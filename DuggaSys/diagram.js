@@ -52,7 +52,7 @@ var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = 0;            // Canvas left click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
-var md = 0;                         // Mode to determine action on canvas
+var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
 var hovobj = -1;
 var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
@@ -129,6 +129,28 @@ const zKey = 90;
 const yKey = 89;
 const aKey = 65;
 const escapeKey = 27;
+
+const kind = { 
+    path: 1, 
+    symbol: 2
+} 
+const symbolKind = { 
+    uml: 1,  
+    erAttribute: 2,
+    erEntity: 3,
+    line: 4,
+    erRelation: 5,
+    text: 6,
+    umlLine: 7
+}
+
+const mouseState = {
+    empty: 0,                       // empty
+    noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
+    insidePoint: 2,                 // mouse is pressed down and at a point in selected object 
+    insideMovableObject: 3,         // mouse pressed down inside a movable object  
+    boxSelectOrCreateMode: 4        // Box select or Create mode 
+}
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -280,7 +302,7 @@ function keyDownHandler(e) {
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != 4) {
+            if(cloneTempArray[i].symbolkind != symbolKind.line) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
             }
@@ -335,12 +357,12 @@ function canvasToPixels(pixelX = 0, pixelY = 0){
 //----------------------------------------------------------------------
 
 function cancelFreeDraw() {
-    if(uimode == "CreateFigure" && figureType == "Free" && md == 4) {
+    if(uimode == "CreateFigure" && figureType == "Free" && md == mouseState.boxSelectOrCreateMode) {
         for (var i = 0; i < numberOfPointsInFigure; i++) {
             diagram.pop();
         }
         cleanUp();
-        md = 0;             //Prevents the dashed line box, when drawing a square, to appear immediately
+        md = mouseState.empty;      //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
       }
 }
@@ -434,20 +456,20 @@ function copySymbol(symbol) {
     middleDividerClone.x += 10;
     middleDividerClone.y += 10;
 
-    if(symbol.symbolkind == 1) {
+    if(symbol.symbolkind == symbolKind.uml) {
         clone.name = "New" + diagram.length;
-    }else if(symbol.symbolkind == 2) {
+    }else if(symbol.symbolkind == symbolKind.erAttribute) {
         clone.name = "Attr" + diagram.length;
-    }else if(symbol.symbolkind == 3) {
+    }else if(symbol.symbolkind == symbolKind.erEntity) {
         clone.name = "Entity" + diagram.length;
-    }else if(symbol.symbolkind == 4) {
+    }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "Line" + diagram.length;
     }else{
         clone.name = "Relation" + diagram.length;
     }
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
-    if(clone.symbolkind != 1) {
+    if(clone.symbolkind != symbolKind.uml) {
         clone.centerPoint = points.push(centerPointClone) - 1;
     }
     else {
@@ -525,7 +547,7 @@ points.clearAllSelects = function() {
 diagram.closestPoint = function(mx, my) {
     var distance = 50000000;
     var point;
-    this.filter(symbol => symbol.kind != 1 && symbol.symbolkind != 6).forEach(symbol => {
+    this.filter(symbol => symbol.kind != kind.path && symbol.symbolkind != symbolKind.text).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
             var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
@@ -537,7 +559,7 @@ diagram.closestPoint = function(mx, my) {
         });
     });
 
-    this.filter(symbol => symbol.kind == 1).forEach(path => {
+    this.filter(symbol => symbol.kind == kind.path).forEach(path => {
         path.segments.forEach(seg => {
             var deltaX = mx - points[seg.pb].x;
             var deltaY = my - points[seg.pb].y;
@@ -559,18 +581,18 @@ diagram.closestPoint = function(mx, my) {
 diagram.draw = function() {
     this.adjustPoints();
     for(var i = 0; i < this.length; i++) {
-        if (this[i].kind == 1) {
+        if (this[i].kind == kind.path) {
             this[i].draw(1, 1);
         }
     }
     //Draws all lines first so that they appear behind the object instead
     for(var i = 0; i < this.length; i++) {
-        if(this[i].symbolkind == 4) {
+        if(this[i].symbolkind == symbolKind.line) {
             this[i].draw();
         }
     }
     for (var i = 0; i < this.length; i++) {
-        if(this[i].kind == 2 && this[i].symbolkind != 4) {
+        if(this[i].kind == kind.symbol && this[i].symbolkind != symbolKind.line) {
             this[i].draw();
         }
     }
@@ -618,7 +640,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
         sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 1) {
+        if (this[i].kind == kind.path) {
             var tempPoints = [];
             for (var j = 0; j < this[i].segments.length; j++) {
                 tempPoints.push({x:points[this[i].segments[j].pa].x, y:points[this[i].segments[j].pa].y});
@@ -697,7 +719,7 @@ diagram.itemClicked = function() {
 
 //--------------------------------------------------------------------
 // checkForHover: Executes isHovered method in all diagram objects
-//                (currently only of kind==2 && symbolkind == 4 (aka. lines))
+//                (currently only of kind==2 && symbolkind == symbolKind.line (aka. lines))
 //--------------------------------------------------------------------
 
 diagram.checkForHover = function(posX, posY) {
@@ -707,16 +729,16 @@ diagram.checkForHover = function(posX, posY) {
     var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
     if (hoveredObjects.length <= 0) return -1;
     hoveredObjects.sort(function(a, b) {
-        if(a.kind == 1 && b.kind == 2) return -1;
-        else if(a.kind != 1 && b.kind == 1) return 1;
-        else if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
-        else if (a.symbolkind == 4 && b.symbolkind != 4) return -1;
-        else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
+        if(a.kind == kind.path && b.kind == kind.symbol) return -1;
+        else if(a.kind != kind.path && b.kind == kind.path) return 1;
+        else if (a.symbolkind != symbolKind.line && b.symbolkind != symbolKind.line) return 0;
+        else if (a.symbolkind == symbolKind.line && b.symbolkind != symbolKind.line) return -1;
+        else if (a.symbolkind != symbolKind.line && b.symbolkind == symbolKind.line) return 1;
         else return 0;
     });
-    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != 1) {
+    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != kind.path) {
         //We only want to set it to true when md is not in selectionbox mode
-        hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
+        hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.boxSelectOrCreateMode || uimode != "normal";
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
@@ -763,7 +785,7 @@ diagram.eraseLines = function(privateLines) {
 diagram.getEntityObjects = function() {
     var entities = [];
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3) {
+        if (diagram[i].symbolkind == symbolKind.erEntity) {
             entities.push(diagram[i]);
         }
     }
@@ -777,7 +799,7 @@ diagram.getEntityObjects = function() {
 diagram.getLineObjects = function() {
     var lines = [];
     for (var i = 0; i < this.length; i++) {
-        if (diagram[i].symbolkind == 4) {
+        if (diagram[i].symbolkind == symbolKind.line) {
             lines.push(diagram[i]);
         }
     }
@@ -791,7 +813,7 @@ diagram.getLineObjects = function() {
 diagram.getRelationObjects = function() {
     var relations = [];
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 5) {
+        if (diagram[i].symbolkind == symbolKind.erRelation) {
             relations.push(diagram[i]);
         }
     }
@@ -824,7 +846,7 @@ diagram.updateLineRelations = function() {
 
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
+        if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
             diagram[i].sortAllConnectors();
         }
     }
@@ -836,7 +858,7 @@ diagram.sortConnectors = function() {
 
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
+        if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
             if(diagram[i].quadrants()) break;
         }
     }
@@ -1074,7 +1096,7 @@ function getConnectedLines(object) {
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
         //Lines connected to object's centerPoint
-        //Line always have topLeft and bottomRight if symbolkind == 4, because that means it's a line object
+        //Line always have topLeft and bottomRight if symbolkind == symbolKind.line, because that means it's a line object
         if (line.topLeft == object.centerPoint || line.bottomRight == object.centerPoint) {
             objectLines.push(line);
         }
@@ -1091,22 +1113,22 @@ function getConnectedLines(object) {
 function eraseObject(object) {
     canvas.style.cursor = "default";
     var objectsToDelete = [];
-    if (object.kind == 2) {
+    if (object.kind == kind.symbol) {
         // None lines
-        if(object.symbolkind != 4) {
-            var lines = diagram.filter(symbol => symbol.symbolkind == 4);
+        if(object.symbolkind != symbolKind.line) {
+            var lines = diagram.filter(symbol => symbol.symbolkind == symbolKind.line);
             objectsToDelete = lines.filter(
                 line => line.topLeft == object.middleDivider
                         || line.topLeft == object.centerPoint
                         || line.bottomRight == object.middleDivider
                         || line.bottomRight == object.centerPoint
-                        || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == 3 || object.symbolkind == 5))
-                        || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == 3 || object.symbolkind == 5))
+                        || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
+                        || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
             );
         // lines
         }else {
             diagram.filter(
-                symbol => symbol.symbolkind == 3 || symbol.symbolkind == 5)
+                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation)
                     .filter(symbol =>   symbol.hasConnector(object.topLeft)
                                      && symbol.hasConnector(object.bottomRight))
                     .forEach(symbol => {
@@ -1114,7 +1136,7 @@ function eraseObject(object) {
                         symbol.removePointFromConnector(object.bottomRight);
                     });
 
-            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5);
+            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation);
             // Check if the line has a common point with a centerpoint of attributes or relations.
             var removeTopleft = attributesAndRelations
                         .filter(symbol => symbol.centerPoint == object.topLeft
@@ -1129,7 +1151,7 @@ function eraseObject(object) {
         }
         object.erase();
         diagram.eraseLines(object, object.getLines());
-    } else if (object.kind == 1) {
+    } else if (object.kind == kind.path) {
         object.erase();
     }
     diagram.deleteObject(object);
@@ -1210,7 +1232,7 @@ function setType() {
 function connectedObjects(line) {
     var privateObjects = [];
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) {
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) {
             var objectPoints = diagram[i].getPoints();
             for (var j = 0; j < objectPoints.length; j++) {
                 if (objectPoints[j] == line.topLeft || objectPoints[j] == line.bottomRight) {
@@ -1775,7 +1797,7 @@ function removeDuplicatesInList(selected_objects) {
 function removeLineObjectsFromList(selected_objects){
     let temporary_objects = [];
     for(let i = 0; i < selected_objects.length; i++) {
-        if(selected_objects[i].symbolkind != 4) {
+        if(selected_objects[i].symbolkind != symbolKind.line) {
             temporary_objects.push(selected_objects[i]);
         }
     }
@@ -1885,15 +1907,15 @@ function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
+        if (diagram[i].kind == kind.path) str += diagram[i].figureToSVG();
     }
     // Convert lines to SVG second so they appear behind other symbols but above figures
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind == symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     // Convert other objects to SVG
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     return str;
 }
@@ -1920,7 +1942,7 @@ function globalLineThickness() {
 
 function globalFont() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.uml || diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
             diagram[i].properties['font'] = document.getElementById('font').value;
         }
     }
@@ -1932,7 +1954,7 @@ function globalFont() {
 
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
             diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
         }
     }
@@ -1944,7 +1966,7 @@ function globalFontColor() {
 
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
             diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
         }
     }
@@ -1956,7 +1978,7 @@ function globalTextSize() {
 
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
             diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
         } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
     }
@@ -1988,15 +2010,15 @@ function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
+        if (diagram[i].kind == kind.path) str += diagram[i].figureToSVG();
     }
     // Convert lines to SVG second so they appear behind other symbols but above figures
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind == symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     // Convert other objects to SVG
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     return str;
 }
@@ -2205,8 +2227,8 @@ function mousemoveevt(ev, t) {
 
     reWrite();
     updateGraphics();
-
-    if (md == 0) {
+  
+    if (md == mouseState.empty) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
@@ -2224,15 +2246,15 @@ function mousemoveevt(ev, t) {
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
-    } else if (md == 1) {
+    } else if (md == mouseState.noPointAvailable) {
         // If mouse is pressed down and no point is close show selection box
-    } else if (md == 2) {
+    } else if (md == mouseState.insidePoint) {
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;	
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
-            if(diagram[lastSelectedObject].kind == 1) {
+            if(diagram[lastSelectedObject].kind == kind.path) {
                 diagram[lastSelectedObject].calculateBoundingBox();
             }
         } else {
@@ -2240,7 +2262,7 @@ function mousemoveevt(ev, t) {
             sel.point.y.y = currentMouseCoordinateY;
         }
         // If mouse is pressed down and at a point in selected object - move that point
-    } else if (md == 3) {
+    } else if (md == mouseState.insideMovableObject) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
             uimode = "Moved";
@@ -2259,14 +2281,14 @@ function mousemoveevt(ev, t) {
             startMouseCoordinateY = currentMouseCoordinateY;
         }
     }
-    if (md == 4 && uimode == "normal") {
+    if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
     } else {
         diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     }
     updateGraphics();
     // Draw select or create dotted box
-    if (md == 4 && uimode != "MoveAround") {
+    if (md == mouseState.boxSelectOrCreateMode && uimode != "MoveAround") {
         if (figureType == "Free" && uimode == "CreateFigure") {
             if(p2 != null && !(isFirstPoint)) {
                 ctx.setLineDash([3, 3]);
@@ -2407,18 +2429,17 @@ function mousedownevt(ev) {
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
-    if(uimode == "Moved" && md != 4) {
+    if(uimode == "Moved" && md != mouseState.boxSelectOrCreateMode) {
         uimode = "normal";
-        md = 0;
+        md = mouseState.empty;
     }
 
     if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
         hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
-        
-        md = 4;            // Box select or Create mode.
+        md = mouseState.boxSelectOrCreateMode;            // Box select or Create mode.
         //If you start on canvas or not
         if (hovobj == -1) {
-            md = 0;
+            md = mouseState.empty;
         } else {
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Store which object you are hovering over in lineStartObj
@@ -2428,12 +2449,12 @@ function mousedownevt(ev) {
             symbolStartKind = diagram[lineStartObj].symbolkind;
         }
     } else if (sel.distance < tolerance) {
-        md = 2;
+        md = mouseState.insidePoint;
     } else if (movobj != -1) {
-        md = 3;
+        md = mouseState.insideMovableObject;
         handleSelect();
     } else {
-        md = 4; // Box select or Create mode.
+        md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
         if(uimode != "CreateFigure") {
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
@@ -2495,8 +2516,8 @@ function handleSelect() {
 function mouseupevt(ev) {
     canvasLeftClick = 0;
     hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
-
-    if (uimode == "CreateFigure" && md == 4) {
+  
+    if (uimode == "CreateFigure" && md == mouseState.boxSelectOrCreateMode) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
@@ -2504,7 +2525,7 @@ function mouseupevt(ev) {
         if(figureType == "Free") return;
     }
     // Code for creating a new class
-    if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
+    if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
         resize();
 
         // Add required points
@@ -2512,15 +2533,15 @@ function mouseupevt(ev) {
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
-    var saveState = md == 4 && uimode != "normal";
+    var saveState = md == mouseState.boxSelectOrCreateMode && uimode != "normal";
     if(movobj > -1) {
-        if(diagram[movobj].symbolkind != 4 && uimode == "Moved") saveState = true;
+        if(diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
-    if (uimode == "CreateLine" && md == 4) {
+    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
-         if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
-            md = 0;
+         if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
+            md = mouseState.empty;
          }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
@@ -2529,37 +2550,37 @@ function mouseupevt(ev) {
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != 4 && symbolEndKind != 4) {
+            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) {
                 var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == 2) {
+                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else {
                     createNewPoint = true;
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == 3 && symbolStartKind == 2) {
+                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 2 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 3 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
-                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)) {
+                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[hovobj].symbolkind == 2) {
+                    if (diagram[hovobj].symbolkind == symbolKind.erAttribute) {
                         p2 = diagram[hovobj].centerPoint;
                     } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -2570,11 +2591,11 @@ function mouseupevt(ev) {
             }
         }
     }
-    if (uimode == "CreateUMLLine" && md == 4) {
+    if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
-         if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
-            md = 0;
+         if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
+            md = mouseState.empty;
          }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
@@ -2583,37 +2604,37 @@ function mouseupevt(ev) {
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != 7 && symbolEndKind != 7) {
+            if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) {
                 var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == 2) {
+                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else {
                     createNewPoint = true;
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == 3 && symbolStartKind == 2) {
+                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 2 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 3 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
-                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)) {
+                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[hovobj].symbolkind == 2) {
+                    if (diagram[hovobj].symbolkind == symbolKind.erAttribute) {
                         p2 = diagram[hovobj].centerPoint;
                     } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -2629,22 +2650,21 @@ function mouseupevt(ev) {
     // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
     //----------------------------------------------------------------------
 
-    if (uimode == "CreateClass" && md == 4) {
-        var classB = new Symbol(1); // UML
+    if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
+        var classB = new Symbol(symbolKind.uml); // UML
         classB.name = "New" + diagram.length;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
         classB.bottomRight = p2;
-
         classB.middleDivider = p3;
         classB.centerPoint = p3;
         diagram.push(classB);
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateERAttr" && md == 4) {
-        erAttributeA = new Symbol(2); // ER attributes
+    } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
+        erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
         erAttributeA.name = "Attr" + diagram.length;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
@@ -2657,8 +2677,8 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateEREntity" && md == 4) {
-        erEnityA = new Symbol(3); // ER entity
+    } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
+        erEnityA = new Symbol(symbolKind.erEntity); // ER entity
         erEnityA.name = "Entity" + diagram.length;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
@@ -2672,11 +2692,11 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateLine" && md == 4) {
+    } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
-        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine) {
-            erLineA = new Symbol(4); // Lines
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) && okToMakeLine) {
+            erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
             erLineA.object_type = "";
@@ -2690,8 +2710,8 @@ function mouseupevt(ev) {
             createCardinality();
             updateGraphics();
         }
-    } else if (uimode == "CreateERRelation" && md == 4) {
-        erRelationA = new Symbol(5); // ER Relation
+    } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
+        erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
         erRelationA.name = "Relation" + diagram.length;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
@@ -2702,10 +2722,10 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (md == 4 && uimode == "normal") {
+    } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }
-    else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
+    else if(uimode != "Moved" && !ctrlIsClicked && md != mouseState.boxSelectOrCreateMode) {
         //Unselects every object.
         for(var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
@@ -2715,13 +2735,13 @@ function mouseupevt(ev) {
         if (lastSelectedObject >= 0) {
             selected_objects.push(diagram[lastSelectedObject]);
             //You have to target an object when you start to draw
-            if(md != 0) diagram[lastSelectedObject].targeted = true;
+            if(md != mouseState.empty) diagram[lastSelectedObject].targeted = true;
         }
-    } else if (uimode == "CreateUMLLine" && md == 4) {
+    } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
-        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 7 && symbolEndKind != 7) && okToMakeLine) {
-            umlLineA = new Symbol(7); //UML Lines
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) 
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) && okToMakeLine) {
+            umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
             umlLineA.name = "Line" + diagram.length
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
@@ -2740,7 +2760,7 @@ function mouseupevt(ev) {
     updateGraphics();
     diagram.updateLineRelations();
     // Clear mouse state
-    md = 0;
+    md = mouseState.empty;
     if(saveState) SaveState();
 
 }
@@ -2754,7 +2774,7 @@ function doubleclick(ev) {
 }
 
 function createText(posX, posY) {
-    var text = new Symbol(6);
+    var text = new Symbol(symbolKind.text);
     text.name = "New Text" + diagram.length;
     text.textLines.push({text:text.name});
 
@@ -2786,7 +2806,7 @@ function createText(posX, posY) {
 //----------------------------------------------------------------------
 
 function resize() {
-    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
+    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == mouseState.boxSelectOrCreateMode) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
             var tempX = currentMouseCoordinateX;
             currentMouseCoordinateX = startMouseCoordinateX;
@@ -2931,7 +2951,7 @@ function loadFormIntoElement(element, dir) {
 
     if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2) {
+      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.symbol) {
         document.getElementById('nametext').value = diagram[lastSelectedObject].name;
         setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
         setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
@@ -2939,7 +2959,7 @@ function loadFormIntoElement(element, dir) {
         setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
         setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
         setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
-      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1) {
+      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
         setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
@@ -3080,33 +3100,33 @@ function objectAppearanceMenu(form) {
     //if no item has been selected
     if(!diagram[lastSelectedObject]) { return;}
     // UML selected
-    if (diagram[lastSelectedObject].symbolkind == 1) {
+    if (diagram[lastSelectedObject].symbolkind == symbolKind.uml ) {
         classAppearanceOpen = true;
         loadUMLForm(form, 'diagram_forms.php?form=classType');
     }
     // ER attributes selected
-    else if (diagram[lastSelectedObject].symbolkind == 2) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erAttribute) {
         loadFormIntoElement(form, 'diagram_forms.php?form=attributeType');
     }
     // ER entity selected
-    else if (diagram[lastSelectedObject].symbolkind == 3) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erEntity) {
         loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
     }
     // Lines selected
-    else if (diagram[lastSelectedObject].symbolkind == 4) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
         loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
     // ER relation selected
-    else if (diagram[lastSelectedObject].symbolkind == 5) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erRelation) {
         loadFormIntoElement(form, 'diagram_forms.php?form=relationType');
     }
     // Text selected
-    else if (diagram[lastSelectedObject].symbolkind == 6) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.text) {
         textAppearanceOpen = true;
         loadTextForm(form, 'diagram_forms.php?form=textType');
     }
     // Fill color of the object
-    else if (diagram[lastSelectedObject].kind == 1) {
+    else if (diagram[lastSelectedObject].kind == kind.path) {
         loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }
 }
@@ -3116,7 +3136,7 @@ function objectAppearanceMenu(form) {
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
-    if(diagram[lastSelectedObject].symbolkind == 1) { // UML-class appearance
+    if(diagram[lastSelectedObject].symbolkind == symbolKind.uml) { // UML-class appearance
       diagram[lastSelectedObject].name = document.getElementById('nametext').value;
       var attributeLines = $('#UMLAttributes').val().split('\n');
       var operationLines = $('#UMLOperations').val().split('\n');
@@ -3131,13 +3151,13 @@ function changeObjectAppearance(object_type) {
         diagram[lastSelectedObject].operations.push({text:operationLines[i]});
       }
 
-    } else if (diagram[lastSelectedObject].symbolkind == 4) {
+    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-    } else if (diagram[lastSelectedObject].kind == 1) {
+    } else if (diagram[lastSelectedObject].kind == kind.path) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
         diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
-    } else if (diagram[lastSelectedObject].symbolkind == 6) {
+    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.text) {
         diagram[lastSelectedObject].textLines = [];
         var textArray = $('#freeText').val().split('\n');
         for(var i = 0; i < textArray.length; i++) {
@@ -3161,13 +3181,13 @@ function changeObjectAppearance(object_type) {
 
 function createCardinality() {
     //Setting cardinality on new line
-    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3) {
+    if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[hovobj].symbolkind == symbolKind.erEntity) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
     }
-    else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
+    else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erRelation) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
     }
-    else if(diagram[lineStartObj].symbolkind == 1 && diagram[hovobj].symbolkind == 1) {
+    else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[hovobj].symbolkind == symbolKind.uml) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
@@ -3183,7 +3203,7 @@ function changeCardinality(isUML) {
     if(val == "None") val = "";
     if(valUML == "None") valUML = "";
     if(diagram[lastSelectedObject].cardinality[0].value != null) {
-        if(diagram[lastSelectedObject].cardinality[0].symbolKind != 1) {
+        if(diagram[lastSelectedObject].cardinality[0].symbolKind != symbolKind.uml) {
             diagram[lastSelectedObject].cardinality[0].value = val;
         } else {
             diagram[lastSelectedObject].cardinality[0].valueUML = valUML;
