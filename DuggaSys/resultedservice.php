@@ -71,10 +71,10 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 if($requestType == "mail"){
 	$studentID = "";
-	foreach($currentRowFilter as $row){
-		if($row != null)
-			studentID = $row["username"];
-	}
+	// foreach($currentRowFilter as $row){
+	// 	if($row != null)
+	// 		studentID = $row["username"];
+	// }
 
 	switch($searchterm)
 	{
