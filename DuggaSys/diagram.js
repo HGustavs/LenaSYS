@@ -1336,7 +1336,7 @@ function debugMode() {
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         drawOrigo();
-        toolbarState = 3;                                                               // Change the toolbar back to ER.
+        toolbarState = 3;                                                               // Change the toolbar to DEV.
         switchToolbar('Dev');                                                           // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to DEV.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
@@ -1370,8 +1370,8 @@ function debugMode() {
 //------------------------------------------------------------------------------
 var crossER = false;
 function switchToolbarER() { 
-    toolbarState = 1;   
-    switchToolbar('ER');
+    toolbarState = 1;                                                               // Change the toolbar to ER.
+    switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
     setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
@@ -1385,14 +1385,12 @@ function switchToolbarER() {
 //------------------------------------------------------------------------------
 var crossUML = false;
 function switchToolbarUML() {
-    toolbarState = 2;   
-    switchToolbar('UML');
-    document.getElementById('toolbarTypeText').innerHTML = 'UML';
+    toolbarState = 2;                                                               // Change the toolbar to UML.
+    switchToolbar('UML');                                                           // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'UML';                   // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('UML')"), !crossUML);                 // Turn on crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossUML.
-    crossER = false;
-    crossDEV = false;
 }
 
 //------------------------------------------------------------------------------
@@ -1402,9 +1400,9 @@ function switchToolbarUML() {
 //------------------------------------------------------------------------------
 var crossDEV = false;
 function switchToolbarDev() {
-    toolbarState = 3;   
-    switchToolbar('Dev');
-    document.getElementById('toolbarTypeText').innerHTML = 'DEV';
+    toolbarState = 3;                                                               // Change the toolbar to DEV.
+    switchToolbar('Dev');                                                           // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
@@ -1414,7 +1412,6 @@ function switchToolbarDev() {
 // hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
 //               then do some sort of calculation. used to save the diagram. it also save the local diagram
 //------------------------------------------------------------------------------
-
 function hashFunction() {
     var diagramToString = "";
     var hash = 0;
@@ -2111,7 +2108,7 @@ function switchToolbar(direction) {
     }
   }
   
-  document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
+  document.getElementById('toolbarTypeText').innerHTML = "ER";
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
