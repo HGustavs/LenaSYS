@@ -3637,8 +3637,8 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  padding-right: 10px;
-  padding-left: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
   height: 30px;
   position: absolute;
   right: 20px;
@@ -3672,37 +3672,75 @@ only screen and (max-device-width: 320px) {
   padding: 0;
 }
 
-#zoomOut {
-  margin: 0;
+.tooltipDecrease{
+  display: inline-block;
+  position: relative;
+  bottom: 7px;
 }
 
-#zoomOut button{
-  position: relative; bottom: 5px;
-  line-height: 15px;
-  font-size: 15px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  background-color: white;
-  color: black;
+.tooltipDecrease button{
+  position: relative;
 }
 
-.b1:hover{
-  background-color: black;
+.tooltipDecrease .tooltiptextDec{
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: -15px;
 }
 
-#zoomIn {
-  margin: 0;
+.tooltipDecrease:hover .tooltiptextDec{
+  visibility: visible;
+}
+#range{
+  position: relative;
+  display: inline-block;
+  top: 2px;
 }
 
-#zoomIn button{
-  position: relative; bottom: 5px;
-  line-height: 15px;
-  font-size: 15px;
+#range input{
+  position: relative;
 }
 
+.tooltipIncrease{
+  position: relative;
+  display: inline-block;
+  bottom: 7px;
+}
+.tooltipIncrease button{
+  position: relative;
+}
 
+.tooltipIncrease .tooltiptextInc{
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
 
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  right: -20px;
+}
 
+.tooltipIncrease:hover .tooltiptextInc{
+  visibility: visible;
+}
 /* #selectDiv .ikonPil {
   display: block;
   background: url("../icons/arrow.svg") no-repeat;

@@ -2117,6 +2117,12 @@ function zoomInMode() {
     updateGraphics();
 }
 
+function zoomo(zoomValue){
+  var value = parseFloat(document.getElementById("ZoomSelect").value);
+  value = value + parseFloat(zoomValue);
+  document.getElementById("ZoomSelect").value = value;
+  zoomInMode();
+}
 //----------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
 //----------------------------------------------------------------------

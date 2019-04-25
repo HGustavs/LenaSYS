@@ -320,13 +320,19 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-              <span id="zoomOut">
-                  <button class="b1"> - </button>
-              </span>
+              <div class="tooltipDecrease">
+                <button name="Zoom" id="zoomDecrease" type="button" onclick="zoomo(-0.1);"> - </button>
+                <span class="tooltiptextDec">Zoom Out</span>
+              </div>
+              <div id="range">
                 <input name="Zoom" id="ZoomSelect" type="range" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
-                <span id="zoomIn">
-                    <button class="zoomInt"> + </button>
-                </span>
+              </div>
+              <div class="tooltipIncrease">
+                <button name="Zoom" id="zoomIncrease" type="button" onclick="zoomo(0.1);"> + </button>
+                <span class="tooltiptextInc">Zoom In</span>
+              </div>
+            </div>
+
                 <!-- <datalist id="tickmarks">
                       <option value="0.1" label="10%">
                       <option value="0.2">
