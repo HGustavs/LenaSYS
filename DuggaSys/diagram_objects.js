@@ -1401,7 +1401,7 @@ function Symbol(kind) {
             ctx.lineTo(breakpointStartX, middleBreakPointY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(breakpointEndX, middleBreakPointY);
-        } else {
+        } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(middleBreakPointX, breakpointStartY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(middleBreakPointX, breakpointEndY);
