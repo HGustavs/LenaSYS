@@ -773,6 +773,7 @@ function renderCell(col, celldata, cellid) {
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
     str += "</div>";
+    str += "</div>";
     str += "<div>" + celldata.email + "</div>";
 		str += "</div>";
 		return str;
