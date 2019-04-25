@@ -482,6 +482,7 @@ function SortableTable(param) {
 
 		this.magicHeader();
 		freezePaneHandler();
+		console.log(tbl.tblbody);
 	}
 
 	this.toggleColumn = function (colname, col, override) {
@@ -671,7 +672,6 @@ function SortableTable(param) {
 		if (del === "undefined" || del === null) {
 			del = ",";
 		}
-
 		// Export visible columns
 		var rendcnt = 0;
 		for (let columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {

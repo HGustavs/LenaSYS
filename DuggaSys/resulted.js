@@ -940,11 +940,7 @@ function smartSearch(splitSearch, row) {
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
-var rowFilterVariable = [];
-
 function rowFilter(row) {
-  rowFilterVariable = row;
-  console.log("ROW FILTER VARIABLE: "+rowFilterVariable);
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
