@@ -943,7 +943,7 @@ var rowFilterVariable = null;
 function rowFilter(row) {
   if(rowFilterVariable == null){
     for(var i = 0; i < myTable.getTable().tblbody.length; i++)
-        rowFilterVariable.push(i);
+        rowFilterVariable.push(myTable.getRow(i);
   }
 
   console.log(rowFilterVariable);
