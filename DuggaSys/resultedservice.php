@@ -22,7 +22,7 @@ if(isset($_SESSION['uid'])){
 }
 
 $requestType = getOP('requestType');
-$searchterm = getOP('searchterm');
+$currentRowFilter = getOP('currentRowFilter');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -70,6 +70,12 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
+	var studentID = "";
+	foreach($currentRowFilter as $row){
+		if($row != null)
+			studentID = $row["username"];
+	}
+
 	switch($searchterm)
 	{
 		case strpos($searchterm, ' ') !== false:
