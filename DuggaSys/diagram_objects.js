@@ -295,12 +295,34 @@ function Symbol(kind) {
             }
         } else if (this.symbolkind == 5) {
             if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
-                points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
+                // If the width is less than the minimum, push out the
+                // point that the user is dragging
+                if(sel && (points[this.topLeft] === sel.point
+                        || points[this.topLeft] === sel.point.x)) {
+                    points[this.topLeft].x = x1 = points[this.bottomRight].x - relationTemplate.width/2;
+                }else {
+                    points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
+                }
             }
             if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2) {
-                points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
+                // If the height is less than the minimum, push out the
+                // point that the user is dragging
+                if(sel && (points[this.topLeft] === sel.point
+                        || points[this.topLeft] === sel.point.y)) {
+                    points[this.topLeft].y = y1 = points[this.bottomRight].y - relationTemplate.height/2;
+                }else {
+                    points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
+                }
             }
-            points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
+            // Make the relation keep it's shape by aligning the topLeft and bottomRight diagonally
+            // Move either the topLeft or the bottomRight depending on which one
+            // the user is dragging
+            if(sel && (points[this.topLeft] === sel.point
+                    || points[this.topLeft] === sel.point.y)) {
+                points[this.topLeft].y = y1 = points[this.bottomRight].y - (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
+            }else {
+                points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
+            }
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
 
