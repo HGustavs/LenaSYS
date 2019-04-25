@@ -2191,7 +2191,6 @@ function mousemoveevt(ev, t) {
         } else {
         	canvas.style.cursor = "default";
         }
-
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
@@ -2222,7 +2221,6 @@ function mousemoveevt(ev, t) {
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
-
                     diagram[i].move(currentMouseCoordinateX - oldMouseCoordinateX, currentMouseCoordinateY - oldMouseCoordinateY);
                 }
             }
@@ -2232,7 +2230,6 @@ function mousemoveevt(ev, t) {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
     } else {
         diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
-
     }
     updateGraphics();
     // Draw select or create dotted box
