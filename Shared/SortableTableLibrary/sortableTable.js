@@ -728,14 +728,13 @@ function newCompare(firstCell, secoundCell) {
 			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 			
 			if (status == 0) {
+				console.log(status);
 				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 			} else {
 				console.log(status);
 				val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 			}
 		}
-		console.log(firstCellTemp);
-		console.log(secoundCellTemp);
        //Check if the cell is a valid cell in the table.
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
