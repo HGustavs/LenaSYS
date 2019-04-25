@@ -710,6 +710,7 @@ function newCompare(firstCell, secoundCell) {
 	var firstCellTemp;
 	var secoundCellTemp;
 	console.log(col);
+	console.log(firstCell);
 
 	//Check if the cell is a valid cell in the table.
 	if (colOrder.includes(col)) {
@@ -717,7 +718,6 @@ function newCompare(firstCell, secoundCell) {
 		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
 			firstCellTemp = firstCell;
 			secoundCellTemp = secoundCell;
-			console.log(firstCellTemp);
 		} else {
 			//Check if any cell is null.
 			if (firstCell === null || secoundCell === null) {
