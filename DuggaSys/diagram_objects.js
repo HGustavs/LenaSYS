@@ -1397,7 +1397,7 @@ function Symbol(kind) {
         ctx.lineTo(x1, breakpointStartY);
         }
 
-        if((startLineDirection === "top" || startLineDirection === "bottom") && (endLineDirection === "top" || endLineDirection === "bottom")) {
+        if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointStartX, middleBreakPointY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(breakpointEndX, middleBreakPointY);
