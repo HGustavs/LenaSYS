@@ -258,6 +258,10 @@ function SortableTable(param) {
 		this.reRender();
 	}
 
+	this.getTable = function(){
+		return tbl;
+	}
+
 	this.getRow = function (rowno) {
 		return tbl.tblbody[rowno];
 	}
