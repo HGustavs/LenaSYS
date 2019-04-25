@@ -257,7 +257,7 @@ function SortableTable(param) {
 	this.renderTable = function () {
 		this.reRender();
 	}
-	
+
 	this.getRow = function (rowno) {
 		return tbl.tblbody[rowno];
 	}
@@ -648,6 +648,10 @@ function SortableTable(param) {
 	this.updateCell = function () {
 		tbl.tblbody[sortableTable.edit_rowno][sortableTable.edit_columnname] = updateCellCallback(sortableTable.edit_rowno, null, sortableTable.edit_columnname, sortableTable.edit_tableid, null, sortableTable.edit_rowid);
 		this.renderTable();
+	}
+
+	this.getColumnFilter = function(){
+		return columnfilter;
 	}
 
 	this.getColumnOrder = function () {
