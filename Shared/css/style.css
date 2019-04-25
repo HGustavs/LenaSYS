@@ -149,8 +149,8 @@ p {
  * --------------================################================-------------- */
 
  #buttonDiv {
-   position: fixed;
    margin-top: -20px;
+   margin-bottom: 10px;
    height: 20px;
    background-color: white;
  }
