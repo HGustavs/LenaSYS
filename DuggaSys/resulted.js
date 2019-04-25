@@ -939,9 +939,9 @@ function smartSearch(splitSearch, row) {
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
-var rowFilterVariable = null;
+var rowFilterVariable = [];
 function rowFilter(row) {
-  if(rowFilterVariable == null){
+  if(rowFilterVariable.length == 0){
     for(var i = 0; i < myTable.getTable().tblbody.length; i++)
         rowFilterVariable.push(myTable.getRow(i));
   }
