@@ -1334,18 +1334,43 @@ function debugMode() {
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         drawOrigo();
+
+
+        toolbarState = 3;
+        switchToolbar('Dev');
+        document.getElementById('toolbarTypeText').innerHTML = 'Dev';
+        console.log('devmode: ON');
+
+
         ghostingCrosses = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+
+        toolbarState = 1;   
+        switchToolbar('ER');
+        document.getElementById('toolbarTypeText').innerHTML = 'ER';
+        console.log('devmode: OFF');
+
         ghostingCrosses = true;
     }
-    /*$("#toolbarOptions").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Compact Toolbar')"), toggleDeveloperMode);*/ 
+
     reWrite();
     updateGraphics();
     setCheckbox($(".drop-down-option:contains('Developer mode')"), !ghostingCrosses);
+}
+
+function switchToolbarER() {
+    toolbarState = 1;   
+    switchToolbar('ER');
+    document.getElementById('toolbarTypeText').innerHTML = 'ER';
+}
+
+function switchToolbarUML() {
+    toolbarState = 2;   
+    switchToolbar('UML');
+    document.getElementById('toolbarTypeText').innerHTML = 'UML';
 }
 
 //------------------------------------------------------------------------------
@@ -2039,13 +2064,13 @@ function switchToolbar(direction) {
   var text = ["ER", "UML"];
   if(direction == 'left') {
     toolbarState--;
-    if(toolbarState < 0) {
+    if(toolbarState = 1) {
       toolbarState = 2;
     }
   }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 2) {
-      toolbarState = 0;
+    if(toolbarState = 2) {
+      toolbarState = 1;
     }
   }
   
@@ -2092,13 +2117,29 @@ function switchToolbar(direction) {
     $("#drawfreebutton").show();
   }
   else if(toolbarState == toolbarDeveloperMode) {
-
+    $(".toolbar-drawer").show();
+    $("#drawerTools").show();
+    $("#drawerCreate").show();
+    $("#drawerUndo").show();
+    $(".tlabel").show();
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
+    $(".buttonsStyle").show();
+    $("#linebutton").show();
+    $("#attributebutton").show();
+    $("#entitybutton").show();
+    $("#relationbutton").show();
+    $("#drawerDraw").show();
+    $("#labelDraw").show();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
   }
-  else { // shows all alternatives in the toolbar
+ /* else { // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
-  }
+  }*/
 
   document.getElementById('toolbar-switcher').value = toolbarState;
 }

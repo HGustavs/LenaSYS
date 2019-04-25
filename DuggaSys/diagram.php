@@ -68,7 +68,7 @@
                             <div class="toolbarArrows" onclick="switchToolbar('left');">
                               <img id="toolbarLeftArrow" src="../Shared/icons/arrow.svg">
                             </div>
-                            <div id="toolbarTypeText">All</div>
+                            <div id="toolbarTypeText">Dev</div>
                             <div class="toolbarArrows" onclick="switchToolbar('right');">
                               <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
                             </div>
@@ -207,7 +207,14 @@
                     <span class="drop-down-label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
+                            <span class="drop-down-option" onclick="debugMode();">Developer mode</span>
+                        </div>
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="switchToolbarER();">ER</span>
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="switchToolbarUML();">UML</span>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
