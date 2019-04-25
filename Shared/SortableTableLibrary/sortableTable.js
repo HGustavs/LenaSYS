@@ -669,6 +669,10 @@ function SortableTable(param) {
 		}
 	}
 
+	this.mail = function(){
+
+	}
+
 	this.export = function (format, del) {
 		var str = "";
 

@@ -772,6 +772,8 @@ function renderCell(col, celldata, cellid) {
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
+    str += "</div>";
+    str += "<div>" + celldata.email + "</div>";
 		str += "</div>";
 		return str;
 
@@ -942,7 +944,7 @@ function smartSearch(splitSearch, row) {
 // rowFilter <- Callback function that filters rows in the table
 function rowFilter(row) {
 
-  
+
   // if(currentRowFilter.length == 0){
   //   for(var i = 0; i < myTable.getTable().tblbody.length; i++)
   //       currentRowFilter.push(myTable.getRow(i));
