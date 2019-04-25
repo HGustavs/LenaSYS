@@ -307,8 +307,18 @@ function keyDownHandler(e) {
 //----------------------------------------------------
 function pixelsToCanvas(pixelX = 0, pixelY = 0){
     return {
-        x: pixelX + origoOffsetX,
-        y: pixelY + origoOffsetY
+        x: pixelX * zoomValue + origoOffsetX,
+        y: pixelY * zoomValue + origoOffsetY
+    }
+}
+
+//----------------------------------------------------
+// Map canvas offset from origo to actual coordinates 
+//----------------------------------------------------
+function canvasToPixels(pixelX = 0, pixelY = 0){
+    return{
+        x: (pixelX - origoOffsetX) / zoomValue,
+        y: (pixelY - origoOffsetY) / zoomValue
     }
 }
 
@@ -1014,7 +1024,7 @@ function canvasSize() {
 window.addEventListener('resize', canvasSize);
 
 function mod(n, m) {
-  return ((n % m) + m) % m;
+  return  Math.round(((n % m) + m)) % m;
 }
 
 //-------------------------------------------
@@ -1024,15 +1034,14 @@ function updateGraphics() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     diagram.updateQuadrants();
     drawGrid();
+    drawOrigoLine();
+    if(!ghostingCrosses) {
+        drawOrigo();
+    }
     diagram.sortConnectors();
     diagram.draw();
     points.drawPoints();
     drawVirtualA4();
-    drawOrigoLine();
-
-     if(!ghostingCrosses) {
-        drawOrigo();
-    }
 }
 
 //---------------------------------------
@@ -1208,11 +1217,12 @@ function connectedObjects(line) {
 
 function drawGrid() {
     ctx.lineWidth = 1;
-    myOffsetX = origoOffsetX % gridSize;
-    myOffsetY = origoOffsetY % gridSize;
+    let zoomGridSize = gridSize * zoomValue;
+    myOffsetX = origoOffsetX % zoomGridSize;
+    myOffsetY = origoOffsetY % zoomGridSize;
 
-    for(let i = 0; i < canvas.width / gridSize; i++){
-        if(mod(myOffsetX, gridSize * 5) == mod(origoOffsetX, gridSize * 5)) {
+    for(let i = 0; i < canvas.width / (gridSize * zoomValue); i++){
+        if(mod(myOffsetX, zoomGridSize * 5) == mod(origoOffsetX, zoomGridSize * 5)) {
             ctx.strokeStyle = "rgb(208, 208, 220)";
         }
         else {
@@ -1225,7 +1235,7 @@ function drawGrid() {
         ctx.stroke();
         ctx.closePath();
 
-        if(mod(myOffsetY, gridSize * 5) == mod(origoOffsetY, gridSize * 5)) {
+        if(mod(myOffsetY, zoomGridSize * 5) == mod(origoOffsetY, zoomGridSize * 5)) {
             ctx.strokeStyle = "rgb(208, 208, 220)";
         }
         else {
@@ -1238,8 +1248,8 @@ function drawGrid() {
         ctx.stroke();
         ctx.closePath();
 
-        myOffsetX += gridSize;
-        myOffsetY += gridSize;
+        myOffsetX += zoomGridSize;
+        myOffsetY += zoomGridSize;
     }
 }
 
@@ -2154,21 +2164,19 @@ function pointDistance(point1, point2) {
 
 function mousemoveevt(ev, t) {
     // Get canvasMouse coordinates for both X & Y.
-    canvasMouseX = ev.clientX - boundingRect.x - origoOffsetX;
-    canvasMouseY = ev.clientY - boundingRect.y - origoOffsetY;
+
+    //canvasMouseX = ev.clientX - boundingRect.x - origoOffsetX;
+    //canvasMouseY = ev.clientY - boundingRect.y - origoOffsetY;
+    canvasMouseX = canvasToPixels(ev.clientX - boundingRect.x).x;
+    canvasMouseY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
     currentMouseCoordinateX = canvasMouseX;
     currentMouseCoordinateY = canvasMouseY;
 
-    let currentX = pixelsToCanvas(currentMouseCoordinateX).x;
-    let startX = pixelsToCanvas(startMouseCoordinateX).x;
-    let currentY = pixelsToCanvas(0, currentMouseCoordinateY).y;
-    let startY = pixelsToCanvas(0, startMouseCoordinateY).y;
-
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
-        origoOffsetX += (ev.clientX - boundingRect.x - origoOffsetX) - mouseDownPosX;
-        origoOffsetY += (ev.clientY - boundingRect.y - origoOffsetY) - mouseDownPosY;
-        mouseDownPosX = ev.clientX - boundingRect.x - origoOffsetX;
-        mouseDownPosY = ev.clientY - boundingRect.y - origoOffsetY;
+        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.x).x - mouseDownPosX;
+        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.y).y - mouseDownPosY;
+        mouseDownPosX = canvasToPixels(ev.clientX - boundingRect.x).x;
+        mouseDownPosY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
     }
 
     reWrite();
@@ -2366,8 +2374,8 @@ function mousemoveevt(ev, t) {
 function mousedownevt(ev) {
     canvasLeftClick = 1;
 
-    mouseDownPosX = ev.clientX - boundingRect.x - origoOffsetX;
-    mouseDownPosY = ev.clientY - boundingRect.y - origoOffsetY;
+    mouseDownPosX = canvasToPixels(ev.clientX - boundingRect.x).x;
+    mouseDownPosY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
     currentMouseCoordinateX = mouseDownPosX;
     currentMouseCoordinateY = mouseDownPosY;
     startMouseCoordinateX = currentMouseCoordinateX;
