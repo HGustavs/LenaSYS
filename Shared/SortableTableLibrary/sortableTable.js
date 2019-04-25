@@ -482,7 +482,6 @@ function SortableTable(param) {
 
 		this.magicHeader();
 		freezePaneHandler();
-		console.log(tbl.tblbody);
 	}
 
 	this.toggleColumn = function (colname, col, override) {
