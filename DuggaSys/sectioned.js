@@ -1402,7 +1402,6 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
-  console.log(event.keyCode);
   if (event.keyCode == 27) {
     // if key is escape
     closeWindows();
