@@ -1266,20 +1266,30 @@ function drawSwimlanes() {
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
+  var addNumb = 2;
+  var tempNumb = 2;
 
   var str = "";
   for (var i = 0; i < weekLength; i++) {
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    if(i==0){
+      addNumb = 0;
+      tempNumb = 2;
+    }else if(i > 0){
+      tempNumb = 0;
+      addNumb = 2;
+    }
+    var widthAdjuster = weekwidth+addNumb;
+    str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" + (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
       str += "fill='#ffffff' />";
     }
-    str += "<text x='" + ((i * weekwidth) + (weekwidth * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
+    str += "<text x='" + ((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth + (addNumb*10)) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
   }
 
 
@@ -1303,7 +1313,8 @@ function drawSwimlanes() {
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = "#FF0000";
         }
-        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (duggalength * daywidth) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
+        var tempVariable = duggalength*daywidth;
+        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
       }
     }
