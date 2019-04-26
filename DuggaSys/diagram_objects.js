@@ -232,7 +232,7 @@ function Symbol(kind) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 // If the width is less than the minimum, push out the
                 // point that the user is dragging
-                if(sel && (points[this.topLeft] === sel.point // Checks if topLeft is clicked
+                if(sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
                         || points[this.topLeft] === sel.point.x)) { // Checks if bottomLeft is clicked
                     points[this.topLeft].x = x1 = points[this.bottomRight].x - entityTemplate.width;
                 }else {
@@ -242,7 +242,7 @@ function Symbol(kind) {
             if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging
-                if(sel && (points[this.topLeft]===sel.point || // Checks if topLeft is clicked
+                if(sel&&sel.point&&(points[this.topLeft]===sel.point || // Checks if topLeft is clicked
                         points[this.topLeft] === sel.point.y)) { // Checks if topRight is clicked
                     points[this.topLeft].y = y1 = points[this.bottomRight].y - entityTemplate.height;
                 }else {
@@ -280,7 +280,7 @@ function Symbol(kind) {
             this.minWidth = ctx.measureText(longestStr).width + 15;
 
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
-                if (sel && (points[this.topLeft] === sel.point
+                if (sel&&sel.point&&(points[this.topLeft] === sel.point
                         || points[this.topLeft] === sel.point.y)) {
                     points[this.topLeft].y = points[this.bottomRight].y - this.minHeight;
                 }else {
@@ -288,7 +288,7 @@ function Symbol(kind) {
                 }
             }
             if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth) {
-                if (sel && (points[this.topLeft] === sel.point
+                if (sel&&sel.point&&(points[this.topLeft] === sel.point
                         || points[this.topLeft] === sel.point.x)) {
                     points[this.topLeft].x = points[this.bottomRight].x - this.minWidth;
                 }else {
@@ -305,7 +305,7 @@ function Symbol(kind) {
             if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
                 // If the width is less than the minimum, push out the
                 // point that the user is dragging
-                if(sel && (points[this.topLeft] === sel.point
+                if(sel&&sel.point&&(points[this.topLeft] === sel.point
                         || points[this.topLeft] === sel.point.x)) {
                     points[this.topLeft].x = x1 = points[this.bottomRight].x - relationTemplate.width/2;
                 }else {
@@ -315,7 +315,7 @@ function Symbol(kind) {
             if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging
-                if(sel && (points[this.topLeft] === sel.point
+                if(sel&&sel.point&&(points[this.topLeft] === sel.point
                         || points[this.topLeft] === sel.point.y)) {
                     points[this.topLeft].y = y1 = points[this.bottomRight].y - relationTemplate.height/2;
                 }else {
@@ -325,7 +325,7 @@ function Symbol(kind) {
             // Make the relation keep it's shape by aligning the topLeft and bottomRight diagonally
             // Move either the topLeft or the bottomRight depending on which one
             // the user is dragging
-            if(sel && (points[this.topLeft] === sel.point
+            if(sel&&sel.point&&(points[this.topLeft] === sel.point
                     || points[this.topLeft] === sel.point.y)) {
                 points[this.topLeft].y = y1 = points[this.bottomRight].y - (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             }else {
