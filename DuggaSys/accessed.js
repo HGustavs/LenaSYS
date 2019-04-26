@@ -134,7 +134,8 @@ function addClass()
 	}
 }
 
-function resetPw(uid, username) {
+function resetPw(uid, username)
+{
 	rnd = randomstring();
 
 	window.location = "mailto:" + username + "@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20" + rnd + "%0A%0A/LENASys Administrators";
