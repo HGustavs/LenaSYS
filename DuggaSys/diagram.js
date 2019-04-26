@@ -2207,8 +2207,8 @@ function mousemoveevt(ev, t) {
 
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
-        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.x).x - startMouseCoordinateX;
-        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.y).y - startMouseCoordinateY;
+        origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
+        origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
         startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
     }
