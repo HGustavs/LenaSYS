@@ -77,7 +77,7 @@ var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
-var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
+var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
 var minEntityY = 50;
 var hashUpdateTimer = 5000;         // set timer varibale for hash and saving
 var currentHash = 0;
@@ -651,11 +651,11 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             var tempTopLeftY = points[this[i].topLeft].y;
             var tempBottomRightX = points[this[i].bottomRight].x;
             var tempBottomRightY = points[this[i].bottomRight].y;
-            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
-                tempTopLeftX = tempBottomRightX - minEntityX;
+            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX*2) {
+                tempTopLeftX = tempBottomRightX - minEntityX*2;
             }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
-                tempTopLeftY = tempBottomRightY - minEntityY;
+            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY*2) {
+                tempTopLeftY = tempBottomRightY - minEntityY*2;
             }
             if (sx < tempTopLeftX && ex > tempTopLeftX &&
                 sy < tempTopLeftY && ey > tempTopLeftY &&
