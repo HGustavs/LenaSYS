@@ -2346,13 +2346,16 @@ span.arrow {
 }
 .tooltip-searchbar-box{
   box-sizing: border-box;
-  display: none;
+  display: block;
   font-size: 13px;
   position: absolute;
   background: #fff;
-  transform: translate(-48%,74%);
+  transform: translate(-48%,61%);
   border-radius: 5px;
   padding: 5px;
+  padding-bottom: 10px;
+  line-height: 18px;
+  color: black;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
 }
 .tooltip-searchbar-box:before {
