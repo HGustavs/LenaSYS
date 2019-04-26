@@ -719,6 +719,7 @@ function newCompare(firstCell, secoundCell) {
 	var secoundCellTemp;
 	console.log(firstCell);
 	console.log(secoundCell);
+	console.log(status);
     if(typeof firstCell === 'object') {
 		// "FnameLnameSSN" is comprised of three separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
@@ -770,6 +771,7 @@ function newCompare(firstCell, secoundCell) {
 		} 
 	   //Check if the cell is a valid cell in the table.
 	}else if (colOrder.includes(col.includes("lid"))){
+		console.log(status);
 		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
 			firstCellTemp = firstCell.grade;
 			secoundCellTemp = secoundCell.grade;
