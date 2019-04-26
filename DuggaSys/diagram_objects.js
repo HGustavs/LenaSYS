@@ -1413,9 +1413,19 @@ function Symbol(kind) {
         ctx.lineTo(x1, breakpointStartY);
         }
 
-        ctx.lineTo(breakpointStartX, middleBreakPointY);
-        ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
-        ctx.lineTo(breakpointEndX, middleBreakPointY);
+        if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
+            ctx.lineTo(breakpointStartX, middleBreakPointY);
+            ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+            ctx.lineTo(breakpointEndX, middleBreakPointY);
+        } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
+            ctx.lineTo(middleBreakPointX, breakpointStartY);
+            ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+            ctx.lineTo(middleBreakPointX, breakpointEndY);
+        }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
+            ctx.lineTo(breakpointStartX, breakpointEndY);
+        }  else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
+            ctx.lineTo(breakpointEndX, breakpointStartY);
+        }
 
         // Draw to end breakpoint based on direction
         if (endLineDirection == "left") {
