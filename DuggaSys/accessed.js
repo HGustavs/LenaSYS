@@ -36,7 +36,8 @@ function hovers()
   */
 }
 
-function leavec() {
+function leavec()
+{
 	$('#dropdownc').css('display', 'none');
 }
 
