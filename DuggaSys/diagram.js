@@ -2201,15 +2201,15 @@ function pointDistance(point1, point2) {
 
 function mousemoveevt(ev, t) {
     // Get canvasMouse coordinates for both X & Y.
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
-        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.x).x - startMouseCoordinateX;
-        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.y).y - startMouseCoordinateY;
-        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.left).x - startMouseCoordinateX;
+        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.top).y - startMouseCoordinateY;
+        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     }
 
     reWrite();
@@ -2411,8 +2411,8 @@ function mousemoveevt(ev, t) {
 function mousedownevt(ev) {
     canvasLeftClick = 1;
 
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
