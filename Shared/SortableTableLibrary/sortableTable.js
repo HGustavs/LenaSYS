@@ -714,7 +714,6 @@ function newCompare(firstCell, secoundCell) {
 		if(col == "FnameLnameSSN"){
 			col = "Fname/Lname/SSN";
 		}
-		console.log(col);
 		var tempString = col.split("/");
 		console.log(tempString[0]);
 		if(colOrder.includes(tempString[0])) {
@@ -754,6 +753,8 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		console.log(secoundCellTemp);
+		console.log(firstCellTemp);
 		if (status == 0) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
