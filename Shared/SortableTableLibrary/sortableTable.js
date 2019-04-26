@@ -525,8 +525,9 @@ function SortableTable(param) {
 
 		this.reRender();
 	}
-	this.setNameColumn = function (colNameArr){
-		nameColumn = colNameArr;
+	this.setNameColumn = function (colnameArr){
+		nameColumn = colnameArr;
+		console.log(colnameArr);
 	}
 	this.getNameColumn = function () {
 		return nameColumn;
