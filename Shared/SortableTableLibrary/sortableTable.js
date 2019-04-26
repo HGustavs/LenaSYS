@@ -719,10 +719,12 @@ function newCompare(firstCell, secoundCell) {
 	var secoundCellTemp;
 
     if(typeof firstCell === 'object') {
+		temp = sortableTable.currentTable.getNameColumn();
 		if(col == "FnameLnameSSN"){
 			col = sortableTable.currentTable.getNameColumn();
 		}
 		console.log(col);
+		console.log(temp);
 		if(colOrder.includes(col.match("Fname"))) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
