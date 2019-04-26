@@ -1432,7 +1432,7 @@ function switchToolbarUML() {
 //------------------------------------------------------------------------------
 var crossDEV = false;
 function switchToolbarDev() {
-    if(ghostingCrosses){
+    if(developerModeActive){
         return;
       }
     toolbarState = 3;                                                               // Change the toolbar to DEV.
