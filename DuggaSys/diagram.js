@@ -7,7 +7,7 @@
 
 /***********************************************
     CANVAS FUNCTIONS NEEDS TO USE THE MAPPING
-    FUNCTIONS: pixelsToCanvas() OR 
+    FUNCTIONS: pixelsToCanvas() OR
     canvasToPixels() AS THE CANVAS IS STATIC
     AND THE OBJECTS ARE RENDERED ACCORDING TO
     THE CANVAS TOPLEFT'S OFFSET FROM ORIGO
@@ -320,7 +320,7 @@ function pixelsToCanvas(pixelX = 0, pixelY = 0){
 }
 
 //----------------------------------------------------
-// Map canvas offset from origo to actual coordinates 
+// Map canvas offset from origo to actual coordinates
 //----------------------------------------------------
 
 function canvasToPixels(pixelX = 0, pixelY = 0){
@@ -471,7 +471,7 @@ points.drawPoints = function() {
     ctx.strokeStyle = crossStrokeStyle1;
     ctx.lineWidth = 2;
     for (var i = 0; i < this.length; i++) {
-        var point = this[i];        
+        var point = this[i];
         if (!point.isSelected) {
             ctx.beginPath();
             ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
@@ -851,10 +851,10 @@ function initializeCanvas() {
     setInterval(function() {Save()}, 10000);
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" 
-                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) 
+    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
+                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) 
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
                 + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
@@ -967,13 +967,13 @@ function toggleVirtualA4Holes() {
 }
 
 //------------------------------------------------------------
-// resetToolbar: resets the toolbar to it's original position 
+// resetToolbar: resets the toolbar to it's original position
 //------------------------------------------------------------
 
 function resetToolbarPosition(){
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
-    //Assign position for the toolbar according to the canvas bounds 
+    //Assign position for the toolbar according to the canvas bounds
     document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
     document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
 }
@@ -1061,7 +1061,7 @@ function updateGraphics() {
 }
 
 //---------------------------------------------------------------------------------
-// resetViewToOrigin: moves the view to origo based on movement done in the canvas 
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------------------------------------------------
 
 function resetViewToOrigin(){
@@ -1252,7 +1252,7 @@ function drawGrid() {
             ctx.strokeStyle = "rgb(238, 238, 250)";
         }
 
-        ctx.beginPath();        
+        ctx.beginPath();
         ctx.moveTo(myOffsetX, 0);
         ctx.lineTo(myOffsetX, canvas.height);
         ctx.stroke();
@@ -1511,8 +1511,8 @@ function decimalPrecision(value, precision){
 function reWrite() {
     if(!ghostingCrosses) {
         //We are now in debug mode/developer mode
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + 
-        "   |   <b>Coordinates:</b> " + "X=" + Math.round(currentMouseCoordinateX) + " & Y=" + Math.round(currentMouseCoordinateY) +  
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" +
+        "   |   <b>Coordinates:</b> " + "X=" + Math.round(currentMouseCoordinateX) + " & Y=" + Math.round(currentMouseCoordinateY) +
         " | topLeft(" + Math.round(-origoOffsetX) + ", " + Math.round(-origoOffsetY) + ")</p>";
 
     } else {
@@ -2039,7 +2039,7 @@ const toolbarFree = 3;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');    
+    var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
     element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
@@ -2123,7 +2123,7 @@ function switchToolbar(direction) {
     $("#linebutton").show();
     $("#classbutton").show();
     $("#linebutton").hide();
-    $("#umllinebutton").show(); 
+    $("#umllinebutton").show();
   }else if(toolbarState == toolbarFree) {
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
@@ -2239,7 +2239,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 2) {
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
-            sel.point.y = currentMouseCoordinateY;	
+            sel.point.y = currentMouseCoordinateY;
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
@@ -2424,7 +2424,7 @@ function mousedownevt(ev) {
 
     if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
         hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
-        
+
         md = 4;            // Box select or Create mode.
         //If you start on canvas or not
         if (hovobj == -1) {
@@ -2729,7 +2729,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateUMLLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
         || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 7 && symbolEndKind != 7) && okToMakeLine) {
             umlLineA = new Symbol(7); //UML Lines
             umlLineA.name = "Line" + diagram.length
@@ -2796,7 +2796,7 @@ function createText(posX, posY) {
 //----------------------------------------------------------------------
 
 function resize() {
-    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
+    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4 && !diagram[movobj].locked) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
             var tempX = currentMouseCoordinateX;
             currentMouseCoordinateX = startMouseCoordinateX;
