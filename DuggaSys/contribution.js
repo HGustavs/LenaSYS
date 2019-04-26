@@ -363,8 +363,8 @@ function renderCircleDiagram(data)
   var activities = data; //Fix this when database is available
   var str = "";
   str+="<div class='circleGraph'>";
-  str+="<svg width='300' height='300'>";
-  str+="<circle class='circleGraphCircle' cx='150' cy='150' r='120' />";
+  str+="<svg width='500' height='500'>";
+  str+="<circle class='circleGraphCircle' cx='250' cy='250' r='220' />";
   str+=renderHourMarkers();
   var hours = {};
   activities.forEach(entry => {
@@ -384,16 +384,34 @@ function renderCircleDiagram(data)
     }
 
   });
+  var activityPoints = [];
   activities.forEach(entry => {
-    const RADIUS = 120;
+    const RADIUS = 220;
     var hour = entry.time.substr(0,2);
     var houroffset = parseInt(hour) + 6;
     var activityCount = activities.length;
     var percentage = hours[hour] / activityCount;
-    var xCoord = (Math.cos(toRadians(houroffset*15)) * (RADIUS * percentage)) + 148;
-    var yCoord = (Math.sin(toRadians(houroffset*15)) * (RADIUS * percentage)) + 148;
+    var angleFactor = (RADIUS+150) * percentage;
+    angleFactor > 220 ? angleFactor = 220 : angleFactor = angleFactor;    
+    var xCoord = (Math.cos(toRadians(houroffset*15)) * angleFactor) + 245;
+    var yCoord = (Math.sin(toRadians(houroffset*15)) * angleFactor) + 245;
 
-    str+="<rect class='activitymarker' width='5' height='5' x='"+xCoord+"' y='"+yCoord+"' />";
+    activityPoints.push([xCoord, yCoord, activityType, hour]);
+  });
+  var set = new Set(activityPoints.map(JSON.stringify));
+  var uniquePoints = Array.from(set).map(JSON.parse);
+  uniquePoints.sort(([a,b,c,d], [e,f,g,h]) => d - h);
+
+  str+="<polygon class='activityPolygon' points='";
+  for(var i = 0; i < uniquePoints.length; i++) {
+    str+=(uniquePoints[i][0]+5)+","+(uniquePoints[i][1]+5)+" ";
+  }
+  str+="' />";
+  activityPoints.forEach(point => {
+    var xCoord = point[0];
+    var yCoord = point[1];
+    var activityType = point[2];
+    str+="<rect class='activitymarker "+activityType+"' width='10' height='10' x='"+xCoord+"' y='"+yCoord+"' onmouseover:'showActivityInfo()' />";
   });
   str+="</svg>";
   str+="</div>";
@@ -401,10 +419,10 @@ function renderCircleDiagram(data)
 
 function renderHourMarkers()
 {
-  const RADIUS = 120;
-  const NUMRADIUS = 140;
-  const MIDDLE = 150;
-  const X_OFFSET = NUMRADIUS + 5;
+  const RADIUS = 220;
+  const NUMRADIUS = 240;
+  const MIDDLE = 250;
+  const X_OFFSET = NUMRADIUS + 10;
   const Y_OFFSET = NUMRADIUS + 15;
   var str = "";
 
@@ -415,11 +433,15 @@ function renderHourMarkers()
 
     str += "<line x1='"+MIDDLE+"' y1='"+MIDDLE+"' class=";
     if (i % 2 === 0) {
-        str += "'circleGraphBigline'";
-        str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
+      xCoord = (Math.cos(toRadians(i*15)) * (RADIUS+10)) + MIDDLE;
+      yCoord = (Math.sin(toRadians(i*15)) * (RADIUS+10)) + MIDDLE;
+      str += "'circleGraphBigline'";
+      str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
     } else {
-        str += "'circleGraphLine'";
-        str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
+      xCoord = (Math.cos(toRadians(i*15)) * RADIUS) + MIDDLE;
+      yCoord = (Math.sin(toRadians(i*15)) * RADIUS) + MIDDLE;
+      str += "'circleGraphLine'";
+      str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
     }
     str += "<circle class='circleGraphCircle' cx='"+MIDDLE+"' cy='"+MIDDLE+"' r=5 />";
   }
