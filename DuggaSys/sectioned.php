@@ -35,7 +35,7 @@
 	<!-- content START -->
 	<div id="content">
 
-		<div id='TopMenuStatic' style="display:none;">
+		<div id='TopMenuStatic' style=" position: fixed; display:none;">
 
 			<table class='navheader' style='overflow: hidden; table-layout: fixed;'>
 				<tr class='trsize nowrap'>
