@@ -2756,7 +2756,7 @@ function mouseupevt(ev) {
 }
 
 function doubleclick(ev) {
-    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
+    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true && !diagram[movobj].locked) {
         openAppearanceDialogMenu();
     } else {
         createText(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -2796,7 +2796,7 @@ function createText(posX, posY) {
 //----------------------------------------------------------------------
 
 function resize() {
-    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4 && !diagram[movobj].locked) {
+    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
             var tempX = currentMouseCoordinateX;
             currentMouseCoordinateX = startMouseCoordinateX;
