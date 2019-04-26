@@ -782,6 +782,13 @@ function newCompare(firstCell, secoundCell) {
 			firstCellTemp = Object.values(firstCell.grade)[0];
 			secoundCellTemp = Object.values(secoundCell.grade)[0];
 		}
+		firstCellTemp = $('<div/>').html(firstCellTemp).text();
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		if (status == 1) {
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+		} else if(status == 2 || status == 3) {
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		}
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
 		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
