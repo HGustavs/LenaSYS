@@ -70,8 +70,9 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
-	$emailsArray = array();
+	$emailsArray = [];
 
+	console.log("Now we are starting query");
 	for($i = 0; $i < $currentRowFilter.length; $i ++) {
 		$studentID = "";
 		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
