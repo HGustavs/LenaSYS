@@ -466,14 +466,6 @@ function returnedDugga(data) {
 						content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
 				content += "</div>"
 
-				/* Search engine */
-				content += "<div id='testSearchContainer' class='navButt'>"
-						content += "<input id='duggaSearch' class ='searchField' type='search' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
-						content += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
-						content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
-						content += "</button>"
-				content += "</div>"
-
 				/* FAB Button */
 				content += "<div class='fixed-action-button'>"
 						content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
