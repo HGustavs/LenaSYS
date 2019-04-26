@@ -607,7 +607,6 @@ diagram.deleteObject = function(object) {
 
 diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
     //ensure that an entity cannot scale below the minimum size
-    console.log("start x: "+sx+" start y: "+sy+" current x: "+ex+" current y: "+ey+" length: "+this.length);
     if (sx > ex) {
         var tempEndX = ex;
         ex = sx;
@@ -651,12 +650,6 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             var tempTopLeftY = points[this[i].topLeft].y;
             var tempBottomRightX = points[this[i].bottomRight].x;
             var tempBottomRightY = points[this[i].bottomRight].y;
-          /*  if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX*2) {
-                tempTopLeftX = tempBottomRightX - minEntityX*2;
-            }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY*2) {
-                tempTopLeftY = tempBottomRightY - minEntityY*2;
-            } */
             if (sx < tempTopLeftX && ex > tempTopLeftX &&
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
