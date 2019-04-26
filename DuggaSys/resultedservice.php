@@ -69,6 +69,7 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
+console.log($requestType);
 if($requestType == "mail"){
 	console.log("Now we are starting query");
 
