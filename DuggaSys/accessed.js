@@ -143,7 +143,8 @@ function resetPw(uid, username)
 	AJAXService("CHPWD", { cid: querystring['cid'], uid: uid, pw: rnd, coursevers: querystring['coursevers'] }, "ACCESS");
 }
 
-function changeOpt(e) {
+function changeOpt(e)
+{
 	var paramlist = e.target.id.split("_");
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
