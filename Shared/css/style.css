@@ -2946,7 +2946,7 @@ table {
 
 #searchinput, #duggaSearch {
   padding: 0 0 0 2px;
-  height: 20px !important;
+  height: 20px;
 }
 
 #searchbutton {
