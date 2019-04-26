@@ -73,7 +73,7 @@ console.log($requestType);
 if($requestType == "mail"){
 	console.log("Now we are starting query");
 
-//	$emailsArray = array();
+	$emailsArray = array();
 	$emailString = "";
 
 	for($i = 0; $i < $currentRowFilter.length; $i++) {
@@ -92,16 +92,15 @@ if($requestType == "mail"){
 
 		$emailString += $mailQuery + " ;";
 
-//			array_push($emailsArray,$mailQuery['email']);
-//			array_push($emailsArray, "hejsan123");
+		array_push($emailsArray,$mailQuery['email']);
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
 
 	console.log($emailString);
 
 	// Seperates the emails with a ;.
-//	$implodedEmails=implode('; ',$emailsArray);
-//	console.log($emailsArray, "after implode");
+	$implodedEmails=implode('; ',$emailsArray);
+	console.log($emailsArray, "after implode");
 	// Returns the emails in a string representation.
 	echo json_encode("hej");
 	} else {
