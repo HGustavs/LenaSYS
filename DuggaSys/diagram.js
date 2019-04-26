@@ -2863,10 +2863,14 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 function openAppearanceDialogMenu() {
-    $(".loginBox").draggable();
-    var form = showMenu();
-    appearanceMenuOpen = true;
-    objectAppearanceMenu(form);
+  if (lastSelectedObject != -1 && diagram[lastSelectedObject].locked && diagram[lastSelectedObject].targeted == true) {
+      return;
+  } else {
+      $(".loginBox").draggable();
+      var form = showMenu();
+      appearanceMenuOpen = true;
+      objectAppearanceMenu(form);
+  }    
 }
 
 //----------------------------------------------------------------------
@@ -3086,9 +3090,6 @@ function globalAppearanceMenu() {
 //----------------------------------------------------------------------
 
 function objectAppearanceMenu(form) {
-    if ((lastSelectedObject != -1 && diagram[lastSelectedObject].locked && diagram[lastSelectedObject].targeted == true)) {
-        return;
-    }
     form.innerHTML = "No item selected<type='text'>";
     //if no item has been selected
     if(!diagram[lastSelectedObject]) { return;}
