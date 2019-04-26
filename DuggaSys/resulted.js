@@ -446,9 +446,9 @@ function formatDateShorter(longDate) {
 	return d.toLocaleString()
 }
 
-function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid) {
-	$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked));
-	// $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid, entryname, u) {
+	var nameOf = document.getElementById("Nameof");
+	nameOf.textContent = entryname + " by " + firstname + " " + lastname + "("+u+")" + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked);
 
 	var menu = "<div class='' style='width:100px;display:block;'>";
 	menu += "<div class='loginBoxheader'>";
@@ -797,6 +797,7 @@ function renderCell(col, celldata, cellid) {
 
 		// Creation of grading buttons
 		if (celldata.ishere === true || celldata.kind == 4) {
+			console.log(celldata);
 			str += "<div class='gradeContainer resultTableText'>";
 			if (celldata.grade === null) {
 				str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
@@ -809,7 +810,7 @@ function renderCell(col, celldata, cellid) {
 			if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
 				str += " grading-hidden";
 			}
-			str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
+			str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\",\"" + celldata + "\");'";
 			str += "/>";
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
