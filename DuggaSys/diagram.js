@@ -7,7 +7,7 @@
 
 /***********************************************
     CANVAS FUNCTIONS NEEDS TO USE THE MAPPING
-    FUNCTIONS: pixelsToCanvas() OR 
+    FUNCTIONS: pixelsToCanvas() OR
     canvasToPixels() AS THE CANVAS IS STATIC
     AND THE OBJECTS ARE RENDERED ACCORDING TO
     THE CANVAS TOPLEFT'S OFFSET FROM ORIGO
@@ -320,7 +320,7 @@ function pixelsToCanvas(pixelX = 0, pixelY = 0){
 }
 
 //----------------------------------------------------
-// Map canvas offset from origo to actual coordinates 
+// Map canvas offset from origo to actual coordinates
 //----------------------------------------------------
 
 function canvasToPixels(pixelX = 0, pixelY = 0){
@@ -471,7 +471,7 @@ points.drawPoints = function() {
     ctx.strokeStyle = crossStrokeStyle1;
     ctx.lineWidth = 2;
     for (var i = 0; i < this.length; i++) {
-        var point = this[i];        
+        var point = this[i];
         if (!point.isSelected) {
             ctx.beginPath();
             ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
@@ -851,11 +851,9 @@ function initializeCanvas() {
     setInterval(function() {Save()}, 10000);
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" 
-                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) 
-                + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) 
-                + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -867,10 +865,8 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
-    $("#ZoomSelect").click(function() {
-        $(this).parent().find(".ikonPil").toggleClass("ikonPilRotation");
-    });
 }
+
 
 function deselectObjects() {
 	for(let i = 0; i < diagram.length; i++) {
@@ -906,7 +902,7 @@ function toggleVirtualA4() {
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   
 
 }
 
@@ -967,13 +963,13 @@ function toggleVirtualA4Holes() {
 }
 
 //------------------------------------------------------------
-// resetToolbar: resets the toolbar to it's original position 
+// resetToolbar: resets the toolbar to it's original position
 //------------------------------------------------------------
 
 function resetToolbarPosition(){
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
-    //Assign position for the toolbar according to the canvas bounds 
+    //Assign position for the toolbar according to the canvas bounds
     document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
     document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
 }
@@ -1061,7 +1057,7 @@ function updateGraphics() {
 }
 
 //---------------------------------------------------------------------------------
-// resetViewToOrigin: moves the view to origo based on movement done in the canvas 
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------------------------------------------------
 
 function resetViewToOrigin(){
@@ -1252,7 +1248,7 @@ function drawGrid() {
             ctx.strokeStyle = "rgb(238, 238, 250)";
         }
 
-        ctx.beginPath();        
+        ctx.beginPath();
         ctx.moveTo(myOffsetX, 0);
         ctx.lineTo(myOffsetX, canvas.height);
         ctx.stroke();
@@ -1360,21 +1356,38 @@ consloe.log = function(gobBluth) {
 
 
 //------------------------------------------------------------------------------
-// developerMode: this function show and hides crosses and the consol.
+// developerMode: 
+// this function show and hides developer options.
 //------------------------------------------------------------------------------
 
 var developerModeActive = false; // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode() {
     if(developerModeActive) {
+        console.log('developermode: ON'); // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         drawOrigo();
+        toolbarState = 3;                                                               // Change the toolbar to DEV.
+        switchToolbar('Dev');                                                           // ---||---
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to DEV.
+        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
+        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   // Turn off crosstoggleA4.
+        setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
         developerModeActive = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+        toolbarState = 1;                                                               // Change the toolbar back to ER.
+        switchToolbar('ER');                                                            // ---||---
+        document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
+        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
+        setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
         developerModeActive = true;
     }
     reWrite();
@@ -1383,10 +1396,57 @@ function developerMode() {
 }
 
 //------------------------------------------------------------------------------
+// SwitchToolbarER:
+// This function handels everything that need to happen when the toolbar
+// changes to ER. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossER = false;
+function switchToolbarER() { 
+    toolbarState = 1;                                                               // Change the toolbar to ER.
+    switchToolbar('ER');                                                            // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
+    setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarUML:
+// This function handels everything that need to happen when the toolbar
+// changes to UML. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossUML = false;
+function switchToolbarUML() {
+    toolbarState = 2;                                                               // Change the toolbar to UML.
+    switchToolbar('UML');                                                           // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'UML';                   // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('UML')"), !crossUML);                 // Turn on crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossUML.
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarDev:
+// This function handels everything that need to happen when the toolbar
+// changes to Dev. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossDEV = false;
+function switchToolbarDev() {
+    if(ghostingCrosses){
+        return;
+      }
+    toolbarState = 3;                                                               // Change the toolbar to DEV.
+    switchToolbar('Dev');                                                           // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+}
+
+//------------------------------------------------------------------------------
 // hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
 //               then do some sort of calculation. used to save the diagram. it also save the local diagram
 //------------------------------------------------------------------------------
-
 function hashFunction() {
     var diagramToString = "";
     var hash = 0;
@@ -1511,17 +1571,22 @@ function decimalPrecision(value, precision){
 function reWrite() {
     if(!developerModeActive) {
         //We are now in developer mode
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + 
-        "   |   <b>Coordinates:</b> " + "X=" + Math.round(currentMouseCoordinateX) + " & Y=" + Math.round(currentMouseCoordinateY) +  
-        " | topLeft(" + Math.round(-origoOffsetX) + ", " + Math.round(-origoOffsetY) + ")</p>";
+        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + " </p>";
 
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
     } else {
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + "   </p>";
+
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
          + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
     }
 }
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -2035,11 +2100,11 @@ var toolbarState;
 
 const toolbarER = 1;
 const toolbarUML = 2;
-const toolbarFree = 3;
+const toolbarDeveloperMode = 3;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');    
+    var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
     element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
@@ -2081,19 +2146,20 @@ function toggleToolbarLayout() {
 //----------------------------------------------------------------------
 
 function switchToolbar(direction) {
-  var text = ["All", "ER", "UML", "Free"];
+  var text = ["ER", "UML"];
   if(direction == 'left') {
     toolbarState--;
-    if(toolbarState < 0) {
-      toolbarState = 3;
+    if(toolbarState = 1) {
+      toolbarState = 2;
     }
   }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 3) {
-      toolbarState = 0;
+    if(toolbarState = 2) {
+      toolbarState = 1;
     }
   }
-  document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
+  
+  document.getElementById('toolbarTypeText').innerHTML = "ER";
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
@@ -2110,10 +2176,16 @@ function switchToolbar(direction) {
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == toolbarUML) {
+    $("#drawerDraw").show();
+    $("#labelDraw").show();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
+  }
+  else if( toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
+    $("#drawerDraw").show();
     $("#drawerUndo").show();
     $(".tlabel").hide();
     $("#labelCreate").show();
@@ -2123,23 +2195,36 @@ function switchToolbar(direction) {
     $("#linebutton").show();
     $("#classbutton").show();
     $("#linebutton").hide();
-    $("#umllinebutton").show(); 
-  }else if(toolbarState == toolbarFree) {
-    $(".toolbar-drawer").hide();
+    $("#umllinebutton").show();
     $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelDraw").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else { // shows all alternatives in the toolbar
+  else if(toolbarState == toolbarDeveloperMode) {
+    $(".toolbar-drawer").show();
+    $("#drawerTools").show();
+    $("#drawerCreate").show();
+    $("#drawerUndo").show();
+    $(".tlabel").show();
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
+    $(".buttonsStyle").show();
+    $("#linebutton").show();
+    $("#attributebutton").show();
+    $("#entitybutton").show();
+    $("#relationbutton").show();
+    $("#drawerDraw").show();
+    $("#labelDraw").show();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
+  }
+ /* else { // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
-  }
+  }*/
 
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
@@ -2160,6 +2245,13 @@ function zoomInMode() {
     zoomValue = document.getElementById("ZoomSelect").value;
     reWrite();
     updateGraphics();
+}
+
+function changeZoom(zoomValue){
+  var value = parseFloat(document.getElementById("ZoomSelect").value);
+  value = value + parseFloat(zoomValue);
+  document.getElementById("ZoomSelect").value = value;
+  zoomInMode();
 }
 
 //----------------------------------------------------------------------
@@ -2239,7 +2331,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 2) {
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
-            sel.point.y = currentMouseCoordinateY;	
+            sel.point.y = currentMouseCoordinateY;
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
@@ -2424,7 +2516,7 @@ function mousedownevt(ev) {
 
     if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
         hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
-        
+
         md = 4;            // Box select or Create mode.
         //If you start on canvas or not
         if (hovobj == -1) {
@@ -2729,7 +2821,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateUMLLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
         || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 7 && symbolEndKind != 7) && okToMakeLine) {
             umlLineA = new Symbol(7); //UML Lines
             umlLineA.name = "Line" + diagram.length
