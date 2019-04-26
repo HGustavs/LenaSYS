@@ -266,7 +266,7 @@
                     <span class="drop-down-label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-text-non-clickable">
-                            <span class="drop-down-option">Move grid</span>
+                            <span class="drop-down-option">Move camera</span>
                             <div id="hotkey-space"><i>Blankspace</i></div>
                         </div>
                         <div class="drop-down-divider"></div>
@@ -316,19 +316,23 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-                <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
-                    <option selected='selected' disabled>Choose zoom</option>
-                    <option value="0.3">30%</option>
-                    <option value="0.5">50%</option>
-                    <option value="0.75">75%</option>
-                    <option value="1">100%</option>
-                    <option value="1.5">150%</option>
-                    <option value="2">200%</option>
-                </select>
-                <i class="ikonPil"></i>
+              <div class="tooltipDecrease">
+                <button name="Zoom" id="zoomDecrease" type="button" onclick="changeZoom(-0.1);"> - </button>
+                <span class="tooltiptextDec">Zoom Out</span>
+              </div>
+              <div id="range">
+                <input name="Zoom" id="ZoomSelect" type="range" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
+              </div>
+              <div class="tooltipIncrease">
+                <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
+                <span class="tooltiptextInc">Zoom In</span>
+              </div>
+              <div id="zoomV"></div>
+            </div>
             </div>
         </div>
     </div>
+
     <!-- The Appearance menu. Default state is display: none; -->
     <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
         <div class='loginBox'>
