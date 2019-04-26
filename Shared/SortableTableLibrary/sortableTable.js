@@ -722,8 +722,6 @@ function newCompare(firstCell, secoundCell) {
 		if(col == "FnameLnameSSN"){
 			col = sortableTable.currentTable.getNameColumn();
 		}
-		console.log(col);
-		console.log(typeof col);
 		if(colOrder.includes(col == "Fname")) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
