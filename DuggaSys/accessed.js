@@ -15,7 +15,7 @@ var myTable;
 
 function setup()
 {
-	AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "ACCESS");
+		AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "ACCESS");
 }
 
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
@@ -38,22 +38,22 @@ function hovers()
 
 function leavec()
 {
-	$('#dropdownc').css('display', 'none');
+		$('#dropdownc').css('display', 'none');
 }
 
 function leaves()
 {
-	$('#dropdowns').css('display', 'none');
+		$('#dropdowns').css('display', 'none');
 }
 
 function showCreateUserPopup()
 {
-	$("#createUser").css("display", "flex");
+		$("#createUser").css("display", "flex");
 }
 
 function showCreateClassPopup()
 {
-	$("#createClass").css("display", "flex");
+		$("#createClass").css("display", "flex");
 }
 
 function showImportUsersPopup()
@@ -63,22 +63,22 @@ function showImportUsersPopup()
 
 function hideCreateUserPopup()
 {
-	$("#createUser").css("display", "none");
+		$("#createUser").css("display", "none");
 }
 
 function hideCreateClassPopup()
 {
-	$("#createClass").css("display", "none");
+		$("#createClass").css("display", "none");
 }
 
 function hideImportUsersPopup()
 {
-	$("#importUsers").css("display", "none");
+		$("#importUsers").css("display", "none");
 }
 
 function closeEdituser()
 {
-	$("#editUsers").css("display", "none");
+		$("#editUsers").css("display", "none");
 }
 
 //----------------------------------------------------------------------------
@@ -101,46 +101,46 @@ function importUsers()
 
 function addSingleUser()
 {
-	var newUser = new Array();
-	newUser.push($("#addSsn").val());
-	newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
-	newUser.push($("#addCid").val());
-	newUser.push($("#addNy").val());
-	newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
-	newUser.push($("#addEmail").val());
+		var newUser = new Array();
+		newUser.push($("#addSsn").val());
+		newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
+		newUser.push($("#addCid").val());
+		newUser.push($("#addNy").val());
+		newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
+		newUser.push($("#addEmail").val());
 
-	var outerArr = new Array();
-	outerArr.push(newUser);
+		var outerArr = new Array();
+		outerArr.push(newUser);
 
-	var newUserJSON = JSON.stringify(outerArr);
-	AJAXService("ADDUSR", { cid: querystring['cid'], newusers: newUserJSON, coursevers: querystring['coursevers'] }, "ACCESS");
-	hideCreateUserPopup();
+		var newUserJSON = JSON.stringify(outerArr);
+		AJAXService("ADDUSR", { cid: querystring['cid'], newusers: newUserJSON, coursevers: querystring['coursevers'] }, "ACCESS");
+		hideCreateUserPopup();
 }
 
 var inputVerified;
 
 function addClass()
 {
-	inputVerified = true;
-	document.getElementById("classErrorText").innerHTML = "";
-	var newClass = new Array();
-	newClass.push(verifyClassInput($("#addClass"), null, ""));
-	newClass.push(verifyClassInput($("#addResponsible"), null, ""));
-	newClass.push(verifyClassInput($("#addClassname"), null, ""));
-	newClass.push(verifyClassInput($("#addRegcode"), /^[0-9]*$/, "number"));
-	newClass.push(verifyClassInput($("#addClasscode"), null, ""));
-	newClass.push(verifyClassInput($("#addHp"), /^[0-9.]*$/, "(decimal) number"));
-	newClass.push(verifyClassInput($("#addTempo"), /^[0-9]*$/, "number"));
-	newClass.push(verifyClassInput($("#addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
+		inputVerified = true;
+		document.getElementById("classErrorText").innerHTML = "";
+		var newClass = new Array();
+		newClass.push(verifyClassInput($("#addClass"), null, ""));
+		newClass.push(verifyClassInput($("#addResponsible"), null, ""));
+		newClass.push(verifyClassInput($("#addClassname"), null, ""));
+		newClass.push(verifyClassInput($("#addRegcode"), /^[0-9]*$/, "number"));
+		newClass.push(verifyClassInput($("#addClasscode"), null, ""));
+		newClass.push(verifyClassInput($("#addHp"), /^[0-9.]*$/, "(decimal) number"));
+		newClass.push(verifyClassInput($("#addTempo"), /^[0-9]*$/, "number"));
+		newClass.push(verifyClassInput($("#addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
 
-	if (inputVerified) {
-		var outerArr = new Array();
-		outerArr.push(newClass);
+		if (inputVerified) {
+				var outerArr = new Array();
+				outerArr.push(newClass);
 
-		var newClassJSON = JSON.stringify(outerArr);
-		AJAXService("ADDCLASS", { cid: querystring['cid'], newclass: newClassJSON, coursevers: querystring['coursevers'] }, "ACCESS");
-		hideCreateClassPopup();
-	}
+				var newClassJSON = JSON.stringify(outerArr);
+				AJAXService("ADDCLASS", { cid: querystring['cid'], newclass: newClassJSON, coursevers: querystring['coursevers'] }, "ACCESS");
+				hideCreateClassPopup();
+		}
 }
 
 function resetPw(uid, username)
@@ -435,7 +435,6 @@ function mouseUp(e) {
 		checkboxes = activeElement.parentElement.lastChild;
 
 		if (checkboxes.contains(e.target)) {
-			console.log("nämen okej");
 		}
 		if (expanded && !checkboxes.contains(e.target)) {
 			checkboxes.style.display = "none";
