@@ -716,6 +716,7 @@ function newCompare(firstCell, secoundCell) {
 		}
 		console.log(col);
 		var tempString = col.split("/");
+		console.log(tempString[0]);
 		if(colOrder.includes(tempString[0])) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
