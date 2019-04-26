@@ -759,13 +759,11 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-		console.log(secoundCellTemp);
-		console.log(firstCellTemp);
-		if (status == 0) {
+		if (status == 0 || status == 2 || status == 4) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
-		}
+		} 
        //Check if the cell is a valid cell in the table.
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
