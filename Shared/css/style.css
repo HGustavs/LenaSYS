@@ -1715,18 +1715,19 @@ div.submit-button:disabled {
 }
 
 .toolboxButtons {
-  cursor: pointer;
   width: 35px !important;
   height: 25px !important;
 }
 
 #linebutton {
+  cursor: pointer;
   margin: 5px 0;
   display: inline;
   border-radius: 5px;
 }
 
 #umllinebutton {
+  cursor: pointer;
   display: inline;
   margin: 5px 0;
   border-radius: 5px;

@@ -91,19 +91,19 @@
                               <h4 class="label tlabel" id="labelCreate">Create</h4>
                               <div class="toolbar-drawer" id="drawerCreate">
                                   <div class="tooltipdialog">
-                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
+                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer" class='buttonsStyle unpressed' data="Create Attribute">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                       </button>
-                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
+                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
                                       </button>
-                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
+                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Relation">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
                                       </button>
-                                      <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
+                                      <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Class">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                     </button>
-                                      <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Text">
+                                      <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text">
                                           <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                                       </button>
                                   </div>
@@ -112,10 +112,10 @@
                           <div class="labelToolContainer">
                             <h4 class="label tlabel" id="labelDraw">Draw</h4>
                             <div class="toolbar-drawer" id="drawerDraw">
-                                <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Square">
+                                <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Square">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_square.svg">
                                 </button>
-                                <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Free">
+                                <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
                                 </button>
                             </div>
