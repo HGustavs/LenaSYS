@@ -46,31 +46,38 @@ function leaves()
 	$('#dropdowns').css('display', 'none');
 }
 
-function showCreateUserPopup() {
+function showCreateUserPopup()
+{
 	$("#createUser").css("display", "flex");
 }
 
-function showCreateClassPopup() {
+function showCreateClassPopup()
+{
 	$("#createClass").css("display", "flex");
 }
 
-function showImportUsersPopup() {
+function showImportUsersPopup()
+{
 	$("#importUsers").css("display", "flex");
 }
 
-function hideCreateUserPopup() {
+function hideCreateUserPopup()
+{
 	$("#createUser").css("display", "none");
 }
 
-function hideCreateClassPopup() {
+function hideCreateClassPopup()
+{
 	$("#createClass").css("display", "none");
 }
 
-function hideImportUsersPopup() {
+function hideImportUsersPopup()
+{
 	$("#importUsers").css("display", "none");
 }
 
-function closeEdituser() {
+function closeEdituser()
+{
 	$("#editUsers").css("display", "none");
 }
 
@@ -78,7 +85,8 @@ function closeEdituser() {
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
 
-function importUsers() {
+function importUsers()
+{
 	var newUsersArr = new Array();
 	newusers = $("#import").val();
 	var myArr = newusers.split("\n");
@@ -91,7 +99,8 @@ function importUsers() {
 	hideImportUsersPopup();
 }
 
-function addSingleUser() {
+function addSingleUser()
+{
 	var newUser = new Array();
 	newUser.push($("#addSsn").val());
 	newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
@@ -149,7 +158,8 @@ function changeOpt(e)
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
-function changeProperty(targetobj, propertyname, propertyvalue) {
+function changeProperty(targetobj, propertyname, propertyvalue)
+{
 	AJAXService("UPDATE", { cid: querystring['cid'], uid: targetobj, prop: propertyname, val: propertyvalue }, "ACCESS");
 }
 
@@ -447,7 +457,8 @@ function mouseUp(e) {
 // createQuickItem: Handle "fast" click on FAB button
 //----------------------------------------------------------------------------------
 
-function createQuickItem() {
+function createQuickItem()
+{
 	clearTimeout(pressTimer);
 	showImportUsersPopup();
 }
