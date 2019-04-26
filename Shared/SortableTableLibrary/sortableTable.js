@@ -717,7 +717,8 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
-
+	console.log(firstCell);
+	console.log(secoundCell);
     if(typeof firstCell === 'object') {
 		if(col == "FnameLnameSSN"){
 			col = sortableTable.currentTable.getNameColumn();
