@@ -206,7 +206,7 @@
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
   <!--<div id='previewpopover' class='previewPopover' style='display:none;'>-->
-  <div id='previewpopover' class='loginBoxContainer' style='display:none; align-items:none;'>
+  <div id='previewpopover' class='loginBoxContainer' style='display:none; align-items:stretch;'>
     <div class="loginBox">
     		<div class='loginBoxheader'>
     			<h3 style='width:100%;' id='Nameof'>Submission and feedback view</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
