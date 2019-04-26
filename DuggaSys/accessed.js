@@ -41,7 +41,8 @@ function leavec()
 	$('#dropdownc').css('display', 'none');
 }
 
-function leaves() {
+function leaves()
+{
 	$('#dropdowns').css('display', 'none');
 }
 
