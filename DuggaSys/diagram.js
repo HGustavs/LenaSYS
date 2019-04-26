@@ -1051,7 +1051,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
-    if(!ghostingCrosses) {
+    if(!developerModeActive) {
         drawOrigo();
     }
     diagram.sortConnectors();
@@ -1360,26 +1360,26 @@ consloe.log = function(gobBluth) {
 
 
 //------------------------------------------------------------------------------
-// debugMode: this function show and hides crosses and the consol.
+// developerMode: this function show and hides crosses and the consol.
 //------------------------------------------------------------------------------
 
-var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
-function debugMode() {
-    if(ghostingCrosses) {
+var developerModeActive = false; // used to repressent a switch for whenever the developerMode is enabled or not.
+function developerMode() {
+    if(developerModeActive) {
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         drawOrigo();
-        ghostingCrosses = false;
+        developerModeActive = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-        ghostingCrosses = true;
+        developerModeActive = true;
     }
     reWrite();
     updateGraphics();
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), !ghostingCrosses);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), !developerModeActive);
 }
 
 //------------------------------------------------------------------------------
@@ -1509,8 +1509,8 @@ function decimalPrecision(value, precision){
 //----------------------------------------------------------------------
 
 function reWrite() {
-    if(!ghostingCrosses) {
-        //We are now in debug mode/developer mode
+    if(!developerModeActive) {
+        //We are now in developer mode
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + 
         "   |   <b>Coordinates:</b> " + "X=" + Math.round(currentMouseCoordinateX) + " & Y=" + Math.round(currentMouseCoordinateY) +  
         " | topLeft(" + Math.round(-origoOffsetX) + ", " + Math.round(-origoOffsetY) + ")</p>";
@@ -2286,7 +2286,7 @@ function mousemoveevt(ev, t) {
                 ctx.strokeStyle = "#000";
                 ctx.stroke();
                 ctx.setLineDash([]);
-                if (ghostingCrosses == true) {
+                if (developerModeActive == true) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2304,7 +2304,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2321,7 +2321,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2340,7 +2340,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2351,7 +2351,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2365,7 +2365,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2379,7 +2379,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2396,7 +2396,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
