@@ -2343,6 +2343,8 @@ span.arrow {
   font-size: 20px;
   padding: 0 2px;
   position: relative;
+  width:10px;
+  cursor: default;
 }
 .tooltip-searchbar-box{
   box-sizing: border-box;
