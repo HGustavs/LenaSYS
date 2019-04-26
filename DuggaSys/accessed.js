@@ -28,7 +28,8 @@ function hoverc()
 	*/
 }
 
-function hovers() {
+function hovers()
+{
   /*
   $('#dropdowns').css('display','block');
   $('#dropdownc').css('display','none');
