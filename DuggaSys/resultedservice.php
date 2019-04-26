@@ -70,7 +70,7 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
-	$emailsArray = [];
+	$emailsArray = array();
 
 	console.log("Now we are starting query");
 	for($i = 0; $i < $currentRowFilter.length; $i ++) {
@@ -88,7 +88,7 @@ if($requestType == "mail"){
 		}
 		if ($row = $mailQuery->fetch(PDO::FETCH_ASSOC)) {
 			$emailAddress = $row['email'];
-			$emailsArray.push($emailAddress);
+			array_push($emailsArray,$emailAddress);
 		}
 //		array_push($emailsArray['email']);
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
