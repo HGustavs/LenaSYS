@@ -110,7 +110,8 @@ function addSingleUser() {
 
 var inputVerified;
 
-function addClass() {
+function addClass()
+{
 	inputVerified = true;
 	document.getElementById("classErrorText").innerHTML = "";
 	var newClass = new Array();
