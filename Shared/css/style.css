@@ -3637,9 +3637,11 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  height: 34px;
+  padding-right: 80px;
+  padding-left: 10px;
+  height: 30px;
   position: absolute;
-  right: 18px;
+  right: 20px;
   bottom: 12px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3670,21 +3672,86 @@ only screen and (max-device-width: 320px) {
   padding: 0;
 }
 
-#selectDiv .ikonPil {
-  display: block;
-  background: url("../icons/arrow.svg") no-repeat;
-  position: absolute;
-  right: 12px;
-  top: 14px;
-  width: 12px;
-  height: 15px;
+.tooltipDecrease{
+  display: inline-block;
+  position: relative;
+  bottom: 7px;
 }
 
-#selectDiv .ikonPilRotation {
-  top: 8px;
-  animation-name: roteraPil;
-  animation-duration: 0.2s;
-  animation-fill-mode: forwards;
+.tooltipDecrease button{
+  position: relative;
+  background-color: #614875;
+  color: #fff;
+}
+
+.tooltipDecrease .tooltiptextDec{
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: -15px;
+}
+
+.tooltipDecrease:hover .tooltiptextDec{
+  visibility: visible;
+}
+#range{
+  position: relative;
+  display: inline-block;
+  top: 2px;
+}
+
+#range input{
+  position: relative;
+}
+
+.tooltipIncrease{
+  position: relative;
+  display: inline-block;
+  bottom: 7px;
+}
+.tooltipIncrease button{
+  position: relative;
+  background-color: #614875;
+  color: #fff;
+}
+
+.tooltipIncrease .tooltiptextInc{
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  right: -20px;
+}
+
+.tooltipIncrease:hover .tooltiptextInc{
+  visibility: visible;
+}
+
+#zoomV{
+  position: absolute;
+  display: inline-block;
+  font-size: 12px;
+  bottom: 2px;
+  right: 4px;
 }
 
 /* Used to rotate the picture that is used as a arrow */
