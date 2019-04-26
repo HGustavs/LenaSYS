@@ -238,6 +238,7 @@ function SortableTable(param) {
 	var sortcolumn = "UNK";
 	var sortkind = -1;
 	var windowWidth = window.innerWidth;
+	var nameColumn;
 
 	// Keeps track of the last picked sorting order
 	var tableSort;
@@ -527,7 +528,7 @@ function SortableTable(param) {
 	}
 	this.setNameColumn = function (colnameArr){
 		nameColumn = colnameArr;
-		console.log(colnameArr);
+
 	}
 	this.getNameColumn = function () {
 		return nameColumn;
