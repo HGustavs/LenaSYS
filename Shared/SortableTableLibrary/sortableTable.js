@@ -521,13 +521,12 @@ function SortableTable(param) {
 			sortcolumn = col;
 		}
 
-		
 		sortkind = kind;
 
 		this.reRender();
 	}
 	this.setNameColumn = function (colNameArr){
-		colNameArr = nameColumn;
+		nameColumn = colNameArr;
 	}
 	this.getNameColumn = function () {
 		return nameColumn;
