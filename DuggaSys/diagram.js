@@ -2239,7 +2239,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 2) {
         // If the selected object is locked, you can´t resize the object.
         if (diagram[lastSelectedObject].locked) {
-            return;   
+            return;
         }
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
@@ -2253,7 +2253,7 @@ function mousemoveevt(ev, t) {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;
         }
-        // If mouse is pressed down and at a point in selected object - move that point    
+        // If mouse is pressed down and at a point in selected object - move that point
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
@@ -2865,14 +2865,14 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 function openAppearanceDialogMenu() {
-  if (lastSelectedObject != -1 && diagram[lastSelectedObject].locked && diagram[lastSelectedObject].targeted == true) {
+  if (diagram[lastSelectedObject].locked) {
       return;
   } else {
       $(".loginBox").draggable();
       var form = showMenu();
       appearanceMenuOpen = true;
       objectAppearanceMenu(form);
-  }    
+  }
 }
 
 //----------------------------------------------------------------------
