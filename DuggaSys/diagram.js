@@ -2217,7 +2217,7 @@ function mousemoveevt(ev, t) {
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
         if (sel.distance < tolerance) {
-			canvas.style.cursor = "pointer";
+            canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
         } else {
             if(uimode == "MoveAround"){
                 canvas.style.cursor = "all-scroll";
@@ -2823,7 +2823,7 @@ function movemode(e, t) {
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
-        canvas.style.cursor = "all-scroll";
+        canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
         uimode = "MoveAround";
     } else {
         buttonStyle.style.visibility = 'hidden';
