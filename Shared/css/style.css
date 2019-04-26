@@ -2350,23 +2350,22 @@ span.arrow {
   font-size: 13px;
   position: absolute;
   background: #fff;
-  transform: translate(-50%,-110%);
+  transform: translate(-48%,74%);
   border-radius: 5px;
   padding: 5px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
 }
-.tooltip-searchbar-box:after {
+.tooltip-searchbar-box:before {
   display: block;
   content: "";
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 10px solid #fff;
+  border-bottom: 10px solid #fff;
   position: relative;
-  bottom: -4px;
   margin: 0 auto;
-  transform: translateY(100%);
+  transform: translateY(-140%);
 }
 .tooltip-searchbar:hover .tooltip-searchbar-box {
   display: inherit;
@@ -2988,7 +2987,7 @@ table {
   border-top-right-radius: 5px;
   box-shadow: none !important;
   margin-bottom: 5px;
-
+  margin-right: 2px;
 }
 
 #searchBar img, #testSearchContainer img {
