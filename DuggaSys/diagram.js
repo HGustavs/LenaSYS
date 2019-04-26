@@ -824,6 +824,7 @@ function initializeCanvas() {
     heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -835,9 +836,6 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
-    $("#ZoomSelect").click(function() {
-        $(this).parent().find(".ikonPil").toggleClass("ikonPilRotation");
-    });
 }
 
 function deselectObjects() {
@@ -1474,13 +1472,17 @@ function decimalPrecision(value, precision){
 function reWrite() {
     if(!ghostingCrosses) {
         //We are now in debug mode/developer mode
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + " </p>";
+
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
          + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
     } else {
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + "   </p>";
+
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
          + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + "</p>";
     }

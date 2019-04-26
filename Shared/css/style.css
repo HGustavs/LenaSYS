@@ -3637,8 +3637,8 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 80px;
+  padding-left: 10px;
   height: 30px;
   position: absolute;
   right: 20px;
@@ -3680,6 +3680,8 @@ only screen and (max-device-width: 320px) {
 
 .tooltipDecrease button{
   position: relative;
+  background-color: #614875;
+  color: #fff;
 }
 
 .tooltipDecrease .tooltiptextDec{
@@ -3719,6 +3721,8 @@ only screen and (max-device-width: 320px) {
 }
 .tooltipIncrease button{
   position: relative;
+  background-color: #614875;
+  color: #fff;
 }
 
 .tooltipIncrease .tooltiptextInc{
@@ -3741,41 +3745,14 @@ only screen and (max-device-width: 320px) {
 .tooltipIncrease:hover .tooltiptextInc{
   visibility: visible;
 }
-/* #selectDiv .ikonPil {
-  display: block;
-  background: url("../icons/arrow.svg") no-repeat;
+
+#zoomV{
   position: absolute;
-  right: 12px;
-  top: 14px;
-  width: 12px;
-  height: 15px;
+  display: inline-block;
+  font-size: 12px;
+  bottom: 2px;
+  right: 4px;
 }
-
-#selectDiv .ikonPilRotation {
-  top: 8px;
-  animation-name: roteraPil;
-  animation-duration: 0.2s;
-  animation-fill-mode: forwards;
-}
-
-/* Used to rotate the picture that is used as a arrow */
-/*
-@keyframes roteraPil {
-  0% {
-    -ms-transform: rotate(0deg);
-    /* IE 9 */
-    /*-webkit-transform: rotate(0deg);
-    /* Chrome, Safari, Opera */
-    /*transform: rotate(0deg);
-  }
-  100% {
-    -ms-transform: rotate(180deg);
-    /* IE 9 */
-  /*  -webkit-transform: rotate(180deg);
-    /* Chrome, Safari, Opera */
-  /*  transform: rotate(180deg);
-  }
-} */
 
 /* Style for the div that presents the coordinants and zoomvalue in diagram */
 
