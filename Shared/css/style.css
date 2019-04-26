@@ -28,7 +28,7 @@
   --color-sectioned-table-lo: #eae8eb;
   --color-statistics: #d8d7da;
   --color-list-hover: #c6cdb8;
-  
+
   --color-border-primary: #775886;
   --color-border-list: #dbd0d8;
   --color-border: #999;
@@ -717,20 +717,18 @@ header td {
 }
 
 .loggedout {
-  background-color: var(--color-red);
+  background-color: rgba(13, 196, 14,100);
+
 }
 
-.loggedout:hover {
-  background-color: var(--color-green);
+#loginbutton:hover {
+  filter: brightness(1.05);
 }
 
 .loggedin {
-  background-color: var(--color-green);
+    background-color: rgba(249, 32, 32,100);
 }
 
-.loggedin:hover {
-  background-color: var(--color-red);
-}
 
 #loginbutton {
   cursor: pointer;
@@ -4682,10 +4680,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
