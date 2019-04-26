@@ -24,7 +24,7 @@ function setup() {
   var filt = "";
 
   filt += "<td id='testSearchContainer' class='navButt'>"
-  filt += "<input id='duggaSearch' type='search' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
+  filt += "<input id='duggaSearch' type='text' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
   filt += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
   filt += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
   filt += "</button>"
