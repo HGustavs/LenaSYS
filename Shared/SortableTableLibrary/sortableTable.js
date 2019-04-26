@@ -723,6 +723,7 @@ function newCompare(firstCell, secoundCell) {
 			col = sortableTable.currentTable.getNameColumn();
 		}
 		console.log(col);
+		console.log(typeof col);
 		if(colOrder.includes(col)) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
