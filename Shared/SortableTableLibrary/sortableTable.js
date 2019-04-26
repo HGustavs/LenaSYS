@@ -518,6 +518,7 @@ function SortableTable(param) {
 		localStorage.setItem(this.tableid + DELIMITER + "sortkind", kind);
 		if(col == "FnameLnameSSN"){
 			sortcolumn = sortableTable.currentTable.getNameColumn();
+			console.log(sortcolumn);
 		}else{
 			sortcolumn = col;
 		}
