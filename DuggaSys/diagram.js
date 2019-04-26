@@ -717,15 +717,6 @@ diagram.checkForHover = function(posX, posY) {
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != 1) {
         //We only want to set it to true when md is not in selectionbox mode
         hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
-        if (hovobj != -1) {
-            for (let i = 0; i < diagram.length; i++) {
-                if (diagram[hovobj].symbolkind != 4 && !diagram[hovobj].locked) {
-                    canvas.style.cursor = "all-scroll";
-                } 
-            }
-        } else {
-            canvas.style.cursor = "default";
-        }
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
@@ -2331,6 +2322,7 @@ function mousemoveevt(ev, t) {
                 canvas.style.cursor = "default";
             }
         }
+
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
