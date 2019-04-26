@@ -1565,6 +1565,12 @@ function setRefreshTime() {
 
 function lockSelected() {
     for(var i = 0; i < selected_objects.length; i++) {
+        if(selected_objects[i].kind == 2){
+            // Lines should not be possible to lock
+            if(selected_objects[i].symbolkind == 4 || selected_objects[i].symbolkind == 7){
+                continue;
+            }
+        }
         selected_objects[i].locked = !selected_objects[i].locked;
 
         if(selected_objects[i].locked) {
