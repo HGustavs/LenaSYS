@@ -58,11 +58,11 @@ function setup() {
   filt += `<button id='searchbutton' class='switchContent'`;
   filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
   filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
-  filt += `</button>`;
-  filt += `<div class='tooltip-searchbar'>`;
+  filt += `</button></td>`;
+  filt += `<td class='tooltip-searchbar'>`;
   filt += `<div class='tooltip-searchbar-box'>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
-  filt += `</div><span>?</span></div></td>`;
+  filt += `</div><span>?</span></td>`;
 
 	$("#menuHook").before(filt);
 
