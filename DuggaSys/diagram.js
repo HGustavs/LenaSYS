@@ -2237,11 +2237,15 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
+        // If the selected object is locked, you can´t resize the object.
+        if (diagram[lastSelectedObject].locked) {
+            return;   
+        }
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
-            //If we changed a point of a path object,
-            //  we need to recalculate the bounding-box so that it will remain clickable.
+            // If we changed a point of a path object,
+            // we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
                 diagram[lastSelectedObject].calculateBoundingBox();
             }
@@ -2249,7 +2253,7 @@ function mousemoveevt(ev, t) {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;
         }
-        // If mouse is pressed down and at a point in selected object - move that point
+        // If mouse is pressed down and at a point in selected object - move that point    
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
@@ -2264,7 +2268,6 @@ function mousemoveevt(ev, t) {
                     diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
                 }
             }
-
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
@@ -2794,7 +2797,6 @@ function createText(posX, posY) {
 //----------------------------------------------------------------------
 // resize: This is used when making the objects bigger or smaller
 //----------------------------------------------------------------------
-
 function resize() {
     if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
