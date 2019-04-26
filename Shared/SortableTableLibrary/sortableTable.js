@@ -725,7 +725,7 @@ function newCompare(firstCell, secoundCell) {
 		}
 		console.log(col);
 		console.log(temp);
-		if(colOrder.includes(col.match("Fname"))) {
+		if(colOrder.includes(col)) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
 				firstCellTemp = firstCell.firstname;
@@ -737,7 +737,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.firstname)[0];
 				secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
-		} else if (colOrder.includes(col.match("Lname"))){
+		} else if (colOrder.includes(col)){
 			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
 				firstCellTemp = firstCell.lastname;
 				secoundCellTemp = secoundCell.lastname;
@@ -748,7 +748,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.lastname)[0];
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
-		} else if (colOrder.includes(col.match("SSN"))) {
+		} else if (colOrder.includes(col)) {
 			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
 				firstCellTemp = firstCell.ssn;
 				secoundCellTemp = secoundCell.ssn;
