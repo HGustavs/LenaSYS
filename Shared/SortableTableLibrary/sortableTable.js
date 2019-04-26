@@ -723,8 +723,8 @@ function newCompare(firstCell, secoundCell) {
 	var secoundCellTemp;
 
     if(typeof firstCell === 'object') {
-		// console.log(tempString[0]);
-		console.log(col);
+		console.log(firstCell.lastname);
+		console.log(firstCell.ssn);
 		if(colOrder.includes(col)) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
