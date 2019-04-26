@@ -1957,14 +1957,14 @@ function Path() {
     //--------------------------------------------------------------------
     // addsegment: Adds a segment to a path
     //--------------------------------------------------------------------
-    this.addsegment = function(kind, p1, p2, p3, p4, p5, p6, p7, p8) {
-        if (kind == 1) {
+    this.addsegment = function(objectKind, p1, p2, p3, p4, p5, p6, p7, p8) {
+        if (objectKind == kind.path) {
             // Only push segment if it does not already exist
             if (!this.existsline(p1, p2, this.segments)) {
-                this.segments.push({kind:1, pa:p1, pb:p2});
+                this.segments.push({kind:kind.path, pa:p1, pb:p2});
             }
         } else {
-            alert("Unknown segment type: " + kind);
+            alert("Unknown segment type: " + objectKind);
         }
         this.calculateBoundingBox();
     }
@@ -2122,14 +2122,14 @@ function Path() {
             points.push({x:endres.x, y:endres.y});
             // Depending on direction of p1 and p2
             if (points[p2].y < points[p1].y) {
-                this.tmplist.push({kind:1, pa:pointno, pb:p2});
+                this.tmplist.push({kind:kind.path, pa:pointno, pb:p2});
                 this.recursetest(pointno, p1);
             } else {
-                this.tmplist.push({kind:1, pa:pointno, pb:p1});
+                this.tmplist.push({kind:kind.path, pa:pointno, pb:p1});
                 this.recursetest(pointno, p2);
             }
         } else {
-            this.tmplist.push({kind:1, pa:p1, pb:p2});
+            this.tmplist.push({kind:kind.path, pa:p1, pb:p2});
         }
     }
 
