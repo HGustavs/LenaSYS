@@ -765,7 +765,18 @@ function newCompare(firstCell, secoundCell) {
 		} else {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		} 
-       //Check if the cell is a valid cell in the table.
+	   //Check if the cell is a valid cell in the table.
+	}else if (colOrder.includes(col.includes("lid"))){
+		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
+			firstCellTemp = firstCell.grade;
+			secoundCellTemp = secoundCell.grade;
+		} else {
+			firstCell = JSON.parse(firstCell.grade);
+			secoundCell = JSON.parse(secoundCell.grade);
+			//Get the first letter from the value.
+			firstCellTemp = Object.values(firstCell.grade)[0];
+			secoundCellTemp = Object.values(secoundCell.grade)[0];
+		}
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
 		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
