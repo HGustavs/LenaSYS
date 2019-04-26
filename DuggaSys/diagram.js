@@ -690,8 +690,8 @@ diagram.checkForHover = function(posX, posY) {
         hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
         if (hovobj != -1) {
             for (let i = 0; i < diagram.length; i++) {
-                if (diagram[hovobj].symbolkind != 4) {
-                   canvas.style.cursor = "all-scroll";
+                if (diagram[hovobj].symbolkind != 4 && !diagram[hovobj].locked) {
+                    canvas.style.cursor = "all-scroll";
                 } 
             }
         } else {
