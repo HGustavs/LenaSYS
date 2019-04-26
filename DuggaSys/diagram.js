@@ -136,9 +136,6 @@ const escapeKey = 27;
 // Mouse clicks
 const rightMouseClick = 2;
 
-// This block of the code is used to handel keyboard input;
-window.addEventListener("keydown", this.keyDownHandler);
-
 // Used to set the coordinates where a right click was made
 document.addEventListener("mousedown", function(e)
     {
@@ -153,10 +150,11 @@ document.addEventListener("mousedown", function(e)
 );
 
 // Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
-window.addEventListener("mousemove", function(e) {
-    // deltas are used to determine the range of which the mouse is allowed to move when pressed.
-    deltaX = 2;
-    deltaY = 2;
+window.addEventListener("mousemove", function(e) 
+    {
+        // deltas are used to determine the range of which the mouse is allowed to move when pressed.
+        deltaX = 2;
+        deltaY = 2;
         if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
             // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
             diffX = e.pageX - InitPageX;
@@ -195,9 +193,15 @@ window.addEventListener("mouseup", function()
 );
 
 // Hides the context menu. Needed in order to be able to right click and drag to move the camera.
-window.addEventListener('contextmenu', function (e) {
-                e.preventDefault();
-            }, false);
+window.addEventListener('contextmenu', function (e) 
+    {
+        e.preventDefault();
+    }, 
+    false
+);
+
+// This block of the code is used to handel keyboard input;
+window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
 
