@@ -862,7 +862,8 @@ function initializeCanvas() {
     }
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
-    updateGraphics();
+    updateGraphics(); 
+    boundingRect = canvas.getBoundingClientRect();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
@@ -971,8 +972,6 @@ function toggleVirtualA4Holes() {
 //------------------------------------------------------------
 
 function resetToolbarPosition(){
-    var myCanvas = document.getElementById('myCanvas');
-    var bound = myCanvas.getBoundingClientRect();
     //Assign position for the toolbar according to the canvas bounds 
     document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
     document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
@@ -1022,7 +1021,8 @@ function importFile() {
 //             Making the page more responsive
 //---------------------------------------------------
 
-function canvasSize() {
+function canvasSize() { 
+    boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 30);
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
@@ -2039,8 +2039,7 @@ const toolbarFree = 3;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');    
-    boundingRect = myCanvas.getBoundingClientRect();
+    var myCanvas = document.getElementById('myCanvas');   
     element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
