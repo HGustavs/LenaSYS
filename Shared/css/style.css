@@ -30,7 +30,7 @@
   --color-list-hover: #c6cdb8;
 
   --color-border-primary: #775886;
-  --color-border-list: #FFFFFF;
+  --color-border-list: #dbd0d8;
   --color-border: #999;
   --color-border-2: #ccc;
   --color-border-3: #f0f0f0;
@@ -2357,7 +2357,7 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 1px solid white;
+	border: 2px solid #dbd0d8;
 }
 
 .accessTableText {
