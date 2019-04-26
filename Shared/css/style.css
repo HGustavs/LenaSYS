@@ -28,7 +28,7 @@
   --color-sectioned-table-lo: #eae8eb;
   --color-statistics: #d8d7da;
   --color-list-hover: #c6cdb8;
-  
+
   --color-border-primary: #775886;
   --color-border-list: #dbd0d8;
   --color-border: #999;
@@ -1703,12 +1703,10 @@ input.fileed-button {
 
 input.submit-button:hover {
   background-color: #7B5A96;
-  border-radius: 2px;
 }
 
 div.submit-button:hover {
   background-color: #7B5A96;
-  border-radius: 2px;
 }
 
 input.fileed-button:hover {
@@ -4682,10 +4680,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
