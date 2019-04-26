@@ -1399,6 +1399,9 @@ function switchToolbarUML() {
 //------------------------------------------------------------------------------
 var crossDEV = false;
 function switchToolbarDev() {
+    if(ghostingCrosses){
+        return;
+      }
     toolbarState = 3;                                                               // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to UML.
