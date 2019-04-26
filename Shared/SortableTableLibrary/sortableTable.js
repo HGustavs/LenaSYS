@@ -723,7 +723,6 @@ function newCompare(firstCell, secoundCell) {
 			col = sortableTable.currentTable.getNameColumn();
 		}
 		if(col == "Fname") {
-			console.log(col);
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
 				firstCellTemp = firstCell.firstname;
@@ -736,7 +735,6 @@ function newCompare(firstCell, secoundCell) {
 				secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
 		} else if (col == "Lname"){
-			console.log(col);
 			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
 				firstCellTemp = firstCell.lastname;
 				secoundCellTemp = secoundCell.lastname;
@@ -748,7 +746,6 @@ function newCompare(firstCell, secoundCell) {
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
 		} else if (col == "SSN") {
-			console.log(col);
 			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
 				firstCellTemp = firstCell.ssn;
 				secoundCellTemp = secoundCell.ssn;
@@ -762,8 +759,8 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-		// console.log(secoundCellTemp);
-		// console.log(firstCellTemp);
+		console.log(secoundCellTemp);
+		console.log(firstCellTemp);
 		if (status == 0) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
