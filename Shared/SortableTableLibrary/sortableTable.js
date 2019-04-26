@@ -720,9 +720,12 @@ function newCompare(firstCell, secoundCell) {
 	console.log(firstCell);
 	console.log(secoundCell);
     if(typeof firstCell === 'object') {
+		// "FnameLnameSSN" is comprised of three separately sortable sub-columns,
+		// if one of them is the sort-target, replace col with the subcolumn
 		if(col == "FnameLnameSSN"){
 			col = sortableTable.currentTable.getNameColumn();
 		}
+		// now check for matching columns with the potentially replaced name
 		if(col == "Fname") {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
