@@ -1284,9 +1284,12 @@ input {
   cursor: pointer;
 }
 #toolbarTypeText{
-  width:60%;
-  background-color: #f1f1f1;
+  width:50%;
+  height: 20px;
+  background-color: #614875;
+  color: #ffffff;
   border: 1px solid #eaeaea;
+  margin: 0 auto;
 }
 #toolbarLeftArrow{
   transform: rotate(-90deg);

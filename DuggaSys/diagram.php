@@ -65,13 +65,7 @@
                         </div>
                         <div class='application-toolbar'>
                           <div id="toolbar-switcher">
-                            <div class="toolbarArrows" onclick="switchToolbar('left');">
-                              <img id="toolbarLeftArrow" src="../Shared/icons/arrow.svg">
-                            </div>
-                            <div id="toolbarTypeText">All</div>
-                            <div class="toolbarArrows" onclick="switchToolbar('right');">
-                              <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
-                            </div>
+                            <div id="toolbarTypeText">Dev</div>
                           </div>
                           <div class="toolsContainer">
                             <div class="labelToolContainer">
@@ -143,9 +137,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option">Load</span>
                         </div>
-                        <div class="drop-down-divider">
-
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</span>
                         </div>
@@ -164,9 +156,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="drop-down-divider">
-
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
                         </div>
@@ -183,8 +173,7 @@
                             <span class="drop-down-option" onclick='redoDiagram()'>Redo</span>
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
                         </div>
@@ -199,8 +188,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
                         </div>
@@ -213,10 +201,19 @@
                     <span class="drop-down-label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
+                            <span class="drop-down-option" onclick="debugMode();">Developer mode</span>
                         </div>
-                        <div class="drop-down-divider">
+                        <div id="displayAllTools" class="drop-down-item">
+                            <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
                         </div>
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="switchToolbarER();">ER</span>
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="switchToolbarUML();">UML</span>
+                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
@@ -231,8 +228,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="align('top');">Top</span>
                         </div>

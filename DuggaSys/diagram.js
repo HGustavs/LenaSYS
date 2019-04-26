@@ -902,7 +902,7 @@ function toggleVirtualA4() {
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   
 
 }
 
@@ -1356,21 +1356,38 @@ consloe.log = function(gobBluth) {
 
 
 //------------------------------------------------------------------------------
-// debugMode: this function show and hides crosses and the consol.
+// debugMode:
+// this function show and hides developer options.
 //------------------------------------------------------------------------------
 
 var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
 function debugMode() {
     if(ghostingCrosses) {
+        console.log('developermode: ON'); // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         drawOrigo();
+        toolbarState = 3;                                                               // Change the toolbar to DEV.
+        switchToolbar('Dev');                                                           // ---||---
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to DEV.
+        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
+        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   // Turn off crosstoggleA4.
+        setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
         ghostingCrosses = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+        toolbarState = 1;                                                               // Change the toolbar back to ER.
+        switchToolbar('ER');                                                            // ---||---
+        document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
+        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
+        setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
         ghostingCrosses = true;
     }
     reWrite();
@@ -1379,10 +1396,57 @@ function debugMode() {
 }
 
 //------------------------------------------------------------------------------
+// SwitchToolbarER:
+// This function handels everything that need to happen when the toolbar
+// changes to ER. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossER = false;
+function switchToolbarER() { 
+    toolbarState = 1;                                                               // Change the toolbar to ER.
+    switchToolbar('ER');                                                            // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
+    setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarUML:
+// This function handels everything that need to happen when the toolbar
+// changes to UML. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossUML = false;
+function switchToolbarUML() {
+    toolbarState = 2;                                                               // Change the toolbar to UML.
+    switchToolbar('UML');                                                           // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'UML';                   // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('UML')"), !crossUML);                 // Turn on crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossUML.
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarDev:
+// This function handels everything that need to happen when the toolbar
+// changes to Dev. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossDEV = false;
+function switchToolbarDev() {
+    if(ghostingCrosses){
+        return;
+      }
+    toolbarState = 3;                                                               // Change the toolbar to DEV.
+    switchToolbar('Dev');                                                           // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+}
+
+//------------------------------------------------------------------------------
 // hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
 //               then do some sort of calculation. used to save the diagram. it also save the local diagram
 //------------------------------------------------------------------------------
-
 function hashFunction() {
     var diagramToString = "";
     var hash = 0;
@@ -2036,7 +2100,7 @@ var toolbarState;
 
 const toolbarER = 1;
 const toolbarUML = 2;
-const toolbarFree = 3;
+const toolbarDeveloperMode = 3;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
@@ -2082,19 +2146,20 @@ function toggleToolbarLayout() {
 //----------------------------------------------------------------------
 
 function switchToolbar(direction) {
-  var text = ["All", "ER", "UML", "Free"];
+  var text = ["ER", "UML"];
   if(direction == 'left') {
     toolbarState--;
-    if(toolbarState < 0) {
-      toolbarState = 3;
+    if(toolbarState = 1) {
+      toolbarState = 2;
     }
   }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 3) {
-      toolbarState = 0;
+    if(toolbarState = 2) {
+      toolbarState = 1;
     }
   }
-  document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
+  
+  document.getElementById('toolbarTypeText').innerHTML = "ER";
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
@@ -2111,10 +2176,16 @@ function switchToolbar(direction) {
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == toolbarUML) {
+    $("#drawerDraw").show();
+    $("#labelDraw").show();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
+  }
+  else if( toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
+    $("#drawerDraw").show();
     $("#drawerUndo").show();
     $(".tlabel").hide();
     $("#labelCreate").show();
@@ -2125,22 +2196,35 @@ function switchToolbar(direction) {
     $("#classbutton").show();
     $("#linebutton").hide();
     $("#umllinebutton").show();
-  }else if(toolbarState == toolbarFree) {
-    $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelDraw").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else { // shows all alternatives in the toolbar
+  else if(toolbarState == toolbarDeveloperMode) {
+    $(".toolbar-drawer").show();
+    $("#drawerTools").show();
+    $("#drawerCreate").show();
+    $("#drawerUndo").show();
+    $(".tlabel").show();
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
+    $(".buttonsStyle").show();
+    $("#linebutton").show();
+    $("#attributebutton").show();
+    $("#entitybutton").show();
+    $("#relationbutton").show();
+    $("#drawerDraw").show();
+    $("#labelDraw").show();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
+  }
+ /* else { // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
-  }
+  }*/
 
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
