@@ -13,7 +13,8 @@ var myTable;
 //----------==========########## User Interface ##########==========----------
 //----------------------------------------------------------------------------
 
-function setup() {
+function setup()
+{
 	AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "ACCESS");
 }
 
