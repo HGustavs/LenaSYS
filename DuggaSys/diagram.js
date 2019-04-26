@@ -3090,7 +3090,7 @@ function globalAppearanceMenu() {
 function objectAppearanceMenu(form) {
     form.innerHTML = "No item selected<type='text'>";
     //if no item has been selected
-    if(!diagram[lastSelectedObject] || (lastSelectedObject != -1 && diagram[movobj].locked && diagram[lastSelectedObject].targeted == true)) { return;}
+    if(!diagram[lastSelectedObject] || (lastSelectedObject != -1 && diagram[lastSelectedObject].locked && diagram[lastSelectedObject].targeted == true)) { return;}
     // UML selected
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
