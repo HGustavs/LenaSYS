@@ -434,8 +434,6 @@ function mouseUp(e) {
 		var checkboxes = $(activeElement).find(".checkboxes");
 		checkboxes = activeElement.parentElement.lastChild;
 
-		if (checkboxes.contains(e.target)) {
-		}
 		if (expanded && !checkboxes.contains(e.target)) {
 			checkboxes.style.display = "none";
 			var str = "";
