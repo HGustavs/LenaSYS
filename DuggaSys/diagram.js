@@ -607,7 +607,7 @@ diagram.deleteObject = function(object) {
 
 diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
     //ensure that an entity cannot scale below the minimum size
-    console.log("start x: "+sx+" start y: "+sy+" current x: "+ex+" current y: "+ey);
+    console.log("start x: "+sx+" start y: "+sy+" current x: "+ex+" current y: "+ey+" length: "+this.length);
     if (sx > ex) {
         var tempEndX = ex;
         ex = sx;
