@@ -716,13 +716,14 @@ function newCompare(firstCell, secoundCell) {
 		}
 		var tempString = col.split("/");
 		console.log(tempString[0]);
-		console.log(firstCell.firstname);
 		if(colOrder.includes(tempString[0])) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
 				firstCellTemp = firstCell.firstname;
 				secoundCellTemp = secoundCell.firstname;
+				console.log(firstCell.firstname);
 			} else {
+				console.log(firstCell.firstname);
 				firstCell = JSON.parse(firstCell.firstname);
 				secoundCell = JSON.parse(secoundCell.firstname);
 				//Get the first letter from the value.
