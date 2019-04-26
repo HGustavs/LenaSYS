@@ -1798,34 +1798,32 @@ function Symbol(kind) {
     }
 
     this.getLockPosition = function() {
-        let y1 = points[this.topLeft].y;
-        let x2 = points[this.bottomRight].x;
-        let y2 = points[this.bottomRight].y;
-
-        let offset = 10;
+        var y1 = points[this.topLeft].y;
+        var x2 = points[this.bottomRight].x;
+        var y2 = points[this.bottomRight].y;
+        
+        var offset = 10;
 
         return {
-                x: x2 + offset,
-                y: y2 - (y2-y1)/2
-            };
+            x: pixelsToCanvas(x2 + offset).x, 
+            y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
 
     this.drawLock = function() {
-        let position = this.getLockPosition();
-
+        var position = this.getLockPosition();
         ctx.save();
 
-        ctx.translate(position.x, position.y);
         ctx.fillStyle = "orange";
         ctx.strokeStyle = "orange";
         ctx.lineWidth = 1;
         //Draws the upper part of the lock
         ctx.beginPath();
-        ctx.arc(5, 0, 4, 1 * Math.PI, 2 * Math.PI);
+        //A slight x offset to get the correct position   
+        ctx.arc(position.x + 5, position.y, 4, 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
         //Draws the lock body
-        ctx.fillRect(0,0, 10, 10);
+        ctx.fillRect(position.x, position.y, 10, 10);
 
         ctx.restore();
     }
@@ -1833,18 +1831,19 @@ function Symbol(kind) {
     this.drawLockedTooltip = function() {
         ctx.save();
 
-        let position = this.getLockPosition();
-        let offset = 25;
+        var position = this.getLockPosition();
+        //Offset used to achive the correct y position since fillRect and fillText are drawn differently
+        var offset = 13;
 
-        ctx.translate(position.x, position.y + offset);
-        //Draw tooltip background, -12 to accommodate that rectangles and text is drawn differently in canvas
+        //Draw tooltip background
         ctx.fillStyle = "#f5f5f5";
-        ctx.fillRect(0, -12, 125, 16);
+        ctx.fillRect(position.x, position.y + offset, 125, 16);
 
         //Draws text, uses fillStyle to override default hover change.
+        offset += 12;
         ctx.fillStyle = "black";
         ctx.font = "12px Arial";
-        ctx.fillText("Entity position is locked", 0, 0);
+        ctx.fillText("Entity position is locked", position.x, position.y + offset);
 
         ctx.restore();
     }
