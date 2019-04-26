@@ -114,6 +114,9 @@ var symbolEndKind;                      // Is used to store which kind of object
 
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 
+var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
+
+// Keyboard keys
 const deleteKey = 46;
 const backspaceKey = 8;
 const spacebarKey = 32;
@@ -130,18 +133,72 @@ const yKey = 89;
 const aKey = 65;
 const escapeKey = 27;
 
-//this block of the code is used to handel keyboard input;
+// Mouse clicks
+const rightMouseClick = 2;
+
+// This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
-document.addEventListener("mouseup", this.logMouseButton);
-// detects mouse drag
-let drag = false;
-window.addEventListener('mousedown', () => drag = false);
-window.addEventListener('mousemove', () => drag = true);
-window.addEventListener('mouseup', () => console.log(drag ? 'drag' : 'click'));
-// hides the context menu. Needed in order to be able to right click and drag to move the camera.
+
+// Used to set the coordinates where a right click was made
+document.addEventListener("mousedown", function(e)
+    {
+        if (e.button == rightMouseClick) {
+            if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+                InitPageX = e.pageX;
+                InitPageY = e.pageY;
+            }
+        }
+    }, 
+    false
+);
+
+// Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
+window.addEventListener("mousemove", function(e) {
+    // deltas are used to determine the range of which the mouse is allowed to move when pressed.
+    deltaX = 2;
+    deltaY = 2;
+        if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
+            // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
+            diffX = e.pageX - InitPageX;
+            diffY = e.pageY - InitPageY;
+            if (    
+                (diffX > deltaX) || (diffX < -deltaX)    
+                || 
+                (diffY > deltaY) || (diffY < -deltaY)   
+            ) {
+                // Entering MoveAround mode
+                if (uimode != "MoveAround") {
+                    activateMovearound();
+                } 
+                updateGraphics();
+            }
+            else {
+                // If click event is needed, it goes in here.
+            } 
+        }  
+    },
+    false
+);
+
+// Deactivate MoveAround by releasing the mouse
+window.addEventListener("mouseup", function()
+    {
+        delete InitPageX;
+        delete InitPageY;
+        // Making sure the MoveAround was not initialized by the spacebar.
+        if (uimode == "MoveAround" && !spacebarKeyPressed) {
+            deactivateMovearound();
+            updateGraphics();
+        }
+    }, 
+    false
+);
+
+// Hides the context menu. Needed in order to be able to right click and drag to move the camera.
 window.addEventListener('contextmenu', function (e) {
                 e.preventDefault();
             }, false);
+
 var ctrlIsClicked = false;
 
 //--------------------------------------------------------------
@@ -259,38 +316,6 @@ function generateExampleCode() {
 
 var diagram = [];
 
-function logMouseButton(e) {
-    let leftMouseClick = 0;
-    let middleMouseClick = 1;
-    let rightMouseClick = 2;
-    switch (e.button) {
-      case leftMouseClick:
-            // No functionality
-        break;
-      case middleMouseClick:
-            // No functionality
-        break;
-      case rightMouseClick:
-        if (e.stopPropagation) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        if(uimode != "MoveAround") {
-            e.button = null;
-            e.button = 2;
-            activateMovearound();
-
-            // (3) move the ball on mousemove
-        } else {
-            deactivateMovearound();
-        }
-        updateGraphics();
-        break;
-      default:
-       // console.log(`Unknown button code: ${btnCode});
-    }
-}
-
 function keyDownHandler(e) {
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
@@ -298,6 +323,12 @@ function keyDownHandler(e) {
         eraseSelectedObject();
         SaveState();
     } else if(key == spacebarKey) {
+        // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
+        if (!spacebarKeyPressed) {
+        spacebarKeyPressed = true;
+        } else {
+            spacebarKeyPressed = false;
+        }
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -2269,9 +2300,10 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
+        // If mouse is pressed down and at a point in selected object - move that point
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
-            sel.point.y = currentMouseCoordinateY;	
+            sel.point.y = currentMouseCoordinateY;  
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
@@ -2281,7 +2313,6 @@ function mousemoveevt(ev, t) {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;
         }
-        // If mouse is pressed down and at a point in selected object - move that point
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
