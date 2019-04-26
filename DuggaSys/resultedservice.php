@@ -79,6 +79,7 @@ if($requestType == "mail"){
 		$mailQuery->bindParam(':studentID', $studentID);
 		$mailQuery->bindParam(':cid', $courseid);
 		$mailQuery->bindParam(':cvers', $coursevers);
+		console.log($mailQuery, "mailquery");
 
 		if(!$mailQuery->execute()){
 			$error=$mailQuery->errorInfo();
@@ -89,8 +90,11 @@ if($requestType == "mail"){
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
 
+	console.log($emailsArray, "before implode");
+
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
+	console.log($emailsArray, "after implode");
 	// Returns the emails in a string representation.
 	echo json_encode($implodedEmails);
 	} else {
