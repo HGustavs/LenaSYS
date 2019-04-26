@@ -28,7 +28,7 @@ var filepath;
 var filekind;
 
 function setup() {
-
+  var filt = "";
   // Add search bar to nav
   filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
