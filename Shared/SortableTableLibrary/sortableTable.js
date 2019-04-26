@@ -725,9 +725,11 @@ function newCompare(firstCell, secoundCell) {
 		if(colOrder.includes(col == "Fname")) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
+				console.log(col);
 				firstCellTemp = firstCell.firstname;
 				secoundCellTemp = secoundCell.firstname;
 			} else {
+				console.log(col);
 				firstCell = JSON.parse(firstCell.firstname);
 				secoundCell = JSON.parse(secoundCell.firstname);
 				//Get the first letter from the value.
