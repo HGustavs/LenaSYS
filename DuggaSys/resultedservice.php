@@ -73,6 +73,7 @@ if($requestType == "mail"){
 	console.log("Now we are starting query");
 
 	$emailsArray = array();
+	$emailString = "";
 
 	for($i = 0; $i < $currentRowFilter.length; $i++) {
 		$studentID = "";
@@ -88,18 +89,33 @@ if($requestType == "mail"){
 			$debug="Error reading user entries".$error[2];
 		}
 
+		// for($i = 0; $i < $currentRowFilter.length; $i++) {
+		// 	$studentID = "";
+		// 	$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
+		//
+		// 	$mailQuery->bindParam(':studentID', $studentID);
+		// 	$mailQuery->bindParam(':cid', $courseid);
+		// 	$mailQuery->bindParam(':cvers', $coursevers);
+		// 	console.log($mailQuery, "mailquery");
+		//
+		// 	if(!$mailQuery->execute()) {
+		// 		$error=$mailQuery->errorInfo();
+		// 		$debug="Error reading user entries".$error[2];
+		// 	}
+		$emailString += $mailQuery + " ;";
+
 //			array_push($emailsArray,$mailQuery['email']);
-			array_push($emailsArray, "hejsan123");
+//			array_push($emailsArray, "hejsan123");
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
 
-	console.log($emailsArray, "before implode");
+	console.log($emailString);
 
 	// Seperates the emails with a ;.
-	$implodedEmails=implode('; ',$emailsArray);
-	console.log($emailsArray, "after implode");
+//	$implodedEmails=implode('; ',$emailsArray);
+//	console.log($emailsArray, "after implode");
 	// Returns the emails in a string representation.
-	echo json_encode($implodedEmails);
+	echo json_encode($emailString);
 	} else {
 
 //------------------------------------------------------------------------------------------------
