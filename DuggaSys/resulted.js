@@ -214,8 +214,8 @@ function process() {
 		var lid = moments[j].lid;
 		var name = momtmp[j].entryname;
 		var truncatedname = name;
-		if (truncatedname.length > 12) {
-			truncatedname = momtmp[j].entryname.slice(0, 3) + "..." + momtmp[j].entryname.slice(momtmp[j].entryname.length - 8);
+		if (truncatedname.length > 30) {
+			truncatedname = momtmp[j].entryname.slice(0, 3) + "..." + momtmp[j].entryname.slice(momtmp[j].entryname.length - 30);
 		}
 
 
