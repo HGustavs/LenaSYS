@@ -358,6 +358,46 @@ function weekchoice(dateString){
     return str;
 }
 
+function renderCircleDiagram(data)
+{
+  var str = "";
+  str+="<div class='hours'>";
+  str+="<svg width='300' height='300'>";
+  str+="<circle id='circle' cx='150' cy='150' r='120' />";
+  str+="<g id='numbers'>";
+  str+=addHourNumbers();
+  str+="</g>";
+  str+="</svg>";
+  str+="</div>";
+}
+
+function addHourNumbers()
+{
+  var RADIUS = 140;
+  var X_OFFSET = RADIUS + 5;
+  var Y_OFFSET = RADIUS + 15;
+  var str = "";
+
+  var i, number;
+  for (i = 0, number = 18; i < 12; i++) {
+      var xCoord = (Math.cos(toRadians(i*30)) * RADIUS) + X_OFFSET;
+      var yCoord = (Math.sin(toRadians(i*30)) * RADIUS) + Y_OFFSET;
+      str += "<text x='"+xCoord+"' y='"+yCoord+"'>"+number+"</text>";
+      if (number === 22) {
+          number = 0;
+      } else {
+          number += 2;
+      }
+  }
+
+  return str;
+
+  function toRadians(angle)
+  {
+      return angle * (Math.PI / 180);
+  }
+}
+
 function intervaltocolor(size,val)
 {
     if(val<size*0.25){
@@ -435,6 +475,7 @@ function returnedSection(data)
 
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
+    str+=renderCircleDiagram(data);
 
     // Table heading
 	str+="<table class='fumho'>";
