@@ -1413,7 +1413,6 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
-  console.log(event.keyCode);
   if (event.keyCode == 27) {
     // if key is escape
     closeWindows();
@@ -1429,7 +1428,7 @@ $(window).keyup(function (event) {
     var submitButtonDisplay = ($('#submitBtn').css('display'));
     var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
-    if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
+    if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       updateItem();
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
@@ -1437,7 +1436,7 @@ $(window).keyup(function (event) {
     } else if (deleteButtonDisplay == 'flex') {
       // Delete the item, allow enter to act as clicking "yes"  
       confirmBox("deleteItem");
-    } else if (isTypeValid() && testsAvailable == true) {
+    } else if (testsAvailable == true) {
       confirmBox("closeConfirmBox");
       testsAvailable = false;
     } else if (errorMissingMaterialDisplay == 'flex') {
