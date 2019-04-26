@@ -515,8 +515,15 @@ function SortableTable(param) {
 		// Save column name to local storage!
 		localStorage.setItem(this.tableid + DELIMITER + "sortcol", col);
 		localStorage.setItem(this.tableid + DELIMITER + "sortkind", kind);
+		if(col == "FnameLnameSSN"){
+			col = "Fname/Lname/SSN";
+			var tempString = col.split("/");
+			sortcolumn = tempString;
+		}else{
+			sortcolumn = col;
+		}
 
-		sortcolumn = col;
+		
 		sortkind = kind;
 
 		this.reRender();
@@ -711,13 +718,9 @@ function newCompare(firstCell, secoundCell) {
 	var secoundCellTemp;
 
     if(typeof firstCell === 'object') {
-		if(col == "FnameLnameSSN"){
-			col = "Fname/Lname/SSN";
-		}
-		var tempString = col.split("/");
 		// console.log(tempString[0]);
-		// console.log(col);
-		if(colOrder.includes(col) && tempString[0]) {
+		console.log(col);
+		if(colOrder.includes(col)) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
 				firstCellTemp = firstCell.firstname;
