@@ -643,6 +643,14 @@ header td {
   display: none;
 }
 
+#TopMenuStatic { 
+  position: fixed; 
+  top: 3px; 
+  left: 95px; 
+  right: 500px; 
+  z-index: 5001; 
+}
+
 .navheader {
   height: 20px;
   margin-bottom: 10px;
