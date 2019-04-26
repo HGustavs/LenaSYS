@@ -86,9 +86,8 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		if ($row = $mailQuery->fetch(PDO::FETCH_ASSOC)) {
-			array_push($emailsArray[$row['email']]);
-		}
+
+			array_push($emailsArray,$mailQuery['email']);
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
 
