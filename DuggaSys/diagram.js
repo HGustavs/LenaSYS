@@ -1610,6 +1610,7 @@ function align(mode) {
 
     updateGraphics();
     hashFunction();
+
     SaveState();
 }
 
@@ -1637,7 +1638,6 @@ function alignLeft(selected_objects) {
             temporary_objects[i].move(0, -difference);
         }
     }
-    SaveState();
 }
 
 function alignTop(selected_objects) {
@@ -1661,7 +1661,6 @@ function alignTop(selected_objects) {
             temporary_objects[i].move(-difference, 0);
         }
     }
-    SaveState();
 }
 
 function alignRight(selected_objects) {
@@ -1685,7 +1684,6 @@ function alignRight(selected_objects) {
             temporary_objects[i].move(0, -difference);
         }
     }
-    SaveState();
 }
 
 function alignBottom(selected_objects) {
@@ -1709,7 +1707,6 @@ function alignBottom(selected_objects) {
             temporary_objects[i].move(-difference, 0);
         }
     }
-    SaveState();
 }
 
 //--------------------------------------------------------------------
@@ -1742,7 +1739,6 @@ function alignVerticalCenter(selected_objects) {
             temporary_objects[i].move(0, -difference);
         }
     }
-    SaveState();
 }
 
 function alignHorizontalCenter(selected_objects) {
@@ -1773,7 +1769,6 @@ function alignHorizontalCenter(selected_objects) {
             temporary_objects[i].move(-difference, 0);
         }
     }
-    SaveState();
 }
 
 // -------------------------------------------------------------------------------------
