@@ -1028,9 +1028,9 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
-  
+
     // This function is used in the drawEntity function and is run when ER entities are not in a weak state.
-    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) 
+    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2)
     {
         var relationMidPoints = [];
 
@@ -1053,13 +1053,13 @@ function Symbol(kind) {
                 dbry = diagram[i].corners().br.y;
                 dblx = diagram[i].corners().bl.x;
                 dbly = diagram[i].corners().bl.y;
-                
+
                 // Stores the midpoints for each corner of the relation in an array
                 if (diagram[i].isRelation) {
                     var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                     var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
-                } 
+                }
                 // Setting the line types to normal if they are forced and the connected entity is strong.
                 if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
 
@@ -1085,7 +1085,7 @@ function Symbol(kind) {
     }
 
     // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
-    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) 
+    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2)
     {
         var relationMidPoints = [];
         var relationMidYPoints = [];
@@ -1119,7 +1119,7 @@ function Symbol(kind) {
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
                     relationMidXPoints.push(relationMiddleX, dtly, dbly);
                     relationMidYPoints.push(relationMiddleY, dtlx, dtrx);
-                }   
+                }
 
                 // Stores the midpoints for the attributes in an array
                 if (diagram[i].isAttribute) {
@@ -1138,7 +1138,7 @@ function Symbol(kind) {
                                 // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
                                 if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
                                     // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
-                                    
+
                                     for (let y = 0; y <= attributeMidPoint.length; y++) {
                                         for (let k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
@@ -1193,14 +1193,14 @@ function Symbol(kind) {
                         }
                     }
                 }
-            } 
+            }
         }
     }
 
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
-        
+
         if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
@@ -1401,7 +1401,7 @@ function Symbol(kind) {
 
             }
         }
-  
+
         // Draw to start breakpoint based on direction
         if (startLineDirection == "left") {
         ctx.lineTo(breakpointStartX, y1);
@@ -1564,7 +1564,7 @@ function Symbol(kind) {
         if (this.targeted || this.isHovered) {
             ctx.lineWidth = 2;
             ctx.strokeColor = "F82";
-            //linedash only when hovered and not targeted 
+            //linedash only when hovered and not targeted
             if (this.isHovered && !this.targeted) {
                 ctx.setLineDash([5, 4]);
             }
@@ -1572,7 +1572,7 @@ function Symbol(kind) {
             ctx.stroke();
         }
         this.properties['textSize'] = this.getFontsize();
-        
+
         ctx.fillStyle = this.properties['fontColor'];
         ctx.textAlign = this.textAlign;
 
@@ -2447,10 +2447,4 @@ function cleanUp() {
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
     p2 = null;
-}
-
-function openInitialDialog() {
-    lastSelectedObject = diagram.length -1;
-    diagram[lastSelectedObject].targeted = true;
-    openAppearanceDialogMenu();
 }
