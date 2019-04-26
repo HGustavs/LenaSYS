@@ -2346,7 +2346,7 @@ span.arrow {
 }
 .tooltip-searchbar-box{
   box-sizing: border-box;
-  display: block;
+  display: none;
   font-size: 13px;
   position: absolute;
   background: #fff;
