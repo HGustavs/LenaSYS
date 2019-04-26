@@ -723,6 +723,7 @@ function newCompare(firstCell, secoundCell) {
 	var secoundCellTemp;
 
     if(typeof firstCell === 'object') {
+		console.log(col);
 		if(colOrder.includes(col.match("Fname"))) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
