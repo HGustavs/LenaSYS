@@ -2756,8 +2756,10 @@ function mouseupevt(ev) {
 }
 
 function doubleclick(ev) {
-    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true && !diagram[movobj].locked) {
-        openAppearanceDialogMenu();
+    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
+        if (!diagram[movobj].locked) {
+          openAppearanceDialogMenu();
+        }
     } else {
         createText(currentMouseCoordinateX, currentMouseCoordinateY);
     }
