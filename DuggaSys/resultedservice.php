@@ -70,10 +70,11 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
+	console.log("Now we are starting query");
+
 	$emailsArray = array();
 
-	console.log("Now we are starting query");
-	for($i = 0; $i < $currentRowFilter.length; $i ++) {
+	for($i = 0; $i < $currentRowFilter.length; $i++) {
 		$studentID = "";
 		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
@@ -82,12 +83,13 @@ if($requestType == "mail"){
 		$mailQuery->bindParam(':cvers', $coursevers);
 		console.log($mailQuery, "mailquery");
 
-		if(!$mailQuery->execute()){
+		if(!$mailQuery->execute()) {
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
 
-			array_push($emailsArray,$mailQuery['email']);
+//			array_push($emailsArray,$mailQuery['email']);
+			array_push($emailsArray, "hejsan123");
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
 
