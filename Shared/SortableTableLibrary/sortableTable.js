@@ -672,7 +672,6 @@ function SortableTable(param) {
 	}
 
 	this.mail = function(cidMail, crsMail, reqType){
-		console.log("sortableTable mail started");
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
@@ -688,6 +687,7 @@ function SortableTable(param) {
 				console.log(err.Message);
 			},
 			success: function(data){
+				console.log(data);
 				window.location.assign("mailto:?bcc=" + data);
 				//window.location.assign("mailto:" + data);
 			//  mailto:astark1@unl.edu?bcc=ASTARK1@UNL.EDU
