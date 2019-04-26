@@ -716,14 +716,13 @@ function newCompare(firstCell, secoundCell) {
 		}
 		var tempString = col.split("/");
 		console.log(tempString[0]);
+		console.log(colOrder);
 		if(colOrder.includes(tempString[0])) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
 				firstCellTemp = firstCell.firstname;
 				secoundCellTemp = secoundCell.firstname;
-				console.log(firstCell.firstname);
 			} else {
-				console.log(firstCell.firstname);
 				firstCell = JSON.parse(firstCell.firstname);
 				secoundCell = JSON.parse(secoundCell.firstname);
 				//Get the first letter from the value.
@@ -755,8 +754,8 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-		console.log(secoundCellTemp);
-		console.log(firstCellTemp);
+		// console.log(secoundCellTemp);
+		// console.log(firstCellTemp);
 		if (status == 0) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
