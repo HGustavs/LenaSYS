@@ -20,7 +20,8 @@ function setup()
 
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
 //  function content was commented out to avoid having a white empty box appear.
-function hoverc() {
+function hoverc()
+{
 	/*
 	$('#dropdowns').css('display','none');
 	$('#dropdownc').css('display','block');
