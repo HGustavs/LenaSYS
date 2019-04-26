@@ -1,4 +1,3 @@
-// trash comment, pls work
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
 	currentTable: null,
@@ -13,11 +12,13 @@ var sortableTable = {
 
 var DELIMITER = "___";
 
+// will split the string and return the text after the dot
 function byString(inpobj, paramstr) {
 	params = paramstr.split(".");
 	return inpobj[params[1]];
 }
 
+// if enter (13) is pressed, simulate a click on searchbutton
 function searchKeyUp(e) {
 	// look for window.event in case event isn't passed in
 	e = e || window.event;
@@ -28,6 +29,7 @@ function searchKeyUp(e) {
 	return true;
 }
 
+// a function that is used when ex. editing a cell, enter will update the content. Escape will clear the inputs
 function keypressHandler(event) {
 	if (event.keyCode == 13) {
 		updateCellInternal();
@@ -39,8 +41,6 @@ function keypressHandler(event) {
 function defaultRowFilter() {
 	return true;
 }
-
-
 
 // Global sorting function global
 function sortableInternalSort(a, b) {
@@ -58,6 +58,7 @@ function sortableInternalSort(a, b) {
 	return ret;
 }
 
+// clears all the edit inputs and closes the "editpopover" box
 function clearUpdateCellInternal() {
 	sortableTable.edit_rowno = -1;
 	sortableTable.edit_rowid = null;
@@ -68,6 +69,7 @@ function clearUpdateCellInternal() {
 	document.getElementById('editpopover').style.display = "none";
 }
 
+// updates the cell content when edited
 function updateCellInternal() {
 	for (var i = 0; i < sortableTable.sortableTables.length; i++) {
 		if (sortableTable.sortableTables[i].tableid == sortableTable.edit_tableid) {
@@ -81,6 +83,8 @@ function updateCellInternal() {
 function clickedInternal(event, clickdobj) {
 	let clickedTbl = event.target.closest("table").id.substring(0, event.target.closest("table").id.indexOf(DELIMITER + "tbl"));
 	let active = null;
+
+	// loops through the sortabletables and checks if something is clicked, change active to the sortabletable that was clicked
 	for (let i = 0; i < sortableTable.sortableTables.length; i++) {
 		if (sortableTable.sortableTables[i].tableid == clickedTbl) {
 			active = sortableTable.sortableTables[i];
