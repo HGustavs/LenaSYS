@@ -2959,6 +2959,32 @@ table {
   background-color: var(--color-background);
 }
 
+.circleGraph {
+  width:300px;
+  height:300px;
+}
+
+.circleGraphCircle {
+  stroke:black;
+  stroke-width:1px;
+  fill:white;
+}
+
+.circleGraphHours {
+  text-anchor: middle;
+}
+
+.circleGraphBigline {
+  fill: black;
+  stroke:black;
+  stroke-width:2px;
+}
+
+.circleGraphLine {
+  fill: gray;
+  stroke:gray;
+  stroke-width:1px;
+}
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {

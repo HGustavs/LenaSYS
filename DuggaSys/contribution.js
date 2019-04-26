@@ -363,7 +363,7 @@ function renderCircleDiagram(data)
   var str = "";
   str+="<div class='circleGraph'>";
   str+="<svg width='300' height='300'>";
-  str+="<circle id='circleGraphCircle' cx='150' cy='150' r='120' />";
+  str+="<circle class='circleGraphCircle' cx='150' cy='150' r='120' />";
   str+=renderHourMarkers();
   str+="</svg>";
   str+="</div>";
@@ -391,10 +391,10 @@ function renderHourMarkers()
         str += "'circleGraphLine'";
         str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
     }
-    str += "<circle id='circleGraphInnerCircle' cx='"+MIDDLE+"' cy='"+MIDDLE+"' r=5 />";
+    str += "<circle class='circleGraphCircle' cx='"+MIDDLE+"' cy='"+MIDDLE+"' r=5 />";
   }
 
-  str += "<g id='circleGraphHours'>";
+  str += "<g class='circleGraphHours'>";
   for (i = 0, number = 18; i < 12; i++) {
     var xCoordNum = (Math.cos(toRadians(i*30)) * NUMRADIUS) + X_OFFSET;
     var yCoordNum = (Math.sin(toRadians(i*30)) * NUMRADIUS) + Y_OFFSET;
@@ -408,7 +408,7 @@ function renderHourMarkers()
   }
   str += "</g>";
   return str;
-  
+
   function toRadians(angle)
   {
       return angle * (Math.PI / 180);
