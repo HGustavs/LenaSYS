@@ -270,7 +270,7 @@
                     <span class="drop-down-label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-text-non-clickable">
-                            <span class="drop-down-option">Move grid</span>
+                            <span class="drop-down-option">Move camera</span>
                             <div id="hotkey-space"><i>Blankspace</i></div>
                         </div>
                         <div class="drop-down-divider"></div>
