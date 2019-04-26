@@ -2985,6 +2985,12 @@ table {
   stroke:gray;
   stroke-width:1px;
 }
+
+.activitymarker {
+  fill: red;
+  stroke-width: 1px;
+  stroke: black;
+}
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {

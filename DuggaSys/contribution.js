@@ -360,11 +360,41 @@ function weekchoice(dateString){
 
 function renderCircleDiagram(data)
 {
+  var activities = data; //Fix this when database is available
   var str = "";
   str+="<div class='circleGraph'>";
   str+="<svg width='300' height='300'>";
   str+="<circle class='circleGraphCircle' cx='150' cy='150' r='120' />";
   str+=renderHourMarkers();
+  var hours = {};
+  activities.forEach(entry => {
+    var hour = entry.time.substr(0,2);
+    var keys = Object.keys(hours);
+    var found = false;
+
+    for (var i = 0; i < keys.length; i++) {
+        if (keys[i] == hour) {
+            hours[hour] += 1;
+            found = true;
+            return;
+        }
+    }
+    if (Object.entries(hours).length === 0 || !found) {
+        hours[hour] = 1;
+    }
+
+  });
+  activities.forEach(entry => {
+    const RADIUS = 120;
+    var hour = entry.time.substr(0,2);
+    var houroffset = parseInt(hour) + 6;
+    var activityCount = activities.length;
+    var percentage = hours[hour] / activityCount;
+    var xCoord = (Math.cos(toRadians(houroffset*15)) * (RADIUS * percentage)) + 148;
+    var yCoord = (Math.sin(toRadians(houroffset*15)) * (RADIUS * percentage)) + 148;
+
+    str+="<rect class='activitymarker' width='5' height='5' x='"+xCoord+"' y='"+yCoord+"' />";
+  });
   str+="</svg>";
   str+="</div>";
 }
