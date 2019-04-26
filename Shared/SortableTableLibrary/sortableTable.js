@@ -736,6 +736,7 @@ function newCompare(firstCell, secoundCell) {
 				secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
 		} else if (col == "Lname"){
+			console.log(col);
 			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
 				firstCellTemp = firstCell.lastname;
 				secoundCellTemp = secoundCell.lastname;
@@ -747,6 +748,7 @@ function newCompare(firstCell, secoundCell) {
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
 		} else if (col == "SSN") {
+			console.log(col);
 			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
 				firstCellTemp = firstCell.ssn;
 				secoundCellTemp = secoundCell.ssn;
