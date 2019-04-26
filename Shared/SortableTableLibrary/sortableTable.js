@@ -672,6 +672,7 @@ function SortableTable(param) {
 	}
 
 	this.mail = function(cidMail, crsMail, reqType){
+		console.log("sortableTable mail started");
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
