@@ -361,37 +361,54 @@ function weekchoice(dateString){
 function renderCircleDiagram(data)
 {
   var str = "";
-  str+="<div class='hours'>";
+  str+="<div class='circleGraph'>";
   str+="<svg width='300' height='300'>";
-  str+="<circle id='circle' cx='150' cy='150' r='120' />";
-  str+="<g id='numbers'>";
-  str+=addHourNumbers();
-  str+="</g>";
+  str+="<circle id='circleGraphCircle' cx='150' cy='150' r='120' />";
+  str+=renderHourMarkers();
   str+="</svg>";
   str+="</div>";
 }
 
-function addHourNumbers()
+function renderHourMarkers()
 {
-  var RADIUS = 140;
-  var X_OFFSET = RADIUS + 5;
-  var Y_OFFSET = RADIUS + 15;
+  const RADIUS = 120;
+  const NUMRADIUS = 140;
+  const MIDDLE = 150;
+  const X_OFFSET = NUMRADIUS + 5;
+  const Y_OFFSET = NUMRADIUS + 15;
   var str = "";
 
   var i, number;
-  for (i = 0, number = 18; i < 12; i++) {
-      var xCoord = (Math.cos(toRadians(i*30)) * RADIUS) + X_OFFSET;
-      var yCoord = (Math.sin(toRadians(i*30)) * RADIUS) + Y_OFFSET;
-      str += "<text x='"+xCoord+"' y='"+yCoord+"'>"+number+"</text>";
-      if (number === 22) {
-          number = 0;
-      } else {
-          number += 2;
-      }
+  for (i = 0; i < 24; i++) {
+    var xCoord = (Math.cos(toRadians(i*15)) * RADIUS) + MIDDLE;
+    var yCoord = (Math.sin(toRadians(i*15)) * RADIUS) + MIDDLE;
+
+    str += "<line x1='"+MIDDLE+"' y1='"+MIDDLE+"' class=";
+    if (i % 2 === 0) {
+        str += "'circleGraphBigline'";
+        str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
+    } else {
+        str += "'circleGraphLine'";
+        str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
+    }
+    str += "<circle id='circleGraphInnerCircle' cx='"+MIDDLE+"' cy='"+MIDDLE+"' r=5 />";
   }
 
+  str += "<g id='circleGraphHours'>";
+  for (i = 0, number = 18; i < 12; i++) {
+    var xCoordNum = (Math.cos(toRadians(i*30)) * NUMRADIUS) + X_OFFSET;
+    var yCoordNum = (Math.sin(toRadians(i*30)) * NUMRADIUS) + Y_OFFSET;
+    
+    str += "<text x='"+xCoordNum+"' y='"+yCoordNum+"'>"+number+"</text>";
+    if (number === 22) {
+        number = 0;
+    } else {
+        number += 2;
+    }
+  }
+  str += "</g>";
   return str;
-
+  
   function toRadians(angle)
   {
       return angle * (Math.PI / 180);
