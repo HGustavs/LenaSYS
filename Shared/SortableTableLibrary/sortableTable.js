@@ -711,11 +711,10 @@ function newCompare(firstCell, secoundCell) {
 	var secoundCellTemp;
 
     if(typeof firstCell === 'object') {
-		if(colOrder.includes("Fname")){
+		if(col == "FnameLnameSSN"){
 			col = "Fname/Lname/SSN";
 		}
 		console.log(col);
-		console.log(colOrder);
 		var tempString = col.split("/");
 		if(colOrder.includes(tempString[0])) {
 			//Convert to json object
