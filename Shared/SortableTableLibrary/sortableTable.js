@@ -722,23 +722,20 @@ function newCompare(firstCell, secoundCell) {
 		if(col == "FnameLnameSSN"){
 			col = sortableTable.currentTable.getNameColumn();
 		}
-		console.log(col);
-		if(colOrder.includes(col == "Fname")) {
+		if(col == "Fname") {
 			console.log(col);
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
-				console.log(col);
 				firstCellTemp = firstCell.firstname;
 				secoundCellTemp = secoundCell.firstname;
 			} else {
-				console.log(col);
 				firstCell = JSON.parse(firstCell.firstname);
 				secoundCell = JSON.parse(secoundCell.firstname);
 				//Get the first letter from the value.
 				firstCellTemp = Object.values(firstCell.firstname)[0];
 				secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
-		} else if (colOrder.includes(col == "Lname")){
+		} else if (col == "Lname"){
 			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
 				firstCellTemp = firstCell.lastname;
 				secoundCellTemp = secoundCell.lastname;
@@ -749,7 +746,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.lastname)[0];
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
-		} else if (colOrder.includes(col == "SSN")) {
+		} else if (col == "SSN") {
 			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
 				firstCellTemp = firstCell.ssn;
 				secoundCellTemp = secoundCell.ssn;
