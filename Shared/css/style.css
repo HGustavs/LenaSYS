@@ -3010,20 +3010,23 @@ table {
   stroke: black;
 }
 rect[class*="activitymarker"]:hover {
-  fill: greenyellow;
+  fill: #8AC926;
 }
 .activitymarker.commit {
-  fill: royalblue;
+  fill: #2AB7CA;
 }
 .activitymarker.pullrequest {
-  fill: purple;
+  fill: #6A4C93;
 }
 .activitymarker.issue {
-  fill: red;
+  fill: #FE4A49;
+}
+.activitymarker.mixed {
+  fill: url("#mixedActivityGradient");
 }
 .activityPolygon {
   opacity: 0.8;
-  fill: yellow;
+  fill: #FED766;
   stroke-width: 0.5px;
   stroke: red;
 }
