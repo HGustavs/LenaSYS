@@ -417,12 +417,14 @@ function renderCircleDiagram(data)
   var uniquePoints = Array.from(set).map(JSON.parse);
   uniquePoints.sort(([a,b,c,d], [e,f,g,h]) => d - h);
 
-  // Make a polygon between each point in the graph
-  str+="<polygon class='activityPolygon' points='";
-  for(var i = 0; i < uniquePoints.length; i++) {
-    str+=(uniquePoints[i][0]+5)+","+(uniquePoints[i][1]+5)+" ";
+  // Make a polygon between each point in the graph if the number of unique points is larger than 2
+  if (uniquePoints.length > 2) {
+    str+="<polygon class='activityPolygon' points='";
+    for(var i = 0; i < uniquePoints.length; i++) {
+      str+=(uniquePoints[i][0]+5)+","+(uniquePoints[i][1]+5)+" ";
+    }
+    str+="' onmouseover='showAllActivity(event, "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
   }
-  str+="' onmouseover='showAllActivity(event, "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
 
   // Make a rectangle for every activity and add it to the graph
   activityPoints.forEach(point => {
@@ -437,7 +439,14 @@ function renderCircleDiagram(data)
     str+="`"+type+"`, `"+hour+"`, "+percentage+", "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
   });
   str+="</svg>";
-  str+="</div>";
+
+  // Hidden gradient used for mixed activity points
+  str+= "<svg style='width:0;height:0;position:absolute;'>";
+  str+= "<linearGradient id='mixedActivityGradient' x2='1' y2='1'>";
+  str+= "<stop offset='0%' stop-color='#6A4C93' />";
+  str+= "<stop offset='50%' stop-color='#2AB7CA' />";
+  str+= "<stop offset='100%' stop-color='#FE4A49' />";
+  str+= "</linearGradient></svg></div>";
 }
 
 function renderHourMarkers()
