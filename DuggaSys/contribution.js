@@ -392,12 +392,13 @@ function renderCircleDiagram(data)
   activities.forEach(entry => {
     // Calculate position for the activity rectangle
     const RADIUS = 220;
+    const BASELINE = 30;
     var hour = entry.time.substr(0,2);
     var houroffset = parseInt(hour) + 6;
     var activityCount = activities.length;
     var percentage = hours[hour] / activityCount;
-    var angleFactor = (RADIUS+150) * percentage;
-    angleFactor > 220 ? angleFactor = 220 : angleFactor = angleFactor;    
+    var angleFactor = (RADIUS * percentage) + BASELINE;
+    angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;    
     var xCoord = (Math.cos(toRadians(houroffset*15)) * angleFactor) + 245;
     var yCoord = (Math.sin(toRadians(houroffset*15)) * angleFactor) + 245;
 
@@ -405,9 +406,7 @@ function renderCircleDiagram(data)
 
     // Count total activities of each type, and count total activities of each type at every time
     if (!Object.keys(activityTypes.times).includes(hour)) activityTypes.times[hour] = {};
-    if (!Object.keys(activityTypes.types).includes(type)) {
-            activityTypes.types[type] = 0;
-    }
+    if (!Object.keys(activityTypes.types).includes(type)) activityTypes.types[type] = 0;
     if (!Object.keys(activityTypes.times[hour]).includes(type)) activityTypes.times[hour][type] = 0;
     activityTypes.types[type] += 1;
     activityTypes.times[hour][type] += 1;
