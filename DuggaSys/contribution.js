@@ -366,6 +366,8 @@ function renderCircleDiagram(data)
   str+="<svg width='500' height='500'>";
   str+="<circle class='circleGraphCircle' cx='250' cy='250' r='220' />";
   str+=renderHourMarkers();
+
+  // Count activities each hour
   var hours = {};
   activities.forEach(entry => {
     var hour = entry.time.substr(0,2);
@@ -384,8 +386,11 @@ function renderCircleDiagram(data)
     }
 
   });
+
   var activityPoints = [];
+  var activityTypes = {times: {}, types: {}};
   activities.forEach(entry => {
+    // Calculate position for the activity rectangle
     const RADIUS = 220;
     var hour = entry.time.substr(0,2);
     var houroffset = parseInt(hour) + 6;
@@ -397,21 +402,39 @@ function renderCircleDiagram(data)
     var yCoord = (Math.sin(toRadians(houroffset*15)) * angleFactor) + 245;
 
     activityPoints.push([xCoord, yCoord, activityType, hour]);
+
+    // Count total activities of each type, and count total activities of each type at every time
+    if (!Object.keys(activityTypes.times).includes(hour)) activityTypes.times[hour] = {};
+    if (!Object.keys(activityTypes.types).includes(type)) {
+            activityTypes.types[type] = 0;
+    }
+    if (!Object.keys(activityTypes.times[hour]).includes(type)) activityTypes.times[hour][type] = 0;
+    activityTypes.types[type] += 1;
+    activityTypes.times[hour][type] += 1;
   });
+  // Get the unique points and sort them according to hour
   var set = new Set(activityPoints.map(JSON.stringify));
   var uniquePoints = Array.from(set).map(JSON.parse);
   uniquePoints.sort(([a,b,c,d], [e,f,g,h]) => d - h);
 
+  // Make a polygon between each point in the graph
   str+="<polygon class='activityPolygon' points='";
   for(var i = 0; i < uniquePoints.length; i++) {
     str+=(uniquePoints[i][0]+5)+","+(uniquePoints[i][1]+5)+" ";
   }
-  str+="' />";
+  str+="' onmouseover='showAllActivity(event, "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
+
+  // Make a rectangle for every activity and add it to the graph
   activityPoints.forEach(point => {
     var xCoord = point[0];
     var yCoord = point[1];
-    var activityType = point[2];
-    str+="<rect class='activitymarker "+activityType+"' width='10' height='10' x='"+xCoord+"' y='"+yCoord+"' onmouseover:'showActivityInfo()' />";
+    var type = point[2];
+    var hour = point[3];
+    var percentage = Math.round(point[4]*100);
+    var types = Object.keys(activityTypes.times[hour]);
+    var values = Object.values(activityTypes.times[hour]);
+    str+="<rect class='activitymarker "+type+"' width='10' height='10' x='"+xCoord+"' y='"+yCoord+"' onmouseover='showActivityInfo(event, ";
+    str+="`"+type+"`, `"+hour+"`, "+percentage+", "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
   });
   str+="</svg>";
   str+="</div>";
@@ -427,6 +450,7 @@ function renderHourMarkers()
   var str = "";
 
   var i, number;
+  // Add lines pointing at each hour
   for (i = 0; i < 24; i++) {
     var xCoord = (Math.cos(toRadians(i*15)) * RADIUS) + MIDDLE;
     var yCoord = (Math.sin(toRadians(i*15)) * RADIUS) + MIDDLE;
@@ -446,6 +470,7 @@ function renderHourMarkers()
     str += "<circle class='circleGraphCircle' cx='"+MIDDLE+"' cy='"+MIDDLE+"' r=5 />";
   }
 
+  // Add numbers representing the hours
   str += "<g class='circleGraphHours'>";
   for (i = 0, number = 18; i < 12; i++) {
     var xCoordNum = (Math.cos(toRadians(i*30)) * NUMRADIUS) + X_OFFSET;
@@ -461,10 +486,86 @@ function renderHourMarkers()
   str += "</g>";
   return str;
 
+  // Since Math.cos and Math.sin does not calculate on degrees we must convert to radians
   function toRadians(angle)
   {
       return angle * (Math.PI / 180);
   }
+}
+
+// Shows all activity when the user hovers over the polygon in the circle graph
+function showAllActivity(e, activities)
+{
+  var box = document.getElementById('activityInfoBox');
+  var span = document.getElementById('allActivity');
+  var times = Object.keys(activities.times);
+  var types = Object.keys(activities.types);
+  
+  var str = "";
+
+  for (var i = 0; i < times.length; i++) {
+      var nextHour;
+      var hourTypes = Object.keys(activities.times[times[i]]);
+
+      if (times[i].indexOf('0') === 0) {
+          nextHour = "0" + (parseInt(times[i])+1);
+      } else {
+          nextHour = (parseInt(times[i])+1);
+      }
+      str += "<span class='activityInfoEntry'>";
+      str += "<strong>"+times[i]+".00 - "+nextHour+".00</strong><br>";
+      
+      hourTypes.forEach(type => {
+          str += type+": "+activities.times[times[i]][type]+"<br>";
+      });
+      str += "</span>";
+  }
+  span.innerHTML = str;
+  box.style.display = 'block';
+  box.style.left = e.clientX + "px";
+  box.style.top = e.clientY + "px";
+}
+
+// Shows info about the activity point the user hovers over in the circle graph
+function showActivityInfo(e, type, hour, pc, activities) 
+{
+  var box = document.getElementById('activityInfoBox');
+  var timeSpan = document.getElementById('activityTime');
+  var pcSpan = document.getElementById('activityPercent');
+  var countSpan = document.getElementById('activityCount');
+  var nextHour;
+  box.style.display = 'block';
+  box.style.left = e.clientX + "px";
+  box.style.top = e.clientY + "px";
+
+  if (hour.indexOf('0') === 0) {
+      nextHour = "0" + (parseInt(hour)+1);
+  } else {
+      nextHour = (parseInt(hour)+1);
+  }
+  timeSpan.innerHTML = hour+".00 - "+nextHour+".00";
+  pcSpan.innerHTML = pc+"% Activity";
+  var str = "";
+  for (var i = 0; i < Object.keys(activities.times[hour]).length; i++) {
+      var type = Object.keys(activities.times[hour])[i];
+      str += activities.times[hour][type]+" of "+activities.types[type]+" total "+type+"s<br>";
+  } 
+  countSpan.innerHTML = str;
+}
+
+// Resets the circle graph activity info box and hides it
+function hideActivityInfo() 
+{
+  var box = document.getElementById('activityInfoBox');
+  var timeSpan = document.getElementById('activityTime');
+  var pcSpan = document.getElementById('activityPercent');
+  var countSpan = document.getElementById('activityCount');
+  var allSpan = document.getElementById('allActivity');
+  timeSpan.innerHTML = "";
+  pcSpan.innerHTML = "";
+  countSpan.innerHTML = "";
+  allSpan.innerHTML = "";
+  box.style.display = 'none';
 }
 
 function intervaltocolor(size,val)
