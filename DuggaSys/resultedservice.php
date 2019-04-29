@@ -75,7 +75,7 @@ if($requestType == "mail"){
 	$emailString = "";
 	$studentID = "";
 
-	echo currentRowFilter;
+	echo '<script>console.log(currentRowFilter)</script>';
 
 	for($i = 0; $i < $currentRowFilter.length; $i++) {
 		if(currentRowFilter[i] != null)
