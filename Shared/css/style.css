@@ -3688,6 +3688,7 @@ only screen and (max-device-width: 320px) {
   position: relative;
   background-color: #614875;
   color: #fff;
+  cursor: pointer;
 }
 
 .tooltipDecrease .tooltiptextDec{
@@ -3729,6 +3730,7 @@ only screen and (max-device-width: 320px) {
   position: relative;
   background-color: #614875;
   color: #fff;
+  cursor: pointer;
 }
 
 .tooltipIncrease .tooltiptextInc{
