@@ -92,7 +92,7 @@ if($requestType == "mail"){
 			$mailQuery->bindParam(':cid', $courseid);
 			$mailQuery->bindParam(':cvers', $coursevers);
 
-			if(!$mailQuery->execute()) {
+			if (!$mailQuery->execute() {
 				echo json_encode($mailQuery);
 				$error=$mailQuery->errorInfo();
 				$debug="Error reading user entries".$error[2];
@@ -104,9 +104,9 @@ if($requestType == "mail"){
 	//		array_push($groups[$row['groupKind']],$row['groupVal']);
 
 	// Seperates the emails with a ;.
-	$implodedEmails=implode('; ',$emailsArray);
+			$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($implodedEmails);
+			echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
