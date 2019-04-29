@@ -136,6 +136,9 @@ var symbolEndKind;                      // Is used to store which kind of object
 
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 
+var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
+
+// Keyboard keys
 const deleteKey = 46;
 const backspaceKey = 8;
 const spacebarKey = 32;
@@ -152,7 +155,82 @@ const yKey = 89;
 const aKey = 65;
 const escapeKey = 27;
 
-//this block of the code is used to handel keyboard input;
+// Mouse clicks
+const rightMouseClick = 2;
+
+// This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
+var rightClick = false;
+
+// Used to set the coordinates where a right click was made.
+document.addEventListener("mousedown", function(e)
+    {
+        if (e.button == rightMouseClick) {
+            if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+                InitPageX = e.pageX;
+                InitPageY = e.pageY;
+                rightClick = true;
+            }
+        }
+    }, 
+    false
+);
+
+// Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
+window.addEventListener("mousemove", function(e) 
+    {
+        // deltas are used to determine the range of which the mouse is allowed to move when pressed.
+        deltaX = 2;
+        deltaY = 2;
+        if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
+            // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
+            diffX = e.pageX - InitPageX;
+            diffY = e.pageY - InitPageY;
+            if (    
+                (diffX > deltaX) || (diffX < -deltaX)    
+                || 
+                (diffY > deltaY) || (diffY < -deltaY)   
+            ) {
+                rightClick = false;
+                // Entering MoveAround mode
+                if (uimode != "MoveAround") {
+                    activateMovearound();
+                } 
+                updateGraphics();
+            }
+            else {
+                // If click event is needed, it goes in here.
+                rightClick = true;
+            } 
+        }  
+    },
+    false
+);
+
+// Deactivate MoveAround by releasing the mouse
+window.addEventListener("mouseup", function()
+    {
+        delete InitPageX;
+        delete InitPageY;
+        // Making sure the MoveAround was not initialized by the spacebar.
+        if (uimode == "MoveAround" && !spacebarKeyPressed) {
+            deactivateMovearound();
+            updateGraphics();
+        }
+    }, 
+    false
+);
+
+// Hides the context menu. Needed in order to be able to right click and drag to move the camera.
+window.addEventListener('contextmenu', function (e) 
+    {
+        if (rightClick != true) {
+            e.preventDefault();
+        }
+    }, 
+    false
+);
+
+// This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
@@ -279,6 +357,12 @@ function keyDownHandler(e) {
         eraseSelectedObject();
         SaveState();
     } else if(key == spacebarKey) {
+        // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
+        if (!spacebarKeyPressed) {
+        spacebarKeyPressed = true;
+        } else {
+            spacebarKeyPressed = false;
+        }
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -291,6 +375,7 @@ function keyDownHandler(e) {
         }
         updateGraphics();
     } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
+
         arrowKeyPressed(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
@@ -2435,9 +2520,11 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
+        // If mouse is pressed down and at a point in selected object - move that point
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
+
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
