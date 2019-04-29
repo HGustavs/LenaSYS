@@ -1219,6 +1219,7 @@ function resetViewToOrigin(){
     origoOffsetX = 0;
     origoOffsetY = 0;
     updateGraphics();
+    SaveState();
 }
 
 function getConnectedLines(object) {
@@ -1802,6 +1803,7 @@ function lockSelected() {
             updateGraphics();
         }
     }
+    SaveState();
 }
 
 function align(mode) {
@@ -1826,6 +1828,8 @@ function align(mode) {
 
     updateGraphics();
     hashFunction();
+
+    SaveState();
 }
 
 //---------------------------------------------------------------------
