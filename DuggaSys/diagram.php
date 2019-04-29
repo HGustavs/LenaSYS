@@ -43,7 +43,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();"
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); developerMode(); initToolbox(); updateGraphics();"
  onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
@@ -65,13 +65,7 @@
                         </div>
                         <div class='application-toolbar'>
                           <div id="toolbar-switcher">
-                            <div class="toolbarArrows" onclick="switchToolbar('left');">
-                              <img id="toolbarLeftArrow" src="../Shared/icons/arrow.svg">
-                            </div>
-                            <div id="toolbarTypeText">All</div>
-                            <div class="toolbarArrows" onclick="switchToolbar('right');">
-                              <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
-                            </div>
+                            <div id="toolbarTypeText">Dev</div>
                           </div>
                           <div class="toolsContainer">
                             <div class="labelToolContainer">
@@ -91,19 +85,19 @@
                               <h4 class="label tlabel" id="labelCreate">Create</h4>
                               <div class="toolbar-drawer" id="drawerCreate">
                                   <div class="tooltipdialog">
-                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
+                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer" class='buttonsStyle unpressed' data="Create Attribute">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                       </button>
-                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
+                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
                                       </button>
-                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
+                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Relation">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
                                       </button>
-                                      <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
+                                      <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Class">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                     </button>
-                                      <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Text">
+                                      <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text">
                                           <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                                       </button>
                                   </div>
@@ -112,10 +106,10 @@
                           <div class="labelToolContainer">
                             <h4 class="label tlabel" id="labelDraw">Draw</h4>
                             <div class="toolbar-drawer" id="drawerDraw">
-                                <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Square">
+                                <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Square">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_square.svg">
                                 </button>
-                                <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Free">
+                                <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
                                 </button>
                             </div>
@@ -143,9 +137,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option">Load</span>
                         </div>
-                        <div class="drop-down-divider">
-
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</span>
                         </div>
@@ -164,9 +156,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="drop-down-divider">
-
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
                         </div>
@@ -183,8 +173,7 @@
                             <span class="drop-down-option" onclick='redoDiagram()'>Redo</span>
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
                         </div>
@@ -199,8 +188,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
                         </div>
@@ -213,10 +201,19 @@
                     <span class="drop-down-label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
+                            <span class="drop-down-option" onclick='developerMode();'>Developer mode</span>
                         </div>
-                        <div class="drop-down-divider">
+                        <div id="displayAllTools" class="drop-down-item">
+                            <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
                         </div>
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="switchToolbarER();">ER</span>
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="switchToolbarUML();">UML</span>
+                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
@@ -231,8 +228,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="align('top');">Top</span>
                         </div>
@@ -320,19 +316,23 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-                <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
-                    <option selected='selected' disabled>Choose zoom</option>
-                    <option value="0.3">30%</option>
-                    <option value="0.5">50%</option>
-                    <option value="0.75">75%</option>
-                    <option value="1">100%</option>
-                    <option value="1.5">150%</option>
-                    <option value="2">200%</option>
-                </select>
-                <i class="ikonPil"></i>
+              <div class="tooltipDecrease">
+                <button name="Zoom" id="zoomDecrease" type="button" onclick="changeZoom(-0.1);"> - </button>
+                <span class="tooltiptextDec">Zoom Out</span>
+              </div>
+              <div id="range">
+                <input name="Zoom" id="ZoomSelect" type="range" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
+              </div>
+              <div class="tooltipIncrease">
+                <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
+                <span class="tooltiptextInc">Zoom In</span>
+              </div>
+              <div id="zoomV"></div>
+            </div>
             </div>
         </div>
     </div>
+
     <!-- The Appearance menu. Default state is display: none; -->
     <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
         <div class='loginBox'>
