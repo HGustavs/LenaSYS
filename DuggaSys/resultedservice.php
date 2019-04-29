@@ -76,9 +76,9 @@ if($requestType == "mail"){
 	$studentID = "";
 
 	for($i = 0; $i < $currentRowFilter.length; $i++) {
-		if(currentRowFilter[i] != null)
+		if($currentRowFilter[$i] != null)
 		{
-			$studentID = currentRowFilter[i]['uid'].uid;
+			$studentID = $currentRowFilter[$i]['uid'].uid;
 			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
 			$mailQuery->bindParam(':studentID', $studentID);
@@ -100,7 +100,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode('<script>console.log("currentrowfilter"+currentRowFilter)</script>');
+	echo json_encode('<script>console.log("hej")</script>');
 	} else {
 
 //------------------------------------------------------------------------------------------------
