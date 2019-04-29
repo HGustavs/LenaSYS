@@ -641,22 +641,19 @@ header td {
 .navName {
   font-size: 0.8em;
   color: #FFFFFF;
-  cursor: default;
   text-decoration: none;
   text-align: right;
   overflow: hidden;
   padding-right: 4px;
+  width: 50px;
 }
 
-.navName:hover {
-  font-size: 0.8em;
+.navName a:hover {
   text-shadow: 2px 2px 4px rgb(0, 0, 0);
   color: #FFFFFF;
-  cursor: default;
   text-decoration: underline;
   text-align: right;
   overflow: hidden;
-  padding-right: 4px;
 }
 
 .navName a {
