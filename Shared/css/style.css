@@ -722,11 +722,11 @@ header td {
 }
 
 #loginbutton:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.1);
 }
 
 .loggedin {
-    background-color: rgba(249, 32, 32,100);
+    background-color: rgba(219, 26, 26,100);
 }
 
 
