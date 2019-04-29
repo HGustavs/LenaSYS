@@ -36,6 +36,27 @@ AJAXService("get", {}, "DIAGRAM");
 
 ************************************************************/
 
+const kind = { 
+    path: 1, 
+    symbol: 2
+};
+const symbolKind = { 
+    uml: 1,  
+    erAttribute: 2,
+    erEntity: 3,
+    line: 4,
+    erRelation: 5,
+    text: 6,
+    umlLine: 7
+};
+const mouseState = {
+    empty: 0,                       // empty
+    noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
+    insidePoint: 2,                 // mouse is pressed down and at a point in selected object 
+    insideMovableObject: 3,         // mouse pressed down inside a movable object  
+    boxSelectOrCreateMode: 4        // Box select or Create mode 
+};
+
 var gridSize = 16;                  // Distance between lines in grid
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
