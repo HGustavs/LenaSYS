@@ -69,9 +69,7 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
-console.log($requestType);
 if($requestType == "mail"){
-	console.log("Now we are starting query");
 
 	$emailsArray = array();
 	$emailString = "";
@@ -83,7 +81,6 @@ if($requestType == "mail"){
 		$mailQuery->bindParam(':studentID', $studentID);
 		$mailQuery->bindParam(':cid', $courseid);
 		$mailQuery->bindParam(':cvers', $coursevers);
-		console.log($mailQuery, "mailquery");
 
 		if(!$mailQuery->execute()) {
 			$error=$mailQuery->errorInfo();
@@ -95,8 +92,6 @@ if($requestType == "mail"){
 		array_push($emailsArray,$mailQuery);
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
-
-	console.log($emailString);
 
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
