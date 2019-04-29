@@ -1112,14 +1112,16 @@ function conv(item, kind) {
 
 function renderColumnFilter(col, status, colname) {
 	str = "";
+  for (var i = 0; i < data['column'].length; i++)
+  console.log(i); 
 	if (colname == "FnameLnameSSN")
 		return str;
 	if (status) {
-		str = "<div class='checkbox-dugga hi'>";
+		str = "<div class='checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	} else {
-		str = "<div class='checkbox-dugga lo'>";
+		str = "<div class='checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	}
