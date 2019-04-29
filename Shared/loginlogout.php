@@ -28,7 +28,6 @@ if($opt=="REFRESH"){
   
     // Login barrier
     $maxLoginTries = 10;
-    $log_db = new PDO('sqlite:../../log/loglena4.db');
     $IP = getIP();
     $timeInterval = 10; // in minutes
 
