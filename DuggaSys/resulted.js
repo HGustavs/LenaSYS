@@ -1112,16 +1112,16 @@ function conv(item, kind) {
 
 function renderColumnFilter(col, status, colname) {
 	str = "";
+  if (colname == "FnameLnameSSN")
+  return str;
   //Räkna hur många columns det finns, modulo x % 2 == 0 blir div class "hi" resten div class "lo" !FIXME
   for(var i = 1; i < moments.length; i++){
     if(i % 2 == 0){
-      str = "<div class='hi ";
+      str = "<div class='lo ";
     } else {
-      str ="<div class='lo ";
+      str ="<div class='hi ";
     }
   }
-	if (colname == "FnameLnameSSN")
-		return str;
 	if (status) {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
