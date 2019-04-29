@@ -1132,6 +1132,7 @@ function renderColumnFilter(col, status, colname) {
 		str += "</div>"
 	}
   console.log(i);
+  console.log(str);
   return str;
 }
 
