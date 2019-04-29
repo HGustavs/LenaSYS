@@ -2377,6 +2377,13 @@ span.arrow {
 	margin-left: 5px;
 }
 
+#oldSubmissionIcon {
+  height: 20px; 
+  float: right; 
+  margin-right: 10px;
+  cursor:pointer;
+}
+
 #user td {
   padding: 0px;
   border-right: 3px dashed rgba(97,72,117,0);
@@ -4742,3 +4749,5 @@ textarea#filecont{
   color: #fff;
   border: 2px solid var(--color-primary);
 }
+
+

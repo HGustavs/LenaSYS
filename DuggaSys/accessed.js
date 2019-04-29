@@ -163,6 +163,11 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 		AJAXService("UPDATE",{cid:querystring['cid'],uid:targetobj,prop:propertyname,val:propertyvalue},"ACCESS");
 }
 
+function showVersion(vers)
+{
+	window.location.href = "../DuggaSys/sectioned.php?courseid="+querystring['cid']+"&coursevers="+vers;
+}
+
 //----------------------------------------------------------------
 // renderCell <- Callback function that renders cells in the table
 //----------------------------------------------------------------
@@ -193,6 +198,10 @@ function renderCell(col,celldata,cellid) {
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.examiner,filez['teachers'],"name","uid")+"</select>";
 		}else if(col=="vers"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptionsItem(obj.vers,filez['courses'],"versname","vers")+"</select>";
+			var checkSubmission = data => data.uid === obj.uid;
+			if (filez['submissions'].some(checkSubmission)) {
+				str+="<img id='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion("+obj.vers+")'>";
+			};
 		}else if(col=="access"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptions(obj.access,["Teacher","Student"],["W","R"])	+"</select>";
 		}else if(col == "requestedpasswordchange") {
