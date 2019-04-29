@@ -37,7 +37,7 @@ if(checklogin() && isSuperUser($_SESSION['uid'])) {
     foreach($rows as $row){
         if(strlen($row['usr'])<9) array_push($allusers, $row['usr']);
     }
-  
+
     $draught=true;
 }else{
     if(isset($_SESSION['uid'])){
@@ -70,9 +70,77 @@ $weekno=1;
 
 $weeks = array();
 
+$groupMembers = "UNK";
+$userGroups = "UNK";
+
+// Get all groups user belong to in current course + version.
+$stmt = $pdo->prepare("SELECT `groups` FROM user_course WHERE user_course.uid=:uid AND user_course.cid=:cid AND user_course.vers=:vers");
+$stmt->bindParam(':uid',$userid);
+$stmt->bindParam(':cid',$cid);
+$stmt->bindParam(':vers',$vers);
+
+if(!$stmt->execute()){
+  $error=$stmt->errorInfo();
+  $debug = "Error getting groups from user in course + vers.\n".$error[2];
+} else {
+  // There should only be one entry that matches the where clause.
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  $result = $result['groups'];
+  if(strlen($result) > 0){
+    $result = trim($result);
+    $userGroups = explode(" ",$result);
+  }
+}
+
+// Using groups, get all other students/users in the same group in the same course version.
+if($userGroups != "UNK"){
+  // Because a user could(probably shouldn't) be part of multiple groups we build
+  // the query as a string before to dynamically add "like" + group[i] before executing it.
+  $queryString = "SELECT user.username FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers AND ";
+  for ($i=0; $i < sizeof($userGroups); $i++) {
+    if($i != 0){
+      // if we're not the first like we need to add an or.
+      $queryString .= " OR ";
+    } else {
+      $queryString .= "(";
+    }
+    $queryString .= "user_course.groups LIKE '%".$userGroups[$i]."%'";
+  }
+  // end the queryString
+  $queryString .= ");";
+
+  $stmt = $pdo->prepare($queryString);
+  $stmt->bindParam(':cid',$cid);
+  $stmt->bindParam(':vers',$vers);
+
+  // set groupMembers to empty array.
+  $groupMembers = array();
+
+  if(!$stmt->execute()){
+    $error=$stmt->errorInfo();
+    $debug = "Error getting groups from user in course + vers.\n".$error[2];
+  } else {
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+      array_push($groupMembers,$row['username']);
+    }
+    print_r($groupMembers);
+    if(sizeof($groupMembers) < 0){
+      // if there are no results (shouldn't be possible since at least the person who's $groups
+      // we are checkin on should be here) we set groupMembers back to "UNK".
+      $groupMembers = "UNK";
+    }
+  }
+}
+
+
+/*
+ * Rankings, numbers etc below.
+ */
 $commitrank="NOT FOUND";
+$commitgrouprank="NOT FOUND";
 $commitrankno="NOT FOUND";
 $i=1;
+$j=1;
 $query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>"2019-03-31" AND thedate<"2020-01-01" GROUP BY author ORDER BY rowk DESC;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
@@ -82,16 +150,24 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['author']==$gituser){
         $commitrank=$i;
+        $commitgrouprank=$j;
         $commitrankno=$row['rowk'];
     }
-  
+
     if($draught) array_push($allcommitranks, $row);
-  
+
     $i++;
+    // If the person is in your group, increment j.
+    if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
+      $j++;
+    }
 }
+
 $rowrank="NOT FOUND";
+$rowgrouprank="NOT FOUND";
 $rowrankno="NOT FOUND";
 $i=1;
+$j=1;
 $query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>"2019-03-31" and blamedate<"2020-01-01" group by blameuser order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
@@ -101,17 +177,24 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['blameuser']==$gituser){
         $rowrank=$i;
+        $rowgrouprank=$j;
         $rowrankno=$row['rowk'];
     }
     if($draught) array_push($allrowranks, $row);
-  
+
     $i++;
-  
+    // If the person is in your group, increment j.
+    if($groupMembers != "UNK" && in_array($row['blameuser'],$groupMembers)){
+      $j++;
+    }
+
 }
 
 $eventrankno="NOT FOUND";
 $eventrank="NOT FOUND";
+$eventgrouprank="NOT FOUND";
 $i=1;
+$j=1;
 $query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2019-03-31" AND  eventtime<"2020-01-01" and eventtime!="undefined" AND kind != "comment" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
@@ -121,17 +204,24 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['author']==$gituser){
         $eventrank=$i;
+        $eventgrouprank=$j;
         $eventrankno=$row['rowk'];
     }
-  
+
     if($draught) array_push($alleventranks, $row);
-  
+
     $i++;
+    // If the person is in your group, increment j.
+    if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
+      $j++;
+    }
 }
 
 $commentrankno="NOT FOUND";
 $commentrank="NOT FOUND";
+$commentgrouprank="NOT FOUND";
 $i=1;
+$j=1;
 $query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" and kind="comment" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
@@ -141,17 +231,24 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['author']==$gituser){
         $commentrank=$i;
+        $commentgrouprank=$j;
         $commentrankno=$row['rowk'];
     }
-  
+
     if($draught) array_push($allcommentranks, $row);
-  
+
     $i++;
+    // If the person is in your group, increment j.
+    if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
+      $j++;
+    }
 }
 
 $issuerank="NOT FOUND";
+$issuegrouprank="NOT FOUND";
 $issuerankno="NOT FOUND";
 $i=1;
+$j=1;
 $query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>"2019-03-31" and issuetime<"2020-01-01" and issuetime!="undefined" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
@@ -161,9 +258,15 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['author']==$gituser){
         $issuerank=$i;
+        $issuegrouprank=$j;
         $issuerankno=$row['rowk'];
     }
+
     $i++;
+    // If the person is in your group, increment j.
+    if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
+      $j++;
+    }
 }
 
 
@@ -182,9 +285,9 @@ foreach($rows as $row){
         $overallrank=$i;
         $overallrankno=$row['davegrowl'];
     }
-    
+
     if($draught) array_push($alltotalranks, $row);
-    
+
     $i++;
 }
 
@@ -193,9 +296,9 @@ SELECT sum(rowk),author FROM (SELECT count(*) as rowk, author FROM event where e
 */
 
 do{
-  
+
 		// Number of issues created by user during the interval
-  
+
 		$issues= array();
     $currentweekdate=date('Y-m-d', $currentweek);
 	$currentweekenddate=date('Y-m-d', $currentweekend);
@@ -217,7 +320,7 @@ do{
 				);
 				array_push($issues, $issue);
 		}
-  
+
 		// Event count of the various kinds of events during interval
 		$events = array();
 		$query = $log_db->prepare("SELECT kind,count(kind) as cnt FROM event WHERE kind!='comment' AND event.author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto GROUP BY kind");
@@ -236,7 +339,7 @@ do{
 				);
 				array_push($events, $event);
 		}
-  
+
 		// Number of comments posted by the user during the interval
 		$comments= array();
 		$query = $log_db->prepare('SELECT * FROM event WHERE author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto AND kind="comment"');
@@ -255,7 +358,7 @@ do{
 				);
 				array_push($comments, $comment);
 		}
-  
+
 		// Number of commits made by the user during the interval
 		$commits=array();
 		$query = $log_db->prepare('SELECT message,cid,author FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
@@ -274,7 +377,7 @@ do{
 				);
 				array_push($commits, $commit);
 		}
-  
+
 		// Number of lines changed in each file during interval
 		$files= array();
         $query = $log_db->prepare('SELECT sum(rowcnt) as rowk, * FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and blamedate>:blamefrom and blamedate<:blameto GROUP BY filename');
@@ -294,7 +397,7 @@ do{
 				);
 				array_push($files, $file);
 		}
-  
+
 		$week = array(
 			'weekno' => $weekno,
 			'weekstart' => $currentweekdate,
@@ -306,13 +409,13 @@ do{
 			'files' => $files
 		);
 		array_push($weeks, $week);
-  
+
 		$currentweek=$currentweekend;
-  
+
 		$currentweekend=strtotime("+1 week",$currentweek);
-  
+
 		$weekno++;
-  
+
 }while($weekno<11);
 
 
@@ -330,7 +433,7 @@ for($i=0;$i<70;$i++){
 		$debug="Error reading entries".$error[2];
 	}
 	$eventcount = $query->fetchAll();
-  
+
   //Comments
 	$query = $log_db->prepare('SELECT count(*) FROM event WHERE author=:gituser AND Date(eventtime)=:currentdate AND kind="comment"');
 	$query->bindParam(':gituser', $gituser);
@@ -340,7 +443,7 @@ for($i=0;$i<70;$i++){
 		$debug="Error reading entries".$error[2];
 	}
 	$commentcount = $query->fetchAll();
-  
+
 	//Commits
 	$query = $log_db->prepare('SELECT count(*) FROM commitgit WHERE author=:gituser AND Date(thedate)=:currentdate');
 	$query->bindParam(':gituser', $gituser);
@@ -350,7 +453,7 @@ for($i=0;$i<70;$i++){
 		$debug="Error reading entries".$error[2];
 	}
 	$commitcount = $query->fetchAll();
-	
+
 	//LOC
 	$query = $log_db->prepare('SELECT sum(rowcnt) FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and Date(blamedate)=:currentdate');
 	$query->bindParam(':gituser', $gituser);
@@ -360,7 +463,7 @@ for($i=0;$i<70;$i++){
 		$debug="Error reading entries".$error[2];
 	}
 	$loccount = $query->fetchAll();
-	
+
 	$daycount = array('events' => $eventcount,
 					  'commits' => $commitcount,
 					  'loc' => $loccount,
@@ -371,21 +474,26 @@ for($i=0;$i<70;$i++){
 $array = array(
 	'debug' => $debug,
 	'weeks' => $weeks,
-    'rowrankno' => $rowrankno,
+  'rowrankno' => $rowrankno,
 	'rowrank' => $rowrank,
-    'eventrankno' => $eventrankno,
+  'rowgrouprank' => $rowgrouprank,
+  'eventrankno' => $eventrankno,
 	'eventrank' => $eventrank,
-    'issuerankno' => $issuerankno,
+  'eventgrouprank' => $eventgrouprank,
+  'issuerankno' => $issuerankno,
 	'issuerank' => $issuerank,
-    'commentrankno' => $commentrankno,
-    'commentrank' => $commentrank,
-    'commitrankno' => $commitrankno,
-    'commitrank' => $commitrank,
-    'allusers' => $allusers,
-    'allrowranks' => $allrowranks,
-    'alleventranks' => $alleventranks,
-    'allcommentranks' => $allcommentranks,
-    'allcommitranks' => $allcommitranks,
+  'issuegrouprank' => $issuegrouprank,
+  'commentrankno' => $commentrankno,
+  'commentrank' => $commentrank,
+  'commentgrouprank' => $commentgrouprank,
+  'commitrankno' => $commitrankno,
+  'commitrank' => $commitrank,
+  'commitgrouprank' => $commitgrouprank,
+  'allusers' => $allusers,
+  'allrowranks' => $allrowranks,
+  'alleventranks' => $alleventranks,
+  'allcommentranks' => $allcommentranks,
+  'allcommitranks' => $allcommitranks,
 	'githubuser' => $gituser,
 	'count' => $count
 );
