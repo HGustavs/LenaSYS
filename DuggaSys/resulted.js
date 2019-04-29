@@ -1112,6 +1112,9 @@ function conv(item, kind) {
 
 function renderColumnFilter(col, status, colname) {
 	str = "";
+  //Räkna hur många columns det finns, modulo x % 2 == 0 blir div class "hi" resten div class "lo" !FIXME
+  for (var j = 0; j < moments.length; j++)
+  console.log(j);
 	if (colname == "FnameLnameSSN")
 		return str;
 	if (status) {
