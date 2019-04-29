@@ -685,15 +685,13 @@ function SortableTable(param) {
 		console.log(currentRowFilter);
 		console.log(activeFilteringUsername);
 
-		var array = activeFilteringUsername[0];
-
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
 			data: {
 				'courseid': cidMail,
 				'coursevers': crsMail,
-				'visibleUserIDs': array,
+				'visibleUserIDs': activeFilteringUsername,
 				'requestType': reqType
 			},
 			dataType: "JSON",
