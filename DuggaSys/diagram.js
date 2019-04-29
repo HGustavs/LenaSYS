@@ -36,12 +36,12 @@ AJAXService("get", {}, "DIAGRAM");
 
 ************************************************************/
 
-const kind = { 
-    path: 1, 
+const kind = {
+    path: 1,
     symbol: 2
 };
-const symbolKind = { 
-    uml: 1,  
+const symbolKind = {
+    uml: 1,
     erAttribute: 2,
     erEntity: 3,
     line: 4,
@@ -52,9 +52,9 @@ const symbolKind = {
 const mouseState = {
     empty: 0,                       // empty
     noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
-    insidePoint: 2,                 // mouse is pressed down and at a point in selected object 
-    insideMovableObject: 3,         // mouse pressed down inside a movable object  
-    boxSelectOrCreateMode: 4        // Box select or Create mode 
+    insidePoint: 2,                 // mouse is pressed down and at a point in selected object
+    insideMovableObject: 3,         // mouse pressed down inside a movable object
+    boxSelectOrCreateMode: 4        // Box select or Create mode
 };
 
 var gridSize = 16;                  // Distance between lines in grid
@@ -410,6 +410,30 @@ function arrowKeyPressed(key) {
     updateGraphics();
 }
 
+//-----------------------------------------------------------------------------------
+// arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
+//-----------------------------------------------------------------------------------
+function moveCanvasView(){
+  if(uimode = "MoveAround"){
+    if(key == leftArrow) {
+      moveCanvasViewLeft();
+    }else if(key == upArrow) {
+      moveCanvasViewUp();
+    }else if(key == rightArrow) {
+      moveCanvasViewRight();
+    }else if(key == downArrow) {
+      moveCanvasViewDown();
+    }
+    updateGraphics();
+  }
+}
+
+function moveCanvasViewRight(){
+
+origoOffsetX += 10;
+console.log("Hej");
+}
+
 //-------------------------------------------------------------------------------------
 // points - stores a global list of points
 //          A point can not be physically deleted but marked as deleted in order to reuse
@@ -742,19 +766,19 @@ diagram.checkForHover = function(posX, posY) {
 }
 
 // Indicates that objects are movable by changing the appearance of the cursor
-window.addEventListener("mousemove", function() 
-{   
+window.addEventListener("mousemove", function()
+{
     let indexOfHoveredObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
     if (indexOfHoveredObject != -1) {
             for (let i = 0; i < diagram.length; i++) {
                 if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked) {
                     canvas.style.cursor = "all-scroll";
-                } 
+                }
             }
         } else {
             canvas.style.cursor = "default";
         }
-    }, 
+    },
     false
 );
 
@@ -939,7 +963,7 @@ function toggleVirtualA4() {
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
 }
 
@@ -1393,7 +1417,7 @@ consloe.log = function(gobBluth) {
 
 
 //------------------------------------------------------------------------------
-// developerMode: 
+// developerMode:
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
@@ -1438,7 +1462,7 @@ function developerMode() {
 // changes to ER. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossER = false;
-function switchToolbarER() { 
+function switchToolbarER() {
     toolbarState = 1;                                                               // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
@@ -2195,7 +2219,7 @@ function switchToolbar(direction) {
       toolbarState = 1;
     }
   }
-  
+
   document.getElementById('toolbarTypeText').innerHTML = "ER";
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
