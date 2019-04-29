@@ -2249,6 +2249,11 @@ span.arrow {
   background-color: #eae8eb;
 }
 
+#resultTable
+{
+  margin-top: 70px;
+}
+
 .resultTableCell{
 		margin:2px;
 }
@@ -2372,6 +2377,13 @@ span.arrow {
 }
 .tooltip-searchbar:hover .tooltip-searchbar-box {
   display: inherit;
+}
+
+#ladexportContainer
+{
+  position: absolute;
+  height: 55px;
+  width: 710px;
 }
 
 /* End DuggaSys resulted*/
