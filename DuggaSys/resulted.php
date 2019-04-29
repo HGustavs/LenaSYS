@@ -66,8 +66,10 @@ pdoConnect();
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
-      </div>
-			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+        </div>
+      <button onclick="ladexport();" style="margin:5px;">LadExport</button>
+			<button onclick="mail();" style="margin:5px;">Mail students</button>
+        <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Filtrera efter</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>inget</option>
@@ -76,8 +78,6 @@ pdoConnect();
 					<option value="Filter-U">U</option>
 				</select>
 			</div>
-      <button onclick="ladexport();">LadExport</button>
-			<button onclick="mail();">Mail students</button>
     </div>
     
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
