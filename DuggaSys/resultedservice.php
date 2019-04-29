@@ -78,7 +78,7 @@ if($requestType == "mail"){
 	// foreach($visibleUserIDs as $id)
 	// {
 			$studentID = "c92cober";
-			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username =:studentID");
+			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username="c92cober"");
 
 			$mailQuery->bindParam(':studentID', $studentID);
 			$mailQuery->bindParam(':cid', $courseid);
