@@ -17,7 +17,7 @@ function setup()
 {
   var filt = "";
 
-  filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
+  filt += "<td id='select' class='navButt'><span class='dropdown-container'>";
   filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
   filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
   filt += "<div id='columnfilter'></div>"
@@ -25,7 +25,7 @@ function setup()
   filt += "</div>";
   filt += "</span></td>";
 
-  filt += "<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();'>";
+  filt += "<td id='filter' class='navButt'><span class='dropdown-container'>";
   filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
   filt += "<div id='dropdowns' class='dropdown-list-container'>";
   filt += "</div>";
@@ -47,31 +47,7 @@ function setup()
 
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
 //  function content was commented out to avoid having a white empty box appear.
-function hoverc()
-{
-	/*
-	$('#dropdowns').css('display','none');
-	$('#dropdownc').css('display','block');
-	*/
-}
 
-function hovers()
-{
-  /*
-  $('#dropdowns').css('display','block');
-  $('#dropdownc').css('display','none');
-  */
-}
-
-function leavec()
-{
-		$('#dropdownc').css('display', 'none');
-}
-
-function leaves()
-{
-		$('#dropdowns').css('display', 'none');
-}
 
 function showCreateUserPopup()
 {
