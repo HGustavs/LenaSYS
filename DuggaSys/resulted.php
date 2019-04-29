@@ -49,7 +49,7 @@ pdoConnect();
 		<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="ladexportContainer" style="display:flex;position:absolute;">
+    <div id="ladexportContainer" style="display:flex;">
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Delkurs</label>
         <select id="ladselect"></select>
