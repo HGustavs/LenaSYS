@@ -14,7 +14,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:../../GHData/GHdata_2019_2.db');
+$log_db = new PDO('sqlite:../../GHData/GHDataTest.db');
 
 $allusers=array();
 
@@ -315,6 +315,43 @@ do{
   
 }while($weekno<11);
 
+//$today = date('Y-m-d');
+$today = '2019-04-04';
+$todaysevents = array();
+
+// Events and issues by the user today
+$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND DATE(eventtime)=:today AND kind IN ("comment", "commit");');
+$query->bindParam(':gituser', $gituser);
+$query->bindParam(':today', $today);
+if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries\n".$error[2];
+}
+$rows = $query->fetchAll();
+foreach($rows as $row){
+		$event = array(
+			'type' => $row['kind'],
+			'time' => $row['eventtimeh']
+		);
+		array_push($todaysevents, $event);
+}
+$commits = array();
+$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND DATE(issuetime)=:today;');
+$query->bindParam(':gituser', $gituser);
+$query->bindParam(':today', $today);
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading entries\n".$error[2];
+}
+$rows = $query->fetchAll();
+foreach($rows as $row){
+	$issue = array(
+		'type' => 'issue',
+		'time' => $row['issuetimeh']
+	);
+	array_push($todaysevents, $issue);
+}
+
 
 $count = array();
 $currentdate = $startweek;
@@ -387,6 +424,7 @@ $array = array(
     'allcommentranks' => $allcommentranks,
     'allcommitranks' => $allcommitranks,
 	'githubuser' => $gituser,
+	'todaysevents' => $todaysevents,
 	'count' => $count
 );
 
