@@ -366,7 +366,6 @@ function toRadians(angle)
 function renderCircleDiagram(data)
 {
   var activities = JSON.parse(data);
-  console.log(activities);
   var str = "";
   str+="<h2 style='padding:10px'>Activities today</h2>";
   str+="<div class='circleGraph'>";
@@ -508,16 +507,11 @@ function showAllActivity(e, activities)
   var str = "";
 
   for (var i = 0; i < times.length; i++) {
-      var nextHour;
+      var prevHour = (parseInt(times[i])-1);
       var hourTypes = Object.keys(activities.times[times[i]]);
 
-      if (times[i].indexOf('0') === 0) {
-          nextHour = "0" + (parseInt(times[i])+1);
-      } else {
-          nextHour = (parseInt(times[i])+1);
-      }
       str += "<span class='activityInfoEntry'>";
-      str += "<strong>"+times[i]+".00 - "+nextHour+".00</strong><br>";
+      str += "<strong>"+prevHour+".00 - "+times[i]+".00</strong><br>";
       
       hourTypes.forEach(type => {
           str += type+": "+activities.times[times[i]][type]+"<br>";
@@ -537,17 +531,12 @@ function showActivityInfo(e, type, hour, pc, activities)
   var timeSpan = document.getElementById('activityTime');
   var pcSpan = document.getElementById('activityPercent');
   var countSpan = document.getElementById('activityCount');
-  var nextHour;
+  var prevHour = (parseInt(hour)-1);
   box.style.display = 'block';
   box.style.left = e.offsetX +10+ "px";
   box.style.top = e.offsetY +10+ "px";
 
-  if (hour.indexOf('0') === 0) {
-      nextHour = "0" + (parseInt(hour)+1);
-  } else {
-      nextHour = (parseInt(hour)+1);
-  }
-  timeSpan.innerHTML = hour+".00 - "+nextHour+".00";
+  timeSpan.innerHTML = prevHour+".00 - "+hour+".00";
   pcSpan.innerHTML = pc+"% Activity";
   var str = "";
   for (var i = 0; i < Object.keys(activities.times[hour]).length; i++) {
