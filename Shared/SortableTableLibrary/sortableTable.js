@@ -691,7 +691,7 @@ function SortableTable(param) {
 			data: {
 				'courseid': cidMail,
 				'coursevers': crsMail,
-				'visibleUserIDs': array,
+				'visibleUserIDs': activeFilteringUsername,
 				'requestType': reqType
 			},
 			dataType: "JSON",
