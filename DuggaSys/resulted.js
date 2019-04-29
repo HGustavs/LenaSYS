@@ -216,7 +216,8 @@ function process() {
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
 
-	// Sorting
+	/* Sorting
+     Hardcoded gradient as the sorting radio buttons are hardcoded. */
 	dstr += "<div class='checkbox-dugga hi' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
 	dstr += "<div class='checkbox-dugga lo'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr += "<div class='checkbox-dugga hi' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
