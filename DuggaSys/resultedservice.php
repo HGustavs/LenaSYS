@@ -90,7 +90,7 @@ if($requestType == "mail"){
 			}
 
 			//$emailString += $mailQuery + "; ";
-
+			echo json_encode($mailQuery);
 			array_push($emailsArray,$mailQuery);
 	}
 	//		array_push($groups[$row['groupKind']],$row['groupVal']);
