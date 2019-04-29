@@ -685,8 +685,6 @@ function SortableTable(param) {
 		console.log(currentRowFilter);
 		console.log(activeFilteringUsername);
 
-		var array = JSON.parse(activeFilteringUsername);
-
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
