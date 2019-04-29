@@ -1413,9 +1413,19 @@ function Symbol(kind) {
         ctx.lineTo(x1, breakpointStartY);
         }
 
-        ctx.lineTo(breakpointStartX, middleBreakPointY);
-        ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
-        ctx.lineTo(breakpointEndX, middleBreakPointY);
+        if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
+            ctx.lineTo(breakpointStartX, middleBreakPointY);
+            ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+            ctx.lineTo(breakpointEndX, middleBreakPointY);
+        } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
+            ctx.lineTo(middleBreakPointX, breakpointStartY);
+            ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+            ctx.lineTo(middleBreakPointX, breakpointEndY);
+        }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
+            ctx.lineTo(breakpointStartX, breakpointEndY);
+        }  else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
+            ctx.lineTo(breakpointEndX, breakpointStartY);
+        }
 
         // Draw to end breakpoint based on direction
         if (endLineDirection == "left") {
@@ -1788,34 +1798,32 @@ function Symbol(kind) {
     }
 
     this.getLockPosition = function() {
-        let y1 = points[this.topLeft].y;
-        let x2 = points[this.bottomRight].x;
-        let y2 = points[this.bottomRight].y;
-
-        let offset = 10;
+        var y1 = points[this.topLeft].y;
+        var x2 = points[this.bottomRight].x;
+        var y2 = points[this.bottomRight].y;
+        
+        var offset = 10;
 
         return {
-                x: x2 + offset,
-                y: y2 - (y2-y1)/2
-            };
+            x: pixelsToCanvas(x2 + offset).x, 
+            y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
 
     this.drawLock = function() {
-        let position = this.getLockPosition();
-
+        var position = this.getLockPosition();
         ctx.save();
 
-        ctx.translate(position.x, position.y);
         ctx.fillStyle = "orange";
         ctx.strokeStyle = "orange";
         ctx.lineWidth = 1;
         //Draws the upper part of the lock
         ctx.beginPath();
-        ctx.arc(5, 0, 4, 1 * Math.PI, 2 * Math.PI);
+        //A slight x offset to get the correct position   
+        ctx.arc(position.x + 5, position.y, 4, 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
         //Draws the lock body
-        ctx.fillRect(0,0, 10, 10);
+        ctx.fillRect(position.x, position.y, 10, 10);
 
         ctx.restore();
     }
@@ -1823,18 +1831,19 @@ function Symbol(kind) {
     this.drawLockedTooltip = function() {
         ctx.save();
 
-        let position = this.getLockPosition();
-        let offset = 25;
+        var position = this.getLockPosition();
+        //Offset used to achive the correct y position since fillRect and fillText are drawn differently
+        var offset = 13;
 
-        ctx.translate(position.x, position.y + offset);
-        //Draw tooltip background, -12 to accommodate that rectangles and text is drawn differently in canvas
+        //Draw tooltip background
         ctx.fillStyle = "#f5f5f5";
-        ctx.fillRect(0, -12, 125, 16);
+        ctx.fillRect(position.x, position.y + offset, 125, 16);
 
         //Draws text, uses fillStyle to override default hover change.
+        offset += 12;
         ctx.fillStyle = "black";
         ctx.font = "12px Arial";
-        ctx.fillText("Entity position is locked", 0, 0);
+        ctx.fillText("Entity position is locked", position.x, position.y + offset);
 
         ctx.restore();
     }
@@ -1956,14 +1965,14 @@ function Path() {
     //--------------------------------------------------------------------
     // addsegment: Adds a segment to a path
     //--------------------------------------------------------------------
-    this.addsegment = function(kind, p1, p2, p3, p4, p5, p6, p7, p8) {
-        if (kind == 1) {
+    this.addsegment = function(objectKind, p1, p2, p3, p4, p5, p6, p7, p8) {
+        if (objectKind == kind.path) {
             // Only push segment if it does not already exist
             if (!this.existsline(p1, p2, this.segments)) {
-                this.segments.push({kind:1, pa:p1, pb:p2});
+                this.segments.push({kind:kind.path, pa:p1, pb:p2});
             }
         } else {
-            alert("Unknown segment type: " + kind);
+            alert("Unknown segment type: " + objectKind);
         }
         this.calculateBoundingBox();
     }
@@ -2121,14 +2130,14 @@ function Path() {
             points.push({x:endres.x, y:endres.y});
             // Depending on direction of p1 and p2
             if (points[p2].y < points[p1].y) {
-                this.tmplist.push({kind:1, pa:pointno, pb:p2});
+                this.tmplist.push({kind:kind.path, pa:pointno, pb:p2});
                 this.recursetest(pointno, p1);
             } else {
-                this.tmplist.push({kind:1, pa:pointno, pb:p1});
+                this.tmplist.push({kind:kind.path, pa:pointno, pb:p1});
                 this.recursetest(pointno, p2);
             }
         } else {
-            this.tmplist.push({kind:1, pa:p1, pb:p2});
+            this.tmplist.push({kind:kind.path, pa:p1, pb:p2});
         }
     }
 

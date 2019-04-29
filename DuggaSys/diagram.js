@@ -7,7 +7,7 @@
 
 /***********************************************
     CANVAS FUNCTIONS NEEDS TO USE THE MAPPING
-    FUNCTIONS: pixelsToCanvas() OR 
+    FUNCTIONS: pixelsToCanvas() OR
     canvasToPixels() AS THE CANVAS IS STATIC
     AND THE OBJECTS ARE RENDERED ACCORDING TO
     THE CANVAS TOPLEFT'S OFFSET FROM ORIGO
@@ -35,6 +35,27 @@ AJAXService("get", {}, "DIAGRAM");
     Globals
 
 ************************************************************/
+
+const kind = { 
+    path: 1, 
+    symbol: 2
+};
+const symbolKind = { 
+    uml: 1,  
+    erAttribute: 2,
+    erEntity: 3,
+    line: 4,
+    erRelation: 5,
+    text: 6,
+    umlLine: 7
+};
+const mouseState = {
+    empty: 0,                       // empty
+    noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
+    insidePoint: 2,                 // mouse is pressed down and at a point in selected object 
+    insideMovableObject: 3,         // mouse pressed down inside a movable object  
+    boxSelectOrCreateMode: 4        // Box select or Create mode 
+};
 
 var gridSize = 16;                  // Distance between lines in grid
 var crossSize = 4.0;                // Size of point cross
@@ -72,6 +93,7 @@ var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
+var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -405,7 +427,7 @@ function pixelsToCanvas(pixelX = 0, pixelY = 0){
 }
 
 //----------------------------------------------------
-// Map canvas offset from origo to actual coordinates 
+// Map canvas offset from origo to actual coordinates
 //----------------------------------------------------
 
 function canvasToPixels(pixelX = 0, pixelY = 0){
@@ -556,7 +578,7 @@ points.drawPoints = function() {
     ctx.strokeStyle = crossStrokeStyle1;
     ctx.lineWidth = 2;
     for (var i = 0; i < this.length; i++) {
-        var point = this[i];        
+        var point = this[i];
         if (!point.isSelected) {
             ctx.beginPath();
             ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
@@ -784,7 +806,6 @@ diagram.itemClicked = function() {
 // checkForHover: Executes isHovered method in all diagram objects
 //                (currently only of kind==2 && symbolkind == 4 (aka. lines))
 //--------------------------------------------------------------------
-
 diagram.checkForHover = function(posX, posY) {
     for (var i = 0; i < this.length; i++) {
         this[i].isHovered = false;
@@ -805,6 +826,23 @@ diagram.checkForHover = function(posX, posY) {
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
+
+// Indicates that objects are movable by changing the appearance of the cursor
+window.addEventListener("mousemove", function() 
+{   
+    let indexOfHoveredObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+    if (indexOfHoveredObject != -1) {
+            for (let i = 0; i < diagram.length; i++) {
+                if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked) {
+                    canvas.style.cursor = "all-scroll";
+                } 
+            }
+        } else {
+            canvas.style.cursor = "default";
+        }
+    }, 
+    false
+);
 
 //--------------------------------------------------------------------
 // eraseLines: removes all the lines connected to an object
@@ -936,26 +974,23 @@ function initializeCanvas() {
     setInterval(function() {Save()}, 10000);
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" 
-                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) 
-                + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) 
-                + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
-    updateGraphics();
+    updateGraphics(); 
+    boundingRect = canvas.getBoundingClientRect();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
-    $("#ZoomSelect").click(function() {
-        $(this).parent().find(".ikonPil").toggleClass("ikonPilRotation");
-    });
 }
+
 
 function deselectObjects() {
 	for(let i = 0; i < diagram.length; i++) {
@@ -981,44 +1016,65 @@ function toggleGrid() {
 
 function toggleVirtualA4() {
     if (toggleA4) {
-      if (toggleA4Holes) {
-        toggleVirtualA4Holes();
-      }
+        // A4 is disabled
         toggleA4 = false;
+        hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
+        showA4State();
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
+    $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
-function drawVirtualA4() {
+function drawVirtualA4() {    
     if(!toggleA4) {
         return;
     }
+    // Origo
+    let zeroX = pixelsToCanvas().x;
+    let zeroY = pixelsToCanvas().y;
+
     // the correct according to 96dpi size, of a4 milimeters to pixels
-    const pixelsPerMillimeter = 3.781;
+    const pixelsPerMillimeter = 3.781 * zoomValue;
     const a4Width = 210 * pixelsPerMillimeter;
     const a4Height = 297 * pixelsPerMillimeter;
     // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
     const holeOffsetX = 12 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
+
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
-    ctx.translate(0, 0);
-    ctx.strokeRect(0,0, a4Width, a4Height);
+
+    if(A4Orientation == "portrait"){
+        ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+    }
+    else if(A4Orientation == "landscape") {
+        ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);        
+    }
 
     if(toggleA4Holes) {
-        //Upper 2 holes
-        drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
-        drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
-        //Latter two holes
-        drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
-        drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
+        if(A4Orientation == "portrait"){
+            //Upper 2 holes
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+            //Latter two holes
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+        }
+        else if(A4Orientation == "landscape") {
+            //Upper 2 holes
+            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            //Latter two holes
+            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);  
+        }
     }
     ctx.restore();
 }
@@ -1033,30 +1089,51 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
+function showA4State(){
+    //Sets icons based on the state of the A4
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+
+}
+
+function hideA4State(){
+    //Hides icons when toggling off the A4
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
+}
+
 function toggleVirtualA4Holes() {
-    if(!toggleA4){
-      return;
-    }
     if (toggleA4Holes) {
         toggleA4Holes = false;
+        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         updateGraphics();
     } else {
         toggleA4Holes = true;
+        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         updateGraphics();
     }
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+}
+
+function toggleA4Orientation() {
+    if(A4Orientation == "portrait"){
+        A4Orientation = "landscape";
+    }
+    else if(A4Orientation == "landscape"){
+        A4Orientation = "portrait";
+    }
+    
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+    updateGraphics();
 }
 
 //------------------------------------------------------------
-// resetToolbar: resets the toolbar to it's original position 
+// resetToolbar: resets the toolbar to it's original position
 //------------------------------------------------------------
 
 function resetToolbarPosition(){
-    var myCanvas = document.getElementById('myCanvas');
-    var bound = myCanvas.getBoundingClientRect();
     //Assign position for the toolbar according to the canvas bounds 
-    document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
-    document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
+    document.getElementById("diagram-toolbar").style.top = (boundingRect.top + "px");
+    document.getElementById("diagram-toolbar").style.left = (boundingRect.left + "px");
 }
 
 //----------------------------------------------------
@@ -1103,7 +1180,8 @@ function importFile() {
 //             Making the page more responsive
 //---------------------------------------------------
 
-function canvasSize() {
+function canvasSize() { 
+    boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 30);
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
@@ -1132,7 +1210,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
-    if(!ghostingCrosses) {
+    if(!developerModeActive) {
         drawOrigo();
     }
     diagram.sortConnectors();
@@ -1142,7 +1220,7 @@ function updateGraphics() {
 }
 
 //---------------------------------------------------------------------------------
-// resetViewToOrigin: moves the view to origo based on movement done in the canvas 
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------------------------------------------------
 
 function resetViewToOrigin(){
@@ -1333,7 +1411,7 @@ function drawGrid() {
             ctx.strokeStyle = "rgb(238, 238, 250)";
         }
 
-        ctx.beginPath();        
+        ctx.beginPath();
         ctx.moveTo(myOffsetX, 0);
         ctx.lineTo(myOffsetX, canvas.height);
         ctx.stroke();
@@ -1441,33 +1519,97 @@ consloe.log = function(gobBluth) {
 
 
 //------------------------------------------------------------------------------
-// debugMode: this function show and hides crosses and the consol.
+// developerMode: 
+// this function show and hides developer options.
 //------------------------------------------------------------------------------
 
-var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
-function debugMode() {
-    if(ghostingCrosses) {
+var developerModeActive = false; // used to repressent a switch for whenever the developerMode is enabled or not.
+function developerMode() {
+    if(developerModeActive) {
+        console.log('developermode: ON'); // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         drawOrigo();
-        ghostingCrosses = false;
+        toolbarState = 3;                                                               // Change the toolbar to DEV.
+        switchToolbar('Dev');                                                           // ---||---
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to DEV.
+        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
+        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   // Turn off crosstoggleA4.
+        setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
+        developerModeActive = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-        ghostingCrosses = true;
+        toolbarState = 1;                                                               // Change the toolbar back to ER.
+        switchToolbar('ER');                                                            // ---||---
+        document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
+        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
+        setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
+        developerModeActive = true;
     }
     reWrite();
     updateGraphics();
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), !ghostingCrosses);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), !developerModeActive);
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarER:
+// This function handels everything that need to happen when the toolbar
+// changes to ER. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossER = false;
+function switchToolbarER() { 
+    toolbarState = 1;                                                               // Change the toolbar to ER.
+    switchToolbar('ER');                                                            // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
+    setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarUML:
+// This function handels everything that need to happen when the toolbar
+// changes to UML. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossUML = false;
+function switchToolbarUML() {
+    toolbarState = 2;                                                               // Change the toolbar to UML.
+    switchToolbar('UML');                                                           // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'UML';                   // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('UML')"), !crossUML);                 // Turn on crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossUML.
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarDev:
+// This function handels everything that need to happen when the toolbar
+// changes to Dev. It changes toolbar and turn on/off crosses on the menu.
+//------------------------------------------------------------------------------
+var crossDEV = false;
+function switchToolbarDev() {
+    if(developerModeActive){
+        return;
+      }
+    toolbarState = 3;                                                               // Change the toolbar to DEV.
+    switchToolbar('Dev');                                                           // ---||---
+    document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
 }
 
 //------------------------------------------------------------------------------
 // hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
 //               then do some sort of calculation. used to save the diagram. it also save the local diagram
 //------------------------------------------------------------------------------
-
 function hashFunction() {
     var diagramToString = "";
     var hash = 0;
@@ -1590,19 +1732,24 @@ function decimalPrecision(value, precision){
 //----------------------------------------------------------------------
 
 function reWrite() {
-    if(!ghostingCrosses) {
-        //We are now in debug mode/developer mode
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + 
-        "   |   <b>Coordinates:</b> " + "X=" + Math.round(currentMouseCoordinateX) + " & Y=" + Math.round(currentMouseCoordinateY) +  
-        " | topLeft(" + Math.round(-origoOffsetX) + ", " + Math.round(-origoOffsetY) + ")</p>";
+    if(!developerModeActive) {
+        //We are now in developer mode
+        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + " </p>";
 
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
     } else {
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + "   </p>";
+
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
          + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
     }
 }
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -1650,6 +1797,12 @@ function setRefreshTime() {
 
 function lockSelected() {
     for(var i = 0; i < selected_objects.length; i++) {
+        if(selected_objects[i].kind == 2){
+            // Lines should not be possible to lock
+            if(selected_objects[i].symbolkind == 4 || selected_objects[i].symbolkind == 7){
+                continue;
+            }
+        }
         selected_objects[i].locked = !selected_objects[i].locked;
 
         if(selected_objects[i].locked) {
@@ -2098,7 +2251,36 @@ function setCheckbox(element, check) {
 
     if (check) {
         $(element).children(".material-icons").show();
-    }else {
+    } else {
+        $(element).children(".material-icons").hide();
+    }
+}
+
+//--------------------------------------------------------
+// Used for toggling orientation icon
+// Both for showing / hiding and also for changning image
+//--------------------------------------------------------
+
+function setOrientationIcon(element, check) {
+    // Init icon element
+    if ($(element).children(".material-icons").length == 0) {
+        $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">crop_portrait</i>");
+    }
+
+    // Set icon either to portrait or landscape
+    if(toggleA4){
+        if(A4Orientation == "landscape"){
+            $(element).children(".material-icons")[0].innerHTML = "crop_16_9"; 
+        }
+        else if(A4Orientation == "portrait"){           
+            $(element).children(".material-icons")[0].innerHTML = "crop_portrait";
+        }
+    }
+
+    // Toggle visibility
+    if (check) {
+        $(element).children(".material-icons").show();
+    } else {
         $(element).children(".material-icons").hide();
     }
 }
@@ -2110,12 +2292,11 @@ var toolbarState;
 
 const toolbarER = 1;
 const toolbarUML = 2;
-const toolbarFree = 3;
+const toolbarDeveloperMode = 3;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');    
-    boundingRect = myCanvas.getBoundingClientRect();
+    var myCanvas = document.getElementById('myCanvas');   
     element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
@@ -2156,19 +2337,20 @@ function toggleToolbarLayout() {
 //----------------------------------------------------------------------
 
 function switchToolbar(direction) {
-  var text = ["All", "ER", "UML", "Free"];
+  var text = ["ER", "UML"];
   if(direction == 'left') {
     toolbarState--;
-    if(toolbarState < 0) {
-      toolbarState = 3;
+    if(toolbarState = 1) {
+      toolbarState = 2;
     }
   }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 3) {
-      toolbarState = 0;
+    if(toolbarState = 2) {
+      toolbarState = 1;
     }
   }
-  document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
+  
+  document.getElementById('toolbarTypeText').innerHTML = "ER";
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
@@ -2185,10 +2367,16 @@ function switchToolbar(direction) {
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == toolbarUML) {
+    $("#drawerDraw").show();
+    $("#labelDraw").show();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
+  }
+  else if( toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
+    $("#drawerDraw").show();
     $("#drawerUndo").show();
     $(".tlabel").hide();
     $("#labelCreate").show();
@@ -2198,23 +2386,36 @@ function switchToolbar(direction) {
     $("#linebutton").show();
     $("#classbutton").show();
     $("#linebutton").hide();
-    $("#umllinebutton").show(); 
-  }else if(toolbarState == toolbarFree) {
-    $(".toolbar-drawer").hide();
+    $("#umllinebutton").show();
     $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelDraw").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else { // shows all alternatives in the toolbar
+  else if(toolbarState == toolbarDeveloperMode) {
+    $(".toolbar-drawer").show();
+    $("#drawerTools").show();
+    $("#drawerCreate").show();
+    $("#drawerUndo").show();
+    $(".tlabel").show();
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
+    $(".buttonsStyle").show();
+    $("#linebutton").show();
+    $("#attributebutton").show();
+    $("#entitybutton").show();
+    $("#relationbutton").show();
+    $("#drawerDraw").show();
+    $("#labelDraw").show();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
+  }
+ /* else { // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
-  }
+  }*/
 
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
@@ -2235,6 +2436,13 @@ function zoomInMode() {
     zoomValue = document.getElementById("ZoomSelect").value;
     reWrite();
     updateGraphics();
+}
+
+function changeZoom(zoomValue){
+  var value = parseFloat(document.getElementById("ZoomSelect").value);
+  value = value + parseFloat(zoomValue);
+  document.getElementById("ZoomSelect").value = value;
+  zoomInMode();
 }
 
 //----------------------------------------------------------------------
@@ -2277,15 +2485,15 @@ function pointDistance(point1, point2) {
 
 function mousemoveevt(ev, t) {
     // Get canvasMouse coordinates for both X & Y.
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
-        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.x).x - startMouseCoordinateX;
-        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.y).y - startMouseCoordinateY;
-        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.left).x - startMouseCoordinateX;
+        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.top).y - startMouseCoordinateY;
+        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     }
 
     reWrite();
@@ -2296,7 +2504,7 @@ function mousemoveevt(ev, t) {
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
         if (sel.distance < tolerance) {
-			canvas.style.cursor = "pointer";
+            canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
         } else {
             if(uimode == "MoveAround"){
                 canvas.style.cursor = "all-scroll";
@@ -2315,7 +2523,8 @@ function mousemoveevt(ev, t) {
         // If mouse is pressed down and at a point in selected object - move that point
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
-            sel.point.y = currentMouseCoordinateY;  
+            sel.point.y = currentMouseCoordinateY;
+
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
@@ -2362,7 +2571,7 @@ function mousemoveevt(ev, t) {
                 ctx.strokeStyle = "#000";
                 ctx.stroke();
                 ctx.setLineDash([]);
-                if (ghostingCrosses == true) {
+                if (developerModeActive == true) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2380,7 +2589,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2397,7 +2606,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2416,7 +2625,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2427,7 +2636,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2441,7 +2650,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2455,7 +2664,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2472,7 +2681,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2488,8 +2697,8 @@ function mousemoveevt(ev, t) {
 function mousedownevt(ev) {
     canvasLeftClick = 1;
 
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
@@ -2500,7 +2709,7 @@ function mousedownevt(ev) {
 
     if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
         hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
-        
+
         md = 4;            // Box select or Create mode.
         //If you start on canvas or not
         if (hovobj == -1) {
@@ -2805,7 +3014,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateUMLLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
         || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 7 && symbolEndKind != 7) && okToMakeLine) {
             umlLineA = new Symbol(7); //UML Lines
             umlLineA.name = "Line" + diagram.length
@@ -2903,7 +3112,7 @@ function movemode(e, t) {
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
-        canvas.style.cursor = "all-scroll";
+        canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
         uimode = "MoveAround";
     } else {
         buttonStyle.style.visibility = 'hidden';
