@@ -841,7 +841,7 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
 
     this.draw = function () {
-        ctx.lineWidth = this.properties['lineWidth'] * 2;
+        ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
         this.properties['textSize'] = this.getFontsize();
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
@@ -933,7 +933,7 @@ function Symbol(kind) {
 
         // Clear Class Box
         ctx.fillStyle = "#fff";
-        ctx.lineWidth = this.properties['lineWidth'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         // Box
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -1208,7 +1208,7 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y2 + 5);
             ctx.lineTo(x1 - 5, y1 - 5);
             ctx.stroke();
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
         } else {
             removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
@@ -1260,20 +1260,20 @@ function Symbol(kind) {
         }
 
 
-        ctx.lineWidth = this.properties['lineWidth'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
-            ctx.lineWidth = this.properties['lineWidth']*3;
+            ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.stroke();
             //Draw a white line in the middle to simulate space (2 line illusion);
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             ctx.strokeStyle = "#fff";
         }
         else if (this.properties['key_type'] == "Derived") {
-            ctx.lineWidth = this.properties['lineWidth'] * 2;
+            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
 
@@ -1307,20 +1307,20 @@ function Symbol(kind) {
         }
 
 
-        ctx.lineWidth = this.properties['lineWidth'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
-            ctx.lineWidth = this.properties['lineWidth']*3;
+            ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.stroke();
             //Draw a white line in the middle to simulate space (2 line illusion);
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             ctx.strokeStyle = "#fff";
         }
         else if (this.properties['key_type'] == "Derived") {
-            ctx.lineWidth = this.properties['lineWidth'] * 2;
+            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
 
@@ -1528,7 +1528,7 @@ function Symbol(kind) {
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
         ctx.beginPath();
         if (this.properties['key_type'] == 'Weak') {
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             ctx.moveTo(midx, y1 + 5);
             ctx.lineTo(x2 - 9, midy + 0);
             ctx.lineTo(midx + 0, y2 - 5);
@@ -1562,7 +1562,7 @@ function Symbol(kind) {
         ctx.beginPath();
         //draw text outline
         if (this.targeted || this.isHovered) {
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 2 * diagram.getZoomValue();
             ctx.strokeColor = "F82";
             //linedash only when hovered and not targeted 
             if (this.isHovered && !this.targeted) {
@@ -1595,7 +1595,7 @@ function Symbol(kind) {
 		// Style and positions
 		var svgObj = "", svgStyle = "", svgPos = "";
 		var lineDash = "5, 4"; // Use this for dashed line
-		var strokeWidth = this.properties['lineWidth'];
+		var strokeWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 
 		// Create SVG string
 		str += "<g>";
@@ -1702,16 +1702,16 @@ function Symbol(kind) {
 			svgPos = "x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"'";
 			if (this.properties['key_type'] == "Forced") {
 				// Thick line that will be divided into two lines using thin line
-				strokeWidth = this.properties['lineWidth'] * 3;
+				strokeWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
 				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 
 				// Thin line used to divide thick line into two lines
-				strokeWidth = this.properties['lineWidth'];
+				strokeWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 				svgStyle = "stroke:#fff; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			} else if (this.properties['key_type'] == "Derived") {
-				strokeWidth = this.properties['lineWidth'] * 2;
+				strokeWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
 				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
 			} else {
@@ -1776,13 +1776,13 @@ function Symbol(kind) {
     }
 
 	this.getFontsize = function() {
-		var fontsize = 14;
+		var fontsize = 14 * diagram.getZoomValue();
 		if (this.properties['sizeOftext'] == 'Small') {
-			fontsize = 20;
+			fontsize = 20 * diagram.getZoomValue();
 		} else if (this.properties['sizeOftext'] == 'Medium') {
-			fontsize = 30;
+			fontsize = 30 * diagram.getZoomValue();
 		} else if (this.properties['sizeOftext'] == 'Large') {
-			fontsize = 50;
+			fontsize = 50 * diagram.getZoomValue();
 		}
 		return fontsize;
 	}
@@ -1818,7 +1818,7 @@ function Symbol(kind) {
         ctx.translate(position.x, position.y);
         ctx.fillStyle = "orange";
         ctx.strokeStyle = "orange";
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1 * diagram.getZoomValue();
         //Draws the upper part of the lock
         ctx.beginPath();
         ctx.arc(5, 0, 4, 1 * Math.PI, 2 * Math.PI);
@@ -2026,7 +2026,7 @@ function Path() {
             ctx.strokeStyle = this.targeted ? "#F82" : this.properties['strokeColor'];
             ctx.fillStyle = this.fillColor;
             ctx.globalAlpha = this.opacity;
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 
             ctx.beginPath();
             var pseg = this.segments[0];
@@ -2287,7 +2287,7 @@ function Path() {
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
-        ctx.lineWidth = this.properties['lineWidth'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         ctx.strokeStyle = "#46f";
         for (var i = 0; i < segmentlist.length; i++) {
             var line = segmentlist[i];
@@ -2313,7 +2313,7 @@ function Path() {
         var str = "";
         if (this.isorganized && this.segments.length > 0) {
             str += "<g>";
-            var svgStyle = "fill:"+this.fillColor+";fill-opacity:"+this.opacity+";stroke:"+this.properties['strokeColor']+";stroke-width:"+this.properties['lineWidth']+";";
+            var svgStyle = "fill:"+this.fillColor+";fill-opacity:"+this.opacity+";stroke:"+this.properties['strokeColor']+";stroke-width:"+this.properties['lineWidth'] * diagram.getZoomValue()+";";
             var pseg = this.segments[0];
             svgPos = "M"+points[pseg.pa].x+","+points[pseg.pa].y;
             for (var i = 0; i < this.segments.length; i++) {

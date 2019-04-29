@@ -469,7 +469,7 @@ function copySymbol(symbol) {
 
 points.drawPoints = function() {
     ctx.strokeStyle = crossStrokeStyle1;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2 * zoomValue;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
         if (!point.isSelected) {
@@ -840,6 +840,10 @@ diagram.updateQuadrants = function() {
             if(diagram[i].quadrants()) break;
         }
     }
+}
+
+diagram.getZoomValue = function(){
+    return zoomValue;
 }
 
 function initializeCanvas() {
@@ -1233,7 +1237,7 @@ function connectedObjects(line) {
 //------------------------------------------
 
 function drawGrid() {
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     let zoomGridSize = gridSize * zoomValue;
     myOffsetX = origoOffsetX % zoomGridSize;
     myOffsetY = origoOffsetY % zoomGridSize;
@@ -1278,7 +1282,7 @@ function drawOrigo() {
     const colors = ['#0fbcf9','transparent','#0fbcf9','transparent'];
 
     ctx.save();
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
 
     for(let i=0;i<4;i++){
@@ -1298,7 +1302,7 @@ function drawOrigo() {
 }
 
 function drawOrigoLine() {
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
     ctx.beginPath();
     ctx.moveTo(0, origoOffsetY);
