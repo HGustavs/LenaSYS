@@ -86,12 +86,13 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-
+		echo $mailQuery;
 		$emailString += $mailQuery + " ;";
 
-		array_push($emailsArray,$mailQuery);
+//		array_push($emailsArray,$mailQuery);
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
+
 
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
