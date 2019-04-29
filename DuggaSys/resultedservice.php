@@ -100,7 +100,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode('<script>console.log(currentRowFilter)</script>');
+	echo json_encode('<script>console.log("currentrowfilter"+currentRowFilter)</script>');
 	} else {
 
 //------------------------------------------------------------------------------------------------
