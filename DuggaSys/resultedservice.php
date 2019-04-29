@@ -9,6 +9,10 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
+error_reporting(E_ALL);
+ini_set('display_errors',true);
+ini_set('display_startup_errors',true);
+
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 	$loginname=$_SESSION['loginname'];
