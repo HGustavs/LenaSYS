@@ -1113,7 +1113,7 @@ function conv(item, kind) {
 function renderColumnFilter(col, status, colname) {
 	str = "";
   //Räkna hur många columns det finns, modulo x % 2 == 0 blir div class "hi" resten div class "lo" !FIXME
-  for(var i = 0; i < moments.length; i++){
+  for(var i = 1; i < moments.length; i++){
     if(i % 2 == 0){
       str = "<div class='hi ";
     } else {
@@ -1131,7 +1131,8 @@ function renderColumnFilter(col, status, colname) {
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	}
-return str;
+  console.log(i);
+  return str;
 }
 
 function onToggleFilter(colId) {
