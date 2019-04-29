@@ -267,6 +267,7 @@ $teachers=array();
 $classes=array();
 $groups=array();
 $courses=array();
+$submissions=array();
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
@@ -363,6 +364,26 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			);
 		}
 	}
+
+	// Find user submissions in old versions
+	$query=$pdo->prepare("SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE course.cid=:cid AND course.cid=userAnswer.cid AND vers.vers=userAnswer.vers AND userAnswer.vers!=activeversion;");
+	$query->bindParam(':cid', $cid);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading submissions\n".$error[2];
+	}else{
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$submissions,
+				array(
+					'cid' => $row['cid'],
+					'uid' => $row['uid'],
+					'vers' => $row['vers'],
+					'versname' => $row['versname']
+				)
+			);
+		}
+	}
 }
 
 $array = array(
@@ -373,7 +394,8 @@ $array = array(
 	'courses' => $courses,
 	'groups' => $groups,
 	'queryResult' => $queryResult,
-	'examiners' => $examiners
+	'examiners' => $examiners,
+	'submissions' => $submissions
 );
 
 echo json_encode($array);
