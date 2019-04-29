@@ -1414,9 +1414,15 @@ function Symbol(kind) {
         }
 
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
-            ctx.lineTo(breakpointStartX, middleBreakPointY);
-            ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
-            ctx.lineTo(breakpointEndX, middleBreakPointY);
+            if(Math.abs(y1 - y2) < 60) {
+                ctx.lineTo(breakpointStartX, breakpointStartY);
+                ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+                ctx.lineTo(breakpointEndX, breakpointEndY);
+            } else {
+                ctx.lineTo(breakpointStartX, middleBreakPointY);
+                ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+                ctx.lineTo(breakpointEndX, middleBreakPointY);
+            }
         } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(middleBreakPointX, breakpointStartY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
