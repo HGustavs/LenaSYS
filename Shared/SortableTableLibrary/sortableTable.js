@@ -672,7 +672,17 @@ function SortableTable(param) {
 	}
 
 	this.mail = function(cidMail, crsMail, reqType){
-		console.log(currentRowFilter);
+		var activeFilteringUsername = [];
+		for(var i = 0; i < currentRowFilter.length; i++)
+		{
+			if(currentRowFilter[i] != null)
+			{
+				activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
+			}
+		}
+
+		console.log(activeFilteringUsername);
+
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
