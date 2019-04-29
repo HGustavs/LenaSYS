@@ -1115,8 +1115,8 @@ function renderColumnFilter(col, status, colname) {
   if (colname == "FnameLnameSSN")
   return str;
   //Räkna hur många columns det finns, modulo x % 2 == 0 blir div class "hi" resten div class "lo" !FIXME
-  for(var i = 0; i < moments.length; i++){
-    if(i % 3 == 0){
+  forEach(var i = 0; i < moments.length; i++){
+    if(i % 2 == 0){
       str = "<div class='hi ";
     } else {
       str = "<div class='lo ";
