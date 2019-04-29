@@ -1112,8 +1112,6 @@ function conv(item, kind) {
 
 function renderColumnFilter(col, status, colname) {
 	str = "";
-  for (var i = 0; i < data['column'].length; i++)
-  console.log(i); 
 	if (colname == "FnameLnameSSN")
 		return str;
 	if (status) {
