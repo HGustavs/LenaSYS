@@ -1182,8 +1182,6 @@ function canvasSize() {
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(sx, sy, widthWindow, heightWindow);
     ctx.translate(sx, sy);
-    distanceMovedX = -sx;
-    distanceMovedY = -sy;
     ctx.scale(1, 1);
     ctx.scale(zoomValue, zoomValue);
 }
@@ -1214,13 +1212,12 @@ function updateGraphics() {
 }
 
 //---------------------------------------------------------------------------------
-// resetViewToOrigin: moves the view to origo based on movement done in the canvas
+// resetViewToOrigin: moves the view to origo 
 //---------------------------------------------------------------------------------
 
 function resetViewToOrigin(){
-    ctx.translate(distanceMovedX, distanceMovedY);
-    distanceMovedX = 0;
-    distanceMovedY = 0;
+    origoOffsetX = 0;
+    origoOffsetY = 0;
     updateGraphics();
 }
 
