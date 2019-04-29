@@ -1115,7 +1115,7 @@ function renderColumnFilter(col, status, colname) {
 	str = "";
   if (colname == "FnameLnameSSN")
   return str;
-  //Räkna hur många columns det finns, modulo x % 2 == 0 blir div class "hi" resten div class "lo" !FIXME
+  /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */ 
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
   } else {
@@ -1130,9 +1130,7 @@ function renderColumnFilter(col, status, colname) {
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	}
-  console.log(intVarGradient);
   intVarGradient++;
-  console.log(str);
   return str;
 }
 
