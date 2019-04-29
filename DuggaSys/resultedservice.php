@@ -22,7 +22,7 @@ if(isset($_SESSION['uid'])){
 }
 
 $requestType = getOP('requestType');
-$currentRowFilter = getOP('currentRowFilter');
+$visibleUserIDs = getOP('visibleUserIDs');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -75,10 +75,9 @@ if($requestType == "mail"){
 	$emailString = "";
 	$studentID = "";
 
-	for($i = 0; $i < $currentRowFilter.length; $i++) {
-		if($currentRowFilter[$i] != null)
-		{
-			$studentID = $currentRowFilter[$i].uid;
+	foreach($visibleUserIDs as $id)
+	{
+			$studentID = $id;
 			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
 			$mailQuery->bindParam(':studentID', $studentID);
@@ -92,15 +91,14 @@ if($requestType == "mail"){
 
 			$emailString += $mailQuery + "; ";
 
-			array_push($emailsArray,$mailQuery);
-	//		array_push($groups[$row['groupKind']],$row['groupVal']);
-		}
+			//array_push($emailsArray,$mailQuery);
 	}
+	//		array_push($groups[$row['groupKind']],$row['groupVal']);
 
 	// Seperates the emails with a ;.
-	$implodedEmails=implode('; ',$emailsArray);
+	//$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode();
+	echo json_encode($emailString);
 	} else {
 
 //------------------------------------------------------------------------------------------------
