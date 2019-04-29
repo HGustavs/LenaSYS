@@ -136,18 +136,22 @@ const escapeKey = 27;
 // Mouse clicks
 const rightMouseClick = 2;
 
-// Used to set the coordinates where a right click was made
+// This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
+var rightClick = false;
+// Used to set the coordinates where a right click was made.
 document.addEventListener("mousedown", function(e)
     {
         if (e.button == rightMouseClick) {
             if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
                 InitPageX = e.pageX;
                 InitPageY = e.pageY;
+                rightClick = true;
             }
         }
     }, 
     false
 );
+
 
 // Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
 window.addEventListener("mousemove", function(e) 
@@ -164,6 +168,7 @@ window.addEventListener("mousemove", function(e)
                 || 
                 (diffY > deltaY) || (diffY < -deltaY)   
             ) {
+                rightClick = false;
                 // Entering MoveAround mode
                 if (uimode != "MoveAround") {
                     activateMovearound();
@@ -172,6 +177,7 @@ window.addEventListener("mousemove", function(e)
             }
             else {
                 // If click event is needed, it goes in here.
+                rightClick = true;
             } 
         }  
     },
@@ -195,10 +201,13 @@ window.addEventListener("mouseup", function()
 // Hides the context menu. Needed in order to be able to right click and drag to move the camera.
 window.addEventListener('contextmenu', function (e) 
     {
-        e.preventDefault();
+        if (rightClick != true) {
+            e.preventDefault();
+        }
     }, 
     false
 );
+
 
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
