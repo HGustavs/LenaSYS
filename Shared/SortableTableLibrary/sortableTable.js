@@ -696,8 +696,9 @@ function SortableTable(param) {
 			},
 			dataType: "JSON",
 			error: function(xhr, status, error) {
-				var err = eval("(" + xhr.responseText + ")");
-				console.log(err.Message);
+				//var err = eval("(" + xhr.responseText + ")");
+				//console.log(err.Message);
+				console.log("ERROR: SERVICE FAILED!");
 			},
 			success: function(data){
 				console.log("returned data: "+data);
