@@ -2355,7 +2355,7 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 0px;
+	border: 2px solid #dbd0d8;
 }
 
 .accessTableText {
