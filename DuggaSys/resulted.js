@@ -30,6 +30,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
+var intVarGradient = 0;
 
 function setup() {
 	//Benchmarking function
@@ -1115,14 +1116,10 @@ function renderColumnFilter(col, status, colname) {
   if (colname == "FnameLnameSSN")
   return str;
   //Räkna hur många columns det finns, modulo x % 2 == 0 blir div class "hi" resten div class "lo" !FIXME
-  for(var i = 0; i < moments.length; i++){
-    var j = i;
-    console.log("j = " + j);
-    if(i % 2 == 0){
-      str = "<div class='hi ";
-    } else {
-      str = "<div class='lo ";
-    }
+  if(intVarGradient % 2 == 0){
+    str = "<div class='hi ";
+  } else {
+    str = "<div class='lo ";
   }
 	if (status) {
 		str += "checkbox-dugga'>";
@@ -1133,7 +1130,8 @@ function renderColumnFilter(col, status, colname) {
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	}
-  console.log(i);
+  console.log(intVarGradient);
+  intVarGradient++;
   console.log(str);
   return str;
 }
