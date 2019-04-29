@@ -228,8 +228,8 @@ function process() {
 		var lid = moments[j].lid;
 		var name = momtmp[j].entryname;
 		var truncatedname = name;
-		if (truncatedname.length > 12) {
-			truncatedname = momtmp[j].entryname.slice(0, 3) + "..." + momtmp[j].entryname.slice(momtmp[j].entryname.length - 8);
+		if (truncatedname.length > 30) {
+			truncatedname = momtmp[j].entryname.slice(0, 3) + "..." + momtmp[j].entryname.slice(momtmp[j].entryname.length - 30);
 		}
 
 
@@ -460,9 +460,9 @@ function formatDateShorter(longDate) {
 	return d.toLocaleString()
 }
 
-function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid) {
-	$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked));
-	// $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid, entryname) {
+	var nameOf = document.getElementById("Nameof");
+	nameOf.textContent = entryname + " by " + firstname + " " + lastname + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked);
 
 	var menu = "<div class='' style='width:100px;display:block;'>";
 	menu += "<div class='loginBoxheader'>";
@@ -823,7 +823,7 @@ function renderCell(col, celldata, cellid) {
 			if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
 				str += " grading-hidden";
 			}
-			str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
+			str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
 			str += "/>";
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
