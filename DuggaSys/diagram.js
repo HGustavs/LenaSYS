@@ -2865,14 +2865,13 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 function openAppearanceDialogMenu() {
-  if (diagram[lastSelectedObject].locked) {
-      return;
-  } else {
-      $(".loginBox").draggable();
-      var form = showMenu();
-      appearanceMenuOpen = true;
-      objectAppearanceMenu(form);
-  }
+    if (diagram[lastSelectedObject].locked) {
+        return;
+    }
+    $(".loginBox").draggable();
+    var form = showMenu();
+    appearanceMenuOpen = true;
+    objectAppearanceMenu(form);
 }
 
 //----------------------------------------------------------------------
