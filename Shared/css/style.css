@@ -28,7 +28,7 @@
   --color-sectioned-table-lo: #eae8eb;
   --color-statistics: #d8d7da;
   --color-list-hover: #c6cdb8;
-  
+
   --color-border-primary: #775886;
   --color-border-list: #dbd0d8;
   --color-border: #999;
@@ -223,12 +223,7 @@ p {
 #content {
   background: var(--color-background);
   min-height: calc(100vh - 80px);
-  margin-top: 65px;
-}
-
-#TopMenuStatic {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 65px 10px 0px 10px;
 }
 
 #contentDiagram {
@@ -722,20 +717,18 @@ header td {
 }
 
 .loggedout {
-  background-color: var(--color-red);
+  background-color: rgba(13, 196, 14,100);
+
 }
 
-.loggedout:hover {
-  background-color: var(--color-green);
+#loginbutton:hover {
+  filter: brightness(1.1);
 }
 
 .loggedin {
-  background-color: var(--color-green);
+    background-color: rgba(219, 26, 26,100);
 }
 
-.loggedin:hover {
-  background-color: var(--color-red);
-}
 
 #loginbutton {
   cursor: pointer;
@@ -1708,12 +1701,10 @@ input.fileed-button {
 
 input.submit-button:hover {
   background-color: #7B5A96;
-  border-radius: 2px;
 }
 
 div.submit-button:hover {
   background-color: #7B5A96;
-  border-radius: 2px;
 }
 
 input.fileed-button:hover {
@@ -2362,7 +2353,7 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 0px;
+	border: 2px solid #dbd0d8;
 }
 
 .accessTableText {
@@ -2380,6 +2371,13 @@ span.arrow {
 
 .accessTable_counter span {
 	margin-left: 5px;
+}
+
+#oldSubmissionIcon {
+  height: 20px; 
+  float: right; 
+  margin-right: 10px;
+  cursor:pointer;
 }
 
 #user td {
@@ -3919,6 +3917,7 @@ only screen and (max-device-width: 320px) {
   bottom: 24px;
   right: 24px;
   z-index: 1;
+  touch-action: none;
 }
 .fixed-action-button.sectioned {
   right: 75px;
@@ -4759,10 +4758,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
@@ -4819,3 +4818,5 @@ textarea#filecont{
   color: #fff;
   border: 2px solid var(--color-primary);
 }
+
+

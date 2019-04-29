@@ -35,22 +35,23 @@ function setup() {
 	//Benchmarking function
 	//benchmarkData = performance.timing;
 
-	/*    Add filter menu   */
-	var filt = "";
-	filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
-	filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-	filt += "<div id='columnfilter'></div>"
-	filt += "<div id='customfilter'></div>"
-	filt += "</div>";
-	filt += "</span></td>";
+	/*  Add filter menu   */
 
-	filt += "<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();'>";
-	filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-	filt += "<div id='dropdowns' class='dropdown-list-container'>";
-	filt += "</div>";
-	filt += "</span></td>";
-	$("#menuHook").before(filt);
+  document.getElementById("sort").style.display = "table-cell";
+  document.getElementById("select").style.display = "table-cell";
+
+  // Remove all children, at the time of writing there is only 1 and its unwanted.
+  while(document.getElementById("dropdownc").hasChildNodes()){
+    document.getElementById("dropdownc").removeChild(document.getElementById("dropdownc").firstChild);
+  }
+
+  var customFilterDiv = document.createElement("div");
+  customFilterDiv.id = "customfilter";
+  var columnFilterDiv = document.createElement("div");
+  columnFilterDiv.id = "columnfilter";
+  document.getElementById("dropdownc").appendChild(columnFilterDiv);
+  document.getElementById("dropdownc").appendChild(customFilterDiv);
+
 
 	window.onscroll = function () {
 		magicHeading()
