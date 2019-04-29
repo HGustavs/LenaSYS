@@ -717,10 +717,7 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
-	console.log(firstCell);
-	console.log(secoundCell);
-	console.log(status);
-    if(typeof firstCell === 'object') {
+    if(typeof firstCell === 'object' && col.includes("FnameLnameSSN")) {
 		// "FnameLnameSSN" is comprised of three separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
 		if(col == "FnameLnameSSN"){
@@ -770,8 +767,7 @@ function newCompare(firstCell, secoundCell) {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		} 
 	   //Check if the cell is a valid cell in the table.
-	}else if (colOrder.includes(col.includes("lid"))){
-		console.log(status);
+	}else if (typeof firstCell === 'object' && col.includes("lid")){
 		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
 			firstCellTemp = firstCell.grade;
 			secoundCellTemp = secoundCell.grade;
