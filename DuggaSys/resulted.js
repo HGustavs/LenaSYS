@@ -233,7 +233,7 @@ function process() {
 			truncatedname = momtmp[j].entryname.slice(0, 3) + "..." + momtmp[j].entryname.slice(momtmp[j].entryname.length - 30);
 		}
 
-    if(intVarGradient % 2 == 0){
+    if(j % 2 == 0){
       dstr += "<div class='hi ";
     } else{
       dstr += "<div class='lo ";
