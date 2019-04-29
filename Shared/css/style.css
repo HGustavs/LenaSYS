@@ -713,9 +713,9 @@ header td {
   bottom: 8px;
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
-  padding: 4px;
+  /*padding: 4px;*/
   background-color: #ccc;
-  border: 2px solid #999;
+  /*border: 2px solid #999;*/
 }
 
 .previewpopover {
@@ -1130,6 +1130,7 @@ input {
 
 .loginBox td {
   margin-left: 4px;
+  margin-right: 4px;
 }
 
 .buttonLoginBox {
