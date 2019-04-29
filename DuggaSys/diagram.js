@@ -897,7 +897,8 @@ function initializeCanvas() {
     }
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
-    updateGraphics();
+    updateGraphics(); 
+    boundingRect = canvas.getBoundingClientRect();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
@@ -1004,11 +1005,9 @@ function toggleVirtualA4Holes() {
 //------------------------------------------------------------
 
 function resetToolbarPosition(){
-    var myCanvas = document.getElementById('myCanvas');
-    var bound = myCanvas.getBoundingClientRect();
-    //Assign position for the toolbar according to the canvas bounds
-    document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
-    document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
+    //Assign position for the toolbar according to the canvas bounds 
+    document.getElementById("diagram-toolbar").style.top = (boundingRect.top + "px");
+    document.getElementById("diagram-toolbar").style.left = (boundingRect.left + "px");
 }
 
 //----------------------------------------------------
@@ -1055,7 +1054,8 @@ function importFile() {
 //             Making the page more responsive
 //---------------------------------------------------
 
-function canvasSize() {
+function canvasSize() { 
+    boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 30);
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
@@ -2141,8 +2141,7 @@ const toolbarDeveloperMode = 3;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');
-    boundingRect = myCanvas.getBoundingClientRect();
+    var myCanvas = document.getElementById('myCanvas');   
     element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
@@ -2331,15 +2330,15 @@ function pointDistance(point1, point2) {
 
 function mousemoveevt(ev, t) {
     // Get canvasMouse coordinates for both X & Y.
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
-        origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
-        origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
-        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.left).x - startMouseCoordinateX;
+        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.top).y - startMouseCoordinateY;
+        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     }
 
     reWrite();
@@ -2541,8 +2540,8 @@ function mousemoveevt(ev, t) {
 function mousedownevt(ev) {
     canvasLeftClick = 1;
 
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
