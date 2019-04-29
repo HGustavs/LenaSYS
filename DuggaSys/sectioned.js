@@ -1279,7 +1279,7 @@ function drawSwimlanes() {
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += "<line x1='0' y1='" + (((i * weekheight) + 15) || 0) + "' x2='" + ((weekLength * weekwidth) || 0) + "' y2='" + (((i * weekheight) + 15) || 0) + "' stroke='black' />";
   }
 
 
@@ -1309,7 +1309,7 @@ function drawSwimlanes() {
     }
 
   }
-  str += "<line opacity='0.7' x1='" + ((daywidth * daySinceStart) - daywidth) + "' y1='" + (15 + weekheight) + "' x2='" + ((daywidth * daySinceStart) - daywidth) + "' y2='" + (((1 + deadlineEntries.length) * weekheight) + 15) + "' stroke-width='4' stroke='red' />";
+  str += "<line opacity='0.7' x1='" + (((daywidth * daySinceStart) - daywidth) || 0) + "' y1='" + (15 + weekheight) + "' x2='" + (((daywidth * daySinceStart) - daywidth) || 0) + "' y2='" + (((1 + deadlineEntries.length) * weekheight) + 15) + "' stroke-width='4' stroke='red' />";
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
