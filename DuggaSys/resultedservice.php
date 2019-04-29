@@ -84,6 +84,7 @@ if($requestType == "mail"){
 			$mailQuery->bindParam(':cid', $courseid);
 			$mailQuery->bindParam(':cvers', $coursevers);
 
+			echo json_encode($mailQuery);
 			if(!$mailQuery->execute()) {
 				$error=$mailQuery->errorInfo();
 				$debug="Error reading user entries".$error[2];
