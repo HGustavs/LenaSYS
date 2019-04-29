@@ -183,7 +183,8 @@ p {
 
 #contentDiagram {
   background: #fff;
-  margin: 65px 10px 15px 10px;
+  margin-left: 13px;
+  margin-top: 65px;
 }
 
 #accessedcontent {
@@ -2146,9 +2147,7 @@ span.arrow {
   header {
     display: none;
   }
-  body {
-    margin: 0px
-  }
+
   #content {
     margin: 0px;
     padding: 0px;
