@@ -93,6 +93,7 @@ var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
+var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -930,21 +931,22 @@ function toggleGrid() {
 
 function toggleVirtualA4() {
     if (toggleA4) {
-      if (toggleA4Holes) {
-        toggleVirtualA4Holes();
-      }
+        // A4 is disabled
         toggleA4 = false;
+        hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
+        showA4State();
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   
 
+    $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
-function drawVirtualA4() {
+function drawVirtualA4() {    
     if(!toggleA4) {
         return;
     }
@@ -963,15 +965,31 @@ function drawVirtualA4() {
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
-    ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+
+    if(A4Orientation == "portrait"){
+        ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+    }
+    else if(A4Orientation == "landscape") {
+        ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);        
+    }
 
     if(toggleA4Holes) {
-        //Upper 2 holes
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
-        //Latter two holes
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+        if(A4Orientation == "portrait"){
+            //Upper 2 holes
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+            //Latter two holes
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+        }
+        else if(A4Orientation == "landscape") {
+            //Upper 2 holes
+            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            //Latter two holes
+            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);  
+        }
     }
     ctx.restore();
 }
@@ -986,18 +1004,41 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
+function showA4State(){
+    //Sets icons based on the state of the A4
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+
+}
+
+function hideA4State(){
+    //Hides icons when toggling off the A4
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
+}
+
 function toggleVirtualA4Holes() {
-    if(!toggleA4){
-      return;
-    }
     if (toggleA4Holes) {
         toggleA4Holes = false;
+        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         updateGraphics();
     } else {
         toggleA4Holes = true;
+        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         updateGraphics();
     }
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+}
+
+function toggleA4Orientation() {
+    if(A4Orientation == "portrait"){
+        A4Orientation = "landscape";
+    }
+    else if(A4Orientation == "landscape"){
+        A4Orientation = "portrait";
+    }
+    
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+    updateGraphics();
 }
 
 //------------------------------------------------------------
@@ -2125,7 +2166,36 @@ function setCheckbox(element, check) {
 
     if (check) {
         $(element).children(".material-icons").show();
-    }else {
+    } else {
+        $(element).children(".material-icons").hide();
+    }
+}
+
+//--------------------------------------------------------
+// Used for toggling orientation icon
+// Both for showing / hiding and also for changning image
+//--------------------------------------------------------
+
+function setOrientationIcon(element, check) {
+    // Init icon element
+    if ($(element).children(".material-icons").length == 0) {
+        $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">crop_portrait</i>");
+    }
+
+    // Set icon either to portrait or landscape
+    if(toggleA4){
+        if(A4Orientation == "landscape"){
+            $(element).children(".material-icons")[0].innerHTML = "crop_16_9"; 
+        }
+        else if(A4Orientation == "portrait"){           
+            $(element).children(".material-icons")[0].innerHTML = "crop_portrait";
+        }
+    }
+
+    // Toggle visibility
+    if (check) {
+        $(element).children(".material-icons").show();
+    } else {
         $(element).children(".material-icons").hide();
     }
 }
