@@ -123,7 +123,7 @@ if($userGroups != "UNK"){
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
       array_push($groupMembers,$row['username']);
     }
-    print_r($groupMembers);
+    
     if(sizeof($groupMembers) < 0){
       // if there are no results (shouldn't be possible since at least the person who's $groups
       // we are checkin on should be here) we set groupMembers back to "UNK".
