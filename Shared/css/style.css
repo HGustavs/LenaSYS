@@ -717,20 +717,18 @@ header td {
 }
 
 .loggedout {
-  background-color: var(--color-red);
+  background-color: rgba(13, 196, 14,100);
+
 }
 
-.loggedout:hover {
-  background-color: var(--color-green);
+#loginbutton:hover {
+  filter: brightness(1.1);
 }
 
 .loggedin {
-  background-color: var(--color-green);
+    background-color: rgba(219, 26, 26,100);
 }
 
-.loggedin:hover {
-  background-color: var(--color-red);
-}
 
 #loginbutton {
   cursor: pointer;

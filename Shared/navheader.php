@@ -23,7 +23,7 @@
 			if($noup!='NONE') {
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
-			
+
 			if($noup=='COURSE'){
 					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
@@ -55,9 +55,9 @@
 					echo "<span id='exampleName'> Example Name</span>";
 					echo "</td>";
 				}else{
-				
+
 						echo "<td id='menuHook' class='navSpacer'>";
-				
+
 						echo "<td id='select' style='display:none;' class='navButt'>";
 						echo   "<span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
 						echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
@@ -74,18 +74,24 @@
   					echo     "</div>";
   					echo   "</span>";
 						echo "</td>";
-				
-						echo "</td>";
-				
-			}
 
-			if(checklogin()) {
-					echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' title='Logout'/></td>";
-			}else{
-					echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
-					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' title='Login'/></td>";
+						echo "</td>";
+
 			}
+          if(checklogin()) {
+            echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
+            echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+          }else{
+            echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
+            echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
+          }
+			// if(checklogin()) {
+			// 		echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
+			// 		echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' title='Logout'/></td>";
+			// }else{
+			// 		echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
+			// 		echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' title='Login'/></td>";
+			// }
 
 
 		echo "</tr></table>";
