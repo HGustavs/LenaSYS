@@ -97,7 +97,7 @@ if($requestType == "mail"){
 		//		$implodedEmails=implode('; ',$emailsArray);
 				echo json_encode($emailsArray);
 			}
-			else (!$mailQuery->execute()) {
+			else {
 				echo json_encode($mailQuery);
 				$error=$mailQuery->errorInfo();
 				$debug="Error reading user entries".$error[2];
