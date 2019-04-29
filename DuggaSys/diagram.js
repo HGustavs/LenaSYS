@@ -983,6 +983,7 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
+    canvas.addEventListener('wheel', scrollZoom, false);
 }
 
 
@@ -2437,6 +2438,15 @@ function changeZoom(zoomValue){
   value = value + parseFloat(zoomValue);
   document.getElementById("ZoomSelect").value = value;
   zoomInMode();
+}
+
+// Canvas zoom on scroll
+function scrollZoom(event) {
+    if(event.deltaY > 0){
+        changeZoom(-0.1);
+    } else {
+        changeZoom(0.1);
+    }
 }
 
 //----------------------------------------------------------------------
