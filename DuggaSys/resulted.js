@@ -1117,7 +1117,7 @@ function renderColumnFilter(col, status, colname) {
     if(i % 2 == 0){
       str = "<div class='hi ";
     } else {
-        str ="<div class='lo ";
+      str ="<div class='lo ";
     }
   }
 	if (colname == "FnameLnameSSN")
