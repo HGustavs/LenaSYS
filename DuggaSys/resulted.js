@@ -1117,9 +1117,9 @@ function renderColumnFilter(col, status, colname) {
   //Räkna hur många columns det finns, modulo x % 2 == 0 blir div class "hi" resten div class "lo" !FIXME
   for(var i = 0; i < moments.length; i++){
     if(i % 2 == 0){
-      str = "<div class='lo ";
-    } else {
       str = "<div class='hi ";
+    } else {
+      str = "<div class='lo ";
     }
   }
 	if (status) {
