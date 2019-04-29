@@ -59,11 +59,10 @@
       		</div>
       		<div class='note'>
                   <p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
-                  <p>SSN&lt;tab&gt;Lastname,&lt;space&gt;Firstname&lt;tab&gt;CID&lt;tab&gt;Ny&lt;tab&gt;PID,&lt;space&gt;Term&lt;tab&gt;Email&lt;linebreak&gt;</p>
+                  <p>SSN; Lastname; Firstname; CID; Date; Tempo; Regstatus; Status; Classname&lt;linebreak&gt;</p>
                   <p>Example:<br/>
-                      999102-5571	Gregersson, Greger	91001	Ny	WEBUG, H11	b17mahgo@student.his.se<br/>
-                      888107-4432	Sven Harkel, Egon	91001	Ny	WEBUG, H11	b14sveha@student.his.se<br/>
-                      777153-6699	Broskelsson, Dagmar	91001	Ny	WEBUG, H09	f16dagbr@student.his.se</p>
+				  	18972221-8475;Piraten-Nilsson; Sven;92337 ; 2019-01-21 - 2019-03-31 ; 50% ; Normal;Ej påbörjad;WEBUG<br/>
+					18531603-5473;Grishufvud; Egon;92337 ; 2019-01-21 - 2019-03-31 ; 50% ; Normal;Registrerad; ej avklarad (1);DVSUG</p>
       		</div>
       		<div style='padding:5px;'>
       			<textarea id="import" ></textarea>
