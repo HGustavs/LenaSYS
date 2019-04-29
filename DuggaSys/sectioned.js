@@ -814,8 +814,8 @@ function returnedSection(data) {
               }
           }
           */
-          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
-          str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += "<td style='width:32px;'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+          str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
         } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
@@ -884,7 +884,7 @@ function returnedSection(data) {
           }
         } else if (itemKind == 6) {
           // Group
-          str += "<div class='ellipsis nowrap' style='cursor:pointer;'>" + item['entryname'];
+          str += "<a class='ellipsis nowrap' onclick='getGroups(\"" + grp + "\");' style='cursor:pointer;'>" + item['entryname'];
           let re = new RegExp(grptype, "g");
           grp = grp.replace(re, "");
           if (document.getElementById("userName").innerHTML == "Guest") {
@@ -892,7 +892,7 @@ function returnedSection(data) {
           } else if (grp.indexOf("UNK") >= 0) {
             str += " &laquo;Not assigned yet&raquo</span></div>";
           } else {
-            str += grp + "</span></div>";
+            str += grp + "</span></a>";
           }
         } else if (itemKind == 7) {
           // Message
