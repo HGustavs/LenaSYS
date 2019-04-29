@@ -1710,7 +1710,7 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 2px;
+  right: 18px;
   top: 100;
   z-index: 2;
   position: absolute;
