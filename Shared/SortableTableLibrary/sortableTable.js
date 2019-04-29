@@ -698,6 +698,7 @@ function SortableTable(param) {
 			error: function(xhr, status, error) {
 				//var err = eval("(" + xhr.responseText + ")");
 				//console.log(err.Message);
+				console.log(xhr);
 				console.log("ERROR: SERVICE FAILED!");
 			},
 			success: function(data){
