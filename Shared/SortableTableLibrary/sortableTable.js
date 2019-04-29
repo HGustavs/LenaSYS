@@ -672,7 +672,7 @@ function SortableTable(param) {
 	}
 
 	this.mail = function(cidMail, crsMail, reqType){
-		console.log(currentRowFilter);
+		console.log(currentRowFilter['username'].username);
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
