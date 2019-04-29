@@ -27,7 +27,9 @@ if(isset($_SESSION['uid'])){
 
 $requestType = getOP('requestType');
 $visibleUserIDs = array();
-var_dump($_POST);
+if($requestType != "UNK"){
+	var_dump($_POST);
+}
 $visibleUserIDs = getOP('visibleUserIDs');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
