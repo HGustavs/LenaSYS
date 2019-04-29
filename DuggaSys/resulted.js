@@ -233,8 +233,12 @@ function process() {
 			truncatedname = momtmp[j].entryname.slice(0, 3) + "..." + momtmp[j].entryname.slice(momtmp[j].entryname.length - 30);
 		}
 
-
-		dstr += "<div class='checkbox-dugga checknarrow ";
+    if(intVarGradient % 2 == 0){
+      dstr += "<div class='hi ";
+    } else{
+      dstr += "<div class='lo ";
+    }
+		dstr += "checkbox-dugga checknarrow ";
 		if (moments[j].visible == 0) {
 			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		} else {
