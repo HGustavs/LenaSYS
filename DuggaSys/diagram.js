@@ -720,7 +720,6 @@ diagram.itemClicked = function() {
 // checkForHover: Executes isHovered method in all diagram objects
 //                (currently only of kind==2 && symbolkind == 4 (aka. lines))
 //--------------------------------------------------------------------
-
 diagram.checkForHover = function(posX, posY) {
     for (var i = 0; i < this.length; i++) {
         this[i].isHovered = false;
@@ -741,6 +740,23 @@ diagram.checkForHover = function(posX, posY) {
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
+
+// Indicates that objects are movable by changing the appearance of the cursor
+window.addEventListener("mousemove", function() 
+{   
+    let indexOfHoveredObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+    if (indexOfHoveredObject != -1) {
+            for (let i = 0; i < diagram.length; i++) {
+                if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked) {
+                    canvas.style.cursor = "all-scroll";
+                } 
+            }
+        } else {
+            canvas.style.cursor = "default";
+        }
+    }, 
+    false
+);
 
 //--------------------------------------------------------------------
 // eraseLines: removes all the lines connected to an object
