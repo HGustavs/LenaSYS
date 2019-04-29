@@ -101,7 +101,7 @@ if($requestType == "mail"){
 			if($mailQuery->execute()) {
 				array_push($emailsArray,$mailQuery);
 				//$implodedEmails=implode('; ',$emailsArray);
-				echo json_encode($implodedEmails);
+				echo json_encode($emailsArray);
 			}
 
 			//$emailString += $mailQuery + "; ";
