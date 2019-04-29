@@ -2992,7 +2992,7 @@ table {
   stroke-width:1px;
   fill:white;
 }
-.circleGraphHours {
+#circleGraphHours {
   text-anchor: middle;
 }
 .circleGraphBigline {
@@ -3015,7 +3015,7 @@ rect[class*="activitymarker"]:hover {
 .activitymarker.commit {
   fill: #2AB7CA;
 }
-.activitymarker.pullrequest {
+.activitymarker.comment {
   fill: #6A4C93;
 }
 .activitymarker.issue {
