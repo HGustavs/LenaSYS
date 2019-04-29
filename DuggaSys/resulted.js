@@ -1113,19 +1113,22 @@ function conv(item, kind) {
 function renderColumnFilter(col, status, colname) {
 	str = "";
   //Räkna hur många columns det finns, modulo x % 2 == 0 blir div class "hi" resten div class "lo" !FIXME
-  for (var j = 0; j < moments.length; j++)
-  console.log(j);
-	if (colname == "FnameLnameSSN")
-		return str;
-	if (status) {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	} else {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	}
+  if(moments.length % 2 == 0){
+    str += "<div class='hi'";
+  	if (colname == "FnameLnameSSN")
+  		return str;
+  	if (status) {
+  		str = "<div class='checkbox-dugga'>";
+  		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+  		str += "</div>"
+  	} else {
+  		str = "<div class='checkbox-dugga'>";
+  		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+  		str += "</div>"
+  	}
+  } else{
+      str +="<div class='lo'";
+  }
 	return str;
 }
 
