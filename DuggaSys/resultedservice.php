@@ -75,8 +75,6 @@ if($requestType == "mail"){
 	$emailString = "";
 	$studentID = "";
 
-	echo '<script>console.log(currentRowFilter)</script>';
-
 	for($i = 0; $i < $currentRowFilter.length; $i++) {
 		if(currentRowFilter[i] != null)
 		{
@@ -102,7 +100,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode("hej");
+	echo json_encode('<script>console.log(currentRowFilter)</script>');
 	} else {
 
 //------------------------------------------------------------------------------------------------
