@@ -1084,7 +1084,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
-    if(!ghostingCrosses) {
+    if(!developerModeActive) {
         drawOrigo();
     }
     diagram.sortConnectors();
@@ -1393,13 +1393,13 @@ consloe.log = function(gobBluth) {
 
 
 //------------------------------------------------------------------------------
-// debugMode:
+// developerMode: 
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
-var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
-function debugMode() {
-    if(ghostingCrosses) {
+var developerModeActive = false; // used to repressent a switch for whenever the developerMode is enabled or not.
+function developerMode() {
+    if(developerModeActive) {
         console.log('developermode: ON'); // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
@@ -1413,7 +1413,7 @@ function debugMode() {
         setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
-        ghostingCrosses = false;
+        developerModeActive = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -1425,11 +1425,11 @@ function debugMode() {
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
         setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
-        ghostingCrosses = true;
+        developerModeActive = true;
     }
     reWrite();
     updateGraphics();
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), !ghostingCrosses);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), !developerModeActive);
 }
 
 //------------------------------------------------------------------------------
@@ -1469,7 +1469,7 @@ function switchToolbarUML() {
 //------------------------------------------------------------------------------
 var crossDEV = false;
 function switchToolbarDev() {
-    if(ghostingCrosses){
+    if(developerModeActive){
         return;
       }
     toolbarState = 3;                                                               // Change the toolbar to DEV.
@@ -1606,8 +1606,8 @@ function decimalPrecision(value, precision){
 //----------------------------------------------------------------------
 
 function reWrite() {
-    if(!ghostingCrosses) {
-        //We are now in debug mode/developer mode
+    if(!developerModeActive) {
+        //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + " </p>";
 
@@ -2415,7 +2415,7 @@ function mousemoveevt(ev, t) {
                 ctx.strokeStyle = "#000";
                 ctx.stroke();
                 ctx.setLineDash([]);
-                if (ghostingCrosses == true) {
+                if (developerModeActive == true) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2433,7 +2433,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2450,7 +2450,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2469,7 +2469,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2480,7 +2480,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2494,7 +2494,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2508,7 +2508,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2525,7 +2525,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";

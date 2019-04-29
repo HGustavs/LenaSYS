@@ -43,7 +43,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();"
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); developerMode(); initToolbox(); updateGraphics();"
  onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
@@ -201,7 +201,7 @@
                     <span class="drop-down-label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="debugMode();">Developer mode</span>
+                            <span class="drop-down-option" onclick='developerMode();'>Developer mode</span>
                         </div>
                         <div id="displayAllTools" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
