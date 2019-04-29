@@ -30,7 +30,7 @@ $visibleUserIDs = array();
 if($requestType != "UNK"){
 	var_dump($_POST);
 }
-$visibleUserIDs = getOP('visibleUserIDs');
+$visibleUserIDs = getOP('visibleuserids');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -98,15 +98,21 @@ if($requestType == "mail"){
 				$debug="Error reading user entries".$error[2];
 			}
 
+			if($mailQuery->execute()) {
+				array_push($emailsArray,$mailQuery);
+				$implodedEmails=implode('; ',$emailsArray);
+				echo json_encode($implodedEmails);
+			}
+
 			//$emailString += $mailQuery + "; ";
-			array_push($emailsArray,$mailQuery);
+		//	array_push($emailsArray,$mailQuery);
 	//}
 	//		array_push($groups[$row['groupKind']],$row['groupVal']);
 
 	// Seperates the emails with a ;.
-	$implodedEmails=implode('; ',$emailsArray);
+//	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($implodedEmails);
+	//echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
