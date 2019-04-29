@@ -315,8 +315,8 @@ do{
   
 }while($weekno<11);
 
-//$today = date('Y-m-d');
-$today = '2019-04-10'; // For testing purposes
+$today = date('Y-m-d');
+//$today = '2019-04-10'; // For testing purposes
 $todaysevents = array();
 
 // Events and issues by the user today
