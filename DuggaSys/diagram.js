@@ -138,6 +138,7 @@ const rightMouseClick = 2;
 
 // This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
 var rightClick = false;
+
 // Used to set the coordinates where a right click was made.
 document.addEventListener("mousedown", function(e)
     {
@@ -151,7 +152,6 @@ document.addEventListener("mousedown", function(e)
     }, 
     false
 );
-
 
 // Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
 window.addEventListener("mousemove", function(e) 
@@ -207,7 +207,6 @@ window.addEventListener('contextmenu', function (e)
     }, 
     false
 );
-
 
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
