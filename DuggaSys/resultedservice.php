@@ -77,6 +77,7 @@ if($requestType == "mail"){
 
 	foreach($visibleUserIDs as $id)
 	{
+		echo json_encode($id);
 			$studentID = $id;
 			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
