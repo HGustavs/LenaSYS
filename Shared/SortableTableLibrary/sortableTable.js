@@ -682,6 +682,7 @@ function SortableTable(param) {
 			}
 		}
 
+		console.log(currentRowFilter);
 		console.log(activeFilteringUsername);
 
 		$.ajax({
