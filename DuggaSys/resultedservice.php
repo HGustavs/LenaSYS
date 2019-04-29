@@ -73,26 +73,31 @@ if($requestType == "mail"){
 
 	$emailsArray = array();
 	$emailString = "";
+	$studentID = "";
+
+	echo currentRowFilter;
 
 	for($i = 0; $i < $currentRowFilter.length; $i++) {
-		$studentID = "";
-		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
+		if(currentRowFilter[i] != null)
+		{
+			$studentID = currentRowFilter[i]['uid'].uid;
+			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
-		$mailQuery->bindParam(':studentID', $studentID);
-		$mailQuery->bindParam(':cid', $courseid);
-		$mailQuery->bindParam(':cvers', $coursevers);
+			$mailQuery->bindParam(':studentID', $studentID);
+			$mailQuery->bindParam(':cid', $courseid);
+			$mailQuery->bindParam(':cvers', $coursevers);
 
-		if(!$mailQuery->execute()) {
-			$error=$mailQuery->errorInfo();
-			$debug="Error reading user entries".$error[2];
+			if(!$mailQuery->execute()) {
+				$error=$mailQuery->errorInfo();
+				$debug="Error reading user entries".$error[2];
+			}
+
+			$emailString += $mailQuery + "; ";
+
+			array_push($emailsArray,$mailQuery);
+	//		array_push($groups[$row['groupKind']],$row['groupVal']);
 		}
-		echo $mailQuery;
-		$emailString += $mailQuery + " ;";
-
-//		array_push($emailsArray,$mailQuery);
-//		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
-
 
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
