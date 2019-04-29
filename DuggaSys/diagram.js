@@ -2440,7 +2440,10 @@ function changeZoom(zoomValue){
   zoomInMode();
 }
 
+//-----------------------
 // Canvas zoom on scroll
+//-----------------------
+
 function scrollZoom(event) {
     if(event.deltaY > 0){
         changeZoom(-0.1);
