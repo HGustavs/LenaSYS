@@ -15,7 +15,34 @@ var myTable;
 
 function setup()
 {
-		AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "ACCESS");
+  var filt = "";
+
+  filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
+  filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+  filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+  filt += "<div id='columnfilter'></div>"
+  filt += "<div id='customfilter'></div>"
+  filt += "</div>";
+  filt += "</span></td>";
+
+  filt += "<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();'>";
+  filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+  filt += "<div id='dropdowns' class='dropdown-list-container'>";
+  filt += "</div>";
+  filt += "</span></td>";
+
+  // Add search bar to nav
+  filt += `<td id='searchBar' class='navButt'>`;
+  filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
+  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
+  filt += `<button id='searchbutton' class='switchContent'`;
+  filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
+  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
+  filt += `</button></td>`;
+
+  $("#menuHook").before(filt);
+
+  AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
@@ -306,12 +333,7 @@ function returnedAccess(data) {
 	filez = data;
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
-
-	if (data["entries"].length > 0) {
-		document.getElementById("sort").style.display = "table-cell";
-		document.getElementById("select").style.display = "table-cell";
-	}
-
+  
 	var tabledata = {
 		tblhead: {
 			username: "User",

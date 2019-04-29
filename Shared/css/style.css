@@ -641,22 +641,19 @@ header td {
 .navName {
   font-size: 0.8em;
   color: #FFFFFF;
-  cursor: default;
   text-decoration: none;
   text-align: right;
   overflow: hidden;
   padding-right: 4px;
+  width: 50px;
 }
 
-.navName:hover {
-  font-size: 0.8em;
+.navName a:hover {
   text-shadow: 2px 2px 4px rgb(0, 0, 0);
   color: #FFFFFF;
-  cursor: default;
   text-decoration: underline;
   text-align: right;
   overflow: hidden;
-  padding-right: 4px;
 }
 
 .navName a {
@@ -716,9 +713,9 @@ header td {
   bottom: 8px;
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
-  padding: 4px;
+  /*padding: 4px;*/
   background-color: #ccc;
-  border: 2px solid #999;
+  /*border: 2px solid #999;*/
 }
 
 .previewpopover {
@@ -1133,6 +1130,7 @@ input {
 
 .loginBox td {
   margin-left: 4px;
+  margin-right: 4px;
 }
 
 .buttonLoginBox {
@@ -2339,9 +2337,42 @@ span.arrow {
   border-top: 3px dashed rgba(97,72,117,0);
 }
 
-/* End DuggaSys resulted*/
-
-/**************************/
+.tooltip-searchbar {
+  font-size: 20px;
+  padding: 0 2px;
+  position: relative;
+  width:10px;
+  cursor: default;
+}
+.tooltip-searchbar-box{
+  box-sizing: border-box;
+  display: none;
+  font-size: 13px;
+  position: absolute;
+  background: #fff;
+  transform: translate(-48%,61%);
+  border-radius: 5px;
+  padding: 5px;
+  padding-bottom: 10px;
+  line-height: 18px;
+  color: black;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+}
+.tooltip-searchbar-box:before {
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #fff;
+  position: relative;
+  margin: 0 auto;
+  transform: translateY(-140%);
+}
+.tooltip-searchbar:hover .tooltip-searchbar-box {
+  display: inherit;
+}
 
 /* End DuggaSys resulted*/
 
@@ -2729,7 +2760,7 @@ span.arrow {
   font-size: 12px;
   display: none;
   position: absolute;
-  top: 10px;
+  top: 35px;
   background: #fff;
   box-shadow: 2px 2px 8px #888;
 }
@@ -2938,26 +2969,15 @@ table {
     bottom: 2px;
 }
 
-/* styling for the search bar in fileed.php */
+/* styling for the search bars in resulted, accessed, duggaed, filed */
 
-#searchBar {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  float: right;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
-  margin-bottom: 15px;
-  margin-right: 7px;
+#searchBar, #testSearchContainer {
+  padding-left: 20px;
 }
 
-#searchinput {
-  margin-right: 0;
-  border-right: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border: 1px solid #ccc;
-  border-bottom: 0;
+#searchinput, #duggaSearch {
   padding: 0 0 0 2px;
+  height: 20px;
 }
 
 #searchbutton {
@@ -2968,18 +2988,23 @@ table {
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
-  box-shadow: none;
+  box-shadow: none !important;
   margin-bottom: 5px;
+  margin-right: 2px;
 }
-.searchField{
+
+#searchBar img, #testSearchContainer img {
+  margin: 0px;
+}
+
+/* .searchField{
   height: 25px;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
   border-right: 0px;
-}
+} */
 
 #lookingGlassSVG {
-  position: absolute;
   top: 3px;
   left: 3px;
 }
@@ -4605,17 +4630,6 @@ textarea#filecont{
   .optionButtons {
     top: 436px;
   }
-}
-
-/* styling for the search bar in duggaed.php */
-#testSearchContainer {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  margin: 0 2px 7px 0;
-  float: right;
-  position: relative;
-  top: -5px;
 }
 
 .flexwrapper{
