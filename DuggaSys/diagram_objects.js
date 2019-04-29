@@ -280,16 +280,20 @@ function Symbol(kind) {
             this.minWidth = ctx.measureText(longestStr).width + 15;
 
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
-                if (sel&&sel.point&&(points[this.topLeft] === sel.point
-                        || points[this.topLeft] === sel.point.y)) {
+                // If the height is less than the minimum, push out the
+                // point that the user is dragging
+                if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
+                        || points[this.topLeft] === sel.point.y)) { // Checks if topRight is clicked
                     points[this.topLeft].y = points[this.bottomRight].y - this.minHeight;
                 }else {
                     points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
                 }
             }
             if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth) {
-                if (sel&&sel.point&&(points[this.topLeft] === sel.point
-                        || points[this.topLeft] === sel.point.x)) {
+                // If the width is less than the minimum, push out the
+                // point that the user is dragging
+                if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
+                        || points[this.topLeft] === sel.point.x)) { // Checks if topRight is clicked
                     points[this.topLeft].x = points[this.bottomRight].x - this.minWidth;
                 }else {
                     points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
