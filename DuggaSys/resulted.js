@@ -242,10 +242,10 @@ function process() {
 		}
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(0)' id='sorttype0' value='0'><label class='headerlabel' for='sorttype0' >FIFO</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(1)' id='sorttype1' value='1'><label class='headerlabel' for='sorttype1' >Grade</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(2)' id='sorttype2' value='2'><label class='headerlabel' for='sorttype2' >Submitted</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
+	dstr += "<div class='checkbox-dugga checknarrow hi' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(0)' id='sorttype0' value='0'><label class='headerlabel' for='sorttype0' >FIFO</label></div>";
+	dstr += "<div class='checkbox-dugga checknarrow lo' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(1)' id='sorttype1' value='1'><label class='headerlabel' for='sorttype1' >Grade</label></div>";
+	dstr += "<div class='checkbox-dugga checknarrow hi' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(2)' id='sorttype2' value='2'><label class='headerlabel' for='sorttype2' >Submitted</label></div>";
+	dstr += "<div class='checkbox-dugga checknarrow lo' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
 	dstr += "</td></tr></table>";
 	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
 	document.getElementById("dropdowns").innerHTML = dstr;
@@ -1115,7 +1115,7 @@ function renderColumnFilter(col, status, colname) {
 	str = "";
   if (colname == "FnameLnameSSN")
   return str;
-  /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */ 
+  /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
   } else {
