@@ -75,9 +75,9 @@ if($requestType == "mail"){
 	$emailString = "";
 	$studentID = "";
 
-	foreach($visibleUserIDs as $id)
-	{
-			$studentID = $id;
+	// foreach($visibleUserIDs as $id)
+	// {
+			$studentID = $visibleUserIDs[0];
 			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
 			$mailQuery->bindParam(':studentID', $studentID);
@@ -90,9 +90,8 @@ if($requestType == "mail"){
 			}
 
 			//$emailString += $mailQuery + "; ";
-			echo json_encode($mailQuery);
 			array_push($emailsArray,$mailQuery);
-	}
+	//}
 	//		array_push($groups[$row['groupKind']],$row['groupVal']);
 
 	// Seperates the emails with a ;.
