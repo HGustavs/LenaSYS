@@ -89,6 +89,7 @@ if($requestType == "mail"){
 				$debug="Error reading user entries".$error[2];
 			}
 
+			echo json_encode($mailQuery);
 			//$emailString += $mailQuery + "; ";
 
 			array_push($emailsArray,$mailQuery);
@@ -98,7 +99,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($mailQuery);
+	echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
