@@ -1276,3 +1276,9 @@ function mail() {
     }
   });
 }
+
+$(window).scroll(function(){
+    $('#ladexportContainer').css({
+        'left': $(this).scrollLeft() + 10 
+    });
+});
