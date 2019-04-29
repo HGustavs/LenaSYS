@@ -92,7 +92,7 @@ if($requestType == "mail"){
 
 		$emailString += $mailQuery + " ;";
 
-		array_push($emailsArray,$mailQuery['email']);
+		array_push($emailsArray,$mailQuery);
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
 
