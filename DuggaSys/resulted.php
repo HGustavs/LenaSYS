@@ -79,6 +79,7 @@ pdoConnect();
       <button onclick="ladexport();">LadExport</button>
 			<button onclick="mail();">Mail students</button>
     </div>
+    
 		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
 		<div id='searchBar' style='test-align:right;margin-bottom:15px;'>
 			<div class="tooltip-searchbar">
@@ -94,6 +95,7 @@ pdoConnect();
 				<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 			</button>
 		</div>
+    
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
 		<div id="resultTable"></div>
 	</div>

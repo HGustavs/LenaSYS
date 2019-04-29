@@ -25,7 +25,7 @@ pdoConnect();
   <script src="clickcounter.js"></script>
 
 </head>
-<body>
+<body onload="setup();">
 
 	<!-- Navigation Header START -->
 	<?php
@@ -36,17 +36,17 @@ pdoConnect();
 
 	<!-- Content START -->
 
-	<div id="content">	
+	<div id="content">
     	<div id="headerContent"></div> <!-- A div to place header content. -->
 		<div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
-		
+
 	  	<!-- Login Dialog START -->
 	  	<?php
 	  	 include '../Shared/loginbox.php';
 	  	?>
 	  	<!-- Login Dialog END -->
   	</div>
-  	
+
   	<!-- Content END -->
 
 

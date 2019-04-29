@@ -58,12 +58,6 @@ pdoConnect();
                 <label name="sortLinks" style='white-space:nowrap'>Links</label>
             </div>
         </div>
-        <div id="searchBar">
-            <input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
-            <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
-                <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
-            </button>
-        </div>
     </div>
 		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
 		<!-- content END -->
