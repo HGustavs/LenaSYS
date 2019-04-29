@@ -237,6 +237,7 @@ function SortableTable(param) {
 	var sortcolumn = "UNK";
 	var sortkind = -1;
 	var windowWidth = window.innerWidth;
+	var nameColumn;
 
 	// Keeps track of the last picked sorting order
 	var tableSort;
@@ -514,11 +515,18 @@ function SortableTable(param) {
 		// Save column name to local storage!
 		localStorage.setItem(this.tableid + DELIMITER + "sortcol", col);
 		localStorage.setItem(this.tableid + DELIMITER + "sortkind", kind);
-
+		
 		sortcolumn = col;
 		sortkind = kind;
 
 		this.reRender();
+	}
+	this.setNameColumn = function (colnameArr){
+		nameColumn = colnameArr;
+
+	}
+	this.getNameColumn = function () {
+		return nameColumn;
 	}
 
 	this.getKeyByValue = function () {
@@ -708,9 +716,75 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
-
-	//Check if the cell is a valid cell in the table.
-	if (colOrder.includes(col)) {
+    if(typeof firstCell === 'object' && col.includes("FnameLnameSSN")) {
+		// "FnameLnameSSN" is comprised of three separately sortable sub-columns,
+		// if one of them is the sort-target, replace col with the subcolumn
+		if(col == "FnameLnameSSN"){
+			col = sortableTable.currentTable.getNameColumn();
+		}
+		// now check for matching columns with the potentially replaced name
+		if(col == "Fname") {
+			//Convert to json object
+			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
+				firstCellTemp = firstCell.firstname;
+				secoundCellTemp = secoundCell.firstname;
+			} else {
+				firstCell = JSON.parse(firstCell.firstname);
+				secoundCell = JSON.parse(secoundCell.firstname);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.firstname)[0];
+				secoundCellTemp = Object.values(secoundCell.firstname)[0];
+			}
+		} else if (col == "Lname"){
+			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
+				firstCellTemp = firstCell.lastname;
+				secoundCellTemp = secoundCell.lastname;
+			} else {
+				firstCell = JSON.parse(firstCell.lastname);
+				secoundCell = JSON.parse(secoundCell.lastname);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.lastname)[0];
+				secoundCellTemp = Object.values(secoundCell.lastname)[0];
+			}
+		} else if (col == "SSN") {
+			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
+				firstCellTemp = firstCell.ssn;
+				secoundCellTemp = secoundCell.ssn;
+			} else {
+				firstCell = JSON.parse(firstCell.ssn);
+				secoundCell = JSON.parse(secoundCell.ssn);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.ssn)[0];
+				secoundCellTemp = Object.values(secoundCell.ssn)[0];
+			}
+		}
+		firstCellTemp = $('<div/>').html(firstCellTemp).text();
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		if (status == 0 || status == 2 || status == 4) {
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+		} else {
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		} 
+	   //Check if the cell is a valid cell in the table.
+	}else if (typeof firstCell === 'object' && col.includes("lid")){
+		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
+			firstCellTemp = firstCell.grade;
+			secoundCellTemp = secoundCell.grade;
+		} else {
+			firstCell = JSON.parse(firstCell.grade);
+			secoundCell = JSON.parse(secoundCell.grade);
+			//Get the first letter from the value.
+			firstCellTemp = Object.values(firstCell.grade)[0];
+			secoundCellTemp = Object.values(secoundCell.grade)[0];
+		}
+		firstCellTemp = $('<div/>').html(firstCellTemp).text();
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		if (status == 1) {
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+		} else if(status == 2 || status == 3) {
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		}
+	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
 		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
 			firstCellTemp = firstCell;
@@ -756,13 +830,14 @@ function newCompare(firstCell, secoundCell) {
 		} else {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
-	}
-	else {
+	} else {
 		if ((status % 2) == 0) {
 			val = firstCellTemp < secoundCell;
 		} else {
 			val = secoundCell < firstCellTemp;
 		}
 	}
+	
 	return val;
+
 }
