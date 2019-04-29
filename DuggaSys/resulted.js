@@ -1276,3 +1276,10 @@ function mail() {
     }
   });
 }
+
+// Puts filter buttons at a fixed point when scrolling horizontally
+$(window).scroll(function() {
+    $('#ladexportContainer').css({
+        'left': $(this).scrollLeft() + 10 
+    });
+});
