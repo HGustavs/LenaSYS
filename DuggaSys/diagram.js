@@ -99,7 +99,7 @@ var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
-var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
+var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
 var minEntityY = 50;
 var hashUpdateTimer = 5000;         // set timer varibale for hash and saving
 var currentHash = 0;
@@ -600,7 +600,7 @@ points.drawPoints = function() {
 
 //--------------------------------------------------------------------
 // closestPoint: Returns the distance and index of the point closest
-//               to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
+//               to the coordinates passed as parameters.
 //--------------------------------------------------------------------
 
 points.closestPoint = function(xCoordinate, yCoordinate, pointIndex) {
@@ -757,12 +757,6 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             var tempTopLeftY = points[this[i].topLeft].y;
             var tempBottomRightX = points[this[i].bottomRight].x;
             var tempBottomRightY = points[this[i].bottomRight].y;
-            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
-                tempTopLeftX = tempBottomRightX - minEntityX;
-            }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
-                tempTopLeftY = tempBottomRightY - minEntityY;
-            }
             if (sx < tempTopLeftX && ex > tempTopLeftX &&
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
@@ -1736,7 +1730,6 @@ function reWrite() {
         //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + " </p>";
-
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
          + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
