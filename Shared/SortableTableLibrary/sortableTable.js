@@ -700,7 +700,7 @@ function SortableTable(param) {
 				console.log(err.Message);
 			},
 			success: function(data){
-				console.log(data);
+				console.log("returned data: "+data);
 				window.location.assign("mailto:?bcc=" + data);
 				//window.location.assign("mailto:" + data);
 			//  mailto:astark1@unl.edu?bcc=ASTARK1@UNL.EDU
