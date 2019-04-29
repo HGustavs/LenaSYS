@@ -1115,11 +1115,11 @@ function renderColumnFilter(col, status, colname) {
 	if (colname == "FnameLnameSSN")
 		return str;
 	if (status) {
-		str = "<div class='checkbox-dugga'>";
+		str = "<div class='checkbox-dugga hi'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	} else {
-		str = "<div class='checkbox-dugga'>";
+		str = "<div class='checkbox-dugga lo'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	}
