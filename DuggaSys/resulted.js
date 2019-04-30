@@ -719,7 +719,7 @@ function createSortableTable(data) {
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
-    intVarGradient++;
+    intVarGradient = 0;
 }
 
 function gradeFilterHandler() {
@@ -1125,10 +1125,10 @@ function renderColumnFilter(col, status, colname) {
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
-    intVarGradient++;
+    intVarGradient = 1;
   } else {
     str = "<div class='lo ";
-    intVarGradient--;
+    intVarGradient = 0;
   }
 	if (status) {
 		str += "checkbox-dugga'>";
