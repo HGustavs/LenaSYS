@@ -1157,21 +1157,21 @@ function onToggleFilter(colId) {
 
 }
 function exportCell(format, cell, colname) {
-  var todaysDate = new Date();
-  var currentYearDigits = todaysDate.getFullYear().toString().substr(2);  // returns 19 if e.g year is 2019
-  var ssnInt = parseInt(cell.ssn, 10);
-  var ssnYearDigits = ssnInt.toString().substring(0,2)  // Same as currentYearDigits but for the ssn
+  // var todaysDate = new Date();
+  // var currentYearDigits = todaysDate.getFullYear().toString().substr(2);  // returns 19 if e.g year is 2019
+  // var ssnInt = parseInt(cell.ssn, 10);
+  // var ssnYearDigits = ssnInt.toString().substring(0,2)  // Same as currentYearDigits but for the ssn
 
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
-			if (cell.ssn.length > 11) {
+			if (cell.ssn.length > 0) {
 				str = cell.ssn + ";";
-      }else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){  // If the person is born on a date after the current it must be last century.
-				str = todaysDate.getFullYear().toString().substr(0,2) + cell.ssn + ";";
-      }else{
-        str = (todaysDate.getFullYear() -100).toString().substr(0,2) + cell.ssn + ";";
-      }
+      // }else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){  // If the person is born on a date after the current it must be last century.
+			// 	str = todaysDate.getFullYear().toString().substr(0,2) + cell.ssn + ";";
+      // }else{
+      //   str = (todaysDate.getFullYear() -100).toString().substr(0,2) + cell.ssn + ";";
+      // }
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
 			str = str.replace(/\&Aring\;/g, "Å");
