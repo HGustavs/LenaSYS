@@ -73,8 +73,6 @@ pdoConnect();
 			<?php }else{ ?>
 				<button onclick="mail();" style="margin:5px;" disabled>Mail students</button>
 			<?php } ?>
-
-			?>
         <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Filtrera efter</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
