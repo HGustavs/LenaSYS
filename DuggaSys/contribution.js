@@ -363,11 +363,28 @@ function toRadians(angle)
 {
   return angle * (Math.PI / 180);
 }
-function renderCircleDiagram(data)
+function changeDay(date)
 {
+  AJAXService("updateday",{userid:"HGustavs", today: date},"CONTRIBUTION");
+}
+function renderCircleDiagram(data, day)
+{
+  var today = new Date();
+  if (!day) {
+    var YYYY = today.getFullYear();
+    var mm = today.getMonth() + 1;
+    var dd = today.getDate();
+    if (dd < 10) dd = '0'+dd;
+    if (mm < 10) mm = '0'+mm;
+    today = YYYY+"-"+mm+"-"+dd;
+  } else {
+    today = day;
+  }
+
   var activities = JSON.parse(data);
   var str = "";
   str+="<h2 style='padding:10px'>Activities today</h2>";
+  str+="<input type='date' id='circleGraphDatepicker' value="+today+" onchange='changeDay(this.value)' />";
   str+="<div class='circleGraph'>";
   str+="<div id='activityInfoBox'><span id='allActivity'></span><span id='activityTime'></span><span id='activityPercent'></span><span id='activityCount'></span></div>";
   str+="<svg width='500' height='500'>";
@@ -583,8 +600,15 @@ var momentexists=0;
 var resave = false;
 function returnedSection(data)
 {
-	retdata=data;
-    if(data['debug']!="NONE!") alert(data['debug']);
+  retdata=data;
+
+  if (Object.keys(data).length === 2) {
+    var div = document.getElementById('hourlyGraph');
+    div.innerHTML = renderCircleDiagram(JSON.stringify(data['events']),data['day']);
+    return;
+  }
+
+  if(data['debug']!="NONE!") alert(data['debug']);
 
   contribDataArr = [];
 	var str="";
@@ -638,7 +662,9 @@ function returnedSection(data)
 
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
+    str+="<div id='hourlyGraph'>";
     str+=renderCircleDiagram(JSON.stringify(data['todaysevents']));
+    str+="</div>";
 
     // Table heading
 	str+="<table class='fumho'>";
