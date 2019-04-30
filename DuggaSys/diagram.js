@@ -1194,7 +1194,7 @@ function canvasSize() {
 window.addEventListener('resize', canvasSize);
 
 function mod(n, m) {
-  return  Math.round(((n % m) + m)) % m;
+  return  Math.round(Math.round(((n % m) + m)) % m);
 }
 
 //----------------------------------------------------------
