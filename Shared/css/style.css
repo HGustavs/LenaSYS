@@ -3637,7 +3637,6 @@ only screen and (max-device-width: 480px) {
     display: block;
     height: 26px;
     opacity: 1.0;
-    left:500px;
   }
   table.navheader input.hamburger {
     position: absolute;
@@ -4368,7 +4367,7 @@ textarea#mrkdwntxt {
     height: 38%;
     width: 97%;
     position: relative;
-    float: left;
+    float: right;
   }
   .markdownPrev {
     height: 38%;
