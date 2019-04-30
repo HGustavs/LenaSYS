@@ -30,7 +30,7 @@
 		<div id="newbutton">
 			<?php
 				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
-				echo "<h1 style='flex:1;text-align:center;position:relative;left:100px;'>Access</h1>";
+				echo "<h1 style='flex:1;text-align:center;position:relative;'>Access</h1>";
 			?>
 	</div>
 </div>
