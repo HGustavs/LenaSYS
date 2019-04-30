@@ -79,13 +79,13 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 if($requestType == "mail"){
 
-// 	$emailsArray = array();
-// 	$emailString = "";
-// 	$studentID = "";
-//
+ 	$emailsArray = array();
+ 	$emailString = "";
+ 	$studentID = "";
+
 // //	 foreach($visibleUserIDs as $id)
 // //	 {
-// //			$studentID = $visibleUserIDs[0];
+					$studentID = $visibleUserIDs[0];
 // //			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username=:studentid");
 // 			$mailQuery = $pdo->prepare("SELECT user.email FROM user");
 //
