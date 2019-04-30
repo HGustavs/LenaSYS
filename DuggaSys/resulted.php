@@ -68,7 +68,7 @@ pdoConnect();
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
       <button onclick="ladexport();" style="margin:5px;">LadExport</button>
-			<?php if (checklogin()){ ?>
+			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
 				<button onclick="mail();" style="margin:5px;">Mail students</button>
 			<?php }else{ ?>
 				<button onclick="mail();" style="margin:5px;" disabled>Mail students</button>
