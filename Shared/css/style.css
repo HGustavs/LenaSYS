@@ -3642,19 +3642,20 @@ only screen and (max-device-width: 480px) {
     position: absolute;
     top: 3px;
     right: 10px;
-    left:50px;
+    left:30px;
   }
   table.navheader div.hamburger {
     position: absolute;
     top: 3px;
     right: 10px;
-    left:50px;
+    left:30px;
   }
   table.navheader div.hamburgerMenu {
     right: 10px;
     top: 110px;
     margin-top: 0px;
     margin-left: 0px;
+    background-color: #252;
   }
 
   #statisticsList {
