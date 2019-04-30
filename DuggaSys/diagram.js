@@ -1185,11 +1185,10 @@ function canvasSize() {
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
-    ctx.clearRect(sx, sy, widthWindow, heightWindow);
-    ctx.translate(sx, sy);
-    ctx.scale(1, 1);
-    ctx.scale(zoomValue, zoomValue);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    updateGraphics();
 }
+
 
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
