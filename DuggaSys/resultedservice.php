@@ -101,14 +101,14 @@ if($requestType == "mail"){
 // 			}
 //
 // 			//$emailString += $mailQuery + "; ";
-// 	array_push($emailsArray,$mailQuery);
+ 	array_push($emailsArray,$mailQuery);
 // //	}
 // 	//		array_push($groups[$row['groupKind']],$row['groupVal']);
 //
 // 	// Seperates the emails with a ;.
-// 			$implodedEmails=implode('; ',$emailsArray);
+ 			$implodedEmails = implode('; ',$emailsArray);
 // 	// Returns the emails in a string representation.
- 			echo json_encode("Hej");
+ 			echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
