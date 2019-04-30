@@ -3650,6 +3650,14 @@ only screen and (max-device-width: 480px) {
   #statisticsList {
     display: none;
   }
+
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 500px; 
+    z-index: 5001; 
+  }
 }
 
 @media only screen and (max-width: 320px),
