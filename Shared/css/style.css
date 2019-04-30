@@ -643,6 +643,14 @@ header td {
   display: none;
 }
 
+#TopMenuStatic { 
+  position: fixed; 
+  top: 3px; 
+  left: 95px; 
+  right: 500px; 
+  z-index: 5001; 
+}
+
 .navheader {
   height: 20px;
   margin-bottom: 10px;
@@ -3314,13 +3322,6 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
      #sortingBar {
         width: 135px;
         position: relative;
@@ -3365,13 +3366,6 @@ only screen and (max-device-width: 1085px) {
 
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 800px) {
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
 	#addElement{display:none;}
    table.navheader td.contribution{
     margin-right: 0px;
@@ -3388,13 +3382,6 @@ only screen and (max-device-width: 800px) {
 
 @media only screen and (max-width: 768px),
 only screen and (max-device-width: 768px) {
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
   .hideAll,
   .showAll {
     -webkit-transform: scale(0.7, 0.7);
