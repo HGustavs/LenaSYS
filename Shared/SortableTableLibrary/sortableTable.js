@@ -695,12 +695,12 @@ function SortableTable(param) {
 				'requestType': reqType
 			},
 			dataType: "JSON",
-			error: function(xhr, status, error) {
-				//var err = eval("(" + xhr.responseText + ")");
-				//console.log(err.Message);
-				console.log(xhr);
-				console.log("ERROR: SERVICE FAILED!");
-			},
+			// error: function(xhr, status, error) {
+			// 	//var err = eval("(" + xhr.responseText + ")");
+			// 	//console.log(err.Message);
+			// 	console.log(xhr);
+			// 	console.log("ERROR: SERVICE FAILED!");
+			// },
 			success: function(data){
 				console.log("returned data: "+data);
 				window.location.assign("mailto:?bcc=" + data);
