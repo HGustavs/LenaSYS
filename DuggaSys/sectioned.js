@@ -1543,8 +1543,8 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
       m_gracetime.setDate(m_deadline.getDate() + 2);
     }
       m_gracetime.setHours(8);
-      m_gracetime.setMinutes(00);
-      m_gracetime.setSeconds(00);
+      m_gracetime.setMinutes(0);
+      m_gracetime.setSeconds(0);
   }
   if (m_dateTimeSubmitted > m_gracetime) {
     return true;
