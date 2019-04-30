@@ -4367,7 +4367,7 @@ textarea#mrkdwntxt {
     height: 38%;
     width: 97%;
     position: relative;
-    float: right;
+    float: left;
   }
   .markdownPrev {
     height: 38%;
