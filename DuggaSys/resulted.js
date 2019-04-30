@@ -1132,12 +1132,12 @@ function renderColumnFilter(col, status, colname) {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>";
-    intVarGradient++;
+    intVarGradient--;
 	} else {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
-    intVarGradient--;
+    intVarGradient++;
 	}
   console.log(intVarGradient);
   console.log(str);
