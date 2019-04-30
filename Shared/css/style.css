@@ -1274,8 +1274,8 @@ input {
   height:20px;
   display: flex;
   text-align: center;
-  padding:0 3px;
   line-height: 20px;
+  background-color: #614875;
 }
 .toolbarArrows{
   width:20%;
@@ -1286,9 +1286,7 @@ input {
 #toolbarTypeText{
   width:50%;
   height: 20px;
-  background-color: #614875;
   color: #ffffff;
-  border: 1px solid #eaeaea;
   margin: 0 auto;
 }
 #toolbarLeftArrow{
