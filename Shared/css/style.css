@@ -3522,8 +3522,6 @@ only screen and (max-device-width: 710px) {
     height: 13px;
   }
   #searchBar {
-    position: absolute;
-    z-index: 5002;
     margin-left: 15px;
   }
   #searchinput{
