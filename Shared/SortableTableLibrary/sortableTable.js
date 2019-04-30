@@ -671,39 +671,25 @@ function SortableTable(param) {
 		}
 	}
 
-	this.mail = function(cidMail, crsMail, reqType) {
-		 var activeFilteringUsername = [];
-		 currentRowFilter[1] = null;
-		 for(var i = 0; i < currentRowFilter.length; i++)
-		 {
-		 	if(currentRowFilter[i] != null)
-		 	{
-		 		activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
-		 	}
-		 }
-
-		 console.log(currentRowFilter);
-		 console.log(activeFilteringUsername);
-
+	this.mail = function(cidMail, crsMail, reqType){
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
 			data: {
 				'courseid': cidMail,
 				'coursevers': crsMail,
-//				'visibleuserids': activeFilteringUsername,
+				'currentRowFilter': currentRowFilter,
 				'requestType': reqType
 			},
 			dataType: "JSON",
 			error: function(xhr, status, error) {
-				//var err = eval("(" + xhr.responseText + ")");
-				//console.log(err.Message);
-				console.log(xhr);
-				console.log("ERROR: SERVICE FAILED!");
+				var err = eval("(" + xhr.responseText + ")");
+				console.log(err.Message);
 			},
 			success: function(data){
-				console.log("returned data: "+data);
 				window.location.assign("mailto:?bcc=" + data);
+				//window.location.assign("mailto:" + data);
+			//  mailto:astark1@unl.edu?bcc=ASTARK1@UNL.EDU
 			}
 		});
 	}
