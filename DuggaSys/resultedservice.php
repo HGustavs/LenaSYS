@@ -71,7 +71,6 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
-	echo json_encode("Hej");
 	$emailsArray = array();
 	$count = "1";
 	$test = "hej";
@@ -90,7 +89,7 @@ if($requestType == "mail"){
 			$debug="Error reading user entries".$error[2];
 		}
 	//	$test += $count
-		array_push($emailsArray, $mailQuery);
+		array_push($emailsArray, "hej");
 	}
 
 	// Seperates the emails with a ;.
