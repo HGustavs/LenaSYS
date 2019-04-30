@@ -85,7 +85,7 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		array_push($emailsArray['email']);
+		array_push($emailsArray, $mailQuery);
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
 
