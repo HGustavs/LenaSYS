@@ -774,46 +774,7 @@ function returnedSection(data) {
               }
             }
           }
-          /*
-          // Alt 2
-          var grp="UNK";
-          let grpmembershp=data['grpmembershp'];
-          let grptype=item['grptype']+"_";
-
-          if(document.getElementById("userName").innerHTML!="Guest"){
-              var ex="(?:"+grptype+")([A-Z0-9])(?:\s?)";
-              var regex = new RegExp(ex,"g");
-              while((found = regex.exec(grpmembershp)) !== null) {
-                  if(grp!=="UNK"){
-                      grp+=",";
-                  }else{
-                      grp="";
-                  }
-                  grp+=found[1];
-              }
-          }
-          */
-          /*
-          // Alt 3
-          var grp="UNK";
-          let grpmembershp=data['grpmembershp'];
-          let grptype=item['grptype']+"_";
-
-          if(document.getElementById("userName").innerHTML!="Guest"){
-              let memberArr=getAllIndexes(grpmembershp, grptype);
-              for(let j=0;j<memberArr.length;j++){
-                  let spos=memberArr[j]+item['grptype'].length;
-                  let epos=data['grpmembershp'].indexOf(' ',spos);
-                  let g=data['grpmembershp'].slice(spos,epos);
-                  if(grp!=="UNK"){
-                      grp+=",";
-                  }else{
-                      grp="";
-                  }
-                  grp+=g;
-              }
-          }
-          */
+          
           str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
           str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
