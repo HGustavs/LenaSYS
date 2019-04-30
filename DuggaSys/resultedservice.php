@@ -71,7 +71,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 if($requestType == "mail"){
 	$emailsArray = array();
-	$count = 0;
+	$count = "1";
+	$test = "hej";
 
 // 	 foreach($visibleUserIDs as $id)
 	for($i = 0; $i < $visibleUserIDs.length; $i++) {
@@ -86,14 +87,14 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		$count++;
+		$hej += $count
 		array_push($emailsArray, "hej");
 	}
 
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($implodedEmails , $count);
+	echo json_encode($test);
 	} else {
 
 //------------------------------------------------------------------------------------------------
