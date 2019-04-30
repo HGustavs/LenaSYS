@@ -1162,12 +1162,10 @@ function exportCell(format, cell, colname) {
   var ssnInt = parseInt(cell.ssn, 10);
   var ssnYearDigits = ssnInt.toString().substring(0,2)  // Same as currentYearDigits but for the ssn
 
-  // console.log(currentYearDigits);
-  // console.log(ssnYearDigits);
-  console.log(todaysDate.getFullYear() -100);
-
   // if lenght = 10 and cell.ssn last 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
   // else str = 2 first digits of decenium
+
+  console.log((todaysDate.getFullYear() -100).toString().substr(0,2));
 
 	str = "";
 	if (format === "csv") {
@@ -1175,9 +1173,9 @@ function exportCell(format, cell, colname) {
 			if (cell.ssn.length > 11) {
 				str = cell.ssn + ";";
       } else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){
-				str = todaysDate.getFullYear().toString().substr(1,2); + cell.ssn + ";";
-	    }else{
-        //str =  + cell.ssn + ";";
+				str = todaysDate.getFullYear().toString().substr(0,2) + cell.ssn + ";";
+      }else{
+        str = (todaysDate.getFullYear() -100).toString().substr(0,2) + cell.ssn + ";";
       }
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
