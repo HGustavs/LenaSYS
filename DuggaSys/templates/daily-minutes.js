@@ -251,6 +251,8 @@ function createFileUploadArea(params){
 
 function createSmallerViewportForm(){
 	var smallerViewportFormHolder ="";
+	var form = "";
+	var str = "";
 	
 
 	smallerViewportFormHolder +="<div id='smallerViewportWrapper'>";
@@ -269,5 +271,16 @@ function createSmallerViewportForm(){
 	smallerViewportFormHolder +="</div>";
 	smallerViewportFormHolder +="</div>";
 
-	document.getElementById("smallerViewport").innerHTML=smallerViewportFormHolder;
+	form +="<input id='smallerViewportUploadButton' type='submit' value='Upload' /></form>";
+	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
+	str += "</div>";
+	str += "<div>";
+	str += form;
+	str += "</div>";
+	str += "</div>";
+	str += "</div>";
+
+	smallerViewportFormHolder += str;
+
+	document.getElementById("smallerViewportArea").innerHTML=smallerViewportFormHolder;
 }
