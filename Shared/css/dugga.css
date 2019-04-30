@@ -326,14 +326,16 @@ svg text {
 	#smallerViewportWrapper{
 		border-style: solid;
 		border-width: 1px;
+		border-top: none;
 	}
 	#smallerViewportForm{
 		margin-top: 20px;
 		margin-bottom: 20px;
-		margin-left: 50px;
+		margin-left: 10%;
 		border-style: solid;
 		border-width: 1px;
 		border-color: #cdd0d6;
+		border-top: none;
 		width: 180px;
 		font-weight: 600;
 	}
