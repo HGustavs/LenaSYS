@@ -245,4 +245,29 @@ function createFileUploadArea(params){
 
 
 	document.getElementById("tomten").innerHTML=str;
+
+	createSmallerViewportForm();
+}
+
+function createSmallerViewportForm(){
+	var smallerViewportFormHolder ="";
+	
+
+	smallerViewportFormHolder +="<div id='smallerViewportWrapper'>";
+	smallerViewportFormHolder +="<div id='smallerViewportHead'></div>";
+	smallerViewportFormHolder +="<div id='smallerViewportForm'>";
+	smallerViewportFormHolder +="<div id='smallerViewportLabel'><label>Date</label></div>";
+	smallerViewportFormHolder +="<div id='datePicker'><input type=date></div>";
+	smallerViewportFormHolder +="<div id='smallerViewportLabel'><label>Type</label></div>";
+	smallerViewportFormHolder +="<div id='type'><select id='smallerViewportSelect'><option value='Issue'>Issue</option><option value='Pull Request'>Pull Request</option></select></div>";
+	smallerViewportFormHolder +="<div id='smallerViewportLabel'><label>Reference</label></div>";
+	smallerViewportFormHolder +="<div id='reference'><input type='number'></div>";
+	smallerViewportFormHolder +="<div id='smallerViewportLabel'><label>Comment</label></div>";
+	smallerViewportFormHolder +="<div id='comment'><input type='text'></div>";
+	smallerViewportFormHolder +="</div>";
+	smallerViewportFormHolder +="</div>";
+	smallerViewportFormHolder +="</div>";
+	smallerViewportFormHolder +="</div>";
+
+	document.getElementById("smallerViewport").innerHTML=smallerViewportFormHolder;
 }
