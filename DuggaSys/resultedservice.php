@@ -94,7 +94,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($test);
+	echo json_encode("hej");
 	} else {
 
 //------------------------------------------------------------------------------------------------
