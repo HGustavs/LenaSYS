@@ -719,7 +719,7 @@ function createSortableTable(data) {
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
-    intVarGradient = 0;
+    intVarGradient++;
 }
 
 function gradeFilterHandler() {
