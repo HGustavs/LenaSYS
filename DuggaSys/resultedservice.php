@@ -22,7 +22,7 @@ if(isset($_SESSION['uid'])){
 }
 $requestType = "";
 $requestType = getOP('requestType');
-$visibleUserIDs = getOP('visibleuserids');
+$visibleUserIDs = $_POST['visibleuserids'];
 $lenghtOfVisibleUserIDs = sizeof($_POST['visibleuserids']);
 $courseid = getOP('courseid');
 $opt = getOP('opt');
