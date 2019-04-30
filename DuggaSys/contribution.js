@@ -613,7 +613,6 @@ function createTimeSheetTable(data)
 		tblbody: data,
 		tblfoot:{}
   };
-  console.log(data);
 	var colOrder=["week","day","type","reference","comment","link"];
 	myTable = new SortableTable({
 		data:tabledata,
