@@ -68,7 +68,13 @@ pdoConnect();
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
       <button onclick="ladexport();" style="margin:5px;">LadExport</button>
-			<button onclick="mail();" style="margin:5px;">Mail students</button>
+			<?php if (checklogin()){ ?>
+				<button onclick="mail();" style="margin:5px;">Mail students</button>
+			<?php }else{ ?>
+				<button onclick="mail();" style="margin:5px;" disabled>Mail students</button>
+			<?php } ?>
+
+			?>
         <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Filtrera efter</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
