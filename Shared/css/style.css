@@ -2957,6 +2957,78 @@ table {
   background-color: var(--color-background);
 }
 
+ /* Styling for circle graph */
+.circleGraph {
+  width:500px;
+  height:500px;
+  position: relative;
+}
+#activityInfoBox {
+  display: none;
+  position: absolute;
+  min-width: 150px;
+  background: lightgray;
+  color: black;
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  font-size: 10pt;
+  font-family: sans-serif;
+}
+#activityInfoBox span {
+  display: block;
+  padding: 1px;
+  font-weight: bold;
+}
+#allActivity .activityInfoEntry {
+  display: block;
+  padding: 0 0 8px 0;
+  font-weight: 100;
+}
+.circleGraphCircle {
+  stroke:black;
+  stroke-width:1px;
+  fill:white;
+}
+#circleGraphHours {
+  text-anchor: middle;
+}
+.circleGraphBigline {
+  fill: black;
+  stroke:black;
+  stroke-width:2px;
+}
+.circleGraphLine {
+  fill: gray;
+  stroke:gray;
+  stroke-width:1px;
+}
+.activitymarker {
+  stroke-width: 0.5px;
+  stroke: black;
+}
+rect[class*="activitymarker"]:hover {
+  fill: #8AC926;
+}
+.activitymarker.commit {
+  fill: #2AB7CA;
+}
+.activitymarker.comment {
+  fill: #6A4C93;
+}
+.activitymarker.issue {
+  fill: #FE4A49;
+}
+.activitymarker.mixed {
+  fill: url("#mixedActivityGradient");
+}
+.activityPolygon {
+  opacity: 0.8;
+  fill: #FED766;
+  stroke-width: 0.5px;
+  stroke: red;
+}
+
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
