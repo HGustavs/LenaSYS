@@ -1207,7 +1207,7 @@ function exportCell(format, cell, colname) {
 	}
 	return str;
 }
-
+}
 function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
