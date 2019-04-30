@@ -22,8 +22,8 @@ if(isset($_SESSION['uid'])){
 }
 $requestType = "";
 $requestType = getOP('requestType');
-$visibleUserIDs= array();
 $visibleUserIDs = getOP('visibleuserids');
+$lenghtOfVisibleUserIDs = sizeof($_POST['visibleuserids']);
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -76,7 +76,7 @@ if($requestType == "mail"){
 	$test = "hej";
 
 // 	 foreach($visibleUserIDs as $id)
-	for($i = 0; $i < $visibleUserIDs.length; $i++) {
+	for($i = 0; $i < $lenghtOfVisibleUserIDs; $i++) {
 		$studentID = $visibleUserIDs[$i];
 		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
