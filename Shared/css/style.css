@@ -648,7 +648,7 @@ header td {
   top: 3px; 
   left: 95px; 
   right: 500px; 
-  z-index: 10000; 
+  z-index: 5001; 
 }
 
 .navheader {
@@ -3640,12 +3640,12 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader input.hamburger {
     position: absolute;
-    top: 66px;
+    top: 3px;
     right: 10px;
   }
   table.navheader div.hamburger {
     position: absolute;
-    top: 66px;
+    top: 3px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
