@@ -71,7 +71,6 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
-	echo json_encode($lenghtOfVisibleUserIDs);
 	$emailsArray = array();
 	$count = "1";
 	$test = "hej";
@@ -90,13 +89,13 @@ if($requestType == "mail"){
 			$debug="Error reading user entries".$error[2];
 		}
 	//	$test += $count
-		array_push($emailsArray, "hej");
+		array_push($emailsArray, $mailQuery);
 	}
 
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($visibleUserIDs);
+	echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
