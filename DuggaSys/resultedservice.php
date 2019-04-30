@@ -91,13 +91,13 @@ if($requestType == "mail"){
 	//	echo json_encode($mailQuery);
 	//	var_dump($mailQuery);
 	//	$test += $count
-		array_push($emailsArray, "hej");
+		array_push($emailsArray, $mailQuery->fetch());
 	}
 
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($visibleUserIDs[4]);
+	echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
