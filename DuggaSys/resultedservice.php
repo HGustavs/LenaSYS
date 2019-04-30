@@ -87,7 +87,7 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		$test += $count
+	//	$test += $count
 		array_push($emailsArray, "hej");
 	}
 
