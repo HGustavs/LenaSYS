@@ -22,6 +22,7 @@ pdoConnect();
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="contribution.js"></script>
+	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	
 <!--the inline CSS was moved to the file shared/css/style.css-->
@@ -38,6 +39,7 @@ pdoConnect();
 	<div id="content">
 	
 	</div>
+	<div id='contribTsTable' style='width:100%; white-space: nowrap;'></div>";
 	<!-- content END -->
 
 	<?php
