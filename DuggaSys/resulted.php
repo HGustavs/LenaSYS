@@ -66,8 +66,10 @@ pdoConnect();
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
-      </div>
-			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+        </div>
+      <button onclick="ladexport();" style="margin:5px;">LadExport</button>
+			<button onclick="mail();" style="margin:5px;">Mail students</button>
+        <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Filtrera efter</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>inget</option>
@@ -76,24 +78,8 @@ pdoConnect();
 					<option value="Filter-U">U</option>
 				</select>
 			</div>
-      <button onclick="ladexport();">LadExport</button>
-			<button onclick="mail();">Mail students</button>
     </div>
-		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
-		<div id='searchBar' style='test-align:right;margin-bottom:15px;'>
-			<div class="tooltip-searchbar">
-				<div class="tooltip-searchbar-box">
-							<b>Keywords:</b> markG, markU, date <br>
-							<b>Ex:</b> markG:färgdugga
-				</div>
-				<span>?</span>
-			</div>
-			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>
-
-			<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>
-				<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
-			</button>
-		</div>
+    
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
 		<div id="resultTable"></div>
 	</div>

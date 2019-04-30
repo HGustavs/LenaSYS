@@ -47,9 +47,23 @@ function setup() {
 
 	filt += "<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();'>";
 	filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-	filt += "<div id='dropdowns' class='dropdown-list-container'>";
+	filt += "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
 	filt += "</div>";
 	filt += "</span></td>";
+
+  // Add search bar to nav
+  filt += `<td id='searchBar' class='navButt'>`;
+  filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
+  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
+  filt += `<button id='searchbutton' class='switchContent'`;
+  filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
+  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
+  filt += `</button></td>`;
+  filt += `<td class='tooltip-searchbar'>`;
+  filt += `<div class='tooltip-searchbar-box'>`;
+  filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
+  filt += `</div><span>?</span></td>`;
+
 	$("#menuHook").before(filt);
 
 	window.onscroll = function () {
@@ -1010,11 +1024,11 @@ function renderSortOptions(col, status, colname) {
 		if (col == "FnameLnameSSN") {
 			let colnameArr = colname.split("/");
 			str += "<div style='white-space:nowrap;cursor:pointer'>"
-			str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-			str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-			str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 		} else {
-			str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+			str += "<span class='sortableHeading' onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
 		}
 		str += "</div>"
 	} else {
@@ -1023,37 +1037,37 @@ function renderSortOptions(col, status, colname) {
 			if (status == 0 || status == 1) {
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 0) {
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				}
 				str += "</div>"
 			} else if (status == 2 || status == 3) {
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 2) {
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				}
 				str += "</div>"
 			} else {
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 4) {
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",5)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",5)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 				} else {
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 				}
 				str += "</div>"
 			}

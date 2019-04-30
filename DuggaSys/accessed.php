@@ -31,15 +31,6 @@
 			<?php
 				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
 				echo "<h1 style='flex:1;text-align:center;position:relative;left:100px;'>Access</h1>";
-				echo "<div style='align-items: flex-end; display: flex; justify-content: space-between;'>";
-				echo "<div id='searchBar' style='position:relative; top:20px; left: 12px;'>";
-				echo "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById(\"searchinput\").value;searchKeyUp(event);myTable.renderTable();'> ";
-				echo "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>";
-				echo "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>";
-				echo "</button>";
-				echo "</div>";
-				echo "</div>";
-				//needs to calculate if the user has access to this button before writing out
 			?>
 	</div>
 </div>
