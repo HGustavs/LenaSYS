@@ -1126,7 +1126,7 @@ function renderColumnFilter(col, status, colname) {
     intVarGradient++;
   } else {
     str = "<div class='lo ";
-    intVarGradient-=2;
+    intVarGradient--;
   }
 	if (status) {
 		str += "checkbox-dugga'>";
