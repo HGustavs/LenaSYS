@@ -782,6 +782,7 @@ function AJAXService(opt,apara,kind)
 	// 		type:"POST",
 	// 		data: "opt="+opt+para,
 	// 		dataType: "json",
+	
 	// 		success: returnedAnalysis
 	// 	});
 	} else if(kind=="GETQUIZ") {
