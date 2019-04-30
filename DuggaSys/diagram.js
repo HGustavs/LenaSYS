@@ -37,7 +37,7 @@ AJAXService("get", {}, "DIAGRAM");
 ************************************************************/
 
 const kind = {
-    path: 1, 
+    path: 1,
     symbol: 2
 };
 const symbolKind = {
@@ -978,11 +978,11 @@ function initializeCanvas() {
     setInterval(function() {Save()}, 10000);
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" 
-                    + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) 
-                    + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
-    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + "</p>";
+    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
+                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
+                + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
+                + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -1190,14 +1190,13 @@ function importFile() {
 function canvasSize() {
     boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 30);
-    heightWindow = (window.innerHeight - 144);
+    heightWindow = (window.innerHeight - 110);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
-    ctx.clearRect(sx, sy, widthWindow, heightWindow);
-    ctx.translate(sx, sy);
-    ctx.scale(1, 1);
-    ctx.scale(zoomValue, zoomValue);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    updateGraphics();
 }
+
 
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
@@ -1225,7 +1224,7 @@ function updateGraphics() {
 }
 
 //---------------------------------------------------------------------------------
-// resetViewToOrigin: moves the view to origo
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------------------------------------------------
 
 function resetViewToOrigin(){
@@ -2304,6 +2303,7 @@ const toolbarDeveloperMode = 3;
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
+    boundingRect = myCanvas.getBoundingClientRect();
     element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
@@ -2394,6 +2394,8 @@ function switchToolbar(direction) {
     $("#classbutton").show();
     $("#linebutton").hide();
     $("#umllinebutton").show();
+  } else if(toolbarState == toolbarFree) {
+    $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#labelDraw").show();
     $("#squarebutton").show();
@@ -3114,7 +3116,6 @@ function createText(posX, posY) {
 //----------------------------------------------------------------------
 // resize: This is used when making the objects bigger or smaller
 //----------------------------------------------------------------------
-
 function resize() {
     if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
@@ -3183,6 +3184,9 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 function openAppearanceDialogMenu() {
+    if (diagram[lastSelectedObject].locked) {
+        return;
+    }
     $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;

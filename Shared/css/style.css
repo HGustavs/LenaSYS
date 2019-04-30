@@ -183,7 +183,8 @@ p {
 
 #contentDiagram {
   background: #fff;
-  margin: 65px 10px 15px 10px;
+  margin-left: 13px;
+  margin-top: 65px;
 }
 
 #accessedcontent {
@@ -2146,9 +2147,7 @@ span.arrow {
   header {
     display: none;
   }
-  body {
-    margin: 0px
-  }
+
   #content {
     margin: 0px;
     padding: 0px;
@@ -3647,7 +3646,7 @@ only screen and (max-device-width: 320px) {
   padding-left: 10px;
   height: 30px;
   position: absolute;
-  right: 20px;
+  right: 15px;
   bottom: 12px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
