@@ -30,7 +30,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
-var intVarGradient = 1;
+var intVarGradient = 0;
 
 function setup() {
 	//Benchmarking function
@@ -1130,6 +1130,7 @@ function renderColumnFilter(col, status, colname) {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
+    intVarGradient++;
 	} else {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
@@ -1137,7 +1138,7 @@ function renderColumnFilter(col, status, colname) {
 	}
   console.log(intVarGradient);
   console.log(str);
-  intVarGradient++;
+
   return str;
 }
 
