@@ -2936,7 +2936,7 @@ function mouseupevt(ev) {
     //----------------------------------------------------------------------
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
-        var classB = new Symbol(1); // UML
+        var classB = new Symbol(symbolKind.uml); // UML
         classB.name = "New" + diagram.length;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
@@ -2950,7 +2950,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
-        erAttributeA = new Symbol(2); // ER attributes
+        erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
         erAttributeA.name = "Attr" + diagram.length;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
@@ -2964,7 +2964,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
-        erEnityA = new Symbol(3); // ER entity
+        erEnityA = new Symbol(symbolKind.erEntity); // ER entity
         erEnityA.name = "Entity" + diagram.length;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
@@ -2982,7 +2982,7 @@ function mouseupevt(ev) {
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) && okToMakeLine) {
-            erLineA = new Symbol(4); // Lines
+            erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
             erLineA.object_type = "";
@@ -3004,7 +3004,7 @@ function mouseupevt(ev) {
             updateGraphics();
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
-        erRelationA = new Symbol(5); // ER Relation
+        erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
         erRelationA.name = "Relation" + diagram.length;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
@@ -3034,7 +3034,7 @@ function mouseupevt(ev) {
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) && okToMakeLine) {
-            umlLineA = new Symbol(7); //UML Lines
+            umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
             umlLineA.name = "Line" + diagram.length
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
