@@ -14,6 +14,12 @@ var inParams = "UNK";;
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
+$(function () {  // Used to set the position of the FAB above the cookie message
+	if(localStorage.getItem("cookieMessage")!="off"){
+		$(".fixed-action-button").css("bottom", "64px");
+	}
+})
+
 //----------------------------------------------------------------------------------
 // get all the indexes where a substring (needle) is found in a string (haystack)
 // adapted from https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
@@ -1551,4 +1557,27 @@ function generateTimeSheetOptions(course, moment, selected) {
 		return "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
 	}
 
+}
+
+//----------------------------------------------------------------------------------
+// hideServerMessage/hideCookieMessage : Hide MOTD/cookie messages
+//
+// Functions for animating and hiding MOTD and cookie messages
+//----------------------------------------------------------------------------------
+
+function hideServerMessage() {
+	$("#servermsgcontainer").animate({ opacity: 0, top: 0 }, 200, "easeInOutSine");
+	setTimeout(function () {
+		$("#servermsgcontainer").css("display", "none");
+		$("#servermsgcontainer").css("opacity", "1");
+	}, 200);
+}
+
+function hideCookieMessage() {
+	$("#cookiemsg").animate({ opacity: 0, bottom: -70 }, 200, "easeInOutSine");
+	$(".fixed-action-button").animate({ bottom: 24 }, 200, "easeInOutSine");
+	setTimeout(function () {
+		$("#cookiemsg").css("display", "none");
+		$("#cookiemsg").css("opacity", "1");
+	}, 200);
 }

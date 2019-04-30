@@ -104,15 +104,15 @@
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
 			$("#cookiemsg").css("display", "none");
-		}
-		else{
+		}else{
 			$("#cookiemsg").css("display", "flex");
 		}
 
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
 	function cookieMessage(){
+		hideCookieMessage();
 		localStorage.setItem("cookieMessage", "off");
-		$("#cookiemsg").css("display", "none");
+		//$("#cookiemsg").css("display", "none");
 	}
 	function hoverBack(){
 		$(".dropdown-list-container").css("display", "none");
