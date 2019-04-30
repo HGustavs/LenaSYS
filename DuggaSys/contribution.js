@@ -457,7 +457,7 @@ function renderActivityPoints(activities)
     for(var i = 0; i < uniquePoints.length; i++) {
       str+=(uniquePoints[i][0]+5)+","+(uniquePoints[i][1]+5)+" ";
     }
-    str+="' onmouseover='showAllActivity(event, "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
+    str+="250,250' onmouseover='showAllActivity(event, "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
   }
 
   uniquePoints.forEach(point => {
