@@ -1132,7 +1132,7 @@ function renderColumnFilter(col, status, colname) {
 		str += "</div>";
     intVarGradient++;
 	} else {
-    intVarGradient++;
+    intVarGradient--;
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
