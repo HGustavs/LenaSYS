@@ -335,6 +335,7 @@ svg text {
 		border-width: 1px;
 		border-color: #cdd0d6;
 		width: 180px;
+		font-weight: 600;
 	}
 	#smallerViewportHead{
 		width: 100%;
@@ -350,6 +351,6 @@ svg text {
 		width: 100%;
 	}
 	#smallerViewport input{
-		width: 97%;
+		width: 98%;
 	}
 }
