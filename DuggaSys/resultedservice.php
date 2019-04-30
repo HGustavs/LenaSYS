@@ -26,11 +26,11 @@ if(isset($_SESSION['uid'])){
 }
 
 $requestType = getOP('requestType');
-$visibleUserIDs = array();
+//$visibleUserIDs = array();
 if($requestType != "UNK"){
 	var_dump($_POST);
 }
-$visibleUserIDs = getOP('visibleuserids');
+//$visibleUserIDs = getOP('visibleuserids');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
