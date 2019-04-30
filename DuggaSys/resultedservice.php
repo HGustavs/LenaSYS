@@ -71,6 +71,7 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
+	echo json_encode($lenghtOfVisibleUserIDs);
 	$emailsArray = array();
 	$count = "1";
 	$test = "hej";
