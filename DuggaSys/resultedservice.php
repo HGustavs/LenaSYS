@@ -22,6 +22,7 @@ if(isset($_SESSION['uid'])){
 }
 $requestType = "";
 $requestType = getOP('requestType');
+$visibleUserIDs= array();
 $visibleUserIDs = getOP('visibleuserids');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
