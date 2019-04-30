@@ -37,7 +37,7 @@ AJAXService("get", {}, "DIAGRAM");
 ************************************************************/
 
 const kind = {
-    path: 1, 
+    path: 1,
     symbol: 2
 };
 const symbolKind = {
@@ -972,9 +972,11 @@ function initializeCanvas() {
     setInterval(function() {Save()}, 10000);
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
-    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + "</p>";
+    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
+                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
+                + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
+                + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -1216,7 +1218,7 @@ function updateGraphics() {
 }
 
 //---------------------------------------------------------------------------------
-// resetViewToOrigin: moves the view to origo
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------------------------------------------------
 
 function resetViewToOrigin(){
@@ -2295,6 +2297,7 @@ const toolbarDeveloperMode = 3;
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
+    boundingRect = myCanvas.getBoundingClientRect();
     element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
@@ -2385,6 +2388,8 @@ function switchToolbar(direction) {
     $("#classbutton").show();
     $("#linebutton").hide();
     $("#umllinebutton").show();
+  } else if(toolbarState == toolbarFree) {
+    $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#labelDraw").show();
     $("#squarebutton").show();
@@ -2530,13 +2535,15 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
-        // If mouse is pressed down and at a point in selected object - move that point
+        // If the selected object is locked, you can´t resize the object.
+        if (diagram[lastSelectedObject].locked) {
+            return;
+        }
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
-
-            //If we changed a point of a path object,
-            //  we need to recalculate the bounding-box so that it will remain clickable.
+            // If we changed a point of a path object,
+            // we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
                 diagram[lastSelectedObject].calculateBoundingBox();
             }
@@ -2559,7 +2566,6 @@ function mousemoveevt(ev, t) {
                     diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
                 }
             }
-
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
@@ -3103,7 +3109,6 @@ function createText(posX, posY) {
 //----------------------------------------------------------------------
 // resize: This is used when making the objects bigger or smaller
 //----------------------------------------------------------------------
-
 function resize() {
     if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
@@ -3172,6 +3177,9 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 function openAppearanceDialogMenu() {
+    if (diagram[lastSelectedObject].locked) {
+        return;
+    }
     $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;
