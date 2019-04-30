@@ -84,23 +84,22 @@ if($requestType == "mail"){
 		$mailQuery->bindParam(':cid', $courseid);
 		$mailQuery->bindParam(':cvers', $coursevers);
 
-		if(!$mailQuery->execute()){
+		foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row) {
+			array_push($emailsArray,$row['email']);
+		}
+
+		if(!$mailQuery->execute()) {
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		// foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
-		// 	array_push($emailsArray,$row['email']);
-		// }
-	//	echo json_encode($mailQuery);
-	//	var_dump($mailQuery);
-	//	$test += $count
-		array_push($emailsArray, $mailQuery->fetch());
+
+	//	array_push($emailsArray, $mailQuery->fetch());
 	}
 
 	// Seperates the emails with a ;.
-	//$implodedEmails=implode('; ',$emailsArray);
+	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($emailsArray);
+	echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
