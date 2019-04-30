@@ -73,10 +73,11 @@ if($requestType == "mail"){
 	$emailsArray = array();
 
 	for($i = 0; $i < 1; $i ++) {
-		$studentID = "";
-		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
+		$studentID = "c92cober";
+	//	$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
+		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username=:studentid");
 
-		$mailQuery->bindParam(':studentID', $studentID);
+		$mailQuery->bindParam(':studentid', $studentID);
 		$mailQuery->bindParam(':cid', $courseid);
 		$mailQuery->bindParam(':cvers', $coursevers);
 
@@ -84,24 +85,9 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		array_push($emailsArray['email']);
+		array_push($emailsArray,$mailQuery);
 //		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
-
-	// for($i = 0; $i < $currentRowFilter.length; $i ++) {
-	// 	$studentID = "";
-	// 	$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
-	//
-	// 	$mailQuery->bindParam(':studentID', $studentID);
-	// 	$mailQuery->bindParam(':cid', $courseid);
-	// 	$mailQuery->bindParam(':cvers', $coursevers);
-	//
-	// 	if(!$mailQuery->execute()){
-	// 		$error=$mailQuery->errorInfo();
-	// 		$debug="Error reading user entries".$error[2];
-	// 	}
-	// 	array_push($emailsArray['email']);
-	// }
 
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
