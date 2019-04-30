@@ -2990,7 +2990,6 @@ table {
 #searchinput, #duggaSearch {
   padding: 0 0 0 2px;
   height: 20px;
-  max-width: 140px;
 }
 
 #searchbutton {
@@ -3598,6 +3597,9 @@ only screen and (max-device-width: 530px) {
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
+  #searchinput, #duggaSearch {
+    max-width: 120px;
+  }
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3645,6 +3647,9 @@ only screen and (max-device-width: 480px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
+  #searchinput, #duggaSearch {
+    max-width: 100px;
+  }
   #Sectionlist .course {
     font-size: 14px;
   }
