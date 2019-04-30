@@ -123,7 +123,7 @@ if($userGroups != "UNK"){
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
       array_push($groupMembers,$row['username']);
     }
-    
+
     if(sizeof($groupMembers) < 0){
       // if there are no results (shouldn't be possible since at least the person who's $groups
       // we are checkin on should be here) we set groupMembers back to "UNK".
@@ -150,7 +150,9 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['author']==$gituser){
         $commitrank=$i;
-        $commitgrouprank=$j;
+        if($groupMembers != "UNK"){
+          $commitgrouprank=$j;
+        }
         $commitrankno=$row['rowk'];
     }
 
@@ -177,7 +179,9 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['blameuser']==$gituser){
         $rowrank=$i;
-        $rowgrouprank=$j;
+        if($groupMembers != "UNK"){
+          $commitgrouprank=$j;
+        }
         $rowrankno=$row['rowk'];
     }
     if($draught) array_push($allrowranks, $row);
@@ -204,7 +208,9 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['author']==$gituser){
         $eventrank=$i;
-        $eventgrouprank=$j;
+        if($groupMembers != "UNK"){
+          $commitgrouprank=$j;
+        }
         $eventrankno=$row['rowk'];
     }
 
@@ -231,7 +237,9 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['author']==$gituser){
         $commentrank=$i;
-        $commentgrouprank=$j;
+        if($groupMembers != "UNK"){
+          $commitgrouprank=$j;
+        }
         $commentrankno=$row['rowk'];
     }
 
@@ -258,7 +266,9 @@ $rows = $query->fetchAll();
 foreach($rows as $row){
     if($row['author']==$gituser){
         $issuerank=$i;
-        $issuegrouprank=$j;
+        if($groupMembers != "UNK"){
+          $commitgrouprank=$j;
+        }
         $issuerankno=$row['rowk'];
     }
 
