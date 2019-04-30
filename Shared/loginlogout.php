@@ -7,9 +7,9 @@ session_set_cookie_params('18000');
 // Start session using parameters above
 session_start();
 
+// Includes
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
-
 include_once "../../coursesyspw.php";
 
 $opt = getOP('opt');
@@ -75,7 +75,6 @@ if($opt=="REFRESH"){
 
 	// Return the data as JSON
 	echo json_encode($res);
-
 }else{
 	//Adds a row to the logging table for the userlogout.
 	logUserEvent($_SESSION['loginname'],EventTypes::Logout,"");
@@ -91,10 +90,12 @@ if($opt=="REFRESH"){
 		$params = session_get_cookie_params();
 		setcookie(session_name(), '', time() - 42000,$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
 	}
+	
 	// Finally, destroy the session.
 	session_unset();
 	session_destroy();
 	clearstatcache(); 
+	
 	// Remove the cookies.
 	setcookie('username', '', 0, '/');
 	setcookie('password', '', 0, '/');
