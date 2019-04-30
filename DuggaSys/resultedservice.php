@@ -71,8 +71,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 if($requestType == "mail"){
 	$emailsArray = array();
-	$count = "1";
-	$test = "hej";
+//	$count = "1";
+//	$test = "hej";
 
 // 	 foreach($visibleUserIDs as $id)
 	for($i = 0; $i < $visibleUserIDs.length; $i++) {
@@ -87,7 +87,7 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		$test += $count
+	//	$test += $count
 		array_push($emailsArray, "hej");
 	}
 
