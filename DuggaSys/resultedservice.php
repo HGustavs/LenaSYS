@@ -78,10 +78,11 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
+	echo json_encode("Hej");
 
- 	$emailsArray = array();
- 	$emailString = "";
- 	$studentID = "";
+// 	$emailsArray = array();
+// 	$emailString = "";
+// 	$studentID = "";
 
 // 	 foreach($visibleUserIDs as $id)
 // 	 {
@@ -108,7 +109,7 @@ if($requestType == "mail"){
 // 	 Seperates the emails with a ;.
 // 			$implodedEmails = implode('; ',$emailsArray);
 // 	 Returns the emails in a string representation.
- 			echo json_encode("Hej");
+// 			echo json_encode("Hej");
 	} else {
 
 //------------------------------------------------------------------------------------------------
