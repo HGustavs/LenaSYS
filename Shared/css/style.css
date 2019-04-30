@@ -648,7 +648,7 @@ header td {
   top: 3px; 
   left: 95px; 
   right: 500px; 
-  z-index: 5001; 
+  z-index: 10000; 
 }
 
 .navheader {
