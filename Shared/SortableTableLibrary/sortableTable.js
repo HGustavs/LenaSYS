@@ -1,4 +1,3 @@
-// trash comment, pls work
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
 	currentTable: null,
@@ -13,11 +12,13 @@ var sortableTable = {
 
 var DELIMITER = "___";
 
+// will split the string and return the text after the dot
 function byString(inpobj, paramstr) {
 	params = paramstr.split(".");
 	return inpobj[params[1]];
 }
 
+// if enter (13) is pressed, simulate a click on searchbutton
 function searchKeyUp(e) {
 	// look for window.event in case event isn't passed in
 	e = e || window.event;
@@ -28,6 +29,7 @@ function searchKeyUp(e) {
 	return true;
 }
 
+// a function that is used when ex. editing a cell, enter will update the content. Escape will clear the inputs
 function keypressHandler(event) {
 	if (event.keyCode == 13) {
 		updateCellInternal();
@@ -39,8 +41,6 @@ function keypressHandler(event) {
 function defaultRowFilter() {
 	return true;
 }
-
-
 
 // Global sorting function global
 function sortableInternalSort(a, b) {
@@ -58,6 +58,7 @@ function sortableInternalSort(a, b) {
 	return ret;
 }
 
+// clears all the edit inputs and closes the "editpopover" box
 function clearUpdateCellInternal() {
 	sortableTable.edit_rowno = -1;
 	sortableTable.edit_rowid = null;
@@ -68,6 +69,7 @@ function clearUpdateCellInternal() {
 	document.getElementById('editpopover').style.display = "none";
 }
 
+// updates the cell content when edited
 function updateCellInternal() {
 	for (var i = 0; i < sortableTable.sortableTables.length; i++) {
 		if (sortableTable.sortableTables[i].tableid == sortableTable.edit_tableid) {
@@ -81,6 +83,8 @@ function updateCellInternal() {
 function clickedInternal(event, clickdobj) {
 	let clickedTbl = event.target.closest("table").id.substring(0, event.target.closest("table").id.indexOf(DELIMITER + "tbl"));
 	let active = null;
+
+	// loops through the sortabletables and checks if something is clicked, change active to the sortabletable that was clicked
 	for (let i = 0; i < sortableTable.sortableTables.length; i++) {
 		if (sortableTable.sortableTables[i].tableid == clickedTbl) {
 			active = sortableTable.sortableTables[i];
@@ -88,6 +92,8 @@ function clickedInternal(event, clickdobj) {
 		}
 	}
 	sortableTable.currentTable = active;
+
+	// when a dropdown input in row is opened and edited(seems to only be in accessed) 
 	if (sortableTable.currentTable.showEditCell != null) {
 		var cellelement = event.target.closest("td");
 		var rowelement = event.target.closest("tr");
@@ -108,6 +114,7 @@ function clickedInternal(event, clickdobj) {
 		sortableTable.edit_tableid = tableid;
 		sortableTable.edit_celldata = coldata;
 		var estr = sortableTable.currentTable.showEditCell(coldata, rowno, rowelement, cellelement, columnname, columnno, rowdata, coldata, tableid);
+		// cant find where and when this runs
 		if (estr !== false) {
 			str += "<div id='input-container' style='flex-grow:1'>";
 			str += estr;
@@ -157,6 +164,7 @@ function rowDeHighlightInternal(event, row) {
 
 // https://stackoverflow.com/questions/13708590/css-gradient-colour-stops-from-end-in-pixels
 
+// highlights the row and column on hover
 function defaultRowHighlightOn(rowid, rowno, colclass, centerel) {
 	rowid = rowid.replace(DELIMITER + "mhv", "");
 	rowElement = document.getElementById(rowid);
@@ -175,6 +183,7 @@ function defaultRowHighlightOn(rowid, rowno, colclass, centerel) {
 	centerel.style.background = "radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2)),linear-gradient(to top,RGBA(255,220,80,1) 2px,RGBA(0,0,0,0.0) 3px, RGBA(0,0,0,0.0) calc(100% - 3px), RGBA(255,220,80,1) calc(100% - 3px)), linear-gradient(to right,RGBA(255,220,80,1) 2px,RGBA(0,0,0,0.0) 3px, RGBA(0,0,0,0.0) calc(100% - 3px), RGBA(255,220,80,1) calc(100% - 2px))";
 }
 
+// removes the highlights on the row and column when cursor is removed
 function defaultRowHighlightOff(rowid, rowno, colclass, centerel) {
 	rowid = rowid.replace(DELIMITER + "mhv", "");
 	rowElement = document.getElementById(rowid);
@@ -188,7 +197,6 @@ function defaultRowHighlightOff(rowid, rowno, colclass, centerel) {
 	for (var i = 0; i < colElements.length; i++) {
 		colElements[i].style.backgroundImage = "none";
 	}
-
 }
 
 // Checks if parameter has been defined and returns default if not
@@ -200,7 +208,7 @@ function getparam(param, def) {
 }
 
 function SortableTable(param) {
-	//------------==========########### Fenced paramters ###########==========------------
+	// Fenced paramters
 
 	var tbl = getparam(param.data, { tblhead: {}, tblbody: [], tblfoot: {} });
 	this.tableid = getparam(param.tableElementId, "UNK");
@@ -231,7 +239,7 @@ function SortableTable(param) {
 		columnOrder.push(rowsumList[i][0]['id']);
 	}
 
-	//------------==========########### Private member variables ###########==========------------
+	// Private member variables 
 	var result = 0;
 	var columnfilter = [];
 	var sortcolumn = "UNK";
@@ -376,6 +384,7 @@ function SortableTable(param) {
 				}
 			}
 		}
+
 		str += "</tr></thead>";
 		mhstr += "</tr></thead></table>";
 		mhfstr += "</tr></thead></table>";
@@ -543,7 +552,7 @@ function SortableTable(param) {
 
 	this.getSortkind = function () {
 		return sortkind;
-	}
+	}			
 
 	this.magicHeader = function () {
 		// Assign table and magic headings table(s)
@@ -566,38 +575,7 @@ function SortableTable(param) {
 				document.getElementById(children[i].id.slice(0, -1) + "f").style.boxSizing = "border-box";
 			}
 			document.getElementById(this.tableid + DELIMITER + "tblhead_mh").style.height = Math.round(document.getElementById(this.tableid + DELIMITER + "tblhead").getBoundingClientRect().height) + "px";
-			document.getElementById(this.tableid + DELIMITER + "tblhead_mhf").style.height = Math.round(document.getElementById(this.tableid + DELIMITER + "tblhead").getBoundingClientRect().height) + "px";
-		} else {
-			document.getElementById(this.tableid).innerHTML = str;
-		}
-
-		if (tableSort != null) {
-			sortTable(tableSort, colSort, reverseSort);
-		}
-	}
-
-	this.magicHeader = function () {
-		// Assign table and magic headings table(s)
-		if (this.hasMagicHeadings) {
-			document.getElementById(this.tableid).innerHTML = str + mhstr + mhvstr + mhfstr;
-			document.getElementById(this.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.width = document.getElementById(this.tableid + DELIMITER + "tbl").getBoundingClientRect().width + "px";
-			document.getElementById(this.tableid + DELIMITER + "tbl" + DELIMITER + "mh").style.boxSizing = "border-box";
-			children = document.getElementById(this.tableid + DELIMITER + "tbl").getElementsByTagName('TH');
-			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id + DELIMITER + "mh").style.width = children[i].getBoundingClientRect().width + "px";
-				document.getElementById(children[i].id + DELIMITER + "mh").style.boxSizing = "border-box";
-			}
-
-			document.getElementById(this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.width = Math.round(document.getElementById(this.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").getBoundingClientRect().width) + "px";
-			document.getElementById(this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf").style.boxSizing = "border-box";
-			children = document.getElementById(this.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").getElementsByTagName('TH');
-
-			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id.slice(0, -1) + "f").style.width = children[i].getBoundingClientRect().width + "px";
-				document.getElementById(children[i].id.slice(0, -1) + "f").style.boxSizing = "border-box";
-			}
-			document.getElementById(this.tableid + DELIMITER + "tblhead_mh").style.height = Math.round(document.getElementById(this.tableid + DELIMITER + "tblhead").getBoundingClientRect().height) + "px";
-			//commented this line out, because the line where the corresponding div is created is also commented out. This caused error before.
+			// commented this line out, because the line where the corresponding div is created is also commented out. This caused error before.
 			//document.getElementById(this.tableid+DELIMITER+"tblhead_mhv").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
 			document.getElementById(this.tableid + DELIMITER + "tblhead_mhf").style.height = Math.round(document.getElementById(this.tableid + DELIMITER + "tblhead").getBoundingClientRect().height) + "px";
 		} else {
