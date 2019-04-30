@@ -1159,6 +1159,7 @@ function onToggleFilter(colId) {
 function exportCell(format, cell, colname) {
   var todaysDate = new Date();
   var testDate = todaysDate.getFullYear().toString().substr(0,2);
+  testDate -= 1;
   console.log(testDate);
 	str = "";
 	if (format === "csv") {
@@ -1166,9 +1167,9 @@ function exportCell(format, cell, colname) {
 			if (cell.ssn.length > 11) {
 				str = cell.ssn + ";";
 
-// if lenght < 11 and cell.ssn first 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
+// if lenght = 10 and cell.ssn last 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
 // else str = 2 first digits of decenium
-} else {
+} else{
 				str = "19" + cell.ssn + ";";
 			}
 			str += cell.firstname + " " + cell.lastname;
