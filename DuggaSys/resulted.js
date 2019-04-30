@@ -1158,12 +1158,15 @@ function onToggleFilter(colId) {
 }
 
 function exportCell(format, cell, colname) {
-  console.log(cell);
+  console.log(currentTime);
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
 			if (cell.ssn.length > 11) {
 				str = cell.ssn + ";";
+
+// if lenght < 11 and cell.ssn first 2 ex 98 < current year last 2 digits then str = 20
+// else str = 19
 			} else {
 				str = "19" + cell.ssn + ";";
 			}
