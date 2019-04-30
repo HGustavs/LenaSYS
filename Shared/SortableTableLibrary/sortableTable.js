@@ -671,19 +671,19 @@ function SortableTable(param) {
 		}
 	}
 
-	this.mail = function(cidMail, crsMail, reqType){
-		var activeFilteringUsername = [];
-		currentRowFilter[1] = null;
-		for(var i = 0; i < currentRowFilter.length; i++)
-		{
-			if(currentRowFilter[i] != null)
-			{
-				activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
-			}
-		}
-
-		console.log(currentRowFilter);
-		console.log(activeFilteringUsername);
+	this.mail = function(cidMail, crsMail, reqType) {
+		// var activeFilteringUsername = [];
+		// currentRowFilter[1] = null;
+		// for(var i = 0; i < currentRowFilter.length; i++)
+		// {
+		// 	if(currentRowFilter[i] != null)
+		// 	{
+		// 		activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
+		// 	}
+		// }
+		//
+		// console.log(currentRowFilter);
+		// console.log(activeFilteringUsername);
 
 		$.ajax({
 			url: "resultedservice.php",
