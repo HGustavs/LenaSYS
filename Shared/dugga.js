@@ -776,14 +776,14 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedTitle
 		});
-	}else if(kind=="STATS") {
-		$.ajax({
-			url: "stats.php",
-			type:"POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedAnalysis
-		});
+	// }else if(kind=="STATS") {
+	// 	$.ajax({
+	// 		url: "stats.php",
+	// 		type:"POST",
+	// 		data: "opt="+opt+para,
+	// 		dataType: "json",
+	// 		success: returnedAnalysis
+	// 	});
 	} else if(kind=="GETQUIZ") {
 		$.ajax({
 			url: "duggaedservice.php",
