@@ -1294,11 +1294,16 @@ function drawSwimlanes() {
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
         duggalength = Math.ceil((entry.deadline - entry.start) / (24 * 60 * 60 * 1000));
+
+        // Yellow backgroundcolor if the dugga have been submitted but grade is pending.
+        // Green backgroundcolor if the dugga have been submitted and the grade is passed.
+        // Red backgroundcolor if the dugga have been submitted and the grade is failed.
         var fillcol = "#BDBDBD";
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
 
+        // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = "#000000";
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = "#FF0000";
@@ -1538,8 +1543,8 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
       m_gracetime.setDate(m_deadline.getDate() + 2);
     }
       m_gracetime.setHours(8);
-      m_gracetime.setMinutes(00);
-      m_gracetime.setSeconds(00);
+      m_gracetime.setMinutes(0);
+      m_gracetime.setSeconds(0);
   }
   if (m_dateTimeSubmitted > m_gracetime) {
     return true;
