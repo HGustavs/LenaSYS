@@ -291,6 +291,7 @@ function keyDownHandler(e) {
         updateGraphics();
     } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
         arrowKeyPressed(key);
+        moveCanvasView(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
@@ -413,25 +414,19 @@ function arrowKeyPressed(key) {
 //-----------------------------------------------------------------------------------
 // arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
 //-----------------------------------------------------------------------------------
-function moveCanvasView(){
+function moveCanvasView(key){
   if(uimode = "MoveAround"){
     if(key == leftArrow) {
-      moveCanvasViewLeft();
+      origoOffsetX += 10;
     }else if(key == upArrow) {
-      moveCanvasViewUp();
+      origoOffsetY += 10;
     }else if(key == rightArrow) {
-      moveCanvasViewRight();
+      origoOffsetX += -10;
     }else if(key == downArrow) {
-      moveCanvasViewDown();
+      origoOffsetY += -10;
     }
     updateGraphics();
   }
-}
-
-function moveCanvasViewRight(){
-
-origoOffsetX += 10;
-console.log("Hej");
 }
 
 //-------------------------------------------------------------------------------------
