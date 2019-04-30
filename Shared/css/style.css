@@ -1284,8 +1284,9 @@ input {
 }
 #toolbarTypeText{
   height: 20px;
-  color: #999;
+  color: #111;
   margin: 0 auto;
+  font-weight: bold;
 }
 #toolbarLeftArrow{
   transform: rotate(-90deg);
