@@ -20,7 +20,7 @@ if(isset($_SESSION['uid'])){
 	$lastname="UNK";
 	$firstname="UNK";
 }
-
+$requestType = "";
 $requestType = getOP('requestType');
 $visibleUserIDs = getOP('visibleuserids');
 $courseid = getOP('courseid');
