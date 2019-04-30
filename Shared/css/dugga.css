@@ -353,9 +353,13 @@ svg text {
 		width: 100%;
 	}
 	#smallerViewportArea input{
-		width: 97%;
+		width: 98%;
 	}
 	#smallerViewportUploadButton{
 		margin-left: 3px;
+		height: 30px;
+	}
+	#prevSub{
+		margin-top: 10px;
 	}
 }
