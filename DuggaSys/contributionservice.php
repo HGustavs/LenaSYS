@@ -14,7 +14,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:../../GHData/GHdata_2019_2.db');
+$log_db = new PDO('sqlite:../../GHData/GHDataTest.db');
 
 $allusers=array();
 
@@ -368,6 +368,27 @@ for($i=0;$i<70;$i++){
 	$count[$currentdate] = $daycount;
 	$currentdate=strtotime("+1 day",strtotime($currentdate));
 }
+
+$timesheets = array();
+$query = $pdo->prepare('SELECT day, week, type, reference, comment FROM timesheet WHERE uid=:userid AND cid=:cid AND vers=:vers;');
+$query->bindParam(':userid', $userid);
+$query->bindParam(':cid', $cid);
+$query->bindParam(':vers', $vers);
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading entries".$error[2];
+}
+$rows = $query->fetchAll();
+foreach($rows as $row){
+	$timesheet = array(
+		'day' => $row['day'],
+		'week' => intval($row['week']),
+		'type' => $row['type'],
+		'reference' => intval($row['reference']),
+		'comment' => $row['comment']
+	);
+	array_push($timesheets, $timesheet);
+}
 $array = array(
 	'debug' => $debug,
 	'weeks' => $weeks,
@@ -387,7 +408,8 @@ $array = array(
     'allcommentranks' => $allcommentranks,
     'allcommitranks' => $allcommitranks,
 	'githubuser' => $gituser,
-	'count' => $count
+	'count' => $count,
+	'timesheets' => $timesheets
 );
 
 echo json_encode($array);
