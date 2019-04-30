@@ -1157,8 +1157,9 @@ function onToggleFilter(colId) {
 
 }
 function exportCell(format, cell, colname) {
-  currentTime = new Date();
-  console.log(currentTime.getTime());
+  var todaysDate = new Date();
+  var todaysYear = todaysDate.getYear();
+  console.log(todaysYear);
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
