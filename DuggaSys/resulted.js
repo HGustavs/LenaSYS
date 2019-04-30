@@ -1165,14 +1165,14 @@ function exportCell(format, cell, colname) {
   // if lenght = 10 and cell.ssn last 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
   // else str = 2 first digits of decenium
 
-  console.log((todaysDate.getFullYear() -100).toString().substr(0,2));
+console.log(cell);
 
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
 			if (cell.ssn.length > 11) {
 				str = cell.ssn + ";";
-      } else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){
+      } else if(cell.ssn.length == 11 && currentYearDigits >= ssnYearDigits){
 				str = todaysDate.getFullYear().toString().substr(0,2) + cell.ssn + ";";
       }else{
         str = (todaysDate.getFullYear() -100).toString().substr(0,2) + cell.ssn + ";";
