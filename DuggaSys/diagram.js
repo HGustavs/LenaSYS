@@ -36,6 +36,27 @@ AJAXService("get", {}, "DIAGRAM");
 
 ************************************************************/
 
+const kind = {
+    path: 1, 
+    symbol: 2
+};
+const symbolKind = {
+    uml: 1,
+    erAttribute: 2,
+    erEntity: 3,
+    line: 4,
+    erRelation: 5,
+    text: 6,
+    umlLine: 7
+};
+const mouseState = {
+    empty: 0,                       // empty
+    noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
+    insidePoint: 2,                 // mouse is pressed down and at a point in selected object
+    insideMovableObject: 3,         // mouse pressed down inside a movable object
+    boxSelectOrCreateMode: 4        // Box select or Create mode
+};
+
 var gridSize = 16;                  // Distance between lines in grid
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
@@ -72,12 +93,13 @@ var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
+var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
-var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
+var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
 var minEntityY = 50;
 var hashUpdateTimer = 5000;         // set timer varibale for hash and saving
 var currentHash = 0;
@@ -114,6 +136,9 @@ var symbolEndKind;                      // Is used to store which kind of object
 
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 
+var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
+
+// Keyboard keys
 const deleteKey = 46;
 const backspaceKey = 8;
 const spacebarKey = 32;
@@ -130,7 +155,82 @@ const yKey = 89;
 const aKey = 65;
 const escapeKey = 27;
 
-//this block of the code is used to handel keyboard input;
+// Mouse clicks
+const rightMouseClick = 2;
+
+// This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
+var rightClick = false;
+
+// Used to set the coordinates where a right click was made.
+document.addEventListener("mousedown", function(e)
+    {
+        if (e.button == rightMouseClick) {
+            if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+                InitPageX = e.pageX;
+                InitPageY = e.pageY;
+                rightClick = true;
+            }
+        }
+    },
+    false
+);
+
+// Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
+window.addEventListener("mousemove", function(e)
+    {
+        // deltas are used to determine the range of which the mouse is allowed to move when pressed.
+        deltaX = 2;
+        deltaY = 2;
+        if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
+            // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
+            diffX = e.pageX - InitPageX;
+            diffY = e.pageY - InitPageY;
+            if (
+                (diffX > deltaX) || (diffX < -deltaX)
+                ||
+                (diffY > deltaY) || (diffY < -deltaY)
+            ) {
+                rightClick = false;
+                // Entering MoveAround mode
+                if (uimode != "MoveAround") {
+                    activateMovearound();
+                }
+                updateGraphics();
+            }
+            else {
+                // If click event is needed, it goes in here.
+                rightClick = true;
+            }
+        }
+    },
+    false
+);
+
+// Deactivate MoveAround by releasing the mouse
+window.addEventListener("mouseup", function()
+    {
+        delete InitPageX;
+        delete InitPageY;
+        // Making sure the MoveAround was not initialized by the spacebar.
+        if (uimode == "MoveAround" && !spacebarKeyPressed) {
+            deactivateMovearound();
+            updateGraphics();
+        }
+    },
+    false
+);
+
+// Hides the context menu. Needed in order to be able to right click and drag to move the camera.
+window.addEventListener('contextmenu', function (e)
+    {
+        if (rightClick != true) {
+            e.preventDefault();
+        }
+    },
+    false
+);
+
+// This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
@@ -257,6 +357,12 @@ function keyDownHandler(e) {
         eraseSelectedObject();
         SaveState();
     } else if(key == spacebarKey) {
+        // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
+        if (!spacebarKeyPressed) {
+        spacebarKeyPressed = true;
+        } else {
+            spacebarKeyPressed = false;
+        }
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -269,6 +375,7 @@ function keyDownHandler(e) {
         }
         updateGraphics();
     } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
+
         arrowKeyPressed(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
@@ -367,9 +474,9 @@ window.onkeyup = function(event) {
     }
 }
 
-//----------------------------------------------------------------------
-// arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
-//----------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+// arrowKeyPressed: Handler for when pressing arrow keys when an object is selected
+//----------------------------------------------------------------------------------
 
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
@@ -493,7 +600,7 @@ points.drawPoints = function() {
 
 //--------------------------------------------------------------------
 // closestPoint: Returns the distance and index of the point closest
-//               to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
+//               to the coordinates passed as parameters.
 //--------------------------------------------------------------------
 
 points.closestPoint = function(xCoordinate, yCoordinate, pointIndex) {
@@ -650,12 +757,6 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             var tempTopLeftY = points[this[i].topLeft].y;
             var tempBottomRightX = points[this[i].bottomRight].x;
             var tempBottomRightY = points[this[i].bottomRight].y;
-            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
-                tempTopLeftX = tempBottomRightX - minEntityX;
-            }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
-                tempTopLeftY = tempBottomRightY - minEntityY;
-            }
             if (sx < tempTopLeftX && ex > tempTopLeftX &&
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
@@ -699,7 +800,6 @@ diagram.itemClicked = function() {
 // checkForHover: Executes isHovered method in all diagram objects
 //                (currently only of kind==2 && symbolkind == 4 (aka. lines))
 //--------------------------------------------------------------------
-
 diagram.checkForHover = function(posX, posY) {
     for (var i = 0; i < this.length; i++) {
         this[i].isHovered = false;
@@ -720,6 +820,23 @@ diagram.checkForHover = function(posX, posY) {
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
+
+// Indicates that objects are movable by changing the appearance of the cursor
+window.addEventListener("mousemove", function()
+{
+    let indexOfHoveredObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+    if (indexOfHoveredObject != -1) {
+            for (let i = 0; i < diagram.length; i++) {
+                if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked) {
+                    canvas.style.cursor = "all-scroll";
+                }
+            }
+        } else {
+            canvas.style.cursor = "default";
+        }
+    },
+    false
+);
 
 //--------------------------------------------------------------------
 // eraseLines: removes all the lines connected to an object
@@ -861,10 +978,12 @@ function initializeCanvas() {
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
     updateGraphics();
+    boundingRect = canvas.getBoundingClientRect();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
+    canvas.addEventListener('wheel', scrollZoom, false);
 }
 
 
@@ -892,18 +1011,19 @@ function toggleGrid() {
 
 function toggleVirtualA4() {
     if (toggleA4) {
-      if (toggleA4Holes) {
-        toggleVirtualA4Holes();
-      }
+        // A4 is disabled
         toggleA4 = false;
+        hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
+        showA4State();
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   
 
+    $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
 function drawVirtualA4() {
@@ -925,15 +1045,31 @@ function drawVirtualA4() {
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
-    ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+
+    if(A4Orientation == "portrait"){
+        ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+    }
+    else if(A4Orientation == "landscape") {
+        ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);
+    }
 
     if(toggleA4Holes) {
-        //Upper 2 holes
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
-        //Latter two holes
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+        if(A4Orientation == "portrait"){
+            //Upper 2 holes
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+            //Latter two holes
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+        }
+        else if(A4Orientation == "landscape") {
+            //Upper 2 holes
+            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            //Latter two holes
+            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+        }
     }
     ctx.restore();
 }
@@ -948,18 +1084,41 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
+function showA4State(){
+    //Sets icons based on the state of the A4
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+
+}
+
+function hideA4State(){
+    //Hides icons when toggling off the A4
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
+}
+
 function toggleVirtualA4Holes() {
-    if(!toggleA4){
-      return;
-    }
     if (toggleA4Holes) {
         toggleA4Holes = false;
+        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         updateGraphics();
     } else {
         toggleA4Holes = true;
+        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         updateGraphics();
     }
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+}
+
+function toggleA4Orientation() {
+    if(A4Orientation == "portrait"){
+        A4Orientation = "landscape";
+    }
+    else if(A4Orientation == "landscape"){
+        A4Orientation = "portrait";
+    }
+
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+    updateGraphics();
 }
 
 //------------------------------------------------------------
@@ -967,11 +1126,9 @@ function toggleVirtualA4Holes() {
 //------------------------------------------------------------
 
 function resetToolbarPosition(){
-    var myCanvas = document.getElementById('myCanvas');
-    var bound = myCanvas.getBoundingClientRect();
     //Assign position for the toolbar according to the canvas bounds
-    document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
-    document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
+    document.getElementById("diagram-toolbar").style.top = (boundingRect.top + "px");
+    document.getElementById("diagram-toolbar").style.left = (boundingRect.left + "px");
 }
 
 //----------------------------------------------------
@@ -1019,14 +1176,13 @@ function importFile() {
 //---------------------------------------------------
 
 function canvasSize() {
+    boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 30);
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(sx, sy, widthWindow, heightWindow);
     ctx.translate(sx, sy);
-    distanceMovedX = -sx;
-    distanceMovedY = -sy;
     ctx.scale(1, 1);
     ctx.scale(zoomValue, zoomValue);
 }
@@ -1047,7 +1203,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
-    if(!ghostingCrosses) {
+    if(!developerModeActive) {
         drawOrigo();
     }
     diagram.sortConnectors();
@@ -1057,14 +1213,14 @@ function updateGraphics() {
 }
 
 //---------------------------------------------------------------------------------
-// resetViewToOrigin: moves the view to origo based on movement done in the canvas
+// resetViewToOrigin: moves the view to origo
 //---------------------------------------------------------------------------------
 
 function resetViewToOrigin(){
-    ctx.translate(distanceMovedX, distanceMovedY);
-    distanceMovedX = 0;
-    distanceMovedY = 0;
+    origoOffsetX = 0;
+    origoOffsetY = 0;
     updateGraphics();
+    SaveState();
 }
 
 function getConnectedLines(object) {
@@ -1356,13 +1512,13 @@ consloe.log = function(gobBluth) {
 
 
 //------------------------------------------------------------------------------
-// debugMode:
+// developerMode:
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
-var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
-function debugMode() {
-    if(ghostingCrosses) {
+var developerModeActive = false; // used to repressent a switch for whenever the developerMode is enabled or not.
+function developerMode() {
+    if(developerModeActive) {
         console.log('developermode: ON'); // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
@@ -1376,7 +1532,7 @@ function debugMode() {
         setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
-        ghostingCrosses = false;
+        developerModeActive = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -1388,11 +1544,11 @@ function debugMode() {
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
         setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
-        ghostingCrosses = true;
+        developerModeActive = true;
     }
     reWrite();
     updateGraphics();
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), !ghostingCrosses);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), !developerModeActive);
 }
 
 //------------------------------------------------------------------------------
@@ -1401,7 +1557,7 @@ function debugMode() {
 // changes to ER. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossER = false;
-function switchToolbarER() { 
+function switchToolbarER() {
     toolbarState = 1;                                                               // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
@@ -1432,7 +1588,7 @@ function switchToolbarUML() {
 //------------------------------------------------------------------------------
 var crossDEV = false;
 function switchToolbarDev() {
-    if(ghostingCrosses){
+    if(developerModeActive){
         return;
       }
     toolbarState = 3;                                                               // Change the toolbar to DEV.
@@ -1569,11 +1725,10 @@ function decimalPrecision(value, precision){
 //----------------------------------------------------------------------
 
 function reWrite() {
-    if(!ghostingCrosses) {
-        //We are now in debug mode/developer mode
+    if(!developerModeActive) {
+        //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + " </p>";
-
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
          + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
@@ -1649,6 +1804,7 @@ function lockSelected() {
             updateGraphics();
         }
     }
+    SaveState();
 }
 
 function align(mode) {
@@ -1673,6 +1829,8 @@ function align(mode) {
 
     updateGraphics();
     hashFunction();
+
+    SaveState();
 }
 
 //---------------------------------------------------------------------
@@ -2088,7 +2246,36 @@ function setCheckbox(element, check) {
 
     if (check) {
         $(element).children(".material-icons").show();
-    }else {
+    } else {
+        $(element).children(".material-icons").hide();
+    }
+}
+
+//--------------------------------------------------------
+// Used for toggling orientation icon
+// Both for showing / hiding and also for changning image
+//--------------------------------------------------------
+
+function setOrientationIcon(element, check) {
+    // Init icon element
+    if ($(element).children(".material-icons").length == 0) {
+        $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">crop_portrait</i>");
+    }
+
+    // Set icon either to portrait or landscape
+    if(toggleA4){
+        if(A4Orientation == "landscape"){
+            $(element).children(".material-icons")[0].innerHTML = "crop_16_9";
+        }
+        else if(A4Orientation == "portrait"){
+            $(element).children(".material-icons")[0].innerHTML = "crop_portrait";
+        }
+    }
+
+    // Toggle visibility
+    if (check) {
+        $(element).children(".material-icons").show();
+    } else {
         $(element).children(".material-icons").hide();
     }
 }
@@ -2105,7 +2292,6 @@ const toolbarDeveloperMode = 3;
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
-    boundingRect = myCanvas.getBoundingClientRect();
     element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
@@ -2158,7 +2344,7 @@ function switchToolbar(direction) {
       toolbarState = 1;
     }
   }
-  
+
   document.getElementById('toolbarTypeText').innerHTML = "ER";
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
@@ -2254,6 +2440,18 @@ function changeZoom(zoomValue){
   zoomInMode();
 }
 
+//-----------------------
+// Canvas zoom on scroll
+//-----------------------
+
+function scrollZoom(event) {
+    if(event.deltaY > 0){
+        changeZoom(-0.1);
+    } else {
+        changeZoom(0.1);
+    }
+}
+
 //----------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
 //----------------------------------------------------------------------
@@ -2294,15 +2492,15 @@ function pointDistance(point1, point2) {
 
 function mousemoveevt(ev, t) {
     // Get canvasMouse coordinates for both X & Y.
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
-        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.x).x - startMouseCoordinateX;
-        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.y).y - startMouseCoordinateY;
-        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.left).x - startMouseCoordinateX;
+        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.top).y - startMouseCoordinateY;
+        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     }
 
     reWrite();
@@ -2329,9 +2527,11 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
+        // If mouse is pressed down and at a point in selected object - move that point
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
+
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
@@ -2378,7 +2578,7 @@ function mousemoveevt(ev, t) {
                 ctx.strokeStyle = "#000";
                 ctx.stroke();
                 ctx.setLineDash([]);
-                if (ghostingCrosses == true) {
+                if (developerModeActive == true) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2396,7 +2596,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2413,7 +2613,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2432,7 +2632,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2443,7 +2643,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2457,7 +2657,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2471,7 +2671,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2488,7 +2688,7 @@ function mousemoveevt(ev, t) {
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.closePath();
-            if (ghostingCrosses == true) {
+            if (developerModeActive == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2504,8 +2704,8 @@ function mousemoveevt(ev, t) {
 function mousedownevt(ev) {
     canvasLeftClick = 1;
 
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
@@ -2789,6 +2989,13 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
+            //resets the mode so that next click can move or select an object instead of drawing another line
+            //only happens when a line has been created between 2 objects
+            if ($("#linebutton").hasClass("pressed")){
+                $("#linebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
+            }
+            uimode = "normal";
+
             createCardinality();
             updateGraphics();
         }
@@ -2834,6 +3041,13 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
+            //resets the mode so that next click can move or select an object instead of drawing another line
+            //only happens when a line has been created between 2 objects
+            if ($("#umllinebutton").hasClass("pressed")){
+                $("#umllinebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
+            }
+            uimode = "normal";
+
             createCardinality();
             updateGraphics();
             }

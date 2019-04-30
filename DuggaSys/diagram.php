@@ -43,7 +43,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();"
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); developerMode(); initToolbox(); updateGraphics();"
  onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
@@ -85,19 +85,19 @@
                               <h4 class="label tlabel" id="labelCreate">Create</h4>
                               <div class="toolbar-drawer" id="drawerCreate">
                                   <div class="tooltipdialog">
-                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
+                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer" class='buttonsStyle unpressed' data="Create Attribute">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                       </button>
-                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
+                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
                                       </button>
-                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
+                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Relation">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
                                       </button>
-                                      <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
+                                      <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Class">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                     </button>
-                                      <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Text">
+                                      <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text">
                                           <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                                       </button>
                                   </div>
@@ -106,10 +106,10 @@
                           <div class="labelToolContainer">
                             <h4 class="label tlabel" id="labelDraw">Draw</h4>
                             <div class="toolbar-drawer" id="drawerDraw">
-                                <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Square">
+                                <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Square">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_square.svg">
                                 </button>
-                                <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Free">
+                                <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
                                 </button>
                             </div>
@@ -201,7 +201,7 @@
                     <span class="drop-down-label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="debugMode();">Developer mode</span>
+                            <span class="drop-down-option" onclick='developerMode();'>Developer mode</span>
                         </div>
                         <div id="displayAllTools" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
@@ -216,6 +216,9 @@
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
+                        </div>
+                        <div id="a4-orientation-item" class="drop-down-item-disabled">
+                            <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
                         </div>
                         <div id="a4-holes-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>

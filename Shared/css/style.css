@@ -149,8 +149,8 @@ p {
  * --------------================################================-------------- */
 
  #buttonDiv {
-   position: fixed;
    margin-top: -20px;
+   margin-bottom: 10px;
    height: 20px;
    background-color: white;
  }
@@ -1302,6 +1302,7 @@ input {
   filter:invert(100%);
 }
 .diagramAction{
+  cursor: pointer;
   border-radius: 5px;
   background-color: #614875;
   width: 47%;
@@ -1709,7 +1710,7 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 2px;
+  right: 18px;
   top: 100;
   z-index: 2;
   position: absolute;
@@ -1722,12 +1723,14 @@ div.submit-button:disabled {
 }
 
 #linebutton {
+  cursor: pointer;
   margin: 5px 0;
   display: inline;
   border-radius: 5px;
 }
 
 #umllinebutton {
+  cursor: pointer;
   display: inline;
   margin: 5px 0;
   border-radius: 5px;
@@ -3686,6 +3689,7 @@ only screen and (max-device-width: 320px) {
   background-color: #614875;
   color: #fff;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .tooltipDecrease .tooltiptextDec{
@@ -3728,6 +3732,7 @@ only screen and (max-device-width: 320px) {
   background-color: #614875;
   color: #fff;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .tooltipIncrease .tooltiptextInc{
