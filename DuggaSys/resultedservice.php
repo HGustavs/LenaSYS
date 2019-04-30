@@ -22,7 +22,7 @@ if(isset($_SESSION['uid'])){
 }
 
 $requestType = getOP('requestType');
-//$currentRowFilter = getOP('currentRowFilter');
+$visibleUserIDs = getOP('visibleuserids');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -106,7 +106,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($implodedEmails);
+	echo json_encode("Hej");
 	} else {
 
 //------------------------------------------------------------------------------------------------
