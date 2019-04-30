@@ -1,5 +1,4 @@
 <?php
-echo json_encode("Hej");
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
