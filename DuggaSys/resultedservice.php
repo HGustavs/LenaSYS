@@ -71,8 +71,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 if($requestType == "mail"){
 	$emailsArray = array();
-//	$count = "1";
-//	$test = "hej";
+	$count = "1";
+	$test = "hej";
 
 // 	 foreach($visibleUserIDs as $id)
 	for($i = 0; $i < $visibleUserIDs.length; $i++) {
@@ -94,7 +94,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode("hej");
+	echo json_encode($test);
 	} else {
 
 //------------------------------------------------------------------------------------------------
