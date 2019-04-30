@@ -2848,17 +2848,17 @@ function mouseupevt(ev) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 2 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 3 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
-                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)) {
+                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
@@ -2980,8 +2980,8 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
-        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine) {
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) && okToMakeLine) {
             erLineA = new Symbol(4); // Lines
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
@@ -3032,8 +3032,8 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
-        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 7 && symbolEndKind != 7) && okToMakeLine) {
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) && okToMakeLine) {
             umlLineA = new Symbol(7); //UML Lines
             umlLineA.name = "Line" + diagram.length
             umlLineA.topLeft = p1;
