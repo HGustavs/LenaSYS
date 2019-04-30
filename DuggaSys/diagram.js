@@ -36,12 +36,12 @@ AJAXService("get", {}, "DIAGRAM");
 
 ************************************************************/
 
-const kind = { 
-    path: 1, 
+const kind = {
+    path: 1,
     symbol: 2
 };
-const symbolKind = { 
-    uml: 1,  
+const symbolKind = {
+    uml: 1,
     erAttribute: 2,
     erEntity: 3,
     line: 4,
@@ -52,9 +52,9 @@ const symbolKind = {
 const mouseState = {
     empty: 0,                       // empty
     noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
-    insidePoint: 2,                 // mouse is pressed down and at a point in selected object 
-    insideMovableObject: 3,         // mouse pressed down inside a movable object  
-    boxSelectOrCreateMode: 4        // Box select or Create mode 
+    insidePoint: 2,                 // mouse is pressed down and at a point in selected object
+    insideMovableObject: 3,         // mouse pressed down inside a movable object
+    boxSelectOrCreateMode: 4        // Box select or Create mode
 };
 
 var gridSize = 16;                  // Distance between lines in grid
@@ -171,12 +171,12 @@ document.addEventListener("mousedown", function(e)
                 rightClick = true;
             }
         }
-    }, 
+    },
     false
 );
 
 // Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
-window.addEventListener("mousemove", function(e) 
+window.addEventListener("mousemove", function(e)
     {
         // deltas are used to determine the range of which the mouse is allowed to move when pressed.
         deltaX = 2;
@@ -185,23 +185,23 @@ window.addEventListener("mousemove", function(e)
             // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
             diffX = e.pageX - InitPageX;
             diffY = e.pageY - InitPageY;
-            if (    
-                (diffX > deltaX) || (diffX < -deltaX)    
-                || 
-                (diffY > deltaY) || (diffY < -deltaY)   
+            if (
+                (diffX > deltaX) || (diffX < -deltaX)
+                ||
+                (diffY > deltaY) || (diffY < -deltaY)
             ) {
                 rightClick = false;
                 // Entering MoveAround mode
                 if (uimode != "MoveAround") {
                     activateMovearound();
-                } 
+                }
                 updateGraphics();
             }
             else {
                 // If click event is needed, it goes in here.
                 rightClick = true;
-            } 
-        }  
+            }
+        }
     },
     false
 );
@@ -216,17 +216,17 @@ window.addEventListener("mouseup", function()
             deactivateMovearound();
             updateGraphics();
         }
-    }, 
+    },
     false
 );
 
 // Hides the context menu. Needed in order to be able to right click and drag to move the camera.
-window.addEventListener('contextmenu', function (e) 
+window.addEventListener('contextmenu', function (e)
     {
         if (rightClick != true) {
             e.preventDefault();
         }
-    }, 
+    },
     false
 );
 
@@ -822,19 +822,19 @@ diagram.checkForHover = function(posX, posY) {
 }
 
 // Indicates that objects are movable by changing the appearance of the cursor
-window.addEventListener("mousemove", function() 
-{   
+window.addEventListener("mousemove", function()
+{
     let indexOfHoveredObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
     if (indexOfHoveredObject != -1) {
             for (let i = 0; i < diagram.length; i++) {
                 if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked) {
                     canvas.style.cursor = "all-scroll";
-                } 
+                }
             }
         } else {
             canvas.style.cursor = "default";
         }
-    }, 
+    },
     false
 );
 
@@ -979,7 +979,7 @@ function initializeCanvas() {
     }
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
-    updateGraphics(); 
+    updateGraphics();
     boundingRect = canvas.getBoundingClientRect();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
@@ -1027,7 +1027,7 @@ function toggleVirtualA4() {
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
-function drawVirtualA4() {    
+function drawVirtualA4() {
     if(!toggleA4) {
         return;
     }
@@ -1051,7 +1051,7 @@ function drawVirtualA4() {
         ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
     }
     else if(A4Orientation == "landscape") {
-        ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);        
+        ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);
     }
 
     if(toggleA4Holes) {
@@ -1069,7 +1069,7 @@ function drawVirtualA4() {
             drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
             //Latter two holes
             drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
-            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);  
+            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
         }
     }
     ctx.restore();
@@ -1117,7 +1117,7 @@ function toggleA4Orientation() {
     else if(A4Orientation == "landscape"){
         A4Orientation = "portrait";
     }
-    
+
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
     updateGraphics();
 }
@@ -1126,7 +1126,7 @@ function toggleA4Orientation() {
 // resetToolbar: resets the toolbar to it's original position
 //------------------------------------------------------------
 
-function resetToolbarPosition(){ 
+function resetToolbarPosition(){
     document.getElementById("diagram-toolbar").style.top = (boundingRect.top + "px");
     document.getElementById("diagram-toolbar").style.left = (boundingRect.left + "px");
 }
@@ -1175,7 +1175,7 @@ function importFile() {
 //             Making the page more responsive
 //---------------------------------------------------
 
-function canvasSize() { 
+function canvasSize() {
     boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 30);
     heightWindow = (window.innerHeight - 144);
@@ -1512,7 +1512,7 @@ consloe.log = function(gobBluth) {
 
 
 //------------------------------------------------------------------------------
-// developerMode: 
+// developerMode:
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
@@ -1557,7 +1557,7 @@ function developerMode() {
 // changes to ER. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossER = false;
-function switchToolbarER() { 
+function switchToolbarER() {
     toolbarState = 1;                                                               // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
@@ -2265,9 +2265,9 @@ function setOrientationIcon(element, check) {
     // Set icon either to portrait or landscape
     if(toggleA4){
         if(A4Orientation == "landscape"){
-            $(element).children(".material-icons")[0].innerHTML = "crop_16_9"; 
+            $(element).children(".material-icons")[0].innerHTML = "crop_16_9";
         }
-        else if(A4Orientation == "portrait"){           
+        else if(A4Orientation == "portrait"){
             $(element).children(".material-icons")[0].innerHTML = "crop_portrait";
         }
     }
@@ -2345,7 +2345,7 @@ function switchToolbar(direction) {
       toolbarState = 1;
     }
   }
-  
+
   document.getElementById('toolbarTypeText').innerHTML = "ER";
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
@@ -2501,7 +2501,7 @@ function mousemoveevt(ev, t) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
-        if (sel.distance < tolerance && !diagram[lastSelectedObject].locked) {
+        if (sel.distance < tolerance && lastSelectedObject == -1 && !diagram[lastSelectedObject].locked) {
             canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
         } else {
             if(uimode == "MoveAround"){
@@ -2985,7 +2985,7 @@ function mouseupevt(ev) {
             //only happens when a line has been created between 2 objects
             if ($("#linebutton").hasClass("pressed")){
                 $("#linebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
-            }            
+            }
             uimode = "normal";
 
             createCardinality();
@@ -3037,7 +3037,7 @@ function mouseupevt(ev) {
             //only happens when a line has been created between 2 objects
             if ($("#umllinebutton").hasClass("pressed")){
                 $("#umllinebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
-            }            
+            }
             uimode = "normal";
 
             createCardinality();
