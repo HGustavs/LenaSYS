@@ -86,13 +86,13 @@ if($requestType == "mail"){
 // //	 foreach($visibleUserIDs as $id)
 // //	 {
 					$studentID = $visibleUserIDs[0];
-					$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username=:studentid");
-// 			$mailQuery = $pdo->prepare("SELECT user.email FROM user");
+			//		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username=:studentid");
+ 					$mailQuery = $pdo->prepare("SELECT user.email FROM user");
 //
 //
-					$mailQuery->bindParam(':studentid', $studentID);
-					$mailQuery->bindParam(':cid', $courseid);
-					$mailQuery->bindParam(':cvers', $coursevers);
+				//	$mailQuery->bindParam(':studentid', $studentID);
+				//	$mailQuery->bindParam(':cid', $courseid);
+				//	$mailQuery->bindParam(':cvers', $coursevers);
 //
 // 			if (!$mailQuery->execute() {
 // 				echo json_encode($mailQuery);
