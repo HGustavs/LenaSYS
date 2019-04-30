@@ -2201,6 +2201,7 @@ function mousemoveevt(ev, t) {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;
         }
+        updateGraphics();
         // If mouse is pressed down and at a point in selected object - move that point
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
