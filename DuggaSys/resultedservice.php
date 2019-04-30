@@ -26,7 +26,7 @@ if(isset($_SESSION['uid'])){
 }
 
 $requestType = getOP('requestType');
-//$visibleUserIDs = array();
+$visibleUserIDs = array();
 if($requestType != "UNK"){
 	var_dump($_POST);
 }
@@ -79,36 +79,36 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 if($requestType == "mail"){
 
-	$emailsArray = array();
-	$emailString = "";
-	$studentID = "";
-
-//	 foreach($visibleUserIDs as $id)
-//	 {
-//			$studentID = $visibleUserIDs[0];
-//			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username=:studentid");
-			$mailQuery = $pdo->prepare("SELECT user.email FROM user");
-
-
-//			$mailQuery->bindParam(':studentid', $studentID);
-//			$mailQuery->bindParam(':cid', $courseid);
-//			$mailQuery->bindParam(':cvers', $coursevers);
-
-			if (!$mailQuery->execute() {
-				echo json_encode($mailQuery);
-				$error=$mailQuery->errorInfo();
-				$debug="Error reading user entries".$error[2];
-			}
-
-			//$emailString += $mailQuery + "; ";
-	array_push($emailsArray,$mailQuery);
-//	}
-	//		array_push($groups[$row['groupKind']],$row['groupVal']);
-
-	// Seperates the emails with a ;.
-			$implodedEmails=implode('; ',$emailsArray);
-	// Returns the emails in a string representation.
-			echo json_encode($implodedEmails);
+// 	$emailsArray = array();
+// 	$emailString = "";
+// 	$studentID = "";
+//
+// //	 foreach($visibleUserIDs as $id)
+// //	 {
+// //			$studentID = $visibleUserIDs[0];
+// //			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username=:studentid");
+// 			$mailQuery = $pdo->prepare("SELECT user.email FROM user");
+//
+//
+// //			$mailQuery->bindParam(':studentid', $studentID);
+// //			$mailQuery->bindParam(':cid', $courseid);
+// //			$mailQuery->bindParam(':cvers', $coursevers);
+//
+// 			if (!$mailQuery->execute() {
+// 				echo json_encode($mailQuery);
+// 				$error=$mailQuery->errorInfo();
+// 				$debug="Error reading user entries".$error[2];
+// 			}
+//
+// 			//$emailString += $mailQuery + "; ";
+// 	array_push($emailsArray,$mailQuery);
+// //	}
+// 	//		array_push($groups[$row['groupKind']],$row['groupVal']);
+//
+// 	// Seperates the emails with a ;.
+// 			$implodedEmails=implode('; ',$emailsArray);
+// 	// Returns the emails in a string representation.
+// 			echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
