@@ -84,17 +84,14 @@ if($requestType == "mail"){
 		$mailQuery->bindParam(':cid', $courseid);
 		$mailQuery->bindParam(':cvers', $coursevers);
 
-		if($mailQuery->execute()){
-			//	var_dump($mailQuery);
-			//	$test += $count
-				array_push($emailsArray, "hej");
-		}
-		else {
+		if(!$mailQuery->execute()){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-
-
+		echo json_encode($mailQuery);
+	//	var_dump($mailQuery);
+	//	$test += $count
+		array_push($emailsArray, "hej");
 	}
 
 	// Seperates the emails with a ;.
