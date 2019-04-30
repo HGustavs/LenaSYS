@@ -1158,7 +1158,7 @@ function onToggleFilter(colId) {
 }
 
 function exportCell(format, cell, colname) {
-  console.log("INNE I EXPORT CELL!");
+  console.log(cell);
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
