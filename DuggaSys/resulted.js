@@ -1158,19 +1158,16 @@ function onToggleFilter(colId) {
 }
 function exportCell(format, cell, colname) {
   var todaysDate = new Date();
-  var currentYearDigits = todaysDate.getFullYear().toString().substr(2);  // ex if year 2019 digits is 19
+  var currentYearDigits = todaysDate.getFullYear().toString().substr(2);  // returns 19 if e.g year is 2019
   var ssnInt = parseInt(cell.ssn, 10);
   var ssnYearDigits = ssnInt.toString().substring(0,2)  // Same as currentYearDigits but for the ssn
-
-  // if lenght = 10 and cell.ssn last 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
-  // else str = 2 first digits of decenium
 
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
 			if (cell.ssn.length > 11) {
 				str = cell.ssn + ";";
-      } else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){
+      } else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){  // If the person is born on a date after the current it must be last century.
 				str = todaysDate.getFullYear().toString().substr(0,2) + cell.ssn + ";";
       }else{
         str = (todaysDate.getFullYear() -100).toString().substr(0,2) + cell.ssn + ";";
