@@ -3571,14 +3571,6 @@ only screen and (max-device-width: 590px) {
   #statisticsList {
     display: none;
   }
-
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
 }
 
 @media only screen and (max-width: 530px),
@@ -3610,14 +3602,6 @@ only screen and (max-device-width: 530px) {
 
   #statisticsList {
     display: none;
-  }
-
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
   }
 }
 
@@ -3666,14 +3650,6 @@ only screen and (max-device-width: 480px) {
   #statisticsList {
     display: none;
   }
-
-  #TopMenuStatic { 
-  position: fixed; 
-  top: 3px; 
-  left: 95px; 
-  right: 500px; 
-  z-index: 5001; 
-}
 }
 
 @media only screen and (max-width: 320px),
@@ -3684,14 +3660,6 @@ only screen and (max-device-width: 320px) {
 
   #statisticsList {
     display: none;
-  }
-
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
   }
 }
 
