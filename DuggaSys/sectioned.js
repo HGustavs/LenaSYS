@@ -963,7 +963,7 @@ function returnedSection(data) {
 
     } else {
       // No items were returned!
-      str += "<div class='bigg'>";
+      str += "<div id='noAccessMessage' class='bigg'>";
       str += "<span>You either have no access or there isn't anything under this course</span>";
       str += "</div>";
     }
