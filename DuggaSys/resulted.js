@@ -1118,6 +1118,7 @@ function conv(item, kind) {
 
 function renderColumnFilter(col, status, colname) {
 	str = "";
+  intVarGradient = 0;
   if (colname == "FnameLnameSSN")
   return str;
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
@@ -1132,12 +1133,10 @@ function renderColumnFilter(col, status, colname) {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>";
-    intVarGradient--;
 	} else {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
-    intVarGradient++;
 	}
   console.log(intVarGradient);
   console.log(str);
