@@ -1167,7 +1167,7 @@ function exportCell(format, cell, colname) {
 		if (colname == "FnameLnameSSN") {
 			if (cell.ssn.length > 11) {
 				str = cell.ssn + ";";
-      } else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){  // If the person is born on a date after the current it must be last century.
+      }else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){  // If the person is born on a date after the current it must be last century.
 				str = todaysDate.getFullYear().toString().substr(0,2) + cell.ssn + ";";
       }else{
         str = (todaysDate.getFullYear() -100).toString().substr(0,2) + cell.ssn + ";";
