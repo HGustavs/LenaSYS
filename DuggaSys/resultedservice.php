@@ -72,8 +72,10 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 if($requestType == "mail"){
 	$emailsArray = array();
 
-	foreach($visibleUserIDs as $studentID) {
-	//	$studentID = $visibleUserIDs[0];
+// 	 foreach($visibleUserIDs as $id)
+	for($i = 0; $i < $visibleUserIDs.length; $i++) {
+		$studentID = $visibleUserIDs[$i];
+		$count = 0;
 		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
 		$mailQuery->bindParam(':studentid', $studentID);
@@ -84,6 +86,7 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
+		$count++;
 		array_push($emailsArray, "hej");
 	}
 
