@@ -325,7 +325,11 @@ function returnedCourse(data)
 
 	if (data['writeaccess']) {
 		str += "<div style='float:right;'>";
-		str += "<div class='fixed-action-button'>";
+		if(localStorage.getItem("cookieMessage")!="off"){
+			str += "<div class='fixed-action-button' style='bottom:64px;'>";
+		}else{
+			str += "<div class='fixed-action-button'>";
+		}
 		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()'>+</a>";
 		str += "</div>";
 		str += "</div>";

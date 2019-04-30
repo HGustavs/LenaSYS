@@ -98,8 +98,7 @@
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
 			$("#cookiemsg").css("display", "none");
-		}
-		else{
+		}else{
 			$("#cookiemsg").css("display", "flex");
 		}
 

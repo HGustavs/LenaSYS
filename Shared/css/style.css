@@ -3039,14 +3039,11 @@ table {
 }
 
 .alertmsg#cookiemsg {
-  bottom: 10px;
-  width: 900px !important;
-  height: 60px !important;
-  border-radius: 5px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  bottom: 0;
+}
+
+.alertmsg#cookiemsg input {
+  align-self: center;
 }
 
 /* } */
@@ -3812,6 +3809,9 @@ only screen and (max-device-width: 320px) {
   right: 24px;
   z-index: 1;
   touch-action: none;
+}
+.fixed-action-button.cookie-fab {
+  bottom: 64px !important;
 }
 .fixed-action-button.sectioned {
   right: 75px;
