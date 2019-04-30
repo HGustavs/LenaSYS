@@ -84,8 +84,7 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		echo json_encode("hej");
-		array_push($emailsArray, $mailQuery);
+		array_push($emailsArray, "hej");
 	}
 
 	// Seperates the emails with a ;.
