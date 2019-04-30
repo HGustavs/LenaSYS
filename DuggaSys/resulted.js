@@ -1121,21 +1121,22 @@ function renderColumnFilter(col, status, colname) {
   if (colname == "FnameLnameSSN")
   return str;
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
-  intVarGradient++;
-  if(intVarGradient % 2 == 0){
-    str = "<div class='hi ";
-  } else {
-    str = "<div class='lo ";
+  for(intVarGradient; intVarGradient < moments.length; intVarGradient++;){
+    if(intVarGradient % 2 == 0){
+      str = "<div class='hi ";
+    } else {
+      str = "<div class='lo ";
+    }
+    if (status) {
+      str += "checkbox-dugga'>";
+      str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+      str += "</div>";
+    } else {
+      str += "checkbox-dugga'>";
+      str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+      str += "</div>"
+    }
   }
-	if (status) {
-		str += "checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>";
-	} else {
-		str += "checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	}
   console.log(intVarGradient);
   console.log(str);
   return str;
