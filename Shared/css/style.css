@@ -1710,7 +1710,7 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 2px;
+  right: 18px;
   top: 100;
   z-index: 2;
   position: absolute;
@@ -3688,6 +3688,8 @@ only screen and (max-device-width: 320px) {
   position: relative;
   background-color: #614875;
   color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .tooltipDecrease .tooltiptextDec{
@@ -3729,6 +3731,8 @@ only screen and (max-device-width: 320px) {
   position: relative;
   background-color: #614875;
   color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .tooltipIncrease .tooltiptextInc{
