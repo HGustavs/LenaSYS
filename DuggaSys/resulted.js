@@ -1159,10 +1159,11 @@ function onToggleFilter(colId) {
 function exportCell(format, cell, colname) {
   var todaysDate = new Date();
   var currentYearDigits = todaysDate.getFullYear().toString().substr(2);
-  var ssnYearDigits = parseInt(cell.ssn, 10);
+  var ssnInt = parseInt(cell.ssn, 10);
+  var ssnYearDigits = ssnInt.toString().substring(0,2)
 
   console.log(currentYearDigits);
-  console.log("substringed: "+ssnYearDigits.toString().substring(0,2));
+  console.log(ssnYearDigits);
 
   // if lenght = 10 and cell.ssn last 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
   // else str = 2 first digits of decenium
