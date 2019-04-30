@@ -643,14 +643,6 @@ header td {
   display: none;
 }
 
-#TopMenuStatic { 
-  position: fixed; 
-  top: 3px; 
-  left: 95px; 
-  right: 500px; 
-  z-index: 5001; 
-}
-
 .navheader {
   height: 20px;
   margin-bottom: 10px;
@@ -3362,6 +3354,14 @@ only screen and (max-device-width: 1085px) {
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
+
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 500px; 
+    z-index: 5001; 
+  }
 }
 
 @media only screen and (max-width: 800px),
@@ -3377,6 +3377,14 @@ only screen and (max-device-width: 800px) {
 
   #statisticsList {
     display: none;
+  }
+
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 500px; 
+    z-index: 5001; 
   }
 }
 
