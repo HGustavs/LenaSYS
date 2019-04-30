@@ -86,28 +86,12 @@ if($requestType == "mail"){
 			$debug="Error reading user entries".$error[2];
 		}
 		array_push($emailsArray, $mailQuery);
-//		array_push($groups[$row['groupKind']],$row['groupVal']);
 	}
-
-	// for($i = 0; $i < $currentRowFilter.length; $i ++) {
-	// 	$studentID = "";
-	// 	$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
-	//
-	// 	$mailQuery->bindParam(':studentID', $studentID);
-	// 	$mailQuery->bindParam(':cid', $courseid);
-	// 	$mailQuery->bindParam(':cvers', $coursevers);
-	//
-	// 	if(!$mailQuery->execute()){
-	// 		$error=$mailQuery->errorInfo();
-	// 		$debug="Error reading user entries".$error[2];
-	// 	}
-	// 	array_push($emailsArray['email']);
-	// }
 
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode("Hej");
+	echo json_encode($implodedEmails);
 	} else {
 
 //------------------------------------------------------------------------------------------------
