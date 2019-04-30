@@ -474,9 +474,9 @@ window.onkeyup = function(event) {
     }
 }
 
-//----------------------------------------------------------------------
-// arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
-//----------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+// arrowKeyPressed: Handler for when pressing arrow keys when an object is selected
+//----------------------------------------------------------------------------------
 
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
@@ -576,7 +576,7 @@ function copySymbol(symbol) {
 
 points.drawPoints = function() {
     ctx.strokeStyle = crossStrokeStyle1;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2 * zoomValue;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
         if (!point.isSelected) {
@@ -959,6 +959,10 @@ diagram.updateQuadrants = function() {
     }
 }
 
+diagram.getZoomValue = function(){
+    return zoomValue;
+}
+
 function initializeCanvas() {
     //hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
     setInterval(refreshFunction, refreshTimer);
@@ -985,6 +989,7 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
+    canvas.addEventListener('wheel', scrollZoom, false);
 }
 
 
@@ -1127,6 +1132,7 @@ function toggleA4Orientation() {
 //------------------------------------------------------------
 
 function resetToolbarPosition(){
+    //Assign position for the toolbar according to the canvas bounds
     document.getElementById("diagram-toolbar").style.top = (boundingRect.top + "px");
     document.getElementById("diagram-toolbar").style.left = (boundingRect.left + "px");
 }
@@ -1181,11 +1187,10 @@ function canvasSize() {
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
-    ctx.clearRect(sx, sy, widthWindow, heightWindow);
-    ctx.translate(sx, sy);
-    ctx.scale(1, 1);
-    ctx.scale(zoomValue, zoomValue);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    updateGraphics();
 }
+
 
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
@@ -1389,7 +1394,7 @@ function connectedObjects(line) {
 //------------------------------------------
 
 function drawGrid() {
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     let zoomGridSize = gridSize * zoomValue;
     myOffsetX = origoOffsetX % zoomGridSize;
     myOffsetY = origoOffsetY % zoomGridSize;
@@ -1434,7 +1439,7 @@ function drawOrigo() {
     const colors = ['#0fbcf9','transparent','#0fbcf9','transparent'];
 
     ctx.save();
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
 
     for(let i=0;i<4;i++){
@@ -1454,7 +1459,7 @@ function drawOrigo() {
 }
 
 function drawOrigoLine() {
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
     ctx.beginPath();
     ctx.moveTo(0, origoOffsetY);
@@ -2443,6 +2448,18 @@ function changeZoom(zoomValue){
   zoomInMode();
 }
 
+//-----------------------
+// Canvas zoom on scroll
+//-----------------------
+
+function scrollZoom(event) {
+    if(event.deltaY > 0){
+        changeZoom(-0.1);
+    } else {
+        changeZoom(0.1);
+    }
+}
+
 //----------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
 //----------------------------------------------------------------------
@@ -2488,8 +2505,8 @@ function mousemoveevt(ev, t) {
 
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
-        origoOffsetX += canvasToPixels(ev.clientX - boundingRect.left).x - startMouseCoordinateX;
-        origoOffsetY += canvasToPixels(0, ev.clientY - boundingRect.top).y - startMouseCoordinateY;
+        origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
+        origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
         startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     }

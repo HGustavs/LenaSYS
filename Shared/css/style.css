@@ -3688,6 +3688,7 @@ only screen and (max-device-width: 320px) {
   position: relative;
   background-color: #614875;
   color: #fff;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -3730,6 +3731,7 @@ only screen and (max-device-width: 320px) {
   position: relative;
   background-color: #614875;
   color: #fff;
+  border-radius: 6px;
   cursor: pointer;
 }
 
