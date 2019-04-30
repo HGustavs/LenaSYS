@@ -88,7 +88,7 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
-		echo json_encode($mailQuery);
+	//	echo json_encode($mailQuery);
 	//	var_dump($mailQuery);
 	//	$test += $count
 		array_push($emailsArray, "hej");
@@ -97,7 +97,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($implodedEmails);
+	echo json_encode($visibleUserIDs[0]);
 	} else {
 
 //------------------------------------------------------------------------------------------------
