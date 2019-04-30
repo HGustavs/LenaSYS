@@ -78,7 +78,7 @@ if($requestType == "mail"){
 // 	 foreach($visibleUserIDs as $id)
 	for($i = 0; $i < $lenghtOfVisibleUserIDs; $i++) {
 		$studentID = $visibleUserIDs[$i];
-		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
+		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentid");
 
 		$mailQuery->bindParam(':studentid', $studentID);
 		$mailQuery->bindParam(':cid', $courseid);
@@ -88,6 +88,9 @@ if($requestType == "mail"){
 			$error=$mailQuery->errorInfo();
 			$debug="Error reading user entries".$error[2];
 		}
+		// foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
+		// 	array_push($emailsArray,$row['email']);
+		// }
 	//	echo json_encode($mailQuery);
 	//	var_dump($mailQuery);
 	//	$test += $count
