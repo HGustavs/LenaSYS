@@ -1519,7 +1519,6 @@ function TouchFABUp(e)
 {
 	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
 	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
-		clearTimeout(pressTimer);
 		createQuickItem();
 	}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
 		FABToggle();
