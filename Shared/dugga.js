@@ -1581,7 +1581,3 @@ function hideCookieMessage() {
 		$("#cookiemsg").css("opacity", "1");
 	}, 200);
 }
-
-function createFAB() {
-
-}
