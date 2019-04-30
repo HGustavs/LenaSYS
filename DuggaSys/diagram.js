@@ -748,7 +748,7 @@ window.addEventListener("mousemove", function()
     if (indexOfHoveredObject != -1) {
             for (let i = 0; i < diagram.length; i++) {
                 // If the symbol is a line or an umlline or the object is locked the cursor pointer will remain default, otherwise it's of type all-scroll
-                if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked && diagram[indexOfHoveredObject].symbolkind != 7) {
+                if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked && diagram[indexOfHoveredObject].symbolkind != 7 && uimode != "CreateLine") {
                     canvas.style.cursor = "all-scroll";
                 }
             }
