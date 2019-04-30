@@ -1160,9 +1160,9 @@ function exportCell(format, cell, colname) {
   var todaysDate = new Date();
   var currentYearDigits = todaysDate.getFullYear().toString().substr(2);
   var ssnYearDigits = cell.ssn;
-  ssnYearDigits = ssnYearDigits.toString().substr(0,2)
+
   console.log(currentYearDigits);
-  console.log(ssnYearDigits);
+  console.log(ssnYearDigits.toString().substr(0,2));
 
   // if lenght = 10 and cell.ssn last 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
   // else str = 2 first digits of decenium
