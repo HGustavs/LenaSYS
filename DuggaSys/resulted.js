@@ -1158,7 +1158,7 @@ function onToggleFilter(colId) {
 }
 function exportCell(format, cell, colname) {
   var todaysDate = new Date();
-  var testDate = todaysDate.getFullYear().substr(0,2)
+  var testDate = todaysDate.getFullYear().substr(0,2);
   console.log(testDate);
 	str = "";
 	if (format === "csv") {
