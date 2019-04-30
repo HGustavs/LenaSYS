@@ -784,6 +784,7 @@ function AJAXService(opt,apara,kind)
 	// 		dataType: "json",
 	// 		success: returnedAnalysis
 	// 	});
+	
 	} else if(kind=="GETQUIZ") {
 		$.ajax({
 			url: "duggaedservice.php",
