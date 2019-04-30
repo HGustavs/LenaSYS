@@ -69,7 +69,7 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
-if($requestType == "mail"){
+if($requestType == "mail" && checklogin()){
 	switch($searchterm)
 	{
 		case strpos($searchterm, ' ') !== false:
