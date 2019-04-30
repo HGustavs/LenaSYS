@@ -30,7 +30,7 @@ if($opt=="REFRESH"){
     $maxLoginTries = 10;
     $log_db = new PDO('sqlite:../../log/loglena4.db');
     $IP = getIP();
-    $timeInterval = 1; // in minutes
+    $timeInterval = 10; // in minutes
 
     $query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM userLogEntries
       WHERE eventType = 4
