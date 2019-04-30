@@ -1158,12 +1158,13 @@ function onToggleFilter(colId) {
 }
 function exportCell(format, cell, colname) {
   var todaysDate = new Date();
-  var currentYearDigits = todaysDate.getFullYear().toString().substr(2);
+  var currentYearDigits = todaysDate.getFullYear().toString().substr(2);  // ex if year 2019 digits is 19
   var ssnInt = parseInt(cell.ssn, 10);
-  var ssnYearDigits = ssnInt.toString().substring(0,2)
+  var ssnYearDigits = ssnInt.toString().substring(0,2)  // Same as currentYearDigits but for the ssn
 
-  console.log(currentYearDigits);
-  console.log(ssnYearDigits);
+  // console.log(currentYearDigits);
+  // console.log(ssnYearDigits);
+  console.log(todaysDate.getFullYear() -100);
 
   // if lenght = 10 and cell.ssn last 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
   // else str = 2 first digits of decenium
@@ -1174,7 +1175,7 @@ function exportCell(format, cell, colname) {
 			if (cell.ssn.length > 11) {
 				str = cell.ssn + ";";
       } else if(cell.ssn.length == 11 && currentYearDigits > ssnYearDigits){
-				str = currentYearDigits = todaysDate.getFullYear().toString().substr(1,2); + cell.ssn + ";";
+				str = todaysDate.getFullYear().toString().substr(1,2); + cell.ssn + ";";
 	    }else{
         //str =  + cell.ssn + ";";
       }
