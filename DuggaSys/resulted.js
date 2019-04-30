@@ -1159,7 +1159,7 @@ function onToggleFilter(colId) {
 function exportCell(format, cell, colname) {
   var todaysDate = new Date();
   var currentYearDigits = todaysDate.getFullYear().toString().substr(2);
-  var ssnYearDigits = cell.ssn;
+  var ssnYearDigits = parseInt(cell.ssn, 10);
 
   console.log(currentYearDigits);
   console.log(ssnYearDigits.toString().substr(0,2));
