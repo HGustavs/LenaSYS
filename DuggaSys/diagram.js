@@ -1013,9 +1013,9 @@ function updateGraphics() {
         distanceMovedY += mouseDiffY;
     }
 
-    diagram.updateQuadrants();
     drawGrid();
     diagram.sortConnectors();
+    diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
     drawVirtualA4();
