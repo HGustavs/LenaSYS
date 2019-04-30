@@ -71,11 +71,11 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 if($requestType == "mail"){
 	$emailsArray = array();
+	$count = 0;
 
 // 	 foreach($visibleUserIDs as $id)
 	for($i = 0; $i < $visibleUserIDs.length; $i++) {
 		$studentID = $visibleUserIDs[$i];
-		$count = 0;
 		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
 		$mailQuery->bindParam(':studentid', $studentID);
@@ -93,7 +93,7 @@ if($requestType == "mail"){
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
-	echo json_encode($implodedEmails);
+	echo json_encode($implodedEmails , $count);
 	} else {
 
 //------------------------------------------------------------------------------------------------
