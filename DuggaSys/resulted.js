@@ -718,6 +718,8 @@ function createSortableTable(data) {
 
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
+
+    intVarGradient = 0;
 }
 
 function gradeFilterHandler() {
@@ -1118,7 +1120,6 @@ function conv(item, kind) {
 
 function renderColumnFilter(col, status, colname) {
 	str = "";
-  intVarGradient = 0;
   if (colname == "FnameLnameSSN")
   return str;
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
