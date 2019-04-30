@@ -1162,7 +1162,7 @@ function exportCell(format, cell, colname) {
   var ssnYearDigits = parseInt(cell.ssn, 10);
 
   console.log(currentYearDigits);
-  console.log(ssnYearDigits.toString());
+  console.log("substringed: "+ssnYearDigits.toString().substring(0,2));
 
   // if lenght = 10 and cell.ssn last 2 ex 98 < current year last 2 digits then str = first 2 digits of current decenium
   // else str = 2 first digits of decenium
