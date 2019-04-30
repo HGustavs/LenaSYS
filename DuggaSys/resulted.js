@@ -1157,6 +1157,7 @@ function onToggleFilter(colId) {
 
 }
 function exportCell(format, cell, colname) {
+  currentTime = new Date();
   console.log(currentTime.getTime());
 	str = "";
 	if (format === "csv") {
