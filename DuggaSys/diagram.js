@@ -2713,9 +2713,9 @@ function mousedownevt(ev) {
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
-    if(uimode == "Moved" && md != 4) {
+    if(uimode == "Moved" && md != mouseState.boxSelectOrCreateMode) {
         uimode = "normal";
-        md = 0;
+        md = mouseState.empty;
     }
 
     if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
@@ -3015,7 +3015,7 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (md == 4 && uimode == "normal") {
+    } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }
     else if(uimode != "Moved" && !ctrlIsClicked && md != mouseState.boxSelectOrCreateMode) {
@@ -3028,7 +3028,7 @@ function mouseupevt(ev) {
         if (lastSelectedObject >= 0) {
             selected_objects.push(diagram[lastSelectedObject]);
             //You have to target an object when you start to draw
-            if(md != 0) diagram[lastSelectedObject].targeted = true;
+            if(md != mouseState.empty) diagram[lastSelectedObject].targeted = true;
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
