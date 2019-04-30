@@ -314,7 +314,7 @@ svg text {
  * --------------================################================-------------- */
 
  @media only screen and (min-width: 1121px){
-	#smallerViewport {
+	#smallerViewportArea {
 		display: none;
 	}
 }
@@ -341,7 +341,7 @@ svg text {
 	}
 	#smallerViewportHead{
 		width: 100%;
-		height: 35px;
+		height: 39px;
 		background-color: #614875;
 	}
 	#smallerViewportLabel{
@@ -352,7 +352,10 @@ svg text {
 	#smallerViewportSelect{
 		width: 100%;
 	}
-	#smallerViewport input{
-		width: 98%;
+	#smallerViewportArea input{
+		width: 97%;
+	}
+	#smallerViewportUploadButton{
+		margin-left: 3px;
 	}
 }
