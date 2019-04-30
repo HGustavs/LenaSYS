@@ -22,7 +22,7 @@ if(isset($_SESSION['uid'])){
 }
 
 $requestType = getOP('requestType');
-$currentRowFilter = getOP('currentRowFilter');
+//$currentRowFilter = getOP('currentRowFilter');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -72,7 +72,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 if($requestType == "mail"){
 	$emailsArray = array();
 
-	for($i = 0; $i < $currentRowFilter.length; $i ++) {
+	for($i = 0; $i < 1; $i ++) {
 		$studentID = "";
 		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.uid =:studentID");
 
