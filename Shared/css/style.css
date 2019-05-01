@@ -643,14 +643,6 @@ header td {
   display: none;
 }
 
-#TopMenuStatic { 
-  position: fixed; 
-  top: 3px; 
-  left: 95px; 
-  right: 500px; 
-  z-index: 5001; 
-}
-
 .navheader {
   height: 20px;
   margin-bottom: 10px;
@@ -3334,6 +3326,13 @@ only screen and (max-device-width: 1085px) {
         margin-top: 0px;
         min-width: 375px;
     }
+    #TopMenuStatic { 
+      position: fixed; 
+      top: 3px; 
+      left: 95px; 
+      right: 500px; 
+      z-index: 5001; 
+    }
     #fileLink{
         /*min-width: 375px;*/
     }
@@ -3374,7 +3373,13 @@ only screen and (max-device-width: 800px) {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
-
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 500px; 
+    z-index: 5001; 
+  }
   #statisticsList {
     display: none;
   }
