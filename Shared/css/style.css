@@ -643,6 +643,14 @@ header td {
   display: none;
 }
 
+#TopMenuStatic { 
+  position: fixed; 
+  top: 3px; 
+  left: 95px; 
+  right: 500px; 
+  z-index: 5001; 
+}
+
 .navheader {
   height: 20px;
   margin-bottom: 10px;
@@ -3326,13 +3334,6 @@ only screen and (max-device-width: 1085px) {
         margin-top: 0px;
         min-width: 375px;
     }
-    #TopMenuStatic { 
-      position: fixed; 
-      top: 3px; 
-      left: 95px; 
-      right: 500px; 
-      z-index: 5001; 
-    }
     #fileLink{
         /*min-width: 375px;*/
     }
@@ -3373,13 +3374,7 @@ only screen and (max-device-width: 800px) {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
+
   #statisticsList {
     display: none;
   }
@@ -3393,13 +3388,7 @@ only screen and (max-device-width: 768px) {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
+
   #cookiemsg {
     background-color: var(--color-accent);
     z-index: 1000;
@@ -3586,13 +3575,6 @@ only screen and (max-device-width: 590px) {
     height: 26px;
     opacity: 1.0;
   }
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
 
   #statisticsList {
     display: none;
@@ -3606,13 +3588,6 @@ only screen and (max-device-width: 530px) {
     -webkit-transform: scale(0.6, 0.6);
     transform: scale(0.6, 0.6);
     left: 4px;
-  }
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
   }
   .loginBox {
     /*top: 8%;
@@ -3640,13 +3615,6 @@ only screen and (max-device-width: 530px) {
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3672,22 +3640,19 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader input.hamburger {
     position: absolute;
-    top: 3px;
+    top: 66px;
     right: 10px;
-    left:20px;
   }
   table.navheader div.hamburger {
     position: absolute;
-    top: 3px;
+    top: 66px;
     right: 10px;
-    left:20px;
   }
   table.navheader div.hamburgerMenu {
     right: 10px;
     top: 110px;
     margin-top: 0px;
     margin-left: 0px;
-    left: 20px; 
   }
 
   #statisticsList {
@@ -3697,13 +3662,6 @@ only screen and (max-device-width: 480px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
   #Sectionlist .course {
     font-size: 14px;
   }
@@ -3871,13 +3829,6 @@ only screen and (max-device-width: 320px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 500px; 
-    z-index: 5001; 
-  }
   .migration-row {
     width: 95%;
     margin: 1rem auto;
