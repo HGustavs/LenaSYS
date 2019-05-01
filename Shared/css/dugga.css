@@ -338,6 +338,7 @@ svg text {
 		border-top: none;
 		width: 180px;
 		font-weight: 600;
+		height: 170px;
 	}
 	#smallerViewportHead{
 		width: 100%;
@@ -359,6 +360,10 @@ svg text {
 		margin-left: 3px;
 		height: 30px;
 		cursor: pointer;
+	}
+	#smallerViewportUploadButton:hover{
+		background-color: #614875;
+		color: #F0F0F0;
 	}
 	#prevSub{
 		margin-top: 10px;
