@@ -3607,6 +3607,13 @@ only screen and (max-device-width: 530px) {
     transform: scale(0.6, 0.6);
     left: 4px;
   }
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 500px; 
+    z-index: 5001; 
+  }
   .loginBox {
     /*top: 8%;
     left: 10%;*/
@@ -3633,6 +3640,13 @@ only screen and (max-device-width: 530px) {
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 500px; 
+    z-index: 5001; 
+  }
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3683,6 +3697,13 @@ only screen and (max-device-width: 480px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 500px; 
+    z-index: 5001; 
+  }
   #Sectionlist .course {
     font-size: 14px;
   }
@@ -3850,6 +3871,13 @@ only screen and (max-device-width: 320px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 500px; 
+    z-index: 5001; 
+  }
   .migration-row {
     width: 95%;
     margin: 1rem auto;
