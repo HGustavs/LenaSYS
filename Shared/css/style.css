@@ -2424,6 +2424,7 @@ span.arrow {
 
 .submit-button {
   background-color: var(--color-primary);
+  position: absolute;
   border: 0px;
   width: 110px;
   height: 30px;
