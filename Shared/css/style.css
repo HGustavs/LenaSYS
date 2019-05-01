@@ -3650,7 +3650,7 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader div.hamburgerMenu {
     right: 10px;
-    top: 10px;
+    top: 110px;
     margin-top: 0px;
     margin-left: 0px;
   }
