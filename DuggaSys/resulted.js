@@ -38,7 +38,7 @@ function setup() {
 	/*    Add filter menu   */
 	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
-	filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
+	filt += "<td id='select' class='navButt'>";
 	filt += "<div style='z-index: 1'>";
 
 	
