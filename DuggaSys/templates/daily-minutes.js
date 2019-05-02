@@ -122,10 +122,15 @@ function returnedDugga(data)
 			// UNK
 		}
 
+		var windowWidth = $(window).innerWidth();
 		var duggaFiles = data["files"][inParams["moment"]];
 		if($("#submitButtonTable").length != 0) {
-			createFileUploadArea(duggaParams["submissions"]);
-			createSmallerViewportForm(duggaParams["submissions"]);
+			if(windowWidth > 1120){
+				createFileUploadArea(duggaParams["submissions"]);
+			}
+			if(windowWidth < 1120){
+				createSmallerViewportForm(duggaParams["submissions"]);
+			}
 			for (var k=0; k < duggaParams["submissions"].length; k++){
 				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
 	    		if (duggaParams['uploadInstruction'] !== null){
