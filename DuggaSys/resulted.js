@@ -697,7 +697,7 @@ function createSortableTable(data) {
 		tblbody: studentInfo,
 		tblfoot: []
 	}
-  intVarGradient = 0;
+  //intVarGradient = 0;
 	var colOrder = buildColumnOrder();
 	myTable = new SortableTable({
 		data: tabledata,
