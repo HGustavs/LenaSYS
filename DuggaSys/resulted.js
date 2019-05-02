@@ -38,8 +38,8 @@ function setup() {
 	/*    Add filter menu   */
 	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
-	filt += "<div class='navButt'>";
-
+	filt += "<td class='navButt'>";
+	
 
 	
 
