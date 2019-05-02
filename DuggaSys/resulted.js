@@ -717,9 +717,9 @@ function createSortableTable(data) {
 	myTable.renderTable();
 
   if(moments.length % 2 == 0){
-    intVarGradient = 1;
+    intVarGradient = 0;
   }
-  
+
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
