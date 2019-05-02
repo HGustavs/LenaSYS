@@ -1127,7 +1127,7 @@ function renderColumnFilter(col, status, colname) {
     intVarGradient++;
   } else {
     str = "<div class='lo ";
-    intVarGradient--;
+    //intVarGradient--;
   }
 
 	if (status) {
@@ -1141,6 +1141,8 @@ function renderColumnFilter(col, status, colname) {
 	}
   console.log(intVarGradient);
   console.log(str);
+  if(intVarGradient = moments.length)
+    intVarGradient = 0;
   return str;
 }
 
