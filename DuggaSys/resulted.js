@@ -1130,6 +1130,7 @@ function renderColumnFilter(col, status, colname) {
   }
   var hello = 0;
   hello++;
+  console.log(hello);
   if(moments.length == hello){
     intVarGradient = 1;
   }
