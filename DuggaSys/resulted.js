@@ -31,7 +31,6 @@ var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
 var intVarGradient = 0;
-var hello = 0;
 
 function setup() {
 	//Benchmarking function
@@ -1122,6 +1121,9 @@ function renderColumnFilter(col, status, colname) {
   if (colname == "FnameLnameSSN")
   return str;
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
+  if(moments.length % 2 == 0){
+    intVarGradient++;
+  }
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
     intVarGradient++;
@@ -1129,12 +1131,7 @@ function renderColumnFilter(col, status, colname) {
     str = "<div class='lo ";
     intVarGradient--;
   }
-  hello++;
-  console.log(hello);
-  if(moments.length == hello){
-    intVarGradient = 0;
-    hello = 0;
-  }
+
 	if (status) {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
