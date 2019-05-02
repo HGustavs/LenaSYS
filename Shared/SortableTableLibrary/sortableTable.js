@@ -93,7 +93,7 @@ function clickedInternal(event, clickdobj) {
 	}
 	sortableTable.currentTable = active;
 
-	// when a dropdown input in row is opened and edited(seems to only be in accessed) 
+	// when a dropdown input in row is opened and edited(seems to only be in accessed)
 	if (sortableTable.currentTable.showEditCell != null) {
 		var cellelement = event.target.closest("td");
 		var rowelement = event.target.closest("tr");
@@ -211,6 +211,7 @@ function SortableTable(param) {
 	// Fenced paramters
 
 	var tbl = getparam(param.data, { tblhead: {}, tblbody: [], tblfoot: {} });
+	var currentRowFilter = tbl.tblbody;
 	this.tableid = getparam(param.tableElementId, "UNK");
 	var filterid = getparam(param.filterElementId, "UNK");
 	var caption = getparam(param.tableCaption, "UNK");
@@ -239,7 +240,7 @@ function SortableTable(param) {
 		columnOrder.push(rowsumList[i][0]['id']);
 	}
 
-	// Private member variables 
+	// Private member variables
 	var result = 0;
 	var columnfilter = [];
 	var sortcolumn = "UNK";
@@ -524,7 +525,7 @@ function SortableTable(param) {
 		// Save column name to local storage!
 		localStorage.setItem(this.tableid + DELIMITER + "sortcol", col);
 		localStorage.setItem(this.tableid + DELIMITER + "sortkind", kind);
-		
+
 		sortcolumn = col;
 		sortkind = kind;
 
@@ -552,7 +553,7 @@ function SortableTable(param) {
 
 	this.getSortkind = function () {
 		return sortkind;
-	}			
+	}
 
 	this.magicHeader = function () {
 		// Assign table and magic headings table(s)
@@ -646,12 +647,42 @@ function SortableTable(param) {
 		}
 	}
 
+	// e-mail all visible users
 	this.export = function (format, del) {
 		var str = "";
 
 		if (del === "undefined" || del === null) {
 			del = ",";
 		}
+
+		this.mail = function(cidMail, crsMail, reqType) {
+	 var activeFilteringUsername = [];
+	 for(var i = 0; i < currentRowFilter.length; i++)
+	 {
+		if(currentRowFilter[i] != null)
+		{
+			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
+		}
+	 }
+
+	$.ajax({
+		url: "resultedservice.php",
+		type: "POST",
+		data: {
+			'courseid': cidMail,
+			'coursevers': crsMail,
+			'visibleuserids': activeFilteringUsername,
+			'requestType': reqType
+		},
+		dataType: "JSON",
+		error: function(xhr, status, error) {
+			var err = eval("(" + xhr.responseText + ")");
+		},
+		success: function(data){
+			window.location.assign("mailto:?bcc=" + data);
+		}
+	});
+}
 
 		// Export visible columns
 		var rendcnt = 0;
@@ -742,7 +773,7 @@ function newCompare(firstCell, secoundCell) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
-		} 
+		}
 	   //Check if the cell is a valid cell in the table.
 	}else if (typeof firstCell === 'object' && col.includes("lid")){
 		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
@@ -815,7 +846,7 @@ function newCompare(firstCell, secoundCell) {
 			val = secoundCell < firstCellTemp;
 		}
 	}
-	
+
 	return val;
 
 }
