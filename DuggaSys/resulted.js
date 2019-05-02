@@ -64,7 +64,7 @@ function setup() {
   filt += `<div class='tooltip-searchbar-box'>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
- 
+
 	$("#menuHook").before(filt);
   */
 
@@ -1130,19 +1130,29 @@ function conv(item, kind) {
 }
 
 function renderColumnFilter(col, status, colname) {
-	str = "";
-	if (colname == "FnameLnameSSN")
-		return str;
-	if (status) {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	} else {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	}
-	return str;
+  str = "";
+  if (colname == "FnameLnameSSN")
+  return str;
+  /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
+  if(intVarGradient % 2 == 0){
+    str = "<div class='hi ";
+    intVarGradient++;
+  } else {
+    str = "<div class='lo ";
+    intVarGradient--;
+  }
+  if (status) {
+  	str += "checkbox-dugga'>";
+  	str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+  	str += "</div>";
+  } else {
+  	str += "checkbox-dugga'>";
+  	str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+  	str += "</div>"
+  }
+  console.log("intVarGradient: " + intVarGradient);
+  console.log(str);
+  return str;
 }
 
 function onToggleFilter(colId) {
@@ -1299,6 +1309,6 @@ function mail() {
 // Puts filter buttons at a fixed point when scrolling horizontally
 $(window).scroll(function() {
     $('#ladexportContainer').css({
-        'left': $(this).scrollLeft() + 10 
+        'left': $(this).scrollLeft() + 10
     });
 });
