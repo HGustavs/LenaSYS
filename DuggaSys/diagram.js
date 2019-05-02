@@ -852,7 +852,9 @@ window.addEventListener("mousemove", function()
     let indexOfHoveredObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
     if (indexOfHoveredObject != -1) {
             for (let i = 0; i < diagram.length; i++) {
-                if (diagram[indexOfHoveredObject].symbolkind != symbolKind.line && !diagram[indexOfHoveredObject].locked) {
+                // If the symbol is a line or an umlline or the object is locked or the user is trying to draw a line between entities the cursor pointer will remain default,
+                // otherwise it's of type "all-scroll"
+                if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked && diagram[indexOfHoveredObject].symbolkind != 7 && uimode != "CreateLine") {
                     canvas.style.cursor = "all-scroll";
                 }
             }
@@ -2581,7 +2583,6 @@ function mousemoveevt(ev, t) {
         if (md == mouseState.empty) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-
             if (sel.distance < tolerance) {
                 canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
             } else {
