@@ -3312,9 +3312,15 @@ ul.hamburgerList button.menuButton {
   width: 100%;
 }
 
-@media only screen and (max-width: 1085px),
-only screen and (max-device-width: 1085px) {
-     #sortingBar {
+@media only screen and (min-width: 1085px),
+only screen and (min-device-width: 1085px) {
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 100px; 
+    z-index: 5001; 
+  }#sortingBar {
         width: 135px;
         position: relative;
         top: 25px;
@@ -3632,12 +3638,12 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader input.hamburger {
     position: absolute;
-    top: 66px;
+    top: 0px;
     right: 5px;
   }
   table.navheader div.hamburger {
     position: absolute;
-    top: 66px;
+    top: 0px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
