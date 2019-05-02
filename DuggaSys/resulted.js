@@ -38,7 +38,8 @@ function setup() {
 	/*    Add filter menu   */
 	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
-	filt += "<td class='navButt'>";
+	filt += "<div class='navButt'>";
+
 
 	
 
@@ -53,7 +54,7 @@ function setup() {
   filt += `<td class='tooltip-searchbar'>`;
   filt += `<div class='tooltip-searchbar-box'>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
- 
+  filt += `</div><span>?</span></td>`;
  
 	$("#menuHook").before(filt);
   
