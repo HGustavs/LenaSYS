@@ -693,7 +693,6 @@ function SortableTable(param) {
 			dataType: "JSON",
 			error: function(xhr, status, error) {
 				var err = eval("(" + xhr.responseText + ")");
-				console.log(err.Message);
 			},
 			success: function(data){
 				window.location.assign("mailto:?bcc=" + data);
