@@ -3643,8 +3643,8 @@ only screen and (max-device-width: 320px) {
   padding-left: 10px;
   height: 30px;
   position: absolute;
-  right: 15px;
-  bottom: 12px;
+  right: 16px;
+  bottom: 16px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3791,7 +3791,8 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 12px;
+  bottom: 16px;
+  left: 16px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
