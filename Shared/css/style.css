@@ -3708,7 +3708,7 @@ only screen and (max-device-width: 320px) {
   left: -15px;
 }
 
-button:hover + .tooltiptextDec{
+#zoomDecrease:hover + .tooltiptextDec{
   visibility: visible;
 }
 #range{
@@ -3751,7 +3751,7 @@ button:hover + .tooltiptextDec{
   right: -20px;
 }
 
-button:hover + .tooltiptextInc{
+#zoomIncrease:hover + .tooltiptextInc{
   visibility: visible;
 }
 
