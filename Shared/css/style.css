@@ -4397,11 +4397,25 @@ textarea#mrkdwntxt {
   .optionButtons {
     top: 686px;
   }
-  .save-close-button-md{
+  .save-close-button-md {
     margin-top: 15px;
   }
 }
 
+/* Mode Switch */
+
+.modeSwitchDialog {
+  display: none;
+  background-color: rgba(0,0,0,0);
+}
+
+.modeSwitchContainer {
+  min-height: 80px;
+}
+
+.modeSwitchHeader h3 {
+  padding-right: 10px;
+}
 
 /* Import diagram */
 

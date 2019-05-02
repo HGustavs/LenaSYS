@@ -208,10 +208,10 @@
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="switchToolbarER();">ER</span>
+                            <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="switchToolbarUML();">UML</span>
+                            <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
@@ -366,6 +366,23 @@
                     <div id="importButtonWrap" class="importButtonWrap">
                         <input type="submit" id="file-submit-button" class="submit-button uploadButton" onclick="importFile();" value="Upload diagram" />
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirm mode-switch dialog  -->
+    <div id="modeSwitchDialog" class='loginBoxContainer importDiagram'>
+        <div class='loginBox modeSwitchContainer'>
+            <div class='loginBoxheader modeSwitchHeader'>
+                <h3 id="modeSwitchTarget"></h3>
+                <div class='cursorPointer' onclick='modeSwitchConfirmed(false)'>x</div>
+            </div>
+            <div class='mode-wrap'>
+                <div id="importButtonWrap" class="importButtonWrap">
+                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(true);" value="Accept" />
+                </div>
+                <div id="importButtonWrap" class="importButtonWrap">
+                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(false);" value="Cancel" />
                 </div>
             </div>
         </div>

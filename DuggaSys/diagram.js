@@ -1562,6 +1562,41 @@ function developerMode() {
     setCheckbox($(".drop-down-option:contains('Developer mode')"), !developerModeActive);
 }
 
+var targetMode;     //the mode that we want to change to when trying to switch the toolbar
+
+//------------------------------------------------------------------------------
+// modeSwitchConfirmed: 
+// This function calls the switch methods if the change is accepted, called  
+// when clicking the dialog.
+//------------------------------------------------------------------------------
+function modeSwitchConfirmed(confirmed) {
+    $("#modeSwitchDialog").hide();
+    if(confirmed){
+        if (targetMode == 'ER') {
+            switchToolbarER();
+        } else if (targetMode == 'UML'){
+            switchToolbarUML();
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
+// switchToolbarTo: 
+// This function switch opens a dialog for confirmation and sets which mode 
+// to change to.
+//------------------------------------------------------------------------------
+function switchToolbarTo(target){
+    targetMode = target;
+    //only ask for confirmation when developer mode is off or if the user has started drawing something
+    if(!developerModeActive || diagram.length < 1) {
+        modeSwitchConfirmed(true);
+    } else {
+        $("#modeSwitchDialog").css("display", "flex");
+        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+        document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
+    }
+}
+
 //------------------------------------------------------------------------------
 // SwitchToolbarER:
 // This function handels everything that need to happen when the toolbar
@@ -2356,8 +2391,9 @@ function switchToolbar(direction) {
       toolbarState = 1;
     }
   }
-
+  
   document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
+  
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
