@@ -39,7 +39,6 @@ function setup() {
 	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
 	filt += "<td class='navButt'>";
-	filt += "<div>";
 
 	
 
