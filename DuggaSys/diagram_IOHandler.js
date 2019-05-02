@@ -38,9 +38,7 @@ function saveToServer(dia) {
     });
 
 }
-function createFolder(name) {
 
-}
 function redirect(doc) {
     var a = doc.value;
 
