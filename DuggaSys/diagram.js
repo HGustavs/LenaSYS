@@ -71,9 +71,10 @@ var origoOffsetX = 0.0;             // Canvas x topleft offset from origo
 var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = 0;            // Canvas left click state
+var canvasRightClick = 0;            // Canvas right click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
-var md = 0;                         // Mode to determine action on canvas
+var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
 var hovobj = -1;
 var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
@@ -93,12 +94,13 @@ var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
+var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
-var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
+var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
 var minEntityY = 50;
 var hashUpdateTimer = 5000;         // set timer varibale for hash and saving
 var currentHash = 0;
@@ -135,6 +137,9 @@ var symbolEndKind;                      // Is used to store which kind of object
 
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 
+var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
+
+// Keyboard keys
 const deleteKey = 46;
 const backspaceKey = 8;
 const spacebarKey = 32;
@@ -151,7 +156,87 @@ const yKey = 89;
 const aKey = 65;
 const escapeKey = 27;
 
-//this block of the code is used to handel keyboard input;
+// Mouse clicks
+const rightMouseClick = 2;
+
+// This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
+var rightClick = false;
+
+// Used to set the coordinates where a right click was made.
+document.addEventListener("mousedown", function(e)
+    {
+        if (e.button == rightMouseClick) {
+            canvasRightClick = 1;
+            if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+                InitPageX = e.pageX;
+                InitPageY = e.pageY;
+                rightClick = true;
+            }
+        }
+    },
+    false
+);
+
+// Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
+window.addEventListener("mousemove", function(e)
+    {
+        // deltas are used to determine the range of which the mouse is allowed to move when pressed.
+        deltaX = 2;
+        deltaY = 2;
+        if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
+            // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
+            diffX = e.pageX - InitPageX;
+            diffY = e.pageY - InitPageY;
+            if (
+                (diffX > deltaX) || (diffX < -deltaX)
+                ||
+                (diffY > deltaY) || (diffY < -deltaY)
+            ) {
+                rightClick = false;
+                // Entering MoveAround mode
+                if (uimode != "MoveAround") {
+                    activateMovearound();
+                }
+                updateGraphics();
+            }
+            else {
+                // If click event is needed, it goes in here.
+                rightClick = true;
+            }
+        }
+    },
+    false
+);
+
+// Deactivate MoveAround by releasing the mouse
+window.addEventListener("mouseup", function(e)
+    {
+        if (e.button == rightMouseClick) {
+            canvasRightClick = 0;
+        }
+
+        delete InitPageX;
+        delete InitPageY;
+        // Making sure the MoveAround was not initialized by the spacebar.
+        if (uimode == "MoveAround" && !spacebarKeyPressed) {
+            deactivateMovearound();
+            updateGraphics();
+        }
+    },
+    false
+);
+
+// Hides the context menu. Needed in order to be able to right click and drag to move the camera.
+window.addEventListener('contextmenu', function (e)
+    {
+        if (rightClick != true) {
+            e.preventDefault();
+        }
+    },
+    false
+);
+
+// This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
@@ -278,6 +363,12 @@ function keyDownHandler(e) {
         eraseSelectedObject();
         SaveState();
     } else if(key == spacebarKey) {
+        // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
+        if (!spacebarKeyPressed) {
+        spacebarKeyPressed = true;
+        } else {
+            spacebarKeyPressed = false;
+        }
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -290,7 +381,9 @@ function keyDownHandler(e) {
         }
         updateGraphics();
     } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
+
         arrowKeyPressed(key);
+        moveCanvasView(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
@@ -301,7 +394,7 @@ function keyDownHandler(e) {
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != 4) {
+            if(cloneTempArray[i].symbolkind != symbolKind.line) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
             }
@@ -356,12 +449,12 @@ function canvasToPixels(pixelX = 0, pixelY = 0){
 //----------------------------------------------------------------------
 
 function cancelFreeDraw() {
-    if(uimode == "CreateFigure" && figureType == "Free" && md == 4) {
+    if(uimode == "CreateFigure" && figureType == "Free" && md == mouseState.boxSelectOrCreateMode) {
         for (var i = 0; i < numberOfPointsInFigure; i++) {
             diagram.pop();
         }
         cleanUp();
-        md = 0;             //Prevents the dashed line box, when drawing a square, to appear immediately
+        md = mouseState.empty;      //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
       }
 }
@@ -388,9 +481,9 @@ window.onkeyup = function(event) {
     }
 }
 
-//----------------------------------------------------------------------
-// arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
-//----------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+// arrowKeyPressed: Handler for when pressing arrow keys when an object is selected
+//----------------------------------------------------------------------------------
 
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
@@ -408,6 +501,24 @@ function arrowKeyPressed(key) {
         selected_objects[i].move(xNew, yNew);
     }
     updateGraphics();
+}
+
+//-----------------------------------------------------------------------------------
+// arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
+//-----------------------------------------------------------------------------------
+function moveCanvasView(key){
+  if(uimode = "MoveAround"){
+    if(key == leftArrow) {
+      origoOffsetX += 10;
+    }else if(key == upArrow) {
+      origoOffsetY += 10;
+    }else if(key == rightArrow) {
+      origoOffsetX += -10;
+    }else if(key == downArrow) {
+      origoOffsetY += -10;
+    }
+    updateGraphics();
+  }
 }
 
 //-------------------------------------------------------------------------------------
@@ -455,20 +566,20 @@ function copySymbol(symbol) {
     middleDividerClone.x += 10;
     middleDividerClone.y += 10;
 
-    if(symbol.symbolkind == 1) {
+    if(symbol.symbolkind == symbolKind.uml) {
         clone.name = "New" + diagram.length;
-    }else if(symbol.symbolkind == 2) {
+    }else if(symbol.symbolkind == symbolKind.erAttribute) {
         clone.name = "Attr" + diagram.length;
-    }else if(symbol.symbolkind == 3) {
+    }else if(symbol.symbolkind == symbolKind.erEntity) {
         clone.name = "Entity" + diagram.length;
-    }else if(symbol.symbolkind == 4) {
+    }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "Line" + diagram.length;
     }else{
         clone.name = "Relation" + diagram.length;
     }
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
-    if(clone.symbolkind != 1) {
+    if(clone.symbolkind != symbolKind.uml) {
         clone.centerPoint = points.push(centerPointClone) - 1;
     }
     else {
@@ -490,7 +601,7 @@ function copySymbol(symbol) {
 
 points.drawPoints = function() {
     ctx.strokeStyle = crossStrokeStyle1;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2 * zoomValue;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
         if (!point.isSelected) {
@@ -514,7 +625,7 @@ points.drawPoints = function() {
 
 //--------------------------------------------------------------------
 // closestPoint: Returns the distance and index of the point closest
-//               to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
+//               to the coordinates passed as parameters.
 //--------------------------------------------------------------------
 
 points.closestPoint = function(xCoordinate, yCoordinate, pointIndex) {
@@ -546,7 +657,7 @@ points.clearAllSelects = function() {
 diagram.closestPoint = function(mx, my) {
     var distance = 50000000;
     var point;
-    this.filter(symbol => symbol.kind != 1 && symbol.symbolkind != 6).forEach(symbol => {
+    this.filter(symbol => symbol.kind != kind.path && symbol.symbolkind != symbolKind.text).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
             var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
@@ -558,7 +669,7 @@ diagram.closestPoint = function(mx, my) {
         });
     });
 
-    this.filter(symbol => symbol.kind == 1).forEach(path => {
+    this.filter(symbol => symbol.kind == kind.path).forEach(path => {
         path.segments.forEach(seg => {
             var deltaX = mx - points[seg.pb].x;
             var deltaY = my - points[seg.pb].y;
@@ -580,18 +691,18 @@ diagram.closestPoint = function(mx, my) {
 diagram.draw = function() {
     this.adjustPoints();
     for(var i = 0; i < this.length; i++) {
-        if (this[i].kind == 1) {
+        if (this[i].kind == kind.path) {
             this[i].draw(1, 1);
         }
     }
     //Draws all lines first so that they appear behind the object instead
     for(var i = 0; i < this.length; i++) {
-        if(this[i].symbolkind == 4) {
+        if(this[i].symbolkind == symbolKind.line) {
             this[i].draw();
         }
     }
     for (var i = 0; i < this.length; i++) {
-        if(this[i].kind == 2 && this[i].symbolkind != 4) {
+        if(this[i].kind == kind.symbol && this[i].symbolkind != symbolKind.line) {
             this[i].draw();
         }
     }
@@ -639,7 +750,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
         sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 1) {
+        if (this[i].kind == kind.path) {
             var tempPoints = [];
             for (var j = 0; j < this[i].segments.length; j++) {
                 tempPoints.push({x:points[this[i].segments[j].pa].x, y:points[this[i].segments[j].pa].y});
@@ -671,12 +782,6 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             var tempTopLeftY = points[this[i].topLeft].y;
             var tempBottomRightX = points[this[i].bottomRight].x;
             var tempBottomRightY = points[this[i].bottomRight].y;
-            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
-                tempTopLeftX = tempBottomRightX - minEntityX;
-            }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
-                tempTopLeftY = tempBottomRightY - minEntityY;
-            }
             if (sx < tempTopLeftX && ex > tempTopLeftX &&
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
@@ -727,16 +832,16 @@ diagram.checkForHover = function(posX, posY) {
     var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
     if (hoveredObjects.length <= 0) return -1;
     hoveredObjects.sort(function(a, b) {
-        if(a.kind == 1 && b.kind == 2) return -1;
-        else if(a.kind != 1 && b.kind == 1) return 1;
-        else if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
-        else if (a.symbolkind == 4 && b.symbolkind != 4) return -1;
-        else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
+        if(a.kind == kind.path && b.kind == kind.symbol) return -1;
+        else if(a.kind != kind.path && b.kind == kind.path) return 1;
+        else if (a.symbolkind != symbolKind.line && b.symbolkind != symbolKind.line) return 0;
+        else if (a.symbolkind == symbolKind.line && b.symbolkind != symbolKind.line) return -1;
+        else if (a.symbolkind != symbolKind.line && b.symbolkind == symbolKind.line) return 1;
         else return 0;
     });
-    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != 1) {
+    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != kind.path) {
         //We only want to set it to true when md is not in selectionbox mode
-        hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
+        hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.insideMovableObject || uimode != "normal";
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
@@ -802,7 +907,7 @@ diagram.eraseLines = function(privateLines) {
 diagram.getEntityObjects = function() {
     var entities = [];
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3) {
+        if (diagram[i].symbolkind == symbolKind.erEntity) {
             entities.push(diagram[i]);
         }
     }
@@ -816,7 +921,7 @@ diagram.getEntityObjects = function() {
 diagram.getLineObjects = function() {
     var lines = [];
     for (var i = 0; i < this.length; i++) {
-        if (diagram[i].symbolkind == 4) {
+        if (diagram[i].symbolkind == symbolKind.line) {
             lines.push(diagram[i]);
         }
     }
@@ -830,7 +935,7 @@ diagram.getLineObjects = function() {
 diagram.getRelationObjects = function() {
     var relations = [];
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 5) {
+        if (diagram[i].symbolkind == symbolKind.erRelation) {
             relations.push(diagram[i]);
         }
     }
@@ -863,7 +968,7 @@ diagram.updateLineRelations = function() {
 
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
+        if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
             diagram[i].sortAllConnectors();
         }
     }
@@ -875,10 +980,14 @@ diagram.sortConnectors = function() {
 
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
+        if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
             if(diagram[i].quadrants()) break;
         }
     }
+}
+
+diagram.getZoomValue = function(){
+    return zoomValue;
 }
 
 function initializeCanvas() {
@@ -890,9 +999,11 @@ function initializeCanvas() {
     setInterval(function() {Save()}, 10000);
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
-    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + "</p>";
+    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
+                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
+                + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
+                + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -900,10 +1011,12 @@ function initializeCanvas() {
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
     updateGraphics();
+    boundingRect = canvas.getBoundingClientRect();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
+    canvas.addEventListener('wheel', scrollZoom, false);
 }
 
 
@@ -931,18 +1044,20 @@ function toggleGrid() {
 
 function toggleVirtualA4() {
     if (toggleA4) {
-      if (toggleA4Holes) {
-        toggleVirtualA4Holes();
-      }
+        // A4 is disabled
         toggleA4 = false;
+        hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
+        showA4State();
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
+    $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
 function drawVirtualA4() {
@@ -964,15 +1079,31 @@ function drawVirtualA4() {
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
-    ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+
+    if(A4Orientation == "portrait"){
+        ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+    }
+    else if(A4Orientation == "landscape") {
+        ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);
+    }
 
     if(toggleA4Holes) {
-        //Upper 2 holes
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
-        //Latter two holes
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
-        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+        if(A4Orientation == "portrait"){
+            //Upper 2 holes
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+            //Latter two holes
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+        }
+        else if(A4Orientation == "landscape") {
+            //Upper 2 holes
+            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            //Latter two holes
+            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
+        }
     }
     ctx.restore();
 }
@@ -987,18 +1118,41 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
+function showA4State(){
+    //Sets icons based on the state of the A4
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+
+}
+
+function hideA4State(){
+    //Hides icons when toggling off the A4
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
+}
+
 function toggleVirtualA4Holes() {
-    if(!toggleA4){
-      return;
-    }
     if (toggleA4Holes) {
         toggleA4Holes = false;
+        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         updateGraphics();
     } else {
         toggleA4Holes = true;
+        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         updateGraphics();
     }
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+}
+
+function toggleA4Orientation() {
+    if(A4Orientation == "portrait"){
+        A4Orientation = "landscape";
+    }
+    else if(A4Orientation == "landscape"){
+        A4Orientation = "portrait";
+    }
+
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+    updateGraphics();
 }
 
 //------------------------------------------------------------
@@ -1006,11 +1160,9 @@ function toggleVirtualA4Holes() {
 //------------------------------------------------------------
 
 function resetToolbarPosition(){
-    var myCanvas = document.getElementById('myCanvas');
-    var bound = myCanvas.getBoundingClientRect();
     //Assign position for the toolbar according to the canvas bounds
-    document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
-    document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
+    document.getElementById("diagram-toolbar").style.top = (boundingRect.top + "px");
+    document.getElementById("diagram-toolbar").style.left = (boundingRect.left + "px");
 }
 
 //----------------------------------------------------
@@ -1058,23 +1210,21 @@ function importFile() {
 //---------------------------------------------------
 
 function canvasSize() {
+    boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 30);
-    heightWindow = (window.innerHeight - 144);
+    heightWindow = (window.innerHeight - 110);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
-    ctx.clearRect(sx, sy, widthWindow, heightWindow);
-    ctx.translate(sx, sy);
-    distanceMovedX = -sx;
-    distanceMovedY = -sy;
-    ctx.scale(1, 1);
-    ctx.scale(zoomValue, zoomValue);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    updateGraphics();
 }
+
 
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
 function mod(n, m) {
-  return  Math.round(((n % m) + m)) % m;
+  return  Math.round(Math.round(((n % m) + m)) % m);
 }
 
 //----------------------------------------------------------
@@ -1090,6 +1240,7 @@ function updateGraphics() {
         drawOrigo();
     }
     diagram.sortConnectors();
+    diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
     drawVirtualA4();
@@ -1100,10 +1251,10 @@ function updateGraphics() {
 //---------------------------------------------------------------------------------
 
 function resetViewToOrigin(){
-    ctx.translate(distanceMovedX, distanceMovedY);
-    distanceMovedX = 0;
-    distanceMovedY = 0;
+    origoOffsetX = 0;
+    origoOffsetY = 0;
     updateGraphics();
+    SaveState();
 }
 
 function getConnectedLines(object) {
@@ -1130,22 +1281,22 @@ function getConnectedLines(object) {
 function eraseObject(object) {
     canvas.style.cursor = "default";
     var objectsToDelete = [];
-    if (object.kind == 2) {
+    if (object.kind == kind.symbol) {
         // None lines
         if(object.symbolkind != 4) {
-            var lines = diagram.filter(symbol => symbol.symbolkind == 4);
+            var lines = diagram.filter(symbol => symbol.symbolkind == symbolKind.line);
             objectsToDelete = lines.filter(
                 line => line.topLeft == object.middleDivider
                         || line.topLeft == object.centerPoint
                         || line.bottomRight == object.middleDivider
                         || line.bottomRight == object.centerPoint
-                        || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == 3 || object.symbolkind == 5))
-                        || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == 3 || object.symbolkind == 5))
+                        || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
+                        || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
             );
         // lines
         }else {
             diagram.filter(
-                symbol => symbol.symbolkind == 3 || symbol.symbolkind == 5)
+                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation)
                     .filter(symbol =>   symbol.hasConnector(object.topLeft)
                                      && symbol.hasConnector(object.bottomRight))
                     .forEach(symbol => {
@@ -1153,7 +1304,7 @@ function eraseObject(object) {
                         symbol.removePointFromConnector(object.bottomRight);
                     });
 
-            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5);
+            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation);
             // Check if the line has a common point with a centerpoint of attributes or relations.
             var removeTopleft = attributesAndRelations
                         .filter(symbol => symbol.centerPoint == object.topLeft
@@ -1168,7 +1319,7 @@ function eraseObject(object) {
         }
         object.erase();
         diagram.eraseLines(object, object.getLines());
-    } else if (object.kind == 1) {
+    } else if (object.kind == kind.path) {
         object.erase();
     }
     diagram.deleteObject(object);
@@ -1249,7 +1400,7 @@ function setType() {
 function connectedObjects(line) {
     var privateObjects = [];
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) {
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) {
             var objectPoints = diagram[i].getPoints();
             for (var j = 0; j < objectPoints.length; j++) {
                 if (objectPoints[j] == line.topLeft || objectPoints[j] == line.bottomRight) {
@@ -1272,7 +1423,7 @@ function connectedObjects(line) {
 //------------------------------------------
 
 function drawGrid() {
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     let zoomGridSize = gridSize * zoomValue;
     myOffsetX = origoOffsetX % zoomGridSize;
     myOffsetY = origoOffsetY % zoomGridSize;
@@ -1317,7 +1468,7 @@ function drawOrigo() {
     const colors = ['#0fbcf9','transparent','#0fbcf9','transparent'];
 
     ctx.save();
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
 
     for(let i=0;i<4;i++){
@@ -1337,7 +1488,7 @@ function drawOrigo() {
 }
 
 function drawOrigoLine() {
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
     ctx.beginPath();
     ctx.moveTo(0, origoOffsetY);
@@ -1409,7 +1560,7 @@ function developerMode() {
         drawOrigo();
         toolbarState = 3;                                                               // Change the toolbar to DEV.
         switchToolbar('Dev');                                                           // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to DEV.
+        document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';                   // Change the text to DEV.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   // Turn off crosstoggleA4.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
@@ -1422,7 +1573,7 @@ function developerMode() {
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         toolbarState = 1;                                                               // Change the toolbar back to ER.
         switchToolbar('ER');                                                            // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
+        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
@@ -1434,6 +1585,41 @@ function developerMode() {
     setCheckbox($(".drop-down-option:contains('Developer mode')"), !developerModeActive);
 }
 
+var targetMode;     //the mode that we want to change to when trying to switch the toolbar
+
+//------------------------------------------------------------------------------
+// modeSwitchConfirmed: 
+// This function calls the switch methods if the change is accepted, called  
+// when clicking the dialog.
+//------------------------------------------------------------------------------
+function modeSwitchConfirmed(confirmed) {
+    $("#modeSwitchDialog").hide();
+    if(confirmed){
+        if (targetMode == 'ER') {
+            switchToolbarER();
+        } else if (targetMode == 'UML'){
+            switchToolbarUML();
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
+// switchToolbarTo: 
+// This function switch opens a dialog for confirmation and sets which mode 
+// to change to.
+//------------------------------------------------------------------------------
+function switchToolbarTo(target){
+    targetMode = target;
+    //only ask for confirmation when developer mode is off or if the user has started drawing something
+    if(!developerModeActive || diagram.length < 1) {
+        modeSwitchConfirmed(true);
+    } else {
+        $("#modeSwitchDialog").css("display", "flex");
+        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+        document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
+    }
+}
+
 //------------------------------------------------------------------------------
 // SwitchToolbarER:
 // This function handels everything that need to happen when the toolbar
@@ -1443,7 +1629,7 @@ var crossER = false;
 function switchToolbarER() {
     toolbarState = 1;                                                               // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'ER';                    // Change the text to ER.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
     setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
@@ -1458,7 +1644,7 @@ var crossUML = false;
 function switchToolbarUML() {
     toolbarState = 2;                                                               // Change the toolbar to UML.
     switchToolbar('UML');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'UML';                   // Change the text to UML.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';                   // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('UML')"), !crossUML);                 // Turn on crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossUML.
@@ -1476,7 +1662,7 @@ function switchToolbarDev() {
       }
     toolbarState = 3;                                                               // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'DEV';                   // Change the text to UML.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';                   // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
@@ -1612,7 +1798,6 @@ function reWrite() {
         //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + " </p>";
-
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
          + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
@@ -1673,9 +1858,9 @@ function setRefreshTime() {
 
 function lockSelected() {
     for(var i = 0; i < selected_objects.length; i++) {
-        if(selected_objects[i].kind == 2){
+        if(selected_objects[i].kind == kind.symbol){
             // Lines should not be possible to lock
-            if(selected_objects[i].symbolkind == 4 || selected_objects[i].symbolkind == 7){
+            if(selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine){
                 continue;
             }
         }
@@ -1688,6 +1873,7 @@ function lockSelected() {
             updateGraphics();
         }
     }
+    SaveState();
 }
 
 function align(mode) {
@@ -1712,6 +1898,8 @@ function align(mode) {
 
     updateGraphics();
     hashFunction();
+
+    SaveState();
 }
 
 //---------------------------------------------------------------------
@@ -1889,7 +2077,7 @@ function removeDuplicatesInList(selected_objects) {
 function removeLineObjectsFromList(selected_objects){
     let temporary_objects = [];
     for(let i = 0; i < selected_objects.length; i++) {
-        if(selected_objects[i].symbolkind != 4) {
+        if(selected_objects[i].symbolkind != symbolKind.line) {
             temporary_objects.push(selected_objects[i]);
         }
     }
@@ -1999,15 +2187,15 @@ function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
+        if (diagram[i].kind == kind.path) str += diagram[i].figureToSVG();
     }
     // Convert lines to SVG second so they appear behind other symbols but above figures
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind == symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     // Convert other objects to SVG
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     return str;
 }
@@ -2034,7 +2222,7 @@ function globalLineThickness() {
 
 function globalFont() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.uml || diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
             diagram[i].properties['font'] = document.getElementById('font').value;
         }
     }
@@ -2046,7 +2234,7 @@ function globalFont() {
 
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
             diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
         }
     }
@@ -2058,7 +2246,7 @@ function globalFontColor() {
 
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
             diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
         }
     }
@@ -2070,7 +2258,7 @@ function globalTextSize() {
 
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
             diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
         } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
     }
@@ -2102,15 +2290,15 @@ function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
+        if (diagram[i].kind == kind.path) str += diagram[i].figureToSVG();
     }
     // Convert lines to SVG second so they appear behind other symbols but above figures
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind == symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     // Convert other objects to SVG
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     return str;
 }
@@ -2127,7 +2315,36 @@ function setCheckbox(element, check) {
 
     if (check) {
         $(element).children(".material-icons").show();
-    }else {
+    } else {
+        $(element).children(".material-icons").hide();
+    }
+}
+
+//--------------------------------------------------------
+// Used for toggling orientation icon
+// Both for showing / hiding and also for changning image
+//--------------------------------------------------------
+
+function setOrientationIcon(element, check) {
+    // Init icon element
+    if ($(element).children(".material-icons").length == 0) {
+        $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">crop_portrait</i>");
+    }
+
+    // Set icon either to portrait or landscape
+    if(toggleA4){
+        if(A4Orientation == "landscape"){
+            $(element).children(".material-icons")[0].innerHTML = "crop_16_9";
+        }
+        else if(A4Orientation == "portrait"){
+            $(element).children(".material-icons")[0].innerHTML = "crop_portrait";
+        }
+    }
+
+    // Toggle visibility
+    if (check) {
+        $(element).children(".material-icons").show();
+    } else {
         $(element).children(".material-icons").hide();
     }
 }
@@ -2197,8 +2414,9 @@ function switchToolbar(direction) {
       toolbarState = 1;
     }
   }
-
-  document.getElementById('toolbarTypeText').innerHTML = "ER";
+  
+  document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
+  
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
@@ -2235,6 +2453,8 @@ function switchToolbar(direction) {
     $("#classbutton").show();
     $("#linebutton").hide();
     $("#umllinebutton").show();
+  } else if(toolbarState == toolbarFree) {
+    $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#labelDraw").show();
     $("#squarebutton").show();
@@ -2293,6 +2513,18 @@ function changeZoom(zoomValue){
   zoomInMode();
 }
 
+//-----------------------
+// Canvas zoom on scroll
+//-----------------------
+
+function scrollZoom(event) {
+    if(event.deltaY > 0){
+        changeZoom(-0.1);
+    } else {
+        changeZoom(0.1);
+    }
+}
+
 //----------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
 //----------------------------------------------------------------------
@@ -2333,83 +2565,164 @@ function pointDistance(point1, point2) {
 
 function mousemoveevt(ev, t) {
     // Get canvasMouse coordinates for both X & Y.
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
-        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+        startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+        startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     }
 
     reWrite();
     updateGraphics();
 
-    if (md == 0) {
-        // Select a new point only if mouse is not already moving a point or selection box
-        sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-
-        if (sel.distance < tolerance) {
-            canvas.style.cursor = "default";
-        } else {
-            if(uimode == "MoveAround"){
-                canvas.style.cursor = "all-scroll";
-            }
-            else {
-                canvas.style.cursor = "default";
-            }
-        }
-
-        // If mouse is not pressed highlight closest point
-        points.clearAllSelects();
-        movobj = diagram.itemClicked();
-    } else if (md == 1) {
-        // If mouse is pressed down and no point is close show selection box
-    } else if (md == 2) {
-        if(!sel.point.fake) {
-            sel.point.x = currentMouseCoordinateX;
-            sel.point.y = currentMouseCoordinateY;
-            //If we changed a point of a path object,
-            //  we need to recalculate the bounding-box so that it will remain clickable.
-            if(diagram[lastSelectedObject].kind == 1) {
-                diagram[lastSelectedObject].calculateBoundingBox();
-            }
-        } else {
-            sel.point.x.x = currentMouseCoordinateX;
-            sel.point.y.y = currentMouseCoordinateY;
-        }
-        // If mouse is pressed down and at a point in selected object - move that point
-    } else if (md == 3) {
-        // If mouse is pressed down inside a movable object - move that object
-        if (movobj != -1 ) {
-            uimode = "Moved";
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
-            for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].targeted == true && !diagram[movobj].locked) {
-                    if(snapToGrid) {
-                        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
-                        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
-                    }
-                    diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
+    if(canvasRightClick == 0){
+        if (md == mouseState.empty) {
+            // Select a new point only if mouse is not already moving a point or selection box
+            sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+            if (sel.distance < tolerance) {
+                canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+            } else {
+                if(uimode == "MoveAround"){
+                    canvas.style.cursor = "all-scroll";
+                }
+                else {
+                    canvas.style.cursor = "default";
                 }
             }
+            // If mouse is not pressed highlight closest point
+            points.clearAllSelects();
+            movobj = diagram.itemClicked();
+        } else if (md == mouseState.noPointAvailable) {
+            // If mouse is pressed down and no point is close show selection box
+        } else if (md == mouseState.insidePoint) {
+            // If mouse is pressed down and at a point in selected object - move that point
+            if(!sel.point.fake) {
+                sel.point.x = currentMouseCoordinateX;
+                sel.point.y = currentMouseCoordinateY;
 
-            startMouseCoordinateX = currentMouseCoordinateX;
-            startMouseCoordinateY = currentMouseCoordinateY;
+                //If we changed a point of a path object,
+                //  we need to recalculate the bounding-box so that it will remain clickable.
+                if(diagram[lastSelectedObject].kind == kind.path) {
+                    diagram[lastSelectedObject].calculateBoundingBox();
+                }
+            } else {
+                sel.point.x.x = currentMouseCoordinateX;
+                sel.point.y.y = currentMouseCoordinateY;
+            }
+            updateGraphics();
+            // If mouse is pressed down and at a point in selected object - move that point
+        } else if (md == mouseState.insideMovableObject) {
+            // If mouse is pressed down inside a movable object - move that object
+            if (movobj != -1 ) {
+                uimode = "Moved";
+                $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+                for (var i = 0; i < diagram.length; i++) {
+                    if (diagram[i].targeted == true && !diagram[movobj].locked) {
+                        if(snapToGrid) {
+                            currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+                            currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
+                        }
+                        diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
+                    }
+                }
+
+                startMouseCoordinateX = currentMouseCoordinateX;
+                startMouseCoordinateY = currentMouseCoordinateY;
+            }
         }
-    }
-    if (md == 4 && uimode == "normal") {
-        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
-    } else {
-        diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
-    }
-    updateGraphics();
-    // Draw select or create dotted box
-    if (md == 4 && uimode != "MoveAround") {
-        if (figureType == "Free" && uimode == "CreateFigure") {
-            if(p2 != null && !(isFirstPoint)) {
+        if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
+            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
+        } else {
+            diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+        }
+        updateGraphics();
+        // Draw select or create dotted box
+        if (md == mouseState.boxSelectOrCreateMode && uimode != "MoveAround") {
+            if (figureType == "Free" && uimode == "CreateFigure") {
+                if(p2 != null && !(isFirstPoint)) {
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    if (developerModeActive == true) {
+                        crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                        crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                        crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    }
+                }
+            } else if(uimode == "CreateFigure" && figureType == "Square") {
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.strokeStyle = "#d51";
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.closePath();
+                if (developerModeActive == true) {
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                }
+            } else if (uimode == "CreateEREntity") {
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.closePath();
+                if (developerModeActive == true) {
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                }
+            } else if(uimode == "CreateERRelation") {
+                ctx.setLineDash([3, 3]);
+                var midx = pixelsToCanvas(startMouseCoordinateX).x+((pixelsToCanvas(currentMouseCoordinateX).x-pixelsToCanvas(startMouseCoordinateX).x)/2);
+                var midy = pixelsToCanvas(0, startMouseCoordinateY).y+((pixelsToCanvas(0, currentMouseCoordinateY).y-pixelsToCanvas(0, startMouseCoordinateY).y)/2);
+                ctx.beginPath();
+                ctx.moveTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, midy);
+                ctx.lineTo(midx, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, midy);
+                ctx.lineTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.closePath();
+                if (developerModeActive == true) {
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                }
+            } else if(uimode == "CreateERAttr") {
+                ctx.setLineDash([3, 3]);
+                drawOval(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y, pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+                ctx.setLineDash([]);
+                if (developerModeActive == true) {
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                }
+            } else if(uimode == "CreateLine") {
+                // Path settings for preview line
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
                 ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
@@ -2422,115 +2735,37 @@ function mousemoveevt(ev, t) {
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
                 }
-            }
-        } else if(uimode == "CreateFigure" && figureType == "Square") {
-            ctx.setLineDash([3, 3]);
-            ctx.beginPath();
-            ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.strokeStyle = "#d51";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.closePath();
-            if (developerModeActive == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
-            }
-        } else if (uimode == "CreateEREntity") {
-            ctx.setLineDash([3, 3]);
-            ctx.beginPath();
-            ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.strokeStyle = "#000";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.closePath();
-            if (developerModeActive == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
-            }
-        } else if(uimode == "CreateERRelation") {
-            ctx.setLineDash([3, 3]);
-            var midx = pixelsToCanvas(startMouseCoordinateX).x+((pixelsToCanvas(currentMouseCoordinateX).x-pixelsToCanvas(startMouseCoordinateX).x)/2);
-            var midy = pixelsToCanvas(0, startMouseCoordinateY).y+((pixelsToCanvas(0, currentMouseCoordinateY).y-pixelsToCanvas(0, startMouseCoordinateY).y)/2);
-            ctx.beginPath();
-            ctx.moveTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, midy);
-            ctx.lineTo(midx, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, midy);
-            ctx.lineTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.strokeStyle = "#000";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.closePath();
-            if (developerModeActive == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
-            }
-        } else if(uimode == "CreateERAttr") {
-            ctx.setLineDash([3, 3]);
-            drawOval(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y, pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.strokeStyle = "#000";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            if (developerModeActive == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
-            }
-        } else if(uimode == "CreateLine") {
-            // Path settings for preview line
-            ctx.setLineDash([3, 3]);
-            ctx.beginPath();
-            ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.strokeStyle = "#000";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            if (developerModeActive == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
-            }
-        } else if(uimode == "CreateUMLLine") {
-            // Path settings for preview line
-            ctx.setLineDash([3, 3]);
-            ctx.beginPath();
-            ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.strokeStyle = "#000";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            if (developerModeActive == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+            } else if(uimode == "CreateUMLLine") {
+                // Path settings for preview line
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+                ctx.setLineDash([]);
+                if (developerModeActive == true) {
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    }
+                } else {
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.closePath();
+                if (developerModeActive == true) {
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
                 }
-            } else {
-            ctx.setLineDash([3, 3]);
-            ctx.beginPath();
-            ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-            ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-            ctx.strokeStyle = "#000";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.closePath();
-            if (developerModeActive == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
         }
     }
@@ -2543,23 +2778,23 @@ function mousemoveevt(ev, t) {
 function mousedownevt(ev) {
     canvasLeftClick = 1;
 
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.x).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.y).y;
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
-    if(uimode == "Moved" && md != 4) {
+    if(uimode == "Moved" && md != mouseState.boxSelectOrCreateMode) {
         uimode = "normal";
-        md = 0;
+        md = mouseState.empty;
     }
 
     if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
         hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
-        md = 4;            // Box select or Create mode.
+        md = mouseState.boxSelectOrCreateMode;  // Box select or Create mode.
         //If you start on canvas or not
         if (hovobj == -1) {
-            md = 0;
+            md = mouseState.empty;
         } else {
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Store which object you are hovering over in lineStartObj
@@ -2568,13 +2803,13 @@ function mousedownevt(ev) {
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
         }
-    } else if (sel.distance < tolerance) {
-        md = 2;
+    } else if (sel.distance < tolerance / zoomValue) {
+        md = mouseState.insidePoint;
     } else if (movobj != -1) {
-        md = 3;
+        md = mouseState.insideMovableObject;
         handleSelect();
     } else {
-        md = 4; // Box select or Create mode.
+        md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
         if(uimode != "CreateFigure") {
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
@@ -2637,7 +2872,7 @@ function mouseupevt(ev) {
     canvasLeftClick = 0;
     hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
-    if (uimode == "CreateFigure" && md == 4) {
+    if (uimode == "CreateFigure" && md == mouseState.boxSelectOrCreateMode) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
@@ -2645,7 +2880,7 @@ function mouseupevt(ev) {
         if(figureType == "Free") return;
     }
     // Code for creating a new class
-    if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
+    if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
         resize();
 
         // Add required points
@@ -2653,15 +2888,15 @@ function mouseupevt(ev) {
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
-    var saveState = md == 4 && uimode != "normal";
+    var saveState = md == mouseState.boxSelectOrCreateMode && uimode != "normal";
     if(movobj > -1) {
-        if(diagram[movobj].symbolkind != 4 && uimode == "Moved") saveState = true;
+        if(diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
-    if (uimode == "CreateLine" && md == 4) {
+    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
-         if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
-            md = 0;
+         if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
+            md = mouseState.empty;
          }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
@@ -2670,37 +2905,37 @@ function mouseupevt(ev) {
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != 4 && symbolEndKind != 4) {
+            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) {
                 var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == 2) {
+                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else {
                     createNewPoint = true;
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == 3 && symbolStartKind == 2) {
+                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 2 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 3 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
-                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)) {
+                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[hovobj].symbolkind == 2) {
+                    if (diagram[hovobj].symbolkind == symbolKind.erAttribute) {
                         p2 = diagram[hovobj].centerPoint;
                     } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -2711,11 +2946,11 @@ function mouseupevt(ev) {
             }
         }
     }
-    if (uimode == "CreateUMLLine" && md == 4) {
+    if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
-         if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
-            md = 0;
+         if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
+            md = mouseState.empty;
          }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
@@ -2724,37 +2959,37 @@ function mouseupevt(ev) {
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != 7 && symbolEndKind != 7) {
+            if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) {
                 var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == 2) {
+                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else {
                     createNewPoint = true;
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == 3 && symbolStartKind == 2) {
+                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 2 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 3 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 3) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 5) {
+                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
-                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)) {
+                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[hovobj].symbolkind == 2) {
+                    if (diagram[hovobj].symbolkind == symbolKind.erAttribute) {
                         p2 = diagram[hovobj].centerPoint;
                     } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -2770,8 +3005,8 @@ function mouseupevt(ev) {
     // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
     //----------------------------------------------------------------------
 
-    if (uimode == "CreateClass" && md == 4) {
-        var classB = new Symbol(1); // UML
+    if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
+        var classB = new Symbol(symbolKind.uml); // UML
         classB.name = "New" + diagram.length;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
@@ -2784,8 +3019,8 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateERAttr" && md == 4) {
-        erAttributeA = new Symbol(2); // ER attributes
+    } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
+        erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
         erAttributeA.name = "Attr" + diagram.length;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
@@ -2798,8 +3033,8 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateEREntity" && md == 4) {
-        erEnityA = new Symbol(3); // ER entity
+    } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
+        erEnityA = new Symbol(symbolKind.erEntity); // ER entity
         erEnityA.name = "Entity" + diagram.length;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
@@ -2813,11 +3048,11 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateLine" && md == 4) {
+    } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
-        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine) {
-            erLineA = new Symbol(4); // Lines
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) && okToMakeLine) {
+            erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
             erLineA.object_type = "";
@@ -2828,11 +3063,18 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
+            //resets the mode so that next click can move or select an object instead of drawing another line
+            //only happens when a line has been created between 2 objects
+            if ($("#linebutton").hasClass("pressed")){
+                $("#linebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
+            }
+            uimode = "normal";
+
             createCardinality();
             updateGraphics();
         }
-    } else if (uimode == "CreateERRelation" && md == 4) {
-        erRelationA = new Symbol(5); // ER Relation
+    } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
+        erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
         erRelationA.name = "Relation" + diagram.length;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
@@ -2843,10 +3085,10 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (md == 4 && uimode == "normal") {
+    } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }
-    else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
+    else if(uimode != "Moved" && !ctrlIsClicked && md != mouseState.boxSelectOrCreateMode) {
         //Unselects every object.
         for(var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
@@ -2856,13 +3098,13 @@ function mouseupevt(ev) {
         if (lastSelectedObject >= 0) {
             selected_objects.push(diagram[lastSelectedObject]);
             //You have to target an object when you start to draw
-            if(md != 0) diagram[lastSelectedObject].targeted = true;
+            if(md != mouseState.empty) diagram[lastSelectedObject].targeted = true;
         }
-    } else if (uimode == "CreateUMLLine" && md == 4) {
+    } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
-        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 7 && symbolEndKind != 7) && okToMakeLine) {
-            umlLineA = new Symbol(7); //UML Lines
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) && okToMakeLine) {
+            umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
             umlLineA.name = "Line" + diagram.length
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
@@ -2873,6 +3115,13 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
+            //resets the mode so that next click can move or select an object instead of drawing another line
+            //only happens when a line has been created between 2 objects
+            if ($("#umllinebutton").hasClass("pressed")){
+                $("#umllinebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
+            }
+            uimode = "normal";
+
             createCardinality();
             updateGraphics();
             }
@@ -2881,7 +3130,7 @@ function mouseupevt(ev) {
     updateGraphics();
     diagram.updateLineRelations();
     // Clear mouse state
-    md = 0;
+    md = mouseState.empty;
     if(saveState) SaveState();
 
 }
@@ -2925,9 +3174,8 @@ function createText(posX, posY) {
 //----------------------------------------------------------------------
 // resize: This is used when making the objects bigger or smaller
 //----------------------------------------------------------------------
-
 function resize() {
-    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
+    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == mouseState.boxSelectOrCreateMode) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
             var tempX = currentMouseCoordinateX;
             currentMouseCoordinateX = startMouseCoordinateX;
@@ -2994,6 +3242,9 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 function openAppearanceDialogMenu() {
+    if (diagram[lastSelectedObject].locked) {
+        return;
+    }
     $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;
@@ -3072,7 +3323,7 @@ function loadFormIntoElement(element, dir) {
 
     if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2) {
+      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.symbol) {
         document.getElementById('nametext').value = diagram[lastSelectedObject].name;
         setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
         setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
@@ -3080,7 +3331,7 @@ function loadFormIntoElement(element, dir) {
         setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
         setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
         setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
-      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1) {
+      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
         setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
@@ -3221,33 +3472,33 @@ function objectAppearanceMenu(form) {
     //if no item has been selected
     if(!diagram[lastSelectedObject]) { return;}
     // UML selected
-    if (diagram[lastSelectedObject].symbolkind == 1) {
+    if (diagram[lastSelectedObject].symbolkind == symbolKind.uml) {
         classAppearanceOpen = true;
         loadUMLForm(form, 'diagram_forms.php?form=classType');
     }
     // ER attributes selected
-    else if (diagram[lastSelectedObject].symbolkind == 2) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erAttribute) {
         loadFormIntoElement(form, 'diagram_forms.php?form=attributeType');
     }
     // ER entity selected
-    else if (diagram[lastSelectedObject].symbolkind == 3) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erEntity) {
         loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
     }
     // Lines selected
-    else if (diagram[lastSelectedObject].symbolkind == 4) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
         loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
     // ER relation selected
-    else if (diagram[lastSelectedObject].symbolkind == 5) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erRelation) {
         loadFormIntoElement(form, 'diagram_forms.php?form=relationType');
     }
     // Text selected
-    else if (diagram[lastSelectedObject].symbolkind == 6) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.text) {
         textAppearanceOpen = true;
         loadTextForm(form, 'diagram_forms.php?form=textType');
     }
     // Fill color of the object
-    else if (diagram[lastSelectedObject].kind == 1) {
+    else if (diagram[lastSelectedObject].kind == kind.path) {
         loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }
 }
@@ -3257,7 +3508,7 @@ function objectAppearanceMenu(form) {
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
-    if(diagram[lastSelectedObject].symbolkind == 1) { // UML-class appearance
+    if(diagram[lastSelectedObject].symbolkind == symbolKind.uml) { // UML-class appearance
       diagram[lastSelectedObject].name = document.getElementById('nametext').value;
       var attributeLines = $('#UMLAttributes').val().split('\n');
       var operationLines = $('#UMLOperations').val().split('\n');
@@ -3272,13 +3523,13 @@ function changeObjectAppearance(object_type) {
         diagram[lastSelectedObject].operations.push({text:operationLines[i]});
       }
 
-    } else if (diagram[lastSelectedObject].symbolkind == 4) {
+    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-    } else if (diagram[lastSelectedObject].kind == 1) {
+    } else if (diagram[lastSelectedObject].kind == kind.path) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
         diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
-    } else if (diagram[lastSelectedObject].symbolkind == 6) {
+    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.text) {
         diagram[lastSelectedObject].textLines = [];
         var textArray = $('#freeText').val().split('\n');
         for(var i = 0; i < textArray.length; i++) {
@@ -3302,13 +3553,13 @@ function changeObjectAppearance(object_type) {
 
 function createCardinality() {
     //Setting cardinality on new line
-    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3) {
+    if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[hovobj].symbolkind == symbolKind.erEntity) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
     }
-    else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
+    else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erRelation) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
     }
-    else if(diagram[lineStartObj].symbolkind == 1 && diagram[hovobj].symbolkind == 1) {
+    else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[hovobj].symbolkind == symbolKind.uml) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
@@ -3324,7 +3575,7 @@ function changeCardinality(isUML) {
     if(val == "None") val = "";
     if(valUML == "None") valUML = "";
     if(diagram[lastSelectedObject].cardinality[0].value != null) {
-        if(diagram[lastSelectedObject].cardinality[0].symbolKind != 1) {
+        if(diagram[lastSelectedObject].cardinality[0].symbolKind != symbolKind.uml) {
             diagram[lastSelectedObject].cardinality[0].value = val;
         } else {
             diagram[lastSelectedObject].cardinality[0].valueUML = valUML;

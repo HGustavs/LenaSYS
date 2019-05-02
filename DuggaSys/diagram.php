@@ -208,14 +208,17 @@
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="switchToolbarER();">ER</span>
+                            <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="switchToolbarUML();">UML</span>
+                            <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
+                        </div>
+                        <div id="a4-orientation-item" class="drop-down-item-disabled">
+                            <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
                         </div>
                         <div id="a4-holes-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
@@ -321,7 +324,7 @@
                 <span class="tooltiptextDec">Zoom Out</span>
               </div>
               <div id="range">
-                <input name="Zoom" id="ZoomSelect" type="range" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
+                <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
               </div>
               <div class="tooltipIncrease">
                 <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
@@ -363,6 +366,23 @@
                     <div id="importButtonWrap" class="importButtonWrap">
                         <input type="submit" id="file-submit-button" class="submit-button uploadButton" onclick="importFile();" value="Upload diagram" />
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirm mode-switch dialog  -->
+    <div id="modeSwitchDialog" class='loginBoxContainer importDiagram'>
+        <div class='loginBox modeSwitchContainer'>
+            <div class='loginBoxheader modeSwitchHeader'>
+                <h3 id="modeSwitchTarget"></h3>
+                <div class='cursorPointer' onclick='modeSwitchConfirmed(false)'>x</div>
+            </div>
+            <div class='mode-wrap'>
+                <div id="importButtonWrap" class="importButtonWrap">
+                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(true);" value="Accept" />
+                </div>
+                <div id="importButtonWrap" class="importButtonWrap">
+                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(false);" value="Cancel" />
                 </div>
             </div>
         </div>
