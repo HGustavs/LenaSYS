@@ -31,6 +31,7 @@ var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
 var intVarGradient = 0;
+var hello = 0;
 
 function setup() {
 	//Benchmarking function
@@ -1128,7 +1129,6 @@ function renderColumnFilter(col, status, colname) {
     str = "<div class='lo ";
     intVarGradient--;
   }
-  var hello = 0;
   hello++;
   console.log(hello);
   if(moments.length == hello){
