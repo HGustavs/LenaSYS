@@ -674,6 +674,12 @@ function SortableTable(param) {
 	this.mail = function(cidMail, crsMail, reqType) {
 		 var activeFilteringUsername = [];
 		 currentRowFilter[1] = null;
+		 currentRowFilter[2] = null;
+		 currentRowFilter[3] = null;
+		 currentRowFilter[4] = null;
+		 currentRowFilter[5] = null;
+		 currentRowFilter[6] = null;
+		 currentRowFilter[7] = null;
 		 for(var i = 0; i < currentRowFilter.length; i++)
 		 {
 		 	if(currentRowFilter[i] != null)
