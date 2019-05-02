@@ -673,13 +673,6 @@ function SortableTable(param) {
 
 	this.mail = function(cidMail, crsMail, reqType) {
 		 var activeFilteringUsername = [];
-		 currentRowFilter[1] = null;
-		 currentRowFilter[2] = null;
-		 currentRowFilter[3] = null;
-		 currentRowFilter[4] = null;
-		 currentRowFilter[5] = null;
-		 currentRowFilter[6] = null;
-		 currentRowFilter[7] = null;
 		 for(var i = 0; i < currentRowFilter.length; i++)
 		 {
 		 	if(currentRowFilter[i] != null)
@@ -687,9 +680,6 @@ function SortableTable(param) {
 		 		activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
 		 	}
 		 }
-
-		 console.log(currentRowFilter);
-		 console.log(activeFilteringUsername);
 
 		$.ajax({
 			url: "resultedservice.php",
@@ -702,10 +692,8 @@ function SortableTable(param) {
 			},
 			dataType: "JSON",
 			error: function(xhr, status, error) {
-				//var err = eval("(" + xhr.responseText + ")");
-				//console.log(err.Message);
-				console.log(xhr);
-				console.log("ERROR: SERVICE FAILED!");
+				var err = eval("(" + xhr.responseText + ")");
+				console.log(err.Message);
 			},
 			success: function(data){
 				console.log("returned data: "+data);
