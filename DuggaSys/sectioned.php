@@ -317,8 +317,8 @@
 			</div>
 			<div style='padding:5px;'>
 				<input type='hidden' id='cid' value='Toddler' />
+				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Start Date:</span><input class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input class='textinput' type='date' id='eenddate' value='' /></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
