@@ -647,15 +647,7 @@ function SortableTable(param) {
 		}
 	}
 
-	// e-mail all visible users
-	this.export = function (format, del) {
-		var str = "";
-
-		if (del === "undefined" || del === null) {
-			del = ",";
-		}
-
-		this.mail = function(cidMail, crsMail, reqType) {
+	this.mail = function(cidMail, crsMail, reqType) {
 	 var activeFilteringUsername = [];
 	 for(var i = 0; i < currentRowFilter.length; i++)
 	 {
@@ -683,6 +675,13 @@ function SortableTable(param) {
 		}
 	});
 }
+
+	this.export = function (format, del) {
+		var str = "";
+
+		if (del === "undefined" || del === null) {
+			del = ",";
+		}
 
 		// Export visible columns
 		var rendcnt = 0;
