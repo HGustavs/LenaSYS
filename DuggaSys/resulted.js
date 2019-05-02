@@ -53,7 +53,7 @@ function setup() {
   filt += `<td class='tooltip-searchbar'>`;
   filt += `<div class='tooltip-searchbar-box'>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
-  filt += `</div><span>?</span></td>`;
+ 
  
 	$("#menuHook").before(filt);
   
