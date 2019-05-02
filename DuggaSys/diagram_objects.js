@@ -230,10 +230,24 @@ function Symbol(kindOfSymbol) {
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erEntity) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
-                points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
+                // If the width is less than the minimum, push out the
+                // point that the user is dragging
+                if(sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
+                        || points[this.topLeft] === sel.point.x)) { // Checks if bottomLeft is clicked
+                    points[this.topLeft].x = x1 = points[this.bottomRight].x - entityTemplate.width;
+                }else {
+                    points[this.bottomRight].x = x2 = points[this.topLeft].x + entityTemplate.width;
+                }
             }
             if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height) {
-                points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
+                // If the height is less than the minimum, push out the
+                // point that the user is dragging
+                if(sel&&sel.point&&(points[this.topLeft]===sel.point || // Checks if topLeft is clicked
+                        points[this.topLeft] === sel.point.y)) { // Checks if topRight is clicked
+                    points[this.topLeft].y = y1 = points[this.bottomRight].y - entityTemplate.height;
+                }else {
+                    points[this.bottomRight].y = y2 = points[this.topLeft].y + entityTemplate.height;
+                }
             }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
@@ -265,28 +279,62 @@ function Symbol(kindOfSymbol) {
             ctx.font = "14px Arial";
             this.minWidth = ctx.measureText(longestStr).width + 15;
 
+            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
+                // If the height is less than the minimum, push out the
+                // point that the user is dragging
+                if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
+                        || points[this.topLeft] === sel.point.y)) { // Checks if topRight is clicked
+                    points[this.topLeft].y = points[this.bottomRight].y - this.minHeight;
+                }else {
+                    points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
+                }
+            }
+            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth) {
+                // If the width is less than the minimum, push out the
+                // point that the user is dragging
+                if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
+                        || points[this.topLeft] === sel.point.x)) { // Checks if topRight is clicked
+                    points[this.topLeft].x = points[this.bottomRight].x - this.minWidth;
+                }else {
+                    points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+                }
+            }
             if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y) {
                 points[this.middleDivider].y = points[this.bottomRight].y - opHeight;
-                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
             if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y) {
                 points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
-                points[this.topLeft].y = points[this.middleDivider].y - attrHeight;
-            }
-            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
-                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
-            }
-            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth) {
-                points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
         } else if (this.symbolkind == symbolKind.erRelation) {
             if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
-                points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
+                // If the width is less than the minimum, push out the
+                // point that the user is dragging
+                if(sel&&sel.point&&(points[this.topLeft] === sel.point
+                        || points[this.topLeft] === sel.point.x)) {
+                    points[this.topLeft].x = x1 = points[this.bottomRight].x - relationTemplate.width/2;
+                }else {
+                    points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
+                }
             }
             if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2) {
-                points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
+                // If the height is less than the minimum, push out the
+                // point that the user is dragging
+                if(sel&&sel.point&&(points[this.topLeft] === sel.point
+                        || points[this.topLeft] === sel.point.y)) {
+                    points[this.topLeft].y = y1 = points[this.bottomRight].y - relationTemplate.height/2;
+                }else {
+                    points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
+                }
             }
-            points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
+            // Make the relation keep it's shape by aligning the topLeft and bottomRight diagonally
+            // Move either the topLeft or the bottomRight depending on which one
+            // the user is dragging
+            if(sel&&sel.point&&(points[this.topLeft] === sel.point
+                    || points[this.topLeft] === sel.point.y)) {
+                points[this.topLeft].y = y1 = points[this.bottomRight].y - (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
+            }else {
+                points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
+            }
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
 
