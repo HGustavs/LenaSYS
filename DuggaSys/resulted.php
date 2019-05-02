@@ -86,8 +86,7 @@ pdoConnect();
     </div>
     
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
-		<div id="resultTable"></div>
-	</div>
+		
 	<!-- content END -->
 
 	<!-- -------------------=============####### Result Popover #######=============------------------- -->
