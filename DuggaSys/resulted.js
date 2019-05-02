@@ -1141,8 +1141,8 @@ function renderColumnFilter(col, status, colname) {
 	}
   console.log(intVarGradient);
   console.log(str);
-  if(intVarGradient = moments.length)
-    intVarGradient = 0;
+  /*if(intVarGradient = moments.length)
+    intVarGradient = 0;*/
   return str;
 }
 
