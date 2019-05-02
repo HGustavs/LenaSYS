@@ -51,7 +51,6 @@ $grplst=array();
 
 if($gradesys=="UNK") $gradesys=0;
 
-}	else {*/
 		// Store current day in string
 		$today = date("Y-m-d H:i:s");
 
