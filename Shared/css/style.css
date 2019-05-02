@@ -719,7 +719,7 @@ header td {
 }
 
 .loggedout {
-  background-color: rgba(13, 196, 14,100);
+  background-color: #50a750;
 
 }
 
@@ -728,7 +728,7 @@ header td {
 }
 
 .loggedin {
-    background-color: rgba(219, 26, 26,100);
+    background-color: #c75050;
 }
 
 
