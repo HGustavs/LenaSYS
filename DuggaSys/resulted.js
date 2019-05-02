@@ -697,7 +697,6 @@ function createSortableTable(data) {
 		tblbody: studentInfo,
 		tblfoot: []
 	}
-  intVarGradient = 0;
 	var colOrder = buildColumnOrder();
 	myTable = new SortableTable({
 		data: tabledata,
@@ -1124,11 +1123,12 @@ function renderColumnFilter(col, status, colname) {
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
+    intVarGradient++;
   } else {
     str = "<div class='lo ";
-    //intVarGradient--;
   }
-  intVarGradient++;
+  if(moments.length % 2 == 0)
+   intVarGradient++;
 
 	if (status) {
 		str += "checkbox-dugga'>";
@@ -1141,8 +1141,6 @@ function renderColumnFilter(col, status, colname) {
 	}
   console.log(intVarGradient);
   console.log(str);
-  /*if(intVarGradient = moments.length)
-    intVarGradient = 0;*/
   return str;
 }
 
