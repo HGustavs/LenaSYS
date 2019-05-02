@@ -2584,7 +2584,7 @@ function mousemoveevt(ev, t) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance) {
-                canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                canvas.style.cursor = "default";
             } else {
                 if(uimode == "MoveAround"){
                     canvas.style.cursor = "all-scroll";
