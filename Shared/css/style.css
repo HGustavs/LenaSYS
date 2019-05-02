@@ -997,10 +997,6 @@ header td {
   width: 100%;
 }
 
-#editContent input.submit-button-fix{
-  margin-top: 0;
-}
-
 #editContent input.submit-button {
   margin: 0;
 }
