@@ -45,14 +45,14 @@ function setup() {
 
   // Add search bar to nav
   filt += `<td id='searchBar' class='navButt' style='margin-left: 0px'>`;
-  filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
+  filt += `<input id='searchinput' type='text' name='search' placeholder='Search..' style='margin-left: 0px'`;
   filt += `onkeyup='searchterm=document.getElement ById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
   filt += `<button id='searchbutton' class='switchContent'`;
   filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
   filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
   filt += `</button></td>`;
-  filt += `<td class='tooltip-searchbar'>`;
-  filt += `<div class='tooltip-searchbar-box'>`;
+  filt += `<td class='tooltip-searchbar style='margin-left: 0px''>`;
+  filt += `<div class='tooltip-searchbar-box style='margin-left: 0px''>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
  
