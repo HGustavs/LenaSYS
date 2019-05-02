@@ -36,7 +36,7 @@ function setup() {
 	//benchmarkData = performance.timing;
 
 	/*    Add filter menu   */
-	 --Commented out this code because of similar solution below due to possible duplicate issue on github--
+	 //--Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
 	filt += "<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();'>";
 	filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
