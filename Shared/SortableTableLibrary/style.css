@@ -1219,7 +1219,7 @@ input {
   box-sizing: border-box;
 }
 
-.greyedout_textinput {
+.greyedouttextinput {
   display: block;
   width: 216px;
   height: 30px;

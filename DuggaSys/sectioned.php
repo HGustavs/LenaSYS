@@ -294,7 +294,7 @@
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
+				<div class='inputwrapper'><span>Version Name:</span><input class='greyedouttextinput' type='text' id='versname' placeholder='Version Name' /></div>
 				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
 				<div class='inputwrapper'><span>Start Date:</span><input class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input class='textinput' type='date' id='enddate' value='' /></div>
