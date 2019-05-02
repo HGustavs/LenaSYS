@@ -1164,7 +1164,7 @@ function exportCell(format, cell, colname) {
 				str = cell.ssn + ";";
 			}else{
         str = "XXXXXXXX-XXXX;";
-      }
+			}
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
 			str = str.replace(/\&Aring\;/g, "Å");
