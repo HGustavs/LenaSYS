@@ -1127,9 +1127,9 @@ function renderColumnFilter(col, status, colname) {
   } else {
     str = "<div class='lo ";
   }
-  if(moments.length % 2 == 0)
+/*  if(moments.length % 2 == 0)
    intVarGradient++;
-
+*/
 	if (status) {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
@@ -1140,7 +1140,7 @@ function renderColumnFilter(col, status, colname) {
 		str += "</div>"
 	}
   console.log(intVarGradient);
-  console.log(str);
+  console.log(moments.length + "ml");
   return str;
 }
 
