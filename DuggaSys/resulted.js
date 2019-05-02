@@ -1140,7 +1140,7 @@ function renderColumnFilter(col, status, colname) {
 		str += "</div>"
 	}
   console.log(intVarGradient);
-  console.log(col);
+  console.log(str);
   return str;
 }
 
