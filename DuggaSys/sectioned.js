@@ -774,7 +774,7 @@ function returnedSection(data) {
               }
             }
           }
-          
+
           str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
           str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
@@ -845,7 +845,7 @@ function returnedSection(data) {
           }
         } else if (itemKind == 6) {
           // Group
-          str += "<div class='ellipsis nowrap' style='cursor:pointer;'>" + item['entryname'];
+          str += "<a class='ellipsis nowrap' onclick='getGroups(\"" + grp + "\");' style='cursor:pointer;'>" + item['entryname'];
           let re = new RegExp(grptype, "g");
           grp = grp.replace(re, "");
           if (document.getElementById("userName").innerHTML == "Guest") {
@@ -853,7 +853,7 @@ function returnedSection(data) {
           } else if (grp.indexOf("UNK") >= 0) {
             str += " &laquo;Not assigned yet&raquo</span></div>";
           } else {
-            str += grp + "</span></div>";
+            str += grp + "</span></a>";
           }
         } else if (itemKind == 7) {
           // Message
@@ -906,7 +906,7 @@ function returnedSection(data) {
           if (itemKind === 1) str += "class='section" + hideState + "' ";
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
-          str += "><img id='dorf' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype']]) + ");' />";
           str += "</td>";
         }
@@ -914,7 +914,7 @@ function returnedSection(data) {
         // trashcan
         if (data['writeaccess']) {
           str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
-          str += "<img id='dorf' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
+          str += "<img id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
         }
 
@@ -924,7 +924,7 @@ function returnedSection(data) {
 
     } else {
       // No items were returned!
-      str += "<div class='bigg'>";
+      str += "<div id='noAccessMessage' class='bigg'>";
       str += "<span>You either have no access or there isn't anything under this course</span>";
       str += "</div>";
     }
@@ -1265,11 +1265,16 @@ function drawSwimlanes() {
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
         duggalength = Math.ceil((entry.deadline - entry.start) / (24 * 60 * 60 * 1000));
+
+        // Yellow backgroundcolor if the dugga have been submitted but grade is pending.
+        // Green backgroundcolor if the dugga have been submitted and the grade is passed.
+        // Red backgroundcolor if the dugga have been submitted and the grade is failed.
         var fillcol = "#BDBDBD";
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
 
+        // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = "#000000";
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = "#FF0000";
@@ -1510,8 +1515,8 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
       m_gracetime.setDate(m_deadline.getDate() + 2);
     }
       m_gracetime.setHours(8);
-      m_gracetime.setMinutes(00);
-      m_gracetime.setSeconds(00);
+      m_gracetime.setMinutes(0);
+      m_gracetime.setSeconds(0);
   }
   if (m_dateTimeSubmitted > m_gracetime) {
     return true;

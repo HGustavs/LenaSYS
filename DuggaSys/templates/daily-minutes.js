@@ -122,9 +122,15 @@ function returnedDugga(data)
 			// UNK
 		}
 
+		var windowWidth = $(window).innerWidth();
 		var duggaFiles = data["files"][inParams["moment"]];
 		if($("#submitButtonTable").length != 0) {
-			createFileUploadArea(duggaParams["submissions"]);
+			if(windowWidth > 1120){
+				createFileUploadArea(duggaParams["submissions"]);		
+			} 
+			if(windowWidth <= 1120){
+				createSmallerViewportForm(duggaParams["submissions"]);		
+			}
 			for (var k=0; k < duggaParams["submissions"].length; k++){
 				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
 	    		if (duggaParams['uploadInstruction'] !== null){
@@ -152,6 +158,7 @@ function returnedDugga(data)
 			msg+="</div>";
 
 			document.getElementById("tomten").innerHTML=msg;
+			document.getElementById("smallerViewportArea").innerHTML=msg;
 		}
 
 		if (duggaFiles && duggaFiles.length > 0){
@@ -243,6 +250,52 @@ function createFileUploadArea(params){
 	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
-
 	document.getElementById("tomten").innerHTML=str;
+}
+
+function createSmallerViewportForm(params){
+	var str ="";
+	var form = "";
+	var fieldname = "timesheet";
+	if (params) {
+		fieldname = params[0].fieldname;
+	}
+
+	form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php'>";
+	form +="<div id='smallerViewportForm'>";
+	form +="<table class='tsTable'>";
+	form +="<tbody id='tsTableBody'><tr class='tsInputRow' id='tsTableRow_0'>";
+	form +="<div id='smallerViewportLabel'><label>Date</label></div>";
+	form +="<div id='datePicker'><input required type='date' name='tsDate_0' /></div>";
+	form +="<div id='smallerViewportLabel'><label>Type</label></div>";
+	form +="<div id='type'><select id='smallerViewportSelect' required name='tsType_0'>";
+	form += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
+	form +="</select></div>";
+	form +="<div id='smallerViewportLabel'><label>Reference</label></div>";
+	form +="<div id='reference'><input type='number' required name='tsRef_0'/></div>";
+	form +="<div id='smallerViewportLabel'><label>Comment</label></div>";
+	form +="<div id='comment'><input type='text' required name='tsComment_0'/>";
+	form +="</tr></tbody>";
+	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
+	form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
+	form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
+	form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
+	form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
+	form +="<input type='hidden' name='field' value='"+fieldname+"' />";
+	form +="<input type='hidden' name='kind' value='3' />";
+	form +="<tfoot><td colspan='4'>";
+	form +="</td></tfoot></table>";
+	form += "</div>";
+	form +="<input id='smallerViewportUploadButton' type='submit' value='Upload' /></form>";
+	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
+	str += "<div id='"+fieldname+"Instruction' style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
+	str += "</div>";
+	str += "<div>";
+	str += form;
+	str += "</div>";
+	str += "</div>";
+	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str += "</div>";
+
+	document.getElementById("smallerViewportArea").innerHTML=str;
 }

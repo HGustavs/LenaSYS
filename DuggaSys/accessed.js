@@ -166,6 +166,11 @@ function changeProperty(targetobj, propertyname, propertyvalue)
 	AJAXService("UPDATE", { cid: querystring['cid'], uid: targetobj, prop: propertyname, val: propertyvalue }, "ACCESS");
 }
 
+function showVersion(vers)
+{
+	window.location.href = "../DuggaSys/sectioned.php?courseid="+querystring['cid']+"&coursevers="+vers;
+}
+
 //----------------------------------------------------------------
 // renderCell <- Callback function that renders cells in the table
 //----------------------------------------------------------------
@@ -311,18 +316,19 @@ function returnedAccess(data) {
 	if (data['debug'] != "NONE!") alert(data['debug']);
   
 	var tabledata = {
-		tblhead: {
-			username: "User",
-			ssn: "SSN",
-			firstname: "First name",
-			lastname: "Last name",
-			class: "Class",
-			modified: "Added",
-			examiner: "Examiner",
-			vers: "Version",
-			access: "Access",
-			groups: "Group(s)",
-			requestedpasswordchange: "Password"
+
+		tblhead:{
+			username:"User",
+			ssn:"SSN",
+			firstname:"First name",
+			lastname:"Last name",
+			class:"Class",
+			modified:"Last Modified",
+			examiner:"Examiner",
+			vers:"Version",
+			access:"Access",
+			groups:"Group(s)",
+			requestedpasswordchange:"Password"
 		},
 		tblbody: data['entries'],
 		tblfoot: {}

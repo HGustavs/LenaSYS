@@ -76,7 +76,7 @@ pdoConnect();
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
               <div class='flexwrapper'><span>Deadline 3:</span><span><input class='' type='date' id='deadline3' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='deadlinet3'></select><select style='width:55px;' id='deadlinem3'></select></span></div>
   						<div class='flexwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
-              <div class='flexwrapper'><span>Release:</span><span><input class='' type='date' id='release' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
+              <div class='flexwrapper'><span>Result release:</span><span><input class='' type='date' id='release' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
         		</div>
         		<div style='padding:5px;display:flex;justify-content:space-between'>
         			<input id='closeDugga' class='submit-button' style='' type='button' value='Cancel' onclick='closeWindows();' />
