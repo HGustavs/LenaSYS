@@ -716,13 +716,8 @@ function createSortableTable(data) {
 
 	myTable.renderTable();
 
-  if(moments.length % 2 == 1){
-    intVarGradient = 0;
-  }
-
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
-
 }
 
 function gradeFilterHandler() {
@@ -1125,13 +1120,15 @@ function renderColumnFilter(col, status, colname) {
 	str = "";
   if (colname == "FnameLnameSSN")
   return str;
-
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
-    intVarGradient = 1;
+    intVarGradient++;
   } else {
     str = "<div class='lo ";
+    intVarGradient--;
+  }
+  if(moments.length == intVarGradient){
     intVarGradient = 0;
   }
 	if (status) {
