@@ -1122,7 +1122,8 @@ function renderColumnFilter(col, status, colname) {
   return str;
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
   for(var i = 0; i < moments.length; i++){
-    if(i % 2 == 0){
+    intVarGradient++;
+    if(intVarGradient % 2 == 0){
       str = "<div class='hi ";
     //  intVarGradient++;
     } else {
@@ -1139,7 +1140,8 @@ function renderColumnFilter(col, status, colname) {
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	}
-  console.log(i);
+  console.log("i: " + i);
+  console.log("intVarGradient: " + intVarGradient);
   console.log(moments.length + "ml");
   return str;
 }
