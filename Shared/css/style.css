@@ -643,14 +643,6 @@ header td {
   display: none;
 }
 
-#TopMenuStatic { 
-  position: fixed; 
-  top: 3px; 
-  left: 95px; 
-  right: 100px; 
-  z-index: 5001; 
-}
-
 .navheader {
   height: 20px;
   margin-bottom: 10px;
@@ -3322,6 +3314,13 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
+  #TopMenuStatic { 
+    position: fixed; 
+    top: 3px; 
+    left: 95px; 
+    right: 100px; 
+    z-index: 5001; 
+  }
      #sortingBar {
         width: 135px;
         position: relative;
