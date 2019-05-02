@@ -1121,15 +1121,12 @@ function renderColumnFilter(col, status, colname) {
   if (colname == "FnameLnameSSN")
   return str;
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
-  for(var i = 0; i < moments.length; i++){
+  if(intVarGradient % 2 == 0){
+    str = "<div class='hi ";
     intVarGradient++;
-    if(intVarGradient % 2 == 0){
-      str = "<div class='hi ";
-    //  intVarGradient++;
-    } else {
-      str = "<div class='lo ";
-      //intVarGradient--;
-    }
+  } else {
+    str = "<div class='lo ";
+    intVarGradient--;
   }
   intVarGradient--;
 	if (status) {
@@ -1141,9 +1138,8 @@ function renderColumnFilter(col, status, colname) {
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	}
-  console.log("i: " + i);
   console.log("intVarGradient: " + intVarGradient);
-  console.log(moments.length + "ml");
+  console.log(str);
   return str;
 }
 
