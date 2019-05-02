@@ -1128,7 +1128,9 @@ function renderColumnFilter(col, status, colname) {
     str = "<div class='lo ";
     intVarGradient--;
   }
-  if(moments.length == intVarGradient){
+  var hello = 0;
+  hello++;
+  if(moments.length == hello){
     intVarGradient = 0;
   }
 	if (status) {
