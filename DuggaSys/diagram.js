@@ -383,6 +383,7 @@ function keyDownHandler(e) {
     } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
 
         arrowKeyPressed(key);
+        moveCanvasView(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
@@ -500,6 +501,24 @@ function arrowKeyPressed(key) {
         selected_objects[i].move(xNew, yNew);
     }
     updateGraphics();
+}
+
+//-----------------------------------------------------------------------------------
+// arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
+//-----------------------------------------------------------------------------------
+function moveCanvasView(key){
+  if(uimode = "MoveAround"){
+    if(key == leftArrow) {
+      origoOffsetX += 10;
+    }else if(key == upArrow) {
+      origoOffsetY += 10;
+    }else if(key == rightArrow) {
+      origoOffsetX += -10;
+    }else if(key == downArrow) {
+      origoOffsetY += -10;
+    }
+    updateGraphics();
+  }
 }
 
 //-------------------------------------------------------------------------------------
@@ -1033,6 +1052,7 @@ function toggleVirtualA4() {
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
     $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
