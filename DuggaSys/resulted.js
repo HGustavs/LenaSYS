@@ -34,12 +34,11 @@ var tableCellName = "resultTableCell";
 function setup() {
 	//Benchmarking function
 	//benchmarkData = performance.timing;
-	
 
 	/*    Add filter menu   */
-	//Commented out this code because of similar solution below due to possible duplicate issue on github--
+	/* --Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
-	filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
+	/filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
 	filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 	filt += "<div id='columnfilter'></div>"
@@ -52,7 +51,6 @@ function setup() {
 	filt += "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
 	filt += "</div>";
 	filt += "</span></td>";
-	
 
   // Add search bar to nav
   filt += `<td id='searchBar' class='navButt'>`;
@@ -67,8 +65,8 @@ function setup() {
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
  
-//	$("#menuHook").before(filt);
-  
+	$("#menuHook").before(filt);
+  */
 
 	/*  Add filter menu   */
 
