@@ -51,10 +51,10 @@ function setup() {
 	filt += "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
 	filt += "</div>";
 	filt += "</span></td>";
-	*/
+	
 
   // Add search bar to nav
-  filt += `<td id='searchBar'>`;
+  filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
   filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
   filt += `<button id='searchbutton' class='switchContent'`;
@@ -66,7 +66,7 @@ function setup() {
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
  
-$("#menuHook").before(filt);
+	$("#menuHook").before(filt);
   
 
 	/*  Add filter menu   */
