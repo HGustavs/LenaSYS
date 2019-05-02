@@ -1124,11 +1124,11 @@ function renderColumnFilter(col, status, colname) {
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
-    intVarGradient++;
   } else {
     str = "<div class='lo ";
     //intVarGradient--;
   }
+  intVarGradient++;
 
 	if (status) {
 		str += "checkbox-dugga'>";
