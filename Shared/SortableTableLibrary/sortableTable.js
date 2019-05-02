@@ -696,7 +696,6 @@ function SortableTable(param) {
 				console.log(err.Message);
 			},
 			success: function(data){
-				console.log("returned data: "+data);
 				window.location.assign("mailto:?bcc=" + data);
 			}
 		});
