@@ -448,8 +448,8 @@ if(strcmp($opt,"get")==0) {
 		'allcommentranks' => $allcommentranks,
 		'allcommitranks' => $allcommitranks,
 		'githubuser' => $gituser,
-		'count' => $count,
 		'todaysevents' => $todaysevents,
+		'count' => $count,
 		'timesheets' => $timesheets
 	);
 	
@@ -497,4 +497,5 @@ if(strcmp($opt,"get")==0) {
 	);
 	echo json_encode($array);
 }
+
 ?>
