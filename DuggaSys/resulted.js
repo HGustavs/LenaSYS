@@ -44,9 +44,9 @@ function setup() {
 	
 
   // Add search bar to nav
-  filt += `<td id='searchBar' class='navButt'>`;
+  filt += `<td id='searchBar' class='navButt' style='margin-left: 0px'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
+  filt += `onkeyup='searchterm=document.getElement ById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
   filt += `<button id='searchbutton' class='switchContent'`;
   filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
   filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
