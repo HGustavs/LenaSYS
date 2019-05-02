@@ -177,14 +177,14 @@ p {
     border:1px solid black;
     box-shadow:2px 2px 2px #000;
     position:absolute;
-    background-color: #FFF; 
+    background-color: #FFF;
 }
 
 .icon {
     width:15px;
     height:15px;
     padding:0px;
-}                
+}
 
 #input-container input{
     width:100%;
@@ -788,7 +788,7 @@ header td {
   margin-bottom:2px;
   margin-left:115px;
   font-size:14px;
-  transition:1s background-color;  
+  transition:1s background-color;
 }
 
 #endsessionmessagebutton:hover {
@@ -830,7 +830,7 @@ header td {
 .loginBox .cursorPointer {
   cursor: pointer;
 }
- 
+
 #playlink {
   width: 216px;
 }
@@ -955,7 +955,7 @@ input {
   background-color: #ce3d3d;
 }
 .loginBoxbody {
-    
+
 }
 
 .loginBox form {
@@ -1219,6 +1219,34 @@ input {
   box-sizing: border-box;
 }
 
+.greyedout_textinput {
+  display: block;
+  width: 216px;
+  height: 30px;
+  line-height: 18px;
+  color: #202020;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  padding: 5px;
+  font-size: 14px;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: start;
+  border-radius: 0px;
+  box-sizing: border-box;
+  opacity: 0.8;
+}
+
 input.option {
   float: left;
 }
@@ -1397,7 +1425,7 @@ input.submit-button:disabled {
 }
 
 .pressed{
-  background:#FFA500; 
+  background:#FFA500;
 }
 
 .button-row {
@@ -1901,28 +1929,28 @@ span.arrow {
   border-bottom-right-radius: 10px;
 }
 
-.fab { 
-  position:fixed; 
-  width:50px; 
-   height:50px; 
-   border-radius:25px; 
-   box-shadow:0px 0px 15px #888; 
-   bottom:35px; 
-   right:50px; 
-   font-size:24px; 
-   text-align:center; 
-   background-color:#fecc56; 
-   color:#614875; 
-   z-index:4000; 
+.fab {
+  position:fixed;
+  width:50px;
+   height:50px;
+   border-radius:25px;
+   box-shadow:0px 0px 15px #888;
+   bottom:35px;
+   right:50px;
+   font-size:24px;
+   text-align:center;
+   background-color:#fecc56;
+   color:#614875;
+   z-index:4000;
    border:0;
-   outline: none; 
-   cursor: pointer; 
-   padding-left: 7px; 
-   padding-top: 1px; 
- } 
+   outline: none;
+   cursor: pointer;
+   padding-left: 7px;
+   padding-top: 1px;
+ }
 
-.fab:hover { 
-    transform:scale(1.1); 
+.fab:hover {
+    transform:scale(1.1);
 }
 
 .dugga-pass {
@@ -2188,8 +2216,8 @@ span.arrow {
   line-height: 47px;
 }
 
-.rownoMagic { 
-  width: 25px; 
+.rownoMagic {
+  width: 25px;
 }
 
 .rownoMagic > div {
@@ -2636,7 +2664,7 @@ ul.hamburgerList button.menuButton {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
-  
+
   #cookiemsg {
 	background-color: #fecc56;
 	z-index: 1000;
