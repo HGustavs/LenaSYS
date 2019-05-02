@@ -358,6 +358,226 @@ function weekchoice(dateString){
     return str;
 }
 
+// Since Math.cos and Math.sin does not calculate on degrees we must convert to radians
+function toRadians(angle)
+{
+  return angle * (Math.PI / 180);
+}
+function changeDay(date)
+{
+  AJAXService("updateday",{userid:"HGustavs", today: date},"CONTRIBUTION");
+}
+function renderCircleDiagram(data, day)
+{
+  var today = new Date();
+  if (!day) {
+    var YYYY = today.getFullYear();
+    var mm = today.getMonth() + 1;
+    var dd = today.getDate();
+    if (dd < 10) dd = '0'+dd;
+    if (mm < 10) mm = '0'+mm;
+    today = YYYY+"-"+mm+"-"+dd;
+  } else {
+    today = day;
+  }
+
+  var activities = JSON.parse(data);
+  var str = "";
+  str+="<h2 style='padding:10px'>Activities today</h2>";
+  str+="<input type='date' id='circleGraphDatepicker' value="+today+" onchange='changeDay(this.value)' />";
+  str+="<div class='circleGraph'>";
+  str+="<div id='activityInfoBox'><span id='allActivity'></span><span id='activityTime'></span><span id='activityPercent'></span><span id='activityCount'></span></div>";
+  str+="<svg width='500' height='500'>";
+  str+="<circle class='circleGraphCircle' cx='250' cy='250' r='220' />";
+  str+=renderHourMarkers();
+  str+=renderActivityPoints(activities);
+  str+="</svg>";
+
+  // Hidden gradient used for mixed activity points
+  str+= "<svg style='width:0;height:0;position:absolute;'>";
+  str+= "<linearGradient id='mixedActivityGradient' x2='1' y2='1'>";
+  str+= "<stop offset='0%' stop-color='#6A4C93' />";
+  str+= "<stop offset='50%' stop-color='#2AB7CA' />";
+  str+= "<stop offset='100%' stop-color='#FE4A49' />";
+  str+= "</linearGradient></svg></div>";
+  
+  return str;
+}
+function renderActivityPoints(activities)
+{
+  var str = "";
+  var hours = {};
+  activities.forEach(entry => {
+    var hour = entry.time;
+    var keys = Object.keys(hours);
+    var found = false;
+
+    for (var i = 0; i < keys.length; i++) {
+        if (keys[i] == hour) {
+            hours[hour] += 1;
+            found = true;
+            return;
+        }
+    }
+    if (!found) {
+        hours[hour] = 1;
+    }
+
+  });
+
+  var uniquePoints = [];
+  var activityTypes = {times: {}, types: {}};
+  const RADIUS = 220;
+  const BASELINE = 50;
+  const MIDDLE = 243;
+  activities.forEach(entry => {
+    var hour = entry.time.substr(0,2);
+    var houroffset = parseInt(hour) + 6;
+    var type = entry.type;
+    var activityCount = activities.length;
+    var percentage = hours[hour] / activityCount;
+    var angleFactor = ((RADIUS-BASELINE) * percentage) + BASELINE;
+    angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;    
+    var xCoord = (Math.cos(toRadians(houroffset*15)) * angleFactor) + MIDDLE;
+    var yCoord = (Math.sin(toRadians(houroffset*15)) * angleFactor) + MIDDLE;
+    
+    if (!Object.keys(activityTypes.times).includes(hour)) {
+        activityTypes.times[hour] = {};
+        uniquePoints.push([xCoord,yCoord,hour,percentage]);
+    }
+    if (!Object.keys(activityTypes.types).includes(type)) activityTypes.types[type] = 0;
+    if (!Object.keys(activityTypes.times[hour]).includes(type)) activityTypes.times[hour][type] = 0;
+    activityTypes.types[type] += 1;
+    activityTypes.times[hour][type] += 1;
+  });
+  uniquePoints.sort(([a,b,c], [d,e,f]) => c - f);
+
+  if (uniquePoints.length > 2) {
+    str+="<polygon class='activityPolygon' points='";
+    for(var i = 0; i < uniquePoints.length; i++) {
+      str+=(uniquePoints[i][0]+5)+","+(uniquePoints[i][1]+5)+" ";
+    }
+    str+="250,250' onmouseover='showAllActivity(event, "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
+  }
+
+  uniquePoints.forEach(point => {
+    var xCoord = point[0];
+    var yCoord = point[1];
+    var hour = point[2];
+    var percentage = Math.round(point[3]*100);
+    var types = Object.keys(activityTypes.times[hour]);
+    var values = Object.values(activityTypes.times[hour]);
+
+    types.length > 1 ? type = "mixed" : type = types[0];
+    str+="<rect class='activitymarker "+type+"' width='14' height='14' x='"+xCoord+"' y='"+yCoord+"' onmouseover='showActivityInfo(event, ";
+    str+="`"+type+"`, `"+hour+"`, "+percentage+", "+JSON.stringify(activityTypes)+")' onmouseout='hideActivityInfo()' />";
+  });
+  return str;
+}
+function renderHourMarkers()
+{
+  const RADIUS = 220;
+  const NUMRADIUS = 240;
+  const MIDDLE = 250;
+  const X_OFFSET = NUMRADIUS + 10;
+  const Y_OFFSET = NUMRADIUS + 15;
+  var str = "";
+
+  var i, number;
+  for (i = 0; i < 24; i++) {
+      var xCoord;
+      var yCoord;
+    str += "<line x1='"+MIDDLE+"' y1='"+MIDDLE+"' class=";
+    if (i % 2 === 0) {
+        xCoord = (Math.cos(toRadians(i*15)) * (RADIUS+10)) + MIDDLE;
+        yCoord = (Math.sin(toRadians(i*15)) * (RADIUS+10)) + MIDDLE;
+        str += "'circleGraphBigline'";
+        str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
+    } else {
+        xCoord = (Math.cos(toRadians(i*15)) * RADIUS) + MIDDLE;
+        yCoord = (Math.sin(toRadians(i*15)) * RADIUS) + MIDDLE;
+        str += "'circleGraphLine'";
+        str += " x2='"+xCoord+"' y2='"+yCoord+"' />";
+    }
+  }
+  str += "<circle class='circleGraphCircle' cx='"+MIDDLE+"' cy='"+MIDDLE+"' r=25 />";
+  str += "<g id='circleGraphHours'>";
+  for (i = 0, number = 18; i < 12; i++) {
+    var xCoordNum = (Math.cos(toRadians(i*30)) * NUMRADIUS) + X_OFFSET;
+    var yCoordNum = (Math.sin(toRadians(i*30)) * NUMRADIUS) + Y_OFFSET;
+    
+    str += "<text x='"+xCoordNum+"' y='"+yCoordNum+"'>"+number+"</text>";
+    number === 22 ? number = 0 : number += 2;
+  }
+  str += "</g>";
+  return str;
+}
+
+// Shows all activity when the user hovers over the polygon in the circle graph
+function showAllActivity(e, activities)
+{
+  var box = document.getElementById('activityInfoBox');
+  var span = document.getElementById('allActivity');
+  var times = Object.keys(activities.times);
+  var types = Object.keys(activities.types);
+  
+  var str = "";
+
+  for (var i = 0; i < times.length; i++) {
+      var prevHour = (parseInt(times[i])-1);
+      var hourTypes = Object.keys(activities.times[times[i]]);
+
+      str += "<span class='activityInfoEntry'>";
+      str += "<strong>"+prevHour+".00 - "+times[i]+".00</strong><br>";
+      
+      hourTypes.forEach(type => {
+          str += type+": "+activities.times[times[i]][type]+"<br>";
+      });
+      str += "</span>";
+  }
+  span.innerHTML = str;
+  box.style.display = 'block';
+  box.style.left = e.offsetX +10+ "px";
+  box.style.top = e.offsetY +10+ "px";
+}
+
+// Shows info about the activity point the user hovers over in the circle graph
+function showActivityInfo(e, type, hour, pc, activities) 
+{
+  var box = document.getElementById('activityInfoBox');
+  var timeSpan = document.getElementById('activityTime');
+  var pcSpan = document.getElementById('activityPercent');
+  var countSpan = document.getElementById('activityCount');
+  var prevHour = (parseInt(hour)-1);
+  box.style.display = 'block';
+  box.style.left = e.offsetX +10+ "px";
+  box.style.top = e.offsetY +10+ "px";
+
+  timeSpan.innerHTML = prevHour+".00 - "+hour+".00";
+  pcSpan.innerHTML = pc+"% Activity";
+  var str = "";
+  for (var i = 0; i < Object.keys(activities.times[hour]).length; i++) {
+      var type = Object.keys(activities.times[hour])[i];
+      str += activities.times[hour][type]+" of "+activities.types[type]+" total "+type+"s<br>";
+  } 
+  countSpan.innerHTML = str;
+}
+
+// Resets the circle graph activity info box and hides it
+function hideActivityInfo() 
+{
+  var box = document.getElementById('activityInfoBox');
+  var timeSpan = document.getElementById('activityTime');
+  var pcSpan = document.getElementById('activityPercent');
+  var countSpan = document.getElementById('activityCount');
+  var allSpan = document.getElementById('allActivity');
+  timeSpan.innerHTML = "";
+  pcSpan.innerHTML = "";
+  countSpan.innerHTML = "";
+  allSpan.innerHTML = "";
+  box.style.display = 'none';
+}
+
 function intervaltocolor(size,val)
 {
     if(val<size*0.25){
@@ -380,8 +600,15 @@ var momentexists=0;
 var resave = false;
 function returnedSection(data)
 {
-	retdata=data;
-    if(data['debug']!="NONE!") alert(data['debug']);
+  retdata=data;
+
+  if (Object.keys(data).length === 2) {
+    var div = document.getElementById('hourlyGraph');
+    div.innerHTML = renderCircleDiagram(JSON.stringify(data['events']),data['day']);
+    return;
+  }
+
+  if(data['debug']!="NONE!") alert(data['debug']);
 
   contribDataArr = [];
 	var str="";
@@ -441,6 +668,9 @@ function returnedSection(data)
 
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
+    str+="<div id='hourlyGraph'>";
+    str+=renderCircleDiagram(JSON.stringify(data['todaysevents']));
+    str+="</div>";
 
     // Table heading
 	str+="<table class='fumho'>";

@@ -120,3 +120,6 @@ ALTER TABLE listentries MODIFY groupKind VARCHAR(16);
 UPDATE groups SET groupKind="Number" WHERE groupKind="No";
 UPDATE groups SET groupKind="Letter" WHERE groupKind="Le";
 UPDATE groups SET groupKind="Roman" WHERE groupKind="VI";
+
+/* #6259 Add update column to vers table */
+ALTER TABLE vers ADD COLUMN updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;

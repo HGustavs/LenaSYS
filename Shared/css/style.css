@@ -1,4 +1,48 @@
 /* --------------================################================-------------- *
+ *                                    Colors                                    *
+ * --------------================################================-------------- */
+
+ :root {
+  --color-text-primary: #775886;
+  --color-text-secondary: #434343;
+  --color-text-header: #fff;
+  --color-text-list: #000;
+  --color-text-logo: #fff;
+  --color-text-label: #000;
+
+  --color-logo1: #775886;
+  --color-logo2: #573866;
+  --color-logo-backbround: #775886;
+
+  --color-primary: #614875;
+  --color-primary-2: #775886;
+  --color-primary-hover: #7b5a96;
+  --color-primary-light: #927b9e;
+  --color-accent: #fecc56;
+  --color-accent-hover: #ffd369;
+  --color-background: #fff;
+  --color-background-2: #ccc;
+  --color-background-3: #f0f0f0;
+  --color-background-4: #c8c8c8;
+  --color-sectioned-table-hi: #dad8db;
+  --color-sectioned-table-lo: #eae8eb;
+  --color-statistics: #d8d7da;
+  --color-list-hover: #c6cdb8;
+
+  --color-border-primary: #775886;
+  --color-border-list: #dbd0d8;
+  --color-border: #999;
+  --color-border-2: #ccc;
+  --color-border-3: #f0f0f0;
+  --color-border-4: #c8c8c8;
+  --color-border-5: #888;
+
+  --color-green: #50a750;
+  --color-red: #c75050;
+  --color-red-hover: #ce3d3d;
+}
+
+/* --------------================################================-------------- *
  *                               Fonts 1                                         *
  * --------------================################================-------------- */
 
@@ -63,6 +107,7 @@ body {
   overflow-y: scroll;
   width: 100%;
   height: 100%;
+  background-color: var(--color-background);
 }
 
 table {
@@ -149,8 +194,8 @@ p {
  * --------------================################================-------------- */
 
  #buttonDiv {
-   position: fixed;
    margin-top: -20px;
+   margin-bottom: 10px;
    height: 20px;
    background-color: white;
  }
@@ -176,21 +221,22 @@ p {
 }
 
 #content {
-  background: #fff;
+  background: var(--color-background);
   min-height: calc(100vh - 80px);
-  margin: 65px 10px 15px 10px;
+  margin: 65px 10px 0px 10px;
 }
 
 #contentDiagram {
   background: #fff;
-  margin: 65px 10px 15px 10px;
+  margin-left: 13px;
+  margin-top: 65px;
 }
 
 #accessedcontent {
   margin: 0px auto;
   position: relative;
   padding: 10px 10px 10px 10px;
-  background: #fff;
+  background: var(--color-background);
   min-height: 200px;
 }
 
@@ -198,21 +244,21 @@ p {
   margin: 0px auto;
   position: relative;
   padding: 50px 12px 8px 8px;
-  background: #fff;
+  background: var(--color-background);
   min-height: 50px;
 }
 
 #wrappall {
   margin: 0px auto;
   width: 80%;
-  border: 8px solid #ccc;
+  border: 8px solid var(--color-border-2);
 }
 
 .lena {
   border-radius: 6px 0px 0px 6px;
-  color: #FFF;
-  background-color: #775886;
-  background: linear-gradient(to bottom, #775886, #573866);
+  color: var(--color-text-logo);
+  background-color: var(--color-logo-backbround);
+  background: linear-gradient(to bottom, var(--color-logo1), var(--color-logo2));
   padding-left: 6px;
   padding-right: 6px;
   padding-top: 2px;
@@ -222,9 +268,9 @@ p {
 
 .sys {
   border-radius: 6px;
-  color: #775886;
-  border: 2px solid #775886;
-  background-color: #fff;
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-logo-backbround);
+  background-color: var(--color-background);
   padding-right: 4px;
   margin-right: 4px;
   text-decoration: none;
@@ -232,14 +278,14 @@ p {
 
 #Courselist {
   margin: 0px auto;
-  background-color: #fff;
-  color: #434343;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
 }
 
 #Courselist a {
-  color: #775886;
+  color: var(--color-text-primary);
   text-decoration: none;
 }
 
@@ -249,24 +295,24 @@ p {
 
 #Courselist .head {
   text-align: center;
-  color: #775886;
+  color: var(--color-text-primary);
   font-size: 18pt;
   display: block;
-  background-color: #FFF;
+  background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
   margin-top: 40px;
   margin-bottom: 4px;
   padding-bottom: 15px;
-  border-bottom: 2px dotted #775886;
+  border-bottom: 2px dotted var(--color-border-primary);
 }
 
 #Courselist .bigg {
   text-align: center;
-  color: #775886;
+  color: var(--color-text-primary);
   font-size: 14pt;
   display: block;
-  background-color: #fff;
+  background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
   margin-right: 8px;
@@ -282,10 +328,14 @@ p {
   opacity: 0.3 !important;
 }
 
+#noAccessMessage {
+  padding: 5px;
+}
+
 #Sectionlist {
   margin: 0px auto;
-  background-color: #fff;
-  color: #434343;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
   border-radius: 5px;
@@ -298,19 +348,19 @@ p {
 }
 
 #Sectionlist .section {
-  color: #fff;
-  background-color: #927b9e;
+  color: var(--color-text-header);
+  background-color: var(--color-primary-light);
 }
 
 #Sectionlist .header {
-  color: #fff;
+  color: var(--color-text-header);
   background-color: #775886;
   text-align: center;
 }
 
 #Sectionlist .moment {
-  color: #ffffff;
-  background-color: #927b9e;
+  color: var(--color-text-header);
+  background-color: var(--color-primary-light);
   cursor: pointer;
   /*
   box-shadow: 0px 3px 0px #aaa;
@@ -347,7 +397,7 @@ p {
 }
 
 #Sectionlist .example {
-  color: #434343;
+  color: var(--color-text-secondary);
   /*font-size: 12pt;
   padding-top: 5px;*/
   min-height: 26px;
@@ -375,7 +425,7 @@ p {
 }
 
 #Sectionlist .quiz {
-  color: #434343;
+  color: var(--color-text-secondary);
   font-size: 12pt;
   padding-top: 5px;
   min-height: 26px;
@@ -384,14 +434,14 @@ p {
 #Sectionlist .course {
   padding: 6px;
   text-align: center;
-  color: #fff;
+  color: var(--color-text-header);
   font-size: 24px;
-  background-color: #614875;
+  background-color: var(--color-primary);
 }
 
 .item a {
   text-decoration: none;
-  color: #775886;
+  color: var(--color-text-primary);
 }
 
 .item a:hover {
@@ -415,31 +465,31 @@ p {
 }
 
 #Sectionlist .norm {
-  background-color: #fff;
-  color: #000;
+  background-color: var(--color-background);
+  color: var(--color-text-list);
 }
 
 #Sectionlist .norm:hover {
   background-color: #c6cdb8;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .hi:hover {
   background-color: #c6cdb8;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .lo:hover {
   background-color: #c6cdb8;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 .hi {
-  background-color: #dad8db !important;
+  background-color: var(--color-sectioned-table-hi) !important;
 }
 
 .lo {
-  background-color: #eae8eb !important;
+  background-color: var(--color-sectioned-table-lo) !important;
 }
 
 .LightBox {
@@ -452,7 +502,7 @@ p {
   width: 32px;
   vertical-align: middle;
   overflow: hidden;
-  background-color: #927b9e;
+  background-color: var(--color-primary-light);
 }
 
 .StopLight {
@@ -490,7 +540,7 @@ p {
 
 #Sectionlist .hiddensection {
   opacity: 0.3;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .loginsection {
@@ -515,7 +565,7 @@ p {
 .tooltiptext {
   display: none;
   width: 160px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: white;
   text-align: center;
   border-radius: 6px;
@@ -541,7 +591,7 @@ p {
  }
 
  .statistics {
-   background-color: #927b9e;
+   background-color: var(--color-primary-light);
    color: white;
    width: 36px;
    min-height: calc(100vh - 122px);
@@ -553,13 +603,13 @@ p {
  .statisticsContent {
    width: 100%;
    height: 100%;
-   background-color: #d8d7da;
+   background-color: var(--color-statistics);
 }
 
 .statisticsInnerBox{
     margin: 10px 10px 10px 10px;
     border: 2px solid darkgray;
-    background-color: #eae8eb;
+    background-color: var(--color-sectioned-table-lo);
 }
 
 /* --------------================################================-------------- *
@@ -568,10 +618,10 @@ p {
 
 header {
   /*overflow: hidden;*/
-  color: #fff;
+  color: var(--color-text-header);
   height: 50px;
   width: 100%;
-  background: #614875;
+  background: var(--color-primary);
   position: fixed;
   z-index: 5000;
   top: 0px;
@@ -641,22 +691,19 @@ header td {
 .navName {
   font-size: 0.8em;
   color: #FFFFFF;
-  cursor: default;
   text-decoration: none;
   text-align: right;
   overflow: hidden;
   padding-right: 4px;
+  width: 50px;
 }
 
-.navName:hover {
-  font-size: 0.8em;
+.navName a:hover {
   text-shadow: 2px 2px 4px rgb(0, 0, 0);
   color: #FFFFFF;
-  cursor: default;
   text-decoration: underline;
   text-align: right;
   overflow: hidden;
-  padding-right: 4px;
 }
 
 .navName a {
@@ -672,20 +719,18 @@ header td {
 }
 
 .loggedout {
-  background-color: #c75050;
+  background-color: rgba(13, 196, 14,100);
+
 }
 
-.loggedout:hover {
-  background-color: #50a750;
+#loginbutton:hover {
+  filter: brightness(1.1);
 }
 
 .loggedin {
-  background-color: #50a750;
+    background-color: rgba(219, 26, 26,100);
 }
 
-.loggedin:hover {
-  background-color: #c75050;
-}
 
 #loginbutton {
   cursor: pointer;
@@ -701,7 +746,15 @@ header td {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background: #fff;
+  background: var(--color-background);
+}
+
+#TopMenuStatic { 
+  position: fixed; 
+  top: 3px; 
+  left: 95px; 
+  right: 100px; 
+  z-index: 5001; 
 }
 
 /* --------------================################================-------------- *
@@ -717,8 +770,8 @@ header td {
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
 }
 
 .previewpopover {
@@ -730,8 +783,8 @@ header td {
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
 }
 
 .floatRightBox {
@@ -744,8 +797,8 @@ header td {
   z-index: 9000;
   box-shadow: 2px 2px 4px #000;
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
 }
 
 #overlay {
@@ -773,8 +826,8 @@ header td {
 
 .loginBox {
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -800,8 +853,8 @@ header td {
   z-index:9000;
   box-shadow:2px 2px 4px #000;
   padding:4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
 }
 
 #resultpopoverBox{
@@ -815,8 +868,8 @@ header td {
 
 .newpassword {
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -826,8 +879,8 @@ header td {
 
 .showsecurityquestion {
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -837,8 +890,8 @@ header td {
 
 .resetcomplete {
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -850,8 +903,8 @@ header td {
 .endsessionmessagebox {
   display: block;
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   width: 350px;
   min-height: 100px;
   z-index: 9000;
@@ -863,7 +916,7 @@ header td {
 }
 
 #endsessionmessagebutton {
-  background-color: #614875;
+  background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 110px;
@@ -968,7 +1021,7 @@ header td {
 
 input {
   border-radius: 2px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--color-border-2);
   border-radius: 4px;
   font-size: 16px;
 }
@@ -1027,7 +1080,7 @@ input {
   line-height: 18px;
   color: #6f6f6f;
   background-color: #ffffff;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-border-2);
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -1038,7 +1091,7 @@ input {
 
 .loginBoxheader {
   height: 25px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
   cursor: default;
@@ -1050,7 +1103,7 @@ input {
   font-size: 14px;
   margin-top: 10px;
   line-height: 0.5em;
-  color: #fff;
+  color: var(--color-text-header);
   width: 100%;
 }
 
@@ -1101,7 +1154,7 @@ input {
   width: 80px;
   height: 25px;
   color: #fff;
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   border-radius: 4px;
   margin-left: 1px;
@@ -1133,11 +1186,12 @@ input {
 
 .loginBox td {
   margin-left: 4px;
+  margin-right: 4px;
 }
 
 .buttonLoginBox {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: none;
   width: 260px;
   height: 40px;
@@ -1201,19 +1255,19 @@ input {
 .application-toolbar-wrap {
   position: fixed;
   z-index: 1000;
-  border: 1px solid rgb(200, 200, 200);
-  outline: 1px solid rgb(240, 240, 240);
-  background-color: #fff;
+  border: 1px solid var(--color-border-4);
+  outline: 1px solid var(--color-border-3);
+  background-color: var(--color-background);
 }
 
 .application-header {
   height: 25px;
-  background-color: #614875;
-  color: #fff;
+  background-color: var(--color-primary);
+  color: var(--color-text-header);
   vertical-align: bottom;
   cursor: move;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin: 0px;
 }
 
@@ -1227,7 +1281,7 @@ input {
 
 .toolbar-drawer {
   padding: 8px 8px;
-  border-top: 1px solid rgb(240, 240, 240);
+  border-top: 1px solid var(--color-border-3);
 }
 
 .application-toolbar h4.label {
@@ -1274,19 +1328,19 @@ input {
   height:20px;
   display: flex;
   text-align: center;
-  padding:0 3px;
   line-height: 20px;
 }
 .toolbarArrows{
   width:20%;
-  background: #614875;
+  background: var(--color-primary);
   border-radius: 5px;
   cursor: pointer;
 }
 #toolbarTypeText{
-  width:60%;
-  background-color: #f1f1f1;
-  border: 1px solid #eaeaea;
+  height: 20px;
+  color: #111;
+  margin: 0 auto;
+  font-weight: bold;
 }
 #toolbarLeftArrow{
   transform: rotate(-90deg);
@@ -1299,8 +1353,9 @@ input {
   filter:invert(100%);
 }
 .diagramAction{
+  cursor: pointer;
   border-radius: 5px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   width: 47%;
 }
 
@@ -1344,12 +1399,12 @@ input {
 
 .menu-drop-down span.drop-down-label:hover {
   cursor: pointer;
-  background-color: rgb(240, 240, 240);
+  background-color: var(--color-border-3);
 }
 
 .document-settings span.label:hover {
   cursor: pointer;
-  background-color: rgb(240, 240, 240);
+  background-color: var(--color-border-3);
 }
 
 .document-settings>.menu-drop-down:hover>.drop-down {
@@ -1364,8 +1419,8 @@ input {
 .export-drop-down {
   position: absolute;
   z-index: 2000;
-  outline: 1px solid rgb(240, 240, 240);
-  border: 1px solid rgb(200, 200, 200);
+  outline: 1px solid var(--color-border-3);
+  border: 1px solid var(--color-border-4);
   display: none;
   width: 260px;
   background-color: rgb(255, 255, 255);
@@ -1386,7 +1441,7 @@ input {
   display: block;
   width: 100%;
   height: 6px;
-  border-bottom: 1px solid rgb(240, 240, 240);
+  border-bottom: 1px solid var(--color-border-3);
   margin-bottom: 6px;
 }
 
@@ -1413,7 +1468,7 @@ input {
 
 .drop-down-item:hover,
 .export-drop-down-item:hover {
-  background-color: rgb(240, 240, 240);
+  background-color: var(--color-border-3);
   cursor: pointer;
 }
 
@@ -1428,7 +1483,7 @@ input {
 }
 
 .drop-down-text:hover {
-  background-color: rgb(240, 240, 240);
+  background-color: var(--color-border-3);
   cursor: default !important;
 }
 
@@ -1481,9 +1536,9 @@ input {
   font-size: 14px;
   line-height: 18px;
   color: #555;
-  background-color: #fff;
+  background-color: var(--color-background);
   background-image: none;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-2);
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
@@ -1499,7 +1554,7 @@ input {
   color: #202020;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-border-2);
   border-radius: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1531,7 +1586,7 @@ button.option {
 }
 
 input.submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 110px;
@@ -1544,10 +1599,11 @@ input.submit-button {
   font-size: 14px;
   transition: 1s background-color;
   float: left;
+  -webkit-appearance: none
 }
 
 div.submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 30px;
@@ -1566,7 +1622,7 @@ div.submit-button {
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  background-color: rgb(253, 203, 96);
+  background-color: var(--color-accent);
   border: 0px;
   width: 35px;
   height: 25px;
@@ -1583,7 +1639,7 @@ input.submit-button-newitem {
 }
 
 input.submit-button-newitem:hover {
-  transition: 0.4s;
+  transition: 0.2s;
   background-color: rgb(283, 233, 126);
 }
 
@@ -1627,13 +1683,13 @@ button.diagram-menu-buttons {
 }
 
 button.diagram-menu-buttons:hover {
-  background-color: #ffcc55;
+  background-color: var(--color-accent-hover);
   border-radius: 2px;
 }
 
 input.hide-moments-button {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: rgb(253, 203, 96);
+  background-color: var(--color-accent);
   border: 0px;
   width: 77px;
   height: 25px;
@@ -1650,19 +1706,17 @@ input.hide-moments-button {
 }
 
 input.fileed-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   margin: 0 0 4px 8px;
   float: right;
 }
 
 input.submit-button:hover {
   background-color: #7B5A96;
-  border-radius: 2px;
 }
 
 div.submit-button:hover {
   background-color: #7B5A96;
-  border-radius: 2px;
 }
 
 input.fileed-button:hover {
@@ -1702,11 +1756,11 @@ div.submit-button:disabled {
   white-space: nowrap;
   z-index: 10;
   border-radius: 5px;
-  background: #614875;
+  background: var(--color-primary);
 }
 
 #moveButton {
-  right: 2px;
+  right: 18px;
   top: 100;
   z-index: 2;
   position: absolute;
@@ -1719,12 +1773,14 @@ div.submit-button:disabled {
 }
 
 #linebutton {
+  cursor: pointer;
   margin: 5px 0;
   display: inline;
   border-radius: 5px;
 }
 
 #umllinebutton {
+  cursor: pointer;
   display: inline;
   margin: 5px 0;
   border-radius: 5px;
@@ -1743,7 +1799,7 @@ div.submit-button:disabled {
 }
 
 .unpressed {
-  background: #614875;
+  background: var(--color-primary);
 }
 
 .pressed {
@@ -1857,7 +1913,7 @@ input.large-button {
   padding: 5px;
   padding-right: 10px;
   color: white;
-  background-color: #614875;
+  background-color: var(--color-primary);
   display: inline-block;
   cursor: pointer;
 }
@@ -1882,7 +1938,7 @@ input.large-button {
   margin-bottom: 10px;
   margin-top: -1;
   color: white;
-  background-color: #614875;
+  background-color: var(--color-primary);
   cursor: pointer;
   border: none;
   border-radius: 0;
@@ -1892,53 +1948,53 @@ input.large-button {
 .list {
   width: 100%;
   padding: 1px;
-  border-bottom: 2px solid #dbd0d8;
+  border-bottom: 2px solid var(--color-border-list);
   margin-top: 20px;
   font-size: 16px;
 }
 
 .listHeading {
-  border-left: 2px solid #614875;
-  border-right: 2px solid #614875;
+  border-left: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
 }
 
 .innertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 2px 3px 2px #a09098 inset;
-  border-top: 2px solid #dbd0d8;
-  border-bottom: 2px solid #dbd0d8;
+  border-top: 2px solid var(--color-border-list);
+  border-bottom: 2px solid var(--color-border-list);
 }
 
 .innertable td {
-  color: #000;
+  color: var(--color-text-list);
   line-height: 28px;
   border: none;
   text-align: left !important;
 }
 
 .list td {
-  border-left: 2px solid #dbd0d8;
-  border-right: 2px solid #dbd0d8;
+  border-left: 2px solid var(--color-border-list);
+  border-right: 2px solid var(--color-border-list);
   padding: 0 8px 0 8px;
 }
 
 .list th {
-  background: #614875;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   line-height: 28px;
   font-weight: bold;
   padding: 5px;
 }
 
 .innertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 2px 3px 2px #a09098 inset;
-  border-top: 2px solid #dbd0d8;
-  border-bottom: 2px solid #dbd0d8;
+  border-top: 2px solid var(--color-border-list);
+  border-bottom: 2px solid var(--color-border-list);
 }
 
 .innertable td {
-  color: #000;
+  color: var(--color-text-list);
   line-height: 28px;
   border: none;
 }
@@ -2038,20 +2094,20 @@ input.large-button {
 }
 
 .list tbody tr:nth-child(odd) {
-  background-color: #ccc;
+  background-color: var(--color-background-2);
 }
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {
-  background-color: #eae8eb;
+  background-color: var(--color-sectioned-table-lo);
 }
 
 .evenfumo {
-  background: #ccc !important;
+  background: var(--color-background-2) !important;
 }
 
 .oddfumo {
-  background: #eae8eb !important;
+  background: var(--color-sectioned-table-lo) !important;
 }
 
 .selectedtr {
@@ -2059,7 +2115,7 @@ input.large-button {
 }
 
 #testinnertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: none;
   border-top: none;
   border-bottom: none;
@@ -2086,7 +2142,7 @@ span.arrow {
 }
 
 #testinnertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: none;
   border-top: none;
   border-bottom: none;
@@ -2095,27 +2151,27 @@ span.arrow {
 .markinglist {
   width: 100%;
   padding: 1px;
-  border-left: 2px solid #dbd0d8;
-  border-bottom: 2px solid #dbd0d8;
+  border-left: 2px solid var(--color-border-list);
+  border-bottom: 2px solid var(--color-border-list);
   font-family: hack, "Lucida Console", Monaco, monospace;
 }
 
 .markinglist td {
-  border-right: 2px solid #dbd0d8;
+  border-right: 2px solid var(--color-border-list);
   font-size: 10px;
 }
 
 .markinglist th {
-  background: #614875;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   font-style: italic;
   font-size: 12px;
   white-space: nowrap;
 }
 
 .feedback-list caption {
-  border-left: 2px solid #dbd0d8;
-  background: #614875;
+  border-left: 2px solid var(--color-border-list);
+  background: var(--color-primary);
   color: #fff;
   line-height: 28px;
 }
@@ -2140,9 +2196,7 @@ span.arrow {
   header {
     display: none;
   }
-  body {
-    margin: 0px
-  }
+
   #content {
     margin: 0px;
     padding: 0px;
@@ -2184,7 +2238,7 @@ span.arrow {
 /* Course version dropdown div */
 
 .course-dropdown-div {
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-2);
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
   overflow: hidden;
@@ -2220,8 +2274,8 @@ span.arrow {
 /**************************/
 
 #tableheader {
-  background: #614875;
-  color: #FFFFFF;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   margin-top: 10px;
   float: left;
   width: calc(100% - 200px);
@@ -2248,7 +2302,12 @@ span.arrow {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: #eae8eb;
+  background-color: var(--color-sectioned-table-lo);
+}
+
+#resultTable
+{
+  margin-top: 70px;
 }
 
 .resultTableCell{
@@ -2311,7 +2370,7 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 0px;
+	border: 2px solid #dbd0d8;
 }
 
 .accessTableText {
@@ -2331,6 +2390,13 @@ span.arrow {
 	margin-left: 5px;
 }
 
+#oldSubmissionIcon {
+  height: 20px; 
+  float: right; 
+  margin-right: 10px;
+  cursor:pointer;
+}
+
 #user td {
   padding: 0px;
   border-right: 3px dashed rgba(97,72,117,0);
@@ -2339,9 +2405,49 @@ span.arrow {
   border-top: 3px dashed rgba(97,72,117,0);
 }
 
-/* End DuggaSys resulted*/
+.tooltip-searchbar {
+  font-size: 20px;
+  padding: 0 2px;
+  position: relative;
+  width:10px;
+  cursor: default;
+}
+.tooltip-searchbar-box{
+  box-sizing: border-box;
+  display: none;
+  font-size: 13px;
+  position: absolute;
+  background: #fff;
+  transform: translate(-48%,61%);
+  border-radius: 5px;
+  padding: 5px;
+  padding-bottom: 10px;
+  line-height: 18px;
+  color: black;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+}
+.tooltip-searchbar-box:before {
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #fff;
+  position: relative;
+  margin: 0 auto;
+  transform: translateY(-140%);
+}
+.tooltip-searchbar:hover .tooltip-searchbar-box {
+  display: inherit;
+}
 
-/**************************/
+#ladexportContainer
+{
+  position: absolute;
+  height: 55px;
+  width: 710px;
+}
 
 /* End DuggaSys resulted*/
 
@@ -2363,13 +2469,13 @@ span.arrow {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--color-background);
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
 }
 
 .submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   width: 110px;
   height: 30px;
@@ -2384,6 +2490,7 @@ span.arrow {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  -webkit-appearance: none;
 }
 
 #variantSearch{
@@ -2413,7 +2520,7 @@ span.arrow {
 }
 
 #feedbackTable tbody tr:nth-child(odd) {
-  background-color: #FFF;
+  background-color: var(--color-background);
 }
 
 #feedbackBox {
@@ -2450,7 +2557,7 @@ span.arrow {
 .loginTransparent {
   display: block;
   height: 60px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   text-align: left;
 }
 
@@ -2471,18 +2578,18 @@ span.arrow {
 }
 
 .pane {
-  border-top: 2px solid #614875;
-  border-left: 2px solid #614875;
-  border-right: 2px solid #614875;
+  border-top: 2px solid var(--color-primary);
+  border-left: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
   display: inline-block;
   padding: 5px 15px 5px 15px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  color: #000000;
+  color: var(--color-text-list);
 }
 
 .pane-active {
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: #FFFFFF;
 }
 
@@ -2492,7 +2599,7 @@ span.arrow {
 }
 
 .pane-body {
-  border: 2px solid #614875;
+  border: 2px solid var(--color-primary);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -2507,8 +2614,8 @@ span.arrow {
   right:50px;
   font-size:24px;
   text-align:center;
-  background-color:#fecc56;
-  color:#614875;
+  background-color: var(--color-accent);
+  color:var(--color-primary);
   z-index:4000;
   border:0;
   outline: none;
@@ -2655,7 +2762,7 @@ span.arrow {
 }
 
 .checkmoment {
-  border-top: 1px solid #888;
+  border-top: 1px solid var(--color-border-5);
   font-weight: bold;
 }
 
@@ -2669,7 +2776,7 @@ span.arrow {
 }
 
 .accessedLine {
-  border-top: 1px solid #888;
+  border-top: 1px solid var(--color-border-5);
   font-weight: bold;
 }
 
@@ -2688,7 +2795,7 @@ span.arrow {
 }
 
 .headerlabel {
-  color: black;
+  color: var(--color-text-label);
   font-size: 16px;
   direction: rtl;
   max-width: 140px;
@@ -2713,8 +2820,8 @@ span.arrow {
 }
 
 .result-header-inverse {
-  background-color: rgb(255, 204, 85) !important;
-  color: #614875 !important;
+  background-color: var(--color-accent) !important;
+  color: var(--color-primary) !important;
 }
 
 .dropdown-container {
@@ -2729,8 +2836,8 @@ span.arrow {
   font-size: 12px;
   display: none;
   position: absolute;
-  top: 10px;
-  background: #fff;
+  top: 35px;
+  background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
 }
 
@@ -2755,19 +2862,19 @@ span.arrow {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--color-background);
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
 }
 
 .vhighlight-border-color {
-  border: 4px solid #614875 !important;
+  border: 4px solid var(--color-primary) !important;
   box-shadow: 0px 0px 4px #202 inset;
 }
 
 .vhighlight-border-color-inverse {
-  border: 4px solid #fecc56 !important;
-  box-shadow: 0px 0px 4px #ffcc55 inset;
+  border: 4px solid var(--color-accent) !important;
+  box-shadow: 0px 0px 4px var(--color-accent) inset;
 }
 
 .hhighlight-border-color {
@@ -2820,7 +2927,7 @@ span.arrow {
 
 .fumho th {
   background: #620;
-  color: #fff;
+  color: var(--color-text-header);
   font-family: Arial;
   font-weight: bold;
 }
@@ -2904,7 +3011,79 @@ table {
 }
 
 .fumho tr:nth-child(odd) {
-  background-color: #fff;
+  background-color: var(--color-background);
+}
+
+ /* Styling for circle graph */
+.circleGraph {
+  width:500px;
+  height:500px;
+  position: relative;
+}
+#activityInfoBox {
+  display: none;
+  position: absolute;
+  min-width: 150px;
+  background: lightgray;
+  color: black;
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  font-size: 10pt;
+  font-family: sans-serif;
+}
+#activityInfoBox span {
+  display: block;
+  padding: 1px;
+  font-weight: bold;
+}
+#allActivity .activityInfoEntry {
+  display: block;
+  padding: 0 0 8px 0;
+  font-weight: 100;
+}
+.circleGraphCircle {
+  stroke:black;
+  stroke-width:1px;
+  fill:white;
+}
+#circleGraphHours {
+  text-anchor: middle;
+}
+.circleGraphBigline {
+  fill: black;
+  stroke:black;
+  stroke-width:2px;
+}
+.circleGraphLine {
+  fill: gray;
+  stroke:gray;
+  stroke-width:1px;
+}
+.activitymarker {
+  stroke-width: 0.5px;
+  stroke: black;
+}
+rect[class*="activitymarker"]:hover {
+  fill: #8AC926;
+}
+.activitymarker.commit {
+  fill: #2AB7CA;
+}
+.activitymarker.comment {
+  fill: #6A4C93;
+}
+.activitymarker.issue {
+  fill: #FE4A49;
+}
+.activitymarker.mixed {
+  fill: url("#mixedActivityGradient");
+}
+.activityPolygon {
+  opacity: 0.8;
+  fill: #FED766;
+  stroke-width: 0.5px;
+  stroke: red;
 }
 
 /* JQuery UI Complement for missing icons in the DatePicker */
@@ -2938,26 +3117,22 @@ table {
     bottom: 2px;
 }
 
-/* styling for the search bar in fileed.php */
+/* styling for the search bars in resulted, accessed, duggaed, filed */
 
-#searchBar {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  float: right;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
-  margin-bottom: 15px;
-  margin-right: 7px;
+#searchBar, #testSearchContainer {
+  padding-left: 20px;
 }
 
-#searchinput {
+
+#searchinput, #duggaSearch {
   margin-right: 0;
   border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  border: 1px solid #ccc;
-  border-bottom: 0;
+  border: 1px solid var(--color-border-2);
+  border-bottom: 0
   padding: 0 0 0 2px;
+  height: 20px;
 }
 
 #searchbutton {
@@ -2968,18 +3143,23 @@ table {
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
-  box-shadow: none;
+  box-shadow: none !important;
   margin-bottom: 5px;
+  margin-right: 2px;
 }
-.searchField{
+
+#searchBar img, #testSearchContainer img {
+  margin: 0px;
+}
+
+/* .searchField{
   height: 25px;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
   border-right: 0px;
-}
+} */
 
 #lookingGlassSVG {
-  position: absolute;
   top: 3px;
   left: 3px;
 }
@@ -2990,7 +3170,7 @@ table {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
   text-align: center;
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: #fff;
   padding: 6px;
   margin: 1px;
@@ -3008,10 +3188,9 @@ table {
 /* and (max-device-width : 480px) { */
 
 .alertmsg {
-  background-color: #fecc56;
+  background-color: var(--color-accent);
   z-index: 1000;
   position: fixed;
-  bottom: 0px;
   width: 100%;
   height: 40px;
   padding: 0 20px 0 0px;
@@ -3024,13 +3203,27 @@ table {
   /* margin-left: 5px; */
   display: inline;
   align-self: center;
-  color: #614875;
+  color: var(--color-text-primary);
 }
 
 .alertmsg input {
   float: none;
-  align-self: center;
+  /* align-self: center; */
   margin-right: 5px;
+  position: absolute;
+  right: 20px;
+}
+
+.alertmsg#servermsgcontainer {
+  top: 50px;
+}
+
+.alertmsg#cookiemsg {
+  bottom: 0;
+}
+
+.alertmsg#cookiemsg input {
+  align-self: center;
 }
 
 /* } */
@@ -3103,8 +3296,8 @@ table.navheader div.menuButton {
 .material-box h3 {
   margin: -20px -20px 10px -20px;
   border-radius: 2px 2px 0 0;
-  background: #614875;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   padding: 10px 20px;
 }
 
@@ -3134,11 +3327,11 @@ table.navheader div.hamburgerMenu {
   padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
-  margin-top: 50px;
+  margin-top: 5px;
   margin-left: 5px;
   z-index: 1;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   display: none;
   overflow-x: hidden;
 }
@@ -3180,7 +3373,7 @@ ul.hamburgerList button.menuButton {
 .bar3 {
   width: 17px;
   height: 3px;
-  background-color: #fff;
+  background-color: var(--color-background);
   margin: 3px 0;
   transition: 0.4s;
 }
@@ -3267,7 +3460,7 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
-     #sortingBar {
+#sortingBar {
         width: 135px;
         position: relative;
         top: 25px;
@@ -3335,7 +3528,7 @@ only screen and (max-device-width: 768px) {
   }
 
   #cookiemsg {
-    background-color: #fecc56;
+    background-color: var(--color-accent);
     z-index: 1000;
     position: fixed;
     bottom: 0px;
@@ -3364,7 +3557,7 @@ only screen and (max-device-width: 768px) {
 
 .fileLink_counter {
     font-size: 16px;
-    color: #000;
+    color: var(--color-text-list);
 }
 .fileLink-editor, .fileLink-trashcan{
     width:initial;
@@ -3383,7 +3576,7 @@ only screen and (max-device-width: 768px) {
     }
 
     #fileLink_body tr[style]{
-        border: 1px solid #ccc !important;
+        border: 1px solid var(--color-border-2) !important;
         display: block !important;
     }
 
@@ -3396,7 +3589,7 @@ only screen and (max-device-width: 768px) {
   }
 
   #fileLink_body tr[style]{
-    border: 1px solid #ccc !important;
+    border: 1px solid var(--color-border-2) !important;
     display: block !important;
   }
 
@@ -3409,7 +3602,7 @@ only screen and (max-device-width: 768px) {
   }
 
   #fileLink_body tr[style]{
-    border: 1px solid #ccc !important;
+    border: 1px solid var(--color-border-2) !important;
     display: block !important;
   }
 
@@ -3539,7 +3732,7 @@ only screen and (max-device-width: 530px) {
     left: 10%;*/
   }
   #cookiemsg {
-    background-color: #fecc56;
+    background-color: var(--color-accent);
     z-index: 1000;
     position: fixed;
     bottom: 0px;
@@ -3560,6 +3753,9 @@ only screen and (max-device-width: 530px) {
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
+  #searchinput, #duggaSearch {
+    max-width: 120px;
+  }
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3586,11 +3782,13 @@ only screen and (max-device-width: 480px) {
   table.navheader input.hamburger {
     position: absolute;
     top: 66px;
-    right: 10px;
+    left:10px;
+    right: 5px;
   }
   table.navheader div.hamburger {
     position: absolute;
     top: 66px;
+    left:10px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
@@ -3607,6 +3805,9 @@ only screen and (max-device-width: 480px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
+  #searchinput, #duggaSearch {
+    max-width: 100px;
+  }
   #Sectionlist .course {
     font-size: 14px;
   }
@@ -3625,7 +3826,7 @@ only screen and (max-device-width: 320px) {
 }
 
 .titles h1 {
-  color: #614875;
+  color: var(--color-text-primary);
 }
 
 #nametext {
@@ -3635,12 +3836,15 @@ only screen and (max-device-width: 320px) {
 /* Is used to style a Select-box in diagram.php. */
 
 #selectDiv {
+  background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  height: 34px;
+  padding-right: 80px;
+  padding-left: 10px;
+  height: 30px;
   position: absolute;
-  right: 18px;
-  bottom: 12px;
+  right: 16px;
+  bottom: 16px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3670,21 +3874,90 @@ only screen and (max-device-width: 320px) {
   padding: 0;
 }
 
-#selectDiv .ikonPil {
-  display: block;
-  background: url("../icons/arrow.svg") no-repeat;
-  position: absolute;
-  right: 12px;
-  top: 14px;
-  width: 12px;
-  height: 15px;
+.tooltipDecrease{
+  display: inline-block;
+  position: relative;
+  bottom: 7px;
 }
 
-#selectDiv .ikonPilRotation {
-  top: 8px;
-  animation-name: roteraPil;
-  animation-duration: 0.2s;
-  animation-fill-mode: forwards;
+.tooltipDecrease button{
+  position: relative;
+  background-color: #614875;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tooltipDecrease .tooltiptextDec{
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: -15px;
+}
+
+#zoomDecrease:hover + .tooltiptextDec{
+  visibility: visible;
+}
+#range{
+  position: relative;
+  display: inline-block;
+  top: 2px;
+}
+
+#range input{
+  position: relative;
+}
+
+.tooltipIncrease{
+  position: relative;
+  display: inline-block;
+  bottom: 7px;
+}
+.tooltipIncrease button{
+  position: relative;
+  background-color: #614875;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tooltipIncrease .tooltiptextInc{
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  right: -20px;
+}
+
+#zoomIncrease:hover + .tooltiptextInc{
+  visibility: visible;
+}
+
+#zoomV{
+  position: absolute;
+  display: inline-block;
+  font-size: 12px;
+  bottom: 2px;
+  right: 4px;
 }
 
 /* Used to rotate the picture that is used as a arrow */
@@ -3718,7 +3991,8 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 12px;
+  bottom: 16px;
+  left: 16px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -3797,6 +4071,9 @@ only screen and (max-device-width: 320px) {
   z-index: 1;
   touch-action: none;
 }
+.fixed-action-button.cookie-fab {
+  bottom: 64px !important;
+}
 .fixed-action-button.sectioned {
   right: 75px;
 }
@@ -3837,8 +4114,8 @@ only screen and (max-device-width: 320px) {
     width: 56px;
     height: 56px;
     line-height: 56px;
-    background-color: #fecc56;
-    color: #614875;
+    background-color: var(--color-accent);
+    color: var(--color-primary) !important;
     font-size: 30px;
     vertical-align: middle;
 }
@@ -4060,8 +4337,8 @@ only screen and (max-device-width: 320px) {
     height: 89%;
     width: 95%;
     margin: 0px auto;
-    border: solid rgb(200,200,200);
-    background-color:  rgb(200,200,200);
+    border: solid var(--color-border-4);
+    background-color:  var(--color-background-4);
     box-shadow: 0px 5px 10px grey;
     z-index: 12000;
     display: none;
@@ -4076,8 +4353,8 @@ only screen and (max-device-width: 320px) {
 }
 
 .markdown {
-  border: solid rgb(200, 200, 200);
-  background-color: rgb(200, 200, 200);
+  border: solid var(--color-border-4);
+  background-color: var(--color-background-4);
   width: 38%;
   height: 80%;
   position: relative;
@@ -4091,7 +4368,7 @@ only screen and (max-device-width: 320px) {
     height:93%;
 }
 .markdownPrev {
-  border: solid rgb(200, 200, 200);
+  border: solid var(--color-border-4);
   width: 56%;
   height: 80%;
   position: relative;
@@ -4105,7 +4382,7 @@ only screen and (max-device-width: 320px) {
 
 .save-close-button-md {
   border-radius: 4px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   width: 110px;
   height: 30px;
@@ -4148,14 +4425,14 @@ legend{
 
 .prevHead {
   height: 20px;
-  background-color: #614875;
-  color: #FFFFFF;
+  background-color: var(--color-primary);
+  color: var(--color-text-header);
   font-size: 14px;
   padding: 0px 5px 0px 5px;
 }
 
 .prevNav {
-  background-color: #614875;
+  background-color: var(--color-primary);
   height: 30px;
   color: #FFF;
   padding: 0px 5px 0px 5px;
@@ -4163,7 +4440,7 @@ legend{
 }
 
 .markNav {
-  background-color: #614875;
+  background-color: var(--color-primary);
   height: 30px;
   color: #FFF;
   padding: 0px 5px 0px 5px;
@@ -4249,11 +4526,11 @@ textarea#mrkdwntxt {
 .selectHeader > span {
     display: block;
     cursor: pointer;
-    color: #000;
-    background-color: #fff;
+    color: var(--color-text-list);
+    background-color: var(--color-background);
 }
 .selectHeader > span:hover {
-      background-color: rgb(200, 200, 200);
+      background-color: var(--color-background-4);
 }
 #headerType1 {
     font-size: 13px;
@@ -4266,7 +4543,7 @@ textarea#mrkdwntxt {
 }
 
 #headerType2:hover {
-  background-color: rgb(200, 200, 200);
+  background-color: var(--color-background-4);
 }
 
 #headerType3 {
@@ -4324,11 +4601,25 @@ textarea#mrkdwntxt {
   .optionButtons {
     top: 686px;
   }
-  .save-close-button-md{
+  .save-close-button-md {
     margin-top: 15px;
   }
 }
 
+/* Mode Switch */
+
+.modeSwitchDialog {
+  display: none;
+  background-color: rgba(0,0,0,0);
+}
+
+.modeSwitchContainer {
+  min-height: 80px;
+}
+
+.modeSwitchHeader h3 {
+  padding-right: 10px;
+}
 
 /* Import diagram */
 
@@ -4433,7 +4724,7 @@ textarea#mrkdwntxt {
   height: 80%;
   width: 95%;
   margin: auto;
-  background-color: rgb(200,200,200);
+  background-color: var(--color-background-4);
   z-index: 12000;
   left: 0;
   right: 0;
@@ -4442,8 +4733,8 @@ textarea#mrkdwntxt {
 }
 
 .editFileCode {
-  border: solid rgb(200, 200, 200);
-  background-color: rgb(200, 200, 200);
+  border: solid var(--color-border-4);
+  background-color: var(--color-background-4);
   width: 93%;
   height: 90%;
   position: relative;
@@ -4458,8 +4749,8 @@ textarea#mrkdwntxt {
   height: 150px;
   width: 400px;
   margin: 0px auto;
-  border: solid rgb(200,200,200);
-  background-color: rgb(240,240,240);
+  border: solid var(--color-border-4);
+  background-color: var(--color-background-3);
   box-shadow: 0px 5px 10px grey;
   display: none;
   left: 0;
@@ -4489,7 +4780,7 @@ textarea#mrkdwntxt {
 
 .save-close-button-fe{
   border-radius: 4px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   width: 110px;
   height: 30px;
@@ -4607,17 +4898,6 @@ textarea#filecont{
   }
 }
 
-/* styling for the search bar in duggaed.php */
-#testSearchContainer {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  margin: 0 2px 7px 0;
-  float: right;
-  position: relative;
-  top: -5px;
-}
-
 .flexwrapper{
     display:flex;
     justify-content: space-between;
@@ -4625,7 +4905,7 @@ textarea#filecont{
 }
 
 .active-variant {
-    background-color: #fbcd47 !important;
+    background-color: var(--color-accent) !important;
 }
 
 /* Styling for timesheet table */
@@ -4664,7 +4944,7 @@ textarea#filecont{
   padding: 5px;
 }
 .tsTable tfoot {
-  background: #F0F0F0;
+  background: var(--color-background-3);
 }
 .tsTable tfoot:hover {
   background: #E0E0E0;
@@ -4692,7 +4972,9 @@ textarea#filecont{
   cursor: pointer;
 }
 #tsSubmit:hover {
-  background: #614875;
+  background: var(--color-primary);
   color: #fff;
-  border: 2px solid #614875;
+  border: 2px solid var(--color-primary);
 }
+
+
