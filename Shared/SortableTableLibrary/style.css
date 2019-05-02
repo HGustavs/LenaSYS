@@ -1219,9 +1219,8 @@ input {
   box-sizing: border-box;
 }
 
-.testinput {
+.greyedout-textinput {
   display: block;
-  opacity: 0.8;
   width: 216px;
   height: 30px;
   line-height: 18px;
@@ -1245,6 +1244,7 @@ input {
   text-align: start;
   border-radius: 0px;
   box-sizing: border-box;
+  opacity: 0.9;
 }
 
 input.option {
