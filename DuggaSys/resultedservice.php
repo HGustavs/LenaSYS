@@ -72,20 +72,14 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 if($requestType == "mail"){
 	$emailsArray = array();
-	$count = "1";
-	$test = "hej";
 
-	for($i = 0; $i < $lenghtOfVisibleUserIDs; $i++) {
+	for($i = 0; $i < $visibleUserIDs.length; $i++) {
 		$studentID = $visibleUserIDs[$i];
 		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username =:studentid");
 
 		$mailQuery->bindParam(':studentid', $studentID);
 		$mailQuery->bindParam(':cid', $courseid);
 		$mailQuery->bindParam(':cvers', $coursevers);
-
-		// foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row) {
-		// 	array_push($emailsArray,$row['email']);
-		// }
 
 		if(!$mailQuery->execute()) {
 			$error=$mailQuery->errorInfo();
