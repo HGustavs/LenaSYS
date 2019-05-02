@@ -3632,12 +3632,12 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader input.hamburger {
     position: absolute;
-    top: 0px;
+    top: 66px;
     right: 5px;
   }
   table.navheader div.hamburger {
     position: absolute;
-    top: 0px;
+    top: 66px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
