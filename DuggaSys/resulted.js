@@ -1128,7 +1128,6 @@ function renderColumnFilter(col, status, colname) {
     str = "<div class='lo ";
     intVarGradient--;
   }
-  intVarGradient--;
 	if (status) {
 		str += "checkbox-dugga'>";
 		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
