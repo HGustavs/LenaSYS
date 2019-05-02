@@ -1162,7 +1162,7 @@ function exportCell(format, cell, colname) {
 		if (colname == "FnameLnameSSN") {
 			if (cell.ssn.length > 0) {
 				str = cell.ssn + ";";
-      }else{
+			}else{
         str = "XXXXXXXX-XXXX;";
       }
 			str += cell.firstname + " " + cell.lastname;
