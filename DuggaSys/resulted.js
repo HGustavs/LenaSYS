@@ -697,6 +697,7 @@ function createSortableTable(data) {
 		tblbody: studentInfo,
 		tblfoot: []
 	}
+  intVarGradient = 0;
 	var colOrder = buildColumnOrder();
 	myTable = new SortableTable({
 		data: tabledata,
@@ -1121,9 +1122,6 @@ function renderColumnFilter(col, status, colname) {
   if (colname == "FnameLnameSSN")
   return str;
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
-  if(moments.length % 2 == 1){
-    intVarGradient++;
-  }
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
     intVarGradient++;
