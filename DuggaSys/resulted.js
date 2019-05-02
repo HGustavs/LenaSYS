@@ -1139,8 +1139,8 @@ function renderColumnFilter(col, status, colname) {
 	}
   console.log("intVarGradient: " + intVarGradient);
   console.log(str);
-  return str;
   intVarGradient=0;
+  return str;
 }
 
 function onToggleFilter(colId) {
