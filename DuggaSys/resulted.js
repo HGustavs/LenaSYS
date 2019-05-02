@@ -714,9 +714,6 @@ function createSortableTable(data) {
 		hasCounterColumn: true
 	});
 
-  intVarGradient = 0;
-  console.log("createsortabletable");
-
 	myTable.renderTable();
 
 	if (data['debug'] != "NONE!")
@@ -1140,6 +1137,7 @@ function renderColumnFilter(col, status, colname) {
 		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
 		str += "</div>"
 	}
+  console.log("rendercolumnfilter");
   console.log("intVarGradient: " + intVarGradient);
   console.log(str);
   return str;
