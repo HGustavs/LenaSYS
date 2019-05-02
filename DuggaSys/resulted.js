@@ -714,6 +714,9 @@ function createSortableTable(data) {
 		hasCounterColumn: true
 	});
 
+  intVarGradient = 0;
+  console.log("createsortabletable");
+
 	myTable.renderTable();
 
 	if (data['debug'] != "NONE!")
