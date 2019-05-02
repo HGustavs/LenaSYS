@@ -3500,13 +3500,6 @@ only screen and (max-device-width: 768px) {
 
 @media only screen and (max-width: 710px),
 only screen and (max-device-width: 710px) {
-  #TopMenuStatic { 
-    position: fixed; 
-    top: 3px; 
-    left: 95px; 
-    right: 100px; 
-    z-index: 5001; 
-  }
   table.navheader td.hamburger {
     pointer-events: auto;
     width: 32px;
