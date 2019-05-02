@@ -318,6 +318,7 @@ function SortableTable(param) {
 		}
 
 		if (renderColumnFilter != null) {
+			intVarGradient = 0;
 			document.getElementById(filterid).innerHTML = filterstr;
 		}
 
