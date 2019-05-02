@@ -690,22 +690,19 @@ header td {
 .navName {
   font-size: 0.8em;
   color: #FFFFFF;
-  cursor: default;
   text-decoration: none;
   text-align: right;
   overflow: hidden;
   padding-right: 4px;
+  width: 50px;
 }
 
-.navName:hover {
-  font-size: 0.8em;
+.navName a:hover {
   text-shadow: 2px 2px 4px rgb(0, 0, 0);
   color: #FFFFFF;
-  cursor: default;
   text-decoration: underline;
   text-align: right;
   overflow: hidden;
-  padding-right: 4px;
 }
 
 .navName a {
@@ -1188,6 +1185,7 @@ input {
 
 .loginBox td {
   margin-left: 4px;
+  margin-right: 4px;
 }
 
 .buttonLoginBox {
@@ -2305,6 +2303,11 @@ span.arrow {
   background-color: var(--color-sectioned-table-lo);
 }
 
+#resultTable
+{
+  margin-top: 70px;
+}
+
 .resultTableCell{
 		margin:2px;
 }
@@ -2400,9 +2403,49 @@ span.arrow {
   border-top: 3px dashed rgba(97,72,117,0);
 }
 
-/* End DuggaSys resulted*/
+.tooltip-searchbar {
+  font-size: 20px;
+  padding: 0 2px;
+  position: relative;
+  width:10px;
+  cursor: default;
+}
+.tooltip-searchbar-box{
+  box-sizing: border-box;
+  display: none;
+  font-size: 13px;
+  position: absolute;
+  background: #fff;
+  transform: translate(-48%,61%);
+  border-radius: 5px;
+  padding: 5px;
+  padding-bottom: 10px;
+  line-height: 18px;
+  color: black;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+}
+.tooltip-searchbar-box:before {
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #fff;
+  position: relative;
+  margin: 0 auto;
+  transform: translateY(-140%);
+}
+.tooltip-searchbar:hover .tooltip-searchbar-box {
+  display: inherit;
+}
 
-/**************************/
+#ladexportContainer
+{
+  position: absolute;
+  height: 55px;
+  width: 710px;
+}
 
 /* End DuggaSys resulted*/
 
@@ -2791,7 +2834,7 @@ span.arrow {
   font-size: 12px;
   display: none;
   position: absolute;
-  top: 10px;
+  top: 35px;
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
 }
@@ -3072,26 +3115,22 @@ rect[class*="activitymarker"]:hover {
     bottom: 2px;
 }
 
-/* styling for the search bar in fileed.php */
+/* styling for the search bars in resulted, accessed, duggaed, filed */
 
-#searchBar {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  float: right;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
-  margin-bottom: 15px;
-  margin-right: 7px;
+#searchBar, #testSearchContainer {
+  padding-left: 20px;
 }
 
-#searchinput {
+
+#searchinput, #duggaSearch {
   margin-right: 0;
   border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border: 1px solid var(--color-border-2);
-  border-bottom: 0;
+  border-bottom: 0
   padding: 0 0 0 2px;
+  height: 20px;
 }
 
 #searchbutton {
@@ -3102,18 +3141,23 @@ rect[class*="activitymarker"]:hover {
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
-  box-shadow: none;
+  box-shadow: none !important;
   margin-bottom: 5px;
+  margin-right: 2px;
 }
-.searchField{
+
+#searchBar img, #testSearchContainer img {
+  margin: 0px;
+}
+
+/* .searchField{
   height: 25px;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
   border-right: 0px;
-}
+} */
 
 #lookingGlassSVG {
-  position: absolute;
   top: 3px;
   left: 3px;
 }
@@ -3707,6 +3751,9 @@ only screen and (max-device-width: 530px) {
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
+  #searchinput, #duggaSearch {
+    max-width: 120px;
+  }
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3756,6 +3803,9 @@ only screen and (max-device-width: 480px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
+  #searchinput, #duggaSearch {
+    max-width: 100px;
+  }
   #Sectionlist .course {
     font-size: 14px;
   }
@@ -4757,17 +4807,6 @@ textarea#filecont{
   .optionButtons {
     top: 436px;
   }
-}
-
-/* styling for the search bar in duggaed.php */
-#testSearchContainer {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  margin: 0 2px 7px 0;
-  float: right;
-  position: relative;
-  top: -5px;
 }
 
 .flexwrapper{
