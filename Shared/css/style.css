@@ -1352,11 +1352,17 @@ input {
   width: 50%;
   filter:invert(100%);
 }
-.diagramAction{
+
+.diagramAction {
   cursor: pointer;
   border-radius: 5px;
   background-color: var(--color-primary);
   width: 47%;
+  transition: 0.25s background-color;
+}
+
+.diagramAction:hover {
+  background-color: #7B5A96;
 }
 
 /* --------------================################================-------------- *
@@ -1738,6 +1744,11 @@ div.submit-button:disabled {
   align-items: center;
   border-radius: 8px;
   margin: 5px auto;
+  transition: 0.25s background-color;
+}
+
+.buttonsStyle:hover {
+  background-color: #7B5A96;
 }
 
 .buttonsStyle img,
@@ -1757,6 +1768,18 @@ div.submit-button:disabled {
   z-index: 10;
   border-radius: 5px;
   background: var(--color-primary);
+}
+
+.buttonStyleDialog {
+  margin: 5px auto;
+  background-color: var(--color-primary);
+  padding: 4px 8px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.buttonStyleDialog:hover {
+  background-color: #7B5A96;
 }
 
 #moveButton {
@@ -1802,7 +1825,7 @@ div.submit-button:disabled {
   background: var(--color-primary);
 }
 
-.pressed {
+.pressed, .pressed:hover {
   background: #FFA500;
 }
 
@@ -3903,6 +3926,14 @@ only screen and (max-device-width: 320px) {
   z-index: 1;
   bottom: 100%;
   left: -15px;
+}
+
+.zoomButtonStyle {
+  transition: 0.25s background-color;
+}
+
+.zoomButtonStyle:hover {
+  background-color: #7B5A96;
 }
 
 #zoomDecrease:hover + .tooltiptextDec{
