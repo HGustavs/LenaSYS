@@ -51,7 +51,7 @@ function setup() {
 	filt += "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
 	filt += "</div>";
 	filt += "</span></td>";
-
+*/
   // Add search bar to nav
   filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
@@ -66,7 +66,7 @@ function setup() {
   filt += `</div><span>?</span></td>`;
  
 	$("#menuHook").before(filt);
-  */
+  
 
 	/*  Add filter menu   */
 
