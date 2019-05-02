@@ -36,11 +36,8 @@ function setup() {
 	//benchmarkData = performance.timing;
 
 	/*    Add filter menu   */
-	 //--Commented out this code because of similar solution below due to possible duplicate issue on github--
-  var filt = "";
-	filt += "<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();'>";
-	filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-	filt += "</span></td>";
+s
+
 
   // Add search bar to nav
   filt += `<td id='searchBar' class='navButt'>`;
