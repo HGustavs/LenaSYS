@@ -30,6 +30,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
+var intVarGradient = 0;
 
 function setup() {
 	//Benchmarking function
