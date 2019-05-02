@@ -39,9 +39,6 @@ function setup() {
 	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
 	filt += "<td class='navButt'>";
-	
-
-	
 
   // Add search bar to nav
   filt += `<td id='searchBar' class='navButt'>`;
@@ -57,10 +54,8 @@ function setup() {
   filt += `</div><span>?</span></td>`;
  
 	$("#menuHook").before(filt);
-  
 
 	/*  Add filter menu   */
-
   document.getElementById("sort").style.display = "table-cell";
   document.getElementById("select").style.display = "table-cell";
 
