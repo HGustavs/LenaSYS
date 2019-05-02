@@ -2802,8 +2802,8 @@ function mousedownevt(ev) {
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
         }
-    } else if (sel.distance < tolerance) {
-        md = mouseState.noPointAvailable;
+    } else if (sel.distance < tolerance / zoomValue) {
+        md = mouseState.insidePoint;
     } else if (movobj != -1) {
         md = mouseState.insideMovableObject;
         handleSelect();
