@@ -39,9 +39,8 @@ function setup() {
 	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
 	filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
-
-	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-
+	filt += "<div style='z-index: 1'></div>";
+	filt += "</td>";
 	
 
   // Add search bar to nav
