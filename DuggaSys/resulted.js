@@ -34,9 +34,10 @@ var tableCellName = "resultTableCell";
 function setup() {
 	//Benchmarking function
 	//benchmarkData = performance.timing;
+	
 
 	/*    Add filter menu   */
-	/* --Commented out this code because of similar solution below due to possible duplicate issue on github--
+	//Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
 	/filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
 	filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
