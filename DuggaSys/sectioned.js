@@ -819,7 +819,8 @@ function returnedSection(data) {
 
         } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
-            str += "<td style='width:32px;'><img src='showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + item['link'] + "' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+            //str += "<td style='width:32px;'><img src='showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + item['link'] + "' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+            str += "<td style='width:32px;'><img src='../Shared/icons/warningTriangle.svg'></td>";
           }
           str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
         }
@@ -1424,7 +1425,7 @@ $(window).keyup(function (event) {
       newItem();
       showSaveButton();
     } else if (deleteButtonDisplay == 'flex') {
-      // Delete the item, allow enter to act as clicking "yes"  
+      // Delete the item, allow enter to act as clicking "yes"
       confirmBox("deleteItem");
     } else if (isTypeValid() && testsAvailable == true) {
       confirmBox("closeConfirmBox");
