@@ -409,6 +409,26 @@ if(strcmp($opt,"get")==0) {
 		$count[$currentdate] = $daycount;
 		$currentdate=strtotime("+1 day",strtotime($currentdate));
 	}
+	$timesheets = array();
+	$query = $pdo->prepare('SELECT day, week, type, reference, comment FROM timesheet WHERE uid=:userid AND cid=:cid AND vers=:vers;');
+	$query->bindParam(':userid', $userid);
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $vers);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+	$rows = $query->fetchAll();
+	foreach($rows as $row){
+		$timesheet = array(
+			'day' => $row['day'],
+			'week' => intval($row['week']),
+			'type' => $row['type'],
+			'reference' => intval($row['reference']),
+			'comment' => $row['comment']
+		);
+		array_push($timesheets, $timesheet);
+	}
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,
@@ -428,8 +448,9 @@ if(strcmp($opt,"get")==0) {
 		'allcommentranks' => $allcommentranks,
 		'allcommitranks' => $allcommitranks,
 		'githubuser' => $gituser,
+		'count' => $count,
 		'todaysevents' => $todaysevents,
-		'count' => $count
+		'timesheets' => $timesheets
 	);
 	
 	echo json_encode($array);
@@ -476,48 +497,4 @@ if(strcmp($opt,"get")==0) {
 	);
 	echo json_encode($array);
 }
-
-$timesheets = array();
-$query = $pdo->prepare('SELECT day, week, type, reference, comment FROM timesheet WHERE uid=:userid AND cid=:cid AND vers=:vers;');
-$query->bindParam(':userid', $userid);
-$query->bindParam(':cid', $cid);
-$query->bindParam(':vers', $vers);
-if(!$query->execute()) {
-	$error=$query->errorInfo();
-	$debug="Error reading entries".$error[2];
-}
-$rows = $query->fetchAll();
-foreach($rows as $row){
-	$timesheet = array(
-		'day' => $row['day'],
-		'week' => intval($row['week']),
-		'type' => $row['type'],
-		'reference' => intval($row['reference']),
-		'comment' => $row['comment']
-	);
-	array_push($timesheets, $timesheet);
-}
-$array = array(
-	'debug' => $debug,
-	'weeks' => $weeks,
-    'rowrankno' => $rowrankno,
-	'rowrank' => $rowrank,
-    'eventrankno' => $eventrankno,
-	'eventrank' => $eventrank,
-    'issuerankno' => $issuerankno,
-	'issuerank' => $issuerank,
-    'commentrankno' => $commentrankno,
-    'commentrank' => $commentrank,
-    'commitrankno' => $commitrankno,
-    'commitrank' => $commitrank,
-    'allusers' => $allusers,
-    'allrowranks' => $allrowranks,
-    'alleventranks' => $alleventranks,
-    'allcommentranks' => $allcommentranks,
-    'allcommitranks' => $allcommitranks,
-	'githubuser' => $gituser,
-	'count' => $count,
-	'timesheets' => $timesheets
-);
-
 ?>
