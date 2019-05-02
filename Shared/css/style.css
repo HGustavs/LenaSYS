@@ -327,6 +327,10 @@ p {
   opacity: 0.3 !important;
 }
 
+#noAccessMessage {
+  padding: 5px;
+}
+
 #Sectionlist {
   margin: 0px auto;
   background-color: var(--color-background);
