@@ -10,11 +10,11 @@
 // Symbol - stores a diagram symbol
 // Function Symbol() handles the CREATE-functions in the diagram.
 //--------------------------------------------------------------------
-function Symbol(kind) {
-    this.kind = 2;                  // Diagram object kind is always 2 for symbols
+function Symbol(kindOfSymbol) {
+    this.kind = kind.symbol;        // Diagram object kind is always 2 for symbols
     this.name = "New Class";        // New Class default name in new class
     this.targeted = false;
-    this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
+    this.symbolkind = kindOfSymbol; // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];            // Free text array
@@ -228,7 +228,7 @@ function Symbol(kind) {
         var y2 = points[this.bottomRight].y;
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
-        if (this.symbolkind == 2 || this.symbolkind == 3) {
+        if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erEntity) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
             }
@@ -237,7 +237,7 @@ function Symbol(kind) {
             }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
-        } else if (this.symbolkind == 1) {
+        } else if (this.symbolkind == symbolKind.uml) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
             points[this.topLeft].y = y1;
@@ -279,7 +279,7 @@ function Symbol(kind) {
             if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth) {
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
-        } else if (this.symbolkind == 5) {
+        } else if (this.symbolkind == symbolKind.erRelation) {
             if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
                 points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
             }
@@ -290,7 +290,7 @@ function Symbol(kind) {
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
 
-        } else if (this.symbolkind == 6) {
+        } else if (this.symbolkind == symbolKind.text) {
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
 
@@ -316,7 +316,7 @@ function Symbol(kind) {
     // sortConnector: Sorts the connector
     //--------------------------------------------------------------------
     this.sortConnector = function (connector, direction, start, end, otherside) {
-        if(this.symbolkind != 5) {
+        if(this.symbolkind != symbolKind.erRelation) {
             var delta = (end - start) / (connector.length + 1);
         } else {
             var delta = (end - start) / 2;
@@ -329,14 +329,14 @@ function Symbol(kind) {
                 var y2 = points[b.to].y;
                 return y1 - y2;
             });
-            if(this.symbolkind != 5) {
+            if(this.symbolkind != symbolKind.erRelation) {
                 var ycc = start;
             } else {
                 var ycc = start + delta;
             }
 
             for (var i = 0; i < connector.length; i++) {
-                if(this.symbolkind != 5) {
+                if(this.symbolkind != symbolKind.erRelation) {
                     ycc += delta;
                 }
                 points[connector[i].from].y = ycc;
@@ -348,13 +348,13 @@ function Symbol(kind) {
                 var x2 = points[b.to].x;
                 return x1 - x2;
             });
-            if(this.symbolkind != 5) {
+            if(this.symbolkind != symbolKind.erRelation) {
                 var ycc = start;
             } else {
                 var ycc = start + delta;
             }
             for (var i = 0; i < connector.length; i++) {
-                if(this.symbolkind != 5) {
+                if(this.symbolkind != symbolKind.erRelation) {
                     ycc += delta;
                 }
 
@@ -407,7 +407,7 @@ function Symbol(kind) {
         var count = 0;
         var tmp = this.connectorTop.concat(this.connectorBottom, this.connectorLeft, this.connectorRight);
 
-        if ((this.symbolkind == 3 && symbol.symbolkind == 5) || this.symbolkind == 5 && symbol.symbolkind == 3) {
+        if ((this.symbolkind == symbolKind.erEntity && symbol.symbolkind == symbolKind.erRelation) || this.symbolkind == symbolKind.erRelation && symbol.symbolkind == symbolKind.erEntity) {
             var symbolTmp = symbol.connectorTop.concat(symbol.connectorBottom, symbol.connectorLeft, symbol.connectorRight);
             for (var i = 0; i < symbolTmp.length; i++) {
                 for (var j = 0; j < tmp.length; j++) {
@@ -458,9 +458,9 @@ function Symbol(kind) {
     // checkForHover: Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
-        if(this.symbolkind == 4) {
+        if(this.symbolkind == symbolKind.line) {
             return this.linehover(mx, my);
-        }else if(this.symbolkind == 3) {
+        }else if(this.symbolkind == symbolKind.erEntity) {
             return this.entityhover(mx, my);
         }else {
             return this.entityhover(mx, my);
@@ -588,15 +588,15 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
         if(this.locked) return;
-        if(this.symbolkind != 4) {
+        if(this.symbolkind != symbolKind.line) {
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
             points[this.bottomRight].x += movex;
             points[this.bottomRight].y += movey;
-            if (this.symbolkind == 1) {
+            if (this.symbolkind == symbolKind.uml) {
                 points[this.middleDivider].x += movex;
                 points[this.middleDivider].y += movey;
-            } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3 || this.symbolkind == 6) {
+            } else if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erRelation || this.symbolkind == symbolKind.erEntity || this.symbolkind == symbolKind.text) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
             }
@@ -642,7 +642,7 @@ function Symbol(kind) {
     //             IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        if (this.symbolkind == 4) return;
+        if (this.symbolkind == symbolKind.line) return;
         points[this.topLeft] = waldoPoint;
         points[this.bottomRight] = waldoPoint;
         points[this.centerPoint] = waldoPoint;
@@ -688,7 +688,7 @@ function Symbol(kind) {
     //-----------------------------------------------------------------------
     this.getPoints = function() {
         var privatePoints = [];
-        if(this.symbolkind==3) {
+        if(this.symbolkind  == symbolKind.erEntity) {
             for (var i = 0; i < this.connectorTop.length; i++) {
                 if(this.getquadrant(this.connectorTop[i].to.x,this.connectorTop[i].to.y) != -1) {
                     privatePoints.push(this.connectorTop[i].to);
@@ -735,12 +735,12 @@ function Symbol(kind) {
     //----------------------------------------------------------------
 
     this.getConnectedObjects = function () {
-        if (this.symbolkind == 4) {
+        if (this.symbolkind == symbolKind.line) {
             var privateObjects = [];
 
             // Compare values of all symbols in diagram with current line
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) {
+                if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) {
                     // Top left and bottom right corners for the current object
                     dtlx = diagram[i].corners().tl.x;
                     dtly = diagram[i].corners().tl.y;
@@ -753,7 +753,7 @@ function Symbol(kind) {
                     lbrx = this.corners().br.x;
                     lbry = this.corners().br.y;
 
-                    if (diagram[i].symbolkind == 1) { // UML
+                    if (diagram[i].symbolkind == symbolKind.uml) { // UML
                         // If line's either end point is within the corners of the UML symbol
                         // Can possibly be optimised, currently uses coordinates because the connector
                         // points aren't saved somehow to the UML's points
@@ -762,17 +762,17 @@ function Symbol(kind) {
                                 privateObjects.push(diagram[i]);
                             }
                         }
-                    } else if (diagram[i].symbolkind == 2) { // Attribute
+                    } else if (diagram[i].symbolkind == symbolKind.erAttribute) { // Attribute
                         // If line's either end point is the same as an attribute's center point
                         if (diagram[i].centerPoint == this.topLeft || diagram[i].centerPoint == this.bottomRight) {
                             privateObjects.push(diagram[i]);
                         }
-                    } else if (diagram[i].symbolkind == 3) { // Entity
+                    } else if (diagram[i].symbolkind == symbolKind.erEntity) { // Entity
                         // If line's both end points are included in the entity's list of connectors
                         if (diagram[i].getPoints().includes(this.topLeft) && diagram[i].getPoints().includes(this.bottomRight)) {
                             privateObjects.push(diagram[i]);
                         }
-                    } else if (diagram[i].symbolkind == 5) { // Relation
+                    } else if (diagram[i].symbolkind == symbolKind.erRelation) { // Relation
                         // If line's either end points matches the coordinates of the Relation symbol's connector pointsSelected
                         // This can be optimised if these points are added when a Relation symbol is created
                         var connectedToRelation = false;
@@ -841,7 +841,7 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
 
     this.draw = function () {
-        ctx.lineWidth = this.properties['lineWidth'] * 2;
+        ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
         this.properties['textSize'] = this.getFontsize();
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
@@ -865,31 +865,31 @@ function Symbol(kind) {
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
 
         // 1 = UML
-        if(this.symbolkind == 1) {
+        if(this.symbolkind == symbolKind.uml) {
             this.drawUML(x1, y1, x2, y2);
         }
         // 2 = ER attribute
-        else if(this.symbolkind == 2) {
+        else if(this.symbolkind == symbolKind.erAttribute) {
             this.drawERAttribute(x1, y1, x2, y2);
         }
         // 3 = entity
-        else if(this.symbolkind == 3) {
+        else if(this.symbolkind == symbolKind.erEntity) {
             this.drawEntity(x1, y1, x2, y2);
         }
         // 4 = line
-        else if(this.symbolkind == 4) {
+        else if(this.symbolkind == symbolKind.line) {
             this.drawLine(x1, y1, x2, y2);
         }
         // 5 = ER relation
-        else if(this.symbolkind == 5) {
+        else if(this.symbolkind == symbolKind.erRelation) {
             this.drawRelation(x1, y1, x2, y2);
         }
         // 6 = Text
-        else if (this.symbolkind == 6) {
+        else if (this.symbolkind == symbolKind.text) {
             this.drawText(x1, y1, x2, y2);
         }
         // 7 = uml line
-        else if(this.symbolkind == 7) {
+        else if(this.symbolkind == symbolKind.umlLine) {
             this.drawUMLLine(x1, y1, x2, y2);
         }
 
@@ -897,7 +897,7 @@ function Symbol(kind) {
         ctx.setLineDash([]);
 
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted && this.symbolkind != 6) {
+        if(this.targeted && this.symbolkind != symbolKind.text) {
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
@@ -907,7 +907,7 @@ function Symbol(kind) {
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
-            if(this.symbolkind != 4 && this.symbolkind != 7) {
+            if(this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
                 ctx.beginPath();
                 ctx.arc(x1,y2,5,0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
@@ -933,7 +933,7 @@ function Symbol(kind) {
 
         // Clear Class Box
         ctx.fillStyle = "#fff";
-        ctx.lineWidth = this.properties['lineWidth'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         // Box
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -1028,9 +1028,9 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
-  
+
     // This function is used in the drawEntity function and is run when ER entities are not in a weak state.
-    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) 
+    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2)
     {
         var relationMidPoints = [];
 
@@ -1042,7 +1042,7 @@ function Symbol(kind) {
 
         // Need to find the connected entities in order to change lines between relations and entities to normal.
         for(let i = 0; i < diagram.length; i++) {
-            if (diagram[i] != this && diagram[i].kind == 2) {
+            if (diagram[i] != this && diagram[i].kind == kind.symbol) {
                 // Getting each (top) coordinate of the object
                 dtlx = diagram[i].corners().tl.x;
                 dtly = diagram[i].corners().tl.y;
@@ -1053,13 +1053,13 @@ function Symbol(kind) {
                 dbry = diagram[i].corners().br.y;
                 dblx = diagram[i].corners().bl.x;
                 dbly = diagram[i].corners().bl.y;
-                
+
                 // Stores the midpoints for each corner of the relation in an array
                 if (diagram[i].isRelation) {
                     var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                     var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
-                } 
+                }
                 // Setting the line types to normal if they are forced and the connected entity is strong.
                 if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
 
@@ -1085,7 +1085,7 @@ function Symbol(kind) {
     }
 
     // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
-    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) 
+    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2)
     {
         var relationMidPoints = [];
         var relationMidYPoints = [];
@@ -1100,7 +1100,7 @@ function Symbol(kind) {
 
         // Need to find the connected entities in order to change lines between relations and entities to forced.
         for(let i = 0; i < diagram.length; i++) {
-            if (diagram[i] != this && diagram[i].kind == 2) {
+            if (diagram[i] != this && diagram[i].kind == kind.symbol) {
                 // Getting each (top) coordinate of the object
                 dtlx = diagram[i].corners().tl.x;
                 dtly = diagram[i].corners().tl.y;
@@ -1119,7 +1119,7 @@ function Symbol(kind) {
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
                     relationMidXPoints.push(relationMiddleX, dtly, dbly);
                     relationMidYPoints.push(relationMiddleY, dtlx, dtrx);
-                }   
+                }
 
                 // Stores the midpoints for the attributes in an array
                 if (diagram[i].isAttribute) {
@@ -1138,7 +1138,7 @@ function Symbol(kind) {
                                 // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
                                 if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
                                     // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
-                                    
+
                                     for (let y = 0; y <= attributeMidPoint.length; y++) {
                                         for (let k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
@@ -1193,14 +1193,14 @@ function Symbol(kind) {
                         }
                     }
                 }
-            } 
+            }
         }
     }
 
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
-        
+
         if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
@@ -1208,7 +1208,7 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y2 + 5);
             ctx.lineTo(x1 - 5, y1 - 5);
             ctx.stroke();
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
         } else {
             removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
@@ -1241,7 +1241,7 @@ function Symbol(kind) {
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].symbolKind == 1) {
+            if(this.cardinality[0].symbolKind == symbolKind.uml) {
                 var valX = x1 > x2 ? x1-15 : x1+15;
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
@@ -1260,20 +1260,20 @@ function Symbol(kind) {
         }
 
 
-        ctx.lineWidth = this.properties['lineWidth'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
-            ctx.lineWidth = this.properties['lineWidth']*3;
+            ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.stroke();
             //Draw a white line in the middle to simulate space (2 line illusion);
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             ctx.strokeStyle = "#fff";
         }
         else if (this.properties['key_type'] == "Derived") {
-            ctx.lineWidth = this.properties['lineWidth'] * 2;
+            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
 
@@ -1288,7 +1288,7 @@ function Symbol(kind) {
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].symbolKind == 1) {
+            if(this.cardinality[0].symbolKind == symbolKind.uml) {
                 var valX = x1 > x2 ? x1-15 : x1+15;
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
@@ -1307,20 +1307,20 @@ function Symbol(kind) {
         }
 
 
-        ctx.lineWidth = this.properties['lineWidth'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
-            ctx.lineWidth = this.properties['lineWidth']*3;
+            ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.stroke();
             //Draw a white line in the middle to simulate space (2 line illusion);
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             ctx.strokeStyle = "#fff";
         }
         else if (this.properties['key_type'] == "Derived") {
-            ctx.lineWidth = this.properties['lineWidth'] * 2;
+            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
 
@@ -1357,7 +1357,7 @@ function Symbol(kind) {
 
         // Check all symbols in diagram and see if anyone matches current line's points coordinate
         for (var i = 0; i < diagram.length; i++) {
-            if (diagram[i].symbolkind == 1) { // filter UML class
+            if (diagram[i].symbolkind == symbolKind.uml) { // filter UML class
                 var currentSymbol = diagram[i].corners();
 
                 // Check if line's start point matches any class diagram
@@ -1398,10 +1398,17 @@ function Symbol(kind) {
                 breakpointEndX = x2;
                 }
 
+                // If start and end points are too close to each other, set breakpoints to same as start and end points
+                if((Math.abs(x1 - x2) < 60) || (Math.abs(y1 - y2) < 60)) {
+                    breakpointStartX = x1;
+                    breakpointStartY = y1;
+                    breakpointEndX = x2;
+                    breakpointEndY = y2;
+                }
 
             }
         }
-  
+
         // Draw to start breakpoint based on direction
         if (startLineDirection == "left") {
         ctx.lineTo(breakpointStartX, y1);
@@ -1528,7 +1535,7 @@ function Symbol(kind) {
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
         ctx.beginPath();
         if (this.properties['key_type'] == 'Weak') {
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             ctx.moveTo(midx, y1 + 5);
             ctx.lineTo(x2 - 9, midy + 0);
             ctx.lineTo(midx + 0, y2 - 5);
@@ -1562,9 +1569,9 @@ function Symbol(kind) {
         ctx.beginPath();
         //draw text outline
         if (this.targeted || this.isHovered) {
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 2 * diagram.getZoomValue();
             ctx.strokeColor = "F82";
-            //linedash only when hovered and not targeted 
+            //linedash only when hovered and not targeted
             if (this.isHovered && !this.targeted) {
                 ctx.setLineDash([5, 4]);
             }
@@ -1572,7 +1579,7 @@ function Symbol(kind) {
             ctx.stroke();
         }
         this.properties['textSize'] = this.getFontsize();
-        
+
         ctx.fillStyle = this.properties['fontColor'];
         ctx.textAlign = this.textAlign;
 
@@ -1595,11 +1602,11 @@ function Symbol(kind) {
 		// Style and positions
 		var svgObj = "", svgStyle = "", svgPos = "";
 		var lineDash = "5, 4"; // Use this for dashed line
-		var strokeWidth = this.properties['lineWidth'];
+		var strokeWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 
 		// Create SVG string
 		str += "<g>";
-		if (this.symbolkind == 1) {
+		if (this.symbolkind == symbolKind.uml) {
 			var midy = points[this.middleDivider].y;
             font = "bold " + parseInt(fontsize) + "px Arial";
             ctx.font = font;
@@ -1643,7 +1650,7 @@ function Symbol(kind) {
                 svgPos = "x='"+(x1+(fontsize*0.3))+"' y='"+(midy+(fontsize*0.2)+(fontsize*i))+"'";
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
             }
-		} else if (this.symbolkind == 2) {
+		} else if (this.symbolkind == symbolKind.erAttribute) {
             svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
             // Outer oval for multivalued attributes
             if (this.properties['key_type'] == "Multivalue") {
@@ -1673,7 +1680,7 @@ function Symbol(kind) {
 				svgPos = "x='"+(x1 + ((x2 - x1) * 0.5))+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='middle' dominant-baseline='central'";
 			}
             str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
-		} else if (this.symbolkind == 3) {
+		} else if (this.symbolkind == symbolKind.erEntity) {
 			svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
 			if (this.properties['key_type'] == "Weak") {
@@ -1692,7 +1699,7 @@ function Symbol(kind) {
 				svgPos = "x='"+(x1 + ((x2 - x1) * 0.5))+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='middle' dominant-baseline='central'";
 			}
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
-		} else if (this.symbolkind == 4) {
+		} else if (this.symbolkind == symbolKind.line) {
 			// Cardinality
 			if (this.cardinality[0].value != "" && this.cardinality[0].value != null) {
 				svgPos = "x='"+this.cardinality[0].x+"' y='"+this.cardinality[0].y+"' text-anchor='middle' dominant-baseline='central'";
@@ -1702,23 +1709,23 @@ function Symbol(kind) {
 			svgPos = "x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"'";
 			if (this.properties['key_type'] == "Forced") {
 				// Thick line that will be divided into two lines using thin line
-				strokeWidth = this.properties['lineWidth'] * 3;
+				strokeWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
 				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 
 				// Thin line used to divide thick line into two lines
-				strokeWidth = this.properties['lineWidth'];
+				strokeWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 				svgStyle = "stroke:#fff; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			} else if (this.properties['key_type'] == "Derived") {
-				strokeWidth = this.properties['lineWidth'] * 2;
+				strokeWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
 				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
 			} else {
 				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			}
-		} else if (this.symbolkind == 5) {
+		} else if (this.symbolkind == symbolKind.erRelation) {
 			var midx = points[this.centerPoint].x;
 			var midy = points[this.centerPoint].y;
 			// Relation
@@ -1741,7 +1748,7 @@ function Symbol(kind) {
 				svgPos = "x='"+(x1+((x2-x1)*0.5))+"' y='"+(y1+((y2-y1)*0.5))+"' text-anchor='middle' dominant-baseline='central'";
 			}
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
-		} else if (this.symbolkind == 6) {
+		} else if (this.symbolkind == symbolKind.text) {
             var midx = points[this.centerPoint].x;
             svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
             var textAlignment = this.textAlign;
@@ -1776,13 +1783,13 @@ function Symbol(kind) {
     }
 
 	this.getFontsize = function() {
-		var fontsize = 14;
+		var fontsize = 14 * diagram.getZoomValue();
 		if (this.properties['sizeOftext'] == 'Small') {
-			fontsize = 20;
+			fontsize = 20 * diagram.getZoomValue();
 		} else if (this.properties['sizeOftext'] == 'Medium') {
-			fontsize = 30;
+			fontsize = 30 * diagram.getZoomValue();
 		} else if (this.properties['sizeOftext'] == 'Large') {
-			fontsize = 50;
+			fontsize = 50 * diagram.getZoomValue();
 		}
 		return fontsize;
 	}
@@ -1815,7 +1822,7 @@ function Symbol(kind) {
 
         ctx.fillStyle = "orange";
         ctx.strokeStyle = "orange";
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1 * diagram.getZoomValue();
         //Draws the upper part of the lock
         ctx.beginPath();
         //A slight x offset to get the correct position   
@@ -1905,7 +1912,7 @@ function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry) {
 // Path - stores a number of segments, handles e.g the two DRAW-functions in the diagram.
 //--------------------------------------------------------------------
 function Path() {
-    this.kind = 1;                  // Path kind
+    this.kind = kind.path;          // Path kind
     this.segments = Array();        // Segments
     this.intarr = Array();          // Intersection list (one list per segment)
     this.tmplist = Array();         // Temporary list for testing of intersections
@@ -2025,7 +2032,7 @@ function Path() {
             ctx.strokeStyle = this.targeted ? "#F82" : this.properties['strokeColor'];
             ctx.fillStyle = this.fillColor;
             ctx.globalAlpha = this.opacity;
-            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 
             ctx.beginPath();
             var pseg = this.segments[0];
@@ -2286,12 +2293,12 @@ function Path() {
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
-        ctx.lineWidth = this.properties['lineWidth'];
+        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         ctx.strokeStyle = "#46f";
         for (var i = 0; i < segmentlist.length; i++) {
             var line = segmentlist[i];
             // If line is a straight line
-            if (line.kind == 1) {
+            if (line.kind == kind.path) {
                 ctx.beginPath();
                 ctx.moveTo(points[line.pa].x, points[line.pa].y);
                 ctx.lineTo(points[line.pb].x, points[line.pb].y);
@@ -2312,7 +2319,7 @@ function Path() {
         var str = "";
         if (this.isorganized && this.segments.length > 0) {
             str += "<g>";
-            var svgStyle = "fill:"+this.fillColor+";fill-opacity:"+this.opacity+";stroke:"+this.properties['strokeColor']+";stroke-width:"+this.properties['lineWidth']+";";
+            var svgStyle = "fill:"+this.fillColor+";fill-opacity:"+this.opacity+";stroke:"+this.properties['strokeColor']+";stroke-width:"+this.properties['lineWidth'] * diagram.getZoomValue()+";";
             var pseg = this.segments[0];
             svgPos = "M"+points[pseg.pa].x+","+points[pseg.pa].y;
             for (var i = 0; i < this.segments.length; i++) {
@@ -2380,7 +2387,7 @@ function figureFreeDraw() {
             points.splice(p2, 1);
             p2 = startPosition;
             figurePath.addsegment(1, p1, p2);
-            md = 0; // To prevent selectbox spawn when clicking out of freedraw mode
+            md = mouseState.empty; // To prevent selectbox spawn when clicking out of freedraw mode
             diagram.push(figurePath);
             figurePath.figureType = "Free";
             selected_objects.push(figurePath);
@@ -2446,10 +2453,4 @@ function cleanUp() {
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
     p2 = null;
-}
-
-function openInitialDialog() {
-    lastSelectedObject = diagram.length -1;
-    diagram[lastSelectedObject].targeted = true;
-    openAppearanceDialogMenu();
 }

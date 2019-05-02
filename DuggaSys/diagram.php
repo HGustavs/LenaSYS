@@ -217,6 +217,9 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
+                        <div id="a4-orientation-item" class="drop-down-item-disabled">
+                            <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                        </div>
                         <div id="a4-holes-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                         </div>
@@ -321,7 +324,7 @@
                 <span class="tooltiptextDec">Zoom Out</span>
               </div>
               <div id="range">
-                <input name="Zoom" id="ZoomSelect" type="range" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
+                <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
               </div>
               <div class="tooltipIncrease">
                 <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
