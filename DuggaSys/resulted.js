@@ -1121,7 +1121,7 @@ function renderColumnFilter(col, status, colname) {
   if (colname == "FnameLnameSSN")
   return str;
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
-  if(moments.length % 2 == 0){
+  if(moments.length % 2 == 1){
     intVarGradient++;
   }
   if(intVarGradient % 2 == 0){
