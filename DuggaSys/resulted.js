@@ -716,8 +716,13 @@ function createSortableTable(data) {
 
 	myTable.renderTable();
 
+  if(moments.length % 2 == 0){
+    intVarGradient = 1;
+  }
+  
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
+
 }
 
 function gradeFilterHandler() {
@@ -1128,9 +1133,6 @@ function renderColumnFilter(col, status, colname) {
   } else {
     str = "<div class='lo ";
     intVarGradient = 0;
-    if(moments.length % 2 == 0){
-      intVarGradient = 1;
-    }
   }
 	if (status) {
 		str += "checkbox-dugga'>";
