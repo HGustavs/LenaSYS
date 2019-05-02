@@ -448,8 +448,8 @@ if(strcmp($opt,"get")==0) {
 		'allcommentranks' => $allcommentranks,
 		'allcommitranks' => $allcommitranks,
 		'githubuser' => $gituser,
-		'todaysevents' => $todaysevents,
 		'count' => $count,
+		'todaysevents' => $todaysevents,
 		'timesheets' => $timesheets
 	);
 	
