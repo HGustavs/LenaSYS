@@ -1122,12 +1122,12 @@ function renderColumnFilter(col, status, colname) {
   return str;
 
   /* Uses the intVarGradient variable as a counter to make a gradient effect on the column filters. */
-  if(moments.length % 2 == 0){
-    intVarGradient = 0;
-  }
   if(intVarGradient % 2 == 0){
     str = "<div class='hi ";
     intVarGradient = 1;
+    if(moments.length % 2 == 0){
+      intVarGradient = 0;
+    }
   } else {
     str = "<div class='lo ";
     intVarGradient = 0;
