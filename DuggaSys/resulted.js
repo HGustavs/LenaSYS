@@ -41,8 +41,7 @@ function setup() {
 	filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
 
 	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-	filt += "<div id='columnfilter'></div>"
-	filt += "<div id='customfilter'></div>"
+
 	
 
   // Add search bar to nav
