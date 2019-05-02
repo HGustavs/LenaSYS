@@ -1131,7 +1131,7 @@ function renderColumnFilter(col, status, colname) {
   var hello = 0;
   hello++;
   if(moments.length == hello){
-    intVarGradient = 0;
+    intVarGradient = 1;
   }
 	if (status) {
 		str += "checkbox-dugga'>";
