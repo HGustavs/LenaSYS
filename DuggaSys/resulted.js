@@ -1298,7 +1298,13 @@ function mail() {
 
 // Puts filter buttons at a fixed point when scrolling horizontally
 $(window).scroll(function() {
-    $('#ladexportContainer').css({
-        'left': $(this).scrollLeft() + 10 
-    });
+	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
+	var ladExportWidth = document.getElementById("ladexportContainer").offsetWidth;
+	var scrolled = $(this).scrollLeft() + 10;
+	console.log(scrolled);
+	if((scrolled + ladExportWidth) < resultTableWidth){
+		$('#ladexportContainer').css({
+			'transform': 'translateX(' + scrolled +'px'+ ')'
+		});
+	}
 });
