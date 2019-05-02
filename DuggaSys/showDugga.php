@@ -14,7 +14,6 @@
 	<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/dugga.css" rel="stylesheet">
 
-
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -61,7 +60,6 @@
 	$readaccess=false;
 	$checklogin=false;
 
-
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
@@ -69,7 +67,6 @@
 	}
 
   if($cid != "UNK") $_SESSION['courseid'] = $cid;
-
 	$hr=false;
 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 	$query->bindParam(':cid', $cid);
@@ -78,7 +75,6 @@
 			$visibility=$row['visibility'];
 	}
 	$readaccess=hasAccess($userid, $cid, 'r');
-
 /*
 		//Give permit if the user is logged in and has access to the course or if it is public
 		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
@@ -95,7 +91,7 @@
 		echo "' style='position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none' onLoad='checkLeaveFrame(this)'>";
 		echo "</iframe>";
 		die;
-	} 
+	}
   //If we have permission, and if file exists, include javascript file.
 		if(isSuperUser($userid)){
       // If the user is a super user, get all quizes.
@@ -119,17 +115,13 @@
 			$duggadead=$row['deadline'];
 
 			echo "<script src='templates/".$duggafile.".js'></script>";
-
 			echo "</head>";
 			echo "<body onload='setup();'>";
-
 		}else{
 			echo "</head>";
 			echo "<body>";
 		}
-
 ?>
-
 
 	<?php
 		$noup="SECTION";
@@ -139,14 +131,12 @@
 	<!-- content START -->
 	<div id="content">
 		<?php
-
 			// Log USERID for Dugga Access
 			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
 
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
-
 			if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -166,6 +156,7 @@
 			}else if ($visibility==1){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
+
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
@@ -182,7 +173,6 @@
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the test. Contact LENASys-admin.</div>";
 			}
 		?>
-
 	</div>
 
 	<!-- LoginBox (receiptbox) Start! -->
@@ -206,8 +196,8 @@
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
   <!--<div id='previewpopover' class='previewPopover' style='display:none;'>-->
-  <div id='previewpopover' class='loginBoxContainer' style='display:none;'>
-    <div class="loginBox">
+  <div id='previewpopover' class='loginBoxContainer' style='display:none; align-items:stretch;'>
+    <div style='width:100%; max-height:none;' class="loginBox">
     		<div class='loginBoxheader'>
     			<h3 style='width:100%;' id='Nameof'>Submission and feedback view</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
     		</div>
@@ -234,16 +224,13 @@
 	</div>
 
 	<!-- Timer START -->
-
 	<div id='scoreElement'>
-
 	</div>
-
 	<!-- content END -->
-
 	<?php
 		include '../Shared/loginbox.php';
 	?>
+
 </head>
 </body>
 </html>
