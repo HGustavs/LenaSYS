@@ -420,6 +420,12 @@ function keyDownHandler(e) {
     else if(key == 27) {
         cancelFreeDraw();
     }
+    else if(key == 49){
+        moveToFront();
+    }
+    else if(key == 50){
+        moveToBack();
+    }
 }
 
 //----------------------------------------------------
@@ -442,6 +448,50 @@ function canvasToPixels(pixelX = 0, pixelY = 0){
         x: (pixelX - origoOffsetX) / zoomValue,
         y: (pixelY - origoOffsetY) / zoomValue
     }
+}
+
+function moveToFront(){
+    let front = [];
+    let back = [];
+    let diagramLength = diagram.length;
+    for(let i = 0; i < diagramLength; i++){
+        if(selected_objects.indexOf(diagram[0]) !== -1){
+            front.push(diagram[0]);
+        }
+        else {
+            back.push(diagram[0]);            
+        }
+        diagram.splice(0, 1);
+    }
+    for(let i = 0; i < back.length; i++){
+        diagram.push(back[i]);
+    }
+    for(let i = 0; i < front.length; i++){
+        diagram.push(front[i]);
+    }
+    updateGraphics();
+}
+
+function moveToBack(){
+    let front = [];
+    let back = [];
+    let diagramLength = diagram.length;
+    for(let i = 0; i < diagramLength; i++){
+        if(selected_objects.indexOf(diagram[0]) !== -1){
+            back.push(diagram[0]);
+        }
+        else {
+            front.push(diagram[0]);            
+        }
+        diagram.splice(0, 1);
+    }
+    for(let i = 0; i < back.length; i++){
+        diagram.push(back[i]);
+    }
+    for(let i = 0; i < front.length; i++){
+        diagram.push(front[i]);
+    }
+    updateGraphics();
 }
 
 //----------------------------------------------------------------------
