@@ -54,11 +54,11 @@
 					echo "<span id='exampleSection'>Example Section : </span>";
 					echo "<span id='exampleName'> Example Name</span>";
 					echo "</td>";
-				}else{
+			}/*else{
 
 						echo "<td id='menuHook' class='navSpacer'>";
 
-						/*echo "<td id='select' style='display:none;' class='navButt'>";
+						echo "<td id='select' style='display:none;' class='navButt'>";
 						echo   "<span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
 						echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 						echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
