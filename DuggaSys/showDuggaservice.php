@@ -395,12 +395,11 @@ if(strcmp($opt,"GRPDUGGA")==0){
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':vers', $coursevers);
-	$result = $query->execute();
-	foreach($query->fetchAll() as $row) {
-		$group = $row['groups'];
-		$period = $row['period'];
-		$term = $row['term'];
-	}
+	$query->execute();
+	$result = $query->fetch();
+	$group = $result['groups'];
+	$period = $result['period'];
+	$term = $result['term'];
 
 	$query = $pdo->prepare("SELECT uid FROM user_course WHERE cid=:cid AND vers=:vers AND groups=:group;");
 	$query->bindParam(':cid', $courseid);
@@ -477,6 +476,12 @@ for ($i = 0; $i < $userCount; $i++) {
 					$content="Not a text-submit or URL";
 			}
 		
+ 			$uQuery = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
+			$uQuery->bindParam(':uid', $row['uid'], PDO::PARAM_INT);
+			$uQuery->execute();
+			$uRow = $uQuery->fetch();
+			$username = $uRow['username'];
+
 			$entry = array(
 				'uid' => $row['uid'],
 				'subid' => $row['subid'],
@@ -492,7 +497,8 @@ for ($i = 0; $i < $userCount; $i++) {
 				'seq' => $row['seq'],	
 				'segment' => $row['segment'],	
 				'content' => $content,
-				'feedback' => $feedback
+				'feedback' => $feedback,
+				'username' => $username
 			);
 	
 			// If the filednme key isn't set, create it now

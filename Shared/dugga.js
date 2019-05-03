@@ -1303,13 +1303,18 @@ Array.prototype.move = function (old_index, new_index) {
 };
 
 // Latest version of any file in a field - unsure about naming of the function
-function findfilevers(filez,cfield,ctype,displaystate)
+function findfilevers(filez,cfield,ctype,displaystate,group)
 {
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
 		var tab="<table class='previewTable'>";
-		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		if (group) {
+			tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+		} else {
+			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+		}
+		
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -1330,6 +1335,9 @@ function findfilevers(filez,cfield,ctype,displaystate)
                 tab +="\t<tab><a href='"+filelink+"' target='_blank'><img src='../Shared/icons/external_link_open.svg' /></a></tab>";
               }
 							tab+="</td>";
+							if (group) {
+								tab+="<td>"+filez[i].username+"</td>";
+							}
 							tab+="<td>";
               if (ctype == "link"){
                 tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";
