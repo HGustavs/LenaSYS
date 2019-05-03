@@ -123,3 +123,6 @@ UPDATE groups SET groupKind="Roman" WHERE groupKind="VI";
 
 /* #6259 Add update column to vers table */
 ALTER TABLE vers ADD COLUMN updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+/* #2463 Adding group column to quiz table */
+ALTER TABLE quiz add column `group` TINYINT(1) DEFAULT 0;
