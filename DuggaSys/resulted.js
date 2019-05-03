@@ -42,7 +42,7 @@ function setup() {
 
   // Add search bar to nav
   filt += `<td id='searchBar' class='navButt'>`;
-  filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
+  filt += `<input id='searchinput' type='text' name='search' placeholder='helllllllllllo..'`;
   filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
   filt += `<button >Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
