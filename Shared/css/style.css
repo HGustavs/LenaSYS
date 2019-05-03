@@ -1021,7 +1021,7 @@ header td {
 
 input {
   border-radius: 2px;
-  border: 2px solid var(--color-border-2);
+  border: 2px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
 }
