@@ -2901,7 +2901,9 @@ function mouseupevt(ev) {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
              if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                 console.log("COMPOSITE");
+                 if(symbolStartKind.properties.key_type === "Composite") {
+                    console.log("COMPOSITE");
+                 }
              }
 
              sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
