@@ -183,9 +183,11 @@
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
+                            <i id="hotkey-front">Shift + 1</i>
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
+                            <i id="hotkey-back">Shift + 2</i>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">

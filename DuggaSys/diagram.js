@@ -148,6 +148,7 @@ const upArrow = 38;
 const rightArrow = 39;
 const downArrow = 40;
 const ctrlKey = 17;
+const shiftKey = 16;
 const windowsKey = 91;
 const cKey = 67;
 const vKey = 86;
@@ -244,6 +245,7 @@ window.addEventListener('contextmenu', function (e)
 window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
+var shiftIsClicked = false;
 
 //--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
@@ -390,6 +392,8 @@ function keyDownHandler(e) {
         moveCanvasView(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
+    } else if(key == shiftKey || key == shiftKey) {
+        shiftIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
@@ -424,10 +428,10 @@ function keyDownHandler(e) {
     else if(key == escapeKey) {
         cancelFreeDraw();
     }
-    else if(key == key1 || key == num1){
+    else if((key == key1 || key == num1) && shiftIsClicked){
         moveToFront();
     }
-    else if(key == key2 || key == num2){
+    else if((key == key2 || key == num2) && shiftIsClicked){
         moveToBack();
     }
 }
@@ -540,6 +544,8 @@ function fillCloneArray() {
 window.onkeyup = function(event) {
     if(event.which == ctrlKey || event.which == windowsKey) {
         ctrlIsClicked = false;
+    } else if(event.which == shiftKey || event.which == shiftKey){
+        shiftIsClicked = false;
     }
 }
 
