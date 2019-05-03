@@ -167,6 +167,7 @@ if(strcmp($opt,"get")==0) {
 	$rowrankno="NOT FOUND";
   $rowgrouprank="NOT FOUND";
 	$i=1;
+  $j=1;
 	$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>"2019-03-31" and blamedate<"2020-01-01" group by blameuser order by rowk desc;');
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -185,7 +186,7 @@ if(strcmp($opt,"get")==0) {
 
 		$i++;
     // If the person is in your group, increment j.
-    if($groupMembers != "UNK" && in_array($row['author'],$groupMembers)){
+    if($groupMembers != "UNK" && in_array($row['blameuser'],$groupMembers)){
       $j++;
     }
 
