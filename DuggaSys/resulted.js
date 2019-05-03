@@ -39,9 +39,6 @@ function setup() {
 	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
   var filt = "";
 	filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
-	filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-	filt += "<div id='columnfilter'></div>"
 	filt += "<div id='customfilter'></div>"
 	filt += "</div>";
 	filt += "</span></td>";
