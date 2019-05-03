@@ -2362,7 +2362,7 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
-    element.style.top = (boundingRect.top + - 46 + "px");
+    element.style.top = (boundingRect.top + - 32 + "px");
     element.style.left = (boundingRect.left - 80 + "px");
     element.style.width = (79 + "px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
