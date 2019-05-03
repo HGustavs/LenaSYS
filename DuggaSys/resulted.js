@@ -37,12 +37,7 @@ function setup() {
 
 	/*    Add filter menu   */
 	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
-  var filt = "";
-	filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
-	filt += "<div id='customfilter'></div>"
-	filt += "</div>";
-	filt += "</span></td>";
-	filt += "</div>";
+ 
 	filt += "</span></td>";
 
   // Add search bar to nav
