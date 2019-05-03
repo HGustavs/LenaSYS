@@ -59,45 +59,6 @@ INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VI",6);
 INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VII",7);
 INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VIII",8);
 
-mysql> ALTER TABLE groups MODIFY groupKind VARCHAR(8);
-Query OK, 0 rows affected (0.12 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> update groups set groupkind="Letter" where groupKind="Le";
-Query OK, 8 rows affected (0.00 sec)
-Rows matched: 8  Changed: 8  Warnings: 0
-
-mysql> update groups set groupkind="Number" where groupKind="No";
-Query OK, 8 rows affected (0.00 sec)
-Rows matched: 8  Changed: 8  Warnings: 0
-
-mysql> update groups set groupkind="Romano" where groupKind="Ro";
-Query OK, 0 rows affected (0.01 sec)
-Rows matched: 0  Changed: 0  Warnings: 0
-
-/*
-
-Notice: Undefined variable: duggaVisibility in /Library/WebServer/Documents/LenaSYS_HT2017/DuggaSys/showdoc.php on line 408
-Notice: Undefined variable: duggaVisibility in /Library/WebServer/Documents/LenaSYS_HT2017/DuggaSys/showdoc.php on line 408
-
-Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'timesGraded' in 'field list'
-
-NONE!Error changing group: Table 'imperious.user_group' doesn't exist
-
-Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'timesGraded' in 'field list'
-*/
-
-/*
-show variables like 'sql_mode' ; 
-+---------------+------------------------------------------------------------------------------------------------------------------------+
-| Variable_name | Value                                                                                                                  |
-+---------------+------------------------------------------------------------------------------------------------------------------------+
-| sql_mode      | STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
-+---------------+------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.01 sec)
-
-mysql> SET sql_mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
-*/
 
 /*
 Error reading user entriesUnknown column 'requestedpasswordchange' in 'field list'
