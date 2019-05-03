@@ -384,6 +384,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		myTable.renderTable();
 	} else if ($(e.target).hasClass("Gc")) {
 		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
 	} else if ($(e.target).hasClass("VGc")) {
@@ -423,7 +424,6 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	} else {
 		//alert("This grading is not OK!");
 	}
-	myTable.renderTable();
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind, gfx, cls, qvariant, qid) {
