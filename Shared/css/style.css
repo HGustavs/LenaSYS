@@ -3125,12 +3125,6 @@ rect[class*="activitymarker"]:hover {
 
 
 #searchinput, #duggaSearch {
-  /* margin-right: 0;
-  border-right: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border: 1px solid var(--color-border-2);
-  border-bottom: 0 */
   padding: 0 0 0 2px;
   height: 20px;
 }
