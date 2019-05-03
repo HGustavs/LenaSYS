@@ -56,7 +56,7 @@
 					echo "</td>";
 				}else{
 
-						/*echo "<td id='menuHook' class='navSpacer'>";
+						echo "<td id='menuHook' class='navSpacer'>";
 
 						echo "<td id='select' style='display:none;' class='navButt'>";
 						echo   "<span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
@@ -66,7 +66,7 @@
 						echo     "</div>";
 	          echo   "</span>";
 						echo "</td>";
-
+/*
   					echo "<td id='sort' style='display:none' class='navButt'>";
 						echo   "<span class='dropdown-contain;er' onmouseover='hovers();' onmouseleave='leaves();'>";
   					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
