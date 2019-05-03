@@ -2900,11 +2900,6 @@ function mouseupevt(ev) {
          }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
-             if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                 if(symbolStartKind.properties.key_type === "Composite") {
-                    console.log("COMPOSITE");
-                 }
-             }
 
              sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
@@ -2937,6 +2932,17 @@ function mouseupevt(ev) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
+
+                // Can't draw line between two ER attributes if one of them is not composite
+                if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
+                    if(diagram[hovobj].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
+                       okToMakeLine = true;
+                    } else {
+                        okToMakeLine = false;
+                        // Add error dialog
+                    }
+                }
+
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
