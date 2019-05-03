@@ -483,7 +483,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	var nameOf = document.getElementById("Nameof");
 	nameOf.textContent = entryname + " by " + firstname + " " + lastname + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked);
 
-	var menu = "<div class='' style='width:100px;display:block;'>";
+	var menu = "<div class='' style='§display:block;'>";
 	menu += "<div class='loginBoxheader'>";
 	menu += "<h3>Grade</h3>";
 	menu += "</div>";
