@@ -2940,6 +2940,9 @@ function mouseupevt(ev) {
                     } else {
                         okToMakeLine = false;
                         // Add error dialog
+                        $("#errorMessageDialog").css("display", "flex");
+                        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+                        document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
                     }
                 }
 
@@ -3593,4 +3596,9 @@ function changeCardinality(isUML) {
             diagram[lastSelectedObject].cardinality[0].value = val;
         }
     }
+}
+
+//Close the errorMessageDialog for Composite
+function closeErrorMessageDialog() {
+    $("#errorMessageDialog").hide();
 }
