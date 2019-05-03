@@ -20,7 +20,6 @@ if(isset($_SESSION['uid'])){
 	$userid="guest";
 }
 
-$requestType=getOP('requestType');
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');

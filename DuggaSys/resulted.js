@@ -64,7 +64,7 @@ function setup() {
   filt += `<div class='tooltip-searchbar-box'>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
- 
+
 	$("#menuHook").before(filt);
   */
 
@@ -1268,37 +1268,17 @@ function updateTable() {
 
 function mail() {
   var reqType = "mail";
-
   var url_string = window.location.href;
   var url = new URL(url_string);
   var cidMail = url.searchParams.get("cid");
   var crsMail = url.searchParams.get("coursevers");
 
-  $.ajax({
-    url: "resultedservice.php",
-    type: "POST",
-    data: {
-      'courseid': cidMail,
-      'coursevers': crsMail,
-      'searchterm': searchterm,
-      'requestType': reqType
-    },
-    dataType: "JSON",
-    error: function(xhr, status, error) {
-      var err = eval("(" + xhr.responseText + ")");
-      console.log(err.Message);
-    },
-    success: function(data){
-      window.location.assign("mailto:?bcc=" + data);
-      //window.location.assign("mailto:" + data);
-    //  mailto:astark1@unl.edu?bcc=ASTARK1@UNL.EDU
-    }
-  });
+  myTable.mail(cidMail, crsMail, reqType);
 }
 
 // Puts filter buttons at a fixed point when scrolling horizontally
 $(window).scroll(function() {
     $('#ladexportContainer').css({
-        'left': $(this).scrollLeft() + 10 
+        'left': $(this).scrollLeft() + 10
     });
 });
