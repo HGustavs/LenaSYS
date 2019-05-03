@@ -2900,6 +2900,9 @@ function mouseupevt(ev) {
          }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
+             if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
+                 console.log("COMPOSITE");
+             }
 
              sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
