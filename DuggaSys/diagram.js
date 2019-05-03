@@ -1916,16 +1916,16 @@ function alignLeft(selected_objects) {
         selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
     }
 
-    // Added spacing when there are objects that overlap eachother.
-    temporary_objects = removeDuplicatesInList(selected_objects);
-    temporary_objects = removeLineObjectsFromList(temporary_objects);
-    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++) {
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
-            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
-            temporary_objects[i].move(0, -difference);
-        }
-    }
+    // // Added spacing when there are objects that overlap eachother.
+    // temporary_objects = removeDuplicatesInList(selected_objects);
+    // temporary_objects = removeLineObjectsFromList(temporary_objects);
+    // temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
+    // for(var i = 1; i < temporary_objects.length; i++) {
+    //     if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
+    //         var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
+    //         temporary_objects[i].move(0, -difference);
+    //     }
+    // }
 }
 
 function alignTop(selected_objects) {
@@ -1939,16 +1939,16 @@ function alignTop(selected_objects) {
         selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
     }
 
-    // Added spacing when there are objects that overlap eachother.
-    temporary_objects = removeDuplicatesInList(selected_objects);
-    temporary_objects = removeLineObjectsFromList(temporary_objects);
-    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++) {
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
-            var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
-            temporary_objects[i].move(-difference, 0);
-        }
-    }
+    // // Added spacing when there are objects that overlap eachother.
+    // temporary_objects = removeDuplicatesInList(selected_objects);
+    // temporary_objects = removeLineObjectsFromList(temporary_objects);
+    // temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
+    // for(var i = 1; i < temporary_objects.length; i++) {
+    //     if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
+    //         var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
+    //         temporary_objects[i].move(-difference, 0);
+    //     }
+    // }
 }
 
 function alignRight(selected_objects) {
@@ -1962,16 +1962,16 @@ function alignRight(selected_objects) {
         selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
     }
 
-    // Added spacing when there are objects that overlap eachother.
-    temporary_objects = removeDuplicatesInList(selected_objects);
-    temporary_objects = removeLineObjectsFromList(temporary_objects);
-    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++) {
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
-            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
-            temporary_objects[i].move(0, -difference);
-        }
-    }
+    // // Added spacing when there are objects that overlap eachother.
+    // temporary_objects = removeDuplicatesInList(selected_objects);
+    // temporary_objects = removeLineObjectsFromList(temporary_objects);
+    // temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
+    // for(var i = 1; i < temporary_objects.length; i++) {
+    //     if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
+    //         var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
+    //         temporary_objects[i].move(0, -difference);
+    //     }
+    // }
 }
 
 function alignBottom(selected_objects) {
@@ -1985,16 +1985,16 @@ function alignBottom(selected_objects) {
         selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
     }
 
-    // Added spacing when there are objects that overlap eachother.
-    temporary_objects = removeDuplicatesInList(selected_objects);
-    temporary_objects = removeLineObjectsFromList(temporary_objects);
-    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++) {
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
-            var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
-            temporary_objects[i].move(-difference, 0);
-        }
-    }
+    // // Added spacing when there are objects that overlap eachother.
+    // temporary_objects = removeDuplicatesInList(selected_objects);
+    // temporary_objects = removeLineObjectsFromList(temporary_objects);
+    // temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
+    // for(var i = 1; i < temporary_objects.length; i++) {
+    //     if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
+    //         var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
+    //         temporary_objects[i].move(-difference, 0);
+    //     }
+    // }
 }
 
 //--------------------------------------------------------------------
@@ -2017,16 +2017,16 @@ function alignVerticalCenter(selected_objects) {
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
 
-    // Added spacing when there are objects that overlap eachother.
-    temporary_objects = removeDuplicatesInList(selected_objects);
-    temporary_objects = removeLineObjectsFromList(temporary_objects);
-    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++) {
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
-            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
-            temporary_objects[i].move(0, -difference);
-        }
-    }
+    // // Added spacing when there are objects that overlap eachother.
+    // temporary_objects = removeDuplicatesInList(selected_objects);
+    // temporary_objects = removeLineObjectsFromList(temporary_objects);
+    // temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
+    // for(var i = 1; i < temporary_objects.length; i++) {
+    //     if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
+    //         var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
+    //         temporary_objects[i].move(0, -difference);
+    //     }
+    // }
 }
 
 function alignHorizontalCenter(selected_objects) {
@@ -2047,16 +2047,16 @@ function alignHorizontalCenter(selected_objects) {
         selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
     }
 
-    // Added spacing when there are objects that overlap eachother.
-    temporary_objects = removeDuplicatesInList(selected_objects);
-    temporary_objects = removeLineObjectsFromList(temporary_objects);
-    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++) {
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
-            var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
-            temporary_objects[i].move(-difference, 0);
-        }
-    }
+    // // Added spacing when there are objects that overlap eachother.
+    // temporary_objects = removeDuplicatesInList(selected_objects);
+    // temporary_objects = removeLineObjectsFromList(temporary_objects);
+    // temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
+    // for(var i = 1; i < temporary_objects.length; i++) {
+    //     if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
+    //         var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
+    //         temporary_objects[i].move(-difference, 0);
+    //     }
+    // }
 }
 
 // -------------------------------------------------------------------------------------
