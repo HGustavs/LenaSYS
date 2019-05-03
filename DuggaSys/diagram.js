@@ -1236,7 +1236,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
-    if(!developerModeActive) {
+    if(developerModeActive) {
         drawOrigo();
     }
     diagram.sortConnectors();
@@ -1550,39 +1550,39 @@ consloe.log = function(gobBluth) {
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
-var developerModeActive = false; // used to repressent a switch for whenever the developerMode is enabled or not.
+var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode() {
+    developerModeActive = !developerModeActive;
     if(developerModeActive) {
-        console.log('developermode: ON'); // Shows that the developer have the developermode active.
+        console.log('developermode: ON');       // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-        drawOrigo();
+        drawOrigo();   
         toolbarState = 3;                                                               // Change the toolbar to DEV.
-        switchToolbar('Dev');                                                           // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';                   // Change the text to DEV.
+        switchToolbarDev();                                                             // ---||---
+        document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   // Turn off crosstoggleA4.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
-        developerModeActive = false;
     } else {
+        console.log('developermode: OFF');
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         toolbarState = 1;                                                               // Change the toolbar back to ER.
         switchToolbar('ER');                                                            // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
+        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
         setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
-        developerModeActive = true;
     }
     reWrite();
     updateGraphics();
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), !developerModeActive);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
 }
 
 var targetMode;     //the mode that we want to change to when trying to switch the toolbar
@@ -1611,7 +1611,7 @@ function modeSwitchConfirmed(confirmed) {
 function switchToolbarTo(target){
     targetMode = target;
     //only ask for confirmation when developer mode is off or if the user has started drawing something
-    if(!developerModeActive || diagram.length < 1) {
+    if(developerModeActive || diagram.length < 1) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
@@ -1657,9 +1657,9 @@ function switchToolbarUML() {
 //------------------------------------------------------------------------------
 var crossDEV = false;
 function switchToolbarDev() {
-    if(developerModeActive){
+    if(!developerModeActive){
         return;
-      }
+    }
     toolbarState = 3;                                                               // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';                   // Change the text to UML.
@@ -1794,7 +1794,7 @@ function decimalPrecision(value, precision){
 //----------------------------------------------------------------------
 
 function reWrite() {
-    if(!developerModeActive) {
+    if(developerModeActive) {
         //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + " </p>";
@@ -2453,14 +2453,7 @@ function switchToolbar(direction) {
     $("#classbutton").show();
     $("#linebutton").hide();
     $("#umllinebutton").show();
-  } else if(toolbarState == toolbarFree) {
-    $(".toolbar-drawer").hide();
-    $("#drawerDraw").show();
-    $("#labelDraw").show();
-    $("#squarebutton").show();
-    $("#drawfreebutton").show();
-  }
-  else if(toolbarState == toolbarDeveloperMode) {
+  } else if(toolbarState == toolbarDeveloperMode) {
     $(".toolbar-drawer").show();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -2479,11 +2472,6 @@ function switchToolbar(direction) {
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
- /* else { // shows all alternatives in the toolbar
-    $(".toolbar-drawer").show();
-    $(".label").show();
-    $(".buttonsStyle").show();
-  }*/
 
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
@@ -2651,7 +2639,7 @@ function mousemoveevt(ev, t) {
                     ctx.strokeStyle = "#000";
                     ctx.stroke();
                     ctx.setLineDash([]);
-                    if (developerModeActive == true) {
+                    if (!developerModeActive) {
                         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                         crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2669,7 +2657,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 ctx.closePath();
-                if (developerModeActive == true) {
+                if (!developerModeActive) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2686,7 +2674,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 ctx.closePath();
-                if (developerModeActive == true) {
+                if (!developerModeActive) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2705,7 +2693,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 ctx.closePath();
-                if (developerModeActive == true) {
+                if (!developerModeActive) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2716,7 +2704,7 @@ function mousemoveevt(ev, t) {
                 ctx.strokeStyle = "#000";
                 ctx.stroke();
                 ctx.setLineDash([]);
-                if (developerModeActive == true) {
+                if (!developerModeActive) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2730,7 +2718,7 @@ function mousemoveevt(ev, t) {
                 ctx.strokeStyle = "#000";
                 ctx.stroke();
                 ctx.setLineDash([]);
-                if (developerModeActive == true) {
+                if (!developerModeActive) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2744,7 +2732,7 @@ function mousemoveevt(ev, t) {
                 ctx.strokeStyle = "#000";
                 ctx.stroke();
                 ctx.setLineDash([]);
-                if (developerModeActive == true) {
+                if (!developerModeActive) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
@@ -2761,7 +2749,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 ctx.closePath();
-                if (developerModeActive == true) {
+                if (!developerModeActive) {
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
