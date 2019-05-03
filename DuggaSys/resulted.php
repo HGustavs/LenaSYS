@@ -99,8 +99,12 @@ pdoConnect();
 			onmouseout="hideHover();" >Show Results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 
-		<div id="MarkCont" style="position:absolute; left:4px; right:204px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
-		<div style="position:absolute; right:2px; top:34px; background:#bbb; width:200px;"><div id='markMenuPlaceholder'></div><div id="teacherFeedbackTable"></div></div>
+		<div id="MarkCont" style=" left:4px; right:204px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
+		<button style="position: absolute;top: 0px; right: 0px; display: block;" onclick="toggleGradeBox();">Grade</button>
+		<div id="toggleGrade">
+		<div id='markMenuPlaceholder'></div>
+		<div id="teacherFeedbackTable"></div>
+		</div>
 	</div>
 
   <!-- -------------------=============####### Preview Popover #######=============------------------- -->

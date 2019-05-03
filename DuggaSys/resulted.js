@@ -479,6 +479,7 @@ function formatDateShorter(longDate) {
 	return d.toLocaleString()
 }
 
+
 function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid, entryname) {
 	var nameOf = document.getElementById("Nameof");
 	nameOf.textContent = entryname + " by " + firstname + " " + lastname + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked);
@@ -486,6 +487,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	var menu = "<div class='' style='§display:block;'>";
 	menu += "<div class='loginBoxheader'>";
 	menu += "<h3>Grade</h3>";
+	menu += "<div class='cursorPointer' onclick='closeGrade();'>x</div>"
 	menu += "</div>";
 	menu += "<table>";
 	menu += "<tr><td>";
@@ -503,6 +505,17 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</div> <!-- Menu Dialog END -->";
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
+}
+function toggleGradeBox(){
+	//MarkCont position absolute
+	//toggleGrade position absolute
+	alert("hey");
+	var toggleGrade = document.getElementById('toggleGrade');
+	var markCont = document.getElementById('MarkCont');
+	toggleGrade.style.position = 'absolute';
+	toggleGrade.style.display = 'block';
+
+	markCont.style.position = 'absolute';
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {

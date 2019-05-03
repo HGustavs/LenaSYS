@@ -37,6 +37,13 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
   border: 2px solid grey;
 }
 
+#toggleGrade {
+	position:absolute; 
+	display: none;
+	background:#bbb; width:200px;
+	width: 100%;
+}
+
 h1{color: #000;}
 
 strong {font-weight: bold;}
