@@ -543,8 +543,8 @@ function showAllActivity(e, activities)
   }
   span.innerHTML = str;
   box.style.display = 'block';
-  box.style.left = e.offsetX +10+ "px";
-  box.style.top = e.offsetY +10+ "px";
+  box.style.left = e.layerX +10+ "px";
+  box.style.top = e.layerY +10+ "px";
 }
 
 // Shows info about the activity point the user hovers over in the circle graph
@@ -556,8 +556,8 @@ function showActivityInfo(e, type, hour, pc, activities)
   var countSpan = document.getElementById('activityCount');
   var prevHour = (parseInt(hour)-1);
   box.style.display = 'block';
-  box.style.left = e.offsetX +10+ "px";
-  box.style.top = e.offsetY +10+ "px";
+  box.style.left = e.layerX +10+ "px";
+  box.style.top = e.layerY +10+ "px";
 
   timeSpan.innerHTML = prevHour+".00 - "+hour+".00";
   pcSpan.innerHTML = pc+"% Activity";
