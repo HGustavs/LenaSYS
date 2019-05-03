@@ -367,6 +367,11 @@ function changeDay(date)
 {
   AJAXService("updateday",{userid:"HGustavs", today: date},"CONTRIBUTION");
 }
+function showAllDays()
+{
+  var div = document.getElementById('hourlyGraph');
+  div.innerHTML = renderCircleDiagram(JSON.stringify(retdata['hourlyevents']));
+}
 function renderCircleDiagram(data, day)
 {
   var today = new Date();
@@ -383,8 +388,9 @@ function renderCircleDiagram(data, day)
 
   var activities = JSON.parse(data);
   var str = "";
-  str+="<h2 style='padding:10px'>Activities today</h2>";
-  str+="<input type='date' id='circleGraphDatepicker' value="+today+" onchange='changeDay(this.value)' />";
+  str+="<h2 style='padding:10px'>Hourly activities</h2>";
+  str+="<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' value="+today+" onchange='changeDay(this.value)' />";
+  str+="<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
   str+="<div class='circleGraph'>";
   str+="<div id='activityInfoBox'><span id='allActivity'></span><span id='activityTime'></span><span id='activityPercent'></span><span id='activityCount'></span></div>";
   str+="<svg width='500' height='500'>";
@@ -428,7 +434,7 @@ function renderActivityPoints(activities)
   var uniquePoints = [];
   var activityTypes = {times: {}, types: {}};
   const RADIUS = 220;
-  const BASELINE = 50;
+  const BASELINE = 75;
   const MIDDLE = 243;
   activities.forEach(entry => {
     var hour = entry.time.substr(0,2);
@@ -600,14 +606,12 @@ var momentexists=0;
 var resave = false;
 function returnedSection(data)
 {
-  retdata=data;
-
-  if (Object.keys(data).length === 2) {
+    if (Object.keys(data).length === 2) {
     var div = document.getElementById('hourlyGraph');
     div.innerHTML = renderCircleDiagram(JSON.stringify(data['events']),data['day']);
     return;
   }
-
+  retdata=data;
   if(data['debug']!="NONE!") alert(data['debug']);
 
   contribDataArr = [];
@@ -663,7 +667,7 @@ function returnedSection(data)
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
     str+="<div id='hourlyGraph'>";
-    str+=renderCircleDiagram(JSON.stringify(data['todaysevents']));
+    str+=renderCircleDiagram(JSON.stringify(data['hourlyevents']));
     str+="</div>";
 
     // Table heading
