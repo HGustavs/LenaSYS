@@ -848,6 +848,7 @@ function renderCell(col, celldata, cellid) {
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
 			if (celldata.ishere === true && celldata.timesGraded !== 0) {
 				str += '(' + celldata.timesGraded + ')';
+				console.log("graded: "+celldata.timesGraded)
 			}
 			str += "</div>";
 			str += "</div>";
