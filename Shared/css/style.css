@@ -3023,7 +3023,10 @@ table {
 #activityInfoBox {
   display: none;
   position: absolute;
-  min-width: 150px;
+  max-height: 400px;  
+  grid-auto-flow: column;
+  grid-template-rows: repeat(5, auto);
+  grid-row-start: auto;
   background: lightgray;
   color: black;
   border: 1px solid black;
@@ -3031,16 +3034,18 @@ table {
   text-align: center;
   font-size: 10pt;
   font-family: sans-serif;
+  z-index: 99999;
 }
 #activityInfoBox span {
   display: block;
-  padding: 1px;
+  padding: 0px;
   font-weight: bold;
 }
-#allActivity .activityInfoEntry {
+#activityInfoBox .activityInfoEntry {
   display: block;
-  padding: 0 0 8px 0;
+  padding: 10px;
   font-weight: 100;
+  width: 100px;
 }
 .circleGraphCircle {
   stroke:black;

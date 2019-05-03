@@ -392,7 +392,7 @@ function renderCircleDiagram(data, day)
   str+="<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' value="+today+" onchange='changeDay(this.value)' />";
   str+="<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
   str+="<div class='circleGraph'>";
-  str+="<div id='activityInfoBox'><span id='allActivity'></span><span id='activityTime'></span><span id='activityPercent'></span><span id='activityCount'></span></div>";
+  str+="<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'></span><span style='grid-row-start: -1' id='activityPercent'></span><span style='grid-row-start: -1' id='activityCount'></span></div>";
   str+="<svg width='500' height='500'>";
   str+="<circle class='circleGraphCircle' cx='250' cy='250' r='220' />";
   str+=renderHourMarkers();
@@ -523,7 +523,6 @@ function renderHourMarkers()
 function showAllActivity(e, activities)
 {
   var box = document.getElementById('activityInfoBox');
-  var span = document.getElementById('allActivity');
   var times = Object.keys(activities.times);
   var types = Object.keys(activities.types);
   
@@ -541,8 +540,8 @@ function showAllActivity(e, activities)
       });
       str += "</span>";
   }
-  span.innerHTML = str;
-  box.style.display = 'block';
+  box.innerHTML += str;
+  box.style.display = 'grid';
   box.style.left = e.layerX +10+ "px";
   box.style.top = e.layerY +10+ "px";
 }
@@ -576,11 +575,13 @@ function hideActivityInfo()
   var timeSpan = document.getElementById('activityTime');
   var pcSpan = document.getElementById('activityPercent');
   var countSpan = document.getElementById('activityCount');
-  var allSpan = document.getElementById('allActivity');
+  var allSpans = [...document.getElementsByClassName('activityInfoEntry')];
+  allSpans.forEach(span => {
+    box.removeChild(span);
+  });
   timeSpan.innerHTML = "";
   pcSpan.innerHTML = "";
   countSpan.innerHTML = "";
-  allSpan.innerHTML = "";
   box.style.display = 'none';
 }
 
