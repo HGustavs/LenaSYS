@@ -997,8 +997,6 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
     setInterval(function() {Save()}, 10000);
-    widthWindow = (window.innerWidth - 100);
-    heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
@@ -2362,11 +2360,10 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
-    element.style.top = (boundingRect.top + - 32 + "px");
-    element.style.left = (boundingRect.left - 80 + "px");
-    element.style.width = (79 + "px");
+    element.style.top = (boundingRect.top + "px");
+    element.style.left = (boundingRect.left - 76 + "px");
+    element.style.width = (73 + "px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
-    switchToolbar();
     element.style.display = "inline-block";
 }
 
@@ -2461,10 +2458,6 @@ function switchToolbar(direction) {
 
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
-
-$( function() {
-    $( "#diagram-toolbar" ).draggable();
-} );
 
 // ----------------------------------
 // DIAGRAM MOUSE SECTION
@@ -2751,7 +2744,6 @@ function mousemoveevt(ev, t) {
 
 function mousedownevt(ev) {
     canvasLeftClick = 1;
-
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     startMouseCoordinateX = currentMouseCoordinateX;

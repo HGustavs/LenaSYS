@@ -1255,7 +1255,7 @@ input {
 .application-toolbar-wrap {
   position: fixed;
   z-index: 1000;
-  border: 0px solid var(--color-border-4);
+  border-top: 1px solid var(--color-border-4);
   outline: 0px solid var(--color-border-3);
   background-color: var(--color-background);
 }
@@ -1472,8 +1472,8 @@ input {
 }
 
 /* --------------================################================-------------- *
-  *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
-  * --------------================################================-------------- */
+ *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
+ * --------------================################================-------------- */
 
 /* --------------================################================-------------- *
  *                                 Form Controls                                *
@@ -3791,7 +3791,7 @@ only screen and (max-device-width: 320px) {
   padding-left: 10px;
   height: 30px;
   position: absolute;
-  right: 24px;
+  right: 26px;
   bottom: 19px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);

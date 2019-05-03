@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome = 1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Section Editor</title>
+    <title>Diagram</title>
     <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -51,9 +51,9 @@
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
-        <div id="buttonDiv" style ="margin-left: 68px;">
+        <div id="buttonDiv" style ="margin-left: 68px;" >
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-left: 0px; height: 100%; text-align: center;">
+                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-left: 0px; height: ; text-align: center;" onmousedown="">
                     <div class="application-header">
                         </div>
                         <div class='application-toolbar'>
@@ -107,7 +107,7 @@
                                 </button>
                             </div>
                           </div>
-                          <div class="labelToolContainer">
+                          <div class="labelToolContainer" style = "margin-bottom: -15px;">
                             <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                             <div class="toolbar-drawer" id="drawerUndo">
                                 <button class="diagramAction" id="undoButton" onclick='undoDiagram()' data="Undo">
