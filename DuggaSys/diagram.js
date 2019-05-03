@@ -2370,16 +2370,6 @@ function initToolbox() {
     element.style.display = "inline-block";
 }
 
-function toggleToolbarMinimize() {
-    if($("#minimizeArrow").hasClass("toolbarMaximized")) {
-        $(".application-toolbar").slideUp("fast");
-        $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
-    }else {
-        $(".application-toolbar").slideDown("fast");
-        $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
-    }
-}
-
 function toggleToolbarLayout() {
     if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()) {
         $(".application-toolbar").css({"display": "flex", "flex-direction": "column"});
