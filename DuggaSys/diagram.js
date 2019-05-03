@@ -2048,19 +2048,21 @@ function sortObjects(selected_objects, mode) {
 }
 
 //----------------------------------------------------------------------
-// distribute: unclear what the purpose is of distribute,
-//            does not seem to work at all
+// Distributes the entities with even spacing either
+//            vertically or horizontally
 //----------------------------------------------------------------------
 
 function distribute(axis) {
+  let spacing = 30;
+
     if(axis=='vertically') {
       // Added spacing when there are objects that overlap eachother.
       temporary_objects = removeDuplicatesInList(selected_objects);
       temporary_objects = removeLineObjectsFromList(temporary_objects);
       temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
       for(var i = 1; i < temporary_objects.length; i++) {
-          if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
-              var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
+          if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + spacing) {
+              var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - spacing;
               temporary_objects[i].move(0, -difference);
           }
       }
@@ -2070,8 +2072,8 @@ function distribute(axis) {
       temporary_objects = removeLineObjectsFromList(temporary_objects);
       temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
       for(var i = 1; i < temporary_objects.length; i++) {
-           if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
-               var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
+           if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + spacing) {
+               var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - spacing;
              temporary_objects[i].move(-difference, 0);
           }
        }
