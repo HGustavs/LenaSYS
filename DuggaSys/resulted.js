@@ -423,6 +423,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	} else {
 		//alert("This grading is not OK!");
 	}
+	myTable.renderTable();
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind, gfx, cls, qvariant, qid) {
