@@ -10,7 +10,7 @@ var showing = 1;
 var score;
 var timeUsed;
 var stepsUsed;
-var inParams = "UNK";;
+var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
@@ -325,7 +325,6 @@ function setExpireCookie(){
     if(localStorage.getItem("securityquestion") === "set") {
         var expireDate = new Date();
         expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));////8100000, denotes time in milliseconds
-
         document.cookie = "sessionEndTime=expireC; expires=" + expireDate.toGMTString() + "; path=/";
     }
 }
@@ -968,16 +967,18 @@ function processLogin() {
         opt: "LOGIN"
       },
       success:function(data) {
-        var result = JSON.parse(data);
+				var result = JSON.parse(data);
         if(result['login'] == "success") {
-          hideLoginPopup();
-          /*
+					hideLoginPopup();
+
+
+          // wass commented out before which resulted in teh session expire thing not to show
                     if(result['securityquestion'] != null) {
                         localStorage.setItem("securityquestion", "set");
                     } else {
                         setSecurityNotifaction("on");
                     }
-            */
+            
           setExpireCookie();
           setExpireCookieLogOut();
 
@@ -1200,20 +1201,20 @@ function sessionExpireLogOut() {
 
 	if(document.cookie.indexOf('sessionEndTimeLogOut=expireC') > -1){
 		var intervalId = setInterval(function() {
-			//console.log("testTimeout");
 			checkIfExpired();
+			console.log("hallå");
 		}, 2000);
 	}
 
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
-			//alert('Your session has expired');
-			// When reloaded the log in icon should change from green to red
-			$(".endsessionmessagebox").css("display","block");
-			//processLogout();
-			clearInterval(intervalId);
-		}
+				alert('Your session has expired');
+				// When reloaded the log in icon should change from green to red
+				$(".endsessionmessagebox").css("display","block");
+				//processLogout();
+				clearInterval(intervalId);
+			}	
 
 	}
 }
