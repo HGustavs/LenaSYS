@@ -201,7 +201,13 @@ function renderCell(col, celldata, cellid) {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
 	} else if (col == "vers") {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
-	} else if (col == "access") {
+    var checkSubmission = data => data.uid === obj.uid;
+    if (filez['submissions'].some(checkSubmission)) {
+      console.log("test");
+      str+="<img id='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion("+obj.vers+")'>";
+    };
+  } else if (col == "access") {
+    var checkSubmission = data => data.uid === obj.uid;
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student"], ["W", "R"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		if (parseFloat(obj.recent) > 1440) {
@@ -314,7 +320,7 @@ function returnedAccess(data) {
 	filez = data;
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
-  
+
 	var tabledata = {
 
 		tblhead:{
