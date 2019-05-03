@@ -690,7 +690,15 @@ header td {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background: #fff;
+  background: var(--color-background);
+}
+
+#TopMenuStatic {
+  position: fixed;
+  top: 3px;
+  left: 95px;
+  right: 100px;
+  z-index: 5001;
 }
 
 /* --------------================################================-------------- *
@@ -2320,6 +2328,13 @@ span.arrow {
 
 .accessTable_counter span {
 	margin-left: 5px;
+}
+
+#oldSubmissionIcon {
+  height: 20px;
+  float: right;
+  margin-right: 10px;
+  cursor:pointer;
 }
 
 #user td {
