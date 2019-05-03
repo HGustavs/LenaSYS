@@ -89,12 +89,12 @@
 
 					<td class='results menuButton' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<input type='button' value='Results' class='submit-button' title='Edit student results' onclick='navigatePage("resulted.php");' />
+							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
 						</div>
 					</td>
 					<td class='tests menuButton' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='navigatePage("duggaed.php")'/>
+							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
 						</div>
 					</td>
 					<td class='files menuButton' style='display: inline-block;'>

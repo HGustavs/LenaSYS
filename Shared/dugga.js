@@ -256,9 +256,9 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 // navigatePage: Local function for converting static page navigation to dynamic
 //----------------------------------------------------------------------------------
 
-function navigatePage(pagename)
+function navigatePage(clicked_id, pagename)
 {
-		changeURL(pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
+		changeURL(clicked_id, pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
 }
 
 //----------------------------------------------------------------------------------
@@ -517,9 +517,13 @@ function savequizResult(citstr)
 // changeURL: Patch-in for changeURL from project 2014 code
 //----------------------------------------------------------------------------------
 
-function changeURL(thisurl)
+function changeURL(clicked_id, thisurl)
 {
-		window.location.href = thisurl;
+	alert(clicked_id);
+	var link = document.getElementById(clicked_id);
+	link.href=thisurl;
+	alert(thisurl);
+	//window.location.href = thisurl;
 }
 
 //----------------------------------------------------------------------------------
