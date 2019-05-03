@@ -627,36 +627,42 @@ function returnedSection(data)
 	str+="<th style='padding: 2px 10px;'>Kind</th>";
     str+="<th style='padding: 2px 10px;'>Number</th>";
 	str+="<th style='padding: 2px 10px;'>Ranking</th>";
+  str+="<th style='padding: 2px 10px;'>Group ranking</th>";
 	str+="</tr>";
 
     str+="<tr>";
     str+="<td>Issue Creation</td>";
     str+="<td>"+data['issuerankno']+"</td>";
     str+="<td style='background-color:"+intervaltocolor(41,data['issuerank'])+"'>"+data['issuerank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(41,data['issuegrouprank'])+"'>"+data['issuegrouprank']+"</td>";
 	str+="</tr>";
 
     str+="<tr>";
     str+="<td>Comment Creation</td>";
     str+="<td>"+data['commentrankno']+"</td>";
     str+="<td style='background-color:"+intervaltocolor(41,data['commentrank'])+"'>"+data['commentrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(41,data['commentgrouprank'])+"'>"+data['commentgrouprank']+"</td>";
 	str+="</tr>";
 
     str+="<tr>";
     str+="<td>Events Performed</td>"
     str+="<td>"+data['eventrankno']+"</td>"
     str+="<td style='background-color:"+intervaltocolor(41,data['eventrank'])+"'>"+data['eventrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(41,data['eventgrouprank'])+"'>"+data['eventgrouprank']+"</td>";
     str+="</tr>";
 
     str+="<tr>";
     str+="<td>Lines of Code</td>"
     str+="<td>"+data['rowrankno']+"</td>"
     str+="<td style='background-color:"+intervaltocolor(41,data['rowrank'])+"'>"+data['rowrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(41,data['rowgrouprank'])+"'>"+data['rowgrouprank']+"</td>";
     str+="</tr>";
 
     str+="<tr>";
     str+="<td>GIT Commit</td>"
     str+="<td>"+data['commitrankno']+"</td>"
     str+="<td style='background-color:"+intervaltocolor(41,data['commitrank'])+"'>"+data['commitrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(41,data['commitgrouprank'])+"'>"+data['commitgrouprank']+"</td>";
     str+="</tr>";
     str+="</table>";
 
