@@ -733,7 +733,7 @@ function returnedSection(data)
 
 
 						if(week.issues.length>0){
-								str+="<div class='createissue'>Creeated "+week.issues.length+" issue(s).</div>";
+								str+="<div class='createissue'>Created "+week.issues.length+" issue(s).</div>";
 								for(j=0;j<week.issues.length;j++){
 										var issue=week.issues[j];
 										var issuestr=issue.issueno+" "+issue.title;
