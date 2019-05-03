@@ -307,7 +307,7 @@ function createFileUploadArea(fileuploadfileds){
             str +="<div id='"+fieldname+"Prev' style='min-height:100px;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-style:italic;M'>Submission History</span></div>";
 			str += "<div style='padding:10px;'>";
 			str +="<table style='width:100%;'>";
-			str +="<tr id="Andreas">";
+			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
 			str += form;
 			str += "</td>";
