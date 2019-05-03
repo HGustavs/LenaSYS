@@ -19,8 +19,22 @@ var duggaPages;
 var isClickedElementBox = false;
 var searchterm = "";
 
+function setup() {
 
-AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
+  var filt = "";
+
+  filt += "<td id='testSearchContainer' class='navButt'>"
+  filt += "<input id='duggaSearch' type='text' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
+  filt += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
+  filt += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
+  filt += "</button>"
+  filt += "</td>"
+
+  $("#menuHook").before(filt);
+
+  AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
+}
+
 
 // Detects clicks
 $(document).mousedown(function (e) {
@@ -398,13 +412,13 @@ function returnedDugga(data) {
 	if (data['writeaccess']) {
 		$('#quiz').show();
 		$('.fixed-action-button').show();
-		$('.searchField').show();
+		$('#duggaSearch').show();
 		$('#searchbutton').show();
 	}
 	else {
 		$('#quiz').hide();
 		$('.fixed-action-button').hide();
-		$('.searchField').hide();
+		$('#duggaSearch').hide();
 		$('#searchbutton').hide();
 			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
 				+ querystring['coursevers'] + "");
@@ -450,14 +464,6 @@ function returnedDugga(data) {
 				/* Page title */
 				content += "<div class='titles' style='padding-top:10px;'>"
 						content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
-				content += "</div>"
-
-				/* Search engine */
-				content += "<div id='testSearchContainer'>"
-						content += "<input id='duggaSearch' class ='searchField' type='search' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
-						content += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
-						content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
-						content += "</button>"
 				content += "</div>"
 
 				/* FAB Button */

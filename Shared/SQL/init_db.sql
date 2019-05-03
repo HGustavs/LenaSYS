@@ -147,6 +147,7 @@ CREATE TABLE userAnswer (
 	uid 					INT UNSIGNED NOT NULL,
 	useranswer				TEXT,
 	submitted 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        -- timestamp when last graded/marked
 	marked					TIMESTAMP NULL,
 	vers					VARCHAR(8),
 	creator 				INTEGER,
@@ -158,6 +159,8 @@ CREATE TABLE userAnswer (
 	feedback 				TEXT,
 	timesGraded				INT(11) NOT NULL DEFAULT '0',
 	gradeExpire 			TIMESTAMP NULL DEFAULT NULL,
+        -- used in conjunction with `marked` to determine if a grade has been changed since it was last exported
+        gradeLastExported   timestamp null default null,
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user(uid),
