@@ -280,6 +280,9 @@ svg text {
 	pointer-events: none;
 }
 
+/* Changes the color of the even rows in the background so that the magic "row heading" looks nice */
+#resultTable___tbl___mhvtable tbody tr:nth-child(even) {background-color:#F0F0F0;}
+
 #markMenuPlaceholderz {
 		background:#bbb;
 }
