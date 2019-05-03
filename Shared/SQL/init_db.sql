@@ -99,7 +99,6 @@ CREATE TABLE listentries (
 	rowcolor				TINYINT(1),
 	groupID					INT DEFAULT NULL,
     PRIMARY KEY (lid),
-/*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
 	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
@@ -148,6 +147,7 @@ CREATE TABLE userAnswer (
 	uid 					INT UNSIGNED NOT NULL,
 	useranswer				TEXT,
 	submitted 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        -- timestamp when last graded/marked
 	marked					TIMESTAMP NULL,
 	vers					VARCHAR(8),
 	creator 				INTEGER,
@@ -159,6 +159,8 @@ CREATE TABLE userAnswer (
 	feedback 				TEXT,
 	timesGraded				INT(11) NOT NULL DEFAULT '0',
 	gradeExpire 			TIMESTAMP NULL DEFAULT NULL,
+        -- used in conjunction with `marked` to determine if a grade has been changed since it was last exported
+        gradeLastExported   timestamp null default null,
 	PRIMARY KEY (aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user(uid),
@@ -186,6 +188,7 @@ CREATE TABLE vers(
 	coursenamealt			VARCHAR(45) NOT NULL,
 	startdate     			DATETIME,
 	enddate       			DATETIME,
+	updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	PRIMARY KEY (cid,vers)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -361,23 +364,6 @@ CREATE TABLE playereditor_playbacks(
 	path	 				VARCHAR(256) NOT NULL,
 	PRIMARY KEY (id, type)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
-
-/**
- * This table seems to be intended to store program courses. It does not seem
- * to have any relation to the rest of the database and kind of stands out oddly.
-
-CREATE TABLE programkurs (
-		pkid			INT(11) NOT NULL AUTO_INCREMENT,
-		kull			VARCHAR(8) DEFAULT NULL,
-		kurskod 	VARCHAR(6) DEFAULT NULL,
-		kursnamn 	VARCHAR(100) DEFAULT NULL,
-		anmkod 		VARCHAR(8) DEFAULT NULL,
-		period 		MEDIUMINT(9) DEFAULT NULL,
-		platser 	INT(11) DEFAULT NULL,
-		termin 		VARCHAR(45) DEFAULT NULL,
-		PRIMARY KEY (pkid)
-) CHARACTER SET utf8 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
-*/
 
 CREATE TABLE class (
 	class 					VARCHAR(10) NOT NULL,
@@ -585,12 +571,6 @@ CREATE TABLE timesheet(
 	FOREIGN KEY (did) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
-
-/*
-INSERT INTO programkurs VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundl�ggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationss�kerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och anv�ndbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundl�ggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
-INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
-*/
-
 
 /*
 	This view eases the process of determining how many hp a student with a specific uid

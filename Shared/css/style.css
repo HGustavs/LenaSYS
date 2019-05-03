@@ -28,7 +28,7 @@
   --color-sectioned-table-lo: #eae8eb;
   --color-statistics: #d8d7da;
   --color-list-hover: #c6cdb8;
-  
+
   --color-border-primary: #775886;
   --color-border-list: #dbd0d8;
   --color-border: #999;
@@ -194,8 +194,8 @@ p {
  * --------------================################================-------------- */
 
  #buttonDiv {
-   position: fixed;
    margin-top: -20px;
+   margin-bottom: 10px;
    height: 20px;
    background-color: white;
  }
@@ -223,12 +223,13 @@ p {
 #content {
   background: var(--color-background);
   min-height: calc(100vh - 80px);
-  margin: 65px 10px 15px 10px;
+  margin: 65px 10px 0px 10px;
 }
 
 #contentDiagram {
   background: #fff;
-  margin: 65px 10px 15px 10px;
+  margin-left: 13px;
+  margin-top: 65px;
 }
 
 #accessedcontent {
@@ -327,6 +328,14 @@ p {
   opacity: 0.3 !important;
 }
 
+#noAccessMessage {
+  padding: 5px;
+}
+
+.dateSize {
+  width: 15%;
+}
+
 #Sectionlist {
   margin: 0px auto;
   background-color: var(--color-background);
@@ -340,6 +349,18 @@ p {
   /*padding-top: 4px;*/
   min-height: 30px;
   font-size: 14pt;
+  text-overflow: clip;
+}
+
+@media screen and (max-width : 570px) {
+
+  .item {
+    font-size: 10pt;
+  }
+  .dateSize {
+    width: 25%;
+    font-size: 10pt;
+  }
 }
 
 #Sectionlist .section {
@@ -686,22 +707,19 @@ header td {
 .navName {
   font-size: 0.8em;
   color: #FFFFFF;
-  cursor: default;
   text-decoration: none;
   text-align: right;
   overflow: hidden;
   padding-right: 4px;
+  width: 50px;
 }
 
-.navName:hover {
-  font-size: 0.8em;
+.navName a:hover {
   text-shadow: 2px 2px 4px rgb(0, 0, 0);
   color: #FFFFFF;
-  cursor: default;
   text-decoration: underline;
   text-align: right;
   overflow: hidden;
-  padding-right: 4px;
 }
 
 .navName a {
@@ -717,20 +735,18 @@ header td {
 }
 
 .loggedout {
-  background-color: var(--color-red);
+  background-color: #50a750;
+
 }
 
-.loggedout:hover {
-  background-color: var(--color-green);
+#loginbutton:hover {
+  filter: brightness(1.1);
 }
 
 .loggedin {
-  background-color: var(--color-green);
+    background-color: #c75050;
 }
 
-.loggedin:hover {
-  background-color: var(--color-red);
-}
 
 #loginbutton {
   cursor: pointer;
@@ -747,6 +763,14 @@ header td {
   left: 0px;
   right: 0px;
   background: var(--color-background);
+}
+
+#TopMenuStatic { 
+  position: fixed; 
+  top: 3px; 
+  left: 95px; 
+  right: 100px; 
+  z-index: 5001; 
 }
 
 /* --------------================################================-------------- *
@@ -1178,6 +1202,7 @@ input {
 
 .loginBox td {
   margin-left: 4px;
+  margin-right: 4px;
 }
 
 .buttonLoginBox {
@@ -1319,7 +1344,6 @@ input {
   height:20px;
   display: flex;
   text-align: center;
-  padding:0 3px;
   line-height: 20px;
 }
 .toolbarArrows{
@@ -1329,9 +1353,10 @@ input {
   cursor: pointer;
 }
 #toolbarTypeText{
-  width:60%;
-  background-color: #f1f1f1;
-  border: 1px solid #eaeaea;
+  height: 20px;
+  color: #111;
+  margin: 0 auto;
+  font-weight: bold;
 }
 #toolbarLeftArrow{
   transform: rotate(-90deg);
@@ -1344,6 +1369,7 @@ input {
   filter:invert(100%);
 }
 .diagramAction{
+  cursor: pointer;
   border-radius: 5px;
   background-color: var(--color-primary);
   width: 47%;
@@ -1629,7 +1655,7 @@ input.submit-button-newitem {
 }
 
 input.submit-button-newitem:hover {
-  transition: 0.4s;
+  transition: 0.2s;
   background-color: rgb(283, 233, 126);
 }
 
@@ -1703,12 +1729,10 @@ input.fileed-button {
 
 input.submit-button:hover {
   background-color: #7B5A96;
-  border-radius: 2px;
 }
 
 div.submit-button:hover {
   background-color: #7B5A96;
-  border-radius: 2px;
 }
 
 input.fileed-button:hover {
@@ -1752,7 +1776,7 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 2px;
+  right: 18px;
   top: 100;
   z-index: 2;
   position: absolute;
@@ -1765,12 +1789,14 @@ div.submit-button:disabled {
 }
 
 #linebutton {
+  cursor: pointer;
   margin: 5px 0;
   display: inline;
   border-radius: 5px;
 }
 
 #umllinebutton {
+  cursor: pointer;
   display: inline;
   margin: 5px 0;
   border-radius: 5px;
@@ -2186,9 +2212,7 @@ span.arrow {
   header {
     display: none;
   }
-  body {
-    margin: 0px
-  }
+
   #content {
     margin: 0px;
     padding: 0px;
@@ -2297,6 +2321,11 @@ span.arrow {
   background-color: var(--color-sectioned-table-lo);
 }
 
+#resultTable
+{
+  margin-top: 70px;
+}
+
 .resultTableCell{
 		margin:2px;
 }
@@ -2357,7 +2386,7 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 0px;
+	border: 2px solid #dbd0d8;
 }
 
 .accessTableText {
@@ -2377,6 +2406,13 @@ span.arrow {
 	margin-left: 5px;
 }
 
+#oldSubmissionIcon {
+  height: 20px;
+  float: right;
+  margin-right: 10px;
+  cursor:pointer;
+}
+
 #user td {
   padding: 0px;
   border-right: 3px dashed rgba(97,72,117,0);
@@ -2385,9 +2421,49 @@ span.arrow {
   border-top: 3px dashed rgba(97,72,117,0);
 }
 
-/* End DuggaSys resulted*/
+.tooltip-searchbar {
+  font-size: 20px;
+  padding: 0 2px;
+  position: relative;
+  width:10px;
+  cursor: default;
+}
+.tooltip-searchbar-box{
+  box-sizing: border-box;
+  display: none;
+  font-size: 13px;
+  position: absolute;
+  background: #fff;
+  transform: translate(-48%,61%);
+  border-radius: 5px;
+  padding: 5px;
+  padding-bottom: 10px;
+  line-height: 18px;
+  color: black;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+}
+.tooltip-searchbar-box:before {
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #fff;
+  position: relative;
+  margin: 0 auto;
+  transform: translateY(-140%);
+}
+.tooltip-searchbar:hover .tooltip-searchbar-box {
+  display: inherit;
+}
 
-/**************************/
+#ladexportContainer
+{
+  position: absolute;
+  height: 55px;
+  width: 710px;
+}
 
 /* End DuggaSys resulted*/
 
@@ -2776,7 +2852,7 @@ span.arrow {
   font-size: 12px;
   display: none;
   position: absolute;
-  top: 10px;
+  top: 35px;
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
 }
@@ -2954,6 +3030,78 @@ table {
   background-color: var(--color-background);
 }
 
+ /* Styling for circle graph */
+.circleGraph {
+  width:500px;
+  height:500px;
+  position: relative;
+}
+#activityInfoBox {
+  display: none;
+  position: absolute;
+  min-width: 150px;
+  background: lightgray;
+  color: black;
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  font-size: 10pt;
+  font-family: sans-serif;
+}
+#activityInfoBox span {
+  display: block;
+  padding: 1px;
+  font-weight: bold;
+}
+#allActivity .activityInfoEntry {
+  display: block;
+  padding: 0 0 8px 0;
+  font-weight: 100;
+}
+.circleGraphCircle {
+  stroke:black;
+  stroke-width:1px;
+  fill:white;
+}
+#circleGraphHours {
+  text-anchor: middle;
+}
+.circleGraphBigline {
+  fill: black;
+  stroke:black;
+  stroke-width:2px;
+}
+.circleGraphLine {
+  fill: gray;
+  stroke:gray;
+  stroke-width:1px;
+}
+.activitymarker {
+  stroke-width: 0.5px;
+  stroke: black;
+}
+rect[class*="activitymarker"]:hover {
+  fill: #8AC926;
+}
+.activitymarker.commit {
+  fill: #2AB7CA;
+}
+.activitymarker.comment {
+  fill: #6A4C93;
+}
+.activitymarker.issue {
+  fill: #FE4A49;
+}
+.activitymarker.mixed {
+  fill: url("#mixedActivityGradient");
+}
+.activityPolygon {
+  opacity: 0.8;
+  fill: #FED766;
+  stroke-width: 0.5px;
+  stroke: red;
+}
+
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
@@ -2985,26 +3133,22 @@ table {
     bottom: 2px;
 }
 
-/* styling for the search bar in fileed.php */
+/* styling for the search bars in resulted, accessed, duggaed, filed */
 
-#searchBar {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  float: right;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
-  margin-bottom: 15px;
-  margin-right: 7px;
+#searchBar, #testSearchContainer {
+  padding-left: 20px;
 }
 
-#searchinput {
+
+#searchinput, #duggaSearch {
   margin-right: 0;
   border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border: 1px solid var(--color-border-2);
-  border-bottom: 0;
+  border-bottom: 0
   padding: 0 0 0 2px;
+  height: 20px;
 }
 
 #searchbutton {
@@ -3015,18 +3159,23 @@ table {
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
-  box-shadow: none;
+  box-shadow: none !important;
   margin-bottom: 5px;
+  margin-right: 2px;
 }
-.searchField{
+
+#searchBar img, #testSearchContainer img {
+  margin: 0px;
+}
+
+/* .searchField{
   height: 25px;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
   border-right: 0px;
-}
+} */
 
 #lookingGlassSVG {
-  position: absolute;
   top: 3px;
   left: 3px;
 }
@@ -3058,7 +3207,6 @@ table {
   background-color: var(--color-accent);
   z-index: 1000;
   position: fixed;
-  bottom: 0px;
   width: 100%;
   height: 40px;
   padding: 0 20px 0 0px;
@@ -3076,8 +3224,22 @@ table {
 
 .alertmsg input {
   float: none;
-  align-self: center;
+  /* align-self: center; */
   margin-right: 5px;
+  position: absolute;
+  right: 20px;
+}
+
+.alertmsg#servermsgcontainer {
+  top: 50px;
+}
+
+.alertmsg#cookiemsg {
+  bottom: 0;
+}
+
+.alertmsg#cookiemsg input {
+  align-self: center;
 }
 
 /* } */
@@ -3181,7 +3343,7 @@ table.navheader div.hamburgerMenu {
   padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
-  margin-top: 50px;
+  margin-top: 5px;
   margin-left: 5px;
   z-index: 1;
   background-color: var(--color-background-2);
@@ -3274,10 +3436,6 @@ ul.hamburgerList button.menuButton {
   -moz-transition: opacity 300ms, width 300ms, margin 300ms;
   -o-transition: opacity 300ms, width 300ms, margin 300ms;
 }
-
-.dateSize {
-  width: 150px;
-}
 /* --------------================################================-------------- *
   *                        FILEED TABLE STYLING                         *
 * --------------================################================-------------- */
@@ -3314,7 +3472,7 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
-     #sortingBar {
+#sortingBar {
         width: 135px;
         position: relative;
         top: 25px;
@@ -3607,6 +3765,9 @@ only screen and (max-device-width: 530px) {
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
+  #searchinput, #duggaSearch {
+    max-width: 120px;
+  }
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3633,11 +3794,13 @@ only screen and (max-device-width: 480px) {
   table.navheader input.hamburger {
     position: absolute;
     top: 66px;
-    right: 10px;
+    left:10px;
+    right: 5px;
   }
   table.navheader div.hamburger {
     position: absolute;
     top: 66px;
+    left:10px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
@@ -3654,6 +3817,9 @@ only screen and (max-device-width: 480px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
+  #searchinput, #duggaSearch {
+    max-width: 100px;
+  }
   #Sectionlist .course {
     font-size: 14px;
   }
@@ -3682,12 +3848,15 @@ only screen and (max-device-width: 320px) {
 /* Is used to style a Select-box in diagram.php. */
 
 #selectDiv {
+  background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  height: 34px;
+  padding-right: 80px;
+  padding-left: 10px;
+  height: 30px;
   position: absolute;
-  right: 18px;
-  bottom: 12px;
+  right: 16px;
+  bottom: 16px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3717,21 +3886,90 @@ only screen and (max-device-width: 320px) {
   padding: 0;
 }
 
-#selectDiv .ikonPil {
-  display: block;
-  background: url("../icons/arrow.svg") no-repeat;
-  position: absolute;
-  right: 12px;
-  top: 14px;
-  width: 12px;
-  height: 15px;
+.tooltipDecrease{
+  display: inline-block;
+  position: relative;
+  bottom: 7px;
 }
 
-#selectDiv .ikonPilRotation {
-  top: 8px;
-  animation-name: roteraPil;
-  animation-duration: 0.2s;
-  animation-fill-mode: forwards;
+.tooltipDecrease button{
+  position: relative;
+  background-color: #614875;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tooltipDecrease .tooltiptextDec{
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: -15px;
+}
+
+#zoomDecrease:hover + .tooltiptextDec{
+  visibility: visible;
+}
+#range{
+  position: relative;
+  display: inline-block;
+  top: 2px;
+}
+
+#range input{
+  position: relative;
+}
+
+.tooltipIncrease{
+  position: relative;
+  display: inline-block;
+  bottom: 7px;
+}
+.tooltipIncrease button{
+  position: relative;
+  background-color: #614875;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tooltipIncrease .tooltiptextInc{
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  right: -20px;
+}
+
+#zoomIncrease:hover + .tooltiptextInc{
+  visibility: visible;
+}
+
+#zoomV{
+  position: absolute;
+  display: inline-block;
+  font-size: 12px;
+  bottom: 2px;
+  right: 4px;
 }
 
 /* Used to rotate the picture that is used as a arrow */
@@ -3765,7 +4003,8 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 12px;
+  bottom: 16px;
+  left: 16px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -3842,6 +4081,10 @@ only screen and (max-device-width: 320px) {
   bottom: 24px;
   right: 24px;
   z-index: 1;
+  touch-action: none;
+}
+.fixed-action-button.cookie-fab {
+  bottom: 64px !important;
 }
 .fixed-action-button.sectioned {
   right: 75px;
@@ -4370,11 +4613,25 @@ textarea#mrkdwntxt {
   .optionButtons {
     top: 686px;
   }
-  .save-close-button-md{
+  .save-close-button-md {
     margin-top: 15px;
   }
 }
 
+/* Mode Switch */
+
+.modeSwitchDialog {
+  display: none;
+  background-color: rgba(0,0,0,0);
+}
+
+.modeSwitchContainer {
+  min-height: 80px;
+}
+
+.modeSwitchHeader h3 {
+  padding-right: 10px;
+}
 
 /* Import diagram */
 
@@ -4653,17 +4910,6 @@ textarea#filecont{
   }
 }
 
-/* styling for the search bar in duggaed.php */
-#testSearchContainer {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  margin: 0 2px 7px 0;
-  float: right;
-  position: relative;
-  top: -5px;
-}
-
 .flexwrapper{
     display:flex;
     justify-content: space-between;
@@ -4682,10 +4928,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }

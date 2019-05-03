@@ -774,52 +774,13 @@ function returnedSection(data) {
               }
             }
           }
-          /*
-          // Alt 2
-          var grp="UNK";
-          let grpmembershp=data['grpmembershp'];
-          let grptype=item['grptype']+"_";
 
-          if(document.getElementById("userName").innerHTML!="Guest"){
-              var ex="(?:"+grptype+")([A-Z0-9])(?:\s?)";
-              var regex = new RegExp(ex,"g");
-              while((found = regex.exec(grpmembershp)) !== null) {
-                  if(grp!=="UNK"){
-                      grp+=",";
-                  }else{
-                      grp="";
-                  }
-                  grp+=found[1];
-              }
-          }
-          */
-          /*
-          // Alt 3
-          var grp="UNK";
-          let grpmembershp=data['grpmembershp'];
-          let grptype=item['grptype']+"_";
-
-          if(document.getElementById("userName").innerHTML!="Guest"){
-              let memberArr=getAllIndexes(grpmembershp, grptype);
-              for(let j=0;j<memberArr.length;j++){
-                  let spos=memberArr[j]+item['grptype'].length;
-                  let epos=data['grpmembershp'].indexOf(' ',spos);
-                  let g=data['grpmembershp'].slice(spos,epos);
-                  if(grp!=="UNK"){
-                      grp+=",";
-                  }else{
-                      grp="";
-                  }
-                  grp+=g;
-              }
-          }
-          */
           str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
           str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
         } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
-            str += "<td style='width:32px;'><img src='showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + item['link'] + "' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+            str += "<td style='width:32px;'><img src='../Shared/icons/warningTriangle.svg'></td>";
           }
           str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
         }
@@ -884,7 +845,7 @@ function returnedSection(data) {
           }
         } else if (itemKind == 6) {
           // Group
-          str += "<div class='ellipsis nowrap' style='cursor:pointer;'>" + item['entryname'];
+          str += "<a class='ellipsis nowrap' onclick='getGroups(\"" + grp + "\");' style='cursor:pointer;'>" + item['entryname'];
           let re = new RegExp(grptype, "g");
           grp = grp.replace(re, "");
           if (document.getElementById("userName").innerHTML == "Guest") {
@@ -892,7 +853,7 @@ function returnedSection(data) {
           } else if (grp.indexOf("UNK") >= 0) {
             str += " &laquo;Not assigned yet&raquo</span></div>";
           } else {
-            str += grp + "</span></div>";
+            str += grp + "</span></a>";
           }
         } else if (itemKind == 7) {
           // Message
@@ -963,7 +924,7 @@ function returnedSection(data) {
 
     } else {
       // No items were returned!
-      str += "<div class='bigg'>";
+      str += "<div id='noAccessMessage' class='bigg'>";
       str += "<span>You either have no access or there isn't anything under this course</span>";
       str += "</div>";
     }
@@ -1266,20 +1227,30 @@ function drawSwimlanes() {
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
+  var addNumb = 2;
+  var tempNumb = 2;
 
   var str = "";
   for (var i = 0; i < weekLength; i++) {
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    if(i==0){
+      addNumb = 0;
+      tempNumb = 2;
+    }else if(i > 0){
+      tempNumb = 0;
+      addNumb = 2;
+    }
+    var widthAdjuster = weekwidth+addNumb;
+    str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" + (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
       str += "fill='#ffffff' />";
     }
-    str += "<text x='" + ((i * weekwidth) + (weekwidth * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
+    str += "<text x='" + ((i * widthAdjuster) + (widthAdjuster * 0.5) + (tempNumb * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth + (addNumb*10)) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
   }
 
 
@@ -1294,16 +1265,22 @@ function drawSwimlanes() {
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
         duggalength = Math.ceil((entry.deadline - entry.start) / (24 * 60 * 60 * 1000));
+
+        // Yellow backgroundcolor if the dugga have been submitted but grade is pending.
+        // Green backgroundcolor if the dugga have been submitted and the grade is passed.
+        // Red backgroundcolor if the dugga have been submitted and the grade is failed.
         var fillcol = "#BDBDBD";
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
 
+        // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = "#000000";
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = "#FF0000";
         }
-        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (duggalength * daywidth) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
+        var tempVariable = duggalength*daywidth;
+        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
       }
     }
@@ -1417,7 +1394,7 @@ $(window).keyup(function (event) {
     var submitButtonDisplay = ($('#submitBtn').css('display'));
     var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
-    if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
+    if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       updateItem();
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
@@ -1425,7 +1402,7 @@ $(window).keyup(function (event) {
     } else if (deleteButtonDisplay == 'flex') {
       // Delete the item, allow enter to act as clicking "yes"
       confirmBox("deleteItem");
-    } else if (isTypeValid() && testsAvailable == true) {
+    } else if (testsAvailable == true) {
       confirmBox("closeConfirmBox");
       testsAvailable = false;
     } else if (errorMissingMaterialDisplay == 'flex') {
@@ -1538,8 +1515,8 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
       m_gracetime.setDate(m_deadline.getDate() + 2);
     }
       m_gracetime.setHours(8);
-      m_gracetime.setMinutes(00);
-      m_gracetime.setSeconds(00);
+      m_gracetime.setMinutes(0);
+      m_gracetime.setSeconds(0);
   }
   if (m_dateTimeSubmitted > m_gracetime) {
     return true;
