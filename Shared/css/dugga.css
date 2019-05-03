@@ -274,7 +274,7 @@ strong {font-weight: bold;}
 }
 
 /* Changes the color of the even rows in the background so that the magic "row heading" looks nice */
-#resultTable___tbl___mhv tbody tr:nth-child(even) {background-color:#F0F0F0;}
+#resultTable___tbl___mhv tbody tr:nth-child(even) {background-color:#ffffff;}
 
 /* Change odd rows on resulted bg colour */
 #resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:#ccc;}
