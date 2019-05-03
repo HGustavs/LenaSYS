@@ -273,15 +273,15 @@ strong {font-weight: bold;}
     	border-radius:4px;
 }
 
+/* Changes the color of the even rows in the background so that the magic "row heading" looks nice */
+#resultTable___tbl___mhv table tbody tr:nth-child(even) {background-color:#F0F0F0;}
+
 /* Change odd rows on resulted bg colour */
 #resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:#ccc;}
 .selectedOp {background-color: #c6cdb8 !important;}
 svg text {
 	pointer-events: none;
 }
-
-/* Changes the color of the even rows in the background so that the magic "row heading" looks nice */
-#resultTable___tbl___mhv table tbody tr:nth-child(even) {background-color:#F0F0F0;}
 
 #markMenuPlaceholderz {
 		background:#bbb;
