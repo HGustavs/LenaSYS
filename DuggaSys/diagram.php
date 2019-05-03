@@ -180,8 +180,14 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
                         </div>
-                        <div class="drop-down-divider">
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
                         </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
+                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='lockSelected()'>Lock/Unlock selected</span>
                         </div>
