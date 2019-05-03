@@ -1,48 +1,4 @@
 /* --------------================################================-------------- *
- *                                    Colors                                    *
- * --------------================################================-------------- */
-
- :root {
-  --color-text-primary: #775886;
-  --color-text-secondary: #434343;
-  --color-text-header: #fff;
-  --color-text-list: #000;
-  --color-text-logo: #fff;
-  --color-text-label: #000;
-
-  --color-logo1: #775886;
-  --color-logo2: #573866;
-  --color-logo-backbround: #775886;
-
-  --color-primary: #614875;
-  --color-primary-2: #775886;
-  --color-primary-hover: #7b5a96;
-  --color-primary-light: #927b9e;
-  --color-accent: #fecc56;
-  --color-accent-hover: #ffd369;
-  --color-background: #fff;
-  --color-background-2: #ccc;
-  --color-background-3: #f0f0f0;
-  --color-background-4: #c8c8c8;
-  --color-sectioned-table-hi: #dad8db;
-  --color-sectioned-table-lo: #eae8eb;
-  --color-statistics: #d8d7da;
-  --color-list-hover: #c6cdb8;
-
-  --color-border-primary: #775886;
-  --color-border-list: #dbd0d8;
-  --color-border: #999;
-  --color-border-2: #ccc;
-  --color-border-3: #f0f0f0;
-  --color-border-4: #c8c8c8;
-  --color-border-5: #888;
-
-  --color-green: #50a750;
-  --color-red: #c75050;
-  --color-red-hover: #ce3d3d;
-}
-
-/* --------------================################================-------------- *
  *                               Fonts 1                                         *
  * --------------================################================-------------- */
 
@@ -107,7 +63,6 @@ body {
   overflow-y: scroll;
   width: 100%;
   height: 100%;
-  background-color: var(--color-background);
 }
 
 table {
@@ -194,8 +149,8 @@ p {
  * --------------================################================-------------- */
 
  #buttonDiv {
+   position: fixed;
    margin-top: -20px;
-   margin-bottom: 10px;
    height: 20px;
    background-color: white;
  }
@@ -221,22 +176,21 @@ p {
 }
 
 #content {
-  background: var(--color-background);
+  background: #fff;
   min-height: calc(100vh - 80px);
-  margin: 65px 10px 0px 10px;
+  margin: 65px 10px 15px 10px;
 }
 
 #contentDiagram {
   background: #fff;
-  margin-left: 13px;
-  margin-top: 65px;
+  margin: 65px 10px 15px 10px;
 }
 
 #accessedcontent {
   margin: 0px auto;
   position: relative;
   padding: 10px 10px 10px 10px;
-  background: var(--color-background);
+  background: #fff;
   min-height: 200px;
 }
 
@@ -244,21 +198,21 @@ p {
   margin: 0px auto;
   position: relative;
   padding: 50px 12px 8px 8px;
-  background: var(--color-background);
+  background: #fff;
   min-height: 50px;
 }
 
 #wrappall {
   margin: 0px auto;
   width: 80%;
-  border: 8px solid var(--color-border-2);
+  border: 8px solid #ccc;
 }
 
 .lena {
   border-radius: 6px 0px 0px 6px;
-  color: var(--color-text-logo);
-  background-color: var(--color-logo-backbround);
-  background: linear-gradient(to bottom, var(--color-logo1), var(--color-logo2));
+  color: #FFF;
+  background-color: #775886;
+  background: linear-gradient(to bottom, #775886, #573866);
   padding-left: 6px;
   padding-right: 6px;
   padding-top: 2px;
@@ -268,9 +222,9 @@ p {
 
 .sys {
   border-radius: 6px;
-  color: var(--color-text-primary);
-  border: 2px solid var(--color-logo-backbround);
-  background-color: var(--color-background);
+  color: #775886;
+  border: 2px solid #775886;
+  background-color: #fff;
   padding-right: 4px;
   margin-right: 4px;
   text-decoration: none;
@@ -278,14 +232,14 @@ p {
 
 #Courselist {
   margin: 0px auto;
-  background-color: var(--color-background);
-  color: var(--color-text-secondary);
+  background-color: #fff;
+  color: #434343;
   display: block;
   padding-top: 1px;
 }
 
 #Courselist a {
-  color: var(--color-text-primary);
+  color: #775886;
   text-decoration: none;
 }
 
@@ -295,47 +249,35 @@ p {
 
 #Courselist .head {
   text-align: center;
-  color: var(--color-text-primary);
+  color: #775886;
   font-size: 18pt;
   display: block;
-  background-color: var(--color-background);
+  background-color: #FFF;
   padding-top: 7px;
   min-height: 30px;
   margin-top: 40px;
   margin-bottom: 4px;
   padding-bottom: 15px;
-  border-bottom: 2px dotted var(--color-border-primary);
+  border-bottom: 2px dotted #775886;
 }
 
 #Courselist .bigg {
   text-align: center;
-  color: var(--color-text-primary);
+  color: #775886;
   font-size: 14pt;
   display: block;
-  background-color: var(--color-background);
+  background-color: #fff;
   padding-top: 7px;
   min-height: 30px;
   margin-right: 8px;
   padding-right: 8px;
 }
 
-.login {
-  color: #612 !important;
-}
-
-.deleted {
-  text-decoration: line-through !important;
-  opacity: 0.3 !important;
-}
-
-#noAccessMessage {
-  padding: 5px;
-}
 
 #Sectionlist {
   margin: 0px auto;
-  background-color: var(--color-background);
-  color: var(--color-text-secondary);
+  background-color: #fff;
+  color: #434343;
   display: block;
   padding-top: 1px;
   border-radius: 5px;
@@ -348,19 +290,19 @@ p {
 }
 
 #Sectionlist .section {
-  color: var(--color-text-header);
-  background-color: var(--color-primary-light);
+  color: #fff;
+  background-color: #927b9e;
 }
 
 #Sectionlist .header {
-  color: var(--color-text-header);
+  color: #fff;
   background-color: #775886;
   text-align: center;
 }
 
 #Sectionlist .moment {
-  color: var(--color-text-header);
-  background-color: var(--color-primary-light);
+  color: #ffffff;
+  background-color: #927b9e;
   cursor: pointer;
   /*
   box-shadow: 0px 3px 0px #aaa;
@@ -397,7 +339,7 @@ p {
 }
 
 #Sectionlist .example {
-  color: var(--color-text-secondary);
+  color: #434343;
   /*font-size: 12pt;
   padding-top: 5px;*/
   min-height: 26px;
@@ -425,7 +367,7 @@ p {
 }
 
 #Sectionlist .quiz {
-  color: var(--color-text-secondary);
+  color: #434343;
   font-size: 12pt;
   padding-top: 5px;
   min-height: 26px;
@@ -434,14 +376,14 @@ p {
 #Sectionlist .course {
   padding: 6px;
   text-align: center;
-  color: var(--color-text-header);
+  color: #fff;
   font-size: 24px;
-  background-color: var(--color-primary);
+  background-color: #614875;
 }
 
 .item a {
   text-decoration: none;
-  color: var(--color-text-primary);
+  color: #775886;
 }
 
 .item a:hover {
@@ -465,31 +407,31 @@ p {
 }
 
 #Sectionlist .norm {
-  background-color: var(--color-background);
-  color: var(--color-text-list);
+  background-color: #fff;
+  color: #000;
 }
 
 #Sectionlist .norm:hover {
   background-color: #c6cdb8;
-  color: var(--color-text-list);
+  color: #000;
 }
 
 #Sectionlist .hi:hover {
   background-color: #c6cdb8;
-  color: var(--color-text-list);
+  color: #000;
 }
 
 #Sectionlist .lo:hover {
   background-color: #c6cdb8;
-  color: var(--color-text-list);
+  color: #000;
 }
 
-.hi {
-  background-color: var(--color-sectioned-table-hi) !important;
+#Sectionlisti .hi {
+  background-color: #dad8db;
 }
 
-.lo {
-  background-color: var(--color-sectioned-table-lo) !important;
+#Sectionlisti .lo {
+  background-color: #eae8eb;
 }
 
 .LightBox {
@@ -502,7 +444,7 @@ p {
   width: 32px;
   vertical-align: middle;
   overflow: hidden;
-  background-color: var(--color-primary-light);
+  background-color: #927b9e;
 }
 
 .StopLight {
@@ -540,7 +482,7 @@ p {
 
 #Sectionlist .hiddensection {
   opacity: 0.3;
-  color: var(--color-text-list);
+  color: #000;
 }
 
 #Sectionlist .loginsection {
@@ -565,7 +507,7 @@ p {
 .tooltiptext {
   display: none;
   width: 160px;
-  background-color: var(--color-primary);
+  background-color: #614875;
   color: white;
   text-align: center;
   border-radius: 6px;
@@ -591,7 +533,7 @@ p {
  }
 
  .statistics {
-   background-color: var(--color-primary-light);
+   background-color: #927b9e;
    color: white;
    width: 36px;
    min-height: calc(100vh - 122px);
@@ -603,13 +545,13 @@ p {
  .statisticsContent {
    width: 100%;
    height: 100%;
-   background-color: var(--color-statistics);
+   background-color: #d8d7da;
 }
 
 .statisticsInnerBox{
     margin: 10px 10px 10px 10px;
     border: 2px solid darkgray;
-    background-color: var(--color-sectioned-table-lo);
+    background-color: #eae8eb;
 }
 
 /* --------------================################================-------------- *
@@ -618,10 +560,10 @@ p {
 
 header {
   /*overflow: hidden;*/
-  color: var(--color-text-header);
+  color: #fff;
   height: 50px;
   width: 100%;
-  background: var(--color-primary);
+  background: #614875;
   position: fixed;
   z-index: 5000;
   top: 0px;
@@ -719,18 +661,20 @@ header td {
 }
 
 .loggedout {
-  background-color: rgba(13, 196, 14,100);
-
+  background-color: #c75050;
 }
 
-#loginbutton:hover {
-  filter: brightness(1.1);
+.loggedout:hover {
+  background-color: #50a750;
 }
 
 .loggedin {
-    background-color: rgba(219, 26, 26,100);
+  background-color: #50a750;
 }
 
+.loggedin:hover {
+  background-color: #c75050;
+}
 
 #loginbutton {
   cursor: pointer;
@@ -769,9 +713,9 @@ header td {
   bottom: 8px;
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
-  padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  /*padding: 4px;*/
+  background-color: #ccc;
+  /*border: 2px solid #999;*/
 }
 
 .previewpopover {
@@ -783,8 +727,8 @@ header td {
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
   padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
 }
 
 .floatRightBox {
@@ -797,8 +741,8 @@ header td {
   z-index: 9000;
   box-shadow: 2px 2px 4px #000;
   padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
 }
 
 #overlay {
@@ -826,8 +770,8 @@ header td {
 
 .loginBox {
   padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -853,8 +797,8 @@ header td {
   z-index:9000;
   box-shadow:2px 2px 4px #000;
   padding:4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
 }
 
 #resultpopoverBox{
@@ -868,8 +812,8 @@ header td {
 
 .newpassword {
   padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -879,8 +823,8 @@ header td {
 
 .showsecurityquestion {
   padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -890,8 +834,8 @@ header td {
 
 .resetcomplete {
   padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -903,8 +847,8 @@ header td {
 .endsessionmessagebox {
   display: block;
   padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
   width: 350px;
   min-height: 100px;
   z-index: 9000;
@@ -916,7 +860,7 @@ header td {
 }
 
 #endsessionmessagebutton {
-  background-color: var(--color-primary);
+  background-color: #614875;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 110px;
@@ -1021,7 +965,7 @@ header td {
 
 input {
   border-radius: 2px;
-  border: 2px solid var(--color-border-2);
+  border: 2px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
 }
@@ -1080,7 +1024,7 @@ input {
   line-height: 18px;
   color: #6f6f6f;
   background-color: #ffffff;
-  border: 1px solid var(--color-border-2);
+  border: 1px solid #cccccc;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -1091,7 +1035,7 @@ input {
 
 .loginBoxheader {
   height: 25px;
-  background-color: var(--color-primary);
+  background-color: #614875;
   vertical-align: bottom;
   padding-left: 10px;
   cursor: default;
@@ -1103,7 +1047,7 @@ input {
   font-size: 14px;
   margin-top: 10px;
   line-height: 0.5em;
-  color: var(--color-text-header);
+  color: #fff;
   width: 100%;
 }
 
@@ -1154,7 +1098,7 @@ input {
   width: 80px;
   height: 25px;
   color: #fff;
-  background-color: var(--color-primary);
+  background-color: #614875;
   border: 0px;
   border-radius: 4px;
   margin-left: 1px;
@@ -1191,7 +1135,7 @@ input {
 
 .buttonLoginBox {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: var(--color-primary);
+  background-color: #614875;
   border: none;
   width: 260px;
   height: 40px;
@@ -1218,7 +1162,7 @@ input {
 }
 
 .loginboxTr {
-  background-color: inherit !important;
+  background-color: inherit;
 }
 
 #loginBoxTitle {
@@ -1255,19 +1199,19 @@ input {
 .application-toolbar-wrap {
   position: fixed;
   z-index: 1000;
-  border: 1px solid var(--color-border-4);
-  outline: 1px solid var(--color-border-3);
-  background-color: var(--color-background);
+  border: 1px solid rgb(200, 200, 200);
+  outline: 1px solid rgb(240, 240, 240);
+  background-color: #fff;
 }
 
 .application-header {
   height: 25px;
-  background-color: var(--color-primary);
-  color: var(--color-text-header);
+  background-color: #614875;
+  color: #fff;
   vertical-align: bottom;
   cursor: move;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0px;
 }
 
@@ -1281,7 +1225,7 @@ input {
 
 .toolbar-drawer {
   padding: 8px 8px;
-  border-top: 1px solid var(--color-border-3);
+  border-top: 1px solid rgb(240, 240, 240);
 }
 
 .application-toolbar h4.label {
@@ -1328,19 +1272,19 @@ input {
   height:20px;
   display: flex;
   text-align: center;
+  padding:0 3px;
   line-height: 20px;
 }
 .toolbarArrows{
   width:20%;
-  background: var(--color-primary);
+  background: #614875;
   border-radius: 5px;
   cursor: pointer;
 }
 #toolbarTypeText{
-  height: 20px;
-  color: #111;
-  margin: 0 auto;
-  font-weight: bold;
+  width:60%;
+  background-color: #f1f1f1;
+  border: 1px solid #eaeaea;
 }
 #toolbarLeftArrow{
   transform: rotate(-90deg);
@@ -1353,9 +1297,8 @@ input {
   filter:invert(100%);
 }
 .diagramAction{
-  cursor: pointer;
   border-radius: 5px;
-  background-color: var(--color-primary);
+  background-color: #614875;
   width: 47%;
 }
 
@@ -1399,12 +1342,12 @@ input {
 
 .menu-drop-down span.drop-down-label:hover {
   cursor: pointer;
-  background-color: var(--color-border-3);
+  background-color: rgb(240, 240, 240);
 }
 
 .document-settings span.label:hover {
   cursor: pointer;
-  background-color: var(--color-border-3);
+  background-color: rgb(240, 240, 240);
 }
 
 .document-settings>.menu-drop-down:hover>.drop-down {
@@ -1419,8 +1362,8 @@ input {
 .export-drop-down {
   position: absolute;
   z-index: 2000;
-  outline: 1px solid var(--color-border-3);
-  border: 1px solid var(--color-border-4);
+  outline: 1px solid rgb(240, 240, 240);
+  border: 1px solid rgb(200, 200, 200);
   display: none;
   width: 260px;
   background-color: rgb(255, 255, 255);
@@ -1441,7 +1384,7 @@ input {
   display: block;
   width: 100%;
   height: 6px;
-  border-bottom: 1px solid var(--color-border-3);
+  border-bottom: 1px solid rgb(240, 240, 240);
   margin-bottom: 6px;
 }
 
@@ -1468,12 +1411,12 @@ input {
 
 .drop-down-item:hover,
 .export-drop-down-item:hover {
-  background-color: var(--color-border-3);
+  background-color: rgb(240, 240, 240);
   cursor: pointer;
 }
 
 .drop-down-text>a {
-  font-size: 14px !important;
+  font-size: 14px ;
   color: rgb(0, 0, 0);
   text-decoration: none;
   display: inline-block;
@@ -1483,43 +1426,43 @@ input {
 }
 
 .drop-down-text:hover {
-  background-color: var(--color-border-3);
-  cursor: default !important;
+  background-color: rgb(240, 240, 240);
+  cursor: default ;
 }
 
-.drop-down-item-disabled {
+#a4-holes-item.drop-down-item-disabled {
   opacity: 0.5;
-  cursor: default !important;
+  cursor: default ;
 }
 
-#hotkey-space {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+.drop-down-text-non-clickable #hotkey-space {
+  position: absolute  ;
+  font-size: 11px ;
+  color: #3d3d3d  ;
+  right: 6px;
   top: 10px;
 }
 
-#hotkey-ctrl {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+.drop-down-text-non-clickable #hotkey-ctrl {
+  position: absolute  ;
+  font-size: 11px  ;
+  color: #3d3d3d ;
+  right: 6px;
   top: 55px;
 }
 
-#hotkey-undo {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+.drop-down-item #hotkey-undo {
+  position: absolute  ;
+  font-size: 11px ;
+  color: #3d3d3d;
+  right: 6px ;
   top: 10px;
 }
-#hotkey-redo {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+.drop-down-item #hotkey-redo {
+  position: absolute ;
+  font-size: 11px ;
+  color: #3d3d3d;
+  right: 6px ;
   top: 45px;
 }
 
@@ -1536,9 +1479,9 @@ input {
   font-size: 14px;
   line-height: 18px;
   color: #555;
-  background-color: var(--color-background);
+  background-color: #fff;
   background-image: none;
-  border: 1px solid var(--color-border-2);
+  border: 1px solid #ccc;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
@@ -1554,7 +1497,7 @@ input {
   color: #202020;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid var(--color-border-2);
+  border: 1px solid #cccccc;
   border-radius: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1586,7 +1529,7 @@ button.option {
 }
 
 input.submit-button {
-  background-color: var(--color-primary);
+  background-color: #614875;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 110px;
@@ -1599,11 +1542,10 @@ input.submit-button {
   font-size: 14px;
   transition: 1s background-color;
   float: left;
-  -webkit-appearance: none
 }
 
 div.submit-button {
-  background-color: var(--color-primary);
+  background-color: #614875;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 30px;
@@ -1622,7 +1564,7 @@ div.submit-button {
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  background-color: var(--color-accent);
+  background-color: rgb(253, 203, 96);
   border: 0px;
   width: 35px;
   height: 25px;
@@ -1639,7 +1581,7 @@ input.submit-button-newitem {
 }
 
 input.submit-button-newitem:hover {
-  transition: 0.2s;
+  transition: 0.4s;
   background-color: rgb(283, 233, 126);
 }
 
@@ -1683,13 +1625,13 @@ button.diagram-menu-buttons {
 }
 
 button.diagram-menu-buttons:hover {
-  background-color: var(--color-accent-hover);
+  background-color: #ffcc55;
   border-radius: 2px;
 }
 
 input.hide-moments-button {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: var(--color-accent);
+  background-color: rgb(253, 203, 96);
   border: 0px;
   width: 77px;
   height: 25px;
@@ -1706,17 +1648,19 @@ input.hide-moments-button {
 }
 
 input.fileed-button {
-  background-color: var(--color-primary);
+  background-color: #614875;
   margin: 0 0 4px 8px;
   float: right;
 }
 
 input.submit-button:hover {
   background-color: #7B5A96;
+  border-radius: 2px;
 }
 
 div.submit-button:hover {
   background-color: #7B5A96;
+  border-radius: 2px;
 }
 
 input.fileed-button:hover {
@@ -1756,31 +1700,29 @@ div.submit-button:disabled {
   white-space: nowrap;
   z-index: 10;
   border-radius: 5px;
-  background: var(--color-primary);
+  background: #614875;
 }
 
 #moveButton {
-  right: 18px;
+  right: 2px;
   top: 100;
   z-index: 2;
   position: absolute;
   border-radius: 0px;
 }
 
-.toolboxButtons {
-  width: 35px !important;
-  height: 25px !important;
+#contentDiagram .toolboxButtons {
+  width: 35px ;
+  height: 25px;
 }
 
 #linebutton {
-  cursor: pointer;
   margin: 5px 0;
   display: inline;
   border-radius: 5px;
 }
 
 #umllinebutton {
-  cursor: pointer;
   display: inline;
   margin: 5px 0;
   border-radius: 5px;
@@ -1799,7 +1741,7 @@ div.submit-button:disabled {
 }
 
 .unpressed {
-  background: var(--color-primary);
+  background: #614875;
 }
 
 .pressed {
@@ -1812,10 +1754,10 @@ div.submit-button:disabled {
   text-align: right;
 }
 
-input.large-button {
-  width: 160px !important;
-  height: 48px !important;
-  line-height: 48px !important;
+#submitButtonTable input.large-button {
+  width: 160px;
+  height: 48px;
+  line-height: 48px;
 }
 
 /* Tooltip */
@@ -1913,7 +1855,7 @@ input.large-button {
   padding: 5px;
   padding-right: 10px;
   color: white;
-  background-color: var(--color-primary);
+  background-color: #614875;
   display: inline-block;
   cursor: pointer;
 }
@@ -1938,7 +1880,7 @@ input.large-button {
   margin-bottom: 10px;
   margin-top: -1;
   color: white;
-  background-color: var(--color-primary);
+  background-color: #614875;
   cursor: pointer;
   border: none;
   border-radius: 0;
@@ -1948,59 +1890,60 @@ input.large-button {
 .list {
   width: 100%;
   padding: 1px;
-  border-bottom: 2px solid var(--color-border-list);
+  border-bottom: 2px solid #dbd0d8;
   margin-top: 20px;
   font-size: 16px;
 }
 
 .listHeading {
-  border-left: 2px solid var(--color-primary);
-  border-right: 2px solid var(--color-primary);
+  border-left: 2px solid #614875;
+  border-right: 2px solid #614875;
 }
 
 .innertable {
-  background: var(--color-background);
+  background: #fff;
   box-shadow: 2px 3px 2px #a09098 inset;
-  border-top: 2px solid var(--color-border-list);
-  border-bottom: 2px solid var(--color-border-list);
+  border-top: 2px solid #dbd0d8;
+  border-bottom: 2px solid #dbd0d8;
 }
 
+
 .innertable td {
-  color: var(--color-text-list);
+  color: #000;
   line-height: 28px;
   border: none;
-  text-align: left !important;
+  text-align: left;
 }
 
 .list td {
-  border-left: 2px solid var(--color-border-list);
-  border-right: 2px solid var(--color-border-list);
+  border-left: 2px solid #dbd0d8;
+  border-right: 2px solid #dbd0d8;
   padding: 0 8px 0 8px;
 }
 
 .list th {
-  background: var(--color-primary);
-  color: var(--color-text-header);
+  background: #614875;
+  color: #fff;
   line-height: 28px;
   font-weight: bold;
   padding: 5px;
 }
-
+/*
 .innertable {
-  background: var(--color-background);
+  background: #fff;
   box-shadow: 2px 3px 2px #a09098 inset;
-  border-top: 2px solid var(--color-border-list);
-  border-bottom: 2px solid var(--color-border-list);
+  border-top: 2px solid #dbd0d8;
+  border-bottom: 2px solid #dbd0d8;
 }
-
+*/
 .innertable td {
-  color: var(--color-text-list);
+  color: #000;
   line-height: 28px;
   border: none;
 }
 
-.list--nomargin {
-  margin: 0 !important;
+#fileLink .list--nomargin {
+  margin: 0 ;
 }
 
 .last {
@@ -2058,7 +2001,7 @@ input.large-button {
 }
 
 .sortableHeading {
-  display:inline !important;
+  display:inline;
   cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -2094,20 +2037,20 @@ input.large-button {
 }
 
 .list tbody tr:nth-child(odd) {
-  background-color: var(--color-background-2);
+  background-color: #ccc;
 }
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {
-  background-color: var(--color-sectioned-table-lo);
+  background-color: #eae8eb;
 }
 
 .evenfumo {
-  background: var(--color-background-2) !important;
+  background: #ccc !important;
 }
 
 .oddfumo {
-  background: var(--color-sectioned-table-lo) !important;
+  background: #eae8eb !important;
 }
 
 .selectedtr {
@@ -2115,15 +2058,15 @@ input.large-button {
 }
 
 #testinnertable {
-  background: var(--color-background);
+  background: #fff;
   box-shadow: none;
   border-top: none;
   border-bottom: none;
 }
 
 #testinnertable tr {
-  border-bottom: none !important;
-  background-color: white !important;
+  border-bottom: none ;
+  background-color: white ;
 }
 
 span.arrow {
@@ -2132,9 +2075,9 @@ span.arrow {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.list#testTable input {
-  border-width: 1px !important;
-  border-style: inset !important;
+.list #testTable input {
+  border-width: 1px ;
+  border-style: inset ;
   border-radius: 0px;
   font-size: 14px;
   height: 17px;
@@ -2142,7 +2085,7 @@ span.arrow {
 }
 
 #testinnertable {
-  background: var(--color-background);
+  background: #fff;
   box-shadow: none;
   border-top: none;
   border-bottom: none;
@@ -2151,27 +2094,27 @@ span.arrow {
 .markinglist {
   width: 100%;
   padding: 1px;
-  border-left: 2px solid var(--color-border-list);
-  border-bottom: 2px solid var(--color-border-list);
+  border-left: 2px solid #dbd0d8;
+  border-bottom: 2px solid #dbd0d8;
   font-family: hack, "Lucida Console", Monaco, monospace;
 }
 
 .markinglist td {
-  border-right: 2px solid var(--color-border-list);
+  border-right: 2px solid #dbd0d8;
   font-size: 10px;
 }
 
 .markinglist th {
-  background: var(--color-primary);
-  color: var(--color-text-header);
+  background: #614875;
+  color: #fff;
   font-style: italic;
   font-size: 12px;
   white-space: nowrap;
 }
 
 .feedback-list caption {
-  border-left: 2px solid var(--color-border-list);
-  background: var(--color-primary);
+  border-left: 2px solid #dbd0d8;
+  background: #614875;
   color: #fff;
   line-height: 28px;
 }
@@ -2179,7 +2122,7 @@ span.arrow {
 .feedback-list {
   table-layout: fixed;
   width: 100%;
-  margin-top: 2px !important;
+  margin-top: 2px ;
 }
 
 .feedback-list th,
@@ -2196,7 +2139,9 @@ span.arrow {
   header {
     display: none;
   }
-
+  body {
+    margin: 0px
+  }
   #content {
     margin: 0px;
     padding: 0px;
@@ -2238,7 +2183,7 @@ span.arrow {
 /* Course version dropdown div */
 
 .course-dropdown-div {
-  border: 1px solid var(--color-border-2);
+  border: 1px solid #ccc;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
   overflow: hidden;
@@ -2274,8 +2219,8 @@ span.arrow {
 /**************************/
 
 #tableheader {
-  background: var(--color-primary);
-  color: var(--color-text-header);
+  background: #614875;
+  color: #FFFFFF;
   margin-top: 10px;
   float: left;
   width: calc(100% - 200px);
@@ -2302,12 +2247,7 @@ span.arrow {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: var(--color-sectioned-table-lo);
-}
-
-#resultTable
-{
-  margin-top: 70px;
+  background-color: #eae8eb;
 }
 
 .resultTableCell{
@@ -2370,7 +2310,7 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 2px solid #dbd0d8;
+	border: 0px;
 }
 
 .accessTableText {
@@ -2442,13 +2382,6 @@ span.arrow {
   display: inherit;
 }
 
-#ladexportContainer
-{
-  position: absolute;
-  height: 55px;
-  width: 710px;
-}
-
 /* End DuggaSys resulted*/
 
 /**************************/
@@ -2469,13 +2402,13 @@ span.arrow {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: var(--color-background);
+  background-color: #fff;
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
 }
 
 .submit-button {
-  background-color: var(--color-primary);
+  background-color: #614875;
   border: 0px;
   width: 110px;
   height: 30px;
@@ -2490,7 +2423,6 @@ span.arrow {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-  -webkit-appearance: none;
 }
 
 #variantSearch{
@@ -2511,8 +2443,8 @@ span.arrow {
   border-radius: 0;
 }
 
-.fileed-submit-button {
-  margin:15px 0 18px 0 !important;
+#uploadbuttonname .fileed-submit-button {
+  margin:15px 0 18px 0;
 }
 
 #feedbackTable table {
@@ -2520,7 +2452,7 @@ span.arrow {
 }
 
 #feedbackTable tbody tr:nth-child(odd) {
-  background-color: var(--color-background);
+  background-color: #FFF;
 }
 
 #feedbackBox {
@@ -2557,7 +2489,7 @@ span.arrow {
 .loginTransparent {
   display: block;
   height: 60px;
-  background-color: var(--color-primary);
+  background-color: #614875;
   text-align: left;
 }
 
@@ -2578,18 +2510,18 @@ span.arrow {
 }
 
 .pane {
-  border-top: 2px solid var(--color-primary);
-  border-left: 2px solid var(--color-primary);
-  border-right: 2px solid var(--color-primary);
+  border-top: 2px solid #614875;
+  border-left: 2px solid #614875;
+  border-right: 2px solid #614875;
   display: inline-block;
   padding: 5px 15px 5px 15px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  color: var(--color-text-list);
+  color: #000000;
 }
 
 .pane-active {
-  background-color: var(--color-primary);
+  background-color: #614875;
   color: #FFFFFF;
 }
 
@@ -2599,7 +2531,7 @@ span.arrow {
 }
 
 .pane-body {
-  border: 2px solid var(--color-primary);
+  border: 2px solid #614875;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -2614,8 +2546,8 @@ span.arrow {
   right:50px;
   font-size:24px;
   text-align:center;
-  background-color: var(--color-accent);
-  color:var(--color-primary);
+  background-color:#fecc56;
+  color:#614875;
   z-index:4000;
   border:0;
   outline: none;
@@ -2762,7 +2694,7 @@ span.arrow {
 }
 
 .checkmoment {
-  border-top: 1px solid var(--color-border-5);
+  border-top: 1px solid #888;
   font-weight: bold;
 }
 
@@ -2776,7 +2708,7 @@ span.arrow {
 }
 
 .accessedLine {
-  border-top: 1px solid var(--color-border-5);
+  border-top: 1px solid #888;
   font-weight: bold;
 }
 
@@ -2786,8 +2718,8 @@ span.arrow {
 }
 
 .checknarrow {
-  max-width: 140px !important;
-  min-width: 140px !important;
+  max-width: 180px ;
+  min-width: 100px ;
 }
 
 .grading-hidden {
@@ -2795,7 +2727,7 @@ span.arrow {
 }
 
 .headerlabel {
-  color: var(--color-text-label);
+  color: black;
   font-size: 16px;
   direction: rtl;
   max-width: 140px;
@@ -2820,8 +2752,8 @@ span.arrow {
 }
 
 .result-header-inverse {
-  background-color: var(--color-accent) !important;
-  color: var(--color-primary) !important;
+  background-color: rgb(255, 204, 85) !important;
+  color: #614875 !important;
 }
 
 .dropdown-container {
@@ -2837,7 +2769,7 @@ span.arrow {
   display: none;
   position: absolute;
   top: 35px;
-  background: var(--color-background);
+  background: #fff;
   box-shadow: 2px 2px 8px #888;
 }
 
@@ -2862,19 +2794,19 @@ span.arrow {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: var(--color-background);
+  background-color: #fff;
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
 }
 
 .vhighlight-border-color {
-  border: 4px solid var(--color-primary) !important;
+  border: 4px solid #614875 !important;
   box-shadow: 0px 0px 4px #202 inset;
 }
 
 .vhighlight-border-color-inverse {
-  border: 4px solid var(--color-accent) !important;
-  box-shadow: 0px 0px 4px var(--color-accent) inset;
+  border: 4px solid #fecc56 !important;
+  box-shadow: 0px 0px 4px #ffcc55 inset;
 }
 
 .hhighlight-border-color {
@@ -2927,7 +2859,7 @@ span.arrow {
 
 .fumho th {
   background: #620;
-  color: var(--color-text-header);
+  color: #fff;
   font-family: Arial;
   font-weight: bold;
 }
@@ -3011,79 +2943,7 @@ table {
 }
 
 .fumho tr:nth-child(odd) {
-  background-color: var(--color-background);
-}
-
- /* Styling for circle graph */
-.circleGraph {
-  width:500px;
-  height:500px;
-  position: relative;
-}
-#activityInfoBox {
-  display: none;
-  position: absolute;
-  min-width: 150px;
-  background: lightgray;
-  color: black;
-  border: 1px solid black;
-  padding: 5px;
-  text-align: center;
-  font-size: 10pt;
-  font-family: sans-serif;
-}
-#activityInfoBox span {
-  display: block;
-  padding: 1px;
-  font-weight: bold;
-}
-#allActivity .activityInfoEntry {
-  display: block;
-  padding: 0 0 8px 0;
-  font-weight: 100;
-}
-.circleGraphCircle {
-  stroke:black;
-  stroke-width:1px;
-  fill:white;
-}
-#circleGraphHours {
-  text-anchor: middle;
-}
-.circleGraphBigline {
-  fill: black;
-  stroke:black;
-  stroke-width:2px;
-}
-.circleGraphLine {
-  fill: gray;
-  stroke:gray;
-  stroke-width:1px;
-}
-.activitymarker {
-  stroke-width: 0.5px;
-  stroke: black;
-}
-rect[class*="activitymarker"]:hover {
-  fill: #8AC926;
-}
-.activitymarker.commit {
-  fill: #2AB7CA;
-}
-.activitymarker.comment {
-  fill: #6A4C93;
-}
-.activitymarker.issue {
-  fill: #FE4A49;
-}
-.activitymarker.mixed {
-  fill: url("#mixedActivityGradient");
-}
-.activityPolygon {
-  opacity: 0.8;
-  fill: #FED766;
-  stroke-width: 0.5px;
-  stroke: red;
+  background-color: #fff;
 }
 
 /* JQuery UI Complement for missing icons in the DatePicker */
@@ -3123,19 +2983,12 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-
 #searchinput, #duggaSearch {
-  margin-right: 0;
-  border-right: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border: 1px solid var(--color-border-2);
-  border-bottom: 0
   padding: 0 0 0 2px;
   height: 20px;
 }
 
-#searchbutton {
+#searchBar, #searchbutton {
   position: relative;
   width: 26px;
   height: 25px;
@@ -3143,7 +2996,7 @@ rect[class*="activitymarker"]:hover {
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
-  box-shadow: none !important;
+  box-shadow: none;
   margin-bottom: 5px;
   margin-right: 2px;
 }
@@ -3170,7 +3023,7 @@ rect[class*="activitymarker"]:hover {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
   text-align: center;
-  background-color: var(--color-primary);
+  background-color: #614875;
   color: #fff;
   padding: 6px;
   margin: 1px;
@@ -3188,9 +3041,10 @@ rect[class*="activitymarker"]:hover {
 /* and (max-device-width : 480px) { */
 
 .alertmsg {
-  background-color: var(--color-accent);
+  background-color: #fecc56;
   z-index: 1000;
   position: fixed;
+  bottom: 0px;
   width: 100%;
   height: 40px;
   padding: 0 20px 0 0px;
@@ -3203,27 +3057,13 @@ rect[class*="activitymarker"]:hover {
   /* margin-left: 5px; */
   display: inline;
   align-self: center;
-  color: var(--color-text-primary);
+  color: #614875;
 }
 
 .alertmsg input {
   float: none;
-  /* align-self: center; */
-  margin-right: 5px;
-  position: absolute;
-  right: 20px;
-}
-
-.alertmsg#servermsgcontainer {
-  top: 50px;
-}
-
-.alertmsg#cookiemsg {
-  bottom: 0;
-}
-
-.alertmsg#cookiemsg input {
   align-self: center;
+  margin-right: 5px;
 }
 
 /* } */
@@ -3296,8 +3136,8 @@ table.navheader div.menuButton {
 .material-box h3 {
   margin: -20px -20px 10px -20px;
   border-radius: 2px 2px 0 0;
-  background: var(--color-primary);
-  color: var(--color-text-header);
+  background: #614875;
+  color: #fff;
   padding: 10px 20px;
 }
 
@@ -3327,11 +3167,11 @@ table.navheader div.hamburgerMenu {
   padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
-  margin-top: 5px;
+  margin-top: 50px;
   margin-left: 5px;
   z-index: 1;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  background-color: #ccc;
+  border: 2px solid #999;
   display: none;
   overflow-x: hidden;
 }
@@ -3373,7 +3213,7 @@ ul.hamburgerList button.menuButton {
 .bar3 {
   width: 17px;
   height: 3px;
-  background-color: var(--color-background);
+  background-color: #fff;
   margin: 3px 0;
   transition: 0.4s;
 }
@@ -3427,11 +3267,13 @@ ul.hamburgerList button.menuButton {
 /* --------------================################================-------------- *
   *                        FILEED TABLE STYLING                         *
 * --------------================################================-------------- */
+/*
 #fileLink_tbl{
     width: 80%;
     margin: auto !important;
     min-width: 1050px;
 }
+*/
 #sortingDiv{
     height: 30px;
     /*width: 80%;*/
@@ -3460,7 +3302,7 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
-#sortingBar {
+     #sortingBar {
         width: 135px;
         position: relative;
         top: 25px;
@@ -3476,7 +3318,7 @@ only screen and (max-device-width: 1085px) {
         /*min-width: 375px;*/
     }
     #fileLink_tbl{
-        margin: 0 !important;
+        margin: 0 ;
         width: 100%;
         min-width: 0px;
     }
@@ -3528,7 +3370,7 @@ only screen and (max-device-width: 768px) {
   }
 
   #cookiemsg {
-    background-color: var(--color-accent);
+    background-color: #fecc56;
     z-index: 1000;
     position: fixed;
     bottom: 0px;
@@ -3557,7 +3399,7 @@ only screen and (max-device-width: 768px) {
 
 .fileLink_counter {
     font-size: 16px;
-    color: var(--color-text-list);
+    color: #000;
 }
 .fileLink-editor, .fileLink-trashcan{
     width:initial;
@@ -3572,12 +3414,12 @@ only screen and (max-device-width: 768px) {
     }
 
     #fileLink_tbl_mh[style]{
-        display: none !important;
+        display: none ;
     }
 
     #fileLink_body tr[style]{
-        border: 1px solid var(--color-border-2) !important;
-        display: block !important;
+        border: 1px solid #ccc ;
+        display: block ;
     }
 
   #fileLink_tblhead{
@@ -3585,12 +3427,12 @@ only screen and (max-device-width: 768px) {
   }
 
   #fileLink_tbl_mh[style]{
-    display: none !important;
+    display: none ;
   }
 
   #fileLink_body tr[style]{
-    border: 1px solid var(--color-border-2) !important;
-    display: block !important;
+    border: 1px solid #ccc ;
+    display: block ;
   }
 
   #fileLink_tblhead{
@@ -3598,12 +3440,12 @@ only screen and (max-device-width: 768px) {
   }
 
   #fileLink_tbl_mh[style]{
-    display: none !important;
+    display: none ;
   }
 
   #fileLink_body tr[style]{
-    border: 1px solid var(--color-border-2) !important;
-    display: block !important;
+    border: 1px solid #ccc ;
+    display: block ;
   }
 
   #fileLink_body>tr>td{
@@ -3732,7 +3574,7 @@ only screen and (max-device-width: 530px) {
     left: 10%;*/
   }
   #cookiemsg {
-    background-color: var(--color-accent);
+    background-color: #fecc56;
     z-index: 1000;
     position: fixed;
     bottom: 0px;
@@ -3753,9 +3595,6 @@ only screen and (max-device-width: 530px) {
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
-  #searchinput, #duggaSearch {
-    max-width: 120px;
-  }
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3782,13 +3621,11 @@ only screen and (max-device-width: 480px) {
   table.navheader input.hamburger {
     position: absolute;
     top: 66px;
-    left:10px;
-    right: 5px;
+    right: 10px;
   }
   table.navheader div.hamburger {
     position: absolute;
     top: 66px;
-    left:10px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
@@ -3805,9 +3642,6 @@ only screen and (max-device-width: 480px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
-  #searchinput, #duggaSearch {
-    max-width: 100px;
-  }
   #Sectionlist .course {
     font-size: 14px;
   }
@@ -3826,7 +3660,7 @@ only screen and (max-device-width: 320px) {
 }
 
 .titles h1 {
-  color: var(--color-text-primary);
+  color: #614875;
 }
 
 #nametext {
@@ -3836,15 +3670,12 @@ only screen and (max-device-width: 320px) {
 /* Is used to style a Select-box in diagram.php. */
 
 #selectDiv {
-  background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  padding-right: 80px;
-  padding-left: 10px;
-  height: 30px;
+  height: 34px;
   position: absolute;
-  right: 16px;
-  bottom: 16px;
+  right: 18px;
+  bottom: 12px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3874,90 +3705,21 @@ only screen and (max-device-width: 320px) {
   padding: 0;
 }
 
-.tooltipDecrease{
-  display: inline-block;
-  position: relative;
-  bottom: 7px;
-}
-
-.tooltipDecrease button{
-  position: relative;
-  background-color: #614875;
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.tooltipDecrease .tooltiptextDec{
-  visibility: hidden;
-  width: 60px;
-  font-size: 12px;
-  background-color: #614875;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
+#selectDiv .ikonPil {
+  display: block;
+  background: url("../icons/arrow.svg") no-repeat;
   position: absolute;
-  z-index: 1;
-  bottom: 100%;
-  left: -15px;
+  right: 12px;
+  top: 14px;
+  width: 12px;
+  height: 15px;
 }
 
-#zoomDecrease:hover + .tooltiptextDec{
-  visibility: visible;
-}
-#range{
-  position: relative;
-  display: inline-block;
-  top: 2px;
-}
-
-#range input{
-  position: relative;
-}
-
-.tooltipIncrease{
-  position: relative;
-  display: inline-block;
-  bottom: 7px;
-}
-.tooltipIncrease button{
-  position: relative;
-  background-color: #614875;
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.tooltipIncrease .tooltiptextInc{
-  visibility: hidden;
-  width: 60px;
-  font-size: 12px;
-  background-color: #614875;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-  bottom: 100%;
-  right: -20px;
-}
-
-#zoomIncrease:hover + .tooltiptextInc{
-  visibility: visible;
-}
-
-#zoomV{
-  position: absolute;
-  display: inline-block;
-  font-size: 12px;
-  bottom: 2px;
-  right: 4px;
+#selectDiv .ikonPilRotation {
+  top: 8px;
+  animation-name: roteraPil;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
 }
 
 /* Used to rotate the picture that is used as a arrow */
@@ -3991,8 +3753,7 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 16px;
-  left: 16px;
+  bottom: 12px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -4071,9 +3832,6 @@ only screen and (max-device-width: 320px) {
   z-index: 1;
   touch-action: none;
 }
-.fixed-action-button.cookie-fab {
-  bottom: 64px !important;
-}
 .fixed-action-button.sectioned {
   right: 75px;
 }
@@ -4114,8 +3872,8 @@ only screen and (max-device-width: 320px) {
     width: 56px;
     height: 56px;
     line-height: 56px;
-    background-color: var(--color-accent);
-    color: var(--color-primary) !important;
+    background-color: #fecc56;
+    color: #614875;
     font-size: 30px;
     vertical-align: middle;
 }
@@ -4337,8 +4095,8 @@ only screen and (max-device-width: 320px) {
     height: 89%;
     width: 95%;
     margin: 0px auto;
-    border: solid var(--color-border-4);
-    background-color:  var(--color-background-4);
+    border: solid rgb(200,200,200);
+    background-color:  rgb(200,200,200);
     box-shadow: 0px 5px 10px grey;
     z-index: 12000;
     display: none;
@@ -4353,8 +4111,8 @@ only screen and (max-device-width: 320px) {
 }
 
 .markdown {
-  border: solid var(--color-border-4);
-  background-color: var(--color-background-4);
+  border: solid rgb(200, 200, 200);
+  background-color: rgb(200, 200, 200);
   width: 38%;
   height: 80%;
   position: relative;
@@ -4368,7 +4126,7 @@ only screen and (max-device-width: 320px) {
     height:93%;
 }
 .markdownPrev {
-  border: solid var(--color-border-4);
+  border: solid rgb(200, 200, 200);
   width: 56%;
   height: 80%;
   position: relative;
@@ -4382,7 +4140,7 @@ only screen and (max-device-width: 320px) {
 
 .save-close-button-md {
   border-radius: 4px;
-  background-color: var(--color-primary);
+  background-color: #614875;
   border: 0px;
   width: 110px;
   height: 30px;
@@ -4425,14 +4183,14 @@ legend{
 
 .prevHead {
   height: 20px;
-  background-color: var(--color-primary);
-  color: var(--color-text-header);
+  background-color: #614875;
+  color: #FFFFFF;
   font-size: 14px;
   padding: 0px 5px 0px 5px;
 }
 
 .prevNav {
-  background-color: var(--color-primary);
+  background-color: #614875;
   height: 30px;
   color: #FFF;
   padding: 0px 5px 0px 5px;
@@ -4440,7 +4198,7 @@ legend{
 }
 
 .markNav {
-  background-color: var(--color-primary);
+  background-color: #614875;
   height: 30px;
   color: #FFF;
   padding: 0px 5px 0px 5px;
@@ -4526,11 +4284,11 @@ textarea#mrkdwntxt {
 .selectHeader > span {
     display: block;
     cursor: pointer;
-    color: var(--color-text-list);
-    background-color: var(--color-background);
+    color: #000;
+    background-color: #fff;
 }
 .selectHeader > span:hover {
-      background-color: var(--color-background-4);
+      background-color: rgb(200, 200, 200);
 }
 #headerType1 {
     font-size: 13px;
@@ -4543,7 +4301,7 @@ textarea#mrkdwntxt {
 }
 
 #headerType2:hover {
-  background-color: var(--color-background-4);
+  background-color: rgb(200, 200, 200);
 }
 
 #headerType3 {
@@ -4601,25 +4359,11 @@ textarea#mrkdwntxt {
   .optionButtons {
     top: 686px;
   }
-  .save-close-button-md {
+  .save-close-button-md{
     margin-top: 15px;
   }
 }
 
-/* Mode Switch */
-
-.modeSwitchDialog {
-  display: none;
-  background-color: rgba(0,0,0,0);
-}
-
-.modeSwitchContainer {
-  min-height: 80px;
-}
-
-.modeSwitchHeader h3 {
-  padding-right: 10px;
-}
 
 /* Import diagram */
 
@@ -4724,7 +4468,7 @@ textarea#mrkdwntxt {
   height: 80%;
   width: 95%;
   margin: auto;
-  background-color: var(--color-background-4);
+  background-color: rgb(200,200,200);
   z-index: 12000;
   left: 0;
   right: 0;
@@ -4733,8 +4477,8 @@ textarea#mrkdwntxt {
 }
 
 .editFileCode {
-  border: solid var(--color-border-4);
-  background-color: var(--color-background-4);
+  border: solid rgb(200, 200, 200);
+  background-color: rgb(200, 200, 200);
   width: 93%;
   height: 90%;
   position: relative;
@@ -4749,8 +4493,8 @@ textarea#mrkdwntxt {
   height: 150px;
   width: 400px;
   margin: 0px auto;
-  border: solid var(--color-border-4);
-  background-color: var(--color-background-3);
+  border: solid rgb(200,200,200);
+  background-color: rgb(240,240,240);
   box-shadow: 0px 5px 10px grey;
   display: none;
   left: 0;
@@ -4780,7 +4524,7 @@ textarea#mrkdwntxt {
 
 .save-close-button-fe{
   border-radius: 4px;
-  background-color: var(--color-primary);
+  background-color: #614875;
   border: 0px;
   width: 110px;
   height: 30px;
@@ -4905,7 +4649,7 @@ textarea#filecont{
 }
 
 .active-variant {
-    background-color: var(--color-accent) !important;
+    background-color: #fbcd47 !important;
 }
 
 /* Styling for timesheet table */
@@ -4944,7 +4688,7 @@ textarea#filecont{
   padding: 5px;
 }
 .tsTable tfoot {
-  background: var(--color-background-3);
+  background: #F0F0F0;
 }
 .tsTable tfoot:hover {
   background: #E0E0E0;
@@ -4972,7 +4716,7 @@ textarea#filecont{
   cursor: pointer;
 }
 #tsSubmit:hover {
-  background: var(--color-primary);
+  background: #614875;
   color: #fff;
-  border: 2px solid var(--color-primary);
+  border: 2px solid #614875;
 }
