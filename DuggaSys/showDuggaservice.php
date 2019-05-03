@@ -391,15 +391,13 @@ if(strcmp($marked,"") == 0){$marked = "UNK";} // Return UNK if we have not been 
 
 $userCount = 1;
 if(strcmp($opt,"GRPDUGGA")==0){
-	$query = $pdo->prepare("SELECT uid, groups, period, term FROM user_course WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+	$query = $pdo->prepare("SELECT groups FROM user_course WHERE uid=:uid AND cid=:cid AND vers=:vers;");
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':vers', $coursevers);
 	$query->execute();
 	$result = $query->fetch();
 	$group = $result['groups'];
-	$period = $result['period'];
-	$term = $result['term'];
 
 	$query = $pdo->prepare("SELECT uid FROM user_course WHERE cid=:cid AND vers=:vers AND groups=:group;");
 	$query->bindParam(':cid', $courseid);
@@ -531,6 +529,7 @@ $array = array(
 		"release" => $duggainfo['qrelease'],
 		"files" => $files
 	);
+if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
 echo json_encode($array);
 
