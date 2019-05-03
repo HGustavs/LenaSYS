@@ -1374,7 +1374,7 @@ function setMode(mode) { //"CreateClass" yet to be implemented in .php
 }
 
 $(document).ready(function() {
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton, #umllinebutton").click(function() {
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function() {
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")) {
@@ -2375,8 +2375,6 @@ function switchToolbar(direction) {
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-    $("#linebutton").hide();
-    $("#umllinebutton").show();
   } else if(toolbarState == toolbarDeveloperMode) {
     $(".toolbar-drawer").show();
     $("#drawerTools").show();
@@ -3040,8 +3038,8 @@ function mouseupevt(ev) {
             selected_objects.push(diagram[lastSelectedObject]);
             //resets the mode so that next click can move or select an object instead of drawing another line
             //only happens when a line has been created between 2 objects
-            if ($("#umllinebutton").hasClass("pressed")){
-                $("#umllinebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
+            if ($("#linebutton").hasClass("pressed")){
+                $("#linebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
             }
             uimode = "normal";
 
