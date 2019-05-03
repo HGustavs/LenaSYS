@@ -384,7 +384,6 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
-		myTable.renderTable();
 	} else if ($(e.target).hasClass("Gc")) {
 		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
 	} else if ($(e.target).hasClass("VGc")) {
@@ -512,6 +511,7 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qva
 		newFeedback = document.getElementById('newFeedback').value;
 	}
 	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
+	myTable.renderTable();
 }
 
 function moveDist(e) {
