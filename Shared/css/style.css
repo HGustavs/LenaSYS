@@ -3876,15 +3876,17 @@ only screen and (max-device-width: 320px) {
 
 .tooltipDecrease{
   display: inline-block;
+  position: relative;
+  bottom: 7px;
+  margin-top: 6%;
 }
 
 .tooltipDecrease button{
+  position: relative;
   background-color: #614875;
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
-  position: relative;
-  bottom: 2.5px;
 }
 
 .tooltipDecrease .tooltiptextDec{
@@ -3910,7 +3912,6 @@ only screen and (max-device-width: 320px) {
 #range{
   position: relative;
   display: inline-block;
-  top: 4px;
 }
 
 #range input{
@@ -3918,7 +3919,9 @@ only screen and (max-device-width: 320px) {
 }
 
 .tooltipIncrease{
+  position: relative;
   display: inline-block;
+  bottom: 7px;
 }
 .tooltipIncrease button{
   background-color: #614875;
@@ -3926,7 +3929,6 @@ only screen and (max-device-width: 320px) {
   border-radius: 6px;
   cursor: pointer;
   position: relative;
-  bottom: 2.5px;
 }
 
 .tooltipIncrease .tooltiptextInc{
