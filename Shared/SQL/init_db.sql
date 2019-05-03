@@ -633,9 +633,9 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
 /* Merged from strutt.sql */
-alter table user_course alter column result SET DEFAULT 0.0;
-alter table user_course alter column period set default 1;
-alter table user_course alter column term set default 1;
+ALTER TABLE user_course ALTER COLUMN result SET DEFAULT 0.0;
+ALTER TABLE user_course ALTER COLUMN period SET DEFAULT 1;
+ALTER TABLE user_course ALTER COLUMN term SET DEFAULT 1;
 
-alter table codeexample MODIFY runlink VARCHAR(256);
-ALTER TABLE listentries add column groupKind VARCHAR(16) DEFAULT NULL;
+ALTER TABLE codeexample MODIFY runlink VARCHAR(256);
+ALTER TABLE listentries ADD COLUMN groupKind VARCHAR(16) DEFAULT NULL;
