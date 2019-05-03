@@ -25,7 +25,7 @@ pdoConnect();
   <script src="clickcounter.js"></script>
 
 </head>
-<body>
+<body onload="setup();">
 
 	<!-- Navigation Header START -->
 	<?php
