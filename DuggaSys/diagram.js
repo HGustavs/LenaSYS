@@ -2860,6 +2860,10 @@ function mouseupevt(ev) {
     canvasLeftClick = 0;
     hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
+    //for checking the position of errelation before resize() overwrites values
+    var p1BeforeResize;
+    var p2BeforeResize;
+
     if (uimode == "CreateFigure" && md == mouseState.boxSelectOrCreateMode) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -2869,6 +2873,9 @@ function mouseupevt(ev) {
     }
     // Code for creating a new class
     if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
+        p1BeforeResize = {x:startMouseCoordinateX, y:startMouseCoordinateY};
+        p2BeforeResize = {x:currentMouseCoordinateX, y:currentMouseCoordinateY};
+
         resize();
 
         // Add required points
@@ -2993,6 +3000,8 @@ function mouseupevt(ev) {
     // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
     //----------------------------------------------------------------------
 
+    var diagramObject;
+
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
         classB.name = "New" + diagram.length;
@@ -3000,13 +3009,13 @@ function mouseupevt(ev) {
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
         classB.bottomRight = p2;
-
         classB.middleDivider = p3;
         classB.centerPoint = p3;
         diagram.push(classB);
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
+        diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
         erAttributeA.name = "Attr" + diagram.length;
@@ -3021,6 +3030,7 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
+        diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
         erEnityA.name = "Entity" + diagram.length;
@@ -3036,6 +3046,7 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
+        diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
@@ -3067,12 +3078,12 @@ function mouseupevt(ev) {
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
-
         diagram.push(erRelationA);
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
+        diagramObject = diagram[lastSelectedObject];
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }
@@ -3112,8 +3123,22 @@ function mouseupevt(ev) {
 
             createCardinality();
             updateGraphics();
-            }
         }
+    }
+    //when symbol is er relation then don't assign variables since it's already done earlier when creating points
+    if (diagramObject && diagramObject.symbolkind != symbolKind.erRelation) {
+        p1BeforeResize.x = points[diagramObject.topLeft].x;
+        p1BeforeResize.y = points[diagramObject.topLeft].y;
+        p2BeforeResize.x = points[diagramObject.bottomRight].x;
+        p2BeforeResize.y = points[diagramObject.bottomRight].y;
+    }
+
+    //If the object is created by just clicking and not dragging then set variable so that points 
+    //are moved to mouse position inside the adjust function 
+    if (diagramObject && p1BeforeResize.x == p2BeforeResize.x && p1BeforeResize.y == p2BeforeResize.y) {
+        diagramObject.pointsAtSamePosition = true;
+    }
+
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();

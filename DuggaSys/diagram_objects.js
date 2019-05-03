@@ -42,6 +42,7 @@ function Symbol(kindOfSymbol) {
     this.isAttribute = false;
     this.isRelation = false;
     this.isLine = false;
+    this.pointsAtSamePosition = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -251,6 +252,17 @@ function Symbol(kindOfSymbol) {
             }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
+
+            //only when object is created: changes position of points so that object is created from center point instead of topleft
+            if(this.pointsAtSamePosition) {
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                for (var i = this.topLeft; i <= this.centerPoint; i++) {
+                    //entity and attribute template is the same size so either should work fine
+                    points[i].x -= entityTemplate.width * 0.5;
+                    points[i].y -= entityTemplate.height * 0.5;
+                }
+                this.pointsAtSamePosition = false;
+            }
         } else if (this.symbolkind == symbolKind.uml) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
@@ -305,6 +317,15 @@ function Symbol(kindOfSymbol) {
             if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y) {
                 points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
             }
+            //only when object is created: changes position of points so that object is positioned from center point instead of topleft
+            if(this.pointsAtSamePosition) {
+                //change all 3 points 0,5 * min width/height to the left/up to move object to mouse position  
+                for (var i = this.topLeft; i <= this.centerPoint; i++) {
+                    points[i].x -= this.minWidth * 0.5;
+                    points[i].y -= this.minHeight * 0.5;
+                }
+                this.pointsAtSamePosition = false;
+            }
         } else if (this.symbolkind == symbolKind.erRelation) {
             if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
                 // If the width is less than the minimum, push out the
@@ -338,6 +359,15 @@ function Symbol(kindOfSymbol) {
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
 
+            //only when object is created: changes position of points so that object is positioned from center point instead of topleft
+            if(this.pointsAtSamePosition) {
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                for (var i = this.topLeft; i <= this.centerPoint; i++) {
+                    points[i].x -= relationTemplate.width * 0.5;
+                    points[i].y -= relationTemplate.height * 0.5;
+                }
+                this.pointsAtSamePosition = false;
+            }
         } else if (this.symbolkind == symbolKind.text) {
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
