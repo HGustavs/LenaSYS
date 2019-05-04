@@ -389,8 +389,17 @@ function renderCircleDiagram(data, day)
   var activities = JSON.parse(data);
   var str = "";
   str+="<h2 style='padding:10px'>Hourly activities</h2>";
-  str+="<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' value="+today+" onchange='changeDay(this.value)' />";
+  str+="<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
+  if (day) {
+    str+="value="+today+" ";
+  } 
+  str+="onchange='changeDay(this.value)' />";
   str+="<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
+  if (day) {
+    str+="<p style='margin-left: 10px'>Showing activities for "+today+"</p>";
+  } else {
+    str+="<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 - "+today+"</p>";
+  }
   str+="<div class='circleGraph'>";
   str+="<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'></span><span style='grid-row-start: -1' id='activityPercent'></span><span style='grid-row-start: -1' id='activityCount'></span></div>";
   str+="<svg width='500' height='500'>";
