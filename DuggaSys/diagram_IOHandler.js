@@ -13,10 +13,10 @@ function downloadMode(el) {
     var canvas = document.getElementById("content");
     var selectBox = document.getElementById("download");
     download = selectBox.options[selectBox.selectedIndex].value;
-    if (download.toString() == "getImage") {
+    /*if (download.toString() == "getImage") {
         console.log("b");
         getImage();
-    }
+    }*/
     if (download == "Save") {
         Save();
     }

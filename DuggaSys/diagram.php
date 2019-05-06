@@ -139,7 +139,7 @@
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</span>
+                            <span class="drop-down-option" id="buttonid" onclick="openImportDialog();">Import</span>
                         </div>
 
                         <div class="drop-down-item export-drop-down-head">
