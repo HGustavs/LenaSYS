@@ -708,6 +708,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 $array = array(
 	'entriesNoSSN' => $entriesNoSSN,
+	'entries' => $entries,
 	'moments' => $gentries,
 	'versions' => $sentries,
 	'debug' => $debug,
