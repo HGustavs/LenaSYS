@@ -3541,7 +3541,7 @@ only screen and (max-device-width: 768px) {
     left: 10px;
   }
   #TopMenuStatic{
-    position: absolute;
+    position: static;
     top: 66px;
     left: 0px;
     z-index: 5001; 
