@@ -397,7 +397,7 @@
         </div>
         <div class="mode-wrap">
           <div id="importButtonWrap" class="importButtonWrap">
-            <button class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
+            <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
           </div>
         </div>
       </div>

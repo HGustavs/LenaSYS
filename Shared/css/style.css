@@ -4631,6 +4631,10 @@ textarea#mrkdwntxt {
   min-height: 80px;
 }
 
+#cancelButton {
+  border-radius: 3px;
+}
+
 .messageHeader h3 {
   padding-right: 10px;
 }
