@@ -2465,9 +2465,13 @@ function changeZoom(zoomValue){
 //-----------------------
 
 function scrollZoom(event) {
-    if(event.deltaY > 0){
+    if(event.deltaY > 124){
+        changeZoom(-0.1);
+    } else if (event.deltaY < -124) {
+        changeZoom(0.1);
+    } else if(event.deltaY > 5){
         changeZoom(-0.01);
-    } else {
+    } else if (event.deltaY < -5) {
         changeZoom(0.01);
     }
 }
@@ -2851,21 +2855,22 @@ function mouseupevt(ev) {
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
             md = mouseState.empty;
          }else {
-              //Get which kind of symbol mouseupevt execute on
-             symbolEndKind = diagram[hovobj].symbolkind;
+            //Get which kind of symbol mouseupevt execute on
+            symbolEndKind = diagram[hovobj].symbolkind;
 
-             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            //Check if you not start on a line and not end on a line, if then, set point1 and point2
+            sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object, 
+            // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) {
+            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line && 
+                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else {
                     createNewPoint = true;
                 }
-
                 //Code for making sure enitities not connect to the same attribute multiple times
                 if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
@@ -2909,10 +2914,12 @@ function mouseupevt(ev) {
              symbolEndKind = diagram[hovobj].symbolkind;
 
              sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            //Check if you not start on a line and not end on a line, if then, set point1 and point2
+            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object, 
+            // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) {
+            if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine && 
+                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -3006,9 +3013,10 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
-        //Code for making a line, if start and end object are different, except attributes
+        //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
-        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) && okToMakeLine) {
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line)
+        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
@@ -3058,9 +3066,10 @@ function mouseupevt(ev) {
             if(md != mouseState.empty) diagram[lastSelectedObject].targeted = true;
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
-        //Code for making a line, if start and end object are different, except attributes
+        //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
-        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) && okToMakeLine) {
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
+        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
             umlLineA.name = "Line" + diagram.length
             umlLineA.topLeft = p1;
