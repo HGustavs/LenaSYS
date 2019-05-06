@@ -1068,7 +1068,7 @@ function Symbol(kindOfSymbol) {
         ctx.fillStyle = this.properties['symbolColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
-            drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+            drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
             ctx.stroke();
             this.makeShadow();
             drawOval(x1, y1, x2, y2);
@@ -1280,11 +1280,11 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
 
         if (this.properties['key_type'] == "Weak") {
-            ctx.moveTo(x1 - 5, y1 - 5);
-            ctx.lineTo(x2 + 5, y1 - 5);
-            ctx.lineTo(x2 + 5, y2 + 5);
-            ctx.lineTo(x1 - 5, y2 + 5);
-            ctx.lineTo(x1 - 5, y1 - 5);
+            ctx.moveTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
             ctx.stroke();
             ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
@@ -1614,11 +1614,11 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
         if (this.properties['key_type'] == 'Weak') {
             ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-            ctx.moveTo(midx, y1 + 5);
-            ctx.lineTo(x2 - 9, midy + 0);
-            ctx.lineTo(midx + 0, y2 - 5);
-            ctx.lineTo(x1 + 9, midy + 0);
-            ctx.lineTo(midx + 0, y1 + 5);
+            ctx.moveTo(midx, y1 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 - 9 * diagram.getZoomValue(), midy + 0);
+            ctx.lineTo(midx + 0, y2 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 + 9 * diagram.getZoomValue(), midy + 0);
+            ctx.lineTo(midx + 0, y1 + 5 * diagram.getZoomValue());
         }
         ctx.moveTo(midx, y1);
         ctx.lineTo(x2, midy);
@@ -2531,4 +2531,14 @@ function cleanUp() {
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
     p2 = null;
+}
+
+//--------------------------------------------------------------------
+// Pixels To Canvas helper function for mapping cooridnates
+//--------------------------------------------------------------------
+function pixelsToCanvas(pixelX = 0, pixelY = 0){
+    return {
+        x: pixelX * diagram.getZoomValue() + origoOffsetX,
+        y: pixelY * diagram.getZoomValue() + origoOffsetY
+    }
 }
