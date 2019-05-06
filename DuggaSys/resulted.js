@@ -615,7 +615,7 @@ function returnedResults(data) {
 				break;
 			}
 		}
-		myTable.renderTable();
+		updateTable();
 	} else {
 
 		entries = data.entries;
