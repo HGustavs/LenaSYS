@@ -60,6 +60,7 @@ $duggagrade="";
 $gradeupdated=false;
 
 $entries=array();
+$entriesNoSSN=array();
 $gentries=array();
 $sentries=array();
 $lentries=array();
@@ -446,6 +447,17 @@ if(strcmp($opt,"CHGR")!==0){
 				'access' => $row['access'],
 				'examiner' => $row['examiner']
 			);
+
+			$entryNoSSN = array(
+				'cid' => (int)$row['cid'],
+				'uid' => (int)$row['uid'],
+				'username' => $row['username'],
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname'],
+				'class' => $row['class'],
+				'access' => $row['access'],
+				'examiner' => $row['examiner']
+			);
 /*
 			$entry = array(
 				'cid' => (int)$row['cid'],
@@ -458,6 +470,7 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 			*/
 			array_push($entries, $entry);
+			array_push($entriesNoSSN, $entryNoSSN);
 		}
 
 		// All results from current course and vers?
@@ -694,7 +707,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 }
 
 $array = array(
-	'entries' => $entries,
+	'entriesNoSSN' => $entriesNoSSN,
 	'moments' => $gentries,
 	'versions' => $sentries,
 	'debug' => $debug,
