@@ -2413,23 +2413,6 @@ span.arrow {
 /* End DuggaSys resulted*/
 
 /**************************/
-.late-submission {
-  visibility: hidden;
-  width: 120px;
-  background-color: white;
-  color: black;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
- 
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 1;
-}
-
-.warning:hover .late-submission {
-  visibility: visible;
-}
 
 .gradeInput {
   margin: 0;
