@@ -2532,13 +2532,3 @@ function cleanUp() {
     numberOfPointsInFigure = 0;
     p2 = null;
 }
-
-//--------------------------------------------------------------------
-// Pixels To Canvas helper function for mapping cooridnates
-//--------------------------------------------------------------------
-function pixelsToCanvas(pixelX = 0, pixelY = 0){
-    return {
-        x: pixelX * diagram.getZoomValue() + origoOffsetX,
-        y: pixelY * diagram.getZoomValue() + origoOffsetY
-    }
-}
