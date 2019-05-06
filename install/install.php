@@ -808,11 +808,11 @@
         try {
           // Start of Content to put in coursesyspw.
           $filePutContent = "<?php
-define(\"DB_USER\",\"".$username."\");
-define(\"DB_PASSWORD\",\"".$password."\");
-define(\"DB_HOST\",\"".$serverName."\");
-define(\"DB_NAME\",\"".$databaseName."\");
-?>";
+			define(\"DB_USER\",\"".$username."\");
+			define(\"DB_PASSWORD\",\"".$password."\");
+			define(\"DB_HOST\",\"".$serverName."\");
+			define(\"DB_NAME\",\"".$databaseName."\");
+			?>";
           // end of coursesyspw content
           file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
         } catch (\Exception $e) {
@@ -830,6 +830,11 @@ define(\"DB_NAME\",\"".$databaseName."\");
           echo "</code></div>";
           echo '<div id="copied1">Copied to clipboard!<br></div>';
         }
+		
+		//Check upload_max_filesize parameter
+		if(ini_get('upload_max_filesize')!='128M'){
+			echo "<br><b>upload_max_filesize</b> should be 128M it is currently: " . ini_get('upload_max_filesize');
+		}
 
         if(!connectLogDB()){
             echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
