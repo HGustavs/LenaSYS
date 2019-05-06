@@ -3335,7 +3335,7 @@ table.navheader div.hamburgerMenu {
   padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
-  margin-top: 5px;
+  margin-top: 40px;
   margin-left: 5px;
   z-index: 1;
   background-color: var(--color-background-2);
