@@ -614,7 +614,7 @@ function returnedResults(data) {
 				}
 				break;
 			}
-			console.log(studentInfo);
+			console.log(studentInfo[1]);
 		}
 		myTable.renderTable();
 	} else {
