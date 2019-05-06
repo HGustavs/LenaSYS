@@ -400,7 +400,7 @@ function renderCircleDiagram(data, day)
   str+= "<stop offset='50%' stop-color='#2AB7CA' />";
   str+= "<stop offset='100%' stop-color='#FE4A49' />";
   str+= "</linearGradient></svg></div>";
-  
+
   return str;
 }
 function renderActivityPoints(activities)
@@ -437,10 +437,10 @@ function renderActivityPoints(activities)
     var activityCount = activities.length;
     var percentage = hours[hour] / activityCount;
     var angleFactor = ((RADIUS-BASELINE) * percentage) + BASELINE;
-    angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;    
+    angleFactor > RADIUS ? angleFactor = RADIUS : angleFactor = angleFactor;
     var xCoord = (Math.cos(toRadians(houroffset*15)) * angleFactor) + MIDDLE;
     var yCoord = (Math.sin(toRadians(houroffset*15)) * angleFactor) + MIDDLE;
-    
+
     if (!Object.keys(activityTypes.times).includes(hour)) {
         activityTypes.times[hour] = {};
         uniquePoints.push([xCoord,yCoord,hour,percentage]);
@@ -505,7 +505,7 @@ function renderHourMarkers()
   for (i = 0, number = 18; i < 12; i++) {
     var xCoordNum = (Math.cos(toRadians(i*30)) * NUMRADIUS) + X_OFFSET;
     var yCoordNum = (Math.sin(toRadians(i*30)) * NUMRADIUS) + Y_OFFSET;
-    
+
     str += "<text x='"+xCoordNum+"' y='"+yCoordNum+"'>"+number+"</text>";
     number === 22 ? number = 0 : number += 2;
   }
@@ -520,7 +520,7 @@ function showAllActivity(e, activities)
   var span = document.getElementById('allActivity');
   var times = Object.keys(activities.times);
   var types = Object.keys(activities.types);
-  
+
   var str = "";
 
   for (var i = 0; i < times.length; i++) {
@@ -529,7 +529,7 @@ function showAllActivity(e, activities)
 
       str += "<span class='activityInfoEntry'>";
       str += "<strong>"+prevHour+".00 - "+times[i]+".00</strong><br>";
-      
+
       hourTypes.forEach(type => {
           str += type+": "+activities.times[times[i]][type]+"<br>";
       });
@@ -542,7 +542,7 @@ function showAllActivity(e, activities)
 }
 
 // Shows info about the activity point the user hovers over in the circle graph
-function showActivityInfo(e, type, hour, pc, activities) 
+function showActivityInfo(e, type, hour, pc, activities)
 {
   var box = document.getElementById('activityInfoBox');
   var timeSpan = document.getElementById('activityTime');
@@ -559,12 +559,12 @@ function showActivityInfo(e, type, hour, pc, activities)
   for (var i = 0; i < Object.keys(activities.times[hour]).length; i++) {
       var type = Object.keys(activities.times[hour])[i];
       str += activities.times[hour][type]+" of "+activities.types[type]+" total "+type+"s<br>";
-  } 
+  }
   countSpan.innerHTML = str;
 }
 
 // Resets the circle graph activity info box and hides it
-function hideActivityInfo() 
+function hideActivityInfo()
 {
   var box = document.getElementById('activityInfoBox');
   var timeSpan = document.getElementById('activityTime');
@@ -633,29 +633,29 @@ function returnedSection(data)
     str+="<tr>";
     str+="<td>Issue Creation</td>";
     str+="<td>"+data['issuerankno']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['issuerank'])+"'>"+data['issuerank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['issuegrouprank'])+"'>"+data['issuegrouprank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['issuerank'])+"'>"+data['issuerank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['issuegrouprank'])+"'>"+data['issuegrouprank']+"</td>";
 	str+="</tr>";
 
     str+="<tr>";
     str+="<td>Comment Creation</td>";
     str+="<td>"+data['commentrankno']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['commentrank'])+"'>"+data['commentrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['commentgrouprank'])+"'>"+data['commentgrouprank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['commentrank'])+"'>"+data['commentrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['commentgrouprank'])+"'>"+data['commentgrouprank']+"</td>";
 	str+="</tr>";
 
     str+="<tr>";
     str+="<td>Events Performed</td>"
     str+="<td>"+data['eventrankno']+"</td>"
-    str+="<td style='background-color:"+intervaltocolor(41,data['eventrank'])+"'>"+data['eventrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['eventgrouprank'])+"'>"+data['eventgrouprank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['eventrank'])+"'>"+data['eventrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['eventgrouprank'])+"'>"+data['eventgrouprank']+"</td>";
     str+="</tr>";
 
     str+="<tr>";
     str+="<td>Lines of Code</td>"
     str+="<td>"+data['rowrankno']+"</td>"
-    str+="<td style='background-color:"+intervaltocolor(41,data['rowrank'])+"'>"+data['rowrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['rowgrouprank'])+"'>"+data['rowgrouprank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['rowrank'])+"'>"+data['rowrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['rowgrouprank'])+"'>"+data['rowgrouprank']+"</td>";
     str+="</tr>";
 
     str+="<tr>";
