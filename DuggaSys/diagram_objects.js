@@ -18,16 +18,7 @@ function Symbol(kindOfSymbol) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];            // Free text array
-    this.textsize = 14;             // 14 pixels text size is default
-    this.symbolColor = '#ffffff';   // change background colors on entities
-    this.strokeColor = '#000000';   // change standard line color
-    this.font = "Arial";            // set the standard font
-    this.lineWidth = 2;
-    this.fontColor = '#000000';
     this.name = "New Class";        // Default name is new class
-    this.key_type = "normal";       // Defult key type for a class.
-    this.sizeOftext = "Tiny";       // Used to set size of text.
-    this.textAlign = "center";      // Used to change alignment of free text
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
