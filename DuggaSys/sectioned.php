@@ -89,7 +89,7 @@
 
 					<td class='results menuButton' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
+							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu="javascript:navigatePage(this.i, 'resulted.php');return false;"><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
 						</div>
 					</td>
 					<td class='tests menuButton' style='display: inline-block;'>
