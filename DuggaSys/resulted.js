@@ -853,22 +853,26 @@ function renderCell(col, celldata, cellid) {
 			str += "</div>";
 
 			// Print submitted time and change color to red if passed deadline
-			if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
-				str += "<div class='text-center resultTableText'";
-				for (var p = 0; p < moments.length; p++) {
-					if (moments[p].link == celldata.quizId) {
-						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
-							str += " style='color:red;'";
-						}
-						break;
+			str += "<div class='text-center resultTableText'";
+			for (var p = 0; p < moments.length; p++) {
+				if (moments[p].link == celldata.quizId) {
+					if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+						str += " style='color:red;'";
 					}
+					break;
 				}
-				str += "> <img src='../Shared/icons/warningTriangle.svg'";
-			} else {
-				str += "<div class='text-center resultTableText'>";
 			}
+			str += ">";
 			if (celldata.submitted.getTime() !== timeZero.getTime()) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+			}
+			for (var p = 0; p < moments.length; p++) {
+				if (moments[p].link == celldata.quizId) {
+					if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+						str += "<img src='../Shared/icons/warningTriangle.svg'";
+					}
+					break;
+				}
 			}
 			str += "</div>";
 		}
