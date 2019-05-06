@@ -175,8 +175,16 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
                         </div>
-                        <div class="drop-down-divider">
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
+                            <i id="hotkey-front">Shift + 1</i>
                         </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
+                            <i id="hotkey-back">Shift + 2</i>
+                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='lockSelected()'>Lock/Unlock selected</span>
                         </div>
@@ -315,14 +323,15 @@
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
               <div class="tooltipDecrease" style="position: static;">
-                <button name="Zoom" id="zoomDecrease" type="button" onclick="changeZoom(-0.1);"> - </button>
+                <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1);"> - </button>
                 <span class="tooltiptextDec">Zoom Out</span>
               </div>
               <div id="range" style="padding-right: 8px;">
                 <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1" class="zoomSlider">
               </div>
+
               <div class="tooltipIncrease" style="position: static;">
-                <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
+                <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1);"> + </button>
                 <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
               </div>
               <div id="zoomV"></div>
@@ -374,10 +383,10 @@
             </div>
             <div class='mode-wrap'>
                 <div id="importButtonWrap" class="importButtonWrap">
-                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(true);" value="Accept" />
+                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(true);">Accept</button>
                 </div>
                 <div id="importButtonWrap" class="importButtonWrap">
-                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(false);" value="Cancel" />
+                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
                 </div>
             </div>
         </div>

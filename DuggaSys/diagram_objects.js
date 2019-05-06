@@ -977,22 +977,22 @@ function Symbol(kindOfSymbol) {
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != symbolKind.text) {
             ctx.beginPath();
-            ctx.arc(x1,y1,5,0,2*Math.PI,false);
+            ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
 
             ctx.beginPath();
-            ctx.arc(x2,y2,5,0,2*Math.PI,false);
+            ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
             if(this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
                 ctx.beginPath();
-                ctx.arc(x1,y2,5,0,2*Math.PI,false);
+                ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
                 ctx.fill();
 
                 ctx.beginPath();
-                ctx.arc(x2,y1,5,0,2*Math.PI,false);
+                ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
                 ctx.fill();
             }
@@ -1068,7 +1068,7 @@ function Symbol(kindOfSymbol) {
         ctx.fillStyle = this.properties['symbolColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
-            drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+            drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
             ctx.stroke();
             this.makeShadow();
             drawOval(x1, y1, x2, y2);
@@ -1280,11 +1280,11 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
 
         if (this.properties['key_type'] == "Weak") {
-            ctx.moveTo(x1 - 5, y1 - 5);
-            ctx.lineTo(x2 + 5, y1 - 5);
-            ctx.lineTo(x2 + 5, y2 + 5);
-            ctx.lineTo(x1 - 5, y2 + 5);
-            ctx.lineTo(x1 - 5, y1 - 5);
+            ctx.moveTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
             ctx.stroke();
             ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
@@ -1614,11 +1614,11 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
         if (this.properties['key_type'] == 'Weak') {
             ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-            ctx.moveTo(midx, y1 + 5);
-            ctx.lineTo(x2 - 9, midy + 0);
-            ctx.lineTo(midx + 0, y2 - 5);
-            ctx.lineTo(x1 + 9, midy + 0);
-            ctx.lineTo(midx + 0, y1 + 5);
+            ctx.moveTo(midx, y1 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 - 9 * diagram.getZoomValue(), midy + 0);
+            ctx.lineTo(midx + 0, y2 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 + 9 * diagram.getZoomValue(), midy + 0);
+            ctx.lineTo(midx + 0, y1 + 5 * diagram.getZoomValue());
         }
         ctx.moveTo(midx, y1);
         ctx.lineTo(x2, midy);
@@ -1904,11 +1904,11 @@ function Symbol(kindOfSymbol) {
         //Draws the upper part of the lock
         ctx.beginPath();
         //A slight x offset to get the correct position   
-        ctx.arc(position.x + 5, position.y, 4, 1 * Math.PI, 2 * Math.PI);
+        ctx.arc(position.x + (5 * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
         //Draws the lock body
-        ctx.fillRect(position.x, position.y, 10, 10);
+        ctx.fillRect(position.x, position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
 
         ctx.restore();
     }

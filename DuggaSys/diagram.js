@@ -148,6 +148,7 @@ const upArrow = 38;
 const rightArrow = 39;
 const downArrow = 40;
 const ctrlKey = 17;
+const shiftKey = 16;
 const windowsKey = 91;
 const cKey = 67;
 const vKey = 86;
@@ -155,6 +156,10 @@ const zKey = 90;
 const yKey = 89;
 const aKey = 65;
 const escapeKey = 27;
+const key1 = 49;
+const key2 = 50;
+const num1 = 97;
+const num2 = 98;
 
 // Mouse clicks
 const rightMouseClick = 2;
@@ -240,6 +245,7 @@ window.addEventListener('contextmenu', function (e)
 window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
+var shiftIsClicked = false;
 
 //--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
@@ -386,6 +392,8 @@ function keyDownHandler(e) {
         moveCanvasView(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
+    } else if(key == shiftKey) {
+        shiftIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
@@ -417,8 +425,14 @@ function keyDownHandler(e) {
     else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
     }
-    else if(key == 27) {
+    else if(key == escapeKey) {
         cancelFreeDraw();
+    }
+    else if((key == key1 || key == num1) && shiftIsClicked){
+        moveToFront();
+    }
+    else if((key == key2 || key == num2) && shiftIsClicked){
+        moveToBack();
     }
 }
 
@@ -442,6 +456,58 @@ function canvasToPixels(pixelX = 0, pixelY = 0){
         x: (pixelX - origoOffsetX) / zoomValue,
         y: (pixelY - origoOffsetY) / zoomValue
     }
+}
+
+//-----------------------------------------
+// Move selected objects to front of canvas
+//-----------------------------------------
+
+function moveToFront(){
+    let front = [];
+    let back = [];
+    let diagramLength = diagram.length;
+    for(let i = 0; i < diagramLength; i++){
+        if(selected_objects.indexOf(diagram[0]) !== -1){
+            front.push(diagram[0]);
+        }
+        else {
+            back.push(diagram[0]);            
+        }
+        diagram.splice(0, 1);
+    }
+    for(let i = 0; i < back.length; i++){
+        diagram.push(back[i]);
+    }
+    for(let i = 0; i < front.length; i++){
+        diagram.push(front[i]);
+    }
+    updateGraphics();
+}
+
+//-----------------------------------------
+// Move selected objects to back of canvas
+//-----------------------------------------
+
+function moveToBack(){
+    let front = [];
+    let back = [];
+    let diagramLength = diagram.length;
+    for(let i = 0; i < diagramLength; i++){
+        if(selected_objects.indexOf(diagram[0]) !== -1){
+            back.push(diagram[0]);
+        }
+        else {
+            front.push(diagram[0]);            
+        }
+        diagram.splice(0, 1);
+    }
+    for(let i = 0; i < back.length; i++){
+        diagram.push(back[i]);
+    }
+    for(let i = 0; i < front.length; i++){
+        diagram.push(front[i]);
+    }
+    updateGraphics();
 }
 
 //----------------------------------------------------------------------
@@ -478,6 +544,8 @@ function fillCloneArray() {
 window.onkeyup = function(event) {
     if(event.which == ctrlKey || event.which == windowsKey) {
         ctrlIsClicked = false;
+    } else if(event.which == shiftKey || event.which == shiftKey){
+        shiftIsClicked = false;
     }
 }
 
