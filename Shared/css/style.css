@@ -3836,6 +3836,7 @@ only screen and (max-device-width: 320px) {
 /* Is used to style a Select-box in diagram.php. */
 
 #selectDiv {
+  display: flex;
   background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;
@@ -3875,18 +3876,16 @@ only screen and (max-device-width: 320px) {
 }
 
 .tooltipDecrease{
-  display: inline-block;
-  position: relative;
-  bottom: 7px;
-  margin-top: 6%;
+  display: flex;
+  justify-content: center;
 }
 
 .tooltipDecrease button{
-  position: relative;
   background-color: #614875;
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 100%;
 }
 
 .tooltipDecrease .tooltiptextDec{
@@ -3903,32 +3902,28 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  left: -15px;
+  left: -2%;
 }
 
 #zoomDecrease:hover + .tooltiptextDec{
   visibility: visible;
 }
 #range{
-  position: relative;
-  display: inline-block;
-}
-
-#range input{
-  position: relative;
+  justify-content: center;
+  margin-top: 1%;
 }
 
 .tooltipIncrease{
-  position: relative;
-  display: inline-block;
-  bottom: 7px;
+  display: flex;
+  justify-content:center;
 }
+
 .tooltipIncrease button{
   background-color: #614875;
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
-  position: relative;
+  font-size: 100%;
 }
 
 .tooltipIncrease .tooltiptextInc{
@@ -3945,7 +3940,7 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  right: -20px;
+  right: 21%;
 }
 
 #zoomIncrease:hover + .tooltiptextInc{
@@ -3956,8 +3951,8 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   display: inline-block;
   font-size: 12px;
-  bottom: 2px;
-  right: 4px;
+  bottom: 2%;
+  right: 2%;
 }
 
 /* Used to rotate the picture that is used as a arrow */

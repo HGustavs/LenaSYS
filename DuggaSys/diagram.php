@@ -319,19 +319,18 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-              <div class="tooltipDecrease">
+              <span class="tooltipDecrease">
                 <button name="Zoom" id="zoomDecrease" type="button" onclick="changeZoom(-0.1);"> - </button>
                 <span class="tooltiptextDec">Zoom Out</span>
-              </div>
-              <div id="range">
+              </span>
+              <span id="range">
                 <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
-              </div>
-              <div class="tooltipIncrease">
+              </span>
+              <span class="tooltipIncrease">
                 <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
                 <span class="tooltiptextInc">Zoom In</span>
-              </div>
-              <div id="zoomV"></div>
-            </div>
+              </span>
+              <span id="zoomV"></span>
             </div>
         </div>
     </div>
