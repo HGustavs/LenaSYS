@@ -4956,10 +4956,11 @@ textarea#filecont{
   padding: 5px;
 }
 .tsTable tfoot {
-  background: var(--color-background-3);
+  background: var(--color-primary);
+  color: white;
 }
 .tsTable tfoot:hover {
-  background: #E0E0E0;
+  background: #7B5A96;
 }
 .tsTable tfoot td {
   padding: 0;
