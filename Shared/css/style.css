@@ -765,14 +765,6 @@ header td {
   background: var(--color-background);
 }
 
-#TopMenuStatic {
-  position: fixed;
-  top: 3px;
-  left: 95px;
-  right: 100px;
-  z-index: 5001;
-}
-
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
@@ -3474,7 +3466,7 @@ ul.hamburgerList button.menuButton {
 only screen and (min-device-width: 1085px) {
   /* #TopMenuStatic{
     position: fixed;
-  } */
+  } */TopMenuStatic
 }
 
 @media only screen and (max-width: 1085px),
