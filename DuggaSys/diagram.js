@@ -1290,7 +1290,7 @@ function canvasSize() {
 window.addEventListener('resize', canvasSize);
 
 function mod(n, m) {
-  return  Math.round(Math.round(((n % m) + m)) % m);
+    return Math.round((Math.round((n % m)) + m) % m);
 }
 
 //----------------------------------------------------------
@@ -2465,10 +2465,14 @@ function changeZoom(zoomValue){
 //-----------------------
 
 function scrollZoom(event) {
-    if(event.deltaY > 0){
+    if(event.deltaY > 124){
         changeZoom(-0.1);
-    } else {
+    } else if (event.deltaY < -124) {
         changeZoom(0.1);
+    } else if(event.deltaY > 5){
+        changeZoom(-0.01);
+    } else if (event.deltaY < -5) {
+        changeZoom(0.01);
     }
 }
 
