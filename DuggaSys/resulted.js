@@ -869,7 +869,7 @@ function renderCell(col, celldata, cellid) {
 			for (var p = 0; p < moments.length; p++) {
 				if (moments[p].link == celldata.quizId) {
 					if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
-						str += "<img src='../Shared/icons/warningTriangle.svg' style='width:10px;height:10px;'";
+						str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;'";
 					}
 					break;
 				}
