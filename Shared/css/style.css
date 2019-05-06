@@ -764,14 +764,6 @@ header td {
   background: var(--color-background);
 }
 
-#TopMenuStatic {
-  position: fixed;
-  top: 3px;
-  left: 95px;
-  right: 100px;
-  z-index: 5001;
-}
-
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
@@ -3347,7 +3339,7 @@ table.navheader div.hamburgerMenu {
   padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
-  margin-top: 5px;
+  margin-top: 40px;
   margin-left: 5px;
   z-index: 1;
   background-color: var(--color-background-2);
@@ -3474,6 +3466,16 @@ ul.hamburgerList button.menuButton {
   width: 100%;
 }
 
+@media only screen and (min-width: 1085px),
+only screen and (min-device-width: 1085px) {
+  #TopMenuStatic{
+    position: fixed;
+    top: 3px;
+    left: 100px;
+    z-index: 5001; 
+  } 
+}
+
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
 #sortingBar {
@@ -3542,6 +3544,12 @@ only screen and (max-device-width: 768px) {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
+  #TopMenuStatic{
+    position: static;
+    top: 66px;
+    left: 0px;
+    z-index: 5001; 
+  } 
 
   #cookiemsg {
     background-color: var(--color-accent);
@@ -3798,13 +3806,11 @@ only screen and (max-device-width: 480px) {
   table.navheader input.hamburger {
     position: absolute;
     top: 66px;
-    left:10px;
     right: 5px;
   }
   table.navheader div.hamburger {
     position: absolute;
     top: 66px;
-    left:10px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
