@@ -605,6 +605,7 @@ function returnedResults(data) {
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
 				studentObject.timesGraded = parseInt(data.timesgraded);
+				console.log("student obj:" + studentObject.timesGraded);
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
@@ -847,7 +848,7 @@ function renderCell(col, celldata, cellid) {
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
 			if (celldata.ishere === true && celldata.timesGraded !== 0) {
-				str += '(' + studentObject.timesGraded + ')';
+				str += '(' + celldata.timesGraded + ')';
 			}
 			str += "</div>";
 			str += "</div>";
