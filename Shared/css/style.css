@@ -3930,9 +3930,12 @@ only screen and (max-device-width: 320px) {
   opacity: 0.7;
 }
 
+.zoomSlider:active {
+  opacity: 1;
+}
+
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 .zoomSlider::-webkit-slider-thumb {
-  opacity: 1;
   -webkit-appearance: none; /* Override default look */
   appearance: none;
   width: 15px; /* Set a specific slider handle width */
