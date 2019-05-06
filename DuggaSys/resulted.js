@@ -491,6 +491,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</div>";
 	menu += "<table>";
 	menu += "<tr><td>";
+	
 	if ((foundgrade === null && submitted === null)) {
 		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
 	} else if (foundgrade == -1) {
