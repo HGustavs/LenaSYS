@@ -1225,7 +1225,7 @@ function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
-			str = "Personnummer;Namn";
+			str = /*Personnummer;*/"Namn";
 		} else {
 			heading = heading.replace(/\&aring\;/g, "å");
 			heading = heading.replace(/\&Aring\;/g, "Å");
