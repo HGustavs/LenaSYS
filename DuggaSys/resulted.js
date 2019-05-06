@@ -605,7 +605,7 @@ function returnedResults(data) {
 			var studentObject = studentInfo[student]["lid:" + data.duggaid];
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
-				studentObject.timesGraded = parseInt(data.timesgraded);
+				studentObject.timesGraded = parseInt(data.timesgraded+0);
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
