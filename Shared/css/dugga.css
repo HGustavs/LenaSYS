@@ -273,6 +273,9 @@ strong {font-weight: bold;}
     	border-radius:4px;
 }
 
+/* Changes the color of the even rows in the background so that the magic "row heading" looks nice */
+#resultTable___tbl___mhv tbody tr:nth-child(even) {background-color:#ffffff;}
+
 /* Change odd rows on resulted bg colour */
 #resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:#ccc;}
 .selectedOp {background-color: #c6cdb8 !important;}
@@ -283,7 +286,6 @@ svg text {
 #markMenuPlaceholderz {
 		background:#bbb;
 }
-
 
 /* --------------================################================-------------- *
  *                      	    Preview table style     				        *
