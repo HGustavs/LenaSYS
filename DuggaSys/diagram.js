@@ -1221,16 +1221,6 @@ function toggleA4Orientation() {
     updateGraphics();
 }
 
-//------------------------------------------------------------
-// resetToolbar: resets the toolbar to it's original position
-//------------------------------------------------------------
-
-function resetToolbarPosition(){
-    //Assign position for the toolbar according to the canvas bounds
-    document.getElementById("diagram-toolbar").style.top = (boundingRect.top + "px");
-    document.getElementById("diagram-toolbar").style.left = (boundingRect.left + "px");
-}
-
 //----------------------------------------------------
 // openImportDialog: Opens the dialog menu for import
 //----------------------------------------------------
