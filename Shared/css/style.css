@@ -735,7 +735,7 @@ header td {
 }
 
 .loggedout {
-  background-color: #50a750;
+  background-color: #c75050;
 
 }
 
@@ -744,7 +744,7 @@ header td {
 }
 
 .loggedin {
-    background-color: #c75050;
+    background-color: #50a750;
 }
 
 
