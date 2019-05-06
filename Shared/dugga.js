@@ -1110,7 +1110,7 @@ function refreshUserSession(){
 					url: "../Shared/loginlogout.php",
 					data:{opt:'REFRESH'},
 					success:function(html) {
-						alert(html);
+						alert("Session is now refreshed");
 					}
 
 		 });
