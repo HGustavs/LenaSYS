@@ -2809,7 +2809,7 @@ function mouseupevt(ev) {
     if(movobj > -1) {
         if(diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
-    if (symbolStartKind != 1) {
+    if (symbolStartKind != symbolKind.uml) {
     if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
@@ -2865,7 +2865,7 @@ function mouseupevt(ev) {
         }
     }
     }
-    if (symbolStartKind == 1){
+    if (symbolStartKind == symbolKind.uml){
     if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         uimode = "CreateUMLLine";
