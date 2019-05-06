@@ -511,7 +511,6 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qva
 		newFeedback = document.getElementById('newFeedback').value;
 	}
 	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
-	myTable.renderTable();
 }
 
 function moveDist(e) {
@@ -848,7 +847,7 @@ function renderCell(col, celldata, cellid) {
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
 			if (celldata.ishere === true && celldata.timesGraded !== 0) {
-				str += '(' + celldata.timesGraded + ')';
+				str += celldata.timesGraded;
 				console.log("graded: "+celldata.timesGraded + " type: " + typeof(celldata.timesGraded))
 			}
 			str += "</div>";
