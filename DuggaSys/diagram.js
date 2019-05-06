@@ -2981,8 +2981,6 @@ function mouseupevt(ev) {
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
         erAttributeA.object_type = "";
-        erAttributeA.fontColor = "#000";
-        erAttributeA.font = "Arial";
         diagram.push(erAttributeA);
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
@@ -2997,8 +2995,6 @@ function mouseupevt(ev) {
         erEnityA.centerPoint = p3;
         erEnityA.arity = [];
         erEnityA.object_type = "";
-        erEnityA.fontColor = "#000";
-        erEnityA.font = "Arial";
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
@@ -3123,8 +3119,6 @@ function createText(posX, posY) {
     var fontsize = text.getFontsize();
     var height = fontsize + 20;
 
-    text.fontColor = "#000000";
-    text.font = "Arial";
     ctx.font = "bold " + fontsize + "px " + text.font;
 
     p1 = points.addPoint(posX - (length/2), posY - (height/2), false);
