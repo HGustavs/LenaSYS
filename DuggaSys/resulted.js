@@ -487,7 +487,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	var menu = "<div class='' style='§display:block;'>";
 	menu += "<div class='loginBoxheader'>";
 	menu += "<h3>Grade</h3>";
-	menu += "<div class='cursorPointer' onclick='closeGrade();'>x</div>"
+	menu += "<div class='cursorPointer' onclick='toggleGradeBox();'>x</div>"
 	menu += "</div>";
 	menu += "<table>";
 	menu += "<tr><td>";
@@ -506,19 +506,22 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
 }
-function toggleGradeBox(state){
-	//MarkCont position absolute
-	//toggleGrade position absolute
-	if(state == true){
-		var toggleGrade = document.getElementById('toggleGrade');
-		var markCont = document.getElementById('MarkCont');
-		toggleGrade.style.position = 'absolute';
+function toggleGradeBox(){
+	var toggleGrade = document.getElementById('toggleGrade');
+	var markCont = document.getElementById('MarkCont');
+	var width = toggleGrade.offsetWidth;
+	if(width <= 0){
+		toggleGrade.style.position = 'relative';
 		toggleGrade.style.display = 'block';
-	
+		toggleGrade.style.width = "100%";
+		toggleGrade.style.right = "0px";
 		markCont.style.position = 'absolute';
-		alert("hey");
-	} else if(state == false){
+		state = false;
 
+	} else if(width > 0){
+		toggleGrade.style.display = 'none';
+		toggleGrade.style.right = "-500px";
+		markCont.style.position = 'relative';
 	}
 
 

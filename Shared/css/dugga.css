@@ -16,12 +16,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
     }
 
 }
-@media screen and (min-width: 959px) {
-        #Nameof {
 
-    /* No specific stuff if we want to show the text */
-    }
-}
 
 #Nameof {
   margin: 5px 0px 0px 0px;
@@ -43,6 +38,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 	top: 0px;
 	right: 0px;
 	width: 100%;
+	border: 1px solid black;
 }
 
 h1{color: #000;}

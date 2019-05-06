@@ -1087,11 +1087,6 @@ function hideReceiptPopup()
 	//$("#overlay").css("display","none");
 }
 
-function closeGrade()
-{
-	$("#toggleGrade").css({ display: "none", opacity: 0 });
-}
-
 function hideDuggaStatsPopup()
 {
 	$("#duggaStats").css("display", "none");
