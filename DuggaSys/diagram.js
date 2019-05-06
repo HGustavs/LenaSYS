@@ -392,7 +392,7 @@ function keyDownHandler(e) {
         moveCanvasView(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    } else if(key == shiftKey || key == shiftKey) {
+    } else if(key == shiftKey) {
         shiftIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
