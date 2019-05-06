@@ -52,32 +52,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",
 $writeaccess = false;
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
   $writeaccess = true;
-  /*
-	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart, jsondeadline) VALUES (:cid,:autograde,:gradesystem,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart, :jsondeadline)";
-		$stmt = $pdo->prepare($querystring);
-		$stmt->bindParam(':cid', $cid);
-		$stmt->bindParam(':uid', $userid);
-		$stmt->bindParam(':coursevers', $coursevers);
-		$stmt->bindParam(':autograde', $autograde);
-		$stmt->bindParam(':gradesystem', $gradesys);
-		$stmt->bindParam(':qname', $name);
-		$stmt->bindParam(':template', $template);
-		$stmt->bindParam(':jsondeadline', $jsondeadline);
 
-		if (strrpos("UNK",$deadline)!==false) $deadline = null;
-		if (strrpos("UNK",$qstart)!==false) $qstart = null;
-		if (strrpos("UNK",$release)!==false) $release = null;
-
-		$stmt->bindParam(':release', $release);
-		$stmt->bindParam(':deadline', $deadline);
-		$stmt->bindParam(':qstart', $qstart);
-
-		if (!$stmt->execute()) {
-			$debug=$stmt->errorInfo()[2];
-		}
-  }else
-  */
   if(strcmp($opt,"SAVDUGGA")===0){
     $query=null;
     if(is_null($qid)||strcmp($qid,"UNK")===0){

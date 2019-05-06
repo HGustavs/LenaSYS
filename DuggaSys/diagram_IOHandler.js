@@ -1,5 +1,5 @@
 /************************************************************************
-      
+
     THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY
 
 ************************************************************************/
@@ -190,7 +190,7 @@ function Load() {
     for (var i = 0; i < b.diagram.length; i++) {
         diagram[i] = b.diagram[i];
     }
-    
+
     points.length = b.points.length;
     for (var i = 0; i < b.points.length; i++) {
         points[i] = b.points[i];
@@ -214,7 +214,7 @@ function ExportSVG(el) {
 }
 
 //------------------------------------------------
-// used when exporting the file as a .jpg image.
+// used when exporting the file as a .png image.
 //------------------------------------------------
 
 $(document).ready(function() {
@@ -224,6 +224,6 @@ $(document).ready(function() {
     }
 
     document.getElementById('picid').addEventListener('click', function() {
-        downloadCanvas(this, 'myCanvas', 'picture.jpg');
+        downloadCanvas(this, 'myCanvas', 'picture.png');
     }, false);
 });
