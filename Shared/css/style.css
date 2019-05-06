@@ -3466,6 +3466,9 @@ ul.hamburgerList button.menuButton {
 only screen and (min-device-width: 1085px) {
   #TopMenuStatic{
     position: fixed;
+    top: 3px;
+    left: 100px;
+    z-index: 5001; 
   } 
 }
 
