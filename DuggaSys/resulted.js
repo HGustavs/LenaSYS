@@ -510,18 +510,14 @@ function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
 	var markCont = document.getElementById('MarkCont');
 	var width = toggleGrade.offsetWidth;
+	$('#toggleGrade').animate({width: 'toggle'});
 	if(width <= 0){
 		toggleGrade.style.position = 'relative';
 		toggleGrade.style.display = 'block';
-		toggleGrade.style.width = "100%";
-		toggleGrade.style.right = "0px";
 		markCont.style.position = 'absolute';
 		state = false;
-
 	} else if(width > 0){
 		toggleGrade.style.display = 'none';
-		toggleGrade.style.right = "-500px";
-		markCont.style.position = 'relative';
 	}
 
 
