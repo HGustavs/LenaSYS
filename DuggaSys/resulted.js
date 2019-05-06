@@ -849,6 +849,7 @@ function renderCell(col, celldata, cellid) {
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
 			if (celldata.timesGraded !== 0) {
 				str += '(' + celldata.timesGraded + ')';
+				updateTable();
 			}
 			str += "</div>";
 			str += "</div>";
