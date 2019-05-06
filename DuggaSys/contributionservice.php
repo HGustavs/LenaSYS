@@ -610,8 +610,3 @@ if(strcmp($opt,"get")==0) {
 	echo json_encode($array);
 }
 ?>
-
-<<<<<<< HEAD
-?>
-=======
->>>>>>> 6ae8e4ffc68ecdcf5bc86dea334688075cd78ce1
