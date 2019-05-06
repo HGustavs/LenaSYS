@@ -1710,7 +1710,7 @@ input.fileed-button {
 }
 
 input.submit-button:hover {
-  background-color: #7B5A96;
+  filter: brightness(1.05);
 }
 
 div.submit-button:hover {
