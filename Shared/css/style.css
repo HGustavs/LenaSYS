@@ -3540,6 +3540,12 @@ only screen and (max-device-width: 768px) {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
+  #TopMenuStatic{
+    position: absolute;
+    top: 66px;
+    left: 0px;
+    z-index: 5001; 
+  } 
 
   #cookiemsg {
     background-color: var(--color-accent);
