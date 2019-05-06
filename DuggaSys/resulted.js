@@ -614,9 +614,9 @@ function returnedResults(data) {
 				}
 				break;
 			}
-			console.log(studentInfo[1]);
+			console.log(studentInfo[1].timesgraded);
 		}
-		myTable.renderTable();
+		//myTable.renderTable();
 	} else {
 
 		entries = data.entries;
