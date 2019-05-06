@@ -14,7 +14,6 @@ function downloadMode(el) {
     var selectBox = document.getElementById("download");
     download = selectBox.options[selectBox.selectedIndex].value;
     /*if (download.toString() == "getImage") {
-        console.log("b");
         getImage();
     }*/
     if (download == "Save") {
@@ -77,9 +76,9 @@ function loadStoredFolders(f) {
     document.getElementById('showStoredFolders').style.display = "block";
 }
 
-function getImage() {
+/*function getImage() {
 
-}
+}*/
 
 function Save() {
     c = [];
