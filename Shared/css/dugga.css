@@ -171,6 +171,10 @@ strong {font-weight: bold;}
 	border:1px solid #ccc;
 }
 
+.instructions-content p:first-child {
+	margin: 0;
+}
+
 .instructions-button {
 	cursor: pointer;
 	background-color: #ccc;
@@ -215,7 +219,7 @@ strong {font-weight: bold;}
  * --------------================################================-------------- */
 
 .quiz-wrapper{
-	width:70%;
+	width:100%;
 	margin:auto;
 	background-color:#ccc;
 }
