@@ -1776,6 +1776,7 @@ div.submit-button:disabled {
   padding: 4px 8px;
   color: #ffffff;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .buttonStyleDialog:hover {
