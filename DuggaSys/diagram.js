@@ -1588,8 +1588,8 @@ function developerMode() {
 var targetMode;     //the mode that we want to change to when trying to switch the toolbar
 
 //------------------------------------------------------------------------------
-// modeSwitchConfirmed: 
-// This function calls the switch methods if the change is accepted, called  
+// modeSwitchConfirmed:
+// This function calls the switch methods if the change is accepted, called
 // when clicking the dialog.
 //------------------------------------------------------------------------------
 function modeSwitchConfirmed(confirmed) {
@@ -1604,8 +1604,8 @@ function modeSwitchConfirmed(confirmed) {
 }
 
 //------------------------------------------------------------------------------
-// switchToolbarTo: 
-// This function switch opens a dialog for confirmation and sets which mode 
+// switchToolbarTo:
+// This function switch opens a dialog for confirmation and sets which mode
 // to change to.
 //------------------------------------------------------------------------------
 function switchToolbarTo(target){
@@ -2414,9 +2414,9 @@ function switchToolbar(direction) {
       toolbarState = 1;
     }
   }
-  
+
   document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
-  
+
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {

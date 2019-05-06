@@ -906,6 +906,10 @@ function Symbol(kindOfSymbol) {
             }
         }
 
+        if(this.isHovered){
+          this.drawCenterCoordinatesTooltip();
+        }
+
         ctx.save();
 
         ctx.textAlign = "center";
@@ -1856,11 +1860,11 @@ function Symbol(kindOfSymbol) {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        
+
         var offset = 10;
 
         return {
-            x: pixelsToCanvas(x2 + offset).x, 
+            x: pixelsToCanvas(x2 + offset).x,
             y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
 
@@ -1873,7 +1877,7 @@ function Symbol(kindOfSymbol) {
         ctx.lineWidth = 1 * diagram.getZoomValue();
         //Draws the upper part of the lock
         ctx.beginPath();
-        //A slight x offset to get the correct position   
+        //A slight x offset to get the correct position
         ctx.arc(position.x + 5, position.y, 4, 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
@@ -1901,6 +1905,28 @@ function Symbol(kindOfSymbol) {
         ctx.fillText("Entity position is locked", position.x, position.y + offset);
 
         ctx.restore();
+    }
+
+    this.drawCenterCoordinatesTooltip = function() {
+      ctx.save();
+
+      var centerPosition = points[this.centerPoint];
+
+      var yOffset = -100;
+      var xOffset = 0;
+
+      ctx.fillStyle = "#f5f5f5";
+      ctx.fillRect(centerPosition.x + xOffset, centerPosition.y + yOffset, 125, 50);
+
+      yOffset += 12;
+      ctx.fillStyle = "black";
+      ctx.font = "12 px Arial";
+      ctx.fillText(" Center coordinates ", centerPosition.x, centerPosition.y + yOffset);
+
+      yOffset += 20;
+      ctx.fillText("      X: " + Math.round(points[this.centerPoint].x) + "      Y: " + Math.round(points[this.centerPoint].y), centerPosition.x, centerPosition.y + yOffset);
+
+      ctx.restore();
     }
 }
 
