@@ -833,7 +833,7 @@
 		
 		//Check upload_max_filesize parameter
 		if(ini_get('upload_max_filesize')!='128M'){
-			echo "<br><b>upload_max_filesize</b> should be 128M it is currently: " . ini_get('upload_max_filesize');
+			echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
 		}
 
         if(!connectLogDB()){
