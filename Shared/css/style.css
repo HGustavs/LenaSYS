@@ -1471,6 +1471,21 @@ input {
   top: 45px;
 }
 
+#hotkey-front {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 165px;
+}
+#hotkey-back {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 195px;
+}
+
 /* --------------================################================-------------- *
  *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
  * --------------================################================-------------- */
