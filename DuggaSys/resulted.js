@@ -384,14 +384,12 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
-		updateTable();
 	} else if ($(e.target).hasClass("Gc")) {
 		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
 	} else if ($(e.target).hasClass("VGc")) {
 		changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 	} else if ($(e.target).hasClass("U")) {
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
-		updateTable();
 	} else if ($(e.target).hasClass("Uh")) {
 		for (var a = 0; a < students.length; a++) {
 			var student = students[a];
@@ -504,6 +502,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</table>";
 	menu += "</div> <!-- Menu Dialog END -->";
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
+	
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
 }
 
@@ -607,7 +606,7 @@ function returnedResults(data) {
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
 				studentObject.timesGraded = parseInt(data.timesgraded);
-				console.log("student obj:" + studentObject.timesGraded);
+				console.log("student obj:" + data);
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
