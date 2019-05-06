@@ -558,7 +558,6 @@ if(strcmp($opt,"get")==0) {
 		'githubuser' => $gituser,
 		'hourlyevents' => $hourlyevents,
 		'count' => $count,
-		'todaysevents' => $todaysevents,
 		'timesheets' => $timesheets
 	);
 
