@@ -519,12 +519,8 @@ function savequizResult(citstr)
 
 function changeURL(clicked_id, thisurl)
 {
-	alert(thisurl);	
-	alert(clicked_id);
 	var link = document.getElementById(clicked_id);
 	link.href=thisurl;
-	//window.location.href = thisurl;
-	return thisurl;
 }
 
 //----------------------------------------------------------------------------------
