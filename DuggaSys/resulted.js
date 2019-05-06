@@ -507,7 +507,6 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
-	studentInfo = [];
 	var newFeedback = "UNK";
 	if (document.getElementById('newFeedback') !== null) {
 		newFeedback = document.getElementById('newFeedback').value;
@@ -606,7 +605,7 @@ function returnedResults(data) {
 			var studentObject = studentInfo[student]["lid:" + data.duggaid];
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
-				studentObject.timesGraded = parseInt(data.timesgraded);
+				studentObject.timesGraded = 56;
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
