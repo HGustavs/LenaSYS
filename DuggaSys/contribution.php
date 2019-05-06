@@ -39,7 +39,7 @@ pdoConnect();
 	<div id="content">
 	
 	</div>
-	<div id='contribTsTable' style='width:100%; white-space: nowrap;'></div>";
+	<div id='contribTsTable' style='width:100%; white-space: nowrap;'></div>
 	<!-- content END -->
 
 	<?php
