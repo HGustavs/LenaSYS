@@ -94,6 +94,7 @@ var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
+var switchSideA4Holes = false;      // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
@@ -471,7 +472,7 @@ function moveToFront(){
             front.push(diagram[0]);
         }
         else {
-            back.push(diagram[0]);            
+            back.push(diagram[0]);
         }
         diagram.splice(0, 1);
     }
@@ -497,7 +498,7 @@ function moveToBack(){
             back.push(diagram[0]);
         }
         else {
-            front.push(diagram[0]);            
+            front.push(diagram[0]);
         }
         diagram.splice(0, 1);
     }
@@ -1139,7 +1140,8 @@ function drawVirtualA4() {
     const a4Width = 210 * pixelsPerMillimeter;
     const a4Height = 297 * pixelsPerMillimeter;
     // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
-    const holeOffsetX = 12 * pixelsPerMillimeter;
+    const leftHoleOffsetX = 12 * pixelsPerMillimeter;
+    const rightHoleOffsetX = 198 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
 
     ctx.save();
@@ -1155,21 +1157,48 @@ function drawVirtualA4() {
 
     if(toggleA4Holes) {
         if(A4Orientation == "portrait"){
-            //Upper 2 holes
-            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
-            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
-            //Latter two holes
-            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
-            drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+            if (switchSideA4Holes) {
+                // The Holes on the left side.
+                //Upper 2 holes
+                drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+                drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+                //Latter two holes
+                drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+                drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+                switchSideA4Holes = false;
+            }else {
+                // The holes on the right side.
+                //Upper 2 holes
+                drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+                drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+                //Latter two holes
+                drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+                drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+                switchSideA4Holes = true;
+            }
         }
         else if(A4Orientation == "landscape") {
-            //Upper 2 holes
-            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
-            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
-            //Latter two holes
-            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
-            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, holeOffsetX + zeroY, holeRadius);
-        }
+            if (switchSideA4Holes) {
+                // The holes on the upper side.
+                //Upper 2 holes
+                drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+                drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+                //Latter two holes
+                drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+                drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+                switchSideA4Holes = false;
+
+            }else {
+                // The holes on the bottom side.
+                //Upper 2 holes
+                drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+                drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+                //Latter two holes
+                drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+                drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+                switchSideA4Holes = true;
+            }
+      }
     }
     ctx.restore();
 }
@@ -1624,7 +1653,7 @@ function developerMode() {
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-        drawOrigo();   
+        drawOrigo();
         toolbarState = 3;                                                               // Change the toolbar to DEV.
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
@@ -3091,8 +3120,8 @@ function mouseupevt(ev) {
         p2BeforeResize.y = points[diagramObject.bottomRight].y;
     }
 
-    //If the object is created by just clicking and not dragging then set variable so that points 
-    //are moved to mouse position inside the adjust function 
+    //If the object is created by just clicking and not dragging then set variable so that points
+    //are moved to mouse position inside the adjust function
     if (diagramObject && p1BeforeResize.x == p2BeforeResize.x && p1BeforeResize.y == p2BeforeResize.y) {
         diagramObject.pointsAtSamePosition = true;
     }
