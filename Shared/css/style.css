@@ -3908,10 +3908,6 @@ only screen and (max-device-width: 320px) {
   right: 4px;
 }
 
-.slidecontainer {
-  width: 100%; /* Width of the outside container */
-}
-
 /* The slider itself */
 .zoomSlider {
   -webkit-appearance: none;  /* Override default CSS styles */
