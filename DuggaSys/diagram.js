@@ -3355,11 +3355,20 @@ function loadLineForm(element, dir) {
             if(globalAppearanceValue == 0) {
                 var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
                 var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
+                var lineDirection = diagram[lastSelectedObject].lineDirection;
+
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
                 var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
+                var tempLineDirection = lineDirection;
+                if (lineDirection == "" || lineDirection == null) {
+                    diagram[lastSelectedObject].lineDirection = "First";
+                    tempLineDirection = "First";  
+                }
 
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
                 setSelectedOption('cardinality', tempCardinality);
+                setSelectedOption('line_direction', tempLineDirection);
+
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
@@ -3485,7 +3494,7 @@ function objectAppearanceMenu(form) {
         loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
     }
     // Lines selected
-    else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
+    else if (diagram[lastSelectedObject].symbolkind == symbolKind.line || diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
         loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
     // ER relation selected
@@ -3525,6 +3534,10 @@ function changeObjectAppearance(object_type) {
 
     } else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
+    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
+        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
+        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('line_direction').value;
+        // something about the line type ?? 
     } else if (diagram[lastSelectedObject].kind == kind.path) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
@@ -3583,3 +3596,7 @@ function changeCardinality(isUML) {
         }
     }
 }
+function changeLineDirection() {
+    diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
+    console.log("lineDirection " + diagram[lastSelectedObject].lineDirection);
+} 
