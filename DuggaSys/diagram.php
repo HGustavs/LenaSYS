@@ -327,7 +327,7 @@
                 <span class="tooltiptextDec">Zoom Out</span>
               </div>
               <div id="range" style="padding-right: 8px;">
-                <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1" class="zoomSlider">
+                <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.01" class="zoomSlider">
               </div>
 
               <div class="tooltipIncrease" style="position: static;">

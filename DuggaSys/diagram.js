@@ -1290,7 +1290,7 @@ function canvasSize() {
 window.addEventListener('resize', canvasSize);
 
 function mod(n, m) {
-  return  Math.round(Math.round(((n % m) + m)) % m);
+  return  Math.round(Math.round(Math.round(n % m) + m) % m);
 }
 
 //----------------------------------------------------------
@@ -1490,12 +1490,12 @@ function connectedObjects(line) {
 
 function drawGrid() {
     ctx.lineWidth = 1 * zoomValue;
-    let zoomGridSize = gridSize * zoomValue;
-    myOffsetX = origoOffsetX % zoomGridSize;
-    myOffsetY = origoOffsetY % zoomGridSize;
+    let zoomGridSize = Math.round(gridSize * zoomValue);
+    myOffsetX = mod(origoOffsetX, zoomGridSize);
+    myOffsetY = mod(origoOffsetY, zoomGridSize);
 
     // Draw a horizontal and a vertical line until the canvas is filled
-    for(let i = 0; i < canvas.width / (gridSize * zoomValue); i++){
+    for(let i = 0; i < canvas.width / (gridSize * zoomValue) * 1.5; i++){
         if(mod(myOffsetX, zoomGridSize * 5) == mod(origoOffsetX, zoomGridSize * 5)) {
             // Every fifth line is a darker grey
             ctx.strokeStyle = "rgb(208, 208, 220)";
@@ -2466,9 +2466,9 @@ function changeZoom(zoomValue){
 
 function scrollZoom(event) {
     if(event.deltaY > 0){
-        changeZoom(-0.1);
+        changeZoom(-0.01);
     } else {
-        changeZoom(0.1);
+        changeZoom(0.01);
     }
 }
 
