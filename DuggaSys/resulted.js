@@ -511,6 +511,7 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qva
 		newFeedback = document.getElementById('newFeedback').value;
 	}
 	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
+	updateTable();
 }
 
 function moveDist(e) {
