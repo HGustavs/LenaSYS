@@ -2413,8 +2413,7 @@ span.arrow {
 /* End DuggaSys resulted*/
 
 /**************************/
-
-.warning .late-submission {
+.late-submission {
   visibility: hidden;
   width: 120px;
   background-color: white;
