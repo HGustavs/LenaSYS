@@ -4936,7 +4936,8 @@ textarea#filecont{
   border-bottom: 1px solid #cdd0d6;
 }
 .tsTable thead {
-  background: #cdd0d6;
+  background: var(--color-primary);
+  color: white;
 }
 .tsTable th {
   padding: 10px;
