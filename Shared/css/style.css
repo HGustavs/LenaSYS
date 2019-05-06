@@ -3784,6 +3784,8 @@ only screen and (max-device-width: 320px) {
 /* Is used to style a Select-box in diagram.php. */
 
 #selectDiv {
+  display: flex;
+  align-items: center;
   background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;

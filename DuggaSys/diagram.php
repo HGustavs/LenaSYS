@@ -314,7 +314,7 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-              <div class="tooltipDecrease" style="position: static; padding-top: 5px">
+              <div class="tooltipDecrease" style="position: static;">
                 <button name="Zoom" id="zoomDecrease" type="button" onclick="changeZoom(-0.1);"> - </button>
                 <span class="tooltiptextDec">Zoom Out</span>
               </div>
@@ -323,7 +323,7 @@
               </div>
               <div class="tooltipIncrease" style="position: static;">
                 <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
-                <span class="tooltiptextInc">Zoom In</span>
+                <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
               </div>
               <div id="zoomV"></div>
             </div>
