@@ -606,7 +606,6 @@ function returnedResults(data) {
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
 				studentObject.timesGraded = parseInt(data.timesgraded);
-				console.log(data['timesgraded']);
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
@@ -615,6 +614,7 @@ function returnedResults(data) {
 				}
 				break;
 			}
+			console.log(studentInfo);
 		}
 		myTable.renderTable();
 	} else {
