@@ -40,6 +40,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 }
 #gradeBtn {
 	background-color:var(--color-accent);
+	border: none;
 	position: fixed;
 	height: 56px;
 	width: 56px;
