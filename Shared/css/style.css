@@ -4885,7 +4885,7 @@ textarea#filecont{
   width: 60px;
 }
 
-/* Preview, Edit and Delete columns */
+/*  Preview, Edit and Delete columns  */
 .variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
   width: 25px;
 }
