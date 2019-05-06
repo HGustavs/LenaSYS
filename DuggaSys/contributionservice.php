@@ -425,15 +425,12 @@ if(strcmp($opt,"get")==0) {
 			$weekno++;
 
 	}while($weekno<11);
-
-	$today = date('Y-m-d');
-	//$today = '2019-04-10'; // For testing purposes
-	$todaysevents = array();
+	
+	$hourlyevents = array();
 
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND DATE(eventtime)=:today AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
-	$query->bindParam(':today', $today);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -444,12 +441,11 @@ if(strcmp($opt,"get")==0) {
 				'type' => $row['kind'],
 				'time' => $row['eventtimeh']
 			);
-			array_push($todaysevents, $event);
+			array_push($hourlyevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND DATE(issuetime)=:today;');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2019-03-31" and issuetime!="undefined" and issuetime<"2020-01-01";');
 	$query->bindParam(':gituser', $gituser);
-	$query->bindParam(':today', $today);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -460,7 +456,7 @@ if(strcmp($opt,"get")==0) {
 			'type' => 'issue',
 			'time' => $row['issuetimeh']
 		);
-		array_push($todaysevents, $issue);
+		array_push($hourlyevents, $issue);
 	}
 
 
@@ -560,6 +556,7 @@ if(strcmp($opt,"get")==0) {
 		'allcommentranks' => $allcommentranks,
 		'allcommitranks' => $allcommitranks,
 		'githubuser' => $gituser,
+		'hourlyevents' => $hourlyevents,
 		'count' => $count,
 		'todaysevents' => $todaysevents,
 		'timesheets' => $timesheets

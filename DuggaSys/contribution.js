@@ -367,6 +367,11 @@ function changeDay(date)
 {
   AJAXService("updateday",{userid:"HGustavs", today: date},"CONTRIBUTION");
 }
+function showAllDays()
+{
+  var div = document.getElementById('hourlyGraph');
+  div.innerHTML = renderCircleDiagram(JSON.stringify(retdata['hourlyevents']));
+}
 function renderCircleDiagram(data, day)
 {
   var today = new Date();
@@ -383,10 +388,20 @@ function renderCircleDiagram(data, day)
 
   var activities = JSON.parse(data);
   var str = "";
-  str+="<h2 style='padding:10px'>Activities today</h2>";
-  str+="<input type='date' id='circleGraphDatepicker' value="+today+" onchange='changeDay(this.value)' />";
+  str+="<h2 style='padding:10px'>Hourly activities</h2>";
+  str+="<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
+  if (day) {
+    str+="value="+today+" ";
+  } 
+  str+="onchange='changeDay(this.value)' />";
+  str+="<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
+  if (day) {
+    str+="<p style='margin-left: 10px'>Showing activities for "+today+"</p>";
+  } else {
+    str+="<p style='margin-left: 10px'>Showing activities for the period 2019-03-31 - "+today+"</p>";
+  }
   str+="<div class='circleGraph'>";
-  str+="<div id='activityInfoBox'><span id='allActivity'></span><span id='activityTime'></span><span id='activityPercent'></span><span id='activityCount'></span></div>";
+  str+="<div id='activityInfoBox'><span style='grid-row-start: -1' id='activityTime'></span><span style='grid-row-start: -1' id='activityPercent'></span><span style='grid-row-start: -1' id='activityCount'></span></div>";
   str+="<svg width='500' height='500'>";
   str+="<circle class='circleGraphCircle' cx='250' cy='250' r='220' />";
   str+=renderHourMarkers();
@@ -428,7 +443,7 @@ function renderActivityPoints(activities)
   var uniquePoints = [];
   var activityTypes = {times: {}, types: {}};
   const RADIUS = 220;
-  const BASELINE = 50;
+  const BASELINE = 75;
   const MIDDLE = 243;
   activities.forEach(entry => {
     var hour = entry.time.substr(0,2);
@@ -517,7 +532,6 @@ function renderHourMarkers()
 function showAllActivity(e, activities)
 {
   var box = document.getElementById('activityInfoBox');
-  var span = document.getElementById('allActivity');
   var times = Object.keys(activities.times);
   var types = Object.keys(activities.types);
   
@@ -535,10 +549,10 @@ function showAllActivity(e, activities)
       });
       str += "</span>";
   }
-  span.innerHTML = str;
-  box.style.display = 'block';
-  box.style.left = e.offsetX +10+ "px";
-  box.style.top = e.offsetY +10+ "px";
+  box.innerHTML += str;
+  box.style.display = 'grid';
+  box.style.left = e.layerX +10+ "px";
+  box.style.top = e.layerY +10+ "px";
 }
 
 // Shows info about the activity point the user hovers over in the circle graph
@@ -550,8 +564,8 @@ function showActivityInfo(e, type, hour, pc, activities)
   var countSpan = document.getElementById('activityCount');
   var prevHour = (parseInt(hour)-1);
   box.style.display = 'block';
-  box.style.left = e.offsetX +10+ "px";
-  box.style.top = e.offsetY +10+ "px";
+  box.style.left = e.layerX +10+ "px";
+  box.style.top = e.layerY +10+ "px";
 
   timeSpan.innerHTML = prevHour+".00 - "+hour+".00";
   pcSpan.innerHTML = pc+"% Activity";
@@ -570,11 +584,13 @@ function hideActivityInfo()
   var timeSpan = document.getElementById('activityTime');
   var pcSpan = document.getElementById('activityPercent');
   var countSpan = document.getElementById('activityCount');
-  var allSpan = document.getElementById('allActivity');
+  var allSpans = [...document.getElementsByClassName('activityInfoEntry')];
+  allSpans.forEach(span => {
+    box.removeChild(span);
+  });
   timeSpan.innerHTML = "";
   pcSpan.innerHTML = "";
   countSpan.innerHTML = "";
-  allSpan.innerHTML = "";
   box.style.display = 'none';
 }
 
@@ -664,14 +680,12 @@ var momentexists=0;
 var resave = false;
 function returnedSection(data)
 {
-  retdata=data;
-
-  if (Object.keys(data).length === 2) {
+    if (Object.keys(data).length === 2) {
     var div = document.getElementById('hourlyGraph');
     div.innerHTML = renderCircleDiagram(JSON.stringify(data['events']),data['day']);
     return;
   }
-
+  retdata=data;
   if(data['debug']!="NONE!") alert(data['debug']);
 
   contribDataArr = [];
@@ -734,7 +748,7 @@ function returnedSection(data)
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
     str+="<div id='hourlyGraph'>";
-    str+=renderCircleDiagram(JSON.stringify(data['todaysevents']));
+    str+=renderCircleDiagram(JSON.stringify(data['hourlyevents']));
     str+="</div>";
 
     // Table heading
