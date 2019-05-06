@@ -305,26 +305,6 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 	return str;
 }
 
-function renderColumnFilter(col, status, colname) {
-	str = "";
-	if (colname == "User")
-		return str;
-	if (status) {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	} else {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	}
-	return str;
-}
-
-function onToggleFilter(colId) {
-	myTable.toggleColumn(colId, colId);
-}
-
 //--------------------------------------------------------------------------
 // updateCellCallback
 // ---------------
@@ -400,7 +380,6 @@ function returnedAccess(data) {
 		filterElementId: "filterOptions",
 		renderCellCallback: renderCell,
 		renderSortOptionsCallback: renderSortOptions,
-		renderColumnFilterCallback: renderColumnFilter,
 		rowFilterCallback: rowFilter,
 		displayCellEditCallback: displayCellEdit,
 		updateCellCallback: updateCellCallback,
