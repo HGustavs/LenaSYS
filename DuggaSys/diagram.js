@@ -997,8 +997,6 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
     setInterval(function() {Save()}, 10000);
-    widthWindow = (window.innerWidth - 20);
-    heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
@@ -1211,7 +1209,7 @@ function importFile() {
 
 function canvasSize() {
     boundingRect = myCanvas.getBoundingClientRect();
-    widthWindow = (window.innerWidth - 30);
+    widthWindow = (window.innerWidth - 100);
     heightWindow = (window.innerHeight - 110);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
@@ -2286,38 +2284,11 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
-    element.style.top = (boundingRect.top+"px");
+    element.style.top = (boundingRect.top + "px");
+    element.style.left = (boundingRect.left - 76 + "px");
+    element.style.width = (73 + "px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
-    switchToolbar();
     element.style.display = "inline-block";
-}
-
-function toggleToolbarMinimize() {
-    if($("#minimizeArrow").hasClass("toolbarMaximized")) {
-        $(".application-toolbar").slideUp("fast");
-        $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
-    }else {
-        $(".application-toolbar").slideDown("fast");
-        $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
-    }
-}
-
-function toggleToolbarLayout() {
-    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()) {
-        $(".application-toolbar").css({"display": "flex", "flex-direction": "column"});
-        $(".toolbarArrows").css({"width": "1.7em"});
-        $("#diagram-toolbar").css({"width":"auto"});
-        $("#toolbar-switcher").css({"width": "1.7em", "width": "","justify-content":"center", "margin": "0 30%", "padding": "0"});
-        $(".label").css({"padding": "0 0 0 15px"});
-        $(".toolsContainer").css({"display": "flex"});
-    }else {
-        $(".application-toolbar").css({"display": "", "flex-wrap": ""});
-        $(".toolbarArrows").css({"width": "20%"});
-        $("#diagram-toolbar").css({"width":""});
-        $("#toolbar-switcher").css({"width": "auto","justify-content":"", "margin": "0", "padding": ""});
-        $(".label").css({"padding": "0 4px"});
-        $(".toolsContainer").css({"display": ""});
-    }
 }
 
 //----------------------------------------------------------------------
@@ -2399,10 +2370,6 @@ function switchToolbar(direction) {
 
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
-
-$( function() {
-    $( "#diagram-toolbar" ).draggable();
-} );
 
 // ----------------------------------
 // DIAGRAM MOUSE SECTION
@@ -2689,7 +2656,6 @@ function mousemoveevt(ev, t) {
 
 function mousedownevt(ev) {
     canvasLeftClick = 1;
-
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     startMouseCoordinateX = currentMouseCoordinateX;

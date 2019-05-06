@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome = 1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Section Editor</title>
+    <title>Diagram</title>
     <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -51,17 +51,10 @@
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
-        <div id="buttonDiv">
+        <div id="buttonDiv" style ="margin-left: 68px;" >
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none">
+                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-left: 0px; height: ; text-align: center;" onmousedown="">
                     <div class="application-header">
-                        <div id="toolbar-minimize"  onclick="toggleToolbarMinimize();">
-                            <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
-                          </div>
-                          <h3>Toolbar</h3>
-                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();">
-                              <img id="layoutArrow" class="toolbarMaximized" src="../Shared/icons/rotateButton.svg">
-                            </div>
                         </div>
                         <div class='application-toolbar'>
                           <div id="toolbar-switcher">
@@ -85,7 +78,7 @@
                               <h4 class="label tlabel" id="labelCreate">Create</h4>
                               <div class="toolbar-drawer" id="drawerCreate">
                                   <div class="tooltipdialog">
-                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer" class='buttonsStyle unpressed' data="Create Attribute">
+                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Attribute">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                       </button>
                                       <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity">
@@ -114,14 +107,16 @@
                                 </button>
                             </div>
                           </div>
-                          <div class="labelToolContainer">
+                          <div class="labelToolContainer" style = "margin-bottom: -15px;">
                             <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
-                            <div class="toolbar-drawer" id="drawerUndo" style="text-align: center">
+                            <div class="toolbar-drawer" id="drawerUndo">
                                 <button class="diagramAction" id="undoButton" onclick='undoDiagram()' data="Undo">
-                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
+                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px;">
                                 </button>
+                                </br>
+                                </br>
                                 <button class="diagramAction" id="redoButton" onclick='redoDiagram()' data="Redo">
-                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
+                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px;">
                                 </button>
                             </div>
                         </div>
@@ -308,8 +303,8 @@
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
-
-            <div id="canvasDiv"></div>
+            <div id="canvasDiv" style = "margin-left: 65px">
+            </div>
             <div id="consoleDiv">
             <!--
                 Can be used for a later date. Not needed now.
