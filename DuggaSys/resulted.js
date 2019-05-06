@@ -506,21 +506,15 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
 }
+
 function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
-	var markCont = document.getElementById('MarkCont');
 	var width = toggleGrade.offsetWidth;
+
 	$('#toggleGrade').animate({width: 'toggle'});
 	if(width <= 0){
-		toggleGrade.style.position = 'relative';
-		toggleGrade.style.display = 'block';
-		markCont.style.position = 'absolute';
-		state = false;
-	} else if(width > 0){
-		toggleGrade.style.display = 'none';
+		toggleGrade.style.position = 'absolute';
 	}
-
-
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
