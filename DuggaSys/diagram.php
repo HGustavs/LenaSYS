@@ -323,14 +323,14 @@
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
               <div class="tooltipDecrease">
-                <button name="Zoom" id="zoomDecrease" type="button" onclick="changeZoom(-0.1);"> - </button>
+                <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1);"> - </button>
                 <span class="tooltiptextDec">Zoom Out</span>
               </div>
               <div id="range">
                 <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
               </div>
               <div class="tooltipIncrease">
-                <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
+                <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1);"> + </button>
                 <span class="tooltiptextInc">Zoom In</span>
               </div>
               <div id="zoomV"></div>
@@ -382,10 +382,10 @@
             </div>
             <div class='mode-wrap'>
                 <div id="importButtonWrap" class="importButtonWrap">
-                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(true);" value="Accept" />
+                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(true);">Accept</button>
                 </div>
                 <div id="importButtonWrap" class="importButtonWrap">
-                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(false);" value="Cancel" />
+                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
                 </div>
             </div>
         </div>
