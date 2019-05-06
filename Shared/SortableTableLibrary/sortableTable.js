@@ -47,7 +47,7 @@ function sortableInternalSort(a, b) {
 	var ret = 0;
 	//var colname = sortableTable.currentTable.getKeyByValue();
 	var colname = sortableTable.currentTable.getSortcolumn();
-	
+
 	if ((sortableTable.currentTable.sortkind % 2) == 0) {
 		//alert("Compare: "+a+" "+b);
 		ret = newCompare(a[colname], b[colname]);
@@ -95,7 +95,6 @@ function clickedInternal(event, clickdobj) {
 		let regex = new RegExp("^r([0-9]+)" + DELIMITER + "([a-zA-Z0-9]+)" + DELIMITER + "(.*)")
 		let match = cellelement.id.match(regex);
 		var rowno = match[1];
-		var columnno = null; // Not used anymore
 		var tableid = match[2];
 		var columnname = match[3]
 		var str = "";
@@ -109,6 +108,7 @@ function clickedInternal(event, clickdobj) {
 		sortableTable.edit_tableid = tableid;
 		sortableTable.edit_celldata = coldata;
 		var estr = sortableTable.currentTable.showEditCell(coldata, rowno, rowelement, cellelement, columnname, columnno, rowdata, coldata, tableid);
+
 		if (estr !== false) {
 			str += "<div id='input-container' style='flex-grow:1'>";
 			str += estr;
@@ -735,7 +735,7 @@ function newCompare(firstCell, secoundCell) {
 				}
 			}
 		}
-		
+
 		if (col === "requestedpasswordchange") {
 			firstCellTemp = JSON.parse(firstCell);
 			secoundCellTemp = JSON.parse(secoundCell);
