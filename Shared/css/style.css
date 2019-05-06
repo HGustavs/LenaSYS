@@ -4936,8 +4936,7 @@ textarea#filecont{
   border-bottom: 1px solid #cdd0d6;
 }
 .tsTable thead {
-  background: var(--color-primary);
-  color: white;
+  background: #cdd0d6;
 }
 .tsTable th {
   padding: 10px;
@@ -4957,8 +4956,7 @@ textarea#filecont{
   padding: 5px;
 }
 .tsTable tfoot {
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-background-3);
 }
 .tsTable tfoot:hover {
   background: #7B5A96;
@@ -4979,6 +4977,8 @@ textarea#filecont{
   width: 100%;
   padding: 10px;
   cursor: pointer;
+  background: var(--color-primary);
+  color: white;
 }
 #tsSubmit {
   margin-left: 50px;
