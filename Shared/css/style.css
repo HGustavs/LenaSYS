@@ -765,12 +765,12 @@ header td {
   background: var(--color-background);
 }
 
-#TopMenuStatic { 
-  position: fixed; 
-  top: 3px; 
-  left: 95px; 
-  right: 100px; 
-  z-index: 5001; 
+#TopMenuStatic {
+  position: fixed;
+  top: 3px;
+  left: 95px;
+  right: 100px;
+  z-index: 5001;
 }
 
 /* --------------================################================-------------- *
@@ -1613,7 +1613,7 @@ input.submit-button {
   margin-bottom: 2px;
   margin-left: 4px;
   font-size: 14px;
-  transition: 1s background-color;
+  transition: 0.1s background-color;
   float: left;
   -webkit-appearance: none
 }

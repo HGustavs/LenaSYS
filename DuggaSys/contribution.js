@@ -607,6 +607,70 @@ function intervaltocolor(size,val)
     }
 }
 
+function createTimeSheetTable(data)
+{
+  data.forEach(entry => {
+    var typeURL;
+    if (entry.type === 'pullrequest') typeURL = 'pull';
+    if (entry.type === 'issue') typeURL = 'issues';
+    var link = 'https://github.com/HGustavs/LenaSYS/'+typeURL+'/'+entry.reference;
+    entry['link'] = link;
+  });
+
+  var tabledata = {
+		tblhead:{
+      week:"Week",
+			day:"Date",
+			type:"Type",
+			reference:"Reference",
+      comment:"Comment",
+      link:"Link"
+		},
+		tblbody: data,
+		tblfoot:{}
+  };
+	var colOrder=["week","day","type","reference","comment","link"];
+	myTable = new SortableTable({
+		data:tabledata,
+		tableElementId:"contribTsTable",
+		renderCellCallback:renderCell,
+		renderSortOptionsCallback:renderSortOptions,
+		columnOrder:colOrder,
+		freezePaneIndex:4,
+		hasRowHighlight:false,
+		hasMagicHeadings:true,
+		hasCounterColumn:true
+	});
+
+	myTable.renderTable();
+}
+function renderCell(col,celldata,cellid) 
+{
+  var str="UNK";
+  obj = celldata;
+  if (col==='link') {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>";
+    str += "<a href='"+obj+"' target='_blank'>Github</a></span></div>";
+  } else if (col==='week'||col==='reference'){
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+parseInt(obj)+"</span></div>";
+  } else {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+obj+"</span></div>";
+  }
+  return str;
+}
+function renderSortOptions(col,status,colname) 
+{
+	str = "";
+	if (status == -1) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
+	return str;
+}
+
 function selectuser()
 {
     AJAXService("get",{userid:document.getElementById('userid').value},"CONTRIBUTION");
@@ -680,6 +744,7 @@ function returnedSection(data)
     str+="</tr>";
     str+="</table>";
 
+    str+=createTimeSheetTable(data['timesheets']);
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
     str+="<div id='hourlyGraph'>";
@@ -753,7 +818,7 @@ function returnedSection(data)
 
 
 						if(week.issues.length>0){
-								str+="<div class='createissue'>Creeated "+week.issues.length+" issue(s).</div>";
+								str+="<div class='createissue'>Created "+week.issues.length+" issue(s).</div>";
 								for(j=0;j<week.issues.length;j++){
 										var issue=week.issues[j];
 										var issuestr=issue.issueno+" "+issue.title;

@@ -466,10 +466,6 @@ function returnedDugga(data) {
 						content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
 				content += "</div>"
 
-				/* FAB Button */
-				content += "<div class='fixed-action-button'>"
-						content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
-				content += "</div>";
 		}
 		else {
 				$("#quiz").html("");
