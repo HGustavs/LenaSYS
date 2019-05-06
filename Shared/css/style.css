@@ -3470,6 +3470,13 @@ ul.hamburgerList button.menuButton {
   width: 100%;
 }
 
+@media only screen and (min-width: 1085px),
+only screen and (min-device-width: 1085px) {
+  /* #TopMenuStatic{
+    position: fixed;
+  } */
+}
+
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
 #sortingBar {
