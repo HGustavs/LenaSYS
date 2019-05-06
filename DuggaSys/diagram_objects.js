@@ -977,22 +977,22 @@ function Symbol(kindOfSymbol) {
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != symbolKind.text) {
             ctx.beginPath();
-            ctx.arc(x1,y1,5,0,2*Math.PI,false);
+            ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
 
             ctx.beginPath();
-            ctx.arc(x2,y2,5,0,2*Math.PI,false);
+            ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
             if(this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
                 ctx.beginPath();
-                ctx.arc(x1,y2,5,0,2*Math.PI,false);
+                ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
                 ctx.fill();
 
                 ctx.beginPath();
-                ctx.arc(x2,y1,5,0,2*Math.PI,false);
+                ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
                 ctx.fill();
             }
@@ -1904,11 +1904,11 @@ function Symbol(kindOfSymbol) {
         //Draws the upper part of the lock
         ctx.beginPath();
         //A slight x offset to get the correct position   
-        ctx.arc(position.x + 5, position.y, 4, 1 * Math.PI, 2 * Math.PI);
+        ctx.arc(position.x + (5 * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
         //Draws the lock body
-        ctx.fillRect(position.x, position.y, 10, 10);
+        ctx.fillRect(position.x, position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
 
         ctx.restore();
     }
