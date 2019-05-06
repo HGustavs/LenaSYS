@@ -384,12 +384,14 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		updateTable();
 	} else if ($(e.target).hasClass("Gc")) {
 		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
 	} else if ($(e.target).hasClass("VGc")) {
 		changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 	} else if ($(e.target).hasClass("U")) {
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		updateTable();
 	} else if ($(e.target).hasClass("Uh")) {
 		for (var a = 0; a < students.length; a++) {
 			var student = students[a];
@@ -511,7 +513,6 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qva
 		newFeedback = document.getElementById('newFeedback').value;
 	}
 	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
-	updateTable();
 }
 
 function moveDist(e) {
