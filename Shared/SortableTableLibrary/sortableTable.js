@@ -93,14 +93,13 @@ function clickedInternal(event, clickdobj) {
 	}
 	sortableTable.currentTable = active;
 
-	// when a dropdown input in row is opened and edited(seems to only be in accessed) 
+	// when a dropdown input in row is opened and edited(seems to only be in accessed)
 	if (sortableTable.currentTable.showEditCell != null) {
 		var cellelement = event.target.closest("td");
 		var rowelement = event.target.closest("tr");
 		let regex = new RegExp("^r([0-9]+)" + DELIMITER + "([a-zA-Z0-9]+)" + DELIMITER + "(.*)")
 		let match = cellelement.id.match(regex);
 		var rowno = match[1];
-		var columnno = null; // Not used anymore
 		var tableid = match[2];
 		var columnname = match[3]
 		var str = "";
@@ -239,7 +238,7 @@ function SortableTable(param) {
 		columnOrder.push(rowsumList[i][0]['id']);
 	}
 
-	// Private member variables 
+	// Private member variables
 	var result = 0;
 	var columnfilter = [];
 	var sortcolumn = "UNK";
@@ -524,7 +523,7 @@ function SortableTable(param) {
 		// Save column name to local storage!
 		localStorage.setItem(this.tableid + DELIMITER + "sortcol", col);
 		localStorage.setItem(this.tableid + DELIMITER + "sortkind", kind);
-		
+
 		sortcolumn = col;
 		sortkind = kind;
 
@@ -552,7 +551,7 @@ function SortableTable(param) {
 
 	this.getSortkind = function () {
 		return sortkind;
-	}			
+	}
 
 	this.magicHeader = function () {
 		// Assign table and magic headings table(s)
@@ -742,7 +741,7 @@ function newCompare(firstCell, secoundCell) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
-		} 
+		}
 	   //Check if the cell is a valid cell in the table.
 	}else if (typeof firstCell === 'object' && col.includes("lid")){
 		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
@@ -815,7 +814,7 @@ function newCompare(firstCell, secoundCell) {
 			val = secoundCell < firstCellTemp;
 		}
 	}
-	
+
 	return val;
 
 }
