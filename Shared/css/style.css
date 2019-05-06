@@ -98,7 +98,6 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: black;
 }
 
 body {
@@ -4937,7 +4936,8 @@ textarea#filecont{
   border-bottom: 1px solid #cdd0d6;
 }
 .tsTable thead {
-  background: #cdd0d6;
+  background: var(--color-primary);
+  color: white;
 }
 .tsTable th {
   padding: 10px;
@@ -4957,7 +4957,8 @@ textarea#filecont{
   padding: 5px;
 }
 .tsTable tfoot {
-  background: var(--color-background-3);
+  background: var(--color-primary);
+  color: white;
 }
 .tsTable tfoot:hover {
   background: #7B5A96;
