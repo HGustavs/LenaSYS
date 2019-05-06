@@ -1910,21 +1910,24 @@ function Symbol(kindOfSymbol) {
     this.drawCenterCoordinatesTooltip = function() {
       ctx.save();
 
+      var topLeftPosition = points[this.topLeft];
       var centerPosition = points[this.centerPoint];
+      var widthOfObject = points[this.bottomRight].x - points[this.topLeft].x;
 
-      var yOffset = -100;
-      var xOffset = 0;
+      var yOffset = -40;
+      var xOffset = -3;
 
       ctx.fillStyle = "#f5f5f5";
-      ctx.fillRect(centerPosition.x + xOffset, centerPosition.y + yOffset, 125, 50);
+      ctx.fillRect(topLeftPosition.x, topLeftPosition.y + yOffset, widthOfObject, 40);
 
       yOffset += 12;
       ctx.fillStyle = "black";
-      ctx.font = "12 px Arial";
-      ctx.fillText(" Center coordinates ", centerPosition.x, centerPosition.y + yOffset);
+      ctx.font = "12px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Center coordinates", centerPosition.x, topLeftPosition.y + yOffset);
 
       yOffset += 20;
-      ctx.fillText("      X: " + Math.round(points[this.centerPoint].x) + "      Y: " + Math.round(points[this.centerPoint].y), centerPosition.x, centerPosition.y + yOffset);
+      ctx.fillText("X: " + Math.round(points[this.centerPoint].x) + "  Y: " + Math.round(points[this.centerPoint].y), centerPosition.x, topLeftPosition.y + yOffset);
 
       ctx.restore();
     }
