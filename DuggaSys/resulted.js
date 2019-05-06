@@ -507,6 +507,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
+	studentInfo = [];
 	var newFeedback = "UNK";
 	if (document.getElementById('newFeedback') !== null) {
 		newFeedback = document.getElementById('newFeedback').value;
@@ -615,7 +616,7 @@ function returnedResults(data) {
 				break;
 			}
 		}
-		updateTable();
+		myTable.renderTable();
 	} else {
 
 		entries = data.entries;
