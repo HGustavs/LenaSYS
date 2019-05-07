@@ -18,16 +18,7 @@ function Symbol(kindOfSymbol) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];            // Free text array
-    this.textsize = 14;             // 14 pixels text size is default
-    this.symbolColor = '#ffffff';   // change background colors on entities
-    this.strokeColor = '#000000';   // change standard line color
-    this.font = "Arial";            // set the standard font
-    this.lineWidth = 2;
-    this.fontColor = '#000000';
     this.name = "New Class";        // Default name is new class
-    this.key_type = "normal";       // Defult key type for a class.
-    this.sizeOftext = "Tiny";       // Used to set size of text.
-    this.textAlign = "center";      // Used to change alignment of free text
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
@@ -43,6 +34,7 @@ function Symbol(kindOfSymbol) {
     this.isAttribute = false;
     this.isRelation = false;
     this.isLine = false;
+    this.pointsAtSamePosition = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -252,6 +244,17 @@ function Symbol(kindOfSymbol) {
             }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
+
+            //only when object is created: changes position of points so that object is created from center point instead of topleft
+            if(this.pointsAtSamePosition) {
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                for (var i = this.topLeft; i <= this.centerPoint; i++) {
+                    //entity and attribute template is the same size so either should work fine
+                    points[i].x -= entityTemplate.width * 0.5;
+                    points[i].y -= entityTemplate.height * 0.5;
+                }
+                this.pointsAtSamePosition = false;
+            }
         } else if (this.symbolkind == symbolKind.uml) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
@@ -306,6 +309,15 @@ function Symbol(kindOfSymbol) {
             if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y) {
                 points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
             }
+            //only when object is created: changes position of points so that object is positioned from center point instead of topleft
+            if(this.pointsAtSamePosition) {
+                //change all 3 points 0,5 * min width/height to the left/up to move object to mouse position  
+                for (var i = this.topLeft; i <= this.centerPoint; i++) {
+                    points[i].x -= this.minWidth * 0.5;
+                    points[i].y -= this.minHeight * 0.5;
+                }
+                this.pointsAtSamePosition = false;
+            }
         } else if (this.symbolkind == symbolKind.erRelation) {
             if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
                 // If the width is less than the minimum, push out the
@@ -339,6 +351,15 @@ function Symbol(kindOfSymbol) {
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
 
+            //only when object is created: changes position of points so that object is positioned from center point instead of topleft
+            if(this.pointsAtSamePosition) {
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                for (var i = this.topLeft; i <= this.centerPoint; i++) {
+                    points[i].x -= relationTemplate.width * 0.5;
+                    points[i].y -= relationTemplate.height * 0.5;
+                }
+                this.pointsAtSamePosition = false;
+            }
         } else if (this.symbolkind == symbolKind.text) {
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
@@ -948,22 +969,22 @@ function Symbol(kindOfSymbol) {
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != symbolKind.text) {
             ctx.beginPath();
-            ctx.arc(x1,y1,5,0,2*Math.PI,false);
+            ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
 
             ctx.beginPath();
-            ctx.arc(x2,y2,5,0,2*Math.PI,false);
+            ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
             if(this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
                 ctx.beginPath();
-                ctx.arc(x1,y2,5,0,2*Math.PI,false);
+                ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
                 ctx.fill();
 
                 ctx.beginPath();
-                ctx.arc(x2,y1,5,0,2*Math.PI,false);
+                ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
                 ctx.fill();
             }
@@ -1039,7 +1060,7 @@ function Symbol(kindOfSymbol) {
         ctx.fillStyle = this.properties['symbolColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
-            drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+            drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
             ctx.stroke();
             this.makeShadow();
             drawOval(x1, y1, x2, y2);
@@ -1251,11 +1272,11 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
 
         if (this.properties['key_type'] == "Weak") {
-            ctx.moveTo(x1 - 5, y1 - 5);
-            ctx.lineTo(x2 + 5, y1 - 5);
-            ctx.lineTo(x2 + 5, y2 + 5);
-            ctx.lineTo(x1 - 5, y2 + 5);
-            ctx.lineTo(x1 - 5, y1 - 5);
+            ctx.moveTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
             ctx.stroke();
             ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
@@ -1695,11 +1716,11 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
         if (this.properties['key_type'] == 'Weak') {
             ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-            ctx.moveTo(midx, y1 + 5);
-            ctx.lineTo(x2 - 9, midy + 0);
-            ctx.lineTo(midx + 0, y2 - 5);
-            ctx.lineTo(x1 + 9, midy + 0);
-            ctx.lineTo(midx + 0, y1 + 5);
+            ctx.moveTo(midx, y1 + 5 * diagram.getZoomValue());
+            ctx.lineTo(x2 - 9 * diagram.getZoomValue(), midy + 0);
+            ctx.lineTo(midx + 0, y2 - 5 * diagram.getZoomValue());
+            ctx.lineTo(x1 + 9 * diagram.getZoomValue(), midy + 0);
+            ctx.lineTo(midx + 0, y1 + 5 * diagram.getZoomValue());
         }
         ctx.moveTo(midx, y1);
         ctx.lineTo(x2, midy);
@@ -1895,7 +1916,7 @@ function Symbol(kindOfSymbol) {
 			// Weak relation
 
 			if (this.properties['key_type'] == "Weak") {
-				svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+				svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
@@ -1910,21 +1931,21 @@ function Symbol(kindOfSymbol) {
 		} else if (this.symbolkind == symbolKind.text) {
             var midx = points[this.centerPoint].x;
             svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
-            var textAlignment = this.textAlign;
-            if (this.textAlign == "center") textAlignment = "middle";
+            var textAlignment = this.properties['textAlign'];
+            if (this.properties['textAlign'] == "center") textAlignment = "middle";
             for (var i = 0; i < this.textLines.length; i++) {
                 svgPos = "x='"+this.getTextX(x1, midx, x2)+"' y='"+(y1+(fontsize*1.7)/2+(fontsize*i))+"' text-anchor='"+textAlignment+"' dominant-baseline='central'";
                 str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.textLines[i].text+"</text>";
             }
         }
-		str += "</g>";
-		return str;
-	}
+        str += "</g>";
+        return str;
+    }
 
     this.getTextX = function(x1, midX, x2) {
         var textX = 0;
-        if (this.textAlign == "start") textX = x1 + 10;
-        else if (this.textAlign == "end") textX = x2 - 10;
+        if (this.properties['textAlign'] == "start") textX = x1 + 10;
+        else if (this.properties['textAlign'] == "end") textX = x2 - 10;
         else textX = midX;
         return textX;
     }
@@ -1985,11 +2006,11 @@ function Symbol(kindOfSymbol) {
         //Draws the upper part of the lock
         ctx.beginPath();
         //A slight x offset to get the correct position   
-        ctx.arc(position.x + 5, position.y, 4, 1 * Math.PI, 2 * Math.PI);
+        ctx.arc(position.x + (5 * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
         //Draws the lock body
-        ctx.fillRect(position.x, position.y, 10, 10);
+        ctx.fillRect(position.x, position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
 
         ctx.restore();
     }
