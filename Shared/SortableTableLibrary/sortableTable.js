@@ -724,18 +724,18 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.lastname)[0];
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
-		} else if (col == "SSN") {
-			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
-				firstCellTemp = firstCell.ssn;
-				secoundCellTemp = secoundCell.ssn;
-			} else {
-				firstCell = JSON.parse(firstCell.ssn);
-				secoundCell = JSON.parse(secoundCell.ssn);
-				//Get the first letter from the value.
-				firstCellTemp = Object.values(firstCell.ssn)[0];
-				secoundCellTemp = Object.values(secoundCell.ssn)[0];
-			}
-		}
+		// } else if (col == "SSN") {
+		// 	if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
+		// 		firstCellTemp = firstCell.ssn;
+		// 		secoundCellTemp = secoundCell.ssn;
+		// 	} else {
+		// 		firstCell = JSON.parse(firstCell.ssn);
+		// 		secoundCell = JSON.parse(secoundCell.ssn);
+		// 		//Get the first letter from the value.
+		// 		firstCellTemp = Object.values(firstCell.ssn)[0];
+		// 		secoundCellTemp = Object.values(secoundCell.ssn)[0];
+		// 	}
+		// }
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 		if (status == 0 || status == 2 || status == 4) {
