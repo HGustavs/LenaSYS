@@ -1381,8 +1381,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
 								}
 							}else{
-								var test = "BlablablablalsbsafBlablablablalsbsafBlablablablalsbsafBlablablablalsbsaf";
-								tab+="<span style='text-decoration: underline' onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>"+test.substring(0,8)+"&#8230;</span>";
+								tab+="&nbsp;"
 							}
 							tab+="</td>";
 							tab+="</tr>";

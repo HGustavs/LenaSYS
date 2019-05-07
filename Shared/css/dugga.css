@@ -313,7 +313,7 @@ svg text {
  .previewTable tr:nth-child(even){
   background-color: #dad8db;
 }
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 500px) {
 	.previewTable td {
 		padding-right: 2px;
 		padding-left: 0px
