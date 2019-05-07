@@ -526,13 +526,7 @@ p {
   border: 1px solid yellow;
   width: 26px;
   height: 26px;
-  /*
-  margin-left: 3px;
-  margin-right: 2px;
-  margin-top: 2px;
-  margin-bottom: 0px;
-  */
-  margin: 4px 2px 0px 2px;
+  margin: 2px 2px 2px 2px;
   border-radius: 14px;
   border: 1px solid #000;
 }
