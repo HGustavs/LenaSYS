@@ -2090,6 +2090,10 @@ input.large-button {
   width: fit-content;
 }
 
+.popoveredit{
+  background-color: transparent;
+}
+
 .icon {
   width: 20px;
   height: 20px;
