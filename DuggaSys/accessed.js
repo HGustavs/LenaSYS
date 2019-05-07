@@ -16,8 +16,6 @@ var myTable;
 function setup() {
 	var filt = "";
 
-
-
 	// Add search bar to nav
 	filt += `<td id='searchBar' class='navButt'>`;
 	filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
@@ -44,16 +42,41 @@ function setup() {
 	columnFilterDiv.id = "columnfilter";
 	document.getElementById("dropdownc").appendChild(columnFilterDiv);
 	document.getElementById("dropdownc").appendChild(customFilterDiv);
+  
 	AJAXService("GET", {
 		cid: querystring['cid'],
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
-
 }
 
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
 //  function content was commented out to avoid having a white empty box appear.
 
+function hoverc() {
+	$('#dropdowns').css('display', 'none');
+	$('#dropdownc').css('display', 'block');
+}
+
+function hovers() {
+	$('#dropdowns').css('display', 'block');
+	$('#dropdownc').css('display', 'none');
+}
+
+function leavec() {
+	$('#dropdownc').css('display', 'none');
+}
+
+function leaves() {
+	$('#dropdowns').css('display', 'none');
+}
+
+function showCreateUserPopup() {
+	$("#createUser").css("display", "flex");
+}
+
+function showCreateClassPopup() {
+	$("#createClass").css("display", "flex");
+}
 
 function showCreateUserPopup() {
 	$("#createUser").css("display", "flex");
@@ -288,6 +311,28 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 	return str;
 }
 
+
+function renderColumnFilter(col, status, colname) {
+	str = "";
+	if (colname == "User")
+		return str;
+	if (status) {
+		str = "<div class='checkbox-dugga'>";
+		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+		str += "</div>"
+	} else {
+		str = "<div class='checkbox-dugga'>";
+		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+		str += "</div>"
+	}
+	return str;
+}
+
+function onToggleFilter(colId) {
+	myTable.toggleColumn(colId, colId);
+}
+
+
 //--------------------------------------------------------------------------
 // updateCellCallback
 // ---------------
@@ -363,6 +408,7 @@ function returnedAccess(data) {
 		filterElementId: "filterOptions",
 		renderCellCallback: renderCell,
 		renderSortOptionsCallback: renderSortOptions,
+		renderColumnFilterCallback: renderColumnFilter,
 		rowFilterCallback: rowFilter,
 		displayCellEditCallback: displayCellEdit,
 		updateCellCallback: updateCellCallback,
