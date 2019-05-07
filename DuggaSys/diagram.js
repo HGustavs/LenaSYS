@@ -58,7 +58,6 @@ const mouseState = {
 };
 
 var gridSize = 16;                  // Distance between lines in grid
-var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                            // Canvas context
 var canvas;                         // Canvas Element
@@ -668,6 +667,7 @@ function copySymbol(symbol) {
 //--------------------------------------------------------------------
 
 points.drawPoints = function() {
+    let crossSize = 4 * zoomValue;
     ctx.strokeStyle = crossStrokeStyle1;
     ctx.lineWidth = 2 * zoomValue;
     for (var i = 0; i < this.length; i++) {
@@ -2493,7 +2493,7 @@ function findPos(obj) {
 }
 
 function updateActivePoint() {
-    if (sel.distance <= tolerance) { // sel.distance = the distance of the mouse from each corner point of the object
+    if (sel.distance <= tolerance / zoomValue) { // sel.distance = the distance of the mouse from each corner point of the object
         activePoint = sel.point;
     } else {
         activePoint = null;
@@ -2532,7 +2532,7 @@ function mousemoveevt(ev, t) {
         if (md == mouseState.empty) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            if (sel.distance < tolerance) {
+            if (sel.distance < tolerance / zoomValue) {
                 canvas.style.cursor = "default";
             } else {
                 if(uimode == "MoveAround"){
