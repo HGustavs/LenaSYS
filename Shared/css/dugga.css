@@ -322,6 +322,10 @@ svg text {
   background-color: #dad8db;
 }
 @media only screen and (max-width: 500px) {
+	.previewTable {
+		width: auto;
+		white-space: normal;
+	}
 	.previewTable td {
 		padding-right: 2px;
 		padding-left: 0px

@@ -1308,9 +1308,10 @@ function findfilevers(filez,cfield,ctype,displaystate)
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
-		var mediaQuery = window.matchMedia("(max-width: 1000px)");
+		var mobileMediaQuery = window.matchMedia("(max-width: 600px)");
+		var mediumMediaQuery = window.matchMedia("(min-width: 601px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
-		if (mediaQuery.matches) {
+		if (mobileMediaQuery.matches) {
 			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		} else {
 			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
@@ -1323,7 +1324,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="<tr'>"
 
 							
-							if (!mediaQuery.matches) {
+							if (!mobileMediaQuery.matches) {
 								tab+="<td>";
 								// Button for making / viewing feedback - note - only button for given feedback to students.
 								if (ctype == "link"){
@@ -1342,22 +1343,26 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="<td>";
               if (ctype == "link"){
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
-								if (mediaQuery.matches) {
+								if (mediumMediaQuery.matches) {
+									tab+=filez[i].content.substring(0,32)+"&#8230;</span>";
+								} else if (mobileMediaQuery.matches) {
 									tab+=filez[i].content.substring(0,8)+"&#8230;</span>";
 								} else {
 									tab+=filez[i].content+"</span>";
-								}
-								
+								}						
 							} else {
 								tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
-								if (mediaQuery.matches) {
+								
+								if (mediumMediaQuery.matches) {
+									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</span>";
+								} else if (mobileMediaQuery.matches) {
 									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
 								} else {
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
-								}
+								}								
 							}
 							tab+="</td><td>";
-							if (mediaQuery.matches) {
+							if (mobileMediaQuery.matches) {
 								var mobileDate = filez[i].updtime.substring(2,);
 								tab+=mobileDate+"</td>";
 							} else {
@@ -1365,7 +1370,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							}
 							
 							tab+="<td>";
-							if (!mediaQuery.matches) {
+							if (!mobileMediaQuery.matches) {
 								// Button for making / viewing feedback - note - only button for given feedback to students.
 								if(filez[i].feedback!=="UNK"||displaystate){
 										tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
@@ -1375,7 +1380,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
-								if (mediaQuery.matches) {
+								if (mobileMediaQuery.matches) {
 									tab+="<span style='text-decoration: underline' onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>"+filez[i].feedback.substring(0,8)+"&#8230;</span>";
 								} else {
 									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
