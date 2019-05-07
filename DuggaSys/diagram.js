@@ -2847,6 +2847,7 @@ function mouseupevt(ev) {
     if(movobj > -1) {
         if(diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
+    if (symbolStartKind != symbolKind.uml) {
     if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
@@ -2902,8 +2903,11 @@ function mouseupevt(ev) {
             }
         }
     }
-    if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
+}
+    if (symbolStartKind == symbolKind.uml){
+    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
+        uimode = "CreateUMLLine";
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
             md = mouseState.empty;
@@ -2957,6 +2961,7 @@ function mouseupevt(ev) {
                 }
             }
         }
+    }
     }
 
     // Code for creating symbols when mouse is released
@@ -3081,8 +3086,8 @@ function mouseupevt(ev) {
             selected_objects.push(diagram[lastSelectedObject]);
             //resets the mode so that next click can move or select an object instead of drawing another line
             //only happens when a line has been created between 2 objects
-            if ($("#umllinebutton").hasClass("pressed")){
-                $("#umllinebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
+            if ($("#linebutton").hasClass("pressed")){
+                $("#linebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
             }
             uimode = "normal";
 
