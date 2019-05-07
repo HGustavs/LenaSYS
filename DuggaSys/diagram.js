@@ -725,6 +725,7 @@ points.clearAllSelects = function() {
 diagram.closestPoint = function(mx, my) {
     var distance = 50000000;
     var point;
+    let attachedSymbol;
     this.filter(symbol => symbol.kind != kind.path && symbol.symbolkind != symbolKind.text).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
@@ -733,6 +734,7 @@ diagram.closestPoint = function(mx, my) {
             if (hypotenuseElevatedBy2 < distance) {
                 distance = hypotenuseElevatedBy2;
                 point = corner;
+                attachedSymbol = symbol;
             }
         });
     });
@@ -745,11 +747,11 @@ diagram.closestPoint = function(mx, my) {
             if (hypotenuseElevatedBy2 < distance) {
                 distance = hypotenuseElevatedBy2;
                 point = points[seg.pb];
+                attachedSymbol = path;
             }
         });
     });
-
-    return {distance:Math.sqrt(distance), point:point};
+    return {distance:Math.sqrt(distance), point:point, attachedSymbol: attachedSymbol};
 }
 
 //--------------------------------------------------------------------
@@ -913,25 +915,6 @@ diagram.checkForHover = function(posX, posY) {
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
-
-// Indicates that objects are movable by changing the appearance of the cursor
-window.addEventListener("mousemove", function()
-{
-    let indexOfHoveredObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
-    if (indexOfHoveredObject != -1) {
-            for (let i = 0; i < diagram.length; i++) {
-                // If the symbol is a line or an umlline or the object is locked or the user is trying to draw a line between entities the cursor pointer will remain default,
-                // otherwise it's of type "all-scroll"
-                if (diagram[indexOfHoveredObject].symbolkind != 4 && !diagram[indexOfHoveredObject].locked && diagram[indexOfHoveredObject].symbolkind != 7 && uimode != "CreateLine" && uimode !="CreateUMLLine") {
-                    canvas.style.cursor = "all-scroll";
-                }
-            }
-        } else {
-            canvas.style.cursor = "default";
-        }
-    },
-    false
-);
 
 //--------------------------------------------------------------------
 // eraseLines: removes all the lines connected to an object
@@ -1345,7 +1328,6 @@ function getConnectedLines(object) {
 }
 
 function eraseObject(object) {
-    canvas.style.cursor = "default";
     var objectsToDelete = [];
     if (object.kind == kind.symbol) {
         // None lines
@@ -1412,7 +1394,6 @@ function changeLoginBoxTitleAppearance() {
 }
 
 function eraseSelectedObject() {
-    canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
     if(selected_objects.length == 0) {
         showMenu().innerHTML = "No item selected<type='text'>";
@@ -1428,7 +1409,6 @@ function eraseSelectedObject() {
 }
 
 function setMode(mode) { //"CreateClass" yet to be implemented in .php
-    canvas.style.cursor = "default";
     uimode = mode;
     if(mode == 'Square' || mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
@@ -2534,8 +2514,14 @@ function mousemoveevt(ev, t) {
         if (md == mouseState.empty) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            if (sel.distance < tolerance) {
-                canvas.style.cursor = "default";
+            if (sel.distance < tolerance / zoomValue) {
+                //Change cursor if you are hovering over a point and its not a line
+                if(sel.attachedSymbol.symbolkind != symbolKind.line && sel.attachedSymbol.symbolkind != symbolKind.umlLine) {
+                    canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                } else {
+                    //The point belongs to a umlLine or Line
+                    canvas.style.cursor = "pointer";
+                }
             } else {
                 if(uimode == "MoveAround"){
                     canvas.style.cursor = "all-scroll";
@@ -2555,9 +2541,10 @@ function mousemoveevt(ev, t) {
                 sel.point.x = currentMouseCoordinateX;
                 sel.point.y = currentMouseCoordinateY;
 
-                //If we changed a point of a path object,
-                //  we need to recalculate the bounding-box so that it will remain clickable.
-                if(diagram[lastSelectedObject].kind == kind.path) {
+                // If we changed a point of a path object,
+                // we need to recalculate the bounding-box so that it will remain clickable.
+                // First we need to check if lastSelectedObject exists
+                if(diagram[lastSelectedObject] && diagram[lastSelectedObject].kind == kind.path) {
                     diagram[lastSelectedObject].calculateBoundingBox();
                 }
             } else {
@@ -3210,7 +3197,6 @@ function deactivateMovearound() {
 // The building blocks for creating the menu
 //--------------------------------------------------------------------
 function showMenu() {
-    canvas.style.cursor = "default";
     $("#appearance").show();
     $("#appearance").width("auto");
     dimDialogMenu(true);
