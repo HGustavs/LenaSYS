@@ -94,7 +94,7 @@ var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
-var switchSideA4Holes = false;      // switching the sides of the A4-holes
+var switchSideA4Holes = "left";      // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
@@ -1157,7 +1157,7 @@ function drawVirtualA4() {
 
     if(toggleA4Holes) {
         if(A4Orientation == "portrait"){
-            if (switchSideA4Holes) {
+            if (switchSideA4Holes == "left") {
                 // The Holes on the left side.
                 //Upper 2 holes
                 drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
@@ -1165,7 +1165,7 @@ function drawVirtualA4() {
                 //Latter two holes
                 drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
                 drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
-                switchSideA4Holes = false;
+                switchSideA4Holes = "right";
             }else {
                 // The holes on the right side.
                 //Upper 2 holes
@@ -1174,11 +1174,11 @@ function drawVirtualA4() {
                 //Latter two holes
                 drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
                 drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
-                switchSideA4Holes = true;
+                switchSideA4Holes = "left";
             }
         }
         else if(A4Orientation == "landscape") {
-            if (switchSideA4Holes) {
+            if (switchSideA4Holes == "left") {
                 // The holes on the upper side.
                 //Upper 2 holes
                 drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
@@ -1186,7 +1186,7 @@ function drawVirtualA4() {
                 //Latter two holes
                 drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
                 drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
-                switchSideA4Holes = false;
+                switchSideA4Holes = "right";
 
             }else {
                 // The holes on the bottom side.
@@ -1196,7 +1196,7 @@ function drawVirtualA4() {
                 //Latter two holes
                 drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
                 drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
-                switchSideA4Holes = true;
+                switchSideA4Holes = "left";
             }
       }
     }
