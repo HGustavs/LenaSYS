@@ -5028,6 +5028,4 @@ textarea#filecont{
   border: 2px solid var(--color-primary);
 }
 
-.previewTable tr:nth-child(even){
-  background-color: #dad8db;
-}
+

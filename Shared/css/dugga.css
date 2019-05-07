@@ -296,8 +296,8 @@ svg text {
    overflow-x: auto;
  }
  .previewTable tr {
-     display: table-row;
-     vertical-align: inherit;
+  display: table-row;
+  vertical-align: inherit;
  }
  .previewTable th {
    font-weight: bold;
@@ -310,6 +310,20 @@ svg text {
    padding-right: 30px;
    padding-left: 10px;
  }
+ .previewTable tr:nth-child(even){
+  background-color: #dad8db;
+}
+@media only screen and (max-width: 1000px) {
+	.previewTable td {
+		padding-right: 2px;
+		padding-left: 0px
+	}
+	.previewTable th {
+		padding-right: 2px;
+		padding-left: 0px
+	}
+}
+
 
  /* --------------================################================-------------- *
  *                      	       Daily - minutes  				       								 *
