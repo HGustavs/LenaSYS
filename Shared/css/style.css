@@ -3222,7 +3222,6 @@ rect[class*="activitymarker"]:hover {
   float: none;
   /* align-self: center; */
   margin-right: 5px;
-  position: absolute;
   right: 20px;
 }
 
@@ -3234,16 +3233,8 @@ rect[class*="activitymarker"]:hover {
   bottom: 0;
 }
 
-#cookiemsg input {
-  margin-bottom: 4px;
-}
-
 .alertmsg#cookiemsg input {
   align-self: center;
-}
-
-#cookiemsgButton {
-  margin-bottom: 4px;
 }
 
 /* } */
