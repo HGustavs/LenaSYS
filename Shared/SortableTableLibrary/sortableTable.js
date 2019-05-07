@@ -1,3 +1,4 @@
+var filterResulted = []; //visible rows will be stored 
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
 	currentTable: null,
@@ -273,6 +274,7 @@ function SortableTable(param) {
 
 	this.reRender = function () {
 
+		filterResulted = [];
 		this.rowIndex = 1;
 		// Local variable that contains html code for main table and local variable that contains magic headings table
 		str = "<table style='border-collapse: collapse;' id='" + this.tableid + DELIMITER + "tbl' class='list list--nomargin'>";
@@ -396,7 +398,8 @@ function SortableTable(param) {
 		for (var i = 0; i < tbl.tblbody.length; i++) {
 			var row = tbl.tblbody[i];
 			if (rowFilter(row)) {
-				str += "<tr id='" + this.tableid + DELIMITER + i + "'"
+				filterResulted.push(row['FnameLname'].username);//if row is visible, it will be added
+				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
 				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
 				//Check if row contains requestedpasswordchange & set styling accordingly
@@ -664,7 +667,7 @@ function SortableTable(param) {
 		data: {
 			'courseid': cidMail,
 			'coursevers': crsMail,
-			'visibleuserids': activeFilteringUsername,
+			'visibleuserids': filterResulted,
 			'requestType': reqType
 		},
 		dataType: "JSON",
