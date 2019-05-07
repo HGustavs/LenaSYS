@@ -604,7 +604,6 @@ function returnedResults(data) {
 		for (var student in studentInfo) {
 			
 			var studentObject = studentInfo[student]["lid:" + data.duggaid];
-			console.log(studentObject);
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
 				studentObject.timesGraded = parseInt(data.duggatimesgraded);
