@@ -2505,6 +2505,28 @@ function pointDistance(point1, point2) {
 
     return [width, height];
 }
+//---------------------------------------------------
+// Check if the value causes the objects size to be <= the objects minimum size
+// Used when moving a point and locking proportions
+//---------------------------------------------------
+function minSizeCheck(value, object, type){
+    var umlMax = object.minWidth;
+    var entityMax = entityTemplate.width;
+    var relationMax =relationTemplate.width;
+    if (type == "y") {
+        umlMax = object.minHeight;
+        entityMax = entityTemplate.height
+        relationMax = relationTemplate.height;
+    }
+    if ((value <= umlMax && object.symbolkind == symbolKind.uml)
+    || (value <= entityMax && (object.symbolkind == symbolKind.erAttribute || object.symbolkind == symbolKind.erEntity))
+    || (value <= relationMax && object.symbolkind == symbolKind.erRelation)) {
+        // the value is inside or at the minimum size
+        return true;
+    } else {
+        return false;
+    }
+}
 
 //---------------------------------------------------
 // Is called each time the mouse moves on the canvas
@@ -2547,15 +2569,65 @@ function mousemoveevt(ev, t) {
             // If mouse is pressed down and no point is close show selection box
         } else if (md == mouseState.insidePoint) {
             // If mouse is pressed down and at a point in selected object - move that point
+            // this is for the topLeft and bottomRight points
             if(!sel.point.fake) {
-                sel.point.x = currentMouseCoordinateX;
-                sel.point.y = currentMouseCoordinateY;
+                // for locking proportions of object when resizing it
+                if(shiftIsClicked) {
+                    var object;
+                    // the movement change we wan't to make
+                    var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
+                    // find the object that has the point we want to move 
+                    for (var i = 0; i < diagram.length; i++) {
+                        if (points[diagram[i].bottomRight] == sel.point || points[diagram[i].topLeft] == sel.point) {
+                            object = diagram[i];
+                            // the objects current width and height
+                            var xDiff = points[object.bottomRight].x - points[object.topLeft].x;
+                            var yDiff = points[object.bottomRight].y - points[object.topLeft].y;
+                            // For making sure the proportions stay the same when the object is at it's minimum size on one of the axes 
+                            // so that it doesn't keep resizing one of the axes independently of the other
 
+                            // if x size is equal to the objects min width
+                            if (minSizeCheck(xDiff, object, "x")) {
+                                var xDiffNew;
+                                // set the new size depending on which point we're moving 
+                                if (points[object.bottomRight] == sel.point){
+                                    xDiffNew = (sel.point.x + change) - points[object.topLeft].x;
+                                } else if (points[object.topLeft] == sel.point){
+                                    xDiffNew = points[object.bottomRight].x - (sel.point.x + change);
+                                }
+                                // set change to 0 if the new size isn't bigger than the minimum size
+                                if (minSizeCheck(xDiffNew, object, "x")) {
+                                    change = 0;
+                                }
+                            }
+                            // if y size is equal to the objects min height, same as above but for y coordinates
+                            if (minSizeCheck(yDiff, object, "y")) {
+                                var yDiffNew;
+                                if (points[object.bottomRight] == sel.point){
+                                    yDiffNew = (sel.point.y + change) - points[object.topLeft].y;
+                                } else if (points[object.topLeft] == sel.point){
+                                    yDiffNew = points[object.bottomRight].y - (sel.point.y + change);
+                                }
+                                if (minSizeCheck(yDiffNew, object, "y")) {
+                                    change = 0;
+                                }
+                            }
+                        }
+                    }
+                    // apply resize 
+                    sel.point.x += change;
+                    sel.point.y += change;
+                } else {
+                    // normal resize
+                    sel.point.x = currentMouseCoordinateX;
+                    sel.point.y = currentMouseCoordinateY;
+                }
                 //If we changed a point of a path object,
                 //  we need to recalculate the bounding-box so that it will remain clickable.
                 if(diagram[lastSelectedObject].kind == kind.path) {
                     diagram[lastSelectedObject].calculateBoundingBox();
                 }
+            // this is for the other two points that doesn't really exist: bottomLeft and topRight
             } else {
                 sel.point.x.x = currentMouseCoordinateX;
                 sel.point.y.y = currentMouseCoordinateY;
