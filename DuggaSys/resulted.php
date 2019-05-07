@@ -92,7 +92,7 @@ pdoConnect();
 
 	<!-- -------------------=============####### Result Popover #######=============------------------- -->
 
-	<div id='resultpopover' class='resultPopover' style='display: table-cell'>
+	<div id='resultpopover' class='resultPopover' style='display: none'>
 		<div class='loginBoxheader'>
 			<span id="hoverRes" ></span>
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
