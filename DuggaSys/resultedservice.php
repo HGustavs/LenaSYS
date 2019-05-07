@@ -448,6 +448,7 @@ if(strcmp($opt,"CHGR")!==0){
 				'examiner' => $row['examiner']
 			);
 
+			// The array which is displayed on resulted without SSN
 			$entryNoSSN = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
