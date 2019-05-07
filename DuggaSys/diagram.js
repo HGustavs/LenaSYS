@@ -1495,7 +1495,7 @@ function drawGrid() {
     myOffsetY = mod(origoOffsetY, zoomGridSize);
 
     // Draw a horizontal and a vertical line until the canvas is filled
-    for(let i = 0; i < canvas.width / (gridSize * zoomValue) * 1.5; i++){
+    for(let i = 0; i < Math.max(canvas.width, canvas.height) / (gridSize * zoomValue) * 1.5; i++){
         if(mod(myOffsetX, zoomGridSize * 5) == mod(origoOffsetX, zoomGridSize * 5)) {
             // Every fifth line is a darker grey
             ctx.strokeStyle = "rgb(208, 208, 220)";
