@@ -68,7 +68,8 @@
 
 <g
    id="g1293"
-   transform="translate(-131.29979,-5.0370762)"><path
+   transform="matrix(0.85326391,0,0,0.85623181,-103.91372,4.631733)"
+   style="stroke-width:1.16993737"><path
      transform="matrix(-0.91065619,0.41316499,0.41316499,0.91065619,0,0)"
      sodipodi:open="true"
      d="m -101.24411,114.32285 a 34.577496,33.43655 0 0 1 -21.40899,30.9168 34.577496,33.43655 0 0 1 -37.7158,-7.36806 34.577496,33.43655 0 0 1 -7.31842,-36.52892 34.577496,33.43655 0 0 1 32.1415,-20.455303"
@@ -80,7 +81,7 @@
      sodipodi:cx="-135.82161"
      sodipodi:type="arc"
      id="path1259"
-     style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:8.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" /><path
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:9.9444685;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" /><path
      transform="matrix(0.72435326,-0.05152556,0.05855429,0.82316406,43.640281,12.687731)"
      inkscape:transform-center-y="-3.49062"
      inkscape:transform-center-x="0.76755676"
@@ -96,5 +97,5 @@
      sodipodi:cx="151.2802"
      sodipodi:sides="3"
      id="path1289"
-     style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:10.98005581;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:12.84597874;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
      sodipodi:type="star" /></g></svg>
