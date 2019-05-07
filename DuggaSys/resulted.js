@@ -148,7 +148,7 @@ function process() {
 		}
 		var student = new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({ grade: ("<div class='dugga-result-div'>" + entriesNoSSN[i].firstname + " " + entriesNoSSN[i].lastname + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].username + " / " + entriesNoSSN[i].class + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, /*ssn: entriesNoSSN[i].ssn,*/ class: entriesNoSSN[i].class, access: entriesNoSSN[i].access, setTeacher, username: entriesNoSSN[i].username });
+		student.push({ grade: ("<div class='dugga-result-div'>" + entriesNoSSN[i].firstname + " " + entriesNoSSN[i].lastname + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].username + " / " + entriesNoSSN[i].class + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, class: entriesNoSSN[i].class, access: entriesNoSSN[i].access, setTeacher, username: entriesNoSSN[i].username });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
 			if (momtmp[j].kind == 4) {
@@ -790,12 +790,6 @@ function renderCell(col, celldata, cellid) {
 		}
 	}
 
-	/*function hideSSN(ssn){
-		var hiddenSSN;
-		hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
-		return hiddenSSN;
-	}*/
-
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN") {
@@ -803,7 +797,6 @@ function renderCell(col, celldata, cellid) {
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-		/*str += "<div>" + hideSSN(celldata.ssn) + "</div>";*/
 		str += "</div>";
 		return str;
 
@@ -1180,11 +1173,6 @@ function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
-			// if (cell.ssn.length > 11) {
-			// 	str = cell.ssn + ";";
-			// } else {
-			// 	str = "19" + cell.ssn + ";";
-			// }
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
 			str = str.replace(/\&Aring\;/g, "Å");
@@ -1225,7 +1213,7 @@ function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLnameSSN") {
-			str = /*Personnummer;*/"Namn";
+			str = "Namn";
 		} else {
 			heading = heading.replace(/\&aring\;/g, "å");
 			heading = heading.replace(/\&Aring\;/g, "Å");
