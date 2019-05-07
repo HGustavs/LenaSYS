@@ -107,10 +107,10 @@
                           <div class="labelToolContainer" style = "margin-bottom: 0px;">
                             <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                             <div class="toolbar-drawer" id="drawerUndo">
-                                <button class="diagramAction" id="undoButton" onclick='undoDiagram()' data="Undo">
+                                <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
                                     <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 20px; height: 20px;">
                                 </button>
-                                <button class="diagramAction" id="redoButton" onclick='redoDiagram()' data="Redo">
+                                <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
                                     <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 20px; height: 20px;">
                                 </button>
                             </div>
