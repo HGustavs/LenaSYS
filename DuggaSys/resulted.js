@@ -35,23 +35,8 @@ function setup() {
 	//Benchmarking function
 	//benchmarkData = performance.timing;
 
-	/*    Add filter menu   */
-	// --Commented out this code because of similar solution below due to possible duplicate issue on github--
-  var filt = "";
-	/*filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
-	filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-	filt += "<div id='columnfilter'></div>"
-	filt += "<div id='customfilter'></div>"
-	filt += "</div>";
-	filt += "</span></td>";
-	filt += "<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();'>";
-	filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-	filt += "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
-	filt += "</div>";
-	filt += "</span></td>";*/
-
   // Add search bar to nav
+  var filt = "";
   filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
   filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
@@ -65,16 +50,11 @@ function setup() {
   filt += `</div><span>?</span></td>`;
 
 	$("#sort").after(filt);
-  
+
 
 	/*  Add filter menu   */
   document.getElementById("sort").style.display = "table-cell";
   document.getElementById("select").style.display = "table-cell";
-
-  // Remove all children, at the time of writing there is only 1 and its unwanted.
-  while(document.getElementById("dropdownc").hasChildNodes()){
-    document.getElementById("dropdownc").removeChild(document.getElementById("dropdownc").firstChild);
-  }
 
   var customFilterDiv = document.createElement("div");
   customFilterDiv.id = "customfilter";
