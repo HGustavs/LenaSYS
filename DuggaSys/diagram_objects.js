@@ -1910,8 +1910,8 @@ function Symbol(kindOfSymbol) {
     this.drawCenterCoordinatesTooltip = function() {
       ctx.save();
 
-      var topLeftPosition = points[this.topLeft];
-      var centerPosition = points[this.centerPoint];
+      var topLeftPosition = pixelsToCanvas(points[this.topLeft].x, points[this.topLeft].y);
+      var centerPosition = pixelsToCanvas(points[this.centerPoint].x, points[this.centerPoint].y);
       var widthOfObject = points[this.bottomRight].x - points[this.topLeft].x;
 
       var yOffset = -40;
