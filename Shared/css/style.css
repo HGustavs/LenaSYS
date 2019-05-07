@@ -2083,15 +2083,16 @@ input.large-button {
 }
 
 #editpopover {
-  border:1px solid red;
-  box-shadow:2px 2px 2px #000;
+  border:1px solid #fecc56;
+  box-shadow:2px 2px 2px #434343;
   position:absolute;
-  background-color: #82a43a;
+  background-color: #fecc56;
   width: fit-content;
 }
 
 .popoveredit{
   background-color: transparent;
+  border: none;
 }
 
 .icon {
