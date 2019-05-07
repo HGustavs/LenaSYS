@@ -1,3 +1,4 @@
+var filterResulted = [];
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
 	currentTable: null,
@@ -272,7 +273,7 @@ function SortableTable(param) {
 	}
 
 	this.reRender = function () {
-
+		filterResulted = [];
 		this.rowIndex = 1;
 		// Local variable that contains html code for main table and local variable that contains magic headings table
 		str = "<table style='border-collapse: collapse;' id='" + this.tableid + DELIMITER + "tbl' class='list list--nomargin'>";
@@ -396,7 +397,8 @@ function SortableTable(param) {
 		for (var i = 0; i < tbl.tblbody.length; i++) {
 			var row = tbl.tblbody[i];
 			if (rowFilter(row)) {
-				str += "<tr id='" + this.tableid + DELIMITER + i + "'"
+				filterResulted.push([row['FnameLnameSSN'].username]);
+				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
 				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
 				//Check if row contains requestedpasswordchange & set styling accordingly
@@ -657,7 +659,7 @@ function SortableTable(param) {
 			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
 		}
 	 }
-
+	 activeFilteringUsername = filterResulted;
 	$.ajax({
 		url: "resultedservice.php",
 		type: "POST",
