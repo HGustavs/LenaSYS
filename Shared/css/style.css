@@ -3863,17 +3863,16 @@ only screen and (max-device-width: 320px) {
 }
 
 .tooltipDecrease{
-  display: inline-block;
-  position: relative;
-  bottom: 7px;
+  display: flex;
+  justify-content: center;
 }
 
 .tooltipDecrease button{
-  position: relative;
   background-color: #614875;
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 100%;
 }
 
 .tooltipDecrease .tooltiptextDec{
@@ -3890,7 +3889,7 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  left: -15px;
+  left: -2%;
 }
 
 .zoomButtonStyle {
@@ -3905,26 +3904,21 @@ only screen and (max-device-width: 320px) {
   visibility: visible;
 }
 #range{
-  position: relative;
-  display: inline-block;
-  top: 2px;
-}
-
-#range input{
-  position: relative;
+  justify-content: center;
+  margin-top: 1%;
 }
 
 .tooltipIncrease{
-  position: relative;
-  display: inline-block;
-  bottom: 7px;
+  display: flex;
+  justify-content:center;
 }
+
 .tooltipIncrease button{
-  position: relative;
   background-color: #614875;
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 100%;
 }
 
 .tooltipIncrease .tooltiptextInc{
@@ -3941,7 +3935,7 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  right: -20px;
+  right: 21%;
 }
 
 #zoomIncrease:hover + .tooltiptextInc{
@@ -3952,8 +3946,8 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   display: inline-block;
   font-size: 12px;
-  bottom: 2px;
-  right: 4px;
+  bottom: 2%;
+  right: 2%;
 }
 
 /* The slider itself */
@@ -4658,6 +4652,25 @@ textarea#mrkdwntxt {
 .modeSwitchHeader h3 {
   padding-right: 10px;
 }
+
+/* Composite error message dialog */
+.errorMessageDialog {
+  display: none;
+  background-color: rgba(0,0,0,0);
+}
+
+.messageContainer {
+  min-height: 80px;
+}
+
+#cancelButton {
+  border-radius: 3px;
+}
+
+.messageHeader h3 {
+  padding-right: 10px;
+}
+
 
 /* Import diagram */
 
