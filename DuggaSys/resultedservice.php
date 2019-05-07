@@ -436,6 +436,7 @@ if(strcmp($opt,"CHGR")!==0){
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			// Create array entry for each course participant
 
+			// This is unused in resulted, but kept if needed elsewhere / some other time
 			$entry = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],

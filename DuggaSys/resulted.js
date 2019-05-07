@@ -672,7 +672,7 @@ var myTable;
 //----------------------------------------
 
 function buildDynamicHeaders() {
-	var tblhead = { "FnameLnameSSN": "Fname/Lname" };
+	var tblhead = { "FnameLname": "Fname/Lname" };
 	moments.forEach(function (entry) {
 		tblhead["lid:" + entry['lid']] = entry['entryname'];
 	});
@@ -680,7 +680,7 @@ function buildDynamicHeaders() {
 }
 
 function buildColumnOrder() {
-	var colOrder = ["FnameLnameSSN"];
+	var colOrder = ["FnameLname"];
 	moments.forEach(function (entry) {
 		colOrder.push("lid:" + entry['lid']);
 	});
@@ -690,7 +690,7 @@ function buildColumnOrder() {
 function buildStudentInfo() {
 	var i = 0;
 	students.forEach(function (entry) {
-		var row = { "FnameLnameSSN": entry[0] };
+		var row = { "FnameLname": entry[0] };
 		if (entry.length > 1) {
 			for (var j = 1; j < entry.length; j++) {
 				row["lid:" + entry[j]['lid']] = entry[j];
@@ -758,7 +758,7 @@ function renderCell(col, celldata, cellid) {
 	// Render minimode
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
-		if (col == "FnameLnameSSN") {
+		if (col == "FnameLname") {
 			str = "<div class='resultTableCell resultTableMini'>";
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
@@ -792,7 +792,7 @@ function renderCell(col, celldata, cellid) {
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
-	if (col == "FnameLnameSSN") {
+	if (col == "FnameLname") {
 		str = "<div class='resultTableCell resultTableNormal'>";
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
@@ -968,12 +968,12 @@ function smartSearch(splitSearch, row) {
 //----------------------------------------------------------------
 function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
-	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
+	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
 	if (filterList["onlyPending"]) {
 		var rowPending = false;
 		for (var colname in row) {
-			if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) {
+			if (colname != "FnameLname" && row[colname]["needMarking"] == true) {
 				rowPending = true;
 				break;
 			}
@@ -996,7 +996,7 @@ function rowFilter(row) {
 		return smartSearch(splitSearch, row);
 	} else {
 		for (colname in row) {
-			if (colname == "FnameLnameSSN") {
+			if (colname == "FnameLname") {
 				var name = "";
 				if (row[colname]["firstname"] != null) {
 					name += row[colname]["firstname"] + " ";
@@ -1033,7 +1033,7 @@ function rowFilter(row) {
 function renderSortOptions(col, status, colname) {
 	str = "";
 	if (status == -1) {
-		if (col == "FnameLnameSSN") {
+		if (col == "FnameLname") {
 			let colnameArr = colname.split("/");
 			str += "<div style='white-space:nowrap;cursor:pointer'>"
 			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
@@ -1044,7 +1044,7 @@ function renderSortOptions(col, status, colname) {
 		}
 		str += "</div>"
 	} else {
-		if (col == "FnameLnameSSN") {
+		if (col == "FnameLname") {
 			let colnameArr = colname.split("/");
 			if (status == 0 || status == 1) {
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
@@ -1124,7 +1124,7 @@ function conv(item, kind) {
 
 function renderColumnFilter(col, status, colname) {
 	str = "";
-	if (colname == "FnameLnameSSN")
+	if (colname == "FnameLname")
 		return str;
 	if (status) {
 		str = "<div class='checkbox-dugga'>";
@@ -1172,7 +1172,7 @@ function onToggleFilter(colId) {
 function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
-		if (colname == "FnameLnameSSN") {
+		if (colname == "FnameLname") {
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
 			str = str.replace(/\&Aring\;/g, "Å");
@@ -1212,7 +1212,7 @@ function exportCell(format, cell, colname) {
 function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
-		if (colname == "FnameLnameSSN") {
+		if (colname == "FnameLname") {
 			str = "Namn";
 		} else {
 			heading = heading.replace(/\&aring\;/g, "å");
