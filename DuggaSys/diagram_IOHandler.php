@@ -202,15 +202,15 @@
       }
       ?>
       <?php
-          if(isset($_POST["answer"])) {
-              ?>
-              <script>
-                  document.getElementById('showStoredFolders').style.display = "block";
-                  document.getElementById('showStored').style.display = "block";
-              </script>
-              <?php
-          }
+      if(isset($_POST["answer"])) {
           ?>
+          <script>
+              document.getElementById('showStoredFolders').style.display = "block";
+              document.getElementById('showStored').style.display = "block";
+          </script>
+          <?php
+      }
+      ?>
     </div>
 </body>
 </html>
