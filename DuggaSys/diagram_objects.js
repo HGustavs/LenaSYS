@@ -26,6 +26,7 @@ function Symbol(kindOfSymbol) {
     this.cardinality = [
       {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null}
     ];
+    this.lineDirection;
     this.minWidth;
     this.minHeight;
     this.locked = false;
@@ -1358,10 +1359,10 @@ function Symbol(kindOfSymbol) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             if(this.cardinality[0].symbolKind == symbolKind.uml) {
-                var valX = x1 > x2 ? x1-15 : x1+15;
+                var valX = x1 > x2 ? x1-20 : x1+20;
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
-                var valX2 = x2 > x1 ? x2-15 : x2+15;
+                var valX2 = x2 > x1 ? x2-20 : x2+20;
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
@@ -1375,29 +1376,18 @@ function Symbol(kindOfSymbol) {
             }
         }
 
-
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-        if (this.properties['key_type'] == "Forced") {
-            //Draw a thick black line
-            ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-            //Draw a white line in the middle to simulate space (2 line illusion);
-            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-            ctx.strokeStyle = "#fff";
-        }
-        else if (this.properties['key_type'] == "Derived") {
-            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
-            ctx.setLineDash([5, 4]);
+
+        // Set as dotted lines depending on value  
+        if (this.properties['key_type'] == "Implementation" || this.properties['key_type'] == "Dependency") {
+            ctx.setLineDash([10, 10]);
         }
 
         // Variables for UML line breakpoints
         var breakpointStartX = 0;     // X Coordinate for start breakpoint
         var breakpointStartY = 0;     // Y Coordinate for start breakpoint
         var breakpointEndX = 0;       // X Coordinate for end breakpoint
-        var breakpointEndY = 0;       // Y Coordinate for start breakpoint
+        var breakpointEndY = 0;       // Y Coordinate for end breakpoint
         var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
         var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
         var startLineDirection = "";  // Which side of the class the line starts from
@@ -1405,19 +1395,19 @@ function Symbol(kindOfSymbol) {
 
         // Calculating the mid point between start and end
         if (x2 > x1) {
-          middleBreakPointX = x1 + (x2 - x1) / 2;
+            middleBreakPointX = x1 + (x2 - x1) / 2;
         } else if (x1 > x2) {
-          middleBreakPointX = x2 + (x1 - x2) / 2;
+            middleBreakPointX = x2 + (x1 - x2) / 2;
         } else {
-          middleBreakPointX = x1;
+            middleBreakPointX = x1;
         }
 
         if (y2 > y1) { // The code breaks if you don't use Math.abs, can be removed if fixed
-          middleBreakPointY = Math.abs(y1) + Math.abs(y2 - y1) / 2;
+            middleBreakPointY = Math.abs(y1) + Math.abs(y2 - y1) / 2;
         } else if (y1 > y2) {
-          middleBreakPointY = Math.abs(y2) + Math.abs(y1 - y2) / 2;
+            middleBreakPointY = Math.abs(y2) + Math.abs(y1 - y2) / 2;
         } else {
-          middleBreakPointY = Math.abs(y1);
+            middleBreakPointY = Math.abs(y1);
         }
 
         // Start line
@@ -1431,40 +1421,40 @@ function Symbol(kindOfSymbol) {
 
                 // Check if line's start point matches any class diagram
                 if (x1 == currentSymbol.tl.x) {
-                startLineDirection = "left";
-                breakpointStartX = x1 - 30;
-                breakpointStartY = y1;
+                    startLineDirection = "left";
+                    breakpointStartX = x1 - 30;
+                    breakpointStartY = y1;
                 } else if (x1 == currentSymbol.br.x) {
-                startLineDirection = "right";
-                breakpointStartX = x1 + 30;
-                breakpointStartY = y1;
+                    startLineDirection = "right";
+                    breakpointStartX = x1 + 30;
+                    breakpointStartY = y1;
                 } else if (y1 == currentSymbol.tl.y) {
-                startLineDirection = "up"
-                breakpointStartY = y1 - 30;
-                breakpointStartX = x1;
+                    startLineDirection = "up"
+                    breakpointStartY = y1 - 30;
+                    breakpointStartX = x1;
                 } else if (y1 == currentSymbol.br.y) {
-                startLineDirection = "down"
-                breakpointStartY = y1 + 30;
-                breakpointStartX = x1;
+                    startLineDirection = "down"
+                    breakpointStartY = y1 + 30;
+                    breakpointStartX = x1;
                 }
 
                 // Check if line's end point matches any class diagram
                 if (x2 == currentSymbol.tl.x) {
-                endLineDirection = "left";
-                breakpointEndX = x2 - 30;
-                breakpointEndY = y2;
+                    endLineDirection = "left";
+                    breakpointEndX = x2 - 30;
+                    breakpointEndY = y2;
                 } else if (x2 == currentSymbol.br.x) {
-                endLineDirection = "right";
-                breakpointEndX = x2 + 30;
-                breakpointEndY = y2;
+                    endLineDirection = "right";
+                    breakpointEndX = x2 + 30;
+                    breakpointEndY = y2;
                 } else if (y2 == currentSymbol.tl.y) {
-                endLineDirection = "up"
-                breakpointEndY = y2 - 30;
-                breakpointEndX = x2;
+                    endLineDirection = "up"
+                    breakpointEndY = y2 - 30;
+                    breakpointEndX = x2;
                 } else if (y2 == currentSymbol.br.y) {
-                endLineDirection = "down"
-                breakpointEndY = y2 + 30;
-                breakpointEndX = x2;
+                    endLineDirection = "down"
+                    breakpointEndY = y2 + 30;
+                    breakpointEndX = x2;
                 }
 
                 // If start and end points are too close to each other, set breakpoints to same as start and end points
@@ -1474,19 +1464,18 @@ function Symbol(kindOfSymbol) {
                     breakpointEndX = x2;
                     breakpointEndY = y2;
                 }
-
             }
         }
 
         // Draw to start breakpoint based on direction
         if (startLineDirection == "left") {
-        ctx.lineTo(breakpointStartX, y1);
+            ctx.lineTo(breakpointStartX, y1);
         } else if (startLineDirection == "right") {
-        ctx.lineTo(breakpointStartX, y1);
+            ctx.lineTo(breakpointStartX, y1);
         } else if (startLineDirection == "up") {
-        ctx.lineTo(x1, breakpointStartY);
+            ctx.lineTo(x1, breakpointStartY);
         } else if (startLineDirection == "down") {
-        ctx.lineTo(x1, breakpointStartY);
+            ctx.lineTo(x1, breakpointStartY);
         }
 
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
@@ -1505,17 +1494,139 @@ function Symbol(kindOfSymbol) {
 
         // Draw to end breakpoint based on direction
         if (endLineDirection == "left") {
-        ctx.lineTo(breakpointEndX, y2);
+            ctx.lineTo(breakpointEndX, y2);
         } else if (endLineDirection == "right") {
-        ctx.lineTo(breakpointEndX, y2);
+            ctx.lineTo(breakpointEndX, y2);
         } else if (endLineDirection == "up") {
-        ctx.lineTo(x2, breakpointEndY);
+            ctx.lineTo(x2, breakpointEndY);
         } else if (endLineDirection == "down") {
-        ctx.lineTo(x2, breakpointEndY);
+            ctx.lineTo(x2, breakpointEndY);
         }
-
         ctx.lineTo(x2, y2);
         ctx.stroke();
+        
+        this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
+    }
+
+    //---------------------------------------------------------------
+    // drawUmlRelationLineFigures: Draw arrow or diamond shape 
+    // depending on linetype at one of the connected uml objects    
+    //---------------------------------------------------------------
+    this.drawUmlRelationLines = function(x1, y1, x2, y2, startLineDirection, endLineDirection) {
+        // set start position to the right object line start
+        var linePositions = { x:x1, y:y1 };
+        if (this.lineDirection == "Second") {
+            linePositions = { x:x2, y:y2 };
+        }
+        ctx.setLineDash([0]);
+        
+        var type;
+
+        // arrow filled
+        if (this.properties['key_type'] == "Inheritance" || this.properties['key_type'] == "Implementation") {
+            type = "triangle";
+        }
+        // arrow hollow
+        else if (this.properties['key_type'] == "Association" || this.properties['key_type'] == "Dependency") {
+            type = "hollow";
+        }
+        // diamond shape
+        else if (this.properties['key_type'] == "Aggregation" || this.properties['key_type'] == "Composition") {
+            type = "diamond"
+            //reverse line positions if diamond type
+            if (this.lineDirection == "First") {
+                linePositions = { x:x2, y:y2 };
+            } else {
+                linePositions = { x:x1, y:y1 };
+            }
+        }
+        //line dimensions
+        var xChange = 6;
+        var yChange = 10;
+
+        // base coordinates of triangle on the object it is closest to, reverse for diamond type
+        if ((type != "diamond" && this.lineDirection == "First") || (type == "diamond" && this.lineDirection == "Second")) {
+            // changes coordinates depending on position of line
+            if (startLineDirection == "down") {
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, xChange, yChange, true, type);
+            } else if (startLineDirection == "left") {
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, -yChange, -xChange, false, type);
+            } else if (startLineDirection == "right") {
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, yChange, xChange, false, type);
+            } else if (startLineDirection == "up") {
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, -xChange, -yChange, true, type);
+            }
+        }
+        else if ((type != "diamond" && this.lineDirection == "Second") || (type == "diamond" && this.lineDirection == "First")) {
+            if (endLineDirection == "down"){
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, xChange, yChange, true, type);
+            } else if (endLineDirection == "left") {
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, -yChange, -xChange, false, type);              
+            } else if (endLineDirection == "right") {
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, yChange, xChange, false, type);
+            } else if (endLineDirection == "up") {
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, -xChange, -yChange, true, type);
+            }
+        }
+    }
+    //---------------------------------------------------------------
+    // drawUmlLineRelation: decide which shape to draw
+    //---------------------------------------------------------------
+    this.drawUmlLineRelation = function(x, y, xC, yC, vertical, type) {
+        if(type == "diamond"){
+            this.drawDiamond(x, y, xC, yC, vertical);
+        }
+        else if(type == "triangle") {
+            this.drawTriangle(x, y, xC, yC, vertical, true);
+        }
+        else if (type == "hollow") {
+            this.drawTriangle(x, y, xC, yC, vertical, false);
+        }
+    }
+    //---------------------------------------------------------------
+    // drawDiamond: draws a diamond shape at the line end
+    //---------------------------------------------------------------
+    this.drawDiamond = function(x, y, xC, yC, vertical){
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + xC, y + yC);
+        if (vertical) {
+            ctx.lineTo(x, y + yC * 2);
+            ctx.lineTo(x - xC, y + yC);
+        } else { 
+            ctx.lineTo(x + xC * 2, y);
+            ctx.lineTo(x + xC, y - yC); 
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fillStyle = "white";
+        if (this.properties['key_type'] == "Composition") {
+            ctx.fillStyle = "black";
+        }
+        ctx.fill();
+    }
+
+    //---------------------------------------------------------------
+    // drawTriangle: draws triangle shape at line start
+    //---------------------------------------------------------------
+    this.drawTriangle = function(x, y, xC, yC, vertical, normal) {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + xC, y + yC);
+        if(!normal) {
+            ctx.moveTo(x, y);
+        }
+        if (vertical) {
+            ctx.lineTo(x - xC, y + yC);
+        } else { 
+            ctx.lineTo(x + xC, y - yC); 
+        }
+        ctx.closePath();
+        ctx.stroke();
+        if (normal){
+            ctx.fillStyle = "white";
+            ctx.fill();
+        }
     }
 
     //---------------------------------------------------------------
