@@ -412,17 +412,17 @@ p {
 }
 
 #Sectionlist .norm:hover {
-  background-color: #c6cdb8;
+  background-color: #cccccc;
   color: #000;
 }
 
 #Sectionlist .hi:hover {
-  background-color: #c6cdb8;
+  background-color: #cccccc;
   color: #000;
 }
 
 #Sectionlist .lo:hover {
-  background-color: #c6cdb8;
+  background-color: #cccccc;
   color: #000;
 }
 
