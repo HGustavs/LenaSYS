@@ -654,7 +654,7 @@ function SortableTable(param) {
 	 {
 		if(currentRowFilter[i] != null)
 		{
-			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
+			activeFilteringUsername.push(currentRowFilter[i]['FnameLname'].username);
 		}
 	 }
 
