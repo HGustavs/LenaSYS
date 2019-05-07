@@ -4977,7 +4977,7 @@ textarea#filecont{
 .newRowButton {
   display: block;
   width: 100%;
-  padding: 10px;
+  padding-bottom: 10px;
   cursor: pointer;
   background: var(--color-primary);
   color: white;
