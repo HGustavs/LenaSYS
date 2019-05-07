@@ -198,7 +198,7 @@ p {
    margin-bottom: 10px;
    height: 20px;
    background-color: white;
-   border-left: 1px solid #7777;
+   border-left: 1px solid #c0c0c0;
  }
 
 .version {
@@ -1284,7 +1284,7 @@ input {
 #toolbarTypeText{
   height: 22px;
   font-size: 12px;
-  color: #7777;
+  color: #c0c0c0;
   margin: 0 auto;
   font-weight: bold;
   padding-top: 15px;
