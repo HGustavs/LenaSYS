@@ -608,7 +608,7 @@ function returnedResults(data) {
 			console.log(studentObject);
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
-				console.log(typeof data.timesgraded);
+				console.log(typeof data.timesGraded);
 				studentObject.timesGraded = parseInt(data.timesgraded);
 				console.log(typeof studentObject.timesGraded);
 				console.log(studentObject.timesGraded);
