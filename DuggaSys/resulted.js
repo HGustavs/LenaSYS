@@ -477,16 +477,19 @@ function formatDateShorter(longDate) {
 	return d.toLocaleString()
 }
 
+
 function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid, entryname) {
 	var nameOf = document.getElementById("Nameof");
 	nameOf.textContent = entryname + " by " + firstname + " " + lastname + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked);
 
-	var menu = "<div class='' style='width:100px;display:block;'>";
+	var menu = "<div class='' style='display:block;'>";
 	menu += "<div class='loginBoxheader'>";
 	menu += "<h3>Grade</h3>";
+	menu += "<div class='cursorPointer' onclick='toggleGradeBox();'>x</div>"
 	menu += "</div>";
 	menu += "<table>";
 	menu += "<tr><td>";
+	
 	if ((foundgrade === null && submitted === null)) {
 		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
 	} else if (foundgrade == -1) {
@@ -501,6 +504,16 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</div> <!-- Menu Dialog END -->";
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
+}
+
+function toggleGradeBox(){
+	var toggleGrade = document.getElementById('toggleGrade');
+	var width = toggleGrade.offsetWidth;
+
+	$('#toggleGrade').animate({width: 'toggle'});
+	if(width <= 0){
+		toggleGrade.style.position = 'absolute';
+	}
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
