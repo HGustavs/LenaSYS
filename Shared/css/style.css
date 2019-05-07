@@ -4983,6 +4983,8 @@ textarea#filecont{
   color: white;
 }
 #tsSubmit {
+  background: var(--color-primary);
+  color: white;
   margin-left: 50px;
   margin-bottom: 10px;
   cursor: pointer;
