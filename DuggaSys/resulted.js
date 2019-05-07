@@ -597,8 +597,8 @@ function saveResponse() {
 //----------------------------------------
 
 function returnedResults(data) {
-	alert("Result of request, entered returnedResults");
-	console.log(data.timesgraded);
+	var test = 0;
+
 	if (data['debug'] !== "NONE!")
 		alert(data['debug']);
 	if (data.gradeupdated === true) {
@@ -608,6 +608,8 @@ function returnedResults(data) {
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
 				studentObject.timesGraded = parseInt(data.timesgraded);
+				test = parseInt(data.timesgraded);
+				console.log("test: " + test);
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
