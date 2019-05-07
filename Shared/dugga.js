@@ -1333,7 +1333,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
 								}
 							}else{
-								tab+="&nbsp;";
+								tab+="&nbsp;"
 							}
 							tab+="</td>";
 							tab+="</tr>";
