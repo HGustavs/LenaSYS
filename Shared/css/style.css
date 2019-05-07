@@ -2721,12 +2721,8 @@ span.arrow {
   text-overflow: ellipsis;
 }
 
-.checkbox-dugga:nth-child(even){
-    background-color: blue;
-}
-
 .checkbox-dugga:nth-child(odd){
-    background-color: red;
+    background-color: #eee;
 }
 
 .checkmoment {
