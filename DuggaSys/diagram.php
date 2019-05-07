@@ -280,6 +280,11 @@
                             <span class="drop-down-option">Select multiple objects</span>
                             <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-text-non-clickable">
+                            <span class="drop-down-option">Lock object proportions</span>
+                            <div id="hotkey-shift"><i>Shift</i></div>
+                        </div>
                     </div>
                 </div>
             </div>
