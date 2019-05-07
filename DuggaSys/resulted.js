@@ -609,7 +609,7 @@ function returnedResults(data) {
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
 				console.log(typeof data.timesGraded);
-				studentObject.timesGraded = parseInt(data.duggatimesGraded);
+				studentObject.timesGraded = parseInt(data.duggatimesgraded);
 				console.log(typeof studentObject.timesGraded);
 				console.log(studentObject.timesGraded);
 				studentObject.gradeExpire = data.duggaexpire;
