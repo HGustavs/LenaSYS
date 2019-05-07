@@ -17,7 +17,7 @@ function setup() {
 	var filt = "";
 
 	filt += "<td id='select' class='navButt'><span class='dropdown-container'>";
-	filt += "<img class='navButt' onhover='hoverc()' src='../Shared/icons/tratt_white.svg'>";
+	filt += "<img class='navButt' onmouseover='hoverc()' src='../Shared/icons/tratt_white.svg'>";
 	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 	filt += "<div id='columnfilter'></div>"
 	filt += "<div id='customfilter'></div>"
