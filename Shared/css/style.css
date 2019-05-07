@@ -2096,8 +2096,7 @@ input.large-button {
 }
 
 #popovercross:hover {
-  border: 1px solid #202;
-}
+background-color: #1e90ff}
 
 .icon {
   width: 20px;
