@@ -2083,10 +2083,10 @@ input.large-button {
 }
 
 #editpopover {
-  border:1px solid #fecc56;
+  border:1px solid #d7fdd9;
   box-shadow:2px 2px 2px #434343;
   position:absolute;
-  background-color: #fecc56;
+  background-color: #d7fdd9;
   width: fit-content;
 }
 
