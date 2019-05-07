@@ -24,8 +24,8 @@ function setup() {
 	filt += "</div>";
 	filt += "</span></td>";
 
-	filt += "<td id='filter' class='navButt'> onmouseover='hovers()' onmouseout='leaves()' <span class='dropdown-container'>";
-	filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+	filt += "<td id='filter' class='navButt'> <span class='dropdown-container'>";
+	filt += "<img class='navButt' onmouseover='hovers()' onmouseout='leaves()' src='../Shared/icons/sort_white.svg'>";
 	filt += "<div id='dropdowns' class='dropdown-list-container'>";
 	filt += "</div>";
 	filt += "</span></td>";
