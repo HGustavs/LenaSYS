@@ -602,7 +602,9 @@ function returnedResults(data) {
 	if (data.gradeupdated === true) {
 		// Update the the local array studentInfo when grade is updated.
 		for (var student in studentInfo) {
+			
 			var studentObject = studentInfo[student]["lid:" + data.duggaid];
+			console.log(studentObject);
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
 				console.log(typeof data.timesgraded);
