@@ -446,15 +446,12 @@ if(strcmp($opt,"get")==0) {
 			$weekno++;
 
 	}while($weekno<11);
-
-	$today = date('Y-m-d');
-	//$today = '2019-04-10'; // For testing purposes
-	$todaysevents = array();
+	
+	$hourlyevents = array();
 
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND DATE(eventtime)=:today AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
-	$query->bindParam(':today', $today);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -465,12 +462,11 @@ if(strcmp($opt,"get")==0) {
 				'type' => $row['kind'],
 				'time' => $row['eventtimeh']
 			);
-			array_push($todaysevents, $event);
+			array_push($hourlyevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND DATE(issuetime)=:today;');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2019-03-31" and issuetime!="undefined" and issuetime<"2020-01-01";');
 	$query->bindParam(':gituser', $gituser);
-	$query->bindParam(':today', $today);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -481,7 +477,7 @@ if(strcmp($opt,"get")==0) {
 			'type' => 'issue',
 			'time' => $row['issuetimeh']
 		);
-		array_push($todaysevents, $issue);
+		array_push($hourlyevents, $issue);
 	}
 
 
@@ -537,6 +533,26 @@ if(strcmp($opt,"get")==0) {
 		$count[$currentdate] = $daycount;
 		$currentdate=strtotime("+1 day",strtotime($currentdate));
 	}
+	$timesheets = array();
+	$query = $pdo->prepare('SELECT day, week, type, reference, comment FROM timesheet WHERE uid=:userid AND cid=:cid AND vers=:vers;');
+	$query->bindParam(':userid', $userid);
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $vers);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+	$rows = $query->fetchAll();
+	foreach($rows as $row){
+		$timesheet = array(
+			'day' => $row['day'],
+			'week' => intval($row['week']),
+			'type' => $row['type'],
+			'reference' => intval($row['reference']),
+			'comment' => $row['comment']
+		);
+		array_push($timesheets, $timesheet);
+	}
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,
@@ -561,10 +577,11 @@ if(strcmp($opt,"get")==0) {
 		'allcommentranks' => $allcommentranks,
 		'allcommitranks' => $allcommitranks,
 		'githubuser' => $gituser,
-		'todaysevents' => $todaysevents,
 		'count' => $count,
     'amountInCourse' => $amountInCourse,
-    'amountInGroups' => $amountInGroups
+    'amountInGroups' => $amountInGroups,
+		'hourlyevents' => $hourlyevents,
+		'timesheets' => $timesheets
 	);
 
 	echo json_encode($array);
@@ -611,6 +628,4 @@ if(strcmp($opt,"get")==0) {
 	);
 	echo json_encode($array);
 }
-
-
 ?>

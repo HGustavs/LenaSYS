@@ -169,7 +169,6 @@ pdoConnect();
                         <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;overflow:auto;"></div>
                       </fieldset>
                       <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;" onclick="addVariantSubmissionRow();" />
-                      <input type="button" class="submit-button" name="createjson" id="createjson" value="Create JSON" onclick="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"/>
                     </div>
                   </div>
                     <!-- Submissions for dugga -->

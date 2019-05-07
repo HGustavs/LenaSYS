@@ -195,6 +195,7 @@ function validateDuggaName() {
 // VARIANT FUNCTIONS start
 function newVariant() {
 	document.getElementById('variantSearch').value = '';
+  document.getElementById('filelink').value = '';
 	document.getElementById('filelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
@@ -223,12 +224,31 @@ function selectVariant(vid, el) {
 			}
 		});
 	});
-
 	$("#saveVariant").css("display", "block");
 
-	$("#vid").val(target_variant['vid']); // Set Variant ID
-	$("#variantparameterText").val(target_variant['param']); // Set Variant ID
-	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant ID
+
+    //Get information for rightDivDialog and display it.
+    document.getElementById('vid').value = target_variant['vid'];
+    document.getElementById('variantparameterText').value = target_variant['param'];
+    document.getElementById('variantanswerText').value = target_variant['variantanswer'];
+
+    //Get information for leftDivDialog and display it.
+    var obj = JSON.parse(target_variant['param']);
+    var it = Object.keys(obj).length;
+    for(var i = 0; i<it; i++){
+      var result = Object.keys(obj)[i];
+
+      if(result == "type"){
+        document.getElementById('type').value = obj[result];
+      }
+      else if(result == "filelink"){
+        document.getElementById('filelink').value = obj[result];
+      }
+      else if(result == "extraparam"){
+        document.getElementById('extraparam').value = obj[result];
+      }
+    }
+
 
   var disabled = (target_variant['disabled']);
   $("#disabled").val(disabled);
@@ -243,11 +263,14 @@ function selectVariant(vid, el) {
 	}
 }
 
+
 function updateVariant(status) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   var parameter = $("#variantparameterText").val();
 	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+  $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
+  $("#editVariant").css("display", "flex"); //Display variant-window
 }
 
 function deleteVariant(vid) {
@@ -273,7 +296,7 @@ function showVariantEditor() {
 // Adds a submission row
 function addVariantSubmissionRow() {
   var subDivContent = "<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>" +
-		"<select name='s_type' id='submissionType' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>" +
+		"<select name='s_type' id='submissionType" + submissionRow + "' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>" +
 		"<option value='pdf'>PDF</option>" +
 		"<option value='zip'>Zip</option>" +
 		"<option value='link'>Link</option>" +
@@ -296,13 +319,15 @@ function addVariantSubmissionRow() {
 // Removes the submissionRow on which the -(delete) was clicked on
 function removeVariantSubmissionRow(buttonElement){
   // Get the parent element
-  submissionRow = buttonElement.parentElement
+  var subRow = buttonElement.parentElement
   // loop through all chidlren and remove them (cruel)
-  while (submissionRow.firstChild) {
-    submissionRow.removeChild(submissionRow.firstChild);
+  while (subRow.firstChild) {
+    subRow.removeChild(subRow.firstChild);
   }
   // Remove parent once children are gone.
-  submissionRow.remove();
+  subRow.remove();
+  submissionRow = submissionRow-1;
+  $("#variantparameterText").val(createJSONString($("#jsonForm").serializeArray()));
 }
 
 function createJSONString(formData) {
@@ -491,6 +516,7 @@ function returnedDugga(data) {
 // Table for variants
 function renderVariant(clickedElement) {
 		globalVariant = clickedElement;
+    console.log("sda:" + globalVariant);
 		updateVariantTitle(clickedElement);
 		var tabledata = {
 				tblhead: {

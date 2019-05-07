@@ -93,14 +93,14 @@ function clickedInternal(event, clickdobj) {
 	}
 	sortableTable.currentTable = active;
 
-	// when a dropdown input in row is opened and edited(seems to only be in accessed) 
+	// when a dropdown input in row is opened and edited(seems to only be in accessed)
 	if (sortableTable.currentTable.showEditCell != null) {
 		var cellelement = event.target.closest("td");
 		var rowelement = event.target.closest("tr");
 		let regex = new RegExp("^r([0-9]+)" + DELIMITER + "([a-zA-Z0-9]+)" + DELIMITER + "(.*)")
 		let match = cellelement.id.match(regex);
 		var rowno = match[1];
-		var columnno = null; // Not used anymore
+		var columnno = null;
 		var tableid = match[2];
 		var columnname = match[3]
 		var str = "";
@@ -210,7 +210,11 @@ function getparam(param, def) {
 function SortableTable(param) {
 	// Fenced paramters
 
-	var tbl = getparam(param.data, { tblhead: {}, tblbody: [], tblfoot: {} });
+	var tbl = getparam(param.data, {
+		tblhead: {},
+		tblbody: [],
+		tblfoot: {}
+	});
 	this.tableid = getparam(param.tableElementId, "UNK");
 	var filterid = getparam(param.filterElementId, "UNK");
 	var caption = getparam(param.tableCaption, "UNK");
@@ -239,7 +243,7 @@ function SortableTable(param) {
 		columnOrder.push(rowsumList[i][0]['id']);
 	}
 
-	// Private member variables 
+	// Private member variables
 	var result = 0;
 	var columnfilter = [];
 	var sortcolumn = "UNK";
@@ -436,7 +440,7 @@ function SortableTable(param) {
 						}
 
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
-						if (colsumList.indexOf(columnOrder[columnOrderIdx]) > - 1) {
+						if (colsumList.indexOf(columnOrder[columnOrderIdx]) > -1) {
 							if (typeof (sumContent[columnOrder[columnOrderIdx]]) == "undefined") sumContent[columnOrder[columnOrderIdx]] = 0;
 							sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
 						}
@@ -524,13 +528,13 @@ function SortableTable(param) {
 		// Save column name to local storage!
 		localStorage.setItem(this.tableid + DELIMITER + "sortcol", col);
 		localStorage.setItem(this.tableid + DELIMITER + "sortkind", kind);
-		
+
 		sortcolumn = col;
 		sortkind = kind;
 
 		this.reRender();
 	}
-	this.setNameColumn = function (colnameArr){
+	this.setNameColumn = function (colnameArr) {
 		nameColumn = colnameArr;
 
 	}
@@ -552,7 +556,7 @@ function SortableTable(param) {
 
 	this.getSortkind = function () {
 		return sortkind;
-	}			
+	}
 
 	this.magicHeader = function () {
 		// Assign table and magic headings table(s)
@@ -588,6 +592,7 @@ function SortableTable(param) {
 	}
 
 	setInterval(freezePaneHandler, 30);
+
 	function freezePaneHandler() {
 		// Hide magic headings and find minimum overdraft
 		for (var i = 0; i < sortableTable.sortableTables.length; i++) {
@@ -687,6 +692,7 @@ function SortableTable(param) {
 		return str;
 	}
 }
+
 function newCompare(firstCell, secoundCell) {
 	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
 	let status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
@@ -694,14 +700,14 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
-    if(typeof firstCell === 'object' && col.includes("FnameLnameSSN")) {
+	if (typeof firstCell === 'object' && col.includes("FnameLnameSSN")) {
 		// "FnameLnameSSN" is comprised of three separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
-		if(col == "FnameLnameSSN"){
+		if (col == "FnameLnameSSN") {
 			col = sortableTable.currentTable.getNameColumn();
 		}
 		// now check for matching columns with the potentially replaced name
-		if(col == "Fname") {
+		if (col == "Fname") {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
 				firstCellTemp = firstCell.firstname;
@@ -713,7 +719,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.firstname)[0];
 				secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
-		} else if (col == "Lname"){
+		} else if (col == "Lname") {
 			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
 				firstCellTemp = firstCell.lastname;
 				secoundCellTemp = secoundCell.lastname;
@@ -742,9 +748,9 @@ function newCompare(firstCell, secoundCell) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
-		} 
-	   //Check if the cell is a valid cell in the table.
-	}else if (typeof firstCell === 'object' && col.includes("lid")){
+		}
+		//Check if the cell is a valid cell in the table.
+	} else if (typeof firstCell === 'object' && col.includes("lid")) {
 		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
 			firstCellTemp = firstCell.grade;
 			secoundCellTemp = secoundCell.grade;
@@ -759,7 +765,7 @@ function newCompare(firstCell, secoundCell) {
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 		if (status == 1) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-		} else if(status == 2 || status == 3) {
+		} else if (status == 2 || status == 3) {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
 	} else if (colOrder.includes(col)) {
@@ -815,7 +821,7 @@ function newCompare(firstCell, secoundCell) {
 			val = secoundCell < firstCellTemp;
 		}
 	}
-	
+
 	return val;
 
 }
