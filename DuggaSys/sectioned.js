@@ -249,6 +249,8 @@ function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
+    $('#close-item-button').focus();
+    
   } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
@@ -1379,6 +1381,7 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
+  var deleteButtonDisplay = $('#sectionConfirmBox').css('display');
   if (event.keyCode == 27) {
     // if key is escape
     closeWindows();
@@ -1386,29 +1389,39 @@ $(window).keyup(function (event) {
     showSaveButton();
     hamburgerChange("escapePress");
     document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
-  } else if (event.keyCode == 13) {
+  } 
+  else if (event.keyCode == 13) {
     //Remember that keycode 13 = enter button
     document.activeElement.blur();
     var saveButtonDisplay = ($('#saveBtn').css('display'));
     var editSectionDisplay = ($('#editSection').css('display'));
     var submitButtonDisplay = ($('#submitBtn').css('display'));
-    var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       updateItem();
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();
-    } else if (deleteButtonDisplay == 'flex') {
+    } /*else if (deleteButtonDisplay == 'flex') {
       // Delete the item, allow enter to act as clicking "yes"
       confirmBox("deleteItem");
-    } else if (testsAvailable == true) {
+    } */else if (testsAvailable == true) {
       confirmBox("closeConfirmBox");
       testsAvailable = false;
     } else if (errorMissingMaterialDisplay == 'flex') {
       closeWindows();
     }
-
+    
+  }
+  else if(event.keyCode == 37){
+    if (deleteButtonDisplay == 'flex') {
+      $('#delete-item-button').focus();
+    }
+  }
+  else if(event.keyCode == 39){
+    if (deleteButtonDisplay == 'flex') {
+      $('#close-item-button').focus();
+    }
   }
 });
 
