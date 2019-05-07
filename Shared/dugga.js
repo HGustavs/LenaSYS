@@ -1297,7 +1297,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 									tab+=filez[i].content.substring(0,8)+"&#8230;</span>";
 								} else {
 									tab+=filez[i].content+"</span>";
-								}										
+								}						
 							} else {
 								tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
 								if (mediumMediaQuery.matches) {
@@ -1306,7 +1306,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
 								} else {
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
-								}	
+								}								
 							}
 							tab+="</td><td>";
 							if (mobileMediaQuery.matches) {
