@@ -121,7 +121,7 @@ if(strcmp($opt,"get")==0) {
       foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
         array_push($groupMembers,$row['username']);
       }
-      print_r($groupMembers);
+
       if(sizeof($groupMembers) < 0){
         // if there are no results (shouldn't be possible since at least the person who's $groups
         // we are checkin on should be here) we set groupMembers back to "UNK".
@@ -129,6 +129,27 @@ if(strcmp($opt,"get")==0) {
       }
     }
   }
+  // Get amount of students in course vers.
+  $stmt = $pdo->prepare("SELECT user.username FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
+  $stmt->bindParam(":cid",$cid);
+  $stmt->bindParam(":vers",$vers);
+  $courseMembers = array();
+  if(!$stmt->execute()){
+    $error = $stmt->errorInfo();
+    $debug = "Error getting students in course + vers .\n".$error[2];
+  } else {
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+        array_push($courseMembers,$row['username']);
+    }
+  }
+
+  $amountInCourse = sizeof($courseMembers);
+  if(!is_array($groupMembers)){
+    $amountInGroups = 0;
+  } else {
+    $amountInGroups = sizeof($groupMembers);
+  }
+
 
   /*
    * Rankings, numbers etc below.
@@ -556,8 +577,10 @@ if(strcmp($opt,"get")==0) {
 		'allcommentranks' => $allcommentranks,
 		'allcommitranks' => $allcommitranks,
 		'githubuser' => $gituser,
-		'hourlyevents' => $hourlyevents,
 		'count' => $count,
+    'amountInCourse' => $amountInCourse,
+    'amountInGroups' => $amountInGroups,
+		'hourlyevents' => $hourlyevents,
 		'timesheets' => $timesheets
 	);
 
