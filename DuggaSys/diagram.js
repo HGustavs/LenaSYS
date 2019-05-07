@@ -75,7 +75,8 @@ var canvasRightClick = 0;            // Canvas right click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
-var hovobj = -1;
+var hoveredObject = -1;
+var markedObject = -1;
 var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
@@ -900,6 +901,7 @@ diagram.checkForHover = function(posX, posY) {
         this[i].isHovered = false;
     }
     var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
+    hoveredObject = hoveredObjects[hoveredObjects.length - 1];
     if (hoveredObjects.length <= 0) return -1;
     hoveredObjects.sort(function(a, b) {
         if(a.kind == kind.path && b.kind == kind.symbol) return -1;
@@ -2516,17 +2518,22 @@ function mousemoveevt(ev, t) {
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance / zoomValue) {
                 //Change cursor if you are hovering over a point and its not a line
-                if(sel.attachedSymbol.symbolkind != symbolKind.line && sel.attachedSymbol.symbolkind != symbolKind.umlLine) {
-                    canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
-                } else {
+                if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
                     //The point belongs to a umlLine or Line
                     canvas.style.cursor = "pointer";
+                } else {                    
+                    canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                 }
             } else {
                 if(uimode == "MoveAround"){
                     canvas.style.cursor = "all-scroll";
-                }
-                else {
+                } else if(hoveredObject && !hoveredObject.locked){
+                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine){
+                        canvas.style.cursor = "pointer";
+                    } else {
+                        canvas.style.cursor = "all-scroll";
+                    }
+                } else {
                     canvas.style.cursor = "default";
                 }
             }
@@ -2726,16 +2733,16 @@ function mousedownevt(ev) {
     }
 
     if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
-        hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+        markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
         md = mouseState.boxSelectOrCreateMode;  // Box select or Create mode.
         //If you start on canvas or not
-        if (hovobj == -1) {
+        if (markedObject == -1) {
             md = mouseState.empty;
         } else {
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Store which object you are hovering over in lineStartObj
-            lineStartObj = hovobj;
+            lineStartObj = markedObject;
 
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
@@ -2807,7 +2814,7 @@ function handleSelect() {
 
 function mouseupevt(ev) {
     canvasLeftClick = 0;
-    hovobj = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+    markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
     //for checking the position of errelation before resize() overwrites values
     var p1BeforeResize;
@@ -2839,11 +2846,11 @@ function mouseupevt(ev) {
     if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
-         if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
+         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
             md = mouseState.empty;
          }else {
             //Get which kind of symbol mouseupevt execute on
-            symbolEndKind = diagram[hovobj].symbolkind;
+            symbolEndKind = diagram[markedObject].symbolkind;
 
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object, 
@@ -2860,33 +2867,33 @@ function mouseupevt(ev) {
                 }
                 //Code for making sure enitities not connect to the same attribute multiple times
                 if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
-                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
+                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
                 } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
-                if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
+                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[hovobj].symbolkind == symbolKind.erAttribute) {
-                        p2 = diagram[hovobj].centerPoint;
+                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                        p2 = diagram[markedObject].centerPoint;
                     } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     }
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                    diagram[hovobj].connectorTop.push({from:p2, to:p1});
+                    diagram[markedObject].connectorTop.push({from:p2, to:p1});
                 }
             }
         }
@@ -2894,11 +2901,11 @@ function mouseupevt(ev) {
     if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
-         if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
+         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
             md = mouseState.empty;
          }else {
               //Get which kind of symbol mouseupevt execute on
-             symbolEndKind = diagram[hovobj].symbolkind;
+             symbolEndKind = diagram[markedObject].symbolkind;
 
              sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object, 
@@ -2916,33 +2923,33 @@ function mouseupevt(ev) {
 
                 //Code for making sure enitities not connect to the same attribute multiple times
                 if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
-                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
+                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
                 } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
-                if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
+                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[hovobj].symbolkind == symbolKind.erAttribute) {
-                        p2 = diagram[hovobj].centerPoint;
+                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                        p2 = diagram[markedObject].centerPoint;
                     } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     }
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                    diagram[hovobj].connectorTop.push({from:p2, to:p1});
+                    diagram[markedObject].connectorTop.push({from:p2, to:p1});
                 }
             }
         }
@@ -3519,13 +3526,13 @@ function changeObjectAppearance(object_type) {
 
 function createCardinality() {
     //Setting cardinality on new line
-    if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[hovobj].symbolkind == symbolKind.erEntity) {
+    if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erEntity) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
     }
-    else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erRelation) {
+    else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erRelation) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
     }
-    else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[hovobj].symbolkind == symbolKind.uml) {
+    else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[markedObject].symbolkind == symbolKind.uml) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
