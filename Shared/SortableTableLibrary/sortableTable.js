@@ -120,7 +120,7 @@ function clickedInternal(event, clickdobj) {
 			str += estr;
 			str += "</div>";
 			str += "<img id='popovertick' class='icon' src='../Shared/icons/Icon_Tick.svg' onclick='updateCellInternal();'>";
-			str += "<img id='popovercross' class='icon' src='../Shared/icons/Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
+			str += "<img id='popovercross' class='icon' src='../Shared/icons/Icon_Cross_Grey.svg' onclick='clearUpdateCellInternal();'>";
 			var lmnt = cellelement.getBoundingClientRect();
 			var popoverelement = document.getElementById("editpopover");
 
