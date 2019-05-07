@@ -470,7 +470,7 @@ function moveToFront(){
             front.push(diagram[0]);
         }
         else {
-            back.push(diagram[0]);            
+            back.push(diagram[0]);
         }
         diagram.splice(0, 1);
     }
@@ -496,7 +496,7 @@ function moveToBack(){
             back.push(diagram[0]);
         }
         else {
-            front.push(diagram[0]);            
+            front.push(diagram[0]);
         }
         diagram.splice(0, 1);
     }
@@ -1099,7 +1099,9 @@ function deselectObjects() {
 //             functionality is related to currentMouseCoordinateX and currentMouseCoordinateY
 //-----------------------------------------------------------------------------------
 
-function toggleGrid() {
+function toggleGrid(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+
     if (snapToGrid == false) {
         snapToGrid = true;
     } else {
@@ -1108,7 +1110,9 @@ function toggleGrid() {
     setCheckbox($(".drop-down-option:contains('Snap to grid')"), snapToGrid);
 }
 
-function toggleVirtualA4() {
+function toggleVirtualA4(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+
     if (toggleA4) {
         // A4 is disabled
         toggleA4 = false;
@@ -1607,14 +1611,15 @@ consloe.log = function(gobBluth) {
 //------------------------------------------------------------------------------
 
 var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
-function developerMode() {
+function developerMode(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
     if(developerModeActive) {
         console.log('developermode: ON');       // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-        drawOrigo();   
+        drawOrigo();
         toolbarState = 3;                                                               // Change the toolbar to DEV.
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
@@ -1634,11 +1639,12 @@ function developerMode() {
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
-        setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
+        setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER
     }
     reWrite();
     updateGraphics();
     setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
+
 }
 
 var targetMode;     //the mode that we want to change to when trying to switch the toolbar
@@ -1912,7 +1918,9 @@ function setRefreshTime() {
 // lockSelected: the selected objects are locked
 //----------------------------------------------------------------------
 
-function lockSelected() {
+function lockSelected(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+
     for(var i = 0; i < selected_objects.length; i++) {
         if(selected_objects[i].kind == kind.symbol){
             // Lines should not be possible to lock
@@ -1932,7 +1940,9 @@ function lockSelected() {
     SaveState();
 }
 
-function align(mode) {
+function align(event, mode) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+
     if(mode == 'top') {
        alignTop(selected_objects);
     }
@@ -2108,8 +2118,10 @@ function sortObjects(selected_objects, mode) {
 //            vertically or horizontally
 //----------------------------------------------------------------------
 
-function distribute(axis) {
+function distribute(event, axis) {
   let spacing = 30;
+
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
 
     if(axis=='vertically') {
       // Added spacing when there are objects that overlap eachother.
@@ -2143,7 +2155,8 @@ function distribute(axis) {
 // undoDiagram: removes the last object that was drawn
 //----------------------------------------------------------------------
 
-function undoDiagram() {
+function undoDiagram(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     if (diagramNumberHistory > 1) diagramNumberHistory--;
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
@@ -2153,7 +2166,8 @@ function undoDiagram() {
 // redoDiagram: restores the last object that was removed
 //----------------------------------------------------------------------
 
-function redoDiagram() {
+function redoDiagram(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
@@ -2252,18 +2266,6 @@ function globalStrokeColor() {
     for (var i = 0; i < diagram.length; i++) {
             diagram[i].properties['strokeColor'] = document.getElementById('StrokeColor').value;
     }
-}
-
-function undoDiagram() {
-    if (diagramNumberHistory > 1) diagramNumberHistory--;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
-}
-
-function redoDiagram() {
-    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
 function diagramToSVG() {
@@ -2852,11 +2854,11 @@ function mouseupevt(ev) {
             symbolEndKind = diagram[hovobj].symbolkind;
 
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object, 
+            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
             // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line && 
+            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
                 symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
@@ -2924,11 +2926,11 @@ function mouseupevt(ev) {
              symbolEndKind = diagram[hovobj].symbolkind;
 
              sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object, 
+            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
             // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine && 
+            if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine &&
                 symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
@@ -3107,8 +3109,8 @@ function mouseupevt(ev) {
         p2BeforeResize.y = points[diagramObject.bottomRight].y;
     }
 
-    //If the object is created by just clicking and not dragging then set variable so that points 
-    //are moved to mouse position inside the adjust function 
+    //If the object is created by just clicking and not dragging then set variable so that points
+    //are moved to mouse position inside the adjust function
     if (diagramObject && p1BeforeResize.x == p2BeforeResize.x && p1BeforeResize.y == p2BeforeResize.y) {
         diagramObject.pointsAtSamePosition = true;
     }
