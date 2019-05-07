@@ -61,6 +61,7 @@ $duggagrade="";
 $gradeupdated=false;
 
 $entries=array();
+$entriesNoSSN=array();
 $gentries=array();
 $sentries=array();
 $lentries=array();
@@ -426,6 +427,7 @@ if(strcmp($opt,"CHGR")!==0){
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			// Create array entry for each course participant
 
+			// This is unused in resulted, but kept if needed elsewhere / some other time
 			$entry = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -433,6 +435,18 @@ if(strcmp($opt,"CHGR")!==0){
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
 				'ssn' => $row['ssn'],
+				'class' => $row['class'],
+				'access' => $row['access'],
+				'examiner' => $row['examiner']
+			);
+
+			// The array which is displayed on resulted without SSN
+			$entryNoSSN = array(
+				'cid' => (int)$row['cid'],
+				'uid' => (int)$row['uid'],
+				'username' => $row['username'],
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname'],
 				'class' => $row['class'],
 				'access' => $row['access'],
 				'examiner' => $row['examiner']
@@ -449,6 +463,7 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 			*/
 			array_push($entries, $entry);
+			array_push($entriesNoSSN, $entryNoSSN);
 		}
 
 		// All results from current course and vers?
@@ -685,6 +700,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 }
 
 $array = array(
+	'entriesNoSSN' => $entriesNoSSN,
 	'entries' => $entries,
 	'moments' => $gentries,
 	'versions' => $sentries,

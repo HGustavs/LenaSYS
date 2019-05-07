@@ -725,10 +725,10 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
-    if(typeof firstCell === 'object' && col.includes("FnameLnameSSN")) {
-		// "FnameLnameSSN" is comprised of three separately sortable sub-columns,
+    if(typeof firstCell === 'object' && col.includes("FnameLname")) {
+		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
-		if(col == "FnameLnameSSN"){
+		if(col == "FnameLname"){
 			col = sortableTable.currentTable.getNameColumn();
 		}
 		// now check for matching columns with the potentially replaced name
@@ -755,18 +755,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.lastname)[0];
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
-		} else if (col == "SSN") {
-			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
-				firstCellTemp = firstCell.ssn;
-				secoundCellTemp = secoundCell.ssn;
-			} else {
-				firstCell = JSON.parse(firstCell.ssn);
-				secoundCell = JSON.parse(secoundCell.ssn);
-				//Get the first letter from the value.
-				firstCellTemp = Object.values(firstCell.ssn)[0];
-				secoundCellTemp = Object.values(secoundCell.ssn)[0];
-			}
-		}
+		} 
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 		if (status == 0 || status == 2 || status == 4) {
