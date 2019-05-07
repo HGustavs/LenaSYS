@@ -102,30 +102,30 @@
          </div>
       </div>
 
-          <?php
-          if(isset($_POST["newFolderInFolder"])) {
-              $name = $_POST["newFolderInFolder"];
-              ?>
-              <script>
-                  document.getElementById("showNew").style.visibility = "block";
-              </script>
-              <?php
-              ?>
-              <div id="newProject" style="visibility:block;position:absolute;left:500px;top:60px;">
-                  <form action="diagram_IOHandler.php" method="post">
-                      <?php echo "$name" ?> /
-                      <br>
-                      Project name:<input name="projectInFolder" type="text"  />
-                      <br>
-                      Permissions: W<input type="checkbox" name="W" value="W"> R<input type="checkbox" name="R" value="R"> X<input type="checkbox" name="X" value="X">
-                      <br>
-                      <input type="hidden" name="Folder" value='<?php print $name ?>'>
-                      <button type="submit" >Create!</button>
-                  </form>
-              </div>
-              <?php
-          }
+      <?php
+      if(isset($_POST["newFolderInFolder"])) {
+          $name = $_POST["newFolderInFolder"];
           ?>
+          <script>
+              document.getElementById("showNew").style.visibility = "block";
+          </script>
+          <?php
+          ?>
+          <div id="newProject" style="visibility:block;position:absolute;left:500px;top:60px;">
+              <form action="diagram_IOHandler.php" method="post">
+                  <?php echo "$name" ?> /
+                  <br>
+                  Project name:<input name="projectInFolder" type="text"  />
+                  <br>
+                  Permissions: W<input type="checkbox" name="W" value="W"> R<input type="checkbox" name="R" value="R"> X<input type="checkbox" name="X" value="X">
+                  <br>
+                  <input type="hidden" name="Folder" value='<?php print $name ?>'>
+                  <button type="submit" >Create!</button>
+              </form>
+          </div>
+          <?php
+      }
+      ?>
 
       <!-- The Appearance menu. Default state is display: none; -->
       <div id="appearance" class='loginBox' style='display: none;'>
@@ -138,29 +138,29 @@
           </div>
       </div>
 
-          <div id='showStoredFolders' style="display:none;position:absolute;left:360px;top:50px">
-              <div id="adsds" style="position:fixed;height:100vh;width:160px;border-right:1px solid black;">
-                  <?php
-                  if (isset($_POST["answer"]) && !empty($_POST)) {
-                      $newFolder = $_POST['answer'];
-                      if ($handle = opendir("Save/$newFolder/")) {
-                          $blacklist = array('.', '..', 'Save', 'id.txt');
-                          while (false !== ($file = readdir($handle))) {
-                              if (!in_array($file, $blacklist)) {
-                                  ?>
-                                  <br>
-                                  <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>'
-                                          style="margin-left:25px;left:10px;width:60px;margin-top:5px;"
-                                          onclick='redirectas(this,"<?php print $newFolder ?>")'><?php print $file ?></button>
-                                  <?php
-                              }
+      <div id='showStoredFolders' style="display:none;position:absolute;left:360px;top:50px">
+          <div id="adsds" style="position:fixed;height:100vh;width:160px;border-right:1px solid black;">
+              <?php
+              if (isset($_POST["answer"]) && !empty($_POST)) {
+                  $newFolder = $_POST['answer'];
+                  if ($handle = opendir("Save/$newFolder/")) {
+                      $blacklist = array('.', '..', 'Save', 'id.txt');
+                      while (false !== ($file = readdir($handle))) {
+                          if (!in_array($file, $blacklist)) {
+                              ?>
+                              <br>
+                              <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>'
+                                      style="margin-left:25px;left:10px;width:60px;margin-top:5px;"
+                                      onclick='redirectas(this,"<?php print $newFolder ?>")'><?php print $file ?></button>
+                              <?php
                           }
-                          closedir($handle);
                       }
+                      closedir($handle);
                   }
-                  ?>
-              </div>
+              }
+              ?>
           </div>
+      </div>
 
       <!-- content END -->
       <?php
@@ -187,21 +187,21 @@
               }
       }
       ?>
-          <?php
-          if(isset($_POST["projectInFolder"])) {
-              $projectName = $_POST["projectInFolder"];
-              $name = $_POST["Folder"];
-              if(!is_dir("Save/$name/$projectName")) {
-                  mkdir("Save/$name/$projectName",0777,true);
-                  $newURL = "diagram.php?id=$projectName&folder=$name";
-                  echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$newURL.'">';
-              } else {
-                      $message = "Directory already exists";
-                      echo "<script type='text/javascript'>alert('$message');</script>";
-                }
-          }
-          ?>
-          <?php
+      <?php
+      if(isset($_POST["projectInFolder"])) {
+          $projectName = $_POST["projectInFolder"];
+          $name = $_POST["Folder"];
+          if(!is_dir("Save/$name/$projectName")) {
+              mkdir("Save/$name/$projectName",0777,true);
+              $newURL = "diagram.php?id=$projectName&folder=$name";
+              echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$newURL.'">';
+          } else {
+                  $message = "Directory already exists";
+                  echo "<script type='text/javascript'>alert('$message');</script>";
+            }
+      }
+      ?>
+      <?php
           if(isset($_POST["answer"])) {
               ?>
               <script>
