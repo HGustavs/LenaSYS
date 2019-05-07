@@ -100,7 +100,7 @@ function clickedInternal(event, clickdobj) {
 		let regex = new RegExp("^r([0-9]+)" + DELIMITER + "([a-zA-Z0-9]+)" + DELIMITER + "(.*)")
 		let match = cellelement.id.match(regex);
 		var rowno = match[1];
-		var columno = null;
+		var columnno = null;
 		var tableid = match[2];
 		var columnname = match[3]
 		var str = "";
