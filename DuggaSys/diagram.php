@@ -68,9 +68,6 @@
                                       <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                       </button>
-                                      <button id='umllinebutton' onclick='setMode("CreateUMLLine");' class='buttonsStyle unpressed' data="Create UML Line">
-                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_umlline.svg">
-                                      </button>
                                   </div>
                               </div>
                             </div>
