@@ -1125,6 +1125,7 @@ function toggleVirtualA4() {
 
     $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
 }
 
 function drawVirtualA4() {
@@ -1173,7 +1174,6 @@ function drawVirtualA4() {
                 //Latter two holes
                 drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
                 drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
-
             }
         }
         else if(A4Orientation == "landscape") {
@@ -1193,7 +1193,6 @@ function drawVirtualA4() {
                 //Latter two holes
                 drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
                 drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
-
             }
       }
     }
@@ -1215,7 +1214,6 @@ function showA4State(){
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), false);
-
 }
 
 function hideA4State(){
@@ -1223,6 +1221,9 @@ function hideA4State(){
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), false);
+
+    $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
 function toggleVirtualA4Holes() {
