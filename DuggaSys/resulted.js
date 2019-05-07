@@ -503,6 +503,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</table>";
 	menu += "</div> <!-- Menu Dialog END -->";
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
+	
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
 }
 
@@ -615,7 +616,7 @@ function returnedResults(data) {
 			var studentObject = studentInfo[student]["lid:" + data.duggaid];
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
-				studentObject.timesGraded = parseInt(data.timesgraded);
+				studentObject.timesGraded = parseInt(data.duggatimesgraded);
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
@@ -857,7 +858,7 @@ function renderCell(col, celldata, cellid) {
 			str += "/>";
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
-			if (celldata.ishere === true && celldata.timesGraded !== 0) {
+			if (celldata.timesGraded !== 0) {
 				str += '(' + celldata.timesGraded + ')';
 			}
 			str += "</div>";
