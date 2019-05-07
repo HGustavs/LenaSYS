@@ -764,6 +764,14 @@ header td {
   background: var(--color-background);
 }
 
+#TopMenuStatic {
+  position: fixed;
+  top: 3px;
+  left: 95px;
+  right: 100px;
+  z-index: 5001;
+}
+
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
@@ -4993,4 +5001,8 @@ textarea#filecont{
   background: var(--color-primary);
   color: #fff;
   border: 2px solid var(--color-primary);
+}
+
+.previewTable tr:nth-child(even){
+  background-color: #dad8db;
 }
