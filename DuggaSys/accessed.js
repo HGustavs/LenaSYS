@@ -16,20 +16,6 @@ var myTable;
 function setup() {
 	var filt = "";
 
-	filt += "<td id='select' class='navButt'><span class='dropdown-container'>";
-	filt += "<img class='navButt' onmouseover='hoverc()' onmouseout='leavec()' src='../Shared/icons/tratt_white.svg'>";
-	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-	filt += "<div id='columnfilter'></div>"
-	filt += "<div id='customfilter'></div>"
-	filt += "</div>";
-	filt += "</span></td>";
-
-	filt += "<td id='filter' class='navButt'> <span class='dropdown-container'>";
-	filt += "<img class='navButt' onmouseover='hovers()' onmouseout='leaves()' src='../Shared/icons/sort_white.svg'>";
-	filt += "<div id='dropdowns' class='dropdown-list-container'>";
-	filt += "</div>";
-	filt += "</span></td>";
-
 	// Add search bar to nav
 	filt += `<td id='searchBar' class='navButt'>`;
 	filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
@@ -39,8 +25,24 @@ function setup() {
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
 	filt += `</button></td>`;
 
-	$("#menuHook").before(filt);
+	$("#sort").after(filt);
+	/* Add filter menu */
 
+	document.getElementById("sort").style.display = "table-cell";
+	document.getElementById("select").style.display = "table-cell";
+
+	// Remove all children, at the time of writing there is only 1 and its unwanted.
+	while (document.getElementById("dropdownc").hasChildNodes()) {
+		document.getElementById("dropdownc").removeChild(document.getElementById("dropdownc").firstChild);
+	}
+
+	var customFilterDiv = document.createElement("div");
+	customFilterDiv.id = "customfilter";
+	var columnFilterDiv = document.createElement("div");
+	columnFilterDiv.id = "columnfilter";
+	document.getElementById("dropdownc").appendChild(columnFilterDiv);
+	document.getElementById("dropdownc").appendChild(customFilterDiv);
+  
 	AJAXService("GET", {
 		cid: querystring['cid'],
 		coursevers: querystring['coursevers']
@@ -51,17 +53,13 @@ function setup() {
 //  function content was commented out to avoid having a white empty box appear.
 
 function hoverc() {
-
 	$('#dropdowns').css('display', 'none');
 	$('#dropdownc').css('display', 'block');
-
 }
 
 function hovers() {
-
 	$('#dropdowns').css('display', 'block');
 	$('#dropdownc').css('display', 'none');
-
 }
 
 function leavec() {
@@ -70,6 +68,14 @@ function leavec() {
 
 function leaves() {
 	$('#dropdowns').css('display', 'none');
+}
+
+function showCreateUserPopup() {
+	$("#createUser").css("display", "flex");
+}
+
+function showCreateClassPopup() {
+	$("#createClass").css("display", "flex");
 }
 
 function showCreateUserPopup() {
