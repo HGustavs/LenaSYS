@@ -295,22 +295,29 @@ svg text {
  #TestPrev {
    overflow-x: auto;
  }
- .previewTable tr {
-     display: table-row;
-     vertical-align: inherit;
- }
- .previewTable th {
-   font-weight: bold;
-   text-align: center;
-   vertical-align: inherit;
-   padding-right: 30px;
-   padding-left: 10px;
- }
- .previewTable td {
-   padding-right: 30px;
-   padding-left: 10px;
- }
-
+ .previewTable {
+	width: 100%;
+	white-space: nowrap;
+}
+.previewTable tr {
+		display: table-row;
+		vertical-align: inherit;
+}
+.previewTable th {
+	font-weight: bold;
+	text-align: center;
+	vertical-align: inherit;
+	padding-right: 30px;
+	padding-left: 10px;
+}
+.previewTable td {
+	padding-right: 30px;
+	padding-left: 10px;
+	width: 1px;
+}
+.previewTable td:last-child {
+	width: 100%;
+}
  /* --------------================################================-------------- *
  *                      	       Daily - minutes  				       								 *
  * --------------================################================-------------- */
