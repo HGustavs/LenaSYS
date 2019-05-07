@@ -64,7 +64,7 @@ function setup() {
   filt += `<div class='tooltip-searchbar-box'>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
- 
+
 	$("#menuHook").before(filt);
   */
 
@@ -1038,6 +1038,7 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
+  console.trace();
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLnameSSN") {
@@ -1299,6 +1300,6 @@ function mail() {
 // Puts filter buttons at a fixed point when scrolling horizontally
 $(window).scroll(function() {
     $('#ladexportContainer').css({
-        'left': $(this).scrollLeft() + 10 
+        'left': $(this).scrollLeft() + 10
     });
 });

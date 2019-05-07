@@ -98,8 +98,9 @@ CREATE TABLE listentries (
 	highscoremode			INT DEFAULT 0,
 	rowcolor				TINYINT(1),
 	groupID					INT DEFAULT NULL,
+	groupKind 				VARCHAR(16) DEFAULT NULL,
     PRIMARY KEY (lid),
-	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /* Quiz tables */
@@ -631,13 +632,3 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
-
-/* Merged from strutt.sql */
-alter table user_course alter column result SET DEFAULT 0.0;
-alter table user_course alter column period set default 1;
-alter table user_course alter column term set default 1;
-/* Does not work, already exist a vers in user_course
-alter table user_course add column vers VARCHAR(8);
-*/
-alter table codeexample MODIFY runlink VARCHAR(256);
-ALTER TABLE listentries add column groupKind VARCHAR(16) DEFAULT NULL;
