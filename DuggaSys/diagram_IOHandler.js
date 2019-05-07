@@ -13,9 +13,7 @@ function downloadMode(el) {
     var canvas = document.getElementById("content");
     var selectBox = document.getElementById("download");
     download = selectBox.options[selectBox.selectedIndex].value;
-    /*if (download.toString() == "getImage") {
-        getImage();
-    }*/
+
     if (download == "Save") {
         Save();
     }
@@ -28,14 +26,11 @@ function downloadMode(el) {
 }
 
 function saveToServer(dia) {
-
     $.ajax({
         url: 'diagram.php',
         type: 'POST', // GET or POST
         data: {StringDiagram : dia, Hash: hashFunction()}
-
     });
-
 }
 
 function redirect(doc) {
@@ -49,36 +44,33 @@ function redirect(doc) {
         success: function(data) { // <-- note the parameter here, not in your code
             return false;
         }
-
     });
 
     location.href="diagram.php?id="+0+"&folder="+a;
-
 }
+
 function redirectas(doc,folder) {
         location.href="diagram.php?id="+doc.value+"&folder="+folder;
 }
+
 function newProject() {
     document.getElementById('newProject').style.display = "block";
 }
-function loadNew() {
 
+function loadNew() {
     document.getElementById('showStoredFolders').style.display = "none";
     document.getElementById('showStored').style.display = "none";
     document.getElementById('showNew').style.display = "block";
 }
+
 function loadStored() {
     document.getElementById('showNew').style.display = "none";
     document.getElementById('showStored').style.display = "block";
 }
-function loadStoredFolders(f) {
 
+function loadStoredFolders(f) {
     document.getElementById('showStoredFolders').style.display = "block";
 }
-
-/*function getImage() {
-
-}*/
 
 function Save() {
     c = [];
@@ -155,6 +147,7 @@ function LoadFile() {
 //-------------------------------------------------------------------------------
 // getUpload: this function adds eventlisteners to the buttons when html body is loaded
 //-------------------------------------------------------------------------------
+
 function getUpload() {
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
@@ -171,6 +164,7 @@ function getUpload() {
         }
     }
 }
+
 function Load() {
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.
