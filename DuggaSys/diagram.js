@@ -3002,8 +3002,6 @@ function mouseupevt(ev) {
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
         erAttributeA.object_type = "";
-        erAttributeA.fontColor = "#000";
-        erAttributeA.font = "Arial";
         diagram.push(erAttributeA);
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
@@ -3018,8 +3016,6 @@ function mouseupevt(ev) {
         erEnityA.centerPoint = p3;
         erEnityA.arity = [];
         erEnityA.object_type = "";
-        erEnityA.fontColor = "#000";
-        erEnityA.font = "Arial";
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
@@ -3146,8 +3142,6 @@ function createText(posX, posY) {
     var fontsize = text.getFontsize();
     var height = fontsize + 20;
 
-    text.fontColor = "#000000";
-    text.font = "Arial";
     ctx.font = "bold " + fontsize + "px " + text.font;
 
     p1 = points.addPoint(posX - (length/2), posY - (height/2), false);
@@ -3328,7 +3322,7 @@ function loadFormIntoElement(element, dir) {
       }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-        setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
+        setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
       }
     }
   }
@@ -3522,7 +3516,7 @@ function changeObjectAppearance(object_type) {
     } else if (diagram[lastSelectedObject].kind == kind.path) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
-        diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
+        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
     } else if (diagram[lastSelectedObject].symbolkind == symbolKind.text) {
         diagram[lastSelectedObject].textLines = [];
         var textArray = $('#freeText').val().split('\n');

@@ -18,16 +18,7 @@ function Symbol(kindOfSymbol) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];            // Free text array
-    this.textsize = 14;             // 14 pixels text size is default
-    this.symbolColor = '#ffffff';   // change background colors on entities
-    this.strokeColor = '#000000';   // change standard line color
-    this.font = "Arial";            // set the standard font
-    this.lineWidth = 2;
-    this.fontColor = '#000000';
     this.name = "New Class";        // Default name is new class
-    this.key_type = "normal";       // Defult key type for a class.
-    this.sizeOftext = "Tiny";       // Used to set size of text.
-    this.textAlign = "center";      // Used to change alignment of free text
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
@@ -1814,7 +1805,7 @@ function Symbol(kindOfSymbol) {
 			// Weak relation
 
 			if (this.properties['key_type'] == "Weak") {
-				svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+				svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
@@ -1829,21 +1820,21 @@ function Symbol(kindOfSymbol) {
 		} else if (this.symbolkind == symbolKind.text) {
             var midx = points[this.centerPoint].x;
             svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
-            var textAlignment = this.textAlign;
-            if (this.textAlign == "center") textAlignment = "middle";
+            var textAlignment = this.properties['textAlign'];
+            if (this.properties['textAlign'] == "center") textAlignment = "middle";
             for (var i = 0; i < this.textLines.length; i++) {
                 svgPos = "x='"+this.getTextX(x1, midx, x2)+"' y='"+(y1+(fontsize*1.7)/2+(fontsize*i))+"' text-anchor='"+textAlignment+"' dominant-baseline='central'";
                 str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.textLines[i].text+"</text>";
             }
         }
-		str += "</g>";
-		return str;
-	}
+        str += "</g>";
+        return str;
+    }
 
     this.getTextX = function(x1, midX, x2) {
         var textX = 0;
-        if (this.textAlign == "start") textX = x1 + 10;
-        else if (this.textAlign == "end") textX = x2 - 10;
+        if (this.properties['textAlign'] == "start") textX = x1 + 10;
+        else if (this.properties['textAlign'] == "end") textX = x2 - 10;
         else textX = midX;
         return textX;
     }
