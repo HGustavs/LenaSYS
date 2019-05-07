@@ -192,9 +192,6 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
                         </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='resetToolbarPosition();'>Reset toolbar position</span>
-                        </div>
                     </div>
                 </div>
                 <div class="menu-drop-down">
