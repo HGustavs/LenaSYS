@@ -609,6 +609,7 @@ function returnedResults(data) {
 				studentObject.grade = parseInt(data.results);
 				console.log(typeof data.timesgraded);
 				studentObject.timesGraded = parseInt(data.timesgraded);
+				console.log(typeof studentObject.timesGraded);
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
