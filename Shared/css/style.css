@@ -1255,20 +1255,9 @@ input {
 .application-toolbar-wrap {
   position: fixed;
   z-index: 1000;
-  border: 1px solid var(--color-border-4);
-  outline: 1px solid var(--color-border-3);
+  border-top: 1px solid var(--color-border-4);
+  outline: 0px solid var(--color-border-3);
   background-color: var(--color-background);
-}
-
-.application-header {
-  height: 25px;
-  background-color: var(--color-primary);
-  color: var(--color-text-header);
-  vertical-align: bottom;
-  cursor: move;
-  display: flex;
-  justify-content: space-between;
-  margin: 0px;
 }
 
 .application-toolbar {
@@ -1292,71 +1281,35 @@ input {
   padding: 0px 4px 0px 4px;
 }
 
-#toolbar-minimize, #toolbar-toggleLayout {
-  display: inline-block;
-  width: 30px;
-  height: 25px;
-  left: 5px;
-  cursor: pointer;
-  text-align: center;
-  line-height: 25px;
-}
-
-#minimizeArrow {
-  width: 10px;
-  height: 10px;
-  filter: invert(100%);
-  transition: 0.2s;
-}
-
-#layoutArrow {
-  width: 15px;
-  height: 15px;
-  margin: 5px;
-  filter: invert(100%);
-  transition: 0.2s;
-}
-
-.toolbarMinimized {
-  transform: rotate(90deg);
-}
-
-.toolbarMaximized {
-  transform: rotate(180deg);
-}
-#toolbar-switcher{
-  height:20px;
-  display: flex;
-  text-align: center;
-  line-height: 20px;
-}
-.toolbarArrows{
-  width:20%;
-  background: var(--color-primary);
-  border-radius: 5px;
-  cursor: pointer;
-}
 #toolbarTypeText{
   height: 20px;
   color: #111;
   margin: 0 auto;
   font-weight: bold;
 }
+
 #toolbarLeftArrow{
   transform: rotate(-90deg);
   width: 50%;
   filter:invert(100%);
 }
+
 #toolbarRightArrow{
   transform: rotate(90deg);
   width: 50%;
   filter:invert(100%);
 }
-.diagramAction{
+
+.diagramAction {
   cursor: pointer;
   border-radius: 5px;
   background-color: var(--color-primary);
   width: 47%;
+  transition: 0.25s background-color;
+}
+
+.diagramAction:hover {
+  background-color: #7B5A96;
 }
 
 /* --------------================################================-------------- *
@@ -1523,9 +1476,24 @@ input {
   top: 45px;
 }
 
+#hotkey-front {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 165px;
+}
+#hotkey-back {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 195px;
+}
+
 /* --------------================################================-------------- *
-  *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
-  * --------------================################================-------------- */
+ *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
+ * --------------================################================-------------- */
 
 /* --------------================################================-------------- *
  *                                 Form Controls                                *
@@ -1738,6 +1706,11 @@ div.submit-button:disabled {
   align-items: center;
   border-radius: 8px;
   margin: 5px auto;
+  transition: 0.25s background-color;
+}
+
+.buttonsStyle:hover {
+  background-color: #7B5A96;
 }
 
 .buttonsStyle img,
@@ -1757,6 +1730,19 @@ div.submit-button:disabled {
   z-index: 10;
   border-radius: 5px;
   background: var(--color-primary);
+}
+
+.buttonStyleDialog {
+  margin: 5px auto;
+  background-color: var(--color-primary);
+  padding: 4px 8px;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.buttonStyleDialog:hover {
+  background-color: #7B5A96;
 }
 
 #moveButton {
@@ -1802,7 +1788,7 @@ div.submit-button:disabled {
   background: var(--color-primary);
 }
 
-.pressed {
+.pressed, .pressed:hover {
   background: #FFA500;
 }
 
@@ -3837,6 +3823,7 @@ only screen and (max-device-width: 320px) {
 
 #selectDiv {
   display: flex;
+  align-items: center;
   background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;
@@ -3844,8 +3831,8 @@ only screen and (max-device-width: 320px) {
   padding-left: 10px;
   height: 30px;
   position: absolute;
-  right: 16px;
-  bottom: 16px;
+  right: 26px;
+  bottom: 19px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3905,6 +3892,14 @@ only screen and (max-device-width: 320px) {
   left: -2%;
 }
 
+.zoomButtonStyle {
+  transition: 0.25s background-color;
+}
+
+.zoomButtonStyle:hover {
+  background-color: #7B5A96;
+}
+
 #zoomDecrease:hover + .tooltiptextDec{
   visibility: visible;
 }
@@ -3955,6 +3950,48 @@ only screen and (max-device-width: 320px) {
   right: 2%;
 }
 
+/* The slider itself */
+.zoomSlider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 5px; /* Specified height */
+  background: #d3d3d3;  /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.zoomSlider:hover {
+  opacity: 0.7;
+}
+
+.zoomSlider:active {
+  opacity: 1;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.zoomSlider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 15px; /* Set a specific slider handle width */
+  height: 15px; /* Slider handle height */
+  border-radius: 50%; 
+  background: var(--color-primary);  /*Purple background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.zoomSlider::-moz-range-thumb {
+  opacity: 1;
+  width: 15px; /* Set a specific slider handle width */
+  height: 15px; /* Slider handle height */
+  border-radius: 50%;
+  background: var(--color-primary); /* Purple background */
+  cursor: pointer; /* Cursor on hover */
+}
+
 /* Used to rotate the picture that is used as a arrow */
 
 @keyframes roteraPil {
@@ -3986,8 +4023,8 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 16px;
-  left: 16px;
+  bottom: 19px;
+  left: 84px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -4615,6 +4652,25 @@ textarea#mrkdwntxt {
 .modeSwitchHeader h3 {
   padding-right: 10px;
 }
+
+/* Composite error message dialog */
+.errorMessageDialog {
+  display: none;
+  background-color: rgba(0,0,0,0);
+}
+
+.messageContainer {
+  min-height: 80px;
+}
+
+#cancelButton {
+  border-radius: 3px;
+}
+
+.messageHeader h3 {
+  padding-right: 10px;
+}
+
 
 /* Import diagram */
 
