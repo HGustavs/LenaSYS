@@ -397,7 +397,7 @@ function SortableTable(param) {
 		for (var i = 0; i < tbl.tblbody.length; i++) {
 			var row = tbl.tblbody[i];
 			if (rowFilter(row)) {
-				filterResulted.push([row['FnameLnameSSN'].username]);
+				filterResulted.push(row['FnameLnameSSN'].username);
 				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
 				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
@@ -659,6 +659,8 @@ function SortableTable(param) {
 			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
 		}
 	 }
+	 console.log(activeFilteringUsername);
+	 console.log(filterResulted);
 	 activeFilteringUsername = filterResulted;
 	$.ajax({
 		url: "resultedservice.php",
