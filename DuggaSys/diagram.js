@@ -1271,7 +1271,7 @@ function importFile() {
 
 function canvasSize() {
     boundingRect = myCanvas.getBoundingClientRect();
-    widthWindow = (window.innerWidth - 100);
+    widthWindow = (window.innerWidth - 90);
     heightWindow = (window.innerHeight - 110);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
@@ -2344,9 +2344,9 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
-    element.style.top = (boundingRect.top + "px");
-    element.style.left = (boundingRect.left - 76 + "px");
-    element.style.width = (73 + "px");
+    element.style.top = (boundingRect.top - 47 + "px");
+    element.style.left = (boundingRect.left - 80 + "px");
+    element.style.width = (76 + "px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     element.style.display = "inline-block";
 }
