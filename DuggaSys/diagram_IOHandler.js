@@ -13,10 +13,9 @@ function downloadMode(el) {
     var canvas = document.getElementById("content");
     var selectBox = document.getElementById("download");
     download = selectBox.options[selectBox.selectedIndex].value;
-    if (download.toString() == "getImage") {
-        console.log("b");
+    /*if (download.toString() == "getImage") {
         getImage();
-    }
+    }*/
     if (download == "Save") {
         Save();
     }
@@ -38,9 +37,7 @@ function saveToServer(dia) {
     });
 
 }
-function createFolder(name) {
 
-}
 function redirect(doc) {
     var a = doc.value;
 
@@ -79,9 +76,9 @@ function loadStoredFolders(f) {
     document.getElementById('showStoredFolders').style.display = "block";
 }
 
-function getImage() {
+/*function getImage() {
 
-}
+}*/
 
 function Save() {
     c = [];
