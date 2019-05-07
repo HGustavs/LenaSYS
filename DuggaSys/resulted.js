@@ -878,6 +878,14 @@ function renderCell(col, celldata, cellid) {
 			if (celldata.submitted.getTime() !== timeZero.getTime()) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 			}
+			for (var p = 0; p < moments.length; p++) {
+				if (moments[p].link == celldata.quizId) {
+					if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+						str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+					}
+					break;
+				}
+			}
 			str += "</div>";
 		}
 		str += "</div>";
