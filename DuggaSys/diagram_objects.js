@@ -906,7 +906,7 @@ function Symbol(kindOfSymbol) {
             }
         }
 
-        if(this.isHovered){
+        if(this.isHovered && this.symbolkind != symbolKind.umlLine && this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.text){
           this.drawCenterCoordinatesTooltip();
         }
 
