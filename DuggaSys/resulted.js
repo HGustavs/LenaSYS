@@ -599,9 +599,7 @@ function saveResponse() {
 function returnedResults(data) {
 	if (data['debug'] !== "NONE!")
 		alert(data['debug']);
-		console.log(parseInt(data.timesgraded));
 	if (data.gradeupdated === true) {
-		console.log(parseInt(data.timesgraded));
 		// Update the the local array studentInfo when grade is updated.
 		for (var student in studentInfo) {
 			var studentObject = studentInfo[student]["lid:" + data.duggaid];
