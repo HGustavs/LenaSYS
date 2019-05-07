@@ -77,7 +77,7 @@ function returnedDugga(data)
 		}
 
 		var duggaFiles = data["files"][inParams["moment"]];
-		duggaFiles.sort((a,b) => (a.updtime > b.updtime) ? 1 : -1);
+		if (duggaFiles) duggaFiles.sort((a,b) => (a.updtime > b.updtime) ? 1 : -1);
 		if($("#submitButtonTable").length != 0) {
 			createFileUploadArea(duggaParams["submissions"]);
 			for (var k=0; k < duggaParams["submissions"].length; k++){
