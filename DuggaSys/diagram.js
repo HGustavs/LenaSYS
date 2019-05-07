@@ -2982,7 +2982,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        classB.name = "New" + diagram.length;
+        classB.name = "New" + countNumberOfSymbolKind(symbolKind.uml);
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -2996,7 +2996,7 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        erAttributeA.name = "Attr" + diagram.length;
+        erAttributeA.name = "Attr" + countNumberOfSymbolKind(symbolKind.erAttribute);
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3009,7 +3009,7 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        erEnityA.name = "Entity" + diagram.length;
+        erEnityA.name = "Entity" + countNumberOfSymbolKind(symbolKind.erEntity);
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3049,7 +3049,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        erRelationA.name = "Relation" + diagram.length;
+        erRelationA.name = "Relation" + countNumberOfSymbolKind(symbolKind.erRelation);
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3122,6 +3122,16 @@ function mouseupevt(ev) {
     md = mouseState.empty;
     if(saveState) SaveState();
 
+}
+
+function countNumberOfSymbolKind(kind) {
+  let numberOfSymbolKind = 0;
+  for(let i = 0; i < diagram.length; i++){
+    if(diagram[i].symbolkind == kind) {
+      numberOfSymbolKind++;
+    }
+  }
+  return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
