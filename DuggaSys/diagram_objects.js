@@ -1914,20 +1914,18 @@ function Symbol(kindOfSymbol) {
       var centerPosition = pixelsToCanvas(points[this.centerPoint].x, points[this.centerPoint].y);
       var widthOfObject = points[this.bottomRight].x - points[this.topLeft].x;
 
-      var yOffset = -40;
-      var xOffset = -3;
+      var xPosition = 230;
+      var yPosition = 805;
 
-      ctx.fillStyle = "#f5f5f5";
-      ctx.fillRect(topLeftPosition.x, topLeftPosition.y + yOffset, widthOfObject, 40);
+      ctx.fillStyle = "#00000";
+      ctx.fillRect(xPosition, yPosition, 300, 30);
 
-      yOffset += 12;
+      var yOffset = 17;
+      var xOffset = 135;
       ctx.fillStyle = "black";
-      ctx.font = "12px Arial";
+      ctx.font = "bold 14px Arial";
       ctx.textAlign = "center";
-      ctx.fillText("Center coordinates", centerPosition.x, topLeftPosition.y + yOffset);
-
-      yOffset += 20;
-      ctx.fillText("X: " + Math.round(points[this.centerPoint].x) + "  Y: " + Math.round(points[this.centerPoint].y), centerPosition.x, topLeftPosition.y + yOffset);
+      ctx.fillText("Center coordinates of object: " + "X=" + Math.round(points[this.centerPoint].x) + " & " + "Y=" + Math.round(points[this.centerPoint].y), xPosition + xOffset, yPosition + yOffset);
 
       ctx.restore();
     }
