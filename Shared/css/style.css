@@ -198,6 +198,7 @@ p {
    margin-bottom: 10px;
    height: 20px;
    background-color: white;
+   border-left: 1px solid #c0c0c0;
  }
 
 .version {
@@ -1255,7 +1256,6 @@ input {
 .application-toolbar-wrap {
   position: fixed;
   z-index: 1000;
-  border-top: 1px solid var(--color-border-4);
   outline: 0px solid var(--color-border-3);
   background-color: var(--color-background);
 }
@@ -1282,10 +1282,12 @@ input {
 }
 
 #toolbarTypeText{
-  height: 20px;
-  color: #111;
+  height: 22px;
+  font-size: 12px;
+  color: #c0c0c0;
   margin: 0 auto;
   font-weight: bold;
+  padding-top: 15px;
 }
 
 #toolbarLeftArrow{
@@ -1753,7 +1755,7 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 18px;
+  right: 10px;
   top: 100;
   z-index: 2;
   position: absolute;
@@ -3838,7 +3840,7 @@ only screen and (max-device-width: 320px) {
   padding-left: 10px;
   height: 30px;
   position: absolute;
-  right: 26px;
+  right: 16px;
   bottom: 19px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);

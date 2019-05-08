@@ -51,7 +51,7 @@
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
-        <div id="buttonDiv" style ="margin-left: 68px;" >
+        <div id="buttonDiv" style ="margin-left: 65px;" >
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-left: 0px; height: ; text-align: center;" onmousedown="">
                     <div class="application-header">
