@@ -294,9 +294,10 @@ function updateVariant(status) {
 
 	// Remove extra submission rows
 	if (submissionRow > 0) {
-		for (var i = 1; i <= submissionRow; i++) {
+		for (var i = submissionRow-1; i > 0; i--) {
 			// The function needs an element of the row to be removed, so this is what we have to do
 			var rows = [...document.getElementById('submissions').childNodes];
+			console.log(submissionRow);
 			var elements = [...rows[i].childNodes];
 			var element = elements[0];
 			removeVariantSubmissionRow(element);
