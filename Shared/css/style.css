@@ -3188,7 +3188,7 @@ table.navheader td.hamburger {
 
 table.navheader nav.package {
   margin-left: 0px;
-  widht: 100%;
+  width: 100%;
 }
 
 table.navheader div.hamburgerMenu {
@@ -3654,7 +3654,7 @@ only screen and (max-device-width: 480px) {
   table.navheader div.hamburger {
     position: absolute;
     top: 66px;
-    right: 10px;
+    left: 0;
   }
   table.navheader div.hamburgerMenu {
     right: 10px;
