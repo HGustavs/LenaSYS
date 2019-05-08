@@ -2087,7 +2087,8 @@ input.large-button {
   box-shadow:2px 2px 2px #434343;
   position:absolute;
   background-color: #d7fdd9;
-  width: fit-content;
+  min-width: 150px;
+  padding: 5px;
 }
 
 .popoveredit{
