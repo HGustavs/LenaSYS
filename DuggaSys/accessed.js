@@ -13,83 +13,99 @@ var myTable;
 //----------==========########## User Interface ##########==========----------
 //----------------------------------------------------------------------------
 
-function setup()
-{
-  var filt = "";
+function setup() {
+	var filt = "";
 
-  filt += "<td id='select' class='navButt'><span class='dropdown-container'>";
-  filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-  filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-  filt += "<div id='columnfilter'></div>"
-  filt += "<div id='customfilter'></div>"
-  filt += "</div>";
-  filt += "</span></td>";
+	// Add search bar to nav
+	filt += `<td id='searchBar' class='navButt'>`;
+	filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
+	filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
+	filt += `<button id='searchbutton' class='switchContent'`;
+	filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
+	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
+	filt += `</button></td>`;
 
-  filt += "<td id='filter' class='navButt'><span class='dropdown-container'>";
-  filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-  filt += "<div id='dropdowns' class='dropdown-list-container'>";
-  filt += "</div>";
-  filt += "</span></td>";
+	$("#sort").after(filt);
+	/* Add filter menu */
 
-  // Add search bar to nav
-  filt += `<td id='searchBar' class='navButt'>`;
-  filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
-  filt += `<button id='searchbutton' class='switchContent'`;
-  filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
-  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
-  filt += `</button></td>`;
+	document.getElementById("sort").style.display = "table-cell";
+	document.getElementById("select").style.display = "table-cell";
 
-  $("#menuHook").before(filt);
+	var customFilterDiv = document.createElement("div");
+	customFilterDiv.id = "customfilter";
+	var columnFilterDiv = document.createElement("div");
+	columnFilterDiv.id = "columnfilter";
+	document.getElementById("dropdownc").appendChild(columnFilterDiv);
+	document.getElementById("dropdownc").appendChild(customFilterDiv);
 
-  AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
+	AJAXService("GET", {
+		cid: querystring['cid'],
+		coursevers: querystring['coursevers']
+	}, "ACCESS");
 }
 
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
 //  function content was commented out to avoid having a white empty box appear.
 
-
-function showCreateUserPopup()
-{
-		$("#createUser").css("display", "flex");
+function hoverc() {
+	$('#dropdowns').css('display', 'none');
+	$('#dropdownc').css('display', 'block');
 }
 
-function showCreateClassPopup()
-{
-		$("#createClass").css("display", "flex");
+function hovers() {
+	$('#dropdowns').css('display', 'block');
+	$('#dropdownc').css('display', 'none');
 }
 
-function showImportUsersPopup()
-{
+function leavec() {
+	$('#dropdownc').css('display', 'none');
+}
+
+function leaves() {
+	$('#dropdowns').css('display', 'none');
+}
+
+function showCreateUserPopup() {
+	$("#createUser").css("display", "flex");
+}
+
+function showCreateClassPopup() {
+	$("#createClass").css("display", "flex");
+}
+
+function showCreateUserPopup() {
+	$("#createUser").css("display", "flex");
+}
+
+function showCreateClassPopup() {
+	$("#createClass").css("display", "flex");
+}
+
+function showImportUsersPopup() {
 	$("#importUsers").css("display", "flex");
 }
 
-function hideCreateUserPopup()
-{
-		$("#createUser").css("display", "none");
+function hideCreateUserPopup() {
+	$("#createUser").css("display", "none");
 }
 
-function hideCreateClassPopup()
-{
-		$("#createClass").css("display", "none");
+function hideCreateClassPopup() {
+	$("#createClass").css("display", "none");
 }
 
-function hideImportUsersPopup()
-{
-		$("#importUsers").css("display", "none");
+function hideImportUsersPopup() {
+	$("#importUsers").css("display", "none");
 }
 
-function closeEdituser()
-{
-		$("#editUsers").css("display", "none");
+function closeEdituser() {
+	$("#editUsers").css("display", "none");
 }
 
 //----------------------------------------------------------------------------
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
 
-function importUsers()
-{
+function importUsers() {
 	var newUsersArr = new Array();
 	newusers = $("#import").val();
 	var myArr = newusers.split("\n");
@@ -98,77 +114,93 @@ function importUsers()
 	}
 	var newUserJSON = JSON.stringify(newUsersArr);
 
-	AJAXService("ADDUSR", { cid: querystring['cid'], newusers: newUserJSON, coursevers: querystring['coursevers'] }, "ACCESS");
+	AJAXService("ADDUSR", {
+		cid: querystring['cid'],
+		newusers: newUserJSON,
+		coursevers: querystring['coursevers']
+	}, "ACCESS");
 	hideImportUsersPopup();
 }
 
-function addSingleUser()
-{
-		var newUser = new Array();
-		newUser.push($("#addSsn").val());
-		newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
-		newUser.push($("#addCid").val());
-		newUser.push($("#addNy").val());
-		newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
-		newUser.push($("#addEmail").val());
+function addSingleUser() {
+	var newUser = new Array();
+	newUser.push($("#addSsn").val());
+	newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
+	newUser.push($("#addCid").val());
+	newUser.push($("#addNy").val());
+	newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
+	newUser.push($("#addEmail").val());
 
-		var outerArr = new Array();
-		outerArr.push(newUser);
+	var outerArr = new Array();
+	outerArr.push(newUser);
 
-		var newUserJSON = JSON.stringify(outerArr);
-		AJAXService("ADDUSR", { cid: querystring['cid'], newusers: newUserJSON, coursevers: querystring['coursevers'] }, "ACCESS");
-		hideCreateUserPopup();
+	var newUserJSON = JSON.stringify(outerArr);
+	AJAXService("ADDUSR", {
+		cid: querystring['cid'],
+		newusers: newUserJSON,
+		coursevers: querystring['coursevers']
+	}, "ACCESS");
+	hideCreateUserPopup();
 }
 
 var inputVerified;
 
-function addClass()
-{
-		inputVerified = true;
-		document.getElementById("classErrorText").innerHTML = "";
-		var newClass = new Array();
-		newClass.push(verifyClassInput($("#addClass"), null, ""));
-		newClass.push(verifyClassInput($("#addResponsible"), null, ""));
-		newClass.push(verifyClassInput($("#addClassname"), null, ""));
-		newClass.push(verifyClassInput($("#addRegcode"), /^[0-9]*$/, "number"));
-		newClass.push(verifyClassInput($("#addClasscode"), null, ""));
-		newClass.push(verifyClassInput($("#addHp"), /^[0-9.]*$/, "(decimal) number"));
-		newClass.push(verifyClassInput($("#addTempo"), /^[0-9]*$/, "number"));
-		newClass.push(verifyClassInput($("#addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
+function addClass() {
+	inputVerified = true;
+	document.getElementById("classErrorText").innerHTML = "";
+	var newClass = new Array();
+	newClass.push(verifyClassInput($("#addClass"), null, ""));
+	newClass.push(verifyClassInput($("#addResponsible"), null, ""));
+	newClass.push(verifyClassInput($("#addClassname"), null, ""));
+	newClass.push(verifyClassInput($("#addRegcode"), /^[0-9]*$/, "number"));
+	newClass.push(verifyClassInput($("#addClasscode"), null, ""));
+	newClass.push(verifyClassInput($("#addHp"), /^[0-9.]*$/, "(decimal) number"));
+	newClass.push(verifyClassInput($("#addTempo"), /^[0-9]*$/, "number"));
+	newClass.push(verifyClassInput($("#addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
 
-		if (inputVerified) {
-				var outerArr = new Array();
-				outerArr.push(newClass);
+	if (inputVerified) {
+		var outerArr = new Array();
+		outerArr.push(newClass);
 
-				var newClassJSON = JSON.stringify(outerArr);
-				AJAXService("ADDCLASS", { cid: querystring['cid'], newclass: newClassJSON, coursevers: querystring['coursevers'] }, "ACCESS");
-				hideCreateClassPopup();
-		}
+		var newClassJSON = JSON.stringify(outerArr);
+		AJAXService("ADDCLASS", {
+			cid: querystring['cid'],
+			newclass: newClassJSON,
+			coursevers: querystring['coursevers']
+		}, "ACCESS");
+		hideCreateClassPopup();
+	}
 }
 
-function resetPw(uid, username)
-{
+function resetPw(uid, username) {
 	rnd = randomstring();
 
 	window.location = "mailto:" + username + "@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20" + rnd + "%0A%0A/LENASys Administrators";
 
-	AJAXService("CHPWD", { cid: querystring['cid'], uid: uid, pw: rnd, coursevers: querystring['coursevers'] }, "ACCESS");
+	AJAXService("CHPWD", {
+		cid: querystring['cid'],
+		uid: uid,
+		pw: rnd,
+		coursevers: querystring['coursevers']
+	}, "ACCESS");
 }
 
-function changeOpt(e)
-{
+function changeOpt(e) {
 	var paramlist = e.target.id.split("_");
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
-function changeProperty(targetobj, propertyname, propertyvalue)
-{
-	AJAXService("UPDATE", { cid: querystring['cid'], uid: targetobj, prop: propertyname, val: propertyvalue }, "ACCESS");
+function changeProperty(targetobj, propertyname, propertyvalue) {
+	AJAXService("UPDATE", {
+		cid: querystring['cid'],
+		uid: targetobj,
+		prop: propertyname,
+		val: propertyvalue
+	}, "ACCESS");
 }
 
-function showVersion(vers)
-{
-	window.location.href = "../DuggaSys/sectioned.php?courseid="+querystring['cid']+"&coursevers="+vers;
+function showVersion(vers) {
+	window.location.href = "../DuggaSys/sectioned.php?courseid=" + querystring['cid'] + "&coursevers=" + vers;
 }
 
 //----------------------------------------------------------------
@@ -201,13 +233,13 @@ function renderCell(col, celldata, cellid) {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
 	} else if (col == "vers") {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
-    var checkSubmission = data => data.uid === obj.uid;
-    if (filez['submissions'].some(checkSubmission)) {
-      console.log("test");
-      str+="<img id='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion("+obj.vers+")'>";
-    };
-  } else if (col == "access") {
-    var checkSubmission = data => data.uid === obj.uid;
+		var checkSubmission = data => data.uid === obj.uid;
+		if (filez['submissions'].some(checkSubmission)) {
+			console.log("test");
+			str += "<img id='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + obj.vers + ")'>";
+		};
+	} else if (col == "access") {
+		var checkSubmission = data => data.uid === obj.uid;
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student"], ["W", "R"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		if (parseFloat(obj.recent) > 1440) {
@@ -274,6 +306,28 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 	return str;
 }
 
+
+function renderColumnFilter(col, status, colname) {
+	str = "";
+	if (colname == "User")
+		return str;
+	if (status) {
+		str = "<div class='checkbox-dugga'>";
+		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+		str += "</div>"
+	} else {
+		str = "<div class='checkbox-dugga'>";
+		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+		str += "</div>"
+	}
+	return str;
+}
+
+function onToggleFilter(colId) {
+	myTable.toggleColumn(colId, colId);
+}
+
+
 //--------------------------------------------------------------------------
 // updateCellCallback
 // ---------------
@@ -282,7 +336,9 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 function updateCellCallback(rowno, colno, column, tableid) {
 	if (column == "firstname" || column == "lastname" || column == "username") {
 		// TODO: Check of individual parts needs to be done.
-		var obj = { uid: parseInt(document.getElementById("popoveredit_uid").value) };
+		var obj = {
+			uid: parseInt(document.getElementById("popoveredit_uid").value)
+		};
 		obj[column] = document.getElementById("popoveredit_" + column).value;
 		changeProperty(obj.uid, column, obj[column])
 		return JSON.stringify(obj);
@@ -293,6 +349,7 @@ function updateCellCallback(rowno, colno, column, tableid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 var searchterm = "";
+
 function rowFilter(row) {
 	if (searchterm == "") {
 		return true;
@@ -323,18 +380,18 @@ function returnedAccess(data) {
 
 	var tabledata = {
 
-		tblhead:{
-			username:"User",
-			ssn:"SSN",
-			firstname:"First name",
-			lastname:"Last name",
-			class:"Class",
-			modified:"Last Modified",
-			examiner:"Examiner",
-			vers:"Version",
-			access:"Access",
-			groups:"Group(s)",
-			requestedpasswordchange:"Password"
+		tblhead: {
+			username: "User",
+			ssn: "SSN",
+			firstname: "First name",
+			lastname: "Last name",
+			class: "Class",
+			modified: "Last Modified",
+			examiner: "Examiner",
+			vers: "Version",
+			access: "Access",
+			groups: "Group(s)",
+			requestedpasswordchange: "Password"
 		},
 		tblbody: data['entries'],
 		tblfoot: {}
@@ -346,6 +403,7 @@ function returnedAccess(data) {
 		filterElementId: "filterOptions",
 		renderCellCallback: renderCell,
 		renderSortOptionsCallback: renderSortOptions,
+		renderColumnFilterCallback: renderColumnFilter,
 		rowFilterCallback: rowFilter,
 		displayCellEditCallback: displayCellEdit,
 		updateCellCallback: updateCellCallback,
@@ -464,8 +522,7 @@ function mouseUp(e) {
 // createQuickItem: Handle "fast" click on FAB button
 //----------------------------------------------------------------------------------
 
-function createQuickItem()
-{
+function createQuickItem() {
 	clearTimeout(pressTimer);
 	showImportUsersPopup();
 }
