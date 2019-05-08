@@ -2490,7 +2490,7 @@ span.arrow {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin: 4px 2px 4px 2px;
+  margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 1s background-color;
   float: right;
