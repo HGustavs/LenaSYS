@@ -1,4 +1,48 @@
 /* --------------================################================-------------- *
+ *                                    Colors                                    *
+ * --------------================################================-------------- */
+
+ :root {
+  --color-text-primary: #775886;
+  --color-text-secondary: #434343;
+  --color-text-header: #fff;
+  --color-text-list: #000;
+  --color-text-logo: #fff;
+  --color-text-label: #000;
+
+  --color-logo1: #775886;
+  --color-logo2: #573866;
+  --color-logo-background: #775886;
+
+  --color-primary: #614875;
+  --color-primary-2: #775886;
+  --color-primary-hover: #7b5a96;
+  --color-primary-light: #927b9e;
+  --color-accent: #fecc56;
+  --color-accent-hover: #ffd369;
+  --color-background: #fff;
+  --color-background-2: #ccc;
+  --color-background-3: #f0f0f0;
+  --color-background-4: #c8c8c8;
+  --color-sectioned-table-hi: #dad8db;
+  --color-sectioned-table-lo: #eae8eb;
+  --color-statistics: #d8d7da;
+  --color-list-hover: #c6cdb8;
+
+  --color-border-primary: #775886;
+  --color-border-list: #dbd0d8;
+  --color-border: #999;
+  --color-border-2: #ccc;
+  --color-border-3: #f0f0f0;
+  --color-border-4: #c8c8c8;
+  --color-border-5: #888;
+
+  --color-green: #50a750;
+  --color-red: #c75050;
+  --color-red-hover: #ce3d3d;
+}
+
+/* --------------================################================-------------- *
  *                               Fonts 1                                         *
  * --------------================################================-------------- */
 
@@ -176,13 +220,13 @@ p {
 }
 
 #content {
-  background: #fff;
+  background: var(--color-background);
   min-height: calc(100vh - 80px);
   margin: 65px 10px 15px 10px;
 }
 
 #contentDiagram {
-  background: #fff;
+  background: var(--color-background);
   margin: 65px 10px 15px 10px;
 }
 
@@ -190,7 +234,7 @@ p {
   margin: 0px auto;
   position: relative;
   padding: 10px 10px 10px 10px;
-  background: #fff;
+  background: var(--color-background);
   min-height: 200px;
 }
 
@@ -198,21 +242,21 @@ p {
   margin: 0px auto;
   position: relative;
   padding: 50px 12px 8px 8px;
-  background: #fff;
+  background: var(--color-background);
   min-height: 50px;
 }
 
 #wrappall {
   margin: 0px auto;
   width: 80%;
-  border: 8px solid #ccc;
+  border: 8px solid var(--color-border-2);
 }
 
 .lena {
   border-radius: 6px 0px 0px 6px;
-  color: #FFF;
-  background-color: #775886;
-  background: linear-gradient(to bottom, #775886, #573866);
+  color: var(--color-text-logo);
+  background-color: var(--color-logo-background);
+  background: linear-gradient(to bottom, var(--color-logo1), var(--color-logo2);
   padding-left: 6px;
   padding-right: 6px;
   padding-top: 2px;
@@ -222,9 +266,9 @@ p {
 
 .sys {
   border-radius: 6px;
-  color: #775886;
-  border: 2px solid #775886;
-  background-color: #fff;
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-logo-background);
+  background-color: var(--color-background);
   padding-right: 4px;
   margin-right: 4px;
   text-decoration: none;
@@ -232,14 +276,14 @@ p {
 
 #Courselist {
   margin: 0px auto;
-  background-color: #fff;
-  color: #434343;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
 }
 
 #Courselist a {
-  color: #775886;
+  color: var(--color-text-primary);
   text-decoration: none;
 }
 
@@ -249,24 +293,24 @@ p {
 
 #Courselist .head {
   text-align: center;
-  color: #775886;
+  color: var(--color-text-primary);
   font-size: 18pt;
   display: block;
-  background-color: #FFF;
+  background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
   margin-top: 40px;
   margin-bottom: 4px;
   padding-bottom: 15px;
-  border-bottom: 2px dotted #775886;
+  border-bottom: 2px dotted var(--color-border-primary);
 }
 
 #Courselist .bigg {
   text-align: center;
-  color: #775886;
+  color: var(--color-text-primary);
   font-size: 14pt;
   display: block;
-  background-color: #fff;
+  background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
   margin-right: 8px;
@@ -280,8 +324,8 @@ p {
 
 #Sectionlist {
   margin: 0px auto;
-  background-color: #fff;
-  color: #434343;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
   border-radius: 5px;
@@ -306,12 +350,12 @@ p {
 }
 
 #Sectionlist .section {
-  color: #fff;
-  background-color: #927b9e;
+  color: var(--color-text-header);
+  background-color: var(--color-background);
 }
 
 #Sectionlist .header {
-  color: #fff;
+  color: var(--color-text-header);
   background-color: #775886;
   text-align: center;
 }
