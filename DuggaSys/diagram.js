@@ -1256,7 +1256,7 @@ function importFile() {
 
 function canvasSize() {
     boundingRect = myCanvas.getBoundingClientRect();
-    widthWindow = (window.innerWidth - 100);
+    widthWindow = (window.innerWidth - 90);
     heightWindow = (window.innerHeight - 110);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
@@ -1471,7 +1471,7 @@ function drawGrid() {
     myOffsetY = mod(origoOffsetY, zoomGridSize);
 
     // Draw a horizontal and a vertical line until the canvas is filled
-    for(let i = 0; i < canvas.width / (gridSize * zoomValue) * 1.5; i++){
+    for(let i = 0; i < Math.max(canvas.width, canvas.height) / (gridSize * zoomValue) * 1.5; i++){
         if(mod(myOffsetX, zoomGridSize * 5) == mod(origoOffsetX, zoomGridSize * 5)) {
             // Every fifth line is a darker grey
             ctx.strokeStyle = "rgb(208, 208, 220)";
@@ -2326,9 +2326,9 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
-    element.style.top = (boundingRect.top + "px");
-    element.style.left = (boundingRect.left - 76 + "px");
-    element.style.width = (73 + "px");
+    element.style.top = (boundingRect.top - 47 + "px");
+    element.style.left = (boundingRect.left - 80 + "px");
+    element.style.width = (76 + "px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     element.style.display = "inline-block";
 }
@@ -2481,6 +2481,28 @@ function pointDistance(point1, point2) {
 
     return [width, height];
 }
+//---------------------------------------------------
+// Check if the value causes the objects size to be <= the objects minimum size
+// Used when moving a point and locking proportions
+//---------------------------------------------------
+function minSizeCheck(value, object, type){
+    var umlMax = object.minWidth;
+    var entityMax = entityTemplate.width;
+    var relationMax =relationTemplate.width;
+    if (type == "y") {
+        umlMax = object.minHeight;
+        entityMax = entityTemplate.height
+        relationMax = relationTemplate.height;
+    }
+    if ((value <= umlMax && object.symbolkind == symbolKind.uml)
+    || (value <= entityMax && (object.symbolkind == symbolKind.erAttribute || object.symbolkind == symbolKind.erEntity))
+    || (value <= relationMax && object.symbolkind == symbolKind.erRelation)) {
+        // the value is inside or at the minimum size
+        return true;
+    } else {
+        return false;
+    }
+}
 
 //---------------------------------------------------
 // Is called each time the mouse moves on the canvas
@@ -2538,16 +2560,66 @@ function mousemoveevt(ev, t) {
                 return;
             }
             // If mouse is pressed down and at a point in selected object - move that point
+            // this is for the topLeft and bottomRight points
             if(!sel.point.fake) {
-                sel.point.x = currentMouseCoordinateX;
-                sel.point.y = currentMouseCoordinateY;
+                // for locking proportions of object when resizing it
+                if(shiftIsClicked) {
+                    var object;
+                    // the movement change we wan't to make
+                    var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
+                    // find the object that has the point we want to move 
+                    for (var i = 0; i < diagram.length; i++) {
+                        if (points[diagram[i].bottomRight] == sel.point || points[diagram[i].topLeft] == sel.point) {
+                            object = diagram[i];
+                            // the objects current width and height
+                            var xDiff = points[object.bottomRight].x - points[object.topLeft].x;
+                            var yDiff = points[object.bottomRight].y - points[object.topLeft].y;
+                            // For making sure the proportions stay the same when the object is at it's minimum size on one of the axes 
+                            // so that it doesn't keep resizing one of the axes independently of the other
 
+                            // if x size is equal to the objects min width
+                            if (minSizeCheck(xDiff, object, "x")) {
+                                var xDiffNew;
+                                // set the new size depending on which point we're moving 
+                                if (points[object.bottomRight] == sel.point){
+                                    xDiffNew = (sel.point.x + change) - points[object.topLeft].x;
+                                } else if (points[object.topLeft] == sel.point){
+                                    xDiffNew = points[object.bottomRight].x - (sel.point.x + change);
+                                }
+                                // set change to 0 if the new size isn't bigger than the minimum size
+                                if (minSizeCheck(xDiffNew, object, "x")) {
+                                    change = 0;
+                                }
+                            }
+                            // if y size is equal to the objects min height, same as above but for y coordinates
+                            if (minSizeCheck(yDiff, object, "y")) {
+                                var yDiffNew;
+                                if (points[object.bottomRight] == sel.point){
+                                    yDiffNew = (sel.point.y + change) - points[object.topLeft].y;
+                                } else if (points[object.topLeft] == sel.point){
+                                    yDiffNew = points[object.bottomRight].y - (sel.point.y + change);
+                                }
+                                if (minSizeCheck(yDiffNew, object, "y")) {
+                                    change = 0;
+                                }
+                            }
+                        }
+                    }
+                    // apply resize 
+                    sel.point.x += change;
+                    sel.point.y += change;
+                } else {
+                    // normal resize
+                    sel.point.x = currentMouseCoordinateX;
+                    sel.point.y = currentMouseCoordinateY;
+                }
                 // If we changed a point of a path object,
                 // we need to recalculate the bounding-box so that it will remain clickable.
                 // First we need to check if lastSelectedObject exists
                 if(diagram[lastSelectedObject] && diagram[lastSelectedObject].kind == kind.path) {
                     diagram[lastSelectedObject].calculateBoundingBox();
                 }
+            // this is for the other two points that doesn't really exist: bottomLeft and topRight
             } else {
                 sel.point.x.x = currentMouseCoordinateX;
                 sel.point.y.y = currentMouseCoordinateY;
@@ -2976,7 +3048,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        classB.name = "New" + diagram.length;
+        classB.name = "New" + countNumberOfSymbolKind(symbolKind.uml);
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -2990,7 +3062,7 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        erAttributeA.name = "Attr" + diagram.length;
+        erAttributeA.name = "Attr" + countNumberOfSymbolKind(symbolKind.erAttribute);
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3003,7 +3075,7 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        erEnityA.name = "Entity" + diagram.length;
+        erEnityA.name = "Entity" + countNumberOfSymbolKind(symbolKind.erEntity);
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3043,7 +3115,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        erRelationA.name = "Relation" + diagram.length;
+        erRelationA.name = "Relation" + countNumberOfSymbolKind(symbolKind.erRelation);
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3116,6 +3188,16 @@ function mouseupevt(ev) {
     md = mouseState.empty;
     if(saveState) SaveState();
 
+}
+
+function countNumberOfSymbolKind(kind) {
+  let numberOfSymbolKind = 0;
+  for(let i = 0; i < diagram.length; i++){
+    if(diagram[i].symbolkind == kind) {
+      numberOfSymbolKind++;
+    }
+  }
+  return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
