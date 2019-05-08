@@ -80,13 +80,13 @@
 							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
 						</div>
 					</td>
-					<td class='tests menuButton' style='display: inline-block;'>
+					<td class='tests hamburgerMenu' style='display: inline-block;'>
 						<div class='tests menuButton'>
 							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
 						</div>
 					</td>
-					<td class='files menuButton' style='display: inline-block;'>
-						<div class='files menuButton'>
+					<td class='files hamburgerMenu' style='display: inline-block;'>
+						<div class='files hamburgerMenu'>
 						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
 
 						</div>
