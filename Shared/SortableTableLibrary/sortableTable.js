@@ -657,7 +657,6 @@ function SortableTable(param) {
 			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
 		}
 	 }
-
 	$.ajax({
 		url: "resultedservice.php",
 		type: "POST",
