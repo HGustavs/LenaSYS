@@ -2003,6 +2003,10 @@ div.submit-button:disabled {
   font-weight: bold;
   padding: 5px;
 }
+
+.list tr {
+  height: 48px;
+}
 /*
 .innertable {
   background: #fff;
@@ -2387,6 +2391,11 @@ span.arrow {
 #accessTable td {
 	padding: 0px;
 	border: 0px;
+}
+
+#accessTable td select {
+  height: 40px;
+  width: 100%;
 }
 
 .accessTableText {
