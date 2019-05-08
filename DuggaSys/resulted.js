@@ -1031,7 +1031,6 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-  console.trace();
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
