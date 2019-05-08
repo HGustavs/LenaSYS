@@ -1498,6 +1498,13 @@ input {
   top: 195px;
 }
 
+.drop-down-item #hotkey-delete {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 6px;
+  top: 272px;
+}
 /* --------------================################================-------------- *
  *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
  * --------------================################================-------------- */
