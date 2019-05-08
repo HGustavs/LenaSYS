@@ -2878,11 +2878,11 @@ function mouseupevt(ev) {
                 } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
-                if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
+                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
 
                 // Can't draw line between two ER attributes if one of them is not composite
                 if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                    if(diagram[hovobj].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
+                    if(diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
                        okToMakeLine = true;
                     } else {
                         okToMakeLine = false;
