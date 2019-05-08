@@ -656,7 +656,7 @@ function SortableTable(param) {
 	this.mail = function(cidMail, crsMail, reqType) {
 		var filteredUsernames = [];
 		for(var i = 0; i < filteredRows.length; i++){
-			filteredUsernames.push(filteredRows['FnameLname'].username)
+			filteredUsernames.push(filteredRows[i]['FnameLname'].username)
 		}
 	$.ajax({
 		url: "resultedservice.php",
