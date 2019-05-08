@@ -1720,6 +1720,14 @@ div.submit-button:hover {
   border-radius: 2px;
 }
 
+.submit-button:focus {
+  box-shadow: 0 0 0 2px #1e90ff;
+  outline: none;
+}
+.submit-button::-moz-focus-inner {
+  border: 0;
+}
+
 input.fileed-button:hover {
   background-color: #91859b;
 }
