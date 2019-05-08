@@ -1150,7 +1150,7 @@ function drawVirtualA4() {
         //ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);
         for (var i = 0; i < 9; i++) {
             for (var j = 0; j < 14; j++) {
-                ctx.strokeRect(zeroX + a4Height * i, zeroY + a4Width * j, a4Height, a4Width); 
+                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width); 
             }
         }
     }
