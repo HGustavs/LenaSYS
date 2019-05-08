@@ -1,10 +1,4 @@
-<?php
-//xd
-	session_start();
-	include_once "../../coursesyspw.php";
-	include_once "../Shared/sessions.php";
-	pdoConnect();
-?>
+
 
 <!DOCTYPE html>
 <html>
@@ -27,10 +21,32 @@
 </head>
 <body onload="setup();">
 
-	<?php
-		$noup="COURSE";
-		include '../Shared/navheader.php';
-	?>
+	    <header>
+		<table class='navheader'><tr><td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td><td class='navButt' id='back' title='Back'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Up.svg'></a></td><td id='select' style='display:none;' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'><img class='navButt' src='../Shared/icons/tratt_white.svg'><div id='dropdownc' class='dropdown-list-container' style='z-index: 1'><div id='filterOptions'></div></div></span></td><td id='sort' style='display:none' class='navButt'><span class='dropdown-contain;er' onmouseover='hovers();' onmouseleave='leaves();'><img class='navButt' src='../Shared/icons/sort_white.svg'><div id='dropdowns' class='dropdown-list-container'></div></span></td></td><td id='menuHook' class='navSpacer'><td class='navName'><a id='userName' href='profile.php' title='Toddler&#39;s profile'>Toddler</a></td><td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td></tr></table><div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()' style='margin-top: 0px'/></div></header>
+<script type="text/javascript">
+		if(localStorage.getItem("cookieMessage")=="off"){
+			$("#cookiemsg").css("display", "none");
+		}else{
+			$("#cookiemsg").css("display", "flex");
+		}
+
+	setupLoginLogoutButton('true');
+	function cookieMessage(){
+		hideCookieMessage();
+		localStorage.setItem("cookieMessage", "off");
+		//$("#cookiemsg").css("display", "none");
+	}
+	function hoverBack(){
+		$(".dropdown-list-container").css("display", "none");
+	}
+</script>
+<script type="text/javascript">
+	(function(proxied) {
+		window.alert = function() {
+			return proxied.apply(this, arguments);
+		};
+	})(window.alert);
+</script>
 
 	<!-- content START -->
 	<div id="content">
@@ -41,7 +57,7 @@
 				<tr class='trsize nowrap'>
 					<td style='display: inline-block;'>
 						<div class='course-dropdown-div'>
-								<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this)' >
+								<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this.id)' >
 								</select>
 						</div>
 					</td>
@@ -72,17 +88,16 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-									<button class='submit-button menuButton results' onclick='navigatePage("resulted.php");' title='Edit student results'>Results</button>
+									<button class='submit-button menuButton results' onclick='closeWindows(); navigatePage("resulted.php");' title='Edit student results'>Results</button>
 								</li>
 								<li class='tests'>
-										<button class='submit-button menuButton tests' onclick='navigatePage("duggaed.php");' title='Show tests'>Tests</button>
+										<button class='submit-button menuButton tests' onclick='closeWindows(); navigatePage("duggaed.php");' title='Show tests'>Tests</button>
 								</li>
 								<li class='files'>
-										
-										<input type='button' value='Files' class='submit-button' title='Show files' onclick='navigatePage("fileed.php")'/>
+										<button class='submit-button menuButton files' onclick='closeWindows(); navigatePage("fileed.php");' title='Show files'>Files</button>
 								</li>
 								<li class='access'>
-										<button class='submit-button menuButton access' onclick='navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
+										<button class='submit-button menuButton access' onclick='closeWindows(); navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
 								</li>
 							</ul>
 						</div>
@@ -90,22 +105,23 @@
 
 					<td class='results menuButton' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<input type='button' value='Results' class='submit-button' title='Edit student results' onclick='navigatePage("resulted.php");' />
+							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
 						</div>
 					</td>
 					<td class='tests menuButton' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='navigatePage("duggaed.php")'/>
+							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
 						</div>
 					</td>
 					<td class='files menuButton' style='display: inline-block;'>
 						<div class='files menuButton'>
-							<input type='button' value='Files' class='submit-button' title='Show files' onclick='navigatePage("fileed.php")'/>
+						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
+
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
 						<div class='access menuButton'>
-							<input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='navigatePage("accessed.php");'/>
+						<a id='accessBTN' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
 						</div>
 					</td>
 				</tr>
@@ -199,9 +215,181 @@
 	</div>
 	<!-- content END -->
 
-	<?php
-		include '../Shared/loginbox.php';
-	?>
+			<!-- Overlay -->
+
+  <div id="overlay" style="display:none"></div>
+
+	<!-- Login Box Start! -->
+  <!--  <div id='loginBox' class="loginBox" style="display:none;display:flex;justify-content:center;align-items:center;">-->
+    <div id='loginBox' class="loginBoxContainer" style="display:none;">
+		<div id='login' class="loginBox">
+			<div class='loginBoxheader'>
+				<h3>Login</h3>
+				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
+			</div>
+			<form action="" id="loginForm" method="post">
+				<table class="loginBoxTable">
+					<tr class="loginboxTr">
+						<td>
+							<label id="loginBoxTitle">Sign in</label>
+						</td>
+					</tr>
+					<tr  class="loginboxTr">
+						<td>
+							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<td>
+							<input id="password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<td class="nowrap">
+							<label class='text forgotPw' onclick='toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<td>
+							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<!-- Message displayed when using wrong password or username -->
+						<td id="message";></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div id='newpassword' class='newpassword' style="display:none">
+			<div class='loginBoxheader'>
+				<h3> Reset Password</h3>
+				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" title="Close window">x</div>
+			</div>
+			<div style='padding: 20px;'>
+				<table class="loginBoxTable">
+					<tr>
+						<td>
+							<label id="loginBoxTitle">Enter your username to reset the password</label>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<td>
+							<input id="usernamereset" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<td>
+							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckUsername();" value='Continue' style='margin-top: 10px;' title='Continue'>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<!-- Message displayed when using wrong password or username -->
+						<td id="message2";></td>
+					</tr>
+				</table>
+			</div>
+			<tr>
+				<td>
+					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+				</td>
+			</tr>
+		</div>
+		<div id='showsecurityquestion' class='showsecurityquestion' style="display:none">
+			<div class='loginBoxheader'>
+				<h3> Reset Password</h3>
+				<div class="cursorPointer" onclick="closeWindows();resetLoginStatus()" title="Close window">x</div>
+			</div>
+			<div style='padding: 20px;'>
+				<table class="loginBoxTable">
+					<tr>
+						<td>
+							<label id="loginBoxTitle">Please answer your security question</label>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<td style='padding-top: 14px;'>
+							<label style='font-size: 14px;'> Question: </label>
+							<label id="displaysecurityquestion" class="text">Placeholder question</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+						</td>
+					</tr>
+					<tr class="loginboxTr">
+						<td>
+							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
+						</td>
+					</tr>
+
+					<tr>
+						<!-- Message displayed when using wrong password or username -->
+						<td id="message3";></td>
+					</tr>
+				</table>
+			</div>
+			<tr>
+				<td>
+					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+				</td>
+			</tr>
+
+		</div>
+		<div id='resetcomplete' class='resetcomplete' style="display:none">
+			<div class='loginBoxheader' id="completeid">
+				<h3>Request complete</h3>
+				<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
+			</div>
+			<div style='padding: 20px;'>
+				<table class="loginBoxTable">
+					<tr>
+						<td>
+							<p style='font-size: 0.8em;'>Your teachers have been notified, a new password will be sent to your school email as soon as possible.</p>
+							<p style='font-size: 0.8em;'>You can change your password later in the profile page.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type='button' class='buttonLoginBox' onclick="location.reload();" value='Ok!' style='margin-top: 10px;' title='Ok!'>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- Login Box End! -->
+
+  <!-- Security question notifaction -->
+    <div class="loginBox" id="securitynotification" style="display:none;">
+         <div class='loginBoxheader'>
+          <h3>Choose a challenge question</h3>
+          <div class='cursorPointer' onclick="closeWindows(); setSecurityNotifaction('off');" title="Close window">x</div>
+        </div>
+        <p id="securitynotificationmessage">You need to choose a challenge question. You can do this by visiting your profile page (clicking your username) or by clicking <a onclick="closeWindows(); setSecurityNotifaction('off');" href='profile.php'>here</a> </p>
+    </div>
+  <!-- Security question notification END -->
+
+  <!-- Session expire message -->
+  <div class="expiremessagebox" style="display:none">
+    <div class='loginBoxheader'>
+      <h3>Alert</h3>
+      <div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
+    </div>
+    <p id="expiremessage">Your session will expire in about 15 minutes. Refresh session ?</p>
+    <input type="button" id="expiremessagebutton" class="submit-button" onclick="closeWindows(); refreshUserSession()" value="Refresh">
+  </div>
+
+  <div class="endsessionmessagebox" style="display:none">
+    <div class='loginBoxheader'>
+      <h3>Alert</h3>
+      <div onclick="closeWindows(); reloadPage(); processLogout()">x</div>
+    </div>
+    <p id="endsessionmessage">Your session has timed out.</p>
+    <input type="button" id="endsessionmessagebutton" onclick="closeWindows(); processLogout()" value="OK">
+  </div>
+  <!-- Session expire message END -->
 
 	<!-- Edit Section Dialog START -->
 	<div id='editSection' class='loginBoxContainer' style='display:none;'>
