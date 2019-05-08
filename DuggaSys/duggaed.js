@@ -297,7 +297,6 @@ function updateVariant(status) {
 		for (var i = submissionRow-1; i > 0; i--) {
 			// The function needs an element of the row to be removed, so this is what we have to do
 			var rows = [...document.getElementById('submissions').childNodes];
-			console.log(submissionRow);
 			var elements = [...rows[i].childNodes];
 			var element = elements[0];
 			removeVariantSubmissionRow(element);
@@ -548,7 +547,6 @@ function returnedDugga(data) {
 // Table for variants
 function renderVariant(clickedElement) {
 		globalVariant = clickedElement;
-    console.log("sda:" + globalVariant);
 		updateVariantTitle(clickedElement);
 		var tabledata = {
 				tblhead: {
