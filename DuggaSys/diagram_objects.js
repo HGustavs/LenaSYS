@@ -2106,6 +2106,76 @@ function Path() {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
+    this.isLockHovered = false;     // Checks if lock is hovered on free draw objects
+
+    this.getLockPosition = function() {
+        var RightMostPoint;
+        //First point of the free-draw figure
+        RightMostPoint = points[this.segments[0].pa];
+        for (var i = 1; i < this.segments.length; i++) {
+            //Saves the right most point of the free-draw figure.
+            if (points[this.segments[i].pa].x > RightMostPoint.x) {
+                RightMostPoint = points[this.segments[i].pa];
+            }
+        }
+        return {
+            x: pixelsToCanvas(RightMostPoint.x).x,
+            y: pixelsToCanvas(0,RightMostPoint.y).y
+        };
+    }
+
+    this.drawLock = function() {
+        var position = this.getLockPosition();
+        ctx.save();
+
+        ctx.fillStyle = "orange";
+        ctx.strokeStyle = "orange";
+        ctx.lineWidth = 1 * diagram.getZoomValue();
+        //Draws the upper part of the lock
+        ctx.beginPath();
+        var xOffset = 15;
+        //A slight x offset to get the correct position   
+        ctx.arc(position.x + (xOffset * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        xOffset = 10;
+        //Draws the lock body
+        ctx.fillRect(position.x + (xOffset * diagram.getZoomValue()), position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
+
+        ctx.restore();
+    }
+
+    this.drawLockedTooltip = function() {
+        ctx.save();
+
+        var position = this.getLockPosition();
+        //Offset used to achive the correct y position since fillRect and fillText are drawn differently
+        var offset = 13;
+        var xOffset = 10;
+
+        //Draw tooltip background
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(position.x + xOffset, position.y + offset, 125, 16);
+
+        //Draws text, uses fillStyle to override default hover change.
+        offset += 12;
+        ctx.fillStyle = "black";
+        ctx.font = "12px Arial";
+        ctx.fillText("Entity position is locked", position.x + xOffset, position.y + offset);
+
+        ctx.restore();
+    }
+
+    this.setLockIsHovered = function(mx, my) {
+        var position = this.getLockPosition();
+        position.x += 10;
+        position.y -= 5;
+        if (mx > position.x && mx < position.x + 10 && my > position.y && my < position.y + 15) {
+            this.isLockHovered = true;
+        } else {
+            this.isLockHovered = false;
+        }
+    }
 
     //--------------------------------------------------------------------
     // move: Performs a delta-move on all points in a path
@@ -2202,6 +2272,14 @@ function Path() {
             alert("Only organized paths can be filled!");
         }
         if (this.segments.length > 0) {
+            
+            if(this.locked){
+                this.drawLock();
+                if(this.isLockHovered){
+                    this.drawLockedTooltip();
+                }
+            }
+            
             // Assign stroke style, color, transparency etc
             var shouldFill = true;
 
@@ -2294,6 +2372,7 @@ function Path() {
     }
 
     this.checkForHover = function (mx, my) {
+        this.setLockIsHovered(mx, my);
         return this.isClicked(mx, my);
     }
 
