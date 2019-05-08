@@ -972,9 +972,13 @@ function returnedSection(data) {
         }
 
       });
+      // But disable sorting if there is a #noAccessMessage
+      if( $("#noAccessMessage").length) {
+        $("#Sectionlistc").sortable("disable");
+      }
     }
   } else {
-    str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";
+    str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML = str;
 
@@ -983,6 +987,7 @@ function returnedSection(data) {
     }
 
   }
+
 
   // The next 5 lines are related to collapsable menus and their state.
   getHiddenElements();

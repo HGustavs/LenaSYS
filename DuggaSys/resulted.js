@@ -469,7 +469,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</div>";
 	menu += "<table>";
 	menu += "<tr><td>";
-	
+
 	if ((foundgrade === null && submitted === null)) {
 		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
 	} else if (foundgrade == -1) {
@@ -483,7 +483,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</table>";
 	menu += "</div> <!-- Menu Dialog END -->";
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
-	
+
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
 }
 
@@ -1031,6 +1031,7 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
+  console.trace();
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {

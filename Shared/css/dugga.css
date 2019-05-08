@@ -185,6 +185,10 @@ strong {font-weight: bold;}
 	border:1px solid #ccc;
 }
 
+.instructions-content p:first-child {
+	margin: 0;
+}
+
 .instructions-button {
 	cursor: pointer;
 	background-color: #ccc;
@@ -229,7 +233,7 @@ strong {font-weight: bold;}
  * --------------================################================-------------- */
 
 .quiz-wrapper{
-	width:70%;
+	width:100%;
 	margin:auto;
 	background-color:#ccc;
 }
@@ -307,22 +311,29 @@ svg text {
  #TestPrev {
    overflow-x: auto;
  }
- .previewTable tr {
-     display: table-row;
-     vertical-align: inherit;
- }
- .previewTable th {
-   font-weight: bold;
-   text-align: center;
-   vertical-align: inherit;
-   padding-right: 30px;
-   padding-left: 10px;
- }
- .previewTable td {
-   padding-right: 30px;
-   padding-left: 10px;
- }
-
+ .previewTable {
+	width: 100%;
+	white-space: nowrap;
+}
+.previewTable tr {
+		display: table-row;
+		vertical-align: inherit;
+}
+.previewTable th {
+	font-weight: bold;
+	text-align: center;
+	vertical-align: inherit;
+	padding-right: 30px;
+	padding-left: 10px;
+}
+.previewTable td {
+	padding-right: 30px;
+	padding-left: 10px;
+	width: 1px;
+}
+.previewTable td:last-child {
+	width: 100%;
+}
  /* --------------================################================-------------- *
  *                      	       Daily - minutes  				       								 *
  * --------------================################================-------------- */
