@@ -121,7 +121,7 @@ if(strcmp($opt,"get")==0) {
       foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
         array_push($groupMembers,$row['username']);
       }
-      print_r($groupMembers);
+
       if(sizeof($groupMembers) < 0){
         // if there are no results (shouldn't be possible since at least the person who's $groups
         // we are checkin on should be here) we set groupMembers back to "UNK".
@@ -129,6 +129,27 @@ if(strcmp($opt,"get")==0) {
       }
     }
   }
+  // Get amount of students in course vers.
+  $stmt = $pdo->prepare("SELECT user.username FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
+  $stmt->bindParam(":cid",$cid);
+  $stmt->bindParam(":vers",$vers);
+  $courseMembers = array();
+  if(!$stmt->execute()){
+    $error = $stmt->errorInfo();
+    $debug = "Error getting students in course + vers .\n".$error[2];
+  } else {
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+        array_push($courseMembers,$row['username']);
+    }
+  }
+
+  $amountInCourse = sizeof($courseMembers);
+  if(!is_array($groupMembers)){
+    $amountInGroups = 0;
+  } else {
+    $amountInGroups = sizeof($groupMembers);
+  }
+
 
   /*
    * Rankings, numbers etc below.
@@ -425,15 +446,12 @@ if(strcmp($opt,"get")==0) {
 			$weekno++;
 
 	}while($weekno<11);
-
-	$today = date('Y-m-d');
-	//$today = '2019-04-10'; // For testing purposes
-	$todaysevents = array();
+	
+	$hourlyevents = array();
 
 	// Events and issues by the user today
-	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND DATE(eventtime)=:today AND kind IN ("comment", "commit");');
+	$query = $log_db->prepare('SELECT kind, eventtimeh FROM event WHERE author=:gituser AND eventtime>"2019-03-31" and eventtime!="undefined" and eventtime<"2020-01-01" AND kind IN ("comment", "commit");');
 	$query->bindParam(':gituser', $gituser);
-	$query->bindParam(':today', $today);
 	if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries\n".$error[2];
@@ -444,12 +462,11 @@ if(strcmp($opt,"get")==0) {
 				'type' => $row['kind'],
 				'time' => $row['eventtimeh']
 			);
-			array_push($todaysevents, $event);
+			array_push($hourlyevents, $event);
 	}
 	$commits = array();
-	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND DATE(issuetime)=:today;');
+	$query = $log_db->prepare('SELECT issuetimeh FROM issue WHERE author=:gituser AND issuetime>"2019-03-31" and issuetime!="undefined" and issuetime<"2020-01-01";');
 	$query->bindParam(':gituser', $gituser);
-	$query->bindParam(':today', $today);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries\n".$error[2];
@@ -460,7 +477,7 @@ if(strcmp($opt,"get")==0) {
 			'type' => 'issue',
 			'time' => $row['issuetimeh']
 		);
-		array_push($todaysevents, $issue);
+		array_push($hourlyevents, $issue);
 	}
 
 
@@ -516,6 +533,26 @@ if(strcmp($opt,"get")==0) {
 		$count[$currentdate] = $daycount;
 		$currentdate=strtotime("+1 day",strtotime($currentdate));
 	}
+	$timesheets = array();
+	$query = $pdo->prepare('SELECT day, week, type, reference, comment FROM timesheet WHERE uid=:userid AND cid=:cid AND vers=:vers;');
+	$query->bindParam(':userid', $userid);
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $vers);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+	$rows = $query->fetchAll();
+	foreach($rows as $row){
+		$timesheet = array(
+			'day' => $row['day'],
+			'week' => intval($row['week']),
+			'type' => $row['type'],
+			'reference' => intval($row['reference']),
+			'comment' => $row['comment']
+		);
+		array_push($timesheets, $timesheet);
+	}
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,
@@ -540,8 +577,11 @@ if(strcmp($opt,"get")==0) {
 		'allcommentranks' => $allcommentranks,
 		'allcommitranks' => $allcommitranks,
 		'githubuser' => $gituser,
-		'todaysevents' => $todaysevents,
-		'count' => $count
+		'count' => $count,
+    'amountInCourse' => $amountInCourse,
+    'amountInGroups' => $amountInGroups,
+		'hourlyevents' => $hourlyevents,
+		'timesheets' => $timesheets
 	);
 
 	echo json_encode($array);
@@ -588,6 +628,4 @@ if(strcmp($opt,"get")==0) {
 	);
 	echo json_encode($array);
 }
-
-
 ?>

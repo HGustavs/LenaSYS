@@ -133,7 +133,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
+  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2, 3]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
   $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
@@ -803,7 +803,7 @@ function returnedSection(data) {
           str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + arrowID + "' class='arrowRight' style='display:none;'></div>";
         } else if (itemKind == 4) {
           // Moment
-          var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)", "(U-3-4-5)"]);
+          var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
           str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
           str += "<span class='ellipsis listentries-span'>" + item['entryname'] + " " + strz + " </span>";
           str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + arrowID + "' class='arrowComp' style='display:inline-block;'>";
@@ -978,7 +978,7 @@ function returnedSection(data) {
       }
     }
   } else {
-    str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";
+    str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML = str;
 
@@ -1477,31 +1477,6 @@ function addClasses() {
     }
   }
 }
-
-// Function for automatically create a mail with participating students in current course
-/*function mail() {
-  var reqType = "mail";
-
-  var url_string = window.location.href;
-  var url = new URL(url_string);
-  var cname = url.searchParams.get("coursename");
-  var cidMail = url.searchParams.get("courseid");
-  var versMail = url.searchParams.get("coursevers");
-
-  $.ajax({
-    url: "sectionedservice.php",
-    type: "POST",
-    data: {
-      'courseid': cidMail,
-      'coursevers': versMail,
-      'requestType': reqType
-    },
-    dataType: "json",
-    success: function(data){
-      window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname);
-    }
-  });
-}*/
 
 // Function for checking if a grace time exists and if the submition time is withing that grace time window
 function hasGracetimeExpired(deadline, dateTimeSubmitted) {

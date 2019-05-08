@@ -29,7 +29,6 @@ $versid=getOP('versid');
 $versname=getOP('versname');
 $coursenamealt=getOP('coursenamealt');
 $coursecode=getOP('coursecode');
-$coursename=getOP('coursename');
 $copycourse=getOP('copycourse');
 $startdate=getOP('startdate');
 $enddate=getOP('enddate');

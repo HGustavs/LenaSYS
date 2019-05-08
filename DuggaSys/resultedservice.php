@@ -25,7 +25,8 @@ if(isset($_SESSION['uid'])){
 }
 
 $requestType = getOP('requestType');
-$searchterm = getOP('searchterm');
+$visibleUserIDs = $_POST['visibleuserids'];
+$lenghtOfVisibleUserIDs = sizeof($_POST['visibleuserids']);
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -60,6 +61,7 @@ $duggagrade="";
 $gradeupdated=false;
 
 $entries=array();
+$entriesNoSSN=array();
 $gentries=array();
 $sentries=array();
 $lentries=array();
@@ -74,34 +76,24 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 
 // checks if the user is logged in and has access to send mail, only admins (superusers) will be able to mail
 if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){
-	switch($searchterm)
-	{
-		case strpos($searchterm, ' ') !== false:
-			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm1 AND user.lastname LIKE :searchterm2)");
-			$searchterm = "%".$searchterm."%";
-			$searchterm = explode(' ', $searchterm);
-			$mailQuery->bindParam(':searchterm1', $searchterm[0]);
-			$searchterm[1] = $searchterm[1]."%";
-			$mailQuery->bindParam(':searchterm2', $searchterm[1]);
-			break;
-
-		default:
-			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm OR user.lastname LIKE :searchterm OR user.username LIKE :searchterm OR user.ssn LIKE :searchterm OR user.class LIKE :searchterm)");
-			$searchterm = "%".$searchterm."%";
-			$mailQuery->bindParam(':searchterm', $searchterm);
-			break;
-	}
-	$mailQuery->bindParam(':cid', $courseid);
-	$mailQuery->bindParam(':cvers', $coursevers);
 	$emailsArray = array();
-	if(!$mailQuery->execute()){
-		$error=$mailQuery->errorInfo();
-		$debug="Error reading user entries".$error[2];
+
+	for($i = 0; $i < $lenghtOfVisibleUserIDs; $i++) {
+		$studentID = $visibleUserIDs[$i];
+		$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username =:studentid");
+
+		$mailQuery->bindParam(':studentid', $studentID);
+		$mailQuery->bindParam(':cid', $courseid);
+		$mailQuery->bindParam(':cvers', $coursevers);
+
+		if(!$mailQuery->execute()) {
+			$error=$mailQuery->errorInfo();
+			$debug="Error reading user entries".$error[2];
+		}
+
+		array_push($emailsArray, $mailQuery->fetch()[0]);
 	}
-	// Fetches the emails from the sql_query result $mailQuery and then pushes it into the array $emailsArray.
-	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
-		array_push($emailsArray,$row['email']);
-	}
+
 	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
 	// Returns the emails in a string representation.
@@ -151,7 +143,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			return;
 		}
 	}
-	
+
 	if(strcmp($opt,"CHGR")===0){
 		if($ukind=="U"){
 			if ($mark == "UNK"){
@@ -435,6 +427,7 @@ if(strcmp($opt,"CHGR")!==0){
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			// Create array entry for each course participant
 
+			// This is unused in resulted, but kept if needed elsewhere / some other time
 			$entry = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -442,6 +435,18 @@ if(strcmp($opt,"CHGR")!==0){
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
 				'ssn' => $row['ssn'],
+				'class' => $row['class'],
+				'access' => $row['access'],
+				'examiner' => $row['examiner']
+			);
+
+			// The array which is displayed on resulted without SSN
+			$entryNoSSN = array(
+				'cid' => (int)$row['cid'],
+				'uid' => (int)$row['uid'],
+				'username' => $row['username'],
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname'],
 				'class' => $row['class'],
 				'access' => $row['access'],
 				'examiner' => $row['examiner']
@@ -458,6 +463,7 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 			*/
 			array_push($entries, $entry);
+			array_push($entriesNoSSN, $entryNoSSN);
 		}
 
 		// All results from current course and vers?
@@ -694,6 +700,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 }
 
 $array = array(
+	'entriesNoSSN' => $entriesNoSSN,
 	'entries' => $entries,
 	'moments' => $gentries,
 	'versions' => $sentries,
