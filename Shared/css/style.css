@@ -2399,7 +2399,7 @@ span.arrow {
 }
 
 .accessTable-vers select {
-  width: 50%;
+  width: 50% !important;
 }
 
 .accessTableText {
