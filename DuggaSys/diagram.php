@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome = 1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Section Editor</title>
+    <title>Diagram</title>
     <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -43,7 +43,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); developerMode(); initToolbox(); updateGraphics();"
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); developerMode(event); initToolbox(); updateGraphics();"
  onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
@@ -51,17 +51,10 @@
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
-        <div id="buttonDiv">
+        <div id="buttonDiv" style ="margin-left: 65px;" >
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none">
+                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-left: 0px; height: ; text-align: center;" onmousedown="">
                     <div class="application-header">
-                        <div id="toolbar-minimize"  onclick="toggleToolbarMinimize();">
-                            <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
-                          </div>
-                          <h3>Toolbar</h3>
-                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();">
-                              <img id="layoutArrow" class="toolbarMaximized" src="../Shared/icons/rotateButton.svg">
-                            </div>
                         </div>
                         <div class='application-toolbar'>
                           <div id="toolbar-switcher">
@@ -75,9 +68,6 @@
                                       <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                       </button>
-                                      <button id='umllinebutton' onclick='setMode("CreateUMLLine");' class='buttonsStyle unpressed' data="Create UML Line">
-                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_umlline.svg">
-                                      </button>
                                   </div>
                               </div>
                             </div>
@@ -85,7 +75,7 @@
                               <h4 class="label tlabel" id="labelCreate">Create</h4>
                               <div class="toolbar-drawer" id="drawerCreate">
                                   <div class="tooltipdialog">
-                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer" class='buttonsStyle unpressed' data="Create Attribute">
+                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Attribute">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                       </button>
                                       <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity">
@@ -114,14 +104,14 @@
                                 </button>
                             </div>
                           </div>
-                          <div class="labelToolContainer">
+                          <div class="labelToolContainer" style = "margin-bottom: 0px;">
                             <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
-                            <div class="toolbar-drawer" id="drawerUndo" style="text-align: center">
-                                <button class="diagramAction" id="undoButton" onclick='undoDiagram()' data="Undo">
-                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
+                            <div class="toolbar-drawer" id="drawerUndo">
+                                <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
+                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 20px; height: 20px;">
                                 </button>
-                                <button class="diagramAction" id="redoButton" onclick='redoDiagram()' data="Redo">
-                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
+                                <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
+                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 20px; height: 20px;">
                                 </button>
                             </div>
                         </div>
@@ -139,7 +129,7 @@
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</span>
+                            <span class="drop-down-option" id="buttonid" onclick="openImportDialog();">Import</span>
                         </div>
 
                         <div class="drop-down-item export-drop-down-head">
@@ -166,11 +156,11 @@
                     <span class="drop-down-label">Edit</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='undoDiagram()'>Undo</span>
+                            <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
                             <i id="hotkey-undo">Ctrl + Z</i>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='redoDiagram()'>Redo</span>
+                            <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
                         <div class="drop-down-divider"></div>
@@ -180,10 +170,18 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
                         </div>
-                        <div class="drop-down-divider">
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
+                            <i id="hotkey-front">Shift + 1</i>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='lockSelected()'>Lock/Unlock selected</span>
+                            <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
+                            <i id="hotkey-back">Shift + 2</i>
+                        </div>
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
@@ -192,16 +190,13 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
                         </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='resetToolbarPosition();'>Reset toolbar position</span>
-                        </div>
                     </div>
                 </div>
                 <div class="menu-drop-down">
                     <span class="drop-down-label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='developerMode();'>Developer mode</span>
+                            <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
                         </div>
                         <div id="displayAllTools" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
@@ -215,7 +210,7 @@
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
+                            <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
                         </div>
                         <div id="a4-orientation-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
@@ -223,34 +218,37 @@
                         <div id="a4-holes-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                         </div>
+                        <div id="a4-holes-item-right" class="drop-down-item-disabled">
+                            <span class="drop-down-option" onclick='toggleVirtualA4HolesRight();'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                        </div>
                     </div>
                 </div>
                 <div class="menu-drop-down">
                     <span class="drop-down-label">Align</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
+                            <span class="drop-down-option" onclick="toggleGrid(event)">Snap to grid</span>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align('top');">Top</span>
+                            <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align('right');">Right</span>
+                            <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align('bottom');">Bottom</span>
+                            <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align('left');">Left</span>
+                            <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
                         </div>
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align('horizontalCenter');">Horizontal center</span>
+                            <span class="drop-down-option" onclick="align(event, 'horizontalCenter');">Horizontal center</span>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align('verticalCenter');">Vertical center</span>
+                            <span class="drop-down-option" onclick="align(event, 'verticalCenter');">Vertical center</span>
                         </div>
                     </div>
                 </div>
@@ -258,10 +256,10 @@
                     <span class="drop-down-label">Distribute</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="distribute('horizontally');">Horizontal</span>
+                            <span class="drop-down-option" onclick="distribute(event, 'horizontally');">Horizontal</span>
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="distribute('vertically');">Vertical</span>
+                            <span class="drop-down-option" onclick="distribute(event, 'vertically');">Vertical</span>
                         </div>
                     </div>
                 </div>
@@ -276,6 +274,11 @@
                         <div class="drop-down-text-non-clickable">
                             <span class="drop-down-option">Select multiple objects</span>
                             <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
+                        </div>
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-text-non-clickable">
+                            <span class="drop-down-option">Lock object proportions</span>
+                            <div id="hotkey-shift"><i>Shift</i></div>
                         </div>
                     </div>
                 </div>
@@ -308,8 +311,8 @@
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
-
-            <div id="canvasDiv"></div>
+            <div id="canvasDiv" style = "margin-left: 65px">
+            </div>
             <div id="consoleDiv">
             <!--
                 Can be used for a later date. Not needed now.
@@ -319,18 +322,19 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-              <div class="tooltipDecrease">
-                <button name="Zoom" id="zoomDecrease" type="button" onclick="changeZoom(-0.1);"> - </button>
+              <span class="tooltipDecrease" style="position: static;">
+                <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1);"> - </button>
                 <span class="tooltiptextDec">Zoom Out</span>
-              </div>
-              <div id="range">
-                <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
-              </div>
-              <div class="tooltipIncrease">
-                <button name="Zoom" id="zoomIncrease" type="button" onclick="changeZoom(0.1);"> + </button>
-                <span class="tooltiptextInc">Zoom In</span>
-              </div>
-              <div id="zoomV"></div>
+              </span>
+              <span id="range" style="padding-right: 8px;">
+                <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.01" class="zoomSlider">
+              </span>
+
+              <span class="tooltipIncrease" style="position: static;">
+                <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1);"> + </button>
+                <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
+              </span>
+              <span id="zoomV"></span>
             </div>
             </div>
         </div>
@@ -379,13 +383,28 @@
             </div>
             <div class='mode-wrap'>
                 <div id="importButtonWrap" class="importButtonWrap">
-                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(true);" value="Accept" />
+                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(true);">Accept</button>
                 </div>
                 <div id="importButtonWrap" class="importButtonWrap">
-                    <input type="submit" class="submit-button uploadButton" onclick="modeSwitchConfirmed(false);" value="Cancel" />
+                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Error message when non objects are not composite-->
+    <div id="errorMessageDialog" class="loginBoxContainer importDiagram">
+      <div class="loginBox messageContainer">
+        <div class="loginBoxheader messageHeader">
+            <h3 id="errorMessage"></h3>
+            <div class='cursorPointer' onclick='closeErrorMessageDialog();'>x</div>
+        </div>
+        <div class="mode-wrap">
+          <div id="importButtonWrap" class="importButtonWrap">
+            <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- content END -->
     <?php
