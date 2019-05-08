@@ -218,6 +218,9 @@
                         <div id="a4-holes-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                         </div>
+                        <div id="a4-holes-item-right" class="drop-down-item-disabled">
+                            <span class="drop-down-option" onclick='toggleVirtualA4HolesRight();'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                        </div>
                     </div>
                 </div>
                 <div class="menu-drop-down">
