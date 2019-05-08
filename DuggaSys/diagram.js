@@ -1139,7 +1139,12 @@ function drawVirtualA4() {
     ctx.setLineDash([10]);
 
     if(A4Orientation == "portrait"){
-        ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+        //ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+        for (var i = 0; i < 6; i++) {
+            for (var j = 0; j < 20; j++) {
+                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height); 
+            }
+        }
     }
     else if(A4Orientation == "landscape") {
         ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);
