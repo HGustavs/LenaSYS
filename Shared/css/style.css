@@ -2768,6 +2768,10 @@ span.arrow {
   text-overflow: ellipsis;
 }
 
+.checkbox-dugga:nth-child(odd){
+    background-color: #eee;
+}
+
 .checkmoment {
   border-top: 1px solid #888;
   font-weight: bold;
