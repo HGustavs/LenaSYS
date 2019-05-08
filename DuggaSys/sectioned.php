@@ -78,7 +78,8 @@
 										<button class='submit-button menuButton tests' onclick='navigatePage("duggaed.php");' title='Show tests'>Tests</button>
 								</li>
 								<li class='files'>
-										<button class='submit-button menuButton files' onclick='navigatePage("fileed.php");' title='Show files'>Files</button>
+										
+										<input type='button' value='Files' class='submit-button' title='Show files' onclick='navigatePage("fileed.php")'/>
 								</li>
 								<li class='access'>
 										<button class='submit-button menuButton access' onclick='navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
