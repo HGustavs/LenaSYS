@@ -3653,11 +3653,11 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader div.hamburger {
     position: absolute;
-    top: 66px;
-    left: 0;
+    top: 63px;
+    left: -80px;
   }
   table.navheader div.hamburgerMenu {
-    right: 10px;
+    left: -50px;
     top: 110px;
     margin-top: 0px;
     margin-left: 0px;
