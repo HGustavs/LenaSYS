@@ -203,6 +203,14 @@ function newVariant() {
 	document.getElementById('variantparameterText').placeholder = 'Undefied JSON parameter';
 	document.getElementById('variantanswerText').value = '';
 	document.getElementById('variantanswerText').placeholder = 'Undefied JSON answer';
+	if (document.querySelector('#submissionType0')) {
+		document.querySelector('#submissionType0').value = 'pdf';
+		document.querySelector('#fieldname0').value = '';
+		document.querySelector('#fieldname0').placeholder = 'Submission name';
+		document.querySelector('#instruction0').value = '';
+		document.querySelector('#instruction0').placeholder = 'Upload instruction';
+	}
+	
 }
 
 function createVariant() {
@@ -226,7 +234,6 @@ function selectVariant(vid, el) {
 	});
 	$("#saveVariant").css("display", "block");
 
-
     //Get information for rightDivDialog and display it.
     document.getElementById('vid').value = target_variant['vid'];
     document.getElementById('variantparameterText').value = target_variant['param'];
@@ -249,7 +256,20 @@ function selectVariant(vid, el) {
       }
     }
 
-
+		var submissionTypes = obj.submissions;
+		if (submissionTypes) {
+			document.getElementById('submissionType0').value = submissionTypes[0].type;
+			document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
+			document.getElementById('instruction0').value = submissionTypes[0].instruction;
+	
+			for (var i = 1; i < submissionTypes.length; i++) {
+				addVariantSubmissionRow();
+				document.getElementById('submissionType'+i).value = submissionTypes[i].type;
+				document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
+				document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
+				document.getElementById('variantparameterText').value = target_variant['param'];
+			}
+		}
   var disabled = (target_variant['disabled']);
   $("#disabled").val(disabled);
 	if (disabled == 0) {
@@ -270,7 +290,18 @@ function updateVariant(status) {
   var parameter = $("#variantparameterText").val();
 	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
-  $("#editVariant").css("display", "flex"); //Display variant-window
+	$("#editVariant").css("display", "flex"); //Display variant-window
+
+	// Remove extra submission rows
+	if (submissionRow > 0) {
+		for (var i = 1; i <= submissionRow; i++) {
+			// The function needs an element of the row to be removed, so this is what we have to do
+			var rows = [...document.getElementById('submissions').childNodes];
+			var elements = [...rows[i].childNodes];
+			var element = elements[0];
+			removeVariantSubmissionRow(element);
+		}
+	}
 }
 
 function deleteVariant(vid) {
