@@ -1134,22 +1134,31 @@ function drawVirtualA4() {
     const rightHoleOffsetX = 198 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
 
+    var a4Rows;
+    var a4Columns;
+
+    if (A4Orientation == "portrait") {
+        a4Rows = 6;
+        a4Columns = 20;
+    } else if(A4Orientation == "landscape") {
+        a4Rows = 9;
+        a4Columns = 14;
+    }
+
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
 
     if(A4Orientation == "portrait"){
-        //ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
-        for (var i = 0; i < 6; i++) {
-            for (var j = 0; j < 20; j++) {
+        for (var i = 0; i < a4Rows; i++) {
+            for (var j = 0; j < a4Columns; j++) {
                 ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height); 
             }
         }
     }
     else if(A4Orientation == "landscape") {
-        //ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);
-        for (var i = 0; i < 9; i++) {
-            for (var j = 0; j < 14; j++) {
+        for (var i = 0; i < a4Rows; i++) {
+            for (var j = 0; j < a4Columns; j++) {
                 ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width); 
             }
         }
@@ -1159,8 +1168,8 @@ function drawVirtualA4() {
         if(A4Orientation == "portrait"){
             if (switchSideA4Holes == "left") {
                 // The Holes on the left side.
-                for (var i = 0; i < 6; i++) {
-                    for (var j = 0; j < 20; j++) {
+                for (var i = 0; i < a4Rows; i++) {
+                    for (var j = 0; j < a4Columns; j++) {
                         //Upper 2 holes
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
@@ -1171,8 +1180,8 @@ function drawVirtualA4() {
                 }
             }else {
                 // The holes on the right side.
-                for (var i = 0; i < 6; i++) {
-                    for (var j = 0; j < 20; j++) {
+                for (var i = 0; i < a4Rows; i++) {
+                    for (var j = 0; j < a4Columns; j++) {
                         //Upper 2 holes
                         drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
@@ -1186,8 +1195,8 @@ function drawVirtualA4() {
         else if(A4Orientation == "landscape") {
             if (switchSideA4Holes == "left") {
                 // The holes on the upper side.
-                for (var i = 0; i < 9; i++) {
-                    for (var j = 0; j < 14; j++) {
+                for (var i = 0; i < a4Rows; i++) {
+                    for (var j = 0; j < a4Columns; j++) {
                         //Upper 2 holes
                         drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
@@ -1198,8 +1207,8 @@ function drawVirtualA4() {
                 }
             }else {
                 // The holes on the bottom side.
-                for (var i = 0; i < 9; i++) {
-                    for (var j = 0; j < 14; j++) {
+                for (var i = 0; i < a4Rows; i++) {
+                    for (var j = 0; j < a4Columns; j++) {
                         //Upper 2 holes
                         drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
