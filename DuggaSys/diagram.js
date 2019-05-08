@@ -1221,9 +1221,12 @@ function hideA4State(){
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), false);
-
     $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
+    //Reset the variables after disable the A4
+    toggleA4Holes = false;
+    switchSideA4Holes = "left";
 }
 
 function toggleVirtualA4Holes() {
