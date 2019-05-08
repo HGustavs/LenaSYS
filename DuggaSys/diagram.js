@@ -1134,6 +1134,7 @@ function drawVirtualA4() {
     const rightHoleOffsetX = 198 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
 
+    // Number of A4 sheets to draw out
     var a4Rows;
     var a4Columns;
 
@@ -1149,6 +1150,7 @@ function drawVirtualA4() {
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
 
+    // Draw A4 sheets in portrait mode
     if(A4Orientation == "portrait"){
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
@@ -1156,6 +1158,7 @@ function drawVirtualA4() {
             }
         }
     }
+    // Draw A4 sheets in landscape mode
     else if(A4Orientation == "landscape") {
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
@@ -1164,6 +1167,7 @@ function drawVirtualA4() {
         }
     }
 
+    // Draw A4 holes
     if(toggleA4Holes) {
         if(A4Orientation == "portrait"){
             if (switchSideA4Holes == "left") {
