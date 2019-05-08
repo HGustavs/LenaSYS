@@ -2393,9 +2393,13 @@ span.arrow {
 	border: 0px;
 }
 
-#accessTable td select {
+#accessTable select {
   height: 40px;
   width: 100%;
+}
+
+.accessTable-vers select {
+  width: 50%;
 }
 
 .accessTableText {
