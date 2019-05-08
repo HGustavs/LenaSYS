@@ -655,6 +655,7 @@ function SortableTable(param) {
 
 	this.mail = function(cidMail, crsMail, reqType) {
 		var filteredUsernames = [];
+		//get usernames of the filtered rows
 		for(var i = 0; i < filteredRows.length; i++){
 			filteredUsernames.push(filteredRows[i]['FnameLname'].username)
 		}
