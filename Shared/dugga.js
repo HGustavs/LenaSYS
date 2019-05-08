@@ -1289,7 +1289,12 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							tab+="<td>";
               if (ctype == "link"){
                 tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";
-							} else {
+							} 
+							// Else if filetype is .zip or .rar.
+							else if(ctype == "zip" || ctype == "rar") {
+								tab+="<span><a href='"+filelink+"'>" +filez[i].filename+'.'+filez[i].extension+"</a></span>";
+							}
+							else {
                 tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>"+filez[i].filename+"."+filez[i].extension+"</span>";
 							}
 							tab+="</td><td>";
