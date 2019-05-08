@@ -1369,10 +1369,10 @@ function mouseUp(e) {
     showSaveButton();
     */
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
-    hamburgerChange("notAClick");
     /*
     closeWindows();
-    closeSelect();
+     closeSelect();
+    hamburgerChange("notAClick");
     showSaveButton();
     */
   }
@@ -1385,10 +1385,12 @@ function mouseUp(e) {
 $(window).keyup(function (event) {
   if (event.keyCode == 27) {
     // if key is escape
+    /*
     closeWindows();
     closeSelect();
     showSaveButton();
     hamburgerChange("escapePress");
+    */
     document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     //Remember that keycode 13 = enter button
