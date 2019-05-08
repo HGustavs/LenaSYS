@@ -2466,6 +2466,14 @@ span.arrow {
   border-radius: 4px;
 }
 
+.submit-button:focus {
+  box-shadow: 0 0 0 2px #1e90ff;
+  outline: none;
+}
+.submit-button::-moz-focus-inner {
+  border: 0;
+}
+
 .no-radius:hover {
   background-color: #7B5A96;
   border-radius: 0;
