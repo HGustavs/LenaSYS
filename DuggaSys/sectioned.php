@@ -72,16 +72,19 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-									<button class='submit-button menuButton results' onclick='closeWindows(); navigatePage("resulted.php");' title='Edit student results'>Results</button>
+									<a id='resultsBtnBurger' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button menuButton results'  title='Edit student results' /></a>
+
 								</li>
 								<li class='tests'>
-										<button class='submit-button menuButton tests' onclick='closeWindows(); navigatePage("duggaed.php");' title='Show tests'>Tests</button>
+									<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
+
+										<button class='submit-button menuButton tests' onclick=' navigatePage("duggaed.php");' title='Show tests'>Tests</button>
 								</li>
 								<li class='files'>
-										<button class='submit-button menuButton files' onclick='closeWindows(); navigatePage("fileed.php");' title='Show files'>Files</button>
+										<button class='submit-button menuButton files' onclick=' navigatePage("fileed.php");' title='Show files'>Files</button>
 								</li>
 								<li class='access'>
-										<button class='submit-button menuButton access' onclick='closeWindows(); navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
+										<button class='submit-button menuButton access' onclick=' navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
 								</li>
 							</ul>
 						</div>

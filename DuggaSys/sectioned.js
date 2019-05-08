@@ -92,6 +92,7 @@ function toggleArrows() {
 menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
+
 function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
@@ -1362,15 +1363,18 @@ function mouseDown(e) {
 
 function mouseUp(e) {
   // if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
-  if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) && $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
-    closeWindows();
+  if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) && $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {               
+    /*closeWindows();
     closeSelect();
     showSaveButton();
+    */
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
     hamburgerChange("notAClick");
+    /*
     closeWindows();
     closeSelect();
     showSaveButton();
+    */
   }
 }
 
