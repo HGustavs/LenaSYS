@@ -825,8 +825,8 @@ header td {
 
 .loginBox {
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
