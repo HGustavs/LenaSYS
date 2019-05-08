@@ -1,5 +1,5 @@
 //all visible rows will be stored to this array
-var filteredUsernames = []; 
+var filteredRows = []; 
 
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
@@ -276,7 +276,7 @@ function SortableTable(param) {
 
 	this.reRender = function () {
 
-		filteredUsernames = [];
+		filteredRows = [];
 		this.rowIndex = 1;
 		// Local variable that contains html code for main table and local variable that contains magic headings table
 		str = "<table style='border-collapse: collapse;' id='" + this.tableid + DELIMITER + "tbl' class='list list--nomargin'>";
@@ -401,7 +401,7 @@ function SortableTable(param) {
 			var row = tbl.tblbody[i];
 			if (rowFilter(row)) {
 				//if row is visible, it will be added
-				filteredUsernames.push(row['FnameLname'].username);
+				filteredRows.push(row);
 				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
 				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
@@ -654,6 +654,10 @@ function SortableTable(param) {
 	}
 
 	this.mail = function(cidMail, crsMail, reqType) {
+		var filteredUsernames = [];
+		for(var i = 0; i < filteredRows.length; i++){
+			filteredUsernames.push(filteredRows['FnameLname'].username)
+		}
 	$.ajax({
 		url: "resultedservice.php",
 		type: "POST",
