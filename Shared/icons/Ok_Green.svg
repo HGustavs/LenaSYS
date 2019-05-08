@@ -25,7 +25,6 @@
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
          rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
    id="defs6"><linearGradient
-     inkscape:collect="always"
      id="linearGradient1339"
      osb:paint="gradient"><stop
        style="stop-color:#000000;stop-opacity:1;"
@@ -75,7 +74,7 @@
    id="namedview4"
    showgrid="false"
    inkscape:zoom="2.105706"
-   inkscape:cx="-3.8449465"
+   inkscape:cx="-123.51977"
    inkscape:cy="57.06425"
    inkscape:window-x="-9"
    inkscape:window-y="-9"
@@ -83,14 +82,6 @@
    inkscape:current-layer="Layer_1" />
 
 <rect
-   style="opacity:1;fill:none;fill-opacity:1;stroke:#008000;stroke-width:6.448;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-   id="rect1345"
-   width="72.488556"
-   height="73.205505"
-   x="3.6938481"
-   y="3.3580501"
-   rx="33.748413"
-   ry="0" /><rect
    style="opacity:1;fill:#008000;fill-opacity:1;stroke:none;stroke-width:8.62815094;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4.69999981;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
    id="rect1403"
    width="16.989609"
