@@ -73,18 +73,15 @@
 							<ul class='hamburgerList'>
 								<li class='results'>
 									<a id='resultsBtnBurger' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button menuButton results'  title='Edit student results' /></a>
-
 								</li>
 								<li class='tests'>
-									<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
-
-										<button class='submit-button menuButton tests' onclick=' navigatePage("duggaed.php");' title='Show tests'>Tests</button>
+									<a id='testsBtnBurger' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button menuButton tests' title='Show tests' /></a>
 								</li>
 								<li class='files'>
-										<button class='submit-button menuButton files' onclick=' navigatePage("fileed.php");' title='Show files'>Files</button>
+									<a id='filesBtnBurger' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button menuButton files'  title='Show files'/></a>
 								</li>
 								<li class='access'>
-										<button class='submit-button menuButton access' onclick=' navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
+									<a id='accessBtnBurger' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button menuButton access'  title='Give students access to the selected version'/></a>
 								</li>
 							</ul>
 						</div>
@@ -103,7 +100,6 @@
 					<td class='files menuButton' style='display: inline-block;'>
 						<div class='files menuButton'>
 						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
-
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
