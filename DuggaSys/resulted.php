@@ -60,7 +60,7 @@ pdoConnect();
         <select id="ladgradescale">
           <option value="U-G-VG" selected>U-G-VG</option>
           <option value="U-G">U-G</option>
-          <option value="U-3-4-5">U-3-4-5</option>
+       	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
         </select>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
@@ -92,15 +92,22 @@ pdoConnect();
 
 	<!-- -------------------=============####### Result Popover #######=============------------------- -->
 
-	<div id='resultpopover' class='resultPopover' style='display:none'>
+	<div id='resultpopover' class='resultPopover' style='display: none'>
 		<div class='loginBoxheader'>
 			<span id="hoverRes" ></span>
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
-			onmouseout="hideHover();" >Show Results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
+			onmouseout="hideHover();" >Show Results</h3>
+			<button id='gradeBtn' onclick="toggleGradeBox();">
+				<img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px">
+			</button>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 
-		<div id="MarkCont" style="position:absolute; left:4px; right:204px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
-		<div style="position:absolute; right:2px; top:34px; background:#bbb; width:200px;"><div id='markMenuPlaceholder'></div><div id="teacherFeedbackTable"></div></div>
+		<div id="MarkCont" style="position: absolute; left:4px; width: 99%; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
+		<div id="toggleGrade">
+		<div id='markMenuPlaceholder'></div>
+		<div id="teacherFeedbackTable"></div>
+		</div>
 	</div>
 
   <!-- -------------------=============####### Preview Popover #######=============------------------- -->

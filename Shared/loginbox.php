@@ -160,7 +160,7 @@
       <h3>Alert</h3>
       <div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
     </div>
-    <p id="expiremessage">Your session will expire in about 30 minutes. Refresh session ?</p>
+    <p id="expiremessage">Your session will expire in about 15 minutes. Refresh session ?</p>
     <input type="button" id="expiremessagebutton" class="submit-button" onclick="closeWindows(); refreshUserSession()" value="Refresh">
   </div>
 

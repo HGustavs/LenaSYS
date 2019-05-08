@@ -20,7 +20,6 @@ if(isset($_SESSION['uid'])){
 	$userid="guest";
 }
 
-$requestType=getOP('requestType');
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
@@ -392,16 +391,6 @@ if($gradesys=="UNK") $gradesys=0;
 				)
 			);
 		}
-
-		array_push(
-			$duggor,
-			array(
-				'id' => '9999',
-				'qname' => 'Contribution',
-				'release' => '',
-				'deadline' => ''
-			)
-		);
 
 		$query = $pdo->prepare("SELECT `groups` FROM user_course WHERE uid=:uid AND cid=:cid;");
 		$query->bindParam(':cid', $courseid);
