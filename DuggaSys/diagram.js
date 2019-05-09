@@ -1346,7 +1346,7 @@ function importFile() {
 function canvasSize() {
     boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 90);
-    heightWindow = (window.innerHeight - 110);
+    heightWindow = (window.innerHeight - 94);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
