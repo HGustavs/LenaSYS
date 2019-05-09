@@ -39,7 +39,7 @@ function setup() {
   var filt = "";
   filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>`;
+  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinputMobile").value=document.getElementById("searchinput").value;'/>`;
   filt += `<button id='searchbutton' class='switchContent'`;
   filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
   filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
