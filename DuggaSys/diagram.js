@@ -248,6 +248,9 @@ window.addEventListener("keydown", this.keyDownHandler);
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
 
+// This event checks if the user leaves the diagram.php
+window.addEventListener('blur', resetButtonsPressed);
+
 //--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
 //--------------------------------------------------------------
@@ -360,15 +363,11 @@ function generateExampleCode() {
 // This function check if focus on diagram was lost
 // Put your action here if you want focus lost as trigger
 //--------------------------------------------------------------------
-setInterval( checkFocus, 200 );
-function checkFocus() {
-  if ( document.hasFocus() ) {
-    // Put the code you want to run while in focuse here:
-  } else {
-    // Put the code you want to run when focuse is lost here:
+
+function resetButtonsPressed() {
     ctrlIsClicked = false;
     shiftIsClicked = false;
-  }
+    alert("Hej");
 }
 
 //--------------------------------------------------------------------
