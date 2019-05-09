@@ -526,3 +526,18 @@ function createQuickItem() {
 	clearTimeout(pressTimer);
 	showImportUsersPopup();
 }
+
+//----------------------------------------------------------------------------------
+// Keyboard shortcuts - Edit functionality in the accessed table
+//----------------------------------------------------------------------------------
+document.addEventListener("keyup", function(event)
+{
+  if (event.keyCode === 13)
+  {
+    // If user presses key: Enter (13)
+    updateCellInternal();
+  } else if (event.keyCode === 27) {
+    // If user presses key: Escape (27)
+    clearUpdateCellInternal();
+  }
+});
