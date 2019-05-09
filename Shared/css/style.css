@@ -3194,6 +3194,29 @@ rect[class*="activitymarker"]:hover {
   display: none;
 }
 
+#searchBarMobile, #searchbuttonMobile {
+  width: 24px;
+  height: 22px;
+  margin-top: 10px;
+}
+
+#searchBarMobile {
+  padding-left: 8px;
+  display: inline-flex;
+  height: 24px;
+  border-radius: 5px;
+  float: left;
+}
+
+#searchinputMobile {
+  margin-left: 16px;
+  border: 1px solid var(--color-border);
+} 
+
+#searchbuttonMobile {
+  margin: 0;
+}
+
 /* styling for fileed switching table button*/
 
 .switchContent {
@@ -3834,33 +3857,9 @@ only screen and (max-device-width: 530px) {
     display: none;
   }
 
-  #searchBarMobile, #searchbutton {
-    width: 24px;
-    height: 22px;
-    margin-top: 10px;
-  }
-
-  #searchBarMobile {
-    padding-left: 8px;
-    display: inline-flex;
-    height: 24px;
-    border-radius: 5px;
-    float: left;
-  }
-
-  #searchinputMobile {
-    margin-left: 16px;
-    border: 1px solid var(--color-border);
-  }
-
   .switchContent {
     padding: 3px;
   }
-
-  #searchbuttonMobile {
-    margin: 0;
-  }
-
   /* Mobile resulted end */
 }
 
