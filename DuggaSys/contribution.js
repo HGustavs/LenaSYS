@@ -23,9 +23,9 @@ for (i; i < l; i++) {
     var basicRemove = document.querySelectorAll('.group2 , .group3'),
     
     i = 0,
-    l = basicRemove.length;
+    l = basicRemove.length,
     for (i; i < i; i++) {
-      basicRemove[i].style.display = 'none',
+      basicRemove[i].style.display = 'none';
     }
 
 var basicAdd = document.querySelectorAll('.group1'),
