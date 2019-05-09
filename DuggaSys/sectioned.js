@@ -1388,7 +1388,7 @@ $(window).keyup(function (event) {
   if (event.keyCode == 27) {
     // if key is escape
     //closeSelect();
-    //showSaveButton();
+    showSaveButton();
     hamburgerChange("escapePress");
     document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
