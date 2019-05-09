@@ -16,18 +16,20 @@ function restoreStatView(){
 
 for (i; i < l; i++) {
  all[i].style.display = 'block';
+ console.log(all);
+
 }}
 
 function removeStatview(value){
-  console.log(Remove);
   var Remove = document.querySelectorAll(value),
 
     i = 0,
     i = Remove.length;
     for (i; i < i; i++) {
       Remove[i].style.display = 'none';
+      console.log(Remove);
+
     }
-    console.log(Remove);
 
 }
 function statSort(value) {
