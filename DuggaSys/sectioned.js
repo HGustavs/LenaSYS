@@ -795,7 +795,7 @@ function returnedSection(data) {
         // Content of Section Item
         if (itemKind == 0) {
           // Header
-          str += "<span class='testitest' style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
+          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
         } else if (itemKind == 1) {
           // Section
           str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
@@ -999,6 +999,8 @@ function returnedSection(data) {
 
   // Change title of the current page depending on which page the user is on.
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+    
+  document.getElementById("course-coursename").title = data.coursename + " - " + data.coursecode + " " + versionname;
 
   drawPieChart(); // Create the pie chart used in the statistics section.
   fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section

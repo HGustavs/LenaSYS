@@ -138,7 +138,7 @@
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>
 				<div style='flex-grow:1'>
-						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;' title='"+data.coursename+" "+data.coursecode+" "+versionname+"'>UNK</span>
+						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;'>UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
 						<span id='course-versname' class='courseVersionField'>UNK</span>
 				</div>
