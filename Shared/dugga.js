@@ -530,8 +530,8 @@ function changeURL(clicked_id, thisurl)
 function changeURL(clicked_id, thisurl)
 {
 	var link = document.getElementById(clicked_id);
-	
-	if(link.href != null){
+
+	if(link != null){
 		link.href=thisurl;
 	}
 	else{
