@@ -235,7 +235,7 @@ function renderCell(col, celldata, cellid) {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
 		var checkSubmission = data => data.uid === obj.uid;
 		if (filez['submissions'].some(checkSubmission)) {
-			str += "<img id='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + obj.vers + ")'>";
+			str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + obj.vers + ")'>";
 		};
 	} else if (col == "access") {
 		var checkSubmission = data => data.uid === obj.uid;
@@ -525,3 +525,18 @@ function createQuickItem() {
 	clearTimeout(pressTimer);
 	showImportUsersPopup();
 }
+
+//----------------------------------------------------------------------------------
+// Keyboard shortcuts - Edit functionality in the accessed table
+//----------------------------------------------------------------------------------
+document.addEventListener("keyup", function(event)
+{
+  if (event.keyCode === 13)
+  {
+    // If user presses key: Enter (13)
+    updateCellInternal();
+  } else if (event.keyCode === 27) {
+    // If user presses key: Escape (27)
+    clearUpdateCellInternal();
+  }
+});

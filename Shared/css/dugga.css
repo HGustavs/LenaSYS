@@ -371,7 +371,8 @@ svg text {
 		background-color: #614875;
 	}
 	#smallerViewportLabel{
-		background-color:#cdd0d6;
+		background: var(--color-primary);
+    color: white;
 		width: 180px;
 		text-align: center;
 	}
@@ -385,6 +386,8 @@ svg text {
 		margin-left: 3px;
 		height: 30px;
 		cursor: pointer;
+    background: var(--color-primary);
+    color: white;
 	}
 	#smallerViewportUploadButton:hover{
 		background-color: #614875;
