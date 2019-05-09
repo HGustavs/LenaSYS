@@ -7,6 +7,35 @@ var dailyCount=[[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0],
 
 AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 
+
+//sorting for multiple views
+function statSort(value) {
+  if (value == "All") {
+    document.getElementsByClassName('group1').style.display = "block"
+    document.getElementsByClassName('group2').style.display = "block"
+    document.getElementsByClassName('group3').style.display = "block"
+    document.getElementById("contribTsTable").style.display = "block";
+
+  } else if (value == "Basic") {
+    document.getElementsByClassName('group1').style.display = "block"
+    document.getElementsByClassName('group2').style.display = "none"
+    document.getElementsByClassName('group3').style.display = "none"
+    document.getElementById("contribTsTable").style.display = "nonek";
+  } else if (value == "Charts") {
+    document.getElementsByClassName('group1').style.display = "nonek"
+    document.getElementsByClassName('group2').style.display = "block"
+    document.getElementsByClassName('group3').style.display = "none"
+    document.getElementById("contribTsTable").style.display = "none";
+
+  } else if (value == "Contribution") {
+    document.getElementsByClassName('group1').style.display = "none"
+    document.getElementsByClassName('group2').style.display = "none"
+    document.getElementsByClassName('group3').style.display = "block"
+    document.getElementById("contribTsTable").style.display = "block";
+
+  }
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -118,7 +147,7 @@ function renderBarDiagram(data)
   }
 
   // Renders the diagram
-  var str = "<div style='width:100%;overflow-x:scroll;'>";
+  var str = "<div id='group1' style='width:100%;overflow-x:scroll;'>";
   str += "<svg class='chart fumho' style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
   for(var i = 0; i < numOfWeeks; i++){
     str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
@@ -177,6 +206,7 @@ function renderLineDiagram(data){
     var firstweek = data.weeks[0].weekstart;
 
     //Selectbox to choose week
+    str+='<div id="group2">';
     str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
     str+='<option value="'+firstweek+'">All weeks</option>';
 	for(i=0;i<weeks.length;i++){
@@ -187,6 +217,7 @@ function renderLineDiagram(data){
 
     str+='<div id="lineDiagramDiv">';
     str+=weekchoice(firstweek);
+    str+='</div>';
     str+='</div>';
 
     return str;
@@ -689,7 +720,14 @@ function returnedSection(data)
   if(data['debug']!="NONE!") alert(data['debug']);
 
   contribDataArr = [];
-	var str="";
+  var str="";
+  
+  str += "<div class='contributionSort'>";
+  str += "<input type='button' value='All' class='submit-button title='All' onclick='statSort(value)'></input>";
+  str += "<input type='button' value='Basic' class='submit-button title='Basic' onclick='statSort(value)'></input>";
+  str += "<input type='button' value='Charts' class='submit-button title='Charts' onclick='statSort(value)'></input>";
+  str += "<input type='button' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)'></input>";
+  str += "</div>";
 
     if(data['allusers'].length>0){
         str+="<select id='userid' onchange='selectuser();'>";
@@ -700,13 +738,15 @@ function returnedSection(data)
     }
 
     str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
-  	str+="<table class='fumho'>";
+    
+  	str+="<table id='group1' class='fumho'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th style='padding: 2px 10px;'>Kind</th>";
     str+="<th style='padding: 2px 10px;'>Number</th>";
 	str+="<th style='padding: 2px 10px;'>Ranking</th>";
   str+="<th style='padding: 2px 10px;'>Group ranking</th>";
 	str+="</tr>";
+
 
     str+="<tr>";
     str+="<td>Issue Creation</td>";
@@ -752,7 +792,7 @@ function returnedSection(data)
     str+="</div>";
 
     // Table heading
-	str+="<table class='fumho'>";
+	str+="<table class='fumho' id='group3'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th></th>";
 	str+="<th style='padding: 2px 10px;'>Dates</th>";
@@ -860,9 +900,9 @@ function returnedSection(data)
 	}
 
 	// End of table
-
+  str+="<div id='group3'">;
 	str+="</table><div id='rankTable'></div>";
-
+  str+="</div>";
     var contribData = [];
 
 	if(data['allrowranks'].length>0){
