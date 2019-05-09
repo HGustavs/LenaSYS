@@ -37,27 +37,10 @@ function statSort(value) {
 
   } else if (value == "Basic") {
     removeStatview('.group2 , .group3');
- 
-
-
   } else if (value == "Charts") {
-    var charts = document.querySelectorAll('.group1 , .group3'),
-    i = 0,
-    l = charts.length;
-
-for (i; i < l; i++) {
-   charts[i].style.display = 'none';
-}
-
+    removeStatview('.group1 , .group3');
   } else if (value == "Contribution") {
-    var contribution = document.querySelectorAll('.group1 , .group2'),
-    i = 0,
-    l = contribution.length;
-
-for (i; i < l; i++) {
-   contribution[i].style.display = 'none';
-}
-
+    removeStatview('.group1 , .group2');
   }
 }
 
