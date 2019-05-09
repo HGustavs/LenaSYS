@@ -17,6 +17,13 @@ function statSort(value) {
     document.getElementById("contribTsTable").style.display = "block";
 
   } else if (value == "Basic") {
+    var myClasses = document.querySelectorAll('group1'),
+    i = 0,
+    l = group1.length;
+
+for (i; i < l; i++) {
+   group1[i].style.display = 'none';
+}
     document.getElementById('group1').style.display = "block"
     document.getElementById('group2').style.display = "none"
     document.getElementById('group3').style.display = "none"
@@ -44,7 +51,7 @@ function statSort(value) {
 
 function renderRankTable(){
   if(contribDataArr.length == 0) return;
-  var str="<table id='group3' class='fumho'><tr><th></th><th style='padding: 2px 10px;' onclick='sortRank(0);'>login</th><th style='padding: 2px 10px;' onclick='sortRank(2);'>alleventranks</th><th style='padding: 2px 10px;' onclick='sortRank(3);'>allcommentranks</th><th style='padding: 2px 10px;' onclick='sortRank(4);'>LOC rank</th><th style='padding: 2px 10px;' onclick='sortRank(5);'>Commit rank</th></tr>";
+  var str="<table  class='fumho group3'><tr><th></th><th style='padding: 2px 10px;' onclick='sortRank(0);'>login</th><th style='padding: 2px 10px;' onclick='sortRank(2);'>alleventranks</th><th style='padding: 2px 10px;' onclick='sortRank(3);'>allcommentranks</th><th style='padding: 2px 10px;' onclick='sortRank(4);'>LOC rank</th><th style='padding: 2px 10px;' onclick='sortRank(5);'>Commit rank</th></tr>";
   for (var j=0; j<contribDataArr.length;j++){
       str+="<tr>";
       str+="<td>"+j+"</td>";
@@ -150,7 +157,7 @@ function renderBarDiagram(data)
 
   // Renders the diagram
 
-  var str = "<div id='group1' style='width:100%;overflow-x:scroll;'>";
+  var str = "<div class='group1' style='width:100%;overflow-x:scroll;'>";
   str += "<svg  class='chart fumho'  style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
   for(var i = 0; i < numOfWeeks; i++){
     str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
@@ -210,7 +217,7 @@ function renderLineDiagram(data){
    
 
     //Selectbox to choose week
-    str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
+    str='<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
     str+='<option value="'+firstweek+'">All weeks</option>';
 	for(i=0;i<weeks.length;i++){
             var week=weeks[i];
@@ -218,10 +225,8 @@ function renderLineDiagram(data){
     }
 
     str+='</select>';
-    str+='<div id="group2">';
-    str+='<div id="lineDiagramDiv">';
+    str+='<div class="group2" id="lineDiagramDiv">';
     str+=weekchoice(firstweek);
-    str+='</div>';
     str+='</div>';
 
 
@@ -744,7 +749,7 @@ function returnedSection(data)
 
     str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
     
-  	str+="<table id='group1' class='fumho'>";
+  	str+="<table  class='fumho group1'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th style='padding: 2px 10px;'>Kind</th>";
     str+="<th style='padding: 2px 10px;'>Number</th>";
@@ -792,15 +797,13 @@ function returnedSection(data)
     str+=createTimeSheetTable(data['timesheets']);
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
-    str+="<div id='group2'>";
-    str+="<div id='hourlyGraph'>";
+    str+="<div class='group2' id='hourlyGraph'>";
     str+=renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-    str+="</div>";
     str+="</div>";
 
 
     // Table heading
-	str+="<table class='fumho' id='group3'>";
+	str+="<table class='fumho group3' >";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th></th>";
 	str+="<th style='padding: 2px 10px;'>Dates</th>";
