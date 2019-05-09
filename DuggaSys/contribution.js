@@ -17,19 +17,13 @@ function statSort(value) {
     document.getElementById("contribTsTable").style.display = "block";
 
   } else if (value == "Basic") {
-    var myClasses = document.querySelectorAll('.group1'),
+    var group1 = document.querySelectorAll('.group1'),
     i = 0,
     l = group1.length;
 
 for (i; i < l; i++) {
    group1[i].style.display = 'none';
 }
-
-    document.getElementById('group1').style.display = "block"
-    document.getElementById('group2').style.display = "none"
-    document.getElementById('group3').style.display = "none"
-    document.getElementById("hourlyGraph").style.display = "none";
-    document.getElementById("contribTsTable").style.display = "none";
   } else if (value == "Charts") {
     document.getElementById('group1').style.display = "none"
     document.getElementById('group2').style.display = "block"
