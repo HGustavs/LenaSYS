@@ -3696,12 +3696,12 @@ only screen and (max-device-width: 860px) {
     display: block;
     height: 13px;
   }
-  #searchBar {
+  /* #searchBar {
     margin-left: 15px;
   }
   #searchinput{
     width:170px;
-  }
+  } */
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
@@ -3829,6 +3829,21 @@ only screen and (max-device-width: 530px) {
 
   .headerSearch {
     display: none;
+  }
+
+  #searchBar, #searchbutton {
+    width: 24px;
+    height: 22px;
+    margin-top: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+  }
+
+  #searchBar, #testSearchContainer {
+    padding-left: 8px;
+    display: inline-flex;
+    height: 24px;
+    border-radius: 5px;
+    float: left;
   }
 }
 

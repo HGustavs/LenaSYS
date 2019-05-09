@@ -86,12 +86,6 @@ pdoConnect();
 			</div>
 
 			<div id='searchBar' class='mobileSearch' style='test-align:right;margin-bottom:15px;'>
-				
-				<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>
-
-				<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>
-					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
-				</button>
 				<div class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
 								<b>Keywords:</b> markG, markU, date <br>
@@ -99,6 +93,11 @@ pdoConnect();
 					</div>
 					<span>?</span>
 				</div>
+				<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>
+
+				<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>
+					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
+				</button>
 			</div>
 
     </div>
