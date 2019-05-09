@@ -18,9 +18,9 @@ for (i; i < l; i++) {
  all[i].style.display = 'block';
 }}
 
-function removeStatview(value1,value2){
+function removeStatview(value){
   console.log(value1);
-  var Remove = document.querySelectorAll(value1,value2),
+  var Remove = document.querySelectorAll(value),
     
     i = 0,
     i = Remove.length;
