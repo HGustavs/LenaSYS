@@ -2359,9 +2359,22 @@ function diagramToSVG() {
 //----------------------------------------------------------------------
 // setCheckbox: Check or uncheck the checkbox contained in 'element'
 //              This function adds a checkbox element if there is none
+//
+// IMPORTANT: This function only updates the checkbox graphically, it
+// does not change the value of the underlying variable. When calling
+// this function it should be called along with an explicit assignment like:
+//         checkboxVar = true;
+//         setCheckbox(checkboxElement, checkboxVar);
+// Or like:
+//         setCheckbox(checkboxElement, checkboxVar = true);
+// NOT like:
+//         setCheckbox(checkboxElement, true); // checkboxVar is unchanged
+// The last example results in unchanged behaviour in the diagram but with
+// the checkbox icon appearing as if it is active. 
 //----------------------------------------------------------------------
 
 function setCheckbox(element, check) {
+    // Add checkbox element if it doesn't exist
     if ($(element).children(".material-icons").length == 0) {
         $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">check</i>");
     }
