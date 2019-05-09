@@ -523,6 +523,7 @@ function savequizResult(citstr)
 
 function changeURL(clicked_id, thisurl)
 {
+	
 	var link = document.getElementById(clicked_id);
 	link.href=thisurl;
 }
