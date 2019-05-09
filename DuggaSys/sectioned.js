@@ -795,7 +795,7 @@ function returnedSection(data) {
         // Content of Section Item
         if (itemKind == 0) {
           // Header
-          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
+          str += "<span style='margin-left:8px;'>" + item['entryname'] + "</span>";
         } else if (itemKind == 1) {
           // Section
           str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
