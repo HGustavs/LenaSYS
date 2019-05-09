@@ -113,7 +113,12 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline) {
+
+  var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+  var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+  var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
+  var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -133,11 +138,15 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2, 3]));
+  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
   $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
   $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
+  $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
+  $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
+  $("#setDeadlineValue").val(deadline.substr(0,10));
+
   var groups = [];
   for (var key in retdata['groups']) {
     // skip loop if the property is from prototype
@@ -312,6 +321,7 @@ function addColorsToTabSections(kind, visible, spkind) {
 function prepareItem() {
   // Create parameter object and fill with information
   var param = {};
+  var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
 
   // Storing tabs in gradesys column!
   var kind = $("#type").val()
@@ -330,6 +340,7 @@ function prepareItem() {
   param.moment = $("#moment").val();
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
+  param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
 
   return param;
 }
@@ -351,12 +362,20 @@ function deleteItem(item_lid = null) {
 //----------------------------------------------------------------------------------
 
 function updateItem() {
-
   AJAXService("UPDATE", prepareItem(), "SECTION");
+
+  // $("#sectionConfirmBox").css("display", "none");
+  // $("#editSection").css("display", "none");
+}
+
+function updateDeadline(){
+  var deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
+  var link = $("#link").val();
+
+  AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
 
   $("#sectionConfirmBox").css("display", "none");
   $("#editSection").css("display", "none");
-
 }
 
 //----------------------------------------------------------------------------------
@@ -907,7 +926,7 @@ function returnedSection(data) {
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
           str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype']]) + ");' />";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline']]) + ");' />";
           str += "</td>";
         }
 
