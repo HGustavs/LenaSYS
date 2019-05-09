@@ -2932,6 +2932,10 @@ span.arrow {
 
 /*this was inline-CSS before, only moved it to the right file*/
 
+.contributionSort{
+  height:40px;
+}
+
 .fumho th {
   background: #620;
   color: #fff;

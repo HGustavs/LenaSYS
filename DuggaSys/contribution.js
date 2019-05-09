@@ -689,7 +689,7 @@ function renderCell(col,celldata,cellid)
   var str="UNK";
   obj = celldata;
   if (col==='link') {
-    str = "<div class='group3' style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>";
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>";
     str += "<a href='"+obj+"' target='_blank'>Github</a></span></div>";
   } else if (col==='week'||col==='reference'){
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+parseInt(obj)+"</span></div>";
