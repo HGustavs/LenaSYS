@@ -23,7 +23,7 @@ function removeStatview(value1,value2){
   var Remove = document.querySelectorAll(value1,value2),
     
     i = 0,
-    l = Remove.length;
+    i = Remove.length;
     for (i; i < i; i++) {
       Remove[i].style.display = 'none';
     }
