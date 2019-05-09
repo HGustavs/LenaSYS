@@ -403,9 +403,14 @@ function keyDownHandler(e) {
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line) {
+            if(cloneTempArray[i].symbolkind) {
+                cloneTempArray[i].name == "copy";
+                if (cloneTempArray[i].symbolkind.line) {
+                    console.log(connectedObjects(line));
+                }
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
+                fixLineConnectionAfterCopy(cloneTempArray[i]);
             }
         }
         cloneTempArray = temp;
@@ -619,7 +624,6 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 // copySymbol: Clone an object
 //----------------------------------------------------------------------
-
 function copySymbol(symbol) {
     var clone = Object.assign(new Symbol(), symbol);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
@@ -636,18 +640,20 @@ function copySymbol(symbol) {
     middleDividerClone.y += 10;
 
     if(symbol.symbolkind == symbolKind.uml) {
-        clone.name = "New" + diagram.length;
+        clone.name = "NewCopy" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.erAttribute) {
-        clone.name = "Attr" + diagram.length;
+        clone.name = "AttrCopy" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.erEntity) {
-        clone.name = "Entity" + diagram.length;
+        clone.name = "EntityCopy" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.line) {
-        clone.name = "Line" + diagram.length;
+        clone.name = "LineCopy" + diagram.length;
     }else{
-        clone.name = "Relation" + diagram.length;
+        clone.name = "RelationCopy" + diagram.length;
     }
+    
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
+   
     if(clone.symbolkind != symbolKind.uml) {
         clone.centerPoint = points.push(centerPointClone) - 1;
     }
@@ -662,6 +668,9 @@ function copySymbol(symbol) {
 
     return diagram.length;
 
+}
+function fixLineConnectionAfterCopy(object) {
+    // console.log("oname: " + object.name);
 }
 
 //--------------------------------------------------------------------
@@ -1536,7 +1545,9 @@ function connectedObjects(line) {
             for (var j = 0; j < objectPoints.length; j++) {
                 if (objectPoints[j] == line.topLeft || objectPoints[j] == line.bottomRight) {
                     privateObjects.push(diagram[i]);
+                    console.log("po: " + privateObjects[i].name);
                 }
+
                 if (privateObjects.length >= 2) {
                     break;
                 }
@@ -1544,6 +1555,7 @@ function connectedObjects(line) {
             if (privateObjects.length >= 2) {
                 break;
             }
+
         }
     }
     return privateObjects;
@@ -2929,7 +2941,7 @@ function mousedownevt(ev) {
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
-
+    console.log(last.name);
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
