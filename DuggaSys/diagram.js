@@ -1238,27 +1238,28 @@ function drawCircle(cx, cy, radius) {
 }
 
 function showA4State(){
-    //Sets icons based on the state of the A4
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
+    // Sets icons based on the state of the A4
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes=false);
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
-    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), false);
+    switchSideA4Holes = "left";
+    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
 }
 
 function hideA4State(){
-    //Hides icons when toggling off the A4
-    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
-    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), false);
-    $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
-
-    //Reset the variables after disable the A4
+    // Reset the variables after disable the A4
     toggleA4Holes = false;
     switchSideA4Holes = "left";
+
+    // Hides icons when toggling off the A4
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+    $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
 function toggleVirtualA4Holes() {
-    //Toggle a4 holes to the A4-paper.
+    // Toggle a4 holes to the A4-paper.
     if (toggleA4Holes) {
         toggleA4Holes = false;
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
@@ -1275,12 +1276,12 @@ function toggleVirtualA4Holes() {
 }
 
 function toggleVirtualA4HolesRight() {
-    //Switch a4 holes from left to right of the A4-paper.
+    // Switch a4 holes from left to right of the A4-paper.
     if (switchSideA4Holes == "right") {
         switchSideA4Holes = "left";
         setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
         updateGraphics();
-    } else {
+    }else {
         switchSideA4Holes = "right";
         setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
         updateGraphics();
@@ -1288,10 +1289,9 @@ function toggleVirtualA4HolesRight() {
 }
 
 function toggleA4Orientation() {
-    if(A4Orientation == "portrait"){
+    if (A4Orientation == "portrait") {
         A4Orientation = "landscape";
-    }
-    else if(A4Orientation == "landscape"){
+    }else if (A4Orientation == "landscape") {
         A4Orientation = "portrait";
     }
 
@@ -1695,10 +1695,12 @@ function developerMode(event) {
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   // Turn off crosstoggleA4.
-        setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
-        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
-        setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
+        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"),
+            toggleA4=false);                                                            // Turn off crosstoggleA4.
+        setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+            crossDEV=true);                                                             // Turn on crossDEV.
     } else {
         console.log('developermode: OFF');
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -1708,9 +1710,10 @@ function developerMode(event) {
         switchToolbar('ER');                                                            // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
-        setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
-        setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+            crossDEV=false);                                                            // Turn off crossDEV.
+        setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER
     }
     reWrite();
     updateGraphics();
@@ -1755,7 +1758,7 @@ function switchToolbarTo(target){
 
 //------------------------------------------------------------------------------
 // SwitchToolbarER:
-// This function handels everything that need to happen when the toolbar
+// This function handles everything that need to happen when the toolbar
 // changes to ER. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossER = false;
@@ -1763,29 +1766,31 @@ function switchToolbarER() {
     toolbarState = 1;                                                               // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
-    setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+        crossDEV=false);                                                            // Turn off crossDEV.
 }
 
 //------------------------------------------------------------------------------
 // SwitchToolbarUML:
-// This function handels everything that need to happen when the toolbar
+// This function handles everything that need to happen when the toolbar
 // changes to UML. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossUML = false;
 function switchToolbarUML() {
     toolbarState = 2;                                                               // Change the toolbar to UML.
     switchToolbar('UML');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';                   // Change the text to UML.
-    setCheckbox($(".drop-down-option:contains('UML')"), !crossUML);                 // Turn on crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossUML.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';             // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+        crossDEV=false);                                                            // Turn off crossUML.
 }
 
 //------------------------------------------------------------------------------
 // SwitchToolbarDev:
-// This function handels everything that need to happen when the toolbar
+// This function handles everything that need to happen when the toolbar
 // changes to Dev. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossDEV = false;
@@ -1795,10 +1800,11 @@ function switchToolbarDev() {
     }
     toolbarState = 3;                                                               // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';                   // Change the text to UML.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+        crossDEV=true);                                                             // Turn on crossDEV.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
 }
 
 //------------------------------------------------------------------------------
