@@ -20,13 +20,19 @@ for (i; i < l; i++) {
 }
 
   } else if (value == "Basic") {
-    var basic = document.querySelectorAll('.group2 , .group3'),
-    i = 0,
-    l = basic.length;
-
+    var baiscAdd = document.querySelectorAll('.group1'),
+    var basicRemove = document.querySelectorAll('.group2 , .group3'),
+    i,j = 0,
+    j = basicAdd,
+    l = basicRemove.length;
 for (i; i < l; i++) {
    basic[i].style.display = 'none';
 }
+for (j; j < j; j++) {
+  basicRemove[j].style.display = 'block';
+}
+
+
 
   } else if (value == "Charts") {
     var charts = document.querySelectorAll('.group1 , .group3'),
