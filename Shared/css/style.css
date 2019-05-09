@@ -4012,8 +4012,6 @@ only screen and (max-device-width: 320px) {
   right: 2%;
 }
 
-
-
 /* The slider itself */
 .zoomSlider {
   -webkit-appearance: none;  /* Override default CSS styles */
