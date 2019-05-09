@@ -905,9 +905,7 @@ function returnedSection(data)
 	}
 
   // End of table
-  str+="<div id='group3'>";
 	str+="</table><div id='rankTable'></div>";
-  str+="</div>";
     var contribData = [];
 
 	if(data['allrowranks'].length>0){
