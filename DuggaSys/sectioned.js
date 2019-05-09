@@ -95,8 +95,8 @@ menuState
 function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-      toggleHamburger();
       bigMac();
+      toggleHamburger();
     }
   } else {
     toggleHamburger();
@@ -1375,7 +1375,6 @@ function mouseUp(e) {
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
     hamburgerChange("notAClick");
-    bigMac();
   }
 }
 
