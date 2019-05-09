@@ -19,7 +19,7 @@ for (i; i < l; i++) {
 }}
 
 function removeStatview(value){
-  console.log(value1);
+  console.log(value);
   var Remove = document.querySelectorAll(value),
     
     i = 0,
