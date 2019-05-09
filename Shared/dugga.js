@@ -523,13 +523,16 @@ function savequizResult(citstr)
 
 function changeURL(clicked_id, thisurl)
 {
-	console.log(thisurl);
+	//Simple check solution to make this function able to handle
+	//both opening a url in a new tab and still be able to handle links without id.
 	if(clicked_id != ""){
-	var link = document.getElementById(clicked_id);
-	link.href=thisurl;
-	} else{
+	  var link = document.getElementById(clicked_id);
+	  link.href=thisurl;
+	} 
+	else{
 		window.location.href = thisurl;
 	}
+
 }
 
 //----------------------------------------------------------------------------------
