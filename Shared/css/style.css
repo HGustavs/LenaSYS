@@ -3842,11 +3842,11 @@ only screen and (max-device-width: 530px) {
     height: 24px;
     border-radius: 5px;
     float: left;
-    border: 1px solid var(--color-border);
   }
 
   #searchinput, #duggaSearch {
     margin-left: 16px;
+    border: 1px solid var(--color-border);
   }
 
   .switchContent {
