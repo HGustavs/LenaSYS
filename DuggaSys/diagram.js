@@ -70,7 +70,7 @@ var origoOffsetX = 0.0;             // Canvas x topleft offset from origo
 var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = 0;            // Canvas left click state
-var canvasRightClick = 0;            // Canvas right click state
+var canvasRightClick = 0;           // Canvas right click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
@@ -914,7 +914,9 @@ diagram.checkForHover = function(posX, posY) {
     });
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != kind.path) {
         //We only want to set it to true when md is not in selectionbox mode
-        hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.insideMovableObject || uimode != "normal";
+        if(!(uimode == "MoveAround")) {
+            hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.insideMovableObject || uimode != "normal";
+        }
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
@@ -2613,23 +2615,33 @@ function mousemoveevt(ev, t) {
     reWrite();
     updateGraphics();
 
-    if(canvasRightClick == 0){
+    if(canvasRightClick == 0) {
         if (md == mouseState.empty) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance / zoomValue) {
-                //Change cursor if you are hovering over a point and its not a line
-                if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
-                    //The point belongs to a umlLine or Line
-                    canvas.style.cursor = "pointer";
-                } else {                    
-                    canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                // check so that the point we're hovering over belongs to an object that's selected
+                var pointBelongsToObject = false;
+                for (var i = 0; i < selected_objects.length; i++) {
+                    if (sel.attachedSymbol == selected_objects[i]) {
+                        pointBelongsToObject = true;
+                    }
+                }
+                // when in movearound mode or if the point doesn't belong to a selected object then don't display different pointer when hovering points
+                if (uimode != "MoveAround" && pointBelongsToObject) {
+                    //Change cursor if you are hovering over a point and its not a line
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
+                        //The point belongs to a umlLine or Line
+                        canvas.style.cursor = "pointer";
+                    } else {                    
+                        canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                    }
                 }
             } else {
-                if(uimode == "MoveAround"){
+                if(uimode == "MoveAround") {
                     canvas.style.cursor = "all-scroll";
                 } else if(hoveredObject && !hoveredObject.locked){
-                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine){
+                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
                         canvas.style.cursor = "pointer";
                     } else {
                         canvas.style.cursor = "all-scroll";
@@ -3358,7 +3370,7 @@ function movemode(e, t) {
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
-        canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+        canvas.style.cursor = "all-scroll";
         uimode = "MoveAround";
     } else {
         buttonStyle.style.visibility = 'hidden';
@@ -3367,6 +3379,7 @@ function movemode(e, t) {
         canvas.style.cursor = "default";
         uimode = "normal";
     }
+    updateGraphics();
 }
 
 function activateMovearound() {
