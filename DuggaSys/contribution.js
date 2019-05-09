@@ -20,19 +20,21 @@ for (i; i < l; i++) {
 }
 
   } else if (value == "Basic") {
-    var basicAdd = document.querySelectorAll('.group1'),
     var basicRemove = document.querySelectorAll('.group2 , .group3'),
-    i,j = 0,
-    j = basicAdd.length,
+    
+    i = 0,
     l = basicRemove.length;
+    for (j; j < j; j++) {
+      basicRemove[j].style.display = 'block';
+    }
+
+var basicAdd = document.querySelectorAll('.group1'),
+j = 0,
+j = basicAdd.length,
+
 for (i; i < l; i++) {
-   basicAdd[i].style.display = 'none';
+  basicAdd[i].style.display = 'none';
 }
-for (j; j < j; j++) {
-  basicRemove[j].style.display = 'block';
-}
-
-
 
   } else if (value == "Charts") {
     var charts = document.querySelectorAll('.group1 , .group3'),
