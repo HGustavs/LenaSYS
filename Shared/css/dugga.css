@@ -406,3 +406,19 @@ svg text {
 		display: block;
 	}
  }
+
+  /* --------------================################================-------------- *
+ *                      	        Transform Dugga				       								   *
+ * --------------================################================-------------- */
+ #transformInfoBox {
+	min-width: 300px;
+	width: 300px;
+}
+@media only screen and (max-width: 1360px) {
+ #transformInfoBox {
+	 width: 100%;
+ }
+ #transformInfoBox .loginBoxheader {
+	 width: 100%;
+ }
+}
