@@ -10,7 +10,7 @@ var showing = 1;
 var score;
 var timeUsed;
 var stepsUsed;
-var inParams = "UNK";;
+var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
@@ -256,9 +256,9 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 // navigatePage: Local function for converting static page navigation to dynamic
 //----------------------------------------------------------------------------------
 
-function navigatePage(pagename)
+function navigatePage(clicked_id, pagename)
 {
-		changeURL(pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
+		changeURL(clicked_id, pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
 }
 
 //----------------------------------------------------------------------------------
@@ -324,26 +324,30 @@ function removeYearFromDate(date){
 }
 
 //----------------------------------------------------------------------------------
-// Sets cookie that expires when there's 30 min left of session
+// cookie that after 45 minutes will let the user know (through another function) 
+// that there is 15 minutes left of session.
 //----------------------------------------------------------------------------------
 
 function setExpireCookie(){
-    if(localStorage.getItem("securityquestion") === "set") {
-        var expireDate = new Date();
-        expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));////8100000, denotes time in milliseconds
-
+    if(localStorage.getItem("securityquestion") == "set") {
+				var expireDate = new Date();
+				// a test date so you dont have to actually wait 45 minutes
+				// expireDate.setMinutes(expireDate.getMinutes() + 1);
+				expireDate.setMinutes(expireDate.getMinutes() + 45);
         document.cookie = "sessionEndTime=expireC; expires=" + expireDate.toGMTString() + "; path=/";
     }
 }
 
 //----------------------------------------------------------------------------------
-// Sets a cookie that expires at the same time as the user is logged out (when the session ends)
+// a cookie that will end the session after 1 hour
 //----------------------------------------------------------------------------------
 
 function setExpireCookieLogOut() {
-    if (localStorage.getItem("securityquestion") === "set") {
-        var expireDate = new Date();
-        expireDate.setTime(expireDate.getTime() + (1 * 2 * 9000000));
+    if (localStorage.getItem("securityquestion") == "set") {
+				var expireDate = new Date();
+				// test date
+				// expireDate.setMinutes(expireDate.getMinutes() + 2);
+				expireDate.setMinutes(expireDate.getMinutes() + 60);
         document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toGMTString() + "; path=/";
     }
 }
@@ -517,9 +521,10 @@ function savequizResult(citstr)
 // changeURL: Patch-in for changeURL from project 2014 code
 //----------------------------------------------------------------------------------
 
-function changeURL(thisurl)
+function changeURL(clicked_id, thisurl)
 {
-		window.location.href = thisurl;
+	var link = document.getElementById(clicked_id);
+	link.href=thisurl;
 }
 
 //----------------------------------------------------------------------------------
@@ -905,63 +910,13 @@ function processResetPasswordCheckSecurityAnswer() {
 }
 
 function processLogin() {
-
-    /*
-    var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-
-		$.ajax({
-			type:"POST",
-			url: "../Shared/loginlogout.php",
-			data: {
-				username: username,
-				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
-				password: password,
-				opt: "LOGIN"
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['login'] == "success") {
-					$("#userName").html(result['username']);
-					$("#loginbutton").removeClass("loggedout");
-					$("#loginbutton").addClass("loggedin");
-
-					hideLoginPopup();
-
-					$("#login #username").val("");
-					$("#login #password").val("");
-
-					$("#loginbutton").off("click");
-					console.log("Removed show login bind");
-					$("#loginbutton").click(function(){processLogout();});
-
-					location.reload();
-				}else{
-					console.log("Failed to log in.");
-					if(typeof result.reason != "undefined") {
-						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
-					}
-					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
-					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
-				}
-
-			},
-			error:function() {
-				console.log("error");
-			}
-		});
-
-    */
     var username = $("#login #username").val();
     var saveuserlogin = $("#login #saveuserlogin").val();
     var password = $("#login #password").val();
     if (saveuserlogin==1){
-          saveuserlogin = 'on';
+			saveuserlogin = 'on';
     }else{
-          saveuserlogin = 'off';
+			saveuserlogin = 'off';
     }
 
     $.ajax({
@@ -974,21 +929,19 @@ function processLogin() {
         opt: "LOGIN"
       },
       success:function(data) {
-        var result = JSON.parse(data);
+				var result = JSON.parse(data);
         if(result['login'] == "success") {
-          hideLoginPopup();
-          /*
-                    if(result['securityquestion'] != null) {
-                        localStorage.setItem("securityquestion", "set");
-                    } else {
-                        setSecurityNotifaction("on");
-                    }
-            */
+					hideLoginPopup();
+          // was commented out before which resulted in the session to never end
+					if(result['securityquestion'] != null) {
+							localStorage.setItem("securityquestion", "set");
+						} else {
+							setSecurityNotifaction("on");
+					}
+            
           setExpireCookie();
           setExpireCookieLogOut();
 
-          // Fake a second login, this will reload the page and enable chrome and firefox to save username and password
-          //$("#loginForm").submit();
           reloadPage();
         }else if(result['login'] == "limit"){
           displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
@@ -998,7 +951,6 @@ function processLogin() {
           } else {
             displayAlertText("#login #message", "Wrong username or password");
           }
-
 
           $("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
           $("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
@@ -1165,7 +1117,7 @@ function refreshUserSession(){
 					url: "../Shared/loginlogout.php",
 					data:{opt:'REFRESH'},
 					success:function(html) {
-						alert(html);
+						alert("Session is now refreshed");
 					}
 
 		 });
@@ -1176,13 +1128,12 @@ function refreshUserSession(){
 }
 
 //----------------------------------------------------------------------------------
-// Timeout function, gives a prompt if the session is about to expire
+// Timeout function, gives a prompt if the session is about to expire, which is 45 minutes
 //----------------------------------------------------------------------------------
 function sessionExpireMessage() {
 
 	if(document.cookie.indexOf('sessionEndTime=expireC') > -1){
 		var intervalId = setInterval(function() {
-		//console.log("testEMessage");
 		checkIfExpired();
 		}, 2000);
 	}
@@ -1190,7 +1141,6 @@ function sessionExpireMessage() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
-				// alert('Session is about to expire in 30 minutes');
 				$(".expiremessagebox").css("display","block");
 
 				clearInterval(intervalId);
@@ -1200,13 +1150,13 @@ function sessionExpireMessage() {
 	}
 
 //----------------------------------------------------------------------------------
-// Gives an alert when user is timed out (when the session ends)
+// Gives an alert when user is timed out, 1 hour(when the session ends)
+// check every 5 seconds
 //----------------------------------------------------------------------------------
 function sessionExpireLogOut() {
 
 	if(document.cookie.indexOf('sessionEndTimeLogOut=expireC') > -1){
 		var intervalId = setInterval(function() {
-			//console.log("testTimeout");
 			checkIfExpired();
 		}, 2000);
 	}
@@ -1214,12 +1164,10 @@ function sessionExpireLogOut() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
-			//alert('Your session has expired');
-			// When reloaded the log in icon should change from green to red
-			$(".endsessionmessagebox").css("display","block");
-			//processLogout();
-			clearInterval(intervalId);
-		}
+				$(".endsessionmessagebox").css("display","block");
+				processLogout();
+				clearInterval(intervalId);
+			}	
 
 	}
 }
@@ -1303,13 +1251,18 @@ Array.prototype.move = function (old_index, new_index) {
 };
 
 // Latest version of any file in a field - unsure about naming of the function
-function findfilevers(filez,cfield,ctype,displaystate)
+function findfilevers(filez,cfield,ctype,displaystate,group)
 {
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
 		var tab="<table class='previewTable'>";
-		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		if (group) {
+			tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+		} else {
+			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+		}
+		
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -1330,6 +1283,9 @@ function findfilevers(filez,cfield,ctype,displaystate)
                 tab +="\t<tab><a href='"+filelink+"' target='_blank'><img src='../Shared/icons/external_link_open.svg' /></a></tab>";
               }
 							tab+="</td>";
+							if (group) {
+								tab+="<td>"+filez[i].username+"</td>";
+							}
 							tab+="<td>";
               if (ctype == "link"){
                 tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";

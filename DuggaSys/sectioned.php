@@ -89,29 +89,25 @@
 
 					<td class='results menuButton' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<input type='button' value='Results' class='submit-button' title='Edit student results' onclick='navigatePage("resulted.php");' />
+							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
 						</div>
 					</td>
 					<td class='tests menuButton' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='navigatePage("duggaed.php")'/>
+							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
 						</div>
 					</td>
 					<td class='files menuButton' style='display: inline-block;'>
 						<div class='files menuButton'>
-							<input type='button' value='Files' class='submit-button' title='Show files' onclick='navigatePage("fileed.php")'/>
+						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
+
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
 						<div class='access menuButton'>
-							<input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='navigatePage("accessed.php");'/>
+						<a id='accessBTN' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
 						</div>
 					</td>
-					<!--<td class='access menuButton' style='display: inline-block;'>
-							<div class='access menuButton'>
-									<input type='button' value='Mail' class='submit-button' title='Mail' onclick='mail();'/>
-							</div>
-					</td>-->
 				</tr>
 
 			</table>
@@ -317,8 +313,8 @@
 			</div>
 			<div style='padding:5px;'>
 				<input type='hidden' id='cid' value='Toddler' />
+				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Start Date:</span><input class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input class='textinput' type='date' id='eenddate' value='' /></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>

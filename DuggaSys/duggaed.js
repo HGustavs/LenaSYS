@@ -77,7 +77,7 @@ function selectDugga(qid) {
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").html(makeoptions(quiz['autograde'],["Hidden","Yes"],[0,1]));
-	$("#gradesys").html(makeoptions(quiz['gradesystem'],["U-G-VG","U-G","U-3-4-5"],[1,2,3]));
+	$("#gradesys").html(makeoptions(quiz['gradesystem'],["U-G-VG","U-G"],[1,2,3]));
 	$("#template").html(makeoptions(quiz['quizFile'],globalData["files"],globalData["files"]));
   if(quiz['qstart']===null)quiz['qstart']="";
   $("#qstart").val(quiz['qstart'].substr(0,10));

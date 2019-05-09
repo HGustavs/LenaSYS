@@ -100,6 +100,7 @@ function clickedInternal(event, clickdobj) {
 		let regex = new RegExp("^r([0-9]+)" + DELIMITER + "([a-zA-Z0-9]+)" + DELIMITER + "(.*)")
 		let match = cellelement.id.match(regex);
 		var rowno = match[1];
+		var columnno = null;
 		var tableid = match[2];
 		var columnname = match[3]
 		var str = "";
@@ -210,6 +211,7 @@ function SortableTable(param) {
 	// Fenced paramters
 
 	var tbl = getparam(param.data, { tblhead: {}, tblbody: [], tblfoot: {} });
+	var currentRowFilter = tbl.tblbody;
 	this.tableid = getparam(param.tableElementId, "UNK");
 	var filterid = getparam(param.filterElementId, "UNK");
 	var caption = getparam(param.tableCaption, "UNK");
@@ -435,7 +437,7 @@ function SortableTable(param) {
 						}
 
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
-						if (colsumList.indexOf(columnOrder[columnOrderIdx]) > - 1) {
+						if (colsumList.indexOf(columnOrder[columnOrderIdx]) > -1) {
 							if (typeof (sumContent[columnOrder[columnOrderIdx]]) == "undefined") sumContent[columnOrder[columnOrderIdx]] = 0;
 							sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
 						}
@@ -529,7 +531,7 @@ function SortableTable(param) {
 
 		this.reRender();
 	}
-	this.setNameColumn = function (colnameArr){
+	this.setNameColumn = function (colnameArr) {
 		nameColumn = colnameArr;
 
 	}
@@ -587,6 +589,7 @@ function SortableTable(param) {
 	}
 
 	setInterval(freezePaneHandler, 30);
+
 	function freezePaneHandler() {
 		// Hide magic headings and find minimum overdraft
 		for (var i = 0; i < sortableTable.sortableTables.length; i++) {
@@ -645,6 +648,35 @@ function SortableTable(param) {
 		}
 	}
 
+	this.mail = function(cidMail, crsMail, reqType) {
+
+	 var activeFilteringUsername = [];
+	 for(var i = 0; i < currentRowFilter.length; i++)
+	 {
+		if(currentRowFilter[i] != null)
+		{
+			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
+		}
+	 }
+	$.ajax({
+		url: "resultedservice.php",
+		type: "POST",
+		data: {
+			'courseid': cidMail,
+			'coursevers': crsMail,
+			'visibleuserids': activeFilteringUsername,
+			'requestType': reqType
+		},
+		dataType: "JSON",
+		error: function(xhr, status, error) {
+			var err = eval("(" + xhr.responseText + ")");
+		},
+		success: function(data){
+			window.location.assign("mailto:?bcc=" + data);
+		}
+	});
+}
+
 	this.export = function (format, del) {
 		var str = "";
 
@@ -686,6 +718,7 @@ function SortableTable(param) {
 		return str;
 	}
 }
+
 function newCompare(firstCell, secoundCell) {
 	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
 	let status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
@@ -693,14 +726,14 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
-    if(typeof firstCell === 'object' && col.includes("FnameLnameSSN")) {
-		// "FnameLnameSSN" is comprised of three separately sortable sub-columns,
+    if(typeof firstCell === 'object' && col.includes("FnameLname")) {
+		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
-		if(col == "FnameLnameSSN"){
+		if(col == "FnameLname"){
 			col = sortableTable.currentTable.getNameColumn();
 		}
 		// now check for matching columns with the potentially replaced name
-		if(col == "Fname") {
+		if (col == "Fname") {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
 				firstCellTemp = firstCell.firstname;
@@ -712,7 +745,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.firstname)[0];
 				secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
-		} else if (col == "Lname"){
+		} else if (col == "Lname") {
 			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
 				firstCellTemp = firstCell.lastname;
 				secoundCellTemp = secoundCell.lastname;
@@ -723,17 +756,6 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.lastname)[0];
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
-		} else if (col == "SSN") {
-			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
-				firstCellTemp = firstCell.ssn;
-				secoundCellTemp = secoundCell.ssn;
-			} else {
-				firstCell = JSON.parse(firstCell.ssn);
-				secoundCell = JSON.parse(secoundCell.ssn);
-				//Get the first letter from the value.
-				firstCellTemp = Object.values(firstCell.ssn)[0];
-				secoundCellTemp = Object.values(secoundCell.ssn)[0];
-			}
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
@@ -742,8 +764,8 @@ function newCompare(firstCell, secoundCell) {
 		} else {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
-	   //Check if the cell is a valid cell in the table.
-	}else if (typeof firstCell === 'object' && col.includes("lid")){
+		//Check if the cell is a valid cell in the table.
+	} else if (typeof firstCell === 'object' && col.includes("lid")) {
 		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
 			firstCellTemp = firstCell.grade;
 			secoundCellTemp = secoundCell.grade;
@@ -758,7 +780,7 @@ function newCompare(firstCell, secoundCell) {
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 		if (status == 1) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-		} else if(status == 2 || status == 3) {
+		} else if (status == 2 || status == 3) {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
 	} else if (colOrder.includes(col)) {
