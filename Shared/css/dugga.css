@@ -421,20 +421,23 @@ svg text {
  #transformInfoBox .loginBoxheader {
 	 width: 100%;
  }
+ .transformContainer {
+	 flex-wrap: wrap;
+ }
 }
 
   /* --------------================################================-------------- *
  *                      	     Clipping Masking Dugga				       							 *
  * --------------================################================-------------- */
 #clippingInfoBox {
-min-width:170px;
-width:300px;
-margin:0 4px 0 4px;
+	min-width:170px;
+	width:300px;
+	margin:0 4px 0 4px;
 }
 #clippingInfoBox2 {
-min-width:120px;
-width:300px;
-margin:0 4px 0 4px;
+	min-width:120px;
+	width:300px;
+	margin:0 4px 0 4px;
 }
  @media only screen and (max-width: 1360px) {
 	#clippingInfoBox {
