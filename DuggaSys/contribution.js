@@ -20,9 +20,9 @@ for (i; i < l; i++) {
 
 }}
 
-function removeStatview(value){
+function removeStatview(){
   console.log(Remove);
-  var Remove = document.querySelectorAll(value),
+  var Remove = document.querySelectorAll(' .group2 , .group3'),
 
     i = 0,
     i = Remove.length;
@@ -37,7 +37,7 @@ function statSort(value) {
     restoreStatView();
 
   } else if (value == "Basic") {
-    removeStatview('.group2 , .group3');
+    removeStatview();
     console.log("test")
 
 
