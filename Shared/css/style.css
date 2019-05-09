@@ -1444,7 +1444,7 @@ input {
 
 .drop-down-item:hover,
 .export-drop-down-item:hover {
-  background-color: rgb(240, 240, 240);
+  background-color: var(--color-border-3);
   cursor: pointer;
 }
 
@@ -1459,7 +1459,7 @@ input {
 }
 
 .drop-down-text:hover {
-  background-color: rgb(240, 240, 240);
+  background-color: var(--color-border-3);
   cursor: default ;
 }
 
@@ -1536,7 +1536,7 @@ input {
   color: #555;
   background-color: var(--color-background);
   background-image: none;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-2);
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
@@ -1552,7 +1552,7 @@ input {
   color: #202020;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-border-2);
   border-radius: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1612,7 +1612,7 @@ button.option {
 }
 
 input.submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 110px;
@@ -1626,7 +1626,7 @@ input.submit-button {
 }
 
 div.submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 30px;
@@ -1645,7 +1645,7 @@ div.submit-button {
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  background-color: rgb(253, 203, 96);
+  background-color: var(--color-accent);
   border: 0px;
   width: 35px;
   height: 25px;
@@ -1706,13 +1706,13 @@ button.diagram-menu-buttons {
 }
 
 button.diagram-menu-buttons:hover {
-  background-color: #ffcc55;
+  background-color: var(--color-accent-hover);
   border-radius: 2px;
 }
 
 input.hide-moments-button {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: rgb(253, 203, 96);
+  background-color: var(--color-accent);
   border: 0px;
   width: 77px;
   height: 25px;
@@ -1729,7 +1729,7 @@ input.hide-moments-button {
 }
 
 input.fileed-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   margin: 0 0 4px 8px;
   float: right;
 }
@@ -1744,7 +1744,7 @@ div.submit-button:hover {
 }
 
 input.fileed-button:hover {
-  background-color: #91859b;
+  background-color: var(--color-primary);
 }
 
 input.submit-button:disabled {
@@ -1839,7 +1839,7 @@ div.submit-button:disabled {
 }
 
 .unpressed {
-  background: #614875;
+  background: var(--color-primary);
 }
 
 .pressed, .pressed:hover {
@@ -1953,7 +1953,7 @@ div.submit-button:disabled {
   padding: 5px;
   padding-right: 10px;
   color: white;
-  background-color: #614875;
+  background-color: var(--color-primary);
   display: inline-block;
   cursor: pointer;
 }
@@ -1978,7 +1978,7 @@ div.submit-button:disabled {
   margin-bottom: 10px;
   margin-top: -1;
   color: white;
-  background-color: #614875;
+  background-color: var(--color-primary);
   cursor: pointer;
   border: none;
   border-radius: 0;
@@ -1988,54 +1988,54 @@ div.submit-button:disabled {
 .list {
   width: 100%;
   padding: 1px;
-  border-bottom: 2px solid #dbd0d8;
+  border-bottom: 2px solid var(--color-border-list);
   margin-top: 20px;
   font-size: 16px;
 }
 
 .listHeading {
-  border-left: 2px solid #614875;
-  border-right: 2px solid #614875;
+  border-left: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
 }
 
 .innertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 2px 3px 2px #a09098 inset;
-  border-top: 2px solid #dbd0d8;
-  border-bottom: 2px solid #dbd0d8;
+  border-top: 2px solid var(--color-border-list);
+  border-bottom: 2px solid var(--color-border-list);
 }
 
 
 .innertable td {
-  color: #000;
+  color: var(--color-text-list);
   line-height: 28px;
   border: none;
   text-align: left;
 }
 
 .list td {
-  border-left: 2px solid #dbd0d8;
-  border-right: 2px solid #dbd0d8;
+  border-left: 2px solid var(--color-border-list);
+  border-right: 2px solid var(--color-border-list);
   padding: 0 8px 0 8px;
 }
 
 .list th {
-  background: #614875;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   line-height: 28px;
   font-weight: bold;
   padding: 5px;
 }
-/*
+
 .innertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 2px 3px 2px #a09098 inset;
-  border-top: 2px solid #dbd0d8;
-  border-bottom: 2px solid #dbd0d8;
+  border-top: 2px solid var(--color-border-list);
+  border-bottom: 2px solid var(--color-border-list);
 }
-*/
+
 .innertable td {
-  color: #000;
+  color: var(--color-text-list);
   line-height: 28px;
   border: none;
 }
@@ -2135,20 +2135,20 @@ div.submit-button:disabled {
 }
 
 .list tbody tr:nth-child(odd) {
-  background-color: #ccc;
+  background-color: var(--color-background-2);
 }
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {
-  background-color: #eae8eb;
+  background-color: var(--color-sectioned-table-lo);
 }
 
 .evenfumo {
-  background: #ccc !important;
+  background: var(--color-background-2) !important;
 }
 
 .oddfumo {
-  background: #eae8eb !important;
+  background: var(--color-sectioned-table-lo) !important;
 }
 
 .selectedtr {
@@ -2156,7 +2156,7 @@ div.submit-button:disabled {
 }
 
 #testinnertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: none;
   border-top: none;
   border-bottom: none;
@@ -2183,7 +2183,7 @@ span.arrow {
 }
 
 #testinnertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: none;
   border-top: none;
   border-bottom: none;
@@ -2192,27 +2192,27 @@ span.arrow {
 .markinglist {
   width: 100%;
   padding: 1px;
-  border-left: 2px solid #dbd0d8;
-  border-bottom: 2px solid #dbd0d8;
+  border-left: 2px solid var(--color-border-list);
+  border-bottom: 2px solid var(--color-border-list);
   font-family: hack, "Lucida Console", Monaco, monospace;
 }
 
 .markinglist td {
-  border-right: 2px solid #dbd0d8;
+  border-right: 2px solid var(--color-border-list);
   font-size: 10px;
 }
 
 .markinglist th {
-  background: #614875;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   font-style: italic;
   font-size: 12px;
   white-space: nowrap;
 }
 
 .feedback-list caption {
-  border-left: 2px solid #dbd0d8;
-  background: #614875;
+  border-left: 2px solid var(--color-border-list);
+  background: var(--color-primary);
   color: #fff;
   line-height: 28px;
 }
@@ -2282,7 +2282,7 @@ span.arrow {
 /* Course version dropdown div */
 
 .course-dropdown-div {
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-2);
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
   overflow: hidden;
@@ -2318,8 +2318,8 @@ span.arrow {
 /**************************/
 
 #tableheader {
-  background: #614875;
-  color: #FFFFFF;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   margin-top: 10px;
   float: left;
   width: calc(100% - 200px);
@@ -2409,7 +2409,7 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 0px;
+	border: 2px solid #dbd0d8;
 }
 
 .accessTableText {
@@ -2507,7 +2507,7 @@ span.arrow {
 }
 
 .submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   width: 110px;
   height: 30px;
@@ -2587,7 +2587,7 @@ span.arrow {
 .loginTransparent {
   display: block;
   height: 60px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   text-align: left;
 }
 
@@ -2608,18 +2608,18 @@ span.arrow {
 }
 
 .pane {
-  border-top: 2px solid #614875;
-  border-left: 2px solid #614875;
-  border-right: 2px solid #614875;
+  border-top: 2px solid var(--color-primary);
+  border-left: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
   display: inline-block;
   padding: 5px 15px 5px 15px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  color: #000000;
+  color: var(--color-text-list);
 }
 
 .pane-active {
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: #FFFFFF;
 }
 
@@ -2629,7 +2629,7 @@ span.arrow {
 }
 
 .pane-body {
-  border: 2px solid #614875;
+  border: 2px solid var(--color-primary);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -2644,8 +2644,8 @@ span.arrow {
   right:50px;
   font-size:24px;
   text-align:center;
-  background-color:#fecc56;
-  color:#614875;
+  background-color: var(--color-accent);
+  color: var(--color-primary);
   z-index:4000;
   border:0;
   outline: none;
@@ -2792,7 +2792,7 @@ span.arrow {
 }
 
 .checkmoment {
-  border-top: 1px solid #888;
+  border-top: 1px solid var(--color-border-5);
   font-weight: bold;
 }
 
@@ -2806,7 +2806,7 @@ span.arrow {
 }
 
 .accessedLine {
-  border-top: 1px solid #888;
+  border-top: 1px solid var(--color-border-5);
   font-weight: bold;
 }
 
@@ -2816,8 +2816,8 @@ span.arrow {
 }
 
 .checknarrow {
-  max-width: 180px ;
-  min-width: 100px ;
+  max-width: 140px ;
+  min-width: 140px ;
 }
 
 .grading-hidden {
@@ -2825,7 +2825,7 @@ span.arrow {
 }
 
 .headerlabel {
-  color: black;
+  color: var(--color-text-label);
   font-size: 16px;
   direction: rtl;
   max-width: 140px;
@@ -2850,8 +2850,8 @@ span.arrow {
 }
 
 .result-header-inverse {
-  background-color: rgb(255, 204, 85) !important;
-  color: #614875 !important;
+  background-color: var(--color-accent) !important;
+  color: var(--color-primary) !important;
 }
 
 .dropdown-container {
@@ -2867,7 +2867,7 @@ span.arrow {
   display: none;
   position: absolute;
   top: 35px;
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
 }
 
@@ -2898,7 +2898,7 @@ span.arrow {
 }
 
 .vhighlight-border-color {
-  border: 4px solid #614875 !important;
+  border: 4px solid var(--color-primary) !important;
   box-shadow: 0px 0px 4px #202 inset;
 }
 
