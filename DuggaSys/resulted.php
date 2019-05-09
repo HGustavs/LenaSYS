@@ -85,7 +85,7 @@ pdoConnect();
 				</select>
 			</div>
 
-			<div id='searchBar' class='mobileSearch' style='test-align:right;margin-bottom:15px;'>
+			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
 				<div class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
 								<b>Keywords:</b> markG, markU, date <br>

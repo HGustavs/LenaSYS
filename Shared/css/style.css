@@ -3148,10 +3148,6 @@ rect[class*="activitymarker"]:hover {
 
 /* styling for the search bars in resulted, accessed, duggaed, filed */
 
-.headerSearch {
-  display: block;
-}
-
 #searchBar, #testSearchContainer {
   padding-left: 20px;
 }
@@ -3828,22 +3824,22 @@ only screen and (max-device-width: 530px) {
   }
 
   /* Mobile view resulted filter / search */
-  .mobileSearch {
+  #searchBarMobile {
     display:block;
   }
 
-  .headerSearch {
+  #searchBar {
     display: none;
   }
 
-  #searchBar, #searchbutton {
+  #searchBarMobile, #searchbutton {
     width: 24px;
     height: 22px;
     margin-top: 10px;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
   }
 
-  #searchBar, #testSearchContainer {
+  #searchBarMobile, #testSearchContainer {
     padding-left: 8px;
     display: inline-flex;
     height: 24px;
