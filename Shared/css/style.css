@@ -2109,6 +2109,7 @@ input.large-button {
   top: 50%;
   transform: translateY(-50%);
   size: 5;
+  border-bottom: 2px solid #008000;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
