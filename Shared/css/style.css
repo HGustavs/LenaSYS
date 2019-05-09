@@ -220,7 +220,7 @@ p {
 }
 
 #content {
-  background: #fff;
+  background: var(--color-background);
   min-height: calc(100vh - 80px);
   margin: 65px 10px 15px 10px;
 }
@@ -234,7 +234,7 @@ p {
   margin: 0px auto;
   position: relative;
   padding: 10px 10px 10px 10px;
-  background: #fff;
+  background: var(--color-background);
   min-height: 200px;
 }
 
@@ -242,21 +242,21 @@ p {
   margin: 0px auto;
   position: relative;
   padding: 50px 12px 8px 8px;
-  background: #fff;
+  background: var(--color-background);
   min-height: 50px;
 }
 
 #wrappall {
   margin: 0px auto;
   width: 80%;
-  border: 8px solid #ccc;
+  border: 8px solid var(--color-border-2);
 }
 
 .lena {
   border-radius: 6px 0px 0px 6px;
-  color: #FFF;
-  background-color: #775886;
-  background: linear-gradient(to bottom, #775886, #573866);
+  color: var(--color-text-logo);
+  background-color: var(--color-logo-backbround);
+  background: linear-gradient(to bottom, var(--color-logo1), var(--color-logo2));
   padding-left: 6px;
   padding-right: 6px;
   padding-top: 2px;
@@ -266,9 +266,9 @@ p {
 
 .sys {
   border-radius: 6px;
-  color: #775886;
-  border: 2px solid #775886;
-  background-color: #fff;
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-logo-backbround);
+  background-color: var(--color-background);
   padding-right: 4px;
   margin-right: 4px;
   text-decoration: none;
@@ -276,8 +276,8 @@ p {
 
 #Courselist {
   margin: 0px auto;
-  background-color: #fff;
-  color: #434343;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
 }
