@@ -3878,17 +3878,19 @@ only screen and (max-device-width: 320px) {
 }
 
 /* Is used to style a Select-box in diagram.php. */
-
 #selectDiv {
   display: flex;
   align-items: center;
+  padding-right: 50px;
+  padding-left: 10px;
   background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;
   height: 34px;
+  width: 230px;
   position: absolute;
-  right: 16px;
-  bottom: 19px;
+  right: 14px;
+  bottom: 11px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3896,8 +3898,7 @@ only screen and (max-device-width: 320px) {
 
 #selectDiv select {
   height: 34px;
-  padding-left: 10px;
-  padding-right: 40px;
+  padding-left: 50px;
   font-size: 14px;
   border: 0;
   -webkit-appearance: none;
@@ -3918,36 +3919,6 @@ only screen and (max-device-width: 320px) {
   padding: 0;
 }
 
-.tooltipDecrease{
-  display: flex;
-  justify-content: center;
-}
-
-.tooltipDecrease button{
-  background-color: #614875;
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 100%;
-}
-
-.tooltipDecrease .tooltiptextDec{
-  visibility: hidden;
-  width: 60px;
-  font-size: 12px;
-  background-color: #614875;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-  bottom: 100%;
-  left: -2%;
-}
-
 .zoomButtonStyle {
   transition: 0.25s background-color;
 }
@@ -3956,28 +3927,14 @@ only screen and (max-device-width: 320px) {
   background-color: #7B5A96;
 }
 
-#zoomDecrease:hover + .tooltiptextDec{
-  visibility: visible;
-}
-#range{
-  justify-content: center;
-  margin-top: 1%;
-}
-
-.tooltipIncrease{
-  display: flex;
-  justify-content:center;
-}
-
-.tooltipIncrease button{
+.tooltipDecrease button {
   background-color: #614875;
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 100%;
 }
 
-.tooltipIncrease .tooltiptextInc{
+.tooltipDecrease .tooltiptextDec {
   visibility: hidden;
   width: 60px;
   font-size: 12px;
@@ -3991,20 +3948,52 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  right: 21%;
+  left: -20px;
+}
+
+#zoomDecrease:hover + .tooltiptextDec {
+  visibility: visible;
+}
+
+#range {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.tooltipIncrease button {
+  background-color: #614875;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tooltipIncrease .tooltiptextInc {
+  visibility: hidden;
+  width: 60px;
+  font-size: 12px;
+  background-color: #614875;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
 }
 
 #zoomIncrease:hover + .tooltiptextInc{
   visibility: visible;
 }
 
-#zoomV{
+#zoomV {
   position: absolute;
-  display: inline-block;
+  width: 70px;
   font-size: 12px;
-  bottom: 2%;
-  right: 2%;
+  right: 3%;
 }
+
 
 /* The slider itself */
 .zoomSlider {
@@ -4046,25 +4035,6 @@ only screen and (max-device-width: 320px) {
   border-radius: 50%;
   background: var(--color-primary); /* Purple background */
   cursor: pointer; /* Cursor on hover */
-}
-
-/* Used to rotate the picture that is used as a arrow */
-
-@keyframes roteraPil {
-  0% {
-    -ms-transform: rotate(0deg);
-    /* IE 9 */
-    -webkit-transform: rotate(0deg);
-    /* Chrome, Safari, Opera */
-    transform: rotate(0deg);
-  }
-  100% {
-    -ms-transform: rotate(180deg);
-    /* IE 9 */
-    -webkit-transform: rotate(180deg);
-    /* Chrome, Safari, Opera */
-    transform: rotate(180deg);
-  }
 }
 
 /* Style for the div that presents the coordinants and zoomvalue in diagram */
