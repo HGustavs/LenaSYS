@@ -322,15 +322,14 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-              <span class="tooltipDecrease" style="position: static;">
+              <span class="tooltipDecrease">
                 <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1);"> - </button>
                 <span class="tooltiptextDec">Zoom Out</span>
               </span>
-              <span id="range" style="padding-right: 8px;">
+              <span id="range">
                 <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.01" class="zoomSlider">
               </span>
-
-              <span class="tooltipIncrease" style="position: static;">
+              <span class="tooltipIncrease">
                 <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1);"> + </button>
                 <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
               </span>
