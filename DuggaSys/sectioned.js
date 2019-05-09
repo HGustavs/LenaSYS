@@ -95,7 +95,6 @@ menuState
 function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-      alert("hamburgerChange !=click");
       toggleHamburger();
     }
   } else {
@@ -1372,9 +1371,8 @@ function mouseUp(e) {
     closeWindows();
     closeSelect();
     showSaveButton();
-    hamburgerChange("notAClick");
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
-    hamburgerChange("click");
+    hamburgerChange("notAClick");
    // closeWindows();
     //closeSelect();
     //showSaveButton();
