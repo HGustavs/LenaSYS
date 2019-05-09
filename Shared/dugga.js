@@ -527,17 +527,15 @@ function changeURL(clicked_id, thisurl)
 	link.href=thisurl;
 }
 
-function changeURL(clicked_id, thisurl)
-{
-	var link = document.getElementById(clicked_id);
+//----------------------------------------------------------------------------------
+// changeURL: Patch-in for changeURL from project 2014 code
+//----------------------------------------------------------------------------------
 
-	if(link != null){
-		link.href=thisurl;
-	}
-	else{
-		window.location.href = thisurl;
-	}
+function changeCourseVersURL(thisurl)
+{
+  window.location.href = thisurl;
 }
+
 
 //----------------------------------------------------------------------------------
 // navigateExample: Upscale variant of changeURL - navigate to certain Example
