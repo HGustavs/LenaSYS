@@ -3822,8 +3822,8 @@ only screen and (max-device-width: 530px) {
   }
 
   /* Mobile view resulted filter / search */
-  #searchBarMobile {
-    display:block;
+  #searchBarMobile, #tooltip-mobile {
+    display: block;
   }
 
   #searchBar, .tooltip-searchbar {
