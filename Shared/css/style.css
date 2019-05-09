@@ -4085,8 +4085,8 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 19px;
-  left: 84px;
+  bottom: 11px;
+  left: 65px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
