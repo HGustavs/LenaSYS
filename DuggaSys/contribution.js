@@ -17,12 +17,12 @@ function statSort(value) {
     document.getElementById("contribTsTable").style.display = "block";
 
   } else if (value == "Basic") {
-    var groupremove = document.querySelectorAll('.group2' + '.group3'),
+    var basic = document.querySelectorAll('.group2 , group3'),
     i = 0,
-    l = groupremove.length;
+    l = basic.length;
 
 for (i; i < l; i++) {
-   groupremove[i].style.display = 'none';
+   basic[i].style.display = 'none';
 }
 
   } else if (value == "Charts") {
