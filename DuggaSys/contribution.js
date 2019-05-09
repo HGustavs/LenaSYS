@@ -20,13 +20,13 @@ for (i; i < l; i++) {
 }
 
   } else if (value == "Basic") {
-    var baiscAdd = document.querySelectorAll('.group1'),
+    var basicAdd = document.querySelectorAll('.group1'),
     var basicRemove = document.querySelectorAll('.group2 , .group3'),
     i,j = 0,
-    j = basicAdd,
+    j = basicAdd.length,
     l = basicRemove.length;
 for (i; i < l; i++) {
-   basic[i].style.display = 'none';
+   basicAdd[i].style.display = 'none';
 }
 for (j; j < j; j++) {
   basicRemove[j].style.display = 'block';
