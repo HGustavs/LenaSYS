@@ -115,6 +115,7 @@ function toggleHamburger() {
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline) {
 
+  // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
@@ -364,15 +365,12 @@ function deleteItem(item_lid = null) {
 function updateItem() {
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
-  // $("#sectionConfirmBox").css("display", "none");
-  // $("#editSection").css("display", "none");
+  $("#sectionConfirmBox").css("display", "none");
+  $("#editSection").css("display", "none");
 }
 
 function updateDeadline(){
   AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
-
-  $("#sectionConfirmBox").css("display", "none");
-  $("#editSection").css("display", "none");
 }
 
 //----------------------------------------------------------------------------------
