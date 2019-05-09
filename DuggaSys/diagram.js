@@ -541,7 +541,6 @@ function fillCloneArray() {
 // Keeps track of if the CTRL or CMD key is active or not
 //--------------------------------------------------------------------
 
-// Not used yet
 window.onkeyup = function(event) {
     if(event.which == ctrlKey || event.which == windowsKey) {
         ctrlIsClicked = false;
@@ -557,13 +556,13 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if(key == leftArrow) { //left
+    if(key == leftArrow) {
         xNew = -5;
-    }else if(key == upArrow) { //up
+    }else if(key == upArrow) {
         yNew = -5;
-    }else if(key == rightArrow) { //right
+    }else if(key == rightArrow) {
         xNew = 5;
-    }else if(key == downArrow) { //down
+    }else if(key == downArrow) {
         yNew = 5;
     }
     for(var i = 0; i < selected_objects.length; i++) {
