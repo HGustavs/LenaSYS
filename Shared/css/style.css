@@ -2974,13 +2974,18 @@ span.arrow {
   z-index: 10;
   text-overflow: ellipsis;
 }
-.iconDropdown-content .iconDropdown-content-showmore{
+.iconDropdown-content-showmore{
   display: none;
   position: absolute;
+
 }
-.iconDropdown:hover .iconDropdown-content {
+.iconDropdown-notification-content{
+display: none;
+}
+.iconDropdown:hover .iconDropdown-notification-content {
   display: block;
 }
+
 
 .iconDropdown:focus .iconDropdown-content {
   display: block;
@@ -3081,7 +3086,7 @@ table {
 #activityInfoBox {
   display: none;
   position: absolute;
-  max-height: 400px;  
+  max-height: 400px;
   grid-auto-flow: column;
   grid-template-rows: repeat(5, auto);
   grid-row-start: auto;
@@ -3522,8 +3527,8 @@ only screen and (min-device-width: 1085px) {
     position: fixed;
     top: 3px;
     left: 100px;
-    z-index: 5001; 
-  } 
+    z-index: 5001;
+  }
 }
 
 @media only screen and (max-width: 1085px),
@@ -3598,8 +3603,8 @@ only screen and (max-device-width: 768px) {
     position: static;
     top: 66px;
     left: 0px;
-    z-index: 5001; 
-  } 
+    z-index: 5001;
+  }
 
   #cookiemsg {
     background-color: var(--color-accent);
@@ -3795,7 +3800,7 @@ only screen and (max-device-width: 790px) {
 
 @media only screen and (max-width: 670px),
 only screen and (max-device-width: 670px) {
-  table.navheader td.results, 
+  table.navheader td.results,
   table.navheader td.tests {
     margin-right: 0px;
     width: 0px;
@@ -3803,7 +3808,7 @@ only screen and (max-device-width: 670px) {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
-  table.navheader div.results, 
+  table.navheader div.results,
   table.navheader div.tests {
     pointer-events: none;
     opacity: 0;
@@ -3811,7 +3816,7 @@ only screen and (max-device-width: 670px) {
     -moz-transition: opacity 0.5s;
     -o-transition: opacity 0.5s, ;
   }
-  ul.hamburgerList li.results, 
+  ul.hamburgerList li.results,
   ul.hamburgerList li.tests {
     pointer-events: auto;
     display: block;

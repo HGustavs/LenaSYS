@@ -392,7 +392,7 @@ function renderCircleDiagram(data, day)
   str+="<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
   if (day) {
     str+="value="+today+" ";
-  } 
+  }
   str+="onchange='changeDay(this.value)' />";
   str+="<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
   if (day) {
@@ -644,7 +644,7 @@ function createTimeSheetTable(data)
 
 	myTable.renderTable();
 }
-function renderCell(col,celldata,cellid) 
+function renderCell(col,celldata,cellid)
 {
   var str="UNK";
   obj = celldata;
@@ -658,7 +658,7 @@ function renderCell(col,celldata,cellid)
   }
   return str;
 }
-function renderSortOptions(col,status,colname) 
+function renderSortOptions(col,status,colname)
 {
 	str = "";
 	if (status == -1) {
@@ -805,23 +805,21 @@ function returnedSection(data)
 
 			if(week.issues.length>0||week.comments.length>0||week.events.length>0){
 						str+="<div class='contrib'>";
-					//	str+="<div class='contribcontent'>";
+					  //str+="<div class='contribcontent'>";
 
             //Comment button
             str+="<div class='contributionIcons'>";
-            str+="<div class='iconDropdown'>";
-            str+="\t<tab><img src='../Shared/icons/Comment_Icon.svg' onclick='showMoreContent(this)' id='commentIconW"+week.weekno+"' class='commentIcon';></tab>";
+            str+="<div id='commentIcon' class='iconDropdown'>";
+            str+="\t<tab><img src='../Shared/icons/Comment_Icon.svg' onclick='showMoreContent(this)' id='commentIconW"+week.weekno+"' class='commentIcon ' ></tab>";
             str+="<span class='badge'>"+week.comments.length+"</span>";
-            str+="<div id='commentDropdownW"+week.weekno+"' class='iconDropdown-content'>";
+            str+="<div id='commentDropdownW"+week.weekno+"' class=' iconDropdown-notification-content'>";
+            str+="<div id='commentDropdownShowMoreW"+week.weekno+"' class='iconDropdown-content-showmore iconDropdown-content'></div>";
             if(week.comments.length>0){
-                str+="<div class='createissue'>Made "+week.comments.length+" comment(s).</div>";
-                str+="<span>Click to see more.</span>";
-                str+="<div id='commentDropdownShowMoreW'"+week.weekno+"' class='iconDropdown-content-showmore'></div>";
+                str+="<div id='commentHoverContentW"+week.weekno+"' class='iconDropdown-notification-content iconDropdown-content'>Made "+week.comments.length+" comment(s).</br>Click to see more..</div>";
             }
             else{
-              str+="<div class='createissue'>No comments this week.</div>";
+              str+="<div id='noContent' class='iconDropdown-content-showmore iconDropdown-content'>No comments this week.</div>";
             }
-
             str+="</div>";
             str+="</div>";
           }
@@ -836,18 +834,13 @@ function returnedSection(data)
             str+="<div class='iconDropdown'>";
             str+="\t<tab><img src='../Shared/icons/Event_Icon.svg' onclick='showMoreContent(this)' id='eventIconW"+week.weekno+"' class='eventIcon';></tab>"
             str+="<span class='badge'>"+totalAmountEvents+"</span>";
-            str+="<div id='eventDropdownW"+week.weekno+"' class='iconDropdown-content'>";
+            str+="<div id='eventDropdownW"+week.weekno+"' class='iconDropdown-notification-content'>";
+            str+="<div id='eventDropdownShowMoreW"+week.weekno+"' class='iconDropdown-content-showmore iconDropdown-content'></div>";
             if(totalAmountEvents>0){
-              str+="<div class='createissue'>Performed "+totalAmountEvents+" event(s).</div>";
-              str+="<span>Click to see more.</span>";
-              str+="<div id='eventDropdownShowMoreW"+week.weekno+"' class='iconDropdown-content-showmore'></div>";
+              str+="<div id='eventHoverContentW"+week.weekno+"' class='iconDropdown-notification-content iconDropdown-content'>Performed "+totalAmountEvents+" event(s).</br>Click to see more..</div>";
             }
-              // for(var j=0;j<week.events.length;j++){
-              //     var eve=week.events[j];
-              //     str+="<div class='contentissue'>"+eve.kind+" "+eve.cnt+"</div>";
-              // }
             else{
-              str+="<div class='createissue'>No events this week.</div>";
+              str+="<div id='noContent' class='createissue'>No events this week.</div>";
             }
             str+="</div>";
             str+="</div>";
@@ -856,20 +849,13 @@ function returnedSection(data)
             str+="<div class='iconDropdown'>";
             str+="\t<tab><img src='../Shared/icons/Issue_Icon.svg' onclick='showMoreContent(this);' id='issueIconW"+week.weekno+"' class='issueIcon';></tab>"
             str+="<span class='badge'>"+week.issues.length+"</span>";
-            str+="<div id='issueDropdownW"+week.weekno+"' class='iconDropdown-content'>";
+            str+="<div id='issueDropdownW"+week.weekno+"' class='iconDropdown-notification-content'>";
+            str+="<div id='issueDropdownShowMoreW"+week.weekno+"' class='iconDropdown-content-showmore iconDropdown-content'></div>";
             if(week.issues.length>0){
-                str+="<div class='createissue'>Created "+week.issues.length+" issue(s).</div>";
-                str+="<span>Click to see more.</span>";
-                str+="<div id='issueDropdownShowMoreW"+week.weekno+"' class='iconDropdown-content-showmore'></div>";
-                // for(j=0;j<week.issues.length;j++){
-                //     var issue=week.issues[j];
-                //     var issuestr=issue.issueno+" "+issue.title;
-                //     str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/"+issue.issueno.substr(1)+"'>"+issuestr+"</a></div>";
-                // }
-
+                str+="<div id='issueHoverContentW"+week.weekno+"' class='iconDropdown-notification-content iconDropdown-content'>Created "+week.issues.length+" issue(s).</br>Click to see more..</div>";
             }
             else{
-              str+="<div class='createissue'>No issues this week.</div>";
+              str+="<div id='noContent' class='createissue'>No issues this week.</div>";
             }
             str+="</div>";
             str+="</div>";
@@ -878,19 +864,13 @@ function returnedSection(data)
             str+="<div class='iconDropdown'>";
             str+="\t<tab><img src='../Shared/icons/Commit_Icon.svg' onclick='showMoreContent(this)' id='commitIconW"+week.weekno+"' class='commitIcon';></tab>"
             str+="<span class='badge'>"+week.commits.length+"</span>";
-            str+="<div id='commitDropdownW"+week.weekno+"' class='iconDropdown-content'>";
+            str+="<div id='commitDropdownW"+week.weekno+"' class='iconDropdown-notification-content'>";
+            str+="<div id='commitDropdownShowMoreW"+week.weekno+"' class='iconDropdown-content-showmore iconDropdown-content'></div>";
             if(week.commits.length>0){
-                str+="<div class='createissue'>Made "+week.commits.length+" commit(s).</div>";
-                str+="<span>Click to see more.</span>";
-                str+="<div id='commitDropdownShowMoreW"+week.weekno+"' class='iconDropdown-content-showmore'></div>";
-                // for(j=0;j<week.commits.length;j++){
-                //     var message=week.commits[j].message;
-                //     var hash=week.commits[j].cid;
-                //     str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/commit/"+hash+"'>"+message+"</a></div>";
-                // }
+                str+="<div id='commitHoverContentW"+week.weekno+"' class='iconDropdown-notification-content iconDropdown-content'>Made "+week.commits.length+" commit(s).</br>Click to see more..</div>";
             }
             else{
-              str+="<div class='createissue'>No commits this week.</div>";
+              str+="<div id='noContent' class='iconDropdown-notification-content iconDropdown-content'>No commits this week.</div>";
             }
             str+="</div>";
             str+="</div>";
@@ -1006,51 +986,104 @@ function displayComments(week){
   }
 }
 
-
+//shows more content when a GitHub Contribution icon is clicked
 function showMoreContent(element){
-  var p = element.parentElement;
-  var p2 = p.parentElement;
-  var c = p2.lastChild;
-
-
+  var clickedElement = element.parentElement.parentElement.lastChild.firstChild;
   var weekNr = element.id[element.id.length -1];
   var week = retdata.weeks[weekNr-1];
   var str = '';
-  if(week.weekno == weekNr){
+
+
+  if(week.weekno == weekNr){ //Checks that the clicked icon is on the right week row. 
     if(element.id == "commentIconW"+weekNr){
-      c.classList.toggle("iconDropdown-show");
-        if(week.comments.length>0){
-            for(j=0;j<week.comments.length;j++){
-                var comment=week.comments[j];
-                var issuestr=comment.issueno+" "+comment.content;
-                str+="<p><a href='https://github.com/HGustavs/LenaSYS/issues/"+comment.issueno.substr(1)+"'>"+issuestr+"</a></p>";
+      var contributionListDiv = document.getElementById('commentDropdownShowMoreW'+weekNr);
+      var contributionHoverDiv = document.getElementById('commentHoverContentW'+weekNr);
+      clickedElement.classList.toggle("iconDropdown-show");
+
+      //checks if the showmore block is toggled or not.
+      if(!contributionListDiv.classList.contains("iconDropdown-show")){
+        contributionHoverDiv.style.display = "block";
+        contributionListDiv.style.display = "none";
+      }else{
+        contributionHoverDiv.style.display = "none";
+        contributionListDiv.style.display = "block";
+          if(week.comments.length>0){
+            if(!contributionListDiv.firstChild){//checks that no child elements exists.
+              for(j=0;j<week.comments.length;j++){
+                  var comment=week.comments[j];
+                  var issuestr=comment.issueno+" "+comment.content;
+                  str+="<p><a href='https://github.com/HGustavs/LenaSYS/issues/"+comment.issueno.substr(1)+"'>"+issuestr+"</a></p>";
+              }
+              document.getElementById('commentDropdownShowMoreW'+weekNr).innerHTML = str;
+            }
+          }
+      }
+
+      }else if(element.id == "eventIconW"+weekNr){
+        var contributionListDiv = document.getElementById('eventDropdownShowMoreW'+weekNr);
+        var contributionHoverDiv = document.getElementById('eventHoverContentW'+weekNr);
+        console.log(contributionHoverDiv);
+        clickedElement.classList.toggle("iconDropdown-show");
+        if(!contributionListDiv.classList.contains("iconDropdown-show")){
+          contributionHoverDiv.style.display = "block";
+          contributionListDiv.style.display = "none";
+        }else{
+          contributionHoverDiv.style.display = "none";
+          contributionListDiv.style.display = "block";
+            if(week.events.length>0){
+              if(!contributionListDiv.firstChild){
+                  for(var i=0;i<week.events.length;i++){
+                    var eve=week.events[i];
+                    str+="<div class='contentissue'><p>"+eve.kind+" "+eve.cnt+"<p></div>";
+                  }
+                  document.getElementById('eventDropdownShowMoreW'+weekNr).innerHTML = str;
+              }
             }
         }
-        document.getElementById('commentDropdownShowMoreW'+weekNr).innerHTML = str;
+      }else if(element.id == "issueIconW"+weekNr){
+        var contributionListDiv = document.getElementById('issueDropdownShowMoreW'+weekNr);
+        var contributionHoverDiv = document.getElementById('issueHoverContentW'+weekNr);
+        clickedElement.classList.toggle("iconDropdown-show");
+        if(!contributionListDiv.classList.contains("iconDropdown-show")){
+          contributionHoverDiv.style.display = "block";
+          contributionListDiv.style.display = "none";
+        }else{
+          contributionHoverDiv.style.display = "none";
+          contributionListDiv.style.display = "block";
+            if(week.issues.length>0){
+              if(!contributionListDiv.firstChild){
+                for(j=0;j<week.issues.length;j++){
+                  var issue=week.issues[j];
+                  var issuestr=issue.issueno+" "+issue.title;
+                  str+="<div class='contentissue'><p><a href='https://github.com/HGustavs/LenaSYS/issues/"+issue.issueno.substr(1)+"'>"+issuestr+"</a></p></div>";
+                }
+                  document.getElementById('issueDropdownShowMoreW'+weekNr).innerHTML = str;
+              }
+            }
+        }
+      }else if(element.id == "commitIconW"+weekNr){
+        var contributionListDiv = document.getElementById('commitDropdownShowMoreW'+weekNr);
+        var contributionHoverDiv = document.getElementById('commitHoverContentW'+weekNr);
+        clickedElement.classList.toggle("iconDropdown-show");
+        if(!contributionListDiv.classList.contains("iconDropdown-show")){
+          contributionHoverDiv.style.display = "block";
+          contributionListDiv.style.display = "none";
+        }else{
+          contributionHoverDiv.style.display = "none";
+          contributionListDiv.style.display = "block";
+            if(week.commits.length>0){
+              if(!contributionListDiv.firstChild){
+                for(var j=0;j<week.commits.length;j++){
+
+                    var commit=week.commits[j];
+
+                    str+="<div class='contentissue'>"+commit.message+"</div>";
+                      str+="<div class='contentissue'><p><a href='https://github.com/HGustavs/LenaSYS/commit/"+commit.message+"</a></p></div>";
+                }
+                  document.getElementById('commitDropdownShowMoreW'+weekNr).innerHTML = str;
+              }
+            }
+        }
+      }
     }
-  }
-  // var weekRow = element.parentElement;
-  // if(element.className === weekRow.firstChild.className){
-  //   console.log(weekRow.firstChild.className);
-  //   element.classList.toggle("iconDropdown-show");
-  //   if(week.comments.length>0){
-  //       for(j=0;j<week.comments.length;j++){
-  //           var comment=week.comments[j];
-  //           var issuestr=comment.issueno+" "+comment.content;
-  //           str+="<div class='iconDropdown-dropdown-show'><a href='https://github.com/HGustavs/LenaSYS/issues/"+comment.issueno.substr(1)+"'>"+issuestr+"</a></div>";
-  //       }
-  //   }
-  //   console.log(str);
-  //   document.getElementById('hej').innerHTML = str;
-  // }else if (element.className === weekRow.firstChild.className) {
-  //
-  //   console.log(weekRow.firstChild.className);
-  //
-  // }else if (element.className === weekRow.firstChild.className) {
-  //
-  //
-  //   console.log(weekRow.firstChild.className);
-  // }else if (element.className === weekRow.firstChild.className) {
-  //
-  // }
 }
