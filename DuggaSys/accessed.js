@@ -309,16 +309,14 @@ function renderColumnFilter(col, status, colname) {
     str = "";
     if (colname == "User")
         return str;
-    if (colname !="Toggle all"){
-        if (status) {
+    if (status) {
         str = "<div class='checkbox-dugga'>";
         str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
         str += "</div>"
-        } else {
+    } else {
             str = "<div class='checkbox-dugga'>";
             str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
             str += "</div>"
-        }
     }
     return str;
 }
@@ -424,7 +422,7 @@ function returnedAccess(data) {
 	myTable.renderTable();
 
 	str = "<div class='checkbox-dugga'>";
-	str += "<button id='toggleAllButton' type='checkbox' checked onclick='toggleAllCheckboxes(this)'><label class='headerlabel'>Toggle all</label>";
+	str += "<button id='toggleAllButton' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
 	str += "</div>"
 	document.getElementById("dropdownc").innerHTML += str;
 }
