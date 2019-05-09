@@ -95,6 +95,7 @@ menuState
 function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
+      bigMac();
       toggleHamburger();
     }
   } else {
@@ -1388,9 +1389,6 @@ function mouseUp(e) {
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
     hamburgerChange("notAClick");
-    closeWindows();
-    closeSelect();
-    showSaveButton();
   }
 }
 
@@ -1402,10 +1400,10 @@ $(window).keyup(function (event) {
   var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
   if (event.keyCode == 27) {
     // if key is escape
-    closeWindows();
+    //closeWindows();
     closeSelect();
     showSaveButton();
-    hamburgerChange("escapePress");
+     hamburgerChange("escapePress");
     document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     //Remember that keycode 13 = enter button
