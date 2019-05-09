@@ -429,11 +429,11 @@ function updateVersion() {
   $("#editCourseVersion").css("display", "none");
 }
 
-function goToVersion(selected) {
+function goToVersion(selected,pagename) {
   var value = selected.value;
-  console.log("value: " + value);
+  console.log(pagename);
   //changeURL("sectioned.php" + value)
-  changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
+  changeURL(pagename + "?cid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
 
 function accessCourse() {

@@ -41,7 +41,7 @@
 				<tr class='trsize nowrap'>
 					<td style='display: inline-block;'>
 						<div class='course-dropdown-div'>
-								<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this)' >
+								<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this,"sectioned.php")' >
 								</select>
 						</div>
 					</td>
