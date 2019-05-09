@@ -431,6 +431,7 @@ function updateVersion() {
 
 function goToVersion(selected) {
   var value = selected.value;
+  console.log("value: " + value);
   //changeURL("sectioned.php" + value)
   changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
