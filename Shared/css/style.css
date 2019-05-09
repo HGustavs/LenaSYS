@@ -3849,7 +3849,6 @@ only screen and (max-device-width: 530px) {
   }
 
   #searchinputMobile {
-    margin-left: 16px;
     border: 1px solid var(--color-border);
     border-radius: 0;
   } 
@@ -3863,6 +3862,7 @@ only screen and (max-device-width: 530px) {
     font-size: 17px;
     padding: 0px 0px 4px 6px;
     border-right-width: 0px;
+    width: 100px;
   }
 
   .switchContent {
