@@ -119,8 +119,8 @@ function clickedInternal(event, clickdobj) {
 			str += "<div id='input-container' style='flex-grow:1'>";
 			str += estr;
 			str += "</div>";
-			str += "<img id='popovertick' class='icon' src='../Shared/icons/Icon_Tick.svg' onclick='updateCellInternal();'>";
-			str += "<img id='popovercross' class='icon' src='../Shared/icons/Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
+			str += "<img id='popovertick' class='icon' src='../Shared/icons/Ok_Green.svg' onclick='updateCellInternal();'>";
+			str += "<img id='popovercross' class='icon' src='../Shared/icons/Cancel_Red.svg' onclick='clearUpdateCellInternal();'>";
 			var lmnt = cellelement.getBoundingClientRect();
 			var popoverelement = document.getElementById("editpopover");
 
@@ -210,11 +210,8 @@ function getparam(param, def) {
 function SortableTable(param) {
 	// Fenced paramters
 
-	var tbl = getparam(param.data, {
-		tblhead: {},
-		tblbody: [],
-		tblfoot: {}
-	});
+	var tbl = getparam(param.data, { tblhead: {}, tblbody: [], tblfoot: {} });
+	var currentRowFilter = tbl.tblbody;
 	this.tableid = getparam(param.tableElementId, "UNK");
 	var filterid = getparam(param.filterElementId, "UNK");
 	var caption = getparam(param.tableCaption, "UNK");
@@ -651,6 +648,35 @@ function SortableTable(param) {
 		}
 	}
 
+	this.mail = function(cidMail, crsMail, reqType) {
+
+	 var activeFilteringUsername = [];
+	 for(var i = 0; i < currentRowFilter.length; i++)
+	 {
+		if(currentRowFilter[i] != null)
+		{
+			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
+		}
+	 }
+	$.ajax({
+		url: "resultedservice.php",
+		type: "POST",
+		data: {
+			'courseid': cidMail,
+			'coursevers': crsMail,
+			'visibleuserids': activeFilteringUsername,
+			'requestType': reqType
+		},
+		dataType: "JSON",
+		error: function(xhr, status, error) {
+			var err = eval("(" + xhr.responseText + ")");
+		},
+		success: function(data){
+			window.location.assign("mailto:?bcc=" + data);
+		}
+	});
+}
+
 	this.export = function (format, del) {
 		var str = "";
 
@@ -700,10 +726,10 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
-	if (typeof firstCell === 'object' && col.includes("FnameLnameSSN")) {
-		// "FnameLnameSSN" is comprised of three separately sortable sub-columns,
+    if(typeof firstCell === 'object' && col.includes("FnameLname")) {
+		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
-		if (col == "FnameLnameSSN") {
+		if(col == "FnameLname"){
 			col = sortableTable.currentTable.getNameColumn();
 		}
 		// now check for matching columns with the potentially replaced name
@@ -729,17 +755,6 @@ function newCompare(firstCell, secoundCell) {
 				//Get the first letter from the value.
 				firstCellTemp = Object.values(firstCell.lastname)[0];
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
-			}
-		} else if (col == "SSN") {
-			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
-				firstCellTemp = firstCell.ssn;
-				secoundCellTemp = secoundCell.ssn;
-			} else {
-				firstCell = JSON.parse(firstCell.ssn);
-				secoundCell = JSON.parse(secoundCell.ssn);
-				//Get the first letter from the value.
-				firstCellTemp = Object.values(firstCell.ssn)[0];
-				secoundCellTemp = Object.values(secoundCell.ssn)[0];
 			}
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();

@@ -21,7 +21,7 @@ var sortcolumn = 1;
 var clickedindex;
 var typechanged = false;
 var teacher;
-var entries;
+var entriesNoSSN;
 var moments;
 var results;
 var versions;
@@ -35,24 +35,8 @@ function setup() {
 	//Benchmarking function
 	//benchmarkData = performance.timing;
 
-	/*    Add filter menu   */
-	/* --Commented out this code because of similar solution below due to possible duplicate issue on github--
-  var filt = "";
-	/filt += "<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
-	filt += "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-	filt += "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-	filt += "<div id='columnfilter'></div>"
-	filt += "<div id='customfilter'></div>"
-	filt += "</div>";
-	filt += "</span></td>";
-
-	filt += "<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();'>";
-	filt += "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-	filt += "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
-	filt += "</div>";
-	filt += "</span></td>";
-
   // Add search bar to nav
+  var filt = "";
   filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
   filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
@@ -65,18 +49,12 @@ function setup() {
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
 
-	$("#menuHook").before(filt);
-  */
+	$("#sort").after(filt);
+
 
 	/*  Add filter menu   */
-
   document.getElementById("sort").style.display = "table-cell";
   document.getElementById("select").style.display = "table-cell";
-
-  // Remove all children, at the time of writing there is only 1 and its unwanted.
-  while(document.getElementById("dropdownc").hasChildNodes()){
-    document.getElementById("dropdownc").removeChild(document.getElementById("dropdownc").firstChild);
-  }
 
   var customFilterDiv = document.createElement("div");
   customFilterDiv.id = "customfilter";
@@ -120,9 +98,9 @@ function process() {
 
 	// Reconstitute table
 	students = new Array;
-	for (i = 0; i < entries.length; i++) {
+	for (i = 0; i < entriesNoSSN.length; i++) {
 
-		var uid = entries[i].uid;
+		var uid = entriesNoSSN[i].uid;
 
 		// Loop through all teacher names and store the appropriate name in a variable
 		for (j = 0; j < teacher.length; j++) {
@@ -148,7 +126,7 @@ function process() {
 		}
 		var student = new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname, ssn: entries[i].ssn, class: entries[i].class, access: entries[i].access, setTeacher, username: entries[i].username });
+		student.push({ grade: ("<div class='dugga-result-div'>" + entriesNoSSN[i].firstname + " " + entriesNoSSN[i].lastname + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].username + " / " + entriesNoSSN[i].class + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, class: entriesNoSSN[i].class, access: entriesNoSSN[i].access, setTeacher, username: entriesNoSSN[i].username });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
 			if (momtmp[j].kind == 4) {
@@ -160,9 +138,9 @@ function process() {
 				var momentresult = restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if (typeof momentresult != 'undefined') {
-					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
+					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
 				} else {
-					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadline), });
+					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, deadline: new Date(momtmp[j].deadline), });
 				}
 			} else {
 				var momentresult = restmp[momtmp[j].lid];
@@ -186,8 +164,8 @@ function process() {
 						quizfile: momtmp[j].quizfile,
 						timesGraded: momentresult.timesGraded,
 						gradeExpire: momentresult.gradeExpire,
-						firstname: entries[i].firstname,
-						lastname: entries[i].lastname,
+						firstname: entriesNoSSN[i].firstname,
+						lastname: entriesNoSSN[i].lastname,
 						deadline: new Date((momtmp[j].deadlinets * 1000)),
 					});
 				} else {
@@ -210,8 +188,8 @@ function process() {
 						quizfile: momtmp[j].quizfile,
 						timesGraded: 0,
 						gradeExpire: "UNK",
-						firstname: entries[i].firstname,
-						lastname: entries[i].lastname,
+						firstname: entriesNoSSN[i].firstname,
+						lastname: entriesNoSSN[i].lastname,
 						deadline: new Date(momtmp[j].deadline),
 					});
 				}
@@ -479,16 +457,19 @@ function formatDateShorter(longDate) {
 	return d.toLocaleString()
 }
 
+
 function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid, entryname) {
 	var nameOf = document.getElementById("Nameof");
 	nameOf.textContent = entryname + " by " + firstname + " " + lastname + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked);
 
-	var menu = "<div class='' style='width:100px;display:block;'>";
+	var menu = "<div class='' style='display:block;'>";
 	menu += "<div class='loginBoxheader'>";
 	menu += "<h3>Grade</h3>";
+	menu += "<div class='cursorPointer' onclick='toggleGradeBox();'>x</div>"
 	menu += "</div>";
 	menu += "<table>";
 	menu += "<tr><td>";
+
 	if ((foundgrade === null && submitted === null)) {
 		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
 	} else if (foundgrade == -1) {
@@ -502,7 +483,18 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</table>";
 	menu += "</div> <!-- Menu Dialog END -->";
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
+
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
+}
+
+function toggleGradeBox(){
+	var toggleGrade = document.getElementById('toggleGrade');
+	var width = toggleGrade.offsetWidth;
+
+	$('#toggleGrade').animate({width: 'toggle'});
+	if(width <= 0){
+		toggleGrade.style.position = 'absolute';
+	}
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
@@ -604,7 +596,7 @@ function returnedResults(data) {
 			var studentObject = studentInfo[student]["lid:" + data.duggaid];
 			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
 				studentObject.grade = parseInt(data.results);
-				studentObject.timesGraded = parseInt(data.timesgraded);
+				studentObject.timesGraded = parseInt(data.duggatimesgraded);
 				studentObject.gradeExpire = data.duggaexpire;
 				if (data.results > 0) {
 					studentObject.needMarking = false;
@@ -617,7 +609,7 @@ function returnedResults(data) {
 		myTable.renderTable();
 	} else {
 
-		entries = data.entries;
+		entriesNoSSN = data.entriesNoSSN;
 		moments = data.moments;
 		versions = data.versions;
 		results = data.results;
@@ -672,7 +664,7 @@ var myTable;
 //----------------------------------------
 
 function buildDynamicHeaders() {
-	var tblhead = { "FnameLnameSSN": "Fname/Lname/SSN" };
+	var tblhead = { "FnameLname": "Fname/Lname" };
 	moments.forEach(function (entry) {
 		tblhead["lid:" + entry['lid']] = entry['entryname'];
 	});
@@ -680,7 +672,7 @@ function buildDynamicHeaders() {
 }
 
 function buildColumnOrder() {
-	var colOrder = ["FnameLnameSSN"];
+	var colOrder = ["FnameLname"];
 	moments.forEach(function (entry) {
 		colOrder.push("lid:" + entry['lid']);
 	});
@@ -690,7 +682,7 @@ function buildColumnOrder() {
 function buildStudentInfo() {
 	var i = 0;
 	students.forEach(function (entry) {
-		var row = { "FnameLnameSSN": entry[0] };
+		var row = { "FnameLname": entry[0] };
 		if (entry.length > 1) {
 			for (var j = 1; j < entry.length; j++) {
 				row["lid:" + entry[j]['lid']] = entry[j];
@@ -758,7 +750,7 @@ function renderCell(col, celldata, cellid) {
 	// Render minimode
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
-		if (col == "FnameLnameSSN") {
+		if (col == "FnameLname") {
 			str = "<div class='resultTableCell resultTableMini'>";
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
@@ -790,20 +782,13 @@ function renderCell(col, celldata, cellid) {
 		}
 	}
 
-	function hideSSN(ssn){
-		var hiddenSSN;
-		hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
-		return hiddenSSN;
-	}
-
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
-	if (col == "FnameLnameSSN") {
+	if (col == "FnameLname") {
 		str = "<div class='resultTableCell resultTableNormal'>";
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
 		str += "</div>";
 		return str;
 
@@ -846,7 +831,7 @@ function renderCell(col, celldata, cellid) {
 			str += "/>";
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
-			if (celldata.ishere === true && celldata.timesGraded !== 0) {
+			if (celldata.timesGraded !== 0) {
 				str += '(' + celldata.timesGraded + ')';
 			}
 			str += "</div>";
@@ -865,6 +850,14 @@ function renderCell(col, celldata, cellid) {
 			str += ">";
 			if (celldata.submitted.getTime() !== timeZero.getTime()) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+			}
+			for (var p = 0; p < moments.length; p++) {
+				if (moments[p].link == celldata.quizId) {
+					if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+						str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+					}
+					break;
+				}
 			}
 			str += "</div>";
 		}
@@ -975,12 +968,12 @@ function smartSearch(splitSearch, row) {
 //----------------------------------------------------------------
 function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
-	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
+	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
 	if (filterList["onlyPending"]) {
 		var rowPending = false;
 		for (var colname in row) {
-			if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) {
+			if (colname != "FnameLname" && row[colname]["needMarking"] == true) {
 				rowPending = true;
 				break;
 			}
@@ -1003,7 +996,7 @@ function rowFilter(row) {
 		return smartSearch(splitSearch, row);
 	} else {
 		for (colname in row) {
-			if (colname == "FnameLnameSSN") {
+			if (colname == "FnameLname") {
 				var name = "";
 				if (row[colname]["firstname"] != null) {
 					name += row[colname]["firstname"] + " ";
@@ -1015,10 +1008,10 @@ function rowFilter(row) {
 					return true;
 				}
 
-				if (row[colname]["ssn"] != null) {
-					if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-						return true;
-				}
+				// if (row[colname]["ssn"] != null) {
+				// 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+				// 		return true;
+				// }
 				if (row[colname]["username"] != null) {
 					if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
 						return true;
@@ -1041,29 +1034,29 @@ function renderSortOptions(col, status, colname) {
   console.trace();
 	str = "";
 	if (status == -1) {
-		if (col == "FnameLnameSSN") {
+		if (col == "FnameLname") {
 			let colnameArr = colname.split("/");
 			str += "<div style='white-space:nowrap;cursor:pointer'>"
 			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+			// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 		} else {
 			str += "<span class='sortableHeading' onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
 		}
 		str += "</div>"
 	} else {
-		if (col == "FnameLnameSSN") {
+		if (col == "FnameLname") {
 			let colnameArr = colname.split("/");
 			if (status == 0 || status == 1) {
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 0) {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				}
 				str += "</div>"
 			} else if (status == 2 || status == 3) {
@@ -1071,11 +1064,11 @@ function renderSortOptions(col, status, colname) {
 				if (status == 2) {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				}
 				str += "</div>"
 			} else {
@@ -1083,11 +1076,11 @@ function renderSortOptions(col, status, colname) {
 				if (status == 4) {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",5)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",5)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 				} else {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 				}
 				str += "</div>"
 			}
@@ -1132,7 +1125,7 @@ function conv(item, kind) {
 
 function renderColumnFilter(col, status, colname) {
 	str = "";
-	if (colname == "FnameLnameSSN")
+	if (colname == "FnameLname")
 		return str;
 	if (status) {
 		str = "<div class='checkbox-dugga'>";
@@ -1180,12 +1173,7 @@ function onToggleFilter(colId) {
 function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
-		if (colname == "FnameLnameSSN") {
-			if (cell.ssn.length > 11) {
-				str = cell.ssn + ";";
-			} else {
-				str = "19" + cell.ssn + ";";
-			}
+		if (colname == "FnameLname") {
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
 			str = str.replace(/\&Aring\;/g, "Å");
@@ -1225,8 +1213,8 @@ function exportCell(format, cell, colname) {
 function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
-		if (colname == "FnameLnameSSN") {
-			str = "Personnummer;Namn";
+		if (colname == "FnameLname") {
+			str = "Namn";
 		} else {
 			heading = heading.replace(/\&aring\;/g, "å");
 			heading = heading.replace(/\&Aring\;/g, "Å");
@@ -1269,37 +1257,22 @@ function updateTable() {
 
 function mail() {
   var reqType = "mail";
-
   var url_string = window.location.href;
   var url = new URL(url_string);
   var cidMail = url.searchParams.get("cid");
   var crsMail = url.searchParams.get("coursevers");
 
-  $.ajax({
-    url: "resultedservice.php",
-    type: "POST",
-    data: {
-      'courseid': cidMail,
-      'coursevers': crsMail,
-      'searchterm': searchterm,
-      'requestType': reqType
-    },
-    dataType: "JSON",
-    error: function(xhr, status, error) {
-      var err = eval("(" + xhr.responseText + ")");
-      console.log(err.Message);
-    },
-    success: function(data){
-      window.location.assign("mailto:?bcc=" + data);
-      //window.location.assign("mailto:" + data);
-    //  mailto:astark1@unl.edu?bcc=ASTARK1@UNL.EDU
-    }
-  });
+  myTable.mail(cidMail, crsMail, reqType);
 }
 
 // Puts filter buttons at a fixed point when scrolling horizontally
 $(window).scroll(function() {
-    $('#ladexportContainer').css({
-        'left': $(this).scrollLeft() + 10
-    });
+	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
+	var ladExportWidth = document.getElementById("ladexportContainer").offsetWidth;
+	var scrolled = $(this).scrollLeft() + 10;
+	if((scrolled + ladExportWidth) < resultTableWidth){
+		$('#ladexportContainer').css({
+			'transform': 'translateX(' + scrolled +'px'+ ')'
+		});
+	}
 });

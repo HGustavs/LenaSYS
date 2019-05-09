@@ -129,7 +129,6 @@
   //form for lines
   else if($form == 'lineType') {
       $cardinality = $_GET['cardinality'];
-
       if($cardinality != 1) {
         echo"
         Line type: </br>
@@ -151,9 +150,20 @@
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
             <option value='normal'>Normal</option>
-            <option value='Forced'>Forced</option>
-            <option value='Derived'>Derived</option>
+            <option value='Association'>Association</option>
+            <option value='Inheritance'>Inheritance</option>
+            <option value='Implementation'>Implementation</option>
+            <option value='Dependency'>Dependency</option>
+            <option value='Aggregation'>Aggregation</option>
+            <option value='Composition'>Composition</option>
         </select></br>
+        
+        Line direction: <br/>
+        <select onchange=\"changeLineDirection()\" id='line_direction'>
+          <option value='First'>First object</option>
+          <option value='Second'>Second object</option>
+        </select><br/>
+        
         Cardinality: <br/>
         <select onchange=\"changeCardinality(true)\" id='cardinality'>
           <option value='None'>None</option>

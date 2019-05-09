@@ -105,7 +105,7 @@ $noup="NONE";
     <div class='loginBox' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Server Settings</h3>
-    			<div onclick='closeWindows();'>x</div>
+    			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
     		<div style='padding:5px;'>
     			<div class='inputwrapper'><span>MOTD:</span><input class='textinput' type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
