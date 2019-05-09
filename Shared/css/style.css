@@ -5085,6 +5085,8 @@ textarea#filecont{
 
 .resultedbuttons{
   margin: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: #614875;
   color: #ffffff;
 }
