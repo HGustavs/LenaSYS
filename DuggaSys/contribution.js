@@ -10,7 +10,6 @@ AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 
 //sorting for multiple views
 function restoreStatView(){
-  console.log(all);
   var all = document.querySelectorAll('.group1 , .group2 , .group3'),
   i = 0,
   l = all.length;
@@ -22,12 +21,12 @@ for (i; i < l; i++) {
 
 function removeStatview(value){
   restoreStatView();
-  var all = document.querySelectorAll(value),
+  var remove = document.querySelectorAll(value),
   i = 0,
-  l = all.length;
+  l = remove.length;
 
 for (i; i < l; i++) {
- all[i].style.display = 'none';
+ remove[i].style.display = 'none';
 
 }
 
