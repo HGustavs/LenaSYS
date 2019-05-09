@@ -422,3 +422,28 @@ svg text {
 	 width: 100%;
  }
 }
+
+  /* --------------================################================-------------- *
+ *                      	     Clipping Masking Dugga				       							 *
+ * --------------================################================-------------- */
+#clippingInfoBox {
+min-width:170px;
+width:300px;
+margin:0 4px 0 4px;
+}
+#clippingInfoBox2 {
+min-width:120px;
+width:300px;
+margin:0 4px 0 4px;
+}
+ @media only screen and (max-width: 1360px) {
+	#clippingInfoBox {
+		width:100%;
+	}
+	#clippingInfoBox2 {
+		width:100%;
+	}
+	.clippingContainer {
+		flex-wrap: wrap;
+	}
+}
