@@ -207,7 +207,8 @@ function renderLineDiagram(data){
    
 
   
-    str+='<div id="group2">';
+   
+      str+='<div id="group2">';
       //Selectbox to choose week
       str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
       str+='<option value="'+firstweek+'">All weeks</option>';
