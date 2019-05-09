@@ -308,25 +308,39 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 
 
 function renderColumnFilter(col, status, colname) {
-	str = "";
-	if (colname == "User")
-		return str;
-	if (status) {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	} else {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	}
-	return str;
+    str = "";
+    if (colname == "User")
+        return str;
+    if (colname !="Toggle all"){
+        if (status) {
+        str = "<div class='checkbox-dugga'>";
+        str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+        str += "</div>"
+        } else {
+            str = "<div class='checkbox-dugga'>";
+            str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+            str += "</div>"
+        }
+    }
+    if (colname == "Toggle all"){
+        str = "<div class='checkbox-dugga'>";
+        str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='toggleAllCheckboxes(this)'><label class='headerlabel'>" + colname + "</label>";
+        str += "</div>"
+    }
+    return str;
 }
 
 function onToggleFilter(colId) {
-	myTable.toggleColumn(colId, colId);
+    myTable.toggleColumn(colId, colId);
 }
 
+function toggleAllCheckboxes(source){
+    checkboxArray = document.getElementsByName('checkbox');
+    for (var i = 0, n = checkboxArray.length; i < n; i++){
+        checkboxArray[i].checked = source.checked;
+        console.log(checkboxArray[i].colname);
+    }
+}
 
 //--------------------------------------------------------------------------
 // updateCellCallback
@@ -381,6 +395,7 @@ function returnedAccess(data) {
 	var tabledata = {
 
 		tblhead: {
+			toggleAll: "Toggle all",
 			username: "User",
 			ssn: "SSN",
 			firstname: "First name",
@@ -396,7 +411,7 @@ function returnedAccess(data) {
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-	var colOrder = ["username", "ssn", "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
+	var colOrder = ["toggleAll", "username", "ssn", "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: "accessTable",
