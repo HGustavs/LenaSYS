@@ -5082,3 +5082,9 @@ textarea#filecont{
 .previewTable tr:nth-child(even){
   background-color: #dad8db;
 }
+
+.resultedbuttons{
+  margin: 7px;
+  background-color: #202;
+  color: #ffffff;
+}
