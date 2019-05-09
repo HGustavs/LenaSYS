@@ -31,7 +31,7 @@ function statSort(value) {
     document.getElementById('group1').style.display = "none"
     document.getElementById('group2').style.display = "none"
     document.getElementById('group3').style.display = "block"
-    document.getElementById("hourlyGraph").style.display = "block";
+    document.getElementById("hourlyGraph").style.display = "none";
     document.getElementById("contribTsTable").style.display = "block";
 
   }
