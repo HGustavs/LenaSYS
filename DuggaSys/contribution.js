@@ -21,7 +21,7 @@ for (i; i < l; i++) {
 }}
 
 function removeStatview(){
-  console.log(Remove);
+  
   var all = document.querySelectorAll(' .group2 , .group3'),
   i = 0,
   l = all.length;
