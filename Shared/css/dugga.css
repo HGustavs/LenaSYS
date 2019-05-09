@@ -394,3 +394,15 @@ svg text {
 		margin-top: 10px;
 	}
 }
+
+ /* --------------================################================-------------- *
+ *                      	         HTML-CSS Dugga				       								   *
+ * --------------================################================-------------- */
+
+ @media only screen and (max-width: 800px) {
+	#htmlCssTable > tbody,
+	#htmlCssTable > tbody > tr, 
+	#htmlCssTable > tbody > tr > td {
+		display: block;
+	}
+ }
