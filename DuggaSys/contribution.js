@@ -204,12 +204,10 @@ function renderLineDiagram(data){
     var weeks=data.weeks;
     daycounts=data['count'];
     var firstweek = data.weeks[0].weekstart;
+   
+    str+='<div id="group2">';
 
     //Selectbox to choose week
-    str+='<div id="group2">';
-    str+='test123';
-    str+='</div>';
-
     str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
     str+='<option value="'+firstweek+'">All weeks</option>';
 	for(i=0;i<weeks.length;i++){
@@ -221,10 +219,10 @@ function renderLineDiagram(data){
     str+='<div id="lineDiagramDiv">';
     str+=weekchoice(firstweek);
     str+='</div>';
-    str+='</div>';
 
     return str;
 }
+str+='</div>';
 
 function lineDiagram(){
     str="<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;min-width:700px;background-color:#efefef;margin-top:10px;'>";
