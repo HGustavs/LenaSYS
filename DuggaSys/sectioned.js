@@ -1375,10 +1375,7 @@ function mouseUp(e) {
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
     hamburgerChange("notAClick");
-    closeWindows();
-    closeSelect();
-    showSaveButton();
-    alert("utanför!");
+    bigMac();
   }
 }
 
@@ -1392,7 +1389,7 @@ $(window).keyup(function (event) {
     // if key is escape
     //closeSelect();
     //showSaveButton();
-    //hamburgerChange("escapePress");
+    hamburgerChange("escapePress");
     document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     //Remember that keycode 13 = enter button
