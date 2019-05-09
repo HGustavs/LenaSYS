@@ -17,13 +17,14 @@ function statSort(value) {
     document.getElementById("contribTsTable").style.display = "block";
 
   } else if (value == "Basic") {
-    var myClasses = document.querySelectorAll('group1'),
+    var myClasses = document.querySelectorAll('.group1'),
     i = 0,
     l = group1.length;
 
 for (i; i < l; i++) {
    group1[i].style.display = 'none';
 }
+
     document.getElementById('group1').style.display = "block"
     document.getElementById('group2').style.display = "none"
     document.getElementById('group3').style.display = "none"
