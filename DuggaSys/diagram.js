@@ -367,7 +367,6 @@ function generateExampleCode() {
 function resetButtonsPressed() {
     ctrlIsClicked = false;
     shiftIsClicked = false;
-    alert("Hej");
 }
 
 //--------------------------------------------------------------------
