@@ -24,16 +24,16 @@ for (i; i < l; i++) {
     
     i = 0,
     l = basicRemove.length;
-    for (j; j < j; j++) {
-      basicRemove[j].style.display = 'block';
+    for (i; i < i; i++) {
+      basicRemove[i].style.display = 'none';
     }
 
 var basicAdd = document.querySelectorAll('.group1'),
 j = 0,
 j = basicAdd.length,
 
-for (i; i < l; i++) {
-  basicAdd[i].style.display = 'none';
+for (j; j < j; j++) {
+  basicAdd[j].style.display = 'block';
 }
 
   } else if (value == "Charts") {
