@@ -22,7 +22,7 @@ function statSort(value) {
     document.getElementById('group3').style.display = "none"
     documentgetElementById("contribTsTable").style.display = "nonek";
   } else if (value == "Charts") {
-    document.getElementById('group1').style.display = "nonek"
+    document.getElementById('group1').style.display = "none"
     document.getElementById('group2').style.display = "block"
     document.getElementById('group3').style.display = "none"
     document.getElementById("contribTsTable").style.display = "none";
@@ -213,7 +213,7 @@ function renderLineDiagram(data){
             var week=weeks[i];
             str+='<option value="'+week.weekstart+'">'+ "Week " + week.weekno +"   ("+week.weekstart+" - "+week.weekend+")"+'</option>';
     }
-    
+
     str+='</select>';
     str+='<div id="group2">';
     str+='<div id="lineDiagramDiv">';
@@ -789,9 +789,12 @@ function returnedSection(data)
     str+=createTimeSheetTable(data['timesheets']);
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
+    str+="<div id='group2'>";
     str+="<div id='hourlyGraph'>";
     str+=renderCircleDiagram(JSON.stringify(data['hourlyevents']));
     str+="</div>";
+    str+="</div>";
+
 
     // Table heading
 	str+="<table class='fumho' id='group3'>";
