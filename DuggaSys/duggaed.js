@@ -688,12 +688,14 @@ function renderSortOptionsDugga(col,status,colname) {
 			}
 		}
 		*/
-		if (status ==- 1) {
+		if (col != "arrow" && col != "cogwheel" && col != "trashcan") {			//Disable sorting for pen, cog and trashcan icons
+			if (status ==- 1) {
 				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
-		} else if (status == 0) {
-				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
-		} else {
-				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+			} else if (status == 0) {
+					str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+			} else {
+					str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+			}
 		}
 return str;
 }
