@@ -3841,9 +3841,9 @@ only screen and (max-device-width: 530px) {
   }
 
   #searchBarMobile {
-    padding-left: 8px;
+    padding-left: 5px;
     display: inline-flex;
-    height: 24px;
+    height: 22px;
     border-radius: 5px;
     float: left;
   }
@@ -3851,10 +3851,18 @@ only screen and (max-device-width: 530px) {
   #searchinputMobile {
     margin-left: 16px;
     border: 1px solid var(--color-border);
+    border-radius: 0;
   } 
 
   #searchbuttonMobile {
     margin: 0;
+  }
+
+  #tooltip-mobile {
+    border: 1px solid var(--color-border);
+    font-size: 17px;
+    padding: 0px 0px 4px 6px;
+    border-right-width: 0px;
   }
 
   .switchContent {
