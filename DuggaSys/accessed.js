@@ -338,7 +338,6 @@ function toggleAllCheckboxes(source){
     checkboxArray = document.getElementsByName('checkbox');
     for (var i = 0, n = checkboxArray.length; i < n; i++){
         checkboxArray[i].checked = source.checked;
-        console.log(checkboxArray[i].colname);
     }
 }
 
