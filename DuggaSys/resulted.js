@@ -1269,7 +1269,7 @@ function mail() {
 $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
 	var ladExportWidth = document.getElementById("ladexportContainer").offsetWidth;
-	var scrolled = $(this).scrollLeft() + 10;
+	var scrolled = $(this).scrollLeft();
 	if((scrolled + ladExportWidth) < resultTableWidth){
 		$('#ladexportContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'

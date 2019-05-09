@@ -3868,6 +3868,11 @@ only screen and (max-device-width: 530px) {
   .switchContent {
     padding: 3px;
   }
+
+  #ladexportContainer select, #ladexportContainer input {
+    height: 24px;
+    margin-top: 2px;
+  }
   /* Mobile resulted end */
 }
 
