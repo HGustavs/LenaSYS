@@ -18,20 +18,23 @@ for (i; i < l; i++) {
  all[i].style.display = 'block';
 }
 
+function removeStatview(value1,value2){
+  var Remove = document.querySelectorAll(value1,value2),
+    
+    i = 0,
+    l = Remove.length;
+    for (i; i < i; i++) {
+      Remove[i].style.display = 'none';
+    }
+}
 }
 function statSort(value) {
   if (value == "All") {
     restoreStatView();
 
   } else if (value == "Basic") {
-    restoreStatView();
-    var basicRemove = document.querySelectorAll('.group2 , .group3'),
-    
-    i = 0,
-    l = basicRemove.length;
-    for (i; i < i; i++) {
-      basicRemove[i].style.display = 'none';
-    }
+    removeStatview('.group2 , .group3');
+
 
   } else if (value == "Charts") {
     var charts = document.querySelectorAll('.group1 , .group3'),
