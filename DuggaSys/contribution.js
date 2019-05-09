@@ -33,6 +33,7 @@ for (i; i < l; i++) {
 }
 function statSort(value) {
   if (value == "All") {
+    document.getElementById("contribTsTable").style.display = "block";
     restoreStatView();
 
   } else if (value == "Basic") {
@@ -43,6 +44,7 @@ function statSort(value) {
     document.getElementById("contribTsTable").style.display = "none";
     removeStatview('.group1 , .group3');
   } else if (value == "Contribution") {
+    document.getElementById("contribTsTable").style.display = "block";
     removeStatview('.group1 , .group2');
   }
 }
