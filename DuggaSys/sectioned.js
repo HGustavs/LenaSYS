@@ -1000,7 +1000,7 @@ function returnedSection(data) {
   // Change title of the current page depending on which page the user is on.
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
     
-  document.getElementById("course-coursename").title = data.coursename + " - " + data.coursecode + " " + versionname;
+  document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
 
   drawPieChart(); // Create the pie chart used in the statistics section.
   fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
