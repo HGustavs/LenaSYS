@@ -17,13 +17,14 @@ function statSort(value) {
     document.getElementById("contribTsTable").style.display = "block";
 
   } else if (value == "Basic") {
-    var group1 = document.querySelectorAll('.group1'),
+    var groupremove = document.querySelectorAll('.group2' + '.group3'),
     i = 0,
-    l = group1.length;
+    l = groupremove.length;
 
 for (i; i < l; i++) {
-   group1[i].style.display = 'none';
+   groupremove[i].style.display = 'none';
 }
+
   } else if (value == "Charts") {
     document.getElementById('group1').style.display = "none"
     document.getElementById('group2').style.display = "block"
