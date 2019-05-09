@@ -826,8 +826,8 @@ header td {
 
 .loginBox {
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -4691,6 +4691,20 @@ textarea#mrkdwntxt {
   }
 }
 
+/* Mode Switch */
+
+.modeSwitchDialog {
+  display: none;
+  background-color: rgba(0,0,0,0);
+}
+
+.modeSwitchContainer {
+  min-height: 80px;
+}
+
+.modeSwitchHeader h3 {
+  padding-right: 10px;
+}
 
 /* Composite error message dialog */
 .errorMessageDialog {
