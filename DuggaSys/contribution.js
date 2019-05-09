@@ -30,7 +30,7 @@ for (i; i < l; i++) {
 
 var basicAdd = document.querySelectorAll('.group1'),
 j = 0,
-j = basicAdd.length,
+j = basicAdd.length;
 
 for (j; j < j; j++) {
   basicAdd[j].style.display = 'block';
