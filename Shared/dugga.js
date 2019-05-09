@@ -527,9 +527,9 @@ function changeURL(clicked_id, thisurl)
 	link.href=thisurl;
 }
 
-//----------------------------------------------------------------------------------
-// changeURL: Patch-in for changeURL from project 2014 code
-//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+// changeCourseVersURL: Separet function for changing course version, taken from changeURL
+//----------------------------------------------------------------------------------------
 
 function changeCourseVersURL(thisurl)
 {
