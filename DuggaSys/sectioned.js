@@ -1371,11 +1371,12 @@ function mouseUp(e) {
     closeWindows();
     closeSelect();
     showSaveButton();
+    hamburgerChange("click");
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
     hamburgerChange("notAClick");
-    closeWindows();
-    closeSelect();
-    showSaveButton();
+   // closeWindows();
+    //closeSelect();
+    //showSaveButton();
   }
 }
 
