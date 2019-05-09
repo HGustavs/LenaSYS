@@ -3860,7 +3860,7 @@ only screen and (max-device-width: 530px) {
   #tooltip-mobile {
     border: 1px solid var(--color-border);
     font-size: 17px;
-    padding: 0px 0px 4px 6px;
+    padding: 0px 5px;
     border-right-width: 0px;
     width: 100px;
   }
