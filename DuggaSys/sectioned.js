@@ -95,9 +95,8 @@ menuState
 function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-      $("#hMenu").toggle();
+      bigMac();
       toggleHamburger();
-
     }
   } else {
     toggleHamburger();

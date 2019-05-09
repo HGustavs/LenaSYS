@@ -72,16 +72,16 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-									<button class='submit-button menuButton results' onclick=' navigatePage("resulted.php");' title='Edit student results'>Results</button>
+									<button class='submit-button menuButton results' onclick='bigMac(); navigatePage("resulted.php");' title='Edit student results'>Results</button>
 								</li>
 								<li class='tests'>
-										<button class='submit-button menuButton tests' onclick=' navigatePage("duggaed.php");' title='Show tests'>Tests</button>
+										<button class='submit-button menuButton tests' onclick='bigMac(); navigatePage("duggaed.php");' title='Show tests'>Tests</button>
 								</li>
 								<li class='files'>
-										<button class='submit-button menuButton files' onclick=' navigatePage("fileed.php");' title='Show files'>Files</button>
+										<button class='submit-button menuButton files' onclick='bigMac(); navigatePage("fileed.php");' title='Show files'>Files</button>
 								</li>
 								<li class='access'>
-										<button class='submit-button menuButton access' onclick='navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
+										<button class='submit-button menuButton access' onclick='bigMac(); navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
 								</li>
 							</ul>
 						</div>
