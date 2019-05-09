@@ -1703,7 +1703,6 @@ function developerMode(event) {
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
     } else {
-        console.log('developermode: OFF');
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
@@ -2377,7 +2376,7 @@ function diagramToSVG() {
 // NOT like:
 //         setCheckbox(checkboxElement, true); // checkboxVar is unchanged
 // The last example results in unchanged behaviour in the diagram but with
-// the checkbox icon appearing as if it is active. 
+// the checkbox icon appearing as if it is active.
 //----------------------------------------------------------------------
 
 function setCheckbox(element, check) {
@@ -2651,7 +2650,7 @@ function mousemoveevt(ev, t) {
                     if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
                         //The point belongs to a umlLine or Line
                         canvas.style.cursor = "pointer";
-                    } else {                    
+                    } else {
                         canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                     }
                 }
