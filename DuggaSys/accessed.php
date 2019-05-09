@@ -9,6 +9,7 @@
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<title>Access Editor</title>
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -26,20 +27,21 @@
 	?>
 
 	<!-- content START -->
-		<div id="wrappall" style="border-top:0px;display:table; table-layout:auto;padding:0px 10px 0px 10px;border:none;width:auto;">
-		<div id="newbutton">
+	<div id="content">
+		<div id="headerContent"> <!-- A div to place header content. -->
 			<?php
-				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
-				echo "<h1 style='flex:1;text-align:center;position:relative;'>Access</h1>";
+				echo "<div class='titles' style='padding-top:10px;'>";
+				echo "<h1 style='flex:1;text-align:center;'>Access</h1>";
 			?>
-	</div>
-</div>
-	<div id='accessTable' style='width:100%; white-space: nowrap;'></div>
-	<!--- Edit Section Dialog END --->
+			</div>
+		</div>
+		<div id='accessTable' style='width:100%; white-space: nowrap;'></div> <!-- A div to place the access table within. -->
 
+	<!-- Login Dialog START -->
 	<?php
 		include '../Shared/loginbox.php';
 	?>
+	<!-- Login Dialog END -->
 
 	<!-- Import Users Dialog START -->
 	<div id='importUsers' class='loginBoxContainer' style='display:none;'>

@@ -221,8 +221,8 @@ function createVariant() {
 }
 
 function selectVariant(vid, el) {
-  var target_variant;
-  markSelectedVariant(el);
+	var target_variant;
+	let isSelected = markSelectedVariant(el);
 	globalData['entries'].forEach(element => {
 		var tempVariant = element['variants'];
 		tempVariant.forEach(variant => {
@@ -234,42 +234,58 @@ function selectVariant(vid, el) {
 	});
 	$("#saveVariant").css("display", "block");
 
-    //Get information for rightDivDialog and display it.
-    document.getElementById('vid').value = target_variant['vid'];
-    document.getElementById('variantparameterText').value = target_variant['param'];
-    document.getElementById('variantanswerText').value = target_variant['variantanswer'];
-
-    //Get information for leftDivDialog and display it.
-    var obj = JSON.parse(target_variant['param']);
-    var it = Object.keys(obj).length;
-    for(var i = 0; i<it; i++){
-      var result = Object.keys(obj)[i];
-
-      if(result == "type"){
-        document.getElementById('type').value = obj[result];
-      }
-      else if(result == "filelink"){
-        document.getElementById('filelink').value = obj[result];
-      }
-      else if(result == "extraparam"){
-        document.getElementById('extraparam').value = obj[result];
-      }
-    }
-
-		var submissionTypes = obj.submissions;
-		if (submissionTypes) {
-			document.getElementById('submissionType0').value = submissionTypes[0].type;
-			document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
-			document.getElementById('instruction0').value = submissionTypes[0].instruction;
-	
-			for (var i = 1; i < submissionTypes.length; i++) {
-				addVariantSubmissionRow();
-				document.getElementById('submissionType'+i).value = submissionTypes[i].type;
-				document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
-				document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
-				document.getElementById('variantparameterText').value = target_variant['param'];
-			}
+		//Get information for rightDivDialog and display it.
+		if(isSelected) {
+			document.getElementById('vid').value = target_variant['vid'];
+			document.getElementById('variantparameterText').value = target_variant['param'];
+			document.getElementById('variantanswerText').value = target_variant['variantanswer'];
+		} else {
+			// But hide the information if it is deselected.
+			document.getElementById('vid').value = "";
+			document.getElementById('variantparameterText').value = "";
+			document.getElementById('variantanswerText').value = "";
 		}
+
+
+		//Get information for leftDivDialog and display it.
+		if(isSelected) {
+			var obj = JSON.parse(target_variant['param']);
+			var it = Object.keys(obj).length;
+			for(var i = 0; i<it; i++){
+				var result = Object.keys(obj)[i];
+	
+				if(result == "type"){
+					document.getElementById('type').value = obj[result];
+				}
+				else if(result == "filelink"){
+					document.getElementById('filelink').value = obj[result];
+				}
+				else if(result == "extraparam"){
+					document.getElementById('extraparam').value = obj[result];
+				}
+			}
+      
+      var submissionTypes = obj.submissions;
+      if (submissionTypes) {
+			  document.getElementById('submissionType0').value = submissionTypes[0].type;
+			  document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
+			  document.getElementById('instruction0').value = submissionTypes[0].instruction;
+	
+			  for (var i = 1; i < submissionTypes.length; i++) {
+				  addVariantSubmissionRow();
+				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
+				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
+				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
+				  document.getElementById('variantparameterText').value = target_variant['param'];
+			 }
+		  }
+		} else {
+				// Hide information if it is deselected.
+				document.getElementById('type').value = "";
+				document.getElementById('filelink').value = "";
+				document.getElementById('extraparam').value = "";
+		}
+  
   var disabled = (target_variant['disabled']);
   $("#disabled").val(disabled);
 	if (disabled == 0) {
@@ -397,12 +413,19 @@ function createJSONString(formData) {
 	background color of the table row.
 */
 function markSelectedVariant(el) {
-    $('.active-variant').each(function() {
+	let row = el.closest("tr");
+
+    $('.active-variant').not(row).each(function() {
         $(this).removeClass('active-variant');
     });
 
-    let row=el.closest("tr");
-    $(row).addClass('active-variant');
+		if($(row).hasClass('active-variant')) {
+			$(row).removeClass('active-variant');
+			return false;
+		} else {
+			$(row).addClass('active-variant');
+			return true;
+		}
 }
 
 /*
