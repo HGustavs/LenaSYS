@@ -92,7 +92,7 @@ function toggleArrows() {
 menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
-/*function hamburgerChange(operation = 'click') {
+function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
       toggleHamburger();
@@ -101,7 +101,7 @@ menuState
     toggleHamburger();
   }
 }
-*/
+
 function toggleHamburger() {
   var x = document.getElementById("hamburgerIcon");
   findAncestor(x, "hamburger").classList.toggle("change");
