@@ -1733,6 +1733,12 @@ div.submit-button:disabled {
   opacity: 0.3;
 }
 
+.toolbarButtonPressed {
+  display: inline; 
+  border-radius: 5px; 
+  cursor: pointer
+}
+
 .buttonsStyle {
   display: flex;
   flex-direction: column;
