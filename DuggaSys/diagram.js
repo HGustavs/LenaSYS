@@ -413,8 +413,8 @@ function keyDownHandler(e) {
         updateGraphics();
         SaveState();
     }
-    else if (key == zKey && ctrlIsClicked) undoDiagram();
-    else if (key == yKey && ctrlIsClicked) redoDiagram();
+    else if (key == zKey && ctrlIsClicked) undoDiagram(event);
+    else if (key == yKey && ctrlIsClicked) redoDiagram(event);
     else if (key == aKey && ctrlIsClicked) {
         e.preventDefault();
         for(var i = 0; i < diagram.length; i++) {
@@ -1156,7 +1156,7 @@ function drawVirtualA4() {
     if(A4Orientation == "portrait"){
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height); 
+                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);
             }
         }
     }
@@ -1164,7 +1164,7 @@ function drawVirtualA4() {
     else if(A4Orientation == "landscape") {
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width); 
+                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);
             }
         }
     }
@@ -1181,7 +1181,7 @@ function drawVirtualA4() {
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         //Latter two holes
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius); 
+                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                     }
                 }
             }else {
@@ -1193,7 +1193,7 @@ function drawVirtualA4() {
                         drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         //Latter two holes
                         drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius); 
+                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                     }
                 }
             }
@@ -1208,7 +1208,7 @@ function drawVirtualA4() {
                         drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         //Latter two holes
                         drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius); 
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                     }
                 }
             }else {
@@ -1220,7 +1220,7 @@ function drawVirtualA4() {
                         drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         //Latter two holes
                         drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius); 
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                     }
                 }
             }
@@ -1347,8 +1347,8 @@ function importFile() {
 
 function canvasSize() {
     boundingRect = myCanvas.getBoundingClientRect();
-    widthWindow = (window.innerWidth - 90);
-    heightWindow = (window.innerHeight - 110);
+    widthWindow = (window.innerWidth - 75);
+    heightWindow = (window.innerHeight - 95);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -2417,9 +2417,9 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
-    element.style.top = (boundingRect.top - 47 + "px");
-    element.style.left = (boundingRect.left - 80 + "px");
-    element.style.width = (76 + "px");
+    element.style.top = (boundingRect.top - 37 + "px");
+    element.style.left = (boundingRect.left - 65 + "px");
+    element.style.width = (65 + "px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     element.style.display = "inline-block";
 }
@@ -2668,20 +2668,20 @@ function mousemoveevt(ev, t) {
                     var object;
                     // the movement change we wan't to make
                     var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
-                    // find the object that has the point we want to move 
+                    // find the object that has the point we want to move
                     for (var i = 0; i < diagram.length; i++) {
                         if (points[diagram[i].bottomRight] == sel.point || points[diagram[i].topLeft] == sel.point) {
                             object = diagram[i];
                             // the objects current width and height
                             var xDiff = points[object.bottomRight].x - points[object.topLeft].x;
                             var yDiff = points[object.bottomRight].y - points[object.topLeft].y;
-                            // For making sure the proportions stay the same when the object is at it's minimum size on one of the axes 
+                            // For making sure the proportions stay the same when the object is at it's minimum size on one of the axes
                             // so that it doesn't keep resizing one of the axes independently of the other
 
                             // if x size is equal to the objects min width
                             if (minSizeCheck(xDiff, object, "x")) {
                                 var xDiffNew;
-                                // set the new size depending on which point we're moving 
+                                // set the new size depending on which point we're moving
                                 if (points[object.bottomRight] == sel.point){
                                     xDiffNew = (sel.point.x + change) - points[object.topLeft].x;
                                 } else if (points[object.topLeft] == sel.point){
@@ -2706,7 +2706,7 @@ function mousemoveevt(ev, t) {
                             }
                         }
                     }
-                    // apply resize 
+                    // apply resize
                     sel.point.x += change;
                     sel.point.y += change;
                 } else {
@@ -3525,7 +3525,7 @@ function loadLineForm(element, dir) {
                 var tempLineDirection = lineDirection;
                 if (lineDirection == "" || lineDirection == null) {
                     diagram[lastSelectedObject].lineDirection = "First";
-                    tempLineDirection = "First";  
+                    tempLineDirection = "First";
                 }
 
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
@@ -3700,7 +3700,7 @@ function changeObjectAppearance(object_type) {
     } else if (diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('line_direction').value;
-        // something about the line type ?? 
+        // something about the line type ??
     } else if (diagram[lastSelectedObject].kind == kind.path) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
@@ -3763,7 +3763,7 @@ function changeCardinality(isUML) {
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
     console.log("lineDirection " + diagram[lastSelectedObject].lineDirection);
-} 
+}
 
 //Close the errorMessageDialog for Composite
 function closeErrorMessageDialog() {

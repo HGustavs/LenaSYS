@@ -51,9 +51,9 @@
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
-        <div id="buttonDiv" style ="margin-left: 65px;" >
+        <div id="buttonDiv">
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-left: 0px; height: ; text-align: center;" onmousedown="">
+                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-right: 0px; height: ; text-align: center;" onmousedown="">
                     <div class="application-header">
                         </div>
                         <div class='application-toolbar'>
@@ -108,10 +108,10 @@
                             <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                             <div class="toolbar-drawer" id="drawerUndo">
                                 <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
-                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 20px; height: 20px;">
+                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
                                 </button>
                                 <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
-                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 20px; height: 20px;">
+                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
                                 </button>
                             </div>
                         </div>
@@ -311,7 +311,7 @@
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
-            <div id="canvasDiv" style = "margin-left: 65px">
+            <div id="canvasDiv" style = "margin-left: 52px">
             </div>
             <div id="consoleDiv">
             <!--

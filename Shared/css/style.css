@@ -192,8 +192,9 @@ p {
  * --------------================################================-------------- */
 
  #buttonDiv {
+   margin-left: 52px;
    position: fixed;
-   margin-top: -20px;
+   margin-top: -27px;
    height: 20px;
    background-color: white;
    border-left: 1px solid #c0c0c0;
@@ -825,8 +826,8 @@ header td {
 
 .loginBox {
   padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
@@ -1259,7 +1260,7 @@ input {
 }
 
 .application-toolbar {
-  padding-top: 5px;
+  padding-top: 0px;
 }
 
 .application-toolbar>input[type='button'] {
@@ -1267,7 +1268,7 @@ input {
 }
 
 .toolbar-drawer {
-  padding: 6px 6px;
+  padding: 2px 2px;
   border-top: 1px solid var(--color-border-3);
 }
 
@@ -1280,8 +1281,8 @@ input {
 }
 
 #toolbarTypeText{
-  height: 22px;
-  font-size: 12px;
+  height: 20px;
+  font-size: 11px;
   color: #c0c0c0;
   margin: 0 auto;
   font-weight: bold;
@@ -4690,6 +4691,20 @@ textarea#mrkdwntxt {
   }
 }
 
+/* Mode Switch */
+
+.modeSwitchDialog {
+  display: none;
+  background-color: rgba(0,0,0,0);
+}
+
+.modeSwitchContainer {
+  min-height: 80px;
+}
+
+.modeSwitchHeader h3 {
+  padding-right: 10px;
+}
 
 /* Composite error message dialog */
 .errorMessageDialog {
