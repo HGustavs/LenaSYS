@@ -9,32 +9,29 @@ AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 
 
 //sorting for multiple views
-function statSort(value) {
-  if (value == "All") {
-    var all = document.querySelectorAll('.group1 , .group2 , .group3'),
-    i = 0,
-    l = all.length;
+function restoreStatView(){
+  var all = document.querySelectorAll('.group1 , .group2 , .group3'),
+  i = 0,
+  l = all.length;
 
 for (i; i < l; i++) {
-   all[i].style.display = 'block';
+ all[i].style.display = 'block';
 }
 
+}
+function statSort(value) {
+  if (value == "All") {
+    restoreStatView();
+
   } else if (value == "Basic") {
+    restoreStatView();
     var basicRemove = document.querySelectorAll('.group2 , .group3'),
     
     i = 0,
-    l = basicRemove.length,
+    l = basicRemove.length;
     for (i; i < i; i++) {
       basicRemove[i].style.display = 'none';
     }
-
-var basicAdd = document.querySelectorAll('.group1'),
-j = 0,
-j = basicAdd.length;
-
-for (j; j < j; j++) {
-  basicAdd[j].style.display = 'block';
-}
 
   } else if (value == "Charts") {
     var charts = document.querySelectorAll('.group1 , .group3'),
