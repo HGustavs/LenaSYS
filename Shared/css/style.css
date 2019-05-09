@@ -3186,6 +3186,10 @@ rect[class*="activitymarker"]:hover {
   left: 3px;
 }
 
+#searchBarMobile {
+  display: none;
+}
+
 /* styling for fileed switching table button*/
 
 .switchContent {
@@ -3696,12 +3700,6 @@ only screen and (max-device-width: 860px) {
     display: block;
     height: 13px;
   }
-  /* #searchBar {
-    margin-left: 15px;
-  }
-  #searchinput{
-    width:170px;
-  } */
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
@@ -3828,7 +3826,7 @@ only screen and (max-device-width: 530px) {
     display:block;
   }
 
-  #searchBar {
+  #searchBar, .tooltip-searchbar {
     display: none;
   }
 
@@ -3845,6 +3843,18 @@ only screen and (max-device-width: 530px) {
     height: 24px;
     border-radius: 5px;
     float: left;
+  }
+
+  #searchinput, #duggaSearch {
+    margin-left: 16px;
+  }
+
+  .switchContent {
+    padding: 3px;
+  }
+
+  #searchbutton {
+    margin: 0;
   }
 
   /* Mobile resulted end */
