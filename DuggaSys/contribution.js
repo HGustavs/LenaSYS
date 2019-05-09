@@ -198,7 +198,6 @@ function renderBarDiagram(data)
   str += "</div>";
   return str;
 }
-str+='<div id="group2">';
 
 function renderLineDiagram(data){
 
@@ -215,14 +214,16 @@ function renderLineDiagram(data){
             str+='<option value="'+week.weekstart+'">'+ "Week " + week.weekno +"   ("+week.weekstart+" - "+week.weekend+")"+'</option>';
     }
     str+='</select>';
-
+   
+    str+='<div id="group2">';
     str+='<div id="lineDiagramDiv">';
     str+=weekchoice(firstweek);
     str+='</div>';
+    str+='</div>';
+
 
     return str;
 }
-str+='</div>';
 
 function lineDiagram(){
     str="<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;min-width:700px;background-color:#efefef;margin-top:10px;'>";
