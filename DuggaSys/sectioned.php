@@ -88,15 +88,15 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-								<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>								</li>
+									<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>								</li>
 								<li class='tests'>
-								<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
+									<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
 								</li>
 								<li class='files'>
-										<button class='submit-button menuButton files' onclick='closeWindows(); navigatePage("fileed.php");' title='Show files'>Files</button>
+									<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
 								</li>
 								<li class='access'>
-										<button class='submit-button menuButton access' onclick='closeWindows(); navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
+									<a id='accessBTN' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
 								</li>
 							</ul>
 						</div>
