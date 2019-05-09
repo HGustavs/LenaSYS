@@ -3776,6 +3776,10 @@ only screen and (max-device-width: 670px) {
   #statisticsList {
     display: none;
   }
+
+  #ladexportContainer {
+    display: block;
+  }
 }
 
 @media only screen and (max-width: 530px),
