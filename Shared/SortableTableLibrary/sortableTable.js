@@ -1,3 +1,6 @@
+//all visible rows will be stored to this array
+var filteredRows = []; 
+
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
 	currentTable: null,
@@ -272,7 +275,7 @@ function SortableTable(param) {
 	}
 
 	this.reRender = function () {
-
+		filteredRows = [];
 		this.rowIndex = 1;
 		// Local variable that contains html code for main table and local variable that contains magic headings table
 		str = "<table style='border-collapse: collapse;' id='" + this.tableid + DELIMITER + "tbl' class='list list--nomargin'>";
@@ -396,7 +399,8 @@ function SortableTable(param) {
 		for (var i = 0; i < tbl.tblbody.length; i++) {
 			var row = tbl.tblbody[i];
 			if (rowFilter(row)) {
-				str += "<tr id='" + this.tableid + DELIMITER + i + "'"
+				filteredRows.push(row);
+				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
 				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
 				//Check if row contains requestedpasswordchange & set styling accordingly
@@ -649,22 +653,18 @@ function SortableTable(param) {
 	}
 
 	this.mail = function(cidMail, crsMail, reqType) {
-
-	 var activeFilteringUsername = [];
-	 for(var i = 0; i < currentRowFilter.length; i++)
-	 {
-		if(currentRowFilter[i] != null)
-		{
-			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
+		var filteredUsernames = [];
+		//get usernames of the filtered rows
+		for(var i = 0; i < filteredRows.length; i++){ 
+			filteredUsernames.push(filteredRows[i]['FnameLname'].username);
 		}
-	 }
 	$.ajax({
 		url: "resultedservice.php",
 		type: "POST",
 		data: {
 			'courseid': cidMail,
 			'coursevers': crsMail,
-			'visibleuserids': activeFilteringUsername,
+			'visibleuserids': filteredUsernames,
 			'requestType': reqType
 		},
 		dataType: "JSON",
