@@ -95,6 +95,7 @@ menuState
 function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
+      $("#hMenu").toggle();
       toggleHamburger();
 
     }
@@ -106,8 +107,6 @@ function hamburgerChange(operation = 'click') {
 function toggleHamburger() {
   var x = document.getElementById("hamburgerIcon");
   findAncestor(x, "hamburger").classList.toggle("change");
-  var menu = document.getElementById("hMenu");
-  menu.style.display = 'toggle';
 }
 
 // -------------==============######## Dialog Handling ###########==============-------------
