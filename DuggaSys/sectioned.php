@@ -88,16 +88,16 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-									<button class='submit-button menuButton results' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'></button>
+									<button class='submit-button menuButton results' onclick='closeWindows(); navigatePage("resulted.php");' title='Edit student results'>Results</button>
 								</li>
 								<li class='tests'>
-										<button class='submit-button menuButton tests' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'></button>
+										<button class='submit-button menuButton tests' onclick='closeWindows(); navigatePage("duggaed.php");' title='Show tests'>Tests</button>
 								</li>
 								<li class='files'>
-										<button class='submit-button menuButton files' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'></button>
+										<button class='submit-button menuButton files' onclick='closeWindows(); navigatePage("fileed.php");' title='Show files'>Files</button>
 								</li>
 								<li class='access'>
-										<button class='submit-button menuButton access' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'></button>
+										<button class='submit-button menuButton access' onclick='closeWindows(); navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
 								</li>
 							</ul>
 						</div>
