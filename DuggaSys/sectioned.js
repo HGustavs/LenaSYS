@@ -1373,7 +1373,7 @@ function mouseUp(e) {
     closeSelect();
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
-    hamburgerChange("notAClick");
+    hamburgerChange("click");
 
   }
 }
