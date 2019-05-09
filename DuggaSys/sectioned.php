@@ -179,7 +179,7 @@
 								</table>
 						</div>
 						<div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
-								<svg id="swimlaneSVG" width='300px' style='padding: 10px; margin: auto;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
+								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
 						<!--<div style='display:flex;'>
 							<canvas id='swimlanesMoments' style='padding:10px;'></canvas>
