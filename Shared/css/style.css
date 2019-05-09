@@ -1733,6 +1733,12 @@ div.submit-button:disabled {
   opacity: 0.3;
 }
 
+.toolbarButtonPressed {
+  display: inline; 
+  border-radius: 5px; 
+  cursor: pointer
+}
+
 .buttonsStyle {
   display: flex;
   flex-direction: column;
@@ -4005,6 +4011,8 @@ only screen and (max-device-width: 320px) {
   bottom: 2%;
   right: 2%;
 }
+
+
 
 /* The slider itself */
 .zoomSlider {
