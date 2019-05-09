@@ -9,6 +9,7 @@ AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 
 
 //sorting for multiple views
+//Restores all views when pressing the All button
 function restoreStatView(){
   var all = document.querySelectorAll('.group1 , .group2 , .group3'),
   i = 0,
@@ -18,7 +19,7 @@ for (i; i < l; i++) {
  all[i].style.display = 'block';
 
 }}
-
+//Removes unwanted classes based on button
 function removeStatview(value){
   restoreStatView();
   var remove = document.querySelectorAll(value),
@@ -29,8 +30,8 @@ for (i; i < l; i++) {
  remove[i].style.display = 'none';
 
 }
-
-}
+  }
+// Gives the buttons functionality 
 function statSort(value) {
   if (value == "All") {
     document.getElementById("contribTsTable").style.display = "block";
