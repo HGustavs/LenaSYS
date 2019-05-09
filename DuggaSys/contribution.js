@@ -899,7 +899,7 @@ function returnedSection(data)
 			str+="</tr>";
 	}
 
-	// End of table
+  // End of table
   str+="<div id='group3'">;
 	str+="</table><div id='rankTable'></div>";
   str+="</div>";
