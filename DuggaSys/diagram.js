@@ -357,6 +357,21 @@ function generateExampleCode() {
 }
 
 //--------------------------------------------------------------------
+// This function check if focus on diagram was lost
+// Put your action here if you want focus lost as trigger
+//--------------------------------------------------------------------
+setInterval( checkFocus, 200 );
+function checkFocus() {
+  if ( document.hasFocus() ) {
+    // Put the code you want to run while in focuse here:
+  } else {
+    // Put the code you want to run when focuse is lost here:
+    ctrlIsClicked = false;
+    shiftIsClicked = false;
+  }
+}
+
+//--------------------------------------------------------------------
 // diagram - Stores a global list of diagram objects
 //           A diagram object could for instance be a path, or a symbol
 //--------------------------------------------------------------------
@@ -2375,7 +2390,7 @@ function diagramToSVG() {
 // NOT like:
 //         setCheckbox(checkboxElement, true); // checkboxVar is unchanged
 // The last example results in unchanged behaviour in the diagram but with
-// the checkbox icon appearing as if it is active. 
+// the checkbox icon appearing as if it is active.
 //----------------------------------------------------------------------
 
 function setCheckbox(element, check) {
