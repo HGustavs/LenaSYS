@@ -17,7 +17,7 @@ function statSort(value) {
     document.getElementById("contribTsTable").style.display = "block";
 
   } else if (value == "Basic") {
-    var basic = document.querySelectorAll('.group2 , group3'),
+    var basic = document.querySelectorAll('.group2 , .group3'),
     i = 0,
     l = basic.length;
 
