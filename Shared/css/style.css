@@ -3848,7 +3848,7 @@ only screen and (max-device-width: 530px) {
     float: left;
   }
 
-  #searchinputMobile {
+  #searchinput, #duggaSearch {
     margin-left: 16px;
     border: 1px solid var(--color-border);
   }
@@ -3857,7 +3857,7 @@ only screen and (max-device-width: 530px) {
     padding: 3px;
   }
 
-  #searchbuttonMobile {
+  #searchbutton {
     margin: 0;
   }
 
