@@ -11,10 +11,13 @@ AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 //sorting for multiple views
 function statSort(value) {
   if (value == "All") {
-    document.getElementById('group1').style.display = "block"
-    document.getElementById('group2').style.display = "block"
-    document.getElementById('group3').style.display = "block"
-    document.getElementById("contribTsTable").style.display = "block";
+    var all = document.querySelectorAll('.group1 , .group2 , .group3'),
+    i = 0,
+    l = all.length;
+
+for (i; i < l; i++) {
+   all[i].style.display = 'block';
+}
 
   } else if (value == "Basic") {
     var basic = document.querySelectorAll('.group2 , .group3'),
@@ -26,17 +29,22 @@ for (i; i < l; i++) {
 }
 
   } else if (value == "Charts") {
-    document.getElementById('group1').style.display = "none"
-    document.getElementById('group2').style.display = "block"
-    document.getElementById('group3').style.display = "none"
-    document.getElementById("contribTsTable").style.display = "none";
+    var charts = document.querySelectorAll('.group1 , .group3'),
+    i = 0,
+    l = charts.length;
+
+for (i; i < l; i++) {
+   charts[i].style.display = 'none';
+}
 
   } else if (value == "Contribution") {
-    document.getElementById('group1').style.display = "none"
-    document.getElementById('group2').style.display = "none"
-    document.getElementById('group3').style.display = "block"
-    document.getElementById("hourlyGraph").style.display = "none";
-    document.getElementById("contribTsTable").style.display = "block";
+    var contribution = document.querySelectorAll('.group1 , .group2'),
+    i = 0,
+    l = contribution.length;
+
+for (i; i < l; i++) {
+   contribution[i].style.display = 'none';
+}
 
   }
 }
