@@ -36,8 +36,11 @@ function statSort(value) {
     restoreStatView();
 
   } else if (value == "Basic") {
+    document.getElementById("contribTsTable").style.display = "none";
     removeStatview('.group2 , .group3');
+
   } else if (value == "Charts") {
+    document.getElementById("contribTsTable").style.display = "none";
     removeStatview('.group1 , .group3');
   } else if (value == "Contribution") {
     removeStatview('.group1 , .group2');
@@ -673,7 +676,6 @@ function createTimeSheetTable(data)
 	myTable = new SortableTable({
 		data:tabledata,
     tableElementId:"contribTsTable",
-    tableElementClass:"group3",
 		renderCellCallback:renderCell,
 		renderSortOptionsCallback:renderSortOptions,
 		columnOrder:colOrder,
