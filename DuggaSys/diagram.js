@@ -3379,7 +3379,6 @@ function movemode(e, t) {
         canvas.style.cursor = "default";
         uimode = "normal";
     }
-    updateGraphics();
 }
 
 function activateMovearound() {
