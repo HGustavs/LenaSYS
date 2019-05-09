@@ -295,7 +295,7 @@ p {
 
 #Courselist .head {
   text-align: center;
-  color: var(--color-primary-2);
+  color: var(--color-text-primary);
   font-size: 18pt;
   display: block;
   background-color: var(--color-background);
@@ -304,12 +304,12 @@ p {
   margin-top: 40px;
   margin-bottom: 4px;
   padding-bottom: 15px;
-  border-bottom: 2px dotted #775886;
+  border-bottom: 2px dotted var(--color-border-primary);
 }
 
 #Courselist .bigg {
   text-align: center;
-  color: #775886;
+  color: var(--color-text-primary);
   font-size: 14pt;
   display: block;
   background-color: var(--color-background);
@@ -327,7 +327,7 @@ p {
 #Sectionlist {
   margin: 0px auto;
   background-color: var(--color-background);
-  color: #434343;
+  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
   border-radius: 5px;
@@ -352,19 +352,19 @@ p {
 }
 
 #Sectionlist .section {
-  color: #fff;
-  background-color: #927b9e;
+  color: var(--color-text-header);
+  background-color: var(--color-primary-light);
 }
 
 #Sectionlist .header {
-  color: #fff;
+  color: var(--color-text-header);
   background-color: #775886;
   text-align: center;
 }
 
 #Sectionlist .moment {
-  color: #ffffff;
-  background-color: #927b9e;
+  color: var(--color-text-header);
+  background-color: var(--color-primary-light);
   cursor: pointer;
   /*
   box-shadow: 0px 3px 0px #aaa;
@@ -401,7 +401,7 @@ p {
 }
 
 #Sectionlist .example {
-  color: #434343;
+  color: var(--color-text-secondary);
   /*font-size: 12pt;
   padding-top: 5px;*/
   min-height: 26px;
@@ -429,7 +429,7 @@ p {
 }
 
 #Sectionlist .quiz {
-  color: #434343;
+  color: var(--color-text-secondary);
   font-size: 12pt;
   padding-top: 5px;
   min-height: 26px;
@@ -438,14 +438,14 @@ p {
 #Sectionlist .course {
   padding: 6px;
   text-align: center;
-  color: #fff;
+  color: var(--color-text-header);
   font-size: 24px;
-  background-color: #614875;
+  background-color: var(--color-primary);
 }
 
 .item a {
   text-decoration: none;
-  color: #775886;
+  color: var(--color-text-primary);
 }
 
 .item a:hover {
@@ -470,36 +470,37 @@ p {
 
 #Sectionlist .norm {
   background-color: var(--color-background);
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .norm:hover {
   background-color: #cccccc;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .hi:hover {
   background-color: #cccccc;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .lo:hover {
   background-color: #cccccc;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlisti .hi {
-  background-color: #dad8db;
+  background-color: var(--color-sectioned-table-hi);
 }
 
 #Sectionlisti .lo {
-  background-color: #eae8eb;
+  background-color: var(--color-sectioned-table-lo);
 }
 
 .LightBox {
   width: 32px;
   /*vertical-align: middle;*/
   overflow: hidden;
+  background-color: var(--color-primary-light);
 }
 
 .LightBoxFilled {
@@ -538,7 +539,7 @@ p {
 
 #Sectionlist .hiddensection {
   opacity: 0.3;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .loginsection {
@@ -563,7 +564,7 @@ p {
 .tooltiptext {
   display: none;
   width: 160px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: white;
   text-align: center;
   border-radius: 6px;
