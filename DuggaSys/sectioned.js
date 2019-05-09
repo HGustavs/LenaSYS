@@ -858,7 +858,7 @@ function returnedSection(data) {
           }
         } else if (itemKind == 7) {
           // Message
-          str += "<span style='margin-left:8px;"</span>";
+          str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
         }
 
         str += "</td>";
