@@ -2104,12 +2104,15 @@ input.large-button {
   transform: translateY(50%);
 }
 
+#input-container{
+  border-bottom: 2px solid #008000;
+}
+
 #input-container input {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
   size: 5;
-  border-bottom: 2px solid #008000;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
