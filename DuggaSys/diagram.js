@@ -2375,7 +2375,7 @@ function diagramToSVG() {
 // NOT like:
 //         setCheckbox(checkboxElement, true); // checkboxVar is unchanged
 // The last example results in unchanged behaviour in the diagram but with
-// the checkbox icon appearing as if it is active. 
+// the checkbox icon appearing as if it is active.
 //----------------------------------------------------------------------
 
 function setCheckbox(element, check) {
@@ -2619,6 +2619,11 @@ function mousemoveevt(ev, t) {
     // Get canvasMouse coordinates for both X & Y.
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
+
+    //If drawing lines a pen-cursor is shown to make it more user-friendly
+    if (uimode == "CreateLine"){
+        canvas.style.cursor = "url('../Shared/icons/pen.cur'), auto";
+    }
 
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
