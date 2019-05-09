@@ -521,11 +521,15 @@ function savequizResult(citstr)
 // changeURL: Patch-in for changeURL from project 2014 code
 //----------------------------------------------------------------------------------
 
-function changeURL(thisurl)
+function changeURL(clicked_id, thisurl)
 {
 	console.log(thisurl);
-	//var link = document.getElementById(clicked_id);
-	window.location.href = thisurl;
+	if(clicked_id != null){
+	var link = document.getElementById(clicked_id);
+	link.href=thisurl;
+	} else{
+		window.location.href = thisurl;
+	}
 }
 
 //----------------------------------------------------------------------------------
