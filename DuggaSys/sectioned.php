@@ -61,7 +61,7 @@
 					</td>
 					<td class='hamburger hamburgerClickable'>
 						<div tabindex='0' class='package'>
-							<div id='hamburgerIcon' class='submit-button hamburger' onclick='hamburgerChange();bigMac();' >
+							<div id='hamburgerIcon' class='submit-button hamburger' onclick='hamburgerChange();' >
 								<div class='container'>
 									<div class='bar1'></div>
 									<div class='bar2'></div>

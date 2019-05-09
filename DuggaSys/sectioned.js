@@ -241,7 +241,7 @@ function showSaveButton() {
 
 // Show the hamburger menu
 function bigMac() {
-  $(".hamburgerMenu").toggle();
+ // $(".hamburgerMenu").toggle();
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
