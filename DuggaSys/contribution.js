@@ -20,7 +20,7 @@ function statSort(value) {
     document.getElementById('group1').style.display = "block"
     document.getElementById('group2').style.display = "none"
     document.getElementById('group3').style.display = "none"
-    documentgetElementById("contribTsTable").style.display = "none";
+    document.getElementById("contribTsTable").style.display = "none";
   } else if (value == "Charts") {
     document.getElementById('group1').style.display = "none"
     document.getElementById('group2').style.display = "block"
