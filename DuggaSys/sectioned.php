@@ -88,7 +88,7 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-									<button class='submit-button menuButton results' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'></button>
+									<button class='submit-button menuButton results' onclick='closeWindows(); navigatePage("resulted.php");' title='Edit student results'>Results</button>
 								</li>
 								<li class='tests'>
 										<button class='submit-button menuButton tests' onclick='closeWindows(); navigatePage("duggaed.php");' title='Show tests'>Tests</button>
