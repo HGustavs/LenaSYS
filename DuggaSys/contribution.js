@@ -21,7 +21,7 @@ for (i; i < l; i++) {
 }}
 
 function removeStatview(value){
-  
+  restoreStatView();
   var all = document.querySelectorAll(value),
   i = 0,
   l = all.length;
