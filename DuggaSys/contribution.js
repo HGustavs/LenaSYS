@@ -672,7 +672,8 @@ function createTimeSheetTable(data)
 	var colOrder=["week","day","type","reference","comment","link"];
 	myTable = new SortableTable({
 		data:tabledata,
-		tableElementId:"contribTsTable",
+    tableElementId:"contribTsTable",
+    tableElementClass:"group3",
 		renderCellCallback:renderCell,
 		renderSortOptionsCallback:renderSortOptions,
 		columnOrder:colOrder,
