@@ -524,7 +524,7 @@ function savequizResult(citstr)
 function changeURL(clicked_id, thisurl)
 {
 	console.log(thisurl);
-	if(clicked_id != null){
+	if(clicked_id != ""){
 	var link = document.getElementById(clicked_id);
 	link.href=thisurl;
 	} else{
