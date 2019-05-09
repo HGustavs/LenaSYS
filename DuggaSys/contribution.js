@@ -988,13 +988,14 @@ function displayComments(week){
 
 //shows more content when a GitHub Contribution icon is clicked
 function showMoreContent(element){
-  var clickedElement = element.parentElement.parentElement.lastChild.firstChild;
+  var row = element.parentElement.parentElement;
+  var clickedElement = row.lastChild.firstChild;
   var weekNr = element.id[element.id.length -1];
-  var week = retdata.weeks[weekNr-1];
+  var tableWeek = retdata.weeks[weekNr-1];
   var str = '';
 
 
-  if(week.weekno == weekNr){ //Checks that the clicked icon is on the right week row. 
+  if(tableWeek.weekno == weekNr){ //Checks that the clicked icon is on the right week row.
     if(element.id == "commentIconW"+weekNr){
       var contributionListDiv = document.getElementById('commentDropdownShowMoreW'+weekNr);
       var contributionHoverDiv = document.getElementById('commentHoverContentW'+weekNr);
@@ -1007,10 +1008,10 @@ function showMoreContent(element){
       }else{
         contributionHoverDiv.style.display = "none";
         contributionListDiv.style.display = "block";
-          if(week.comments.length>0){
+          if(tableWeek.comments.length>0){
             if(!contributionListDiv.firstChild){//checks that no child elements exists.
-              for(j=0;j<week.comments.length;j++){
-                  var comment=week.comments[j];
+              for(j=0;j<tableWeek.comments.length;j++){
+                  var comment=tableWeek.comments[j];
                   var issuestr=comment.issueno+" "+comment.content;
                   str+="<p><a href='https://github.com/HGustavs/LenaSYS/issues/"+comment.issueno.substr(1)+"'>"+issuestr+"</a></p>";
               }
@@ -1022,7 +1023,6 @@ function showMoreContent(element){
       }else if(element.id == "eventIconW"+weekNr){
         var contributionListDiv = document.getElementById('eventDropdownShowMoreW'+weekNr);
         var contributionHoverDiv = document.getElementById('eventHoverContentW'+weekNr);
-        console.log(contributionHoverDiv);
         clickedElement.classList.toggle("iconDropdown-show");
         if(!contributionListDiv.classList.contains("iconDropdown-show")){
           contributionHoverDiv.style.display = "block";
@@ -1030,10 +1030,10 @@ function showMoreContent(element){
         }else{
           contributionHoverDiv.style.display = "none";
           contributionListDiv.style.display = "block";
-            if(week.events.length>0){
+            if(tableWeek.events.length>0){
               if(!contributionListDiv.firstChild){
-                  for(var i=0;i<week.events.length;i++){
-                    var eve=week.events[i];
+                  for(var i=0;i<tableWeek.events.length;i++){
+                    var eve=tableWeek.events[i];
                     str+="<div class='contentissue'><p>"+eve.kind+" "+eve.cnt+"<p></div>";
                   }
                   document.getElementById('eventDropdownShowMoreW'+weekNr).innerHTML = str;
@@ -1050,10 +1050,10 @@ function showMoreContent(element){
         }else{
           contributionHoverDiv.style.display = "none";
           contributionListDiv.style.display = "block";
-            if(week.issues.length>0){
+            if(tableWeek.issues.length>0){
               if(!contributionListDiv.firstChild){
-                for(j=0;j<week.issues.length;j++){
-                  var issue=week.issues[j];
+                for(j=0;j<tableWeek.issues.length;j++){
+                  var issue=tableWeek.issues[j];
                   var issuestr=issue.issueno+" "+issue.title;
                   str+="<div class='contentissue'><p><a href='https://github.com/HGustavs/LenaSYS/issues/"+issue.issueno.substr(1)+"'>"+issuestr+"</a></p></div>";
                 }
@@ -1071,11 +1071,11 @@ function showMoreContent(element){
         }else{
           contributionHoverDiv.style.display = "none";
           contributionListDiv.style.display = "block";
-            if(week.commits.length>0){
+            if(tableWeek.commits.length>0){
               if(!contributionListDiv.firstChild){
-                for(var j=0;j<week.commits.length;j++){
+                for(var j=0;j<tableWeek.commits.length;j++){
 
-                    var commit=week.commits[j];
+                    var commit=tableWeek.commits[j];
 
                     str+="<div class='contentissue'>"+commit.message+"</div>";
                       str+="<div class='contentissue'><p><a href='https://github.com/HGustavs/LenaSYS/commit/"+commit.message+"</a></p></div>";
