@@ -2089,11 +2089,17 @@ div.submit-button:disabled {
 }
 
 #editpopover {
-  border:1px solid red;
-  box-shadow:2px 2px 2px #000;
+  border:1px solid #d7fdd9;
+  box-shadow:2px 2px 2px #434343;
   position:absolute;
-  background-color: #82a43a;
-  width: fit-content;
+  background-color: #d7fdd9;
+  min-width: 150px;
+  padding: 5px;
+}
+
+.popoveredit{
+  background-color: transparent;
+  border: none;
 }
 
 .icon {
@@ -2102,6 +2108,10 @@ div.submit-button:disabled {
   padding: 0;
   position: relative;
   transform: translateY(50%);
+}
+
+#input-container{
+  border-bottom: 2px solid #008000;
 }
 
 #input-container input {
