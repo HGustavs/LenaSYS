@@ -11,26 +11,26 @@ AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 //sorting for multiple views
 function statSort(value) {
   if (value == "All") {
-    document.getElementsByClassName('group1').style.display = "block"
-    document.getElementsByClassName('group2').style.display = "block"
-    document.getElementsByClassName('group3').style.display = "block"
+    document.getElementById('group1').style.display = "block"
+    document.getElementById('group2').style.display = "block"
+    document.getElementById('group3').style.display = "block"
     document.getElementById("contribTsTable").style.display = "block";
 
   } else if (value == "Basic") {
-    document.getElementsByClassName('group1').style.display = "block"
-    document.getElementsByClassName('group2').style.display = "none"
-    document.getElementsByClassName('group3').style.display = "none"
-    document.getElementById("contribTsTable").style.display = "nonek";
+    document.getElementById('group1').style.display = "block"
+    document.getElementById('group2').style.display = "none"
+    document.getElementById('group3').style.display = "none"
+    documentgetElementById("contribTsTable").style.display = "nonek";
   } else if (value == "Charts") {
-    document.getElementsByClassName('group1').style.display = "nonek"
-    document.getElementsByClassName('group2').style.display = "block"
-    document.getElementsByClassName('group3').style.display = "none"
+    document.getElementById('group1').style.display = "nonek"
+    document.getElementById('group2').style.display = "block"
+    document.getElementById('group3').style.display = "none"
     document.getElementById("contribTsTable").style.display = "none";
 
   } else if (value == "Contribution") {
-    document.getElementsByClassName('group1').style.display = "none"
-    document.getElementsByClassName('group2').style.display = "none"
-    document.getElementsByClassName('group3').style.display = "block"
+    document.getElementById('group1').style.display = "none"
+    document.getElementById('group2').style.display = "none"
+    document.getElementById('group3').style.display = "block"
     document.getElementById("contribTsTable").style.display = "block";
 
   }
