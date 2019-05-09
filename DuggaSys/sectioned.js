@@ -1384,10 +1384,10 @@ function mouseUp(e) {
 $(window).keyup(function (event) {
   if (event.keyCode == 27) {
     // if key is escape
-    closeWindows();
+    //closeWindows();
     closeSelect();
     showSaveButton();
-    hamburgerChange("escapePress");
+     hamburgerChange("escapePress");
     document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     //Remember that keycode 13 = enter button
