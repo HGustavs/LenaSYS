@@ -16,7 +16,7 @@ function restoreStatView(){
 
 for (i; i < l; i++) {
  all[i].style.display = 'block';
-}
+}}
 
 function removeStatview(value1,value2){
   var Remove = document.querySelectorAll(value1,value2),
@@ -26,7 +26,6 @@ function removeStatview(value1,value2){
     for (i; i < i; i++) {
       Remove[i].style.display = 'none';
     }
-}
 }
 function statSort(value) {
   if (value == "All") {
