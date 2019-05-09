@@ -2470,6 +2470,11 @@ span.arrow {
   display: flex;
 }
 
+.mobileSearch {
+  display: none;
+}
+
+
 /* End DuggaSys resulted*/
 
 /**************************/
@@ -3783,6 +3788,10 @@ only screen and (max-device-width: 670px) {
 
   #ladexportContainer {
     display: block;
+  }
+
+  .mobileSearch {
+    display:block;
   }
 }
 
