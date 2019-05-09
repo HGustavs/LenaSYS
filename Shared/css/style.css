@@ -3790,9 +3790,6 @@ only screen and (max-device-width: 670px) {
     display: block;
   }
 
-  .mobileSearch {
-    display:block;
-  }
 }
 
 @media only screen and (max-width: 530px),
@@ -3823,6 +3820,14 @@ only screen and (max-device-width: 530px) {
   }
 
   #statisticsList {
+    display: none;
+  }
+
+  .mobileSearch {
+    display:block;
+  }
+
+  .headerSearch {
     display: none;
   }
 }
