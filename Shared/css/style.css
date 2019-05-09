@@ -3148,6 +3148,10 @@ rect[class*="activitymarker"]:hover {
 
 /* styling for the search bars in resulted, accessed, duggaed, filed */
 
+.headerSearch {
+  display: block;
+}
+
 #searchBar, #testSearchContainer {
   padding-left: 20px;
 }
@@ -3823,6 +3827,7 @@ only screen and (max-device-width: 530px) {
     display: none;
   }
 
+  /* Mobile view resulted filter / search */
   .mobileSearch {
     display:block;
   }
@@ -3845,6 +3850,8 @@ only screen and (max-device-width: 530px) {
     border-radius: 5px;
     float: left;
   }
+
+  /* Mobile resulted end */
 }
 
 @media only screen and (max-width: 480px),
