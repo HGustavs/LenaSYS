@@ -274,11 +274,21 @@ function createFileUploadArea(fileuploadfileds){
 		}else if(type=="text"){
 				form +="<textarea rows='15' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 80%;background:#f8f8ff;padding:10px;margin-bottom:10px;border: 2px solid #e8e6e6;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea><br>";
 				form +="<input type='hidden' name='kind' value='3' />";
-		}else{
-				form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' accept='.zip,.pdf' multiple='multiple' onchange='this.form.submit();'/>";
-                form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
+		}else if(type=="pdf"){
+        // special type for pdf to have accept = .pdf
+				form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' accept='.pdf' multiple='multiple' onchange='this.form.submit();'/>";
+        form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
 				form +="<input type='hidden' name='kind' value='1' />";
-		}
+		} else if(type == "zip"){
+      // special type for zip to have accept = .zip and .rar
+      form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' accept='.zip,.rar' multiple='multiple' onchange='this.form.submit();'/>";
+      form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
+      form +="<input type='hidden' name='kind' value='1' />";
+    } else {
+      form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' multiple='multiple' onchange='this.form.submit();'/>";
+      form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
+      form +="<input type='hidden' name='kind' value='1' />";
+    }
 
 		form +="<input type='submit' name='okGo' id='okGo" + l + "' class='inputfile' value='Upload'>";
         form +="<label for='okGo" + l + "' style='padding-left:20px; padding-right:20px'>Upload</label>";
