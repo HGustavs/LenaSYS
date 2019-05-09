@@ -404,13 +404,8 @@ function keyDownHandler(e) {
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
             if(cloneTempArray[i].symbolkind) {
-                cloneTempArray[i].name == "copy";
-                if (cloneTempArray[i].symbolkind.line) {
-                    console.log(connectedObjects(line));
-                }
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
-                fixLineConnectionAfterCopy(cloneTempArray[i]);
             }
         }
         cloneTempArray = temp;
@@ -537,6 +532,7 @@ function cancelFreeDraw() {
 
 function fillCloneArray() {
     cloneTempArray = [];
+    var tempName = "";
     for(var i = 0; i < selected_objects.length; i++) {
         cloneTempArray.push(selected_objects[i]);
     }
@@ -625,7 +621,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 // copySymbol: Clone an object
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
-    var clone = Object.assign(new Symbol(), symbol);
+    var clone = new Symbol(symbol.symbolkind);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     topLeftClone.x += 10;
     topLeftClone.y += 10;
@@ -647,6 +643,11 @@ function copySymbol(symbol) {
         clone.name = "EntityCopy" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "LineCopy" + diagram.length;
+        var temp = []
+        for (let i = 0; i < connectedObjects(clone).length; i++) {
+            temp = connectedObjects(clone);
+            console.log("copiedLine connections: " + temp[i].name);
+        }
     }else{
         clone.name = "RelationCopy" + diagram.length;
     }
@@ -668,9 +669,6 @@ function copySymbol(symbol) {
 
     return diagram.length;
 
-}
-function fixLineConnectionAfterCopy(object) {
-    // console.log("oname: " + object.name);
 }
 
 //--------------------------------------------------------------------
@@ -1545,9 +1543,7 @@ function connectedObjects(line) {
             for (var j = 0; j < objectPoints.length; j++) {
                 if (objectPoints[j] == line.topLeft || objectPoints[j] == line.bottomRight) {
                     privateObjects.push(diagram[i]);
-                    console.log("po: " + privateObjects[i].name);
                 }
-
                 if (privateObjects.length >= 2) {
                     break;
                 }
@@ -1555,7 +1551,6 @@ function connectedObjects(line) {
             if (privateObjects.length >= 2) {
                 break;
             }
-
         }
     }
     return privateObjects;

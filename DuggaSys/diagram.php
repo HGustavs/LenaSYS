@@ -39,7 +39,6 @@
             window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
     </script>
-
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
