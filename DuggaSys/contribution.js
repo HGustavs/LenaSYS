@@ -198,6 +198,7 @@ function renderBarDiagram(data)
   str += "</div>";
   return str;
 }
+str+='<div id="group2">';
 
 function renderLineDiagram(data){
 
@@ -205,7 +206,6 @@ function renderLineDiagram(data){
     daycounts=data['count'];
     var firstweek = data.weeks[0].weekstart;
    
-    str+='<div id="group2">';
 
     //Selectbox to choose week
     str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
