@@ -209,15 +209,16 @@ function renderLineDiagram(data){
   
    
       str+='<div id="group2">';
-      //Selectbox to choose week
-      str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
-      str+='<option value="'+firstweek+'">All weeks</option>';
-    for(i=0;i<weeks.length;i++){
-              var week=weeks[i];
-              str+='<option value="'+week.weekstart+'">'+ "Week " + week.weekno +"   ("+week.weekstart+" - "+week.weekend+")"+'</option>';
-      }
-      str+='</select>';
+     
     str+='<div id="lineDiagramDiv">';
+     //Selectbox to choose week
+     str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
+     str+='<option value="'+firstweek+'">All weeks</option>';
+   for(i=0;i<weeks.length;i++){
+             var week=weeks[i];
+             str+='<option value="'+week.weekstart+'">'+ "Week " + week.weekno +"   ("+week.weekstart+" - "+week.weekend+")"+'</option>';
+     }
+     str+='</select>';
     str+=weekchoice(firstweek);
     str+='</div>';
     str+='</div>';
