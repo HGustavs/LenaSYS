@@ -335,10 +335,11 @@ function onToggleFilter(colId) {
 }
 
 function toggleAllCheckboxes(source){
+	var i = 0
     checkboxArray = document.getElementsByName('checkbox');
-    for (var i = 0, n = checkboxArray.length; i < n; i++){
-        checkboxArray[i].checked = source.checked;
-    }
+    for (n = checkboxArray.length; i < n; i++){
+		document.getElementById(checkboxArray[i].id).click();
+	}
 }
 
 //--------------------------------------------------------------------------
