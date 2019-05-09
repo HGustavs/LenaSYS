@@ -96,6 +96,7 @@ function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
       toggleHamburger();
+      alert("operation != click");
     }
   } else {
     toggleHamburger();
