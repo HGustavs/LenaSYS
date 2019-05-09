@@ -447,3 +447,20 @@ margin:0 4px 0 4px;
 		flex-wrap: wrap;
 	}
 }
+
+  /* --------------================################================-------------- *
+ *                      	          Curve Dugga				       							       *
+ * --------------================################================-------------- */
+ #curveInfoBox {
+	max-width:300px;
+ }
+
+@media only screen and (max-width: 1360px) {
+	#curveInfoBox {
+		width: 100%;
+		max-width: 100%;
+	}
+	.curveContainer {
+		flex-wrap: wrap;
+	}
+}
