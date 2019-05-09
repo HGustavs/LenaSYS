@@ -255,7 +255,7 @@ p {
 .lena {
   border-radius: 6px 0px 0px 6px;
   color: var(--color-text-logo);
-  background-color: var(--color-logo-backbround);
+  background-color: var(--color-logo-background);
   background: linear-gradient(to bottom, var(--color-logo1), var(--color-logo2));
   padding-left: 6px;
   padding-right: 6px;
