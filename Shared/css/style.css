@@ -106,6 +106,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100%;
+  background-color: var(--color-background);
 }
 
 table {
@@ -192,8 +193,8 @@ p {
  * --------------================################================-------------- */
 
  #buttonDiv {
-   position: fixed;
    margin-top: -20px;
+   margin-bottom: 10px;
    height: 20px;
    background-color: white;
    border-left: 1px solid #c0c0c0;
@@ -222,12 +223,13 @@ p {
 #content {
   background: var(--color-background);
   min-height: calc(100vh - 80px);
-  margin: 65px 10px 15px 10px;
+  margin: 65px 10px 0px 10px;
 }
 
 #contentDiagram {
-  background: #fff;
-  margin: 65px 10px 15px 10px;
+  background: var(--color-background);
+  margin-left: 13px;
+  margin-top: 65px;
 }
 
 #accessedcontent {
@@ -267,7 +269,7 @@ p {
 .sys {
   border-radius: 6px;
   color: var(--color-text-primary);
-  border: 2px solid var(--color-logo-backbround);
+  border: 2px solid var(--color-logo-background);
   background-color: var(--color-background);
   padding-right: 4px;
   margin-right: 4px;
@@ -283,7 +285,7 @@ p {
 }
 
 #Courselist a {
-  color: #775886;
+  color: var(--color-primary-2);
   text-decoration: none;
 }
 
@@ -293,10 +295,10 @@ p {
 
 #Courselist .head {
   text-align: center;
-  color: #775886;
+  color: var(--color-primary-2);
   font-size: 18pt;
   display: block;
-  background-color: #FFF;
+  background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
   margin-top: 40px;
@@ -310,7 +312,7 @@ p {
   color: #775886;
   font-size: 14pt;
   display: block;
-  background-color: #fff;
+  background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
   margin-right: 8px;
@@ -324,7 +326,7 @@ p {
 
 #Sectionlist {
   margin: 0px auto;
-  background-color: #fff;
+  background-color: var(--color-background);
   color: #434343;
   display: block;
   padding-top: 1px;
@@ -467,7 +469,7 @@ p {
 }
 
 #Sectionlist .norm {
-  background-color: #fff;
+  background-color: var(--color-background);
   color: #000;
 }
 
@@ -1511,7 +1513,7 @@ input {
   font-size: 14px;
   line-height: 18px;
   color: #555;
-  background-color: #fff;
+  background-color: var(--color-background);
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -2478,7 +2480,7 @@ span.arrow {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--color-background);
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
 }
@@ -2527,7 +2529,7 @@ span.arrow {
 }
 
 #feedbackTable tbody tr:nth-child(odd) {
-  background-color: #FFF;
+  background-color: var(--color-background);
 }
 
 #feedbackBox {
@@ -2869,7 +2871,7 @@ span.arrow {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--color-background);
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
 }
@@ -3379,7 +3381,7 @@ ul.hamburgerList button.menuButton {
 .bar3 {
   width: 17px;
   height: 3px;
-  background-color: #fff;
+  background-color: var(--color-background);
   margin: 3px 0;
   transition: 0.4s;
 }
@@ -3881,7 +3883,7 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--color-background);
   border-radius: 6px;
   border: 2px solid #d4d4d4;
   height: 34px;
@@ -4611,10 +4613,10 @@ textarea#mrkdwntxt {
     display: block;
     cursor: pointer;
     color: #000;
-    background-color: #fff;
+    background-color: var(--color-background);
 }
 .selectHeader > span:hover {
-      background-color: rgb(200, 200, 200);
+    background-color: rgb(200, 200, 200);
 }
 #headerType1 {
     font-size: 13px;
