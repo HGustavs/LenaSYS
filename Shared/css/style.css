@@ -3156,12 +3156,12 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-#searchinput, #duggaSearch {
+#searchinput, #duggaSearch, #searchinputMobile {
   padding: 0 0 0 2px;
   height: 20px;
 }
 
-#searchBar, #searchbutton {
+#searchBar, #searchbutton, #searchbuttonMobile {
   position: relative;
   width: 26px;
   height: 25px;
@@ -3848,7 +3848,7 @@ only screen and (max-device-width: 530px) {
     float: left;
   }
 
-  #searchinput, #duggaSearch {
+  #searchinputMobile {
     margin-left: 16px;
     border: 1px solid var(--color-border);
   }
@@ -3857,7 +3857,7 @@ only screen and (max-device-width: 530px) {
     padding: 3px;
   }
 
-  #searchbutton {
+  #searchbuttonMobile {
     margin: 0;
   }
 
