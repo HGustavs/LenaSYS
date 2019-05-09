@@ -96,6 +96,7 @@ function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
       toggleHamburger();
+      bigMac();
     }
   } else {
     toggleHamburger();
@@ -1377,6 +1378,7 @@ function mouseUp(e) {
     closeWindows();
     closeSelect();
     showSaveButton();
+    alert("utanför!");
   }
 }
 
