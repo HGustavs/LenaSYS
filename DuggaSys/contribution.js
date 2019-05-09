@@ -22,14 +22,14 @@ for (i; i < l; i++) {
 
 function removeStatview(){
   console.log(Remove);
-  var Remove = document.querySelectorAll(' .group2 , .group3'),
+  var all = document.querySelectorAll(' .group2 , .group3'),
+  i = 0,
+  l = all.length;
 
-    i = 0,
-    i = Remove.length;
-    for (i; i < i; i++) {
-      Remove[i].style.display = 'none';
+for (i; i < l; i++) {
+ all[i].style.display = 'none';
 
-    }
+}
 
 }
 function statSort(value) {
