@@ -235,7 +235,7 @@ function renderCell(col, celldata, cellid) {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
 		var checkSubmission = data => data.uid === obj.uid;
 		if (filez['submissions'].some(checkSubmission)) {
-			str += "<img id='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + obj.vers + ")'>";
+			str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + obj.vers + ")'>";
 		};
 	} else if (col == "access") {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student"], ["W", "R"]) + "</select>";
