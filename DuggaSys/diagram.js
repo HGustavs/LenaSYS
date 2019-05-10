@@ -1700,7 +1700,6 @@ function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
     if(developerModeActive) {
-        console.log('developermode: ON');       // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
@@ -1716,7 +1715,6 @@ function developerMode(event) {
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
     } else {
-        console.log('developermode: OFF');
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
@@ -2669,7 +2667,7 @@ function mousemoveevt(ev, t) {
                     if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
                         //The point belongs to a umlLine or Line
                         canvas.style.cursor = "pointer";
-                    } else {                    
+                    } else {
                         canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                     }
                 }
