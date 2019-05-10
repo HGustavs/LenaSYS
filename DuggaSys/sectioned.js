@@ -806,7 +806,7 @@ function returnedSection(data) {
         // Generate ID for collapsing arrows
         //var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
         var arrowID = item['moment'];
-
+        var arrowLID = item['lid'];
         // Content of Section Item
         if (itemKind == 0) {
           // Header
@@ -815,15 +815,15 @@ function returnedSection(data) {
           // Section
           str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
           str += "<span class='ellipsis listentries-span'>" + item['entryname'] + "</span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + arrowID + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + arrowID + "' class='arrowRight' style='display:none;'></div>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + arrowLID + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + arrowLID + "' class='arrowRight' style='display:none;'></div>";
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
           str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
           str += "<span class='ellipsis listentries-span'>" + item['entryname'] + " " + strz + " </span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + arrowID + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + arrowID + "' class='arrowRight' style='display:none;'>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + arrowLID + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + arrowLID + "' class='arrowRight' style='display:none;'>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
