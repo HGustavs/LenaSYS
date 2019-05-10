@@ -2500,7 +2500,7 @@ span.arrow {
   cursor: pointer;
   margin: 8px 2px 4px 2px;
   font-size: 14px;
-  transition: 1s background-color;
+  transition: 2s background-color;
   float: right;
   line-height: 30px;
   text-align: center;
