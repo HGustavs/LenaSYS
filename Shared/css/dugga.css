@@ -397,3 +397,76 @@ svg text {
 		margin-top: 10px;
 	}
 }
+
+ /* --------------================################================-------------- *
+ *                      	         HTML-CSS Dugga				       								   *
+ * --------------================################================-------------- */
+
+ @media only screen and (max-width: 800px) {
+	#htmlCssTable > tbody,
+	#htmlCssTable > tbody > tr, 
+	#htmlCssTable > tbody > tr > td {
+		display: block;
+	}
+ }
+
+  /* --------------================################================-------------- *
+ *                      	        Transform Dugga				       								   *
+ * --------------================################================-------------- */
+ #transformInfoBox {
+	min-width: 300px;
+	width: 300px;
+}
+@media only screen and (max-width: 1360px) {
+ #transformInfoBox {
+	 width: 100%;
+ }
+ #transformInfoBox .loginBoxheader {
+	 width: 100%;
+ }
+ .transformContainer {
+	 flex-wrap: wrap;
+ }
+}
+
+  /* --------------================################================-------------- *
+ *                      	     Clipping Masking Dugga				       							 *
+ * --------------================################================-------------- */
+#clippingInfoBox {
+	min-width:170px;
+	width:300px;
+	margin:0 4px 0 4px;
+}
+#clippingInfoBox2 {
+	min-width:120px;
+	width:300px;
+	margin:0 4px 0 4px;
+}
+ @media only screen and (max-width: 1360px) {
+	#clippingInfoBox {
+		width:100%;
+	}
+	#clippingInfoBox2 {
+		width:100%;
+	}
+	.clippingContainer {
+		flex-wrap: wrap;
+	}
+}
+
+  /* --------------================################================-------------- *
+ *                      	          Curve Dugga				       							       *
+ * --------------================################================-------------- */
+ #curveInfoBox {
+	max-width:300px;
+ }
+
+@media only screen and (max-width: 1360px) {
+	#curveInfoBox {
+		width: 100%;
+		max-width: 100%;
+	}
+	.curveContainer {
+		flex-wrap: wrap;
+	}
+}
