@@ -363,10 +363,11 @@ if($ha){
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive_dugga.php", $userid,$info);
-
+echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
+/*
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
-}
+}*/
 function formatTimeSheetInput(){
 	$inputString = "";
 	$indexedPOST = array_values($_POST);

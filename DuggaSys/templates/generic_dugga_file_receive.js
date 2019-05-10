@@ -290,6 +290,9 @@ function createFileUploadArea(fileuploadfileds){
 
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
 		form +="</form>";
+		form +="<div class='err'>";
+		form +="<span style='font-weight: bold;'>Bummer!</span>";
+		form +=" This filetype is not allowed!</div>";
 
 		str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
 		str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
