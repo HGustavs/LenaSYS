@@ -1281,6 +1281,9 @@ function toggleVirtualA4Holes() {
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
         $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
+        switchSideA4Holes = "left"; // Disable the 'A4 Holes Right' option
+        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
         updateGraphics();
     } else {
         toggleA4Holes = true;
