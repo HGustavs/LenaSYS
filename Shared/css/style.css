@@ -5086,9 +5086,13 @@ textarea#filecont{
   display: block;
   width: 100%;
   padding-bottom: 10px;
+  padding-top: 8px;
   cursor: pointer;
   background: var(--color-primary);
   color: white;
+}
+.newRowButton:hover{
+  background: #7B5A96;
 }
 #tsSubmit {
   background: var(--color-primary);
@@ -5096,10 +5100,12 @@ textarea#filecont{
   margin-left: 50px;
   margin-bottom: 10px;
   cursor: pointer;
+  border: 2px solid #614875;
+  padding: 4px 8px 4px 8px;
 }
 #tsSubmit:hover {
-  background: #614875;
-  color: #fff;
+  background: #7B5A96;
+  color: white;
   border: 2px solid #614875;
 }
 
