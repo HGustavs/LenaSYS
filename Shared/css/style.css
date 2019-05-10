@@ -3871,11 +3871,11 @@ only screen and (max-device-width: 530px) {
 
   .tooltip-searchbar-box {
     transform: translate(-10%, 30%);
+    box-shadow: 0 0px 17px 0 rgba(0,0,0,0.5);
   }
 
   .tooltip-searchbar-box:before {
     margin: 0;
-    box-shadow: 0 0px 17px 0 rgba(0,0,0,0.5);
   }
 
   /* #ladexportContainer select, #ladexportContainer input {
