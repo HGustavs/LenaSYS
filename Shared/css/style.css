@@ -5089,6 +5089,7 @@ textarea#filecont{
 
 .resultedbuttons{
   margin: 7px;
+  margin-bottom: 0px;
   padding-left: 10px;
   padding-right: 10px;
   background-color: #614875;
@@ -5098,6 +5099,8 @@ textarea#filecont{
   border: 0px;
   font-size: 14px;
   transition: 0.1s background-color;
+  border-radius: 4px;
+  box-shadow: 1px 3px rgba(0,0,0,0.12);
 }
 
 .resultedbuttons:hover{
