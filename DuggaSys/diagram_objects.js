@@ -247,7 +247,7 @@ function Symbol(kindOfSymbol) {
 
             //only when object is created: changes position of points so that object is created from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     //entity and attribute template is the same size so either should work fine
                     points[i].x -= entityTemplate.width * 0.5;
@@ -311,7 +311,7 @@ function Symbol(kindOfSymbol) {
             }
             //only when object is created: changes position of points so that object is positioned from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * min width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * min width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     points[i].x -= this.minWidth * 0.5;
                     points[i].y -= this.minHeight * 0.5;
@@ -353,7 +353,7 @@ function Symbol(kindOfSymbol) {
 
             //only when object is created: changes position of points so that object is positioned from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     points[i].x -= relationTemplate.width * 0.5;
                     points[i].y -= relationTemplate.height * 0.5;
@@ -928,6 +928,10 @@ function Symbol(kindOfSymbol) {
             }
         }
 
+        if(this.isHovered && this.symbolkind != symbolKind.umlLine && this.symbolkind != symbolKind.line){
+          this.drawCenterCoordinatesTooltip();
+        }
+
         ctx.save();
 
         ctx.textAlign = "center";
@@ -1378,7 +1382,7 @@ function Symbol(kindOfSymbol) {
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 
-        // Set as dotted lines depending on value  
+        // Set as dotted lines depending on value
         if (this.properties['key_type'] == "Implementation" || this.properties['key_type'] == "Dependency") {
             ctx.setLineDash([10, 10]);
         }
@@ -1504,13 +1508,13 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
-        
+
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
 
     //---------------------------------------------------------------
-    // drawUmlRelationLineFigures: Draw arrow or diamond shape 
-    // depending on linetype at one of the connected uml objects    
+    // drawUmlRelationLineFigures: Draw arrow or diamond shape
+    // depending on linetype at one of the connected uml objects
     //---------------------------------------------------------------
     this.drawUmlRelationLines = function(x1, y1, x2, y2, startLineDirection, endLineDirection) {
         // set start position to the right object line start
@@ -1519,7 +1523,7 @@ function Symbol(kindOfSymbol) {
             linePositions = { x:x2, y:y2 };
         }
         ctx.setLineDash([0]);
-        
+
         var type;
 
         // arrow filled
@@ -1561,7 +1565,7 @@ function Symbol(kindOfSymbol) {
             if (endLineDirection == "down"){
                 this.drawUmlLineRelation(linePositions.x, linePositions.y, xChange, yChange, true, type);
             } else if (endLineDirection == "left") {
-                this.drawUmlLineRelation(linePositions.x, linePositions.y, -yChange, -xChange, false, type);              
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, -yChange, -xChange, false, type);
             } else if (endLineDirection == "right") {
                 this.drawUmlLineRelation(linePositions.x, linePositions.y, yChange, xChange, false, type);
             } else if (endLineDirection == "up") {
@@ -1593,9 +1597,9 @@ function Symbol(kindOfSymbol) {
         if (vertical) {
             ctx.lineTo(x, y + yC * 2);
             ctx.lineTo(x - xC, y + yC);
-        } else { 
+        } else {
             ctx.lineTo(x + xC * 2, y);
-            ctx.lineTo(x + xC, y - yC); 
+            ctx.lineTo(x + xC, y - yC);
         }
         ctx.closePath();
         ctx.stroke();
@@ -1618,8 +1622,8 @@ function Symbol(kindOfSymbol) {
         }
         if (vertical) {
             ctx.lineTo(x - xC, y + yC);
-        } else { 
-            ctx.lineTo(x + xC, y - yC); 
+        } else {
+            ctx.lineTo(x + xC, y - yC);
         }
         ctx.closePath();
         ctx.stroke();
@@ -1988,11 +1992,11 @@ function Symbol(kindOfSymbol) {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        
+
         var offset = 10;
 
         return {
-            x: pixelsToCanvas(x2 + offset).x, 
+            x: pixelsToCanvas(x2 + offset).x,
             y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
 
@@ -2005,7 +2009,7 @@ function Symbol(kindOfSymbol) {
         ctx.lineWidth = 1 * diagram.getZoomValue();
         //Draws the upper part of the lock
         ctx.beginPath();
-        //A slight x offset to get the correct position   
+        //A slight x offset to get the correct position
         ctx.arc(position.x + (5 * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
@@ -2033,6 +2037,29 @@ function Symbol(kindOfSymbol) {
         ctx.fillText("Entity position is locked", position.x, position.y + offset);
 
         ctx.restore();
+    }
+
+    this.drawCenterCoordinatesTooltip = function() {
+      ctx.save();
+
+      var topLeftPosition = pixelsToCanvas(points[this.topLeft].x, points[this.topLeft].y);
+      var centerPosition = pixelsToCanvas(points[this.centerPoint].x, points[this.centerPoint].y);
+      var widthOfObject = points[this.bottomRight].x - points[this.topLeft].x;
+
+      var xPosition = 230;
+      var yPosition = 805;
+
+      ctx.fillStyle = "#00000";
+      ctx.fillRect(xPosition, yPosition, 300, 30);
+
+      var yOffset = 17;
+      var xOffset = 135;
+      ctx.fillStyle = "black";
+      ctx.font = "bold 14px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Center coordinates of object: " + "X=" + Math.round(points[this.centerPoint].x) + " & " + "Y=" + Math.round(points[this.centerPoint].y), xPosition + xOffset, yPosition + yOffset);
+
+      ctx.restore();
     }
 }
 
