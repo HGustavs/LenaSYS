@@ -3137,6 +3137,10 @@ rect[class*="activitymarker"]:hover {
   cursor: pointer;
 }
 
+#toggleAllButton:hover {
+  background-color: #7b5a96;
+}
+
 #dropdownc {
   cursor: default;
 }
