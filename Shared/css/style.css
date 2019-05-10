@@ -154,8 +154,8 @@ h6 {
 
 hr {
   border: 0;
-  border-bottom: 1px dashed #ccc;
-  background: #999;
+  border-bottom: 1px dashed var(--color-border-2);;
+  background: var(--color-border);
 }
 
 .hidden {
@@ -196,8 +196,8 @@ p {
    margin-top: -20px;
    margin-bottom: 10px;
    height: 20px;
-   background-color: white;
-   border-left: 1px solid #c0c0c0;
+   background: var(--color-background);
+   border-left: 1px solid var(--color-border-4);
  }
 
 .version {
@@ -206,7 +206,7 @@ p {
   text-align: center;
   padding: 10px;
   font-size: 10pt;
-  background-color: #ddd;
+  background-color: var(--color-background);
 }
 
 .err {
@@ -371,7 +371,7 @@ p {
 
 #Sectionlist .header {
   color: var(--color-text-header);
-  background-color: #775886;
+  background-color: var(--color-text-primary);
   text-align: center;
 }
 
@@ -487,17 +487,17 @@ p {
 }
 
 #Sectionlist .norm:hover {
-  background-color: #cccccc;
+  background-color: var(--color-background-2);
   color: var(--color-text-list);
 }
 
 #Sectionlist .hi:hover {
-  background-color: #cccccc;
+  background-color: var(--color-background-2);
   color: var(--color-text-list);
 }
 
 #Sectionlist .lo:hover {
-  background-color: #cccccc;
+  background-color: var(--color-background-2);
   color: var(--color-text-list);
 }
 
@@ -520,7 +520,7 @@ p {
   width: 32px;
   vertical-align: middle;
   overflow: hidden;
-  background-color: #927b9e;
+  background-color: var(--color-primary-light);
 }
 
 .StopLight {
@@ -621,7 +621,7 @@ p {
 .statisticsInnerBox{
     margin: 10px 10px 10px 10px;
     border: 2px solid darkgray;
-    background-color: #eae8eb;
+    background-color: var(--color-sectioned-table-lo);
 }
 
 /* --------------================################================-------------- *
@@ -648,7 +648,7 @@ header td {
 #scoreElement {
   z-index: 9000;
   width: 100px;
-  background-color: white;
+  background: var(--color-background);
   text-align: center;
   position: fixed;
   top: 0%;
@@ -1349,7 +1349,7 @@ input {
 }
 
 .diagramAction:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
 }
 
 /* --------------================################================-------------- *
@@ -1596,7 +1596,7 @@ input {
   color: #202020;
   background-color: var(--color-sectioned-table-lo);
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-border-2);
   border-radius: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
