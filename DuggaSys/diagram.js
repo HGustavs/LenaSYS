@@ -401,12 +401,22 @@ function keyDownHandler(e) {
     } else if(ctrlIsClicked && key == vKey ) {
         //Ctrl + v
         var temp = [];
+        var tempLine = []
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind) {
-                const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
+            let cloneIndex = 0;
+            if(cloneTempArray[i].symbolkind != symbolKind.line) {
+                cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
+            } 
+            if (cloneTempArray[i].symbolkind == symbolKind.line) {
+                console.log(getConnectedLines(cloneTempArray[i]));
+                cloneIndex = copySymbol(cloneTempArray[i]) -1;
+                tempLine.push(diagram[cloneIndex]);
             }
+        }
+        for (let j = 0; j < tempLine.length; j++) {
+            temp.push(tempLine[j]);
         }
         cloneTempArray = temp;
         selected_objects = temp;
@@ -622,18 +632,28 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
-    var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    // var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    // var topLeftClone = JSON.parse(JSON.stringify(points[symbol.topLeft]));
+    var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
     topLeftClone.x += 10;
     topLeftClone.y += 10;
-    var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+    // var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+    // var bottomRightClone = JSON.parse(JSON.stringify(points[symbol.bottomRight]));
+    var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
     bottomRightClone.x += 10;
     bottomRightClone.y += 10;
-    var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+    // var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+    // var centerPointClone = JSON.parse(JSON.stringify(points[symbol.centerPoint]));
+    var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
     centerPointClone.y += 10;
-    var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
-    middleDividerClone.x += 10;
-    middleDividerClone.y += 10;
+    // var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
+    if (symbol.symbolkind == symbolKind.uml) {
+        // var middleDividerClone = JSON.parse(JSON.stringify(points[symbol.middleDivider]));
+        var middleDividerClone = jQuery.extend(true, {}, points[symbol.middleDivider]);
+        middleDividerClone.x += 10;
+        middleDividerClone.y += 10;
+    }
 
     if(symbol.symbolkind == symbolKind.uml) {
         clone.name = "NewCopy" + diagram.length;
