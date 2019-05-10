@@ -41,8 +41,7 @@
 				<tr class='trsize nowrap'>
 					<td style='display: inline-block;'>
 						<div class='course-dropdown-div'>
-								<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this.id)' >
-								</select>
+							<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this.id)' ></select>
 						</div>
 					</td>
 					<td class='editVers' style='display: inline-block;'>
