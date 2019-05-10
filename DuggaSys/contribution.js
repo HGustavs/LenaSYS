@@ -7,13 +7,56 @@ var dailyCount=[[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0],
 
 AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 
+
+//sorting for multiple views
+//Restores all views when pressing the All button
+function restoreStatView(){
+  var all = document.querySelectorAll('.group1 , .group2 , .group3'),
+  i = 0,
+  l = all.length;
+
+for (i; i < l; i++) {
+ all[i].style.display = 'block';
+
+}}
+//Removes unwanted classes based on button
+function removeStatview(value){
+  restoreStatView();
+  var remove = document.querySelectorAll(value),
+  i = 0,
+  l = remove.length;
+
+for (i; i < l; i++) {
+ remove[i].style.display = 'none';
+
+}
+  }
+// Gives the buttons functionality 
+function statSort(value) {
+  if (value == "All") {
+    document.getElementById("contribTsTable").style.display = "block";
+    restoreStatView();
+
+  } else if (value == "Basic") {
+    document.getElementById("contribTsTable").style.display = "none";
+    removeStatview('.group2 , .group3');
+
+  } else if (value == "Charts") {
+    document.getElementById("contribTsTable").style.display = "none";
+    removeStatview('.group1 , .group3');
+  } else if (value == "Contribution") {
+    document.getElementById("contribTsTable").style.display = "block";
+    removeStatview('.group1 , .group2');
+  }
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
 
 function renderRankTable(){
   if(contribDataArr.length == 0) return;
-  var str="<table class='fumho'><tr><th></th><th style='padding: 2px 10px;' onclick='sortRank(0);'>login</th><th style='padding: 2px 10px;' onclick='sortRank(2);'>alleventranks</th><th style='padding: 2px 10px;' onclick='sortRank(3);'>allcommentranks</th><th style='padding: 2px 10px;' onclick='sortRank(4);'>LOC rank</th><th style='padding: 2px 10px;' onclick='sortRank(5);'>Commit rank</th></tr>";
+  var str="<table  class='fumho group3'><tr><th></th><th style='padding: 2px 10px;' onclick='sortRank(0);'>login</th><th style='padding: 2px 10px;' onclick='sortRank(2);'>alleventranks</th><th style='padding: 2px 10px;' onclick='sortRank(3);'>allcommentranks</th><th style='padding: 2px 10px;' onclick='sortRank(4);'>LOC rank</th><th style='padding: 2px 10px;' onclick='sortRank(5);'>Commit rank</th></tr>";
   for (var j=0; j<contribDataArr.length;j++){
       str+="<tr>";
       str+="<td>"+j+"</td>";
@@ -118,8 +161,9 @@ function renderBarDiagram(data)
   }
 
   // Renders the diagram
-  var str = "<div style='width:100%;overflow-x:scroll;'>";
-  str += "<svg class='chart fumho' style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
+
+  var str = "<div class='group1' style='width:100%;overflow-x:scroll;'>";
+  str += "<svg  class='chart fumho'  style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
   for(var i = 0; i < numOfWeeks; i++){
     str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
   }
@@ -175,19 +219,21 @@ function renderLineDiagram(data){
     var weeks=data.weeks;
     daycounts=data['count'];
     var firstweek = data.weeks[0].weekstart;
+   
 
     //Selectbox to choose week
-    str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
+    str='<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
     str+='<option value="'+firstweek+'">All weeks</option>';
 	for(i=0;i<weeks.length;i++){
             var week=weeks[i];
             str+='<option value="'+week.weekstart+'">'+ "Week " + week.weekno +"   ("+week.weekstart+" - "+week.weekend+")"+'</option>';
     }
-    str+='</select>';
 
-    str+='<div id="lineDiagramDiv">';
+    str+='</select>';
+    str+='<div class="group2" id="lineDiagramDiv">';
     str+=weekchoice(firstweek);
     str+='</div>';
+
 
     return str;
 }
@@ -632,7 +678,7 @@ function createTimeSheetTable(data)
 	var colOrder=["week","day","type","reference","comment","link"];
 	myTable = new SortableTable({
 		data:tabledata,
-		tableElementId:"contribTsTable",
+    tableElementId:"contribTsTable",
 		renderCellCallback:renderCell,
 		renderSortOptionsCallback:renderSortOptions,
 		columnOrder:colOrder,
@@ -690,29 +736,41 @@ function returnedSection(data)
 
   contribDataArr = [];
 	var str="";
-  localStorage.setItem('GitHubUser', data['githubuser'])
-    str+="<p>";
-    if(data['allusers'].length>0){
-        str+="<select id='userid' onchange='selectuser();'>";
-        str+="<option>"+localStorage.getItem('GitHubUser')+"</option>";
-        for(i=0;i<data['allusers'].length;i++){
-          if(data['allusers'][i] != localStorage.getItem('GitHubUser')){
-            str+="<option>"+data['allusers'][i]+"</option>";
-          }
-        }
-        str+="</select>";
+
+
+  
+  str += "<div class='contributionSort'>";
+  str += "<input type='button' value='All' class='submit-button title='All' onclick='statSort(value)'></input>";
+  str += "<input type='button' value='Basic' class='submit-button title='Basic' onclick='statSort(value)'></input>";
+  str += "<input type='button' value='Charts' class='submit-button title='Charts' onclick='statSort(value)'></input>";
+  str += "<input type='button' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)'></input>";
+  str += "</div>";
+
+   localStorage.setItem('GitHubUser', data['githubuser'])
+   str+="<p>";
+   if(data['allusers'].length>0){
+       str+="<select id='userid' onchange='selectuser();'>";
+       str+="<option>"+localStorage.getItem('GitHubUser')+"</option>";
+       for(i=0;i<data['allusers'].length;i++){
+         if(data['allusers'][i] != localStorage.getItem('GitHubUser')){
+           str+="<option>"+data['allusers'][i]+"</option>";
+         }
+       }
+       str+="</select>";
     }
-    str+="</p>";
+   str+="</p>";
 
-    str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
+   str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
+  
+  str+="<table  class='fumho group1'>";
 
-  	str+="<table class='fumho'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th style='padding: 2px 10px;'>Kind</th>";
-    str+="<th style='padding: 2px 10px;'>Number</th>";
+   str+="<th style='padding: 2px 10px;'>Number</th>";
 	str+="<th style='padding: 2px 10px;'>Ranking</th>";
   str+="<th style='padding: 2px 10px;'>Group ranking</th>";
 	str+="</tr>";
+
 
     str+="<tr>";
     str+="<td>Issue Creation</td>";
@@ -753,12 +811,13 @@ function returnedSection(data)
     str+=createTimeSheetTable(data['timesheets']);
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
-    str+="<div id='hourlyGraph'>";
+    str+="<div class='group2' id='hourlyGraph'>";
     str+=renderCircleDiagram(JSON.stringify(data['hourlyevents']));
     str+="</div>";
 
+
     // Table heading
-	str+="<table class='fumho'>";
+	str+="<table class='fumho group3' >";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th></th>";
 	str+="<th style='padding: 2px 10px;'>Dates</th>";
@@ -865,10 +924,8 @@ function returnedSection(data)
 			str+="</tr>";
 	}
 
-	// End of table
-
+  // End of table
 	str+="</table><div id='rankTable'></div>";
-
     var contribData = [];
 
 	if(data['allrowranks'].length>0){
