@@ -2674,8 +2674,8 @@ function mousemoveevt(ev, t) {
         } else if (md == mouseState.noPointAvailable) {
             // If mouse is pressed down and no point is close show selection box
         } else if (md == mouseState.insidePoint) {
-            // If the selected object is locked, you can't resize the object
-            if (diagram[lastSelectedObject].locked) {
+            // check so that the point were trying to move is attached to a targeted symbol and If the selected object is locked, you can't resize the object
+            if (!sel.attachedSymbol.targeted || diagram[lastSelectedObject].locked) {
                 return;
             }
             // If mouse is pressed down and at a point in selected object - move that point
