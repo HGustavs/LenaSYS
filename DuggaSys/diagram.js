@@ -2377,7 +2377,7 @@ function diagramToSVG() {
 // NOT like:
 //         setCheckbox(checkboxElement, true); // checkboxVar is unchanged
 // The last example results in unchanged behaviour in the diagram but with
-// the checkbox icon appearing as if it is active. 
+// the checkbox icon appearing as if it is active.
 //----------------------------------------------------------------------
 
 function setCheckbox(element, check) {
@@ -2651,7 +2651,7 @@ function mousemoveevt(ev, t) {
                     if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
                         //The point belongs to a umlLine or Line
                         canvas.style.cursor = "pointer";
-                    } else {                    
+                    } else {
                         canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                     }
                 }
@@ -3167,7 +3167,17 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        classB.name = "New" + countNumberOfSymbolKind(symbolKind.uml);
+        var numberOfSymbolKind = 0;
+        for(let i = 0; i < diagram.length; i++){
+            //Checks for duplicates with the same number and adds +1 to it.
+            if (diagram[i].name == "New" + countNumberOfSymbolKind(symbolKind.uml)) {
+                numberOfSymbolKind = 1;
+            }
+        }
+        //Variable that adds +1 to numberOfSymbolKind if there were a duplicate otherwise it's 0.
+        var newValue = countNumberOfSymbolKind(symbolKind.uml) + numberOfSymbolKind;
+
+        classB.name = "New" + newValue;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3181,7 +3191,17 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        erAttributeA.name = "Attr" + countNumberOfSymbolKind(symbolKind.erAttribute);
+        var numberOfSymbolKind = 0;
+        for(let i = 0; i < diagram.length; i++){
+            //Checks for duplicates with the same number and adds +1 to it.
+            if (diagram[i].name == "Attr" + countNumberOfSymbolKind(symbolKind.erAttribute)) {
+                numberOfSymbolKind = 1;
+            }
+        }
+        //Variable that adds +1 to numberOfSymbolKind if there were a duplicate otherwise it's 0.
+        var newValue = countNumberOfSymbolKind(symbolKind.erAttribute) + numberOfSymbolKind;
+
+        erAttributeA.name = "Attr" + newValue;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3194,7 +3214,18 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        erEnityA.name = "Entity" + countNumberOfSymbolKind(symbolKind.erEntity);
+
+        var numberOfSymbolKind = 0;
+        for(let i = 0; i < diagram.length; i++){
+            //Checks for duplicates with the same number and adds +1 to it.
+            if (diagram[i].name == "Entity" + countNumberOfSymbolKind(symbolKind.erEntity)) {
+                numberOfSymbolKind = 1;
+            }
+        }
+        //Variable that adds +1 to numberOfSymbolKind if there were a duplicate otherwise it's 0.
+        var newValue = countNumberOfSymbolKind(symbolKind.erEntity) + numberOfSymbolKind;
+
+        erEnityA.name = "Entity" + newValue;;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3234,7 +3265,18 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        erRelationA.name = "Relation" + countNumberOfSymbolKind(symbolKind.erRelation);
+
+        var numberOfSymbolKind = 0;
+        for(let i = 0; i < diagram.length; i++){
+            //Checks for duplicates with the same number and adds +1 to it.
+            if (diagram[i].name == "Relation" + countNumberOfSymbolKind(symbolKind.erRelation)) {
+                numberOfSymbolKind = 1;
+            }
+        }
+        //Variable that adds +1 to numberOfSymbolKind if there were a duplicate otherwise it's 0.
+        var newValue = countNumberOfSymbolKind(symbolKind.erRelation) + numberOfSymbolKind;
+
+        erRelationA.name = "Relation" + newValue;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3310,10 +3352,10 @@ function mouseupevt(ev) {
 }
 
 function countNumberOfSymbolKind(kind) {
-  let numberOfSymbolKind = 0;
+  var numberOfSymbolKind = 0;
   for(let i = 0; i < diagram.length; i++){
     if(diagram[i].symbolkind == kind) {
-      numberOfSymbolKind++;
+        numberOfSymbolKind++;
     }
   }
   return numberOfSymbolKind;
