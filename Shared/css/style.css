@@ -193,8 +193,8 @@ p {
  * --------------================################================-------------- */
 
  #buttonDiv {
+   position:fixed;
    margin-top: -20px;
-   margin-bottom: 10px;
    height: 20px;
    background: var(--color-background);
    border-left: 1px solid var(--color-border-4);
@@ -202,7 +202,7 @@ p {
 
 .version {
   color: #EFF;
-  text-shadow: 1px 1px #000;
+  text-shadow: 1px 1px var(--color-text-list);
   text-align: center;
   padding: 10px;
   font-size: 10pt;
@@ -217,19 +217,18 @@ p {
   display: block;
   box-shadow: 0px 2px 4px #DCD;
   padding: 8px;
-  text-shadow: 1px 1px #000;
+  text-shadow: 1px 1px var(--color-text-list);
 }
 
 #content {
   background: var(--color-background);
   min-height: calc(100vh - 80px);
-  margin: 65px 10px 0px 10px;
+  margin: 65px 10px 15px 10px;
 }
 
 #contentDiagram {
   background: var(--color-background);
-  margin-left: 13px;
-  margin-top: 65px;
+  margin: 65px 10px 15px 10px;
 }
 
 #accessedcontent {
@@ -319,20 +318,6 @@ p {
   padding-right: 8px;
 }
 
-.login {
-  color: #612 !important;
-}
-
-.deleted {
-  text-decoration: line-through !important;
-  opacity: 0.3 !important;
-}
-
-#noAccessMessage {
-  padding: 5px;
-}
-
-
 .dateSize {
   width: 15%;
 }
@@ -410,7 +395,7 @@ p {
 
 .fileLink_counter {
   font-size: 20px;
-  color: #614875;
+  color: var(--color-primary);
 }
 
 #Sectionlist .example {
@@ -731,24 +716,19 @@ header td {
 }
 
 .loggedout {
-  background-color: #50a750;
-
-}
-
-#loginbutton:hover {
-    filter: brightness(1.1);
+  background-color: var(--color-green);
 }
 
 .loggedout:hover {
-  background-color: #50a750;
+  background-color: var(--color-green);
 }
 
 .loggedin {
-    background-color: #c75050;
+    background-color: var(--color-red);
 }
 
 .loggedin:hover {
-  background-color: #c75050;
+  background-color: var(--color-red);
 }
 
 #loginbutton {
@@ -769,14 +749,6 @@ header td {
   background: var(--color-background);
 }
 
-#TopMenuStatic {
-  position: fixed;
-  top: 3px;
-  left: 95px;
-  right: 100px;
-  z-index: 5001;
-}
-
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
@@ -789,9 +761,9 @@ header td {
   bottom: 8px;
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
-  padding: 4px;
+  /*padding: 4px;*/
   background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
+  /*border: 2px solid var(--color-border);*/
 }
 
 .previewpopover {
@@ -951,7 +923,7 @@ header td {
 }
 
 #endsessionmessagebutton:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
   border-radius: 2px;
 }
 
@@ -1226,7 +1198,7 @@ input {
 }
 
 .buttonLoginBox:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
   border-radius: 2px;
 }
 
@@ -1287,7 +1259,7 @@ input {
   vertical-align: bottom;
   cursor: move;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0px;
 }
 
@@ -1320,12 +1292,9 @@ input {
 }
 
 #toolbarTypeText{
-  height: 20px;
-  font-size: 12px;
-  color: #c0c0c0;
-  margin: 0 auto;
-  font-weight: bold;
-  padding-top: 15px;
+  width:60%;
+  border: 1px solid #eaeaea;
+  background-color: #f1f1f1;
 }
 
 #toolbarLeftArrow{
@@ -1341,7 +1310,6 @@ input {
 }
 
 .diagramAction {
-  cursor: pointer;
   border-radius: 5px;
   background-color: var(--color-primary);
   width: 47%;
@@ -1466,7 +1434,7 @@ input {
 }
 
 .drop-down-text>a {
-  font-size: 14px ;
+  font-size: 14px !important;
   color: rgb(0, 0, 0);
   text-decoration: none;
   display: inline-block;
@@ -1480,23 +1448,23 @@ input {
   cursor: default ;
 }
 
-#a4-holes-item.drop-down-item-disabled {
+.drop-down-item-disabled {
   opacity: 0.5;
-  cursor: default ;
+  cursor: default !important;
 }
 
-.drop-down-text-non-clickable #hotkey-space {
-  position: absolute  ;
-  font-size: 11px ;
-  color: #3d3d3d  ;
+#hotkey-space {
+  position: absolute  !important;
+  font-size: 11px !important;
+  color: #3d3d3d  !important;
   right: 6px;
   top: 10px;
 }
 
-.drop-down-text-non-clickable #hotkey-ctrl {
-  position: absolute  ;
-  font-size: 11px  ;
-  color: #3d3d3d ;
+#hotkey-ctrl {
+  position: absolute  !important;
+  font-size: 11px  !important;
+  color: #3d3d3d !important;
   right: 6px;
   top: 55px;
 }
@@ -1508,14 +1476,14 @@ input {
   top: 100px;
 }
 
-.drop-down-item #hotkey-undo {
+#hotkey-undo {
   position: absolute  ;
   font-size: 11px ;
   color: #3d3d3d;
   right: 6px ;
   top: 10px;
 }
-.drop-down-item #hotkey-redo {
+#hotkey-redo {
   position: absolute ;
   font-size: 11px ;
   color: #3d3d3d;
@@ -1640,6 +1608,7 @@ input.submit-button {
   font-size: 14px;
   transition: 0.1s background-color;
   float: left;
+  -webkit-appearance: none
 }
 
 div.submit-button {
@@ -1679,12 +1648,12 @@ input.submit-button-newitem {
 }
 
 input.submit-button-newitem:hover {
-  transition: 0.2s;
+  transition: 0.4s;
   background-color: rgb(283, 233, 126);
 }
 
 input.diagram-sidebar-buttons {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 130px;
@@ -1756,7 +1725,7 @@ input.submit-button:hover {
 }
 
 div.submit-button:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
   border-radius: 2px;
 }
 
@@ -1783,7 +1752,7 @@ div.submit-button:disabled {
 }
 
 .buttonsStyle:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
 }
 
 .buttonsStyle img,
@@ -1802,7 +1771,7 @@ div.submit-button:disabled {
   white-space: nowrap;
   z-index: 10;
   border-radius: 5px;
-  background: #614875;
+  background: var(--color-primary);
 }
 
 .buttonStyleDialog {
@@ -1815,11 +1784,11 @@ div.submit-button:disabled {
 }
 
 .buttonStyleDialog:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
 }
 
 #moveButton {
-  right: 18px;
+  right: 2px;
   top: 100;
   z-index: 2;
   position: absolute;
@@ -1827,19 +1796,17 @@ div.submit-button:disabled {
 }
 
 #contentDiagram .toolboxButtons {
-  width: 35px ;
-  height: 25px;
+  width: 35px !important;
+  height: 25px !important;
 }
 
 #linebutton {
-  cursor: pointer;
   margin: 5px 0;
   display: inline;
   border-radius: 5px;
 }
 
 #umllinebutton {
-  cursor: pointer;
   display: inline;
   margin: 5px 0;
   border-radius: 5px;
@@ -1872,9 +1839,9 @@ div.submit-button:disabled {
 }
 
 #submitButtonTable input.large-button {
-  width: 160px;
-  height: 48px;
-  line-height: 48px;
+  width: 160px !important;
+  height: 48px !important;
+  line-height: 48px !important;
 }
 
 /* Tooltip */
@@ -1952,7 +1919,7 @@ div.submit-button:disabled {
 }
 
 #openFile:hover {
-  color: #7B5A96;
+  color: var(--color-primary-hover);
 }
 
 /* File upload form */
@@ -1979,7 +1946,7 @@ div.submit-button:disabled {
 
 .inputfile:focus+label,
 .inputfile+label:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
   transition: 1s background-color;
 }
 
@@ -2029,7 +1996,7 @@ div.submit-button:disabled {
   color: var(--color-text-list);
   line-height: 28px;
   border: none;
-  text-align: left;
+  text-align: left !important;
 }
 
 .list td {
@@ -2046,12 +2013,14 @@ div.submit-button:disabled {
   padding: 5px;
 }
 
+/*
 .innertable {
   background: var(--color-background);
   box-shadow: 2px 3px 2px #a09098 inset;
   border-top: 2px solid var(--color-border-list);
   border-bottom: 2px solid var(--color-border-list);
 }
+*/
 
 .innertable td {
   color: var(--color-text-list);
@@ -2060,7 +2029,7 @@ div.submit-button:disabled {
 }
 
 #fileLink .list--nomargin {
-  margin: 0 ;
+  margin: 0 !important;
 }
 
 .last {
@@ -2118,7 +2087,7 @@ div.submit-button:disabled {
 }
 
 .sortableHeading {
-  display:inline;
+  display:inline !important;
   cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -2182,8 +2151,8 @@ div.submit-button:disabled {
 }
 
 #testinnertable tr {
-  border-bottom: none ;
-  background-color: white ;
+  border-bottom: none !important;
+  background-color: white !important;
 }
 
 span.arrow {
@@ -2193,8 +2162,8 @@ span.arrow {
 }
 
 .list #testTable input {
-  border-width: 1px ;
-  border-style: inset ;
+  border-width: 1px !important;
+  border-style: inset !important;
   border-radius: 0px;
   font-size: 14px;
   height: 17px;
@@ -2239,7 +2208,7 @@ span.arrow {
 .feedback-list {
   table-layout: fixed;
   width: 100%;
-  margin-top: 2px ;
+  margin-top: 2px !important;
 }
 
 .feedback-list th,
@@ -2255,6 +2224,10 @@ span.arrow {
 @media print {
   header {
     display: none;
+  }
+
+  body {
+    margin: 0px
   }
 
   #content {
@@ -2366,11 +2339,6 @@ span.arrow {
   background-color: var(--color-sectioned-table-lo);
 }
 
-#resultTable
-{
-  margin-top: 70px;
-}
-
 .resultTableCell{
 		margin:2px;
 }
@@ -2431,7 +2399,7 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 2px solid #dbd0d8;
+	border: 0px;
 }
 
 .accessTableText {
@@ -2449,20 +2417,6 @@ span.arrow {
 
 .accessTable_counter span {
 	margin-left: 5px;
-}
-
-#oldSubmissionIcon {
-  height: 20px;
-  float: right;
-  margin-right: 10px;
-  cursor:pointer;
-}
-
-#ladexportContainer
-{
-  position: absolute;
-  height: 55px;
-  width: 710px;
 }
 
 #user td {
@@ -2549,7 +2503,6 @@ span.arrow {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  -webkit-appearance: none;
 }
 
 #variantSearch{
@@ -2561,17 +2514,17 @@ span.arrow {
 }
 
 .submit-button:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
   border-radius: 4px;
 }
 
 .no-radius:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
   border-radius: 0;
 }
 
 #uploadbuttonname .fileed-submit-button {
-  margin:15px 0 18px 0;
+  margin:15px 0 18px 0 !important;
 }
 
 #feedbackTable table {
@@ -2845,8 +2798,8 @@ span.arrow {
 }
 
 .checknarrow {
-  max-width: 140px ;
-  min-width: 140px ;
+  max-width: 140px !important;
+  min-width: 140px !important;
 }
 
 .grading-hidden {
@@ -2945,7 +2898,7 @@ span.arrow {
 .rowno>div {
   text-align: right;
   font-size: 20px;
-  color: #614875 !important;
+  color: var(--color-primary) !important;
   min-height: 47px;
   line-height: 47px;
 }
@@ -2957,7 +2910,7 @@ span.arrow {
 .rownoMagic>div {
   text-align: right;
   font-size: 20px;
-  color: #614875 !important;
+  color: var(--color-primary) !important;
   min-height: 47px;
   line-height: 47px;
 }
@@ -2965,7 +2918,7 @@ span.arrow {
 .grouprow>div {
   text-align: center;
   font-size: 20px;
-  color: #614875 !important;
+  color: var(--color-primary) !important;
   min-height: 47px;
   line-height: 47px;
 }
@@ -2973,7 +2926,7 @@ span.arrow {
 .groupStar {
   display: none;
   font-size: 20px;
-  color: #614875 !important;
+  color: var(--color-primary) !important;
   min-height: 47px;
   line-height: 47px;
   margin: 0px 5px;
@@ -2993,78 +2946,6 @@ span.arrow {
 
 .fumho tr:nth-child(odd) {
     background-color: var(--color-background);
-  }
-  
-   /* Styling for circle graph */
-  .circleGraph {
-    width:500px;
-    height:500px;
-    position: relative;
-  }
-  #activityInfoBox {
-    display: none;
-    position: absolute;
-    min-width: 150px;
-    background: lightgray;
-    color: black;
-    border: 1px solid black;
-    padding: 5px;
-    text-align: center;
-    font-size: 10pt;
-    font-family: sans-serif;
-  }
-  #activityInfoBox span {
-    display: block;
-    padding: 1px;
-    font-weight: bold;
-  }
-  #allActivity .activityInfoEntry {
-    display: block;
-    padding: 0 0 8px 0;
-    font-weight: 100;
-  }
-  .circleGraphCircle {
-    stroke:black;
-    stroke-width:1px;
-    fill:white;
-  }
-  #circleGraphHours {
-    text-anchor: middle;
-  }
-  .circleGraphBigline {
-    fill: black;
-    stroke:black;
-    stroke-width:2px;
-  }
-  .circleGraphLine {
-    fill: gray;
-    stroke:gray;
-    stroke-width:1px;
-  }
-  .activitymarker {
-    stroke-width: 0.5px;
-    stroke: black;
-  }
-  rect[class*="activitymarker"]:hover {
-    fill: #8AC926;
-  }
-  .activitymarker.commit {
-    fill: #2AB7CA;
-  }
-  .activitymarker.comment {
-    fill: #6A4C93;
-  }
-  .activitymarker.issue {
-    fill: #FE4A49;
-  }
-  .activitymarker.mixed {
-    fill: url("#mixedActivityGradient");
-  }
-  .activityPolygon {
-    opacity: 0.8;
-    fill: #FED766;
-    stroke-width: 0.5px;
-    stroke: red;
   }
 
 .contribheading {
@@ -3264,17 +3145,12 @@ rect[class*="activitymarker"]:hover {
 }
 
 #searchinput, #duggaSearch {
-    margin-right: 0;
-    border-right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
     border: 1px solid var(--color-border-2);
-    border-bottom: 0;
     padding: 0 0 0 2px;
     height: 20px;
   }
 
-#searchbutton {
+#searchBar,#searchbutton {
   position: relative;
   width: 26px;
   height: 25px;
@@ -3282,7 +3158,7 @@ rect[class*="activitymarker"]:hover {
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
-  box-shadow: none;
+  box-shadow: none !important;
   margin-bottom: 5px;
   margin-right: 2px;
 }
@@ -3309,7 +3185,7 @@ rect[class*="activitymarker"]:hover {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
   text-align: center;
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: var(--color-primary);
   padding: 6px;
   margin: 1px;
@@ -3348,12 +3224,9 @@ rect[class*="activitymarker"]:hover {
 
 .alertmsg input {
   float: none;
-  /* align-self: center; */
-  margin-right: 5px;
-  position: absolute;
-  right: 20px;
 }
 
+/*
 .alertmsg#servermsgcontainer {
   top: 50px;
 }
@@ -3373,6 +3246,7 @@ rect[class*="activitymarker"]:hover {
 .alertmsg#cookiemsg {
   bottom: 0;
 }
+*/
 
 .nowrap {
   white-space: nowrap;
@@ -3466,14 +3340,14 @@ table.navheader td.hamburger {
 
 table.navheader nav.package {
   margin-left: 0px;
-  widht: 100%;
+  width: 100%;
 }
 
 table.navheader div.hamburgerMenu {
   padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
-  margin-top: 5px;
+  margin-top: 50px;
   margin-left: 5px;
   z-index: 1;
   background-color: var(--color-background-2);
@@ -3570,11 +3444,13 @@ ul.hamburgerList button.menuButton {
   *                        FILEED TABLE STYLING                         *
 * --------------================################================-------------- */
 
+/*
 #fileLink_tbl{
     width: 80%;
     margin: auto !important;
     min-width: 1050px;
 }
+*/
 
 #sortingDiv{
     height: 30px;
@@ -3630,7 +3506,7 @@ only screen and (max-device-width: 1085px) {
         /*min-width: 375px;*/
     }
     #fileLink_tbl{
-        margin: 0 ;
+        margin: 0 !important;
         width: 100%;
         min-width: 0px;
     }
@@ -3732,12 +3608,12 @@ only screen and (max-device-width: 768px) {
     }
 
     #fileLink_tbl_mh[style]{
-        display: none ;
+        display: none !important;
     }
 
     #fileLink_body tr[style]{
-        border: 1px solid var(--color-border-2);
-        display: block;
+        border: 1px solid var(--color-border-2) !important;
+        display: block !important;
     }
 
   #fileLink_tblhead{
@@ -3745,12 +3621,12 @@ only screen and (max-device-width: 768px) {
   }
 
   #fileLink_tbl_mh[style]{
-    display: none ;
+    display: none !important;
   }
 
   #fileLink_body tr[style]{
-    border: 1px solid var(--color-border-2);
-    display: block ;
+    border: 1px solid var(--color-border-2) !important;
+    display: block !important;
   }
 
   #fileLink_tblhead{
@@ -3944,9 +3820,6 @@ only screen and (max-device-width: 530px) {
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
-  #searchinput, #duggaSearch {
-    max-width: 120px;
-  }
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3973,13 +3846,11 @@ only screen and (max-device-width: 480px) {
   table.navheader input.hamburger {
     position: absolute;
     top: 66px;
-    left:10px;
-    right: 5px;
+    right:10px;
   }
   table.navheader div.hamburger {
     position: absolute;
     top: 66px;
-    left:10px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
@@ -3996,9 +3867,6 @@ only screen and (max-device-width: 480px) {
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
-  #searchinput, #duggaSearch {
-    max-width: 100px;
-  }
   #Sectionlist .course {
     font-size: 14px;
   }
@@ -4036,8 +3904,8 @@ only screen and (max-device-width: 320px) {
   padding-left: 10px;
   height: 30px;
   position: absolute;
-  right: 16px;
-  bottom: 16px;
+  right: 18px;
+  bottom: 12px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -4067,102 +3935,20 @@ only screen and (max-device-width: 320px) {
   padding: 0;
 }
 
-.tooltipDecrease{
-    display: inline-block;
-    display: block;
-    position: relative;
-    background: url("../icons/arrow.svg") no-repeat;
-    bottom: 7px;
-  }
-
-  .tooltipDecrease button{
-    position: relative;
-    background-color: #614875;
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .tooltipDecrease .tooltiptextDec{
-    visibility: hidden;
-    width: 60px;
-    font-size: 12px;
-    background-color: #614875;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-  
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    left: -15px;
-  }
 
 .zoomButtonStyle {
   transition: 0.25s background-color;
 }
 
 .zoomButtonStyle:hover {
-  background-color: #7B5A96;
+  background-color: var(--color-primary-hover);
 }
 
-#zoomDecrease:hover + .tooltiptextDec{
-  visibility: visible;
-}
-#range{
-  position: relative;
-  display: inline-block;
-  top: 2px;
-}
-
-#range input{
-  position: relative;
-}
-
-.tooltipIncrease{
-  position: relative;
-  display: inline-block;
-  bottom: 7px;
-}
-
-.tooltipIncrease button{
-  position: relative;
-  background-color: #614875;
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-}
 
 .tooltipIncrease .tooltiptextInc{
-  visibility: hidden;
-  width: 60px;
-  font-size: 12px;
-  background-color: #614875;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
   /* Position the tooltip */
   position: absolute;
-  z-index: 1;
-  bottom: 100%;
-  right: -20px;
 }
-
-#zoomIncrease:hover + .tooltiptextInc{
-  visibility: visible;
-}
-
-#zoomV{
-    position: absolute;
-    display: inline-block;
-    font-size: 12px;
-    bottom: 2px;
-    right: 4px;
-  }
 
 /* The slider itself */
 .zoomSlider {
@@ -4237,8 +4023,7 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 16px;
-  left: 16px;
+  bottom: 12px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -4320,9 +4105,7 @@ only screen and (max-device-width: 320px) {
 .fixed-action-button.sectioned {
   right: 75px;
 }
-.fixed-action-button.cookie-fab {
-  bottom: 64px !important;
-}
+
 #Courselist div.fixed-action-button a:hover {
   text-decoration: none;
 }
@@ -4851,22 +4634,6 @@ textarea#mrkdwntxt {
     margin-top: 15px;
   }
 }
-
-/* Mode Switch */
-
-.modeSwitchDialog {
-  display: none;
-  background-color: rgba(0,0,0,0);
-}
-
-.modeSwitchContainer {
-  min-height: 80px;
-}
-
-.modeSwitchHeader h3 {
-  padding-right: 10px;
-}
-
 
 /* Composite error message dialog */
 .errorMessageDialog {
