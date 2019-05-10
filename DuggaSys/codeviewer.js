@@ -256,7 +256,8 @@ function returned(data)
 	resizeBoxes("#div2", retData["templateid"]);
 }
 
-function returnedTitle(data) {
+function returnedTitle(data)
+{
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
 	retData['box'][retData['box'].length-1][4] = data;
 	$("#boxtitle2").text(data);
@@ -960,7 +961,8 @@ function dehighlightKeyword(kw)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------
 
-function token (kind,val,fromchar,tochar,row) {
+function token (kind,val,fromchar,tochar,row)
+{
 	this.kind = kind;
 	this.val = val;
 	this.from = fromchar;
@@ -1630,7 +1632,8 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function createCodeborder(lineno,improws){
+function createCodeborder(lineno,improws)
+{
 	var str="<div class='codeborder'>";
 
 	for(var i=1; i<=lineno; i++){
@@ -2283,14 +2286,11 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 // WIDTH MEASURMENT FOR TEMPLATE 6
 //---------------------------------
 
-function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
-
+function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird)
+{
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-
-
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
 	var basePer = 100 - remainWidthPer;
-
 
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
@@ -2313,7 +2313,8 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 // WIDTH MEASURMENT FOR TEMPLATE 7
 //-----------------------------------
 
-function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
+function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird)
+{
 
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 
@@ -2339,7 +2340,8 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 // HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
 //---------------------------------------
 
-function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
+function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
+{
 
 	//Get initial values.
 	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
@@ -2397,7 +2399,8 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 // WIDTH MEASURMENT FOR TEMPLATE 9
 //----------------------------------
 
-function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive){
+function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive)
+{
 
 	//Width for the four smaller boxes.
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxOne]['id']).width();
@@ -2485,7 +2488,8 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 // HEIGHT MEASURMENT FOR TEMPLATE 9
 //-----------------------------------
 
-function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour){
+function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour)
+{
 
 	//Box three height. It is the box that is currently being resized.
 	var boxThreeHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
@@ -2671,7 +2675,8 @@ function setLocalStorageProperties(templateId, boxValArray)
 //  loading gif until page has loaded fully
 //----------------------------------------------------------------------------------
 
-document.onreadystatechange = function () {
+document.onreadystatechange = function ()
+{
   var state = document.readyState
   if (state == 'interactive') {
        document.getElementById('content').style.visibility="hidden";
@@ -2763,6 +2768,7 @@ function setResizableToPer(boxValArray)
 //                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function addHtmlLineBreak(inString){
+function addHtmlLineBreak(inString)
+{
 	return inString.replace(/\n/g, '<br>');
 }
