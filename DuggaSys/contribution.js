@@ -392,7 +392,7 @@ function renderCircleDiagram(data, day)
   str+="<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
   if (day) {
     str+="value="+today+" ";
-  } 
+  }
   str+="onchange='changeDay(this.value)' />";
   str+="<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
   if (day) {
@@ -644,7 +644,7 @@ function createTimeSheetTable(data)
 
 	myTable.renderTable();
 }
-function renderCell(col,celldata,cellid) 
+function renderCell(col,celldata,cellid)
 {
   var str="UNK";
   obj = celldata;
@@ -658,7 +658,7 @@ function renderCell(col,celldata,cellid)
   }
   return str;
 }
-function renderSortOptions(col,status,colname) 
+function renderSortOptions(col,status,colname)
 {
 	str = "";
 	if (status == -1) {
@@ -690,16 +690,22 @@ function returnedSection(data)
 
   contribDataArr = [];
 	var str="";
-
+  localStorage.setItem('GitHubUser', data['githubuser'])
+    str+="<p>";
     if(data['allusers'].length>0){
         str+="<select id='userid' onchange='selectuser();'>";
+        str+="<option>"+localStorage.getItem('GitHubUser')+"</option>";
         for(i=0;i<data['allusers'].length;i++){
+          if(data['allusers'][i] != localStorage.getItem('GitHubUser')){
             str+="<option>"+data['allusers'][i]+"</option>";
+          }
         }
         str+="</select>";
     }
+    str+="</p>";
 
     str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
+
   	str+="<table class='fumho'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th style='padding: 2px 10px;'>Kind</th>";
