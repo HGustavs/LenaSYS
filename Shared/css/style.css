@@ -5088,8 +5088,8 @@ textarea#filecont{
 }
 
 .resultedbuttons{
-  margin: 7px;
-  margin-bottom: 0px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 8px 2px 4px 2px;
   padding-left: 10px;
   padding-right: 10px;
   background-color: #614875;
