@@ -628,7 +628,7 @@ function copySymbol(symbol) {
     topLeftClone.x += 10;
     topLeftClone.y += 10;
     // var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
-    var bottomRightClone = JSON.parse(JSON.stringify(points[symbol.bottomRight]));
+    // var bottomRightClone = JSON.parse(JSON.stringify(points[symbol.bottomRight]));
     var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
     bottomRightClone.x += 10;
     bottomRightClone.y += 10;
@@ -672,9 +672,17 @@ function copySymbol(symbol) {
         clone.middleDivider = points.push(middleDividerClone) - 1;
         clone.centerPoint = clone.middleDivider;
     }
+    
+    // draw a new line
+    if (clone.symbolkind == symbolKind.line) {
+        clone.connectorTop.push({from:topLeftClone, to:bottomRightClone});
+        clone.connectorTop.push({from:bottomRightClone, to:topLeftClone});
+    }
     clone.targeted = true;
     symbol.targeted = false;
 
+    
+    
     diagram.push(clone);
 
     return diagram.length;
