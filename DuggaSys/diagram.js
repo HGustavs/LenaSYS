@@ -1710,7 +1710,9 @@ function developerMode(event) {
         toolbarState = 3;                                                               // Change the toolbar to DEV.
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
-        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
+        $("#er-item").addClass("drop-down-item drop-down-item-disabled");               // Disable ER and UML options
+        $("#uml-item").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
@@ -1723,7 +1725,9 @@ function developerMode(event) {
         toolbarState = 1;                                                               // Change the toolbar back to ER.
         switchToolbar('ER');                                                            // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
-        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");       // Add disable of displayAllTools id.
+        $("#er-item").removeClass("drop-down-item drop-down-item-disabled");            // Disable ER and UML options
+        $("#uml-item").removeClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=false);                                                            // Turn off crossDEV.
