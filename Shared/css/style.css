@@ -1610,8 +1610,8 @@ div.submit-button {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: 6px;
-  margin-bottom: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   margin-left: 4px;
   font-size: 14px;
   transition: 1s background-color;
@@ -3862,7 +3862,7 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader div.hamburger {
     position: absolute;
-    top: 66px;
+    top: 64px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
