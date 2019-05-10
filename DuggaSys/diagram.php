@@ -65,7 +65,7 @@
                               <h4 class="label tlabel" id="labelTools">Tools</h4>
                               <div class="toolbar-drawer" id="drawerTools">
                                   <div class="tooltipdialog">
-                                      <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Line">
+                                      <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Line (Shift + L)">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                       </button>
                                   </div>
@@ -75,19 +75,19 @@
                               <h4 class="label tlabel" id="labelCreate">Create</h4>
                               <div class="toolbar-drawer" id="drawerCreate">
                                   <div class="tooltipdialog">
-                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Attribute">
+                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Attribute (Shift + A)">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                       </button>
-                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Entity">
+                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Entity (Shift + E)">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
                                       </button>
-                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Relation">
+                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Relation (Shift + R)">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
                                       </button>
-                                      <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Class">
+                                      <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Class (Shift + C)">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                     </button>
-                                      <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed toolbarButtonPressed' data="Draw Text">
+                                      <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed toolbarButtonPressed' data="Draw Text (Shift + T)">
                                           <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                                       </button>
                                   </div>
@@ -99,7 +99,7 @@
                                 <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed toolbarButtonPressed' data="Draw Square">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_square.svg">
                                 </button>
-                                <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed toolbarButtonPressed' data="Draw Free">
+                                <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed toolbarButtonPressed' data="Draw Free (Shift + F)">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
                                 </button>
                             </div>
@@ -107,10 +107,10 @@
                           <div class="labelToolContainer" style = "margin-bottom: 0px;">
                             <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                             <div class="toolbar-drawer" id="drawerUndo">
-                                <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
+                                <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo (Ctrl + Z)">
                                     <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
                                 </button>
-                                <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
+                                <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo (Ctrl + Y)">
                                     <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
                                 </button>
                             </div>
@@ -197,6 +197,7 @@
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
+                            <i id="hotkey-developerMode">Shift + D</i>
                         </div>
                         <div id="displayAllTools" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>

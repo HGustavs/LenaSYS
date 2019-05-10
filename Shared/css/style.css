@@ -1498,6 +1498,13 @@ input {
   right: 6px !important;
   top: 195px;
 }
+#hotkey-developerMode{
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 10px;
+}
 
 /* --------------================################================-------------- *
  *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
@@ -1734,8 +1741,8 @@ div.submit-button:disabled {
 }
 
 .toolbarButtonPressed {
-  display: inline; 
-  border-radius: 5px; 
+  display: inline;
+  border-radius: 5px;
   cursor: pointer
 }
 

@@ -141,24 +141,31 @@ var cloneTempArray = [];                // Is used to store all selected objects
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
 
 // Keyboard keys
-const deleteKey = 46;
 const backspaceKey = 8;
+const shiftKey = 16;
+const ctrlKey = 17;
+const escapeKey = 27;
 const spacebarKey = 32;
 const leftArrow = 37;
 const upArrow = 38;
 const rightArrow = 39;
 const downArrow = 40;
-const ctrlKey = 17;
-const shiftKey = 16;
-const windowsKey = 91;
+const deleteKey = 46;
+const key1 = 49;
+const key2 = 50;
+const aKey = 65;
 const cKey = 67;
+const dKey = 68;
+const eKey = 69;
+const fKey = 70;
+const lKey = 76;
+const mKey = 77;
+const rKey = 82;
+const tKey = 84;
 const vKey = 86;
 const zKey = 90;
 const yKey = 89;
-const aKey = 65;
-const escapeKey = 27;
-const key1 = 49;
-const key2 = 50;
+const windowsKey = 91;
 const num1 = 97;
 const num2 = 98;
 
@@ -448,6 +455,28 @@ function keyDownHandler(e) {
     else if((key == key2 || key == num2) && shiftIsClicked){
         moveToBack();
     }
+    else if(shiftIsClicked && key == lKey) {
+      document.getElementById("linebutton").click();
+    }
+    else if(shiftIsClicked && key == aKey) {
+      document.getElementById("attributebutton").click();
+    }
+    else if(shiftIsClicked && key == eKey) {
+      document.getElementById("entitybutton").click();
+    }
+    else if(shiftIsClicked && key == rKey) {
+      document.getElementById("relationbutton").click();
+    }
+    else if(shiftIsClicked && key == cKey) {
+      document.getElementById("classbutton").click();
+    }
+    else if(shiftIsClicked && key == tKey) {
+      document.getElementById("drawtextbutton").click();
+    }
+    else if(shiftIsClicked && key == fKey) {
+      document.getElementById("drawfreebutton").click();
+    }
+
 }
 
 //----------------------------------------------------
@@ -2669,7 +2698,7 @@ function mousemoveevt(ev, t) {
                     if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
                         //The point belongs to a umlLine or Line
                         canvas.style.cursor = "pointer";
-                    } else {                    
+                    } else {
                         canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                     }
                 }
