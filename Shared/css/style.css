@@ -3157,8 +3157,23 @@ rect[class*="activitymarker"]:hover {
     bottom: 2px;
 }
 
-/* styling for the search bars in resulted, accessed, duggaed, filed */
+/* styling for dropdown and toggle all button in accessed */
+#toggleAllButton {
+  background-color: #614875;
+  color: white;
+  width: 100px;
+  cursor: pointer;
+}
 
+#toggleAllButton:hover {
+  background-color: #7b5a96;
+}
+
+#dropdownc {
+  cursor: default;
+}
+
+/* styling for the search bars in resulted, accessed, duggaed, filed */
 #searchBar, #testSearchContainer {
   padding-left: 20px;
 }

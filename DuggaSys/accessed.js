@@ -238,7 +238,6 @@ function renderCell(col, celldata, cellid) {
 			str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + obj.vers + ")'>";
 		};
 	} else if (col == "access") {
-		var checkSubmission = data => data.uid === obj.uid;
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student"], ["W", "R"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		if (parseFloat(obj.recent) > 1440) {
@@ -307,25 +306,32 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 
 
 function renderColumnFilter(col, status, colname) {
-	str = "";
-	if (colname == "User")
-		return str;
-	if (status) {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	} else {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	}
-	return str;
+    str = "";
+    if (colname == "User")
+        return str;
+    if (status) {
+        str = "<div class='checkbox-dugga'>";
+        str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+        str += "</div>"
+    } else {
+            str = "<div class='checkbox-dugga'>";
+            str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+            str += "</div>"
+    }
+    return str;
 }
 
 function onToggleFilter(colId) {
-	myTable.toggleColumn(colId, colId);
+    myTable.toggleColumn(colId, colId);
 }
 
+function toggleAllCheckboxes(source){
+	var i = 0
+    checkboxArray = document.getElementsByName('checkbox');
+    for (n = checkboxArray.length; i < n; i++){
+		document.getElementById(checkboxArray[i].id).click();
+	}
+}
 
 //--------------------------------------------------------------------------
 // updateCellCallback
@@ -415,6 +421,10 @@ function returnedAccess(data) {
 
 	myTable.renderTable();
 
+	str = "<div class='checkbox-dugga'>";
+	str += "<button id='toggleAllButton' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
+	str += "</div>"
+	document.getElementById("dropdownc").innerHTML += str;
 }
 
 //excuted onclick button for quick searching in table
