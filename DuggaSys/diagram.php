@@ -51,9 +51,9 @@
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
-        <div id="buttonDiv" style ="margin-left: 65px;" >
+        <div id="buttonDiv">
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-left: 0px; height: ; text-align: center;" onmousedown="">
+                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-right: 0px; height: ; text-align: center;" onmousedown="">
                     <div class="application-header">
                         </div>
                         <div class='application-toolbar'>
@@ -65,7 +65,7 @@
                               <h4 class="label tlabel" id="labelTools">Tools</h4>
                               <div class="toolbar-drawer" id="drawerTools">
                                   <div class="tooltipdialog">
-                                      <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
+                                      <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Line">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                       </button>
                                   </div>
@@ -75,19 +75,19 @@
                               <h4 class="label tlabel" id="labelCreate">Create</h4>
                               <div class="toolbar-drawer" id="drawerCreate">
                                   <div class="tooltipdialog">
-                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Attribute">
+                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Attribute">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                       </button>
-                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity">
+                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Entity">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
                                       </button>
-                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Relation">
+                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Relation">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
                                       </button>
-                                      <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Class">
+                                      <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed toolbarButtonPressed' data="Create Class">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                     </button>
-                                      <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text">
+                                      <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed toolbarButtonPressed' data="Draw Text">
                                           <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                                       </button>
                                   </div>
@@ -96,10 +96,10 @@
                           <div class="labelToolContainer">
                             <h4 class="label tlabel" id="labelDraw">Draw</h4>
                             <div class="toolbar-drawer" id="drawerDraw">
-                                <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Square">
+                                <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed toolbarButtonPressed' data="Draw Square">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_square.svg">
                                 </button>
-                                <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free">
+                                <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed toolbarButtonPressed' data="Draw Free">
                                     <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
                                 </button>
                             </div>
@@ -108,10 +108,10 @@
                             <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                             <div class="toolbar-drawer" id="drawerUndo">
                                 <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
-                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 20px; height: 20px;">
+                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
                                 </button>
                                 <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
-                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 20px; height: 20px;">
+                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
                                 </button>
                             </div>
                         </div>
@@ -311,7 +311,7 @@
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
-            <div id="canvasDiv" style = "margin-left: 65px">
+            <div id="canvasDiv" style = "margin-left: 52px">
             </div>
             <div id="consoleDiv">
             <!--
@@ -322,15 +322,14 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-              <span class="tooltipDecrease" style="position: static;">
+              <span class="tooltipDecrease">
                 <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1);"> - </button>
                 <span class="tooltiptextDec">Zoom Out</span>
               </span>
-              <span id="range" style="padding-right: 8px;">
+              <span id="range">
                 <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.01" class="zoomSlider">
               </span>
-
-              <span class="tooltipIncrease" style="position: static;">
+              <span class="tooltipIncrease">
                 <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1);"> + </button>
                 <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
               </span>
