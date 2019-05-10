@@ -737,7 +737,7 @@ header td {
   width: 50px;
   vertical-align: middle;
   text-align: center;
-  background: var(--color-background);
+  background: var(--color-green);
 }
 
 #div2 {
