@@ -3927,6 +3927,7 @@ only screen and (max-device-width: 320px) {
 
 .zoomButtonStyle {
   transition: 0.25s background-color;
+  font-family: hack, "Lucida Console", Monaco, monospace;
 }
 
 .zoomButtonStyle:hover {
