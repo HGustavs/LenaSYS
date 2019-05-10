@@ -527,6 +527,16 @@ function changeURL(clicked_id, thisurl)
 	link.href=thisurl;
 }
 
+//----------------------------------------------------------------------------------------
+// changeCourseVersURL: Separet function for changing course version, taken from changeURL
+//----------------------------------------------------------------------------------------
+
+function changeCourseVersURL(thisurl)
+{
+  window.location.href = thisurl;
+}
+
+
 //----------------------------------------------------------------------------------
 // navigateExample: Upscale variant of changeURL - navigate to certain Example
 //----------------------------------------------------------------------------------
