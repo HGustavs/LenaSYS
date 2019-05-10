@@ -401,23 +401,13 @@ function keyDownHandler(e) {
     } else if(ctrlIsClicked && key == vKey ) {
         //Ctrl + v
         var temp = [];
-        var tempLine = []
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            // let cloneIndex = 0;
             if(cloneTempArray[i].symbolkind) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
-            } 
-            // if (cloneTempArray[i].symbolkind == symbolKind.line) {
-            //     console.log(getConnectedLines(cloneTempArray[i]));
-            //     cloneIndex = copySymbol(cloneTempArray[i]) -1;
-            //     tempLine.push(diagram[cloneIndex]);
-            // }
+            }
         }
-        // for (let j = 0; j < tempLine.length; j++) {
-        //     temp.push(tempLine[j]);
-        // }
         cloneTempArray = temp;
         selected_objects = temp;
         updateGraphics();
@@ -632,37 +622,28 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
-    clone.topLeft = jQuery.extend(true, {}, points[symbol.topLeft]);
-    clone.bottomRight = jQuery.extend(true, {}, points[symbol.topLeft]);
-    clone.centerPoint = jQuery.extend(true, {}, points[symbol.centerPoint]);
-
-    if (clone.symbolkind == symbolKind.uml) {
-        clone.middleDivider = jQuery.extend(true, {}, points[symbol.middleDivider]);
-        clone.middleDivider.x += 10;
-        clone.middleDivider.y += 10;
+    // var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    // var topLeftClone = JSON.parse(JSON.stringify(points[symbol.topLeft]));
+    var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
+    topLeftClone.x += 10;
+    topLeftClone.y += 10;
+    // var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+    var bottomRightClone = JSON.parse(JSON.stringify(points[symbol.bottomRight]));
+    var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
+    bottomRightClone.x += 10;
+    bottomRightClone.y += 10;
+    // var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+    // var centerPointClone = JSON.parse(JSON.stringify(points[symbol.centerPoint]));
+    var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
+    centerPointClone.x += 10;
+    centerPointClone.y += 10;
+    // var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
+    if (symbol.symbolkind == symbolKind.uml) {
+        // var middleDividerClone = JSON.parse(JSON.stringify(points[symbol.middleDivider]));
+        var middleDividerClone = jQuery.extend(true, {}, points[symbol.middleDivider]);
+        middleDividerClone.x += 10;
+        middleDividerClone.y += 10;
     }
-
-    // Moves the clone to an offset from the original
-    clone.topLeft.x += 10;
-    clone.topLeft.y += 10;
-    clone.bottomRight.x += 10;
-    clone.bottomRight.y += 10;
-    clone.centerPoint.x += 10;
-    clone.centerPoint.y += 10;
-
-    clone.topLeft = points.push(clone.topLeft);
-    clone.bottomRight = points.push(clone.bottomRight);
-    if(clone.symbolkind != symbolKind.uml) {
-        clone.centerPoint = points.push(clone.centerPoint);
-    }
-    else {
-        clone.middleDivider = points.push(clone.middleDivider);
-        clone.centerPoint = clone.middleDivider;
-    }
-
-    console.log("clone tl: " + clone.topLeft);
-    console.log("clone tlx: " + clone.topLeft.x);
-    console.log("clone tly: " + clone.topLeft.y);
 
     if(symbol.symbolkind == symbolKind.uml) {
         clone.name = "NewCopy" + diagram.length;
@@ -681,10 +662,16 @@ function copySymbol(symbol) {
         clone.name = "RelationCopy" + diagram.length;
     }
     
-    if (clone.symbolkind == symbolKind.line) {
-        console.log("Connected objects: " + connectedObjects(clone));
+    clone.topLeft = points.push(topLeftClone) - 1;
+    clone.bottomRight = points.push(bottomRightClone) - 1;
+   
+    if(clone.symbolkind != symbolKind.uml) {
+        clone.centerPoint = points.push(centerPointClone) - 1;
     }
-
+    else {
+        clone.middleDivider = points.push(middleDividerClone) - 1;
+        clone.centerPoint = clone.middleDivider;
+    }
     clone.targeted = true;
     symbol.targeted = false;
 
@@ -1566,7 +1553,6 @@ function connectedObjects(line) {
             for (var j = 0; j < objectPoints.length; j++) {
                 if (objectPoints[j] == line.topLeft || objectPoints[j] == line.bottomRight) {
                     privateObjects.push(diagram[i]);
-                    console.log("-------: " + diagram[i].name);
                 }
                 if (privateObjects.length >= 2) {
                     break;
@@ -2960,7 +2946,7 @@ function mousedownevt(ev) {
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
-    console.log("Name: " + last.name);
+    console.log(last.name);
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
