@@ -1251,7 +1251,7 @@ Array.prototype.move = function (old_index, new_index) {
 };
 
 // Latest version of any file in a field - unsure about naming of the function
-function findfilevers(filez,cfield,ctype,displaystate)
+function findfilevers(filez,cfield,ctype,displaystate,group)
 {
 		// Iterate over elements in files array
 		var foundfile=null;
@@ -1259,11 +1259,27 @@ function findfilevers(filez,cfield,ctype,displaystate)
 		var mobileMediaQuery = window.matchMedia("(max-width: 600px)");
 		var mediumMediaQuery = window.matchMedia("(min-width: 601px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
+
 		if (mobileMediaQuery.matches) {
 			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		} else {
 			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
 		}
+
+		if (group) {
+      if (mobileMediaQuery.matches) {
+        tab+="<thead><tr><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+      } else {
+			  tab+="<thead><tr><th></th><th>User</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+      }
+    } else {
+      if (mobileMediaQuery.matches) {
+			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+		  } else {
+			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
+		  }
+    }
+
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -1288,6 +1304,9 @@ function findfilevers(filez,cfield,ctype,displaystate)
 								tab+="</td>";
 							}
 
+              if (group) {
+								tab+="<td>"+filez[i].username+"</td>";
+							}
 							tab+="<td>";
               if (ctype == "link"){
 								tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>";
@@ -1307,6 +1326,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 								} else {
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
 								}								
+
 							}
 							tab+="</td><td>";
 							if (mobileMediaQuery.matches) {

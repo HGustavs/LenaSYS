@@ -2003,6 +2003,10 @@ div.submit-button:disabled {
   font-weight: bold;
   padding: 5px;
 }
+
+.list tr {
+  height: 48px;
+}
 /*
 .innertable {
   background: #fff;
@@ -2085,11 +2089,17 @@ div.submit-button:disabled {
 }
 
 #editpopover {
-  border:1px solid red;
-  box-shadow:2px 2px 2px #000;
+  border:1px solid #d7fdd9;
+  box-shadow:2px 2px 2px #434343;
   position:absolute;
-  background-color: #82a43a;
-  width: fit-content;
+  background-color: #d7fdd9;
+  min-width: 150px;
+  padding: 5px;
+}
+
+.popoveredit{
+  background-color: transparent;
+  border: none;
 }
 
 .icon {
@@ -2098,6 +2108,10 @@ div.submit-button:disabled {
   padding: 0;
   position: relative;
   transform: translateY(50%);
+}
+
+#input-container{
+  border-bottom: 2px solid #008000;
 }
 
 #input-container input {
@@ -2389,6 +2403,15 @@ span.arrow {
 	border: 0px;
 }
 
+#accessTable select {
+  height: 40px;
+  width: 100%;
+}
+
+.accessTable-vers select {
+  width: 60% !important;
+}
+
 .accessTableText {
 	margin-left: 3px;
 	margin-right: 3px;
@@ -2406,11 +2429,11 @@ span.arrow {
 	margin-left: 5px;
 }
 
-#oldSubmissionIcon {
+.oldSubmissionIcon {
   height: 20px;
-  float: right;
-  margin-right: 10px;
+  margin-left: 10px;
   cursor:pointer;
+  vertical-align: middle;
 }
 
 #user td {
@@ -2931,6 +2954,10 @@ span.arrow {
 /*styling for contribution.php*/
 
 /*this was inline-CSS before, only moved it to the right file*/
+
+.contributionSort{
+  height:40px;
+}
 
 .fumho th {
   background: #620;
@@ -4967,7 +4994,7 @@ textarea#filecont{
   width: 60px;
 }
 
-/* Preview, Edit and Delete columns */
+/*  Preview, Edit and Delete columns  */
 .variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
   width: 25px;
 }
@@ -5018,7 +5045,8 @@ textarea#filecont{
   border-bottom: 1px solid #cdd0d6;
 }
 .tsTable thead {
-  background: #cdd0d6;
+  background: var(--color-primary);
+  color: white;
 }
 .tsTable th {
   padding: 10px;
@@ -5041,7 +5069,7 @@ textarea#filecont{
   background: #F0F0F0;
 }
 .tsTable tfoot:hover {
-  background: #E0E0E0;
+  background: #7B5A96;
 }
 .tsTable tfoot td {
   padding: 0;
@@ -5057,10 +5085,14 @@ textarea#filecont{
 .newRowButton {
   display: block;
   width: 100%;
-  padding: 10px;
+  padding-bottom: 10px;
   cursor: pointer;
+  background: var(--color-primary);
+  color: white;
 }
 #tsSubmit {
+  background: var(--color-primary);
+  color: white;
   margin-left: 50px;
   margin-bottom: 10px;
   cursor: pointer;
