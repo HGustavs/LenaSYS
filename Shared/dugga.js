@@ -1116,10 +1116,6 @@ function refreshUserSession(){
 					type: "POST",
 					url: "../Shared/loginlogout.php",
 					data:{opt:'REFRESH'},
-					success:function(html) {
-						alert("Session is now refreshed");
-					}
-
 		 });
      setExpireCookie()
      setExpireCookieLogOut()
