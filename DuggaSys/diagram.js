@@ -681,8 +681,8 @@ function copySymbol(symbol) {
         clone.name = "RelationCopy" + diagram.length;
     }
     
-    if (symbol.symbolkind == symbolKind.line) {
-        connectedObjects("Connected objects: " + symbol);
+    if (clone.symbolkind == symbolKind.line) {
+        console.log("Connected objects: " + connectedObjects(clone));
     }
 
     clone.targeted = true;
