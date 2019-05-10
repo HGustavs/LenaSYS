@@ -70,7 +70,7 @@ var origoOffsetX = 0.0;             // Canvas x topleft offset from origo
 var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = 0;            // Canvas left click state
-var canvasRightClick = 0;            // Canvas right click state
+var canvasRightClick = 0;           // Canvas right click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
@@ -248,6 +248,9 @@ window.addEventListener("keydown", this.keyDownHandler);
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
 
+// This event checks if the user leaves the diagram.php
+window.addEventListener('blur', resetButtonsPressed);
+
 //--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
 //--------------------------------------------------------------
@@ -357,6 +360,16 @@ function generateExampleCode() {
 }
 
 //--------------------------------------------------------------------
+// This function check if focus on diagram was lost
+// Put your action here if you want focus lost as trigger
+//--------------------------------------------------------------------
+
+function resetButtonsPressed() {
+    ctrlIsClicked = false;
+    shiftIsClicked = false;
+}
+
+//--------------------------------------------------------------------
 // diagram - Stores a global list of diagram objects
 //           A diagram object could for instance be a path, or a symbol
 //--------------------------------------------------------------------
@@ -413,8 +426,8 @@ function keyDownHandler(e) {
         updateGraphics();
         SaveState();
     }
-    else if (key == zKey && ctrlIsClicked) undoDiagram();
-    else if (key == yKey && ctrlIsClicked) redoDiagram();
+    else if (key == zKey && ctrlIsClicked) undoDiagram(event);
+    else if (key == yKey && ctrlIsClicked) redoDiagram(event);
     else if (key == aKey && ctrlIsClicked) {
         e.preventDefault();
         for(var i = 0; i < diagram.length; i++) {
@@ -541,7 +554,6 @@ function fillCloneArray() {
 // Keeps track of if the CTRL or CMD key is active or not
 //--------------------------------------------------------------------
 
-// Not used yet
 window.onkeyup = function(event) {
     if(event.which == ctrlKey || event.which == windowsKey) {
         ctrlIsClicked = false;
@@ -557,13 +569,13 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if(key == leftArrow) { //left
+    if(key == leftArrow) {
         xNew = -5;
-    }else if(key == upArrow) { //up
+    }else if(key == upArrow) {
         yNew = -5;
-    }else if(key == rightArrow) { //right
+    }else if(key == rightArrow) {
         xNew = 5;
-    }else if(key == downArrow) { //down
+    }else if(key == downArrow) {
         yNew = 5;
     }
     for(var i = 0; i < selected_objects.length; i++) {
@@ -914,7 +926,9 @@ diagram.checkForHover = function(posX, posY) {
     });
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != kind.path) {
         //We only want to set it to true when md is not in selectionbox mode
-        hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.insideMovableObject || uimode != "normal";
+        if(!(uimode == "MoveAround")) {
+            hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.insideMovableObject || uimode != "normal";
+        }
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
@@ -1154,7 +1168,7 @@ function drawVirtualA4() {
     if(A4Orientation == "portrait"){
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height); 
+                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);
             }
         }
     }
@@ -1162,7 +1176,7 @@ function drawVirtualA4() {
     else if(A4Orientation == "landscape") {
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width); 
+                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);
             }
         }
     }
@@ -1179,7 +1193,7 @@ function drawVirtualA4() {
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         //Latter two holes
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius); 
+                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                     }
                 }
             }else {
@@ -1191,7 +1205,7 @@ function drawVirtualA4() {
                         drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         //Latter two holes
                         drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius); 
+                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                     }
                 }
             }
@@ -1206,7 +1220,7 @@ function drawVirtualA4() {
                         drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         //Latter two holes
                         drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius); 
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                     }
                 }
             }else {
@@ -1218,7 +1232,7 @@ function drawVirtualA4() {
                         drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         //Latter two holes
                         drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius); 
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                     }
                 }
             }
@@ -1238,27 +1252,28 @@ function drawCircle(cx, cy, radius) {
 }
 
 function showA4State(){
-    //Sets icons based on the state of the A4
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
+    // Sets icons based on the state of the A4
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes=false);
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
-    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), false);
+    switchSideA4Holes = "left";
+    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
 }
 
 function hideA4State(){
-    //Hides icons when toggling off the A4
-    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), false);
-    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), false);
-    $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
-
-    //Reset the variables after disable the A4
+    // Reset the variables after disable the A4
     toggleA4Holes = false;
     switchSideA4Holes = "left";
+
+    // Hides icons when toggling off the A4
+    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
+    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+    $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
 function toggleVirtualA4Holes() {
-    //Toggle a4 holes to the A4-paper.
+    // Toggle a4 holes to the A4-paper.
     if (toggleA4Holes) {
         toggleA4Holes = false;
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
@@ -1275,12 +1290,12 @@ function toggleVirtualA4Holes() {
 }
 
 function toggleVirtualA4HolesRight() {
-    //Switch a4 holes from left to right of the A4-paper.
+    // Switch a4 holes from left to right of the A4-paper.
     if (switchSideA4Holes == "right") {
         switchSideA4Holes = "left";
         setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
         updateGraphics();
-    } else {
+    }else {
         switchSideA4Holes = "right";
         setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
         updateGraphics();
@@ -1288,10 +1303,9 @@ function toggleVirtualA4HolesRight() {
 }
 
 function toggleA4Orientation() {
-    if(A4Orientation == "portrait"){
+    if (A4Orientation == "portrait") {
         A4Orientation = "landscape";
-    }
-    else if(A4Orientation == "landscape"){
+    }else if (A4Orientation == "landscape") {
         A4Orientation = "portrait";
     }
 
@@ -1345,8 +1359,8 @@ function importFile() {
 
 function canvasSize() {
     boundingRect = myCanvas.getBoundingClientRect();
-    widthWindow = (window.innerWidth - 90);
-    heightWindow = (window.innerHeight - 110);
+    widthWindow = (window.innerWidth - 75);
+    heightWindow = (window.innerHeight - 95);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1695,10 +1709,12 @@ function developerMode(event) {
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   // Turn off crosstoggleA4.
-        setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
-        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
-        setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
+        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"),
+            toggleA4=false);                                                            // Turn off crosstoggleA4.
+        setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+            crossDEV=true);                                                             // Turn on crossDEV.
     } else {
         console.log('developermode: OFF');
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -1708,9 +1724,10 @@ function developerMode(event) {
         switchToolbar('ER');                                                            // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
         $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
-        setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
-        setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+            crossDEV=false);                                                            // Turn off crossDEV.
+        setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER
     }
     reWrite();
     updateGraphics();
@@ -1755,7 +1772,7 @@ function switchToolbarTo(target){
 
 //------------------------------------------------------------------------------
 // SwitchToolbarER:
-// This function handels everything that need to happen when the toolbar
+// This function handles everything that need to happen when the toolbar
 // changes to ER. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossER = false;
@@ -1763,29 +1780,31 @@ function switchToolbarER() {
     toolbarState = 1;                                                               // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
-    setCheckbox($(".drop-down-option:contains('ER')"), !crossER);                   // Turn on crossER.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossDEV.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+        crossDEV=false);                                                            // Turn off crossDEV.
 }
 
 //------------------------------------------------------------------------------
 // SwitchToolbarUML:
-// This function handels everything that need to happen when the toolbar
+// This function handles everything that need to happen when the toolbar
 // changes to UML. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossUML = false;
 function switchToolbarUML() {
     toolbarState = 2;                                                               // Change the toolbar to UML.
     switchToolbar('UML');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';                   // Change the text to UML.
-    setCheckbox($(".drop-down-option:contains('UML')"), !crossUML);                 // Turn on crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);    // Turn off crossUML.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';             // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+        crossDEV=false);                                                            // Turn off crossUML.
 }
 
 //------------------------------------------------------------------------------
 // SwitchToolbarDev:
-// This function handels everything that need to happen when the toolbar
+// This function handles everything that need to happen when the toolbar
 // changes to Dev. It changes toolbar and turn on/off crosses on the menu.
 //------------------------------------------------------------------------------
 var crossDEV = false;
@@ -1795,10 +1814,11 @@ function switchToolbarDev() {
     }
     toolbarState = 3;                                                               // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';                   // Change the text to UML.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);   // Turn on crossDEV.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);                  // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER);                    // Turn off crossER.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
+        crossDEV=true);                                                             // Turn on crossDEV.
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
 }
 
 //------------------------------------------------------------------------------
@@ -2359,9 +2379,22 @@ function diagramToSVG() {
 //----------------------------------------------------------------------
 // setCheckbox: Check or uncheck the checkbox contained in 'element'
 //              This function adds a checkbox element if there is none
+//
+// IMPORTANT: This function only updates the checkbox graphically, it
+// does not change the value of the underlying variable. When calling
+// this function it should be called along with an explicit assignment like:
+//         checkboxVar = true;
+//         setCheckbox(checkboxElement, checkboxVar);
+// Or like:
+//         setCheckbox(checkboxElement, checkboxVar = true);
+// NOT like:
+//         setCheckbox(checkboxElement, true); // checkboxVar is unchanged
+// The last example results in unchanged behaviour in the diagram but with
+// the checkbox icon appearing as if it is active.
 //----------------------------------------------------------------------
 
 function setCheckbox(element, check) {
+    // Add checkbox element if it doesn't exist
     if ($(element).children(".material-icons").length == 0) {
         $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">check</i>");
     }
@@ -2415,9 +2448,9 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
-    element.style.top = (boundingRect.top - 47 + "px");
-    element.style.left = (boundingRect.left - 80 + "px");
-    element.style.width = (76 + "px");
+    element.style.top = (boundingRect.top - 37 + "px");
+    element.style.left = (boundingRect.left - 65 + "px");
+    element.style.width = (65 + "px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     element.style.display = "inline-block";
 }
@@ -2522,10 +2555,12 @@ function changeZoom(zoomValue){
 }
 
 //-----------------------
-// Canvas zoom on scroll
+// Canvas zoom on scroll with mouse pointer in focus
 //-----------------------
 
 function scrollZoom(event) {
+  let currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
+  let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
     if(event.deltaY > 124){
         changeZoom(-0.1);
     } else if (event.deltaY < -124) {
@@ -2535,6 +2570,9 @@ function scrollZoom(event) {
     } else if (event.deltaY < -5) {
         changeZoom(0.01);
     }
+    origoOffsetX += currentMouseX - pixelsToCanvas(currentMouseCoordinateX).x;
+    origoOffsetY += currentMouseY - pixelsToCanvas(0, currentMouseCoordinateY).y;
+    updateGraphics();
 }
 
 //----------------------------------------------------------------------
@@ -2613,23 +2651,33 @@ function mousemoveevt(ev, t) {
     reWrite();
     updateGraphics();
 
-    if(canvasRightClick == 0){
+    if(canvasRightClick == 0) {
         if (md == mouseState.empty) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance / zoomValue) {
-                //Change cursor if you are hovering over a point and its not a line
-                if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
-                    //The point belongs to a umlLine or Line
-                    canvas.style.cursor = "pointer";
-                } else {                    
-                    canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                // check so that the point we're hovering over belongs to an object that's selected
+                var pointBelongsToObject = false;
+                for (var i = 0; i < selected_objects.length; i++) {
+                    if (sel.attachedSymbol == selected_objects[i]) {
+                        pointBelongsToObject = true;
+                    }
+                }
+                // when in movearound mode or if the point doesn't belong to a selected object then don't display different pointer when hovering points
+                if (uimode != "MoveAround" && pointBelongsToObject) {
+                    //Change cursor if you are hovering over a point and its not a line
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
+                        //The point belongs to a umlLine or Line
+                        canvas.style.cursor = "pointer";
+                    } else {                    
+                        canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                    }
                 }
             } else {
-                if(uimode == "MoveAround"){
+                if(uimode == "MoveAround") {
                     canvas.style.cursor = "all-scroll";
                 } else if(hoveredObject && !hoveredObject.locked){
-                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine){
+                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
                         canvas.style.cursor = "pointer";
                     } else {
                         canvas.style.cursor = "all-scroll";
@@ -2656,20 +2704,20 @@ function mousemoveevt(ev, t) {
                     var object;
                     // the movement change we wan't to make
                     var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
-                    // find the object that has the point we want to move 
+                    // find the object that has the point we want to move
                     for (var i = 0; i < diagram.length; i++) {
                         if (points[diagram[i].bottomRight] == sel.point || points[diagram[i].topLeft] == sel.point) {
                             object = diagram[i];
                             // the objects current width and height
                             var xDiff = points[object.bottomRight].x - points[object.topLeft].x;
                             var yDiff = points[object.bottomRight].y - points[object.topLeft].y;
-                            // For making sure the proportions stay the same when the object is at it's minimum size on one of the axes 
+                            // For making sure the proportions stay the same when the object is at it's minimum size on one of the axes
                             // so that it doesn't keep resizing one of the axes independently of the other
 
                             // if x size is equal to the objects min width
                             if (minSizeCheck(xDiff, object, "x")) {
                                 var xDiffNew;
-                                // set the new size depending on which point we're moving 
+                                // set the new size depending on which point we're moving
                                 if (points[object.bottomRight] == sel.point){
                                     xDiffNew = (sel.point.x + change) - points[object.topLeft].x;
                                 } else if (points[object.topLeft] == sel.point){
@@ -2694,7 +2742,7 @@ function mousemoveevt(ev, t) {
                             }
                         }
                     }
-                    // apply resize 
+                    // apply resize
                     sel.point.x += change;
                     sel.point.y += change;
                 } else {
@@ -3358,7 +3406,7 @@ function movemode(e, t) {
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
-        canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+        canvas.style.cursor = "all-scroll";
         uimode = "MoveAround";
     } else {
         buttonStyle.style.visibility = 'hidden';
@@ -3513,7 +3561,7 @@ function loadLineForm(element, dir) {
                 var tempLineDirection = lineDirection;
                 if (lineDirection == "" || lineDirection == null) {
                     diagram[lastSelectedObject].lineDirection = "First";
-                    tempLineDirection = "First";  
+                    tempLineDirection = "First";
                 }
 
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
@@ -3750,7 +3798,7 @@ function changeCardinality(isUML) {
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
     console.log("lineDirection " + diagram[lastSelectedObject].lineDirection);
-} 
+}
 
 //Close the errorMessageDialog for Composite
 function closeErrorMessageDialog() {

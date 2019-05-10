@@ -2652,6 +2652,7 @@ function figureFreeDraw() {
             selected_objects.push(figurePath);
             lastSelectedObject = diagram.length - 1;
             cleanUp();
+            SaveState();
         } else {
             // Temporary store the new line and then render it
             var tempPath = new Path;
