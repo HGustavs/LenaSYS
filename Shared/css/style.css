@@ -3851,6 +3851,7 @@ only screen and (max-device-width: 530px) {
   #searchinputMobile {
     border: 1px solid var(--color-border);
     border-radius: 0;
+    font-size: 14px;
   } 
 
   #searchbuttonMobile {
