@@ -205,9 +205,11 @@
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
+                            <i id="hotkey-ER">Shift + M</i>
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
+                            <i id="hotkey-UML">Shift + M</i>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">

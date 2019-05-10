@@ -1498,12 +1498,26 @@ input {
   right: 6px !important;
   top: 195px;
 }
-#hotkey-developerMode{
+#hotkey-developerMode {
   position: absolute !important;
   font-size: 11px !important;
   color: #3d3d3d !important;
-  right: 6px !important;
+  right: 35px !important;
   top: 10px;
+}
+#hotkey-ER {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 35px !important;
+  top: 85px;
+}
+#hotkey-UML {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 35px !important;
+  top: 120px;
 }
 
 /* --------------================################================-------------- *

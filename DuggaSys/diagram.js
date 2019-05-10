@@ -458,25 +458,34 @@ function keyDownHandler(e) {
     else if(shiftIsClicked && key == lKey) {
       document.getElementById("linebutton").click();
     }
-    else if(shiftIsClicked && key == aKey) {
+    else if(shiftIsClicked && key == aKey && targetMode == "ER") {
       document.getElementById("attributebutton").click();
     }
-    else if(shiftIsClicked && key == eKey) {
+    else if(shiftIsClicked && key == eKey && targetMode == "ER") {
       document.getElementById("entitybutton").click();
     }
-    else if(shiftIsClicked && key == rKey) {
+    else if(shiftIsClicked && key == rKey && targetMode == "ER") {
       document.getElementById("relationbutton").click();
     }
-    else if(shiftIsClicked && key == cKey) {
+    else if(shiftIsClicked && key == cKey && targetMode == "UML") {
       document.getElementById("classbutton").click();
     }
-    else if(shiftIsClicked && key == tKey) {
+    else if(shiftIsClicked && key == tKey && targetMode == "ER") {
       document.getElementById("drawtextbutton").click();
     }
     else if(shiftIsClicked && key == fKey) {
       document.getElementById("drawfreebutton").click();
     }
-
+    else if(shiftIsClicked && key == dKey) {
+      developerMode(event);
+    }
+    else if(shiftIsClicked && key == mKey) {
+      if(targetMode == "ER"){
+        switchToolbarTo("UML");
+      } else {
+        switchToolbarTo("ER");
+      }
+    }
 }
 
 //----------------------------------------------------
