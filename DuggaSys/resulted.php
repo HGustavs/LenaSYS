@@ -85,6 +85,7 @@ pdoConnect();
 				</select>
 			</div>
 
+			<!-- Search bar for mobile versions --> 
 			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">

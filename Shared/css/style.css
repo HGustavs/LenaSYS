@@ -3869,6 +3869,11 @@ only screen and (max-device-width: 530px) {
     padding: 3px;
   }
 
+  .tooltip-searchbar-box {
+    transform: translate(-10%, 30%);
+    margin: 0;
+  }
+
   /* #ladexportContainer select, #ladexportContainer input {
     height: 22px;
     margin-top: 2px;
