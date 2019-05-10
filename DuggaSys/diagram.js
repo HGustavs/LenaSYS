@@ -248,6 +248,9 @@ window.addEventListener("keydown", this.keyDownHandler);
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
 
+// This event checks if the user leaves the diagram.php
+window.addEventListener('blur', resetButtonsPressed);
+
 //--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
 //--------------------------------------------------------------
@@ -354,6 +357,16 @@ function generateExampleCode() {
     diagram.push(erEntityA);
     diagram.push(erattributeRelD);
     diagram.push(erattributeRelE);
+}
+
+//--------------------------------------------------------------------
+// This function check if focus on diagram was lost
+// Put your action here if you want focus lost as trigger
+//--------------------------------------------------------------------
+
+function resetButtonsPressed() {
+    ctrlIsClicked = false;
+    shiftIsClicked = false;
 }
 
 //--------------------------------------------------------------------
@@ -2377,7 +2390,7 @@ function diagramToSVG() {
 // NOT like:
 //         setCheckbox(checkboxElement, true); // checkboxVar is unchanged
 // The last example results in unchanged behaviour in the diagram but with
-// the checkbox icon appearing as if it is active. 
+// the checkbox icon appearing as if it is active.
 //----------------------------------------------------------------------
 
 function setCheckbox(element, check) {
