@@ -1007,7 +1007,6 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, y2);
         ctx.lineTo(x1, y2);
         ctx.lineTo(x1, y1);
-        this.makeShadow();
         ctx.closePath();
         // Top Divider
         ctx.moveTo(x1, y1 + (this.properties['textSize'] * 1.5));
@@ -1058,14 +1057,11 @@ function Symbol(kindOfSymbol) {
         if (this.properties['key_type'] == 'Multivalue') {
             drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
             ctx.stroke();
-            this.makeShadow();
             drawOval(x1, y1, x2, y2);
         // Drawing a normal attribute
         } else {
             drawOval(x1, y1, x2, y2);
-
             ctx.fill();
-            this.makeShadow();
         }
         ctx.clip();
 
@@ -1286,7 +1282,7 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x1, y2);
         ctx.lineTo(x1, y1);
         ctx.closePath();
-        this.makeShadow();
+        ctx.fill();
         ctx.clip();
         ctx.stroke();
 
@@ -1725,7 +1721,6 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(midx, y1);
 
         ctx.fillStyle = this.properties['symbolColor'];
-        this.makeShadow();
         ctx.fill();
         ctx.closePath();
         ctx.clip();
@@ -1969,16 +1964,6 @@ function Symbol(kindOfSymbol) {
 		}
 		return fontsize;
 	}
-
-    this.makeShadow = function() {
-        ctx.save();
-        ctx.shadowBlur = this.shadowBlur;
-        ctx.shadowOffsetX = this.properties['shadowOffsetX'];
-        ctx.shadowOffsetY = this.properties['shadowOffsetY'];
-        ctx.shadowColor = this.shadowColor;
-        ctx.fill();
-        ctx.restore();
-    }
 
     this.getLockPosition = function() {
         var y1 = points[this.topLeft].y;
