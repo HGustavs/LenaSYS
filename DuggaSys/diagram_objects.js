@@ -51,10 +51,6 @@ function Symbol(kindOfSymbol) {
         'textSize': '14',                               // 14 pixels text size is default.
         'sizeOftext': 'Tiny',                           // Used to set size of text.
         'textAlign': 'center',                          // Used to change alignment of free text.
-        'shadowColor': 'rgba(0, 0, 0, 0.3',             // The shadow color.
-        'shadowBlur': '10',                             // Shadowblur for all objects.
-        'shadowOffsetX': '3',                           // The horizontal distance of the shadow for the object.
-        'shadowOffsetY': '6',                           // The vertical distance of the shadow for the object.
         'key_type': 'normal'                            // Defult key type for a class.
     };
 
@@ -247,7 +243,7 @@ function Symbol(kindOfSymbol) {
 
             //only when object is created: changes position of points so that object is created from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     //entity and attribute template is the same size so either should work fine
                     points[i].x -= entityTemplate.width * 0.5;
@@ -311,7 +307,7 @@ function Symbol(kindOfSymbol) {
             }
             //only when object is created: changes position of points so that object is positioned from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * min width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * min width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     points[i].x -= this.minWidth * 0.5;
                     points[i].y -= this.minHeight * 0.5;
@@ -353,7 +349,7 @@ function Symbol(kindOfSymbol) {
 
             //only when object is created: changes position of points so that object is positioned from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     points[i].x -= relationTemplate.width * 0.5;
                     points[i].y -= relationTemplate.height * 0.5;
@@ -1010,7 +1006,6 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, y2);
         ctx.lineTo(x1, y2);
         ctx.lineTo(x1, y1);
-        this.makeShadow();
         ctx.closePath();
         // Top Divider
         ctx.moveTo(x1, y1 + (this.properties['textSize'] * 1.5));
@@ -1061,14 +1056,11 @@ function Symbol(kindOfSymbol) {
         if (this.properties['key_type'] == 'Multivalue') {
             drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
             ctx.stroke();
-            this.makeShadow();
             drawOval(x1, y1, x2, y2);
         // Drawing a normal attribute
         } else {
             drawOval(x1, y1, x2, y2);
-
             ctx.fill();
-            this.makeShadow();
         }
         ctx.clip();
 
@@ -1289,7 +1281,7 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x1, y2);
         ctx.lineTo(x1, y1);
         ctx.closePath();
-        this.makeShadow();
+        ctx.fill();
         ctx.clip();
         ctx.stroke();
 
@@ -1377,7 +1369,7 @@ function Symbol(kindOfSymbol) {
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 
-        // Set as dotted lines depending on value  
+        // Set as dotted lines depending on value
         if (this.properties['key_type'] == "Implementation" || this.properties['key_type'] == "Dependency") {
             ctx.setLineDash([10, 10]);
         }
@@ -1503,13 +1495,13 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
-        
+
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
 
     //---------------------------------------------------------------
-    // drawUmlRelationLineFigures: Draw arrow or diamond shape 
-    // depending on linetype at one of the connected uml objects    
+    // drawUmlRelationLineFigures: Draw arrow or diamond shape
+    // depending on linetype at one of the connected uml objects
     //---------------------------------------------------------------
     this.drawUmlRelationLines = function(x1, y1, x2, y2, startLineDirection, endLineDirection) {
         // set start position to the right object line start
@@ -1518,7 +1510,7 @@ function Symbol(kindOfSymbol) {
             linePositions = { x:x2, y:y2 };
         }
         ctx.setLineDash([0]);
-        
+
         var type;
 
         // arrow filled
@@ -1560,7 +1552,7 @@ function Symbol(kindOfSymbol) {
             if (endLineDirection == "down"){
                 this.drawUmlLineRelation(linePositions.x, linePositions.y, xChange, yChange, true, type);
             } else if (endLineDirection == "left") {
-                this.drawUmlLineRelation(linePositions.x, linePositions.y, -yChange, -xChange, false, type);              
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, -yChange, -xChange, false, type);
             } else if (endLineDirection == "right") {
                 this.drawUmlLineRelation(linePositions.x, linePositions.y, yChange, xChange, false, type);
             } else if (endLineDirection == "up") {
@@ -1592,9 +1584,9 @@ function Symbol(kindOfSymbol) {
         if (vertical) {
             ctx.lineTo(x, y + yC * 2);
             ctx.lineTo(x - xC, y + yC);
-        } else { 
+        } else {
             ctx.lineTo(x + xC * 2, y);
-            ctx.lineTo(x + xC, y - yC); 
+            ctx.lineTo(x + xC, y - yC);
         }
         ctx.closePath();
         ctx.stroke();
@@ -1617,8 +1609,8 @@ function Symbol(kindOfSymbol) {
         }
         if (vertical) {
             ctx.lineTo(x - xC, y + yC);
-        } else { 
-            ctx.lineTo(x + xC, y - yC); 
+        } else {
+            ctx.lineTo(x + xC, y - yC);
         }
         ctx.closePath();
         ctx.stroke();
@@ -1728,7 +1720,6 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(midx, y1);
 
         ctx.fillStyle = this.properties['symbolColor'];
-        this.makeShadow();
         ctx.fill();
         ctx.closePath();
         ctx.clip();
@@ -1973,25 +1964,15 @@ function Symbol(kindOfSymbol) {
 		return fontsize;
 	}
 
-    this.makeShadow = function() {
-        ctx.save();
-        ctx.shadowBlur = this.shadowBlur;
-        ctx.shadowOffsetX = this.properties['shadowOffsetX'];
-        ctx.shadowOffsetY = this.properties['shadowOffsetY'];
-        ctx.shadowColor = this.shadowColor;
-        ctx.fill();
-        ctx.restore();
-    }
-
     this.getLockPosition = function() {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        
+
         var offset = 10;
 
         return {
-            x: pixelsToCanvas(x2 + offset).x, 
+            x: pixelsToCanvas(x2 + offset).x,
             y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
 
@@ -2004,7 +1985,7 @@ function Symbol(kindOfSymbol) {
         ctx.lineWidth = 1 * diagram.getZoomValue();
         //Draws the upper part of the lock
         ctx.beginPath();
-        //A slight x offset to get the correct position   
+        //A slight x offset to get the correct position
         ctx.arc(position.x + (5 * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
@@ -2230,10 +2211,6 @@ function Path() {
             // Make either stroke or fill or both -- stroke always after fill
             if (fillstate) {
                 ctx.save();
-                ctx.shadowBlur = 10;
-                ctx.shadowOffsetX = 3;
-                ctx.shadowOffsetY = 6;
-                ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
                 if(shouldFill) ctx.fill();
                 ctx.restore();
             }
