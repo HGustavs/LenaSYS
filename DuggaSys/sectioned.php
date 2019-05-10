@@ -165,7 +165,7 @@
 								<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
 								<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
 						</div>
-						<div class='nowrap' style='padding-left:5px' title='statistics'>
+						<div class='nowrap' style='padding-left:50px' title='statistics'>
 								<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>
 						</div>
 				</div>
