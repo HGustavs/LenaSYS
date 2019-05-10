@@ -1734,8 +1734,8 @@ div.submit-button:disabled {
 }
 
 .toolbarButtonPressed {
-  display: inline; 
-  border-radius: 5px; 
+  display: inline;
+  border-radius: 5px;
   cursor: pointer
 }
 
@@ -3887,13 +3887,12 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
-  padding-right: 50px;
+  padding-right: 90px;
   padding-left: 10px;
   background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;
   height: 34px;
-  width: 230px;
   position: absolute;
   right: 14px;
   bottom: 11px;
@@ -3904,7 +3903,6 @@ only screen and (max-device-width: 320px) {
 
 #selectDiv select {
   height: 34px;
-  padding-left: 50px;
   font-size: 14px;
   border: 0;
   -webkit-appearance: none;
@@ -3964,7 +3962,7 @@ only screen and (max-device-width: 320px) {
 
 #range {
   display: inline-block;
-  margin-right: 8px;
+  margin-left: 10px;
 }
 
 .tooltipIncrease button {
@@ -4006,7 +4004,7 @@ only screen and (max-device-width: 320px) {
 .zoomSlider {
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
-  width: 100%; /* Full-width */
+  width: 90%; /* Full-width */
   height: 5px; /* Specified height */
   background: #d3d3d3;  /* Grey background */
   outline: none; /* Remove outline */
