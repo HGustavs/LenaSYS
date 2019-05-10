@@ -3306,17 +3306,16 @@ function mouseupevt(ev) {
     // Clear mouse state
     md = mouseState.empty;
     if(saveState) SaveState();
-
 }
 
 function countNumberOfSymbolKind(kind) {
-  let numberOfSymbolKind = 0;
-  for(let i = 0; i < diagram.length; i++){
-    if(diagram[i].symbolkind == kind) {
-      numberOfSymbolKind++;
+    let numberOfSymbolKind = 0;
+    for(let i = 0; i < diagram.length; i++){
+        if(diagram[i].symbolkind == kind) {
+            numberOfSymbolKind++;
+        }
     }
-  }
-  return numberOfSymbolKind;
+    return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
