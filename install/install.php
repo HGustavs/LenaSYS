@@ -162,6 +162,7 @@
                     <input title="Create new database." type="checkbox" name="createDB" value="Yes" onchange="createDBchange(this)" checked/>
                     Create new database. <br><hr>
                     <div id="DBboxes">
+						<input title="Include contribution dugga" type="checkbox" name="contribution" value="Yes" checked/>  Include Contribution dugga <br>
                         <input title="Include test data." type="checkbox" name="fillDB" value="Yes" onchange="fillDBchange(this)" checked/>
                         Include test data. <br><br>
                         <div id="testdataBoxes">
