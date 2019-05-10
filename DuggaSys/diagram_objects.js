@@ -934,31 +934,30 @@ function Symbol(kindOfSymbol) {
         ctx.textBaseline = "middle";
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
 
-        // 1 = UML
         if(this.symbolkind == symbolKind.uml) {
             this.drawUML(x1, y1, x2, y2);
         }
-        // 2 = ER attribute
+
         else if(this.symbolkind == symbolKind.erAttribute) {
             this.drawERAttribute(x1, y1, x2, y2);
         }
-        // 3 = entity
+
         else if(this.symbolkind == symbolKind.erEntity) {
             this.drawEntity(x1, y1, x2, y2);
         }
-        // 4 = line
+
         else if(this.symbolkind == symbolKind.line) {
             this.drawLine(x1, y1, x2, y2);
         }
-        // 5 = ER relation
+
         else if(this.symbolkind == symbolKind.erRelation) {
             this.drawRelation(x1, y1, x2, y2);
         }
-        // 6 = Text
+
         else if (this.symbolkind == symbolKind.text) {
             this.drawText(x1, y1, x2, y2);
         }
-        // 7 = uml line
+
         else if(this.symbolkind == symbolKind.umlLine) {
             this.drawUMLLine(x1, y1, x2, y2);
         }
