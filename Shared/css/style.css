@@ -720,15 +720,15 @@ header td {
 }
 
 .loggedout:hover {
-  background-color: var(--color-red);
+  background-color: var(--color-red-hover);
 }
 
 .loggedin {
-    background-color: var(--color-green);
+  background-color: var(--color-green);
 }
 
 .loggedin:hover {
-  background-color: var(--color-green);
+  background-color: var(--color-green-hover);
 }
 
 #loginbutton {
