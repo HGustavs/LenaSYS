@@ -2400,7 +2400,8 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 0px;
+  border-left: 2px solid #dbd0d8;
+  border-right: 2px solid #dbd0d8;
 }
 
 #accessTable select {
