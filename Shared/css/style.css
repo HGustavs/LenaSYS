@@ -3878,11 +3878,6 @@ only screen and (max-device-width: 530px) {
   .tooltip-searchbar-box:before {
     margin: 0;
   }
-
-  /* #ladexportContainer select, #ladexportContainer input {
-    height: 22px;
-    margin-top: 2px;
-  } */
   /* Mobile resulted end */
 }
 
