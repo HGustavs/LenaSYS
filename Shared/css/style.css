@@ -498,7 +498,7 @@ p {
   width: 32px;
   /*vertical-align: middle;*/
   overflow: hidden;
-  background-color: var(--color-primary-light);
+  background-color: #927b9e;
 }
 
 .LightBoxFilled {
