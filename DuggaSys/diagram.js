@@ -2555,10 +2555,12 @@ function changeZoom(zoomValue){
 }
 
 //-----------------------
-// Canvas zoom on scroll
+// Canvas zoom on scroll with mouse pointer in focus
 //-----------------------
 
 function scrollZoom(event) {
+  let currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
+  let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
     if(event.deltaY > 124){
         changeZoom(-0.1);
     } else if (event.deltaY < -124) {
@@ -2568,6 +2570,9 @@ function scrollZoom(event) {
     } else if (event.deltaY < -5) {
         changeZoom(0.01);
     }
+    origoOffsetX += currentMouseX - pixelsToCanvas(currentMouseCoordinateX).x;
+    origoOffsetY += currentMouseY - pixelsToCanvas(0, currentMouseCoordinateY).y;
+    updateGraphics();
 }
 
 //----------------------------------------------------------------------
