@@ -1400,8 +1400,6 @@ $(window).keyup(function (event) {
   var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
   if (event.keyCode == 27) {
     // if key is escape
-    //closeWindows();
-    closeSelect();
     showSaveButton();
      hamburgerChange("escapePress");
     document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
