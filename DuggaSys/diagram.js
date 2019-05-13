@@ -1154,17 +1154,25 @@ function toggleVirtualA4(event) {
     if (toggleA4) {
         // A4 is disabled
         toggleA4 = false;
+
+        $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
+        $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+        if (toggleA4Holes) {
+            $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
+        }else {
+            $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        }
         showA4State();
         updateGraphics();
     }
-    $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
-    $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
 }
@@ -1295,6 +1303,11 @@ function showA4State(){
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
     switchSideA4Holes = "left";
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+
+    // Show A4 options
+    $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 function hideA4State(){
@@ -1306,8 +1319,12 @@ function hideA4State(){
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
-    $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
+    // Grey out disabled options
+    $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 function toggleVirtualA4Holes() {
@@ -1315,13 +1332,16 @@ function toggleVirtualA4Holes() {
     if (toggleA4Holes) {
         toggleA4Holes = false;
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-        $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
+        switchSideA4Holes = "left"; // Disable the 'A4 Holes Right' option
+        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
         updateGraphics();
     } else {
         toggleA4Holes = true;
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-        $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
         updateGraphics();
     }
@@ -1738,7 +1758,6 @@ function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
     if(developerModeActive) {
-        console.log('developermode: ON');       // Shows that the developer have the developermode active.
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
@@ -1746,22 +1765,23 @@ function developerMode(event) {
         toolbarState = 3;                                                               // Change the toolbar to DEV.
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
-        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"),
-            toggleA4=false);                                                            // Turn off crosstoggleA4.
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
+        $("#er-item").addClass("drop-down-item drop-down-item-disabled");               // Disable ER and UML options
+        $("#uml-item").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
     } else {
-        console.log('developermode: OFF');
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         toolbarState = 1;                                                               // Change the toolbar back to ER.
         switchToolbar('ER');                                                            // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
-        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");       // Add disable of displayAllTools id.
+        $("#er-item").removeClass("drop-down-item drop-down-item-disabled");            // Disable ER and UML options
+        $("#uml-item").removeClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=false);                                                            // Turn off crossDEV.
@@ -1991,7 +2011,14 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) </p>";
+    if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
+      document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+       + Math.round((zoomValue * 100)) + "%" + " </p>";
+      document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+       + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+    }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   </p>";
@@ -2534,6 +2561,7 @@ function switchToolbar(direction) {
     $("#labelDraw").show();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
+    $("#drawtextbutton").show();
   }
   else if( toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
@@ -2548,6 +2576,7 @@ function switchToolbar(direction) {
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
+    $("#drawtextbutton").show();
   } else if(toolbarState == toolbarDeveloperMode) {
     $(".toolbar-drawer").show();
     $("#drawerTools").show();
@@ -2566,6 +2595,7 @@ function switchToolbar(direction) {
     $("#labelDraw").show();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
+    $("#drawtextbutton").show();
   }
 
   document.getElementById('toolbar-switcher').value = toolbarState;
@@ -2720,6 +2750,13 @@ function mousemoveevt(ev, t) {
                     } else {
                         canvas.style.cursor = "all-scroll";
                     }
+                } else if (uimode == "CreateLine") {
+                    //When CreateLine-button is selected the cursor is "pointer".
+                    canvas.style.cursor = "pointer";
+                    //If objects are hovered while button is selected, the cursor remains the same (pointer).
+                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
+                        canvas.style.cursor = "pointer";
+                    }
                 } else {
                     canvas.style.cursor = "default";
                 }
@@ -2730,8 +2767,8 @@ function mousemoveevt(ev, t) {
         } else if (md == mouseState.noPointAvailable) {
             // If mouse is pressed down and no point is close show selection box
         } else if (md == mouseState.insidePoint) {
-            // If the selected object is locked, you can't resize the object
-            if (diagram[lastSelectedObject].locked) {
+            // check so that the point were trying to move is attached to a targeted symbol and If the selected object is locked, you can't resize the object
+            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.locked) {
                 return;
             }
             // If mouse is pressed down and at a point in selected object - move that point
@@ -3362,17 +3399,16 @@ function mouseupevt(ev) {
     // Clear mouse state
     md = mouseState.empty;
     if(saveState) SaveState();
-
 }
 
 function countNumberOfSymbolKind(kind) {
-  let numberOfSymbolKind = 0;
-  for(let i = 0; i < diagram.length; i++){
-    if(diagram[i].symbolkind == kind) {
-      numberOfSymbolKind++;
+    let numberOfSymbolKind = 0;
+    for(let i = 0; i < diagram.length; i++){
+        if(diagram[i].symbolkind == kind) {
+            numberOfSymbolKind++;
+        }
     }
-  }
-  return numberOfSymbolKind;
+    return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
@@ -3774,7 +3810,6 @@ function changeObjectAppearance(object_type) {
     } else if (diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('line_direction').value;
-        // something about the line type ??
     } else if (diagram[lastSelectedObject].kind == kind.path) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
