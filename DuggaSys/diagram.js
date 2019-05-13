@@ -3142,7 +3142,6 @@ function mouseupevt(ev) {
                 if(symbolEndKind != symbolKind.uml) {
                     okToMakeLine = false;
                 }
-                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
