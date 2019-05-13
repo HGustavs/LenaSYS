@@ -1255,6 +1255,8 @@ function drawSwimlanes() {
   var tempNumb = 2;
 
   var str = "";
+  str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='200' y1='0' y2='0' id='fadeText'><stop offset='90%' stop-opacity='1' /><stop offset='100%' stop-opacity='0' /></linearGradient><linearGradient id='makeFadeText' xlink:href='#fadeText'/></defs>";
+
   for (var i = 0; i < weekLength; i++) {
     if(i==0){
       addNumb = 0;
@@ -1306,8 +1308,6 @@ function drawSwimlanes() {
         var tempVariable = duggalength*daywidth;
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
-
-
       }
     }
 
@@ -1317,17 +1317,6 @@ function drawSwimlanes() {
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
 
-  replaceSwimlane();
-}
-
-function replaceSwimlane() {
-  swimLane = document.getElementById("swimlaneSVG");
-  textLane = document.getElementById("swimlaneSVG").textContent;
-
-  if (textLane.length >= 10) {
-    textLane = "...";
-  }
-  console.log(textLane);
 }
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
