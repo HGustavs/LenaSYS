@@ -622,24 +622,19 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
-    // var topLeftClone = Object.assign({}, points[symbol.topLeft]);
-    // var topLeftClone = JSON.parse(JSON.stringify(points[symbol.topLeft]));
+
     var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
     topLeftClone.x += 10;
     topLeftClone.y += 10;
-    // var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
-    // var bottomRightClone = JSON.parse(JSON.stringify(points[symbol.bottomRight]));
+
     var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
     bottomRightClone.x += 10;
-    bottomRightClone.y += 10;
-    // var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
-    // var centerPointClone = JSON.parse(JSON.stringify(points[symbol.centerPoint]));
+
     var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
     centerPointClone.y += 10;
-    // var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
+
     if (symbol.symbolkind == symbolKind.uml) {
-        // var middleDividerClone = JSON.parse(JSON.stringify(points[symbol.middleDivider]));
         var middleDividerClone = jQuery.extend(true, {}, points[symbol.middleDivider]);
         middleDividerClone.x += 10;
         middleDividerClone.y += 10;
@@ -658,35 +653,26 @@ function copySymbol(symbol) {
             temp = connectedObjects(clone);
             console.log("copiedLine connections: " + temp[i].name);
         }
-    }else{
+    } else{
         clone.name = "RelationCopy" + diagram.length;
     }
-    
+
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
-   
+
     if(clone.symbolkind != symbolKind.uml) {
         clone.centerPoint = points.push(centerPointClone) - 1;
-    }
-    else {
+    }else {
         clone.middleDivider = points.push(middleDividerClone) - 1;
         clone.centerPoint = clone.middleDivider;
     }
-    
-    // draw a new line
-    if (clone.symbolkind == symbolKind.line) {
-        clone.connectorTop.push({from:topLeftClone, to:bottomRightClone});
-        clone.connectorTop.push({from:bottomRightClone, to:topLeftClone});
-    }
+
     clone.targeted = true;
     symbol.targeted = false;
 
-    
-    
     diagram.push(clone);
 
     return diagram.length;
-
 }
 
 //--------------------------------------------------------------------
@@ -2954,7 +2940,7 @@ function mousedownevt(ev) {
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
-    console.log(last.name);
+    
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
