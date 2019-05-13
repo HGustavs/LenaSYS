@@ -540,19 +540,21 @@ if(strcmp($opt,"get")==0) {
 	$query->bindParam(':vers', $vers);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
-		$debug="Error reading entries".$error[2];
+		$debug="TIMESHEET";
+	} else {
+		$rows = $query->fetchAll();
+		foreach($rows as $row){
+			$timesheet = array(
+				'day' => $row['day'],
+				'week' => intval($row['week']),
+				'type' => $row['type'],
+				'reference' => intval($row['reference']),
+				'comment' => $row['comment']
+			);
+			array_push($timesheets, $timesheet);
+		}
 	}
-	$rows = $query->fetchAll();
-	foreach($rows as $row){
-		$timesheet = array(
-			'day' => $row['day'],
-			'week' => intval($row['week']),
-			'type' => $row['type'],
-			'reference' => intval($row['reference']),
-			'comment' => $row['comment']
-		);
-		array_push($timesheets, $timesheet);
-	}
+
 	$array = array(
 		'debug' => $debug,
 		'weeks' => $weeks,

@@ -732,7 +732,12 @@ function returnedSection(data)
     return;
   }
   retdata=data;
-  if(data['debug']!="NONE!") alert(data['debug']);
+  if(data['debug']!="NONE!") {
+    if(data['debug']!="TIMESHEET") {
+      alert(data['debug']);
+    }
+    console.log("No timesheet table was found in the database.")
+  }
 
   contribDataArr = [];
   var str="";
