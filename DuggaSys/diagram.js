@@ -2690,6 +2690,13 @@ function mousemoveevt(ev, t) {
                     } else {
                         canvas.style.cursor = "all-scroll";
                     }
+                } else if (uimode == "CreateLine") {
+                    //When CreateLine-button is selected the cursor is "pointer".
+                    canvas.style.cursor = "pointer";
+                    //If objects are hovered while button is selected, the cursor remains the same (pointer).
+                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
+                        canvas.style.cursor = "pointer";
+                    }
                 } else {
                     canvas.style.cursor = "default";
                 }
