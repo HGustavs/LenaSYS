@@ -1959,7 +1959,7 @@ function reWrite() {
        + Math.round((zoomValue * 100)) + "%" + " </p>";
       document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | Center coordinates of hovered object: X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
     }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "

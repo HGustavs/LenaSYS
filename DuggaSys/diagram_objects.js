@@ -928,10 +928,6 @@ function Symbol(kindOfSymbol) {
             }
         }
 
-        if(this.isHovered && this.symbolkind != symbolKind.umlLine && this.symbolkind != symbolKind.line && developerModeActive){
-          this.drawCenterCoordinatesTooltip();
-        }
-
         ctx.save();
 
         ctx.textAlign = "center";
@@ -2037,29 +2033,6 @@ function Symbol(kindOfSymbol) {
         ctx.fillText("Entity position is locked", position.x, position.y + offset);
 
         ctx.restore();
-    }
-
-    this.drawCenterCoordinatesTooltip = function() {
-      ctx.save();
-
-      var topLeftPosition = pixelsToCanvas(points[this.topLeft].x, points[this.topLeft].y);
-      var centerPosition = pixelsToCanvas(points[this.centerPoint].x, points[this.centerPoint].y);
-      var widthOfObject = points[this.bottomRight].x - points[this.topLeft].x;
-
-      var xPosition = canvas.width / 2 - 175;
-      var yPosition = canvas.height - 30;
-
-      ctx.fillStyle = "#00000";
-      ctx.fillRect(xPosition, yPosition, 300, 30);
-
-      var yOffset = 17;
-      var xOffset = 135;
-      ctx.fillStyle = "black";
-      ctx.font = "bold 14px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("Center coordinates of object: " + "X=" + Math.round(points[this.centerPoint].x) + " & " + "Y=" + Math.round(points[this.centerPoint].y), xPosition + xOffset, yPosition + yOffset);
-
-      ctx.restore();
     }
 }
 
