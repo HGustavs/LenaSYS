@@ -38,6 +38,15 @@ function setup() {
 	document.getElementById("dropdownc").appendChild(columnFilterDiv);
 	document.getElementById("dropdownc").appendChild(customFilterDiv);
 
+	var str = "<div id='sortOptionsContainer'>";
+	str += "<input type='radio' name='sortAscDesc' value='1'><label class='headerlabel'>Sort descending</label>";
+	str += "<input type='radio' name='sortAscDesc' value='0'><label class='headerlabel'>Sort ascending</label>";
+	str += "<fieldset style='margin-top: 10px;'><legend style='color: black; font-size: 16px;'>Columns</legend>";
+	str += "<div id='sortOptions'></div>";
+	str += "</fieldset>";
+	str += "<button onclick='parseSortOptions(this)'>Sort</button>";
+	document.getElementById("dropdowns").innerHTML = str;
+
 	AJAXService("GET", {
 		cid: querystring['cid'],
 		coursevers: querystring['coursevers']
@@ -287,9 +296,40 @@ function renderSortOptions(col, status, colname) {
 	} else {
 		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
+	addToSortDropdown(colname, col);
 	return str;
 }
 
+var sortColumns = [];
+function addToSortDropdown(colname, col) {
+	if (!sortColumns.includes(col)) {
+		var str = "";
+		str += "<div><input name='sort' class='sortRadioBtn' type='radio' value="+col+"><label class='headerlabel'>"+colname+"</label></div>";
+		document.getElementById('sortOptions').innerHTML += str;
+		sortColumns.push(col);
+	}
+}
+
+function parseSortOptions(el) {
+	var inputs = el.parentNode.getElementsByTagName('input');
+	var status;
+	if (inputs[0].checked) {
+		status = inputs[0].value;
+	} else if (inputs[1].checked) {
+		status = inputs[1].value;
+	}
+
+	var column;
+	for (var i = 2; i < inputs.length; i++) {
+		if (inputs[i].checked) {
+			column = inputs[i].value;
+		}
+	}
+
+	if (status && column) {
+		myTable.toggleSortStatus(column, status);
+	} 
+}
 
 //--------------------------------------------------------------------------
 // editCell
@@ -423,7 +463,7 @@ function returnedAccess(data) {
 
 	myTable.renderTable();
 
-	str = "<div class='checkbox-dugga'>";
+	var str = "<div class='checkbox-dugga'>";
 	str += "<button id='toggleAllButton' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
 	str += "</div>"
 	document.getElementById("dropdownc").innerHTML += str;
