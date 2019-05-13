@@ -1252,15 +1252,9 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
-		var mobileMediaQuery = window.matchMedia("(max-width: 600px)");
-		var mediumMediaQuery = window.matchMedia("(min-width: 601px) and (max-width: 1200px)");
+		var mobileMediaQuery = window.matchMedia("(max-width: 800px)");
+		var mediumMediaQuery = window.matchMedia("(min-width: 801px) and (max-width: 1200px)");
 		var tab="<table class='previewTable'>";
-
-		if (mobileMediaQuery.matches) {
-			tab+="<thead><tr><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-		} else {
-			tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>";
-		}
 
 		if (group) {
       if (mobileMediaQuery.matches) {
@@ -1344,7 +1338,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
-								if (mobileMediaQuery.matches) {
+								if (mobileMediaQuery.matches || mediumMediaQuery.matches) {
 									tab+="<span style='text-decoration: underline' onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>"+filez[i].feedback.substring(0,8)+"&#8230;</span>";
 								} else {
 									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
