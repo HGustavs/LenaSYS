@@ -389,7 +389,7 @@ function returnedAccess(data) {
 
 		tblhead: {
 			username: "User",
-			ssn: "SSN",
+			/*ssn: "SSN",*/
 			firstname: "First name",
 			lastname: "Last name",
 			class: "Class",
@@ -403,7 +403,7 @@ function returnedAccess(data) {
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-	var colOrder = ["username", "ssn", "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
+	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: "accessTable",
