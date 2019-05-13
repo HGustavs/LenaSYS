@@ -2690,8 +2690,8 @@ function mousemoveevt(ev, t) {
         } else if (md == mouseState.noPointAvailable) {
             // If mouse is pressed down and no point is close show selection box
         } else if (md == mouseState.insidePoint) {
-            // If the selected object is locked, you can't resize the object
-            if (diagram[lastSelectedObject].locked) {
+            // check so that the point were trying to move is attached to a targeted symbol and If the selected object is locked, you can't resize the object
+            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.locked) {
                 return;
             }
             // If mouse is pressed down and at a point in selected object - move that point
@@ -3322,17 +3322,16 @@ function mouseupevt(ev) {
     // Clear mouse state
     md = mouseState.empty;
     if(saveState) SaveState();
-
 }
 
 function countNumberOfSymbolKind(kind) {
-  let numberOfSymbolKind = 0;
-  for(let i = 0; i < diagram.length; i++){
-    if(diagram[i].symbolkind == kind) {
-      numberOfSymbolKind++;
+    let numberOfSymbolKind = 0;
+    for(let i = 0; i < diagram.length; i++){
+        if(diagram[i].symbolkind == kind) {
+            numberOfSymbolKind++;
+        }
     }
-  }
-  return numberOfSymbolKind;
+    return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
