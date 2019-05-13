@@ -668,16 +668,19 @@ function createboxmenu(contentid, boxid, type)
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
+				str+="<td class='butto2 minimizeboxbtn' id='minimizeBox' title='Minimize boxes' onclick='minimizeBoxes();'><p>Minimize</p>";
 				str+="</tr></table>";
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
+				str+="<td class='butto2 minimizeboxbtn' id='minimizeBox' title='Minimize boxes' onclick='minimizeBoxes();'><p>Minimize</p>";
 				str+='</tr></table>';
 			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
+				str+="<td class='butto2 minimizeboxbtn' id='minimizeBox' title='Minimize boxes' onclick='minimizeBoxes();'><p>Minimize</p>";
 				str+="</tr></table>";
 			}else{
 				var str = "<table cellspacing='2'><tr>";
@@ -1776,6 +1779,24 @@ function Play(event)
 
         }
 	}
+}
+
+//-----------------------------------------------------------------------------
+// minimizeBoxes: Adding minimize functionality for the boxes
+//					Is called by setup() in codeviewer.js
+//-----------------------------------------------------------------------------
+
+function minimizeBoxes()
+{
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+
+	getLocalStorageProperties(boxValArray);
+
+	$(boxValArray['box1']['id']).width("0%");
+	$(boxValArray['box1']['id']).height("0%");
+	alignBoxesWidth(boxValArray, 1, 2, 3);
+	alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
 }
 
 //-----------------------------------------------------------------------------
