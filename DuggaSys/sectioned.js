@@ -1324,8 +1324,8 @@ function replaceSwimlane() {
   swimLane = document.getElementById("swimlaneSVG");
   textLane = document.getElementById("swimlaneSVG").textContent;
 
-  if (textLane.width >= 10) {
-    textLane = "...";
+  if (textLane.length >= 10) {
+    textLane.innerHTML = "...";
   }
   console.log(textLane);
 }
