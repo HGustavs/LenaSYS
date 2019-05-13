@@ -2494,6 +2494,7 @@ function switchToolbar(direction) {
     $("#labelDraw").show();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
+    $("#drawtextbutton").show();
   }
   else if( toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
@@ -2508,6 +2509,7 @@ function switchToolbar(direction) {
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
+    $("#drawtextbutton").show();
   } else if(toolbarState == toolbarDeveloperMode) {
     $(".toolbar-drawer").show();
     $("#drawerTools").show();
@@ -2526,6 +2528,7 @@ function switchToolbar(direction) {
     $("#labelDraw").show();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
+    $("#drawtextbutton").show();
   }
 
   document.getElementById('toolbar-switcher').value = toolbarState;
