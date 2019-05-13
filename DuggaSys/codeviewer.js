@@ -2160,8 +2160,25 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-
 	}
+  else if (templateId == 10) {
+    getLocalStorageProperties(templateId, boxValArray);
+
+    $(boxValArray['box1']['id']).resizable({
+      containment: parent,
+      handles: "e",
+      start: function(event, ui) {
+        $('iframe').css('pointer-events','none');
+      },
+      resize: function(e, ui){
+        alignBoxesWidth(boxValArray, 1);
+      },
+      stop: function(e, ui) {
+        setLocalStorageProperties(templateId, boxValArray);
+        $('iframe').css('pointer-events','auto');
+      }
+    });
+  }
 };
 
 //----------------------------------------------------------------------------------
@@ -2733,6 +2750,9 @@ function erasePercentGap(templateId, boxValArray)
 		alignTemplate9Height(boxValArray, 2, 3, 4, 5);
 		alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
 	}
+else if(templateId == 10){
+  alignBoxesWidth(boxValArray, 1, 2);
+}
 }
 
 //----------------------------------------------------------------------------------
