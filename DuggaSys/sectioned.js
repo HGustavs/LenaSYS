@@ -1307,10 +1307,6 @@ function drawSwimlanes() {
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
 
-        swimLane = document.getElementById("swimlaneSVG");
-        textLane = document.getElementById("swimlaneSVG").textContent;
-
-        console.log(swimLane.textContent);
 
       }
     }
@@ -1321,6 +1317,14 @@ function drawSwimlanes() {
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
 
+  replaceSwimlane();
+}
+
+function replaceSwimlane() {
+  swimLane = document.getElementById("swimlaneSVG");
+  textLane = document.getElementById("swimlaneSVG").textContent;
+
+  console.log(textLane);
 }
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
