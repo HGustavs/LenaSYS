@@ -726,6 +726,7 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
+	
     if(typeof firstCell === 'object' && col.includes("FnameLname")) {
 		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
@@ -778,11 +779,17 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-		if (status == 1) {
+		console.log(firstCellTemp.toLocaleUpperCase());
+		console.log(secoundCellTemp);
+		if (status == 0 && firstCellTemp >= 0 && secoundCellTemp == "") {
+			val = 1
+
+
+		} else if (status == 1) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-		} else if (status == 2 || status == 3) {
+		} else if (status == 2) {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
-		}
+		} 
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
 		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
