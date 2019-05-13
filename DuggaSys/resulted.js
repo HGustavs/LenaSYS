@@ -746,23 +746,25 @@ function gradeFilterHandler() {
 }
 function deadlineFilterHandler() {
 	// getting the alternative that the filter have.
-	filterDeadline = 0;
+	isLate = false;
 	var argument = document.getElementById("deadlineFilter").value;
 	switch (argument) {
-		case "dugga-pending-late-submission":
-		filterDeadline = 3;
+		case "late":
+		isLate = true;
 			break;
-		case "dugga-pending":
-		filterDeadline = 2;
+		case "notLate":
+		isLate = false;
 			break;
 		default:
-		filterDeadline = "none";
+		isLate = "none";
 			break;
 	}
+	return isLate;
 }
 
 function renderCell(col, celldata, cellid) {
 	gradeFilterHandler();
+	console.log(celldata.deadline);
 	
 	// Render minimode
 	if (filterList["minimode"]) {
@@ -1048,6 +1050,7 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
+	
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
