@@ -3046,13 +3046,82 @@ function mouseupevt(ev) {
     if(movobj > -1) {
         if(diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
-    if (symbolStartKind != symbolKind.uml) {
-    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+    if (symbolStartKind != symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
-        //Check if you release on canvas or try to draw a line from entity to entity
-         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-            md = mouseState.empty;
+        // Check if you release on canvas
+         if (markedObject == -1) {
+             md = mouseState.empty;
          }else {
+             //Get which kind of symbol mouseupevt execute on
+             symbolEndKind = diagram[markedObject].symbolkind;
+
+             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+             //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
+             // if then, set point1 and point2
+             //okToMakeLine is a flag for this
+             var okToMakeLine = true;
+             if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
+                 symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+                 var createNewPoint = false;
+                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
+                     p1 = diagram[lineStartObj].centerPoint;
+                 } else {
+                     createNewPoint = true;
+                 }
+                 //Code for making sure enitities not connect to the same attribute multiple times
+                 if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
+                     if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
+                         okToMakeLine= false;
+                     }
+                 } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
+                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
+                         okToMakeLine= false;
+                     }
+                 } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
+                     if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                 } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
+                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                 } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
+                     okToMakeLine = false;
+                 } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
+                     okToMakeLine = false;
+                 }
+                 if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
+
+                 // Can't draw line between two ER attributes if one of them is not composite
+                 if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
+                     if(diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
+                        okToMakeLine = true;
+                     } else {
+                         okToMakeLine = false;
+                         // Add error dialog
+                         $("#errorMessageDialog").css("display", "flex");
+                         var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+                         document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
+                     }
+                 }
+
+                 if(okToMakeLine) {
+                     saveState = true;
+                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                     if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                         p2 = diagram[markedObject].centerPoint;
+                     } else {
+                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                     }
+                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
+                     diagram[markedObject].connectorTop.push({from:p2, to:p1});
+                 }
+             }
+        }
+    }
+    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+        saveState = false;
+        uimode = "CreateUMLLine";
+        //Check if you release on canvas or try to draw a line from entity to entity
+        if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
+            md = mouseState.empty;
+        }else {
             //Get which kind of symbol mouseupevt execute on
             symbolEndKind = diagram[markedObject].symbolkind;
 
@@ -3061,80 +3130,7 @@ function mouseupevt(ev) {
             // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
-                var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
-                    p1 = diagram[lineStartObj].centerPoint;
-                } else {
-                    createNewPoint = true;
-                }
-                //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
-                    okToMakeLine = false;
-                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
-                    okToMakeLine = false;
-                }
-                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
-
-                // Can't draw line between two ER attributes if one of them is not composite
-                if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                    if(diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
-                       okToMakeLine = true;
-                    } else {
-                        okToMakeLine = false;
-                        // Add error dialog
-                        $("#errorMessageDialog").css("display", "flex");
-                        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
-                        document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
-                    }
-                }
-
-                if(okToMakeLine) {
-                    saveState = true;
-                    if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
-                        p2 = diagram[markedObject].centerPoint;
-                    } else {
-                        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    }
-                    diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                    diagram[markedObject].connectorTop.push({from:p2, to:p1});
-                }
-            }
-        }
-    }
-}
-    if (symbolStartKind == symbolKind.uml){
-    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
-        saveState = false;
-        uimode = "CreateUMLLine";
-        //Check if you release on canvas or try to draw a line from entity to entity
-         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-            md = mouseState.empty;
-         }else {
-              //Get which kind of symbol mouseupevt execute on
-             symbolEndKind = diagram[markedObject].symbolkind;
-
-             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
-            // if then, set point1 and point2
-            //okToMakeLine is a flag for this
-            var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            if(symbolEndKind != symbolKind.umlLine && symbolEndKind != symbolKind.text) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -3143,21 +3139,7 @@ function mouseupevt(ev) {
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
-                    okToMakeLine = false;
-                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
+                if(symbolEndKind != symbolKind.uml) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
@@ -3174,7 +3156,6 @@ function mouseupevt(ev) {
                 }
             }
         }
-    }
     }
 
     // Code for creating symbols when mouse is released
