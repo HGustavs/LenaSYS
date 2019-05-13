@@ -81,10 +81,6 @@
                                         <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Class">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                         </button>
-                                        <!-- Create Text -->
-                                        <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text">
-                                            <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
-                                        </button>
                                         <!-- Create Line -->
                                         <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
@@ -92,6 +88,10 @@
                                         <!-- Draw Free -->
                                         <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
+                                        </button>
+                                        <!-- Create Text -->
+                                        <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text">
+                                            <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                                         </button>
                                     </div>
                                 </div>
