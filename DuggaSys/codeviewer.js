@@ -173,6 +173,7 @@ function returned(data)
 			// set font size
 			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
 		}else if(boxtype === "DOCUMENT"){
+
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
 			var desc = boxcontent;
@@ -200,6 +201,10 @@ function returned(data)
 			$("#"+contentid).html(desc);
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
+
+				// set font size
+				$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
+				
 			// Make room for the menu by setting padding-top equals to height of menubox
 			if($("#"+contentid+"menu").height() == null){
 				boxmenuheight = 0;
