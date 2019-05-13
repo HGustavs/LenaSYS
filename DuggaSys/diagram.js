@@ -492,7 +492,7 @@ function keyDownHandler(e) {
 // Map actual coordinates to canvas offset from origo
 //----------------------------------------------------
 
-function pixelsToCanvas(pixelX = 0, pixelY = 0){
+function pixelsToCanvas(pixelX = 0, pixelY = 0) {
     return {
         x: pixelX * zoomValue + origoOffsetX,
         y: pixelY * zoomValue + origoOffsetY
@@ -503,8 +503,8 @@ function pixelsToCanvas(pixelX = 0, pixelY = 0){
 // Map canvas offset from origo to actual coordinates
 //----------------------------------------------------
 
-function canvasToPixels(pixelX = 0, pixelY = 0){
-    return{
+function canvasToPixels(pixelX = 0, pixelY = 0) {
+    return {
         x: (pixelX - origoOffsetX) / zoomValue,
         y: (pixelY - origoOffsetY) / zoomValue
     }
@@ -965,7 +965,21 @@ diagram.checkForHover = function(posX, posY) {
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != kind.path) {
         //We only want to set it to true when md is not in selectionbox mode
         if(!(uimode == "MoveAround")) {
-            hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.insideMovableObject || uimode != "normal";
+            if (md != mouseState.insideMovableObject || uimode != "normal" || hoveredObjects[hoveredObjects.length - 1].isLocked) {
+                hoveredObjects[hoveredObjects.length - 1].isHovered = true;
+            } else {
+                hoveredObjects[hoveredObjects.length - 1].isHovered = false;
+            }
+        }
+    }
+    // check hover for free draw objects
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == kind.path) {
+            if (diagram[i].checkForHover(posX, posY) && uimode != "MoveAround") {
+                diagram[i].isHovered = true;
+            } else {
+                diagram[i].isHovered = false;
+            }
         }
     }
     return hoveredObjects[hoveredObjects.length - 1];
@@ -2084,10 +2098,10 @@ function lockSelected(event) {
                 continue;
             }
         }
-        selected_objects[i].locked = !selected_objects[i].locked;
+        selected_objects[i].isLocked = !selected_objects[i].isLocked;
 
-        if(selected_objects[i].locked) {
-            selected_objects[i].drawLock();
+        if(selected_objects[i].isLocked) {
+            drawLock(selected_objects[i]);
         }
         else {
             updateGraphics();
@@ -2744,7 +2758,7 @@ function mousemoveevt(ev, t) {
             } else {
                 if(uimode == "MoveAround") {
                     canvas.style.cursor = "all-scroll";
-                } else if(hoveredObject && !hoveredObject.locked){
+                } else if(hoveredObject && !hoveredObject.isLocked){
                     if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
                         canvas.style.cursor = "pointer";
                     } else {
@@ -2768,7 +2782,7 @@ function mousemoveevt(ev, t) {
             // If mouse is pressed down and no point is close show selection box
         } else if (md == mouseState.insidePoint) {
             // check so that the point were trying to move is attached to a targeted symbol and If the selected object is locked, you can't resize the object
-            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.locked) {
+            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.isLocked) {
                 return;
             }
             // If mouse is pressed down and at a point in selected object - move that point
@@ -2844,7 +2858,7 @@ function mousemoveevt(ev, t) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
-                    if (diagram[i].targeted == true && !diagram[movobj].locked) {
+                    if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
                         if(snapToGrid) {
                             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -3118,138 +3132,138 @@ function mouseupevt(ev) {
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
     var saveState = md == mouseState.boxSelectOrCreateMode && uimode != "normal";
-    if(movobj > -1) {
-        if(diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
+    if (movobj > -1) {
+        if (diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
     if (symbolStartKind != symbolKind.uml) {
-    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
-        saveState = false;
-        //Check if you release on canvas or try to draw a line from entity to entity
-         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-            md = mouseState.empty;
-         }else {
-            //Get which kind of symbol mouseupevt execute on
-            symbolEndKind = diagram[markedObject].symbolkind;
+        if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+            saveState = false;
+            //Check if you release on canvas or try to draw a line from entity to entity
+            if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
+                md = mouseState.empty;
+            } else {
+                //Get which kind of symbol mouseupevt execute on
+                symbolEndKind = diagram[markedObject].symbolkind;
 
-            sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
-            // if then, set point1 and point2
-            //okToMakeLine is a flag for this
-            var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
-                var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
-                    p1 = diagram[lineStartObj].centerPoint;
-                } else {
-                    createNewPoint = true;
-                }
-                //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
-                    okToMakeLine = false;
-                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
-                    okToMakeLine = false;
-                }
-                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
-
-                // Can't draw line between two ER attributes if one of them is not composite
-                if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                    if(diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
-                       okToMakeLine = true;
+                sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+                //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
+                // if then, set point1 and point2
+                //okToMakeLine is a flag for this
+                var okToMakeLine = true;
+                if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
+                    symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+                    var createNewPoint = false;
+                    if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
+                        p1 = diagram[lineStartObj].centerPoint;
                     } else {
+                        createNewPoint = true;
+                    }
+                    //Code for making sure enitities not connect to the same attribute multiple times
+                    if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
+                        if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
+                            okToMakeLine= false;
+                        }
+                    } else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
+                        if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
+                            okToMakeLine= false;
+                        }
+                    } else if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
+                        if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                    } else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
+                        if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                    } else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                         okToMakeLine = false;
-                        // Add error dialog
-                        $("#errorMessageDialog").css("display", "flex");
-                        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
-                        document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
+                    } else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
+                        okToMakeLine = false;
                     }
-                }
+                    if (diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
 
-                if(okToMakeLine) {
-                    saveState = true;
-                    if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
-                        p2 = diagram[markedObject].centerPoint;
-                    } else {
-                        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    // Can't draw line between two ER attributes if one of them is not composite
+                    if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
+                        if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
+                        okToMakeLine = true;
+                        } else {
+                            okToMakeLine = false;
+                            // Add error dialog
+                            $("#errorMessageDialog").css("display", "flex");
+                            var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+                            document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
+                        }
                     }
-                    diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                    diagram[markedObject].connectorTop.push({from:p2, to:p1});
+
+                    if (okToMakeLine) {
+                        saveState = true;
+                        if (createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                        if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                            p2 = diagram[markedObject].centerPoint;
+                        } else {
+                            p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                        }
+                        diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
+                        diagram[markedObject].connectorTop.push({from:p2, to:p1});
+                    }
                 }
             }
         }
     }
-}
-    if (symbolStartKind == symbolKind.uml){
-    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
-        saveState = false;
-        uimode = "CreateUMLLine";
-        //Check if you release on canvas or try to draw a line from entity to entity
-         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-            md = mouseState.empty;
-         }else {
-              //Get which kind of symbol mouseupevt execute on
-             symbolEndKind = diagram[markedObject].symbolkind;
+    if (symbolStartKind == symbolKind.uml) {
+        if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+            saveState = false;
+            uimode = "CreateUMLLine";
+            //Check if you release on canvas or try to draw a line from entity to entity
+            if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
+                md = mouseState.empty;
+            } else {
+                //Get which kind of symbol mouseupevt execute on
+                symbolEndKind = diagram[markedObject].symbolkind;
 
-             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
-            // if then, set point1 and point2
-            //okToMakeLine is a flag for this
-            var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
-                var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
-                    p1 = diagram[lineStartObj].centerPoint;
-                } else {
-                    createNewPoint = true;
-                }
-
-                //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
-                    okToMakeLine = false;
-                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
-                    okToMakeLine = false;
-                }
-                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
-                if(okToMakeLine) {
-                    saveState = true;
-                    if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
-                        p2 = diagram[markedObject].centerPoint;
+                sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+                //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
+                // if then, set point1 and point2
+                //okToMakeLine is a flag for this
+                var okToMakeLine = true;
+                if (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine &&
+                    symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+                    var createNewPoint = false;
+                    if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
+                        p1 = diagram[lineStartObj].centerPoint;
                     } else {
-                        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                        createNewPoint = true;
                     }
-                    diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                    diagram[markedObject].connectorTop.push({from:p2, to:p1});
+
+                    //Code for making sure enitities not connect to the same attribute multiple times
+                    if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
+                        if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
+                            okToMakeLine= false;
+                        }
+                    } else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
+                        if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
+                            okToMakeLine= false;
+                        }
+                    } else if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
+                        if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                    } else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
+                        if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                    } else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
+                        okToMakeLine = false;
+                    } else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
+                        okToMakeLine = false;
+                    }
+                    if (diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
+                    if (okToMakeLine) {
+                        saveState = true;
+                        if (createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                        if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                            p2 = diagram[markedObject].centerPoint;
+                        } else {
+                            p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                        }
+                        diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
+                        diagram[markedObject].connectorTop.push({from:p2, to:p1});
+                    }
                 }
             }
         }
-    }
     }
 
     // Code for creating symbols when mouse is released
@@ -3339,6 +3353,17 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+        // clicking on a lock removes it
+        if (currentMouseCoordinateX == startMouseCoordinateX && currentMouseCoordinateY == startMouseCoordinateY) {
+            for (var i = 0; i < diagram.length; i++) {
+                if (diagram[i].isLocked){
+                    setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
+                    if (diagram[i].isLockHovered) {
+                        diagram[i].isLocked = false;
+                    }    
+                }
+            }
+        }
     }
     else if(uimode != "Moved" && !ctrlIsClicked && md != mouseState.boxSelectOrCreateMode) {
         //Unselects every object.
@@ -3515,7 +3540,7 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 function openAppearanceDialogMenu() {
-    if (diagram[lastSelectedObject].locked) {
+    if (diagram[lastSelectedObject].isLocked) {
         return;
     }
     $(".loginBox").draggable();

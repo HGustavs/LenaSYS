@@ -29,7 +29,8 @@ function Symbol(kindOfSymbol) {
     this.lineDirection;
     this.minWidth;
     this.minHeight;
-    this.locked = false;
+    this.isLocked = false;          // If the symbol is locked
+    this.isLockHovered = false;     // Checks if the lock itself is hovered on the symbol
     this.isOval = false;
     this.isAttribute = false;
     this.isRelation = false;
@@ -524,11 +525,12 @@ function Symbol(kindOfSymbol) {
     // checkForHover: Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
-        if(this.symbolkind == symbolKind.line) {
+        setIsLockHovered(this, mx, my);
+        if (this.symbolkind == symbolKind.line) {
             return this.linehover(mx, my);
-        }else if(this.symbolkind == symbolKind.erEntity) {
+        } else if(this.symbolkind == symbolKind.erEntity) {
             return this.entityhover(mx, my);
-        }else {
+        } else {
             return this.entityhover(mx, my);
         }
     }
@@ -653,8 +655,8 @@ function Symbol(kindOfSymbol) {
     // move: Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
-        if(this.locked) return;
-        if(this.symbolkind != symbolKind.line) {
+        if (this.isLocked) return;
+        if (this.symbolkind != symbolKind.line) {
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
             points[this.bottomRight].x += movex;
@@ -916,11 +918,10 @@ function Symbol(kindOfSymbol) {
         var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
         var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
 
-        if(this.locked) {
-            this.drawLock();
-
-            if(this.isHovered) {
-                this.drawLockedTooltip();
+        if (this.isLocked) {
+            drawLock(this);
+            if (this.isHovered || this.isLockHovered) {
+                drawLockedTooltip(this);
             }
         }
 
@@ -930,23 +931,23 @@ function Symbol(kindOfSymbol) {
         ctx.textBaseline = "middle";
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
 
-        if(this.symbolkind == symbolKind.uml) {
+        if (this.symbolkind == symbolKind.uml) {
             this.drawUML(x1, y1, x2, y2);
         }
 
-        else if(this.symbolkind == symbolKind.erAttribute) {
+        else if (this.symbolkind == symbolKind.erAttribute) {
             this.drawERAttribute(x1, y1, x2, y2);
         }
 
-        else if(this.symbolkind == symbolKind.erEntity) {
+        else if (this.symbolkind == symbolKind.erEntity) {
             this.drawEntity(x1, y1, x2, y2);
         }
 
-        else if(this.symbolkind == symbolKind.line) {
+        else if (this.symbolkind == symbolKind.line) {
             this.drawLine(x1, y1, x2, y2);
         }
 
-        else if(this.symbolkind == symbolKind.erRelation) {
+        else if (this.symbolkind == symbolKind.erRelation) {
             this.drawRelation(x1, y1, x2, y2);
         }
 
@@ -954,7 +955,7 @@ function Symbol(kindOfSymbol) {
             this.drawText(x1, y1, x2, y2);
         }
 
-        else if(this.symbolkind == symbolKind.umlLine) {
+        else if (this.symbolkind == symbolKind.umlLine) {
             this.drawUMLLine(x1, y1, x2, y2);
         }
 
@@ -962,7 +963,7 @@ function Symbol(kindOfSymbol) {
         ctx.setLineDash([]);
 
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted && this.symbolkind != symbolKind.text) {
+        if (this.targeted && this.symbolkind != symbolKind.text) {
             ctx.beginPath();
             ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
@@ -1962,57 +1963,80 @@ function Symbol(kindOfSymbol) {
 			fontsize = 50 * diagram.getZoomValue();
 		}
 		return fontsize;
-	}
-
+    }
+    // returns the position of the lock for this object
     this.getLockPosition = function() {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
 
-        var offset = 10;
+        var xOffset = 10;
 
         return {
-            x: pixelsToCanvas(x2 + offset).x,
+            x: pixelsToCanvas(x2 + xOffset).x,
             y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
-
-    this.drawLock = function() {
-        var position = this.getLockPosition();
-        ctx.save();
-
-        ctx.fillStyle = "orange";
-        ctx.strokeStyle = "orange";
-        ctx.lineWidth = 1 * diagram.getZoomValue();
-        //Draws the upper part of the lock
-        ctx.beginPath();
-        //A slight x offset to get the correct position
-        ctx.arc(position.x + (5 * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        //Draws the lock body
-        ctx.fillRect(position.x, position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
-
-        ctx.restore();
+}
+//----------------------------------------------------------------------
+// drawLock: This function draws out the actual lock for the specified symbol 
+//----------------------------------------------------------------------
+function drawLock(symbol) {
+    var position = symbol.getLockPosition();
+    ctx.save();
+    ctx.fillStyle = "orange";
+    ctx.strokeStyle = "orange";
+    ctx.lineWidth = diagram.getZoomValue();
+    // A slight x offset to get the correct position
+    var xOffset = 5;
+    // Draws the upper part of the lock
+    ctx.beginPath();
+    ctx.arc(position.x + (xOffset * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
+    ctx.stroke();
+    ctx.closePath();
+    // Draws the lock body
+    ctx.fillRect(position.x, position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
+    ctx.restore();
+}
+//----------------------------------------------------------------------
+// drawLockedTooltip: Draws out a tooltip that tells the user the object is locked.
+//----------------------------------------------------------------------
+function drawLockedTooltip(symbol) {
+    ctx.save();
+    var position = symbol.getLockPosition();
+    // Offset used to achive the correct y position since fillRect and fillText are drawn differently
+    var yOffset = 13;
+    // Different size when hovering the lock itself and the entity, for displaying different amount of text
+    var ySize = symbol.isLockHovered ? 34 : 16;
+    // Draw tooltip background
+    ctx.fillStyle = "#f5f5f5";
+    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), 125 * diagram.getZoomValue(), ySize * diagram.getZoomValue());
+    // Draws text, uses fillStyle to override default hover change.
+    yOffset += 12;
+    ctx.fillStyle = "black";
+    ctx.font = 12 * diagram.getZoomValue()+ "px Arial";
+    ctx.fillText("Object position is locked", position.x, position.y + yOffset * diagram.getZoomValue());
+    // Draw additional text when hovering the lock itself
+    if (symbol.isLockHovered) {
+        ctx.fillStyle = "red";
+        yOffset += 16;
+        ctx.fillText("Click to unlock object", position.x, position.y + yOffset * diagram.getZoomValue());
     }
+    ctx.restore();
+}
 
-    this.drawLockedTooltip = function() {
-        ctx.save();
-
-        var position = this.getLockPosition();
-        //Offset used to achive the correct y position since fillRect and fillText are drawn differently
-        var offset = 13;
-
-        //Draw tooltip background
-        ctx.fillStyle = "#f5f5f5";
-        ctx.fillRect(position.x, position.y + offset, 125, 16);
-
-        //Draws text, uses fillStyle to override default hover change.
-        offset += 12;
-        ctx.fillStyle = "black";
-        ctx.font = "12px Arial";
-        ctx.fillText("Entity position is locked", position.x, position.y + offset);
-
-        ctx.restore();
+// Checks if the lock itself is hovered on specified symbol using mousecordinates (mx, my).
+function setIsLockHovered(symbol, mx, my) {
+    var position = symbol.getLockPosition();
+    // offset so that we start at top left of lock 
+    position.y -= 5;
+    //change mouseposition to scale with zoom and movement
+    mx = pixelsToCanvas(mx).x;
+    my = pixelsToCanvas(0, my).y;
+    // 10 is the width of the lock and 15 is the height including the arc
+    if (mx > position.x && mx < position.x + 10 && my > position.y && my < position.y + 15 && uimode != "MoveAround") {
+        symbol.isLockHovered = true;
+    } else {
+        symbol.isLockHovered = false;
     }
 }
 
@@ -2080,13 +2104,14 @@ function Path() {
     this.opacity = 1;               // Opacity value for figures
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;           // An organized path can contain several sub-path, each of which must be organized
+    this.isLocked = false;          // If the free draw object is locked
+    this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
+    this.isHovered = false;         // If the free draw object is hovered
     this.figureType = "Square";
     this.properties = {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
-    this.isLockHovered = false;     // Checks if lock is hovered on free draw objects
-
     //Gets the locks position from the right most point (X)
     this.getLockPosition = function() {
         var RightMostPoint;
@@ -2099,63 +2124,9 @@ function Path() {
             }
         }
         return {
-            x: pixelsToCanvas(RightMostPoint.x).x,
+            x: pixelsToCanvas(RightMostPoint.x + 10).x,
             y: pixelsToCanvas(0,RightMostPoint.y).y
         };
-    }
-
-    //This function draws out the actual lock on the canvas for path-objects such as free-draw objects.
-    this.drawLock = function() {
-        var position = this.getLockPosition();
-        ctx.save();
-
-        ctx.fillStyle = "orange";
-        ctx.strokeStyle = "orange";
-        ctx.lineWidth = 1 * diagram.getZoomValue();
-        //Draws the upper part of the lock
-        ctx.beginPath();
-        var xOffset = 15;
-        //A slight x offset to get the correct position
-        ctx.arc(position.x + (xOffset * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        xOffset = 10;
-        //Draws the lock body
-        ctx.fillRect(position.x + (xOffset * diagram.getZoomValue()), position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
-        ctx.restore();
-    }
-
-    //Draws out a tooltip that tells the user the object is locked.
-    this.drawLockedTooltip = function() {
-        ctx.save();
-
-        var position = this.getLockPosition();
-        //Offset used to achive the correct y position since fillRect and fillText are drawn differently
-        var offset = 13;
-        var xOffset = 10;
-
-        //Draw tooltip background
-        ctx.fillStyle = "#f5f5f5";
-        ctx.fillRect(position.x + xOffset, position.y + offset, 125, 16);
-
-        //Draws text, uses fillStyle to override default hover change.
-        offset += 12;
-        ctx.fillStyle = "black";
-        ctx.font = "12px Arial";
-        ctx.fillText("Entity position is locked", position.x + xOffset, position.y + offset);
-        ctx.restore();
-    }
-
-    //Checks if the lock is hovered using mousecordinates (mx, my).
-    this.setLockIsHovered = function(mx, my) {
-        var position = this.getLockPosition();
-        position.x += 10;
-        position.y -= 5;
-        if (mx > position.x && mx < position.x + 10 && my > position.y && my < position.y + 15) {
-            this.isLockHovered = true;
-        } else {
-            this.isLockHovered = false;
-        }
     }
     //--------------------------------------------------------------------
     // move: Performs a delta-move on all points in a path
@@ -2252,10 +2223,10 @@ function Path() {
             alert("Only organized paths can be filled!");
         }
         if (this.segments.length > 0) {
-            if(this.locked){
-                this.drawLock();
-                if(this.isLockHovered){
-                    this.drawLockedTooltip();
+            if (this.isLocked) {
+                drawLock(this);
+                if (this.isHovered || this.isLockHovered) {
+                    drawLockedTooltip(this);
                 }
             }
 
@@ -2346,7 +2317,7 @@ function Path() {
     }
 
     this.checkForHover = function (mx, my) {
-        this.setLockIsHovered(mx, my);
+        setIsLockHovered(this, mx, my);
         return this.isClicked(mx, my);
     }
 
