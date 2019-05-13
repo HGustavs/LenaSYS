@@ -532,7 +532,6 @@ function cancelFreeDraw() {
 
 function fillCloneArray() {
     cloneTempArray = [];
-    var tempName = "";
     for(var i = 0; i < selected_objects.length; i++) {
         cloneTempArray.push(selected_objects[i]);
     }
@@ -629,6 +628,7 @@ function copySymbol(symbol) {
 
     var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
     bottomRightClone.x += 10;
+    bottomRightClone.y += 10;
 
     var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
@@ -648,11 +648,6 @@ function copySymbol(symbol) {
         clone.name = "Entity" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "Line" + diagram.length;
-        var temp = []
-        for (let i = 0; i < connectedObjects(clone).length; i++) {
-            temp = connectedObjects(clone);
-            console.log("copiedLine connections: " + temp[i].name);
-        }
     } else{
         clone.name = "RelationCopy" + diagram.length;
     }
@@ -2940,7 +2935,7 @@ function mousedownevt(ev) {
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
-    
+
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
