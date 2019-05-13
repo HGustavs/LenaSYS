@@ -232,13 +232,14 @@ function renderCell(col, celldata, cellid) {
 	} else if (col == "examiner") {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
 	} else if (col == "vers") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
-		var checkSubmission = data => data.uid === obj.uid;
-		if (filez['submissions'].some(checkSubmission)) {
-			str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + obj.vers + ")'>";
-		};
+        str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
+        for (var submission of filez['submissions']) {
+            if (obj.uid === submission.uid) {
+                str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
+                break;
+            }
+        };
 	} else if (col == "access") {
-		var checkSubmission = data => data.uid === obj.uid;
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student"], ["W", "R"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		if (parseFloat(obj.recent) > 1440) {
@@ -307,25 +308,32 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 
 
 function renderColumnFilter(col, status, colname) {
-	str = "";
-	if (colname == "User")
-		return str;
-	if (status) {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	} else {
-		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-		str += "</div>"
-	}
-	return str;
+    str = "";
+    if (colname == "User")
+        return str;
+    if (status) {
+        str = "<div class='checkbox-dugga'>";
+        str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+        str += "</div>"
+    } else {
+            str = "<div class='checkbox-dugga'>";
+            str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+            str += "</div>"
+    }
+    return str;
 }
 
 function onToggleFilter(colId) {
-	myTable.toggleColumn(colId, colId);
+    myTable.toggleColumn(colId, colId);
 }
 
+function toggleAllCheckboxes(source){
+	var i = 0
+    checkboxArray = document.getElementsByName('checkbox');
+    for (n = checkboxArray.length; i < n; i++){
+		document.getElementById(checkboxArray[i].id).click();
+	}
+}
 
 //--------------------------------------------------------------------------
 // updateCellCallback
@@ -381,7 +389,7 @@ function returnedAccess(data) {
 
 		tblhead: {
 			username: "User",
-			ssn: "SSN",
+			/*ssn: "SSN",*/
 			firstname: "First name",
 			lastname: "Last name",
 			class: "Class",
@@ -395,7 +403,7 @@ function returnedAccess(data) {
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-	var colOrder = ["username", "ssn", "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
+	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: "accessTable",
@@ -415,6 +423,10 @@ function returnedAccess(data) {
 
 	myTable.renderTable();
 
+	str = "<div class='checkbox-dugga'>";
+	str += "<button id='toggleAllButton' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
+	str += "</div>"
+	document.getElementById("dropdownc").innerHTML += str;
 }
 
 //excuted onclick button for quick searching in table

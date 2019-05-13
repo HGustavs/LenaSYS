@@ -334,6 +334,24 @@ svg text {
 .previewTable td:last-child {
 	width: 100%;
 }
+.previewTable tr:nth-child(even){
+  background-color: #dad8db;
+}
+@media only screen and (max-width: 500px) {
+	.previewTable {
+		width: auto;
+		white-space: normal;
+	}
+	.previewTable td {
+		padding-right: 2px;
+		padding-left: 0px
+	}
+	.previewTable th {
+		padding-right: 2px;
+		padding-left: 0px
+	}
+}
+
  /* --------------================################================-------------- *
  *                      	       Daily - minutes  				       								 *
  * --------------================################================-------------- */
