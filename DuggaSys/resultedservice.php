@@ -25,8 +25,10 @@ if(isset($_SESSION['uid'])){
 }
 
 $requestType = getOP('requestType');
-$visibleUserIDs = $_POST['visibleuserids'];
-$lenghtOfVisibleUserIDs = sizeof($_POST['visibleuserids']);
+$visibleUserIDs = gettheOP('visibleuserids');
+if(is_array($visibleUserIDs)){
+    $lenghtOfVisibleUserIDs = sizeof(gettheOP('visibleuserids'));
+}
 $courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
