@@ -1603,7 +1603,7 @@ input.submit-button {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin: 4px 2px 4px 2px;
+  margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 0.1s background-color;
   float: left;
@@ -1726,6 +1726,14 @@ input.submit-button:hover {
 div.submit-button:hover {
   background-color: var(--color-primary-hover);
   border-radius: 2px;
+}
+
+.submit-button:focus {
+  box-shadow: 0 0 0 2px #1e90ff;
+  outline: none;
+}
+.submit-button::-moz-focus-inner {
+  border: 0;
 }
 
 input.fileed-button:hover {
@@ -2495,7 +2503,7 @@ span.arrow {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin: 4px 2px 4px 2px;
+  margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 1s background-color;
   float: right;
@@ -2772,6 +2780,10 @@ span.arrow {
   text-overflow: ellipsis;
 }
 
+.checkbox-dugga:nth-child(odd){
+    background-color: #eee;
+}
+
 .checkmoment {
   border-top: 1px solid var(--color-border-5);
   font-weight: bold;
@@ -2849,6 +2861,7 @@ span.arrow {
   position: absolute;
   top: 35px;
   background: var(--color-background);
+
   box-shadow: 2px 2px 8px #888;
 }
 
@@ -5016,4 +5029,12 @@ textarea#filecont{
 
 .previewTable tr:nth-child(even){
   background-color: #dad8db;
+}
+
+.resultedbuttons{
+  margin: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #614875;
+  color: #ffffff;
 }
