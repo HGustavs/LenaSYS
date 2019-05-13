@@ -89,10 +89,6 @@
                                         <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                         </button>
-                                        <!-- Create Square -->
-                                        <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Square">
-                                            <img class="toolboxButtons" src="../Shared/icons/diagram_draw_square.svg">
-                                        </button>
                                         <!-- Draw Free -->
                                         <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
