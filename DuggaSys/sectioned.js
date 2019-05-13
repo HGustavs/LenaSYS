@@ -1301,9 +1301,9 @@ function drawSwimlanes() {
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
 
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
-        var textcol = "url('#fadeTextGrey')";
+        var textcol = `url("#fadeTextGrey")`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
-          textcol = "url('#fadeTextRed')";
+          textcol = `url("#fadeTextRed")`;
         }
         var tempVariable = duggalength*daywidth;
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
