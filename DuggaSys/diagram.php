@@ -185,7 +185,7 @@
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
-                            <i id="hotkey-delete">Delete/Backspace</i>
+                            <i id="hotkey-delete">Delete</i>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
