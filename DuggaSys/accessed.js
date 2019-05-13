@@ -71,7 +71,7 @@ function leavec() {
 }
 
 function leaves() {
-	//$('#dropdowns').css('display', 'none');
+	$('#dropdowns').css('display', 'none');
 }
 
 function showCreateUserPopup() {
