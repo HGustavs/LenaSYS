@@ -2680,6 +2680,9 @@ function mousemoveevt(ev, t) {
                     } else {
                         canvas.style.cursor = "all-scroll";
                     }
+                //When CreateLine-button is selected the cursor is "pointer".
+                } else if (uimode == "CreateLine") {
+                    canvas.style.cursor = "pointer";
                 } else {
                     canvas.style.cursor = "default";
                 }
