@@ -247,7 +247,7 @@ function Symbol(kindOfSymbol) {
 
             //only when object is created: changes position of points so that object is created from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     //entity and attribute template is the same size so either should work fine
                     points[i].x -= entityTemplate.width * 0.5;
@@ -311,7 +311,7 @@ function Symbol(kindOfSymbol) {
             }
             //only when object is created: changes position of points so that object is positioned from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * min width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * min width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     points[i].x -= this.minWidth * 0.5;
                     points[i].y -= this.minHeight * 0.5;
@@ -353,7 +353,7 @@ function Symbol(kindOfSymbol) {
 
             //only when object is created: changes position of points so that object is positioned from center point instead of topleft
             if(this.pointsAtSamePosition) {
-                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position  
+                //change all 3 points 0,5 * template width/height to the left/up to move object to mouse position
                 for (var i = this.topLeft; i <= this.centerPoint; i++) {
                     points[i].x -= relationTemplate.width * 0.5;
                     points[i].y -= relationTemplate.height * 0.5;
@@ -1378,7 +1378,7 @@ function Symbol(kindOfSymbol) {
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 
-        // Set as dotted lines depending on value  
+        // Set as dotted lines depending on value
         if (this.properties['key_type'] == "Implementation" || this.properties['key_type'] == "Dependency") {
             ctx.setLineDash([10, 10]);
         }
@@ -1504,13 +1504,13 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
-        
+
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
 
     //---------------------------------------------------------------
-    // drawUmlRelationLineFigures: Draw arrow or diamond shape 
-    // depending on linetype at one of the connected uml objects    
+    // drawUmlRelationLineFigures: Draw arrow or diamond shape
+    // depending on linetype at one of the connected uml objects
     //---------------------------------------------------------------
     this.drawUmlRelationLines = function(x1, y1, x2, y2, startLineDirection, endLineDirection) {
         // set start position to the right object line start
@@ -1519,7 +1519,7 @@ function Symbol(kindOfSymbol) {
             linePositions = { x:x2, y:y2 };
         }
         ctx.setLineDash([0]);
-        
+
         var type;
 
         // arrow filled
@@ -1561,7 +1561,7 @@ function Symbol(kindOfSymbol) {
             if (endLineDirection == "down"){
                 this.drawUmlLineRelation(linePositions.x, linePositions.y, xChange, yChange, true, type);
             } else if (endLineDirection == "left") {
-                this.drawUmlLineRelation(linePositions.x, linePositions.y, -yChange, -xChange, false, type);              
+                this.drawUmlLineRelation(linePositions.x, linePositions.y, -yChange, -xChange, false, type);
             } else if (endLineDirection == "right") {
                 this.drawUmlLineRelation(linePositions.x, linePositions.y, yChange, xChange, false, type);
             } else if (endLineDirection == "up") {
@@ -1593,9 +1593,9 @@ function Symbol(kindOfSymbol) {
         if (vertical) {
             ctx.lineTo(x, y + yC * 2);
             ctx.lineTo(x - xC, y + yC);
-        } else { 
+        } else {
             ctx.lineTo(x + xC * 2, y);
-            ctx.lineTo(x + xC, y - yC); 
+            ctx.lineTo(x + xC, y - yC);
         }
         ctx.closePath();
         ctx.stroke();
@@ -1618,8 +1618,8 @@ function Symbol(kindOfSymbol) {
         }
         if (vertical) {
             ctx.lineTo(x - xC, y + yC);
-        } else { 
-            ctx.lineTo(x + xC, y - yC); 
+        } else {
+            ctx.lineTo(x + xC, y - yC);
         }
         ctx.closePath();
         ctx.stroke();
@@ -1988,11 +1988,11 @@ function Symbol(kindOfSymbol) {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        
+
         var offset = 10;
 
         return {
-            x: pixelsToCanvas(x2 + offset).x, 
+            x: pixelsToCanvas(x2 + offset).x,
             y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
 
@@ -2005,7 +2005,7 @@ function Symbol(kindOfSymbol) {
         ctx.lineWidth = 1 * diagram.getZoomValue();
         //Draws the upper part of the lock
         ctx.beginPath();
-        //A slight x offset to get the correct position   
+        //A slight x offset to get the correct position
         ctx.arc(position.x + (5 * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
@@ -2087,7 +2087,6 @@ function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry) {
         	y: cornerY
         }
 }
-
 //--------------------------------------------------------------------
 // Path - stores a number of segments, handles e.g the two DRAW-functions in the diagram.
 //--------------------------------------------------------------------
@@ -2108,6 +2107,7 @@ function Path() {
     };
     this.isLockHovered = false;     // Checks if lock is hovered on free draw objects
 
+    //Gets the locks position from the right most point (X)
     this.getLockPosition = function() {
         var RightMostPoint;
         //First point of the free-draw figure
@@ -2124,6 +2124,7 @@ function Path() {
         };
     }
 
+    //This function draws out the actual lock on the canvas for path-objects such as free-draw objects.
     this.drawLock = function() {
         var position = this.getLockPosition();
         ctx.save();
@@ -2134,17 +2135,17 @@ function Path() {
         //Draws the upper part of the lock
         ctx.beginPath();
         var xOffset = 15;
-        //A slight x offset to get the correct position   
+        //A slight x offset to get the correct position
         ctx.arc(position.x + (xOffset * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
         xOffset = 10;
         //Draws the lock body
         ctx.fillRect(position.x + (xOffset * diagram.getZoomValue()), position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
-
         ctx.restore();
     }
 
+    //Draws out a tooltip that tells the user the object is locked.
     this.drawLockedTooltip = function() {
         ctx.save();
 
@@ -2162,10 +2163,11 @@ function Path() {
         ctx.fillStyle = "black";
         ctx.font = "12px Arial";
         ctx.fillText("Entity position is locked", position.x + xOffset, position.y + offset);
-
         ctx.restore();
     }
 
+
+    //Checks if the lock is hovered using mousecordinates (mx, my).
     this.setLockIsHovered = function(mx, my) {
         var position = this.getLockPosition();
         position.x += 10;
@@ -2176,7 +2178,6 @@ function Path() {
             this.isLockHovered = false;
         }
     }
-
     //--------------------------------------------------------------------
     // move: Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
@@ -2187,7 +2188,6 @@ function Path() {
         }
         this.calculateBoundingBox();
     }
-
     //--------------------------------------------------------------------
     // adjust: Is used to adjust the points of each symbol when moved
     //--------------------------------------------------------------------
@@ -2267,19 +2267,19 @@ function Path() {
     //--------------------------------------------------------------------
     // draw: Draws filled path to screen (or svg when that functionality is added)
     //--------------------------------------------------------------------
+
     this.draw = function (fillstate, strokestate) {
         if (this.isorganized == false) {
             alert("Only organized paths can be filled!");
         }
         if (this.segments.length > 0) {
-            
             if(this.locked){
                 this.drawLock();
                 if(this.isLockHovered){
                     this.drawLockedTooltip();
                 }
             }
-            
+
             // Assign stroke style, color, transparency etc
             var shouldFill = true;
 
@@ -2291,7 +2291,6 @@ function Path() {
             ctx.fillStyle = this.fillColor;
             ctx.globalAlpha = this.opacity;
             ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-
             ctx.beginPath();
             var pseg = this.segments[0];
             ctx.moveTo(pixelsToCanvas(points[pseg.pa].x).x, pixelsToCanvas(0, points[pseg.pa].y).y);
