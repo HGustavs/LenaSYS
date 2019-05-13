@@ -1310,12 +1310,8 @@ function drawSwimlanes() {
         swimLane = document.getElementById("swimlaneSVG");
         textLane = document.getElementById("swimlaneSVG").textContent;
 
-        if (swimLane.getSubStringLength(0, textLane.length) > 100) {
-          for (var j = textLane.length - 3; j > 0; j -= 3) {
-            if (swimLane.getSubStringLength(0, j) <= 100) {
-              textLane = textLane.substring(0, j) + "...";
-            }
-          } textLane = "...";
+        if (textLane.width > 100) {
+          textLane = "...";
         } 
 
       }
