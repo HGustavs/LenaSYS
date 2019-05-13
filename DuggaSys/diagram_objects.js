@@ -2014,7 +2014,7 @@ function drawLockedTooltip(symbol) {
     yOffset += 12;
     ctx.fillStyle = "black";
     ctx.font = 12 * diagram.getZoomValue()+ "px Arial";
-    ctx.fillText("Entity position is locked", position.x, position.y + yOffset * diagram.getZoomValue());
+    ctx.fillText("Object position is locked", position.x, position.y + yOffset * diagram.getZoomValue());
     // Draw additional text when hovering the lock itself
     if (symbol.isLockHovered) {
         ctx.fillStyle = "red";
