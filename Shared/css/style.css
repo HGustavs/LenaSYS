@@ -3346,7 +3346,7 @@ table.navheader div.hamburgerMenu {
   padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-left: 5px;
   z-index: 1;
   background-color: var(--color-background-2);
@@ -3845,7 +3845,7 @@ only screen and (max-device-width: 480px) {
   table.navheader input.hamburger {
     position: absolute;
     top: 66px;
-    right:10px;
+    right: 5px;
   }
   table.navheader div.hamburger {
     position: absolute;
