@@ -1255,7 +1255,7 @@ function drawSwimlanes() {
   var tempNumb = 2;
 
   var str = "";
-  str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='200' y1='0' y2='0' id='fadeText'><stop offset='90%' stop-opacity='1' /><stop offset='100%' stop-opacity='0' /></linearGradient><linearGradient id='makeFadeText' xlink:href='#fadeText'/></defs>";
+  str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'><stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> <linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'><stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
     if(i==0){
@@ -1301,13 +1301,13 @@ function drawSwimlanes() {
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
 
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
-        var textcol = "#000000";
+        var textcol = "url('#fadeTextGrey')";
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
-          textcol = "#FF0000";
+          textcol = "url('#fadeTextRed')";
         }
         var tempVariable = duggalength*daywidth;
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
-        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "fill='url(#makeFadeText)'</text>";
+        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
       }
     }
 
