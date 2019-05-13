@@ -141,24 +141,31 @@ var cloneTempArray = [];                // Is used to store all selected objects
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
 
 // Keyboard keys
-const deleteKey = 46;
 const backspaceKey = 8;
+const shiftKey = 16;
+const ctrlKey = 17;
+const escapeKey = 27;
 const spacebarKey = 32;
 const leftArrow = 37;
 const upArrow = 38;
 const rightArrow = 39;
 const downArrow = 40;
-const ctrlKey = 17;
-const shiftKey = 16;
-const windowsKey = 91;
+const deleteKey = 46;
+const key1 = 49;
+const key2 = 50;
+const aKey = 65;
 const cKey = 67;
+const dKey = 68;
+const eKey = 69;
+const fKey = 70;
+const lKey = 76;
+const mKey = 77;
+const rKey = 82;
+const tKey = 84;
 const vKey = 86;
 const zKey = 90;
 const yKey = 89;
-const aKey = 65;
-const escapeKey = 27;
-const key1 = 49;
-const key2 = 50;
+const windowsKey = 91;
 const num1 = 97;
 const num2 = 98;
 
@@ -447,6 +454,37 @@ function keyDownHandler(e) {
     }
     else if((key == key2 || key == num2) && shiftIsClicked){
         moveToBack();
+    }
+    else if(shiftIsClicked && key == lKey) {
+      document.getElementById("linebutton").click();
+    }
+    else if(shiftIsClicked && key == aKey && targetMode == "ER") {
+      document.getElementById("attributebutton").click();
+    }
+    else if(shiftIsClicked && key == eKey && targetMode == "ER") {
+      document.getElementById("entitybutton").click();
+    }
+    else if(shiftIsClicked && key == rKey && targetMode == "ER") {
+      document.getElementById("relationbutton").click();
+    }
+    else if(shiftIsClicked && key == cKey && targetMode == "UML") {
+      document.getElementById("classbutton").click();
+    }
+    else if(shiftIsClicked && key == tKey && targetMode == "ER") {
+      document.getElementById("drawtextbutton").click();
+    }
+    else if(shiftIsClicked && key == fKey) {
+      document.getElementById("drawfreebutton").click();
+    }
+    else if(shiftIsClicked && key == dKey) {
+      developerMode(event);
+    }
+    else if(shiftIsClicked && key == mKey) {
+      if(targetMode == "ER"){
+        switchToolbarTo("UML");
+      } else {
+        switchToolbarTo("ER");
+      }
     }
 }
 
@@ -1755,7 +1793,7 @@ function developerMode(event) {
 
 }
 
-var targetMode;     //the mode that we want to change to when trying to switch the toolbar
+var targetMode = "ER";     // The mode that we want to change to when trying to switch the toolbar. Set default here.
 
 //------------------------------------------------------------------------------
 // modeSwitchConfirmed:

@@ -66,31 +66,31 @@
                                 <div class="toolbar-drawer" id="drawerCreate">
                                     <div class="tooltipdialog">
                                         <!-- ER attribute -->
-                                        <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Attribute">
+                                        <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Attribute (Shift + A)">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                         </button>
                                         <!-- ER entity -->
-                                        <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity">
+                                        <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity (Shift + E)">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
                                         </button>
                                         <!-- ER Relation -->
-                                        <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Relation">
+                                        <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Relation (Shift + R)">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
                                         </button>
                                         <!-- UML Create Class -->
-                                        <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Class">
+                                        <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Class (Shift + C)">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                         </button>
                                         <!-- Create Line -->
-                                        <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
+                                        <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line (Shift + L)">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                         </button>
                                         <!-- Draw Free -->
-                                        <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free">
+                                        <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free (Shift + F)">
                                             <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
                                         </button>
                                         <!-- Create Text -->
-                                        <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text">
+                                        <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text (Shift + T)">
                                             <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                                         </button>
                                     </div>
@@ -192,6 +192,7 @@
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
+                            <i id="hotkey-developerMode">Shift + D</i>
                         </div>
                         <div id="displayAllTools" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
@@ -199,9 +200,11 @@
                         <div class="drop-down-divider"></div>
                         <div id="er-item" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
+                            <i id="hotkey-ER">Shift + M</i>
                         </div>
                         <div id="uml-item" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
+                            <i id="hotkey-UML">Shift + M</i>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
