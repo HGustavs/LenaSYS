@@ -717,17 +717,13 @@ header td {
 .loggedout {
   background-color: var(--color-red);
 }
-
-.loggedout:hover {
-  background-color: var(--color-red-hover);
+  
+#loginbutton:hover {
+  filter: brightness(1.1);
 }
 
 .loggedin {
   background-color: var(--color-green);
-}
-
-.loggedin:hover {
-  background-color: var(--color-green-hover);
 }
 
 #loginbutton {
