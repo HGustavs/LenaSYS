@@ -2019,7 +2019,7 @@ function drawLockedTooltip(symbol) {
     if (symbol.isLockHovered) {
         ctx.fillStyle = "red";
         yOffset += 16;
-        ctx.fillText("Click to unlock entity", position.x, position.y + yOffset * diagram.getZoomValue());
+        ctx.fillText("Click to unlock object", position.x, position.y + yOffset * diagram.getZoomValue());
     }
     ctx.restore();
 }
