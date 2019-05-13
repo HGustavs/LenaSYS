@@ -1773,7 +1773,7 @@ function developerMode(event) {
 
 }
 
-var targetMode;     //the mode that we want to change to when trying to switch the toolbar
+var targetMode = "ER";     // The mode that we want to change to when trying to switch the toolbar. Set default here.
 
 //------------------------------------------------------------------------------
 // modeSwitchConfirmed:
