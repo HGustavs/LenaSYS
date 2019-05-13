@@ -395,6 +395,11 @@
 		$prevDir=array();		
 		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid ORDER BY kind,filename");
 		$query->bindParam(':cid', $courseId);
+
+		// Allowed file extensions for each view. Just add an extension as a new string in the array to allow it.
+		$codeFiles=array(".html", ".htm", ".xhtml", ".php", ".css", ".js", ".c", ".cpp", ".java", ".sl", ".glsl", ".rib", ".sql", ".xml", ".svg", ".rss", ".json", ".aspx", ".asp");	// File extensions for code view
+		$descFiles=array(".txt", ".md", ".doc", ".docx", ".odt");	// File extensions for document view
+		$prevFiles=array(".pdf", ".png", ".jpg", ".jpeg", ".svg", ".bmp", ".gif", ".html", ".txt");	// File extensions for preview view
 		
 		// We add only local files to code (no reading code from external sources) and allow preview to files or links.				
 		if(!$query->execute()) {
@@ -403,6 +408,7 @@
 		}
 		$oldkind=2;
 		foreach($query->fetchAll() as $row) {
+				// Add separators to separate the current file from all the other files
 				if($row['kind']!=$oldkind){
 					array_push($codeDir,array('fileid' => -1,'filename' => "---===######===---"));
 					array_push($descDir,array('fileid' => -1,'filename' => "---===######===---"));
@@ -410,11 +416,28 @@
 				}
 				$oldkind=$row['kind'];
 				
-				if(endsWith($row['filename'],".txt")||endsWith($row['filename'],".md")){
+				// List only .md, .txt, etc files for Document view
+				foreach($descFiles as $filetype){
+					if(endsWith($row['filename'],$filetype)){
 						array_push($descDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+					}
 				}
-				if($row['kind']!=1) array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
-				array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));				
+				
+				// List only .js, .css, .html, .c, .cpp, .xml, .sl, .rib, .glsl, .sql, etc files for Code view
+				foreach($codeFiles as $filetype){
+					if(endsWith($row['filename'],$filetype)){
+						array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+					}
+				}
+
+				// List only .pdf, .png, .jpg, .svg, etc for Preview view
+				foreach($prevFiles as $filetype){
+					if(endsWith($row['filename'],$filetype)){
+						array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+					}
+				}
+				//if($row['kind']!=1) array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+				//array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));				
 		}
 		array_push($directories, $codeDir);
 		array_push($directories, $descDir);

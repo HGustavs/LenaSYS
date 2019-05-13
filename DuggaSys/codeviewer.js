@@ -510,6 +510,9 @@ function changeDirectory(kind)
 		$('#wordlist').prop('disabled', 'disabled');
 	}
 
+	// Fill the file selection dropdown with files
+	//---------------------------------------------------------------------
+
 	for(var i=0;i<dir.length;i++){
 		if(chosen==dir[i].filename){
 				str+="<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>"+dir[i].filename+"</option>";
