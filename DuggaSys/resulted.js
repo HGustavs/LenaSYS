@@ -764,7 +764,6 @@ function deadlineFilterHandler() {
 
 function renderCell(col, celldata, cellid) {
 	gradeFilterHandler();
-	console.log(celldata.deadline);
 	
 	// Render minimode
 	if (filterList["minimode"]) {
