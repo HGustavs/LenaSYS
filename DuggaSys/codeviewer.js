@@ -668,19 +668,19 @@ function createboxmenu(contentid, boxid, type)
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes();'><p>Maximize</p>";
+				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p>";
 				str+="</tr></table>";
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes();'><p>Maximize</p>";
+				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p>";
 				str+='</tr></table>';
 			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes();'><p>Maximize</p>";
+				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p>";
 				str+="</tr></table>";
 			}else{
 				var str = "<table cellspacing='2'><tr>";
@@ -1782,21 +1782,53 @@ function Play(event)
 }
 
 //-----------------------------------------------------------------------------
-// maximizeBoxes: Adding minimize functionality for the boxes
+// maximizeBoxes: Adding maximize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
 
-function maximizeBoxes()
+function maximizeBoxes(boxid)
 {
+	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
 
 	getLocalStorageProperties(boxValArray);
 
-	$(boxValArray['box1']['id']).width("100%");
-	$(boxValArray['box1']['id']).height("100%");
-	alignBoxesWidth(boxValArray, 1, 2, 3);
-	alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+	if(templateid == 4){
+
+		if (boxid == 1){
+			$(boxValArray['box' + 2]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth(boxValArray, 1, 2);
+			alignBoxesHeight2boxes(boxValArray, 1, 3);
+		}
+
+		if (boxid == 2){
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 1]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesHeight2boxes(boxValArray, 2, 3);
+		}
+
+		if (boxid == 3){
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 2]['id']).width("50%");
+
+			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 1]['id']).width("50%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesHeight2boxes(boxValArray, 3, 1);
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
