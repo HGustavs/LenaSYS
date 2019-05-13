@@ -280,7 +280,7 @@ if($ha){
 				$allowedExtensions = [
 					"pdf"		=> ["application/pdf"],
 					"zip"		=> ["application/zip"],
-					//"rar"	=> [
+					"rar"		=> ["application/x-rar"]
 				];
 
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
