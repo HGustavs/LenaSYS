@@ -3733,7 +3733,6 @@ function changeObjectAppearance(object_type) {
     } else if (diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('line_direction').value;
-        // something about the line type ??
     } else if (diagram[lastSelectedObject].kind == kind.path) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
