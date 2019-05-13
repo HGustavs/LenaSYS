@@ -534,7 +534,7 @@ if(strcmp($opt,"get")==0) {
 		$currentdate=strtotime("+1 day",strtotime($currentdate));
 	}
 	$timesheets = array();
-	$query = $pdo->prepare('SELECT day, week, type, reference, comment FROM whatever WHERE uid=:userid AND cid=:cid AND vers=:vers;');
+	$query = $pdo->prepare('SELECT day, week, type, reference, comment FROM timesheet WHERE uid=:userid AND cid=:cid AND vers=:vers;');
 	$query->bindParam(':userid', $userid);
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':vers', $vers);
