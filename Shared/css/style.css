@@ -1484,39 +1484,30 @@ input {
   top: 45px;
 }
 
+#hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 35px;
+}
+
 #hotkey-front {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
   top: 165px;
 }
+
 #hotkey-back {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
   top: 195px;
 }
-#hotkey-developerMode {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 35px !important;
-  top: 10px;
+
+#hotkey-developerMode{
+    top: 10px;
 }
+
 #hotkey-ER {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 35px !important;
   top: 85px;
 }
+
 #hotkey-UML {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 35px !important;
   top: 120px;
 }
 
