@@ -2166,7 +2166,6 @@ function Path() {
         ctx.restore();
     }
 
-
     //Checks if the lock is hovered using mousecordinates (mx, my).
     this.setLockIsHovered = function(mx, my) {
         var position = this.getLockPosition();
