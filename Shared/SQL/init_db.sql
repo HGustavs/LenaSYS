@@ -607,7 +607,7 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4)
 INSERT INTO template (templateid,stylesheet,numbox) VALUES (7,"template7.css",4);
 INSERT INTO template (templateid,stylesheet,numbox) VALUES (8,"template8.css",3);
 INSERT INTO template (templateid,stylesheet,numbox) VALUES (9,"template9.css",5);
-INSERT INTO template (templateid,stylesheet,numbox) VALUES (10,"template10.css",2);
+INSERT INTO template (templateid,stylesheet,numbox) VALUES (10,"template10.css",1);
 
 /* Programming languages that decide highlighting */
 
