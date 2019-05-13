@@ -1469,45 +1469,43 @@ input {
   top: 100px;
 }
 
-.drop-down-item #hotkey-undo {
-  position: absolute  ;
-  font-size: 11px ;
+#hotkey-undo, #hotkey-redo, #hotkey-clear, #hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
+  position: absolute;
+  font-size: 11px;
   color: #3d3d3d;
+}
+
+.drop-down-item #hotkey-undo {
   right: 6px ;
   top: 10px;
 }
 .drop-down-item #hotkey-redo {
-  position: absolute ;
-  font-size: 11px ;
-  color: #3d3d3d;
   right: 6px ;
   top: 45px;
 }
 
-#hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
-  right: 35px;
-}
-
-#hotkey-front {
+#hotkey-clear, #hotkey-front {
+  right: 6px ;
   top: 165px;
 }
 
 #hotkey-back {
+  right: 6px ;
   top: 195px;
 }
 
 #hotkey-developerMode{
+    right: 35px;
     top: 10px;
 }
 
 #hotkey-ER {
+  right: 35px;
   top: 85px;
 }
 
 #hotkey-UML {
+  right: 35px;
   top: 120px;
 }
 

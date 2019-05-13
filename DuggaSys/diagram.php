@@ -100,11 +100,11 @@
                                 <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                                 <div class="toolbar-drawer" id="drawerUndo">
                                     <!-- Undo -->
-                                    <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
+                                    <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo (Ctrl + Z)">
                                         <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
                                     </button>
                                     <!-- Redo -->
-                                    <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
+                                    <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo (Ctrl + Y)">
                                         <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
                                     </button>
                                 </div>
@@ -143,6 +143,7 @@
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
+                            <i id="hotkey-clear">Ctrl + A, Delete</i>
                         </div>
                     </div>
                 </div>
