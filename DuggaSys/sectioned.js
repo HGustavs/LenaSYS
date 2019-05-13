@@ -1247,7 +1247,7 @@ function drawSwimlanes() {
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
   var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
-  var daywidth = 4
+  var daywidth = 4;
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
@@ -1305,7 +1305,9 @@ function drawSwimlanes() {
         }
         var tempVariable = duggalength*daywidth;
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
-        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <tspan>" + entry.text + "</tspan> </text>";
+        str += "<text id='entry" + entry[i] + "' x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
+
+
       }
     }
 
