@@ -197,10 +197,10 @@
                             <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
                         </div>
                         <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
+                        <div id="er-item" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
                         </div>
-                        <div class="drop-down-item">
+                        <div id="uml-item" class="drop-down-item">
                             <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
                         </div>
                         <div class="drop-down-divider"></div>

@@ -1116,17 +1116,25 @@ function toggleVirtualA4(event) {
     if (toggleA4) {
         // A4 is disabled
         toggleA4 = false;
+
+        $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
+        $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+        if (toggleA4Holes) {
+            $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
+        }else {
+            $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        }
         showA4State();
         updateGraphics();
     }
-    $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
-    $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
 }
@@ -1257,6 +1265,11 @@ function showA4State(){
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
     switchSideA4Holes = "left";
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+
+    // Show A4 options
+    $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 function hideA4State(){
@@ -1268,8 +1281,12 @@ function hideA4State(){
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
-    $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
+    // Grey out disabled options
+    $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 function toggleVirtualA4Holes() {
@@ -1277,13 +1294,16 @@ function toggleVirtualA4Holes() {
     if (toggleA4Holes) {
         toggleA4Holes = false;
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-        $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
+        switchSideA4Holes = "left"; // Disable the 'A4 Holes Right' option
+        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
         updateGraphics();
     } else {
         toggleA4Holes = true;
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-        $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
         updateGraphics();
     }
@@ -1707,9 +1727,9 @@ function developerMode(event) {
         toolbarState = 3;                                                               // Change the toolbar to DEV.
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
-        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"),
-            toggleA4=false);                                                            // Turn off crosstoggleA4.
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
+        $("#er-item").addClass("drop-down-item drop-down-item-disabled");               // Disable ER and UML options
+        $("#uml-item").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
@@ -1721,7 +1741,9 @@ function developerMode(event) {
         toolbarState = 1;                                                               // Change the toolbar back to ER.
         switchToolbar('ER');                                                            // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
-        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");       // Add disable of displayAllTools id.
+        $("#er-item").removeClass("drop-down-item drop-down-item-disabled");            // Disable ER and UML options
+        $("#uml-item").removeClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=false);                                                            // Turn off crossDEV.

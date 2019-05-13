@@ -1441,7 +1441,7 @@ input {
   cursor: default ;
 }
 
-#a4-holes-item.drop-down-item-disabled {
+.drop-down-item-disabled {
   opacity: 0.5;
   cursor: default ;
 }
