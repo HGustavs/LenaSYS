@@ -641,13 +641,13 @@ function copySymbol(symbol) {
     }
 
     if(symbol.symbolkind == symbolKind.uml) {
-        clone.name = "NewCopy" + diagram.length;
+        clone.name = "New" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.erAttribute) {
-        clone.name = "AttrCopy" + diagram.length;
+        clone.name = "Attr" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.erEntity) {
-        clone.name = "EntityCopy" + diagram.length;
+        clone.name = "Entity" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.line) {
-        clone.name = "LineCopy" + diagram.length;
+        clone.name = "Line" + diagram.length;
         var temp = []
         for (let i = 0; i < connectedObjects(clone).length; i++) {
             temp = connectedObjects(clone);
