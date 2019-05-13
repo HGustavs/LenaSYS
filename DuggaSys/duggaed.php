@@ -189,7 +189,7 @@ pdoConnect();
                 <fieldset style="width:90%">
                   <legend>Generated Param JSON</legend>
                   <div id='parameter' style='min-height:120px'>
-                    <textarea id='variantparameterText' rows="5" style="min-height:100px"></textarea>
+                    <textarea id='variantparameterText' rows="5" style="min-height:100px" onchange="createJSONFormData()"></textarea>
                   </div>
                 </fieldset>
                 <fieldset style="width:90%">
