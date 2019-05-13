@@ -744,9 +744,26 @@ function gradeFilterHandler() {
 			break;
 	}
 }
+function deadlineFilterHandler() {
+	// getting the alternative that the filter have.
+	filterDeadline = 0;
+	var argument = document.getElementById("deadlineFilter").value;
+	switch (argument) {
+		case "dugga-pending-late-submission":
+		filterDeadline = 3;
+			break;
+		case "dugga-pending":
+		filterDeadline = 2;
+			break;
+		default:
+		filterDeadline = "none";
+			break;
+	}
+}
 
 function renderCell(col, celldata, cellid) {
 	gradeFilterHandler();
+	
 	// Render minimode
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
