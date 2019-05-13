@@ -1324,10 +1324,13 @@ function replaceSwimlane() {
   swimLane = document.getElementById("swimlaneSVG");
   textLane = document.getElementById("swimlaneSVG").textContent;
 
-  if (textLane.length >= 10) {
-    textLane = "...";
-  }
-  console.log(textLane);
+  if (swimLane.getSubStringLength(0, textLane.length) > 10) {
+    for (var j = textLane.length - 3; j > 0; j -= 3) {
+      if (swimLane.getSubStringLength(0, j) <= 10) {
+        textLane = textLane.substring(0, j) + "...";
+      }
+    } textLane = "...";
+  } 
 }
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
