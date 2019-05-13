@@ -29,7 +29,7 @@
 		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
-		<link rel="shortcut icon" href="../Shared/icons/placeholder.ico"/>
+		<link rel="shortcut icon" href="../Shared/icons/favico.ico"/>
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 		<script type="text/javascript" src="../Shared/dugga.js"></script>
