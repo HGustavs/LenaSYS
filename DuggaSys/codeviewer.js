@@ -173,6 +173,10 @@ function returned(data)
 			// set font size
 			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
 		}else if(boxtype === "DOCUMENT"){
+
+			// set font size
+			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
+
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
 			var desc = boxcontent;
