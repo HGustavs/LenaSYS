@@ -1734,8 +1734,8 @@ div.submit-button:disabled {
 }
 
 .toolbarButtonPressed {
-  display: inline; 
-  border-radius: 5px; 
+  display: inline;
+  border-radius: 5px;
   cursor: pointer
 }
 

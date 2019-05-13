@@ -928,7 +928,7 @@ function Symbol(kindOfSymbol) {
             }
         }
 
-        if(this.isHovered && this.symbolkind != symbolKind.umlLine && this.symbolkind != symbolKind.line){
+        if(this.isHovered && this.symbolkind != symbolKind.umlLine && this.symbolkind != symbolKind.line && developerModeActive){
           this.drawCenterCoordinatesTooltip();
         }
 
@@ -2046,8 +2046,8 @@ function Symbol(kindOfSymbol) {
       var centerPosition = pixelsToCanvas(points[this.centerPoint].x, points[this.centerPoint].y);
       var widthOfObject = points[this.bottomRight].x - points[this.topLeft].x;
 
-      var xPosition = 230;
-      var yPosition = 805;
+      var xPosition = canvas.width / 2 - 175;
+      var yPosition = canvas.height - 30;
 
       ctx.fillStyle = "#00000";
       ctx.fillRect(xPosition, yPosition, 300, 30);
