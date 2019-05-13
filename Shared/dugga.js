@@ -1269,14 +1269,14 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							tab+="<td>";
 							// Button for making / viewing feedback - note - only button for given feedback to students.
 							if (ctype == "link"){
-									tab+="<a href='"+filez[i].content+"' ><img src='../Shared/icons/file_download.svg' /></a>";
+									tab+="<a href='"+filez[i].content+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
 							} else {
-									tab+="<a href='"+filelink+"' ><img src='../Shared/icons/file_download.svg' /></a>";
+									tab+="<a href='"+filelink+"' ><img title='Download' src='../Shared/icons/file_download.svg' /></a>";
 							}
 
               // if type is pdf, add an extenral_open icon to open in new tab next to download icon.
               if (ctype == "pdf") {
-                tab +="\t<tab><a href='"+filelink+"' target='_blank'><img src='../Shared/icons/external_link_open.svg' /></a></tab>";
+                tab +="\t<tab><a href='"+filelink+"' target='_blank'><img title='Open in new tab' src='../Shared/icons/external_link_open.svg' /></a></tab>";
               }
 							tab+="</td>";
 							if (group) {
