@@ -1255,6 +1255,7 @@ function drawSwimlanes() {
   var tempNumb = 2;
 
   var str = "";
+  // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not. 
   str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'><stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> <linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'><stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
