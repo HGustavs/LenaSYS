@@ -4013,6 +4013,7 @@ only screen and (max-device-width: 320px) {
 .tooltipIncrease .tooltiptextInc {
   visibility: hidden;
   width: 60px;
+  right: 68px;
   font-size: 1px;
   background-color: #614875;
   color: #fff;

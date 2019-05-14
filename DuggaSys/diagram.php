@@ -329,7 +329,7 @@
               </span>
               <span class="tooltipIncrease">
                 <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" onclick="changeZoom(0.1);">+</button>
-                <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
+                <span class="tooltiptextInc">Zoom In</span>
               </span>
               <span id="zoomV"></span>
             </div>
