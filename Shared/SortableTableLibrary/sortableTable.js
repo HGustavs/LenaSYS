@@ -727,6 +727,7 @@ function newCompare(firstCell, secoundCell) {
 	var firstCellTemp;
 	var secoundCellTemp;
 	var sizeTemp = '"{';
+	console.log(typeof firstCell);
     if(typeof firstCell === 'object' && col.includes("FnameLname")) {
 		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
