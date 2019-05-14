@@ -468,6 +468,10 @@ svg text {
 	#smallerViewportSelect{
 		width: 100%;
 	}
+	.tsSmallInput {
+		width: 100%;
+		box-sizing: border-box;
+	}
 	#smallerViewportUploadButton{
 		margin-left: 3px;
 		height: 30px;
