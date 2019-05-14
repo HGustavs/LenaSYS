@@ -204,7 +204,7 @@ function returned(data)
 
 				// set font size
 				$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
-				
+
 			// Make room for the menu by setting padding-top equals to height of menubox
 			if($("#"+contentid+"menu").height() == null){
 				boxmenuheight = 0;
@@ -344,7 +344,7 @@ function editImpWords(editType)
 
 //----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialogue box for editing a code example
-//                Is called at line 58 in navheader.php
+//                
 //----------------------------------------------------------------------------------
 
 function displayEditExample(boxid)
