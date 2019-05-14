@@ -208,6 +208,7 @@ function process() {
 	dstr += makeCustomFilter("showTeachers", "Show Teachers");
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
+	dstr += makeCustomFilter("passedDeadline", "Passed Deadline");
 
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
@@ -744,29 +745,9 @@ function gradeFilterHandler() {
 			break;
 	}
 }
-function deadlineFilterHandler() {
-	// getting the alternative that the filter have.
-	isLate = false;
-	var argument = document.getElementById("deadlineFilter").value;
-	switch (argument) {
-		case "late":
-			isLate = true;
-			console.log(isLate);
-			break;
-		case "notLate":
-			isLate = false;
-			console.log(isLate);
-			break;
-		default:
-		isLate = "none";
-			break;
-	}
-	return isLate;
-}
 
 function renderCell(col, celldata, cellid) {
 	gradeFilterHandler();
-	deadlineFilterHandler();
 	// Render minimode
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)

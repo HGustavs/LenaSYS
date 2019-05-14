@@ -83,15 +83,6 @@ pdoConnect();
 					<option value="Filter-U">U</option>
 				</select>
 			</div>
-			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
-				<label>Deadline:</label>
-				<select id="deadlineFilter" onchange="deadlineFilterHandler(); updateTable();">
-					<option value="Filter-none" selected>inget</option>
-					<option value="late">Efter deadline</option>
-					<option value="notLate">Innan deadline</option>
-				</select>
-			</div>
-
     </div>
     
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
