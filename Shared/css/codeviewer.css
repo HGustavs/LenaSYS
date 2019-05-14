@@ -789,3 +789,8 @@
 .codeheader {
     font-size: 26px !important;
 }
+
+/* style for the maximize button*/
+.maximizebtn {
+    color: #DFF0D8;
+}

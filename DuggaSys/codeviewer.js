@@ -259,6 +259,8 @@ function returned(data)
 	}
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
+
+	hideMaximizeButton();
 }
 
 function returnedTitle(data)
@@ -668,19 +670,19 @@ function createboxmenu(contentid, boxid, type)
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p>";
+				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
 				str+="</tr></table>";
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p>";
+				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
 				str+='</tr></table>';
 			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 maximizebtn' id='maximiseBoxes' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p>";
+				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
 				str+="</tr></table>";
 			}else{
 				var str = "<table cellspacing='2'><tr>";
@@ -1850,6 +1852,18 @@ function maximizeBoxes(boxid)
 			alignBoxesWidth2Boxes(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
+
+		if(boxid == 3){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
 	}
 
 	//For template 4
@@ -1940,6 +1954,7 @@ function maximizeBoxes(boxid)
 		}
 	}
 
+	//For template 6
 	if(templateid == 6){
 		if(boxid == 1){
 			$(boxValArray['box' + 2]['id']).width("0%");
@@ -1993,6 +2008,105 @@ function maximizeBoxes(boxid)
 
 			alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 		}
+	}
+
+	//For template 7
+	if(templateid == 7){
+		if(boxid == 1){
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 4]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 1, 4);
+		}
+
+		if(boxid == 2){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+
+		if(boxid == 3){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+
+		if(boxid == 4){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+		}
+	}
+
+	//for template 8
+	if(templateid == 8){
+		if(boxid == 1){
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+		}
+
+		if(boxid == 2){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
+
+		if(boxid == 3){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
+	}
+}
+
+//hide maximizeButton
+function hideMaximizeButton(){
+	var templateid = retData['templateid'];
+	if(templateid > 8){
+			$('.maximizebtn').hide();
 	}
 }
 
