@@ -3281,7 +3281,8 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        classB.name = "New" + countNumberOfSymbolKind(symbolKind.uml);
+        var newValue = checkDuplicate("New", symbolKind.uml);
+        classB.name = "New" + newValue;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3295,7 +3296,8 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        erAttributeA.name = "Attr" + countNumberOfSymbolKind(symbolKind.erAttribute);
+        var newValue = checkDuplicate("Attr", symbolKind.erAttribute);
+        erAttributeA.name = "Attr" + newValue;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3308,7 +3310,8 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        erEnityA.name = "Entity" + countNumberOfSymbolKind(symbolKind.erEntity);
+        var newValue = checkDuplicate("Entity", symbolKind.erEntity);
+        erEnityA.name = "Entity" + newValue;;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3348,7 +3351,8 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        erRelationA.name = "Relation" + countNumberOfSymbolKind(symbolKind.erRelation);
+        var newValue = checkDuplicate("Relation", symbolKind.erRelation);
+        erRelationA.name = "Relation" + newValue;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3367,7 +3371,7 @@ function mouseupevt(ev) {
                     setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
                     if (diagram[i].isLockHovered) {
                         diagram[i].isLocked = false;
-                    }    
+                    }
                 }
             }
         }
@@ -3434,13 +3438,13 @@ function mouseupevt(ev) {
 }
 
 function countNumberOfSymbolKind(kind) {
-    let numberOfSymbolKind = 0;
-    for(let i = 0; i < diagram.length; i++){
-        if(diagram[i].symbolkind == kind) {
-            numberOfSymbolKind++;
-        }
-    }
-    return numberOfSymbolKind;
+  var numberOfSymbolKind = 0;
+  for(let i = 0; i < diagram.length; i++) {
+      if(diagram[i].symbolkind == kind) {
+          numberOfSymbolKind++;
+      }
+  }
+  return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
@@ -3909,4 +3913,16 @@ function changeLineDirection() {
 //Close the errorMessageDialog for Composite
 function closeErrorMessageDialog() {
     $("#errorMessageDialog").hide();
+}
+
+//Checks if there are any duplicates of entities with the same name.
+function checkDuplicate(name, kind) {
+    var numberOfSymbolKind = 0;
+    for(let i = 0; i < diagram.length; i++) {
+        //Checks for duplicates with the same number and adds +1 to it.
+        if (diagram[i].name == name + countNumberOfSymbolKind(kind)) {
+            numberOfSymbolKind = 1;
+        }
+    }
+    return countNumberOfSymbolKind(kind) + numberOfSymbolKind;
 }
