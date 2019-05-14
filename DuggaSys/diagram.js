@@ -3132,20 +3132,21 @@ function mouseupevt(ev) {
             var okToMakeLine = true;
             if(symbolEndKind != symbolKind.umlLine && symbolEndKind != symbolKind.text) {
                 var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
+                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute
+                        || lineStartObj == markedObject) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else {
                     createNewPoint = true;
                 }
 
-                //Code for making sure enitities not connect to the same attribute multiple times
                 if(symbolEndKind != symbolKind.uml) {
                     okToMakeLine = false;
                 }
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute
+                            || lineStartObj == markedObject) {
                         p2 = diagram[markedObject].centerPoint;
                     } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
