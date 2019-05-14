@@ -423,7 +423,7 @@ function keyDownHandler(e) {
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line 
+            if(cloneTempArray[i].symbolkind != symbolKind.line
                 && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
@@ -3112,35 +3112,67 @@ function handleSelect() {
 }
 
 // returns the entities connected to the specified symbol via lines
-function getConnectedEntities(symbol) {
+function getConnectedEntities(symbol, symbolKind) {
     var entitiesConnected = [];
-    var lines = getConnectedLines(symbol); 
+    var lines = getConnectedLines(symbol);
     for (var i = 0; i < lines.length; i++) {
         var objects = lines[i].getConnectedObjects();
         for (var j = 0; j < objects.length; j++) {
-            if (objects[j] != symbol && objects[j].symbolkind == symbolKind.erEntity) {
+            if (objects[j] != symbol && objects[j].symbolkind == symbolKind) {
                 entitiesConnected.push(objects[j]);
-            } 
+            }
         }
     }
     return entitiesConnected;
 }
 
-// set the attribute key type to composite when connecting 2 attributes whenever one or both of them are connected to entities  
+function checkIfAttributesIsComposite(startSymbol, endSymbol) {
+
+    var startAttributesConnected = getConnectedEntities(startSymbol, symbolKind.erAttribute );
+    var endAttributesConnected = getConnectedEntities(endSymbol, symbolKind.erAttribute);
+
+    var startAttributesWithComposite = [];
+    var endAttributesWithComposite = [];
+
+    for (i = 0; i < startAttributesConnected.length; i++) {
+        if (startAttributesConnected[i].properties.key_type == "Composite"){
+            startAttributesWithComposite.push(startAttributesConnected[i]);
+        }
+    }
+    for (i = 0; i < endAttributesConnected.length; i++) {
+        if (endAttributesConnected[i].properties.key_type == "Composite"){
+            endAttributesWithComposite.push(endAttributesConnected[i]);
+        }
+    }
+    for (i = 0; i < startAttributesWithComposite.length; i++) {
+        if (getConnectedEntities(startAttributesWithComposite[i], symbolKind.erEntity).length > 0){
+            return false;
+        }
+    }
+    for (i = 0; i < endAttributesWithComposite.length; i++) {
+        if (getConnectedEntities(endAttributesWithComposite[i], symbolKind.erEntity).length > 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+// set the attribute key type to composite when connecting 2 attributes whenever one or both of them are connected to entities
 function setComposite(startSymbol, endSymbol) {
-    
-    var startEntitiesConnected = getConnectedEntities(startSymbol);
-    var endEntitiesConnected = getConnectedEntities(endSymbol);
-    
+
+    var startEntitiesConnected = getConnectedEntities(startSymbol, symbolKind.erEntity );
+    var endEntitiesConnected = getConnectedEntities(endSymbol, symbolKind.erEntity);
+
     if (startEntitiesConnected.length > 0 && startSymbol.properties.key_type == "normal") {
         startSymbol.properties.key_type = "Composite";
     }
     if (endEntitiesConnected.length > 0 && endSymbol.properties.key_type == "normal") {
         endSymbol.properties.key_type = "Composite";
     }
+
     if (startEntitiesConnected.length > 0 && endEntitiesConnected.length > 0 ) {
         return false;
-    } else { 
+    } else {
         return true;
     }
 }
@@ -3223,15 +3255,16 @@ function mouseupevt(ev) {
                     if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
 
                         var bothConnectedToEntity =  setComposite(diagram[lineStartObj], diagram[markedObject]);
-                        
+                        var bothAttributesComposite = checkIfAttributesIsComposite(diagram[lineStartObj], diagram[markedObject]);
+
                         // both attributes are connected to entities
-                        if (!bothConnectedToEntity &&(diagram[markedObject].properties.key_type === "Composite" &&  diagram[lineStartObj].properties.key_type === "Composite")) {
+                        if (!bothAttributesComposite || !bothConnectedToEntity && (diagram[markedObject].properties.key_type === "Composite" &&  diagram[lineStartObj].properties.key_type === "Composite")) {
                             okToMakeLine = false;
                             // Add error dialog
                             $("#errorMessageDialog").css("display", "flex");
                             var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
                             document.getElementById("errorMessage").innerHTML = "Error! Both attributes are connected to entities";
-                        
+
                         } else if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
                             okToMakeLine = true;
                         } else {
