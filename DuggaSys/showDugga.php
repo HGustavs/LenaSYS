@@ -121,14 +121,16 @@
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
-					echo "<table id='submitButtonTable' class='navheader'>";
-					echo "<tr>";
-          echo "<td align='center'>";
-					echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
-					echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
-					echo "</td>";
-					echo "</tr>";
-					echo "</table>";
+					if ($duggafile !== 'contribution') {
+						echo "<table id='submitButtonTable' class='navheader'>";
+						echo "<tr>";
+						echo "<td align='center'>";
+						echo "<input id='saveDuggaButton' class='submit-button large-button' type='button' value='Save' onclick='saveClick();' />";
+						echo "<input class='submit-button large-button' type='button' value='Reset' onclick='reset();' />";
+						echo "</td>";
+						echo "</tr>";
+						echo "</table>";
+					}
 
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
