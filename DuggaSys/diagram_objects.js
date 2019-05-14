@@ -1406,44 +1406,45 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
         ctx.moveTo(x1, y1);
 
+
         // Check all symbols in diagram and see if anyone matches current line's points coordinate
         for (var i = 0; i < diagram.length; i++) {
             if (diagram[i].symbolkind == symbolKind.uml) { // filter UML class
                 var currentSymbol = diagram[i].corners();
 
                 // Check if line's start point matches any class diagram
-                if (x1 == currentSymbol.tl.x) {
+                if (x1 == pixelsToCanvas(currentSymbol.tl.x).x) {
                     startLineDirection = "left";
                     breakpointStartX = x1 - 30;
                     breakpointStartY = y1;
-                } else if (x1 == currentSymbol.br.x) {
+                } else if (x1 == pixelsToCanvas(currentSymbol.br.x).x) {
                     startLineDirection = "right";
                     breakpointStartX = x1 + 30;
                     breakpointStartY = y1;
-                } else if (y1 == currentSymbol.tl.y) {
+                } else if (y1 == pixelsToCanvas(currentSymbol.tl.y).y) {
                     startLineDirection = "up"
                     breakpointStartY = y1 - 30;
                     breakpointStartX = x1;
-                } else if (y1 == currentSymbol.br.y) {
+                } else if (y1 == pixelsToCanvas(currentSymbol.br.y).y) {
                     startLineDirection = "down"
                     breakpointStartY = y1 + 30;
                     breakpointStartX = x1;
                 }
 
                 // Check if line's end point matches any class diagram
-                if (x2 == currentSymbol.tl.x) {
+                if (x2 == pixelsToCanvas(currentSymbol.tl.x).x) {
                     endLineDirection = "left";
                     breakpointEndX = x2 - 30;
                     breakpointEndY = y2;
-                } else if (x2 == currentSymbol.br.x) {
+                } else if (x2 == pixelsToCanvas(currentSymbol.br.x).x) {
                     endLineDirection = "right";
                     breakpointEndX = x2 + 30;
                     breakpointEndY = y2;
-                } else if (y2 == currentSymbol.tl.y) {
+                } else if (y2 == pixelsToCanvas(currentSymbol.tl.y).y) {
                     endLineDirection = "up"
                     breakpointEndY = y2 - 30;
                     breakpointEndX = x2;
-                } else if (y2 == currentSymbol.br.y) {
+                } else if (y2 == pixelsToCanvas(currentSymbol.br.y).y) {
                     endLineDirection = "down"
                     breakpointEndY = y2 + 30;
                     breakpointEndX = x2;
