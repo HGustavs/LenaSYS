@@ -72,7 +72,7 @@ pdoConnect();
 			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
 				<button class="resultedbuttons" onclick="mail();">Mail students</button>
 			<?php }else{ ?>
-				<button  onclick="mail();" style="margin:5px;" disabled>Mail students</button>
+				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
         <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Filtrera efter</label>

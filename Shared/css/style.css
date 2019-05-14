@@ -5033,9 +5033,21 @@ textarea#filecont{
 }
 
 .resultedbuttons{
-  margin: 7px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 20px 2px 4px 2px;
   padding-left: 10px;
   padding-right: 10px;
   background-color: #614875;
   color: #ffffff;
+  width: 110px;
+  height: 30px;
+  border: 0px;
+  font-size: 14px;
+  transition: 0.1s background-color;
+  border-radius: 4px;
 }
+
+.resultedbuttons:hover{
+  filter: brightness(1.2); 
+}
+
