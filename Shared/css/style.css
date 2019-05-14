@@ -1765,6 +1765,7 @@ div.submit-button:disabled {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  border: none;
   margin: 5px auto;
   transition: 0.25s background-color;
 }
@@ -1798,7 +1799,8 @@ div.submit-button:disabled {
   padding: 4px 8px;
   color: #ffffff;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 4px;
+  border: none;
 }
 
 .buttonStyleDialog:hover {
@@ -1818,16 +1820,46 @@ div.submit-button:disabled {
   height: 25px;
 }
 
-#linebutton {
-  margin: 5px 0;
+#attributebutton {
   display: inline;
-  border-radius: 5px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-#umllinebutton {
+#entitybutton {
   display: inline;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#relationbutton {
+  display: inline;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#linebutton {
   margin: 5px 0;
-  border-radius: 5px;
+  border-radius: 4px;
+  display: inline;
+}
+
+#drawfreebutton {
+  display: inline;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#classbutton {
+  display: inline;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#drawtextbutton {
+  display: inline;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 #textButton {
@@ -1836,10 +1868,42 @@ div.submit-button:disabled {
   margin-top: 3px;
 }
 
+#umllinebutton {
+  display: inline;
+  margin: 5px 0;
+  border-radius: 1px;
+}
+
 #moveButton img {
   height: 30px;
   width: 30px;
   padding: 2px;
+}
+
+#undoButton {
+  border: none;
+}
+
+#undoButton img {
+  filter: invert(100%);
+  text-align: center;
+  margin-left: -15px;
+  margin-right: -15px;
+  width: 15px;
+  height: 15px;
+}
+
+#redoButton {
+  border: none
+}
+
+#redoButton img {
+  filter: invert(100%);
+  text-align: center;
+  margin-left: -15px;
+  margin-right: -15px;
+  width: 15px;
+  height: 15px;
 }
 
 .unpressed {
@@ -3945,7 +4009,7 @@ only screen and (max-device-width: 320px) {
 
 .zoomButtonStyle {
   transition: 0.25s background-color;
-  font-family: hack, "Lucida Console", Monaco, monospace;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .zoomButtonStyle:hover {
@@ -3954,12 +4018,16 @@ only screen and (max-device-width: 320px) {
 
 .tooltipDecrease button {
   background-color: #614875;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #fff;
-  border-radius: 6px;
+  border: 0px;
   cursor: pointer;
+  transition: 0.1s background-color;
+  border-radius: 3px;
 }
 
 .tooltipDecrease .tooltiptextDec {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   visibility: hidden;
   width: 60px;
   font-size: 12px;
@@ -3987,15 +4055,18 @@ only screen and (max-device-width: 320px) {
 
 .tooltipIncrease button {
   background-color: #614875;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #fff;
-  border-radius: 6px;
+  border: 0px;
   cursor: pointer;
+  transition: 0.1s background-color;
+  border-radius: 3px;
 }
 
 .tooltipIncrease .tooltiptextInc {
   visibility: hidden;
   width: 60px;
-  font-size: 12px;
+  font-size: 1px;
   background-color: #614875;
   color: #fff;
   text-align: center;
