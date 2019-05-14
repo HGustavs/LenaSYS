@@ -261,6 +261,12 @@ function returned(data)
 	resizeBoxes("#div2", retData["templateid"]);
 
 	hideMaximizeButton();
+
+	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
+
+	titles.forEach(title => {
+		title.addEventListener('keypress', preventLinebreak);
+	})
 }
 
 function returnedTitle(data)
