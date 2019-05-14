@@ -3111,6 +3111,40 @@ function handleSelect() {
     }
 }
 
+// returns the entities connected to the specified symbol via lines
+function getConnectedEntities(symbol) {
+    var entitiesConnected = [];
+    var lines = getConnectedLines(symbol); 
+    for (var i = 0; i < lines.length; i++) {
+        var objects = lines[i].getConnectedObjects();
+        for (var j = 0; j < objects.length; j++) {
+            if (objects[j] != symbol && objects[j].symbolkind == symbolKind.erEntity) {
+                entitiesConnected.push(objects[j]);
+            } 
+        }
+    }
+    return entitiesConnected;
+}
+
+// set the attribute key type to composite when connecting 2 attributes whenever one or both of them are connected to entities  
+function setComposite(startSymbol, endSymbol) {
+    
+    var startEntitiesConnected = getConnectedEntities(startSymbol);
+    var endEntitiesConnected = getConnectedEntities(endSymbol);
+    
+    if (startEntitiesConnected.length > 0 && startSymbol.properties.key_type == "normal") {
+        startSymbol.properties.key_type = "Composite";
+    }
+    if (endEntitiesConnected.length > 0 && endSymbol.properties.key_type == "normal") {
+        endSymbol.properties.key_type = "Composite";
+    }
+    if (startEntitiesConnected.length > 0 && endEntitiesConnected.length > 0 ) {
+        return false;
+    } else { 
+        return true;
+    }
+}
+
 function mouseupevt(ev) {
     canvasLeftClick = 0;
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
@@ -3187,8 +3221,19 @@ function mouseupevt(ev) {
 
                     // Can't draw line between two ER attributes if one of them is not composite
                     if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                        if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
-                        okToMakeLine = true;
+
+                        var bothConnectedToEntity =  setComposite(diagram[lineStartObj], diagram[markedObject]);
+                        
+                        // both attributes are connected to entities
+                        if (!bothConnectedToEntity &&(diagram[markedObject].properties.key_type === "Composite" &&  diagram[lineStartObj].properties.key_type === "Composite")) {
+                            okToMakeLine = false;
+                            // Add error dialog
+                            $("#errorMessageDialog").css("display", "flex");
+                            var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+                            document.getElementById("errorMessage").innerHTML = "Error! Both attributes are connected to entities";
+                        
+                        } else if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
+                            okToMakeLine = true;
                         } else {
                             okToMakeLine = false;
                             // Add error dialog
