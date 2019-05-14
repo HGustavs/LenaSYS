@@ -765,8 +765,22 @@
                     }
                 }
 				
+				#Add contribution dugga
 				if (isset($_POST["contribution"])) {
-					 echo "Contribution!!";
+					try {
+						$completeQuery = "INSERT INTO `quiz` (`id`, `cid`, `autograde`, `gradesystem`, `qname`, `quizFile`, `qrelease`, `deadline`, `modified`, `creator`, `vers`, `qstart`, `jsondeadline`, `group`) VALUES
+											(13, 3, 0, 1, 'Contribution', 'contribution', NULL, '2019-05-15 00:00:00', '2019-05-14 08:40:35', 2, '1337', NULL, NULL, 0);"
+						$connection->query($completeQuery);
+						
+						$completeQuery = "INSERT INTO `listentries` (`lid`, `cid`, `entryname`, `link`, `kind`, `pos`, `creator`, `ts`, `code_id`, `visible`, `vers`, `comments`, `moment`, `gradesystem`, `highscoremode`, `rowcolor`, `groupID`, `groupKind`) VALUES
+											(2037, 3, 'Contribution', '13', 3, 100, 2, '2019-05-14 08:42:25', NULL, 0, '1337', 'UNK', NULL, 0, 0, NULL, NULL, NULL);"
+						$connection->query($completeQuery);
+						echo "<span id='successText' />Successfully added contribution dugga</span><br>";
+					} catch (PDOException $e) {
+						$errors++;
+						echo "<span id='failText' />Failed to add contribution dugga</span><br>";
+						echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+					}
 				}
 
                 /************* Copy test code files to the right place *****************/
