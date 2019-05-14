@@ -799,7 +799,9 @@ function renderCell(col, celldata, cellid) {
 				} 
 				str += "'>";
 				// Creation of grading buttons
-				if (celldata.ishere === true || celldata.kind == 4) {
+				console.log(celldata.ishere);
+				
+				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "<div class='gradeContainer resultTableText'>";
 					if (celldata.grade === null) {
 						str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
