@@ -3167,16 +3167,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        var numberOfSymbolKind = 0;
-        for(let i = 0; i < diagram.length; i++){
-            //Checks for duplicates with the same number and adds +1 to it.
-            if (diagram[i].name == "New" + countNumberOfSymbolKind(symbolKind.uml)) {
-                numberOfSymbolKind = 1;
-            }
-        }
-        //Variable that adds +1 to numberOfSymbolKind if there were a duplicate otherwise it's 0.
-        var newValue = countNumberOfSymbolKind(symbolKind.uml) + numberOfSymbolKind;
-
+        let newValue = checkDuplicate("New", symbolKind.uml);
         classB.name = "New" + newValue;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
@@ -3191,16 +3182,7 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        var numberOfSymbolKind = 0;
-        for(let i = 0; i < diagram.length; i++){
-            //Checks for duplicates with the same number and adds +1 to it.
-            if (diagram[i].name == "Attr" + countNumberOfSymbolKind(symbolKind.erAttribute)) {
-                numberOfSymbolKind = 1;
-            }
-        }
-        //Variable that adds +1 to numberOfSymbolKind if there were a duplicate otherwise it's 0.
-        var newValue = countNumberOfSymbolKind(symbolKind.erAttribute) + numberOfSymbolKind;
-
+        let newValue = checkDuplicate("Attr", symbolKind.erAttribute);
         erAttributeA.name = "Attr" + newValue;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
@@ -3214,17 +3196,7 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-
-        var numberOfSymbolKind = 0;
-        for(let i = 0; i < diagram.length; i++){
-            //Checks for duplicates with the same number and adds +1 to it.
-            if (diagram[i].name == "Entity" + countNumberOfSymbolKind(symbolKind.erEntity)) {
-                numberOfSymbolKind = 1;
-            }
-        }
-        //Variable that adds +1 to numberOfSymbolKind if there were a duplicate otherwise it's 0.
-        var newValue = countNumberOfSymbolKind(symbolKind.erEntity) + numberOfSymbolKind;
-
+        let newValue = checkDuplicate("Entity", symbolKind.erEntity);
         erEnityA.name = "Entity" + newValue;;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
@@ -3265,17 +3237,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-
-        var numberOfSymbolKind = 0;
-        for(let i = 0; i < diagram.length; i++){
-            //Checks for duplicates with the same number and adds +1 to it.
-            if (diagram[i].name == "Relation" + countNumberOfSymbolKind(symbolKind.erRelation)) {
-                numberOfSymbolKind = 1;
-            }
-        }
-        //Variable that adds +1 to numberOfSymbolKind if there were a duplicate otherwise it's 0.
-        var newValue = countNumberOfSymbolKind(symbolKind.erRelation) + numberOfSymbolKind;
-
+        let newValue = checkDuplicate("Entity", symbolKind.erRelation);
         erRelationA.name = "Relation" + newValue;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
@@ -3828,4 +3790,16 @@ function changeLineDirection() {
 //Close the errorMessageDialog for Composite
 function closeErrorMessageDialog() {
     $("#errorMessageDialog").hide();
+}
+
+//Checks if there are any duplicates of entities with the same name.
+function checkDuplicate(name, kind) {
+    var numberOfSymbolKind = 0;
+    for(let i = 0; i < diagram.length; i++) {
+        //Checks for duplicates with the same number and adds +1 to it.
+        if (diagram[i].name == name + countNumberOfSymbolKind(kind)) {
+            numberOfSymbolKind = 1;
+        }
+    }
+    return countNumberOfSymbolKind(kind) + numberOfSymbolKind;
 }
