@@ -3435,6 +3435,7 @@ function countNumberOfSymbolKind(kind) {
   for(let i = 0; i < diagram.length; i++) {
       if(diagram[i].symbolkind == kind) {
           numberOfSymbolKind++;
+      }
   }
   return numberOfSymbolKind;
 }
