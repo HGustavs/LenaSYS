@@ -41,8 +41,7 @@
 				<tr class='trsize nowrap'>
 					<td style='display: inline-block;'>
 						<div class='course-dropdown-div'>
-								<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this.id)' >
-								</select>
+							<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this.id)' ></select>
 						</div>
 					</td>
 					<td class='editVers' style='display: inline-block;'>
@@ -138,7 +137,7 @@
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>
 				<div style='flex-grow:1'>
-						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;' title='"+data.coursename+" "+data.coursecode+" "+versionname+"'>UNK</span>
+						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;'>UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
 						<span id='course-versname' class='courseVersionField'>UNK</span>
 				</div>
@@ -179,7 +178,7 @@
 								</table>
 						</div>
 						<div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
-								<svg id="swimlaneSVG" width='300px' style='padding: 10px; margin: auto;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
+								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
 						<!--<div style='display:flex;'>
 							<canvas id='swimlanesMoments' style='padding:10px;'></canvas>
