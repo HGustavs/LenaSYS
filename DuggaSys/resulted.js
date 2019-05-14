@@ -1085,11 +1085,11 @@ function renderSortOptions(col, status, colname) {
 			}
 		} else {
 			if (status == 0) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>Ascending Grades</span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>Ascending Grades </span>" + colname + "</span>";
 			} else if (status == 1) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>Descending Grades</span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>Descending Grades </span>" + colname + "</span>";
 			} else if (status == 2) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>Pending</span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>Pending </span>" + colname + "</span>";
 			}
 		}
 	}

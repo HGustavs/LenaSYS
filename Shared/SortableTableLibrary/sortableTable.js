@@ -781,22 +781,17 @@ function newCompare(firstCell, secoundCell) {
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 		if (status == 0) {
 			//Ascending grade
-			console.log("ascen");
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		} else if (status == 1) {
-			//Descending grade
-			console.log("he");
-		//	val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-			console.log(firstCellTemp);
-			console.log(secoundCellTemp);
-			if(secoundCellTemp != ""){
-				val = -1;
-
+			if(secoundCellTemp != "" && firstCellTemp != "" && secoundCellTemp != 0 && firstCellTemp != 0){
+				//descending grades
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 			}	
-		} else if (status == 2 && firstCellTemp >= 0 && secoundCellTemp == "") {
-			console.log("pend");
-			//Pending
-			val = -1;
+		} else if (status == 2) {
+			//pending grades
+			if(secoundCellTemp == 0 && secoundCellTemp != "" && firstCellTemp != ""){
+				val = -1;
+			}	
 		}
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
@@ -851,7 +846,6 @@ function newCompare(firstCell, secoundCell) {
 			val = secoundCell < firstCellTemp;
 		}
 	}
-
 	return val;
 
 }
