@@ -91,7 +91,7 @@
                                         </button>
                                         <!-- Create Text -->
                                         <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed' data="Draw Text (Shift + T)">
-                                            <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
+                                            <img id='textButton' src="../Shared/icons/textbox.svg">
                                         </button>
                                     </div>
                                 </div>
