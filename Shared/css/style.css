@@ -4320,6 +4320,13 @@ only screen and (max-device-width: 320px) {
   margin-top: 6px;
 }
 
+[data-tooltip]:before {
+  visibility: visible;
+  opacity: 0.2;
+  transform: scale(1);
+  transform-origin: right center 0;
+}
+
 [data-tooltip]:hover:before {
   visibility: visible;
   opacity: 1;
@@ -5132,5 +5139,3 @@ textarea#filecont{
   color: white;
   border: 2px solid #614875;
 }
-
-
