@@ -260,13 +260,13 @@ function returned(data)
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
 
-	hideMaximizeButton();
-
 	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
 
 	titles.forEach(title => {
 		title.addEventListener('keypress', preventLinebreak);
 	})
+
+	hideMaximizeButton();
 }
 
 function returnedTitle(data)
