@@ -750,10 +750,12 @@ function deadlineFilterHandler() {
 	var argument = document.getElementById("deadlineFilter").value;
 	switch (argument) {
 		case "late":
-		isLate = true;
+			isLate = true;
+			console.log(isLate);
 			break;
 		case "notLate":
-		isLate = false;
+			isLate = false;
+			console.log(isLate);
 			break;
 		default:
 		isLate = "none";
@@ -764,7 +766,7 @@ function deadlineFilterHandler() {
 
 function renderCell(col, celldata, cellid) {
 	gradeFilterHandler();
-	
+	deadlineFilterHandler();
 	// Render minimode
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
