@@ -794,7 +794,7 @@ function newCompare(firstCell, secoundCell) {
 			if (firstCell === null || secoundCell === null) {
 				firstCellTemp = firstCell;
 				secoundCellTemp = secoundCell;
-			} else if(firstCell.indexOf(sizeTemp) && secoundCell.indexOf(sizeTemp)){
+			} else if(firstCell.indexOf(sizeTemp) == 1 && secoundCell.indexOf(sizeTemp) == 1){
 				tempTemp1 = firstCell.replace(/\D/g,'');
 				tempTemp2 = secoundCell.replace(/\D/g,'');
 				firstCellTemp = parseInt(tempTemp1, 10);
