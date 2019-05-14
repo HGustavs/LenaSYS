@@ -344,7 +344,7 @@ function editImpWords(editType)
 
 //----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialogue box for editing a code example
-//                
+//
 //----------------------------------------------------------------------------------
 
 function displayEditExample(boxid)
@@ -441,7 +441,7 @@ function updateExample()
 		removedWords = [];
 	}
 
-	$("#editExample").css("display","none");
+	$("#editExampleContainer").css("display","none");
 }
 
 //----------------------------------------------------------------------------------
