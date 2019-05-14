@@ -135,24 +135,31 @@ var cloneTempArray = [];                // Is used to store all selected objects
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
 
 // Keyboard keys
-const deleteKey = 46;
 const backspaceKey = 8;
+const shiftKey = 16;
+const ctrlKey = 17;
+const escapeKey = 27;
 const spacebarKey = 32;
 const leftArrow = 37;
 const upArrow = 38;
 const rightArrow = 39;
 const downArrow = 40;
-const ctrlKey = 17;
-const shiftKey = 16;
-const windowsKey = 91;
+const deleteKey = 46;
+const key1 = 49;
+const key2 = 50;
+const aKey = 65;
 const cKey = 67;
+const dKey = 68;
+const eKey = 69;
+const fKey = 70;
+const lKey = 76;
+const mKey = 77;
+const rKey = 82;
+const tKey = 84;
 const vKey = 86;
 const zKey = 90;
 const yKey = 89;
-const aKey = 65;
-const escapeKey = 27;
-const key1 = 49;
-const key2 = 50;
+const windowsKey = 91;
 const num1 = 97;
 const num2 = 98;
 
@@ -409,7 +416,8 @@ function keyDownHandler(e) {
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line) {
+            if(cloneTempArray[i].symbolkind != symbolKind.line 
+                && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
             }
@@ -440,6 +448,37 @@ function keyDownHandler(e) {
     }
     else if((key == key2 || key == num2) && shiftIsClicked){
         moveToBack();
+    }
+    else if(shiftIsClicked && key == lKey) {
+      document.getElementById("linebutton").click();
+    }
+    else if(shiftIsClicked && key == aKey && targetMode == "ER") {
+      document.getElementById("attributebutton").click();
+    }
+    else if(shiftIsClicked && key == eKey && targetMode == "ER") {
+      document.getElementById("entitybutton").click();
+    }
+    else if(shiftIsClicked && key == rKey && targetMode == "ER") {
+      document.getElementById("relationbutton").click();
+    }
+    else if(shiftIsClicked && key == cKey && targetMode == "UML") {
+      document.getElementById("classbutton").click();
+    }
+    else if(shiftIsClicked && key == tKey && targetMode == "ER") {
+      document.getElementById("drawtextbutton").click();
+    }
+    else if(shiftIsClicked && key == fKey) {
+      document.getElementById("drawfreebutton").click();
+    }
+    else if(shiftIsClicked && key == dKey) {
+      developerMode(event);
+    }
+    else if(shiftIsClicked && key == mKey) {
+      if(targetMode == "ER"){
+        switchToolbarTo("UML");
+      } else {
+        switchToolbarTo("ER");
+      }
     }
 }
 
@@ -622,21 +661,26 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 // copySymbol: Clone an object
 //----------------------------------------------------------------------
-
 function copySymbol(symbol) {
-    var clone = Object.assign(new Symbol(), symbol);
-    var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    var clone = new Symbol(symbol.symbolkind);
+
+    var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
     topLeftClone.x += 10;
     topLeftClone.y += 10;
-    var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+
+    var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
     bottomRightClone.x += 10;
     bottomRightClone.y += 10;
-    var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+
+    var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
     centerPointClone.y += 10;
-    var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
-    middleDividerClone.x += 10;
-    middleDividerClone.y += 10;
+
+    if (symbol.symbolkind == symbolKind.uml) {
+        var middleDividerClone = jQuery.extend(true, {}, points[symbol.middleDivider]);
+        middleDividerClone.x += 10;
+        middleDividerClone.y += 10;
+    }
 
     if(symbol.symbolkind == symbolKind.uml) {
         clone.name = "New" + diagram.length;
@@ -646,18 +690,20 @@ function copySymbol(symbol) {
         clone.name = "Entity" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "Line" + diagram.length;
-    }else{
-        clone.name = "Relation" + diagram.length;
+    } else{
+        clone.name = "RelationCopy" + diagram.length;
     }
+
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
+
     if(clone.symbolkind != symbolKind.uml) {
         clone.centerPoint = points.push(centerPointClone) - 1;
-    }
-    else {
+    }else {
         clone.middleDivider = points.push(middleDividerClone) - 1;
         clone.centerPoint = clone.middleDivider;
     }
+
     clone.targeted = true;
     symbol.targeted = false;
     diagram.push(clone);
@@ -914,7 +960,21 @@ diagram.checkForHover = function(posX, posY) {
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != kind.path) {
         //We only want to set it to true when md is not in selectionbox mode
         if(!(uimode == "MoveAround")) {
-            hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.insideMovableObject || uimode != "normal";
+            if (md != mouseState.insideMovableObject || uimode != "normal" || hoveredObjects[hoveredObjects.length - 1].isLocked) {
+                hoveredObjects[hoveredObjects.length - 1].isHovered = true;
+            } else {
+                hoveredObjects[hoveredObjects.length - 1].isHovered = false;
+            }
+        }
+    }
+    // check hover for free draw objects
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == kind.path) {
+            if (diagram[i].checkForHover(posX, posY) && uimode != "MoveAround") {
+                diagram[i].isHovered = true;
+            } else {
+                diagram[i].isHovered = false;
+            }
         }
     }
     return hoveredObjects[hoveredObjects.length - 1];
@@ -1102,17 +1162,25 @@ function toggleVirtualA4(event) {
     if (toggleA4) {
         // A4 is disabled
         toggleA4 = false;
+
+        $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
+        $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+        if (toggleA4Holes) {
+            $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
+        }else {
+            $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        }
         showA4State();
         updateGraphics();
     }
-    $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 
-    $("#a4-orientation-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
@@ -1242,6 +1310,11 @@ function showA4State() {
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
     switchSideA4Holes = "left";
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+
+    // Show A4 options
+    $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 function hideA4State() {
@@ -1253,8 +1326,12 @@ function hideA4State() {
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
-    $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
+    // Grey out disabled options
+    $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 function toggleVirtualA4Holes() {
@@ -1262,13 +1339,16 @@ function toggleVirtualA4Holes() {
     if (toggleA4Holes) {
         toggleA4Holes = false;
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-        $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
+        switchSideA4Holes = "left"; // Disable the 'A4 Holes Right' option
+        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
         updateGraphics();
     } else {
         toggleA4Holes = true;
         setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-        $("#a4-holes-item-right").toggleClass("drop-down-item drop-down-item-disabled");
+        $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
         updateGraphics();
     }
@@ -1687,9 +1767,9 @@ function developerMode(event) {
         toolbarState = 3;                                                               // Change the toolbar to DEV.
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
-        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"),
-            toggleA4=false);                                                            // Turn off crosstoggleA4.
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
+        $("#er-item").addClass("drop-down-item drop-down-item-disabled");               // Disable ER and UML options
+        $("#uml-item").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
@@ -1701,7 +1781,9 @@ function developerMode(event) {
         toolbarState = 1;                                                               // Change the toolbar back to ER.
         switchToolbar('ER');                                                            // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
-        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");    // Add disable of displayAllTools id.
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");       // Add disable of displayAllTools id.
+        $("#er-item").removeClass("drop-down-item drop-down-item-disabled");            // Disable ER and UML options
+        $("#uml-item").removeClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=false);                                                            // Turn off crossDEV.
@@ -1712,7 +1794,7 @@ function developerMode(event) {
     setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
 }
 
-var targetMode;     //the mode that we want to change to when trying to switch the toolbar
+var targetMode = "ER";     // The mode that we want to change to when trying to switch the toolbar. Set default here.
 
 //------------------------------------------------------------------------------
 // modeSwitchConfirmed:
@@ -1934,7 +2016,14 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) </p>";
+    if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
+      document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+       + Math.round((zoomValue * 100)) + "%" + " </p>";
+      document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+       + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+    }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   </p>";
@@ -2000,10 +2089,10 @@ function lockSelected(event) {
                 continue;
             }
         }
-        selected_objects[i].locked = !selected_objects[i].locked;
+        selected_objects[i].isLocked = !selected_objects[i].isLocked;
 
-        if(selected_objects[i].locked) {
-            selected_objects[i].drawLock();
+        if(selected_objects[i].isLocked) {
+            drawLock(selected_objects[i]);
         }
         else {
             updateGraphics();
@@ -2471,7 +2560,9 @@ function switchToolbar(direction) {
     $("#labelDraw").show();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
-  } else if( toolbarState == toolbarUML) {
+    $("#drawtextbutton").show();
+  }
+  else if (toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -2484,6 +2575,7 @@ function switchToolbar(direction) {
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
+    $("#drawtextbutton").show();
   } else if(toolbarState == toolbarDeveloperMode) {
     $(".toolbar-drawer").show();
     $("#drawerTools").show();
@@ -2502,6 +2594,7 @@ function switchToolbar(direction) {
     $("#labelDraw").show();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
+    $("#drawtextbutton").show();
   }
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
@@ -2651,11 +2744,18 @@ function mousemoveevt(ev, t) {
             } else {
                 if(uimode == "MoveAround") {
                     canvas.style.cursor = "all-scroll";
-                } else if(hoveredObject && !hoveredObject.locked){
+                } else if(hoveredObject && !hoveredObject.isLocked){
                     if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
                         canvas.style.cursor = "pointer";
                     } else {
                         canvas.style.cursor = "all-scroll";
+                    }
+                } else if (uimode == "CreateLine") {
+                    //When CreateLine-button is selected the cursor is "pointer".
+                    canvas.style.cursor = "pointer";
+                    //If objects are hovered while button is selected, the cursor remains the same (pointer).
+                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
+                        canvas.style.cursor = "pointer";
                     }
                 } else {
                     canvas.style.cursor = "default";
@@ -2669,7 +2769,7 @@ function mousemoveevt(ev, t) {
             // If mouse is pressed down and no point is close show selection box
         } else if (md == mouseState.insidePoint) {
             // check so that the point were trying to move is attached to a targeted symbol and If the selected object is locked, you can't resize the object
-            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.locked) {
+            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.isLocked) {
                 return;
             }
             // If mouse is pressed down and at a point in selected object - move that point
@@ -2745,7 +2845,7 @@ function mousemoveevt(ev, t) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
-                    if (diagram[i].targeted == true && !diagram[movobj].locked) {
+                    if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
                         if(snapToGrid) {
                             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -3018,97 +3118,99 @@ function mouseupevt(ev) {
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
     var saveState = md == mouseState.boxSelectOrCreateMode && uimode != "normal";
-    if(movobj > -1) {
-        if(diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
+    if (movobj > -1) {
+        if (diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
     if (symbolStartKind != symbolKind.uml) {
-    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
-        saveState = false;
-        //Check if you release on canvas or try to draw a line from entity to entity
-         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-            md = mouseState.empty;
-         } else {
-            //Get which kind of symbol mouseupevt execute on
-            symbolEndKind = diagram[markedObject].symbolkind;
+        if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+            saveState = false;
+            //Check if you release on canvas or try to draw a line from entity to entity
+            if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
+                md = mouseState.empty;
+            } else {
+                //Get which kind of symbol mouseupevt execute on
+                symbolEndKind = diagram[markedObject].symbolkind;
 
-            sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-            //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
-            // if then, set point1 and point2
-            //okToMakeLine is a flag for this
-            var okToMakeLine = true;
-            if(symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
-                var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
-                    p1 = diagram[lineStartObj].centerPoint;
-                } else {
-                    createNewPoint = true;
-                }
-                //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
-                        okToMakeLine= false;
-                    }
-                } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
-                    okToMakeLine = false;
-                } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
-                    okToMakeLine = false;
-                }
-                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
-
-                // Can't draw line between two ER attributes if one of them is not composite
-                if(symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                    if(diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
-                       okToMakeLine = true;
+                sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+                //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
+                // if then, set point1 and point2
+                //okToMakeLine is a flag for this
+                var okToMakeLine = true;
+                if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
+                    symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+                    var createNewPoint = false;
+                    if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
+                        p1 = diagram[lineStartObj].centerPoint;
                     } else {
+                        createNewPoint = true;
+                    }
+                    //Code for making sure enitities not connect to the same attribute multiple times
+                    if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
+                        if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
+                            okToMakeLine= false;
+                        }
+                    } else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
+                        if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
+                            okToMakeLine= false;
+                        }
+                    } else if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
+                        if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                    } else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
+                        if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                    } else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                         okToMakeLine = false;
-                        // Add error dialog
-                        $("#errorMessageDialog").css("display", "flex");
-                        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
-                        document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
+                    } else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
+                        okToMakeLine = false;
                     }
-                }
+                    if (diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
 
-                if(okToMakeLine) {
-                    saveState = true;
-                    if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
-                        p2 = diagram[markedObject].centerPoint;
-                    } else {
-                        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    // Can't draw line between two ER attributes if one of them is not composite
+                    if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
+                        if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
+                        okToMakeLine = true;
+                        } else {
+                            okToMakeLine = false;
+                            // Add error dialog
+                            $("#errorMessageDialog").css("display", "flex");
+                            var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+                            document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
+                        }
                     }
-                    diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                    diagram[markedObject].connectorTop.push({from:p2, to:p1});
+
+                    if (okToMakeLine) {
+                        saveState = true;
+                        if (createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                        if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                            p2 = diagram[markedObject].centerPoint;
+                        } else {
+                            p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                        }
+                        diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
+                        diagram[markedObject].connectorTop.push({from:p2, to:p1});
+                    }
                 }
             }
         }
     }
-}
     if (symbolStartKind == symbolKind.uml) {
         if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
             saveState = false;
             uimode = "CreateUMLLine";
             //Check if you release on canvas or try to draw a line from entity to entity
-             if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
+            if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
                 md = mouseState.empty;
-             } else {
-                  //Get which kind of symbol mouseupevt execute on
-                 symbolEndKind = diagram[markedObject].symbolkind;
+            } else {
+                //Get which kind of symbol mouseupevt execute on
+                symbolEndKind = diagram[markedObject].symbolkind;
 
-                 sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+                sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+              
                 //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
                 // if then, set point1 and point2
                 //okToMakeLine is a flag for this
                 var okToMakeLine = true;
-                if(symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine &&
+              
+                if (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine &&
                     symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
                     var createNewPoint = false;
                     if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
@@ -3118,27 +3220,27 @@ function mouseupevt(ev) {
                     }
 
                     //Code for making sure enitities not connect to the same attribute multiple times
-                    if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
-                        if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
+                    if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
+                        if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                             okToMakeLine= false;
                         }
-                    } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
+                    } else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                         if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
                             okToMakeLine= false;
                         }
-                    } else if(symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                        if(diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
-                    } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                        if(diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
-                    } else if(symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
+                    } else if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
+                        if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                    } else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
+                        if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                    } else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                         okToMakeLine = false;
-                    } else if((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
+                    } else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                         okToMakeLine = false;
                     }
-                    if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
-                    if(okToMakeLine) {
+                    if (diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
+                    if (okToMakeLine) {
                         saveState = true;
-                        if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                        if (createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                         if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
                             p2 = diagram[markedObject].centerPoint;
                         } else {
@@ -3160,7 +3262,8 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        classB.name = "New" + countNumberOfSymbolKind(symbolKind.uml);
+        var newValue = checkDuplicate("New", symbolKind.uml);
+        classB.name = "New" + newValue;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3174,7 +3277,8 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        erAttributeA.name = "Attr" + countNumberOfSymbolKind(symbolKind.erAttribute);
+        var newValue = checkDuplicate("Attr", symbolKind.erAttribute);
+        erAttributeA.name = "Attr" + newValue;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3187,7 +3291,8 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        erEnityA.name = "Entity" + countNumberOfSymbolKind(symbolKind.erEntity);
+        var newValue = checkDuplicate("Entity", symbolKind.erEntity);
+        erEnityA.name = "Entity" + newValue;;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3227,7 +3332,8 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        erRelationA.name = "Relation" + countNumberOfSymbolKind(symbolKind.erRelation);
+        var newValue = checkDuplicate("Relation", symbolKind.erRelation);
+        erRelationA.name = "Relation" + newValue;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3239,6 +3345,17 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+        // clicking on a lock removes it
+        if (currentMouseCoordinateX == startMouseCoordinateX && currentMouseCoordinateY == startMouseCoordinateY) {
+            for (var i = 0; i < diagram.length; i++) {
+                if (diagram[i].isLocked){
+                    setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
+                    if (diagram[i].isLockHovered) {
+                        diagram[i].isLocked = false;
+                    }
+                }
+            }
+        }
     }
     else if(uimode != "Moved" && !ctrlIsClicked && md != mouseState.boxSelectOrCreateMode) {
         //Unselects every object.
@@ -3301,13 +3418,13 @@ function mouseupevt(ev) {
 }
 
 function countNumberOfSymbolKind(kind) {
-    let numberOfSymbolKind = 0;
-    for(let i = 0; i < diagram.length; i++) {
-        if(diagram[i].symbolkind == kind) {
-            numberOfSymbolKind++;
-        }
-    }
-    return numberOfSymbolKind;
+  var numberOfSymbolKind = 0;
+  for(let i = 0; i < diagram.length; i++) {
+      if(diagram[i].symbolkind == kind) {
+          numberOfSymbolKind++;
+      }
+  }
+  return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
@@ -3418,7 +3535,7 @@ function showMenu() {
 //----------------------------------------------------------------------
 
 function openAppearanceDialogMenu() {
-    if (diagram[lastSelectedObject].locked) {
+    if (diagram[lastSelectedObject].isLocked) {
         return;
     }
     $(".loginBox").draggable();
@@ -3778,4 +3895,16 @@ function changeLineDirection() {
 //Close the errorMessageDialog for Composite
 function closeErrorMessageDialog() {
     $("#errorMessageDialog").hide();
+}
+
+//Checks if there are any duplicates of entities with the same name.
+function checkDuplicate(name, kind) {
+    var numberOfSymbolKind = 0;
+    for(let i = 0; i < diagram.length; i++) {
+        //Checks for duplicates with the same number and adds +1 to it.
+        if (diagram[i].name == name + countNumberOfSymbolKind(kind)) {
+            numberOfSymbolKind = 1;
+        }
+    }
+    return countNumberOfSymbolKind(kind) + numberOfSymbolKind;
 }
