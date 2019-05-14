@@ -764,6 +764,10 @@
                         }
                     }
                 }
+				
+				if (isset($_POST["contribution"])) {
+					 echo "Contribution!!";
+				}
 
                 /************* Copy test code files to the right place *****************/
                 if(@!mkdir("{$putFileHere}/courses", 0770, true)){
