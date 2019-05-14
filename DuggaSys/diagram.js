@@ -3274,7 +3274,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        let newValue = checkDuplicate("New", symbolKind.uml);
+        var newValue = checkDuplicate("New", symbolKind.uml);
         classB.name = "New" + newValue;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
@@ -3289,7 +3289,7 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        let newValue = checkDuplicate("Attr", symbolKind.erAttribute);
+        var newValue = checkDuplicate("Attr", symbolKind.erAttribute);
         erAttributeA.name = "Attr" + newValue;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
@@ -3303,7 +3303,7 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        let newValue = checkDuplicate("Entity", symbolKind.erEntity);
+        var newValue = checkDuplicate("Entity", symbolKind.erEntity);
         erEnityA.name = "Entity" + newValue;;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
@@ -3344,7 +3344,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        let newValue = checkDuplicate("Relation", symbolKind.erRelation);
+        var newValue = checkDuplicate("Relation", symbolKind.erRelation);
         erRelationA.name = "Relation" + newValue;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
@@ -3364,7 +3364,7 @@ function mouseupevt(ev) {
                     setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
                     if (diagram[i].isLockHovered) {
                         diagram[i].isLocked = false;
-                    }    
+                    }
                 }
             }
         }
