@@ -257,6 +257,10 @@ function returned(data)
 			}
 		}
 	}
+
+	//hides maximize button if not supported
+	hideMaximizeButton();
+
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
 
@@ -265,8 +269,6 @@ function returned(data)
 	titles.forEach(title => {
 		title.addEventListener('keypress', preventLinebreak);
 	})
-
-	hideMaximizeButton();
 }
 
 function returnedTitle(data)
