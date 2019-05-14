@@ -1061,8 +1061,10 @@ input {
 }
 
 .loginBox .inputwrapper input[type="checkbox"] {
-  /*margin-right: 200px;*/
+  margin-right: 171px;
+  float: right;
   height: 24px;
+  width: 24px;
 }
 
 .loginBox select {
@@ -2471,6 +2473,19 @@ span.arrow {
   display: inherit;
 }
 
+#ladexportContainer {
+  display: flex;
+}
+
+#laddate {
+  border: 1px solid var(--color-border);
+}
+
+.mobileSearch {
+  display: none;
+}
+
+
 /* End DuggaSys resulted*/
 
 /**************************/
@@ -3156,13 +3171,12 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-#searchinput, #duggaSearch {
-    border: 1px solid var(--color-border-2);
-    padding: 0 0 0 2px;
-    height: 20px;
-  }
+#searchinput, #duggaSearch, #searchinputMobile {
+  padding: 0 0 0 2px;
+  height: 20px;
+}
 
-#searchBar,#searchbutton {
+#searchBar, #searchbutton, #searchbuttonMobile {
   position: relative;
   width: 26px;
   height: 25px;
@@ -3189,6 +3203,10 @@ rect[class*="activitymarker"]:hover {
 #lookingGlassSVG {
   top: 3px;
   left: 3px;
+}
+
+#searchBarMobile {
+  display: none;
 }
 
 /* styling for fileed switching table button*/
@@ -3708,12 +3726,6 @@ only screen and (max-device-width: 860px) {
     display: block;
     height: 13px;
   }
-  #searchBar {
-    margin-left: 15px;
-  }
-  #searchinput{
-    width:170px;
-  }
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
@@ -3797,6 +3809,11 @@ only screen and (max-device-width: 670px) {
   #statisticsList {
     display: none;
   }
+
+  #ladexportContainer {
+    display: block;
+  }
+
 }
 
 @media only screen and (max-width: 530px),
@@ -3829,6 +3846,61 @@ only screen and (max-device-width: 530px) {
   #statisticsList {
     display: none;
   }
+
+  /* Mobile view resulted filter / search */
+  #searchBarMobile, #tooltip-mobile {
+    display: block;
+  }
+
+  #searchBar, .tooltip-searchbar {
+    display: none;
+  }
+
+  #searchBarMobile, #searchbuttonMobile {
+    width: 24px;
+    height: 22px;
+    margin-top: 10px;
+  }
+
+  #searchBarMobile {
+    padding-left: 5px;
+    display: inline-flex;
+    height: 22px;
+    border-radius: 5px;
+    float: left;
+  }
+
+  #searchinputMobile {
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    font-size: 14px;
+  } 
+
+  #searchbuttonMobile {
+    margin: 0;
+  }
+
+  #tooltip-mobile {
+    border: 1px solid var(--color-border);
+    font-size: 17px;
+    padding: 0px 5px;
+    border-right-width: 0px;
+    width: 100px;
+  }
+
+  .switchContent {
+    padding: 3px;
+  }
+
+  .tooltip-searchbar-box {
+    transform: translate(-10%, 30%);
+    box-shadow: 0 0px 17px 0 rgba(0,0,0,0.5);
+  }
+
+  .tooltip-searchbar-box:before {
+    margin: 0;
+  }
+  /* Mobile resulted end */
 }
 
 @media only screen and (max-width: 480px),
@@ -5033,9 +5105,21 @@ textarea#filecont{
 }
 
 .resultedbuttons{
-  margin: 7px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 20px 2px 4px 2px;
   padding-left: 10px;
   padding-right: 10px;
   background-color: #614875;
   color: #ffffff;
+  width: 110px;
+  height: 30px;
+  border: 0px;
+  font-size: 14px;
+  transition: 0.1s background-color;
+  border-radius: 4px;
 }
+
+.resultedbuttons:hover{
+  filter: brightness(1.2); 
+}
+
