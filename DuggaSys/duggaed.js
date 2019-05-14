@@ -200,9 +200,9 @@ function newVariant() {
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
 	document.getElementById('variantparameterText').value = '';
-	document.getElementById('variantparameterText').placeholder = 'Undefied JSON parameter';
+	document.getElementById('variantparameterText').placeholder = 'Undefined JSON parameter';
 	document.getElementById('variantanswerText').value = '';
-	document.getElementById('variantanswerText').placeholder = 'Undefied JSON answer';
+	document.getElementById('variantanswerText').placeholder = 'Undefined JSON answer';
 	if (document.querySelector('#submissionType0')) {
 		document.querySelector('#submissionType0').value = 'pdf';
 		document.querySelector('#fieldname0').value = '';
