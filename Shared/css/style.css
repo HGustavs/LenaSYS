@@ -18,7 +18,8 @@
   --color-primary-2: #775886;
   --color-primary-hover: #7b5a96;
   --color-primary-light: #927b9e;
-  --color-accent: #fecc56;
+  --color-accent: rgb(254, 204, 86);
+  --color-accent-transparent: rgb(254, 204, 86, 0.5);
   --color-accent-hover: #ffd369;
   --color-background: #fff;
   --color-background-2: #ccc;
@@ -5140,4 +5141,28 @@ textarea#filecont{
 
 .copybutton img {
   height: 32px !important;
+}
+
+.copy-notification {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--color-accent-transparent);
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: none;
+  font-size: 24px;
+  user-select: none;
+}
+
+.copy-notification img {
+  margin-left: auto;
+  margin-right: auto;
+  width: 30% !important;
 }
