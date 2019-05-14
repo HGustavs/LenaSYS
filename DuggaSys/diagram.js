@@ -3329,12 +3329,6 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
-            //resets the mode so that next click can move or select an object instead of drawing another line
-            //only happens when a line has been created between 2 objects
-            if ($("#linebutton").hasClass("pressed")){
-                $("#linebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
-            }
-            uimode = "normal";
 
             createCardinality();
             updateGraphics();
@@ -3393,12 +3387,6 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
-            //resets the mode so that next click can move or select an object instead of drawing another line
-            //only happens when a line has been created between 2 objects
-            if ($("#linebutton").hasClass("pressed")){
-                $("#linebutton.buttonsStyle").removeClass("pressed").addClass("unpressed");
-            }
-            uimode = "normal";
 
             createCardinality();
             updateGraphics();
