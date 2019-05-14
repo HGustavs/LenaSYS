@@ -423,7 +423,8 @@ function keyDownHandler(e) {
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line) {
+            if(cloneTempArray[i].symbolkind != symbolKind.line 
+                && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
             }
@@ -669,21 +670,26 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 // copySymbol: Clone an object
 //----------------------------------------------------------------------
-
 function copySymbol(symbol) {
-    var clone = Object.assign(new Symbol(), symbol);
-    var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    var clone = new Symbol(symbol.symbolkind);
+
+    var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
     topLeftClone.x += 10;
     topLeftClone.y += 10;
-    var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+
+    var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
     bottomRightClone.x += 10;
     bottomRightClone.y += 10;
-    var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+
+    var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
     centerPointClone.y += 10;
-    var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
-    middleDividerClone.x += 10;
-    middleDividerClone.y += 10;
+
+    if (symbol.symbolkind == symbolKind.uml) {
+        var middleDividerClone = jQuery.extend(true, {}, points[symbol.middleDivider]);
+        middleDividerClone.x += 10;
+        middleDividerClone.y += 10;
+    }
 
     if(symbol.symbolkind == symbolKind.uml) {
         clone.name = "New" + diagram.length;
@@ -693,25 +699,26 @@ function copySymbol(symbol) {
         clone.name = "Entity" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "Line" + diagram.length;
-    }else{
-        clone.name = "Relation" + diagram.length;
+    } else{
+        clone.name = "RelationCopy" + diagram.length;
     }
+
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
+
     if(clone.symbolkind != symbolKind.uml) {
         clone.centerPoint = points.push(centerPointClone) - 1;
-    }
-    else {
+    }else {
         clone.middleDivider = points.push(middleDividerClone) - 1;
         clone.centerPoint = clone.middleDivider;
     }
+
     clone.targeted = true;
     symbol.targeted = false;
 
     diagram.push(clone);
 
     return diagram.length;
-
 }
 
 //--------------------------------------------------------------------
