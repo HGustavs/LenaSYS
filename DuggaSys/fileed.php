@@ -64,7 +64,7 @@ pdoConnect();
 
     <!-- Add File Dialog START -->
     <div id='addFile' class='loginBoxContainer' style='display:none;'>
-        <div class='loginBox' style='width:464px;'>
+        <div class='loginBox' style='width:464px; overflow-y: visible'>
             <div class='loginBoxheader' style='cursor:default;'>
                 <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
                 <h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
@@ -80,6 +80,10 @@ pdoConnect();
                     <div class='inputwrapper filePopUp'>
                         <span>Upload File:</span>
                         <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple"/>
+                        <div class="fileUploadInfo">
+                            <h1>Allowed Files</h1>
+                            <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
+                        </div>
                     </div>
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>

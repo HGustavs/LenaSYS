@@ -1715,6 +1715,47 @@ input.hide-moments-button {
   float: left;
 }
 
+.filePopUp {
+  position: relative;
+}
+.fileUploadInfo {
+  display: none;
+  width: 100px;
+  position: absolute;
+  background: white;
+  padding: 10px 10px 0;
+  bottom: 120%;
+  transform: translateX(55%);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.fileUploadInfo:after {
+  content: "";
+  display: block;
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid white;
+  position: relative;
+  bottom: -10px;
+  margin: 0 auto;
+}
+
+.fileUploadInfo h1 {
+  font-size: 14px;
+  margin: 0;
+}
+.fileUploadInfo p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 2;
+}
+
+#uploadedfile:hover + .fileUploadInfo{
+  display: block;
+}
+
 input.fileed-button {
   background-color: var(--color-primary);
   margin: 0 0 4px 8px;
