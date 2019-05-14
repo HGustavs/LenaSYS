@@ -22,6 +22,16 @@ Data is saved to the timesheet table in the database, and to DuggaSys/submission
 function setup()
 {
 	inParams = parseGet();
+	window.addEventListener('resize', () => {
+		var windowWidth = $(window).innerWidth();
+		console.log(windowWidth)
+		if(windowWidth > 800){
+			createFileUploadArea(duggaParams["submissions"]);		
+		} 
+		if(windowWidth <= 800){
+			createSmallerViewportForm(duggaParams["submissions"]);		
+		}
+	})
 	AJAXService("GETPARAM", { }, "PDUGGA");
 }
 
@@ -125,10 +135,10 @@ function returnedDugga(data)
 		var windowWidth = $(window).innerWidth();
 		var duggaFiles = data["files"][inParams["moment"]];
 		if($("#submitButtonTable").length != 0) {
-			if(windowWidth > 1120){
+			if(windowWidth > 800){
 				createFileUploadArea(duggaParams["submissions"]);		
 			} 
-			if(windowWidth <= 1120){
+			if(windowWidth <= 800){
 				createSmallerViewportForm(duggaParams["submissions"]);		
 			}
 			for (var k=0; k < duggaParams["submissions"].length; k++){
@@ -227,7 +237,7 @@ function createFileUploadArea(params){
 	form += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 	form +="</select></td>";
 	form +="<td><input id='tsRef_0' type='number' required name='tsRef_0' style='width: 55px' /></td>";
-	form +="<td><input id='tsComment_0' type='text' required name='tsComment_0' style='width: 500px' /></td>";
+	form +="<td class='tsCommentColumn'><input id='tsComment_0' type='text' required name='tsComment_0' style='width: 90%' /></td>";
 	form +="</tr></tbody>";
 	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 	form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";

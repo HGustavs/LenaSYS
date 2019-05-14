@@ -5098,6 +5098,10 @@ textarea#filecont{
 .tsTable tfoot td {
   padding: 0;
 }
+.tsCommentColumn {
+  min-width: 200px;
+  width: 500px;
+}
 .tsTableDeleteCell {
   border-radius: 0px 5px 5x 0px;
   -moz-border-radius: 0px 5px 5px 0px;
