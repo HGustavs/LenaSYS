@@ -2762,7 +2762,7 @@ function mousemoveevt(ev, t) {
                     //When CreateLine-button is selected the cursor is "pointer".
                     canvas.style.cursor = "pointer";
                     //If objects are hovered while button is selected, the cursor remains the same (pointer).
-                } else if(hoveredObject && !hoveredObject.locked) {
+                } else if(hoveredObject && !hoveredObject.isLocked) {
                     if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
                         canvas.style.cursor = "pointer";
                     } else {
@@ -3357,7 +3357,7 @@ function mouseupevt(ev) {
                     setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
                     if (diagram[i].isLockHovered) {
                         diagram[i].isLocked = false;
-                    }    
+                    }
                 }
             }
         }
