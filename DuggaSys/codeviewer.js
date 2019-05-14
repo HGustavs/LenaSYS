@@ -72,7 +72,7 @@ function returned(data)
 	retData=data;
 
 	if(retData['writeaccess'] == "w"){
-		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid="+courseid+"&coursevers="+cvers+"');");
+		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 
@@ -181,7 +181,6 @@ function returned(data)
 			// set font size
 			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
 		}else if(boxtype === "DOCUMENT"){
-
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
 			var desc = boxcontent;
@@ -209,10 +208,6 @@ function returned(data)
 			$("#"+contentid).html(desc);
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
-
-				// set font size
-				$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
-				
 			// Make room for the menu by setting padding-top equals to height of menubox
 			if($("#"+contentid+"menu").height() == null){
 				boxmenuheight = 0;
@@ -267,10 +262,15 @@ function returned(data)
 	}
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
+
+	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
+
+	titles.forEach(title => {
+		title.addEventListener('keypress', preventLinebreak);
+	})
 }
 
-function returnedTitle(data)
-{
+function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
 	retData['box'][retData['box'].length-1][4] = data;
 	$("#boxtitle2").text(data);
@@ -640,6 +640,19 @@ function updateContent()
 	}
 }
 
+/*-----------------------------------------------------------------------
+  -  preventLinebreak: Prevents line breaks in contenteditable heading  -     
+  -----------------------------------------------------------------------*/
+function preventLinebreak(e) {
+	if (e.key === 'Enter') {
+		e.preventDefault();
+		var titles = [...document.querySelectorAll('[contenteditable="true"]')];
+		titles.forEach(title => {
+			title.blur();
+		});
+		window.getSelection().removeAllRanges();
+	}
+}
 //----------------------------------------------------------------------------------
 // addTemplatebox: Adds a new template box to div2
 //				   Is called by returned(data) in codeviewer.js
@@ -977,8 +990,7 @@ function dehighlightKeyword(kw)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------
 
-function token (kind,val,fromchar,tochar,row)
-{
+function token (kind,val,fromchar,tochar,row) {
 	this.kind = kind;
 	this.val = val;
 	this.from = fromchar;
@@ -1648,8 +1660,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function createCodeborder(lineno,improws)
-{
+function createCodeborder(lineno,improws){
 	var str="<div class='codeborder'>";
 
 	for(var i=1; i<=lineno; i++){
@@ -2171,25 +2182,8 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}
-  else if (templateId == 10) {
-    getLocalStorageProperties(templateId, boxValArray);
 
-    $(boxValArray['box1']['id']).resizable({
-      containment: parent,
-      handles: "e",
-      start: function(event, ui) {
-        $('iframe').css('pointer-events','none');
-      },
-      resize: function(e, ui){
-        alignBoxesWidth(boxValArray, 1);
-      },
-      stop: function(e, ui) {
-        setLocalStorageProperties(templateId, boxValArray);
-        $('iframe').css('pointer-events','auto');
-      }
-    });
-  }
+	}
 };
 
 //----------------------------------------------------------------------------------
@@ -2319,16 +2313,21 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 // WIDTH MEASURMENT FOR TEMPLATE 6
 //---------------------------------
 
-function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird)
-{
+function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
+
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+
+
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
 	var basePer = 100 - remainWidthPer;
+
 
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+
+
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
@@ -2344,10 +2343,10 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 // WIDTH MEASURMENT FOR TEMPLATE 7
 //-----------------------------------
 
+function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
 
-function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird)
-{
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
 	var basePer = 100 - remainWidthPer;
 
@@ -2356,11 +2355,13 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
+
 	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 }
 
@@ -2368,8 +2369,7 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 // HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
 //---------------------------------------
 
-function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
-{
+function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
 
 	//Get initial values.
 	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
@@ -2380,8 +2380,10 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	var atry2 = (atry/boxValArray['parent']['height'])*100;
 
 	if (remainHeightPer <= 10) {
+
 			atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 			atry2 = (atry/boxValArray['parent']['height'])*100;
+
 			remainHeightPer = 10;
 			$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 			$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
@@ -2418,14 +2420,14 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 		$("#box4wrapper").height(atry2 + "%");
 		$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
 	}
+
 }
 
 //----------------------------------
 // WIDTH MEASURMENT FOR TEMPLATE 9
 //----------------------------------
 
-function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive)
-{
+function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive){
 
 	//Width for the four smaller boxes.
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxOne]['id']).width();
@@ -2439,6 +2441,7 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	$(boxValArray['box' + boxTwo]['id']).css("left", " ");
 	$(boxValArray['box' + boxThree]['id']).css("left", " ");
 	$(boxValArray['box' + boxFour]['id']).css("left", " ");
+
 	$(boxValArray['box' + boxOne]['id']).css("top", " ");
 
 	//Sets width for all boxes.
@@ -2490,12 +2493,16 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 
 	//Set height and top on the boxes
 	$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
 	$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
 	$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
 	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
 	$(boxValArray['box' + boxFour]['id']).css("height", (100 - (remainHeightPer + boxOneHeightPer)) + "%");
 	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer+remainHeightPer) + "%");
+
 
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
@@ -2508,8 +2515,7 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 // HEIGHT MEASURMENT FOR TEMPLATE 9
 //-----------------------------------
 
-function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour)
-{
+function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour){
 
 	//Box three height. It is the box that is currently being resized.
 	var boxThreeHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
@@ -2571,6 +2577,7 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 
 		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
+
 	}
 
 	//Update array
@@ -2603,6 +2610,7 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	var boxThreeHeightPer = boxThreeHeight/(boxValArray['parent']['height']) * 100;
 
 	if(boxFourHeightPer <= 10){
+
 		boxFourHeightPer = 10;
 
 		//Set height and top on the boxes
@@ -2693,8 +2701,7 @@ function setLocalStorageProperties(templateId, boxValArray)
 //  loading gif until page has loaded fully
 //----------------------------------------------------------------------------------
 
-document.onreadystatechange = function ()
-{
+document.onreadystatechange = function () {
   var state = document.readyState
   if (state == 'interactive') {
        document.getElementById('content').style.visibility="hidden";
@@ -2761,9 +2768,6 @@ function erasePercentGap(templateId, boxValArray)
 		alignTemplate9Height(boxValArray, 2, 3, 4, 5);
 		alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
 	}
-else if(templateId == 10){
-  alignBoxesWidth(boxValArray, 1, 2);
-}
 }
 
 //----------------------------------------------------------------------------------
@@ -2789,7 +2793,6 @@ function setResizableToPer(boxValArray)
 //                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function addHtmlLineBreak(inString)
-{
+function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>');
 }
