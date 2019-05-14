@@ -95,18 +95,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="labelToolContainer" style = "margin-bottom: 0px;">
-                                    <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
-                                    <div class="toolbar-drawer" id="drawerUndo">
-                                        <!-- Undo -->
-                                        <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
-                                            <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
-                                        </button>
-                                        <!-- Redo -->
-                                        <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
-                                            <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
-                                        </button>
-                                    </div>
+                            </div>
+                            <div class="labelToolContainer" style = "margin-bottom: 0px;">
+                                <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
+                                <div class="toolbar-drawer" id="drawerUndo">
+                                    <!-- Undo -->
+                                    <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo (Ctrl + Z)">
+                                        <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
+                                    </button>
+                                    <!-- Redo -->
+                                    <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo (Ctrl + Y)">
+                                        <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
+                                    </button>
                                 </div>
                             </div>
                         </div>
