@@ -781,7 +781,27 @@ function renderCell(col, celldata, cellid) {
 			str += "</div>";
 			return str;
 		}
-	}
+		// Render passed deadline duggas
+	} else if(filterList["passedDeadline"]){
+				// First column (Fname/Lname/SSN)
+			if (col == "FnameLname") {
+				str = "<div class='resultTableCell resultTableNormal'>";
+				str += "<div class='resultTableText'>";
+				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
+				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+				str += "</div>";
+				return str;	
+			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
+				// color based on pass,fail,pending,assigned,unassigned
+				str = "<div style='padding:10px;' class='resultTableCell ";
+				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+					str += "dugga-pending-late-submission";
+				} 
+				str += "'>";
+				str += "</div>";
+				return str;	
+		}
+	}	
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
