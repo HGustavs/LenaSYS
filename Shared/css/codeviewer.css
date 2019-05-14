@@ -790,7 +790,18 @@
     font-size: 26px !important;
 }
 
-/* style for the maximize button*/
+/* style for the maximize and reset button*/
 .maximizebtn {
     color: #DFF0D8;
+    width: 75px;
+    padding-right: 3px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.resetbtn {
+    color: #DFF0D8;
+    width: 50px;
+    text-align: center;
+    font-size: 13px;
 }

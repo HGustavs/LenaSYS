@@ -259,7 +259,7 @@ function returned(data)
 	}
 
 	//hides maximize button if not supported
-	hideMaximizeButton();
+	hideMaximizeAndResetButton();
 
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
@@ -679,18 +679,21 @@ function createboxmenu(contentid, boxid, type)
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
 				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
+				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p>Reset</p></div>";
 				str+="</tr></table>";
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
 				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
+				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
 				str+='</tr></table>';
 			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
 				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
+				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
 				str+="</tr></table>";
 			}else{
 				var str = "<table cellspacing='2'><tr>";
@@ -2111,11 +2114,17 @@ function maximizeBoxes(boxid)
 }
 
 //hide maximizeButton
-function hideMaximizeButton(){
+function hideMaximizeAndResetButton(){
 	var templateid = retData['templateid'];
 	if(templateid > 8){
 			$('.maximizebtn').hide();
+			$('.resetbtn').hide();
 	}
+}
+
+//reset boxes
+function resetBoxes(){
+	resizeBoxes("#div2", retData["templateid"]);
 }
 
 //-----------------------------------------------------------------------------
