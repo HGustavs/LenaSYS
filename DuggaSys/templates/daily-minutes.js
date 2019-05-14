@@ -24,10 +24,10 @@ function setup()
 	inParams = parseGet();
 	window.addEventListener('resize', () => {
 		var windowWidth = $(window).innerWidth();
-		if(windowWidth > 800){
+		if(windowWidth > 850){
 			createFileUploadArea(duggaParams["submissions"]);		
 		} 
-		if(windowWidth <= 800){
+		if(windowWidth <= 850){
 			createSmallerViewportForm(duggaParams["submissions"]);		
 		}
 	})
@@ -64,7 +64,7 @@ function newRow() {
 		inputValue = document.getElementById("tsRef_"+idx).value;
 		str += "<td><input id='tsRef_"+idx+"' required type='number' name='tsRef_"+idx+"' style='width: 55px' value='"+inputValue+"' /></td>";
 		inputValue = document.getElementById("tsComment_"+idx).value;
-		str += "<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' value='"+inputValue+"' /></td>";
+		str += "<td><input id='tsComment_"+idx+"' class='tsCommentColumn' required type='text' name='tsComment_"+idx+"' style='width: 90%' value='"+inputValue+"' /></td>";
 		if (idx > 0) {
 			str += "<td class='tsTableDeleteCell' onclick='deleteRow("+idx+")'><img src='../Shared/icons/Trashcan.svg'></td>";
 		}
@@ -75,7 +75,7 @@ function newRow() {
 	str += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 	str += "</select></td>";
 	str += "<td><input id='tsRef_"+lastRowIdx+"' required type='number' name='tsRef_"+lastRowIdx+"' style='width: 55px' /></td>";
-	str += "<td><input id='tsComment_"+lastRowIdx+"' required type='text' name='tsComment_"+lastRowIdx+"' style='width: 500px' /></td>";
+	str += "<td><input id='tsComment_"+lastRowIdx+"' class='tsCommentColumn' required type='text' name='tsComment_"+lastRowIdx+"' style='width: 90%' /></td>";
 	str += "<td class='tsTableDeleteCell' onclick='deleteRow("+lastRowIdx+")'><img src='../Shared/icons/Trashcan.svg'></td>";
 
 	tsTableBody.innerHTML = str;
@@ -134,10 +134,10 @@ function returnedDugga(data)
 		var windowWidth = $(window).innerWidth();
 		var duggaFiles = data["files"][inParams["moment"]];
 		if($("#submitButtonTable").length != 0) {
-			if(windowWidth > 800){
+			if(windowWidth > 850){
 				createFileUploadArea(duggaParams["submissions"]);		
 			} 
-			if(windowWidth <= 800){
+			if(windowWidth <= 850){
 				createSmallerViewportForm(duggaParams["submissions"]);		
 			}
 			for (var k=0; k < duggaParams["submissions"].length; k++){
