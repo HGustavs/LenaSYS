@@ -1597,6 +1597,11 @@ button.option {
   padding: 6px 12px;
 }
 
+#MOTDbutton {
+  position: absolute;
+ top: -50px;
+}
+
 input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -3874,7 +3879,7 @@ only screen and (max-device-width: 530px) {
     border: 1px solid var(--color-border);
     border-radius: 0;
     font-size: 14px;
-  } 
+  }
 
   #searchbuttonMobile {
     margin: 0;
@@ -5120,6 +5125,5 @@ textarea#filecont{
 }
 
 .resultedbuttons:hover{
-  filter: brightness(1.2); 
+  filter: brightness(1.2);
 }
-
