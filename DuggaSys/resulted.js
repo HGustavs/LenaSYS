@@ -798,9 +798,7 @@ function renderCell(col, celldata, cellid) {
 					str += "dugga-pending-late-submission";
 				} 
 				str += "'>";
-				// Creation of grading buttons
-				console.log(celldata.ishere);
-				
+				// Creation of grading buttons		
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "<div class='gradeContainer resultTableText'>";
 					if (celldata.grade === null) {
