@@ -3271,9 +3271,6 @@ rect[class*="activitymarker"]:hover {
 }
 
 /*
-.alertmsg#servermsgcontainer {
-  top: 50px;
-}
 
 .alertmsg#cookiemsg {
   bottom: 0;
