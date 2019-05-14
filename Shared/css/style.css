@@ -5133,4 +5133,11 @@ textarea#filecont{
   border: 2px solid #614875;
 }
 
+.copybutton {
+  position: absolute;
+  right: 10px;
+}
 
+.copybutton img {
+  height: 32px !important;
+}

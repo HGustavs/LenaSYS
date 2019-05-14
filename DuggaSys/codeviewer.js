@@ -694,6 +694,9 @@ function createboxmenu(contentid, boxid, type)
 		}else{
 			var str = '<table cellspacing="2"><tr>';
 			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][4]+'</span></td>';
+			if(type=="CODE"){
+				str+="<td class='butto2 copybutton' id='copyclipboard' title='Copy to clipboard' onclick='copyToClipboard("+boxid+");' ><img src='../Shared/icons/Copy.svg' /></td>";
+			}
 			str+='</tr></table>';
 			boxmenu.innerHTML=str;
 		}
@@ -2781,4 +2784,8 @@ function setResizableToPer(boxValArray)
 function addHtmlLineBreak(inString)
 {
 	return inString.replace(/\n/g, '<br>');
+}
+
+function copyToClipboard(boxid) {
+	console.log("clicked" + boxid);
 }
