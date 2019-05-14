@@ -1441,7 +1441,7 @@ input {
   cursor: default ;
 }
 
-#a4-holes-item.drop-down-item-disabled {
+.drop-down-item-disabled {
   opacity: 0.5;
   cursor: default ;
 }
@@ -1484,19 +1484,39 @@ input {
   top: 45px;
 }
 
+#hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 35px;
+}
+
 #hotkey-front {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
   top: 165px;
 }
+
 #hotkey-back {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
   top: 195px;
+}
+
+#hotkey-developerMode{
+    top: 10px;
+}
+
+#hotkey-ER {
+  top: 85px;
+}
+
+#hotkey-UML {
+  top: 120px;
+}
+
+.drop-down-item #hotkey-delete {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 6px;
+  top: 272px;
 }
 
 /* --------------================################================-------------- *
