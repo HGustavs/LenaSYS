@@ -210,7 +210,7 @@ function newVariant() {
 		document.querySelector('#instruction0').value = '';
 		document.querySelector('#instruction0').placeholder = 'Upload instruction';
 	}
-	
+
 }
 
 function createVariant() {
@@ -253,7 +253,7 @@ function selectVariant(vid, el) {
 			var it = Object.keys(obj).length;
 			for(var i = 0; i<it; i++){
 				var result = Object.keys(obj)[i];
-	
+
 				if(result == "type"){
 					document.getElementById('type').value = obj[result];
 				}
@@ -264,13 +264,13 @@ function selectVariant(vid, el) {
 					document.getElementById('extraparam').value = obj[result];
 				}
 			}
-      
+
       var submissionTypes = obj.submissions;
       if (submissionTypes) {
 			  document.getElementById('submissionType0').value = submissionTypes[0].type;
 			  document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
 			  document.getElementById('instruction0').value = submissionTypes[0].instruction;
-	
+
 			  for (var i = 1; i < submissionTypes.length; i++) {
 				  addVariantSubmissionRow();
 				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
@@ -285,7 +285,7 @@ function selectVariant(vid, el) {
 				document.getElementById('filelink').value = "";
 				document.getElementById('extraparam').value = "";
 		}
-  
+
   var disabled = (target_variant['disabled']);
   $("#disabled").val(disabled);
 	if (disabled == 0) {
@@ -406,6 +406,59 @@ function createJSONString(formData) {
 		"extraparam":$('#extraparam').val(),
 		"submissions":submission_types
 	});
+}
+
+// Does the reverse of what createJSONString does.
+function createJSONFormData(){
+  var jsonData = $("#variantparameterText").val();
+
+  try {
+    var obj = JSON.parse(jsonData);
+
+    // Remove extra submission rows
+    if (submissionRow > 0) {
+      for (var i = submissionRow-1; i > 0; i--) {
+        // The function needs an element of the row to be removed, so this is what we have to do
+        var rows = [...document.getElementById('submissions').childNodes];
+        var elements = [...rows[i].childNodes];
+        var element = elements[0];
+        removeVariantSubmissionRow(element);
+      }
+    }
+
+    var it = Object.keys(obj).length;
+    for(var i = 0; i<it; i++){
+      var result = Object.keys(obj)[i];
+
+      if(result == "type"){
+        document.getElementById('type').value = obj[result];
+      }
+      else if(result == "filelink"){
+        document.getElementById('filelink').value = obj[result];
+      }
+      else if(result == "extraparam"){
+        document.getElementById('extraparam').value = obj[result];
+      }
+    }
+
+    var submissionTypes = obj.submissions;
+    if (submissionTypes) {
+      document.getElementById('submissionType0').value = submissionTypes[0].type;
+      document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
+      document.getElementById('instruction0').value = submissionTypes[0].instruction;
+
+      for (var i = 1; i < submissionTypes.length; i++) {
+        addVariantSubmissionRow();
+        document.getElementById('submissionType'+i).value = submissionTypes[i].type;
+        document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
+        document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
+        document.getElementById('variantparameterText').value = jsonData;
+      }
+    }
+  } catch (e) {
+    console.log("unable to parse json.");
+    console.log(e);
+  }
 }
 
 /*

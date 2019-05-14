@@ -219,6 +219,14 @@ p {
   text-shadow: 1px 1px #000;
 }
 
+.err-extension {
+  margin-top: 10px;
+}
+
+.err-extension span {
+  font-weight: bold;
+}
+
 #content {
   background: #fff;
   min-height: calc(100vh - 80px);
@@ -1610,8 +1618,8 @@ div.submit-button {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: 6px;
-  margin-bottom: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   margin-left: 4px;
   font-size: 14px;
   transition: 1s background-color;
@@ -3157,8 +3165,23 @@ rect[class*="activitymarker"]:hover {
     bottom: 2px;
 }
 
-/* styling for the search bars in resulted, accessed, duggaed, filed */
+/* styling for dropdown and toggle all button in accessed */
+#toggleAllButton {
+  background-color: #614875;
+  color: white;
+  width: 100px;
+  cursor: pointer;
+}
 
+#toggleAllButton:hover {
+  background-color: #7b5a96;
+}
+
+#dropdownc {
+  cursor: default;
+}
+
+/* styling for the search bars in resulted, accessed, duggaed, filed */
 #searchBar, #testSearchContainer {
   padding-left: 20px;
 }
@@ -3862,7 +3885,7 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader div.hamburger {
     position: absolute;
-    top: 66px;
+    top: 64px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
@@ -5087,9 +5110,13 @@ textarea#filecont{
   display: block;
   width: 100%;
   padding-bottom: 10px;
+  padding-top: 8px;
   cursor: pointer;
   background: var(--color-primary);
   color: white;
+}
+.newRowButton:hover{
+  background: #7B5A96;
 }
 #tsSubmit {
   background: var(--color-primary);
@@ -5097,13 +5124,13 @@ textarea#filecont{
   margin-left: 50px;
   margin-bottom: 10px;
   cursor: pointer;
+  border: 2px solid #614875;
+  padding: 4px 8px 4px 8px;
 }
 #tsSubmit:hover {
-  background: #614875;
-  color: #fff;
+  background: #7B5A96;
+  color: white;
   border: 2px solid #614875;
 }
 
-.previewTable tr:nth-child(even){
-  background-color: #dad8db;
-}
+
