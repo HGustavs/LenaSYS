@@ -13,6 +13,14 @@ Testing Link:
 
 codeviewer.php?exampleid=1&courseid=1&cvers=45656
 
+How to use
+---------------------
+# Upload the files you wish to display in the file editor
+# Create a new codeviewer
+# Pick a template
+# Click the cogwheel and pick the file you wish to display in the 'File' select box
+# Click 'Save'
+
 -------------==============######## Documentation End ###########==============-------------
 */
 
