@@ -39,7 +39,7 @@ function setup() {
   var filt = "";
   filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
+  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinputMobile").value=document.getElementById("searchinput").value;'/>`;
   filt += `<button id='searchbutton' class='switchContent'`;
   filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
   filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
@@ -48,6 +48,7 @@ function setup() {
   filt += `<div class='tooltip-searchbar-box'>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
+
 
 	$("#sort").after(filt);
 
@@ -1268,7 +1269,7 @@ function mail() {
 $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
 	var ladExportWidth = document.getElementById("ladexportContainer").offsetWidth;
-	var scrolled = $(this).scrollLeft() + 10;
+	var scrolled = $(this).scrollLeft();
 	if((scrolled + ladExportWidth) < resultTableWidth){
 		$('#ladexportContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'

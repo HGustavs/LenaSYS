@@ -18,6 +18,7 @@ pdoConnect();
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<title>Result Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
@@ -49,7 +50,7 @@ pdoConnect();
 		<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="ladexportContainer" style="display:flex;">
+    <div id="ladexportContainer">
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Delkurs</label>
         <select id="ladselect"></select>
@@ -83,6 +84,23 @@ pdoConnect();
 					<option value="Filter-U">U</option>
 				</select>
 			</div>
+
+			<!-- Search bar for mobile versions --> 
+			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
+				<div id='tooltip-mobile' class="tooltip-searchbar">
+					<div class="tooltip-searchbar-box">
+								<b>Keywords:</b> markG, markU, date <br>
+								<b>Ex:</b> markG:färgdugga
+					</div>
+					<span>?</span>
+				</div>
+				<input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
+
+				<button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();' type='button'>
+					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
+				</button>
+			</div>
+
     </div>
     
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
