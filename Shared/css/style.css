@@ -1441,7 +1441,7 @@ input {
   cursor: default ;
 }
 
-#a4-holes-item.drop-down-item-disabled {
+.drop-down-item-disabled {
   opacity: 0.5;
   cursor: default ;
 }
@@ -1484,19 +1484,39 @@ input {
   top: 45px;
 }
 
+#hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 35px;
+}
+
 #hotkey-front {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
   top: 165px;
 }
+
 #hotkey-back {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
   top: 195px;
+}
+
+#hotkey-developerMode{
+    top: 10px;
+}
+
+#hotkey-ER {
+  top: 85px;
+}
+
+#hotkey-UML {
+  top: 120px;
+}
+
+.drop-down-item #hotkey-delete {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 6px;
+  top: 272px;
 }
 
 /* --------------================################================-------------- *
@@ -1734,8 +1754,8 @@ div.submit-button:disabled {
 }
 
 .toolbarButtonPressed {
-  display: inline; 
-  border-radius: 5px; 
+  display: inline;
+  border-radius: 5px;
   cursor: pointer
 }
 
@@ -1764,8 +1784,8 @@ div.submit-button:disabled {
   padding: 4px 8px;
   color: #fff;
   position: absolute;
-  left: 0;
-  top: 100%;
+  left: 70px;
+  top: 45px;
   white-space: nowrap;
   z-index: 10;
   border-radius: 5px;
@@ -3887,13 +3907,12 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
-  padding-right: 50px;
+  padding-right: 90px;
   padding-left: 10px;
   background-color: #fff;
   border-radius: 6px;
   border: 2px solid #d4d4d4;
   height: 34px;
-  width: 230px;
   position: absolute;
   right: 14px;
   bottom: 11px;
@@ -3904,7 +3923,6 @@ only screen and (max-device-width: 320px) {
 
 #selectDiv select {
   height: 34px;
-  padding-left: 50px;
   font-size: 14px;
   border: 0;
   -webkit-appearance: none;
@@ -3927,6 +3945,7 @@ only screen and (max-device-width: 320px) {
 
 .zoomButtonStyle {
   transition: 0.25s background-color;
+  font-family: hack, "Lucida Console", Monaco, monospace;
 }
 
 .zoomButtonStyle:hover {
@@ -3963,7 +3982,7 @@ only screen and (max-device-width: 320px) {
 
 #range {
   display: inline-block;
-  margin-right: 8px;
+  margin-left: 10px;
 }
 
 .tooltipIncrease button {
@@ -4005,7 +4024,7 @@ only screen and (max-device-width: 320px) {
 .zoomSlider {
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
-  width: 100%; /* Full-width */
+  width: 90%; /* Full-width */
   height: 5px; /* Specified height */
   background: #d3d3d3;  /* Grey background */
   outline: none; /* Remove outline */
