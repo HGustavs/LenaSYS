@@ -1820,43 +1820,9 @@ div.submit-button:disabled {
   height: 25px;
 }
 
-#attributebutton {
-  display: inline;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#entitybutton {
-  display: inline;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#relationbutton {
-  display: inline;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#linebutton {
-  margin: 5px 0;
-  border-radius: 4px;
-  display: inline;
-}
-
-#drawfreebutton {
-  display: inline;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#classbutton {
-  display: inline;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#drawtextbutton {
+#attributebutton, #entitybutton, #relationbutton,
+#linebutton, #drawfreebutton, #classbutton,
+#drawtextbutton, #umllinebutton {
   display: inline;
   border-radius: 4px;
   cursor: pointer;
@@ -1868,36 +1834,17 @@ div.submit-button:disabled {
   margin-top: 3px;
 }
 
-#umllinebutton {
-  display: inline;
-  margin: 5px 0;
-  border-radius: 1px;
-}
-
 #moveButton img {
   height: 30px;
   width: 30px;
   padding: 2px;
 }
 
-#undoButton {
+#undoButton, #redoButton {
   border: none;
 }
 
-#undoButton img {
-  filter: invert(100%);
-  text-align: center;
-  margin-left: -15px;
-  margin-right: -15px;
-  width: 15px;
-  height: 15px;
-}
-
-#redoButton {
-  border: none
-}
-
-#redoButton img {
+#undoButton img, #redoButton img {
   filter: invert(100%);
   text-align: center;
   margin-left: -15px;
