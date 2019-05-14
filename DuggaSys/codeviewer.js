@@ -265,8 +265,6 @@ function returned(data)
 	titles.forEach(title => {
 		title.addEventListener('keypress', preventLinebreak);
 	})
-
-	hideMaximizeButton();
 }
 
 function returnedTitle(data)
