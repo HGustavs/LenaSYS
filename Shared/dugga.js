@@ -324,7 +324,7 @@ function removeYearFromDate(date){
 }
 
 //----------------------------------------------------------------------------------
-// cookie that after 45 minutes will let the user know (through another function) 
+// cookie that after 45 minutes will let the user know (through another function)
 // that there is 15 minutes left of session.
 //----------------------------------------------------------------------------------
 
@@ -635,7 +635,7 @@ function AJAXService(opt,apara,kind)
 					para += array;
 			}else{
 					// Concat the generated regex result to a string again.
-//					apara[key] = s.join("");
+					// apara[key] = s.join("");
 					apara[key] = old;
 
 					// Informs the user that his input contained illegal characters that were removed after parsing.
@@ -938,7 +938,7 @@ function processLogin() {
 						} else {
 							setSecurityNotifaction("on");
 					}
-            
+
           setExpireCookie();
           setExpireCookieLogOut();
 
@@ -1163,7 +1163,7 @@ function sessionExpireLogOut() {
 				$(".endsessionmessagebox").css("display","block");
 				processLogout();
 				clearInterval(intervalId);
-			}	
+			}
 
 	}
 }
@@ -1278,7 +1278,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							tab+="<tr'>"
 
 
-							
+
 							if (!mobileMediaQuery.matches) {
 								tab+="<td>";
 								// Button for making / viewing feedback - note - only button for given feedback to students.
@@ -1307,7 +1307,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].content.substring(0,8)+"&#8230;</span>";
 								} else {
 									tab+=filez[i].content+"</span>";
-								}						
+								}
 							} else {
 								tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
 								if (mediumMediaQuery.matches) {
@@ -1316,7 +1316,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</span>";
 								} else {
 									tab+=filez[i].filename+"."+filez[i].extension+"</span>";
-								}								
+								}
 
 							}
 							tab+="</td><td>";
@@ -1326,7 +1326,7 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 							} else {
 								tab+=filez[i].updtime;+"</td>";
 							}
-							
+
 							tab+="<td>";
 							if (!mobileMediaQuery.matches) {
 								// Button for making / viewing feedback - note - only button for given feedback to students.
