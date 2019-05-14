@@ -13,6 +13,14 @@ Testing Link:
 
 codeviewer.php?exampleid=1&courseid=1&cvers=45656
 
+How to use
+---------------------
+# Upload the files you wish to display in the file editor
+# Create a new codeviewer
+# Pick a template
+# Click the cogwheel and pick the file you wish to display in the 'File' select box
+# Click 'Save'
+
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -200,6 +208,10 @@ function returned(data)
 			$("#"+contentid).html(desc);
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
+
+			// set font size
+			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
+
 			// Make room for the menu by setting padding-top equals to height of menubox
 			if($("#"+contentid+"menu").height() == null){
 				boxmenuheight = 0;
@@ -254,6 +266,12 @@ function returned(data)
 	}
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
+
+	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
+
+	titles.forEach(title => {
+		title.addEventListener('keypress', preventLinebreak);
+	})
 }
 
 function returnedTitle(data) {
@@ -338,7 +356,7 @@ function editImpWords(editType)
 
 //----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialogue box for editing a code example
-//                Is called at line 58 in navheader.php
+//
 //----------------------------------------------------------------------------------
 
 function displayEditExample(boxid)
@@ -435,7 +453,7 @@ function updateExample()
 		removedWords = [];
 	}
 
-	$("#editExample").css("display","none");
+	$("#editExampleContainer").css("display","none");
 }
 
 //----------------------------------------------------------------------------------
@@ -509,6 +527,9 @@ function changeDirectory(kind)
 		$('#wordlist').val('4');
 		$('#wordlist').prop('disabled', 'disabled');
 	}
+
+	// Fill the file selection dropdown with files
+	//---------------------------------------------------------------------
 
 	for(var i=0;i<dir.length;i++){
 		if(chosen==dir[i].filename){
@@ -623,6 +644,19 @@ function updateContent()
 	}
 }
 
+/*-----------------------------------------------------------------------
+  -  preventLinebreak: Prevents line breaks in contenteditable heading  -     
+  -----------------------------------------------------------------------*/
+function preventLinebreak(e) {
+	if (e.key === 'Enter') {
+		e.preventDefault();
+		var titles = [...document.querySelectorAll('[contenteditable="true"]')];
+		titles.forEach(title => {
+			title.blur();
+		});
+		window.getSelection().removeAllRanges();
+	}
+}
 //----------------------------------------------------------------------------------
 // addTemplatebox: Adds a new template box to div2
 //				   Is called by returned(data) in codeviewer.js

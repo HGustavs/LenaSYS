@@ -31,7 +31,7 @@ for (i; i < l; i++) {
 
 }
   }
-// Gives the buttons functionality 
+// Gives the buttons functionality
 function statSort(value) {
   if (value == "All") {
     document.getElementById("contribTsTable").style.display = "block";
@@ -219,7 +219,7 @@ function renderLineDiagram(data){
     var weeks=data.weeks;
     daycounts=data['count'];
     var firstweek = data.weeks[0].weekstart;
-   
+
 
     //Selectbox to choose week
     str='<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
@@ -438,7 +438,7 @@ function renderCircleDiagram(data, day)
   str+="<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
   if (day) {
     str+="value="+today+" ";
-  } 
+  }
   str+="onchange='changeDay(this.value)' />";
   str+="<button style='margin-left: 20px' onclick='showAllDays()'>Show all</button>";
   if (day) {
@@ -690,7 +690,8 @@ function createTimeSheetTable(data)
 
 	myTable.renderTable();
 }
-function renderCell(col,celldata,cellid) 
+
+function renderCell(col,celldata,cellid)
 {
   var str="UNK";
   obj = celldata;
@@ -704,7 +705,7 @@ function renderCell(col,celldata,cellid)
   }
   return str;
 }
-function renderSortOptions(col,status,colname) 
+function renderSortOptions(col,status,colname)
 {
 	str = "";
 	if (status == -1) {
@@ -732,11 +733,16 @@ function returnedSection(data)
     return;
   }
   retdata=data;
-  if(data['debug']!="NONE!") alert(data['debug']);
+  if(data['debug']!="NONE!") {
+    if(data['debug']!="TIMESHEET") {
+      alert(data['debug']);
+    }
+    console.log("No timesheet table was found in the database.")
+  }
 
   contribDataArr = [];
   var str="";
-  
+
   str += "<div class='contributionSort'>";
   str += "<input type='button' value='All' class='submit-button title='All' onclick='statSort(value)'></input>";
   str += "<input type='button' value='Basic' class='submit-button title='Basic' onclick='statSort(value)'></input>";
@@ -753,7 +759,7 @@ function returnedSection(data)
     }
 
     str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
-    
+
   	str+="<table  class='fumho group1'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th style='padding: 2px 10px;'>Kind</th>";
@@ -794,12 +800,12 @@ function returnedSection(data)
     str+="<tr>";
     str+="<td>GIT Commit</td>"
     str+="<td>"+data['commitrankno']+"</td>"
-    str+="<td style='background-color:"+intervaltocolor(41,data['commitrank'])+"'>"+data['commitrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['commitgrouprank'])+"'>"+data['commitgrouprank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['commitrank'])+"'>"+data['commitrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['commitgrouprank'])+"'>"+data['commitgrouprank']+"</td>";
     str+="</tr>";
     str+="</table>";
 
-    str+=createTimeSheetTable(data['timesheets']);
+    createTimeSheetTable(data['timesheets']);
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
     str+="<div class='group2' id='hourlyGraph'>";
