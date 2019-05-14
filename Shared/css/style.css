@@ -219,6 +219,14 @@ p {
   text-shadow: 1px 1px #000;
 }
 
+.err-extension {
+  margin-top: 10px;
+}
+
+.err-extension span {
+  font-weight: bold;
+}
+
 #content {
   background: #fff;
   min-height: calc(100vh - 80px);
@@ -5125,6 +5133,4 @@ textarea#filecont{
   border: 2px solid #614875;
 }
 
-.previewTable tr:nth-child(even){
-  background-color: #dad8db;
-}
+

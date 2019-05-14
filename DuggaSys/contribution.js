@@ -694,6 +694,7 @@ function createTimeSheetTable(data)
 
 	myTable.renderTable();
 }
+
 function renderCell(col,celldata,cellid)
 {
   var str="UNK";
@@ -803,13 +804,14 @@ function returnedSection(data)
     str+="<tr>";
     str+="<td>GIT Commit</td>"
     str+="<td>"+data['commitrankno']+"</td>"
-    str+="<td style='background-color:"+intervaltocolor(41,data['commitrank'])+"'>"+data['commitrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['commitgrouprank'])+"'>"+data['commitgrouprank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['commitrank'])+"'>"+data['commitrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['commitgrouprank'])+"'>"+data['commitgrouprank']+"</td>";
     str+="</tr>";
     str+="</table>";
 
     createGitHubcontributionTable(buildContributionData(data));
-    str+=createTimeSheetTable(data['timesheets']);
+    createTimeSheetTable(data['timesheets']);
+
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
     str+="<div class='group2' id='hourlyGraph'>";
