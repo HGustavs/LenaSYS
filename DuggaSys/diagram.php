@@ -39,7 +39,6 @@
             window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
     </script>
-
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
@@ -55,9 +54,9 @@
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-right: 0px; height: ; text-align: center;" onmousedown="">
                     <div class="application-header">
-                        </div>
-                        <div class='application-toolbar'>
-                          <div id="toolbar-switcher">
+                    </div>
+                    <div class='application-toolbar'>
+                        <div id="toolbar-switcher">
                             <div id="toolbarTypeText">Dev</div>
                           </div>
                           <div class="toolsContainer">
@@ -111,194 +110,209 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="menu-drop-down">
-                    <span class="drop-down-label">File</span>
-                    <div class="drop-down">
-                        <div class="drop-down-item">
-                            <span class="drop-down-option">Save</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option">Load</span>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" id="buttonid" onclick="openImportDialog();">Import</span>
-                        </div>
-
-                        <div class="drop-down-item export-drop-down-head">
-                            <span class="drop-down-option" id="exportid">Export...</span>
-                            <div class="export-drop-down">
-                                <div class="export-drop-down-item">
-                                    <a class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
+                    <div class="menu-drop-down">
+                        <span class="drop-down-label">File</span>
+                        <div class="drop-down">
+                            <div class="drop-down-item">
+                                <span class="drop-down-option">Save</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option">Load</span>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" id="buttonid" onclick="openImportDialog();">Import</span>
+                            </div>
+                            <div class="drop-down-item export-drop-down-head">
+                                <span class="drop-down-option" id="exportid">Export...</span>
+                                <div class="export-drop-down">
+                                    <div class="export-drop-down-item">
+                                        <a class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
+                                    </div>
+                                    <div class="export-drop-down-item">
+                                        <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
+                                    </div>
+                                    <div class="export-drop-down-item">
+                                        <a class="drop-down-option" id="picid">Export Picture</a>
+                                    </div>
                                 </div>
-                                <div class="export-drop-down-item">
-                                    <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-drop-down">
+                        <span class="drop-down-label">Edit</span>
+                        <div class="drop-down">
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
+                                <i id="hotkey-undo">Ctrl + Z</i>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
+                                <i id="hotkey-redo">Ctrl + Y</i>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
+                                <i id="hotkey-front">Shift + 1</i>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
+                                <i id="hotkey-back">Shift + 2</i>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
+                                <i id="hotkey-delete">Delete/Backspace</i>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-drop-down">
+                        <span class="drop-down-label">View</span>
+                        <div class="drop-down">
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
+                                <i id="hotkey-developerMode">Shift + D</i>
+                            </div>
+                            <div id="displayAllTools" class="drop-down-item">
+                                <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div id="er-item" class="drop-down-item">
+                                <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
+                                <i id="hotkey-ER">Shift + M</i>
+                            </div>
+                            <div id="uml-item" class="drop-down-item">
+                                <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
+                                <i id="hotkey-UML">Shift + M</i>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
+                            </div>
+                            <div id="a4-orientation-item" class="drop-down-item-disabled">
+                                <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                            </div>
+                            <div id="a4-holes-item" class="drop-down-item-disabled">
+                                <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
+                            </div>
+                            <div id="a4-holes-item-right" class="drop-down-item-disabled">
+                                <span class="drop-down-option" onclick='toggleVirtualA4HolesRight();'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-drop-down">
+                        <span class="drop-down-label">Align</span>
+                        <div class="drop-down">
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="toggleGrid(event)">Snap to grid</span>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="align(event, 'horizontalCenter');">Horizontal center</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="align(event, 'verticalCenter');">Vertical center</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-drop-down">
+                        <span class="drop-down-label">Distribute</span>
+                        <div class="drop-down">
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="distribute(event, 'horizontally');">Horizontal</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick="distribute(event, 'vertically');">Vertical</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-drop-down">
+                        <span class="drop-down-label">Help</span>
+                        <div class="drop-down">
+                            <div class="drop-down-text-non-clickable">
+                                <span class="drop-down-option">Move camera</span>
+                                <div id="hotkey-space">
+                                    <i>Blankspace</i>
                                 </div>
-                                <div class="export-drop-down-item">
-                                    <a class="drop-down-option" id="picid">Export Picture</a>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-text-non-clickable">
+                                <span class="drop-down-option">Select multiple objects</span>
+                                <div id="hotkey-ctrl">
+                                    <i>Ctrl + leftclick</i>
+                                </div>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-text-non-clickable">
+                                <span class="drop-down-option">Lock object proportions</span>
+                                <div id="hotkey-shift">
+                                    <i>Shift</i>
                                 </div>
                             </div>
                         </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
-                        </div>
                     </div>
                 </div>
-                <div class="menu-drop-down">
-                    <span class="drop-down-label">Edit</span>
-                    <div class="drop-down">
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
-                            <i id="hotkey-undo">Ctrl + Z</i>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
-                            <i id="hotkey-redo">Ctrl + Y</i>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
-                            <i id="hotkey-front">Shift + 1</i>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
-                            <i id="hotkey-back">Shift + 2</i>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
-                            <i id="hotkey-delete">Delete/Backspace</i>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-drop-down">
-                    <span class="drop-down-label">View</span>
-                    <div class="drop-down">
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
-                            <i id="hotkey-developerMode">Shift + D</i>
-                        </div>
-                        <div id="displayAllTools" class="drop-down-item">
-                            <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div id="er-item" class="drop-down-item">
-                            <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
-                            <i id="hotkey-ER">Shift + M</i>
-                        </div>
-                        <div id="uml-item" class="drop-down-item">
-                            <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
-                            <i id="hotkey-UML">Shift + M</i>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
-                        </div>
-                        <div id="a4-orientation-item" class="drop-down-item-disabled">
-                            <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
-                        </div>
-                        <div id="a4-holes-item" class="drop-down-item-disabled">
-                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
-                        </div>
-                        <div id="a4-holes-item-right" class="drop-down-item-disabled">
-                            <span class="drop-down-option" onclick='toggleVirtualA4HolesRight();'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-drop-down">
-                    <span class="drop-down-label">Align</span>
-                    <div class="drop-down">
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="toggleGrid(event)">Snap to grid</span>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
-                        </div>
-                        <div class="drop-down-divider">
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align(event, 'horizontalCenter');">Horizontal center</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="align(event, 'verticalCenter');">Vertical center</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-drop-down">
-                    <span class="drop-down-label">Distribute</span>
-                    <div class="drop-down">
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="distribute(event, 'horizontally');">Horizontal</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="distribute(event, 'vertically');">Vertical</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-drop-down">
-                    <span class="drop-down-label">Help</span>
-                    <div class="drop-down">
-                        <div class="drop-down-text-non-clickable">
-                            <span class="drop-down-option">Move camera</span>
-                            <div id="hotkey-space"><i>Blankspace</i></div>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-text-non-clickable">
-                            <span class="drop-down-option">Select multiple objects</span>
-                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-text-non-clickable">
-                            <span class="drop-down-option">Lock object proportions</span>
-                            <div id="hotkey-shift"><i>Shift</i></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </br>
-            </br>
+                </br>
+                </br>
 
-            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
-            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
+                <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
+                <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
 
-            <!--
-                Needs to be implemented in the new navbar
+                <!--
+                    Needs to be implemented in the new navbar
 
-               <select id='download' onchange='downloadMode(this)'>
-                    <option selected='selected' disabled>State</option>
-                    <option value='getImage'>getImage</option>
-                    <option value='Save'>Save</option>
-                    <option value='Load'>Load</option>
-                </select>
+                   <select id='download' onchange='downloadMode(this)'>
+                        <option selected='selected' disabled>State</option>
+                        <option value='getImage'>getImage</option>
+                        <option value='Save'>Save</option>
+                        <option value='Load'>Load</option>
+                    </select>
 
-                <input id='fileid' type='file' name='file_name' hidden multiple/>
-            -->
+                    <input id='fileid' type='file' name='file_name' hidden multiple/>
+                -->
 
             </div>
 
@@ -336,16 +350,18 @@
             </div>
         </div>
     </div>
-
     <!-- The Appearance menu. Default state is display: none; -->
     <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3 id='loginBoxTitle'>Appearance</h3>
-                <div class='cursorPointer' onclick='closeAppearanceDialogMenu();changeLoginBoxTitleAppearance();'>x</div>
+                <div class='cursorPointer' onclick='closeAppearanceDialogMenu();changeLoginBoxTitleAppearance();'>
+                    x
+                </div>
             </div>
             <div class='table-wrap'>
-                <div id="f01"></div>
+                <div id="f01">
+                </div>
             </div>
         </div>
     </div>
@@ -354,7 +370,9 @@
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3>Import</h3>
-                <div class='cursorPointer' onclick='closeImportDialog();'>x</div>
+                <div class='cursorPointer' onclick='closeImportDialog();'>
+                    x
+                </div>
             </div>
             <div class='table-wrap'>
                 <div class="importWrap">
@@ -376,7 +394,9 @@
         <div class='loginBox modeSwitchContainer'>
             <div class='loginBoxheader modeSwitchHeader'>
                 <h3 id="modeSwitchTarget"></h3>
-                <div class='cursorPointer' onclick='modeSwitchConfirmed(false)'>x</div>
+                <div class='cursorPointer' onclick='modeSwitchConfirmed(false)'>
+                    x
+                </div>
             </div>
             <div class='mode-wrap'>
                 <div id="importButtonWrap" class="importButtonWrap">
@@ -391,17 +411,19 @@
 
     <!-- Error message when non objects are not composite-->
     <div id="errorMessageDialog" class="loginBoxContainer importDiagram">
-      <div class="loginBox messageContainer">
-        <div class="loginBoxheader messageHeader">
-            <h3 id="errorMessage"></h3>
-            <div class='cursorPointer' onclick='closeErrorMessageDialog();'>x</div>
+        <div class="loginBox messageContainer">
+            <div class="loginBoxheader messageHeader">
+                <h3 id="errorMessage"></h3>
+                <div class='cursorPointer' onclick='closeErrorMessageDialog();'>
+                    x
+                </div>
+            </div>
+            <div class="mode-wrap">
+                <div id="importButtonWrap" class="importButtonWrap">
+                    <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
+                </div>
+            </div>
         </div>
-        <div class="mode-wrap">
-          <div id="importButtonWrap" class="importButtonWrap">
-            <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
-          </div>
-        </div>
-      </div>
     </div>
     <!-- content END -->
     <?php

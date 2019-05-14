@@ -423,7 +423,8 @@ function keyDownHandler(e) {
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line) {
+            if(cloneTempArray[i].symbolkind != symbolKind.line 
+                && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
             }
@@ -669,21 +670,26 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 // copySymbol: Clone an object
 //----------------------------------------------------------------------
-
 function copySymbol(symbol) {
-    var clone = Object.assign(new Symbol(), symbol);
-    var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    var clone = new Symbol(symbol.symbolkind);
+
+    var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
     topLeftClone.x += 10;
     topLeftClone.y += 10;
-    var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+
+    var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
     bottomRightClone.x += 10;
     bottomRightClone.y += 10;
-    var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+
+    var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
     centerPointClone.y += 10;
-    var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
-    middleDividerClone.x += 10;
-    middleDividerClone.y += 10;
+
+    if (symbol.symbolkind == symbolKind.uml) {
+        var middleDividerClone = jQuery.extend(true, {}, points[symbol.middleDivider]);
+        middleDividerClone.x += 10;
+        middleDividerClone.y += 10;
+    }
 
     if(symbol.symbolkind == symbolKind.uml) {
         clone.name = "New" + diagram.length;
@@ -693,25 +699,26 @@ function copySymbol(symbol) {
         clone.name = "Entity" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "Line" + diagram.length;
-    }else{
-        clone.name = "Relation" + diagram.length;
+    } else{
+        clone.name = "RelationCopy" + diagram.length;
     }
+
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
+
     if(clone.symbolkind != symbolKind.uml) {
         clone.centerPoint = points.push(centerPointClone) - 1;
-    }
-    else {
+    }else {
         clone.middleDivider = points.push(middleDividerClone) - 1;
         clone.centerPoint = clone.middleDivider;
     }
+
     clone.targeted = true;
     symbol.targeted = false;
 
     diagram.push(clone);
 
     return diagram.length;
-
 }
 
 //--------------------------------------------------------------------
@@ -3274,7 +3281,8 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        classB.name = "New" + countNumberOfSymbolKind(symbolKind.uml);
+        var newValue = checkDuplicate("New", symbolKind.uml);
+        classB.name = "New" + newValue;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3288,7 +3296,8 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        erAttributeA.name = "Attr" + countNumberOfSymbolKind(symbolKind.erAttribute);
+        var newValue = checkDuplicate("Attr", symbolKind.erAttribute);
+        erAttributeA.name = "Attr" + newValue;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3301,7 +3310,8 @@ function mouseupevt(ev) {
         diagramObject = diagram[lastSelectedObject];
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        erEnityA.name = "Entity" + countNumberOfSymbolKind(symbolKind.erEntity);
+        var newValue = checkDuplicate("Entity", symbolKind.erEntity);
+        erEnityA.name = "Entity" + newValue;;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3341,7 +3351,8 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        erRelationA.name = "Relation" + countNumberOfSymbolKind(symbolKind.erRelation);
+        var newValue = checkDuplicate("Relation", symbolKind.erRelation);
+        erRelationA.name = "Relation" + newValue;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3360,7 +3371,7 @@ function mouseupevt(ev) {
                     setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
                     if (diagram[i].isLockHovered) {
                         diagram[i].isLocked = false;
-                    }    
+                    }
                 }
             }
         }
@@ -3427,13 +3438,13 @@ function mouseupevt(ev) {
 }
 
 function countNumberOfSymbolKind(kind) {
-    let numberOfSymbolKind = 0;
-    for(let i = 0; i < diagram.length; i++){
-        if(diagram[i].symbolkind == kind) {
-            numberOfSymbolKind++;
-        }
-    }
-    return numberOfSymbolKind;
+  var numberOfSymbolKind = 0;
+  for(let i = 0; i < diagram.length; i++) {
+      if(diagram[i].symbolkind == kind) {
+          numberOfSymbolKind++;
+      }
+  }
+  return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
@@ -3902,4 +3913,16 @@ function changeLineDirection() {
 //Close the errorMessageDialog for Composite
 function closeErrorMessageDialog() {
     $("#errorMessageDialog").hide();
+}
+
+//Checks if there are any duplicates of entities with the same name.
+function checkDuplicate(name, kind) {
+    var numberOfSymbolKind = 0;
+    for(let i = 0; i < diagram.length; i++) {
+        //Checks for duplicates with the same number and adds +1 to it.
+        if (diagram[i].name == name + countNumberOfSymbolKind(kind)) {
+            numberOfSymbolKind = 1;
+        }
+    }
+    return countNumberOfSymbolKind(kind) + numberOfSymbolKind;
 }
