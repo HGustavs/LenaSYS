@@ -24,7 +24,6 @@ function setup()
 	inParams = parseGet();
 	window.addEventListener('resize', () => {
 		var windowWidth = $(window).innerWidth();
-		console.log(windowWidth)
 		if(windowWidth > 800){
 			createFileUploadArea(duggaParams["submissions"]);		
 		} 
@@ -168,7 +167,6 @@ function returnedDugga(data)
 			msg+="</div>";
 
 			document.getElementById("tomten").innerHTML=msg;
-			document.getElementById("smallerViewportArea").innerHTML=msg;
 		}
 
 		if (duggaFiles && duggaFiles.length > 0){
@@ -307,5 +305,5 @@ function createSmallerViewportForm(params){
 	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
-	document.getElementById("smallerViewportArea").innerHTML=str;
+	document.getElementById("tomten").innerHTML=str;
 }

@@ -355,17 +355,6 @@ svg text {
  /* --------------================################================-------------- *
  *                      	       Daily - minutes  				       								 *
  * --------------================################================-------------- */
-
- @media only screen and (min-width: 1121px){
-	#smallerViewportArea {
-		display: none;
-	}
-}
-
-@media only screen and (max-width: 1120px){
- 	#tomten {
-		display: none;
-	}
 	#smallerViewportWrapper{
 		border-style: solid;
 		border-width: 1px;
@@ -379,7 +368,7 @@ svg text {
 		border-width: 1px;
 		border-color: #cdd0d6;
 		border-top: none;
-		width: 180px;
+		width: 200px;
 		font-weight: 600;
 		height: 170px;
 	}
@@ -391,14 +380,11 @@ svg text {
 	#smallerViewportLabel{
 		background: var(--color-primary);
     color: white;
-		width: 180px;
+		width: 200px;
 		text-align: center;
 	}
 	#smallerViewportSelect{
 		width: 100%;
-	}
-	#smallerViewportArea input{
-		width: 98%;
 	}
 	#smallerViewportUploadButton{
 		margin-left: 3px;
@@ -414,7 +400,7 @@ svg text {
 	#prevSub{
 		margin-top: 10px;
 	}
-}
+
 
  /* --------------================################================-------------- *
  *                      	         HTML-CSS Dugga				       								   *
