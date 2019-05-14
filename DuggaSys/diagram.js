@@ -3237,7 +3237,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        let newValue = checkDuplicate("Entity", symbolKind.erRelation);
+        let newValue = checkDuplicate("Relation", symbolKind.erRelation);
         erRelationA.name = "Relation" + newValue;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
