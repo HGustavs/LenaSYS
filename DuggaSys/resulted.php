@@ -68,7 +68,7 @@ pdoConnect();
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
-      <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
+      <button class="resultedbuttons" onclick="ladexport();" style=" cursor:pointer">LadExport</button>
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
 			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
 				<button class="resultedbuttons" onclick="mail();">Mail students</button>
