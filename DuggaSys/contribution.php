@@ -13,7 +13,7 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Contribution</title>
 
-	
+
 	<!--<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">-->
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
@@ -23,7 +23,7 @@ pdoConnect();
 	<script src="contribution.js"></script>
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	
+
 <!--the inline CSS was moved to the file shared/css/style.css-->
 
 </head>
@@ -37,9 +37,11 @@ pdoConnect();
 
 	<!-- content START -->
 	<div id="content">
-	
+
 	</div>
+	<div id='contribGithHubContribTable'style='width:100%; white-space: nowrap;'></div>
 	<div id='contribTsTable' style='width:100%; white-space: nowrap;'></div>
+
 	<!-- content END -->
 
 	<?php
