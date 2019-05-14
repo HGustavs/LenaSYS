@@ -1599,7 +1599,7 @@ button.option {
 
 #MOTDbutton {
   position: absolute;
- top: -50px;
+ top: -2px;
 }
 
 input.submit-button {
