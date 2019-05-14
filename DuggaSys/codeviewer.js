@@ -502,28 +502,44 @@ function changeDirectory(kind)
 	var dir;
 	var str="";
 
-	var chosen=$("#filename").val();
+	var kindNum;
+	if (kind.id) {
+		kindNum = kind.id.split('_')[1];
+	}
+	
+	if (kindNum) {
+		var chosen=$("#filename_"+kindNum).val();
+		var wordlist = $('#wordlist_'+kindNum);
+		var filenameBox = $("#filename_"+kindNum);
+	} else {
+		var chosen=$("#filename").val();
+		var wordlist = $('#wordlist');
+		var filenameBox = $("#filename");
+	}
 
 	if ($(kind).val() == "CODE") {
 		dir = retData['directory'][0];
-		$('#wordlist').prop('disabled', false);
+		wordlist.prop('disabled', false);
 	}else if($(kind).val() == "IFRAME"){
 		dir = retData['directory'][2];
-		$('#wordlist').prop('disabled', 'disabled');
+		wordlist.prop('disabled', 'disabled');
 	}else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
-		$('#wordlist').val('4');
-		$('#wordlist').prop('disabled', 'disabled');
+		wordlist.val('4');
+		wordlist.prop('disabled', 'disabled');
 	}
 
 	for(var i=0;i<dir.length;i++){
 		if(chosen==dir[i].filename){
 				str+="<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>"+dir[i].filename+"</option>";
-				}else{
+		}else{
 				str+="<option value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>"+dir[i].filename+"</option>";
 		}
 	}
-	$("#filename").html(str);
+
+
+
+	filenameBox.html(str);
 	$("#playlink").html(str);
 }
 
@@ -1677,6 +1693,49 @@ function changetemplate(templateno)
 
 	$("#templat"+templateno).css("background","#fc4");
 	$("#templateno").val(templateno);
+
+	var templateOptions = document.getElementById('templateOptions');
+	var boxes;
+	switch (templateno) {
+		case '1': boxes = 2;
+						break;
+		case '2': boxes = 2;
+						break;
+		case '3': boxes = 3;
+						break;
+		case '4': boxes = 3;
+						break;
+		case '5': boxes = 4;
+						break;
+		case '6': boxes = 4;
+						break;
+		case '7': boxes = 4;
+						break;
+		case '8': boxes = 3;
+						break;
+		case '9': boxes = 5;
+						break;
+		case '10': boxes = 1;
+						break;
+	}
+
+	var str = "";
+	var wordl=retData['wordlists'];
+
+	for (var i = 0; i < boxes; i++) {
+		str += "<tr><td><label>Kind: </label><select class='templateSelect' id='boxcontent_"+i+"' onchange='changeDirectory(this)'>";
+		str += "<option value='CODE'>Code</option><option value='IFRAME'>Preview</option><option value='DOCUMENT'>Document</option></select></td>";
+		str += "<td><label>File: </label><select class='templateSelect' id='filename_"+i+"'></select></td>";
+		str += "<td><label>Wordlist: </label><select class='templateSelect' id='wordlist_"+i+"'>";
+		for(var j=0;j<wordl.length;j++){
+			str+="<option value='"+wordl[j][0]+"'>"+wordl[j][1]+"</option>";
+		}
+		str += "</select></td></tr>";
+	}
+	templateOptions.innerHTML = str;
+	for (var i = 0; i < boxes; i++) {
+		changeDirectory(document.querySelector('#boxcontent_'+i));
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -1688,17 +1747,25 @@ function updateTemplate()
 {
 	templateno=$("#templateno").val();
 	$("#chooseTemplateContainer").css("display","none");
+
+	var selectBoxes = [...document.querySelectorAll('#templateOptions select')];
+	var examples = selectBoxes.length / 3;
 	try{
 		var courseid = querystring['courseid'];
 		var exampleid = querystring['exampleid'];
 		var cvers = querystring['cvers'];
 		var templateno = $("#templateno").val();
-
+		var content = [];
+		for (var i = 0; i < examples; i++) {
+			var values = [$("#boxcontent_"+i).val(), $("#filename_"+i).val(), $("#wordlist_"+i).val()];
+			content.push(values);
+		}
 		AJAXService("SETTEMPL", {
 			courseid : courseid,
 			exampleid : exampleid,
 			cvers : cvers,
-			templateno : templateno
+			templateno : templateno,
+			content : content
 		}, "CODEVIEW");
 	}catch(e){
 		alert("Error when updating template: "+e.message)

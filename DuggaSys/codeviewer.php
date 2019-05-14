@@ -285,6 +285,8 @@ Testing Link:
 							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10");' src='../Shared/icons/template9_butt.svg' /></td>
 						</tr>
 					</table>
+					<table id="templateOptions" width="100%">
+					</table>
 					<table width="100%">
 						<tr>
 							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
