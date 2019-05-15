@@ -3111,70 +3111,110 @@ function handleSelect() {
     }
 }
 
-// returns the entities connected to the specified symbol via lines
-function getConnectedEntities(symbol, symbolKind) {
-    var entitiesConnected = [];
+// returns all symbols connected to 'symbol' with 'symbolkind' 
+function getConnectedSymbols(symbol, symbolKind) {
+    var symbolsConnected = [];
     var lines = getConnectedLines(symbol);
     for (var i = 0; i < lines.length; i++) {
         var objects = lines[i].getConnectedObjects();
         for (var j = 0; j < objects.length; j++) {
             if (objects[j] != symbol && objects[j].symbolkind == symbolKind) {
-                entitiesConnected.push(objects[j]);
+                symbolsConnected.push(objects[j]);
             }
         }
     }
-    return entitiesConnected;
+    return symbolsConnected;
 }
+// return those attributes that are composite to each  
+function getAttributesWithComposite(startSymbol, endSymbol) {
+    var attributesConnectedToStart = getConnectedSymbols(startSymbol, symbolKind.erAttribute);
+    var attributesConnectedToEnd = getConnectedSymbols(endSymbol, symbolKind.erAttribute);
+    var attributesWithCompositeFromStart = [];
+    var attributesWithCompositeFromEnd = [];
 
-function checkIfAttributesIsComposite(startSymbol, endSymbol) {
-
-    var startAttributesConnected = getConnectedEntities(startSymbol, symbolKind.erAttribute );
-    var endAttributesConnected = getConnectedEntities(endSymbol, symbolKind.erAttribute);
-
-    var startAttributesWithComposite = [];
-    var endAttributesWithComposite = [];
-
-    for (i = 0; i < startAttributesConnected.length; i++) {
-        if (startAttributesConnected[i].properties.key_type == "Composite"){
-            startAttributesWithComposite.push(startAttributesConnected[i]);
+    for (var i = 0; i < attributesConnectedToStart.length; i++) {
+        if (attributesConnectedToStart[i].properties.key_type == "Composite") {
+            attributesWithCompositeFromStart.push(attributesConnectedToStart[i]);
         }
     }
-    for (i = 0; i < endAttributesConnected.length; i++) {
-        if (endAttributesConnected[i].properties.key_type == "Composite"){
-            endAttributesWithComposite.push(endAttributesConnected[i]);
+    for (var i = 0; i < attributesConnectedToEnd.length; i++) {
+        if (attributesConnectedToEnd[i].properties.key_type == "Composite") {
+            attributesWithCompositeFromEnd.push(attributesConnectedToEnd[i]);
         }
     }
-    for (i = 0; i < startAttributesWithComposite.length; i++) {
-        if (getConnectedEntities(startAttributesWithComposite[i], symbolKind.erEntity).length > 0){
-            return false;
-        }
-    }
-    for (i = 0; i < endAttributesWithComposite.length; i++) {
-        if (getConnectedEntities(endAttributesWithComposite[i], symbolKind.erEntity).length > 0){
-            return false;
-        }
-    }
-    return true;
+    return {array1: attributesWithCompositeFromStart, array2: attributesWithCompositeFromEnd};
 }
+// returns the symbol that has a composite connection if it's only one that is connected
+function checkIfCompositeIsConnectedTo(startSymbol, endSymbol) {
+    // check if symbols connected are composite attributes
+    var compositeAttributes = getAttributesWithComposite(startSymbol, endSymbol);
+    var attributesWithCompositeFromStart = compositeAttributes.array1;
+    var attributesWithCompositeFromEnd = compositeAttributes.array2;
 
-// set the attribute key type to composite when connecting 2 attributes whenever one or both of them are connected to entities
-function setComposite(startSymbol, endSymbol) {
-
-    var startEntitiesConnected = getConnectedEntities(startSymbol, symbolKind.erEntity );
-    var endEntitiesConnected = getConnectedEntities(endSymbol, symbolKind.erEntity);
-
-    if (startEntitiesConnected.length > 0 && startSymbol.properties.key_type == "normal") {
-        startSymbol.properties.key_type = "Composite";
-    }
-    if (endEntitiesConnected.length > 0 && endSymbol.properties.key_type == "normal") {
-        endSymbol.properties.key_type = "Composite";
-    }
-
-    if (startEntitiesConnected.length > 0 && endEntitiesConnected.length > 0 ) {
-        return false;
+    if (attributesWithCompositeFromStart.length > 0 && attributesWithCompositeFromEnd < 1) {
+        return startSymbol;
+    } else if (attributesWithCompositeFromStart.length < 1 && attributesWithCompositeFromEnd > 0) {
+        return endSymbol;
     } else {
+        return false;
+    }
+}
+// returns if the symbols are connected to entities within two lines away 
+function bothAttributesConnectedToEntities(startSymbol, endSymbol) {
+    // check if symbols 2 line connection away is an entity
+    var compositeAttributes = getAttributesWithComposite(startSymbol, endSymbol);
+    var attributesWithCompositeFromStart = compositeAttributes.array1;
+    var attributesWithCompositeFromEnd = compositeAttributes.array2;
+
+    var returnValueStart = false;
+    var returnValueEnd = false;
+    for (var i = 0; i < attributesWithCompositeFromStart.length; i++) {
+        if (getConnectedSymbols(attributesWithCompositeFromStart[i], symbolKind.erEntity).length > 0) {
+            returnValueStart = true;
+            break;
+        }
+    }
+    for (var i = 0; i < attributesWithCompositeFromEnd.length; i++) {
+        if (getConnectedSymbols(attributesWithCompositeFromEnd[i], symbolKind.erEntity).length > 0) {
+            returnValueEnd = true;
+            break;
+        }
+    }
+    // check if one of the closest connected symbols is entitiy
+    var entitiesConnectedToStart = getConnectedSymbols(startSymbol, symbolKind.erEntity);
+    var entitiesConnectedToEnd = getConnectedSymbols(endSymbol, symbolKind.erEntity);
+
+    if (entitiesConnectedToStart.length > 0) returnValueStart = true;
+    if (entitiesConnectedToEnd.length > 0) returnValueEnd = true;
+
+    if (returnValueStart && returnValueEnd){
         return true;
     }
+    return false;
+}
+// set the attribute key type to composite when connecting 2 attributes whenever one or both of them are connected to entities
+function setOneToComposite(startSymbol, endSymbol) {
+    var entitiesConnectedToStart = getConnectedSymbols(startSymbol, symbolKind.erEntity );
+    var entitiesConnectedToEnd = getConnectedSymbols(endSymbol, symbolKind.erEntity);
+
+    if (entitiesConnectedToStart.length > 0 && entitiesConnectedToEnd.length > 0) {
+    } else if ((entitiesConnectedToStart.length > 0 && startSymbol.properties.key_type == "normal") || startSymbol.properties.key_type == "Composite" ) {
+        startSymbol.properties.key_type = "Composite";
+        return true;
+    } else if ((entitiesConnectedToEnd.length > 0 && endSymbol.properties.key_type == "normal") || endSymbol.properties.key_type == "Composite" ) {
+        endSymbol.properties.key_type = "Composite";
+        return true;
+    }
+    return false;
+}
+// set one of the symbols to composite depending on which is selected in the error message
+function dialogSetOneToComposite(symbolNumber) {
+    if (symbolNumber == 1) {
+        diagram[lineStartObj].properties.key_type = "Composite";
+    } else if (symbolNumber == 2) {
+        diagram[markedObject].properties.key_type = "Composite";
+    }
+    closeErrorMessageDialog();
 }
 
 function mouseupevt(ev) {
@@ -3249,33 +3289,39 @@ function mouseupevt(ev) {
                     } else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                         okToMakeLine = false;
                     }
-                    if (diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
+                    if (diagram[lineStartObj] == diagram[markedObject]) {
+                        okToMakeLine = false;
+                    } else if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
+                        // Can't draw line between two ER attributes if one of them is not composite
 
-                    // Can't draw line between two ER attributes if one of them is not composite
-                    if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-
-                        var bothConnectedToEntity =  setComposite(diagram[lineStartObj], diagram[markedObject]);
-                        var bothAttributesComposite = checkIfAttributesIsComposite(diagram[lineStartObj], diagram[markedObject]);
+                        var oneIsComposite = setOneToComposite(diagram[lineStartObj], diagram[markedObject]);
+                        var bothAttributesConnectedToEntity= bothAttributesConnectedToEntities(diagram[lineStartObj], diagram[markedObject]);
+                        var symbolConnectedToComposite = checkIfCompositeIsConnectedTo(diagram[lineStartObj], diagram[markedObject]);
 
                         // both attributes are connected to entities
-                        if (!bothAttributesComposite || !bothConnectedToEntity && (diagram[markedObject].properties.key_type === "Composite" &&  diagram[lineStartObj].properties.key_type === "Composite")) {
+                        if (bothAttributesConnectedToEntity || !oneIsComposite && (diagram[markedObject].properties.key_type === "Composite" &&  diagram[lineStartObj].properties.key_type === "Composite")) {
                             okToMakeLine = false;
-                            // Add error dialog
+                            // Show error dialog
                             $("#errorMessageDialog").css("display", "flex");
-                            var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+                            $("#attribute1Button").hide();
+                            $("#attribute2Button").hide();
                             document.getElementById("errorMessage").innerHTML = "Error! Both attributes are connected to entities";
-
                         } else if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
                             okToMakeLine = true;
+                        } else if (!bothAttributesConnectedToEntity && !oneIsComposite && symbolConnectedToComposite != false) {
+                            // if ONLY ONE of the symbols are connected to a composite: then make the one with the connection to composite 
+                            symbolConnectedToComposite.properties.key_type = "Composite";
+                            okToMakeLine = true;
                         } else {
+                            // if they're not connected to a composite attribute then ask which should be composite
                             okToMakeLine = false;
-                            // Add error dialog
+                            // show error dialog
+                            document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite, set one of them to composite";
+                            document.getElementById("attribute1Button").innerHTML = diagram[lineStartObj].name;
+                            document.getElementById("attribute2Button").innerHTML = diagram[markedObject].name;
                             $("#errorMessageDialog").css("display", "flex");
-                            var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
-                            document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
                         }
                     }
-
                     if (okToMakeLine) {
                         saveState = true;
                         if (createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);

@@ -422,7 +422,13 @@
             </div>
             <div class="mode-wrap">
                 <div id="importButtonWrap" class="importButtonWrap">
+                    <button id="attribute1Button" class="submit-button uploadButton" onclick="dialogSetOneToComposite(1);">attr1</button>
+                </div>
+                <div id="importButtonWrap" class="importButtonWrap">
                     <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
+                </div>
+                <div id="importButtonWrap" class="importButtonWrap">
+                    <button id="attribute2Button" class="submit-button uploadButton" onclick="dialogSetOneToComposite(2);">attr2</button>
                 </div>
             </div>
         </div>
