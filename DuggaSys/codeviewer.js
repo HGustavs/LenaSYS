@@ -716,23 +716,29 @@ function createboxmenu(contentid, boxid, type)
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
+        
 				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
 				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p>Reset</p></div>";
 				str+="</tr></table>";
+
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
+
 				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
 				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
 				str+='</tr></table>';
+
 			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
+
 				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
 				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
 				str+="</tr></table>";
+
 			}else{
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
@@ -741,16 +747,18 @@ function createboxmenu(contentid, boxid, type)
 				str+="<option value='CODE'>Code example</option>";
 				str+="<option value='DOCUMENT'>Description section</option>";
 				str+="</select>";
-				str+='</td></tr></table>';
+				str+='</td>';
 			}
-			boxmenu.innerHTML=str;
 		// If reader doesn't have write access, only the boxtitle is shown
 		}else{
 			var str = '<table cellspacing="2"><tr>';
 			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][4]+'</span></td>';
-			str+='</tr></table>';
-			boxmenu.innerHTML=str;
 		}
+		if(type=="CODE"){
+			str+="<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard("+boxid+");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+		}
+		str+='</tr></table>';
+		boxmenu.innerHTML=str;
 		$(boxmenu).click(function(event){
 			if($(window).width() <=1100){
 				toggleClass($("#"+boxmenu.parentNode.id).attr("id"));
@@ -1379,6 +1387,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	str="";
 	cont="";
 	lineno=0;
+	str+="<div id='notification" + boxid + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
 	str+="<div class='normtextwrapper'>";
 
 	pcount=0;
@@ -1690,8 +1699,9 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function createCodeborder(lineno,improws){
-	var str="<div class='codeborder'>";
+function createCodeborder(lineno,improws)
+{
+	var str="<div class='codeborder' style='z-index: 1;'>";		// The z-index places the code border above the copy to clipboard notification
 
 	for(var i=1; i<=lineno; i++){
 		// Print out normal numbers
@@ -3209,4 +3219,29 @@ function setResizableToPer(boxValArray)
 
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>');
+}
+
+//----------------------------------------------------------------------------------
+// copyCodeToClipboard: Selects and copies the code within the selected code view
+//----------------------------------------------------------------------------------
+
+function copyCodeToClipboard(boxid) {
+	var box = document.getElementById("box" + boxid);
+	var code = box.getElementsByClassName("normtextwrapper")[0];
+
+	// Select the code
+	var selection = window.getSelection();
+	var range = document.createRange();
+	range.selectNodeContents(code);
+	selection.removeAllRanges();
+	selection.addRange(range);
+	document.execCommand("Copy");
+	selection.removeAllRanges();
+
+	// Notification animation
+	$("#notification" + boxid).css("display", "flex").hide().fadeIn("fast", function(){
+		setTimeout(function(){
+			$("#notification" + boxid).fadeOut("fast");
+		}, 500);
+	});	
 }
