@@ -1777,8 +1777,8 @@ input.hide-moments-button {
 .fileUploadInfo:after {
   content: "";
   display: block;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid white;
@@ -5339,6 +5339,19 @@ textarea#filecont{
 
 .previewTable tr:nth-child(even){
   background-color: #dad8db;
+}
+.list td.personalRankTable-grpranking, .list td.personalRankTable-rank{
+  padding: 0;
+}
+.personalRankTable-grpranking div, .personalRankTable-rank div {
+  height: 48px;
+  width: 100%;
+}
+
+.personalRankTable-grpranking div div, .personalRankTable-rank div div{
+  display: table-cell;
+  padding-left: 8px;
+  vertical-align: middle;
 }
 
 .resultedbuttons{
