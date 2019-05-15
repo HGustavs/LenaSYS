@@ -778,11 +778,24 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-		if (status == 1) {
-			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-		} else if (status == 2 || status == 3) {
+		if (status == 0) {
+			//Ascending grade
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		} else if (status == 1) {
+			if(secoundCellTemp != "" && firstCellTemp != "" && secoundCellTemp != 0 && firstCellTemp != 0){
+				//descending grades
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			}	
+		} else if (status == 2) {
+			//pending grades
+			console.log(firstCellTemp);
+			if(secoundCellTemp == 0 && secoundCellTemp != ""){
+				val = -1;
+			//	alert(secoundCellTemp);
+			//	alert(firstCellTemp);
+			}	
 		}
+
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
 		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
