@@ -92,7 +92,11 @@
 		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
 			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 			if(strcmp('SETTEMPL',$opt)===0){
-				// Add word to wordlist
+				// Parse content array
+				$content = getOP('content');
+				$cArray = explode(',', $content);
+				$multiArray = array_chunk($cArray, 3);
+
 				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
 				$query->bindParam(':templateno', $templateNumber);
 				$query->bindParam(':exampleid', $exampleId);
@@ -114,27 +118,30 @@
 
 				// Create appropriate number of boxes
 				for($i=1;$i<$boxCount+1;$i++){
-				    // Create boxes, if some box does not exist
-            $query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");
+						$kind = $multiArray[$i-1][0];
+						$file = $multiArray[$i-1][1];
+						$wordlist = $multiArray[$i-1][2];
+
+						// Create boxes, if some box does not exist
+						$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid);");
 
 						$query->bindParam(':i', $i);
 						$query->bindParam(':exampleid', $exampleId);
 						$query->bindValue(':boxtitle', 'Title');
-						$query->bindValue(':boxcontent', 'Code');
+						$query->bindValue(':boxcontent', $kind);
 						$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
-						$query->bindValue(':filename', 'js1.js'); // TODO: Should only bind with the file used (if used) and not to one by default
+						$query->bindValue(':filename', $file); 
+						$query->bindValue(':wordlistid', $wordlist);
 
 						// Update code example to reflect change of template
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
 
-              // If we get duplicate key error message, ignore error, otherwise carry on adding to debug message
-              if(strpos($error[2],"Duplicate entry")==-1) $debug.="Error creating new box: ".$error[2];
+							// If we get duplicate key error message, ignore error, otherwise carry on adding to debug message
+							if(strpos($error[2],"Duplicate entry")==-1) $debug.="Error creating new box: ".$error[2];
 
-            }
+						}
 				}
-
-
 			}else if(strcmp('EDITEXAMPLE',$opt)===0){
 				if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
 				if(isset($_POST['examplename'])) {$exampleName = $_POST['examplename'];}

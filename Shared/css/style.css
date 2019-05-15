@@ -1026,6 +1026,10 @@ header td {
   width: 100%;
 }
 
+.templateSelect {
+  width: 150px !important
+}
+
 input {
   border-radius: 2px;
   border: 2px solid #ccc;
