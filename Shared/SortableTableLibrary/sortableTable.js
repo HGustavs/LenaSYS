@@ -726,6 +726,7 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
+	var sizeTemp = '{"';
     if(typeof firstCell === 'object' && col.includes("FnameLname")) {
 		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
@@ -793,7 +794,7 @@ function newCompare(firstCell, secoundCell) {
 			if (firstCell === null || secoundCell === null) {
 				firstCellTemp = firstCell;
 				secoundCellTemp = secoundCell;
-			} else if(firstCell.includes('{"')){
+			} else if(typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp))){
 				tempTemp1 = firstCell.replace(/\D/g,'');
 				tempTemp2 = secoundCell.replace(/\D/g,'');
 				firstCellTemp = parseInt(tempTemp1, 10);
