@@ -389,83 +389,123 @@ if(strcmp($grade,"") == 0){$grade = "UNK";} // Return UNK if we have no grade
 if(strcmp($submitted,"") == 0){$submitted = "UNK";} // Return UNK if we have not submitted 
 if(strcmp($marked,"") == 0){$marked = "UNK";} // Return UNK if we have not been marked
 
-$files= array();
-if ($showall==="true"){
-  $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
-} else {
-  $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
-  $query->bindParam(':did', $duggaid);
-}
-$query->bindParam(':uid', $userid);
-$query->bindParam(':cid', $courseid);
-$query->bindParam(':vers', $coursevers);
+$userCount = 1;
+if(strcmp($opt,"GRPDUGGA")==0){
+	$query = $pdo->prepare("SELECT groups FROM user_course WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+	$query->bindParam(':uid', $userid);
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':vers', $coursevers);
+	$query->execute();
+	$result = $query->fetch();
+	$group = $result['groups'];
+
+	$query = $pdo->prepare("SELECT uid FROM user_course WHERE cid=:cid AND vers=:vers AND groups=:group;");
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':vers', $coursevers);
+	$query->bindParam(':group', $group, PDO::PARAM_STR);
 	
-$result = $query->execute();
-
-// Store current day in string
-$today = date("Y-m-d H:i:s");
-
-foreach($query->fetchAll() as $row) {
-		
-		$content = "UNK";
-		$feedback = "UNK";
-
-		$currcvd=getcwd();
-		
-		$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
-		if(!file_exists($fedbname)) {
-				$feedback="UNK";
-		} else {
-			if($today > $duggainfo['qrelease']  || is_null($duggainfo['qrelease'])){
-				$feedback=file_get_contents($fedbname);				
-			}
-		}			
-		
-		if($row['kind']=="3"){
-				// Read file contents
-				$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
-
-				if(!file_exists($movname)) {
-						$content="UNK!";
-				} else {
-						$content=file_get_contents($movname);
-				}
-		}	else if($row['kind']=="2"){
-				// File content is an URL
-				$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'];
-
-				if(!file_exists($movname)) {
-						$content="UNK URL!";
-				} else {
-						$content=file_get_contents($movname);
-				}
-		}else{
-				$content="Not a text-submit or URL";
+	$result = $query->execute();
+	$usersInGroup = array();
+	foreach($query->fetchAll() as $row) {
+		$user = $row['uid'];
+		if ($user != $userid) {
+			array_push($usersInGroup, $user);
 		}
-	
-		$entry = array(
-			'uid' => $row['uid'],
-			'subid' => $row['subid'],
-			'vers' => $row['vers'],
-			'did' => $row['did'],
-			'fieldnme' => $row['fieldnme'],
-			'filename' => $row['filename'],	
-			'filepath' => $row['filepath'],	
-			'extension' => $row['extension'],
-			'mime' => $row['mime'],
-			'updtime' => $row['updtime'],
-			'kind' => $row['kind'],	
-			'seq' => $row['seq'],	
-			'segment' => $row['segment'],	
-			'content' => $content,
-			'feedback' => $feedback
-		);
-
-		// If the filednme key isn't set, create it now
- 		if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
-
-		array_push($files[$row['segment']], $entry);	
+	}
+	$userCount += count($usersInGroup);
 }
+
+$files= array();
+for ($i = 0; $i < $userCount; $i++) {
+	if ($showall==="true"){
+		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
+	} else {
+		$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
+		$query->bindParam(':did', $duggaid);
+	}
+	if ($i == 0) {
+		$query->bindParam(':uid', $userid);
+	} else {
+		$query->bindParam(':uid', $usersInGroup[$i-1]);
+	}
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':vers', $coursevers);
+		
+	$result = $query->execute();
+	
+	// Store current day in string
+	$today = date("Y-m-d H:i:s");
+	
+	foreach($query->fetchAll() as $row) {
+			
+			$content = "UNK";
+			$feedback = "UNK";
+	
+			$currcvd=getcwd();
+			
+			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
+			if(!file_exists($fedbname)) {
+					$feedback="UNK";
+			} else {
+				if($today > $duggainfo['qrelease']  || is_null($duggainfo['qrelease'])){
+					$feedback=file_get_contents($fedbname);				
+				}
+			}			
+			
+			if($row['kind']=="3"){
+					// Read file contents
+					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
+	
+					if(!file_exists($movname)) {
+							$content="UNK!";
+					} else {
+							$content=file_get_contents($movname);
+					}
+			}	else if($row['kind']=="2"){
+					// File content is an URL
+					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'];
+	
+					if(!file_exists($movname)) {
+							$content="UNK URL!";
+					} else {
+							$content=file_get_contents($movname);
+					}
+			}else{
+					$content="Not a text-submit or URL";
+			}
+		
+ 			$uQuery = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
+			$uQuery->bindParam(':uid', $row['uid'], PDO::PARAM_INT);
+			$uQuery->execute();
+			$uRow = $uQuery->fetch();
+			$username = $uRow['username'];
+
+			$entry = array(
+				'uid' => $row['uid'],
+				'subid' => $row['subid'],
+				'vers' => $row['vers'],
+				'did' => $row['did'],
+				'fieldnme' => $row['fieldnme'],
+				'filename' => $row['filename'],	
+				'filepath' => $row['filepath'],	
+				'extension' => $row['extension'],
+				'mime' => $row['mime'],
+				'updtime' => $row['updtime'],
+				'kind' => $row['kind'],	
+				'seq' => $row['seq'],	
+				'segment' => $row['segment'],	
+				'content' => $content,
+				'feedback' => $feedback,
+				'username' => $username
+			);
+	
+			// If the filednme key isn't set, create it now
+			 if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
+	
+			array_push($files[$row['segment']], $entry);	
+	}
+}
+
 
 if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
 
@@ -489,6 +529,7 @@ $array = array(
 		"release" => $duggainfo['qrelease'],
 		"files" => $files
 	);
+if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
 echo json_encode($array);
 

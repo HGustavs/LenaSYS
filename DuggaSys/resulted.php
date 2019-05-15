@@ -18,6 +18,7 @@ pdoConnect();
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<title>Result Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
@@ -49,7 +50,7 @@ pdoConnect();
 		<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="ladexportContainer" style="display:flex;">
+    <div id="ladexportContainer">
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Delkurs</label>
         <select id="ladselect"></select>
@@ -67,12 +68,12 @@ pdoConnect();
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
-      <button onclick="ladexport();" style="margin:5px;">LadExport</button>
+      <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
 			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
-				<button onclick="mail();" style="margin:5px;">Mail students</button>
+				<button class="resultedbuttons" onclick="mail();">Mail students</button>
 			<?php }else{ ?>
-				<button onclick="mail();" style="margin:5px;" disabled>Mail students</button>
+				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
         <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Filtrera efter</label>
@@ -83,6 +84,23 @@ pdoConnect();
 					<option value="Filter-U">U</option>
 				</select>
 			</div>
+
+			<!-- Search bar for mobile versions --> 
+			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
+				<div id='tooltip-mobile' class="tooltip-searchbar">
+					<div class="tooltip-searchbar-box">
+								<b>Keywords:</b> markG, markU, date <br>
+								<b>Ex:</b> markG:färgdugga
+					</div>
+					<span>?</span>
+				</div>
+				<input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
+
+				<button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();' type='button'>
+					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
+				</button>
+			</div>
+
     </div>
     
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
@@ -165,7 +183,7 @@ pdoConnect();
 			<h3 style='width:100%;' id='resultlistheader'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
     </div>
     <div style='display:flex;flex-direction:column;flex:1;'>
-      <textarea id='resultlistarea' style='flex:1;overflow:scroll;padding:5px;margin:5px 0 5px 0;'></textarea>
+      <textarea id='resultlistarea' style='resize:none;flex:1;overflow:scroll;padding:5px;margin:5px 0 5px 0;'></textarea>
       <input type='button' value='Close' onclick='closeLadexport();' style='width:100px;align-self:flex-end'>
     </div>
 	</div>

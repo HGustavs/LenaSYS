@@ -1,15 +1,20 @@
 <div id="container">
 	<div class='instructions-container'>
-		<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Instructions</h3></div>	
+		<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Instructions</h3></div>
         <div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="snus">
-        </div>	
+        </div>
     </div>
     <div class='instructions-container'>
-		<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Submission</h3></div>	
+		<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Submission</h3></div>
         <div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="tomten"></div>
-        <div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1;" id="smallerViewportArea"></div>
     </div>
 </div>
+<!--Fab-button-->
+<div class="fixed-action-button" id="fabButton">
+    <a class="btn-floating fab-btn-lg noselect" id="fabBtn" onclick="newRow()">+</a>
+</div>
+<!-- end of Fab-button-->
+
 <div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
     <div class='loginBoxheader'>
         <h3>Dugga Stats</h3>
@@ -24,4 +29,3 @@
         </table>
     </div>
 </div>
-
