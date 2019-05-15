@@ -22,6 +22,15 @@ Data is saved to the timesheet table in the database, and to DuggaSys/submission
 function setup()
 {
 	inParams = parseGet();
+	window.addEventListener('resize', () => {
+		var windowWidth = $(window).innerWidth();
+		if(windowWidth > 850){
+			createFileUploadArea(duggaParams["submissions"]);		
+		} 
+		if(windowWidth <= 850){
+			createSmallerViewportForm(duggaParams["submissions"]);		
+		}
+	})
 	AJAXService("GETPARAM", { }, "PDUGGA");
 }
 
@@ -55,7 +64,7 @@ function newRow() {
 		inputValue = document.getElementById("tsRef_"+idx).value;
 		str += "<td><input id='tsRef_"+idx+"' required type='number' name='tsRef_"+idx+"' style='width: 55px' value='"+inputValue+"' /></td>";
 		inputValue = document.getElementById("tsComment_"+idx).value;
-		str += "<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' value='"+inputValue+"' /></td>";
+		str += "<td><input id='tsComment_"+idx+"' class='tsCommentColumn' required type='text' name='tsComment_"+idx+"' style='width: 90%' value='"+inputValue+"' /></td>";
 		if (idx > 0) {
 			str += "<td class='tsTableDeleteCell' onclick='deleteRow("+idx+")'><img src='../Shared/icons/Trashcan.svg'></td>";
 		}
@@ -66,7 +75,7 @@ function newRow() {
 	str += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 	str += "</select></td>";
 	str += "<td><input id='tsRef_"+lastRowIdx+"' required type='number' name='tsRef_"+lastRowIdx+"' style='width: 55px' /></td>";
-	str += "<td><input id='tsComment_"+lastRowIdx+"' required type='text' name='tsComment_"+lastRowIdx+"' style='width: 500px' /></td>";
+	str += "<td><input id='tsComment_"+lastRowIdx+"' class='tsCommentColumn' required type='text' name='tsComment_"+lastRowIdx+"' style='width: 90%' /></td>";
 	str += "<td class='tsTableDeleteCell' onclick='deleteRow("+lastRowIdx+")'><img src='../Shared/icons/Trashcan.svg'></td>";
 
 	tsTableBody.innerHTML = str;
@@ -125,10 +134,10 @@ function returnedDugga(data)
 		var windowWidth = $(window).innerWidth();
 		var duggaFiles = data["files"][inParams["moment"]];
 		if($("#submitButtonTable").length != 0) {
-			if(windowWidth > 1120){
+			if(windowWidth > 850){
 				createFileUploadArea(duggaParams["submissions"]);		
 			} 
-			if(windowWidth <= 1120){
+			if(windowWidth <= 850){
 				createSmallerViewportForm(duggaParams["submissions"]);		
 			}
 			for (var k=0; k < duggaParams["submissions"].length; k++){
@@ -158,7 +167,6 @@ function returnedDugga(data)
 			msg+="</div>";
 
 			document.getElementById("tomten").innerHTML=msg;
-			document.getElementById("smallerViewportArea").innerHTML=msg;
 		}
 
 		if (duggaFiles && duggaFiles.length > 0){
@@ -227,7 +235,7 @@ function createFileUploadArea(params){
 	form += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 	form +="</select></td>";
 	form +="<td><input id='tsRef_0' type='number' required name='tsRef_0' style='width: 55px' /></td>";
-	form +="<td><input id='tsComment_0' type='text' required name='tsComment_0' style='width: 500px' /></td>";
+	form +="<td class='tsCommentColumn'><input id='tsComment_0' type='text' required name='tsComment_0' style='width: 90%' /></td>";
 	form +="</tr></tbody>";
 	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 	form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
@@ -266,15 +274,15 @@ function createSmallerViewportForm(params){
 	form +="<table class='tsTable'>";
 	form +="<tbody id='tsTableBody'><tr class='tsInputRow' id='tsTableRow_0'>";
 	form +="<div id='smallerViewportLabel'><label>Date</label></div>";
-	form +="<div id='datePicker'><input required type='date' name='tsDate_0' /></div>";
+	form +="<div id='datePicker'><input class='tsSmallInput' required type='date' name='tsDate_0' /></div>";
 	form +="<div id='smallerViewportLabel'><label>Type</label></div>";
-	form +="<div id='type'><select id='smallerViewportSelect' required name='tsType_0'>";
+	form +="<div id='type'><select class='tsSmallInput' id='smallerViewportSelect' required name='tsType_0'>";
 	form += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 	form +="</select></div>";
 	form +="<div id='smallerViewportLabel'><label>Reference</label></div>";
-	form +="<div id='reference'><input type='number' required name='tsRef_0'/></div>";
+	form +="<div id='reference'><input class='tsSmallInput' type='number' required name='tsRef_0'/></div>";
 	form +="<div id='smallerViewportLabel'><label>Comment</label></div>";
-	form +="<div id='comment'><input type='text' required name='tsComment_0'/>";
+	form +="<div id='comment'><input class='tsSmallInput' type='text' required name='tsComment_0'/>";
 	form +="</tr></tbody>";
 	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 	form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
@@ -297,5 +305,5 @@ function createSmallerViewportForm(params){
 	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
-	document.getElementById("smallerViewportArea").innerHTML=str;
+	document.getElementById("tomten").innerHTML=str;
 }

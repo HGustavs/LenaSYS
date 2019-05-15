@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once "../../coursesyspw.php";
+include_once "../Shared/sessions.php";
 pdoConnect();
 ?>
 
@@ -28,11 +29,6 @@ pdoConnect();
 
 </head>
 <body>
-
-	<?php
-		$noup="SECTION";
-		include '../Shared/navheader.php';
-	?>
 	<div id="infoText" style="background-color:#ffffff; border:1px solid black; top:100px; display:none;position:absolute;"></div>
 
 	<!-- content START -->
