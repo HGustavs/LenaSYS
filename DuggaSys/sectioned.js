@@ -1303,10 +1303,11 @@ function drawSwimlanes() {
           textcol = `url("#fadeTextRed")`;
         }
         var tempVariable = duggalength*daywidth;
-        
+        console.log(startday);
         if(startday < 0){
           startday = startday * -1;
         }
+        console.log(startday);
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }
