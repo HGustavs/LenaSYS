@@ -729,7 +729,7 @@ header td {
 }
 
 .loggedout:hover {
-  background-color: var(--color-red-hover);
+  background-color: var(--color-green);
 }
 
 .loggedin {
@@ -737,7 +737,7 @@ header td {
 }
 
 .loggedin:hover {
-  background-color: var(--color-green-hover);
+  background-color: var(--color-red);
 }
 
 #loginbutton {
@@ -746,7 +746,6 @@ header td {
   width: 50px;
   vertical-align: middle;
   text-align: center;
-  background: var(--color-green);
 }
 
 #div2 {
