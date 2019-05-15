@@ -2628,28 +2628,6 @@ function toggleFirstPoint(){
 }
 
 //--------------------------------------------------------------------
-// figureSquare: Draws a square between p1 and p2.
-//--------------------------------------------------------------------
-function figureSquare() {
-    if (isFirstPoint) {
-        p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-        toggleFirstPoint();
-    } else {
-        p3 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-        p2 = points.addPoint(points[p1].x, points[p3].y, false);
-        p4 = points.addPoint(points[p3].x, points[p1].y, false);
-        figurePath.addsegment(1, p1, p2);
-        figurePath.addsegment(1, p2, p3);
-        figurePath.addsegment(1, p3, p4);
-        figurePath.addsegment(1, p4, p1);
-        diagram.push(figurePath);
-        selected_objects.push(figurePath);
-        lastSelectedObject = diagram.length - 1;
-        cleanUp();
-    }
-}
-
-//--------------------------------------------------------------------
 // cleanUp: Resets all varables to ther default start value.
 //--------------------------------------------------------------------
 function cleanUp() {
