@@ -291,7 +291,7 @@ function checkMomentParts(pos, id) {
 }
 
 function hovers() {
-	
+	$('#dropdownc').css('display', 'none');
 	$('#dropdowns').css('display', 'block');
 }
 
