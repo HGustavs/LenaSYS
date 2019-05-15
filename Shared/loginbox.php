@@ -1,3 +1,26 @@
+<style>	
+	.loginFail {
+		animation: loginFail 2s;
+		animation-iteration-count:2;
+	}
+	@keyframes loginFail {
+		0% {
+			background-color: rgba(255,255,255,1);
+		}
+		25% {
+			background-color: rgba(255, 0, 6, 0.2);
+		}
+		50% {
+			background-color: rgba(255,255,255,1);
+		}
+		75% {
+			background-color: rgba(255, 0, 6, 0.2);
+		}
+		100% {
+			background-color: rgba(255,255,255,1);
+		}
+	}
+</style>
 		<!-- Overlay -->
 
   <div id="overlay" style="display:none"></div>

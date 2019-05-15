@@ -31,21 +31,25 @@ for (i; i < l; i++) {
 
 }
   }
-// Gives the buttons functionality 
+// Gives the buttons functionality
 function statSort(value) {
   if (value == "All") {
     document.getElementById("contribTsTable").style.display = "block";
+    document.getElementById("contribGithHubContribTable").style.display = "block";
     restoreStatView();
 
   } else if (value == "Basic") {
     document.getElementById("contribTsTable").style.display = "none";
+    document.getElementById("contribGithHubContribTable").style.display = "none";
     removeStatview('.group2 , .group3');
 
   } else if (value == "Charts") {
     document.getElementById("contribTsTable").style.display = "none";
+    document.getElementById("contribGithHubContribTable").style.display = "none";
     removeStatview('.group1 , .group3');
   } else if (value == "Contribution") {
     document.getElementById("contribTsTable").style.display = "block";
+    document.getElementById("contribGithHubContribTable").style.display = "block";
     removeStatview('.group1 , .group2');
   }
 }
@@ -219,7 +223,7 @@ function renderLineDiagram(data){
     var weeks=data.weeks;
     daycounts=data['count'];
     var firstweek = data.weeks[0].weekstart;
-   
+
 
     //Selectbox to choose week
     str='<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
@@ -690,6 +694,7 @@ function createTimeSheetTable(data)
 
 	myTable.renderTable();
 }
+
 function renderCell(col,celldata,cellid)
 {
   var str="UNK";
@@ -699,7 +704,7 @@ function renderCell(col,celldata,cellid)
     str += "<a href='"+obj+"' target='_blank'>Github</a></span></div>";
   } else if (col==='week'||col==='reference'){
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+parseInt(obj)+"</span></div>";
-  } else {
+  }else {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+obj+"</span></div>";
   }
   return str;
@@ -732,13 +737,17 @@ function returnedSection(data)
     return;
   }
   retdata=data;
-  if(data['debug']!="NONE!") alert(data['debug']);
+  if(data['debug']!="NONE!") {
+    if(data['debug']!="TIMESHEET") {
+      alert(data['debug']);
+    }
+    console.log("No timesheet table was found in the database.")
+  }
 
   contribDataArr = [];
+
 	var str="";
 
-
-  
   str += "<div class='contributionSort'>";
   str += "<input type='button' value='All' class='submit-button title='All' onclick='statSort(value)'></input>";
   str += "<input type='button' value='Basic' class='submit-button title='Basic' onclick='statSort(value)'></input>";
@@ -763,6 +772,11 @@ function returnedSection(data)
    str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
   
   str+="<table  class='fumho group1'>";
+
+
+    str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
+
+  	str+="<table  class='fumho group1'>";
 
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th style='padding: 2px 10px;'>Kind</th>";
@@ -803,12 +817,14 @@ function returnedSection(data)
     str+="<tr>";
     str+="<td>GIT Commit</td>"
     str+="<td>"+data['commitrankno']+"</td>"
-    str+="<td style='background-color:"+intervaltocolor(41,data['commitrank'])+"'>"+data['commitrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(41,data['commitgrouprank'])+"'>"+data['commitgrouprank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['commitrank'])+"'>"+data['commitrank']+"</td>";
+    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['commitgrouprank'])+"'>"+data['commitgrouprank']+"</td>";
     str+="</tr>";
     str+="</table>";
 
-    str+=createTimeSheetTable(data['timesheets']);
+    createGitHubcontributionTable(buildContributionData(data));
+    createTimeSheetTable(data['timesheets']);
+
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
     str+="<div class='group2' id='hourlyGraph'>";
@@ -816,116 +832,7 @@ function returnedSection(data)
     str+="</div>";
 
 
-    // Table heading
-	str+="<table class='fumho group3' >";
-	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
-	str+="<th></th>";
-	str+="<th style='padding: 2px 10px;'>Dates</th>";
-	str+="<th style='padding: 2px 10px;'>Code Contribution</th>";
-	str+="<th style='padding: 2px 10px;'>GitHub Contribution</th>";
-	str+="</tr>";
-
-	var weeks=data.weeks;
-	for(i=0;i<weeks.length;i++){
-			var week=weeks[i];
-
-			str+="<tr>";
-
-			str+="<td>"+week.weekno+"</td>";
-
-			str+="<td>";
-			str+=week.weekstart;
-			str+="<br>";
-			str+=week.weekend;
-			str+="</td>";
-
-			// Start of file contributions
-			str+="<td>";
-
-			var files=week.files;
-
-      for(var j=0;j<files.length;j++){
-					var file=files[j];
-
-					str+="<a href='https://github.com/HGustavs/LenaSYS/blame/"+file.path+file.filename+"'>";
-					str+="<div class='contrib'>";
-					str+="<span class='contribheading' style='padding:4px;'>";
-					str+="<span class='contribpath'>"+file.path+"</span>";
-					str+="<span class='contribfile'>"+file.filename+"</span>";
-					str+="</span>";
-					str+="</a>";
-
-					str+="<div class='contribcontent'>";
-					str+=file.lines+" lines<br>";
-					str+="</div>";
-
-					str+="</div>";
-			}
-
-			// End of file contrbutions
-			str+="</td>";
-
-			// Start of Github contributions
-			str+="<td>";
-
-			if(week.issues.length>0||week.comments.length>0||week.events.length>0){
-						str+="<div class='contrib'>";
-						str+="<div class='contribcontent'>";
-
-						if(week.commits.length>0){
-								str+="<div class='createissue'>Made "+week.commits.length+" commit(s).</div>";
-								for(j=0;j<week.commits.length;j++){
-										var message=week.commits[j].message;
-										var hash=week.commits[j].cid;
-										str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/commit/"+hash+"'>"+message+"</a></div>";
-								}
-						}
-
-
-						if(week.issues.length>0){
-								str+="<div class='createissue'>Created "+week.issues.length+" issue(s).</div>";
-								for(j=0;j<week.issues.length;j++){
-										var issue=week.issues[j];
-										var issuestr=issue.issueno+" "+issue.title;
-										str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/"+issue.issueno.substr(1)+"'>"+issuestr+"</a></div>";
-								}
-
-						}
-
-						if(week.comments.length>0){
-								str+="<div class='createissue'>Made "+week.comments.length+" comment(s).</div>";
-								for(j=0;j<week.comments.length;j++){
-										var comment=week.comments[j];
-										var issuestr=comment.issueno+" "+comment.content;
-										str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/"+comment.issueno.substr(1)+"'>"+issuestr+"</a></div>";
-								}
-
-						}
-
-						if(week.events.length>0){
-              var totalAmountEvents = 0;
-              for(var j=0;j<week.events.length;j++){
-                totalAmountEvents += parseInt(week.events[j].cnt);
-              }
-							str+="<div class='createissue'>Performed "+totalAmountEvents+" event(s).</div>";
-							for(var j=0;j<week.events.length;j++){
-									var eve=week.events[j];
-									str+="<div class='contentissue'>"+eve.kind+" "+eve.cnt+"</div>";
-							}
-						}
-
-						str+="</div>";
-						str+="</div>";
-
-			}
-
-			str +="</td>";
-
-			str+="</tr>";
-	}
-
-  // End of table
-	str+="</table><div id='rankTable'></div>";
+	str+="<div id='rankTable'></div>";
     var contribData = [];
 
 	if(data['allrowranks'].length>0){
@@ -1016,4 +923,141 @@ function returnedSection(data)
     }
     document.getElementById('content').innerHTML=str;
     sortRank(1);  // default to allrank
+}
+
+function buildContributionData(){
+  var data = retdata['weeks'];
+  var contribData = [];
+
+  for(var i = 0; i<data.length; i++){
+    var projectWeek = {
+      weeks:data[i].weekno,
+      dates:{
+        weekStart:data[i].weekstart,
+        weekEnd:data[i].weekend
+      },
+      codeContribution:{
+        files:data[i].files
+      },
+      githubContribution:{
+        comments:data[i].comments,
+        commits:data[i].commits,
+        events:data[i].events,
+        issues:data[i].issues
+      }
+    };
+
+    contribData.push(projectWeek);
+  }
+  return contribData;
+}
+
+function createGitHubcontributionTable(data)
+{
+  var tabledata = {
+		tblhead:{
+      weeks:"Week",
+			dates:"Dates",
+		  codeContribution:"Code Contribution",
+			githubContribution:"GitHub Contribution"
+		},
+		tblbody: data,
+		tblfoot:{}
+  };
+	var colOrder=["weeks","dates","codeContribution","githubContribution"];
+	ghContibTable = new SortableTable({
+		data:tabledata,
+    tableElementId:"contribGithHubContribTable",
+		renderCellCallback:renderCellForghContibTable,
+		renderSortOptionsCallback:renderSortOptions,
+		columnOrder:colOrder,
+		freezePaneIndex:4,
+		hasRowHighlight:false,
+		hasMagicHeadings:true,
+		hasCounterColumn:true
+	});
+  ghContibTable.renderTable();
+}
+function renderCellForghContibTable(col,celldata,cellid){
+  var str="";
+  obj = celldata;
+  console.log(celldata);
+  console.log("**************");
+  if (col==='weeks') {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+parseInt(obj)+"</span></div>";
+  }else if(col==='dates'){
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+ obj.weekStart + " - " + obj.weekEnd + "</span></div>";
+  }else if(col==='codeContribution'){
+    for(var j=0;j<obj.files.length;j++){
+        var file=obj.files[j];
+        str+="<a href='https://github.com/HGustavs/LenaSYS/blame/"+file.path+file.filename+"'>";
+        str+="<div class='contrib'>";
+        str+="<span class='contribheading' style='padding:4px;'>";
+        str+="<span class='contribpath'>"+file.path+"</span>";
+        str+="<span class='contribfile'>"+file.filename+"</span>";
+        str+="</span>";
+        str+="</a>";
+        str+="<div class='contribcontent'>";
+        str+=file.lines+" lines<br>";
+        str+="</div>";
+        str+="</div>";
+    }
+  }else if(col==='githubContribution'){
+
+    if(obj.issues.length>0||obj.comments.length>0||obj.events.length>0){
+          str+="<div class='contrib'>";
+          str+="<div class='contribcontent'>";
+
+          if(obj.commits.length>0){
+              str+="<div class='createissue'>Made "+obj.commits.length+" commit(s).</div>";
+              for(j=0;j<obj.commits.length;j++){
+                  var message=obj.commits[j].message;
+                  var hash=obj.commits[j].cid;
+                  str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/commit/"+hash+"'>"+message+"</a></div>";
+              }
+          }
+
+
+          if(obj.issues.length>0){
+              str+="<div class='createissue'>Created "+obj.issues.length+" issue(s).</div>";
+              for(j=0;j<obj.issues.length;j++){
+                  var issue=obj.issues[j];
+                  var issuestr=issue.issueno+" "+issue.title;
+                  str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/"+issue.issueno.substr(1)+"'>"+issuestr+"</a></div>";
+              }
+
+          }
+
+          if(obj.comments.length>0){
+              str+="<div class='createissue'>Made "+obj.comments.length+" comment(s).</div>";
+              for(j=0;j<obj.comments.length;j++){
+                  var comment=obj.comments[j];
+                  var issuestr=comment.issueno+" "+comment.content;
+                  str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/"+comment.issueno.substr(1)+"'>"+issuestr+"</a></div>";
+              }
+
+          }
+
+          if(obj.events.length>0){
+            var totalAmountEvents = 0;
+            for(var j=0;j<obj.events.length;j++){
+              totalAmountEvents += parseInt(obj.events[j].cnt);
+            }
+            str+="<div class='createissue'>Performed "+totalAmountEvents+" event(s).</div>";
+            for(var j=0;j<obj.events.length;j++){
+                var eve=obj.events[j];
+                str+="<div class='contentissue'>"+eve.kind+" "+eve.cnt+"</div>";
+            }
+          }
+
+          str+="</div>";
+          str+="</div>";
+
+    }
+  }
+
+  else {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+obj+"</span></div>";
+  }
+  return str;
 }

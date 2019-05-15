@@ -830,6 +830,11 @@ define(\"DB_NAME\",\"".$databaseName."\");
           echo "</code></div>";
           echo '<div id="copied1">Copied to clipboard!<br></div>';
         }
+		
+		//Check upload_max_filesize parameter
+		if(ini_get('upload_max_filesize')!='128M'){
+			echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
+		}
 
         if(!connectLogDB()){
             echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>

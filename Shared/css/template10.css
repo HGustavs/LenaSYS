@@ -1,0 +1,17 @@
+/* This template makes two boxes, one to the left in the window and one to the right of the first one*/
+#box1wrapper {
+    position: absolute;
+    border-right-style: solid;
+    border-right-width: 3px;
+    border-color: #5A5757;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: -moz-calc(25.0%);
+    width: -webkit-calc(25.0%);
+    width: calc(100.0%);
+    height: 100% !important;
+	min-width: 10%;
+	max-width: 99.8%;
+}

@@ -75,7 +75,7 @@ function returnedDugga(data)
 			createFileUploadArea(duggaParams["submissions"]);
 			for (var k=0; k < duggaParams["submissions"].length; k++){
 				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
-	    		if (duggaParams['uploadInstruction'] !== null){
+	    		if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname){
 					document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 				}
 
@@ -301,6 +301,14 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
 		form +="</form>";
 
+		//---------------------------------------------------------------------------------------------------
+		// Error  <-- If the file uploaded has the wrong file extension, display an error message
+		//---------------------------------------------------------------------------------------------------
+		var error = "";
+		error +="<div id='fileerror" + l + "' class='err err-extension'>";
+		error +="<span>Bummer!</span>";
+		error +=" The extension "+inParams["extension"]+" is not allowed!</div>";
+
 		str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
 		str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
 		if (type === "pdf"){
@@ -350,9 +358,14 @@ function createFileUploadArea(fileuploadfileds){
 //		str += "</td>";
 //		str += "</tr>";
 		str += "</table>";
+
+		if (inParams["extension"] != null && fieldname === inParams["fieldtype"]) {	// Print out an error if the file extension is wrong. Null means the file extension is allowed.
+			str += error;
+		}
+
         str += "</div>";
-		str += "</div>"
-		str += "</div>"
+		str += "</div>";
+		str += "</div>";
 
 	}
 	document.getElementById("tomten").innerHTML=str;
