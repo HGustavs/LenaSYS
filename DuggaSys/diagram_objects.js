@@ -1406,44 +1406,45 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
         ctx.moveTo(x1, y1);
 
+
         // Check all symbols in diagram and see if anyone matches current line's points coordinate
         for (var i = 0; i < diagram.length; i++) {
             if (diagram[i].symbolkind == symbolKind.uml) { // filter UML class
                 var currentSymbol = diagram[i].corners();
 
                 // Check if line's start point matches any class diagram
-                if (x1 == currentSymbol.tl.x) {
+                if (x1 == pixelsToCanvas(currentSymbol.tl.x).x) {
                     startLineDirection = "left";
                     breakpointStartX = x1 - 30;
                     breakpointStartY = y1;
-                } else if (x1 == currentSymbol.br.x) {
+                } else if (x1 == pixelsToCanvas(currentSymbol.br.x).x) {
                     startLineDirection = "right";
                     breakpointStartX = x1 + 30;
                     breakpointStartY = y1;
-                } else if (y1 == currentSymbol.tl.y) {
+                } else if (y1 == pixelsToCanvas(0, currentSymbol.tl.y).y) {
                     startLineDirection = "up"
                     breakpointStartY = y1 - 30;
                     breakpointStartX = x1;
-                } else if (y1 == currentSymbol.br.y) {
+                } else if (y1 == pixelsToCanvas(0, currentSymbol.br.y).y) {
                     startLineDirection = "down"
                     breakpointStartY = y1 + 30;
                     breakpointStartX = x1;
                 }
 
                 // Check if line's end point matches any class diagram
-                if (x2 == currentSymbol.tl.x) {
+                if (x2 == pixelsToCanvas(currentSymbol.tl.x).x) {
                     endLineDirection = "left";
                     breakpointEndX = x2 - 30;
                     breakpointEndY = y2;
-                } else if (x2 == currentSymbol.br.x) {
+                } else if (x2 == pixelsToCanvas(currentSymbol.br.x).x) {
                     endLineDirection = "right";
                     breakpointEndX = x2 + 30;
                     breakpointEndY = y2;
-                } else if (y2 == currentSymbol.tl.y) {
+                } else if (y2 == pixelsToCanvas(0, currentSymbol.tl.y).y) {
                     endLineDirection = "up"
                     breakpointEndY = y2 - 30;
                     breakpointEndX = x2;
-                } else if (y2 == currentSymbol.br.y) {
+                } else if (y2 == pixelsToCanvas(0, currentSymbol.br.y).y) {
                     endLineDirection = "down"
                     breakpointEndY = y2 + 30;
                     breakpointEndX = x2;
@@ -2107,7 +2108,7 @@ function Path() {
     this.isLocked = false;          // If the free draw object is locked
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
     this.isHovered = false;         // If the free draw object is hovered
-    this.figureType = "Square";
+    this.figureType = "Free";
     this.properties = {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
@@ -2138,35 +2139,12 @@ function Path() {
         }
         this.calculateBoundingBox();
     }
+
     //--------------------------------------------------------------------
     // adjust: Is used to adjust the points of each symbol when moved
     //--------------------------------------------------------------------
     this.adjust = function() {
-        if(this.figureType == "Square") {
-            if(!sel) return;
-            for(var i = 0; i < this.segments.length; i++) {
-                var seg = this.segments[i];
-                if(points[seg.pa] == sel.point) {
-                    if(i == 0) {
-                        points[seg.pb].x = sel.point.x;
-                        points[seg.pb+1].y = sel.point.y;
-                    }
-                    else if(i == 1) {
-                        points[seg.pb-1].x = sel.point.x;
-                        points[seg.pb].y = sel.point.y;
-                    }
-                    else if(i == 2) {
-                        points[seg.pb].x = sel.point.x;
-                        points[seg.pb-1].y = sel.point.y;
-                    }
-                    else if(i == 3) {
-                        points[seg.pb+1].x = sel.point.x;
-                        points[seg.pb].y = sel.point.y;
-                    }
-                    break;
-                }
-            }
-        }
+        // Needed to prevent undefined exception
     }
 
     //--------------------------------------------------------------------
@@ -2556,11 +2534,7 @@ var numberOfPointsInFigure = 0;
 function createFigure() {
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
-    if (figureType == "Free") {
-        figureFreeDraw();
-    } else if (figureType == "Square") {
-        figureSquare();
-    }
+    figureFreeDraw();
 }
 
 //--------------------------------------------------------------------
@@ -2624,28 +2598,6 @@ function toggleFirstPoint(){
     }
     else {
         isFirstPoint = true;
-    }
-}
-
-//--------------------------------------------------------------------
-// figureSquare: Draws a square between p1 and p2.
-//--------------------------------------------------------------------
-function figureSquare() {
-    if (isFirstPoint) {
-        p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-        toggleFirstPoint();
-    } else {
-        p3 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-        p2 = points.addPoint(points[p1].x, points[p3].y, false);
-        p4 = points.addPoint(points[p3].x, points[p1].y, false);
-        figurePath.addsegment(1, p1, p2);
-        figurePath.addsegment(1, p2, p3);
-        figurePath.addsegment(1, p3, p4);
-        figurePath.addsegment(1, p4, p1);
-        diagram.push(figurePath);
-        selected_objects.push(figurePath);
-        lastSelectedObject = diagram.length - 1;
-        cleanUp();
     }
 }
 
