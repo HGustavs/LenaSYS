@@ -2516,8 +2516,8 @@ function initToolbox() {
     var myCanvas = document.getElementById('myCanvas');
     boundingRect = myCanvas.getBoundingClientRect();
     element.style.top = (boundingRect.top - 37 + "px");
-    element.style.left = (boundingRect.left - 65 + "px");
-    element.style.width = (65 + "px");
+    element.style.left = (boundingRect.left - 60 + "px");
+    element.style.width = (58 + "px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     element.style.display = "inline-block";
 }
