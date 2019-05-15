@@ -1259,23 +1259,43 @@ function Symbol(kindOfSymbol) {
         }
     }
 
+    // Used inside drawEntity when this.properties['key_type'] is set to Weak.
+    this.drawWeakEntity = function(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+        ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+        ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+        ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+        ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+        ctx.closePath();
+        ctx.lineWidth = (this.properties['lineWidth'] * 1.5) * diagram.getZoomValue();
+        ctx.stroke();
+
+        // Makes sure that the stroke color can not be white
+        if (this.properties['strokeColor'] == '#ffffff') {
+            this.properties['strokeColor'] = '#000000';
+        }
+        // Make sure that the font color is always able to be seen.
+        //Symbol and Font color should therefore not be the same
+        if (this.properties['fontColor'] == this.properties['symbolColor']) {
+            if (this.properties['symbolColor'] == '#000000') {
+                this.properties['fontColor'] = '#ffffff';
+            } else {
+                this.properties['fontColor'] = '#000000';
+            }
+        }
+    }
+
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
-        ctx.beginPath();
-
+        
         if (this.properties['key_type'] == "Weak") {
-            ctx.moveTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
-            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
-            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
-            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
-            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
-            ctx.stroke();
-            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+            this.drawWeakEntity(x1, y1, x2, y2);
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
         } else {
             removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
         }
-
+        ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y1);
         ctx.lineTo(x2, y2);
@@ -1702,31 +1722,55 @@ function Symbol(kindOfSymbol) {
 	    }
     }
 
-    this.drawRelation = function(x1, y1, x2, y2) {
+    this.drawWeakRelation = function(x1, y1, x2, y2) {
+      var midx = pixelsToCanvas(points[this.centerPoint].x).x;
+      var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
+      ctx.beginPath();
+      ctx.moveTo(midx, y1 - 5 * diagram.getZoomValue());
+      ctx.lineTo(x2 + 9 * diagram.getZoomValue(), midy + 0);
+      ctx.lineTo(midx + 0, y2 + 5 * diagram.getZoomValue());
+      ctx.lineTo(x1 - 9 * diagram.getZoomValue(), midy + 0);
+      ctx.lineTo(midx + 0, y1 - 5 * diagram.getZoomValue());
+      ctx.closePath();
+      ctx.lineWidth = (this.properties['lineWidth'] * 1.5) * diagram.getZoomValue();
+      ctx.stroke();
+
+      // Makes sure that the stroke color can not be white
+      if (this.properties['strokeColor'] == '#ffffff') {
+          this.properties['strokeColor'] = '#000000';
+      }
+      // Make sure that the font color is always able to be seen.
+      //Symbol and Font color should therefore not be the same
+      if (this.properties['fontColor'] == this.properties['symbolColor']) {
+          if (this.properties['symbolColor'] == '#000000') {
+              this.properties['fontColor'] = '#ffffff';
+          } else {
+              this.properties['fontColor'] = '#000000';
+          }
+      }
+    }
+
+    this.drawRelation = function(x1, y1, x2, y2, midx, midy) {
         this.isRelation = true;
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
-        ctx.beginPath();
+
         if (this.properties['key_type'] == 'Weak') {
-            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
-            ctx.moveTo(midx, y1 + 5 * diagram.getZoomValue());
-            ctx.lineTo(x2 - 9 * diagram.getZoomValue(), midy + 0);
-            ctx.lineTo(midx + 0, y2 - 5 * diagram.getZoomValue());
-            ctx.lineTo(x1 + 9 * diagram.getZoomValue(), midy + 0);
-            ctx.lineTo(midx + 0, y1 + 5 * diagram.getZoomValue());
+          this.drawWeakRelation(x1, y1, x2, y2, midx, midy);
         }
+
+        ctx.beginPath();
+        ctx.fillStyle = this.properties['symbolColor'];
         ctx.moveTo(midx, y1);
         ctx.lineTo(x2, midy);
         ctx.lineTo(midx, y2);
         ctx.lineTo(x1, midy);
         ctx.lineTo(midx, y1);
-
-        ctx.fillStyle = this.properties['symbolColor'];
-        ctx.fill();
         ctx.closePath();
+        ctx.fill();
         ctx.clip();
-
         ctx.stroke();
+
         ctx.fillStyle = this.properties['fontColor'];
         if(ctx.measureText(this.name).width >= (x2-x1) - 12) {
             ctx.textAlign = "start";
@@ -1979,7 +2023,7 @@ function Symbol(kindOfSymbol) {
     }
 }
 //----------------------------------------------------------------------
-// drawLock: This function draws out the actual lock for the specified symbol 
+// drawLock: This function draws out the actual lock for the specified symbol
 //----------------------------------------------------------------------
 function drawLock(symbol) {
     var position = symbol.getLockPosition();
@@ -2028,7 +2072,7 @@ function drawLockedTooltip(symbol) {
 // Checks if the lock itself is hovered on specified symbol using mousecordinates (mx, my).
 function setIsLockHovered(symbol, mx, my) {
     var position = symbol.getLockPosition();
-    // offset so that we start at top left of lock 
+    // offset so that we start at top left of lock
     position.y -= 5;
     //change mouseposition to scale with zoom and movement
     mx = pixelsToCanvas(mx).x;
