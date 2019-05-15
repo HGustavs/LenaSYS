@@ -3299,14 +3299,14 @@ rect[class*="activitymarker"]:hover {
 }
 
 /* styling for dropdown and toggle all button in accessed */
-#toggleAllButton {
-  background-color: #614875;
+.dropdown-button {
+  background-color: var(--color-primary);
   color: white;
   width: 100px;
   cursor: pointer;
 }
 
-#toggleAllButton:hover {
+.dropdown-button:hover {
   background-color: #7b5a96;
 }
 
