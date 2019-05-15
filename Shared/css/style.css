@@ -1332,6 +1332,11 @@ input {
   background-color: var(--color-primary);
   width: 47%;
   transition: 0.25s background-color;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .diagramAction:hover {
@@ -1777,8 +1782,8 @@ input.hide-moments-button {
 .fileUploadInfo:after {
   content: "";
   display: block;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid white;
@@ -1904,6 +1909,11 @@ div.submit-button:disabled {
 #contentDiagram .toolboxButtons {
   width: 35px !important;
   height: 25px !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 #textButton {
@@ -1911,6 +1921,11 @@ div.submit-button:disabled {
   height: 22px;
   margin-top: 3px;
   filter: invert(100%);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 #moveButton img {
