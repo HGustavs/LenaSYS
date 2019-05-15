@@ -2998,8 +2998,10 @@ span.arrow {
 .dropdown-list-container {
   padding: 8px;
   width: 300px;
+  max-height: calc(100vh - 100px);
   height: auto;
   font-size: 12px;
+  overflow-y: auto;
   display: none;
   position: absolute;
   top: 35px;
