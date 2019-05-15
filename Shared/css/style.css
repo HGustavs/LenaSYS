@@ -1768,6 +1768,9 @@ div.submit-button:disabled {
   border: none;
   margin: 5px auto;
   transition: 0.25s background-color;
+  display: inline;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .buttonsStyle:hover {
@@ -1818,14 +1821,6 @@ div.submit-button:disabled {
 #contentDiagram .toolboxButtons {
   width: 35px ;
   height: 25px;
-}
-
-#attributebutton, #entitybutton, #relationbutton,
-#linebutton, #drawfreebutton, #classbutton,
-#umllinebutton, #drawtextbutton {
-  display: inline;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 #textButton {
