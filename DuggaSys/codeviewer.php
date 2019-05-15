@@ -266,7 +266,7 @@ Testing Link:
 		<div id='chooseTemplateContainer' class="loginBoxContainer" style="display:none;">
 				<div id='chooseTemplate' class='loginBox' style='width:464px;'>
 					<div class='loginBoxheader'>
-						<h3>Edit Example</h3>
+						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>
 					</div>
 					<table width="100%">
@@ -284,6 +284,8 @@ Testing Link:
 							<td id="templat9" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("9");' src='../Shared/icons/template9_butt.svg' /></td>
 							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10");' src='../Shared/icons/template10_butt.svg' /></td>
 						</tr>
+					</table>
+					<table id="templateOptions" width="100%">
 					</table>
 					<table width="100%">
 						<tr>

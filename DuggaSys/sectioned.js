@@ -95,6 +95,7 @@ menuState
 function hamburgerChange(operation = 'click') {
   if (operation != "click") {
     if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
+      bigMac();
       toggleHamburger();
     }
   } else {
@@ -113,7 +114,13 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline) {
+
+  // Variables for the different options and values for the deadlne time dropdown meny.
+  var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+  var hourArrValue=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+  var minuteArrOptions=["00","05","10","15","20","25","30","35","40","45","50","55"];
+  var minuteArrValue=[0,5,10,15,20,25,30,35,40,45,50,55];
 
   nameSet = false;
   if (entryname == "undefined") entryname = "New Header";
@@ -133,11 +140,15 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2, 3]));
+  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
   $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
   $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
+  $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
+  $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
+  $("#setDeadlineValue").val(deadline.substr(0,10));
+
   var groups = [];
   for (var key in retdata['groups']) {
     // skip loop if the property is from prototype
@@ -249,6 +260,7 @@ function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
+    $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     deleteItem(active_lid);
     $("#sectionConfirmBox").css("display", "none");
@@ -312,6 +324,7 @@ function addColorsToTabSections(kind, visible, spkind) {
 function prepareItem() {
   // Create parameter object and fill with information
   var param = {};
+  var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
 
   // Storing tabs in gradesys column!
   var kind = $("#type").val()
@@ -330,6 +343,7 @@ function prepareItem() {
   param.moment = $("#moment").val();
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
+  param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
 
   return param;
 }
@@ -351,12 +365,14 @@ function deleteItem(item_lid = null) {
 //----------------------------------------------------------------------------------
 
 function updateItem() {
-
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
   $("#sectionConfirmBox").css("display", "none");
   $("#editSection").css("display", "none");
+}
 
+function updateDeadline(){
+  AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
 }
 
 //----------------------------------------------------------------------------------
@@ -432,7 +448,7 @@ function updateVersion() {
 function goToVersion(selected) {
   var value = selected.value;
   //changeURL("sectioned.php" + value)
-  changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
 
 function accessCourse() {
@@ -787,10 +803,6 @@ function returnedSection(data) {
 
         // Close Information
         str += ">";
-        // Generate ID for collapsing arrows
-        //var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
-        var arrowID = item['moment'];
-
         // Content of Section Item
         if (itemKind == 0) {
           // Header
@@ -799,15 +811,15 @@ function returnedSection(data) {
           // Section
           str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
           str += "<span class='ellipsis listentries-span'>" + item['entryname'] + "</span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + arrowID + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + arrowID + "' class='arrowRight' style='display:none;'></div>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
         } else if (itemKind == 4) {
           // Moment
           var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
           str += "<div class='nowrap" + hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='" + item['entryname'] + "'>";
           str += "<span class='ellipsis listentries-span'>" + item['entryname'] + " " + strz + " </span>";
-          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + arrowID + "' class='arrowComp' style='display:inline-block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + arrowID + "' class='arrowRight' style='display:none;'>";
+          str += "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:inline-block;'>";
+          str += "<img src='../Shared/icons/right_complement.svg'" + "id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'>";
           str += "</div>";
         } else if (itemKind == 2) {
           // Code Example
@@ -907,7 +919,7 @@ function returnedSection(data) {
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
           str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype']]) + ");' />";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline']]) + ");' />";
           str += "</td>";
         }
 
@@ -998,6 +1010,9 @@ function returnedSection(data) {
 
   // Change title of the current page depending on which page the user is on.
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+    
+  // Sets a title on the course heading name
+  document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
 
   drawPieChart(); // Create the pie chart used in the statistics section.
   fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
@@ -1228,7 +1243,7 @@ function drawSwimlanes() {
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
   var daySinceStart = Math.ceil((current - startdate) / (24 * 60 * 60 * 1000));
-  var daywidth = 4
+  var daywidth = 4;
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
@@ -1236,6 +1251,9 @@ function drawSwimlanes() {
   var tempNumb = 2;
 
   var str = "";
+  // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not. 
+  str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'><stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> <linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'><stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
+
   for (var i = 0; i < weekLength; i++) {
     if(i==0){
       addNumb = 0;
@@ -1280,13 +1298,13 @@ function drawSwimlanes() {
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
 
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
-        var textcol = "#000000";
+        var textcol = `url("#fadeTextGrey")`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
-          textcol = "#FF0000";
+          textcol = `url("#fadeTextRed")`;
         }
         var tempVariable = duggalength*daywidth;
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
-        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
+        str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }
     }
 
@@ -1373,9 +1391,6 @@ function mouseUp(e) {
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
     hamburgerChange("notAClick");
-    closeWindows();
-    closeSelect();
-    showSaveButton();
   }
 }
 
@@ -1384,12 +1399,11 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
+  var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
   if (event.keyCode == 27) {
     // if key is escape
-    closeWindows();
-    closeSelect();
     showSaveButton();
-    hamburgerChange("escapePress");
+     hamburgerChange("escapePress");
     document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     //Remember that keycode 13 = enter button
@@ -1397,24 +1411,29 @@ $(window).keyup(function (event) {
     var saveButtonDisplay = ($('#saveBtn').css('display'));
     var editSectionDisplay = ($('#editSection').css('display'));
     var submitButtonDisplay = ($('#submitBtn').css('display'));
-    var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       updateItem();
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();
-    } else if (deleteButtonDisplay == 'flex') {
-      // Delete the item, allow enter to act as clicking "yes"
-      confirmBox("deleteItem");
     } else if (testsAvailable == true) {
       confirmBox("closeConfirmBox");
       testsAvailable = false;
     } else if (errorMissingMaterialDisplay == 'flex') {
       closeWindows();
     }
-
   }
+    else if(event.keyCode == 37){
+      if (deleteButtonDisplay == 'flex') {
+        $('#delete-item-button').focus();
+      }
+    }
+    else if(event.keyCode == 39){
+      if (deleteButtonDisplay == 'flex') {
+        $('#close-item-button').focus();
+      }
+    }
 });
 
 // React to scroll events

@@ -28,7 +28,7 @@ function downloadMode(el) {
 function saveToServer(dia) {
     $.ajax({
         url: 'diagram.php',
-        type: 'POST', // GET or POST
+        type: 'POST', 
         data: {StringDiagram : dia, Hash: hashFunction()}
     });
 }

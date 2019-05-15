@@ -39,24 +39,24 @@ pdoConnect();
     <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
         <div style='display:flex;flex-wrap:wrap;'>
             <div style='white-space:nowrap'>
-                <input type="radio" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
-                <label name="sortAll" style='white-space:nowrap'>All files</label>
+                <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
+                <label for="all-files-sort" name="sortAll" style='white-space:nowrap'>All files</label>
             </div>
             <div style='white-space:nowrap'>
-                <input type="radio" name="sortKind" value="Global" onclick="count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
-                <label name="sortGlobal" style='white-space:nowrap'>Global</label>
+                <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
+                <label for="global-files-sort" name="sortGlobal" style='white-space:nowrap'>Global</label>
             </div>
             <div style='white-space:nowrap'>
-                <input type="radio" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
-                <label name="sortCLocal" style='white-space:nowrap'>Course local</label>
+                <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
+                <label for="course-local-sort" name="sortCLocal" style='white-space:nowrap'>Course local</label>
             </div>
             <div style='white-space:nowrap'>
-                <input type="radio" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
-                <label name="sortVLocal" style='white-space:nowrap'>Version local</label>
+                <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
+                <label for="version-local-sort" name="sortVLocal" style='white-space:nowrap'>Version local</label>
             </div>
             <div style='white-space:nowrap'>
-                <input type="radio" name="sortKind" value="Links" onclick="count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
-                <label name="sortLinks" style='white-space:nowrap'>Links</label>
+                <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
+                <label for="links-sort" name="sortLinks" style='white-space:nowrap'>Links</label>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@ pdoConnect();
 
     <!-- Add File Dialog START -->
     <div id='addFile' class='loginBoxContainer' style='display:none;'>
-        <div class='loginBox' style='width:464px;'>
+        <div class='loginBox' style='width:464px; overflow-y: visible'>
             <div class='loginBoxheader' style='cursor:default;'>
                 <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
                 <h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
@@ -81,6 +81,10 @@ pdoConnect();
                     <div class='inputwrapper filePopUp'>
                         <span>Upload File:</span>
                         <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple"/>
+                        <div class="fileUploadInfo">
+                            <h1>Allowed Files</h1>
+                            <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
+                        </div>
                     </div>
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
