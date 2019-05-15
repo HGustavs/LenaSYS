@@ -416,7 +416,7 @@ function keyDownHandler(e) {
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line 
+            if(cloneTempArray[i].symbolkind != symbolKind.line
                 && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
@@ -3201,12 +3201,12 @@ function mouseupevt(ev) {
                 symbolEndKind = diagram[markedObject].symbolkind;
 
                 sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-              
+
                 //Check if you not start on a line and not end on a line or so that a line isn't connected to a text object,
                 // if then, set point1 and point2
                 //okToMakeLine is a flag for this
                 var okToMakeLine = true;
-              
+
                 if (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine &&
                     symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
                     var createNewPoint = false;
@@ -3420,13 +3420,11 @@ function countNumberOfSymbolKind(kind) {
 function doubleclick(ev) {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
-    } else {
-        createText(currentMouseCoordinateX, currentMouseCoordinateY);
     }
 }
 
 function createText(posX, posY) {
-    var text = new Symbol(6);
+    var text = new Symbol(symbolKind.text);
     text.name = "New Text" + diagram.length;
     text.textLines.push({text:text.name});
 
