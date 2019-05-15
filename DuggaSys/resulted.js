@@ -218,9 +218,6 @@ function process() {
 	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
 	dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr += "<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";
-	dstr += "<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(4)' value='0' id='sortcol0_4'><label class='headerlabel' for='sortcol0_4' >Teacher</label></div>";
 
 	dstr += "<table><tr><td>";
 	for (var j = 0; j < momtmp.length; j++) {
