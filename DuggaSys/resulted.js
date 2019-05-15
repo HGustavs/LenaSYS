@@ -240,10 +240,6 @@ function process() {
 		}
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(0)' id='sorttype0' value='0'><label class='headerlabel' for='sorttype0' >FIFO</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(1)' id='sorttype1' value='1'><label class='headerlabel' for='sorttype1' >Grade</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(2)' id='sorttype2' value='2'><label class='headerlabel' for='sorttype2' >Submitted</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
 	dstr += "</td></tr></table>";
 	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
 	document.getElementById("dropdowns").innerHTML = dstr;
@@ -791,15 +787,15 @@ function renderCell(col, celldata, cellid) {
 				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 				str += "</div>";
-				return str;	
+				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
 				str = "<div style='padding:10px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
-				} 
+				}
 				str += "'>";
-				// Creation of grading buttons		
+				// Creation of grading buttons
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "<div class='gradeContainer resultTableText'>";
 					if (celldata.grade === null) {
@@ -847,9 +843,9 @@ function renderCell(col, celldata, cellid) {
 					}
 					str += "</div>";
 				}
-				return str;	
-			} 
-	}	
+				return str;
+			}
+	}
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
@@ -1100,7 +1096,7 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-	
+
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
