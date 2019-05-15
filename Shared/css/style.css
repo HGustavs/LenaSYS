@@ -1597,6 +1597,11 @@ button.option {
   padding: 6px 12px;
 }
 
+#MOTDbutton {
+  position: absolute;
+ top: -2px;
+}
+
 input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -3245,7 +3250,7 @@ rect[class*="activitymarker"]:hover {
 }
 
 .alertmsg p {
-  padding-left: 117px;
+  /*padding-left: 117px; */
   /* margin: 0px; */
   /* margin-left: 5px; */
   display: inline;
@@ -3255,16 +3260,17 @@ rect[class*="activitymarker"]:hover {
 
 .alertmsg input {
   float: none;
+  align-self: center;
+  margin-right: 5px;
+  right: 20px;
+}
+
+
+.alertmsg#servermsgcontainer {
+  top: 50px;
 }
 
 /*
-.alertmsg#servermsgcontainer {
-  top: 50px;
-}
-
-.alertmsg#servermsgcontainer {
-  top: 50px;
-}
 
 .alertmsg#cookiemsg {
   bottom: 0;
@@ -3874,7 +3880,7 @@ only screen and (max-device-width: 530px) {
     border: 1px solid var(--color-border);
     border-radius: 0;
     font-size: 14px;
-  } 
+  }
 
   #searchbuttonMobile {
     margin: 0;
@@ -5120,6 +5126,5 @@ textarea#filecont{
 }
 
 .resultedbuttons:hover{
-  filter: brightness(1.2); 
+  filter: brightness(1.2);
 }
-
