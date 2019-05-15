@@ -2556,11 +2556,7 @@ var numberOfPointsInFigure = 0;
 function createFigure() {
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
-    if (figureType == "Free") {
-        figureFreeDraw();
-    } else if (figureType == "Square") {
-        figureSquare();
-    }
+    figureFreeDraw();
 }
 
 //--------------------------------------------------------------------
