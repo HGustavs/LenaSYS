@@ -2108,7 +2108,7 @@ function Path() {
     this.isLocked = false;          // If the free draw object is locked
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
     this.isHovered = false;         // If the free draw object is hovered
-    this.figureType = "Square";
+    this.figureType = "Free";
     this.properties = {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
@@ -2139,35 +2139,12 @@ function Path() {
         }
         this.calculateBoundingBox();
     }
+
     //--------------------------------------------------------------------
     // adjust: Is used to adjust the points of each symbol when moved
     //--------------------------------------------------------------------
     this.adjust = function() {
-        if(this.figureType == "Square") {
-            if(!sel) return;
-            for(var i = 0; i < this.segments.length; i++) {
-                var seg = this.segments[i];
-                if(points[seg.pa] == sel.point) {
-                    if(i == 0) {
-                        points[seg.pb].x = sel.point.x;
-                        points[seg.pb+1].y = sel.point.y;
-                    }
-                    else if(i == 1) {
-                        points[seg.pb-1].x = sel.point.x;
-                        points[seg.pb].y = sel.point.y;
-                    }
-                    else if(i == 2) {
-                        points[seg.pb].x = sel.point.x;
-                        points[seg.pb-1].y = sel.point.y;
-                    }
-                    else if(i == 3) {
-                        points[seg.pb+1].x = sel.point.x;
-                        points[seg.pb].y = sel.point.y;
-                    }
-                    break;
-                }
-            }
-        }
+        // Needed to prevent undefined exception
     }
 
     //--------------------------------------------------------------------
@@ -2557,11 +2534,7 @@ var numberOfPointsInFigure = 0;
 function createFigure() {
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
-    if (figureType == "Free") {
-        figureFreeDraw();
-    } else if (figureType == "Square") {
-        figureSquare();
-    }
+    figureFreeDraw();
 }
 
 //--------------------------------------------------------------------
@@ -2625,28 +2598,6 @@ function toggleFirstPoint(){
     }
     else {
         isFirstPoint = true;
-    }
-}
-
-//--------------------------------------------------------------------
-// figureSquare: Draws a square between p1 and p2.
-//--------------------------------------------------------------------
-function figureSquare() {
-    if (isFirstPoint) {
-        p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-        toggleFirstPoint();
-    } else {
-        p3 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-        p2 = points.addPoint(points[p1].x, points[p3].y, false);
-        p4 = points.addPoint(points[p3].x, points[p1].y, false);
-        figurePath.addsegment(1, p1, p2);
-        figurePath.addsegment(1, p2, p3);
-        figurePath.addsegment(1, p3, p4);
-        figurePath.addsegment(1, p4, p1);
-        diagram.push(figurePath);
-        selected_objects.push(figurePath);
-        lastSelectedObject = diagram.length - 1;
-        cleanUp();
     }
 }
 

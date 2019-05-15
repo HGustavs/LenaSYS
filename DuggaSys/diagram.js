@@ -1572,7 +1572,7 @@ function eraseSelectedObject() {
 
 function setMode(mode) { //"CreateClass" yet to be implemented in .php
     uimode = mode;
-    if(mode == 'Square' || mode == 'Free' || mode == 'Text') {
+    if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
       if(figureType == "Free") {
           cancelFreeDraw();
@@ -1582,7 +1582,7 @@ function setMode(mode) { //"CreateClass" yet to be implemented in .php
 }
 
 $(document).ready(function() {
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function() {
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function() {
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")) {
@@ -2561,7 +2561,6 @@ function switchToolbar(direction) {
     $("#relationbutton").show();
     $("#drawerDraw").show();
     $("#labelDraw").show();
-    $("#squarebutton").show();
     $("#drawfreebutton").show();
     $("#drawtextbutton").show();
   }
@@ -2595,7 +2594,6 @@ function switchToolbar(direction) {
     $("#relationbutton").show();
     $("#drawerDraw").show();
     $("#labelDraw").show();
-    $("#squarebutton").show();
     $("#drawfreebutton").show();
     $("#drawtextbutton").show();
   }
@@ -2880,23 +2878,6 @@ function mousemoveevt(ev, t) {
                         crossFillStyle = "rgba(255, 102, 68, 0.0)";
                     }
                 }
-            } else if(uimode == "CreateFigure" && figureType == "Square") {
-                ctx.setLineDash([3, 3]);
-                ctx.beginPath();
-                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#d51";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
-                }
             } else if (uimode == "CreateEREntity") {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
@@ -3042,9 +3023,6 @@ function mousedownevt(ev) {
             }
             lastSelectedObject = -1;
             selected_objects = [];
-        }
-        if(uimode == "CreateFigure" && figureType == "Square") {
-            createFigure();
         }
     }
 }
