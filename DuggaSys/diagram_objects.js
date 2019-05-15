@@ -1421,11 +1421,11 @@ function Symbol(kindOfSymbol) {
                     startLineDirection = "right";
                     breakpointStartX = x1 + 30;
                     breakpointStartY = y1;
-                } else if (y1 == pixelsToCanvas(currentSymbol.tl.y).y) {
+                } else if (y1 == pixelsToCanvas(0, currentSymbol.tl.y).y) {
                     startLineDirection = "up"
                     breakpointStartY = y1 - 30;
                     breakpointStartX = x1;
-                } else if (y1 == pixelsToCanvas(currentSymbol.br.y).y) {
+                } else if (y1 == pixelsToCanvas(0, currentSymbol.br.y).y) {
                     startLineDirection = "down"
                     breakpointStartY = y1 + 30;
                     breakpointStartX = x1;
@@ -1440,11 +1440,11 @@ function Symbol(kindOfSymbol) {
                     endLineDirection = "right";
                     breakpointEndX = x2 + 30;
                     breakpointEndY = y2;
-                } else if (y2 == pixelsToCanvas(currentSymbol.tl.y).y) {
+                } else if (y2 == pixelsToCanvas(0, currentSymbol.tl.y).y) {
                     endLineDirection = "up"
                     breakpointEndY = y2 - 30;
                     breakpointEndX = x2;
-                } else if (y2 == pixelsToCanvas(currentSymbol.br.y).y) {
+                } else if (y2 == pixelsToCanvas(0, currentSymbol.br.y).y) {
                     endLineDirection = "down"
                     breakpointEndY = y2 + 30;
                     breakpointEndX = x2;
