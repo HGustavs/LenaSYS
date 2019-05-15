@@ -2742,26 +2742,23 @@ function mousemoveevt(ev, t) {
                     }
                 }
             } else {
-                if(uimode == "MoveAround") {
-                    canvas.style.cursor = "all-scroll";
-                } else if(hoveredObject && !hoveredObject.isLocked){
-                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
-                        canvas.style.cursor = "pointer";
-                    } else {
-                        canvas.style.cursor = "all-scroll";
-                    }
-                } else if (uimode == "CreateLine") {
-                    //When CreateLine-button is selected the cursor is "pointer".
-                    canvas.style.cursor = "pointer";
-                    //If objects are hovered while button is selected, the cursor remains the same (pointer).
-                    if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
-                        canvas.style.cursor = "pointer";
-                    }
-                } else {
-                    canvas.style.cursor = "default";
-                }
-            }
-
+                  if(uimode == "MoveAround") {
+                      canvas.style.cursor = "all-scroll";
+                  } else if (uimode == "CreateLine") {
+                      //When CreateLine-button is selected the cursor is "pointer".
+                      canvas.style.cursor = "pointer";
+                      //If objects are hovered while button is selected, the cursor remains the same (pointer).
+                  } else if(hoveredObject && !hoveredObject.isLocked) {
+                        if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
+                            canvas.style.cursor = "pointer";
+                        } else {
+                            canvas.style.cursor = "all-scroll";
+                        }
+                  } else {
+                      canvas.style.cursor = "default";
+                  }
+              }
+       
             // If mouse is not pressed highlight closest point
             points.clearAllSelects();
             movobj = diagram.itemClicked();
