@@ -1027,6 +1027,10 @@ header td {
   width: 100%;
 }
 
+.templateSelect {
+  width: 150px !important
+}
+
 input {
   border-radius: 2px;
   border: 2px solid #ccc;
@@ -2990,7 +2994,7 @@ span.arrow {
   background: #FFF8A5;
   margin-bottom: 10px;
   margin-top: 4px;
-  z-index: 3000;
+  z-index: 0;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
   padding-left: 8px;
   width: 400px;
@@ -4319,6 +4323,13 @@ only screen and (max-device-width: 320px) {
   height: 20px;
   line-height: 20px;
   margin-top: 6px;
+}
+
+[data-tooltip]:before {
+  visibility: visible;
+  opacity: 0.2;
+  transform: scale(1);
+  transform-origin: right center 0;
 }
 
 [data-tooltip]:hover:before {

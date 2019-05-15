@@ -92,7 +92,11 @@
 		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
 			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 			if(strcmp('SETTEMPL',$opt)===0){
-				// Add word to wordlist
+				// Parse content array
+				$content = getOP('content');
+				$cArray = explode(',', $content);
+				$multiArray = array_chunk($cArray, 3);
+
 				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
 				$query->bindParam(':templateno', $templateNumber);
 				$query->bindParam(':exampleid', $exampleId);
@@ -114,27 +118,30 @@
 
 				// Create appropriate number of boxes
 				for($i=1;$i<$boxCount+1;$i++){
-				    // Create boxes, if some box does not exist
-            $query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");
+						$kind = $multiArray[$i-1][0];
+						$file = $multiArray[$i-1][1];
+						$wordlist = $multiArray[$i-1][2];
+
+						// Create boxes, if some box does not exist
+						$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid);");
 
 						$query->bindParam(':i', $i);
 						$query->bindParam(':exampleid', $exampleId);
 						$query->bindValue(':boxtitle', 'Title');
-						$query->bindValue(':boxcontent', 'Code');
+						$query->bindValue(':boxcontent', $kind);
 						$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
-						$query->bindValue(':filename', 'js1.js'); // TODO: Should only bind with the file used (if used) and not to one by default
+						$query->bindValue(':filename', $file); 
+						$query->bindValue(':wordlistid', $wordlist);
 
 						// Update code example to reflect change of template
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
 
-              // If we get duplicate key error message, ignore error, otherwise carry on adding to debug message
-              if(strpos($error[2],"Duplicate entry")==-1) $debug.="Error creating new box: ".$error[2];
+							// If we get duplicate key error message, ignore error, otherwise carry on adding to debug message
+							if(strpos($error[2],"Duplicate entry")==-1) $debug.="Error creating new box: ".$error[2];
 
-            }
+						}
 				}
-
-
 			}else if(strcmp('EDITEXAMPLE',$opt)===0){
 				if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
 				if(isset($_POST['examplename'])) {$exampleName = $_POST['examplename'];}
@@ -397,25 +404,48 @@
 		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid ORDER BY kind,filename");
 		$query->bindParam(':cid', $courseId);
 
-		// We add only local files to code (no reading code from external sources) and allow preview to files or links.
+		// Allowed file extensions for each view. Just add an extension as a new string in the array to allow it.
+		$codeFiles=array(".html", ".htm", ".xhtml", ".php", ".css", ".js", ".c", ".cpp", ".java", ".sl", ".glsl", ".rib", ".sql", ".xml", ".svg", ".rss", ".json", ".aspx", ".asp");	// File extensions for code view
+		$descFiles=array(".txt", ".md", ".doc", ".docx", ".odt");	// File extensions for document view
+		$prevFiles=array(".pdf", ".png", ".jpg", ".jpeg", ".svg", ".bmp", ".gif", ".html", ".txt");	// File extensions for preview view
+		
+		// We add only local files to code (no reading code from external sources) and allow preview to files or links.				
 		if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error reading entries\n".$error[2];
 		}
 		$oldkind=2;
 		foreach($query->fetchAll() as $row) {
+				// Add separators to separate the current file from all the other files
 				if($row['kind']!=$oldkind){
 					array_push($codeDir,array('fileid' => -1,'filename' => "---===######===---"));
 					array_push($descDir,array('fileid' => -1,'filename' => "---===######===---"));
 					array_push($prevDir,array('fileid' => -1,'filename' => "---===######===---"));
 				}
 				$oldkind=$row['kind'];
-
-				if(endsWith($row['filename'],".txt")||endsWith($row['filename'],".md")){
-						array_push($descDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+				
+				// List only .md, .txt, etc files for Document view
+				foreach($descFiles as $filetype){
+					if(endsWith($row['filename'],$filetype)){
+						array_push($descDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+					}
 				}
-				if($row['kind']!=1) array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
-				array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+				
+				// List only .js, .css, .html, .c, .cpp, .xml, .sl, .rib, .glsl, .sql, etc files for Code view
+				foreach($codeFiles as $filetype){
+					if(endsWith($row['filename'],$filetype)){
+						array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+					}
+				}
+
+				// List only .pdf, .png, .jpg, .svg, etc for Preview view
+				foreach($prevFiles as $filetype){
+					if(endsWith($row['filename'],$filetype)){
+						array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+					}
+				}
+				//if($row['kind']!=1) array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+				//array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));				
 		}
 		array_push($directories, $codeDir);
 		array_push($directories, $descDir);

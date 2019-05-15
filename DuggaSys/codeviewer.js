@@ -13,6 +13,14 @@ Testing Link:
 
 codeviewer.php?exampleid=1&courseid=1&cvers=45656
 
+How to use
+---------------------
+# Upload the files you wish to display in the file editor
+# Create a new codeviewer
+# Pick a template
+# Click the cogwheel and pick the file you wish to display in the 'File' select box
+# Click 'Save'
+
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -64,7 +72,7 @@ function returned(data)
 	retData=data;
 
 	if(retData['writeaccess'] == "w"){
-		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid="+courseid+"&coursevers="+cvers+"');");
+		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 
@@ -173,7 +181,6 @@ function returned(data)
 			// set font size
 			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
 		}else if(boxtype === "DOCUMENT"){
-
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
 			var desc = boxcontent;
@@ -202,9 +209,9 @@ function returned(data)
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
 
-				// set font size
-				$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
-				
+			// set font size
+			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
+
 			// Make room for the menu by setting padding-top equals to height of menubox
 			if($("#"+contentid+"menu").height() == null){
 				boxmenuheight = 0;
@@ -257,12 +264,21 @@ function returned(data)
 			}
 		}
 	}
+
+	//hides maximize button if not supported
+	hideMaximizeAndResetButton();
+
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
+
+	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
+
+	titles.forEach(title => {
+		title.addEventListener('keypress', preventLinebreak);
+	})
 }
 
-function returnedTitle(data)
-{
+function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
 	retData['box'][retData['box'].length-1][4] = data;
 	$("#boxtitle2").text(data);
@@ -344,7 +360,7 @@ function editImpWords(editType)
 
 //----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialogue box for editing a code example
-//                Is called at line 58 in navheader.php
+//
 //----------------------------------------------------------------------------------
 
 function displayEditExample(boxid)
@@ -441,7 +457,7 @@ function updateExample()
 		removedWords = [];
 	}
 
-	$("#editExample").css("display","none");
+	$("#editExampleContainer").css("display","none");
 }
 
 //----------------------------------------------------------------------------------
@@ -502,28 +518,47 @@ function changeDirectory(kind)
 	var dir;
 	var str="";
 
-	var chosen=$("#filename").val();
+	var kindNum;
+	if (kind.id) {
+		kindNum = kind.id.split('_')[1];
+	}
+	
+	if (kindNum) {
+		var chosen=$("#filename_"+kindNum).val();
+		var wordlist = $('#wordlist_'+kindNum);
+		var filenameBox = $("#filename_"+kindNum);
+	} else {
+		var chosen=$("#filename").val();
+		var wordlist = $('#wordlist');
+		var filenameBox = $("#filename");
+	}
 
 	if ($(kind).val() == "CODE") {
 		dir = retData['directory'][0];
-		$('#wordlist').prop('disabled', false);
+		wordlist.prop('disabled', false);
 	}else if($(kind).val() == "IFRAME"){
 		dir = retData['directory'][2];
-		$('#wordlist').prop('disabled', 'disabled');
+		wordlist.prop('disabled', 'disabled');
 	}else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
-		$('#wordlist').val('4');
-		$('#wordlist').prop('disabled', 'disabled');
+		wordlist.val('4');
+		wordlist.prop('disabled', 'disabled');
 	}
+
+	// Fill the file selection dropdown with files
+	//---------------------------------------------------------------------
 
 	for(var i=0;i<dir.length;i++){
 		if(chosen==dir[i].filename){
 				str+="<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>"+dir[i].filename+"</option>";
-				}else{
+		}else{
 				str+="<option value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>"+dir[i].filename+"</option>";
 		}
 	}
-	$("#filename").html(str);
+
+
+
+	filenameBox.html(str);
 	$("#playlink").html(str);
 }
 
@@ -629,6 +664,19 @@ function updateContent()
 	}
 }
 
+/*-----------------------------------------------------------------------
+  -  preventLinebreak: Prevents line breaks in contenteditable heading  -     
+  -----------------------------------------------------------------------*/
+function preventLinebreak(e) {
+	if (e.key === 'Enter') {
+		e.preventDefault();
+		var titles = [...document.querySelectorAll('[contenteditable="true"]')];
+		titles.forEach(title => {
+			title.blur();
+		});
+		window.getSelection().removeAllRanges();
+	}
+}
 //----------------------------------------------------------------------------------
 // addTemplatebox: Adds a new template box to div2
 //				   Is called by returned(data) in codeviewer.js
@@ -668,14 +716,29 @@ function createboxmenu(contentid, boxid, type)
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
+        
+				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
+				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p>Reset</p></div>";
+				str+="</tr></table>";
+
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
+
+				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
+				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
+				str+='</tr></table>';
+
 			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
+
+				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
+				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
+				str+="</tr></table>";
+
 			}else{
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
@@ -965,8 +1028,7 @@ function dehighlightKeyword(kw)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------
 
-function token (kind,val,fromchar,tochar,row)
-{
+function token (kind,val,fromchar,tochar,row) {
 	this.kind = kind;
 	this.val = val;
 	this.from = fromchar;
@@ -1677,6 +1739,49 @@ function changetemplate(templateno)
 
 	$("#templat"+templateno).css("background","#fc4");
 	$("#templateno").val(templateno);
+
+	var templateOptions = document.getElementById('templateOptions');
+	var boxes;
+	switch (templateno) {
+		case '1': boxes = 2;
+						break;
+		case '2': boxes = 2;
+						break;
+		case '3': boxes = 3;
+						break;
+		case '4': boxes = 3;
+						break;
+		case '5': boxes = 4;
+						break;
+		case '6': boxes = 4;
+						break;
+		case '7': boxes = 4;
+						break;
+		case '8': boxes = 3;
+						break;
+		case '9': boxes = 5;
+						break;
+		case '10': boxes = 1;
+						break;
+	}
+
+	var str = "";
+	var wordl=retData['wordlists'];
+
+	for (var i = 0; i < boxes; i++) {
+		str += "<tr><td><label>Kind: </label><select class='templateSelect' id='boxcontent_"+i+"' onchange='changeDirectory(this)'>";
+		str += "<option value='CODE'>Code</option><option value='IFRAME'>Preview</option><option value='DOCUMENT'>Document</option></select></td>";
+		str += "<td><label>File: </label><select class='templateSelect' id='filename_"+i+"'></select></td>";
+		str += "<td><label>Wordlist: </label><select class='templateSelect' id='wordlist_"+i+"'>";
+		for(var j=0;j<wordl.length;j++){
+			str+="<option value='"+wordl[j][0]+"'>"+wordl[j][1]+"</option>";
+		}
+		str += "</select></td></tr>";
+	}
+	templateOptions.innerHTML = str;
+	for (var i = 0; i < boxes; i++) {
+		changeDirectory(document.querySelector('#boxcontent_'+i));
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -1688,17 +1793,25 @@ function updateTemplate()
 {
 	templateno=$("#templateno").val();
 	$("#chooseTemplateContainer").css("display","none");
+
+	var selectBoxes = [...document.querySelectorAll('#templateOptions select')];
+	var examples = selectBoxes.length / 3;
 	try{
 		var courseid = querystring['courseid'];
 		var exampleid = querystring['exampleid'];
 		var cvers = querystring['cvers'];
 		var templateno = $("#templateno").val();
-
+		var content = [];
+		for (var i = 0; i < examples; i++) {
+			var values = [$("#boxcontent_"+i).val(), $("#filename_"+i).val(), $("#wordlist_"+i).val()];
+			content.push(values);
+		}
 		AJAXService("SETTEMPL", {
 			courseid : courseid,
 			exampleid : exampleid,
 			cvers : cvers,
-			templateno : templateno
+			templateno : templateno,
+			content : content
 		}, "CODEVIEW");
 	}catch(e){
 		alert("Error when updating template: "+e.message)
@@ -1776,6 +1889,339 @@ function Play(event)
 
         }
 	}
+}
+
+//-----------------------------------------------------------------------------
+// maximizeBoxes: Adding maximize functionality for the boxes
+//					Is called with onclick() by maximizeButton
+//-----------------------------------------------------------------------------
+
+function maximizeBoxes(boxid)
+{
+	var boxid = boxid;
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+
+	getLocalStorageProperties(boxValArray);
+
+	//For template 1
+	if(templateid == 1){
+		if (boxid == 1){
+			$(boxValArray['box' + 2]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			alignBoxesWidth(boxValArray, 1, 2);
+		}
+
+		if (boxid == 2){
+			$(boxValArray['box' + 1]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			alignBoxesWidth(boxValArray, 2, 1);
+		}
+	}
+
+	//for template 2
+	if(templateid == 2){
+		if (boxid == 1){
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesHeight2boxes(boxValArray, 1, 2);
+		}
+
+		if (boxid == 2){
+			$(boxValArray['box' + 1]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesHeight2boxes(boxValArray, 2, 1);
+		}
+	}
+
+	//For template 3
+	if(templateid == 3){
+		if(boxid == 1){
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+		}
+
+		if(boxid == 2){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
+
+		if(boxid == 3){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
+	}
+
+	//For template 4
+	if(templateid == 4){
+		if (boxid == 1){
+			$(boxValArray['box' + 2]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth(boxValArray, 1, 2);
+			alignBoxesHeight2boxes(boxValArray, 1, 3);
+		}
+
+		if (boxid == 2){
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 1]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesHeight2boxes(boxValArray, 2, 3);
+		}
+
+		if (boxid == 3){
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 2]['id']).width("50%");
+
+			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 1]['id']).width("50%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesHeight2boxes(boxValArray, 3, 1);
+		}
+	}
+
+	//For template 5
+	if (templateid == 5){
+		if(boxid == 1){
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).height("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 1, 2);
+			alignBoxesHeight2boxes(boxValArray, 1, 3);
+		}
+
+		if(boxid == 2){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesHeight2boxes(boxValArray, 2, 3);
+		}
+
+		if(boxid == 3){
+			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("100%");
+			$(boxValArray['box' + 4]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 3, 4);
+			alignBoxesHeight2boxes(boxValArray, 3, 2);
+		}
+
+		if(boxid == 4){
+			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("100%");
+			$(boxValArray['box' + 3]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 4, 3);
+			alignBoxesHeight2boxes(boxValArray, 4, 2);
+		}
+	}
+
+	//For template 6
+	if(templateid == 6){
+		if(boxid == 1){
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
+			$(boxValArray['box' + 4]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 1, 2);
+		}
+
+		if(boxid == 2){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+
+		if(boxid == 3){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+
+		if(boxid == 4){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+		}
+	}
+
+	//For template 7
+	if(templateid == 7){
+		if(boxid == 1){
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 4]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 1, 4);
+		}
+
+		if(boxid == 2){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+
+		if(boxid == 3){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+
+		if(boxid == 4){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+		}
+	}
+
+	//for template 8
+	if(templateid == 8){
+		if(boxid == 1){
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+		}
+
+		if(boxid == 2){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
+
+		if(boxid == 3){
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
+	}
+}
+
+//hide maximizeButton
+function hideMaximizeAndResetButton(){
+	var templateid = retData['templateid'];
+	if(templateid > 8){
+			$('.maximizebtn').hide();
+			$('.resetbtn').hide();
+	}
+}
+
+//reset boxes
+function resetBoxes(){
+	resizeBoxes("#div2", retData["templateid"]);
 }
 
 //-----------------------------------------------------------------------------
@@ -2160,25 +2606,8 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}
-  else if (templateId == 10) {
-    getLocalStorageProperties(templateId, boxValArray);
 
-    $(boxValArray['box1']['id']).resizable({
-      containment: parent,
-      handles: "e",
-      start: function(event, ui) {
-        $('iframe').css('pointer-events','none');
-      },
-      resize: function(e, ui){
-        alignBoxesWidth(boxValArray, 1);
-      },
-      stop: function(e, ui) {
-        setLocalStorageProperties(templateId, boxValArray);
-        $('iframe').css('pointer-events','auto');
-      }
-    });
-  }
+	}
 };
 
 //----------------------------------------------------------------------------------
@@ -2308,16 +2737,21 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 // WIDTH MEASURMENT FOR TEMPLATE 6
 //---------------------------------
 
-function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird)
-{
+function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
+
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+
+
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
 	var basePer = 100 - remainWidthPer;
+
 
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+
+
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
@@ -2333,10 +2767,10 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 // WIDTH MEASURMENT FOR TEMPLATE 7
 //-----------------------------------
 
+function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
 
-function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird)
-{
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
 	var basePer = 100 - remainWidthPer;
 
@@ -2345,11 +2779,13 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
+
 	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 }
 
@@ -2357,8 +2793,7 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 // HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
 //---------------------------------------
 
-function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
-{
+function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
 
 	//Get initial values.
 	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
@@ -2369,8 +2804,10 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	var atry2 = (atry/boxValArray['parent']['height'])*100;
 
 	if (remainHeightPer <= 10) {
+
 			atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 			atry2 = (atry/boxValArray['parent']['height'])*100;
+
 			remainHeightPer = 10;
 			$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 			$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
@@ -2407,14 +2844,14 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 		$("#box4wrapper").height(atry2 + "%");
 		$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
 	}
+
 }
 
 //----------------------------------
 // WIDTH MEASURMENT FOR TEMPLATE 9
 //----------------------------------
 
-function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive)
-{
+function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive){
 
 	//Width for the four smaller boxes.
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxOne]['id']).width();
@@ -2428,6 +2865,7 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	$(boxValArray['box' + boxTwo]['id']).css("left", " ");
 	$(boxValArray['box' + boxThree]['id']).css("left", " ");
 	$(boxValArray['box' + boxFour]['id']).css("left", " ");
+
 	$(boxValArray['box' + boxOne]['id']).css("top", " ");
 
 	//Sets width for all boxes.
@@ -2479,12 +2917,16 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 
 	//Set height and top on the boxes
 	$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
 	$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
 	$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
 	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
 	$(boxValArray['box' + boxFour]['id']).css("height", (100 - (remainHeightPer + boxOneHeightPer)) + "%");
 	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer+remainHeightPer) + "%");
+
 
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
@@ -2497,8 +2939,7 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 // HEIGHT MEASURMENT FOR TEMPLATE 9
 //-----------------------------------
 
-function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour)
-{
+function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour){
 
 	//Box three height. It is the box that is currently being resized.
 	var boxThreeHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
@@ -2560,6 +3001,7 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 
 		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
+
 	}
 
 	//Update array
@@ -2592,6 +3034,7 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	var boxThreeHeightPer = boxThreeHeight/(boxValArray['parent']['height']) * 100;
 
 	if(boxFourHeightPer <= 10){
+
 		boxFourHeightPer = 10;
 
 		//Set height and top on the boxes
@@ -2682,8 +3125,7 @@ function setLocalStorageProperties(templateId, boxValArray)
 //  loading gif until page has loaded fully
 //----------------------------------------------------------------------------------
 
-document.onreadystatechange = function ()
-{
+document.onreadystatechange = function () {
   var state = document.readyState
   if (state == 'interactive') {
        document.getElementById('content').style.visibility="hidden";
@@ -2750,9 +3192,6 @@ function erasePercentGap(templateId, boxValArray)
 		alignTemplate9Height(boxValArray, 2, 3, 4, 5);
 		alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
 	}
-else if(templateId == 10){
-  alignBoxesWidth(boxValArray, 1, 2);
-}
 }
 
 //----------------------------------------------------------------------------------
@@ -2778,8 +3217,7 @@ function setResizableToPer(boxValArray)
 //                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function addHtmlLineBreak(inString)
-{
+function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>');
 }
 

@@ -75,7 +75,7 @@ function returnedDugga(data)
 			createFileUploadArea(duggaParams["submissions"]);
 			for (var k=0; k < duggaParams["submissions"].length; k++){
 				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
-	    		if (duggaParams['uploadInstruction'] !== null){
+	    		if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname){
 					document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 				}
 

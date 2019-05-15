@@ -442,8 +442,7 @@ function SortableTable(param) {
 							sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
 						}
 
-						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];
-
+						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];	
 						str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
 
 
