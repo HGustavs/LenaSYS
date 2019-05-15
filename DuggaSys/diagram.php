@@ -65,19 +65,19 @@
                                     <div class="toolbar-drawer" id="drawerCreate">
                                         <div class="tooltipdialog">
                                             <!-- ER attribute -->
-                                            <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Attribute (Shift + A)">
+                                            <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute (Shift + A)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                             </button>
                                             <!-- ER entity -->
-                                            <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Entity (Shift + E)">
+                                            <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity (Shift + E)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
                                             </button>
                                             <!-- ER Relation -->
-                                            <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Relation (Shift + R)">
+                                            <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation (Shift + R)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
                                             </button>
                                             <!-- UML Create Class -->
-                                            <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Create Class (Shift + C)">
+                                            <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class (Shift + C)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                             </button>
                                             <!-- Create Line -->
@@ -85,29 +85,29 @@
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                             </button>
                                             <!-- Draw Free -->
-                                            <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Free (Shift + F)">
+                                            <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free (Shift + F)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
                                             </button>
                                             <!-- Create Text -->
-                                            <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px; cursor: pointer;" class='buttonsStyle unpressed' data="Draw Text (Shift + T)">
-                                                <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
+                                            <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed' data="Draw Text (Shift + T)">
+                                                <img id='textButton' src="../Shared/icons/textbox.svg">
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="labelToolContainer" style = "margin-bottom: 0px;">
-                                <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
-                                <div class="toolbar-drawer" id="drawerUndo">
-                                    <!-- Undo -->
-                                    <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo (Ctrl + Z)">
-                                        <img src="../Shared/icons/undo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
-                                    </button>
-                                    <!-- Redo -->
-                                    <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo (Ctrl + Y)">
-                                        <img src="../Shared/icons/redo.svg" style="filter: invert(100%); text-align: center; margin-left: -15px; margin-right: -15px; width: 17px; height: 17px;">
-                                    </button>
-                                </div>
+                                <div class="labelToolContainer" style = "margin-bottom: 0px;">
+                                    <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
+                                    <div class="toolbar-drawer" id="drawerUndo">
+                                      <!-- Undo -->
+                                      <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
+                                          <img src="../Shared/icons/undo.svg">
+                                      </button>
+                                      <!-- Redo -->
+                                      <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
+                                          <img src="../Shared/icons/redo.svg">
+                                      </button>
+                                    </div>
+                                  </div>
                             </div>
                         </div>
                     </div>
