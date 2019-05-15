@@ -1796,7 +1796,7 @@ function Play(event)
 
 //-----------------------------------------------------------------------------
 // maximizeBoxes: Adding maximize functionality for the boxes
-//					Is called by setup() in codeviewer.js
+//					Is called with onclick() by maximizeButton
 //-----------------------------------------------------------------------------
 
 function maximizeBoxes(boxid)
