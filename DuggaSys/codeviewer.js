@@ -728,6 +728,7 @@ function createboxmenu(contentid, boxid, type)
 
 				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
 				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
+				str+="<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard("+boxid+");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 				str+='</tr></table>';
 
 			}else if(type=="IFRAME"){
@@ -753,9 +754,6 @@ function createboxmenu(contentid, boxid, type)
 		}else{
 			var str = '<table cellspacing="2"><tr>';
 			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][4]+'</span></td>';
-		}
-		if(type=="CODE"){
-			str+="<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard("+boxid+");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 		str+='</tr></table>';
 		boxmenu.innerHTML=str;
