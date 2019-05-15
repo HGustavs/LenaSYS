@@ -1263,7 +1263,6 @@ function drawSwimlanes() {
       addNumb = 2;
     }
     var widthAdjuster = weekwidth+addNumb;
-    console.log(i*widthAdjuster);
     str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" + (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
@@ -1304,6 +1303,8 @@ function drawSwimlanes() {
           textcol = `url("#fadeTextRed")`;
         }
         var tempVariable = duggalength*daywidth;
+        
+        console.log(startday*daywidth, " ", startday, " ", daywidth);
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }
