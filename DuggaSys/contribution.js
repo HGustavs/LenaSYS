@@ -764,51 +764,6 @@ function returnedSection(data)
 
     str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
 
-  	str+="<table  class='fumho group1'>";
-	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
-	str+="<th style='padding: 2px 10px;'>Kind</th>";
-    str+="<th style='padding: 2px 10px;'>Number</th>";
-	str+="<th style='padding: 2px 10px;'>Ranking</th>";
-  str+="<th style='padding: 2px 10px;'>Group ranking</th>";
-	str+="</tr>";
-
-
-    str+="<tr>";
-    str+="<td>Issue Creation</td>";
-    str+="<td>"+data['issuerankno']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['issuerank'])+"'>"+data['issuerank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['issuegrouprank'])+"'>"+data['issuegrouprank']+"</td>";
-	str+="</tr>";
-
-    str+="<tr>";
-    str+="<td>Comment Creation</td>";
-    str+="<td>"+data['commentrankno']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['commentrank'])+"'>"+data['commentrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['commentgrouprank'])+"'>"+data['commentgrouprank']+"</td>";
-	str+="</tr>";
-
-    str+="<tr>";
-    str+="<td>Events Performed</td>"
-    str+="<td>"+data['eventrankno']+"</td>"
-    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['eventrank'])+"'>"+data['eventrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['eventgrouprank'])+"'>"+data['eventgrouprank']+"</td>";
-    str+="</tr>";
-
-    str+="<tr>";
-    str+="<td>Lines of Code</td>"
-    str+="<td>"+data['rowrankno']+"</td>"
-    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['rowrank'])+"'>"+data['rowrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['rowgrouprank'])+"'>"+data['rowgrouprank']+"</td>";
-    str+="</tr>";
-
-    str+="<tr>";
-    str+="<td>GIT Commit</td>"
-    str+="<td>"+data['commitrankno']+"</td>"
-    str+="<td style='background-color:"+intervaltocolor(data['amountInCourse'],data['commitrank'])+"'>"+data['commitrank']+"</td>";
-    str+="<td style='background-color:"+intervaltocolor(data['amountInGroups'],data['commitgrouprank'])+"'>"+data['commitgrouprank']+"</td>";
-    str+="</tr>";
-    str+="</table>";
-
     createRankTable(buildRankData(data));
     createGitHubcontributionTable(buildContributionData(data));
     createTimeSheetTable(data['timesheets']);
@@ -994,7 +949,9 @@ function rankRenderCell(col,celldata,cellid){
     str+="<div style='background-color:"+intervaltocolor(celldata.amount,celldata.rank)+";'>"
     str+="<div><span style='margin:0 4px;flex-grow:1;'>"+celldata.rank+"</span></div></div>";
   }else{
-  ghContibTable.renderTable();
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+obj+"</span></div>";
+  }
+  return str;
 }
 
 function buildContributionData(){
@@ -1024,8 +981,7 @@ function buildContributionData(){
   return contribData;
 }
 
-function createGitHubcontributionTable(data)
-{
+function createGitHubcontributionTable(data){
   var tabledata = {
 		tblhead:{
       weeks:"Week",
@@ -1056,8 +1012,6 @@ function createGitHubcontributionTable(data)
 function renderCellForghContibTable(col,celldata,cellid){
   var str="";
   obj = celldata;
-  console.log(celldata);
-  console.log("**************");
   if (col==='weeks') {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+parseInt(obj)+"</span></div>";
   }else if(col==='dates'){
@@ -1078,7 +1032,6 @@ function renderCellForghContibTable(col,celldata,cellid){
         str+="</div>";
     }
   }else if(col==='githubContribution'){
-
     if(obj.issues.length>0||obj.comments.length>0||obj.events.length>0){
           str+="<div class='contrib'>";
           str+="<div class='contribcontent'>";
@@ -1121,7 +1074,7 @@ function renderCellForghContibTable(col,celldata,cellid){
           str+="</div>";
           str+="</div>";
     }
-  }  else {
+  } else {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+obj+"</span></div>";
   }
   return str;
