@@ -122,8 +122,8 @@ function clickedInternal(event, clickdobj) {
 			str += "<div id='input-container' style='flex-grow:1'>";
 			str += estr;
 			str += "</div>";
-			str += "<img id='popovertick' class='icon' src='../Shared/icons/Icon_Tick.svg' onclick='updateCellInternal();'>";
-			str += "<img id='popovercross' class='icon' src='../Shared/icons/Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
+			str += "<img id='popovertick' class='icon' src='../Shared/icons/Ok_Green.svg' onclick='updateCellInternal();'>";
+			str += "<img id='popovercross' class='icon' src='../Shared/icons/Cancel_Red.svg' onclick='clearUpdateCellInternal();'>";
 			var lmnt = cellelement.getBoundingClientRect();
 			var popoverelement = document.getElementById("editpopover");
 
@@ -446,8 +446,7 @@ function SortableTable(param) {
 							sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
 						}
 
-						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];
-
+						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];	
 						str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
 
 

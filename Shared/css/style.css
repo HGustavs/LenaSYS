@@ -18,7 +18,8 @@
   --color-primary-2: #775886;
   --color-primary-hover: #7b5a96;
   --color-primary-light: #927b9e;
-  --color-accent: #fecc56;
+  --color-accent: rgb(254, 204, 86);
+  --color-accent-transparent: rgb(254, 204, 86, 0.5);
   --color-accent-hover: #ffd369;
   --color-background: #fff;
   --color-background-2: #ccc;
@@ -218,6 +219,14 @@ p {
   box-shadow: 0px 2px 4px #DCD;
   padding: 8px;
   text-shadow: 1px 1px var(--color-text-list);
+}
+
+.err-extension {
+  margin-top: 10px;
+}
+
+.err-extension span {
+  font-weight: bold;
 }
 
 #content {
@@ -1010,6 +1019,10 @@ header td {
   width: 100%;
 }
 
+.templateSelect {
+  width: 150px !important
+}
+
 input {
   border-radius: 2px;
   border: 2px solid var(--color-border-2);
@@ -1625,8 +1638,8 @@ div.submit-button {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: 6px;
-  margin-bottom: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   margin-left: 4px;
   font-size: 14px;
   transition: 1s background-color;
@@ -2072,6 +2085,9 @@ div.submit-button:disabled {
   padding: 5px;
 }
 
+.list tr {
+  height: 48px;
+}
 /*
 .innertable {
   background: var(--color-background);
@@ -2155,11 +2171,17 @@ div.submit-button:disabled {
 }
 
 #editpopover {
-  border:1px solid red;
-  box-shadow:2px 2px 2px #000;
+  border:1px solid #d7fdd9;
+  box-shadow:2px 2px 2px #434343;
   position:absolute;
-  background-color: #82a43a;
-  width: fit-content;
+  background-color: #d7fdd9;
+  min-width: 150px;
+  padding: 5px;
+}
+
+.popoveredit{
+  background-color: transparent;
+  border: none;
 }
 
 .icon {
@@ -2168,6 +2190,10 @@ div.submit-button:disabled {
   padding: 0;
   position: relative;
   transform: translateY(50%);
+}
+
+#input-container{
+  border-bottom: 2px solid #008000;
 }
 
 #input-container input {
@@ -2458,7 +2484,17 @@ span.arrow {
 
 #accessTable td {
 	padding: 0px;
-	border: 0px;
+  border-left: 2px solid #dbd0d8;
+  border-right: 2px solid #dbd0d8;
+}
+
+#accessTable select {
+  height: 40px;
+  width: 100%;
+}
+
+.accessTable-vers select {
+  width: 60% !important;
 }
 
 .accessTableText {
@@ -2476,6 +2512,13 @@ span.arrow {
 
 .accessTable_counter span {
 	margin-left: 5px;
+}
+
+.oldSubmissionIcon {
+  height: 20px;
+  margin-left: 10px;
+  cursor:pointer;
+  vertical-align: middle;
 }
 
 #user td {
@@ -3014,6 +3057,10 @@ span.arrow {
 
 /*this was inline-CSS before, only moved it to the right file*/
 
+.contributionSort{
+  height:40px;
+}
+
 .fumho th {
   background: #620;
   color: var(--color-text-header);
@@ -3039,7 +3086,7 @@ span.arrow {
   background: #FFF8A5;
   margin-bottom: 10px;
   margin-top: 4px;
-  z-index: 3000;
+  z-index: 0;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
   padding-left: 8px;
   width: 400px;
@@ -3215,8 +3262,23 @@ rect[class*="activitymarker"]:hover {
     bottom: 2px;
 }
 
-/* styling for the search bars in resulted, accessed, duggaed, filed */
+/* styling for dropdown and toggle all button in accessed */
+#toggleAllButton {
+  background-color: #614875;
+  color: white;
+  width: 100px;
+  cursor: pointer;
+}
 
+#toggleAllButton:hover {
+  background-color: #7b5a96;
+}
+
+#dropdownc {
+  cursor: default;
+}
+
+/* styling for the search bars in resulted, accessed, duggaed, filed */
 #searchBar, #testSearchContainer {
   padding-left: 20px;
 }
@@ -3986,7 +4048,7 @@ only screen and (max-device-width: 480px) {
   }
   table.navheader div.hamburger {
     position: absolute;
-    top: 66px;
+    top: 64px;
     right: 10px;
   }
   table.navheader div.hamburgerMenu {
@@ -4348,6 +4410,13 @@ only screen and (max-device-width: 320px) {
   height: 20px;
   line-height: 20px;
   margin-top: 6px;
+}
+
+[data-tooltip]:before {
+  visibility: visible;
+  opacity: 0.2;
+  transform: scale(1);
+  transform-origin: right center 0;
 }
 
 [data-tooltip]:hover:before {
@@ -5047,7 +5116,7 @@ textarea#filecont{
   width: 60px;
 }
 
-/* Preview, Edit and Delete columns */
+/*  Preview, Edit and Delete columns  */
 .variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
   width: 25px;
 }
@@ -5098,7 +5167,8 @@ textarea#filecont{
   border-bottom: 1px solid #cdd0d6;
 }
 .tsTable thead {
-  background: #cdd0d6;
+  background: var(--color-primary);
+  color: white;
 }
 .tsTable th {
   padding: 10px;
@@ -5121,7 +5191,7 @@ textarea#filecont{
   background: var(--color-background-3);
 }
 .tsTable tfoot:hover {
-  background: #E0E0E0;
+  background: #7B5A96;
 }
 .tsTable tfoot td {
   padding: 0;
@@ -5137,13 +5207,23 @@ textarea#filecont{
 .newRowButton {
   display: block;
   width: 100%;
-  padding: 10px;
+  padding-bottom: 10px;
+  padding-top: 8px;
   cursor: pointer;
+  background: var(--color-primary);
+  color: white;
+}
+.newRowButton:hover{
+  background: #7B5A96;
 }
 #tsSubmit {
+  background: var(--color-primary);
+  color: white;
   margin-left: 50px;
   margin-bottom: 10px;
   cursor: pointer;
+  border: 2px solid #614875;
+  padding: 4px 8px 4px 8px;
 }
 #tsSubmit:hover {
   background: var(--color-primary);

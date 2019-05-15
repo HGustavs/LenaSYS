@@ -200,9 +200,17 @@ function newVariant() {
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
 	document.getElementById('variantparameterText').value = '';
-	document.getElementById('variantparameterText').placeholder = 'Undefied JSON parameter';
+	document.getElementById('variantparameterText').placeholder = 'Undefined JSON parameter';
 	document.getElementById('variantanswerText').value = '';
-	document.getElementById('variantanswerText').placeholder = 'Undefied JSON answer';
+	document.getElementById('variantanswerText').placeholder = 'Undefined JSON answer';
+	if (document.querySelector('#submissionType0')) {
+		document.querySelector('#submissionType0').value = 'pdf';
+		document.querySelector('#fieldname0').value = '';
+		document.querySelector('#fieldname0').placeholder = 'Submission name';
+		document.querySelector('#instruction0').value = '';
+		document.querySelector('#instruction0').placeholder = 'Upload instruction';
+	}
+
 }
 
 function createVariant() {
@@ -213,8 +221,8 @@ function createVariant() {
 }
 
 function selectVariant(vid, el) {
-  var target_variant;
-  markSelectedVariant(el);
+	var target_variant;
+	let isSelected = markSelectedVariant(el);
 	globalData['entries'].forEach(element => {
 		var tempVariant = element['variants'];
 		tempVariant.forEach(variant => {
@@ -226,29 +234,57 @@ function selectVariant(vid, el) {
 	});
 	$("#saveVariant").css("display", "block");
 
+		//Get information for rightDivDialog and display it.
+		if(isSelected) {
+			document.getElementById('vid').value = target_variant['vid'];
+			document.getElementById('variantparameterText').value = target_variant['param'];
+			document.getElementById('variantanswerText').value = target_variant['variantanswer'];
+		} else {
+			// But hide the information if it is deselected.
+			document.getElementById('vid').value = "";
+			document.getElementById('variantparameterText').value = "";
+			document.getElementById('variantanswerText').value = "";
+		}
 
-    //Get information for rightDivDialog and display it.
-    document.getElementById('vid').value = target_variant['vid'];
-    document.getElementById('variantparameterText').value = target_variant['param'];
-    document.getElementById('variantanswerText').value = target_variant['variantanswer'];
 
-    //Get information for leftDivDialog and display it.
-    var obj = JSON.parse(target_variant['param']);
-    var it = Object.keys(obj).length;
-    for(var i = 0; i<it; i++){
-      var result = Object.keys(obj)[i];
+		//Get information for leftDivDialog and display it.
+		if(isSelected) {
+			var obj = JSON.parse(target_variant['param']);
+			var it = Object.keys(obj).length;
+			for(var i = 0; i<it; i++){
+				var result = Object.keys(obj)[i];
 
-      if(result == "type"){
-        document.getElementById('type').value = obj[result];
-      }
-      else if(result == "filelink"){
-        document.getElementById('filelink').value = obj[result];
-      }
-      else if(result == "extraparam"){
-        document.getElementById('extraparam').value = obj[result];
-      }
-    }
+				if(result == "type"){
+					document.getElementById('type').value = obj[result];
+				}
+				else if(result == "filelink"){
+					document.getElementById('filelink').value = obj[result];
+				}
+				else if(result == "extraparam"){
+					document.getElementById('extraparam').value = obj[result];
+				}
+			}
 
+      var submissionTypes = obj.submissions;
+      if (submissionTypes) {
+			  document.getElementById('submissionType0').value = submissionTypes[0].type;
+			  document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
+			  document.getElementById('instruction0').value = submissionTypes[0].instruction;
+
+			  for (var i = 1; i < submissionTypes.length; i++) {
+				  addVariantSubmissionRow();
+				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
+				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
+				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
+				  document.getElementById('variantparameterText').value = target_variant['param'];
+			 }
+		  }
+		} else {
+				// Hide information if it is deselected.
+				document.getElementById('type').value = "";
+				document.getElementById('filelink').value = "";
+				document.getElementById('extraparam').value = "";
+		}
 
   var disabled = (target_variant['disabled']);
   $("#disabled").val(disabled);
@@ -270,7 +306,18 @@ function updateVariant(status) {
   var parameter = $("#variantparameterText").val();
 	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
-  $("#editVariant").css("display", "flex"); //Display variant-window
+	$("#editVariant").css("display", "flex"); //Display variant-window
+
+	// Remove extra submission rows
+	if (submissionRow > 0) {
+		for (var i = submissionRow-1; i > 0; i--) {
+			// The function needs an element of the row to be removed, so this is what we have to do
+			var rows = [...document.getElementById('submissions').childNodes];
+			var elements = [...rows[i].childNodes];
+			var element = elements[0];
+			removeVariantSubmissionRow(element);
+		}
+	}
 }
 
 function deleteVariant(vid) {
@@ -361,17 +408,77 @@ function createJSONString(formData) {
 	});
 }
 
+// Does the reverse of what createJSONString does.
+function createJSONFormData(){
+  var jsonData = $("#variantparameterText").val();
+
+  try {
+    var obj = JSON.parse(jsonData);
+
+    // Remove extra submission rows
+    if (submissionRow > 0) {
+      for (var i = submissionRow-1; i > 0; i--) {
+        // The function needs an element of the row to be removed, so this is what we have to do
+        var rows = [...document.getElementById('submissions').childNodes];
+        var elements = [...rows[i].childNodes];
+        var element = elements[0];
+        removeVariantSubmissionRow(element);
+      }
+    }
+
+    var it = Object.keys(obj).length;
+    for(var i = 0; i<it; i++){
+      var result = Object.keys(obj)[i];
+
+      if(result == "type"){
+        document.getElementById('type').value = obj[result];
+      }
+      else if(result == "filelink"){
+        document.getElementById('filelink').value = obj[result];
+      }
+      else if(result == "extraparam"){
+        document.getElementById('extraparam').value = obj[result];
+      }
+    }
+
+    var submissionTypes = obj.submissions;
+    if (submissionTypes) {
+      document.getElementById('submissionType0').value = submissionTypes[0].type;
+      document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
+      document.getElementById('instruction0').value = submissionTypes[0].instruction;
+
+      for (var i = 1; i < submissionTypes.length; i++) {
+        addVariantSubmissionRow();
+        document.getElementById('submissionType'+i).value = submissionTypes[i].type;
+        document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
+        document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
+        document.getElementById('variantparameterText').value = jsonData;
+      }
+    }
+  } catch (e) {
+    console.log("unable to parse json.");
+    console.log(e);
+  }
+}
+
 /*
 	This function marks the selected variant when editing by changing the
 	background color of the table row.
 */
 function markSelectedVariant(el) {
-    $('.active-variant').each(function() {
+	let row = el.closest("tr");
+
+    $('.active-variant').not(row).each(function() {
         $(this).removeClass('active-variant');
     });
 
-    let row=el.closest("tr");
-    $(row).addClass('active-variant');
+		if($(row).hasClass('active-variant')) {
+			$(row).removeClass('active-variant');
+			return false;
+		} else {
+			$(row).addClass('active-variant');
+			return true;
+		}
 }
 
 /*
@@ -516,7 +623,6 @@ function returnedDugga(data) {
 // Table for variants
 function renderVariant(clickedElement) {
 		globalVariant = clickedElement;
-    console.log("sda:" + globalVariant);
 		updateVariantTitle(clickedElement);
 		var tabledata = {
 				tblhead: {
@@ -688,12 +794,14 @@ function renderSortOptionsDugga(col,status,colname) {
 			}
 		}
 		*/
-		if (status ==- 1) {
+		if (col != "arrow" && col != "cogwheel" && col != "trashcan") {			//Disable sorting for pen, cog and trashcan icons
+			if (status ==- 1) {
 				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
-		} else if (status == 0) {
-				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
-		} else {
-				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+			} else if (status == 0) {
+					str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+			} else {
+					str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+			}
 		}
 return str;
 }
