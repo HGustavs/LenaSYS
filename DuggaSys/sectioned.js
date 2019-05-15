@@ -1263,6 +1263,7 @@ function drawSwimlanes() {
       addNumb = 2;
     }
     var widthAdjuster = weekwidth+addNumb;
+    console.log(i*widthAdjuster);
     str += "<rect x='" + (i * widthAdjuster) + "' y='" + (15) + "' width='" + (widthAdjuster+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
