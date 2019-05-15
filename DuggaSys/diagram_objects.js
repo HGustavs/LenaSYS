@@ -2107,7 +2107,7 @@ function Path() {
     this.isLocked = false;          // If the free draw object is locked
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
     this.isHovered = false;         // If the free draw object is hovered
-    this.figureType = "Square";
+    this.figureType = "Free";
     this.properties = {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
@@ -2138,35 +2138,12 @@ function Path() {
         }
         this.calculateBoundingBox();
     }
+
     //--------------------------------------------------------------------
     // adjust: Is used to adjust the points of each symbol when moved
     //--------------------------------------------------------------------
     this.adjust = function() {
-        if(this.figureType == "Square") {
-            if(!sel) return;
-            for(var i = 0; i < this.segments.length; i++) {
-                var seg = this.segments[i];
-                if(points[seg.pa] == sel.point) {
-                    if(i == 0) {
-                        points[seg.pb].x = sel.point.x;
-                        points[seg.pb+1].y = sel.point.y;
-                    }
-                    else if(i == 1) {
-                        points[seg.pb-1].x = sel.point.x;
-                        points[seg.pb].y = sel.point.y;
-                    }
-                    else if(i == 2) {
-                        points[seg.pb].x = sel.point.x;
-                        points[seg.pb-1].y = sel.point.y;
-                    }
-                    else if(i == 3) {
-                        points[seg.pb+1].x = sel.point.x;
-                        points[seg.pb].y = sel.point.y;
-                    }
-                    break;
-                }
-            }
-        }
+        // Needed to prevent undefined exception
     }
 
     //--------------------------------------------------------------------
