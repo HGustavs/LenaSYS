@@ -364,6 +364,10 @@ function closeWindows(){
 		if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
 			index_highest = index_current;
 			e=this;
+			var tempString = e.outerHTML;
+			if(tempString.includes('<div class="previewWindow"')){
+				e.style.display="none";
+			}
 		}
 	});
 
@@ -1234,8 +1238,8 @@ $(window).load(function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
       	if(event.keyCode == 27) {
-          //closeWindows();
-          closeSelect();
+          closeWindows();
+          //closeSelect();
         }
       });
 });
