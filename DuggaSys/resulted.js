@@ -630,7 +630,7 @@ function returnedResults(data) {
 
 		//tim=performance.now();
 
-		subheading = 0;
+		subheading = 3;
 
 		$(document).ready(function () {
 			$("#dropdownc").mouseleave(function () {
