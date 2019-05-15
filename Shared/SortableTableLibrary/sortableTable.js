@@ -604,7 +604,7 @@ function SortableTable(param) {
 				}
 				if (document.getElementById(table.tableid + DELIMITER + "tbl") != null) {
 					var thetab = document.getElementById(table.tableid + DELIMITER + "tbl").getBoundingClientRect();
-					var thetabhead = document.getElementById(table.tableid + DELIMITER + "tblhead").getBoundingClientRect();
+					var thetabhead = document.getElementById("resultTable___tblhead").getBoundingClientRect();
 					// If top is negative and top+height is positive draw mh otherwise hide
 
 					// Vertical
@@ -617,7 +617,7 @@ function SortableTable(param) {
 					}
 					// Horizontal
 					if (thetab.left < 0 && thetab.right > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = thetabhead.top + 48 + "px";
+						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = thetabhead.top + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
 					} else {
