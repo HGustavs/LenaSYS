@@ -73,7 +73,6 @@ function setup() {
 
 
 function resort() {
-
 }
 
 function toggleSortDir(col) {
@@ -215,7 +214,7 @@ function process() {
 	var dstr = "";
 
 	// Sorting
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort Ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir-1'><label class='headerlabel' for='sortdir-1'>Sort descending</label> <div><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='0' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort Pending</label></div> </div>"; 
+	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort Ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir-1'><label class='headerlabel' for='sortdir-1'>Sort descending</label> <div><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='0' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort Pending</label></div></div>";
   dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr += "<div class='checkbox-dugga'style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
 
@@ -310,6 +309,7 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
+    console.log("col: " + col + " dir: " + dir);
 		resort();
 	}
 	magicHeading();
