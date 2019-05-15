@@ -805,6 +805,8 @@ function returnedSection(data)
     str+="</tr>";
     str+="</table>";
 
+
+    createRankTable(buildRankData(data));
     createTimeSheetTable(data['timesheets']);
     str+=renderBarDiagram(data);
     str+=renderLineDiagram(data);
@@ -1013,4 +1015,93 @@ function returnedSection(data)
     }
     document.getElementById('content').innerHTML=str;
     sortRank(1);  // default to allrank
+}
+
+function buildRankData(data){
+  var kindArr = ["Issue Creation","Comment Creation","Events Performed","Lines of Code","GIT Commit"];
+  var numberArr = [data.issuerankno,data.commentrankno,data.eventrankno,data.rowrankno,data.commitrankno];
+  var rankArr = [{
+    rank:data.issuerank,
+    amount:data.amountInCourse},
+    {
+    rank:data.commitrank,
+    amount:data.amountInCourse},
+    {
+    rank:data.eventrank,
+    amount:data.amountInCourse},
+    {
+    rank:data.rowrank,
+    amount:data.amountInCourse},
+    {
+    rank:data.commitrank,
+    amount:data.amountInCourse}];
+  var grpRankArr = [{
+    rank:data.issuegrouprank,
+    amount:data.amountInGroups},
+    {
+    rank:data.commitgrouprank,
+    amount:data.amountInGroups},
+    {
+    rank:data.eventgrouprank,
+    amount:data.amountInGroups},
+    {
+    rank:data.rowgrouprank,
+    amount:data.amountInGroups},
+    {
+    rank:data.commitgrouprank,
+    amount:data.amountInGroups}];
+
+  var rankingData = [];
+  for(var i=0; i<kindArr.length; i++){
+    var personalRanking = {
+      kind:kindArr[i],
+      number:numberArr[i],
+      rank:rankArr[i],
+      grpranking:grpRankArr[i]
+    };
+    rankingData.push(personalRanking)
+  }
+  return rankingData;
+}
+
+function createRankTable(data)
+{
+
+  var tabledata = {
+		tblhead:{
+      kind:"Kind",
+			number:"Number",
+			rank:"Ranking",
+			grpranking:"Group ranking"
+		},
+		tblbody: data,
+		tblfoot:{}
+  };
+	var colOrder=["kind","number","rank","grpranking"];
+	rankTable = new SortableTable({
+		data:tabledata,
+    tableElementId:"personalRankTable",
+		renderCellCallback:rankRenderCell,
+		renderSortOptionsCallback:renderSortOptions,
+		columnOrder:colOrder,
+		freezePaneIndex:4,
+		hasRowHighlight:false,
+		hasMagicHeadings:true,
+		hasCounterColumn:true
+	});
+
+	rankTable.renderTable();
+}
+
+function rankRenderCell(col,celldata,cellid){
+  var str = "";
+  if(col==='kind'|| col==='number'){
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+celldata+"</span></div>";
+  }else if(col==='rank' || col==='grpranking'){
+    str+="<div style='background-color:"+intervaltocolor(celldata.amount,celldata.rank)+";'>"
+    str+="<div><span style='margin:0 4px;flex-grow:1;'>"+celldata.rank+"</span></div></div>";
+  }else{
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+obj+"</span></div>";
+  }
+  return str;
 }

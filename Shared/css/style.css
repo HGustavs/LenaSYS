@@ -5132,5 +5132,17 @@ textarea#filecont{
   color: white;
   border: 2px solid #614875;
 }
+.list td.personalRankTable-grpranking, .list td.personalRankTable-rank{
+  padding: 0;
+}
+.personalRankTable-grpranking div, .personalRankTable-rank div {
+  height: 48px;
+  width: 100%;
 
+}
 
+.personalRankTable-grpranking div div, .personalRankTable-rank div div{
+  display: table-cell;
+  padding-left: 8px;
+  vertical-align: middle;
+}
