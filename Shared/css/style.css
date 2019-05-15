@@ -1777,8 +1777,8 @@ input.hide-moments-button {
 .fileUploadInfo:after {
   content: "";
   display: block;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid white;
@@ -4130,13 +4130,11 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
-  padding-right: 90px;
+  padding-right: 10px;
   padding-left: 10px;
   background-color: var(--color-background);
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  padding-right: 80px;
-  padding-left: 10px;
   height: 30px;
   position: absolute;
   right: 14px;
@@ -4250,10 +4248,10 @@ only screen and (max-device-width: 320px) {
 }
 
 #zoomV {
-  position: absolute;
-  width: 70px;
-  font-size: 12px;
-  right: 3%;
+  margin-left: 10px;
+  width: 80px;
+  font-size: 14px;
+  right: 1%;
 }
 
 
