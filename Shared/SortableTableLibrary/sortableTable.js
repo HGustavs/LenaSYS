@@ -617,7 +617,7 @@ function SortableTable(param) {
 					}
 					// Horizontal
 					if (thetab.left < 0 && thetab.right > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = thetabhead.top + 38 + "px";
+						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = thetabhead.top + 48 + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
 					} else {
