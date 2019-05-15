@@ -183,7 +183,7 @@ pdoConnect();
 			<h3 style='width:100%;' id='resultlistheader'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
     </div>
     <div style='display:flex;flex-direction:column;flex:1;'>
-      <textarea id='resultlistarea' style='flex:1;overflow:scroll;padding:5px;margin:5px 0 5px 0;'></textarea>
+      <textarea id='resultlistarea' style='resize:none;flex:1;overflow:scroll;padding:5px;margin:5px 0 5px 0;'></textarea>
       <input type='button' value='Close' onclick='closeLadexport();' style='width:100px;align-self:flex-end'>
     </div>
 	</div>
