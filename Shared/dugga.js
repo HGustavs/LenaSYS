@@ -527,6 +527,16 @@ function changeURL(clicked_id, thisurl)
 	link.href=thisurl;
 }
 
+//----------------------------------------------------------------------------------------
+// changeCourseVersURL: Separet function for changing course version, taken from changeURL
+//----------------------------------------------------------------------------------------
+
+function changeCourseVersURL(thisurl)
+{
+  window.location.href = thisurl;
+}
+
+
 //----------------------------------------------------------------------------------
 // navigateExample: Upscale variant of changeURL - navigate to certain Example
 //----------------------------------------------------------------------------------
@@ -950,10 +960,15 @@ function processLogin() {
             displayAlertText("#login #message", result.reason);
           } else {
             displayAlertText("#login #message", "Wrong username or password");
-          }
-
-          $("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-          $("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
+					}
+					
+					$("input#username").addClass("loginFail");
+					$("input#password").addClass("loginFail");
+					setTimeout(function(){
+						$("input#username").removeClass("loginFail");
+						$("input#password").removeClass("loginFail");
+						displayAlertText("#login #message", "Try again");
+					}, 2000);
           //closeWindows();
         }
 
@@ -1215,8 +1230,8 @@ $(window).load(function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
       	if(event.keyCode == 27) {
-          closeWindows();
-         // closeSelect();
+          //closeWindows();
+          closeSelect();
         }
       });
 });
