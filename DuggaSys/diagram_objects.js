@@ -1259,23 +1259,41 @@ function Symbol(kindOfSymbol) {
         }
     }
 
+    // Used inside drawEntity when this.properties['key_type'] is set to Weak.
+    this.drawWeakEntity = function(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+        ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+        ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+        ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
+        ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
+        ctx.closePath();
+        
+        ctx.lineWidth = (this.properties['lineWidth'] * 1.5) * diagram.getZoomValue();
+        ctx.stroke();
+        // Makes sure that 
+        if (this.properties['strokeColor'] == '#ffffff') {
+            this.properties['strokeColor'] = '#000000';
+        }
+        if (this.properties['fontColor'] == this.properties['symbolColor']) {
+            if (this.properties['symbolColor'] == '#000000') {
+                this.properties['fontColor'] = '#ffffff';
+            } else {
+                this.properties['fontColor'] = '#000000';
+            }
+        }
+    }
+
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
-        ctx.beginPath();
-
+        
         if (this.properties['key_type'] == "Weak") {
-            ctx.moveTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
-            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
-            ctx.lineTo(x2 + 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
-            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y2 + 5 * diagram.getZoomValue());
-            ctx.lineTo(x1 - 5 * diagram.getZoomValue(), y1 - 5 * diagram.getZoomValue());
-            ctx.stroke();
-            ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+            this.drawWeakEntity(x1, y1, x2, y2);
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
         } else {
             removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
         }
-
+        ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y1);
         ctx.lineTo(x2, y2);
