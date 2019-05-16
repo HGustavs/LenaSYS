@@ -1764,8 +1764,7 @@ function developerMode(event) {
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-        drawOrigo();
-        toolbarState = 3;                                                               // Change the toolbar to DEV.
+        drawOrigo();                                                               // Change the toolbar to DEV.
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
@@ -1774,22 +1773,8 @@ function developerMode(event) {
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
     } else {
-      toolbarState = localStorage.getItem("toolbarState");                             // Change the toolbar back to ER.
-        if(toolbarState == 1) {
-          switchToolbarER();
-        } else if(toolbarState == 2) {
-          switchToolbarUML();
-        } else if(toolbarState == 3) {
-          switchToolbar('Dev');                                                           // ---||---
-          document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
-          setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-              crossDEV=false);                                                             // Turn on crossDEV.
-          setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-          setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-          toolbarState = 1;
-          switchToolbarER();
-          $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
-        }
+        switchToolbarER();
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
@@ -1826,8 +1811,8 @@ function modeSwitchConfirmed(confirmed) {
 
 function switchToolbarTo(target) {
     targetMode = target;
-    //only ask for confirmation when developer mode is off or if the user has started drawing something
-    if(developerModeActive || diagram.length < 1) {
+    //only ask for confirmation when developer mode is off
+    if(developerModeActive) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
@@ -3082,7 +3067,7 @@ function mouseupevt(ev) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
-        
+
         if(figureType == "Free") {
             createFigure();
             return;
