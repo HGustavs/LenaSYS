@@ -72,7 +72,7 @@ function returned(data)
 	retData=data;
 
 	if(retData['writeaccess'] == "w"){
-		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
+		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid="+courseid+"&coursevers="+cvers+"');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 
@@ -710,38 +710,23 @@ function createboxmenu(contentid, boxid, type)
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid+"menu");
 
+		var str = "<table cellspacing='2'><tr>";
+
 		// If reader has write access the settings button is shown along with box title
 		if(retData['writeaccess'] == "w"){
 			if(type=="DOCUMENT"){
-				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
-        
-				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
-				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p>Reset</p></div>";
-				str+="</tr></table>";
 
 			}else if(type=="CODE"){
-				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
-
-				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
-				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
-				str+="<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard("+boxid+");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
-				str+='</tr></table>';
-
+				
 			}else if(type=="IFRAME"){
-				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
 
-				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
-				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
-				str+="</tr></table>";
-
 			}else{
-				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
 				str+="<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 				str+="<option>Choose content</option>";
@@ -752,9 +737,18 @@ function createboxmenu(contentid, boxid, type)
 			}
 		// If reader doesn't have write access, only the boxtitle is shown
 		}else{
-			var str = '<table cellspacing="2"><tr>';
 			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][4]+'</span></td>';
 		}
+
+		// Add resize and reset buttons
+		str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
+		str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
+
+		// Show the copy to clipboard button for code views only
+		if (type=="CODE") {
+			str+="<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard("+boxid+");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+		}
+
 		str+='</tr></table>';
 		boxmenu.innerHTML=str;
 		$(boxmenu).click(function(event){

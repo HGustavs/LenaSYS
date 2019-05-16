@@ -729,7 +729,7 @@ header td {
 }
 
 .loggedout:hover {
-  background-color: var(--color-red-hover);
+  background-color: var(--color-green);
 }
 
 .loggedin {
@@ -737,7 +737,7 @@ header td {
 }
 
 .loggedin:hover {
-  background-color: var(--color-green-hover);
+  background-color: var(--color-red);
 }
 
 #loginbutton {
@@ -746,7 +746,6 @@ header td {
   width: 50px;
   vertical-align: middle;
   text-align: center;
-  background: var(--color-green);
 }
 
 #div2 {
@@ -1777,8 +1776,8 @@ input.hide-moments-button {
 .fileUploadInfo:after {
   content: "";
   display: block;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid white;
@@ -2083,7 +2082,7 @@ div.submit-button:disabled {
   width: 100%;
   padding: 1px;
   border-bottom: 2px solid var(--color-border-list);
-  margin-top: 20px;
+  /* margin-top: 20px; */
   font-size: 16px;
 }
 
@@ -3299,14 +3298,14 @@ rect[class*="activitymarker"]:hover {
 }
 
 /* styling for dropdown and toggle all button in accessed */
-#toggleAllButton {
-  background-color: #614875;
+.dropdown-button {
+  background-color: var(--color-primary);
   color: white;
   width: 100px;
   cursor: pointer;
 }
 
-#toggleAllButton:hover {
+.dropdown-button:hover {
   background-color: #7b5a96;
 }
 
@@ -3664,6 +3663,7 @@ only screen and (min-device-width: 1085px) {
     position: fixed;
     top: 3px;
     left: 100px;
+    right: 100px;
     z-index: 5001;
   }
 }
@@ -4124,6 +4124,10 @@ only screen and (max-device-width: 320px) {
 
 #nametext {
   padding: 2px 0px 2px 10px;
+}
+
+#noAccessMessage {
+  padding: 5px;
 }
 
 /* Is used to style a Select-box in diagram.php. */
@@ -5339,6 +5343,19 @@ textarea#filecont{
 
 .previewTable tr:nth-child(even){
   background-color: #dad8db;
+}
+.list td.personalRankTable-grpranking, .list td.personalRankTable-rank{
+  padding: 0;
+}
+.personalRankTable-grpranking div, .personalRankTable-rank div {
+  height: 48px;
+  width: 100%;
+}
+
+.personalRankTable-grpranking div div, .personalRankTable-rank div div{
+  display: table-cell;
+  padding-left: 8px;
+  vertical-align: middle;
 }
 
 .resultedbuttons{
