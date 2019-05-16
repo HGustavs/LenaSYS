@@ -252,7 +252,7 @@ function filePreview(name, path, extension){
     else if (extension === "php" || extension === "html"){
         codeFilePreview(path);
     }
-    fileDownload(name, path);
+    fileDownload(name, path, extension);
 }
 
 function imgPreview(path){
@@ -267,13 +267,13 @@ function codeFilePreview(path){
     document.querySelector(".fileView").appendChild(frame);
 }
 
-function fileDownload(name, path){
+function fileDownload(name, path, extension){
     var a = document.createElement("a");
     var h1 = document.createElement("h1");
     var div = document.createElement("div");
     h1.textContent = "Download File";
     a.href = path;
-    a.textContent = name;
+    a.textContent = name + "." + extension;
     a.download = name;
     div.appendChild(h1);
     div.appendChild(a);
