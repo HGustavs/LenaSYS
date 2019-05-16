@@ -691,7 +691,7 @@ function copySymbol(symbol) {
     }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "Line" + diagram.length;
     } else{
-        clone.name = "RelationCopy" + diagram.length;
+        clone.name = "Relation" + diagram.length;
     }
 
     clone.topLeft = points.push(topLeftClone) - 1;
