@@ -663,6 +663,25 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
+    // copying the symbol attributes
+    clone.quadrants = jQuery.extend(true, {}, symbol.quadrants);
+    clone.properties = jQuery.extend(true, {}, symbol.properties);
+    clone.lineDirection = jQuery.extend(true, {}, symbol.lineDirection);
+    clone.minWidth = jQuery.extend(true, {}, symbol.minWidth);
+    clone.minHeight = jQuery.extend(true, {}, symbol.minHeight);
+    clone.isOval = jQuery.extend(true, {}, symbol.isOval);
+    clone.isAttribute = jQuery.extend(true, {}, symbol.isAttribute);
+    clone.isRelation = jQuery.extend(true, {}, symbol.isRelation);
+    clone.isLine = jQuery.extend(true, {}, symbol.isLine);
+    clone.pointsAtSamePosition = jQuery.extend(true, {}, symbol.pointsAtSamePosition);
+    clone.operations = jQuery.extend(true, {}, symbol.operations);
+    clone.attributes = jQuery.extend(true, {}, symbol.operations);
+    clone.textLines = jQuery.extend(true, {}, symbol.operations);
+    clone.cardinality = jQuery.extend(true, {}, symbol.cardinality);
+    if (symbol.isLocked) {
+        clone.isLocked = jQuery.extend(true, {}, symbol.isLocked);
+        clone.isLockHovered = jQuery.extend(true, {}, symbol.isLockHovered);
+    }
 
     var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
     topLeftClone.x += 10;
