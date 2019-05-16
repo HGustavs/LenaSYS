@@ -52,16 +52,14 @@
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
         <div id="buttonDiv">
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-right: 0px; height: ; text-align: center;" onmousedown="">
-                    <div class="application-header">
-                    </div>
+                <div id="diagram-toolbar" class="application-toolbar-wrap" onmousedown="">
                     <div class='application-toolbar'>
                         <div id="toolbar-switcher">
-                            <div id="toolbarTypeText">Dev</div>
+                            <div id="toolbarTypeText" style ="text-align: center">Dev</div>
                             </div>
                             <div class="toolsContainer">
                                 <div class="labelToolContainer">
-                                    <h4 class="label tlabel" id="labelTools">Tools</h4>
+                                    <h4 class="label tlabel" id="labelTools" style ="text-align: center">Tools</h4>
                                     <div class="toolbar-drawer" id="drawerCreate">
                                         <div class="tooltipdialog">
                                             <!-- ER attribute -->
@@ -95,9 +93,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="labelToolContainer" style = "margin-bottom: 0px;">
+                                <div class="diagramLabelToolContainer">
                                     <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
-                                    <div class="toolbar-drawer" id="drawerUndo">
+                                    <div class="toolbar-undo-redo-drawer" id="drawerUndo">
                                       <!-- Undo -->
                                       <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
                                           <img src="../Shared/icons/undo.svg">
