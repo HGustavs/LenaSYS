@@ -105,9 +105,9 @@ pdoConnect();
 
 <div class="fileViewContainer">
     <div class="fileViewWindow">
-        <div class="loginBoxheader">
+        <div class="loginBoxheader fileViewHeader">
             <h3 class="fileName"></h3>
-            <div onclick="filePreviewClose()">x</div>
+            <div style="cursor: pointer" onclick="filePreviewClose()">x</div>
         </div>
         <div class="fileView">
         </div>
