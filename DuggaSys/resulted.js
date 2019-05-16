@@ -301,13 +301,13 @@ function leaves() {
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
 
-      // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
-      // If the sorting in sortabletable is fixed then this can be removed.
-      for(var i = 0; i < 3; i++){
-        myTable.toggleSortStatus(allColumnIds[col],i);
-      }
+    // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
+    // If the sorting in sortabletable is fixed then this can be removed.
+    for(var i = 0; i < 3; i++){
+      myTable.toggleSortStatus(allColumnIds[col],i);
+    }
 
-      myTable.toggleSortStatus(allColumnIds[col],dir);
+    myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
 }
 
