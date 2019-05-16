@@ -65,18 +65,9 @@ function setup() {
   document.getElementById("dropdownc").appendChild(customFilterDiv);
 
 	window.onscroll = function () {
-		magicHeading()
 	};
 
 	AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
-}
-
-
-function resort() {
-}
-
-function toggleSortDir(col) {
-
 }
 
 function process() {
@@ -239,8 +230,6 @@ function process() {
 	dstr += "</td></tr></table>";
 	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
 	document.getElementById("dropdowns").innerHTML = dstr;
-
-	resort();
 }
 
 function makeCustomFilter(filtername, labeltext) {
@@ -320,7 +309,6 @@ function leaves() {
 
       myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
-	magicHeading();
 }
 
 function sorttype(t) {
@@ -338,10 +326,6 @@ function sorttype(t) {
 		}
 	}
 	typechanged = true;
-	magicHeading();
-}
-
-function magicHeading() {
 }
 
 $(function () {
