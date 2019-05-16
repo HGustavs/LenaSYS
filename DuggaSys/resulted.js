@@ -286,7 +286,6 @@ function leaves() {
 	var ocol = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol");
 	var odir = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir");
 
-
 	$("input[name='sortcol']:checked").each(function () {
 		col = this.value;
 	});
@@ -297,9 +296,9 @@ function leaves() {
 	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol", col);
 	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir", dir);
 
-
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
+    console.log("col: "+col);
     // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
     // If the sorting in sortabletable is fixed then this can be removed.
     for(var i = 0; i < 3; i++){
