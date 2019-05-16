@@ -3037,8 +3037,6 @@ function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
 
-    console.log(last.name);
-
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
