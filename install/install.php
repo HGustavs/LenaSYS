@@ -105,6 +105,7 @@
     $dbUsername = "";
     $dbHostname = "";
     $dbName = "";
+	$dbPassword = "";
 
     $credentialsFile = "../../coursesyspw.php";
     if(file_exists("../../coursesyspw.php")) {
@@ -121,6 +122,8 @@
               $dbHostname = $tArray[3];
             }else if($tArray[1]=="DB_NAME"){
               $dbName = $tArray[3];
+            }else if($tArray[1]=="DB_PASSWORD"){
+              $dbPassword = $tArray[3];
             }
           }
         }
@@ -138,7 +141,7 @@
     echo 'Enter new MySQL user. <br>';
     echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
     echo 'Enter password for MySQL user. <br>';
-    echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password"/> <br>';
+    echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
     echo 'Enter new database name. <br>';
     echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
     echo 'Enter hostname (e.g localhost). <br>';
