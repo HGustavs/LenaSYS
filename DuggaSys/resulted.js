@@ -298,9 +298,13 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
-    console.log(allColumnIds[col]);
     // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
     // If the sorting in sortabletable is fixed then this can be removed.
+
+    if(col === 0){
+      myTable.setNameColumn("Lname");
+    }
+
     for(var i = 0; i < 3; i++){
       myTable.toggleSortStatus(allColumnIds[col],i);
     }
