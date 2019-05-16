@@ -336,14 +336,14 @@
                 </div>
                 <div id="selectDiv">
                     <span class="tooltipDecrease">
-                        <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1);">-</button>
+                        <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1, event);">-</button>
                         <span class="tooltiptextDec">Zoom Out</span>
                     </span>
                     <span id="range">
                         <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.01" class="zoomSlider">
                     </span>
                     <span class="tooltipIncrease">
-                        <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1);">+</button>
+                        <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1, event);">+</button>
                         <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
                     </span>
                     <span id="zoomV"></span>

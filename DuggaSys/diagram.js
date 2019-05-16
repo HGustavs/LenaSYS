@@ -2608,17 +2608,44 @@ function switchToolbar(direction) {
 // zoomInMode: Function for the zoom in and zoom out in the canvas element
 //----------------------------------------------------------------------
 
-function zoomInMode() {
+function zoomInMode(event) {
+    let currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
+    let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
+
+    let centerX = (canvas.width / 2 - origoOffsetX) / zoomValue;
+    let centerY = (canvas.height / 2 - origoOffsetY) / zoomValue;
+
+    let oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
+    let zoomDifference = zoomValue / oldZoom;
+
+    // Move to mouse
+    if(event.type == "wheel"){
+        origoOffsetX += currentMouseX - pixelsToCanvas(currentMouseCoordinateX).x;
+        origoOffsetY += currentMouseY - pixelsToCanvas(0, currentMouseCoordinateY).y;
+    }
+    // Move to center
+    else {
+        if(oldZoom != zoomValue){
+            if(zoomDifference < 1){
+                origoOffsetX -= Math.round((centerX * 0.9) - centerX);
+                origoOffsetY -= Math.round((centerY * 0.9) - centerY);
+            } else if (zoomDifference > 1){
+                origoOffsetX -= Math.round((centerX * 1.1) - centerX);
+                origoOffsetY -= Math.round((centerY * 1.1) - centerY);
+            }
+        }
+    }
+
     reWrite();
     updateGraphics();
 }
 
-function changeZoom(zoomValue) {
+function changeZoom(zoomValue, event) {
     var value = parseFloat(document.getElementById("ZoomSelect").value);
     value = value + parseFloat(zoomValue);
     document.getElementById("ZoomSelect").value = value;
-    zoomInMode();
+    zoomInMode(event);
 }
 
 //-----------------------
@@ -2626,20 +2653,15 @@ function changeZoom(zoomValue) {
 //-----------------------
 
 function scrollZoom(event) {
-  let currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
-  let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
     if(event.deltaY > 124){
-        changeZoom(-0.1);
+        changeZoom(-0.1, event);
     } else if (event.deltaY < -124) {
-        changeZoom(0.1);
+        changeZoom(0.1, event);
     } else if(event.deltaY > 5) {
-        changeZoom(-0.01);
+        changeZoom(-0.01, event);
     } else if (event.deltaY < -5) {
-        changeZoom(0.01);
+        changeZoom(0.01, event);
     }
-    origoOffsetX += currentMouseX - pixelsToCanvas(currentMouseCoordinateX).x;
-    origoOffsetY += currentMouseY - pixelsToCanvas(0, currentMouseCoordinateY).y;
-    updateGraphics();
 }
 
 //----------------------------------------------------------------------
