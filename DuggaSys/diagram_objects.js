@@ -1428,12 +1428,6 @@ function Symbol(kindOfSymbol) {
         } else {
             middleBreakPointY = Math.abs(y1);
         }
-        
-        // Check if this is a recursive line (connects to a signle object twice)
-        let connObjects = this.getConnectedObjects();
-        if (connObjects.length == 1) {
-            middleBreakPointX += this.recursiveLineExtent;
-        }
 
         // Start line
         ctx.beginPath();
@@ -1501,6 +1495,16 @@ function Symbol(kindOfSymbol) {
             ctx.lineTo(x1, breakpointStartY);
         } else if (startLineDirection == "down") {
             ctx.lineTo(x1, breakpointStartY);
+        }
+
+        // Check if this is a recursive line (connects to a single object twice)
+        let connObjects = this.getConnectedObjects();
+        if (connObjects.length == 1) {
+            if (x1 == x2) {
+                middleBreakPointX += (startLineDirection === "right" ? 1 : -1) * this.recursiveLineExtent;
+            }else if (y1 == y2) {
+                middleBreakPointY += (startLineDirection === "down" ? 1 : -1) * this.recursiveLineExtent;
+            }
         }
 
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
