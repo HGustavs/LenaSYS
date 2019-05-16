@@ -306,7 +306,7 @@ function leaves() {
     for(var i = 0; i < 3; i++){
       myTable.toggleSortStatus(allColumnIds[col],i);
     }
-    myTable.toggleSortStatus(allColumnIds[col],dir);
+    myTable.toggleSortStatus(allColumnIds[col],2);
 	}
 }
 
