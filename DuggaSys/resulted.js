@@ -302,14 +302,18 @@ function leaves() {
 		typechanged = false;
     // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
     // If the sorting in sortabletable is fixed then this can be removed.
-    for(var i = 3; i >= 0; i--){
-      myTable.toggleSortStatus(allColumnIds[col],0);
-    }
+    myTable.toggleSortStatus(allColumnIds[col],0);
     myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
 }
 
 function sorttype(t) {
+  if(t == 0){
+    myTable.setNameColumn('Fname');
+  }else{
+    myTable.setNameColumn('Lname');
+  }
+
 	var c = $("input[name='sortcol']:checked").val();
 	if (c == 0) {
 		localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
