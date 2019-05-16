@@ -2391,7 +2391,7 @@ function globalFont() {
 
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
             diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
         }
     }
@@ -2403,7 +2403,7 @@ function globalFontColor() {
 
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
             diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
         }
     }
@@ -2415,7 +2415,7 @@ function globalTextSize() {
 
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
             diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
         } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
     }

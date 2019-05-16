@@ -998,7 +998,7 @@ function Symbol(kindOfSymbol) {
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
 
         // Clear Class Box
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = this.properties['symbolColor'];
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         // Box
         ctx.beginPath();
@@ -1014,6 +1014,7 @@ function Symbol(kindOfSymbol) {
         // Middie Divider
         ctx.moveTo(x1, midy);
         ctx.lineTo(x2, midy);
+        ctx.fill();
         ctx.stroke();
         ctx.clip();
 
@@ -1080,13 +1081,14 @@ function Symbol(kindOfSymbol) {
             ctx.strokeStyle = this.properties['strokeColor'];
 
         }
+        ctx.fill();
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = this.properties['fontColor'];
         if(ctx.measureText(this.name).width > (x2-x1) - 4) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
-        }else {
+        } else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
