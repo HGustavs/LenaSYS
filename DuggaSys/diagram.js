@@ -856,6 +856,10 @@ diagram.deleteObject = function(object) {
             this.splice(i, 1);
         }
     }
+    if(diagram.length == 0){
+        resetSerialNumbers();
+        removeLocalStorage();
+    }
 }
 
 //--------------------------------------------------------------------
@@ -1742,6 +1746,16 @@ function gridToSVG(width, height) {
 //              it hides the points by placing them beyond the users view.
 //------------------------------------------------------------------------------
 
+function resetSerialNumbers(){
+    diagram.serialNumbers = {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    }
+}
+
 function clearCanvas() {
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
@@ -1750,6 +1764,7 @@ function clearCanvas() {
     for (var i = 0; i < points.length;) {
         points.pop();
     }
+    resetSerialNumbers();
     updateGraphics();
     SaveState();
 }
