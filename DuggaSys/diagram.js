@@ -663,6 +663,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
+    clone.properties = jQuery.extend(true, {}, symbol.properties);
 
     var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
     topLeftClone.x += 10;
