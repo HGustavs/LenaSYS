@@ -766,6 +766,7 @@ function returnedSection(data) {
   }
 
   contribDataArr = [];
+  
   var str = "";
 
   str += "<div class='contributionSort'>";

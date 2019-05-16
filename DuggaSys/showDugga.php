@@ -8,7 +8,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Dugga Viewer</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
@@ -94,6 +93,16 @@
 			$duggarel=$row['qrelease'];
 			$duggadead=$row['deadline'];
 
+			$output = "<title>%TITLE%</title>";
+			if ($duggafile === 'contribution') {
+				$output = str_replace('%TITLE%', 'Contribution', $output);
+			} else if ($duggafile === 'daily-minutes') {
+				$output = str_replace('%TITLE%', 'Daily minutes', $output);
+			} else {
+				$output = str_replace('%TITLE%', 'Dugga viewer', $output);
+			}
+			echo $output;
+			
 			echo "<script src='templates/".$duggafile.".js'></script>";
 			echo "</head>";
 			echo "<body onload='setup();'>";
