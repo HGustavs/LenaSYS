@@ -362,7 +362,6 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	if(document.getElementById('newFeedback') == null){
 		feedbackText = "";
 	} else {		
-		console.log(document.getElementById('newFeedback').value);
 		feedbackText = document.getElementById('newFeedback').value;
 	}
 
