@@ -115,7 +115,6 @@ function returned(data)
 	if(data['sectionname'] != null){
 		exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
 	}
-	console.log(templateid);
 	// User can choose template if no template has been chosen and the user has write access.
 	if((retData['templateid'] == 0)){
 		if(retData['writeaccess'] == "w"){
@@ -515,6 +514,7 @@ function displayEditContent(boxid)
 
 function changeDirectory(kind)
 {
+	console.log(templateid);
 	var dir;
 	var str="";
 
