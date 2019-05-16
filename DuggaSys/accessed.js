@@ -44,7 +44,7 @@ function setup() {
 	str += "<fieldset style='margin-top: 10px;'><legend style='color: black; font-size: 16px;'>Columns</legend>";
 	str += "<div id='sortOptions'></div>";
 	str += "</fieldset>";
-	str += "<button onclick='parseSortOptions(this)'>Sort</button>";
+	str += "<button class='dropdown-button' onclick='parseSortOptions(this)'>Sort</button>";
 	document.getElementById("dropdowns").innerHTML = str;
 
 	AJAXService("GET", {
@@ -464,7 +464,7 @@ function returnedAccess(data) {
 	myTable.renderTable();
 
 	var str = "<div class='checkbox-dugga'>";
-	str += "<button id='toggleAllButton' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
+	str += "<button id='toggleAllButton' class='dropdown-button' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
 	str += "</div>"
 	document.getElementById("dropdownc").innerHTML += str;
 }

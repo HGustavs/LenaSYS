@@ -72,7 +72,7 @@ function returned(data)
 	retData=data;
 
 	if(retData['writeaccess'] == "w"){
-		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
+		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid="+courseid+"&coursevers="+cvers+"');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 
@@ -274,14 +274,16 @@ function returned(data)
 	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
 
 	titles.forEach(title => {
-		title.addEventListener('keypress', preventLinebreak);
+		title.addEventListener('keypress', updateTitle);
 	})
 }
 
 function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
-	retData['box'][retData['box'].length-1][4] = data;
-	$("#boxtitle2").text(data);
+	retData['box'][data.id - 1][4] = data.title;
+	var boxWrapper = document.querySelector('#box'+data.id+'wrapper');
+	var titleSpan = boxWrapper.querySelector('#boxtitle2');
+	titleSpan.innerHTML = data.title;
 }
 
 //---------------------------------------------------------------------------------
@@ -665,16 +667,31 @@ function updateContent()
 }
 
 /*-----------------------------------------------------------------------
-  -  preventLinebreak: Prevents line breaks in contenteditable heading  -     
+  -              updateTitle: Updates the title being edited            -     
   -----------------------------------------------------------------------*/
-function preventLinebreak(e) {
+function updateTitle(e) {
 	if (e.key === 'Enter') {
 		e.preventDefault();
-		var titles = [...document.querySelectorAll('[contenteditable="true"]')];
-		titles.forEach(title => {
-			title.blur();
-		});
+		var titleSpan = e.target;
+		var box = titleSpan.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+		var boxid = box.id.substring(3,4);
+		var title = titleSpan.innerHTML.replace(/&nbsp;/g, '');
+
+		// Trim title, max characters allowed is 20
+		title = title.trim();
+		if (title.length > 20) {
+			title = title.substring(0,20);
+		}
+		title = title.trim(); // Trim title again if the substring caused trailing whitespaces
+
+		titleSpan.blur();
 		window.getSelection().removeAllRanges();
+
+ 		AJAXService("EDITTITLE", {
+			exampleid : querystring['exampleid'],
+			boxid : boxid,
+			boxtitle : title
+		}, "BOXTITLE");
 	}
 }
 //----------------------------------------------------------------------------------
@@ -710,38 +727,23 @@ function createboxmenu(contentid, boxid, type)
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid+"menu");
 
+		var str = "<table cellspacing='2'><tr>";
+
 		// If reader has write access the settings button is shown along with box title
 		if(retData['writeaccess'] == "w"){
 			if(type=="DOCUMENT"){
-				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
-        
-				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
-				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p>Reset</p></div>";
-				str+="</tr></table>";
 
 			}else if(type=="CODE"){
-				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
-
-				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
-				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
-				str+="<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard("+boxid+");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
-				str+='</tr></table>';
-
+				
 			}else if(type=="IFRAME"){
-				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
 
-				str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
-				str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
-				str+="</tr></table>";
-
 			}else{
-				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
 				str+="<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 				str+="<option>Choose content</option>";
@@ -752,9 +754,18 @@ function createboxmenu(contentid, boxid, type)
 			}
 		// If reader doesn't have write access, only the boxtitle is shown
 		}else{
-			var str = '<table cellspacing="2"><tr>';
 			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][4]+'</span></td>';
 		}
+
+		// Add resize and reset buttons
+		str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
+		str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
+
+		// Show the copy to clipboard button for code views only
+		if (type=="CODE") {
+			str+="<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard("+boxid+");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+		}
+
 		str+='</tr></table>';
 		boxmenu.innerHTML=str;
 		$(boxmenu).click(function(event){
