@@ -292,6 +292,7 @@ function leaves() {
 	$('#dropdowns').css('display', 'none');
 	var col = 0;
 	var dir = 1;
+  var allColumnIds = myTable.getColumnOrder();
 
 	var ocol = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol");
 	var odir = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir");
@@ -310,8 +311,7 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
-    console.log(myTable['colname']);
-		myTable.toggleSortStatus(col,dir);
+		myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
 	magicHeading();
 }
