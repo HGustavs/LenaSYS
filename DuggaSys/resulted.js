@@ -300,6 +300,7 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
+    console.log("dir: " + dir);
     // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
     // If the sorting in sortabletable is fixed then this can be removed.
     for(var i = 0; i < 3; i++){
