@@ -100,6 +100,7 @@ function process() {
 	// Reconstitute table
 	students = new Array;
 	for (i = 0; i < entries.length; i++) {
+		console.log(JSON.stringify(entries));
 
 		var uid = entries[i].uid;
 
