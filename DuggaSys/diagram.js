@@ -1756,7 +1756,7 @@ consloe.log = function(gobBluth) {
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
-var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
+var developerModeActive = false;                // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
@@ -1772,16 +1772,41 @@ function developerMode(event) {
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
     } else {
         switchToolbarER();
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
     }
     reWrite();
     updateGraphics();
+}
+
+function setModeOnRefresh(){
+    toolbarState = localStorage.getItem("toolbarState");                             // Change the toolbar back to ER.
+  if(toolbarState == 1) {
+    switchToolbarER();
+    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+  } else if(toolbarState == 2) {
+    switchToolbarUML();
+    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+  } else if(toolbarState == 3) {
+    crossStrokeStyle1 = "#f64";
+    crossFillStyle = "#d51";
+    crossStrokeStyle2 = "#d51";
+    developerModeActive = true;
+    switchToolbarDev();
+    updateGraphics();
     setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
+    $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
+  }
 }
 
 var targetMode = "ER";     // The mode that we want to change to when trying to switch the toolbar. Set default here.
@@ -1973,10 +1998,10 @@ function loadDiagram() {
                 points[i] = b.points[i];
             }
         }
-    }
     deselectObjects();
     updateGraphics();
     SaveState();
+}
 }
 
 //----------------------------------------------------------------------
