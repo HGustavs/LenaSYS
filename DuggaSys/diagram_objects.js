@@ -30,6 +30,7 @@ function Symbol(kindOfSymbol) {
     this.minWidth;
     this.minHeight;
     this.locked = false;
+    this.group = 0;
     this.isOval = false;
     this.isAttribute = false;
     this.isRelation = false;
@@ -926,6 +927,10 @@ function Symbol(kindOfSymbol) {
             if(this.isHovered) {
                 this.drawLockedTooltip();
             }
+        }
+
+        if (this.group != 0){
+            drawGroup(this);
         }
 
         ctx.save();
@@ -2036,6 +2041,26 @@ function Symbol(kindOfSymbol) {
     }
 }
 
+function drawGroup(symbol) {
+    var position = symbol.getLockPosition();
+    ctx.save();
+    // Offset used to achive the correct y position since fillRect and fillText are drawn differently
+    var yOffset = -25;
+    // Different size when hovering the lock itself and the entity, for displaying different amount of text
+    var ySize = 16;
+    var xSize = symbol.group < 10 ? 45 : 50;
+    // Draw tooltip background
+    ctx.fillStyle = "white"; //ctx.fillStyle = "#f5f5f5";
+    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
+    // Draws text, uses fillStyle to override default hover change.
+    yOffset += 12;
+    ctx.fillStyle = "black";
+    ctx.font = 12 * diagram.getZoomValue()+ "px Arial";
+    ctx.fillText("Group:" + symbol.group, position.x, position.y + yOffset * diagram.getZoomValue());
+    // Draw additional text when hovering the lock itself
+    ctx.restore();
+}
+
 this.drawOval = function (x1, y1, x2, y2) {
     this.isOval = true;
     var middleX = x1 + ((x2 - x1) * 0.5);
@@ -2102,6 +2127,7 @@ function Path() {
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;           // An organized path can contain several sub-path, each of which must be organized
     this.figureType = "Square";
+    this.group = "";
     this.properties = {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
