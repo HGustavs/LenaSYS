@@ -71,16 +71,16 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-									<button class='submit-button menuButton results' onclick='bigMac(); navigatePage("resulted.php");' title='Edit student results'>Results</button>
+								<a id='resultsBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
 								</li>
 								<li class='tests'>
-										<button class='submit-button menuButton tests' onclick='bigMac(); navigatePage("duggaed.php");' title='Show tests'>Tests</button>
-								</li>
+										<a id='testsBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
+									</li>
 								<li class='files'>
-										<button class='submit-button menuButton files' onclick='bigMac(); navigatePage("fileed.php");' title='Show files'>Files</button>
+									<a id='filesBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
 								</li>
 								<li class='access'>
-										<button class='submit-button menuButton access' onclick='bigMac(); navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
+									<a id='accessBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
 								</li>
 							</ul>
 						</div>
@@ -93,13 +93,12 @@
 					</td>
 					<td class='tests menuButton' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' /></a>
+							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
 						</div>
 					</td>
 					<td class='files menuButton' style='display: inline-block;'>
 						<div class='files menuButton'>
 						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
-
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
