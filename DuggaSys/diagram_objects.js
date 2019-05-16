@@ -1666,6 +1666,8 @@ function Symbol(kindOfSymbol) {
             } else {
                 newY += points[firstAnchorPoint].y;
             }
+
+            this.addDraggablePoint(newX, newY);
         }
     }
 
