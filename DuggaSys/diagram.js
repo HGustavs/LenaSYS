@@ -3132,8 +3132,7 @@ function mouseupevt(ev) {
             var okToMakeLine = true;
             if(symbolEndKind != symbolKind.umlLine && symbolEndKind != symbolKind.text) {
                 var createNewPoint = false;
-                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute
-                        || lineStartObj == markedObject) {
+                if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else {
                     createNewPoint = true;
@@ -3145,8 +3144,7 @@ function mouseupevt(ev) {
                 if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute
-                            || lineStartObj == markedObject) {
+                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
                         p2 = diagram[markedObject].centerPoint;
                     } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -3216,6 +3214,7 @@ function mouseupevt(ev) {
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
             erLineA.centerPoint = p3;
+            erLineA.isRecursiveLine = lineStartObj == markedObject;
             diagram.push(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
@@ -3269,9 +3268,10 @@ function mouseupevt(ev) {
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
             umlLineA.centerPoint = p3;
+            umlLineA.isRecursiveLine = lineStartObj == markedObject;
             diagram.push(umlLineA);
             //selecting the newly created enitity and open the dialogmenu.
-            lastSelectedObject = diagram.length -1;
+            lastSelectedObject = diagram.length - 1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
             //resets the mode so that next click can move or select an object instead of drawing another line
