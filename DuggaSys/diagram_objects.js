@@ -1457,7 +1457,7 @@ function Symbol(kindOfSymbol) {
         ctx.stroke();
     }
 
-    this.drawUMLLine = function(x1, y1, x2, y2) {
+    this.drawUMLLine = function(x1, y1, x2, y2, x3 = 0, y3 = 0, x4 = 0, y4 = 0) {
         this.clearAnchors();
         this.clearDraggablePoints();
 
@@ -1491,10 +1491,10 @@ function Symbol(kindOfSymbol) {
         }
 
         // Variables for UML line breakpoints
-        var breakpointStartX = 0;     // X Coordinate for start breakpoint
-        var breakpointStartY = 0;     // Y Coordinate for start breakpoint
-        var breakpointEndX = 0;       // X Coordinate for end breakpoint
-        var breakpointEndY = 0;       // Y Coordinate for end breakpoint
+        var breakpointStartX = x3;     // X Coordinate for start breakpoint
+        var breakpointStartY = y3;     // Y Coordinate for start breakpoint
+        var breakpointEndX = x4;       // X Coordinate for end breakpoint
+        var breakpointEndY = y4;       // Y Coordinate for end breakpoint
         var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
         var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
         var startLineDirection = "";  // Which side of the class the line starts from
@@ -1575,6 +1575,9 @@ function Symbol(kindOfSymbol) {
             }
         }
 
+        // Add start breakpoint as an anchor
+        this.addAnchor(breakpointStartX, breakpointStartY);
+
         // Draw to start breakpoint based on direction
         if (startLineDirection == "left") {
             ctx.lineTo(breakpointStartX, y1);
@@ -1590,14 +1593,20 @@ function Symbol(kindOfSymbol) {
             ctx.lineTo(breakpointStartX, middleBreakPointY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(breakpointEndX, middleBreakPointY);
+            this.addAnchor(breakpointStartX, middleBreakPointY);
+            this.addAnchor(breakpointEndX, middleBreakPointY);
         } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(middleBreakPointX, breakpointStartY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(middleBreakPointX, breakpointEndY);
+            this.addAnchor(middleBreakPointX, breakpointStartY);
+            this.addAnchor(middleBreakPointX, breakpointEndY);
         }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
             ctx.lineTo(breakpointStartX, breakpointEndY);
+            this.addAnchor(breakpointStartX, breakpointEndY);
         }  else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointEndX, breakpointStartY);
+            this.addAnchor(breakpointEndX, breakpointStartY);
         }
 
         // Draw to end breakpoint based on direction
@@ -1610,8 +1619,14 @@ function Symbol(kindOfSymbol) {
         } else if (endLineDirection == "down") {
             ctx.lineTo(x2, breakpointEndY);
         }
+
+        // Add end breakpoint anchor
+        this.addAnchor(breakpointEndX, breakpointEndY);
+
         ctx.lineTo(x2, y2);
         ctx.stroke();
+
+        this.updateDraggablePoints();
 
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
