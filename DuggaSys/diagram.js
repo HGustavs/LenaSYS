@@ -690,6 +690,9 @@ function copySymbol(symbol) {
         clone.name = "Entity" + diagram.length;
     }else if(symbol.symbolkind == symbolKind.line) {
         clone.name = "Line" + diagram.length;
+    }else if(symbol.symbolkind == symbolKind.text) {
+        clone.name = "New Text " + diagram.length;
+        clone.textLines.push({text:clone.name});
     } else{
         clone.name = "RelationCopy" + diagram.length;
     }
@@ -2759,7 +2762,7 @@ function mousemoveevt(ev, t) {
                       canvas.style.cursor = "default";
                   }
               }
-       
+
             // If mouse is not pressed highlight closest point
             points.clearAllSelects();
             movobj = diagram.itemClicked();
@@ -3030,6 +3033,8 @@ function mousedownevt(ev) {
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
+
+    console.log(last.name);
 
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
@@ -3406,7 +3411,7 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    text.name = "New Text" + diagram.length;
+    text.name = "New Text " + diagram.length;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
