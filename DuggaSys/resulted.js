@@ -70,15 +70,6 @@ function setup() {
 	AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
-
-function resort() {
-  // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
-  // If the sorting in sortabletable is fixed then this can be removed.
-  for(var i = 0; i < 3; i++){
-    myTable.toggleSortStatus(allColumnIds[col],i);
-  }
-}
-
 function process() {
 	// Create temporary list that complies with dropdown
 	momtmp = new Array;
@@ -313,6 +304,14 @@ function leaves() {
 		typechanged = false;
     myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
+}
+
+function resort() {
+  // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
+  // If the sorting in sortabletable is fixed then this can be removed.
+  for(var i = 0; i < 3; i++){
+    myTable.toggleSortStatus(allColumnIds[col],i);
+  }
 }
 
 function sorttype(t) {
