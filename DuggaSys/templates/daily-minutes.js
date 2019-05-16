@@ -247,7 +247,7 @@ function createFileUploadArea(params){
 	form +="<tfoot><td colspan='4'>";
 	form +="<span class='newRowButton' onclick='newRow()'>Add row</span>";
 	form +="</td></tfoot></table>";
-	form +="<input id='tsSubmit' type='submit' value='Upload' /></form>";
+	form +="<input class='tsSubmit' type='submit' value='Upload' /></form>";
 	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
 	str += "<div id='"+fieldname+"Instruction' style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
 	str += "</div>";
@@ -294,7 +294,7 @@ function createSmallerViewportForm(params){
 	form +="<tfoot><td colspan='4'>";
 	form +="</td></tfoot></table>";
 	form += "</div>";
-	form +="<input id='smallerViewportUploadButton' type='submit' value='Upload' /></form>";
+	form +="<input class='tsSubmit' type='submit' value='Upload' /></form>";
 	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
 	str += "<div id='"+fieldname+"Instruction' style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
 	str += "</div>";
