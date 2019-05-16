@@ -39,6 +39,7 @@ var querystring = parseGet();
 var courseid;
 var exampleid;
 var cvers;
+var templateid;
 
 /********************************************************************************
 
@@ -70,6 +71,7 @@ function setup()
 function returned(data)
 {
 	retData=data;
+	templateid=retData['templateid'];
 
 	if(retData['writeaccess'] == "w"){
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid="+courseid+"&coursevers="+cvers+"');");
@@ -116,7 +118,7 @@ function returned(data)
 		exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
 	}
 	// User can choose template if no template has been chosen and the user has write access.
-	if((retData['templateid'] == 0)){
+	if((templateid == 0)){
 		if(retData['writeaccess'] == "w"){
 			alert("A template has not been chosen for this example. Please choose one.");
 			$("#chooseTemplateContainer").css("display","flex");
@@ -514,7 +516,7 @@ function displayEditContent(boxid)
 
 function changeDirectory(kind)
 {
-	console.log(retData['templateid']);
+	console.log(templateid);
 	var dir;
 	var str="";
 
