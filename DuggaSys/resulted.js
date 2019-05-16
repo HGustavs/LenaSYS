@@ -324,8 +324,6 @@ function sorttype(t) {
 			$("#sorttype" + t).prop("checked", true);
 
       myTable.setNameColumn("Lname");
-
-      }
 		}
 	}
 	typechanged = true;
