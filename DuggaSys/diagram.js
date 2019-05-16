@@ -1756,14 +1756,13 @@ consloe.log = function(gobBluth) {
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
-var developerModeActive = false;                // used to repressent a switch for whenever the developerMode is enabled or not.
+var
+developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
     if(developerModeActive) {
-        crossStrokeStyle1 = "#f64";
-        crossFillStyle = "#d51";
-        crossStrokeStyle2 = "#d51";
+        showCrosses();
         drawOrigo();                                                               // Change the toolbar to DEV.
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
@@ -1777,39 +1776,45 @@ function developerMode(event) {
         switchToolbarER();
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
-        crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-        crossFillStyle = "rgba(255, 102, 68, 0.0)";
-        crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+        hideCrosses();
     }
     reWrite();
     updateGraphics();
 }
 
-function setModeOnRefresh(){
-    toolbarState = localStorage.getItem("toolbarState");                             // Change the toolbar back to ER.
-  if(toolbarState == 1) {
-    switchToolbarER();
-    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-    crossFillStyle = "rgba(255, 102, 68, 0.0)";
-    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-  } else if(toolbarState == 2) {
-    switchToolbarUML();
-    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-    crossFillStyle = "rgba(255, 102, 68, 0.0)";
-    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-  } else if(toolbarState == 3) {
+function setModeOnRefresh() {
+    toolbarState = localStorage.getItem("toolbarState");
+    if(toolbarState == 1) {
+        switchToolbarER();
+        hideCrosses();
+        developerModeActive = false;
+    } else if(toolbarState == 2) {
+        switchToolbarUML();
+        hideCrosses();
+        developerModeActive = false;
+    } else if(toolbarState == 3) {
+        showCrosses();
+        developerModeActive = true;
+        switchToolbarDev();
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
+    }
+    else {
+        switchToolbarER();
+    }
+}
+
+function showCrosses() {
     crossStrokeStyle1 = "#f64";
     crossFillStyle = "#d51";
     crossStrokeStyle2 = "#d51";
-    developerModeActive = true;
-    switchToolbarDev();
-    updateGraphics();
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
-    $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
-  }
 }
 
-var targetMode = "ER";     // The mode that we want to change to when trying to switch the toolbar. Set default here.
+function hideCrosses() {
+    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+}
 
 //------------------------------------------------------------------------------
 // modeSwitchConfirmed:
@@ -2028,23 +2033,23 @@ function reWrite() {
     if(developerModeActive) {
         //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + " </p>";
+        + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) </p>";
-    if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
-      document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-       + Math.round((zoomValue * 100)) + "%" + " </p>";
-      document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-       + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-    }
+        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) </p>";
+        if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
+            document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+            + Math.round((zoomValue * 100)) + "%" + " </p>";
+            document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+            + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+        }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + "   </p>";
+        + Math.round((zoomValue * 100)) + "%" + "   </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
+        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
     }
 }
 
@@ -2885,9 +2890,7 @@ function mousemoveevt(ev, t) {
                     ctx.stroke();
                     ctx.setLineDash([]);
                     if (!developerModeActive) {
-                        crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                        crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                        crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                        hideCrosses();
                     }
                 }
             } else if (uimode == "CreateEREntity") {
@@ -2903,9 +2906,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateERRelation") {
                 ctx.setLineDash([3, 3]);
@@ -2922,9 +2923,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateERAttr") {
                 ctx.setLineDash([3, 3]);
@@ -2933,9 +2932,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateLine") {
                 // Path settings for preview line
@@ -2947,9 +2944,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateUMLLine") {
                 // Path settings for preview line
@@ -2961,10 +2956,8 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
-                    }
+                    hideCrosses();
+                }
                 } else {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
@@ -2978,9 +2971,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             }
         }
