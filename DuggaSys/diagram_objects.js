@@ -1579,15 +1579,7 @@ function Symbol(kindOfSymbol) {
         this.addAnchor(breakpointStartX, breakpointStartY);
 
         // Draw to start breakpoint based on direction
-        if (startLineDirection == "left") {
-            ctx.lineTo(breakpointStartX, y1);
-        } else if (startLineDirection == "right") {
-            ctx.lineTo(breakpointStartX, y1);
-        } else if (startLineDirection == "up") {
-            ctx.lineTo(x1, breakpointStartY);
-        } else if (startLineDirection == "down") {
-            ctx.lineTo(x1, breakpointStartY);
-        }
+        ctx.lineTo(breakpointStartX, breakpointStartY);
 
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
             ctx.lineTo(breakpointStartX, middleBreakPointY);
@@ -1610,15 +1602,7 @@ function Symbol(kindOfSymbol) {
         }
 
         // Draw to end breakpoint based on direction
-        if (endLineDirection == "left") {
-            ctx.lineTo(breakpointEndX, y2);
-        } else if (endLineDirection == "right") {
-            ctx.lineTo(breakpointEndX, y2);
-        } else if (endLineDirection == "up") {
-            ctx.lineTo(x2, breakpointEndY);
-        } else if (endLineDirection == "down") {
-            ctx.lineTo(x2, breakpointEndY);
-        }
+        ctx.lineTo(breakpointEndX, breakpointEndY);
 
         // Add end breakpoint anchor
         this.addAnchor(breakpointEndX, breakpointEndY);
