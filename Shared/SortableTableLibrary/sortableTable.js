@@ -766,7 +766,6 @@ function newCompare(firstCell, secoundCell) {
 		}
 		//Check if the cell is a valid cell in the table.
 	} else if (typeof firstCell === 'object' && col.includes("lid")) {
-		console.log("time");
 		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
 			firstCellTemp = firstCell.grade;
 			secoundCellTemp = secoundCell.grade;
@@ -779,21 +778,25 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		console.log("go");
 		if (status == 0) {
-			//return firstCellTemp > secoundCellTemp ? 1 : -1;
 			//Ascending grade
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
-
 		} else if (status == 1) {
-			//return secoundCellTemp > firstCellTemp ? 1 : -1;
 			if(secoundCellTemp != "" && firstCellTemp != "" && secoundCellTemp != 0 && firstCellTemp != 0){
 				//descending grades
 				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-			}	
+			}
 		} else if (status == 2) {
 			//pending grades
-			if(firstCellTemp > secoundCellTemp && secoundCellTemp != ""){
+			if(secoundCellTemp === "0" && firstCellTemp !== "0"){
 				val = -1;
+			} else if(secoundCellTemp !== "0" && firstCellTemp === "0"){
+				val = 1;			
+			} else if(secoundCellTemp === ""){
+				val = 1;
+			} else {
+				val = 0;
 			}
 		}
 	} else if (colOrder.includes(col)) {
