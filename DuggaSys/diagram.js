@@ -684,18 +684,18 @@ function copySymbol(symbol) {
     }
 
     if(symbol.symbolkind == symbolKind.uml) {
-        clone.name = "New " + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.erAttribute) {
-        clone.name = "Attr " + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.erEntity) {
-        clone.name = "Entity " + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.line) {
-        clone.name = "Line " + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.text) {
-        clone.name = "Text " + diagram.length;
+        clone.name = symbol.name;
         clone.textLines.push({text:clone.name});
     } else{
-        clone.name = "Relation " + diagram.length;
+        clone.name = symbol.name;
     }
 
     clone.topLeft = points.push(topLeftClone) - 1;
