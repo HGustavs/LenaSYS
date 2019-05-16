@@ -664,7 +664,6 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
     // copying the symbol attributes
-    clone.quadrants = jQuery.extend(true, {}, symbol.quadrants);
     clone.properties = jQuery.extend(true, {}, symbol.properties);
     clone.lineDirection = jQuery.extend(true, {}, symbol.lineDirection);
     clone.minWidth = jQuery.extend(true, {}, symbol.minWidth);
