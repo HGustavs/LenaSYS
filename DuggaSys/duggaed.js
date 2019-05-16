@@ -79,15 +79,16 @@ function selectDugga(qid) {
 	$("#autograde").html(makeoptions(quiz['autograde'],["Hidden","Yes"],[0,1]));
 	$("#gradesys").html(makeoptions(quiz['gradesystem'],["U-G-VG","U-G"],[1,2,3]));
 	$("#template").html(makeoptions(quiz['quizFile'],globalData["files"],globalData["files"]));
-  if(quiz['qstart']===null)quiz['qstart']="";
+  if(quiz['qstart']===null || quiz['qstart']==="UNK")quiz['qstart']="";
+	if(quiz['deadline']===null || quiz['deadline']==="UNK")quiz['deadline']="";
+	if(quiz['qrelease']===null || quiz['qrelease']==="UNK")quiz['qrelease']="";
   $("#qstart").val(quiz['qstart'].substr(0,10));
 	$("#qstartt").html(makeoptions(quiz['qstart'].substr(11,2),tarro,tarrv));
   $("#qstartm").html(makeoptions(quiz['qstart'].substr(14,2),marro,marrv));
 
   if(quiz['jsondeadline'].indexOf("'")>=0)quiz['jsondeadline']=quiz['jsondeadline'].replace(/'/g, "\"");
-  if(quiz['jsondeadline']===null||quiz['jsondeadline']=="")quiz['jsondeadline']='{"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""}';
+  if(quiz['jsondeadline']===null||quiz['jsondeadline']===""||quiz['jsondeadline'] ==="UNK")quiz['jsondeadline']='{"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""}';
   let dls=JSON.parse(quiz['jsondeadline']);
-  if(quiz['deadline']===null)quiz['deadline']="";
   $("#deadline").val(quiz['deadline'].substr(0,10));
   $("#deadlinecomments1").val(dls.comment1);
 	$("#deadlinet").html(makeoptions(quiz['deadline'].substr(11,2),tarro,tarrv));
@@ -100,7 +101,6 @@ function selectDugga(qid) {
   $("#deadlinecomments3").val(dls.comment3);
 	$("#deadlinet3").html(makeoptions(dls.deadline3.substr(11,2),tarro,tarrv));
   $("#deadlinem3").html(makeoptions(dls.deadline3.substr(14,2),marro,marrv));
-  if(quiz['qrelease']===null)quiz['qrelease']="";
   $("#release").val(quiz['qrelease'].substr(0,10));
 	$("#releaset").html(makeoptions(quiz['qrelease'].substr(11,2),tarro,tarrv));
   $("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
