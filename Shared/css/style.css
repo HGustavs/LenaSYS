@@ -1634,7 +1634,7 @@ button.option {
 }
 
 #MOTDbutton {
-  position: fixed;
+  position: relative;
  top: -2px;
 }
 
