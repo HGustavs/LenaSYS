@@ -444,6 +444,7 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 
 			// The array which is displayed on resulted without SSN
+			//keeping this array until verified that changes made does not break anything.
 			/*
 			$entryNoSSN = array(
 				'cid' => (int)$row['cid'],
