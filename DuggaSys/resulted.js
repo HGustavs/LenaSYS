@@ -313,13 +313,8 @@ function sorttype(t) {
 		localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
 		$("input[name='sorttype']").prop("checked", false);
 
-    myTable.setNameColumn("Fname");
-	}else if (c == 1) {
-  	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
-  	$("input[name='sorttype']").prop("checked", false);
-
     myTable.setNameColumn("Lname");
-  }else {
+	} else {
 		if (t == -1) {
 			t = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort2", t);
 			$("#sorttype" + t).prop("checked", true);
