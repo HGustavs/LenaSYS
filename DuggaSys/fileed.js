@@ -206,7 +206,7 @@ function validateForm() {
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
-function renderCell(col,celldata,cellid, filedata) {
+function renderCell(col,celldata,cellid) {
     var str="";
    
     if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
@@ -219,8 +219,7 @@ function renderCell(col,celldata,cellid, filedata) {
       if (obj.kind == "Link") {
         str+="<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
       } else {
-        var r = JSON.parse(filedata.editor);
-        str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + r.filePath + "\", \"" + r.extension + "\")'>" + obj.shortfilename + "</span>";
+        str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + obj.filePath + "\", \"" + obj.extension + "\")'>" + obj.shortfilename + "</span>";
       }
 	} else if (col == "filesize") {
       if(obj.kind == "Link") {
@@ -243,20 +242,17 @@ function renderCell(col,celldata,cellid, filedata) {
 }
 
 function filePreview(name, path, extension){
-    $(".fileViewContainer").show();
-    $(".fileViewWindow").show();
-    $(".fileName").text(name)
+    document.querySelector(".fileViewContainer").style.display = "block";
+    document.querySelector(".fileViewWindow").style.display = "block";
+    document.querySelector(".fileName").textContent = name;
+
     if(extension === "jpg" || extension === "png" || extension == "gif"){
         imgPreview(path);
-        fileDownload(name, path);        
     }
     else if (extension === "php" || extension === "html"){
         codeFilePreview(path);
-        fileDownload(name, path);
     }
-    else {
-        fileDownload(name, path);
-    }
+    fileDownload(name, path);
 }
 
 function imgPreview(path){
@@ -278,7 +274,7 @@ function fileDownload(name, path){
     h1.textContent = "Download File";
     a.href = path;
     a.textContent = name;
-    a.download = true;
+    a.download = name;
     div.appendChild(h1);
     div.appendChild(a);
     document.querySelector(".fileView").appendChild(div);

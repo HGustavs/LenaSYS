@@ -144,7 +144,7 @@ if (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
         }
 
         $entry = array(
-            'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname]),
+            'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, 'kind' => $filekindname, 'extension' => $extension, 'filePath' => $filePath]),
             'extension' => $extension,
             'kind' => $filekindname,
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
