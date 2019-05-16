@@ -26,6 +26,7 @@ var fabTimer;
 var filename;
 var filepath;
 var filekind;
+var filedata;
 
 function setup() {
   var filt = "";
@@ -205,23 +206,22 @@ function validateForm() {
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
-function renderCell(col,celldata,cellid) {
-  var str="";
-  if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
-      obj = JSON.parse(celldata);
-  }
-
-	if (col == "trashcan") {
-	    str = "<span class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		  str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
-	} else if (col == "filename") {
+function renderCell(col,celldata,cellid, filedata) {
+    var str="";
+   
+    if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
+        obj = JSON.parse(celldata);
+    }
+    if (col == "trashcan") {
+        str = "<span class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+            str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
+    } else if (col == "filename") {
       if (obj.kind == "Link") {
         str+="<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
       } else {
         // str+="<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
-        var filename = obj.filename;
-        var extension = filename.split(".");
-        str+="<span class='nowrap-filename' id='openFile' onclick='fileClick(\"" + extension[1] + "\")'>" + obj.shortfilename + "</span>";
+        var r = JSON.parse(filedata.editor);
+        str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + r.filePath + "\", \"" + r.extension + "\")'>" + obj.shortfilename + "</span>";
       }
 	} else if (col == "filesize") {
       if(obj.kind == "Link") {
@@ -229,7 +229,7 @@ function renderCell(col,celldata,cellid) {
       }else{
           str+="<span>" + formatBytes(obj.size, 0) + "</span>";
       }
-  } else if (col == "extension" || col=="uploaddate" || col=="kind") {
+    } else if (col == "extension" || col=="uploaddate" || col=="kind") {
       str+="<span>" + celldata + "</span>";
 	} else if (col == "editor") {
       if (obj.extension == "md" || obj.extension == "txt"){
@@ -239,13 +239,56 @@ function renderCell(col,celldata,cellid) {
           str = "<span class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
           str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
       }
-	}
+    }
 	return str;
 }
 
-function fileClick(kind){
-    if(kind === "html"){
-        console.log("detta är html fil")
+function filePreview(name, path, extension){
+    console.log(name, path, extension);
+    $(".fileViewContainer").show();
+    $(".fileViewWindow").show();
+    if(extension === "jpg" || extension === "png" || extension == "gif"){
+        imgPreview(path);
+        fileDownload(name, path);
+        
+    }
+    else if (extension === "php" || extension === "html"){
+        codeFilePreview(path);
+        fileDownload(name, path);
+    }
+    else if(extension === "txt"){
+        fileDownload(name, path);
+    }
+}
+
+function imgPreview(path){
+    var img = document.createElement("IMG");
+    img.src = path;
+    document.querySelector(".fileView").appendChild(img);
+}
+
+function codeFilePreview(path){
+    var frame = document.createElement("IFRAME");
+    frame.src = path;
+    document.querySelector(".fileView").appendChild(frame);
+}
+
+function fileDownload(name, path){
+    var a = document.createElement("A");
+    var h1 = document.createElement("H1");
+    h1.textContent = "klicka för att ladda ned file";
+    a.href = path;
+    a.textContent = name;
+    a.download = true;
+    document.querySelector(".fileView").appendChild(h1);
+    document.querySelector(".fileView").appendChild(a);
+}
+function filePreviewClose(){
+    var fileview = document.querySelector(".fileView");
+    $(".fileViewContainer").hide();
+    // $(".fileViewWindow").css("display", "block");
+    while(fileview.firstChild){
+        fileview.removeChild(fileview.firstChild);
     }
 }
 //----------------------------------------------------------------
@@ -429,8 +472,8 @@ function loadFile(fileUrl, fileNamez, fileKind) {
     filepath=fileUrl;
     filekind=fileKind;
 
-		$("#fileName").val(fileNamez);
-		$("#fileKind").val(fileKind);
+    $("#fileName").val(fileNamez);
+    $("#fileKind").val(fileKind);
 
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");

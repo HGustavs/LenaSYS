@@ -103,6 +103,17 @@ pdoConnect();
 </div>
 <!-- Edit File Dialog END -->
 
+<div class="fileViewContainer">
+    <div class="fileViewWindow">
+        <div class="loginBoxheader">
+            <h3 class="fileName"></h3>
+            <div onclick="filePreviewClose()">x</div>
+        </div>
+        <div class="fileView">
+        </div>
+    </div>
+</div>
+
 <!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer">
     <div class="previewWindow">
