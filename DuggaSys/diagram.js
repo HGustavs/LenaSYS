@@ -675,8 +675,8 @@ function copySymbol(symbol) {
     clone.pointsAtSamePosition = jQuery.extend(true, {}, symbol.pointsAtSamePosition);
     clone.operations = jQuery.extend(true, {}, symbol.operations);
     clone.attributes = jQuery.extend(true, {}, symbol.operations);
-    clone.textLines = jQuery.extend(true, {}, symbol.operations);
     clone.cardinality = jQuery.extend(true, {}, symbol.cardinality);
+
     if (symbol.isLocked) {
         clone.isLocked = jQuery.extend(true, {}, symbol.isLocked);
         clone.isLockHovered = jQuery.extend(true, {}, symbol.isLockHovered);
@@ -3103,7 +3103,7 @@ function mouseupevt(ev) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
-        
+
         if(figureType == "Free") {
             createFigure();
             return;
