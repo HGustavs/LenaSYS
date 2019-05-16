@@ -684,15 +684,18 @@ function copySymbol(symbol) {
     }
 
     if(symbol.symbolkind == symbolKind.uml) {
-        clone.name = "New" + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.erAttribute) {
-        clone.name = "Attr" + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.erEntity) {
-        clone.name = "Entity" + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.line) {
-        clone.name = "Line" + diagram.length;
+        clone.name = symbol.name;
+    }else if(symbol.symbolkind == symbolKind.text) {
+        clone.name = symbol.name;
+        clone.textLines.push({text:clone.name});
     } else{
-        clone.name = "Relation" + diagram.length;
+        clone.name = symbol.name;
     }
 
     clone.topLeft = points.push(topLeftClone) - 1;
@@ -3412,8 +3415,8 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    var newValue = checkDuplicate("Text", symbolKind.text);
-    text.name = "Text" + newValue;
+    var newValue = checkDuplicate("Text ", symbolKind.text);
+    text.name = "Text " + newValue;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
