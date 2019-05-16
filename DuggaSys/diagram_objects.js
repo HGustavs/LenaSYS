@@ -562,13 +562,24 @@ function Symbol(kindOfSymbol) {
         if (!c) {
             c = this.corners();
         }
+        // Handle recursive lines
         if (this.symbolkind == symbolKind.umlLine && this.isRecursiveLine) {
             if (c.tl.x == c.br.x) {
-                c.tr.x += this.recursiveLineExtent;
-                c.br.x += this.recursiveLineExtent;
+                if (this.recursiveLineExtent > 0) {
+                    c.tr.x += this.recursiveLineExtent;
+                    c.br.x += this.recursiveLineExtent;
+                }else {
+                    c.tl.x += this.recursiveLineExtent;
+                    c.bl.x += this.recursiveLineExtent;
+                }
             }else if (c.tl.y == c.br.y) {
-                c.bl.y += this.recursiveLineExtent;
-                c.br.y += this.recursiveLineExtent;
+                if (this.recursiveLineExtent > 0) {
+                    c.bl.y += this.recursiveLineExtent;
+                    c.br.y += this.recursiveLineExtent;
+                }else {
+                    c.tl.y += this.recursiveLineExtent;
+                    c.tr.y += this.recursiveLineExtent;
+                }
             }
         }
         // We have correct points in the four corners of a square.
@@ -1500,10 +1511,14 @@ function Symbol(kindOfSymbol) {
         // Check if this is a recursive line (connects to a single object twice)
         let connObjects = this.getConnectedObjects();
         if (connObjects.length == 1) {
-            if (x1 == x2) {
-                middleBreakPointX += (startLineDirection === "right" ? 1 : -1) * this.recursiveLineExtent;
+            if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
+                if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                middleBreakPointX += this.recursiveLineExtent;
             }else if (y1 == y2) {
-                middleBreakPointY += (startLineDirection === "down" ? 1 : -1) * this.recursiveLineExtent;
+                if (startLineDirection === "down") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                middleBreakPointY += this.recursiveLineExtent;
             }
         }
 
