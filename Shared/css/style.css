@@ -4191,15 +4191,19 @@ only screen and (max-device-width: 320px) {
 }
 
 .tooltipDecrease button {
+  display: flex;
+  align-items: center;
   background-color: #614875;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  font-family: hack, "Lucida Console", Monaco, monospace;
   color: #fff;
   border: 0px;
   cursor: pointer;
   transition: 0.1s background-color;
-  border-radius: 4px;
-  margin-bottom: 5px;
-  align-items: center;
+  border-radius: 5px;
+  /* margin-bottom: 5px; */
+  /* width: 20px;
+  height: 20px; */
 }
 
 .tooltipDecrease .tooltiptextDec {
@@ -4227,18 +4231,24 @@ only screen and (max-device-width: 320px) {
 #range {
   display: inline-block;
   margin-left: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .tooltipIncrease button {
+  display: flex;
+  align-items: center;
   background-color: #614875;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  font-family: hack, "Lucida Console", Monaco, monospace;
   color: #fff;
   border: 0px;
   cursor: pointer;
   transition: 0.1s background-color;
-  border-radius: 4px;
-  margin-bottom: 5px;
-  align-items: center;
+  border-radius: 5px;
+  /* margin-bottom: 5px; */
+  /* width: 20px;
+  height: 20px; */
 }
 
 .tooltipIncrease .tooltiptextInc {
