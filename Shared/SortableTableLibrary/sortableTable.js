@@ -790,12 +790,8 @@ function newCompare(firstCell, secoundCell) {
 			//pending grades
 			if(secoundCellTemp === "0" && firstCellTemp !== "0"){
 				val = -1;
-			} else if(secoundCellTemp !== "0" && firstCellTemp === "0"){
+			} else if(secoundCellTemp !== "0" && firstCellTemp === "0" || secoundCellTemp === ""){
 				val = 1;			
-			} else if(secoundCellTemp === ""){
-				val = 1;
-			} else {
-				val = 0;
 			}
 		}
 	} else if (colOrder.includes(col)) {
