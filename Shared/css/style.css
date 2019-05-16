@@ -1256,29 +1256,18 @@ input {
 
 #diagram-toolbar {
   width: 130px;
-  height: auto;
+  height: 100%;
 }
 
 .application-toolbar-wrap {
+
   position: fixed;
   z-index: 1000;
-  border: 1px solid var(--color-border-4);
-  outline: 1px solid var(--color-border-3);
   background-color: var(--color-background);
 }
 
-.application-header {
-  height: 25px;
-  background-color: var(--color-primary);
-  color: var(--color-text-header);
-  vertical-align: bottom;
-  cursor: move;
-  display: flex;
-  justify-content: space-around;
-  margin: 0px;
-}
-
 .application-toolbar {
+  padding-left: 0px;
   padding-top: 0px;
 }
 
@@ -1287,7 +1276,13 @@ input {
 }
 
 .toolbar-drawer {
-  padding: 2px 2px;
+  padding-left: 4px;
+  border-top: 1px solid var(--color-border-3);
+}
+
+.toolbar-undo-redo-drawer {
+  width: 55px;
+  padding: 4px 2px;
   border-top: 1px solid var(--color-border-3);
 }
 
@@ -1296,7 +1291,7 @@ input {
   font-weight: none;
   margin-top: 8px;
   margin-bottom: 0px;
-  padding: 0px 4px 0px 4px;
+  padding: 0px 4px 0px 0px;
 }
 
 .toolbarArrows{
@@ -1330,7 +1325,7 @@ input {
 .diagramAction {
   border-radius: 5px;
   background-color: var(--color-primary);
-  width: 47%;
+  width: 25px;
   transition: 0.25s background-color;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -1342,6 +1337,7 @@ input {
 .diagramAction:hover {
   background-color: var(--color-primary-hover);
 }
+
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
