@@ -71,8 +71,8 @@ var canvasRightClick = 0;           // Canvas right click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
-var hoveredObject = -1;
-var markedObject = -1;
+var hoveredObject = false;
+var markedObject = false;
 var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
@@ -81,7 +81,6 @@ var figureType = null;              // Specification of uimode, when Create Figu
 var widthWindow;                    // The width on the users screen is saved is in this var.
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
-var sx = 0, sy = 0;                 // Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
 var activePoint = null;             // This point indicates what point is being hovered by the user
@@ -1116,7 +1115,7 @@ function initializeCanvas() {
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
-                + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+                + "%   |   <b>Coordinates:</b> X=" + Math.round(origoOffsetX / zoomValue) + " & Y=" + Math.round(origoOffsetY / zoomValue) + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -1294,6 +1293,43 @@ function drawVirtualA4() {
     ctx.restore();
 }
 
+function drawCrosshair(){
+    let crosshairLength = 12;
+    let centerX = canvas.width / 2;
+    let centerY = canvas.height / 2;
+
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "black";
+    ctx.beginPath();
+    ctx.moveTo(centerX - crosshairLength, centerY);
+    ctx.lineTo(centerX + crosshairLength, centerY);
+    ctx.moveTo(centerX, centerY - crosshairLength);
+    ctx.lineTo(centerX, centerY + crosshairLength);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+}
+
+
+//--------------------------------------------------------
+// Can be used for debugging to mark a spot on the canvas
+//--------------------------------------------------------
+
+function drawDebugCircle(cx, cy, radius, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+}
+
+//-------------------
+// Used for A4 holes
+//-------------------
+
 function drawCircle(cx, cy, radius) {
     ctx.save();
     ctx.translate(cx, cy);
@@ -1449,6 +1485,7 @@ function updateGraphics() {
     drawOrigoLine();
     if(developerModeActive) {
         drawOrigo();
+        drawCrosshair();
     }
     diagram.sortConnectors();
     diagram.updateQuadrants();
@@ -2019,13 +2056,17 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) </p>";
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
+         + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
     if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
       document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
        + Math.round((zoomValue * 100)) + "%" + " </p>";
       document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
+       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) " 
+       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" 
+       + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
     }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
@@ -2609,6 +2650,7 @@ function switchToolbar(direction) {
 //----------------------------------------------------------------------
 
 function zoomInMode(event) {
+    // Save coordinates before changing zoom value
     let currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
     let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
 
@@ -2617,29 +2659,26 @@ function zoomInMode(event) {
 
     let oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
-    let zoomDifference = zoomValue / oldZoom;
+    let zoomDifference = 1 + (zoomValue - oldZoom);
 
     // Move to mouse
     if(event.type == "wheel"){
+        // Move canvas with difference between old mouse coordinates and new
         origoOffsetX += currentMouseX - pixelsToCanvas(currentMouseCoordinateX).x;
         origoOffsetY += currentMouseY - pixelsToCanvas(0, currentMouseCoordinateY).y;
     }
     // Move to center
     else {
-        if(oldZoom != zoomValue){
-            if(zoomDifference < 1){
-                origoOffsetX -= Math.round((centerX * 0.9) - centerX);
-                origoOffsetY -= Math.round((centerY * 0.9) - centerY);
-            } else if (zoomDifference > 1){
-                origoOffsetX -= Math.round((centerX * 1.1) - centerX);
-                origoOffsetY -= Math.round((centerY * 1.1) - centerY);
-            }
-        }
+        // Move canvas with difference between old canvas center coordinates and new
+        origoOffsetX -= centerX * zoomDifference - centerX;
+        origoOffsetY -= centerY * zoomDifference - centerY;
     }
 
     reWrite();
     updateGraphics();
 }
+
+
 
 function changeZoom(zoomValue, event) {
     var value = parseFloat(document.getElementById("ZoomSelect").value);
