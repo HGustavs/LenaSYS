@@ -514,6 +514,7 @@ function displayEditContent(boxid)
 
 function changeDirectory(kind)
 {
+	console.log(retData['templateid']);
 	var dir;
 	var str="";
 
