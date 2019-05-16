@@ -42,6 +42,9 @@ function Symbol(kindOfSymbol) {
     this.connectorLeft = [];
     this.connectorRight = [];
 
+    this.anchors = [];          // Contains UML line anchor points
+    this.draggablePoints = [];  // Contains points between anchors that will be draggable
+
     // Properties array that stores different kind of objects. Refer to the properties with "properties['symbolColor']"
     this.properties = {
         'symbolColor': '#ffffff',                       // Change background colors on entities.
@@ -794,6 +797,12 @@ function Symbol(kindOfSymbol) {
         privatePoints.push(this.bottomRight);
         privatePoints.push(this.middleDivider);
         privatePoints.push(this.centerPoint);
+
+        if (this.symbolkind == symbolKind.umlLine) {
+            privatePoints.push(this.anchors);
+            privatePoints.push(this.draggablePoints);
+        }
+
         return privatePoints;
     }
 
