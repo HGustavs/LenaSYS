@@ -71,7 +71,6 @@ function setup()
 function returned(data)
 {
 	retData=data;
-	templateid=retData['templateid'];
 
 	if(retData['writeaccess'] == "w"){
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid="+courseid+"&coursevers="+cvers+"');");
@@ -118,7 +117,7 @@ function returned(data)
 		exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
 	}
 	// User can choose template if no template has been chosen and the user has write access.
-	if((templateid == 0)){
+	if((retData['templateid'] == 0)){
 		if(retData['writeaccess'] == "w"){
 			alert("A template has not been chosen for this example. Please choose one.");
 			$("#chooseTemplateContainer").css("display","flex");
@@ -516,6 +515,7 @@ function displayEditContent(boxid)
 
 function changeDirectory(kind)
 {
+	templateid = retData['templateid'];
 	console.log(templateid);
 	var dir;
 	var str="";
@@ -1895,7 +1895,7 @@ function maximizeBoxes(boxid)
 	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
-	var templateid = retData['templateid'];
+	templateid = retData['templateid'];
 
 	getLocalStorageProperties(boxValArray);
 
