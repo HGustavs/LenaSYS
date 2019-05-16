@@ -4125,6 +4125,10 @@ only screen and (max-device-width: 320px) {
   padding: 2px 0px 2px 10px;
 }
 
+#noAccessMessage {
+  padding: 5px;
+}
+
 /* Is used to style a Select-box in diagram.php. */
 #selectDiv {
   display: flex;
