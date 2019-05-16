@@ -274,7 +274,7 @@
 				$query->bindParam(':boxid', $boxId);
 				$query->execute();
 
-				echo json_encode($boxTitle);
+				echo json_encode(array('title' => $boxTitle, 'id' => $boxId));
 				return;
 			}
 		}
