@@ -3122,7 +3122,7 @@ span.arrow {
 /*this was inline-CSS before, only moved it to the right file*/
 
 .contributionSort {
-  height: 50px;
+  height: 90px;
 }
 
 .fumho th {
