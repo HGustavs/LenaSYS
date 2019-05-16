@@ -819,12 +819,12 @@ diagram.draw = function() {
     }
     //Draws all lines first so that they appear behind the object instead
     for(var i = 0; i < this.length; i++) {
-        if(this[i].symbolkind == symbolKind.line) {
+        if(this[i].symbolkind == symbolKind.line || this[i].symbolkind == symbolKind.umlLine) {
             this[i].draw();
         }
     }
     for (var i = 0; i < this.length; i++) {
-        if(this[i].kind == kind.symbol && this[i].symbolkind != symbolKind.line) {
+        if(this[i].kind == kind.symbol && this[i].symbolkind != symbolKind.line && this[i].symbolkind != symbolKind.umlLine) {
             this[i].draw();
         }
     }
