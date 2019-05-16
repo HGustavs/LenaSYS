@@ -745,7 +745,8 @@ function returnedSection(data)
   }
 
   contribDataArr = [];
-  var str="";
+
+	var str="";
 
   str += "<div class='contributionSort'>";
   str += "<input type='button' value='All' class='submit-button title='All' onclick='statSort(value)'></input>";
@@ -754,13 +755,24 @@ function returnedSection(data)
   str += "<input type='button' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)'></input>";
   str += "</div>";
 
-    if(data['allusers'].length>0){
-        str+="<select id='userid' onchange='selectuser();'>";
-        for(i=0;i<data['allusers'].length;i++){
-            str+="<option>"+data['allusers'][i]+"</option>";
-        }
-        str+="</select>";
+   localStorage.setItem('GitHubUser', data['githubuser'])
+   str+="<p>";
+   if(data['allusers'].length>0){
+       str+="<select id='userid' onchange='selectuser();'>";
+       str+="<option>"+localStorage.getItem('GitHubUser')+"</option>";
+       for(i=0;i<data['allusers'].length;i++){
+         if(data['allusers'][i] != localStorage.getItem('GitHubUser')){
+           str+="<option>"+data['allusers'][i]+"</option>";
+         }
+       }
+       str+="</select>";
     }
+   str+="</p>";
+
+   str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
+  
+  str+="<table  class='fumho group1'>";
+
 
     str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
 
