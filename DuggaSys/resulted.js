@@ -310,7 +310,7 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
-    console.log(myTable['col']);
+    console.log(myTable['colname']);
 		myTable.toggleSortStatus(col,dir);
 	}
 	magicHeading();
