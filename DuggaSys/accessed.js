@@ -574,7 +574,7 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 function createQuickItem() {
-	clearTimeout(pressTimer);
+	clearTimeout();
 	showImportUsersPopup();
 }
 
