@@ -1276,7 +1276,7 @@ input {
 }
 
 .toolbar-drawer {
-  padding-left: 3px;
+  padding-left: 4px;
   border-top: 1px solid var(--color-border-3);
 }
 
