@@ -97,7 +97,7 @@
 		echo "</tr></table>";
 
 		//Cookie message
-		echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()' style='margin-top: 0px'/></div>";
+		echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' id="MOTDbutton" onclick='cookieMessage()' style='margin-top: 0px'/></div>";
 
 	?>
 </header>
