@@ -48,8 +48,6 @@ diagram.serialNumbers = {
     Text: 0,
 };
 
-
-
 const kind = {
     path: 1,
     symbol: 2
@@ -3094,7 +3092,7 @@ function mouseupevt(ev) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
-        
+
         if(figureType == "Free") {
             createFigure();
             return;
@@ -3257,7 +3255,6 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        var newValue = checkDuplicate("New", symbolKind.uml);
         classB.name = "New " + diagram.serialNumbers.UML;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
@@ -3273,7 +3270,6 @@ function mouseupevt(ev) {
         diagram.serialNumbers.UML++;
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        var newValue = checkDuplicate("Attr", symbolKind.erAttribute);
         erAttributeA.name = "Attr " + diagram.serialNumbers.Attribute;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
@@ -3288,7 +3284,6 @@ function mouseupevt(ev) {
         diagram.serialNumbers.Attribute++;
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        var newValue = checkDuplicate("Entity", symbolKind.erEntity);
         erEnityA.name = "Entity " + diagram.serialNumbers.Entity;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
@@ -3324,7 +3319,6 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        var newValue = checkDuplicate("Relation", symbolKind.erRelation);
         erRelationA.name = "Relation " + diagram.serialNumbers.Relation;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
@@ -3409,16 +3403,6 @@ function mouseupevt(ev) {
     if(saveState) SaveState();
 }
 
-function countNumberOfSymbolKind(kind) {
-  var numberOfSymbolKind = 0;
-  for(let i = 0; i < diagram.length; i++) {
-      if(diagram[i].symbolkind == kind) {
-          numberOfSymbolKind++;
-      }
-  }
-  return numberOfSymbolKind;
-}
-
 function doubleclick(ev) {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
@@ -3427,7 +3411,6 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    var newValue = checkDuplicate("Text", symbolKind.text);
     text.name = "Text " + diagram.serialNumbers.Text;
     diagram.serialNumbers.Text++;
     text.textLines.push({text:text.name});
@@ -3887,16 +3870,4 @@ function changeLineDirection() {
 //Close the errorMessageDialog for Composite
 function closeErrorMessageDialog() {
     $("#errorMessageDialog").hide();
-}
-
-//Checks if there are any duplicates of entities with the same name.
-function checkDuplicate(name, kind) {
-    var numberOfSymbolKind = 0;
-    for(let i = 0; i < diagram.length; i++) {
-        //Checks for duplicates with the same number and adds +1 to it.
-        if (diagram[i].name == name + countNumberOfSymbolKind(kind)) {
-            numberOfSymbolKind = 1;
-        }
-    }
-    return countNumberOfSymbolKind(kind) + numberOfSymbolKind;
 }
