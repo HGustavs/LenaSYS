@@ -3663,6 +3663,7 @@ only screen and (min-device-width: 1085px) {
     position: fixed;
     top: 3px;
     left: 100px;
+    right: 100px;
     z-index: 5001;
   }
 }
