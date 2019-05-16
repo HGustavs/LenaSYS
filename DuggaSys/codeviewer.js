@@ -274,14 +274,16 @@ function returned(data)
 	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
 
 	titles.forEach(title => {
-		title.addEventListener('keypress', preventLinebreak);
+		title.addEventListener('keypress', updateTitle);
 	})
 }
 
 function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
-	retData['box'][retData['box'].length-1][4] = data;
-	$("#boxtitle2").text(data);
+	retData['box'][data.id - 1][4] = data.title;
+	var boxWrapper = document.querySelector('#box'+data.id+'wrapper');
+	var titleSpan = boxWrapper.querySelector('#boxtitle2');
+	titleSpan.innerHTML = data.title;
 }
 
 //---------------------------------------------------------------------------------
@@ -665,16 +667,31 @@ function updateContent()
 }
 
 /*-----------------------------------------------------------------------
-  -  preventLinebreak: Prevents line breaks in contenteditable heading  -     
+  -              updateTitle: Updates the title being edited            -     
   -----------------------------------------------------------------------*/
-function preventLinebreak(e) {
+function updateTitle(e) {
 	if (e.key === 'Enter') {
 		e.preventDefault();
-		var titles = [...document.querySelectorAll('[contenteditable="true"]')];
-		titles.forEach(title => {
-			title.blur();
-		});
+		var titleSpan = e.target;
+		var box = titleSpan.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+		var boxid = box.id.substring(3,4);
+		var title = titleSpan.innerHTML.replace(/&nbsp;/g, '');
+
+		// Trim title, max characters allowed is 20
+		title = title.trim();
+		if (title.length > 20) {
+			title = title.substring(0,20);
+		}
+		title = title.trim(); // Trim title again if the substring caused trailing whitespaces
+
+		titleSpan.blur();
 		window.getSelection().removeAllRanges();
+
+ 		AJAXService("EDITTITLE", {
+			exampleid : querystring['exampleid'],
+			boxid : boxid,
+			boxtitle : title
+		}, "BOXTITLE");
 	}
 }
 //----------------------------------------------------------------------------------
