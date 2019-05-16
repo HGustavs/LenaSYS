@@ -21,7 +21,7 @@ var sortcolumn = 1;
 var clickedindex;
 var typechanged = false;
 var teacher;
-var entriesNoSSN;
+var entries;
 var moments;
 var results;
 var versions;
@@ -99,9 +99,9 @@ function process() {
 
 	// Reconstitute table
 	students = new Array;
-	for (i = 0; i < entriesNoSSN.length; i++) {
+	for (i = 0; i < entries.length; i++) {
 
-		var uid = entriesNoSSN[i].uid;
+		var uid = entries[i].uid;
 
 		// Loop through all teacher names and store the appropriate name in a variable
 		for (j = 0; j < teacher.length; j++) {
@@ -127,7 +127,7 @@ function process() {
 		}
 		var student = new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({ grade: ("<div class='dugga-result-div'>" + entriesNoSSN[i].firstname + " " + entriesNoSSN[i].lastname + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].username + " / " + entriesNoSSN[i].class + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, class: entriesNoSSN[i].class, access: entriesNoSSN[i].access, setTeacher, username: entriesNoSSN[i].username });
+		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname, class: entries[i].class, access: entries[i].access, setTeacher, username: entries[i].username });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
 			if (momtmp[j].kind == 4) {
@@ -139,9 +139,9 @@ function process() {
 				var momentresult = restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if (typeof momentresult != 'undefined') {
-					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
+					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
 				} else {
-					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, deadline: new Date(momtmp[j].deadline), });
+					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadline), });
 				}
 			} else {
 				var momentresult = restmp[momtmp[j].lid];
@@ -165,8 +165,8 @@ function process() {
 						quizfile: momtmp[j].quizfile,
 						timesGraded: momentresult.timesGraded,
 						gradeExpire: momentresult.gradeExpire,
-						firstname: entriesNoSSN[i].firstname,
-						lastname: entriesNoSSN[i].lastname,
+						firstname: entries[i].firstname,
+						lastname: entries[i].lastname,
 						deadline: new Date((momtmp[j].deadlinets * 1000)),
 					});
 				} else {
@@ -189,8 +189,8 @@ function process() {
 						quizfile: momtmp[j].quizfile,
 						timesGraded: 0,
 						gradeExpire: "UNK",
-						firstname: entriesNoSSN[i].firstname,
-						lastname: entriesNoSSN[i].lastname,
+						firstname: entries[i].firstname,
+						lastname: entries[i].lastname,
 						deadline: new Date(momtmp[j].deadline),
 					});
 				}
@@ -611,7 +611,7 @@ function returnedResults(data) {
 		myTable.renderTable();
 	} else {
 
-		entriesNoSSN = data.entriesNoSSN;
+		entries = data.entries;
 		moments = data.moments;
 		versions = data.versions;
 		results = data.results;
