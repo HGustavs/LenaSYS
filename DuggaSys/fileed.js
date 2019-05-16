@@ -207,7 +207,6 @@ function validateForm() {
 //----------------------------------------------------------------------------
 function renderCell(col,celldata,cellid) {
   var str="";
-
   if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
       obj = JSON.parse(celldata);
   }
@@ -219,7 +218,10 @@ function renderCell(col,celldata,cellid) {
       if (obj.kind == "Link") {
         str+="<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
       } else {
-        str+="<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
+        // str+="<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
+        var filename = obj.filename;
+        var extension = filename.split(".");
+        str+="<span class='nowrap-filename' id='openFile' onclick='fileClick(\"" + extension[1] + "\")'>" + obj.shortfilename + "</span>";
       }
 	} else if (col == "filesize") {
       if(obj.kind == "Link") {
@@ -241,6 +243,11 @@ function renderCell(col,celldata,cellid) {
 	return str;
 }
 
+function fileClick(kind){
+    if(kind === "html"){
+        console.log("detta är html fil")
+    }
+}
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
