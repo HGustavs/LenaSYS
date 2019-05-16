@@ -72,229 +72,6 @@ function statSort(value) {
 //----------------------------------------
 // Renderer
 //----------------------------------------
-function buildRankData(data) {
-  var kindArr = ["Issue Creation", "Comment Creation", "Events Performed", "Lines of Code", "GIT Commit"];
-  var numberArr = [data.issuerankno, data.commentrankno, data.eventrankno, data.rowrankno, data.commitrankno];
-  var rankArr = [{
-      rank: data.issuerank,
-      amount: data.amountInCourse
-    },
-    {
-      rank: data.commitrank,
-      amount: data.amountInCourse
-    },
-    {
-      rank: data.eventrank,
-      amount: data.amountInCourse
-    },
-    {
-      rank: data.rowrank,
-      amount: data.amountInCourse
-    },
-    {
-      rank: data.commitrank,
-      amount: data.amountInCourse
-    }
-  ];
-  var grpRankArr = [{
-      rank: data.issuegrouprank,
-      amount: data.amountInGroups
-    },
-    {
-      rank: data.commitgrouprank,
-      amount: data.amountInGroups
-    },
-    {
-      rank: data.eventgrouprank,
-      amount: data.amountInGroups
-    },
-    {
-      rank: data.rowgrouprank,
-      amount: data.amountInGroups
-    },
-    {
-      rank: data.commitgrouprank,
-      amount: data.amountInGroups
-    }
-  ];
-
-  var rankingData = [];
-  for (var i = 0; i < kindArr.length; i++) {
-    var personalRanking = {
-      kind: kindArr[i],
-      number: numberArr[i],
-      rank: rankArr[i],
-      grpranking: grpRankArr[i]
-    };
-    rankingData.push(personalRanking)
-  }
-  return rankingData;
-}
-
-function createRankTable(data) {
-  var tabledata = {
-    tblhead: {
-      kind: "Kind",
-      number: "Number",
-      rank: "Ranking",
-      grpranking: "Group ranking"
-    },
-    tblbody: data,
-    tblfoot: {}
-  };
-  var colOrder = ["kind", "number", "rank", "grpranking"];
-  rankTable = new SortableTable({
-    data: tabledata,
-    tableElementId: "personalRankTable",
-    renderCellCallback: rankRenderCell,
-    renderSortOptionsCallback: renderSortOptions,
-    columnOrder: colOrder,
-    freezePaneIndex: 4,
-    hasRowHighlight: false,
-    hasMagicHeadings: true,
-    hasCounterColumn: true
-  });
-  rankTable.renderTable();
-}
-
-function rankRenderCell(col, celldata, cellid) {
-  var str = "";
-  if (col === 'kind' || col === 'number') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + celldata + "</span></div>";
-  } else if (col === 'rank' || col === 'grpranking') {
-    str += "<div style='background-color:" + intervaltocolor(celldata.amount, celldata.rank) + ";'>"
-    str += "<div><span style='margin:0 4px;flex-grow:1;'>" + celldata.rank + "</span></div></div>";
-  } else {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
-  }
-  return str;
-}
-
-function buildContributionData() {
-  var data = retdata['weeks'];
-  var contribData = [];
-
-  for (var i = 0; i < data.length; i++) {
-    var projectWeek = {
-      weeks: data[i].weekno,
-      dates: {
-        weekStart: data[i].weekstart,
-        weekEnd: data[i].weekend
-      },
-      codeContribution: {
-        files: data[i].files
-      },
-      githubContribution: {
-        comments: data[i].comments,
-        commits: data[i].commits,
-        events: data[i].events,
-        issues: data[i].issues
-      }
-    };
-
-    contribData.push(projectWeek);
-  }
-  return contribData;
-}
-
-function createGitHubcontributionTable(data) {
-  var tabledata = {
-    tblhead: {
-      weeks: "Week",
-      dates: "Dates",
-      codeContribution: "Code Contribution",
-      githubContribution: "GitHub Contribution"
-    },
-    tblbody: data,
-    tblfoot: {}
-  };
-  var colOrder = ["weeks", "dates", "codeContribution", "githubContribution"];
-  ghContibTable = new SortableTable({
-    data: tabledata,
-    tableElementId: "contribGithHubContribTable",
-    renderCellCallback: renderCellForghContibTable,
-    renderSortOptionsCallback: renderSortOptions,
-    columnOrder: colOrder,
-    freezePaneIndex: 4,
-    hasRowHighlight: false,
-    hasMagicHeadings: true,
-    hasCounterColumn: true
-  });
-  ghContibTable.renderTable();
-}
-
-
-
-function renderCellForghContibTable(col, celldata, cellid) {
-  var str = "";
-  obj = celldata;
-  if (col === 'weeks') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
-  } else if (col === 'dates') {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj.weekStart + " - " + obj.weekEnd + "</span></div>";
-  } else if (col === 'codeContribution') {
-    for (var j = 0; j < obj.files.length; j++) {
-      var file = obj.files[j];
-      str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
-      str += "<div class='contrib'>";
-      str += "<span class='contribheading' style='padding:4px;'>";
-      str += "<span class='contribpath'>" + file.path + "</span>";
-      str += "<span class='contribfile'>" + file.filename + "</span>";
-      str += "</span>";
-      str += "</a>";
-      str += "<div class='contribcontent'>";
-      str += file.lines + " lines<br>";
-      str += "</div>";
-      str += "</div>";
-    }
-  } else if (col === 'githubContribution') {
-    if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0) {
-      str += "<div class='contrib'>";
-      str += "<div class='contribcontent'>";
-
-      if (obj.commits.length > 0) {
-        str += "<div class='createissue'>Made " + obj.commits.length + " commit(s).</div>";
-        for (j = 0; j < obj.commits.length; j++) {
-          var message = obj.commits[j].message;
-          var hash = obj.commits[j].cid;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></div>";
-        }
-      }
-      if (obj.issues.length > 0) {
-        str += "<div class='createissue'>Created " + obj.issues.length + " issue(s).</div>";
-        for (j = 0; j < obj.issues.length; j++) {
-          var issue = obj.issues[j];
-          var issuestr = issue.issueno + " " + issue.title;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></div>";
-        }
-      }
-      if (obj.comments.length > 0) {
-        str += "<div class='createissue'>Made " + obj.comments.length + " comment(s).</div>";
-        for (j = 0; j < obj.comments.length; j++) {
-          var comment = obj.comments[j];
-          var issuestr = comment.issueno + " " + comment.content;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></div>";
-        }
-      }
-      if (obj.events.length > 0) {
-        var totalAmountEvents = 0;
-        for (var j = 0; j < obj.events.length; j++) {
-          totalAmountEvents += parseInt(obj.events[j].cnt);
-        }
-        str += "<div class='createissue'>Performed " + totalAmountEvents + " event(s).</div>";
-        for (var j = 0; j < obj.events.length; j++) {
-          var eve = obj.events[j];
-          str += "<div class='contentissue'>" + eve.kind + " " + eve.cnt + "</div>";
-        }
-      }
-      str += "</div>";
-      str += "</div>";
-    }
-  } else {
-    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
-  }
-  return str;
-}
 
 function renderRankTable() {
   if (contribDataArr.length == 0) return;
@@ -1118,6 +895,228 @@ function returnedSection(data) {
   }
   document.getElementById('content').innerHTML = str;
   sortRank(1); // default to allrank
+}
+
+function buildRankData(data) {
+  var kindArr = ["Issue Creation", "Comment Creation", "Events Performed", "Lines of Code", "GIT Commit"];
+  var numberArr = [data.issuerankno, data.commentrankno, data.eventrankno, data.rowrankno, data.commitrankno];
+  var rankArr = [{
+      rank: data.issuerank,
+      amount: data.amountInCourse
+    },
+    {
+      rank: data.commitrank,
+      amount: data.amountInCourse
+    },
+    {
+      rank: data.eventrank,
+      amount: data.amountInCourse
+    },
+    {
+      rank: data.rowrank,
+      amount: data.amountInCourse
+    },
+    {
+      rank: data.commitrank,
+      amount: data.amountInCourse
+    }
+  ];
+  var grpRankArr = [{
+      rank: data.issuegrouprank,
+      amount: data.amountInGroups
+    },
+    {
+      rank: data.commitgrouprank,
+      amount: data.amountInGroups
+    },
+    {
+      rank: data.eventgrouprank,
+      amount: data.amountInGroups
+    },
+    {
+      rank: data.rowgrouprank,
+      amount: data.amountInGroups
+    },
+    {
+      rank: data.commitgrouprank,
+      amount: data.amountInGroups
+    }
+  ];
+
+  var rankingData = [];
+  for (var i = 0; i < kindArr.length; i++) {
+    var personalRanking = {
+      kind: kindArr[i],
+      number: numberArr[i],
+      rank: rankArr[i],
+      grpranking: grpRankArr[i]
+    };
+    rankingData.push(personalRanking)
+  }
+  return rankingData;
+}
+
+function createRankTable(data) {
+  var tabledata = {
+    tblhead: {
+      kind: "Kind",
+      number: "Number",
+      rank: "Ranking",
+      grpranking: "Group ranking"
+    },
+    tblbody: data,
+    tblfoot: {}
+  };
+  var colOrder = ["kind", "number", "rank", "grpranking"];
+  rankTable = new SortableTable({
+    data: tabledata,
+    tableElementId: "personalRankTable",
+    renderCellCallback: rankRenderCell,
+    renderSortOptionsCallback: renderSortOptions,
+    columnOrder: colOrder,
+    freezePaneIndex: 4,
+    hasRowHighlight: false,
+    hasMagicHeadings: true,
+    hasCounterColumn: true
+  });
+  rankTable.renderTable();
+}
+
+function rankRenderCell(col, celldata, cellid) {
+  var str = "";
+  if (col === 'kind' || col === 'number') {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + celldata + "</span></div>";
+  } else if (col === 'rank' || col === 'grpranking') {
+    str += "<div style='background-color:" + intervaltocolor(celldata.amount, celldata.rank) + ";'>"
+    str += "<div><span style='margin:0 4px;flex-grow:1;'>" + celldata.rank + "</span></div></div>";
+  } else {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
+  }
+  return str;
+}
+
+function buildContributionData() {
+  var data = retdata['weeks'];
+  var contribData = [];
+
+  for (var i = 0; i < data.length; i++) {
+    var projectWeek = {
+      weeks: data[i].weekno,
+      dates: {
+        weekStart: data[i].weekstart,
+        weekEnd: data[i].weekend
+      },
+      codeContribution: {
+        files: data[i].files
+      },
+      githubContribution: {
+        comments: data[i].comments,
+        commits: data[i].commits,
+        events: data[i].events,
+        issues: data[i].issues
+      }
+    };
+
+    contribData.push(projectWeek);
+  }
+  return contribData;
+}
+
+function createGitHubcontributionTable(data) {
+  var tabledata = {
+    tblhead: {
+      weeks: "Week",
+      dates: "Dates",
+      codeContribution: "Code Contribution",
+      githubContribution: "GitHub Contribution"
+    },
+    tblbody: data,
+    tblfoot: {}
+  };
+  var colOrder = ["weeks", "dates", "codeContribution", "githubContribution"];
+  ghContibTable = new SortableTable({
+    data: tabledata,
+    tableElementId: "contribGithHubContribTable",
+    renderCellCallback: renderCellForghContibTable,
+    renderSortOptionsCallback: renderSortOptions,
+    columnOrder: colOrder,
+    freezePaneIndex: 4,
+    hasRowHighlight: false,
+    hasMagicHeadings: true,
+    hasCounterColumn: true
+  });
+  ghContibTable.renderTable();
+}
 
 
+
+function renderCellForghContibTable(col, celldata, cellid) {
+  var str = "";
+  obj = celldata;
+  if (col === 'weeks') {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
+  } else if (col === 'dates') {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj.weekStart + " - " + obj.weekEnd + "</span></div>";
+  } else if (col === 'codeContribution') {
+    for (var j = 0; j < obj.files.length; j++) {
+      var file = obj.files[j];
+      str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
+      str += "<div class='contrib'>";
+      str += "<span class='contribheading' style='padding:4px;'>";
+      str += "<span class='contribpath'>" + file.path + "</span>";
+      str += "<span class='contribfile'>" + file.filename + "</span>";
+      str += "</span>";
+      str += "</a>";
+      str += "<div class='contribcontent'>";
+      str += file.lines + " lines<br>";
+      str += "</div>";
+      str += "</div>";
+    }
+  } else if (col === 'githubContribution') {
+    if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0) {
+      str += "<div class='contrib'>";
+      str += "<div class='contribcontent'>";
+
+      if (obj.commits.length > 0) {
+        str += "<div class='createissue'>Made " + obj.commits.length + " commit(s).</div>";
+        for (j = 0; j < obj.commits.length; j++) {
+          var message = obj.commits[j].message;
+          var hash = obj.commits[j].cid;
+          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></div>";
+        }
+      }
+      if (obj.issues.length > 0) {
+        str += "<div class='createissue'>Created " + obj.issues.length + " issue(s).</div>";
+        for (j = 0; j < obj.issues.length; j++) {
+          var issue = obj.issues[j];
+          var issuestr = issue.issueno + " " + issue.title;
+          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></div>";
+        }
+      }
+      if (obj.comments.length > 0) {
+        str += "<div class='createissue'>Made " + obj.comments.length + " comment(s).</div>";
+        for (j = 0; j < obj.comments.length; j++) {
+          var comment = obj.comments[j];
+          var issuestr = comment.issueno + " " + comment.content;
+          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></div>";
+        }
+      }
+      if (obj.events.length > 0) {
+        var totalAmountEvents = 0;
+        for (var j = 0; j < obj.events.length; j++) {
+          totalAmountEvents += parseInt(obj.events[j].cnt);
+        }
+        str += "<div class='createissue'>Performed " + totalAmountEvents + " event(s).</div>";
+        for (var j = 0; j < obj.events.length; j++) {
+          var eve = obj.events[j];
+          str += "<div class='contentissue'>" + eve.kind + " " + eve.cnt + "</div>";
+        }
+      }
+      str += "</div>";
+      str += "</div>";
+    }
+  } else {
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
+  }
+  return str;
 }
