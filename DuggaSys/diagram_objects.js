@@ -1458,6 +1458,9 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawUMLLine = function(x1, y1, x2, y2) {
+        this.clearAnchors();
+        this.clearDraggablePoints();
+
         //Checks if there is cardinality set on this object
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
@@ -1611,6 +1614,60 @@ function Symbol(kindOfSymbol) {
         ctx.stroke();
 
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
+    }
+
+    // Add anchor points to UML line
+    this.addAnchor = function(anchorx, anchory) {
+        var newAnchor;
+        newAnchor = points.addPoint(anchorx, anchory, false);
+        this.anchors.push(newAnchor);
+    }
+
+    // Remove all anchor points from UML line
+    this.clearAnchors = function() {
+        for (var i = 0; i < this.anchors.length; i++) {
+            points[this.anchors[i]] = waldoPoint;
+        }
+        this.anchors = [];
+    }
+
+    // Add draggable point between anchors to UML line
+    this.addDraggablePoint = function(dragpointx, dragpointy) {
+        var newDraggablePoint;
+        newDraggablePoint = points.addPoint(dragpointx, dragpointy, false);
+        this.draggablePoints.push(newDraggablePoint);
+    }
+
+    // Remove all draggable points from UML line
+    this.clearDraggablePoints = function() {
+        for (var i = 0; i < this.draggablePoints.length; i++) {
+            points[this.draggablePoints[i]] = waldoPoint;
+        }
+        this.draggablePoints = [];
+    }
+
+    // Create draggable points dynamically depending on number of UML line anchors
+    this.updateDraggablePoints = function() {
+        for (var i = 1; i < this.anchors.length; i++) {
+            var firstAnchorPoint = this.anchors[i - 1];
+            var secondAnchorPoint = this.anchors[i];
+
+            // Find X coordinate between anchor points
+            var newX = Math.abs(points[firstAnchorPoint].x - points[secondAnchorPoint].x) / 2;
+            if (points[firstAnchorPoint].x > points[secondAnchorPoint].x) {
+                newX += points[secondAnchorPoint].x;
+            } else {
+                newX += points[firstAnchorPoint].x;
+            }
+
+            // Find Y coordinate between anchor points
+            var newY = Math.abs(points[firstAnchorPoint].y - points[secondAnchorPoint].y) / 2;
+            if (points[firstAnchorPoint].y > points[secondAnchorPoint].y) {
+                newY += points[secondAnchorPoint].y;
+            } else {
+                newY += points[firstAnchorPoint].y;
+            }
+        }
     }
 
     //---------------------------------------------------------------
