@@ -65,9 +65,18 @@ function setup() {
   document.getElementById("dropdownc").appendChild(customFilterDiv);
 
 	window.onscroll = function () {
+		magicHeading()
 	};
 
 	AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
+}
+
+
+function resort() {
+}
+
+function toggleSortDir(col) {
+
 }
 
 function process() {
@@ -302,16 +311,16 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
-    myTable.toggleSortStatus(allColumnIds[col],dir);
-	}
-}
 
-function resort() {
-  // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
-  // If the sorting in sortabletable is fixed then this can be removed.
-  for(var i = 0; i < 3; i++){
-    myTable.toggleSortStatus(allColumnIds[col],i);
-  }
+      // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
+      // If the sorting in sortabletable is fixed then this can be removed.
+      for(var i = 0; i < 3; i++){
+        myTable.toggleSortStatus(allColumnIds[col],i);
+      }
+
+      myTable.toggleSortStatus(allColumnIds[col],dir);
+	}
+	magicHeading();
 }
 
 function sorttype(t) {
@@ -329,6 +338,10 @@ function sorttype(t) {
 		}
 	}
 	typechanged = true;
+	magicHeading();
+}
+
+function magicHeading() {
 }
 
 $(function () {
