@@ -3080,8 +3080,11 @@ function mouseupevt(ev) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
-        createFigure();
-        if(figureType == "Free") return;
+        
+        if(figureType == "Free") {
+            createFigure();
+            return;
+        }
     }
     // Code for creating a new class
     if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
