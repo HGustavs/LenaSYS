@@ -359,17 +359,24 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	var momentGrab = moment;
 	var currentTime = new Date();
 	var currentTimeGetTime = currentTime.getTime();
+	if(document.getElementById('newFeedback') == null){
+		feedbackText = "";
+	} else {		
+		console.log(document.getElementById('newFeedback').value);
+		feedbackText = document.getElementById('newFeedback').value;
+	}
 
 	if ($(e.target).hasClass("Uc")) {
-		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
+		
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
-		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("Gc")) {
-		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("VGc")) {
-		changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 	} else if ($(e.target).hasClass("U")) {
-		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 	} else if ($(e.target).hasClass("Uh")) {
 		for (var a = 0; a < students.length; a++) {
 			var student = students[a];
@@ -390,7 +397,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					if (newGradeExpirePlusOneDay > currentTimeGetTime) {
 						//The user must press the ctrl-key to activate if-statement
 						if (event.ctrlKey || event.metaKey) {
-							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 						} else {
 							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
 						}
@@ -404,9 +411,14 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		//alert("This grading is not OK!");
 	}
 }
+function clearFeedback() {
+	if(document.getElementById('newFeedback') !== null) {
+		document.getElementById('newFeedback').value = "";
+	}
+}
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind, gfx, cls, qvariant, qid) {
-	return "<img src=\"" + gfx + "\" id=\"grade-" + moment + "-" + uid + "\" class=\"" + cls + "\" onclick=\"gradeDugga(event," + gradesys + "," + cid + ",'" + vers + "'," + moment + "," + uid + "," + mark + ",'" + ukind + "'," + qvariant + "," + qid + ");\"  />";
+	return "<img src=\"" + gfx + "\" id=\"grade-" + moment + "-" + uid + "\" class=\"" + cls + "\" onclick=\"gradeDugga(event," + gradesys + "," + cid + ",'" + vers + "'," + moment + "," + uid + "," + mark + ",'" + ukind + "'," + qvariant + "," + qid + ");clearFeedback();\"  />";
 }
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid) {
@@ -499,11 +511,8 @@ function toggleGradeBox(){
 	}
 }
 
-function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
-	var newFeedback = "UNK";
-	if (document.getElementById('newFeedback') !== null) {
-		newFeedback = document.getElementById('newFeedback').value;
-	}
+function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire, feedbackText) {
+	var newFeedback = feedbackText;
 	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
 }
 
