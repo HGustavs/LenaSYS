@@ -63,7 +63,8 @@ $duggagrade="";
 $gradeupdated=false;
 
 $entries=array();
-$entriesNoSSN=array();
+
+//$entriesNoSSN=array();
 $gentries=array();
 $sentries=array();
 $lentries=array();
@@ -443,6 +444,7 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 
 			// The array which is displayed on resulted without SSN
+			/*
 			$entryNoSSN = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -453,7 +455,9 @@ if(strcmp($opt,"CHGR")!==0){
 				'access' => $row['access'],
 				'examiner' => $row['examiner']
 			);
+			*/
 /*
+//This array seems like and old duplicate and could possibly be removed
 			$entry = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -465,7 +469,7 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 			*/
 			array_push($entries, $entry);
-			array_push($entriesNoSSN, $entryNoSSN);
+			//array_push($entriesNoSSN, $entryNoSSN);
 		}
 
 		// All results from current course and vers?
@@ -702,7 +706,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 }
 
 $array = array(
-	'entriesNoSSN' => $entriesNoSSN,
+	//'entriesNoSSN' => $entriesNoSSN,
 	'entries' => $entries,
 	'moments' => $gentries,
 	'versions' => $sentries,
