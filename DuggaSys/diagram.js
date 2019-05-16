@@ -3411,7 +3411,8 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    text.name = "New Text " + diagram.length;
+    var newValue = checkDuplicate("Text", symbolKind.text);
+    text.name = "Text" + newValue;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
