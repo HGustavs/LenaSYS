@@ -249,36 +249,40 @@ function selectVariant(vid, el) {
 
 		//Get information for leftDivDialog and display it.
 		if(isSelected) {
-			var obj = JSON.parse(target_variant['param']);
-			var it = Object.keys(obj).length;
-			for(var i = 0; i<it; i++){
-				var result = Object.keys(obj)[i];
+      try {
+        var obj = JSON.parse(target_variant['param']);
+  			var it = Object.keys(obj).length;
+  			for(var i = 0; i<it; i++){
+  				var result = Object.keys(obj)[i];
 
-				if(result == "type"){
-					document.getElementById('type').value = obj[result];
-				}
-				else if(result == "filelink"){
-					document.getElementById('filelink').value = obj[result];
-				}
-				else if(result == "extraparam"){
-					document.getElementById('extraparam').value = obj[result];
-				}
-			}
+  				if(result == "type"){
+  					document.getElementById('type').value = obj[result];
+  				}
+  				else if(result == "filelink"){
+  					document.getElementById('filelink').value = obj[result];
+  				}
+  				else if(result == "extraparam"){
+  					document.getElementById('extraparam').value = obj[result];
+  				}
+  			}
 
-      var submissionTypes = obj.submissions;
-      if (submissionTypes) {
-			  document.getElementById('submissionType0').value = submissionTypes[0].type;
-			  document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
-			  document.getElementById('instruction0').value = submissionTypes[0].instruction;
+        var submissionTypes = obj.submissions;
+        if (submissionTypes) {
+  			  document.getElementById('submissionType0').value = submissionTypes[0].type;
+  			  document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
+  			  document.getElementById('instruction0').value = submissionTypes[0].instruction;
 
-			  for (var i = 1; i < submissionTypes.length; i++) {
-				  addVariantSubmissionRow();
-				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
-				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
-				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
-				  document.getElementById('variantparameterText').value = target_variant['param'];
-			 }
-		  }
+  			  for (var i = 1; i < submissionTypes.length; i++) {
+  				  addVariantSubmissionRow();
+  				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
+  				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
+  				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
+  				  document.getElementById('variantparameterText').value = target_variant['param'];
+  			 }
+  		  }
+      } catch (e) {
+        console.log("Unable to parse json data.");
+      }
 		} else {
 				// Hide information if it is deselected.
 				document.getElementById('type').value = "";
