@@ -757,6 +757,9 @@ function renderCell(col, celldata, cellid) {
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
 			str += "</div>";
+			str += "<div>";
+			str += celldata.ssn;
+			str += "</div>";
 			str += "</div>";
 			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
@@ -1004,7 +1007,7 @@ function renderCell(col, celldata, cellid) {
 		return str;
 	}
 
-	return celldata;
+	return celldata; //editor says it is never reached, might be safe to remove
 }
 
 function smartSearch(splitSearch, row) {
@@ -1136,10 +1139,10 @@ function rowFilter(row) {
 					return true;
 				}
 
-				// if (row[colname]["ssn"] != null) {
-				// 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-				// 		return true;
-				// }
+				 if (row[colname]["ssn"] != null) {
+				 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+				 		return true;
+					}
 				if (row[colname]["username"] != null) {
 					if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
 						return true;
