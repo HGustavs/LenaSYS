@@ -311,9 +311,10 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
-    for(var i = 0; i < 3; i++){
+      for(var i = 0; i < 3; i++){
+        myTable.toggleSortStatus(allColumnIds[col],i);
+      }
       myTable.toggleSortStatus(allColumnIds[col],dir);
-    }
 	}
 	magicHeading();
 }
