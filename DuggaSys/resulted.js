@@ -300,8 +300,8 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
-    // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
-    // If the sorting in sortabletable is fixed then this can be removed.
+    // This one is only here due to a bug where sometimes you need to sort multiple times to get the correct one.
+    // But by always sorting by acending first then the correct one this can be avoided.
     myTable.toggleSortStatus(allColumnIds[col],0);
     myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
