@@ -919,6 +919,7 @@ function renderCell(col, celldata, cellid) {
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+		str += "<div>" + celldata.ssn + "</div>";
 		str += "</div>";
 		return str;
 
