@@ -312,13 +312,16 @@ function sorttype(t) {
 	if (c == 0) {
 		localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
 		$("input[name='sorttype']").prop("checked", false);
-
-    myTable.setNameColumn("Lname");
 	} else {
 		if (t == -1) {
 			t = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort2", t);
 			$("#sorttype" + t).prop("checked", true);
-		} else {
+		}else if (t == 0) {
+    	t = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
+    	$("#sorttype" + t).prop("checked", true);
+
+      myTable.setNameColumn("Fname");
+    }else {
 			localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort2", t);
 			$("#sorttype" + t).prop("checked", true);
 		}
