@@ -117,7 +117,7 @@ function returned(data)
 		exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
 	}
 	// User can choose template if no template has been chosen and the user has write access.
-	if((templateid == 0 || templateid == null)){
+	if((templateid == 0)){
 		if(retData['writeaccess'] == "w"){
 			alert("A template has not been chosen for this example. Please choose one.");
 			$("#chooseTemplateContainer").css("display","flex");
