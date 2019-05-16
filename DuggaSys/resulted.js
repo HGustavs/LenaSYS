@@ -308,12 +308,16 @@ function leaves() {
 }
 
 function sorttype(t) {
+  if(t == 0){
+    myTable.setNameColumn("Fname");
+  }else{
+    myTable.setNameColumn("Lname");
+  }
+
 	var c = $("input[name='sortcol']:checked").val();
 	if (c == 0) {
 		localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
 		$("input[name='sorttype']").prop("checked", false);
-
-    myTable.setNameColumn("Lname");
 	} else {
 		if (t == -1) {
 			t = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort2", t);
