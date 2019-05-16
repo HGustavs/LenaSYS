@@ -308,11 +308,11 @@ function leaves() {
 }
 
 function sorttype(t) {
-  if(t == 0){
-    myTable.setNameColumn("Fname");
-  }else{
-    myTable.setNameColumn("Lname");
-  }
+  // if(t == 0){
+  //   myTable.setNameColumn("Fname");
+  // }else{
+  //   myTable.setNameColumn("Lname");
+  // }
 
 	var c = $("input[name='sortcol']:checked").val();
 	if (c == 0) {
