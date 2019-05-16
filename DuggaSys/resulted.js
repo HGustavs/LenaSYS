@@ -30,6 +30,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
+var presorting = false;
 
 function setup() {
 	//Benchmarking function
@@ -286,6 +287,7 @@ function leaves() {
 	var ocol = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol");
 	var odir = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir");
 
+
 	$("input[name='sortcol']:checked").each(function () {
 		col = this.value;
 	});
@@ -296,7 +298,8 @@ function leaves() {
 	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol", col);
 	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir", dir);
 
-	if (!(ocol == col && odir == dir) || typechanged) {
+
+	if(!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
     // This loop fixes the problem with needing to do more than one "sort" when there exists empty cells.
     // If the sorting in sortabletable is fixed then this can be removed.
@@ -308,12 +311,6 @@ function leaves() {
 }
 
 function sorttype(t) {
-  // if(t == 0){
-  //   myTable.setNameColumn("Fname");
-  // }else{
-  //   myTable.setNameColumn("Lname");
-  // }
-
 	var c = $("input[name='sortcol']:checked").val();
 	if (c == 0) {
 		localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
@@ -322,7 +319,7 @@ function sorttype(t) {
 		if (t == -1) {
 			t = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort2", t);
 			$("#sorttype" + t).prop("checked", true);
-    }else {
+		} else {
 			localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort2", t);
 			$("#sorttype" + t).prop("checked", true);
 		}
