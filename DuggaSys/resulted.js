@@ -100,7 +100,6 @@ function process() {
 	// Reconstitute table
 	students = new Array;
 	for (i = 0; i < entries.length; i++) {
-		console.log(JSON.stringify(entries));
 
 		var uid = entries[i].uid;
 
@@ -749,7 +748,6 @@ function gradeFilterHandler() {
 }
 
 function renderCell(col, celldata, cellid) {
-	console.log(celldata);
 	gradeFilterHandler();
 	// Render minimode
 	if (filterList["minimode"]) {
@@ -1407,3 +1405,10 @@ $(window).scroll(function() {
 		});
 	}
 });
+
+function hideSSN(ssn){
+	var hiddenSSN;
+	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
+	return hiddenSSN;
+}
+str += "<div>" + hideSSN(celldata.ssn) + "</div>";
