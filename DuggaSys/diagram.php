@@ -96,14 +96,14 @@
                                 <div class="diagramLabelToolContainer">
                                     <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                                     <div class="toolbar-undo-redo-drawer" id="drawerUndo">
-                                      <!-- Undo -->
-                                      <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
+                                        <!-- Undo -->
+                                        <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo (Ctrl + Z)">
                                           <img src="../Shared/icons/undo.svg">
-                                      </button>
-                                      <!-- Redo -->
-                                      <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
+                                        </button>
+                                        <!-- Redo -->
+                                        <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo (Ctrl + Y)">
                                           <img src="../Shared/icons/redo.svg">
-                                      </button>
+                                        </button>
                                     </div>
                                   </div>
                             </div>
