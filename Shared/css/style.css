@@ -3351,7 +3351,7 @@ rect[class*="activitymarker"]:hover {
   background-color: var(--color-accent);
   z-index: 1000;
   position: fixed;
-  bottom: 0px;
+  bottom: 870px;
   width: 100%;
   height: fit-content;
   padding: 0 20px 0 0px;
