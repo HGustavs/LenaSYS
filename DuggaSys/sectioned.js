@@ -229,8 +229,8 @@ function showEditVersion() {
   $("#eversid").val(querystring['coursevers']);
   let sdate = retdata['startdate'];
   let edate = retdata['enddate'];
-  if (sdate !== null) $("#estartdate").val(sdate.substr(0, 10));
-  if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
+  if (sdate !== null) $('#estartdate').val(sdate.substr(0, 10));
+  if (edate !== null) $('#eenddate').val(edate.substr(0, 10));
   $("#editCourseVersion").css("display", "flex");
 }
 
@@ -298,7 +298,7 @@ function createQuickItem() {
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", "undefined", "undefined", "0", "undefined", "undefined", "undefined");
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined");
     newItem();
   }
 }
