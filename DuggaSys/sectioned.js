@@ -1287,7 +1287,6 @@ function drawSwimlanes() {
         //startweek=weeksBetween(startdate, entry.start);
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
-        startday = -16433;
         duggalength = Math.ceil((entry.deadline - entry.start) / (24 * 60 * 60 * 1000));
 
         // Yellow backgroundcolor if the dugga have been submitted but grade is pending.
@@ -1297,7 +1296,7 @@ function drawSwimlanes() {
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
-        console.log(entry.grade, entry, startday);
+        console.log(entry.grade,typeof entry.start, startday);
         
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
