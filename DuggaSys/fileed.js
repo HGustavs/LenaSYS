@@ -26,7 +26,6 @@ var fabTimer;
 var filename;
 var filepath;
 var filekind;
-var filedata;
 
 function setup() {
   var filt = "";
