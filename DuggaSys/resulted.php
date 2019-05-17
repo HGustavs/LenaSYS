@@ -86,7 +86,7 @@ pdoConnect();
 				</div>
 				<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 					<label>Examinator:</label>
-					<select name="teacherDropdown" id="teacherDropdown"></select>
+					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
 
 			<!-- Search bar for mobile versions --> 

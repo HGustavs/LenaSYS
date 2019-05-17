@@ -107,7 +107,7 @@ function process() {
 		for (j = 0; j < teacher.length; j++) {
 			var tuid = teacher[j].tuid;
 			if (uid == tuid) {
-				var setTeacher = teacher[j].teacher;
+				var setTeacher = teacher[j].examinerID;
 			}
 		}
 		if (setTeacher !== null) {
@@ -634,9 +634,12 @@ function returnedResults(data) {
 			}
 		}
 		var teacherList;
+		teacherList += "<option value='none'>none</option>";
 		for(var i = 0; i < teacher.length; i++){
-			if(teacher[i].teacher !== null){
-				teacherList += "<option value='"+ teacher[i].teacher +"'>"+ teacher[i].teacher + "-"+ teacher[i].tuid +"</option>";
+			if(teacher[i].examiner !== null){
+				tempTeacherList = teacher[i].examiner;
+				tempTeacherList = tempTeacherList.match(/[A-Z][a-z]+|[0-9]+/g).join(" ");
+				teacherList += "<option value='"+ teacher[i].examinerID +"'>"+ tempTeacherList + " - "+ teacher[i].tuid +"</option>";
 			}
 		}
 		document.getElementById("teacherDropdown").innerHTML = teacherList;
@@ -1111,6 +1114,14 @@ function smartSearch(splitSearch, row) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
+	console.log(row.FnameLname.firstname + " - " + row.FnameLname.setTeacher);
+	var teacherDropdown = document.getElementById("teacherDropdown").value;
+	if (teacherDropdown === "none"){
+		return true;
+	}
+	else if(row.FnameLname.setTeacher != teacherDropdown){
+		return false;
+	}
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;

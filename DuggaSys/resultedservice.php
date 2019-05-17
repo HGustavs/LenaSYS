@@ -670,7 +670,7 @@ if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 $teachers=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("
-    SELECT examiner, uid
+    SELECT examiner, teacher, uid
     FROM user_course;
   ");
 	$query->bindParam(':cid', $cid);
@@ -680,7 +680,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
-				'teacher' => $row['examiner'],
+				'examinerID' => $row['examiner'],
+				'examiner' => $row['teacher'],
 				'tuid' => $row['uid'],
 			);
 			array_push($teachers, $teacher);
