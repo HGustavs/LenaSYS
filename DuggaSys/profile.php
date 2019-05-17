@@ -31,7 +31,7 @@ pdoConnect();
 		include '../Shared/navheader.php';
 		include '../Shared/loginbox.php';
 	?>
-	
+
 	<?php
 	if(checklogin()){
 	?>
@@ -39,7 +39,7 @@ pdoConnect();
 			<div style="width:100%;height:50px;">
 				<h1 style="text-align:center;color:#614875;">Profile</h1>
 			</div>
-			<div style="display:flex; flex-wrap:wrap;">
+			<div style="flex-wrap:wrap;">
 				<div id="changeChallengeQuestion" class="material-box" style="flex-grow: 1;">
 					<h3>Change challenge question</h3>
 					<form method="post" id="challengeForm">
@@ -63,7 +63,7 @@ pdoConnect();
 					</form>
 					<div id="challengeMessage"></div>
 				</div>
-			
+
 				<div id="changePassword" class="material-box" style="flex-grow: 1;">
 					<h3>Change password</h3>
 					<div id="passForm">
@@ -81,7 +81,7 @@ pdoConnect();
 					</div>
 					<div id="passwordMessage"></div>
 				</div>
-			
+
 				<div id="notificationsOnOff" class="material-box" style="flex-grow: 1;">
 					<h3>Push notifications</h3>
 					<?php
@@ -106,6 +106,6 @@ pdoConnect();
 		showLoginPopup();
 	}
 	?>
-	
+
 </body>
 </html>
