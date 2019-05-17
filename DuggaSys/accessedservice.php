@@ -39,6 +39,7 @@ $gid = getOP('gid');
 $queryResult = 'NONE!';
 $prop=getOP('prop');
 $val=getOP('val');
+$access = false;
 
 $debug="NONE!";
 
@@ -384,6 +385,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			);
 		}
 	}
+
+	$access = true;
 }
 
 $array = array(
@@ -395,7 +398,8 @@ $array = array(
 	'groups' => $groups,
 	'queryResult' => $queryResult,
 	'examiners' => $examiners,
-	'submissions' => $submissions
+	'submissions' => $submissions,
+	'access' => $access
 );
 
 echo json_encode($array);
