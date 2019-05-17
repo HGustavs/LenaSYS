@@ -160,9 +160,11 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
+                                <i id="hotkey-global">Shift + G</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                                <i id="hotkey-appearance">Shift + H</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>

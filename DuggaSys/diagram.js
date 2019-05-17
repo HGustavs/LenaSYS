@@ -151,6 +151,8 @@ const cKey = 67;
 const dKey = 68;
 const eKey = 69;
 const fKey = 70;
+const gKey = 71;
+const hKey = 72;
 const lKey = 76;
 const mKey = 77;
 const rKey = 82;
@@ -478,6 +480,13 @@ function keyDownHandler(e) {
       } else {
         switchToolbarTo("ER");
       }
+    }
+    else if(shiftIsClicked && key == gKey) {
+        globalAppearanceMenu();
+    }
+
+    else if(shiftIsClicked && key == hKey) {
+        openAppearanceDialogMenu();
     }
 }
 
@@ -2078,16 +2087,16 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
          + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
     if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
       document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
        + Math.round((zoomValue * 100)) + "%" + " </p>";
       document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
-       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) " 
-       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" 
+       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
+       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
+       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
        + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
     }
     } else {
@@ -3443,7 +3452,7 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
-            
+
             uimode = "CreateLine";
             createCardinality();
             updateGraphics();

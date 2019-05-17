@@ -1511,6 +1511,22 @@ input {
   top: 45px;
 }
 
+.drop-down-item #hotkey-global {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 4px;
+  top: 86px;
+}
+
+.drop-down-item #hotkey-appearance {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 5px;
+  top: 119px;
+}
+
 #hotkey-clear, #hotkey-front {
   right: 6px ;
   top: 165px;
