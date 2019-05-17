@@ -1669,6 +1669,14 @@ div.submit-button {
   border-radius: 4px;
 }
 
+input.submit-button.resetpw-button {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  float: none;
+  margin: auto;
+  display: block;
+}
+
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
@@ -1807,6 +1815,7 @@ input.fileed-button {
 }
 
 input.submit-button:hover {
+  transition: 0.2s;
   filter: brightness(1.05);
 }
 

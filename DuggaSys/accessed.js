@@ -254,7 +254,7 @@ function renderCell(col, celldata, cellid) {
 		if (parseFloat(obj.recent) > 1440) {
 			str = "<input class='submit-button' type='button' value='Reset PW' style=''";
 		} else {
-			str = "<input class='submit-button' type='button' value='Reset PW' style='background-color: #fecc56; color:#614875'";
+			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
 		}
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 		str += "resetPw(\"" + obj.uid + "\",\"" + obj.username + "\"); return false;'>";
