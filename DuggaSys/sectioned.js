@@ -1287,6 +1287,7 @@ function drawSwimlanes() {
         //startweek=weeksBetween(startdate, entry.start);
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
+        startday = -16433;
         duggalength = Math.ceil((entry.deadline - entry.start) / (24 * 60 * 60 * 1000));
 
         // Yellow backgroundcolor if the dugga have been submitted but grade is pending.
