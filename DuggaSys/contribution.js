@@ -784,7 +784,14 @@ function returnedSection(data) {
     str += "</select>";
   }
 
-  str += "<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
+
+    str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
+
+    createAllRankTable(buildAllRankData(data));
+    createRankTable(buildRankData(data));
+    createGitHubcontributionTable(buildContributionData(data));
+    createTimeSheetTable(data['timesheets']);
+
 
   createRankTable(buildRankData(data));
   createGitHubcontributionTable(buildContributionData(data));
@@ -796,106 +803,9 @@ function returnedSection(data) {
   str += renderCircleDiagram(JSON.stringify(data['hourlyevents']));
   str += "</div>";
 
+    document.getElementById('content').innerHTML=str;
+    sortRank(1);  // default to allrank
 
-  str += "<div id='rankTable'></div>";
-  var contribData = [];
-
-  if (data['allrowranks'].length > 0) {
-    for (i = 0; i < data['allrowranks'].length; i++) {
-      if (data['allrowranks'][i][1].length < 9) {
-        if (contribData[data['allrowranks'][i][1]] == undefined) {
-          contribData[data['allrowranks'][i][1]] = {
-            name: data['allrowranks'][i][1]
-          };
-          contribData[data['allrowranks'][i][1]].allrowrank = parseInt(data['allrowranks'][i][0]);
-          // Also add -1 for allrowrank,allcommentranks,alleventranks
-          contribData[data['allrowranks'][i][1]].allrank = parseInt(-1);
-          contribData[data['allrowranks'][i][1]].allcommentranks = parseInt(-1);
-          contribData[data['allrowranks'][i][1]].alleventranks = parseInt(-1);
-
-        } else {
-          contribData[data['allrowranks'][i][1]].allrank = data['allrowranks'][i][0];
-        }
-      }
-    }
-  }
-
-  if (data['allcommentranks'].length > 0) {
-    for (i = 0; i < data['allcommentranks'].length; i++) {
-      if (data['allcommentranks'][i][1].length < 9) {
-        if (contribData[data['allcommentranks'][i][1]] == undefined) {
-          contribData[data['allcommentranks'][i][1]] = {
-            name: data['allcommentranks'][i][1]
-          };
-          contribData[data['allcommentranks'][i][1]].allcommentranks = parseInt(data['allcommentranks'][i][0]);
-          // Also add -1 for allrowrank,alleventranks,allrank
-          contribData[data['allcommentranks'][i][1]].allrowrank = parseInt(-1);
-          contribData[data['allcommentranks'][i][1]].allrank = parseInt(-1);
-          contribData[data['allcommentranks'][i][1]].alleventranks = parseInt(-1);
-        } else {
-          contribData[data['allcommentranks'][i][1]].allcommentranks = parseInt(data['allcommentranks'][i][0]);
-        }
-      }
-    }
-  }
-
-  if (data['alleventranks'].length > 0) {
-    for (i = 0; i < data['alleventranks'].length; i++) {
-      var student = data['alleventranks'][i][1];
-      var studentRank = data['alleventranks'][i][0];
-      if (student.length < 9) {
-        if (contribData[student] == undefined) {
-          contribData[student] = {
-            name: student
-          };
-          if (studentRank === "undefined") {
-            contribData[student].alleventranks = parseInt(-1);
-          } else {
-            contribData[student].alleventranks = parseInt(studentRank);
-          }
-          // Also add -1 for allrowrank,allcommentranks,alleventranks
-          contribData[student].allrank = parseInt(-1);
-          contribData[student].allrowrank = parseInt(-1);
-          contribData[student].allcommentranks = parseInt(-1);
-          contribData[student].allcommitranks = parseInt(-1);
-        } else {
-          contribData[student].alleventranks = parseInt(studentRank);
-        }
-      }
-    }
-  }
-
-  if (data['allcommitranks'].length > 0) {
-    for (i = 0; i < data['allcommitranks'].length; i++) {
-      var student = data['allcommitranks'][i][1];
-      var studentRank = data['allcommitranks'][i][0];
-      if (student.length < 9) {
-        if (contribData[student] == undefined) {
-          contribData[student] = {
-            name: student
-          };
-          if (studentRank === "undefined") {
-            contribData[student].allcommitrank = parseInt(-1);
-          } else {
-            contribData[student].allcommitrank = parseInt(studentRank);
-          }
-          // Also add -1 for allrowrank,allcommentranks,alleventranks
-          contribData[student].allrank = parseInt(-1);
-          contribData[student].allrowrank = parseInt(-1);
-          contribData[student].allcommentranks = parseInt(-1);
-        } else {
-          contribData[student].allcommitrank = parseInt(studentRank);
-        }
-      }
-    }
-  }
-  for (var stud in contribData) {
-    // If the position in the array is not a object, continue
-    if (!(typeof contribData[stud] === "object")) continue;
-    contribDataArr.push(contribData[stud]);
-  }
-  document.getElementById('content').innerHTML = str;
-  sortRank(1); // default to allrank
 }
 
 function buildRankData(data) {
@@ -1049,10 +959,9 @@ function createGitHubcontributionTable(data) {
   ghContibTable.renderTable();
 }
 
-
-
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
+
   obj = celldata;
   if (col === 'weeks') {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
@@ -1121,3 +1030,160 @@ function renderCellForghContibTable(col, celldata, cellid) {
   }
   return str;
 }
+
+function createAllRankTable(data){
+  var tabledata = {
+		tblhead:{
+      login:"Login",
+			eventrank:"Total events",
+			commentrank:"Total comments",
+			locrank:"Total lines of code",
+      commitrank:"Total commits"
+		},
+		tblbody: data,
+		tblfoot:{}
+  };
+	var colOrder=["login","eventrank","commentrank","locrank","commitrank"];
+	allRankTable = new SortableTable({
+		data:tabledata,
+    tableElementId:"allRankTable",
+		renderCellCallback:allRankRenderCell,
+		renderSortOptionsCallback:renderSortOptions,
+		columnOrder:colOrder,
+		freezePaneIndex:4,
+		hasRowHighlight:false,
+		hasMagicHeadings:true,
+		hasCounterColumn:true
+	});
+	allRankTable.renderTable();
+}
+
+/*
+  We cant assume that the users will be on exactly the same position in different
+  databases tables. This function is implemented to handle cases where the user information
+  is on different rows in different database tables.
+*/
+function buildAllRankData(data){
+  var rankData = [];
+  var nextUser;
+  var usersData;
+  var positionTracker;
+  for(var i =0; i<data.allusers.length; i++){
+    var allRanks = {}
+    allRanks.login = data.allusers[i];
+    nextUser = data.allusers[i];
+
+//*************************
+//Adding a allevent value.
+//*************************
+  if(data.alleventranks[i] != undefined){ // Checks if the row exist
+    if(!checkIfDataContanisUser(nextUser,data.alleventranks[i])){ //checks if the data contains nextuser.
+      positionTracker = checkForRightUser(nextUser,data.alleventranks); //If not check for the correct users content and store the position.
+    }else{
+      positionTracker = i; //The data contains the correct user. Stores the position.
+    }
+  }else{
+    positionTracker = -1; // The user does not exist in the data.
+  }
+    if(positionTracker != -1){
+      allRanks.eventrank = allRankContentSelection(nextUser, data.alleventranks[positionTracker]);
+    }else{
+      allRanks.eventrank = 0; // If the user does not have any data display 0.
+    }
+  //*************************
+  //Adding a allcomment value.
+  //*************************
+    if(data.allcommentranks[i] != undefined){ // Checks if the row exist
+      if(!checkIfDataContanisUser(nextUser,data.allcommentranks[i])){ //checks if the data contains nextuser.
+        positionTracker = checkForRightUser(nextUser,data.allcommentranks); //If not check for the correct users content and store the position.
+      }else{
+        positionTracker = i; //The data contains the correct user. Stores the position.
+      }
+    }else{
+      positionTracker = -1; // The user does not exist in the data.
+    }
+      if(positionTracker != -1){
+        allRanks.commentrank = allRankContentSelection(nextUser, data.allcommentranks[positionTracker]);
+      }else{
+        allRanks.commentrank = 0;  // If the user does not have any data display 0.
+      }
+
+
+    //*************************
+    //Adding a all Lines of code value.
+    //*************************
+      if(data.allrowranks[i] != undefined){ // Checks if the row exist
+        if(!checkIfDataContanisUser(nextUser,data.allrowranks[i])){ //checks if the data contains nextuser.
+          positionTracker = checkForRightUser(nextUser,data.allrowranks); //If not check for the correct users content and store the position.
+        }else{
+          positionTracker = i; //The data contains the correct user. Stores the position.
+        }
+      }else{
+        positionTracker = -1; // The user does not exist in the data.
+      }
+        if(positionTracker != -1){
+          allRanks.locrank = allRankContentSelection(nextUser, data.allrowranks[positionTracker]);
+        }else{
+          allRanks.locrank = 0; // If the user does not have any data display 0.
+        }
+
+    //*************************
+    //Adding a all Lines of code value.
+    //*************************
+      if(data.allcommitranks[i] != undefined){ // Checks if the row exist
+        if(!checkIfDataContanisUser(nextUser,data.allcommitranks[i])){ //checks if the data contains nextuser.
+          positionTracker = checkForRightUser(nextUser,data.allcommitranks); //If not check for the correct users content and store the position.
+        }else{
+          positionTracker = i; //The data contains the correct user. Stores the position.
+        }
+      }else{
+        positionTracker = -1; // The user does not exist in the data.
+      }
+        if(positionTracker != -1){
+          allRanks.commitrank = allRankContentSelection(nextUser, data.allcommitranks[positionTracker]);
+        }else{
+          allRanks.commitrank = 0; // If the user does not have any data. display 0.
+        }
+
+    rankData.push(allRanks);
+  }
+  return rankData;
+}
+function checkIfDataContanisUser(user,data){
+  if(user === data[1]){
+    return true;
+  }else{
+    return false;
+  }
+}
+function checkForRightUser(user,data){
+  var positionTracker;
+  for(var j=0; j<data.length; j++){ //Checks if the user has content in the data.
+    if(user ===  data[j][1]){
+      positionTracker = j;
+      break;
+    }else{
+      positionTracker = -1;
+    }
+  }
+  return positionTracker;
+}
+function allRankContentSelection(user,data){
+  if(data != undefined){ // Checks that the row exists
+       if(data[0]!= undefined){  //checks that the value is not undefined.
+        return data[0];
+       }else {
+         return 0;
+       }
+   }else{
+     return 0;
+   }
+}
+function allRankRenderCell(col,celldata,cellid){
+  var str = "";
+  if(col === 'login' || col === 'eventrank' || col === 'commentrank' || col === 'locrank' || col === 'commitrank' ){
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+celldata+"</span></div>";
+  }
+  return str;
+}
+
