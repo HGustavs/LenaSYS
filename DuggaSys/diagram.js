@@ -154,6 +154,7 @@ const eKey = 69;
 const fKey = 70;
 const lKey = 76;
 const mKey = 77;
+const nKey = 78;
 const rKey = 82;
 const tKey = 84;
 const vKey = 86;
@@ -473,12 +474,11 @@ function keyDownHandler(e) {
     else if(shiftIsClicked && key == dKey) {
       developerMode(event);
     }
-    else if(shiftIsClicked && key == mKey) {
-      if(targetMode == "ER"){
-        switchToolbarTo("UML");
-      } else {
+    else if(shiftIsClicked && key == nKey) {
         switchToolbarTo("ER");
-      }
+    }
+    else if(shiftIsClicked && key == mKey) {
+        switchToolbarTo("UML");
     }
 }
 
@@ -1831,7 +1831,7 @@ function modeSwitchConfirmed(confirmed) {
         } else if (targetMode == 'UML') {
             switchToolbarUML();
         } else if (targetMode == 'Dev'){
-          switchToolbarDev();
+            switchToolbarDev();
         }
     }
 }
