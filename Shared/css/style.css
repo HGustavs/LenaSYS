@@ -2667,7 +2667,7 @@ span.arrow {
   font-size: 14px;
 }
 
-.submit-button:hover {
+.submit-button:hover, #TopMenuStatic .submit-button:hover {
   background-color: var(--color-primary-hover);
   border-radius: 4px;
 }
