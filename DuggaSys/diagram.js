@@ -71,8 +71,8 @@ var canvasRightClick = 0;           // Canvas right click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
-var hoveredObject = -1;
-var markedObject = -1;
+var hoveredObject = false;
+var markedObject = false;
 var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
@@ -81,7 +81,6 @@ var figureType = null;              // Specification of uimode, when Create Figu
 var widthWindow;                    // The width on the users screen is saved is in this var.
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
-var sx = 0, sy = 0;                 // Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
 var activePoint = null;             // This point indicates what point is being hovered by the user
@@ -663,6 +662,23 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
+    // copying the symbol attributes
+    clone.properties = jQuery.extend(true, {}, symbol.properties);
+    clone.lineDirection = jQuery.extend(true, {}, symbol.lineDirection);
+    clone.minWidth = jQuery.extend(true, {}, symbol.minWidth);
+    clone.minHeight = jQuery.extend(true, {}, symbol.minHeight);
+    clone.isOval = jQuery.extend(true, {}, symbol.isOval);
+    clone.isAttribute = jQuery.extend(true, {}, symbol.isAttribute);
+    clone.isRelation = jQuery.extend(true, {}, symbol.isRelation);
+    clone.pointsAtSamePosition = jQuery.extend(true, {}, symbol.pointsAtSamePosition);
+    clone.operations = jQuery.extend(true, {}, symbol.operations);
+    clone.attributes = jQuery.extend(true, {}, symbol.operations);
+    clone.cardinality = jQuery.extend(true, {}, symbol.cardinality);
+
+    if (symbol.isLocked) {
+        clone.isLocked = jQuery.extend(true, {}, symbol.isLocked);
+        clone.isLockHovered = jQuery.extend(true, {}, symbol.isLockHovered);
+    }
 
     var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
     topLeftClone.x += 10;
@@ -683,15 +699,18 @@ function copySymbol(symbol) {
     }
 
     if(symbol.symbolkind == symbolKind.uml) {
-        clone.name = "New" + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.erAttribute) {
-        clone.name = "Attr" + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.erEntity) {
-        clone.name = "Entity" + diagram.length;
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.line) {
-        clone.name = "Line" + diagram.length;
+        clone.name = symbol.name;
+    }else if(symbol.symbolkind == symbolKind.text) {
+        clone.name = symbol.name;
+        clone.textLines.push({text:clone.name});
     } else{
-        clone.name = "RelationCopy" + diagram.length;
+        clone.name = symbol.name;
     }
 
     clone.topLeft = points.push(topLeftClone) - 1;
@@ -815,12 +834,12 @@ diagram.draw = function() {
     }
     //Draws all lines first so that they appear behind the object instead
     for(var i = 0; i < this.length; i++) {
-        if(this[i].symbolkind == symbolKind.line) {
+        if(this[i].symbolkind == symbolKind.line || this[i].symbolkind == symbolKind.umlLine) {
             this[i].draw();
         }
     }
     for (var i = 0; i < this.length; i++) {
-        if(this[i].kind == kind.symbol && this[i].symbolkind != symbolKind.line) {
+        if(this[i].kind == kind.symbol && this[i].symbolkind != symbolKind.line && this[i].symbolkind != symbolKind.umlLine) {
             this[i].draw();
         }
     }
@@ -1115,8 +1134,8 @@ function initializeCanvas() {
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
-    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + " </p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
+                + "%   |   <b>Coordinates:</b> X=" + Math.round(origoOffsetX / zoomValue) + " & Y=" + Math.round(origoOffsetY / zoomValue) + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -1132,13 +1151,12 @@ function initializeCanvas() {
     canvas.addEventListener('wheel', scrollZoom, false);
 }
 
-
 function deselectObjects() {
-	for(let i = 0; i < diagram.length; i++) {
-		diagram[i].targeted = false;
-		diagram[i].isSelected = false;
-		diagram[i].isHovered = false;
-	}
+    for(let i = 0; i < diagram.length; i++) {
+        diagram[i].targeted = false;
+        diagram[i].isSelected = false;
+        diagram[i].isHovered = false;
+    }
 }
 
 //-----------------------------------------------------------------------------------
@@ -1293,6 +1311,43 @@ function drawVirtualA4() {
     }
     ctx.restore();
 }
+
+function drawCrosshair(){
+    let crosshairLength = 12;
+    let centerX = canvas.width / 2;
+    let centerY = canvas.height / 2;
+
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "black";
+    ctx.beginPath();
+    ctx.moveTo(centerX - crosshairLength, centerY);
+    ctx.lineTo(centerX + crosshairLength, centerY);
+    ctx.moveTo(centerX, centerY - crosshairLength);
+    ctx.lineTo(centerX, centerY + crosshairLength);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+}
+
+
+//--------------------------------------------------------
+// Can be used for debugging to mark a spot on the canvas
+//--------------------------------------------------------
+
+function drawDebugCircle(cx, cy, radius, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+}
+
+//-------------------
+// Used for A4 holes
+//-------------------
 
 function drawCircle(cx, cy, radius) {
     ctx.save();
@@ -1450,6 +1505,7 @@ function updateGraphics() {
     drawOrigoLine();
     if(developerModeActive) {
         drawOrigo();
+        drawCrosshair();
     }
     diagram.sortConnectors();
     diagram.updateQuadrants();
@@ -2033,27 +2089,30 @@ function decimalPrecision(value, precision) {
 //----------------------------------------------------------------------
 
 function reWrite() {
-    if(developerModeActive) {
+    if (developerModeActive) {
         //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
         + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) </p>";
-        if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true){
+        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
+        
+        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
             document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
             + Math.round((zoomValue * 100)) + "%" + " </p>";
             document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
             + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
             + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " |";
             refreshedPage = false;
-        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
-          document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-          + Math.round((zoomValue * 100)) + "%" + " </p>";
-          document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-          + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-        }
+        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+              document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+              + Math.round((zoomValue * 100)) + "%" + " </p>";
+              document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+              + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) " 
+              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" 
+              + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+          }    
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
         + Math.round((zoomValue * 100)) + "%" + "   </p>";
@@ -2412,7 +2471,7 @@ function globalFont() {
 
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
             diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
         }
     }
@@ -2424,7 +2483,7 @@ function globalFontColor() {
 
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
             diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
         }
     }
@@ -2436,7 +2495,7 @@ function globalTextSize() {
 
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
             diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
         } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
     }
@@ -2635,17 +2694,43 @@ function switchToolbar(direction) {
 // zoomInMode: Function for the zoom in and zoom out in the canvas element
 //----------------------------------------------------------------------
 
-function zoomInMode() {
+function zoomInMode(event) {
+    // Save coordinates before changing zoom value
+    let currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
+    let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
+
+    let centerX = (canvas.width / 2 - origoOffsetX) / zoomValue;
+    let centerY = (canvas.height / 2 - 
+                  ) / zoomValue;
+
+    let oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
+    let zoomDifference = 1 + (zoomValue - oldZoom);
+
+    // Move to mouse
+    if(event.type == "wheel"){
+        // Move canvas with difference between old mouse coordinates and new
+        origoOffsetX += currentMouseX - pixelsToCanvas(currentMouseCoordinateX).x;
+        origoOffsetY += currentMouseY - pixelsToCanvas(0, currentMouseCoordinateY).y;
+    }
+    // Move to center
+    else {
+        // Move canvas with difference between old canvas center coordinates and new
+        origoOffsetX -= centerX * zoomDifference - centerX;
+        origoOffsetY -= centerY * zoomDifference - centerY;
+    }
+
     reWrite();
     updateGraphics();
 }
 
-function changeZoom(zoomValue) {
+
+
+function changeZoom(zoomValue, event) {
     var value = parseFloat(document.getElementById("ZoomSelect").value);
     value = value + parseFloat(zoomValue);
     document.getElementById("ZoomSelect").value = value;
-    zoomInMode();
+    zoomInMode(event);
 }
 
 //-----------------------
@@ -2653,20 +2738,15 @@ function changeZoom(zoomValue) {
 //-----------------------
 
 function scrollZoom(event) {
-  let currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
-  let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
     if(event.deltaY > 124){
-        changeZoom(-0.1);
+        changeZoom(-0.1, event);
     } else if (event.deltaY < -124) {
-        changeZoom(0.1);
+        changeZoom(0.1, event);
     } else if(event.deltaY > 5) {
-        changeZoom(-0.01);
+        changeZoom(-0.01, event);
     } else if (event.deltaY < -5) {
-        changeZoom(0.01);
+        changeZoom(0.01, event);
     }
-    origoOffsetX += currentMouseX - pixelsToCanvas(currentMouseCoordinateX).x;
-    origoOffsetY += currentMouseY - pixelsToCanvas(0, currentMouseCoordinateY).y;
-    updateGraphics();
 }
 
 //----------------------------------------------------------------------
@@ -3422,8 +3502,8 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    var newValue = checkDuplicate("Text", symbolKind.text);
-    text.name = "Text" + newValue;
+    var newValue = checkDuplicate("Text ", symbolKind.text);
+    text.name = "Text " + newValue;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
