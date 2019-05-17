@@ -44,10 +44,10 @@ pdoConnect();
 					<h3>Change challenge question</h3>
 					<form method="post" id="challengeForm">
 						<label for="currentPassword">Current password</label><br>
-						<input type="password" id="currentPassword" class="form-control textinput" placeholder="Current password" style="width: 300px;"><br><br>
+						<input type="password" id="currentPassword" class="form-control textinput" placeholder="Current password"><br><br>
 						<label for="challengeQuestion">Challenge question</label><br>
 						<label id="securityQuestionError"></label>
-						<select id="securityQuestion" class="form-control textinput" name="securityQuestions" style="width: 300px;">
+						<select id="securityQuestion" class="form-control textinput" name="securityQuestions">
 							<option value="What was the name of your first pet?">What was the name of your first pet?</option>
 							<option value="What is your favourite sports/e-sports team?">What is your favourite sports/e-sports team?</option>
 							<option value="What was the best birthday present you ever got?">What was the best birthday present you ever got?</option>
@@ -58,7 +58,7 @@ pdoConnect();
 						</select>
 						<br><br>
 						<label for="challengeAnswer">Challenge answer</label><br>
-						<input type="text" id="challengeAnswer" class="form-control textinput" placeholder="Answer to question" style="width: 300px;"><br><br>
+						<input type="text" id="challengeAnswer" class="form-control textinput" placeholder="Answer to question"><br><br>
 						<button type="submit" class="submit-button" style="float: none; margin-left: 0; width: 150px;">Save Challenge</button>
 					</form>
 					<div id="challengeMessage"></div>
@@ -69,13 +69,13 @@ pdoConnect();
 					<div id="passForm">
 						<form method="post" id="passwordForm">
 							<label for="currentPassword2">Current password</label><br>
-							<input type="password" class="form-control textinput" id="currentPassword2" placeholder="Current password" maxlength="72" style="width: 300px;"><br><br>
+							<input type="password" class="form-control textinput" id="currentPassword2" placeholder="Current password" maxlength="72"><br><br>
 							<label for="newPassword">New password</label><br>
-							<input type="password" class="form-control textinput" id="newPassword" placeholder="Max 72 characters" maxlength="72" style="width: 300px;"><br>
+							<input type="password" class="form-control textinput" id="newPassword" placeholder="Max 72 characters" maxlength="72"><br>
 							Password must be 8 Characters minimum.<br>
 							Password must contain a number, an uppercase and a lowercase letter.<br><br>
 							<label for="newPassword2">Confirm new password</label><br>
-							<input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72" style="width: 300px;"><br><br>
+							<input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72"><br><br>
 							<button type="submit" class="submit-button" style="float: none; margin-left: 0; width: 150px;">Update password</button><br><br>
 						</form>
 					</div>
