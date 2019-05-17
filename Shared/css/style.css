@@ -328,10 +328,6 @@ p {
   padding-right: 8px;
 }
 
-.dateSize {
-  width: 15%;
-}
-
 #Sectionlist {
   margin: 0px auto;
   background-color: var(--color-background);
