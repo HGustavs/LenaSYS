@@ -1397,7 +1397,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	cont="";
 	lineno=0;
 	str+="<div id='notification" + boxid + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
-	str+="<div class='normtextwrapper'>";
+	str+="<div id='textwrapper" + boxid +  "' class='normtextwrapper'>";
 
 	pcount=0;
 	parenthesis=new Array();
@@ -3252,5 +3252,9 @@ function copyCodeToClipboard(boxid) {
 		setTimeout(function(){
 			$("#notification" + boxid).fadeOut("fast");
 		}, 500);
-	});	
+	});
+	$("#textwrapper" + boxid).hide();
+		setTimeout(function(){
+			$("#textwrapper" + boxid).fadeIn("fast");
+		}, 1000);
 }
