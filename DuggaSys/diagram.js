@@ -2897,10 +2897,10 @@ function mousemoveevt(ev, t) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance / zoomValue) {
-                // check so that the point we're hovering over belongs to an object that's selected and doesn't belong to a group
+                // check so that the point we're hovering over belongs to an object that's selected 
                 var pointBelongsToObject = false;
                 for (var i = 0; i < selected_objects.length; i++) {
-                    if (sel.attachedSymbol == selected_objects[i] && sel.attachedSymbol.group == 0) {
+                    if (sel.attachedSymbol == selected_objects[i]) {
                         pointBelongsToObject = true;
                     }
                 }
@@ -2938,8 +2938,8 @@ function mousemoveevt(ev, t) {
         } else if (md == mouseState.noPointAvailable) {
             // If mouse is pressed down and no point is close show selection box
         } else if (md == mouseState.insidePoint) {
-            // check so that the point were trying to move is attached to a targeted symbol and If the selected object is locked or part of a group, you can't resize the object
-            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.isLocked || sel.attachedSymbol.group != 0) {
+            // check so that the point were trying to move is attached to a targeted symbol and If the selected object is locked, you can't resize the object
+            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.isLocked ) {
                 return;
             }
             // If mouse is pressed down and at a point in selected object - move that point
@@ -3587,10 +3587,7 @@ function countNumberOfSymbolKind(kind) {
 
 function doubleclick(ev) {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
-        // shouldn't be able to change the appearance if the object is in a group
-        if (diagram[lastSelectedObject].group == 0) {
-            openAppearanceDialogMenu();
-        }
+        openAppearanceDialogMenu();
     }
 }
 
