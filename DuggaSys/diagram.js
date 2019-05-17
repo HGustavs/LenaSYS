@@ -1115,8 +1115,8 @@ function initializeCanvas() {
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
-                + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + " </p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -1782,20 +1782,21 @@ function developerMode(event) {
     updateGraphics();
 }
 
+var refreshedPage = true;
 function setModeOnRefresh() {
     toolbarState = localStorage.getItem("toolbarState");
     if(toolbarState == 1) {
-        switchToolbarER();
+        switchToolbarTo('ER');
         hideCrosses();
         developerModeActive = false;
     } else if(toolbarState == 2) {
-        switchToolbarUML();
+        switchToolbarTo('UML');
         hideCrosses();
         developerModeActive = false;
     } else if(toolbarState == 3) {
         showCrosses();
         developerModeActive = true;
-        switchToolbarDev();
+        switchToolbarTo('Dev');
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     }
@@ -1829,6 +1830,8 @@ function modeSwitchConfirmed(confirmed) {
             switchToolbarER();
         } else if (targetMode == 'UML') {
             switchToolbarUML();
+        } else if (targetMode == 'Dev'){
+          switchToolbarDev();
         }
     }
 }
@@ -2037,12 +2040,19 @@ function reWrite() {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) </p>";
-        if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
+        if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true){
             document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
             + Math.round((zoomValue * 100)) + "%" + " </p>";
             document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
             + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " |";
+            refreshedPage = false;
+        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
+          document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+          + Math.round((zoomValue * 100)) + "%" + " </p>";
+          document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+          + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
         }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
