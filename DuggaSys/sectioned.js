@@ -843,7 +843,7 @@ function returnedSection(data) {
           str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 5) {
           // Link
-          if (item['link'].substring(0, 4) === "http") {
+          if (item['link'].substr(0, 4) === "http") {
             str += makeanchor(item['link'], hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, {});
           } else {
             var param = {
