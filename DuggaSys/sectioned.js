@@ -298,7 +298,7 @@ function createQuickItem() {
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined");
+    selectItem("undefined", "undefined", "undefined", "0", "undefined", "undefined", "undefined");
     newItem();
   }
 }
@@ -843,7 +843,7 @@ function returnedSection(data) {
           str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 5) {
           // Link
-          if (item['link'].substr(0, 4) === "http") {
+          if (item['link'].substring(0, 4) === "http") {
             str += makeanchor(item['link'], hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, {});
           } else {
             var param = {
