@@ -1527,13 +1527,29 @@ input {
   top: 119px;
 }
 
+.drop-down-item #hotkey-lock {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 6px;
+  top: 241px;
+}
+
+.drop-down-item #hotkey-resetView {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 6px;
+  top: 317px;
+}
+
 #hotkey-clear, #hotkey-front {
-  right: 6px ;
+  right: 5px ;
   top: 165px;
 }
 
 #hotkey-back {
-  right: 6px ;
+  right: 5px ;
   top: 195px;
 }
 

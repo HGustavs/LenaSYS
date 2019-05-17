@@ -160,6 +160,8 @@ const tKey = 84;
 const vKey = 86;
 const zKey = 90;
 const yKey = 89;
+const xKey = 88;
+const oKey = 79;
 const windowsKey = 91;
 const num1 = 97;
 const num2 = 98;
@@ -437,57 +439,45 @@ function keyDownHandler(e) {
             diagram[i].targeted = true;
         }
         updateGraphics();
-    }
-    else if(key == ctrlKey || key == windowsKey) {
+    } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    }
-    else if(key == escapeKey) {
+    } else if(key == escapeKey) {
         cancelFreeDraw();
-    }
-    else if((key == key1 || key == num1) && shiftIsClicked){
+    } else if((key == key1 || key == num1) && shiftIsClicked){
         moveToFront();
-    }
-    else if((key == key2 || key == num2) && shiftIsClicked){
+    } else if((key == key2 || key == num2) && shiftIsClicked){
         moveToBack();
-    }
-    else if(shiftIsClicked && key == lKey) {
+    } else if(shiftIsClicked && key == lKey) {
       document.getElementById("linebutton").click();
-    }
-    else if(shiftIsClicked && key == aKey && targetMode == "ER") {
+    } else if(shiftIsClicked && key == aKey && targetMode == "ER") {
       document.getElementById("attributebutton").click();
-    }
-    else if(shiftIsClicked && key == eKey && targetMode == "ER") {
+    } else if(shiftIsClicked && key == eKey && targetMode == "ER") {
       document.getElementById("entitybutton").click();
-    }
-    else if(shiftIsClicked && key == rKey && targetMode == "ER") {
+    } else if(shiftIsClicked && key == rKey && targetMode == "ER") {
       document.getElementById("relationbutton").click();
-    }
-    else if(shiftIsClicked && key == cKey && targetMode == "UML") {
+    } else if(shiftIsClicked && key == cKey && targetMode == "UML") {
       document.getElementById("classbutton").click();
-    }
-    else if(shiftIsClicked && key == tKey && targetMode == "ER") {
+    } else if(shiftIsClicked && key == tKey && targetMode == "ER") {
       document.getElementById("drawtextbutton").click();
-    }
-    else if(shiftIsClicked && key == fKey) {
+    } else if(shiftIsClicked && key == fKey) {
       document.getElementById("drawfreebutton").click();
-    }
-    else if(shiftIsClicked && key == dKey) {
+    } else if(shiftIsClicked && key == dKey) {
       developerMode(event);
-    }
-    else if(shiftIsClicked && key == mKey) {
+    } else if(shiftIsClicked && key == mKey) {
       if(targetMode == "ER"){
         switchToolbarTo("UML");
       } else {
         switchToolbarTo("ER");
       }
-    }
-    else if(shiftIsClicked && key == gKey) {
-        globalAppearanceMenu();
-    }
-
-    else if(shiftIsClicked && key == hKey) {
-        openAppearanceDialogMenu();
-    }
+    } else if(shiftIsClicked && key == gKey) {
+          globalAppearanceMenu();
+    } else if(shiftIsClicked && key == hKey) {
+          openAppearanceDialogMenu();
+    } else if(shiftIsClicked && key == xKey) {
+          lockSelected(event);
+    } else if(shiftIsClicked && key == oKey) {
+          resetViewToOrigin();
+      }
 }
 
 //----------------------------------------------------

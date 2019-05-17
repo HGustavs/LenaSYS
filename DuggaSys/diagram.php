@@ -180,6 +180,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
+                                <i id="hotkey-lock">Shift + X</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
@@ -189,6 +190,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                                <i id="hotkey-resetView">Shift + O</i>
                             </div>
                         </div>
                     </div>
