@@ -1303,6 +1303,12 @@ function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
+			if (cell.ssn.length > 11) {
+				str = cell.ssn + ";";
+			} else {
+				str = "19" + cell.ssn + ";";
+			}
+			
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
 			str = str.replace(/\&Aring\;/g, "Å");
@@ -1369,7 +1375,7 @@ function ladexport() {
 	expo += document.getElementById("ladgradescale").value + "\n";
 	expo += document.getElementById("laddate").value + "\n";
 	expo += myTable.export("csv", ";");
-	console.log(expo)
+
 	//alert(expo);
 	document.getElementById("resultlistheader").innerHTML = "Results for: " + document.getElementById("ladselect").value;
 	document.getElementById("resultlistarea").value = expo;
