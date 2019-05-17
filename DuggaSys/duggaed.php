@@ -37,7 +37,21 @@ pdoConnect();
 	<!-- Content START -->
 
 	<div id="content">
-    	<div id="headerContent"></div> <!-- A div to place header content. -->
+      <div id="headerContent"></div> <!-- A div to place header content. -->
+      <div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
+				<div id='tooltip-mobile' class="tooltip-searchbar">
+					<div class="tooltip-searchbar-box">
+								<b>Keywords:</b> markG, markU, date <br>
+								<b>Ex:</b> markG:färgdugga
+					</div>
+					<span>?</span>
+				</div>
+				<input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
+
+				<button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();' type='button'>
+					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
+				</button>
+			</div>
 		<div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
 
 	  	<!-- Login Dialog START -->
