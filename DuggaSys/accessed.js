@@ -418,7 +418,9 @@ function rowFilter(row) {
 //----------------------------------------------------------------------------
 
 function returnedAccess(data) {
-
+	if (!data.access) {
+		window.location.href = 'courseed.php';
+	}
 	filez = data;
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
