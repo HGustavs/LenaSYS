@@ -1422,8 +1422,16 @@ function Symbol(kindOfSymbol) {
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
                 var valX2 = x2 > x1 ? x2-20 : x2+20;
                 if (this.isRecursiveLine) {
-                    valY = y1 + 15;
-                    valY2 = y2 + 15;
+                    let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent);
+                    if (x1 == x2) {
+                        valX = valX2 = x1 + 20 * dir;
+                        valY = y1 - 15;
+                        valY2 = y2 - 15;
+                    }else {
+                        valY = valY2 = y1 + 15 * dir;
+                        valX = x1 - 15;
+                        valX2 = x2 - 15;
+                    }
                 }
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
