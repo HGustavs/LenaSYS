@@ -616,7 +616,7 @@ function returnedDugga(data) {
 		var result = 0;
 		filez = data['files'];
 		duggaPages = data['duggaPages'];
-		document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+		document.getElementById("sectionedPageTitle").innerHTML = "Dugga editor - " + data.coursename + " - " + data.coursecode;
 		str = "";
 		if (globalVariant){
 				renderVariant(globalVariant);
