@@ -430,54 +430,54 @@ function keyDownHandler(e) {
     else if (key == yKey && ctrlIsClicked) redoDiagram(event);
     else if (key == aKey && ctrlIsClicked) {
         e.preventDefault();
-        for(var i = 0; i < diagram.length; i++) {
+        for (var i = 0; i < diagram.length; i++) {
             selected_objects.push(diagram[i]);
             diagram[i].targeted = true;
         }
         updateGraphics();
     }
-    else if(key == ctrlKey || key == windowsKey) {
+    else if (key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
     }
-    else if(key == escapeKey) {
+    else if (key == escapeKey) {
         cancelFreeDraw();
     }
-    else if((key == key1 || key == num1) && shiftIsClicked){
+    else if ((key == key1 || key == num1) && shiftIsClicked) {
         moveToFront();
     }
-    else if((key == key2 || key == num2) && shiftIsClicked){
+    else if ((key == key2 || key == num2) && shiftIsClicked) {
         moveToBack();
     }
-    else if(shiftIsClicked && key == lKey) {
-      document.getElementById("linebutton").click();
+    else if (shiftIsClicked && key == lKey) {
+        document.getElementById("linebutton").click();
     }
-    else if(shiftIsClicked && key == aKey && targetMode == "ER") {
-      document.getElementById("attributebutton").click();
+    else if (shiftIsClicked && key == aKey && targetMode == "ER") {
+        document.getElementById("attributebutton").click();
     }
-    else if(shiftIsClicked && key == eKey && targetMode == "ER") {
-      document.getElementById("entitybutton").click();
+    else if (shiftIsClicked && key == eKey && targetMode == "ER") {
+        document.getElementById("entitybutton").click();
     }
-    else if(shiftIsClicked && key == rKey && targetMode == "ER") {
-      document.getElementById("relationbutton").click();
+    else if (shiftIsClicked && key == rKey && targetMode == "ER") {
+        document.getElementById("relationbutton").click();
     }
-    else if(shiftIsClicked && key == cKey && targetMode == "UML") {
-      document.getElementById("classbutton").click();
+    else if (shiftIsClicked && key == cKey && targetMode == "UML") {
+        document.getElementById("classbutton").click();
     }
-    else if(shiftIsClicked && key == tKey && targetMode == "ER") {
-      document.getElementById("drawtextbutton").click();
+    else if (shiftIsClicked && key == tKey && targetMode == "ER") {
+        document.getElementById("drawtextbutton").click();
     }
-    else if(shiftIsClicked && key == fKey) {
-      document.getElementById("drawfreebutton").click();
+    else if (shiftIsClicked && key == fKey) {
+        document.getElementById("drawfreebutton").click();
     }
-    else if(shiftIsClicked && key == dKey) {
-      developerMode(event);
+    else if (shiftIsClicked && key == dKey) {
+        developerMode(event);
     }
-    else if(shiftIsClicked && key == mKey) {
-      if(targetMode == "ER"){
-        switchToolbarTo("UML");
-      } else {
-        switchToolbarTo("ER");
-      }
+    else if (shiftIsClicked && key == mKey) {
+        if (targetMode == "ER"){
+            switchToolbarTo("UML");
+        } else {
+            switchToolbarTo("ER");
+        }
     }
 }
 
@@ -898,14 +898,13 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     pointsSelected++;
                 }
             }
-            if(!hover) {
+            if (!hover) {
                 if (pointsSelected >= tempPoints.length) {
                     selected_objects.push(this[i]);
                     this[i].targeted = true;
-                } else {
-                    this[i].targeted = false;
+                    setTargetedForSymbolGroup(this[i], true);
                 }
-            }else {
+            } else {
                 if (pointsSelected >= tempPoints.length) {
                     this[i].isHovered = true;
                 } else {
@@ -926,21 +925,27 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     if (index >= 0) {
                         this[i].targeted = false;
                         selected_objects.splice(index, 1);
-                    } else if(!hover) {
+                        setTargetedForSymbolGroup(this[i], false);
+                    } else if (!hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
+                        setTargetedForSymbolGroup(this[i], true);
                     }
                 } else {
                     if (index < 0 && !hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
-                    } else if(hover) {
+                        setTargetedForSymbolGroup(this[i], true);
+                    } else if (hover) {
                         this[i].isHovered = true;
-                    }
+                    } 
                 }
-            } else if(!ctrlIsClicked) {
-                if(!hover) this[i].targeted = false;
-                if (index >= 0) selected_objects.splice(index, 1);
+            } else if (!ctrlIsClicked) {
+                if (!hover) this[i].targeted = false;
+                if (index >= 0) {
+                    setTargetedForSymbolGroup(selected_objects[0], true);
+                    break;
+                }
             }
         }
     }
@@ -2135,14 +2140,97 @@ function getCurrentDate() {
 }
 
 function setRefreshTime() {
-  var time = 5000;
-  lastDiagramEdit = localStorage.getItem('lastEdit');
-  if (typeof lastDiagramEdit !== "undefined") {
-    var timeDifference = getCurrentDate() - lastDiagramEdit;
-    refresh_lock = timeDifference > 604800000 ? true : false;
-    time = timeDifference <= 259200000 ? 5000 : 300000;
-  }
-  return time;
+    var time = 5000;
+    lastDiagramEdit = localStorage.getItem('lastEdit');
+    if (typeof lastDiagramEdit !== "undefined") {
+        var timeDifference = getCurrentDate() - lastDiagramEdit;
+        refresh_lock = timeDifference > 604800000 ? true : false;
+        time = timeDifference <= 259200000 ? 5000 : 300000;
+    }
+    return time;
+}
+
+// adds a group to selected objects
+function addGroupToSelected(event) {
+    event.stopPropagation();
+
+    if (selected_objects.length < 1) return;
+    var tempList = [];
+
+    // find all symbols/freedraw objects that is going to be in the group
+    for (var i = 0; i < selected_objects.length; i++) {
+        // do not group lines
+        if(selected_objects[i].kind == kind.symbol && 
+            (selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine)) {
+            continue;
+        } else {
+            tempList.push(selected_objects[i]);
+        }
+    }
+    // remove the current group the objects have 
+    for (var i = 0; i < tempList.length; i++ ) {
+        tempList[i].group = 0;
+    }
+    // check what group numbers already exist
+    var currentGroups = [];
+    for (var i = 0; i < diagram.length; i++) {
+        // don't check lines 
+        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.line || diagram[i].symbolkind == symbolKind.umlLine)) {
+        } else { 
+            if (diagram[i].group != 0) { 
+                currentGroups.push(diagram[i].group);
+            }
+        }
+    }
+    // assign nextGroupNumber to a group number that doesn't exist already, max 1000 groups
+    var nextGroupNumber = 1;
+    for (var i = 0; i < 1000; i++) {
+        var numberAvailable = true;
+        for (var j = 0; j < currentGroups.length; j++) {
+            if (nextGroupNumber == currentGroups[j]) {
+                numberAvailable = false;
+                nextGroupNumber++;
+                break;
+            }
+        }
+        if (numberAvailable) break;
+    }
+    // assign the group number to the selected objects
+    for (var i = 0; i < tempList.length; i++) {
+        tempList[i].group = nextGroupNumber;
+    }
+    SaveState();
+    updateGraphics();
+}
+// removes the group from selected objects
+function removeGroupFromSelected(event) {
+    event.stopPropagation();
+    for (var i = 0; i < selected_objects.length; i++) {
+        // do not do anything with lines
+        if (selected_objects[i].kind == kind.symbol && 
+            (selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine)) {
+            continue;
+        }
+        selected_objects[i].group = 0;
+    }
+    SaveState();
+    updateGraphics();
+}
+// all symbols with the same group as symbol is set to targeted (true or false)
+function setTargetedForSymbolGroup(symbol, targeted) {
+    for (var i = 0; i < diagram.length; i++) {
+        if (symbol.group != 0 && diagram[i] != symbol && diagram[i].group == symbol.group) {
+            if (targeted) {
+                selected_objects.push(diagram[i]);
+            } else {
+                var index = selected_objects.indexOf(diagram[i]);
+                if (index > -1) {
+                    selected_objects.splice(index, 1);
+                }
+            }
+            diagram[i].targeted = targeted;
+        }
+    }
 }
 
 //----------------------------------------------------------------------
@@ -2152,7 +2240,7 @@ function setRefreshTime() {
 function lockSelected(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     for(var i = 0; i < selected_objects.length; i++) {
-        if(selected_objects[i].kind == kind.symbol){
+        if(selected_objects[i].kind == kind.symbol) {
             // Lines should not be possible to lock
             if(selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine){
                 continue;
@@ -2811,7 +2899,7 @@ function mousemoveevt(ev, t) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance / zoomValue) {
-                // check so that the point we're hovering over belongs to an object that's selected
+                // check so that the point we're hovering over belongs to an object that's selected 
                 var pointBelongsToObject = false;
                 for (var i = 0; i < selected_objects.length; i++) {
                     if (sel.attachedSymbol == selected_objects[i]) {
@@ -2853,7 +2941,7 @@ function mousemoveevt(ev, t) {
             // If mouse is pressed down and no point is close show selection box
         } else if (md == mouseState.insidePoint) {
             // check so that the point were trying to move is attached to a targeted symbol and If the selected object is locked, you can't resize the object
-            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.isLocked) {
+            if (!sel.attachedSymbol.targeted || sel.attachedSymbol.isLocked ) {
                 return;
             }
             // If mouse is pressed down and at a point in selected object - move that point
@@ -3103,7 +3191,7 @@ function mousedownevt(ev) {
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
-        if(uimode != "MoveAround" && !ctrlIsClicked) {
+        if (uimode != "MoveAround" && !ctrlIsClicked) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
@@ -3127,6 +3215,7 @@ function handleSelect() {
             if(selected_objects.indexOf(last) < 0) {
                 selected_objects.push(last);
                 last.targeted = true;
+                setTargetedForSymbolGroup(last, true);
             }
             for (var i = 0; i < selected_objects.length; i++) {
                 if (selected_objects[i].targeted == false) {
@@ -3140,6 +3229,7 @@ function handleSelect() {
             selected_objects = [];
             selected_objects.push(last);
             last.targeted = true;
+            setTargetedForSymbolGroup(last, true);
         }
     } else if(uimode != "MoveAround") {
         if(ctrlIsClicked) {
@@ -3148,6 +3238,7 @@ function handleSelect() {
                 selected_objects.splice(index, 1);
             }
             last.targeted = false;
+            setTargetedForSymbolGroup(last, false);
             //when deselecting object, set lastSelectedObject to index of last object in selected_objects
             lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length-1]);
         }
@@ -3413,6 +3504,14 @@ function mouseupevt(ev) {
                     setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
                     if (diagram[i].isLockHovered) {
                         diagram[i].isLocked = false;
+                        // remove locks for objects in the same group
+                        if (diagram[i].group != 0) {
+                            for (var j = 0; j < diagram.length; j++) {
+                                if (diagram[i].group == diagram[j].group) {
+                                    diagram[j].isLocked = false;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -3429,6 +3528,7 @@ function mouseupevt(ev) {
             selected_objects.push(diagram[lastSelectedObject]);
             //You have to target an object when you start to draw
             if(md != mouseState.empty) diagram[lastSelectedObject].targeted = true;
+            setTargetedForSymbolGroup(diagram[lastSelectedObject], true);
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text

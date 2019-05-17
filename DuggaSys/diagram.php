@@ -186,6 +186,14 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='addGroupToSelected(event)'>Add group to selected</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Remove group from selected</span>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
                             </div>
                         </div>
