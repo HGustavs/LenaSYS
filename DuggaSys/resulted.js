@@ -633,6 +633,13 @@ function returnedResults(data) {
 				ladmoments += "<option value='" + dugga.entryname + "'>" + dugga.entryname + "</option>";
 			}
 		}
+		var teacherList;
+		for(var i = 0; i < teacher.length; i++){
+			if(teacher[i].teacher !== null){
+				teacherList += "<option value='"+ teacher[i].teacher +"'>"+ teacher[i].teacher + "-"+ teacher[i].tuid +"</option>";
+			}
+		}
+		document.getElementById("teacherDropdown").innerHTML = teacherList;
 		document.getElementById("ladselect").innerHTML = ladmoments;
 		document.getElementById("laddate").valueAsDate = new Date();
 
