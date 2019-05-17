@@ -445,9 +445,8 @@ function updateVersion() {
   $("#editCourseVersion").css("display", "none");
 }
 
-function goToVersion(selected) {
-  var value = selected.value;
-  //changeURL("sectioned.php" + value)
+function goToVersion(courseDropDown) {
+  var value = courseDropDown.options[courseDropDown.selectedIndex].value;
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
 
