@@ -339,7 +339,9 @@ function showVariantEditor() {
     // The submission row doesn't go away when leaving the modal
     // so without the if statement a new submission div would be created each time.
     addVariantSubmissionRow();
-  }
+  } else if (submissionRow > 1) {
+		removeExtraSubmissionRows();
+	}
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 }
@@ -379,6 +381,16 @@ function removeVariantSubmissionRow(buttonElement){
   subRow.remove();
   submissionRow = submissionRow-1;
   $("#variantparameterText").val(createJSONString($("#jsonForm").serializeArray()));
+}
+
+function removeExtraSubmissionRows() {
+	for (var i = submissionRow-1; i > 0; i--) {
+		// The function needs an element of the row to be removed, so this is what we have to do
+		var rows = [...document.getElementById('submissions').childNodes];
+		var elements = [...rows[i].childNodes];
+		var element = elements[0];
+		removeVariantSubmissionRow(element);
+	}
 }
 
 function createJSONString(formData) {
@@ -421,13 +433,7 @@ function createJSONFormData(){
 
     // Remove extra submission rows
     if (submissionRow > 0) {
-      for (var i = submissionRow-1; i > 0; i--) {
-        // The function needs an element of the row to be removed, so this is what we have to do
-        var rows = [...document.getElementById('submissions').childNodes];
-        var elements = [...rows[i].childNodes];
-        var element = elements[0];
-        removeVariantSubmissionRow(element);
-      }
+      removeExtraSubmissionRows();
     }
 
     var it = Object.keys(obj).length;
