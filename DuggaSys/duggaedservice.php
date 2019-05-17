@@ -36,6 +36,7 @@ $deadline = getOP('deadline');
 $jsondeadline = getOP('jsondeadline');
 $release = getOP('release');
 $coursevers = getOP('coursevers');
+$groupAssignment = false;
 
 $coursecode=getOP('coursecode');
 $coursename=getOP('coursename');
@@ -54,21 +55,30 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
   $writeaccess = true;
 
   if(strcmp($opt,"SAVDUGGA")===0){
-    $query=null;
+		$query=null;
+		// Check if it is a group assignment
+		if (strcmp($template, "group-assignment")==0){
+			$groupAssignment = true;
+		}
     if(is_null($qid)||strcmp($qid,"UNK")===0){
-        $query = $pdo->prepare("INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline) VALUES (:cid,:autograde,:gradesys,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart,:jsondeadline)");
+        $query = $pdo->prepare("INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline,`group`) VALUES (:cid,:autograde,:gradesys,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart,:jsondeadline,:group)");
         $query->bindParam(':cid', $cid);
         $query->bindParam(':uid', $userid);
         $query->bindParam(':coursevers', $coursevers);
     }else{
-        $query = $pdo->prepare("UPDATE quiz SET qname=:qname,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline WHERE id=:qid;");
+        $query = $pdo->prepare("UPDATE quiz SET qname=:qname,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline,`group`=:group WHERE id=:qid;");
         $query->bindParam(':qid', $qid);
     }
     $query->bindParam(':qname', $name);
     $query->bindParam(':autograde', $autograde);
     $query->bindParam(':gradesys', $gradesys);
     $query->bindParam(':template', $template);
-    $query->bindParam(':jsondeadline', $jsondeadline);
+		$query->bindParam(':jsondeadline', $jsondeadline);
+		if($groupAssignment) {
+			$query->bindValue(':group', 1, PDO::PARAM_INT);
+		} else {
+			$query->bindValue(':group', 0, PDO::PARAM_INT);
+		}
 
     if (strrpos("UNK",$deadline)!==false) $deadline = null;
     if (strrpos("UNK",$qstart)!==false) $qstart = null;
