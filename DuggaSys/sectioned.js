@@ -229,8 +229,8 @@ function showEditVersion() {
   $("#eversid").val(querystring['coursevers']);
   let sdate = retdata['startdate'];
   let edate = retdata['enddate'];
-  if (sdate !== null) $('#estartdate').val(sdate.substr(0, 10));
-  if (edate !== null) $('#eenddate').val(edate.substr(0, 10));
+  if (sdate !== null) $("#estartdate").val(sdate.substr(0, 10));
+  if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
   $("#editCourseVersion").css("display", "flex");
 }
 
@@ -291,7 +291,7 @@ function showCreateVersion() {
 }
 
 function createQuickItem() {
-  selectItem("undefined", "New Code", "2", "undefined", "undefined", "0", "undefined", "undefined", "UNK");
+  selectItem("", "New Code", "2", "", "", "0", "", "", "UNK");
   newItem();
 }
 
