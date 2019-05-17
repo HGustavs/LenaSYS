@@ -665,7 +665,7 @@ function updateTitle(e) {
 		e.preventDefault();
 		var titleSpan = e.target;
 		var box = titleSpan.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-		var boxid = box.id.substring(4);
+		var boxid = box.id.substring(3, 4);
 		var title = titleSpan.innerHTML.replace(/&nbsp;/g, '');
 
 		// Trim title, max characters allowed is 20
@@ -722,7 +722,7 @@ function createboxmenu(contentid, boxid, type) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();>' + retData['box'][boxid - 1][4] + '</span></td>';
 
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
@@ -730,7 +730,7 @@ function createboxmenu(contentid, boxid, type) {
 
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();>' + retData['box'][boxid - 1][4] + '</span></td>';
 
 			} else {
 				str += "<td class='butto2 showdesktop'>";
