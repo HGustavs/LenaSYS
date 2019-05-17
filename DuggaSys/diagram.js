@@ -1491,10 +1491,6 @@ function canvasSize() {
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
-function mod(n, m) {
-  return  Math.round(Math.round(Math.round(n % m) + m) % m);
-}
-
 //----------------------------------------------------------
 // updateGraphics: used to redraw each object on the screen
 //----------------------------------------------------------
@@ -1684,47 +1680,41 @@ function connectedObjects(line) {
     return privateObjects;
 }
 
-//------------------------------------------
-// Draws the background lines of the canvas
-//------------------------------------------
+//-----------------------------------
+// Draws the gridlines of the canvas
+//-----------------------------------
 
 function drawGrid() {
-    ctx.lineWidth = 1 * zoomValue;
-    let zoomGridSize = gridSize * zoomValue;
-    myOffsetX = mod(origoOffsetX, zoomGridSize);
-    myOffsetY = mod(origoOffsetY, zoomGridSize);
+    var zoomGridSize = gridSize * zoomValue;
+    var counter = 0;
 
-    // Draw a horizontal and a vertical line until the canvas is filled
-    for(let i = 0; i < Math.max(canvas.width, canvas.height) / zoomGridSize * 1.5; i++) {
-        if(mod(myOffsetX, zoomGridSize * 5) == mod(origoOffsetX, zoomGridSize * 5)) {
-            // Every fifth line is a darker grey
-            ctx.strokeStyle = "rgb(208, 208, 220)";
-        }
-        else {
-            ctx.strokeStyle = "rgb(238, 238, 250)";
-        }
+    for(var i = 0; i < canvas.width / zoomGridSize + Math.max(Math.abs(origoOffsetX), Math.abs(origoOffsetY)); i++){
+        setLineColor(counter);
+        counter++;
 
-        ctx.beginPath();
-        ctx.moveTo(myOffsetX, 0);
-        ctx.lineTo(myOffsetX, canvas.height);
-        ctx.stroke();
-        ctx.closePath();
+        // Positive vertical lines
+        drawGridLine(origoOffsetX + zoomGridSize * i, 0, origoOffsetX + zoomGridSize * i, canvas.height);
 
-        if(mod(myOffsetY, zoomGridSize * 5) == mod(origoOffsetY, zoomGridSize * 5)) {
-            // Every fifth line is a darker grey
-            ctx.strokeStyle = "rgb(208, 208, 220)";
-        } else {
-            ctx.strokeStyle = "rgb(238, 238, 250)";
-        }
+        // Negative vertical lines
+        drawGridLine(origoOffsetX - zoomGridSize * i, 0, origoOffsetX - zoomGridSize * i, canvas.height);
 
-        ctx.beginPath();
-        ctx.moveTo(0, myOffsetY);
-        ctx.lineTo(canvas.width, myOffsetY);
-        ctx.stroke();
-        ctx.closePath();
+        // Positive horizontal lines
+        drawGridLine(0, origoOffsetY + zoomGridSize * i, canvas.width, origoOffsetY + zoomGridSize * i);
 
-        myOffsetX += zoomGridSize;
-        myOffsetY += zoomGridSize;
+        // Negative horizontal lines
+        drawGridLine(0, origoOffsetY - zoomGridSize * i, canvas.width, origoOffsetY - zoomGridSize * i);
+    }
+}
+
+//-------------------------------------------------------------------------------------
+// Sets the color depending on whether the gridline should be darker or brighter grey
+//-------------------------------------------------------------------------------------
+
+function setLineColor(counter){    
+    if(counter % 5 == 0){
+        ctx.strokeStyle = "rgb(208, 208, 220)";
+    } else {
+        ctx.strokeStyle = "rgb(238, 238, 250)";            
     }
 }
 
@@ -1754,14 +1744,15 @@ function drawOrigo() {
 function drawOrigoLine() {
     ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
+    drawGridLine(origoOffsetX, 0, origoOffsetX, canvas.height);
+    drawGridLine(0, origoOffsetY, canvas.width, origoOffsetY);
+}
+
+function drawGridLine(startX, startY, endX, endY) {
+    ctx.lineWidth = 1 * zoomValue;
     ctx.beginPath();
-    ctx.moveTo(0, origoOffsetY);
-    ctx.lineTo(canvas.width, origoOffsetY);
-    ctx.stroke();
-    ctx.closePath();
-    ctx.beginPath();
-    ctx.moveTo(origoOffsetX, 0);
-    ctx.lineTo(origoOffsetX, canvas.height);
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
     ctx.stroke();
     ctx.closePath();
 }
