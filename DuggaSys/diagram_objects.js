@@ -2177,11 +2177,11 @@ function Path() {
     }
 
     this.corners = function(){
-        let point = false, tr = false, bl = false;
-        let tl = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
-        let br = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };
+        var point = false, tr = false, bl = false;
+        var tl = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
+        var br = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };
 
-        for(let i = 0; i < this.segments.length; i++){
+        for(var i = 0; i < this.segments.length; i++){
             point = points[this.segments[i].pa];
             if(point.x < tl.x) {
                 tl.x = point.x;
@@ -2202,8 +2202,6 @@ function Path() {
         tr.x = br.x;
         bl.x = tl.x;
 
-        console.log(tl, tr, bl, br);
-
         return {
             tl: tl,
             tr: tr,
@@ -2216,7 +2214,7 @@ function Path() {
     // move: Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
     this.move = function(movex, movey) {
-        for (let i = 0; i < this.segments.length; i++) {
+        for (var i = 0; i < this.segments.length; i++) {
             points[this.segments[i].pa].x += movex;
             points[this.segments[i].pa].y += movey;
         }
