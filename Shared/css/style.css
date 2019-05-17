@@ -2656,11 +2656,7 @@ span.arrow {
 }
 
 #TopMenuStatic .submit-button {
-  background-image: linear-gradient(to bottom right, var(--color-primary), var(--color-primary-2));
-}
-
-#TopMenuStatic .submit-button:hover {
-  filter: brightness(1.1);
+  background-color: var(--color-primary-2);
 }
 
 #variantSearch{
