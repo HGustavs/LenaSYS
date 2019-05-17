@@ -2096,23 +2096,23 @@ function reWrite() {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-        
+
         if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
             document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
             + Math.round((zoomValue * 100)) + "%" + " </p>";
             document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
             + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " ) " + " |";
+            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " )";
             refreshedPage = false;
         } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
               document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
               + Math.round((zoomValue * 100)) + "%" + " </p>";
               document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
               + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) " 
-              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" 
+              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
+              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
               + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-          }    
+          }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
         + Math.round((zoomValue * 100)) + "%" + "   </p>";
@@ -2700,8 +2700,7 @@ function zoomInMode(event) {
     let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
 
     let centerX = (canvas.width / 2 - origoOffsetX) / zoomValue;
-    let centerY = (canvas.height / 2 - 
-                  ) / zoomValue;
+    let centerY = (canvas.height / 2 - origoOffsetY) / zoomValue;
 
     let oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
