@@ -1,3 +1,6 @@
+//all visible rows will be stored to this array
+var filteredRows = []; 
+
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
 	currentTable: null,
@@ -119,8 +122,8 @@ function clickedInternal(event, clickdobj) {
 			str += "<div id='input-container' style='flex-grow:1'>";
 			str += estr;
 			str += "</div>";
-			str += "<img id='popovertick' class='icon' src='../Shared/icons/Icon_Tick.svg' onclick='updateCellInternal();'>";
-			str += "<img id='popovercross' class='icon' src='../Shared/icons/Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
+			str += "<img id='popovertick' class='icon' src='../Shared/icons/Ok_Green.svg' onclick='updateCellInternal();'>";
+			str += "<img id='popovercross' class='icon' src='../Shared/icons/Cancel_Red.svg' onclick='clearUpdateCellInternal();'>";
 			var lmnt = cellelement.getBoundingClientRect();
 			var popoverelement = document.getElementById("editpopover");
 
@@ -272,7 +275,7 @@ function SortableTable(param) {
 	}
 
 	this.reRender = function () {
-
+		filteredRows = [];
 		this.rowIndex = 1;
 		// Local variable that contains html code for main table and local variable that contains magic headings table
 		str = "<table style='border-collapse: collapse;' id='" + this.tableid + DELIMITER + "tbl' class='list list--nomargin'>";
@@ -396,7 +399,8 @@ function SortableTable(param) {
 		for (var i = 0; i < tbl.tblbody.length; i++) {
 			var row = tbl.tblbody[i];
 			if (rowFilter(row)) {
-				str += "<tr id='" + this.tableid + DELIMITER + i + "'"
+				filteredRows.push(row);
+				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
 				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
 				//Check if row contains requestedpasswordchange & set styling accordingly
@@ -442,8 +446,7 @@ function SortableTable(param) {
 							sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
 						}
 
-						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];
-
+						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];	
 						str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
 
 
@@ -649,22 +652,18 @@ function SortableTable(param) {
 	}
 
 	this.mail = function(cidMail, crsMail, reqType) {
-
-	 var activeFilteringUsername = [];
-	 for(var i = 0; i < currentRowFilter.length; i++)
-	 {
-		if(currentRowFilter[i] != null)
-		{
-			activeFilteringUsername.push(currentRowFilter[i]['FnameLnameSSN'].username);
+		var filteredUsernames = [];
+		//get usernames of the filtered rows
+		for(var i = 0; i < filteredRows.length; i++){ 
+			filteredUsernames.push(filteredRows[i]['FnameLname'].username);
 		}
-	 }
 	$.ajax({
 		url: "resultedservice.php",
 		type: "POST",
 		data: {
 			'courseid': cidMail,
 			'coursevers': crsMail,
-			'visibleuserids': activeFilteringUsername,
+			'visibleuserids': filteredUsernames,
 			'requestType': reqType
 		},
 		dataType: "JSON",
@@ -726,6 +725,7 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
+	var sizeTemp = '{"';
     if(typeof firstCell === 'object' && col.includes("FnameLname")) {
 		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
@@ -793,6 +793,11 @@ function newCompare(firstCell, secoundCell) {
 			if (firstCell === null || secoundCell === null) {
 				firstCellTemp = firstCell;
 				secoundCellTemp = secoundCell;
+			} else if(typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp))){
+				tempTemp1 = firstCell.replace(/\D/g,'');
+				tempTemp2 = secoundCell.replace(/\D/g,'');
+				firstCellTemp = parseInt(tempTemp1, 10);
+				secoundCellTemp = parseInt(tempTemp2, 10);
 			} else {
 				//Convert to json object
 				if (JSON.stringify(firstCell) || JSON.stringify(secoundCell)) {
@@ -821,12 +826,29 @@ function newCompare(firstCell, secoundCell) {
 			return val;
 		}
 
-		firstCellTemp = $('<div/>').html(firstCellTemp).text();
-		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-
-		if (status == 0) {
+		if(!isNaN(firstCellTemp) && !isNaN(secoundCellTemp)) {
+			if ((status % 2) == 0) {
+				val = firstCellTemp < secoundCellTemp;
+				if(val) {
+					val = 1;
+				}else{
+					val = -1;
+				}
+			} else {
+				val = secoundCellTemp < firstCellTemp;
+				if(val){
+					val = 1;
+				}else{
+					val = -1;
+				}
+			}
+		} else if (status == 0) {
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
 	} else {

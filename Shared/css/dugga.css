@@ -51,6 +51,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
  touch-action: none;
 }
 
+
 h1{color: #000;}
 
 strong {font-weight: bold;}
@@ -334,20 +335,109 @@ svg text {
 .previewTable td:last-child {
 	width: 100%;
 }
- /* --------------================################================-------------- *
- *                      	       Daily - minutes  				       								 *
- * --------------================################================-------------- */
-
- @media only screen and (min-width: 1121px){
-	#smallerViewportArea {
-		display: none;
+.previewTable tr:nth-child(even){
+  background-color: #dad8db;
+}
+@media only screen and (max-width: 500px) {
+	.previewTable {
+		width: auto;
+		white-space: normal;
+	}
+	.previewTable td {
+		padding-right: 2px;
+		padding-left: 0px
+	}
+	.previewTable th {
+		padding-right: 2px;
+		padding-left: 0px
 	}
 }
 
-@media only screen and (max-width: 1120px){
- 	#tomten {
-		display: none;
-	}
+ /* --------------================################================-------------- *
+ *                      	       Daily - minutes  				       								 *
+ * --------------================################================-------------- */
+ .tsTable {
+  margin: 20px 50px 20px 50px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.tsTable td:first-of-type {
+  border-left: 1px solid #cdd0d6;
+}
+.tsTable td:last-of-type {
+  border-right: 1px solid #cdd0d6;
+}
+.tsTable td, .tsTable th {
+  border-bottom: 1px solid #cdd0d6;
+}
+.tsTable thead {
+  background: var(--color-primary);
+  color: white;
+}
+.tsTable th {
+  padding: 10px;
+}
+.tsTable tbody, .tsTable tfoot {
+  text-align: center;
+}
+.tsTable td {
+  padding: 5px 10px 5px 10px;
+}
+.tsTable select {
+  height: 30px;
+  padding: 3px 0px 3px 5px;
+  width: 150px;
+}
+.tsTable input {
+  padding: 5px;
+}
+.tsTable tfoot {
+  background: #F0F0F0;
+}
+.tsTable tfoot:hover {
+  background: #7B5A96;
+}
+.tsTable tfoot td {
+  padding: 0;
+}
+.tsCommentColumn {
+  min-width: 200px;
+  width: 500px;
+}
+.tsTableDeleteCell {
+  border-radius: 0px 5px 5x 0px;
+  -moz-border-radius: 0px 5px 5px 0px;
+  -webkit-border-radius: 0px 5px 5px 0px;
+}
+.tsTableDeleteCell:hover {
+  cursor: pointer;
+}
+.newRowButton {
+  display: block;
+  width: 100%;
+  padding-bottom: 10px;
+  padding-top: 8px;
+  cursor: pointer;
+  background: var(--color-primary);
+  color: white;
+}
+.newRowButton:hover{
+  background: #7B5A96;
+}
+#tsSubmit {
+  background: var(--color-primary);
+  color: white;
+  margin-left: 50px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 2px solid #614875;
+  padding: 4px 8px 4px 8px;
+}
+#tsSubmit:hover {
+  background: #7B5A96;
+  color: white;
+  border: 2px solid #614875;
+}
 	#smallerViewportWrapper{
 		border-style: solid;
 		border-width: 1px;
@@ -361,7 +451,7 @@ svg text {
 		border-width: 1px;
 		border-color: #cdd0d6;
 		border-top: none;
-		width: 180px;
+		width: 200px;
 		font-weight: 600;
 		height: 170px;
 	}
@@ -371,20 +461,24 @@ svg text {
 		background-color: #614875;
 	}
 	#smallerViewportLabel{
-		background-color:#cdd0d6;
-		width: 180px;
+		background: var(--color-primary);
+    color: white;
+		width: 200px;
 		text-align: center;
 	}
 	#smallerViewportSelect{
 		width: 100%;
 	}
-	#smallerViewportArea input{
-		width: 98%;
+	.tsSmallInput {
+		width: 100%;
+		box-sizing: border-box;
 	}
 	#smallerViewportUploadButton{
 		margin-left: 3px;
 		height: 30px;
 		cursor: pointer;
+    background: var(--color-primary);
+    color: white;
 	}
 	#smallerViewportUploadButton:hover{
 		background-color: #614875;
@@ -392,5 +486,78 @@ svg text {
 	}
 	#prevSub{
 		margin-top: 10px;
+	}
+
+
+ /* --------------================################================-------------- *
+ *                      	         HTML-CSS Dugga				       								   *
+ * --------------================################================-------------- */
+
+ @media only screen and (max-width: 800px) {
+	#htmlCssTable > tbody,
+	#htmlCssTable > tbody > tr, 
+	#htmlCssTable > tbody > tr > td {
+		display: block;
+	}
+ }
+
+  /* --------------================################================-------------- *
+ *                      	        Transform Dugga				       								   *
+ * --------------================################================-------------- */
+ #transformInfoBox {
+	min-width: 300px;
+	width: 300px;
+}
+@media only screen and (max-width: 1360px) {
+ #transformInfoBox {
+	 width: 100%;
+ }
+ #transformInfoBox .loginBoxheader {
+	 width: 100%;
+ }
+ .transformContainer {
+	 flex-wrap: wrap;
+ }
+}
+
+  /* --------------================################================-------------- *
+ *                      	     Clipping Masking Dugga				       							 *
+ * --------------================################================-------------- */
+#clippingInfoBox {
+	min-width:170px;
+	width:300px;
+	margin:0 4px 0 4px;
+}
+#clippingInfoBox2 {
+	min-width:120px;
+	width:300px;
+	margin:0 4px 0 4px;
+}
+ @media only screen and (max-width: 1360px) {
+	#clippingInfoBox {
+		width:100%;
+	}
+	#clippingInfoBox2 {
+		width:100%;
+	}
+	.clippingContainer {
+		flex-wrap: wrap;
+	}
+}
+
+  /* --------------================################================-------------- *
+ *                      	          Curve Dugga				       							       *
+ * --------------================################================-------------- */
+ #curveInfoBox {
+	max-width:300px;
+ }
+
+@media only screen and (max-width: 1360px) {
+	#curveInfoBox {
+		width: 100%;
+		max-width: 100%;
+	}
+	.curveContainer {
+		flex-wrap: wrap;
 	}
 }

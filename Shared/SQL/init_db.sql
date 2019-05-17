@@ -117,7 +117,8 @@ CREATE TABLE quiz (
 	creator 				INTEGER,
 	vers					VARCHAR(8),
     qstart					DATE,
-	jsondeadline	VARCHAR(2048),
+	jsondeadline			VARCHAR(2048),
+	`group` 				TINYINT(1) DEFAULT 0,
 	PRIMARY KEY (id),
 	FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -607,6 +608,7 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4)
 INSERT INTO template (templateid,stylesheet,numbox) VALUES (7,"template7.css",4);
 INSERT INTO template (templateid,stylesheet,numbox) VALUES (8,"template8.css",3);
 INSERT INTO template (templateid,stylesheet,numbox) VALUES (9,"template9.css",5);
+INSERT INTO template (templateid,stylesheet,numbox) VALUES (10,"template10.css",1);
 
 /* Programming languages that decide highlighting */
 

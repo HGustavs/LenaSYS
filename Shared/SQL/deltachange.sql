@@ -85,6 +85,9 @@ UPDATE groups SET groupKind="Roman" WHERE groupKind="VI";
 /* #6259 Add update column to vers table */
 ALTER TABLE vers ADD COLUMN updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
+/* #2463 Adding group column to quiz table */
+ALTER TABLE quiz add column `group` TINYINT(1) DEFAULT 0;
+
 /* Merged from strutt.sql */
 ALTER TABLE user_course ALTER COLUMN result SET DEFAULT 0.0;
 ALTER TABLE user_course ALTER COLUMN period SET DEFAULT 1;

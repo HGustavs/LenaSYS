@@ -280,7 +280,7 @@ if($ha){
 				$allowedExtensions = [
 					"pdf"		=> ["application/pdf"],
 					"zip"		=> ["application/zip"],
-					//"rar"	=> [
+					"rar"		=> ["application/x-rar"]
 				];
 
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
@@ -363,10 +363,12 @@ if($ha){
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive_dugga.php", $userid,$info);
-
+/* Commenting this out because error should be displayed in showDugga, so redirect regardless of whether or not the file extension is allowed.
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
-}
+}*/
+echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0&extension=".$extension."&fieldtype=".$fieldtype."' />";  //update page, redirect to "showDugga.php" with the variables sent for course id and version id and extension
+
 function formatTimeSheetInput(){
 	$inputString = "";
 	$indexedPOST = array_values($_POST);

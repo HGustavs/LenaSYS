@@ -52,50 +52,50 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php"
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 
 	if(strcmp($opt,"UPDATE")==0){
-	
+
 		// User Table Updates
 		if($prop=="firstname"){
 				$query = $pdo->prepare("UPDATE user SET firstname=:firstname WHERE uid=:uid;");
 				$query->bindParam(':firstname', $val);
 		}else if($prop=="lastname"){
 				$query = $pdo->prepare("UPDATE user SET lastname=:lastname WHERE uid=:uid;");
-				$query->bindParam(':lastname', $val);		
+				$query->bindParam(':lastname', $val);
 		}else if($prop=="ssn"){
 				$query = $pdo->prepare("UPDATE user SET ssn=:ssn WHERE uid=:uid;");
-				$query->bindParam(':ssn', $val);		
+				$query->bindParam(':ssn', $val);
 		}else if($prop=="username"){
 				$query = $pdo->prepare("UPDATE user SET username=:username WHERE uid=:uid;");
-				$query->bindParam(':username', $val);		
+				$query->bindParam(':username', $val);
 		}else if($prop=="class"){
 				$query = $pdo->prepare("UPDATE user SET class=:class WHERE uid=:uid;");
-				$query->bindParam(':class', $val);		
+				$query->bindParam(':class', $val);
 		}
-		
+
 		// User_Course Table Updates
 		if($prop=="examiner"){
 				$query = $pdo->prepare("UPDATE user_course SET examiner=:examiner WHERE uid=:uid AND cid=:cid;");
 				$query->bindParam(':examiner', $val);
 		}else if($prop=="vers"){
 				$query = $pdo->prepare("UPDATE user_course SET vers=:vers WHERE uid=:uid AND cid=:cid;");
-				$query->bindParam(':vers', $val);		
+				$query->bindParam(':vers', $val);
 		}else if($prop=="access"){
 				$query = $pdo->prepare("UPDATE user_course SET access=:access WHERE uid=:uid AND cid=:cid;");
-				$query->bindParam(':access', $val);		
+				$query->bindParam(':access', $val);
 		}else if($prop=="group"){
 				$query = $pdo->prepare("UPDATE user_course SET `groups`=:groups WHERE uid=:uid AND cid=:cid;");
-				$query->bindParam(':groups', $val);		
-		}	
-		
+				$query->bindParam(':groups', $val);
+		}
+
 		if($prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
 				$query->bindParam(':cid', $cid);
 		}
-		
+
 		if($prop=="firstname"||$prop=="lastname"||$prop=="ssn"||$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
 				$query->bindParam(':uid', $uid);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
 						$debug="Error updating user\n".$error[2];
-				}			
+				}
 		}else{
 				$debug="Failed to update property ".$prop." with value ".$val;
 		}
@@ -140,37 +140,37 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 	} else if(strcmp($opt,"ADDUSR")==0){
         $newUserData = json_decode(htmlspecialchars_decode($newusers));
         foreach ($newUserData as $user) {
-            
+
 						$uid="UNK";
 						$regstatus="UNK";
-					
-            if (count($user) == 1&&strcmp($user[0],"")!==0) {                        
+
+            if (count($user) == 1&&strcmp($user[0],"")!==0) {
                 // See if we have added with username or SSN
                 $userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2");
                 $userquery->bindParam(':usernameorssn1', $user[0]);
                 $userquery->bindParam(':usernameorssn2', $user[0]);
-        
+
                 if(!$userquery->execute()) {
                   $error=$userquery->errorInfo();
                   $debug.="Error adding user by ssn or username: ".$error[2];
                 }	else {
                   foreach($userquery->fetchAll(PDO::FETCH_ASSOC) as $row){ $uid = $row["uid"];}
                 }
-                
+
                 if(strcmp($uid,"UNK")===0){
                     if(strcmp($debug,"NONE!")===0){$debug="";}
-                    $debug.=$user[0]." was not found as a user in the system!\n";                                        
+                    $debug.=$user[0]." was not found as a user in the system!\n";
                 }
             } else if (count($user) > 1){
               $ssn = $user[0];
               // Check if user has an account
               $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
               $userquery->bindParam(':ssn', $ssn);
-							
+
 							echo $ssn." ".$userquery->execute() ." ". $userquery->rowCount()." ".$user[3]."<br>";
-							
+
               if ($userquery->execute() && $userquery->rowCount() <= 0) {
-								
+
                   $firstname = $user[1];
                   $lastname = $user[2];
                   $className = $user[count($user)-2];
@@ -178,7 +178,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                   $regstatus = $user[count($user)-1];
 
                   if(strcmp($saveemail,"UNK")!==0){
-                      $username = explode('@', $saveemail)[0];  
+                      $username = explode('@', $saveemail)[0];
                   }else{
                       $username=makeRandomString(6);
                   }
@@ -186,11 +186,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                   if(strcmp($className,"UNK")!==0){
                       $cstmt = $pdo->prepare("SELECT class FROM class WHERE class=:clsnme;");
                       $cstmt->bindParam(':clsnme', $className);
-              
+
                       if(!$cstmt->execute()) {
                           $error=$cstmt->errorInfo();
                           $debug.="Could not read class\n".$error[2];
-                      }  
+                      }
 
                       // If class does not exist
                       if($cstmt->rowCount() === 0){
@@ -201,10 +201,10 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                               $error=$stmt->errorInfo();
                               $debug.="Error updating klasse malmberg\n".$error[2];
                           }
-                      }              
+                      }
 
                   }
-                  
+
 									if($user[0]!="PNR"){
 											$rnd=standardPasswordHash(makeRandomString(9));
 											$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
@@ -287,7 +287,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	foreach($result as $row){
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
-			'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),
+			/*'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),*/
 			'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
 			'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
 			'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
@@ -300,7 +300,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		);
 		array_push($entries, $entry);
 	}
-	
+
 	$query = $pdo->prepare("SELECT user.firstname,user.uid, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by user.firstname,user.lastname, user.uid ORDER BY user.firstname, user.lastname;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
@@ -314,7 +314,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		);
 		array_push($teachers, $teacher);
 	}
-	
+
 	$query = $pdo->prepare("SELECT class FROM class;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
@@ -340,8 +340,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			'groupint' => $row['groupint'],
 		);
 		array_push($groups, $group);
-	}	
-	
+	}
+
 	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers WHERE cid=:cid;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {

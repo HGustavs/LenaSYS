@@ -39,7 +39,7 @@ function setup() {
   var filt = "";
   filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
+  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinputMobile").value=document.getElementById("searchinput").value;'/>`;
   filt += `<button id='searchbutton' class='switchContent'`;
   filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
   filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
@@ -48,6 +48,7 @@ function setup() {
   filt += `<div class='tooltip-searchbar-box'>`;
   filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
   filt += `</div><span>?</span></td>`;
+
 
 	$("#sort").after(filt);
 
@@ -208,6 +209,7 @@ function process() {
 	dstr += makeCustomFilter("showTeachers", "Show Teachers");
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
+	dstr += makeCustomFilter("passedDeadline", "Passed Deadline");
 
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
@@ -780,7 +782,74 @@ function renderCell(col, celldata, cellid) {
 			str += "</div>";
 			return str;
 		}
-	}
+		// Render passed deadline duggas
+	} else if(filterList["passedDeadline"]){
+				// First column (Fname/Lname/SSN)
+			if (col == "FnameLname") {
+				str = "<div class='resultTableCell resultTableNormal'>";
+				str += "<div class='resultTableText'>";
+				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
+				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+				str += "</div>";
+				return str;	
+			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
+				// color based on pass,fail,pending,assigned,unassigned
+				str = "<div style='padding:10px;' class='resultTableCell ";
+				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+					str += "dugga-pending-late-submission";
+				} 
+				str += "'>";
+				// Creation of grading buttons		
+				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+					str += "<div class='gradeContainer resultTableText'>";
+					if (celldata.grade === null) {
+						str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+					} else if (celldata.grade === -1) {
+						str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+					} else {
+						str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+					}
+					str += "<img id='korf' class='fist";
+					if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
+						str += " grading-hidden";
+					}
+					str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+					str += "/>";
+					//Print times graded
+					str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+					if (celldata.timesGraded !== 0) {
+						str += '(' + celldata.timesGraded + ')';
+					}
+					str += "</div>";
+					str += "</div>";
+
+					// Print submitted time and change color to red if passed deadline
+					str += "<div class='text-center resultTableText'";
+					for (var p = 0; p < moments.length; p++) {
+						if (moments[p].link == celldata.quizId) {
+							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+								str += " style='color:red;'";
+							}
+							break;
+						}
+					}
+					str += ">";
+					if (celldata.submitted.getTime() !== timeZero.getTime()) {
+						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+					}
+					for (var p = 0; p < moments.length; p++) {
+						if (moments[p].link == celldata.quizId) {
+							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+								str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+							}
+							break;
+						}
+					}
+					str += "</div>";
+				}
+				return str;	
+			} 
+	}	
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
@@ -1031,14 +1100,14 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-  console.trace();
+	
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
 			let colnameArr = colname.split("/");
 			str += "<div style='white-space:nowrap;cursor:pointer'>"
 			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+			str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 			// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 		} else {
 			str += "<span class='sortableHeading' onclick='myTable.setNameColumn(\"" + colname + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
@@ -1051,11 +1120,11 @@ function renderSortOptions(col, status, colname) {
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 0) {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				}
 				str += "</div>"
@@ -1063,11 +1132,11 @@ function renderSortOptions(col, status, colname) {
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 2) {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				}
 				str += "</div>"
@@ -1075,11 +1144,11 @@ function renderSortOptions(col, status, colname) {
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 4) {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",5)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 				} else {
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
-					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 				}
 				str += "</div>"
@@ -1269,7 +1338,7 @@ function mail() {
 $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
 	var ladExportWidth = document.getElementById("ladexportContainer").offsetWidth;
-	var scrolled = $(this).scrollLeft() + 10;
+	var scrolled = $(this).scrollLeft();
 	if((scrolled + ladExportWidth) < resultTableWidth){
 		$('#ladexportContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
