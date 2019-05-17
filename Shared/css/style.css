@@ -3353,6 +3353,7 @@ rect[class*="activitymarker"]:hover {
   position: fixed;
   width: 100%;
   height:-moz-max-content;
+  height:-webkit-max-content;
   padding: 0 20px 0 0px;
   display: flex;
   text-align: center;
