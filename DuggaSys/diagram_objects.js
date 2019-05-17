@@ -1382,6 +1382,11 @@ function Symbol(kindOfSymbol) {
             ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
             ctx.beginPath();
             ctx.moveTo(x1, y1);
+            // If this is a recursive line, go a bit out of the object, then go back in
+            if (connObjects.length == 1) {
+                ctx.lineTo(cornerX1, cornerY1);
+                ctx.lineTo(cornerX2, cornerY2);
+            }
             ctx.lineTo(x2, y2);
             ctx.stroke();
             //Draw a white line in the middle to simulate space (2 line illusion);
