@@ -2175,6 +2175,41 @@ function Path() {
             y: pixelsToCanvas(0,RightMostPoint.y).y
         };
     }
+
+    this.corners = function(){
+        var point = false, tr = false, bl = false;
+        var tl = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
+        var br = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };
+
+        for(var i = 0; i < this.segments.length; i++){
+            point = points[this.segments[i].pa];
+            if(point.x < tl.x) {
+                tl.x = point.x;
+            }
+            if(point.y < tl.y) {
+                tl.y = point.y;
+            }
+            if(point.x > br.x) {
+                br.x = point.x;
+            }
+            if(point.y > br.y) {
+                br.y = point.y;
+            }
+        }
+
+        tr = tl;
+        bl = br;
+        tr.x = br.x;
+        bl.x = tl.x;
+
+        return {
+            tl: tl,
+            tr: tr,
+            bl: bl,
+            br: br,
+        };
+    }
+
     //--------------------------------------------------------------------
     // move: Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
