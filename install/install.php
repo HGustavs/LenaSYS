@@ -105,7 +105,7 @@
     $dbUsername = "";
     $dbHostname = "";
     $dbName = "";
-	$dbPassword = "";
+    $dbPassword = "";
 
     $credentialsFile = "../../coursesyspw.php";
     if(file_exists($credentialsFile)) {
@@ -147,11 +147,11 @@
     echo 'Enter hostname (e.g localhost). <br>';
     echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
     echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
-	
-	if($dbUsername || $dbHostname || $dbName || $dbPassword){
-		echo "<br><b>Values from existing coursesyspw.php were used </b><br>"; 
-	}
-	
+    
+    if($dbUsername || $dbHostname || $dbName || $dbPassword){
+        echo "<br><b>Values from existing coursesyspw.php were used </b><br>"; 
+    }
+
     echo '</div>';
 ?>
                 <div class="inputContent" id="td2" valign=top>
