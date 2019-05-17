@@ -99,7 +99,7 @@
 			} else if ($duggafile === 'daily-minutes') {
 				$output = str_replace('%TITLE%', 'Daily minutes', $output);
 			} else {
-				$output = str_replace('%TITLE%', 'Dugga viewer', $output);
+				$output = str_replace('%TITLE%', 'Dugga viewer - ' . $duggatitle, $output);
 			}
 			echo $output;
 			
