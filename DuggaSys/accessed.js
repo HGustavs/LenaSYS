@@ -41,9 +41,7 @@ function setup() {
 	var str = "<div id='sortOptionsContainer'>";
 	str += "<input type='radio' name='sortAscDesc' value='1'><label class='headerlabel'>Sort descending</label>";
 	str += "<input type='radio' name='sortAscDesc' value='0'><label class='headerlabel'>Sort ascending</label>";
-	str += "<fieldset style='margin-top: 10px;'><legend style='color: black; font-size: 16px;'>Columns</legend>";
 	str += "<div id='sortOptions'></div>";
-	str += "</fieldset>";
 	str += "<button class='dropdown-button' onclick='parseSortOptions(this)'>Sort</button>";
 	document.getElementById("dropdowns").innerHTML = str;
 
@@ -304,7 +302,7 @@ var sortColumns = [];
 function addToSortDropdown(colname, col) {
 	if (!sortColumns.includes(col)) {
 		var str = "";
-		str += "<div><input name='sort' class='sortRadioBtn' type='radio' value="+col+"><label class='headerlabel'>"+colname+"</label></div>";
+		str += "<div class='checkbox-dugga'><input name='sort' class='sortRadioBtn' type='radio' value="+col+"><label class='headerlabel'>"+colname+"</label></div>";
 		document.getElementById('sortOptions').innerHTML += str;
 		sortColumns.push(col);
 	}
