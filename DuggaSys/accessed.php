@@ -48,8 +48,6 @@
 					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 				</button>
 			</div>
-
-    </div>
 		</div>
 		<div id='accessTable' style='width:100%; white-space: nowrap;'></div> <!-- A div to place the access table within. -->
 
