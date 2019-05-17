@@ -135,7 +135,6 @@ function returned(data)
 	// Possible crash warning if returned number of boxes is wrong
 	if(retData['numbox']==0 || retData['numbox']==null){
 		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
-		console.log(debug);
 	}
 
   // Create boxes
