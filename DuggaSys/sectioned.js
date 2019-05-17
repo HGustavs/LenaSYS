@@ -1296,6 +1296,7 @@ function drawSwimlanes() {
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
+        console.log(entry.grade);
         
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
