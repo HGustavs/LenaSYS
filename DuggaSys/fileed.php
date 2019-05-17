@@ -37,8 +37,7 @@ pdoConnect();
 			<h1 style='flex:1;text-align:center;'>Files</h1>
     </div>
     <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
-        <div id='searchBarMobile' style='display:flex;flex-wrap:wrap;test-align:right;margin-bottom:15px;'>
-            <div style='white-space:nowrap'>
+    <div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
 								<b>Keywords:</b> markG, markU, date <br>
@@ -51,7 +50,8 @@ pdoConnect();
 				<button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();' type='button'>
 					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 				</button>
-            </div>
+			</div>   
+    <div style='display:flex;flex-wrap:wrap;'>
             <div style='white-space:nowrap'>
                 <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
                 <label for="all-files-sort" name="sortAll" style='white-space:nowrap'>All files</label>
