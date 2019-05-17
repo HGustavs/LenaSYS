@@ -1361,13 +1361,15 @@ function exportColumnHeading(format, heading, colname) {
 	return str;
 }
 
+//Function for exporting grades to ladoc
 function ladexport() {
 	let expo = "";
+
 	expo += document.getElementById("ladselect").value + "\n";
 	expo += document.getElementById("ladgradescale").value + "\n";
 	expo += document.getElementById("laddate").value + "\n";
 	expo += myTable.export("csv", ";");
-
+	console.log(expo)
 	//alert(expo);
 	document.getElementById("resultlistheader").innerHTML = "Results for: " + document.getElementById("ladselect").value;
 	document.getElementById("resultlistarea").value = expo;
