@@ -108,7 +108,7 @@
 	$dbPassword = "";
 
     $credentialsFile = "../../coursesyspw.php";
-    if(file_exists("../../coursesyspw.php")) {
+    if(file_exists($credentialsFile)) {
       $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
 
       // check if the credentials exists in the file, store them if they do
