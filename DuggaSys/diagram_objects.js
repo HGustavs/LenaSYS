@@ -925,7 +925,6 @@ function Symbol(kindOfSymbol) {
                 drawLockedTooltip(this);
             }
         }
-
         if (this.group != 0){
             drawGroup(this);
         }
@@ -2059,14 +2058,15 @@ function drawLockedTooltip(symbol) {
     var yOffset = 13;
     // Different size when hovering the lock itself and the entity, for displaying different amount of text
     var ySize = symbol.isLockHovered ? 34 : 16;
+    var xSize = symbol.isLockHovered ? 115 : 85; 
     // Draw tooltip background
     ctx.fillStyle = "#f5f5f5";
-    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), 125 * diagram.getZoomValue(), ySize * diagram.getZoomValue());
+    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
     // Draws text, uses fillStyle to override default hover change.
     yOffset += 12;
     ctx.fillStyle = "black";
     ctx.font = 12 * diagram.getZoomValue()+ "px Arial";
-    ctx.fillText("Object position is locked", position.x, position.y + yOffset * diagram.getZoomValue());
+    ctx.fillText("Object is locked", position.x, position.y + yOffset * diagram.getZoomValue());
     // Draw additional text when hovering the lock itself
     if (symbol.isLockHovered) {
         ctx.fillStyle = "red";
@@ -2279,7 +2279,10 @@ function Path() {
                     drawLockedTooltip(this);
                 }
             }
-
+            if (this.group != 0){
+                drawGroup(this);
+            }
+    
             // Assign stroke style, color, transparency etc
             var shouldFill = true;
 
