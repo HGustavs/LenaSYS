@@ -280,10 +280,8 @@ function hoverc() {
 }
 
 function leavec() {
-	setTimeout(function(){
 	$('#dropdownc').css('display', 'none');
-});}
-
+}
 
 function checkMomentParts(pos, id) {
 	for (var i = 0; i < duggaArray[pos].length; i++) {
@@ -293,17 +291,12 @@ function checkMomentParts(pos, id) {
 }
 
 function hovers() {
-	setTimeout(function(){
 	$('#dropdownc').css('display', 'none');
 	$('#dropdowns').css('display', 'block');
-	},3000);
 }
 
 function leaves() {
-	 
-		$('#dropdowns').css('display', 'none');
-	
-	
+	$('#dropdowns').css('display', 'none');
 	var col = 0;
 	var dir = 1;
 
