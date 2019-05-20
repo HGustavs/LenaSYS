@@ -425,23 +425,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Error message when non objects are not composite-->
-    <div id="errorMessageDialog" class="loginBoxContainer importDiagram">
-        <div class="loginBox messageContainer">
-            <div class="loginBoxheader messageHeader">
-                <h3 id="errorMessage"></h3>
-                <div class='cursorPointer' onclick='closeErrorMessageDialog();'>
-                    x
-                </div>
-            </div>
-            <div class="mode-wrap">
-                <div id="importButtonWrap" class="importButtonWrap">
-                    <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';

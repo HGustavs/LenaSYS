@@ -3304,11 +3304,11 @@ function mouseupevt(ev) {
                     //Code for making sure enitities not connect to the same attribute multiple times
                     if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                         if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
-                            okToMakeLine= false;
+                            okToMakeLine = false;
                         }
                     } else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                         if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
-                            okToMakeLine= false;
+                            okToMakeLine = false;
                         }
                     } else if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
                         if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
@@ -3320,19 +3320,6 @@ function mouseupevt(ev) {
                         okToMakeLine = false;
                     }
                     if (diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
-
-                    // Can't draw line between two ER attributes if one of them is not composite
-                    if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                        if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
-                        okToMakeLine = true;
-                        } else {
-                            okToMakeLine = false;
-                            // Add error dialog
-                            $("#errorMessageDialog").css("display", "flex");
-                            var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
-                            document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
-                        }
-                    }
 
                     if (okToMakeLine) {
                         saveState = true;
@@ -4040,18 +4027,12 @@ function changeCardinality(isUML) {
         }
     }
 }
-
+// Changes direction for uml line relations 
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
     console.log("lineDirection " + diagram[lastSelectedObject].lineDirection);
 }
-
-//Close the errorMessageDialog for Composite
-function closeErrorMessageDialog() {
-    $("#errorMessageDialog").hide();
-}
-
-//Checks if there are any duplicates of entities with the same name.
+// Checks if there are any duplicates of entities with the same name.
 function checkDuplicate(name, kind) {
     var numberOfSymbolKind = 0;
     for(let i = 0; i < diagram.length; i++) {
