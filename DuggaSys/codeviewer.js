@@ -658,7 +658,7 @@ function updateContent() {
 }
 
 /*-----------------------------------------------------------------------
-  -              updateTitle: Updates the title being edited            -     
+  -              updateTitle: Updates the title being edited            -
   -----------------------------------------------------------------------*/
 function updateTitle(e) {
 	if (e.key === 'Enter') {
@@ -3247,3 +3247,28 @@ function copyCodeToClipboard(boxid) {
 		$("#textwrapper" + boxid).fadeIn("fast");
 	}, 1000);
 }
+
+
+// Detects clicks
+$(document).mousedown(function (e) {
+	var box = $(e.target);
+	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
+		isClickedElementBox = true;
+	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
+		&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+		isClickedElementBox = true;
+	} else {
+		isClickedElementBox = false;
+	}
+});
+
+// Close the loginbox when clicking outside it. 
+$(document).mouseup(function (e) {
+	// Click outside the loginBox
+	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
+	{
+		closeWindows();
+	}
+});
