@@ -155,7 +155,7 @@ h6 {
 
 hr {
   border: 0;
-  border-bottom: 1px dashed var(--color-border-2);;
+  border-bottom: 1px dashed var(--color-border-2);
   background: var(--color-border);
 }
 
