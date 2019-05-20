@@ -538,7 +538,7 @@ function moveDist(e) {
 
 function displayPreview(filepath, filename, fileseq, filetype, fileext, fileindex, displaystate) {
 	clickedindex = fileindex;
-	document.getElementById("responseArea").outerHTML = '<textarea id="responseArea" style="width: 100%;height:100%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">' + allData["files"][allData["duggaentry"]][clickedindex].feedback + '</textarea>'
+	document.getElementById("responseArea").outerHTML = '<textarea id="responseArea" style="width: 100%;height:90%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">' + allData["files"][allData["duggaentry"]][clickedindex].feedback + '</textarea>'
 
 	if (displaystate) {
 		document.getElementById("markMenuPlaceholderz").style.display = "block";
