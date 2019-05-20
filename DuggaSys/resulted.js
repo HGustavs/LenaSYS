@@ -293,14 +293,16 @@ function checkMomentParts(pos, id) {
 }
 
 function hovers() {
+	setTimeout(function(){
 	$('#dropdownc').css('display', 'none');
 	$('#dropdowns').css('display', 'block');
+	},3000);
 }
 
 function leaves() {
-	 setTimeout(function(){
+	 
 		$('#dropdowns').css('display', 'none');
-	});
+	
 	
 	var col = 0;
 	var dir = 1;
