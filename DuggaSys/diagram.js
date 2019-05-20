@@ -124,7 +124,7 @@ var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramNumberHistory = 0;           // Is used for undo and redo
+var diagramNumber = 0;           // Is used for undo and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var classAppearanceOpen = false;
@@ -2354,8 +2354,9 @@ function distribute(event, axis) {
 
 function undoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumberHistory > 1) diagramNumberHistory--;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (diagramNumber > 0) diagramNumber--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
@@ -2365,8 +2366,13 @@ function undoDiagram(event) {
 
 function redoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    diagramNumber = localStorage.getItem("diagramNumber");
+    diagramNumber++;
+    if(!localStorage.getItem("diagram" + diagramNumber)){
+        diagramNumber--;
+    }
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
@@ -3592,7 +3598,7 @@ function openAppearanceDialogMenu() {
 function closeAppearanceDialogMenu() {
      //if the X
      if(globalAppearanceValue == 1) {
-         var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+         var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
          if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
     $(".loginBox").draggable('destroy');

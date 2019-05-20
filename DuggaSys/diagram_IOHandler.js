@@ -73,6 +73,8 @@ function loadStoredFolders(f) {
 }
 
 function Save() {
+    diagramNumber++;
+    localStorage.setItem("diagramNumber", diagramNumber);
     c = [];
     for (var i = 0; i < diagram.length; i++) {
         c[i] = diagram[i].constructor.name;
@@ -80,26 +82,16 @@ function Save() {
     }
     var obj = {diagram:diagram, points:points, diagramNames:c};
     a = JSON.stringify(obj, null, "\t");
-
     console.log("State is saved");
 }
 
 function SaveState() {
     Save();
-    diagramNumberHistory = localStorage.length - 3;
-    if (diagramNumberHistory < diagramNumber) {
-        diagramNumberHistory++;
-        diagramNumber = diagramNumberHistory;
-    } else {
-        // diagramNumber++;
-        // diagramNumberHistory = diagramNumber;
-        diagramNumber = ++diagramNumberHistory;
-    }
     localStorage.setItem("diagram" + diagramNumber, a);
     for (var key in localStorage) {
         if (key.indexOf("diagram") != -1) {
             var tmp = key.match(/\d+$/);
-            if (tmp > diagramNumberHistory) localStorage.removeItem(key);
+            if (tmp > diagramNumber) localStorage.removeItem(key);
         }
     }
 }
@@ -123,15 +115,12 @@ function LoadImport(fileContent) {
 //---------------------------------------------
 
 function loadDiagram() {
-    var checkLocalStorage = localStorage.getItem('localdiagram');
-    for(var i = 0; i < localStorage.length; i++){
-        if(localStorage.getItem(`diagram${i}`) != null){
-            console.log(`diagram${i}`)
-        }
-    }
-    //loacal storage and hash
+    diagramNumber = localStorage.getItem("diagramNumber");
+    var checkLocalStorage = localStorage.getItem("diagram" + diagramNumber);
+
+    //local storage and hash
     if (checkLocalStorage != "" && checkLocalStorage != null) {
-        var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+        var localDiagram = JSON.parse(localStorage.getItem("diagram" + diagramNumber));
     }
     var localHexHash = localStorage.getItem('localhash');
     var diagramToString = "";
@@ -233,8 +222,9 @@ function hashCurrent() {
 
 function removeLocalStorage() {
     for (var i = 0; i < localStorage.length; i++) {
-        localStorage.removeItem("localdiagram");
+        localStorage.removeItem("diagram" + i);
     }
+    localStorage.setItem("diagramNumber", 0);
 }
 
 function LoadFile() {
