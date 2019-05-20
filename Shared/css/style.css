@@ -1472,113 +1472,78 @@ input {
   cursor: default !important;
 }
 
+.hotKeys {
+  position: absolute;
+  font-size: 9px;
+  color: #3d3d3d;
+  opacity: 0.5;
+}
+
 #hotkey-space {
-  position: absolute  !important;
-  font-size: 11px !important;
-  color: #3d3d3d  !important;
   right: 6px;
   top: 10px;
 }
 
 #hotkey-ctrl {
-  position: absolute  !important;
-  font-size: 11px  !important;
-  color: #3d3d3d !important;
   right: 6px;
   top: 55px;
 }
 #hotkey-shift {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+  right: 6px;
   top: 100px;
 }
 
-#hotkey-undo, #hotkey-redo, #hotkey-clear, #hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
-}
-
 .drop-down-item #hotkey-undo {
-  right: 6px ;
+  right: 6px;
   top: 10px;
 }
 
 .drop-down-item #hotkey-redo {
-  right: 6px ;
+  right: 6px;
   top: 45px;
 }
 
 .drop-down-item #hotkey-global {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 4px;
   top: 86px;
 }
 
 .drop-down-item #hotkey-appearance {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 5px;
   top: 119px;
 }
 
 .drop-down-item #hotkey-lock {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 6px;
   top: 241px;
 }
 
 .drop-down-item #hotkey-resetView {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 6px;
   top: 317px;
 }
 
 .drop-down-item #hotkey-displayTools {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 36px;
   top: 45px;
 }
 
 .drop-down-item #hotkey-displayA4 {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 39px;
   top: 164px;
 }
 
 .drop-down-item #hotkey-A4-Orientation {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 39px;
   top: 200px;
 }
 
 .drop-down-item #hotkey-Toggle-Holes {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 39px;
   top: 232px;
 }
 
 .drop-down-item #hotkey-Holes-Right {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 39px;
   top: 264px;
 }
@@ -1609,9 +1574,6 @@ input {
 }
 
 .drop-down-item #hotkey-delete {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 6px;
   top: 272px;
 }
