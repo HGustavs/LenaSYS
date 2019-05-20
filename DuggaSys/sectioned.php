@@ -84,7 +84,9 @@
 
 					<td class='results menuButton' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<img id='versionPlus' value='Results' class="navButt" title='Edit student results' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");' onclick='navigatePage(this.id, "resulted.php");' src='../Shared/icons/PlusS.svg'>
+							<a href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'>
+								<img id='versionPlus' value='Results' class="navButt" title='Edit student results' src='../Shared/icons/PlusS.svg'>
+							</a>
 						</div>
 					</td>
 					<td class='tests menuButton' style='display: inline-block;'>
