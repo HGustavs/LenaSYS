@@ -179,7 +179,7 @@ function renderBarDiagram(data) {
 
   // Renders the diagram
 
-  var str = "<div class='group1' style='width:100%;overflow-x:scroll;'>";
+  var str = "<div class='group1' style='width:100%;overflow-x:scroll; margin-bottom:15px;'>";
   str += "<svg  class='chart fumho'  style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
   for (var i = 0; i < numOfWeeks; i++) {
     str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
@@ -766,7 +766,7 @@ function returnedSection(data) {
   }
 
   contribDataArr = [];
-  
+
   var str = "";
 
   str += "<div class='contributionSort'>";
@@ -1186,4 +1186,3 @@ function allRankRenderCell(col,celldata,cellid){
   }
   return str;
 }
-
