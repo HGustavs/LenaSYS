@@ -1911,7 +1911,7 @@ function maximizeBoxes(boxid)
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
-
+	
 	getLocalStorageProperties(boxValArray);
 
 	//For template 1
@@ -2217,6 +2217,8 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
+
+	setLocalStorageProperties(templateId, boxValArray);
 }
 
 //hide maximizeButton
@@ -2231,6 +2233,7 @@ function hideMaximizeAndResetButton(){
 //reset boxes
 function resetBoxes(){
 	resizeBoxes("#div2", retData["templateid"]);
+
 }
 
 //-----------------------------------------------------------------------------
@@ -2241,7 +2244,7 @@ function resetBoxes(){
 function resizeBoxes(parent, templateId)
 {
 	var boxValArray = initResizableBoxValues(parent);
-	var remainWidth;
+	//var remainWidth;
 
 	if (templateId == 1) {
 		getLocalStorageProperties(templateId, boxValArray);
