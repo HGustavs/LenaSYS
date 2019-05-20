@@ -168,8 +168,6 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
               $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
               $userquery->bindParam(':ssn', $ssn);
 
-							echo $ssn." ".$userquery->execute() ." ". $userquery->rowCount()." ".$user[3]."<br>";
-
               if ($userquery->execute() && $userquery->rowCount() <= 0) {
 
                   $firstname = $user[1];
@@ -178,7 +176,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                   $saveemail = $user[3];
                   $regstatus = $user[count($user)-1];
 
-                  if(strcmp($saveemail,"UNK")!==0){
+                  if($saveemail){
                       $username = explode('@', $saveemail)[0];
                   }else{
                       $username=makeRandomString(6);
@@ -218,13 +216,22 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 											$stmt->bindParam(':password', $rnd);
 											$stmt->bindParam(':className', $className);
 
-											if(!$stmt->execute()) {
-												$error=$stmt->errorInfo();
-												$debug.="Error updating entries\n".$error[2];
-												$debug.="   ".$username."Does not Exist \n";
-												$debug.=" ".$uid;
+											try {
+												if(!$stmt->execute()) {
+													$error=$stmt->errorInfo();
+													$debug.="Error updating entries\n".$error[2];
+													$debug.="   ".$username."Does not Exist \n";
+													$debug.=" ".$uid;
+												}
+												$uid=$pdo->lastInsertId();
+											} catch (PDOException $e) {
+												if ($e->errorInfo[1] == 1062) {
+													$debug="Duplicate SSN or Username";
+												} else {
+													$debug="Error updating entries\n".$error[2];
+												}
 											}
-											$uid=$pdo->lastInsertId();
+
 									}
 
 								}else if($userquery->rowCount() > 0){
@@ -254,7 +261,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 								}
 						}
           }
-      } // End of foreach user
+			} // End of foreach user
 	} // End ADD_USER
 }
 
