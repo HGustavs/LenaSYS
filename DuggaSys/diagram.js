@@ -3947,10 +3947,8 @@ function objectAppearanceMenu(form) {
 
         if (cardinalityOption) {
             loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
-            console.log("Cards");
         }else {
             loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=-1');
-            console.log("No cards");
         }
     }
     // ER relation selected
