@@ -3165,10 +3165,10 @@ function mousedownevt(ev) {
         md = mouseState.insideMovableObject;
         handleSelect();
     } else {
-        md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
-        if(uimode != "CreateFigure") {
-            startMouseCoordinateX = currentMouseCoordinateX;
-            startMouseCoordinateY = currentMouseCoordinateY;
+        md = mouseState.boxSelectOrCreateMode; // Box select or Create mode. 
+        if(ev.button == rightMouseClick && uimode == "CreateFigure"){
+            dragDistanceReached = true;
+            endFreeDraw();
         }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
             for (var i = 0; i < selected_objects.length; i++) {
@@ -3177,6 +3177,8 @@ function mousedownevt(ev) {
             lastSelectedObject = -1;
             selected_objects = [];
         }
+        startMouseCoordinateX = currentMouseCoordinateX;
+        startMouseCoordinateY = currentMouseCoordinateY;
     }
 }
 
