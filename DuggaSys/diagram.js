@@ -66,8 +66,8 @@ var startMouseCoordinateY = 0;      // Y coordinate for mouse to get diff from c
 var origoOffsetX = 0.0;             // Canvas x topleft offset from origo
 var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
-var canvasLeftClick = 0;            // Canvas left click state
-var canvasRightClick = 0;           // Canvas right click state
+var canvasLeftClick = false;            // Canvas left click state
+var canvasRightClick = false;           // Canvas right click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
@@ -2848,7 +2848,7 @@ function mousemoveevt(ev, t) {
         }
     }
 
-    if(canvasLeftClick == 1 && uimode == "MoveAround") {
+    if((canvasLeftClick || canvasRightClick) && uimode == "MoveAround") {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
@@ -2858,7 +2858,7 @@ function mousemoveevt(ev, t) {
     reWrite();
     updateGraphics();
 
-    if(canvasRightClick == 0) {
+    if(!canvasRightClick) {
         if (md == mouseState.empty) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -3123,20 +3123,21 @@ function mousemoveevt(ev, t) {
 //----------------------------------------------------------
 
 function mousedownevt(ev) {
-    canvasLeftClick = 1;
-    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
-    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
-    startMouseCoordinateX = currentMouseCoordinateX;
-    startMouseCoordinateY = currentMouseCoordinateY;
-
-    if (ev.button == rightMouseClick) {
-        canvasRightClick = 1;
+    if(ev.button == leftMouseClick){
+        canvasLeftClick = true;
+    } else if(ev.button == rightMouseClick) {
+        canvasRightClick = true;
         if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
             InitPageX = ev.pageX;
             InitPageY = ev.pageY;
             dragDistanceReached = false;
         }
     }
+
+    currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
 
     if(uimode == "Moved" && md != mouseState.boxSelectOrCreateMode) {
         uimode = "normal";
@@ -3224,11 +3225,12 @@ function handleSelect() {
 }
 
 function mouseupevt(ev) {
-    canvasLeftClick = 0;
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
-    if (ev.button == rightMouseClick) {
-        canvasRightClick = 0;
+    if(ev.button == leftMouseClick){
+        canvasLeftClick = false;
+    } else if (ev.button == rightMouseClick) {
+        canvasRightClick = false;
     }
 
     delete InitPageX;
