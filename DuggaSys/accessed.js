@@ -187,7 +187,10 @@ function verifyUserInputForm(input) {
 		alert('Email input too large to create a valid username\nMax allowed characters before "@" is 80');
 		return false;
 	}
-
+	if (input[3] && input[3].indexOf('@') == 0) {
+		alert('Email input must contain at least 1 character before "@" to create a username');
+		return false;
+	}
 	return true;
 }
 

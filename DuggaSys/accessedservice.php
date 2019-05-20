@@ -168,8 +168,6 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
               $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
               $userquery->bindParam(':ssn', $ssn);
 
-							echo $ssn." ".$userquery->execute() ." ". $userquery->rowCount()." ".$user[3]."<br>";
-
               if ($userquery->execute() && $userquery->rowCount() <= 0) {
 
                   $firstname = $user[1];
@@ -228,9 +226,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 												$uid=$pdo->lastInsertId();
 											} catch (PDOException $e) {
 												if ($e->errorInfo[1] == 1062) {
-													$debug.="Duplicate SSN or Username";
+													$debug="Duplicate SSN or Username";
 												} else {
-													$debug.="Error updating entries\n".$error[2];
+													$debug="Error updating entries\n".$error[2];
 												}
 											}
 
@@ -263,7 +261,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 								}
 						}
           }
-      } // End of foreach user
+			} // End of foreach user
 	} // End ADD_USER
 }
 
