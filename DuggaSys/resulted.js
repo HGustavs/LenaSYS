@@ -275,12 +275,12 @@ function toggleFilter(filter) {
 }
 
 function hoverc() {
-	$('#dropdowns').css({display:'none', opacity: 3});
+	$('#dropdowns').css({display:'none'});
 	$('#dropdownc').css({display: 'block'});
 }
 
 function leavec() {
-	$('#dropdownc').css('display', 'none');
+	$('#dropdownc').css({display: 'none', opacity: 0});
 }
 
 function checkMomentParts(pos, id) {
