@@ -2228,7 +2228,7 @@ could potentially be used everywhere or replaced by existing styling styling.
 */
 
 .cogIcon{
-  transform: scale(50%);
+  transform: scale(2,2);
 
 }
 
