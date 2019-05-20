@@ -362,7 +362,9 @@ function hasAccess($userId, $courseId, $access_type)
 		return strtolower($access) == 'w';
 	} else if ($access_type === 'r') {
 		return strtolower($access) == 'r' || strtolower($access) == 'w';
-	} else {
+	} else if ($access_type === 'st') {
+        return strtolower($access) == 'st';
+    } else {
 		return false;
 	}
 }

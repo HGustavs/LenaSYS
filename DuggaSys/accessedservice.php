@@ -47,7 +47,8 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$uid." ".$username." ".$newusers;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php",$userid,$info);
 
-if ((hasAccess($_SESSION['uid'], $cid, 'w') || hasAccess($_SESSION['uid'], $cid, 'ST') || isSuperUser($_SESSION['uid']))) {
+
+if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid)) {
 	$hasAccess = true;
 } else {
 	$hasAccess = false;
