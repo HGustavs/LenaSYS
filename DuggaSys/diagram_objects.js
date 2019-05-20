@@ -29,6 +29,7 @@ function Symbol(kindOfSymbol) {
     this.lineDirection;
     this.minWidth;
     this.minHeight;
+    this.group = 0;                 // What group this symbol belongs to
     this.isLocked = false;          // If the symbol is locked
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the symbol
     this.isOval = false;
@@ -923,6 +924,9 @@ function Symbol(kindOfSymbol) {
             if (this.isHovered || this.isLockHovered) {
                 drawLockedTooltip(this);
             }
+        }
+        if (this.group != 0){
+            drawGroup(this);
         }
 
         ctx.save();
@@ -2054,14 +2058,15 @@ function drawLockedTooltip(symbol) {
     var yOffset = 13;
     // Different size when hovering the lock itself and the entity, for displaying different amount of text
     var ySize = symbol.isLockHovered ? 34 : 16;
+    var xSize = symbol.isLockHovered ? 115 : 85; 
     // Draw tooltip background
     ctx.fillStyle = "#f5f5f5";
-    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), 125 * diagram.getZoomValue(), ySize * diagram.getZoomValue());
+    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
     // Draws text, uses fillStyle to override default hover change.
     yOffset += 12;
     ctx.fillStyle = "black";
     ctx.font = 12 * diagram.getZoomValue()+ "px Arial";
-    ctx.fillText("Object position is locked", position.x, position.y + yOffset * diagram.getZoomValue());
+    ctx.fillText("Object is locked", position.x, position.y + yOffset * diagram.getZoomValue());
     // Draw additional text when hovering the lock itself
     if (symbol.isLockHovered) {
         ctx.fillStyle = "red";
@@ -2085,6 +2090,26 @@ function setIsLockHovered(symbol, mx, my) {
     } else {
         symbol.isLockHovered = false;
     }
+}
+
+function drawGroup(symbol) {
+    var position = symbol.getLockPosition();
+    ctx.save();
+    // Offset used to achive the correct y position since fillRect and fillText are drawn differently
+    var yOffset = -25;
+    // Different size when hovering the lock itself and the entity, for displaying different amount of text
+    var ySize = 16;
+    var xSize = symbol.group < 10 ? 45 : 50;
+    // Draw tooltip background
+    ctx.fillStyle = "white"; //ctx.fillStyle = "#f5f5f5";
+    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
+    // Draws text, uses fillStyle to override default hover change.
+    yOffset += 12;
+    ctx.fillStyle = "black";
+    ctx.font = 12 * diagram.getZoomValue()+ "px Arial";
+    ctx.fillText("Group:" + symbol.group, position.x, position.y + yOffset * diagram.getZoomValue());
+    // Draw additional text when hovering the lock itself
+    ctx.restore();
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
@@ -2151,6 +2176,7 @@ function Path() {
     this.opacity = 1;               // Opacity value for figures
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;           // An organized path can contain several sub-path, each of which must be organized
+    this.group = 0;
     this.isLocked = false;          // If the free draw object is locked
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
     this.isHovered = false;         // If the free draw object is hovered
@@ -2175,6 +2201,41 @@ function Path() {
             y: pixelsToCanvas(0,RightMostPoint.y).y
         };
     }
+
+    this.corners = function(){
+        var point = false, tr = false, bl = false;
+        var tl = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
+        var br = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };
+
+        for(var i = 0; i < this.segments.length; i++){
+            point = points[this.segments[i].pa];
+            if(point.x < tl.x) {
+                tl.x = point.x;
+            }
+            if(point.y < tl.y) {
+                tl.y = point.y;
+            }
+            if(point.x > br.x) {
+                br.x = point.x;
+            }
+            if(point.y > br.y) {
+                br.y = point.y;
+            }
+        }
+
+        tr = tl;
+        bl = br;
+        tr.x = br.x;
+        bl.x = tl.x;
+
+        return {
+            tl: tl,
+            tr: tr,
+            bl: bl,
+            br: br,
+        };
+    }
+
     //--------------------------------------------------------------------
     // move: Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
@@ -2253,7 +2314,10 @@ function Path() {
                     drawLockedTooltip(this);
                 }
             }
-
+            if (this.group != 0){
+                drawGroup(this);
+            }
+    
             // Assign stroke style, color, transparency etc
             var shouldFill = true;
 
