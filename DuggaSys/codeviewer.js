@@ -278,6 +278,7 @@ function returned(data) {
 
 function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
+	
 	retData['box'][data.id - 1][4] = data.title;
 	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
@@ -624,6 +625,7 @@ function updateContent() {
 				var boxid = box[0];
 
 				AJAXService("EDITCONTENT", {
+					courseid: querystring['courseid'],
 					exampleid: exampleid,
 					boxid: boxid,
 					boxtitle: boxtitle,
@@ -647,6 +649,7 @@ function updateContent() {
 			try {
 				AJAXService("EDITTITLE", {
 					exampleid: querystring['exampleid'],
+					courseid: querystring['courseid'],
 					boxid: box[0],
 					boxtitle: $("#boxtitle2").text()
 				}, "BOXTITLE");
@@ -675,14 +678,16 @@ function updateTitle(e) {
 		}
 		title = title.trim(); // Trim title again if the substring caused trailing whitespaces
 
-		titleSpan.blur();
-		window.getSelection().removeAllRanges();
+		
 
 		AJAXService("EDITTITLE", {
 			exampleid: querystring['exampleid'],
+			courseid: querystring['courseid'],
 			boxid: boxid,
 			boxtitle: title
 		}, "BOXTITLE");
+		window.getSelection().removeAllRanges();
+		titleSpan.blur();
 	}
 }
 //----------------------------------------------------------------------------------
