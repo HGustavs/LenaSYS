@@ -1493,59 +1493,64 @@ input {
   top: 100px;
 }
 
-.drop-down-item #hotkey-undo {
-  right: 6px;
+#hotkey-undo, #hotkey-save {
+  right: 5px;
   top: 10px;
 }
 
-.drop-down-item #hotkey-redo {
-  right: 6px;
-  top: 45px;
+#hotkey-redo, #hotkey-load {
+  right: 5px;
+  top: 43px;
 }
 
-.drop-down-item #hotkey-global {
+#hotkey-global {
   right: 4px;
   top: 86px;
 }
 
-.drop-down-item #hotkey-appearance {
+#hotkey-appearance {
   right: 5px;
   top: 119px;
 }
 
-.drop-down-item #hotkey-lock {
+#hotkey-lock {
   right: 6px;
   top: 241px;
 }
 
-.drop-down-item #hotkey-resetView {
+#hotkey-resetView {
   right: 6px;
   top: 317px;
 }
 
-.drop-down-item #hotkey-displayTools {
+#hotkey-displayTools {
   right: 36px;
   top: 45px;
 }
 
-.drop-down-item #hotkey-displayA4 {
+#hotkey-displayA4 {
   right: 39px;
   top: 164px;
 }
 
-.drop-down-item #hotkey-A4-Orientation {
+#hotkey-A4-Orientation {
   right: 39px;
   top: 200px;
 }
 
-.drop-down-item #hotkey-Toggle-Holes {
+#hotkey-Toggle-Holes {
   right: 39px;
   top: 232px;
 }
 
-.drop-down-item #hotkey-Holes-Right {
+#hotkey-Holes-Right {
   right: 39px;
   top: 264px;
+}
+
+#hotkey-import {
+  right: 7px;
+  top: 86px;
 }
 
 #hotkey-clear, #hotkey-front {

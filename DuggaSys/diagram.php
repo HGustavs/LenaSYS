@@ -114,14 +114,17 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option">Save</span>
+                                <i id="hotkey-save" class="hotKeys">Shift + S</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option">Load</span>
+                                <i id="hotkey-load" class="hotKeys">Shift + O</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" id="buttonid" onclick="openImportDialog();">Import</span>
+                                <span class="drop-down-option" onclick="openImportDialog();">Import</span>
+                                <i id="hotkey-import" class="hotKeys">Shift + I</i>
                             </div>
                             <div class="drop-down-item export-drop-down-head">
                                 <span class="drop-down-option" id="exportid">Export...</span>
@@ -190,7 +193,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
-                                <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
+                                <i id="hotkey-resetView" class="hotKeys">Shift + 0</i>
                             </div>
                         </div>
                     </div>

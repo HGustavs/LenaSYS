@@ -144,6 +144,7 @@ const upArrow = 38;
 const rightArrow = 39;
 const downArrow = 40;
 const deleteKey = 46;
+const key0 = 48;
 const key1 = 49;
 const key2 = 50;
 const key4 = 52;
@@ -158,9 +159,11 @@ const eKey = 69;
 const fKey = 70;
 const gKey = 71;
 const hKey = 72;
+const iKey = 73;
 const lKey = 76;
 const mKey = 77;
 const rKey = 82;
+const sKey = 83;
 const tKey = 84;
 const vKey = 86;
 const zKey = 90;
@@ -480,7 +483,7 @@ function keyDownHandler(e) {
           openAppearanceDialogMenu();
     } else if(shiftIsClicked && key == xKey) {
           lockSelected(event);
-    } else if(shiftIsClicked && key == oKey) {
+    } else if(shiftIsClicked && key == key0) {
           resetViewToOrigin();
     } else if(shiftIsClicked && key == bKey) {
           switchToolbarDev();
@@ -492,7 +495,16 @@ function keyDownHandler(e) {
           toggleVirtualA4Holes();
     } else if(shiftIsClicked && key == key7) {
           toggleVirtualA4HolesRight();
+    } else if(shiftIsClicked && key == iKey) {
+          openImportDialog();
     }
+
+    /* Add this when we add function to load and save options in the menu.
+    else if(shiftIsClicked && key == oKey) {
+          Load function here...
+    } else if(shiftIsClicked && key == sKey) {
+          Save function here...
+    } */
 }
 
 //----------------------------------------------------
