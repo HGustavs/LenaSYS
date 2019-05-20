@@ -792,7 +792,8 @@ function newCompare(firstCell, secoundCell) {
 			if(secoundCellTemp === "0" && firstCellTemp !== "0"){
 				val = -1;
 			} else if(secoundCellTemp !== "0" && firstCellTemp === "0" || secoundCellTemp === ""){
-				val = 1;			
+				val = 1;			 
+
 			}
 		}
 	} else if (colOrder.includes(col)) {

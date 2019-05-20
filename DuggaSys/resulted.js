@@ -65,19 +65,9 @@ function setup() {
   document.getElementById("dropdownc").appendChild(customFilterDiv);
 
 	window.onscroll = function () {
-		magicHeading()
 	};
 
 	AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
-}
-
-
-function resort() {
-
-}
-
-function toggleSortDir(col) {
-
 }
 
 function process() {
@@ -215,12 +205,9 @@ function process() {
 	var dstr = "";
 
 	// Sorting
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
-	dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
-	dstr += "<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";
-	dstr += "<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(4)' value='0' id='sortcol0_4'><label class='headerlabel' for='sortcol0_4' >Teacher</label></div>";
+	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='0' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Ascending</label><input name='sortdir' type='radio' class='headercheck' value='1' id='sortdir'><label class='headerlabel' for='sortdir'>Sort descending</label> <div><input name='sortdir' type='radio' class='headercheck' value='2' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Pending</label></div></div>";
+  dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
+	dstr += "<div class='checkbox-dugga'style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
 
 	dstr += "<table><tr><td>";
 	for (var j = 0; j < momtmp.length; j++) {
@@ -240,15 +227,9 @@ function process() {
 		}
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(0)' id='sorttype0' value='0'><label class='headerlabel' for='sorttype0' >FIFO</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(1)' id='sorttype1' value='1'><label class='headerlabel' for='sorttype1' >Grade</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(2)' id='sorttype2' value='2'><label class='headerlabel' for='sorttype2' >Submitted</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
 	dstr += "</td></tr></table>";
 	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
 	document.getElementById("dropdowns").innerHTML = dstr;
-
-	resort();
 }
 
 function makeCustomFilter(filtername, labeltext) {
@@ -259,6 +240,7 @@ function makeCustomFilter(filtername, labeltext) {
 	}
 	if (filterList[filtername]) {
 		str += " checked";
+
 	}
 	str += "><label class='headerlabel' for='" + filtername + "'>" + labeltext + "</label></div>";
 	return str;
@@ -299,6 +281,7 @@ function leaves() {
 	$('#dropdowns').css('display', 'none');
 	var col = 0;
 	var dir = 1;
+  var allColumnIds = myTable.getColumnOrder();
 
 	var ocol = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol");
 	var odir = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir");
@@ -317,12 +300,20 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
-		resort();
+    // This one is only here due to a bug where sometimes you need to sort multiple times to get the correct one.
+    // But by always sorting by acending first then the correct one this can be avoided.
+    myTable.toggleSortStatus(allColumnIds[col],0);
+    myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
-	magicHeading();
 }
 
 function sorttype(t) {
+  if(t == 0){
+    myTable.setNameColumn('Fname');
+  }else{
+    myTable.setNameColumn('Lname');
+  }
+
 	var c = $("input[name='sortcol']:checked").val();
 	if (c == 0) {
 		localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
@@ -337,10 +328,6 @@ function sorttype(t) {
 		}
 	}
 	typechanged = true;
-	magicHeading();
-}
-
-function magicHeading() {
 }
 
 $(function () {
@@ -858,15 +845,15 @@ function renderCell(col, celldata, cellid) {
 				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 				str += "</div>";
-				return str;	
+				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
 				str = "<div style='padding:10px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
-				} 
+				}
 				str += "'>";
-				// Creation of grading buttons		
+				// Creation of grading buttons
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "<div class='gradeContainer resultTableText'>";
 					if (celldata.grade === null) {
@@ -914,9 +901,9 @@ function renderCell(col, celldata, cellid) {
 					}
 					str += "</div>";
 				}
-				return str;	
-			} 
-	}	
+				return str;
+			}
+	}
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
@@ -1168,7 +1155,7 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-	
+
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
