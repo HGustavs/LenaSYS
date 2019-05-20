@@ -92,7 +92,7 @@
 					<td class='tests' style='display: inline-block;'>
 						<div class='tests menuButton'>
 							<a id='testsBTN' value='Tests' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
-								<img id='testsBTN' class="navButt" src='../Shared/icons/files_icon.svg'>
+								<img id='testsBTN' class="navButt" src='../Shared/icons/tests_icon.svg'>
 							</a>
 						</div>
 					</td>
@@ -105,7 +105,9 @@
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
 						<div class='access menuButton'>
-						<a id='accessBTN' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
+							<a id='accessBTN' title='Give students access to the selected version' value='Access' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'>
+								<img class="navButt" src='../Shared/icons/access_icon.svg'>
+							</a>
 						</div>
 					</td>
 				</tr>
