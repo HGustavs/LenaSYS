@@ -341,7 +341,7 @@ function sorttype(t) {
 }
 
 function magicHeading() {
-	setTimeout(function(){ '#dropdowns' }, 100);
+	setTimeout(function(){ alert("Heello"); }, 100);
 }
 
 $(function () {
