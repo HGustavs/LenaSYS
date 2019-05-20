@@ -938,7 +938,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                         setTargetedForSymbolGroup(this[i], true);
                     } else if (hover) {
                         this[i].isHovered = true;
-                    } 
+                    }
                 }
             } else if (!ctrlIsClicked) {
                 if (!hover) this[i].targeted = false;
@@ -1718,11 +1718,11 @@ function drawGrid() {
 // Sets the color depending on whether the gridline should be darker or brighter grey
 //-------------------------------------------------------------------------------------
 
-function setLineColor(counter){    
+function setLineColor(counter){
     if(counter % 5 == 0){
         ctx.strokeStyle = "rgb(208, 208, 220)";
     } else {
-        ctx.strokeStyle = "rgb(238, 238, 250)";            
+        ctx.strokeStyle = "rgb(238, 238, 250)";
     }
 }
 
@@ -2077,16 +2077,16 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
          + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
     if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
       document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
        + Math.round((zoomValue * 100)) + "%" + " </p>";
       document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
-       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) " 
-       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" 
+       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
+       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
+       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
        + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
     }
     } else {
@@ -2151,24 +2151,24 @@ function addGroupToSelected(event) {
     // find all symbols/freedraw objects that is going to be in the group
     for (var i = 0; i < selected_objects.length; i++) {
         // do not group lines
-        if(selected_objects[i].kind == kind.symbol && 
+        if(selected_objects[i].kind == kind.symbol &&
             (selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine)) {
             continue;
         } else {
             tempList.push(selected_objects[i]);
         }
     }
-    // remove the current group the objects have 
+    // remove the current group the objects have
     for (var i = 0; i < tempList.length; i++ ) {
         tempList[i].group = 0;
     }
     // check what group numbers already exist
     var currentGroups = [];
     for (var i = 0; i < diagram.length; i++) {
-        // don't check lines 
+        // don't check lines
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.line || diagram[i].symbolkind == symbolKind.umlLine)) {
-        } else { 
-            if (diagram[i].group != 0) { 
+        } else {
+            if (diagram[i].group != 0) {
                 currentGroups.push(diagram[i].group);
             }
         }
@@ -2198,7 +2198,7 @@ function removeGroupFromSelected(event) {
     event.stopPropagation();
     for (var i = 0; i < selected_objects.length; i++) {
         // do not do anything with lines
-        if (selected_objects[i].kind == kind.symbol && 
+        if (selected_objects[i].kind == kind.symbol &&
             (selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine)) {
             continue;
         }
@@ -2898,7 +2898,7 @@ function mousemoveevt(ev, t) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance / zoomValue) {
-                // check so that the point we're hovering over belongs to an object that's selected 
+                // check so that the point we're hovering over belongs to an object that's selected
                 var pointBelongsToObject = false;
                 for (var i = 0; i < selected_objects.length; i++) {
                     if (sel.attachedSymbol == selected_objects[i]) {
@@ -2908,9 +2908,9 @@ function mousemoveevt(ev, t) {
                 // when in movearound mode or if the point doesn't belong to a selected object then don't display different pointer when hovering points
                 if (uimode != "MoveAround" && pointBelongsToObject) {
                     //Change cursor if you are hovering over a point and its not a line
-                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine || sel.attachedSymbol.isLocked) {
                         //The point belongs to a umlLine or Line
-                        canvas.style.cursor = "pointer";
+                        canvas.style.cursor = "default";
                     } else {
                         canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                     }
@@ -3537,7 +3537,7 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
-            
+
             uimode = "CreateLine";
             createCardinality();
             updateGraphics();
@@ -4032,7 +4032,7 @@ function changeCardinality(isUML) {
         }
     }
 }
-// Changes direction for uml line relations 
+// Changes direction for uml line relations
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
 }
