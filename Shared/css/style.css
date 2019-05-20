@@ -2223,19 +2223,6 @@ div.submit-button:disabled {
   transform: translateY(50%);
 }
 
-/*Icon styiling used in sectioneed, 
-could potentially be used everywhere or replaced by existing styling styling.
-*/
-
-.cogIcon{
-  transform: scale(2,2);
-  margin: 0,2px,0,2px;
-}
-
-.cogIcon:hover{
-  color:gray;
-}
-
 #input-container{
   border-bottom: 2px solid #008000;
 }
