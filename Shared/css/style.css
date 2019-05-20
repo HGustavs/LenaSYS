@@ -2229,7 +2229,7 @@ could potentially be used everywhere or replaced by existing styling styling.
 
 .cogIcon{
   transform: scale(2,2);
-
+  margin: 0,2px,0,2px;
 }
 
 #input-container{
