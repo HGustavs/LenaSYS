@@ -3469,6 +3469,11 @@ function mouseupevt(ev) {
     if (diagramObject && p1BeforeResize.x == p2BeforeResize.x && p1BeforeResize.y == p2BeforeResize.y) {
         diagramObject.pointsAtSamePosition = true;
     }
+
+    if(uimode == "MoveAround" && md === mouseState.boxSelectOrCreateMode) {
+        saveState = false;
+    }
+
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
