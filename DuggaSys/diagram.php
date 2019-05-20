@@ -204,6 +204,7 @@
                             <div class="drop-down-item">
                                 <div id="displayAllTools" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
+                                    <i id="hotkey-displayTools">Shift + B</i>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
@@ -220,6 +221,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
+                                <i id="hotkey-displayA4">Shift + 4</i>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-orientation-item" class="drop-down-item-disabled">

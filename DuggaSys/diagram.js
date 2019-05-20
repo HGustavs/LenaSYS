@@ -146,7 +146,9 @@ const downArrow = 40;
 const deleteKey = 46;
 const key1 = 49;
 const key2 = 50;
+const key4 = 52;
 const aKey = 65;
+const bKey = 66;
 const cKey = 67;
 const dKey = 68;
 const eKey = 69;
@@ -477,7 +479,11 @@ function keyDownHandler(e) {
           lockSelected(event);
     } else if(shiftIsClicked && key == oKey) {
           resetViewToOrigin();
-      }
+    } else if(shiftIsClicked && key == bKey) {
+          switchToolbarDev();
+    } else if(shiftIsClicked && key == key4) {
+          toggleVirtualA4(event);
+    }
 }
 
 //----------------------------------------------------

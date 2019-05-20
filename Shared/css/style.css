@@ -1543,6 +1543,22 @@ input {
   top: 317px;
 }
 
+.drop-down-item #hotkey-displayTools {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 36px;
+  top: 45px;
+}
+
+.drop-down-item #hotkey-displayA4 {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 37px;
+  top: 164px;
+}
+
 #hotkey-clear, #hotkey-front {
   right: 5px ;
   top: 165px;
