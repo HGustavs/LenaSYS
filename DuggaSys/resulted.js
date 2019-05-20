@@ -282,8 +282,8 @@ function hoverc() {
 function leavec() {
 	setTimeout(function(){
 	$('#dropdownc').css('display', 'none');
-},9000);
-}
+},5000);}
+
 
 function checkMomentParts(pos, id) {
 	for (var i = 0; i < duggaArray[pos].length; i++) {
@@ -300,7 +300,7 @@ function hovers() {
 function leaves() {
 	 setTimeout(function(){
 		$('#dropdowns').css('display', 'none');
-	},9000);
+	},5000);
 	
 	var col = 0;
 	var dir = 1;
