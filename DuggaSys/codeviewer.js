@@ -2244,7 +2244,6 @@ function resetBoxes(){
 function resizeBoxes(parent, templateId)
 {
 	var boxValArray = initResizableBoxValues(parent);
-	//var remainWidth;
 
 	if (templateId == 1) {
 		getLocalStorageProperties(templateId, boxValArray);
