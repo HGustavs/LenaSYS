@@ -14,16 +14,27 @@ var myTable;
 //----------------------------------------------------------------------------
 
 function setup() {
+
+	if (localStorage.getItem("accessFilter") != null) {
+		accessFilter = localStorage.getItem("accessFilter");
+	}
+
 	var filt = "";
 
 	// Add search bar to nav
 	filt += `<td id='searchBar' class='navButt'>`;
 	filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-	filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
+	filt += `onkeyup='searchTable()'/>`;
 	filt += `<button id='searchbutton' class='switchContent'`;
-	filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
+	filt += `onclick='searchTable()' type='button'>`;
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
 	filt += `</button></td>`;
+	filt += "<td><span>";
+	filt += "<input id='filterTeachers' type='checkbox' value='W' onchange='filterAccess()'></input>";
+	filt += "<label for='filterTeachers'>Teachers</label>";
+	filt += "<input id='filterStudents' type='checkbox' value='R' onchange='filterAccess()'></input>";
+	filt += "<label for='filterStudents'>Students</label>";
+	filt += "</span></td>";
 
 	$("#sort").after(filt);
 	/* Add filter menu */
@@ -217,7 +228,7 @@ function showVersion(vers) {
 //----------------------------------------------------------------
 var tgroups = [];
 
-function hideSSN(ssn) {
+function hideSSN(ssn) {		// Masks the SSN
 	var hiddenSSN;
 	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
 	return hiddenSSN;
@@ -248,8 +259,9 @@ function renderCell(col, celldata, cellid) {
                 break;
             }
         };
-	} else if (col == "access") {
+	} else if (col == "access") {		// Add dropdown menus to "Access" column
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student"], ["W", "R"]) + "</select>";
+		console.log(obj.username, obj.access);
 	} else if (col == "requestedpasswordchange") {
 		if (parseFloat(obj.recent) > 1440) {
 			str = "<input class='submit-button' type='button' value='Reset PW' style=''";
@@ -396,16 +408,20 @@ function updateCellCallback(rowno, colno, column, tableid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 var searchterm = "";
+var accessFilter = "";		// W or R
 
 function rowFilter(row) {
-	if (searchterm == "") {
-		return true;
-	} else {
-		for (var property in row) {
-			if (row.hasOwnProperty(property)) {
-				if (row[property] != null) {
-					if (row[property].indexOf != null) {
-						if (row[property].indexOf(searchterm) != -1) return true;
+	// First check if we want to filter by teachers/students. W = teacher, R = student.
+	if (row["access"].indexOf(accessFilter) != -1) {
+		if (searchterm == "") {
+			return true;
+		} else {		// If the 
+			for (var property in row) {
+				if (row.hasOwnProperty(property)){
+					if (row[property] != null) {
+						if (row[property].indexOf != null) {
+							if (row[property].indexOf(searchterm) != -1) return true;
+						}
 					}
 				}
 			}
@@ -592,3 +608,32 @@ document.addEventListener("keyup", function(event)
     clearUpdateCellInternal();
   }
 });
+
+//----------------------------------------------------------------------------------
+// searchTable - Search the table and filter its contents
+//----------------------------------------------------------------------------------
+function searchTable() {
+	searchterm=document.getElementById("searchinput").value;
+	searchKeyUp(event);
+	myTable.reRender();
+}
+
+//----------------------------------------------------------------------------------
+// filterAccess - Filter by teachers/students (write access/read access)
+//----------------------------------------------------------------------------------
+function filterAccess() {
+	toggleTeachers = document.getElementById("filterTeachers");
+	toggleStudents = document.getElementById("filterStudents")
+
+	if (toggleTeachers.checked && toggleStudents.checked) {
+		accessFilter="";
+	} else if (toggleTeachers.checked) {
+		accessFilter="W";
+	} else if (toggleStudents.checked) {
+		accessFilter="R";
+	}
+
+	console.log(accessFilter);
+	localStorage.setItem("accessFilter", accessFilter);
+	myTable.reRender();
+}
