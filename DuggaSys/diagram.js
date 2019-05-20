@@ -2035,11 +2035,11 @@ function loadDiagram() {
     var localHexHash = localStorage.getItem('localhash');
     var diagramToString = "";
     var hash = 0;
-    for(let i = 0; i < diagram.length; i++) {
+    for(var i = 0; i < diagram.length; i++) {
         diagramToString += JSON.stringify(diagram[i]);
     }
     if (diagram.length != 0) {
-        for (let i = 0; i < diagramToString.length; i++) {
+        for (var i = 0; i < diagramToString.length; i++) {
             var char = diagramToString.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
             hash = hash & hash;         // Convert to 32bit integer
@@ -2049,7 +2049,7 @@ function loadDiagram() {
     if (typeof localHexHash !== "undefined" && typeof localDiagram !== "undefined") {
         if (localHexHash != hexHash) {
             b = JSON.parse(JSON.stringify(localDiagram));
-            for (let i = 0; i < b.diagram.length; i++) {
+            for (var i = 0; i < b.diagram.length; i++) {
                 if (b.diagramNames[i] == "Symbol") {
                     b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
                 } else if (b.diagramNames[i] == "Path") {
@@ -2057,15 +2057,15 @@ function loadDiagram() {
                 }
             }
             diagram.length = b.diagram.length;
-            for (let i = 0; i < b.diagram.length; i++) {
+            for (var i = 0; i < b.diagram.length; i++) {
                 diagram[i] = b.diagram[i];
             }
             // Points fix
-            for (let i = 0; i < b.points.length; i++) {
+            for (var i = 0; i < b.points.length; i++) {
                 b.points[i] = Object.assign(new Path, b.points[i]);
             }
             points.length = b.points.length;
-            for (let i = 0; i < b.points.length; i++) {
+            for (var i = 0; i < b.points.length; i++) {
                 points[i] = b.points[i];
             }
             diagram.serialNumbers = JSON.parse(localStorage.getItem('SerialNumbers'));
@@ -2103,16 +2103,16 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
          + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
     if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
       document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
        + Math.round((zoomValue * 100)) + "%" + " </p>";
       document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
-       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) " 
-       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" 
+       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
+       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
+       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
        + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
     }
     } else {
