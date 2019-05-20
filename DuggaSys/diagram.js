@@ -139,7 +139,6 @@ var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramNumberHistory = 0;           // Is used for undo and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var classAppearanceOpen = false;
@@ -950,7 +949,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                         setTargetedForSymbolGroup(this[i], true);
                     } else if (hover) {
                         this[i].isHovered = true;
-                    } 
+                    }
                 }
             } else if (!ctrlIsClicked) {
                 if (!hover) this[i].targeted = false;
@@ -1147,7 +1146,6 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
-    setInterval(function() {Save()}, 10000);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
@@ -1969,121 +1967,6 @@ function switchToolbarDev() {
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
 }
 
-//------------------------------------------------------------------------------
-// hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
-//               then do some sort of calculation. used to save the diagram. it also save the local diagram
-//------------------------------------------------------------------------------
-
-function hashFunction() {
-    var diagramToString = "";
-    var hash = 0;
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-        if (currentHash != hexHash) {
-            localStorage.setItem('localhash', hexHash);
-            for (var i = 0; i < diagram.length; i++) {
-                c[i] = diagram[i].constructor.name;
-                c[i] = c[i].replace(/"/g,"");
-            }
-            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c});
-            localStorage.setItem('localdiagram', a);
-            return hexHash;
-        }
-    }
-}
-
-//--------------------------------------------------------------------------------
-// hashCurrent: This function is used to hash the current diagram, but not storing it locally,
-//              so we can compare the current hash with the hash after we have made some changes
-//              to see if it need to be saved.
-//--------------------------------------------------------------------------------
-
-function hashCurrent() {
-    var hash = 0;
-    var diagramToString = "";
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
-    }
-    for (var i = 0; i < diagramToString.length; i++) {
-        var char = diagramToString.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;         // Convert to 32bit integer
-    }
-    currentHash = hash.toString(16);
-}
-
-//---------------------------------------------
-// loadDiagram: retrive an old diagram if it exist.
-//---------------------------------------------
-
-function loadDiagram() {
-    var checkLocalStorage = localStorage.getItem('localdiagram');
-    //loacal storage and hash
-    if (checkLocalStorage != "" && checkLocalStorage != null) {
-        var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
-    }
-    var localHexHash = localStorage.getItem('localhash');
-    var diagramToString = "";
-    var hash = 0;
-    for(var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i]);
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-    }
-    if (typeof localHexHash !== "undefined" && typeof localDiagram !== "undefined") {
-        if (localHexHash != hexHash) {
-            b = JSON.parse(JSON.stringify(localDiagram));
-            for (var i = 0; i < b.diagram.length; i++) {
-                if (b.diagramNames[i] == "Symbol") {
-                    b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
-                } else if (b.diagramNames[i] == "Path") {
-                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-                }
-            }
-            diagram.length = b.diagram.length;
-            for (var i = 0; i < b.diagram.length; i++) {
-                diagram[i] = b.diagram[i];
-            }
-            // Points fix
-            for (var i = 0; i < b.points.length; i++) {
-                b.points[i] = Object.assign(new Path, b.points[i]);
-            }
-            points.length = b.points.length;
-            for (var i = 0; i < b.points.length; i++) {
-                points[i] = b.points[i];
-            }
-            diagram.serialNumbers = JSON.parse(localStorage.getItem('SerialNumbers'));
-        }
-    }
-    deselectObjects();
-    updateGraphics();
-    SaveState();
-}
-
-//----------------------------------------------------------------------
-// removeLocalStorage: this function is running when you click the button clear diagram
-//----------------------------------------------------------------------
-
-function removeLocalStorage() {
-    for (var i = 0; i < localStorage.length; i++) {
-        localStorage.removeItem("localdiagram");
-    }
-}
-
 // This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
 function decimalPrecision(value, precision) {
   var multipler = Math.pow(10, precision || 0);
@@ -2175,24 +2058,24 @@ function addGroupToSelected(event) {
     // find all symbols/freedraw objects that is going to be in the group
     for (var i = 0; i < selected_objects.length; i++) {
         // do not group lines
-        if(selected_objects[i].kind == kind.symbol && 
+        if(selected_objects[i].kind == kind.symbol &&
             (selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine)) {
             continue;
         } else {
             tempList.push(selected_objects[i]);
         }
     }
-    // remove the current group the objects have 
+    // remove the current group the objects have
     for (var i = 0; i < tempList.length; i++ ) {
         tempList[i].group = 0;
     }
     // check what group numbers already exist
     var currentGroups = [];
     for (var i = 0; i < diagram.length; i++) {
-        // don't check lines 
+        // don't check lines
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.line || diagram[i].symbolkind == symbolKind.umlLine)) {
-        } else { 
-            if (diagram[i].group != 0) { 
+        } else {
+            if (diagram[i].group != 0) {
                 currentGroups.push(diagram[i].group);
             }
         }
@@ -2222,7 +2105,7 @@ function removeGroupFromSelected(event) {
     event.stopPropagation();
     for (var i = 0; i < selected_objects.length; i++) {
         // do not do anything with lines
-        if (selected_objects[i].kind == kind.symbol && 
+        if (selected_objects[i].kind == kind.symbol &&
             (selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine)) {
             continue;
         }
@@ -2483,8 +2366,9 @@ function distribute(event, axis) {
 
 function undoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumberHistory > 1) diagramNumberHistory--;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (diagramNumber > 0) diagramNumber--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
@@ -2494,8 +2378,13 @@ function undoDiagram(event) {
 
 function redoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    diagramNumber = localStorage.getItem("diagramNumber");
+    diagramNumber++;
+    if(!localStorage.getItem("diagram" + diagramNumber)){
+        diagramNumber--;
+    }
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
@@ -2922,7 +2811,7 @@ function mousemoveevt(ev, t) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance / zoomValue) {
-                // check so that the point we're hovering over belongs to an object that's selected 
+                // check so that the point we're hovering over belongs to an object that's selected
                 var pointBelongsToObject = false;
                 for (var i = 0; i < selected_objects.length; i++) {
                     if (sel.attachedSymbol == selected_objects[i]) {
@@ -3561,7 +3450,7 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
-            
+
             uimode = "CreateLine";
             createCardinality();
             updateGraphics();
@@ -3711,7 +3600,7 @@ function openAppearanceDialogMenu() {
 function closeAppearanceDialogMenu() {
      //if the X
      if(globalAppearanceValue == 1) {
-         var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+         var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
          if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
     $(".loginBox").draggable('destroy');

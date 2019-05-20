@@ -28,7 +28,7 @@ function downloadMode(el) {
 function saveToServer(dia) {
     $.ajax({
         url: 'diagram.php',
-        type: 'POST', 
+        type: 'POST',
         data: {StringDiagram : dia, Hash: hashFunction()}
     });
 }
@@ -73,6 +73,8 @@ function loadStoredFolders(f) {
 }
 
 function Save() {
+    diagramNumber++;
+    localStorage.setItem("diagramNumber", diagramNumber);
     c = [];
     for (var i = 0; i < diagram.length; i++) {
         c[i] = diagram[i].constructor.name;
@@ -86,18 +88,11 @@ function Save() {
 
 function SaveState() {
     Save();
-    if (diagramNumberHistory < diagramNumber) {
-        diagramNumberHistory++;
-        diagramNumber = diagramNumberHistory;
-    } else {
-        diagramNumber++;
-        diagramNumberHistory = diagramNumber;
-    }
     localStorage.setItem("diagram" + diagramNumber, a);
     for (var key in localStorage) {
         if (key.indexOf("diagram") != -1) {
             var tmp = key.match(/\d+$/);
-            if (tmp > diagramNumberHistory) localStorage.removeItem(key);
+            if (tmp > diagramNumber) localStorage.removeItem(key);
         }
     }
 }
@@ -114,6 +109,124 @@ function SaveFile(el) {
 function LoadImport(fileContent) {
     a = fileContent;
     Load();
+}
+
+//---------------------------------------------
+// loadDiagram: retrive an old diagram if it exist.
+//---------------------------------------------
+
+function loadDiagram() {
+    diagramNumber = localStorage.getItem("diagramNumber");
+    var checkLocalStorage = localStorage.getItem("diagram" + diagramNumber);
+
+    //local storage and hash
+    if (checkLocalStorage != "" && checkLocalStorage != null) {
+        var localDiagram = JSON.parse(localStorage.getItem("diagram" + diagramNumber));
+    }
+    var localHexHash = localStorage.getItem('localhash');
+    var diagramToString = "";
+    var hash = 0;
+    for(var i = 0; i < diagram.length; i++) {
+        diagramToString += JSON.stringify(diagram[i]);
+    }
+    if (diagram.length != 0) {
+        for (var i = 0; i < diagramToString.length; i++) {
+            var char = diagramToString.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;         // Convert to 32bit integer
+        }
+        var hexHash = hash.toString(16);
+    }
+    if (typeof localHexHash !== "undefined" && typeof localDiagram !== "undefined") {
+        if (localHexHash != hexHash) {
+            b = JSON.parse(JSON.stringify(localDiagram));
+            for (var i = 0; i < b.diagram.length; i++) {
+                if (b.diagramNames[i] == "Symbol") {
+                    b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+                } else if (b.diagramNames[i] == "Path") {
+                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+                }
+            }
+            diagram.length = b.diagram.length;
+            for (var i = 0; i < b.diagram.length; i++) {
+                diagram[i] = b.diagram[i];
+            }
+            // Points fix
+            for (var i = 0; i < b.points.length; i++) {
+                b.points[i] = Object.assign(new Path, b.points[i]);
+            }
+            points.length = b.points.length;
+            for (var i = 0; i < b.points.length; i++) {
+                points[i] = b.points[i];
+            }
+        }
+    }
+    deselectObjects();
+    updateGraphics();
+    SaveState();
+}
+
+//------------------------------------------------------------------------------
+// hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
+//               then do some sort of calculation. used to save the diagram. it also save the local diagram
+//------------------------------------------------------------------------------
+
+function hashFunction() {
+    var diagramToString = "";
+    var hash = 0;
+    for (var i = 0; i < diagram.length; i++) {
+        diagramToString += JSON.stringify(diagram[i])
+    }
+    if (diagram.length != 0) {
+        for (var i = 0; i < diagramToString.length; i++) {
+            var char = diagramToString.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;         // Convert to 32bit integer
+        }
+        var hexHash = hash.toString(16);
+        if (currentHash != hexHash) {
+            localStorage.setItem('localhash', hexHash);
+            for (var i = 0; i < diagram.length; i++) {
+                c[i] = diagram[i].constructor.name;
+                c[i] = c[i].replace(/"/g,"");
+            }
+            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c});
+            localStorage.setItem('localdiagram', a);
+            return hexHash;
+        }
+    }
+}
+
+//--------------------------------------------------------------------------------
+// hashCurrent: This function is used to hash the current diagram, but not storing it locally,
+//              so we can compare the current hash with the hash after we have made some changes
+//              to see if it need to be saved.
+//--------------------------------------------------------------------------------
+
+function hashCurrent() {
+    var hash = 0;
+    var diagramToString = "";
+    for (var i = 0; i < diagram.length; i++) {
+        diagramToString += JSON.stringify(diagram[i])
+    }
+    for (var i = 0; i < diagramToString.length; i++) {
+        var char = diagramToString.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;         // Convert to 32bit integer
+    }
+    currentHash = hash.toString(16);
+}
+
+//----------------------------------------------------------------------
+// removeLocalStorage: this function is running when you click the button clear diagram
+//----------------------------------------------------------------------
+
+function removeLocalStorage() {
+    for (var i = 0; i < localStorage.length; i++) {
+        localStorage.removeItem("diagram" + i);
+    }
+    diagramNumber = 0;
+    localStorage.setItem("diagramNumber", 0);
 }
 
 function LoadFile() {
