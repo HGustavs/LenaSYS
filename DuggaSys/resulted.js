@@ -280,7 +280,7 @@ function hoverc() {
 }
 
 function leavec() {
-	$('#dropdownc').css({display: 'none', opacity: 0});
+	$('#dropdownc').css({display: 'none'});
 }
 
 function checkMomentParts(pos, id) {
