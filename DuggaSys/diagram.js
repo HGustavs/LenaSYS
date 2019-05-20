@@ -2796,13 +2796,21 @@ function changeZoom(zoomValue, event) {
 //-----------------------
 
 function scrollZoom(event) {
-    if(event.deltaY > 124){
+    var wheelZoom = 124;
+    var mousePadZoom = 5;
+
+    if(event.mozInputSource){
+        wheelZoom = 2;
+        mousePadZoom = 0;
+    }
+
+    if(event.deltaY > wheelZoom){
         changeZoom(-0.1, event);
-    } else if (event.deltaY < -124) {
+    } else if (event.deltaY < -wheelZoom) {
         changeZoom(0.1, event);
-    } else if(event.deltaY > 5) {
+    } else if(event.deltaY > mousePadZoom) {
         changeZoom(-0.01, event);
-    } else if (event.deltaY < -5) {
+    } else if (event.deltaY < -mousePadZoom) {
         changeZoom(0.01, event);
     }
 }
