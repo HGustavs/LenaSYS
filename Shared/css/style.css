@@ -1555,8 +1555,32 @@ input {
   position: absolute;
   font-size: 11px;
   color: #3d3d3d;
-  right: 37px;
+  right: 39px;
   top: 164px;
+}
+
+.drop-down-item #hotkey-A4-Orientation {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 39px;
+  top: 200px;
+}
+
+.drop-down-item #hotkey-Toggle-Holes {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 39px;
+  top: 232px;
+}
+
+.drop-down-item #hotkey-Holes-Right {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 39px;
+  top: 264px;
 }
 
 #hotkey-clear, #hotkey-front {

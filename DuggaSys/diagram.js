@@ -147,6 +147,9 @@ const deleteKey = 46;
 const key1 = 49;
 const key2 = 50;
 const key4 = 52;
+const key5 = 53;
+const key6 = 54;
+const key7 = 55;
 const aKey = 65;
 const bKey = 66;
 const cKey = 67;
@@ -483,6 +486,12 @@ function keyDownHandler(e) {
           switchToolbarDev();
     } else if(shiftIsClicked && key == key4) {
           toggleVirtualA4(event);
+    } else if(shiftIsClicked && key == key5) {
+          toggleA4Orientation();
+    } else if(shiftIsClicked && key == key6) {
+          toggleVirtualA4Holes();
+    } else if(shiftIsClicked && key == key7) {
+          toggleVirtualA4HolesRight();
     }
 }
 
