@@ -73,12 +73,11 @@ CREATE TABLE user_course(
 	vers					VARCHAR(8),
 	vershistory				TEXT,
 	`groups` 				varchar(256),
-	examiner 				integer UNSIGNED,
+	examiner 				integer,
 	teacher					VARCHAR(30),
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
-	FOREIGN KEY (cid) REFERENCES course (cid),
-	FOREIGN KEY (examiner) REFERENCES user (uid)
+	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE listentries (
