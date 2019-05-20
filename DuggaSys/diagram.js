@@ -1728,11 +1728,11 @@ function drawGrid() {
 // Sets the color depending on whether the gridline should be darker or brighter grey
 //-------------------------------------------------------------------------------------
 
-function setLineColor(counter){    
+function setLineColor(counter){
     if(counter % 5 == 0){
         ctx.strokeStyle = "rgb(208, 208, 220)";
     } else {
-        ctx.strokeStyle = "rgb(238, 238, 250)";            
+        ctx.strokeStyle = "rgb(238, 238, 250)";
     }
 }
 
@@ -2821,9 +2821,9 @@ function mousemoveevt(ev, t) {
                 // when in movearound mode or if the point doesn't belong to a selected object then don't display different pointer when hovering points
                 if (uimode != "MoveAround" && pointBelongsToObject) {
                     //Change cursor if you are hovering over a point and its not a line
-                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine || sel.attachedSymbol.isLocked) {
                         //The point belongs to a umlLine or Line
-                        canvas.style.cursor = "pointer";
+                        canvas.style.cursor = "default";
                     } else {
                         canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                     }
@@ -3935,7 +3935,7 @@ function changeCardinality(isUML) {
         }
     }
 }
-// Changes direction for uml line relations 
+// Changes direction for uml line relations
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
 }
