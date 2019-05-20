@@ -302,7 +302,7 @@ function leaves() {
 		typechanged = false;
     // This one is only here due to a bug where sometimes you need to sort multiple times to get the correct one.
     // But by always sorting by acending first then the correct one this can be avoided.
-    myTable.toggleSortStatus(allColumnIds[col],0);
+    //myTable.toggleSortStatus(allColumnIds[col],0);
     myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
 }
