@@ -95,6 +95,7 @@ var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+var modeSwitchDialogActive = false; // if the mode switch dialog is currently active 
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
@@ -135,6 +136,7 @@ var spacebarKeyPressed = false;         // True when entering MoveAround mode by
 
 // Keyboard keys
 const backspaceKey = 8;
+const enterKey = 13;
 const shiftKey = 16;
 const ctrlKey = 17;
 const escapeKey = 27;
@@ -378,11 +380,11 @@ var diagram = [];
 
 function keyDownHandler(e) {
     var key = e.keyCode;
-    if(appearanceMenuOpen) return;
-    if((key == deleteKey || key == backspaceKey)) {
+    if (appearanceMenuOpen) return;
+    if ((key == deleteKey || key == backspaceKey)) {
         eraseSelectedObject();
         SaveState();
-    } else if(key == spacebarKey) {
+    } else if (key == spacebarKey) {
         // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
         if (!spacebarKeyPressed) {
         spacebarKeyPressed = true;
@@ -394,28 +396,28 @@ function keyDownHandler(e) {
             e.stopPropagation();
             e.preventDefault();
         }
-        if(uimode != "MoveAround") {
+        if (uimode != "MoveAround") {
             activateMovearound();
         } else {
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
+    } else if (key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) { //arrow keys
         arrowKeyPressed(key);
         moveCanvasView(key);
-    } else if(key == ctrlKey || key == windowsKey) {
+    } else if (key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    } else if(key == shiftKey) {
+    } else if (key == shiftKey) {
         shiftIsClicked = true;
-    } else if(ctrlIsClicked && key == cKey) {
+    } else if (ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == vKey ) {
+    } else if (ctrlIsClicked && key == vKey ) {
         //Ctrl + v
         var temp = [];
-        for(var i = 0; i < cloneTempArray.length; i++) {
+        for (var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line
+            if (cloneTempArray[i].symbolkind != symbolKind.line
                 && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
@@ -438,9 +440,11 @@ function keyDownHandler(e) {
     }
     else if (key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    }
-    else if (key == escapeKey) {
+    } else if (key == enterKey) {
+        if (modeSwitchDialogActive) modeSwitchConfirmed(true);
+    } else if (key == escapeKey) {
         cancelFreeDraw();
+        if (modeSwitchDialogActive) modeSwitchConfirmed(false);
     }
     else if ((key == key1 || key == num1) && shiftIsClicked) {
         moveToFront();
@@ -1864,6 +1868,7 @@ var targetMode = "ER";     // The mode that we want to change to when trying to 
 //------------------------------------------------------------------------------
 
 function modeSwitchConfirmed(confirmed) {
+    modeSwitchDialogActive = false;
     $("#modeSwitchDialog").hide();
     if(confirmed){
         if (targetMode == 'ER') {
@@ -1882,6 +1887,7 @@ function modeSwitchConfirmed(confirmed) {
 
 function switchToolbarTo(target) {
     targetMode = target;
+    modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off or if the user has started drawing something
     if(developerModeActive || diagram.length < 1) {
         modeSwitchConfirmed(true);
