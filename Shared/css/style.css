@@ -671,8 +671,8 @@ header td {
 }
 
 .navButt img {
-  margin-top: 10px;
   margin-left: 10px;
+  vertical-align: middle;
   height: 32px;
 }
 
