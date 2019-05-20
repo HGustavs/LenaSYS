@@ -556,7 +556,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		} else {
 			filename = filename.replace("https://", "http://");
 		}
-		str += '<iframe src="' + filename + '" width="100%" height="150%" />';
+		str += '<iframe src="' + filename + '" width="100%" height="100%" />';
 	} else {
 		if (fileext === "pdf") {
 			str += '<embed src="' + filepath + filename + fileseq + '.' + fileext + '" width="100%" height="100%" type="application/pdf" />';
@@ -861,7 +861,7 @@ function renderCell(col, celldata, cellid) {
 				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
-				str = "<div style='padding:10px;' class='resultTableCell ";
+				str = "<div style='padding:12px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
 				}
