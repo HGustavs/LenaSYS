@@ -82,7 +82,7 @@
 						</div>
 					</td>
 
-					<td class='results menuButton' style='display: inline-block;'>
+					<td class='results' style='display: inline-block;'>
 						<div class='results menuButton'>
 							<a id='resultsBTN' title='Edit student results' value='Results' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'>
 								<img id='versionPlus' class="navButt" src='../Shared/icons/FistV.svg'>
