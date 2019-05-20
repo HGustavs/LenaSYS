@@ -3468,6 +3468,7 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
+            diagram[lastSelectedObject - 1].targeted = false;
             selected_objects.push(diagram[lastSelectedObject]);
 
             createCardinality();
