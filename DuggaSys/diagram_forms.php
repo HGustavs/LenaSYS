@@ -48,7 +48,6 @@
       "<option value=\'Partial key\'>Partial key</option>
       "<option value=\'normal\' selected="true">Normal</option>
       "<option value=\'Multivalue\'>Multivalue</option>
-      "<option value=\'Composite\'>Composite</option>
       "<option value=\'Drive\'>Derive</option>
       </select></br>
       '.$backgroundColor.$fontFamily.$fontColor.$textSize.$lineColors.$okButton;

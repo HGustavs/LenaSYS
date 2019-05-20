@@ -82,6 +82,7 @@ function Save() {
     }
     var obj = {diagram:diagram, points:points, diagramNames:c};
     a = JSON.stringify(obj, null, "\t");
+    localStorage.setItem("SerialNumbers", JSON.stringify(diagram.serialNumbers));
     console.log("State is saved");
 }
 
