@@ -58,7 +58,7 @@
 	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php",$userid,$info);
 
 	// Checks and sets user rights
-	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
+	if(checklogin() && ((hasAccess($userid, $courseId, 'w')) || (hasAccess($userid, $courseId, 'st')))){
 		$writeAccess="w";
 	}else{
 		$writeAccess="s";
@@ -89,7 +89,7 @@
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
-		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
+		if(checklogin() && $writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
 			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Parse content array
