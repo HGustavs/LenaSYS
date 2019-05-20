@@ -1544,6 +1544,13 @@ input {
   top: 272px;
 }
 
+.drop-down-item #hotkey-resetViewToOrigin {
+  position: absolute;
+  font-size: 11px;
+  color: #3d3d3d;
+  right: 6px;
+  top: 393px;
+}
 /* --------------================################================-------------- *
  *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
  * --------------================################================-------------- */

@@ -195,6 +195,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                                <i id="hotkey-resetViewToOrigin">Shift + O</i>
                             </div>
                         </div>
                     </div>
