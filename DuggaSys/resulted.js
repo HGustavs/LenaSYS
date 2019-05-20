@@ -275,8 +275,8 @@ function toggleFilter(filter) {
 }
 
 function hoverc() {
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'block');
+	$('#dropdowns').css({display:'none'});
+	$('#dropdownc').css({display: 'block'});
 }
 
 function leavec() {
