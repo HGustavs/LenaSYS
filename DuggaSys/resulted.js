@@ -361,13 +361,13 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	var currentTimeGetTime = currentTime.getTime();
 	if(document.getElementById('newFeedback') == null){
 		feedbackText = "";
-	} else {		
+	} else {
 		feedbackText = document.getElementById('newFeedback').value;
 	}
 
 	if ($(e.target).hasClass("Uc")) {
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
-		
+
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("Gc")) {
@@ -538,7 +538,7 @@ function moveDist(e) {
 
 function displayPreview(filepath, filename, fileseq, filetype, fileext, fileindex, displaystate) {
 	clickedindex = fileindex;
-	document.getElementById("responseArea").outerHTML = '<textarea id="responseArea" style="width: 100%;height:100%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">' + allData["files"][allData["duggaentry"]][clickedindex].feedback + '</textarea>'
+	document.getElementById("responseArea").outerHTML = '<textarea id="responseArea" style="width: 100%;height:90%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">' + allData["files"][allData["duggaentry"]][clickedindex].feedback + '</textarea>'
 
 	if (displaystate) {
 		document.getElementById("markMenuPlaceholderz").style.display = "block";
@@ -799,15 +799,15 @@ function renderCell(col, celldata, cellid) {
 			str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 			str += "</div>";
-			return str;	
+			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div style='padding:10px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "dugga-pending";
-			} 
+			}
 			str += "'>";
-			// Creation of grading buttons		
+			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
@@ -846,10 +846,10 @@ function renderCell(col, celldata, cellid) {
 				}
 				str += "</div>";
 			}
-			return str;	
-		} 
-	}	
-	
+			return str;
+		}
+	}
+
 	else if(filterList["passedDeadline"]){
 				// First column (Fname/Lname/SSN)
 			if (col == "FnameLname") {
@@ -858,15 +858,15 @@ function renderCell(col, celldata, cellid) {
 				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 				str += "</div>";
-				return str;	
+				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
 				str = "<div style='padding:10px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
-				} 
+				}
 				str += "'>";
-				// Creation of grading buttons		
+				// Creation of grading buttons
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "<div class='gradeContainer resultTableText'>";
 					if (celldata.grade === null) {
@@ -914,9 +914,9 @@ function renderCell(col, celldata, cellid) {
 					}
 					str += "</div>";
 				}
-				return str;	
-			} 
-	}	
+				return str;
+			}
+	}
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
@@ -1168,7 +1168,7 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-	
+
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
