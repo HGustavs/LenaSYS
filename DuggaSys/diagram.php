@@ -96,14 +96,14 @@
                                 <div class="diagramLabelToolContainer">
                                     <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                                     <div class="toolbar-undo-redo-drawer" id="drawerUndo">
-                                      <!-- Undo -->
-                                      <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
+                                        <!-- Undo -->
+                                        <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo (Ctrl + Z)">
                                           <img src="../Shared/icons/undo.svg">
-                                      </button>
-                                      <!-- Redo -->
-                                      <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
+                                        </button>
+                                        <!-- Redo -->
+                                        <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo (Ctrl + Y)">
                                           <img src="../Shared/icons/redo.svg">
-                                      </button>
+                                        </button>
                                     </div>
                                   </div>
                             </div>
@@ -186,6 +186,14 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='addGroupToSelected(event)'>Add group to selected</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Remove group from selected</span>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
                             </div>
                         </div>
@@ -219,17 +227,17 @@
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-orientation-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                                    <span class="drop-down-option" onclick='toggleA4Orientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-holes-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
+                                    <span class="drop-down-option" onclick='toggleVirtualA4Holes(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-holes-item-right" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleVirtualA4HolesRight();'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                                    <span class="drop-down-option" onclick='toggleVirtualA4HolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
                                 </div>
                             </div>
                         </div>
@@ -413,23 +421,6 @@
                 </div>
                 <div id="importButtonWrap" class="importButtonWrap">
                     <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Error message when non objects are not composite-->
-    <div id="errorMessageDialog" class="loginBoxContainer importDiagram">
-        <div class="loginBox messageContainer">
-            <div class="loginBoxheader messageHeader">
-                <h3 id="errorMessage"></h3>
-                <div class='cursorPointer' onclick='closeErrorMessageDialog();'>
-                    x
-                </div>
-            </div>
-            <div class="mode-wrap">
-                <div id="importButtonWrap" class="importButtonWrap">
-                    <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
                 </div>
             </div>
         </div>

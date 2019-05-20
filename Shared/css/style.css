@@ -4965,25 +4965,6 @@ textarea#mrkdwntxt {
   padding-right: 10px;
 }
 
-/* Composite error message dialog */
-.errorMessageDialog {
-  display: none;
-  background-color: rgba(0,0,0,0);
-}
-
-.messageContainer {
-  min-height: 80px;
-}
-
-#cancelButton {
-  border-radius: 3px;
-}
-
-.messageHeader h3 {
-  padding-right: 10px;
-}
-
-
 /* Import diagram */
 
 .importDiagram {
