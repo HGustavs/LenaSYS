@@ -1101,7 +1101,6 @@ input {
 }
 
 .loginBoxheader {
-  height: 25px;
   background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
