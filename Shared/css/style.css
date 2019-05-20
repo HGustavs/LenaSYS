@@ -3140,21 +3140,32 @@ span.arrow {
 .contribheading {
   background: #FFF8A5;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
-  border-radius: 4px 6px 0px 0px;
+  border-radius: 5px;
   max-width: 400px;
   overflow: hidden;
   margin-top: 8px;
 }
 
 .contribcontent {
-  position: relative;
-  background: #FFF8A5;
-  margin-bottom: 10px;
-  margin-top: 4px;
-  z-index: 0;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
-  padding-left: 8px;
-  width: 400px;
+  -webkit-transition: height 0.2s cubic-bezier(0, 1.4, 0.8,1 );
+ -moz-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ -ms-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ -o-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ transition: height 0.2s cubic-bezier(0,1.4, 0.8, 1);
+ height:0px;
+ overflow:hidden;
+ display: flex;
+ flex-direction: column;
+}
+
+.contribcontent span {
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+}
+
+.contribcontentToggle {
+  height: auto;
 }
 
 .contrib {

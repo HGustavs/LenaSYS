@@ -766,7 +766,7 @@ function returnedSection(data) {
   }
 
   contribDataArr = [];
-  
+
   var str = "";
 
   str += "<div class='contributionSort'>";
@@ -788,6 +788,7 @@ function returnedSection(data) {
 
   createRankTable(buildRankData(data));
   createGitHubcontributionTable(buildContributionData(data));
+  toggleAfterLocalStorage(data);
   createTimeSheetTable(data['timesheets']);
 
   str += renderBarDiagram(data);
@@ -1054,6 +1055,7 @@ function createGitHubcontributionTable(data) {
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
   obj = celldata;
+  var rowNr = cellid.charAt(1);
   if (col === 'weeks') {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
   } else if (col === 'dates') {
@@ -1063,61 +1065,173 @@ function renderCellForghContibTable(col, celldata, cellid) {
       var file = obj.files[j];
       str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
       str += "<div class='contrib'>";
-      str += "<span class='contribheading' style='padding:4px;'>";
+      str += "<div class='contribheading'";
       str += "<span class='contribpath'>" + file.path + "</span>";
       str += "<span class='contribfile'>" + file.filename + "</span>";
-      str += "</span>";
       str += "</a>";
-      str += "<div class='contribcontent'>";
-      str += file.lines + " lines<br>";
+      str += "<br><span>";
+      str += file.lines + " lines";
+      str += "</span>";
       str += "</div>";
       str += "</div>";
     }
   } else if (col === 'githubContribution') {
-    if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0) {
-      str += "<div class='contrib'>";
-      str += "<div class='contribcontent'>";
-
-      if (obj.commits.length > 0) {
-        str += "<div class='createissue'>Made " + obj.commits.length + " commit(s).</div>";
-        for (j = 0; j < obj.commits.length; j++) {
-          var message = obj.commits[j].message;
-          var hash = obj.commits[j].cid;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></div>";
-        }
-      }
-      if (obj.issues.length > 0) {
-        str += "<div class='createissue'>Created " + obj.issues.length + " issue(s).</div>";
-        for (j = 0; j < obj.issues.length; j++) {
-          var issue = obj.issues[j];
-          var issuestr = issue.issueno + " " + issue.title;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></div>";
-        }
-      }
-      if (obj.comments.length > 0) {
-        str += "<div class='createissue'>Made " + obj.comments.length + " comment(s).</div>";
-        for (j = 0; j < obj.comments.length; j++) {
-          var comment = obj.comments[j];
-          var issuestr = comment.issueno + " " + comment.content;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></div>";
-        }
-      }
-      if (obj.events.length > 0) {
-        var totalAmountEvents = 0;
-        for (var j = 0; j < obj.events.length; j++) {
-          totalAmountEvents += parseInt(obj.events[j].cnt);
-        }
-        str += "<div class='createissue'>Performed " + totalAmountEvents + " event(s).</div>";
-        for (var j = 0; j < obj.events.length; j++) {
-          var eve = obj.events[j];
-          str += "<div class='contentissue'>" + eve.kind + " " + eve.cnt + "</div>";
-        }
-      }
-      str += "</div>";
-      str += "</div>";
-    }
+     if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0 || obj.comments.length > 0) {
+       str += "<div class='githubContribution'>";
+       if(obj.commits.length > 0){
+         str += "<div id='ghCommits' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made " + obj.commits.length + " commit(s).</span>";
+         str += "<div id='ghCommits"+rowNr+"' class='contribcontent'>";
+           for (j = 0; j < obj.commits.length; j++) {
+             var message = obj.commits[j].message;
+             var hash = obj.commits[j].cid;
+             str += "<span><a href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></span>";
+           }
+           str += "</div>";
+           str += "</div>";
+       }
+       if (obj.issues.length > 0) {
+          str += "<div id='ghIssues' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Created " + obj.issues.length + " issue(s).</span>";
+          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>";
+          for (j = 0; j < obj.issues.length; j++) {
+            var issue = obj.issues[j];
+            var issuestr = issue.issueno + " " + issue.title;
+            str += "<span><a href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+          }
+          str += "</div>";
+          str += "</div>";
+       }
+       if (obj.comments.length > 0) {
+          str += "<div id='ghComments' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made " + obj.comments.length + " comment(s).</span>";
+          str += "<div id='ghComments"+rowNr+"' class='contribcontent'>";
+            for (j = 0; j < obj.comments.length; j++) {
+              var comment = obj.comments[j];
+              var issuestr = comment.issueno + " " + comment.content;
+              str += "<span><a href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+            }
+          str += "</div>";
+          str += "</div>";
+       }
+       if (obj.events.length > 0) {
+         var totalAmountEvents = 0;
+         for (var j = 0; j < obj.events.length; j++) {
+           totalAmountEvents += parseInt(obj.events[j].cnt);
+         }
+         str += "<div id='ghEvents' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Performed " + totalAmountEvents + " event(s).</span>";
+         str += "<div id='ghEvents"+rowNr+"' class='contribcontent'>";
+         for (var j = 0; j < obj.events.length; j++) {
+           var eve = obj.events[j];
+           str += "<span>" + eve.kind + " " + eve.cnt + "</span>";
+         }
+         str += "</div>";
+         str += "</div>";
+       }
+     }
+     str += "</div>";
   } else {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
   }
   return str;
+}
+
+
+//TODO Gör en funktion som läser in localStorage onload.
+function toggleAfterLocalStorage(data){
+
+  var nrOfWeeks = data['weeks'].length;
+
+  var toggledValues = JSON.parse(localStorage.getItem('contribToggleArr'));
+  var element;
+  var status;
+  for(var i=0; i<nrOfWeeks; i++){
+    var contributionCounter = Object.keys(toggledValues[i]);
+    for(var j=0; j<contributionCounter.length;j++){
+
+      if(j == 0){
+        element = document.getElementById("ghCommits"+i);
+        status = toggledValues[i].commit;
+      }else if(j == 1){
+        element = document.getElementById("ghIssues"+i);
+        status = toggledValues[i].issues;
+      }else if(j == 2){
+        element = document.getElementById("ghComments"+i);
+        status = toggledValues[i].comments;
+      }else if(j == 3){
+        element = document.getElementById("ghEvents"+i);
+        status = toggledValues[i].events;
+      }
+      if(!(element == null)){
+        showMoreContribContent(element.id,status);
+      }
+    }
+  }
+}
+
+function toggleContributionTable(element){
+  var clickedDiv = element.lastChild;
+  var tableCellId = element.lastChild.id[element.lastChild.id.length-1];
+  var localStorageArrStr = localStorage.getItem('contribToggleArr');
+  var togglevalues = JSON.parse(localStorageArrStr);
+  var status;
+
+  if(clickedDiv.id == "ghCommits"+tableCellId){
+    if(togglevalues[tableCellId].commit == 1){
+      togglevalues[tableCellId].commit = 0;
+    }else{
+      togglevalues[tableCellId].commit = 1;
+    }
+    status = togglevalues[tableCellId].commit;
+  }else if(clickedDiv.id == "ghIssues"+tableCellId){
+    if(togglevalues[tableCellId].issues == 1){
+      togglevalues[tableCellId].issues = 0;
+    }else{
+      togglevalues[tableCellId].issues = 1;
+    }
+    status = togglevalues[tableCellId].issues;
+  }else if(clickedDiv.id == "ghComments"+tableCellId){
+    if(togglevalues[tableCellId].comments == 1){
+      togglevalues[tableCellId].comments = 0;
+    }else{
+      togglevalues[tableCellId].comments = 1;
+    }
+    status = togglevalues[tableCellId].comments;
+  }else if(clickedDiv.id == "ghEvents"+tableCellId){
+    if(togglevalues[tableCellId].events == 1){
+      togglevalues[tableCellId].events = 0;
+    }else{
+      togglevalues[tableCellId].events = 1;
+    }
+    status = togglevalues[tableCellId].events;
+  }
+  showMoreContribContent(element.lastChild.id,status);
+  localStorage.setItem('contribToggleArr', JSON.stringify(togglevalues));
+}
+
+function showMoreContribContent(id,status){
+    if(status == 1){
+      document.getElementById(id).classList.add('contribcontentToggle')
+    }else{
+      document.getElementById(id).classList.remove('contribcontentToggle')
+    }
+}
+
+//Create a default localStorage if localStorage doesn't exists. Used onload.
+function loadContribFormLocalStorage(){
+  if(localStorage.getItem('contribToggleArr') == null){
+    localStorage.setItem('contribToggleArr', JSON.stringify(createDefault()));
+  }
+}
+
+//creates the default localStorage values. All tabs should be open from start.
+function createDefault(){
+  var contibArr = [];
+  for(var i =0; i<10; i++){ // 10 represents 10 weeks in the course.
+    var values = {
+      commit:1,
+      issues:1,
+      comments:1,
+      events:1
+    }
+    contibArr.push(values);
+  }
+  return contibArr;
 }
