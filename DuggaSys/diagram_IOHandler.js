@@ -86,12 +86,14 @@ function Save() {
 
 function SaveState() {
     Save();
+    diagramNumberHistory = localStorage.length - 3;
     if (diagramNumberHistory < diagramNumber) {
         diagramNumberHistory++;
         diagramNumber = diagramNumberHistory;
     } else {
-        diagramNumber++;
-        diagramNumberHistory = diagramNumber;
+        // diagramNumber++;
+        // diagramNumberHistory = diagramNumber;
+        diagramNumber = ++diagramNumberHistory;
     }
     localStorage.setItem("diagram" + diagramNumber, a);
     for (var key in localStorage) {
@@ -122,6 +124,11 @@ function LoadImport(fileContent) {
 
 function loadDiagram() {
     var checkLocalStorage = localStorage.getItem('localdiagram');
+    for(var i = 0; i < localStorage.length; i++){
+        if(localStorage.getItem(`diagram${i}`) != null){
+            console.log(`diagram${i}`)
+        }
+    }
     //loacal storage and hash
     if (checkLocalStorage != "" && checkLocalStorage != null) {
         var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
