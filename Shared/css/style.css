@@ -1493,7 +1493,7 @@ input {
   top: 100px;
 }
 
-#hotkey-undo, #hotkey-save, #hotkey-Snap-Grid, #hotkey-Distribute-Horizontal {
+#hotkey-undo, #hotkey-save, #hotkey-Distribute-Horizontal {
   right: 5px;
   top: 10px;
 }
@@ -1563,7 +1563,7 @@ input {
   top: 195px;
 }
 
-#hotkey-developerMode{
+#hotkey-developerMode, #hotkey-Snap-Grid{
     right: 35px;
     top: 10px;
 }
