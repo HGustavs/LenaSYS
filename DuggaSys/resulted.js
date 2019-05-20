@@ -297,7 +297,7 @@ function hovers() {
 
 function leaves() {
 	$('#dropdowns').css('display', 'none');
-	setTimeout (  4000 );
+	$('#dropdowns').setTimeout (  4000 );
 	var col = 0;
 	var dir = 1;
 
