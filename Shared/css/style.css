@@ -2457,6 +2457,7 @@ span.arrow {
 
 .resultTableCell{
 		margin:2px;
+    height: 90%;
 }
 
 .resultTableText {
@@ -2879,7 +2880,6 @@ span.arrow {
 
 .dugga-moment {
   background-image: url('../icons/Stripes2.png');
-  height: 90%;
 }
 
 .dugga-result-subheader {
