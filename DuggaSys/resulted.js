@@ -341,7 +341,7 @@ function sorttype(t) {
 }
 
 function magicHeading() {
-	setTimeout(function(){ alert("Heello"); }, 100);
+	setTimeout(function(){100});
 }
 
 $(function () {
