@@ -548,7 +548,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 
 	var str = "";
 	if (filetype === "text") {
-		str += "<textarea style='width: 150%;height: 100%;box-sizing: border-box;'>" + allData["files"][allData["duggaentry"]][fileindex].content + "</textarea>";
+		str += "<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>" + allData["files"][allData["duggaentry"]][fileindex].content + "</textarea>";
 	} else if (filetype === "link") {
 		var filename = allData["files"][allData["duggaentry"]][fileindex].content;
 		if (window.location.protocol === "https:") {
@@ -556,7 +556,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		} else {
 			filename = filename.replace("https://", "http://");
 		}
-		str += '<iframe src="' + filename + '" width="100%" height="100%" />';
+		str += '<iframe src="' + filename + '" width="100%" height="150%" />';
 	} else {
 		if (fileext === "pdf") {
 			str += '<embed src="' + filepath + filename + fileseq + '.' + fileext + '" width="100%" height="100%" type="application/pdf" />';
