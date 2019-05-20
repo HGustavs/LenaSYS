@@ -412,7 +412,7 @@ function keyDownHandler(e) {
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
+    } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) { 
         arrowKeyPressed(key);
         moveCanvasView(key);
     } else if(key == ctrlKey || key == windowsKey) {
@@ -497,6 +497,14 @@ function keyDownHandler(e) {
           toggleVirtualA4HolesRight();
     } else if(shiftIsClicked && key == iKey) {
           openImportDialog();
+    } else if(shiftIsClicked && key == upArrow) {
+          align(event, 'top');
+    } else if(shiftIsClicked && key == rightArrow) {
+          align(event, 'right');
+    } else if(shiftIsClicked && key == downArrow) {
+          align(event, 'bottom');
+    } else if(shiftIsClicked && key == leftArrow) {
+          align(event, 'left');
     }
 
     /* Add this when we add function to load and save options in the menu.

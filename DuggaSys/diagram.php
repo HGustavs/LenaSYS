@@ -251,20 +251,25 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="toggleGrid(event)">Snap to grid</span>
+                                <i id="hotkey-Snap-Grid" class="hotKeys">Shift + K</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
+                                <i id="hotkey-Align-Top" class="hotKeys">Shift + ⇧ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
+                                <i id="hotkey-Align-Right" class="hotKeys">Shift + ⇨ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
+                                <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ⇩ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
+                                <i id="hotkey-Align-Left" class="hotKeys">Shift + ⇦ </i>
                             </div>
                             <div class="drop-down-divider">
                             </div>

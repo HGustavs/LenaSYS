@@ -1493,7 +1493,7 @@ input {
   top: 100px;
 }
 
-#hotkey-undo, #hotkey-save {
+#hotkey-undo, #hotkey-save, #hotkey-Snap-Grid {
   right: 5px;
   top: 10px;
 }
@@ -1576,6 +1576,26 @@ input {
 #hotkey-UML {
   right: 35px;
   top: 120px;
+}
+
+#hotkey-Align-Top {
+  right: 5px;
+  top: 55px;
+}
+
+#hotkey-Align-Right {
+  right: 5px;
+  top: 87px;
+}
+
+#hotkey-Align-Bottom {
+  right: 5px;
+  top: 120px;
+}
+
+#hotkey-Align-Left {
+  right: 5px;
+  top: 151px;
 }
 
 .drop-down-item #hotkey-delete {
