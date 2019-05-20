@@ -192,6 +192,14 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='addGroupToSelected(event)'>Add group to selected</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Remove group from selected</span>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
                                 <i id="hotkey-resetView" class="hotKeys">Shift + 0</i>
                             </div>
@@ -434,23 +442,6 @@
                 </div>
                 <div id="importButtonWrap" class="importButtonWrap">
                     <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Error message when non objects are not composite-->
-    <div id="errorMessageDialog" class="loginBoxContainer importDiagram">
-        <div class="loginBox messageContainer">
-            <div class="loginBoxheader messageHeader">
-                <h3 id="errorMessage"></h3>
-                <div class='cursorPointer' onclick='closeErrorMessageDialog();'>
-                    x
-                </div>
-            </div>
-            <div class="mode-wrap">
-                <div id="importButtonWrap" class="importButtonWrap">
-                    <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
                 </div>
             </div>
         </div>
