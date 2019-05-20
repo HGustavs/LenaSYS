@@ -168,68 +168,6 @@ const rightMouseClick = 2;
 // This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
 var rightClick = false;
 
-// Used to set the coordinates where a right click was made.
-document.addEventListener("mousedown", function(e)
-    {
-        if (e.button == rightMouseClick) {
-            canvasRightClick = 1;
-            if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
-                InitPageX = e.pageX;
-                InitPageY = e.pageY;
-                rightClick = true;
-            }
-        }
-    },
-    false
-);
-
-// Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
-window.addEventListener("mousemove", function(e) {
-        // deltas are used to determine the range of which the mouse is allowed to move when pressed.
-        deltaX = 2;
-        deltaY = 2;
-        if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
-            // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
-            diffX = e.pageX - InitPageX;
-            diffY = e.pageY - InitPageY;
-            if (
-                (diffX > deltaX) || (diffX < -deltaX)
-                ||
-                (diffY > deltaY) || (diffY < -deltaY)
-            ) {
-                rightClick = false;
-                // Entering MoveAround mode
-                if (uimode != "MoveAround") {
-                    activateMovearound();
-                }
-                updateGraphics();
-            }
-            else {
-                // If click event is needed, it goes in here.
-                rightClick = true;
-            }
-        }
-    },
-    false
-);
-
-// Deactivate MoveAround by releasing the mouse
-window.addEventListener("mouseup", function(e) {
-        if (e.button == rightMouseClick) {
-            canvasRightClick = 0;
-        }
-
-        delete InitPageX;
-        delete InitPageY;
-        // Making sure the MoveAround was not initialized by the spacebar.
-        if (uimode == "MoveAround" && !spacebarKeyPressed) {
-            deactivateMovearound();
-            updateGraphics();
-        }
-    },
-    false
-);
-
 // Hides the context menu. Needed in order to be able to right click and drag to move the camera.
 window.addEventListener('contextmenu', function (e) {
         if (rightClick != true) {
@@ -2883,6 +2821,31 @@ function mousemoveevt(ev, t) {
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
+    // deltas are used to determine the range of which the mouse is allowed to move when pressed.
+    deltaX = 2;
+    deltaY = 2;
+    if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
+        // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
+        diffX = ev.pageX - InitPageX;
+        diffY = ev.pageY - InitPageY;
+        if (
+            (diffX > deltaX) || (diffX < -deltaX)
+            ||
+            (diffY > deltaY) || (diffY < -deltaY)
+        ) {
+            rightClick = false;
+            // Entering MoveAround mode
+            if (uimode != "MoveAround") {
+                activateMovearound();
+            }
+            updateGraphics();
+        }
+        else {
+            // If click event is needed, it goes in here.
+            rightClick = true;
+        }
+    }
+
     if(canvasLeftClick == 1 && uimode == "MoveAround") {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
@@ -3164,6 +3127,15 @@ function mousedownevt(ev) {
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
+    if (ev.button == rightMouseClick) {
+        canvasRightClick = 1;
+        if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+            InitPageX = ev.pageX;
+            InitPageY = ev.pageY;
+            rightClick = true;
+        }
+    }
+
     if(uimode == "Moved" && md != mouseState.boxSelectOrCreateMode) {
         uimode = "normal";
         md = mouseState.empty;
@@ -3252,6 +3224,18 @@ function handleSelect() {
 function mouseupevt(ev) {
     canvasLeftClick = 0;
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+
+    if (ev.button == rightMouseClick) {
+        canvasRightClick = 0;
+    }
+
+    delete InitPageX;
+    delete InitPageY;
+    // Making sure the MoveAround was not initialized by the spacebar.
+    if (uimode == "MoveAround" && !spacebarKeyPressed) {
+        deactivateMovearound();
+        updateGraphics();
+    }
 
     //for checking the position of errelation before resize() overwrites values
     var p1BeforeResize;
