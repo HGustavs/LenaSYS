@@ -33,6 +33,21 @@ AJAXService("get", {}, "DIAGRAM");
 
 ************************************************************/
 
+//--------------------------------------------------------------------
+// diagram - Stores a global list of diagram objects
+//           A diagram object could for instance be a path, or a symbol
+//--------------------------------------------------------------------
+
+var diagram = [];
+
+diagram.serialNumbers = {
+    Attribute: 0,
+    Entity: 0,
+    Relation: 0,
+    UML: 0,
+    Text: 0,
+};
+
 const kind = {
     path: 1,
     symbol: 2
@@ -368,13 +383,6 @@ function resetButtonsPressed() {
     ctrlIsClicked = false;
     shiftIsClicked = false;
 }
-
-//--------------------------------------------------------------------
-// diagram - Stores a global list of diagram objects
-//           A diagram object could for instance be a path, or a symbol
-//--------------------------------------------------------------------
-
-var diagram = [];
 
 function keyDownHandler(e) {
     var key = e.keyCode;
@@ -865,6 +873,10 @@ diagram.deleteObject = function(object) {
         if (this[i] == object) {
             this.splice(i, 1);
         }
+    }
+    if(diagram.length == 0){
+        resetSerialNumbers();
+        removeLocalStorage();
     }
 }
 
@@ -1789,6 +1801,16 @@ function gridToSVG(width, height) {
 //              it hides the points by placing them beyond the users view.
 //------------------------------------------------------------------------------
 
+function resetSerialNumbers(){
+    diagram.serialNumbers = {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    }
+}
+
 function clearCanvas() {
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
@@ -1797,6 +1819,7 @@ function clearCanvas() {
     for (var i = 0; i < points.length;) {
         points.pop();
     }
+    resetSerialNumbers();
     updateGraphics();
     SaveState();
 }
@@ -2043,6 +2066,7 @@ function loadDiagram() {
             for (var i = 0; i < b.points.length; i++) {
                 points[i] = b.points[i];
             }
+            diagram.serialNumbers = JSON.parse(localStorage.getItem('SerialNumbers'));
         }
     }
     deselectObjects();
@@ -2077,16 +2101,16 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
          + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
+         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
          + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
     if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
       document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
        + Math.round((zoomValue * 100)) + "%" + " </p>";
       document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
-       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) " 
-       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" 
+       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
+       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
+       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
        + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
     }
     } else {
@@ -3411,8 +3435,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        var newValue = checkDuplicate("New", symbolKind.uml);
-        classB.name = "New" + newValue;
+        classB.name = "New " + diagram.serialNumbers.UML;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3424,10 +3447,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        diagram.serialNumbers.UML++;
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        var newValue = checkDuplicate("Attr", symbolKind.erAttribute);
-        erAttributeA.name = "Attr" + newValue;
+        erAttributeA.name = "Attr " + diagram.serialNumbers.Attribute;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3438,10 +3461,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        diagram.serialNumbers.Attribute++;
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        var newValue = checkDuplicate("Entity", symbolKind.erEntity);
-        erEnityA.name = "Entity" + newValue;;
+        erEnityA.name = "Entity " + diagram.serialNumbers.Entity;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3453,13 +3476,14 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        diagram.serialNumbers.Entity++;
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             erLineA = new Symbol(symbolKind.line); // Lines
-            erLineA.name = "Line" + diagram.length
+            erLineA.name = "Line" + diagram.length;
             erLineA.topLeft = p1;
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
@@ -3475,8 +3499,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        var newValue = checkDuplicate("Relation", symbolKind.erRelation);
-        erRelationA.name = "Relation" + newValue;
+        erRelationA.name = "Relation " + diagram.serialNumbers.Relation;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3486,6 +3509,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        diagram.serialNumbers.Relation++;
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
         // clicking on a lock removes it
@@ -3527,7 +3551,7 @@ function mouseupevt(ev) {
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
-            umlLineA.name = "Line" + diagram.length
+            umlLineA.name = "Line" + diagram.length;
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
@@ -3564,16 +3588,6 @@ function mouseupevt(ev) {
     if(saveState) SaveState();
 }
 
-function countNumberOfSymbolKind(kind) {
-  var numberOfSymbolKind = 0;
-  for(let i = 0; i < diagram.length; i++) {
-      if(diagram[i].symbolkind == kind) {
-          numberOfSymbolKind++;
-      }
-  }
-  return numberOfSymbolKind;
-}
-
 function doubleclick(ev) {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
@@ -3582,8 +3596,8 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    var newValue = checkDuplicate("Text ", symbolKind.text);
-    text.name = "Text " + newValue;
+    text.name = "Text " + diagram.serialNumbers.Text;
+    diagram.serialNumbers.Text++;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
@@ -4036,14 +4050,7 @@ function changeCardinality(isUML) {
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
 }
-// Checks if there are any duplicates of entities with the same name.
-function checkDuplicate(name, kind) {
-    var numberOfSymbolKind = 0;
-    for(let i = 0; i < diagram.length; i++) {
-        //Checks for duplicates with the same number and adds +1 to it.
-        if (diagram[i].name == name + countNumberOfSymbolKind(kind)) {
-            numberOfSymbolKind = 1;
-        }
-    }
-    return countNumberOfSymbolKind(kind) + numberOfSymbolKind;
+//Close the errorMessageDialog for Composite
+function closeErrorMessageDialog() {
+    $("#errorMessageDialog").hide();
 }
