@@ -341,6 +341,7 @@ function sorttype(t) {
 }
 
 function magicHeading() {
+	setTimeout(function(){ '#dropdowns' }, 100);
 }
 
 $(function () {
