@@ -538,7 +538,7 @@ function moveDist(e) {
 
 function displayPreview(filepath, filename, fileseq, filetype, fileext, fileindex, displaystate) {
 	clickedindex = fileindex;
-	document.getElementById("responseArea").outerHTML = '<textarea id="responseArea" style="width: 100%;height:200%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">' + allData["files"][allData["duggaentry"]][clickedindex].feedback + '</textarea>'
+	document.getElementById("responseArea").outerHTML = '<textarea id="responseArea" style="width: 100%;height:100%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">' + allData["files"][allData["duggaentry"]][clickedindex].feedback + '</textarea>'
 
 	if (displaystate) {
 		document.getElementById("markMenuPlaceholderz").style.display = "block";
@@ -548,7 +548,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 
 	var str = "";
 	if (filetype === "text") {
-		str += "<textarea style='width: 100%;height:200%;box-sizing: border-box;'>" + allData["files"][allData["duggaentry"]][fileindex].content + "</textarea>";
+		str += "<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>" + allData["files"][allData["duggaentry"]][fileindex].content + "</textarea>";
 	} else if (filetype === "link") {
 		var filename = allData["files"][allData["duggaentry"]][fileindex].content;
 		if (window.location.protocol === "https:") {
@@ -563,7 +563,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		} else if (fileext === "zip" || fileext === "rar") {
 			str += '<a href="' + filepath + filename + fileseq + '.' + fileext + '"/>' + filename + '.' + fileext + '</a>';
 		} else if (fileext === "txt") {
-			str += "<pre style='width: 100%;height:200%;box-sizing: border-box;'>" + allData["files"][allData["duggaentry"]][fileindex].content + "</pre>";
+			str += "<pre style='width: 100%;height: 100%;box-sizing: border-box;'>" + allData["files"][allData["duggaentry"]][fileindex].content + "</pre>";
 		}
 	}
 	document.getElementById("popPrev").innerHTML = str;
@@ -802,7 +802,7 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div style='padding:12px;' class='resultTableCell ";
+			str = "<div style='padding:10px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "dugga-pending";
 			}
@@ -861,7 +861,7 @@ function renderCell(col, celldata, cellid) {
 				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
-				str = "<div style='padding:12px;' class='resultTableCell ";
+				str = "<div style='padding:10px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
 				}
@@ -931,7 +931,7 @@ function renderCell(col, celldata, cellid) {
 
 	} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 		// color based on pass,fail,pending,assigned,unassigned
-		str = "<div style='padding:12px;' class='resultTableCell ";
+		str = "<div style='padding:10px;' class='resultTableCell ";
 		if (celldata.kind == 4) {
 			str += "dugga-moment ";
 		}
