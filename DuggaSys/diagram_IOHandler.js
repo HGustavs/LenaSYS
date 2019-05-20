@@ -28,7 +28,7 @@ function downloadMode(el) {
 function saveToServer(dia) {
     $.ajax({
         url: 'diagram.php',
-        type: 'POST', 
+        type: 'POST',
         data: {StringDiagram : dia, Hash: hashFunction()}
     });
 }
@@ -224,6 +224,7 @@ function removeLocalStorage() {
     for (var i = 0; i < localStorage.length; i++) {
         localStorage.removeItem("diagram" + i);
     }
+    diagramNumber = 0;
     localStorage.setItem("diagramNumber", 0);
 }
 
