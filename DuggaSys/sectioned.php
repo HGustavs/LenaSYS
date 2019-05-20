@@ -47,7 +47,7 @@
 					<td class='editVers' style='display: inline-block;'>
 						<div class='editVers menuButton'>
 							<!--<button type='button' class='submit-button no-radius' style='width:35px;margin-left:0px' title='Edit the selected version' onclick='showEditVersion();'> -->
-								<img id='versionCog' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>
+								<img id='versionCog' class='submit-button no-radius' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>
 							<!--</button>-->
 						</div>
 					</td>
