@@ -275,11 +275,11 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'horizontalCenter');">Horizontal center</span>
-                                <i id="hotkey-Align-Horizontal" class="hotKeys">Shift + , </i>
+                                <i id="hotkey-Align-Horizontal" class="hotKeys">Shift + ' , ' </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'verticalCenter');">Vertical center</span>
-                                <i id="hotkey-Align-Vertical" class="hotKeys">Shift + . </i>
+                                <i id="hotkey-Align-Vertical" class="hotKeys">Shift + ' . ' </i>
                             </div>
                         </div>
                     </div>
@@ -288,7 +288,7 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="distribute(event, 'horizontally');">Horizontal</span>
-                                <i id="hotkey-Distribute-Vertical" class="hotKeys">Shift + < </i>
+                                <i id="hotkey-Distribute-Vertical" class="hotKeys">Shift + ' < ' </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="distribute(event, 'vertically');">Vertical</span>
