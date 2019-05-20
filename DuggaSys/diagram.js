@@ -173,6 +173,9 @@ const oKey = 79;
 const windowsKey = 91;
 const num1 = 97;
 const num2 = 98;
+const commaKey = 188;
+const periodKey = 190;
+const lessThanKey = 226;
 
 // Mouse clicks
 const rightMouseClick = 2;
@@ -412,7 +415,7 @@ function keyDownHandler(e) {
             deactivateMovearound();
         }
         updateGraphics();
-    } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) { 
+    } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) {
         arrowKeyPressed(key);
         moveCanvasView(key);
     } else if(key == ctrlKey || key == windowsKey) {
@@ -505,6 +508,14 @@ function keyDownHandler(e) {
           align(event, 'bottom');
     } else if(shiftIsClicked && key == leftArrow) {
           align(event, 'left');
+    } else if(shiftIsClicked && key == commaKey) {
+          align(event, 'horizontalCenter');
+    } else if(shiftIsClicked && key == periodKey) {
+          align(event, 'verticalCenter');
+    } else if(shiftIsClicked && key == zKey) {
+          distribute(event, 'horizontally');
+    } else if(shiftIsClicked && key == lessThanKey) {
+          distribute(event, 'vertically');
     }
 
     /* Add this when we add function to load and save options in the menu.

@@ -1493,12 +1493,12 @@ input {
   top: 100px;
 }
 
-#hotkey-undo, #hotkey-save, #hotkey-Snap-Grid {
+#hotkey-undo, #hotkey-save, #hotkey-Snap-Grid, #hotkey-Distribute-Horizontal {
   right: 5px;
   top: 10px;
 }
 
-#hotkey-redo, #hotkey-load {
+#hotkey-redo, #hotkey-load, #hotkey-Distribute-Vertical {
   right: 5px;
   top: 43px;
 }
@@ -1596,6 +1596,16 @@ input {
 #hotkey-Align-Left {
   right: 5px;
   top: 151px;
+}
+
+#hotkey-Align-Horizontal {
+  right: 5px;
+  top: 195px;
+}
+
+#hotkey-Align-Vertical {
+  right: 5px;
+  top: 228px;
 }
 
 .drop-down-item #hotkey-delete {
