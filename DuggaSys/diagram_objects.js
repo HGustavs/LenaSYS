@@ -799,7 +799,7 @@ function Symbol(kindOfSymbol) {
     }
 
     //----------------------------------------------------------------
-    // getConnectedObjects: returns an array with the two objects that a specific line is connected to,
+    // getConnectedObjects: returns an array with the objects that a specific line is connected to,
     //                      function is used on line objects
     //----------------------------------------------------------------
 
