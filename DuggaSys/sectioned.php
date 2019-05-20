@@ -92,13 +92,15 @@
 					<td class='tests' style='display: inline-block;'>
 						<div class='tests menuButton'>
 							<a id='testsBTN' value='Tests' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
-								<img id='testsBTN' title='Show tests' class="navButt" src='../Shared/icons/files_icon.svg'>
+								<img id='testsBTN' class="navButt" src='../Shared/icons/files_icon.svg'>
 							</a>
 						</div>
 					</td>
 					<td class='files' style='display: inline-block;'>
 						<div class='files menuButton'>
-						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
+							<a id='filesBTN' title='Show files' value='Files' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'>
+								<img class="navButt" src='../Shared/icons/files_icon.svg'>
+							</a>
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
