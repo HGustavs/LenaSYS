@@ -124,7 +124,6 @@ var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramNumber = 0;           // Is used for undo and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var classAppearanceOpen = false;
