@@ -8,6 +8,8 @@ var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
+var searchterm = "";
+var accessFilter = "";		// W or R
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -15,8 +17,8 @@ var myTable;
 
 function setup() {
 
-	if (localStorage.getItem("accessFilter") != null) {
-		accessFilter = localStorage.getItem("accessFilter");
+	if (localStorage.getItem("accessFilter"+querystring['cid']) != null) {
+		accessFilter = localStorage.getItem("accessFilter"+querystring['cid']);
 	}
 
 	var filt = "";
@@ -29,11 +31,11 @@ function setup() {
 	filt += `onclick='searchTable()' type='button'>`;
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
 	filt += `</button></td>`;
-	filt += "<td><span>";
+	filt += "<td class='navButt'><span>";
 	filt += "<input id='filterTeachers' type='checkbox' value='W' onchange='filterAccess()'></input>";
-	filt += "<label for='filterTeachers'>Teachers</label>";
+	filt += "<label for='filterTeachers'>Teachers only</label>";
 	filt += "<input id='filterStudents' type='checkbox' value='R' onchange='filterAccess()'></input>";
-	filt += "<label for='filterStudents'>Students</label>";
+	filt += "<label for='filterStudents'>Students only</label>";
 	filt += "</span></td>";
 
 	$("#sort").after(filt);
@@ -407,9 +409,6 @@ function updateCellCallback(rowno, colno, column, tableid) {
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
-var searchterm = "";
-var accessFilter = "";		// W or R
-
 function rowFilter(row) {
 	// First check if we want to filter by teachers/students. W = teacher, R = student.
 	if (row["access"].indexOf(accessFilter) != -1) {
@@ -633,7 +632,8 @@ function filterAccess() {
 		accessFilter="R";
 	}
 
-	console.log(accessFilter);
-	localStorage.setItem("accessFilter", accessFilter);
+	console.log(querystring['cid']);
+	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
+	localStorage.setItem("accessFilter"+querystring['cid'], accessFilter);
 	myTable.reRender();
 }
