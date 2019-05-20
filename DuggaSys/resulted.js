@@ -296,7 +296,7 @@ function hovers() {
 }
 
 function leaves() {
-	mouse_monitor = setTimeout(function(){
+	 setTimeout(function(){
 		$('#dropdowns').css('display', 'none');
 	},9000);
 	
