@@ -2058,7 +2058,7 @@ function drawLockedTooltip(symbol) {
     var yOffset = 13;
     // Different size when hovering the lock itself and the entity, for displaying different amount of text
     var ySize = symbol.isLockHovered ? 34 : 16;
-    var xSize = symbol.isLockHovered ? 115 : 85; 
+    var xSize = 85; 
     // Draw tooltip background
     ctx.fillStyle = "#f5f5f5";
     ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
@@ -2071,7 +2071,7 @@ function drawLockedTooltip(symbol) {
     if (symbol.isLockHovered) {
         ctx.fillStyle = "red";
         yOffset += 16;
-        ctx.fillText("Click to unlock object", position.x, position.y + yOffset * diagram.getZoomValue());
+        ctx.fillText("Click to unlock", position.x, position.y + yOffset * diagram.getZoomValue());
     }
     ctx.restore();
 }

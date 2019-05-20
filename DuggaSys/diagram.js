@@ -2917,23 +2917,28 @@ function mousemoveevt(ev, t) {
                     }
                 }
             } else {
-                  if(uimode == "MoveAround") {
-                      canvas.style.cursor = "all-scroll";
-                  } else if (uimode == "CreateLine") {
-                      //When CreateLine-button is selected the cursor is "pointer".
-                      canvas.style.cursor = "pointer";
-                      //If objects are hovered while button is selected, the cursor remains the same (pointer).
-                  } else if(hoveredObject && !hoveredObject.isLocked) {
-                        if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
+                if (uimode == "MoveAround") {
+                    canvas.style.cursor = "all-scroll";
+                } else if (uimode == "CreateLine") {
+                    //When CreateLine-button is selected the cursor is "pointer".
+                    canvas.style.cursor = "pointer";
+                    //If objects are hovered while button is selected, the cursor remains the same (pointer).
+                } else if (hoveredObject && !hoveredObject.isLocked) {
+                    if (hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
+                        canvas.style.cursor = "pointer";
+                    } else {
+                        canvas.style.cursor = "all-scroll";
+                    }
+                } else {
+                    canvas.style.cursor = "default";
+                    // set cursor to pointer if a lock is hovered
+                    for (var i = 0; i < diagram.length; i++) {
+                        if (diagram[i].isLockHovered) {
                             canvas.style.cursor = "pointer";
-                        } else {
-                            canvas.style.cursor = "all-scroll";
                         }
-                  } else {
-                      canvas.style.cursor = "default";
-                  }
-              }
-
+                    }
+                }
+            }
             // If mouse is not pressed highlight closest point
             points.clearAllSelects();
             movobj = diagram.itemClicked();
@@ -3500,7 +3505,7 @@ function mouseupevt(ev) {
         // clicking on a lock removes it
         if (currentMouseCoordinateX == startMouseCoordinateX && currentMouseCoordinateY == startMouseCoordinateY) {
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].isLocked){
+                if (diagram[i].isLocked) {
                     setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
                     if (diagram[i].isLockHovered) {
                         diagram[i].isLocked = false;
@@ -4044,7 +4049,6 @@ function changeCardinality(isUML) {
 
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
-    console.log("lineDirection " + diagram[lastSelectedObject].lineDirection);
 }
 
 //Close the errorMessageDialog for Composite
