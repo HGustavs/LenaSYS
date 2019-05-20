@@ -20,6 +20,7 @@ $filename = getOP('filename');
 $kind = getOP('kind');
 $contents = getOP('contents');
 $debug = "NONE!";
+$studentTeacher = false;
 
 $log_uuid = getOP('log_uuid');
 $info = $opt . " " . $cid . " " . $coursevers . " " . $fid . " " . $filename . " " . $kind;
@@ -30,7 +31,9 @@ if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUs
 } else {
     $hasAccess = false;
 }
-
+if (hasAccess($userid, $cid, 'st')) {
+    $studentTeacher = true;
+}
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
@@ -194,7 +197,8 @@ $array = array(
     'debug' => $debug,
     'gfiles' => $gfiles,
     'lfiles' => $lfiles,
-    'access' => $access
+    'access' => $access,
+    'studentteacher' => $studentTeacher
 );
 
 echo json_encode($array);
