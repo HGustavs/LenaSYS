@@ -21,7 +21,7 @@ var sortcolumn = 1;
 var clickedindex;
 var typechanged = false;
 var teacher;
-var entriesNoSSN;
+var entries;
 var moments;
 var results;
 var versions;
@@ -89,9 +89,9 @@ function process() {
 
 	// Reconstitute table
 	students = new Array;
-	for (i = 0; i < entriesNoSSN.length; i++) {
+	for (i = 0; i < entries.length; i++) {
 
-		var uid = entriesNoSSN[i].uid;
+		var uid = entries[i].uid;
 
 		// Loop through all teacher names and store the appropriate name in a variable
 		for (j = 0; j < teacher.length; j++) {
@@ -117,7 +117,7 @@ function process() {
 		}
 		var student = new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({ grade: ("<div class='dugga-result-div'>" + entriesNoSSN[i].firstname + " " + entriesNoSSN[i].lastname + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].username + " / " + entriesNoSSN[i].class + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, class: entriesNoSSN[i].class, access: entriesNoSSN[i].access, setTeacher, username: entriesNoSSN[i].username });
+		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname ,class: entries[i].class, access: entries[i].access, setTeacher, username: entries[i].username, ssn: entries[i].ssn });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
 			if (momtmp[j].kind == 4) {
@@ -129,9 +129,9 @@ function process() {
 				var momentresult = restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if (typeof momentresult != 'undefined') {
-					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
+					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
 				} else {
-					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, deadline: new Date(momtmp[j].deadline), });
+					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadline), });
 				}
 			} else {
 				var momentresult = restmp[momtmp[j].lid];
@@ -155,8 +155,8 @@ function process() {
 						quizfile: momtmp[j].quizfile,
 						timesGraded: momentresult.timesGraded,
 						gradeExpire: momentresult.gradeExpire,
-						firstname: entriesNoSSN[i].firstname,
-						lastname: entriesNoSSN[i].lastname,
+						firstname: entries[i].firstname,
+						lastname: entries[i].lastname,
 						deadline: new Date((momtmp[j].deadlinets * 1000)),
 					});
 				} else {
@@ -179,8 +179,8 @@ function process() {
 						quizfile: momtmp[j].quizfile,
 						timesGraded: 0,
 						gradeExpire: "UNK",
-						firstname: entriesNoSSN[i].firstname,
-						lastname: entriesNoSSN[i].lastname,
+						firstname: entries[i].firstname,
+						lastname: entries[i].lastname,
 						deadline: new Date(momtmp[j].deadline),
 					});
 				}
@@ -346,17 +346,23 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	var momentGrab = moment;
 	var currentTime = new Date();
 	var currentTimeGetTime = currentTime.getTime();
+	if(document.getElementById('newFeedback') == null){
+		feedbackText = "";
+	} else {		
+		feedbackText = document.getElementById('newFeedback').value;
+	}
 
 	if ($(e.target).hasClass("Uc")) {
-		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
+		
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
-		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("Gc")) {
-		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("VGc")) {
-		changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 	} else if ($(e.target).hasClass("U")) {
-		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 	} else if ($(e.target).hasClass("Uh")) {
 		for (var a = 0; a < students.length; a++) {
 			var student = students[a];
@@ -377,7 +383,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					if (newGradeExpirePlusOneDay > currentTimeGetTime) {
 						//The user must press the ctrl-key to activate if-statement
 						if (event.ctrlKey || event.metaKey) {
-							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 						} else {
 							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
 						}
@@ -391,9 +397,14 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		//alert("This grading is not OK!");
 	}
 }
+function clearFeedback() {
+	if(document.getElementById('newFeedback') !== null) {
+		document.getElementById('newFeedback').value = "";
+	}
+}
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind, gfx, cls, qvariant, qid) {
-	return "<img src=\"" + gfx + "\" id=\"grade-" + moment + "-" + uid + "\" class=\"" + cls + "\" onclick=\"gradeDugga(event," + gradesys + "," + cid + ",'" + vers + "'," + moment + "," + uid + "," + mark + ",'" + ukind + "'," + qvariant + "," + qid + ");\"  />";
+	return "<img src=\"" + gfx + "\" id=\"grade-" + moment + "-" + uid + "\" class=\"" + cls + "\" onclick=\"gradeDugga(event," + gradesys + "," + cid + ",'" + vers + "'," + moment + "," + uid + "," + mark + ",'" + ukind + "'," + qvariant + "," + qid + ");clearFeedback();\"  />";
 }
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid) {
@@ -486,11 +497,8 @@ function toggleGradeBox(){
 	}
 }
 
-function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
-	var newFeedback = "UNK";
-	if (document.getElementById('newFeedback') !== null) {
-		newFeedback = document.getElementById('newFeedback').value;
-	}
+function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire, feedbackText) {
+	var newFeedback = feedbackText;
 	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
 }
 
@@ -598,7 +606,7 @@ function returnedResults(data) {
 		myTable.renderTable();
 	} else {
 
-		entriesNoSSN = data.entriesNoSSN;
+		entries = data.entries;
 		moments = data.moments;
 		versions = data.versions;
 		results = data.results;
@@ -770,7 +778,66 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		}
 		// Render passed deadline duggas
-	} else if(filterList["passedDeadline"]){
+	} else if(filterList["onlyPending"]){
+		// First column (Fname/Lname/SSN)
+		if (col == "FnameLname") {
+			str = "<div class='resultTableCell resultTableNormal'>";
+			str += "<div class='resultTableText'>";
+			str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
+			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+			str += "</div>";
+			return str;	
+		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
+			// color based on pass,fail,pending,assigned,unassigned
+			str = "<div style='padding:10px;' class='resultTableCell ";
+			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+				str += "dugga-pending";
+			} 
+			str += "'>";
+			// Creation of grading buttons		
+			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+				str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null) {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1) {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist";
+				if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
+					str += " grading-hidden";
+				}
+				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+				str += "/>";
+				//Print times graded
+				str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+				if (celldata.timesGraded !== 0) {
+					str += '(' + celldata.timesGraded + ')';
+				}
+				str += "</div>";
+				str += "</div>";
+
+				// Print submitted time and change color to red if passed deadline
+				str += "<div class='text-center resultTableText'>";
+				if (celldata.submitted.getTime() !== timeZero.getTime()) {
+					str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+				}
+				for (var p = 0; p < moments.length; p++) {
+					if (moments[p].link == celldata.quizId) {
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
+							str += "<img src='../Shared/icons/warningTriangle.svg' style='width:12px;height:12px;' title='Late submission'>";
+						}
+						break;
+					}
+				}
+				str += "</div>";
+			}
+			return str;	
+		} 
+	}	
+	
+	else if(filterList["passedDeadline"]){
 				// First column (Fname/Lname/SSN)
 			if (col == "FnameLname") {
 				str = "<div class='resultTableCell resultTableNormal'>";
@@ -845,6 +912,7 @@ function renderCell(col, celldata, cellid) {
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
 		str += "</div>";
 		return str;
 
@@ -932,7 +1000,7 @@ function renderCell(col, celldata, cellid) {
 		return str;
 	}
 
-	return celldata;
+	return celldata; //editor says it is never reached, might be safe to remove
 }
 
 function smartSearch(splitSearch, row) {
@@ -1064,10 +1132,10 @@ function rowFilter(row) {
 					return true;
 				}
 
-				// if (row[colname]["ssn"] != null) {
-				// 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-				// 		return true;
-				// }
+				 if (row[colname]["ssn"] != null) {
+				 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+				 		return true;
+					}
 				if (row[colname]["username"] != null) {
 					if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
 						return true;
@@ -1226,6 +1294,12 @@ function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
+			if (cell.ssn.length > 11) {
+				str = cell.ssn + ";";
+			} else {
+				str = "19" + cell.ssn + ";";
+			}
+
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
 			str = str.replace(/\&Aring\;/g, "Å");
@@ -1266,7 +1340,7 @@ function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
-			str = "Namn";
+			str = "Personnummer;Namn";
 		} else {
 			heading = heading.replace(/\&aring\;/g, "å");
 			heading = heading.replace(/\&Aring\;/g, "Å");
@@ -1284,8 +1358,10 @@ function exportColumnHeading(format, heading, colname) {
 	return str;
 }
 
+//Function for exporting grades to ladoc
 function ladexport() {
 	let expo = "";
+
 	expo += document.getElementById("ladselect").value + "\n";
 	expo += document.getElementById("ladgradescale").value + "\n";
 	expo += document.getElementById("laddate").value + "\n";
@@ -1328,3 +1404,9 @@ $(window).scroll(function() {
 		});
 	}
 });
+
+function hideSSN(ssn){
+	var hiddenSSN;
+	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
+	return hiddenSSN;
+}

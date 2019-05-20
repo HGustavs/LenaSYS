@@ -364,13 +364,20 @@ function closeWindows(){
 		if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
 			index_highest = index_current;
 			e=this;
+			var tempString = e.outerHTML;
+			if(tempString.includes('<div class="previewWindow"')){
+				e.style.display="none";
+			}
 		}
 	});
 
 	if (index_highest > 0 && e.id !== "FABStatic"){
 		/* Overlay is only present for loginbox which has z-index of 9000,
-	 so if we closed such a window, hide the overlay and clear any values as well. */
-		e.style.display= "none";
+		so if we closed such a window, hide the overlay and clear any values as well. */
+		var tempString2 = e.outerHTML;
+		if(!tempString2.includes('<div id="TopMenuStatic"')) {
+			e.style.display= "none";
+		}
 		if (index_highest < 10000) {
 			status=1;
 			//toggleloginnewpass();
@@ -1230,8 +1237,8 @@ $(window).load(function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
       	if(event.keyCode == 27) {
-          //closeWindows();
-          closeSelect();
+          closeWindows();
+          //closeSelect();
         }
       });
 });

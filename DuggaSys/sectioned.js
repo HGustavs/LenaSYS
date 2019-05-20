@@ -445,9 +445,8 @@ function updateVersion() {
   $("#editCourseVersion").css("display", "none");
 }
 
-function goToVersion(selected) {
-  var value = selected.value;
-  //changeURL("sectioned.php" + value)
+function goToVersion(courseDropDown) {
+  var value = courseDropDown.options[courseDropDown.selectedIndex].value;
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
 
@@ -1302,7 +1301,11 @@ function drawSwimlanes() {
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = `url("#fadeTextRed")`;
         }
+        if(duggalength < 0){
+          duggalength = duggalength * -1;
+        }
         var tempVariable = duggalength*daywidth;
+        
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }

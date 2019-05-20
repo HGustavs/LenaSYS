@@ -605,6 +605,7 @@ function SortableTable(param) {
 				if (document.getElementById(table.tableid + DELIMITER + "tbl") != null) {
 					var thetab = document.getElementById(table.tableid + DELIMITER + "tbl").getBoundingClientRect();
 					var thetabhead = document.getElementById(table.tableid + DELIMITER + "tblhead").getBoundingClientRect();
+					var tabheadsize = thetabhead.top + thetabhead.height;
 					// If top is negative and top+height is positive draw mh otherwise hide
 
 					// Vertical
@@ -617,7 +618,7 @@ function SortableTable(param) {
 					}
 					// Horizontal
 					if (thetab.left < 0 && thetab.right > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = thetabhead.top + 38 + "px";
+						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = tabheadsize + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
 					} else {
@@ -766,7 +767,6 @@ function newCompare(firstCell, secoundCell) {
 		}
 		//Check if the cell is a valid cell in the table.
 	} else if (typeof firstCell === 'object' && col.includes("lid")) {
-		console.log("time");
 		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
 			firstCellTemp = firstCell.grade;
 			secoundCellTemp = secoundCell.grade;
@@ -793,6 +793,7 @@ function newCompare(firstCell, secoundCell) {
 				val = -1;
 			} else if(secoundCellTemp !== "0" && firstCellTemp === "0" || secoundCellTemp === ""){
 				val = 1;			 
+
 			}
 		}
 	} else if (colOrder.includes(col)) {
