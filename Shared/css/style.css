@@ -2232,6 +2232,10 @@ could potentially be used everywhere or replaced by existing styling styling.
   margin: 0,2px,0,2px;
 }
 
+.cogIcon:hover{
+  color:gray;
+}
+
 #input-container{
   border-bottom: 2px solid #008000;
 }
