@@ -296,7 +296,7 @@ function hovers() {
 }
 
 function leaves() {
-	$('#dropdowns').css('display', 'none') .animation( 'fade-in 1s');
+	$('#dropdowns').css('display', 'none');
 	var col = 0;
 	var dir = 1;
 
