@@ -410,7 +410,9 @@ function keyDownHandler(e) {
         updateGraphics();
     } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
         arrowKeyPressed(key);
-        moveCanvasView(key);
+        if (uimode == "MoveAround") {
+            moveCanvasView(key);
+        }
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
     } else if(key == shiftKey) {
@@ -607,19 +609,21 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if(key == leftArrow) {
-        xNew = -5;
-    }else if(key == upArrow) {
-        yNew = -5;
-    }else if(key == rightArrow) {
-        xNew = 5;
-    }else if(key == downArrow) {
-        yNew = 5;
+    if (uimode != "MoveAround") {
+        if(key == leftArrow) {
+            xNew = -5;
+        }else if(key == upArrow) {
+            yNew = -5;
+        }else if(key == rightArrow) {
+            xNew = 5;
+        }else if(key == downArrow) {
+            yNew = 5;
+        }
+        for(var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].move(xNew, yNew);
+        }
+        updateGraphics();
     }
-    for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(xNew, yNew);
-    }
-    updateGraphics();
 }
 
 //-----------------------------------------------------------------------------------
