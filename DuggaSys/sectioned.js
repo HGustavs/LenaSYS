@@ -291,7 +291,7 @@ function showCreateVersion() {
 }
 
 function createQuickItem() {
-  selectItem("", "New Code", "2", "", "", "0", "", "", "UNK");
+  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
   newItem();
 }
 
