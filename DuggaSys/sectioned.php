@@ -89,14 +89,14 @@
 							</a>
 						</div>
 					</td>
-					<td class='tests menuButton' style='display: inline-block;'>
+					<td class='tests' style='display: inline-block;'>
 						<div class='tests menuButton'>
 							<a id='testsBTN' value='Tests' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
 								<img id='testsBTN' title='Show tests' class="navButt" src='../Shared/icons/FistV.svg'>
 							</a>
 						</div>
 					</td>
-					<td class='files menuButton' style='display: inline-block;'>
+					<td class='files' style='display: inline-block;'>
 						<div class='files menuButton'>
 						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
 						</div>
