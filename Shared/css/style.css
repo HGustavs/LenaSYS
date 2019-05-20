@@ -671,7 +671,6 @@ header td {
 }
 
 .navButt img {
-  
   margin-left: 10px;
   vertical-align: middle;
   height: 32px;
@@ -3004,7 +3003,7 @@ span.arrow {
   font-size: 12px;
   display: none;
   position: absolute;
-  top: 35px;
+  top: 33px;
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
   margin-top: 15px;
