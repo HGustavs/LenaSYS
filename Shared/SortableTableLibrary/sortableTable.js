@@ -605,6 +605,7 @@ function SortableTable(param) {
 				if (document.getElementById(table.tableid + DELIMITER + "tbl") != null) {
 					var thetab = document.getElementById(table.tableid + DELIMITER + "tbl").getBoundingClientRect();
 					var thetabhead = document.getElementById(table.tableid + DELIMITER + "tblhead").getBoundingClientRect();
+					var tabheadsize = thetabhead.top + thetabhead.height;
 					// If top is negative and top+height is positive draw mh otherwise hide
 
 					// Vertical
@@ -617,7 +618,7 @@ function SortableTable(param) {
 					}
 					// Horizontal
 					if (thetab.left < 0 && thetab.right > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = thetabhead.top + 38 + "px";
+						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = tabheadsize + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
 					} else {
@@ -778,10 +779,22 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-		if (status == 1) {
-			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-		} else if (status == 2 || status == 3) {
+		if (status == 0) {
+			//Ascending grade
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		} else if (status == 1) {
+			if(secoundCellTemp != "" && firstCellTemp != "" && secoundCellTemp != 0 && firstCellTemp != 0){
+				//descending grades
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			}
+		} else if (status == 2) {
+			//pending grades
+			if(secoundCellTemp === "0" && firstCellTemp !== "0"){
+				val = -1;
+			} else if(secoundCellTemp !== "0" && firstCellTemp === "0" || secoundCellTemp === ""){
+				val = 1;			 
+
+			}
 		}
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.

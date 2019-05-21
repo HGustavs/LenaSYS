@@ -145,10 +145,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
   $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
   $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
-  $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
-  $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
-  $("#setDeadlineValue").val(deadline.substr(0,10));
-
+  if(deadline !== undefined){
+    $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
+    $("#deadlineminutes").html(makeoptions(deadline.substr(14,2),minuteArrOptions,minuteArrValue));
+    $("#setDeadlineValue").val(deadline.substr(0,10));
+  }
   var groups = [];
   for (var key in retdata['groups']) {
     // skip loop if the property is from prototype
@@ -291,7 +292,7 @@ function showCreateVersion() {
 }
 
 function createQuickItem() {
-  selectItem("undefined", "New Code", "2", "undefined", "undefined", "0", "undefined", "undefined", "UNK");
+  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
   newItem();
 }
 
@@ -445,9 +446,8 @@ function updateVersion() {
   $("#editCourseVersion").css("display", "none");
 }
 
-function goToVersion(selected) {
-  var value = selected.value;
-  //changeURL("sectioned.php" + value)
+function goToVersion(courseDropDown) {
+  var value = courseDropDown.options[courseDropDown.selectedIndex].value;
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
 
@@ -1296,13 +1296,19 @@ function drawSwimlanes() {
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
-
+        
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = `url("#fadeTextRed")`;
+        } else if((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
+          textcol = `url("#fadeTextRed")`;
+        }
+        if(duggalength < 0){
+          duggalength = duggalength * -1;
         }
         var tempVariable = duggalength*daywidth;
+        
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }

@@ -63,7 +63,8 @@ $duggagrade="";
 $gradeupdated=false;
 
 $entries=array();
-$entriesNoSSN=array();
+
+//$entriesNoSSN=array();
 $gentries=array();
 $sentries=array();
 $lentries=array();
@@ -443,6 +444,8 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 
 			// The array which is displayed on resulted without SSN
+			//keeping this array until verified that changes made does not break anything.
+			/*
 			$entryNoSSN = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -453,7 +456,9 @@ if(strcmp($opt,"CHGR")!==0){
 				'access' => $row['access'],
 				'examiner' => $row['examiner']
 			);
+			*/
 /*
+//This array seems like and old duplicate and could possibly be removed
 			$entry = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -465,7 +470,7 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 			*/
 			array_push($entries, $entry);
-			array_push($entriesNoSSN, $entryNoSSN);
+			//array_push($entriesNoSSN, $entryNoSSN);
 		}
 
 		// All results from current course and vers?
@@ -665,18 +670,23 @@ if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 $teachers=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("
-    SELECT examiner, uid
-    FROM user_course;
+    SELECT user.uid, user.firstname, user.lastname, user.username
+		FROM user_course 
+		INNER JOIN user ON user_course.examiner = user.uid
+		WHERE user_course.cid=:cid AND user_course.vers=:cvers;
   ");
 	$query->bindParam(':cid', $cid);
+	$query->bindParam(':cvers', $vers);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
-				'teacher' => $row['examiner'],
-				'tuid' => $row['uid'],
+				'id' => $row['uid'],
+				'username' => $row['username'],
+				'firstname' => $row['firstname'],		
+				'lastname' => $row['lastname']
 			);
 			array_push($teachers, $teacher);
 		}
@@ -702,7 +712,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 }
 
 $array = array(
-	'entriesNoSSN' => $entriesNoSSN,
+	//'entriesNoSSN' => $entriesNoSSN,
 	'entries' => $entries,
 	'moments' => $gentries,
 	'versions' => $sentries,
