@@ -3835,7 +3835,24 @@ function objectAppearanceMenu(form) {
     }
     // Lines selected
     else if (diagram[lastSelectedObject].symbolkind == symbolKind.line || diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
-        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
+        var cardinalityOption = true;
+        var connObjects = diagram[lastSelectedObject].getConnectedObjects();
+        // Only show cardinality option if the line goes between an entity and a relation
+        if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
+            var atLeastOneEntity = connObjects[0].symbolkind==symbolKind.erEntity ? true :
+                connObjects[1] && connObjects[1].symbolkind==symbolKind.erEntity;
+            var atLeastOneRelation = connObjects[0].symbolkind==symbolKind.erRelation ? true :
+                connObjects[1].symbolkind==symbolKind.erRelation;
+
+            if ((atLeastOneEntity && atLeastOneRelation) == false)
+                cardinalityOption = false;
+        }
+
+        if (cardinalityOption) {
+            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
+        }else {
+            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=-1');
+        }
     }
     // ER relation selected
     else if (diagram[lastSelectedObject].symbolkind == symbolKind.erRelation) {
