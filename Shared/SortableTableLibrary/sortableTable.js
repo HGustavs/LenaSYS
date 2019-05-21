@@ -806,7 +806,7 @@ function newCompare(firstCell, secoundCell) {
 			if (firstCell === null || secoundCell === null) {
 				firstCellTemp = firstCell;
 				secoundCellTemp = secoundCell;
-			} else if(typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp)) && (col.includes("filesize"))){
+			} else if (typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp)) && (col.includes("filesize"))) {
 				tempTemp1 = firstCell.replace(/\D/g,'');
 				tempTemp2 = secoundCell.replace(/\D/g,'');
 				firstCellTemp = parseInt(tempTemp1, 10);
