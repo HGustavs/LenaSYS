@@ -17,10 +17,6 @@ var accessFilter = "";		// W or R
 
 function setup() {
 
-	if (localStorage.getItem("accessFilter"+querystring['cid']) != null) {
-		accessFilter = localStorage.getItem("accessFilter"+querystring['cid']);
-	}
-
 	var filt = "";
 
 	// Add search bar to nav
@@ -31,15 +27,13 @@ function setup() {
 	filt += `onclick='searchTable()' type='button'>`;
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
 	filt += `</button></td>`;
-	filt += "<td class='navButt'><span>";
-	filt += "<input id='filterTeachers' type='checkbox' value='W' onchange='filterAccess()'></input>";
-	filt += "<label for='filterTeachers'>Teachers only</label>";
-	filt += "<input id='filterStudents' type='checkbox' value='R' onchange='filterAccess()'></input>";
-	filt += "<label for='filterStudents'>Students only</label>";
-	filt += "</span></td>";
 
 	$("#sort").after(filt);
 	/* Add filter menu */
+
+	if (localStorage.getItem("accessFilter"+querystring['cid']) != null) {
+		accessFilter = localStorage.getItem("accessFilter"+querystring['cid']);
+	}
 
 	document.getElementById("sort").style.display = "table-cell";
 	document.getElementById("select").style.display = "table-cell";
@@ -64,6 +58,8 @@ function setup() {
 		cid: querystring['cid'],
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
+
+	createCheckboxes();
 }
 
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
@@ -263,7 +259,6 @@ function renderCell(col, celldata, cellid) {
         };
 	} else if (col == "access") {		// Add dropdown menus to "Access" column
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student"], ["W", "R"]) + "</select>";
-		console.log(obj.username, obj.access);
 	} else if (col == "requestedpasswordchange") {
 		if (parseFloat(obj.recent) > 1440) {
 			str = "<input class='submit-button' type='button' value='Reset PW' style=''";
@@ -631,9 +626,26 @@ function filterAccess() {
 	} else if (toggleStudents.checked) {
 		accessFilter="R";
 	}
-
-	console.log(querystring['cid']);
 	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
 	localStorage.setItem("accessFilter"+querystring['cid'], accessFilter);
 	myTable.reRender();
+}
+
+//----------------------------------------------------------------------------------
+// createCheckboxes - Create checkboxes for filtering teachers/students
+//----------------------------------------------------------------------------------
+function createCheckboxes() {
+	str = "<div class='checkbox-dugga checkmoment'>";
+	str += "<input id='filterTeachers' type='checkbox' value='W' onchange='filterAccess()' ";
+	if (accessFilter == "W" || accessFilter == "") str += "checked";
+	str += "></input>";
+	str += "<label for='filterTeachers' class='headerlabel'>Show teachers</label>";
+	str += "</div>";
+	str += "<div class='checkbox-dugga checkmoment'>";
+	str += "<input id='filterStudents' type='checkbox' value='R' onchange='filterAccess()' "
+	if (accessFilter == "R" || accessFilter == "") str += "checked";
+	str += "></input>";
+	str += "<label for='filterStudents' class='headerlabel'>Show students</label>";
+	str += "</div>";
+	document.getElementById("customfilter").innerHTML=str;
 }
