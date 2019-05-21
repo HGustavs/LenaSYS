@@ -1029,6 +1029,7 @@ function smartSearch(splitSearch, row) {
 	for (var i = 0; i < splitSearch.length; i++) {
 		var index = i;
 		columnToSearch = splitSearch[i][1];
+    columnToSearch = columnToSearch.replace(' ', '');
 
 		for (var i = 0; i < moments.length; i++) {
 			lid = "lid:" + moments[i]["lid"];
@@ -1063,18 +1064,20 @@ function smartSearch(splitSearch, row) {
 				var txt = document.createElement("textarea");
 				txt.innerHTML = row[lid].entryname;
 				var columnToFind = txt.value;
+        columnToFind = columnToFind.replace(' ', '');
 				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
 					if (sortingType === sortingValue) {
 						for (colname in row) {
 							if (colname == "lid:" + row[lid].lid) {
 								var name = "";
 								if (row[colname].entryname != null) {
-									name += row[colname].entryname + " ";
+									name += row[colname].entryname; // + " ";
 								}
                 // Makes sure that compares are posible even with å,ä and ö in the strings.
 								var txt = document.createElement("textarea");
 								txt.innerHTML = name;
 								var newName2 = txt.value;
+                newName2 = newName2.replace(' ', '');
 								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
 									return true;
 								}
