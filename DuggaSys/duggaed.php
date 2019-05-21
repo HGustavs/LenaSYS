@@ -41,14 +41,14 @@ pdoConnect();
       <div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
-								<b>Keywords:</b> username, date <br>
-								<b>Ex:</b> date: 2019-05-21
+								<b>Keywords:</b> template name, name, date <br>
+								<b>Ex:</b> template name:color-dugga
 					</div>
 					<span>?</span>
 				</div>
-				<input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
+				<input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);duggaTable.renderTable();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
 
-				<button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();' type='button'>
+				<button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);duggaTable.renderTable();' type='button'>
 					<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 				</button>
 			</div>
