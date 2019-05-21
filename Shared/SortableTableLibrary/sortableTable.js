@@ -783,13 +783,9 @@ function newCompare(firstCell, secoundCell) {
 			//Ascending grade
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		} else if (status == 1) {
-			//descending grades
-			if(secoundCellTemp !== "" && firstCellTemp !== "" && secoundCellTemp !== "0" && firstCellTemp !== "0" ){
+			if(secoundCellTemp != "" && firstCellTemp != "" && secoundCellTemp != 0 && firstCellTemp != 0){
+				//descending grades
 				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-			} else if((secoundCellTemp === "" || secoundCellTemp === "0") && (firstCellTemp !== "" || firstCellTemp !== "0")){
-				val = 1
-			} else if((firstCellTemp === "" || firstCellTemp === "0") && (secoundCellTemp !== "" || secoundCellTemp !== "0")){
-				val = -1
 			}
 		} else if (status == 2) {
 			//pending grades

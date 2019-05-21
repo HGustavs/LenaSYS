@@ -203,10 +203,7 @@ function process() {
 	var dstr = "";
 
 	// Sorting
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'>";
-	dstr += "<input type='radio' class='headercheck' name='sortdir' value='0' ' onclick='sorttype(-1)' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Ascending</label>";
-	dstr += "<input name='sortdir' type='radio' class='headercheck' value='1' ' onclick='sorttype(-1)' id='sortdir'> <label class='headerlabel' for='sortdir'>Sort descending</label>";
-	dstr += "<div><input name='sortdir' type='radio' class='headercheck' value='2' ' onclick='sorttype(-1)' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Pending</label></div></div>";
+	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='0' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Ascending</label><input name='sortdir' type='radio' class='headercheck' value='1' id='sortdir'><label class='headerlabel' for='sortdir'>Sort descending</label> <div><input name='sortdir' type='radio' class='headercheck' value='2' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Pending</label></div></div>";
   dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr += "<div class='checkbox-dugga'style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
 
@@ -229,6 +226,7 @@ function process() {
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
 	dstr += "</td></tr></table>";
+	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
 	document.getElementById("dropdowns").innerHTML = dstr;
 }
 
@@ -278,7 +276,33 @@ function hovers() {
 }
 
 function leaves() {
-	$('#dropdowns').css('display', 'none');
+	$('#dropdowns').css({display: 'none'});
+	var col = 0;
+	var dir = 1;
+  var allColumnIds = myTable.getColumnOrder();
+
+	var ocol = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol");
+	var odir = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir");
+
+
+	$("input[name='sortcol']:checked").each(function () {
+		col = this.value;
+	});
+	$("input[name='sortdir']:checked").each(function () {
+		dir = this.value;
+	});
+
+	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol", col);
+	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir", dir);
+
+
+	if (!(ocol == col && odir == dir) || typechanged) {
+		typechanged = false;
+    // This one is only here due to a bug where sometimes you need to sort multiple times to get the correct one.
+    // But by always sorting by acending first then the correct one this can be avoided.
+    myTable.toggleSortStatus(allColumnIds[col],0);
+    myTable.toggleSortStatus(allColumnIds[col],dir);
+	}
 }
 
 function sorttype(t) {
@@ -301,21 +325,12 @@ function sorttype(t) {
 			$("#sorttype" + t).prop("checked", true);
 		}
 	}
-
-	var col;
-	var dir;
-	$("input[name='sortcol']:checked").each(function () {
-		col = this.value;
-	});
-	$("input[name='sortdir']:checked").each(function () {
-		dir = this.value;
-	});
 	typechanged = true;
-	if(col !== undefined && dir !== undefined){
-		typechanged = false;
-		var allColumnIds = myTable.getColumnOrder();
-		myTable.toggleSortStatus(allColumnIds[col],dir);
-	}
+	magicHeading();
+}
+
+function magicHeading() {
+
 }
 
 $(function () {
