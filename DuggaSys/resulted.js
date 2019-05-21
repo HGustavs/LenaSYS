@@ -1121,11 +1121,9 @@ function rowFilter(row) {
 	}
 
 	// divides the search on &&
+  searchterm = searchterm.replace(' ', '');
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
-
-  var spaceSlitSearch = [];
-  spaceSlitSearch = searchterm.split(" ");
 
 	tempSplitSearch.forEach(function (s) {
 		if (s.length > 0)
