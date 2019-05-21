@@ -1121,13 +1121,15 @@ function rowFilter(row) {
 	}
 
 	// divides the search on &&
+  searchterm = searchterm.replace(' ', '');
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
 
 	tempSplitSearch.forEach(function (s) {
 		if (s.length > 0)
-			splitSearch.push(s.trim().split(":").replace(' ', ''));
+			splitSearch.push(s.trim().split(":"));
 	})
+
   console.log("splitsearch: "+splitSearch);
 
   // The else makes sure that you can search on names without a search-category.
@@ -1143,6 +1145,9 @@ function rowFilter(row) {
 				if (row[colname]["lastname"] != null) {
 					name += row[colname]["lastname"];
 				}
+
+        name = name.replace(' ', '');
+
 				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
 					return true;
 				}
