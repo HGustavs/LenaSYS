@@ -146,6 +146,7 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
+var toolbarState = 1;                   // Set default toolbar state to ER.
 
 // Keyboard keys
 const backspaceKey = 8;
@@ -177,6 +178,7 @@ const iKey = 73;
 const kKey = 75;
 const lKey = 76;
 const mKey = 77;
+const nKey = 78;
 const rKey = 82;
 const sKey = 83;
 const tKey = 84;
@@ -482,12 +484,10 @@ function keyDownHandler(e) {
       document.getElementById("drawfreebutton").click();
     } else if(shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == mKey) {
-      if(targetMode == "ER"){
-        switchToolbarTo("UML");
-      } else {
+    } else if(shiftIsClicked && key == nKey) {
         switchToolbarTo("ER");
-      }
+    } else if(shiftIsClicked && key == mKey) {
+        switchToolbarTo("UML");
     } else if(shiftIsClicked && key == gKey) {
           globalAppearanceMenu();
     } else if(shiftIsClicked && key == hKey) {
@@ -1214,13 +1214,12 @@ function initializeCanvas() {
     canvas.addEventListener('wheel', scrollZoom, false);
 }
 
-
 function deselectObjects() {
-	for(let i = 0; i < diagram.length; i++) {
-		diagram[i].targeted = false;
-		diagram[i].isSelected = false;
-		diagram[i].isHovered = false;
-	}
+    for(let i = 0; i < diagram.length; i++) {
+        diagram[i].targeted = false;
+        diagram[i].isSelected = false;
+        diagram[i].isHovered = false;
+    }
 }
 
 //-----------------------------------------------------------------------------------
@@ -1886,11 +1885,8 @@ function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
     if(developerModeActive) {
-        crossStrokeStyle1 = "#f64";
-        crossFillStyle = "#d51";
-        crossStrokeStyle2 = "#d51";
-        drawOrigo();
-        toolbarState = 3;                                                               // Change the toolbar to DEV.
+        showCrosses();
+        drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
@@ -1898,33 +1894,52 @@ function developerMode(event) {
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
     } else {
-      toolbarState = localStorage.getItem("toolbarState");                             // Change the toolbar back to ER.
-        if(toolbarState == 1) {
-          switchToolbarER();
-        } else if(toolbarState == 2) {
-          switchToolbarUML();
-        } else if(toolbarState == 3) {
-          switchToolbar('Dev');                                                           // ---||---
-          document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
-          setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-              crossDEV=false);                                                             // Turn on crossDEV.
-          setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-          setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-          toolbarState = 1;
-          switchToolbarER();
-          $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
-        }
-        crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-        crossFillStyle = "rgba(255, 102, 68, 0.0)";
-        crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+        switchToolbarER();
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
+        hideCrosses();
     }
     reWrite();
     updateGraphics();
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
 }
 
-var targetMode = "ER";     // The mode that we want to change to when trying to switch the toolbar. Set default here.
+var refreshedPage = true;
+function setModeOnRefresh() {
+    toolbarState = localStorage.getItem("toolbarState");
+    if(toolbarState == 1) {
+        switchToolbarTo('ER');
+        hideCrosses();
+        developerModeActive = false;
+    } else if(toolbarState == 2) {
+        switchToolbarTo('UML');
+        hideCrosses();
+        developerModeActive = false;
+    } else if(toolbarState == 3) {
+        showCrosses();
+        developerModeActive = true;
+        switchToolbarTo('Dev');
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        switchToolbarER();
+        hideCrosses();
+        developerModeActive = false;
+    }
+}
+
+function showCrosses() {
+    crossStrokeStyle1 = "#f64";
+    crossFillStyle = "#d51";
+    crossStrokeStyle2 = "#d51";
+}
+
+function hideCrosses() {
+    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+}
 
 //------------------------------------------------------------------------------
 // modeSwitchConfirmed:
@@ -1939,6 +1954,8 @@ function modeSwitchConfirmed(confirmed) {
             switchToolbarER();
         } else if (targetMode == 'UML') {
             switchToolbarUML();
+        } else if (targetMode == 'Dev'){
+            switchToolbarDev();
         }
     }
 }
@@ -1951,8 +1968,8 @@ function modeSwitchConfirmed(confirmed) {
 
 function switchToolbarTo(target) {
     targetMode = target;
-    //only ask for confirmation when developer mode is off or if the user has started drawing something
-    if(developerModeActive || diagram.length < 1) {
+    //only ask for confirmation when developer mode is off
+    if(developerModeActive) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
@@ -2015,6 +2032,120 @@ function switchToolbarDev() {
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
 }
 
+//------------------------------------------------------------------------------
+// hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
+//               then do some sort of calculation. used to save the diagram. it also save the local diagram
+//------------------------------------------------------------------------------
+
+function hashFunction() {
+    var diagramToString = "";
+    var hash = 0;
+    for (var i = 0; i < diagram.length; i++) {
+        diagramToString += JSON.stringify(diagram[i])
+    }
+    if (diagram.length != 0) {
+        for (var i = 0; i < diagramToString.length; i++) {
+            var char = diagramToString.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;         // Convert to 32bit integer
+        }
+        var hexHash = hash.toString(16);
+        if (currentHash != hexHash) {
+            localStorage.setItem('localhash', hexHash);
+            for (var i = 0; i < diagram.length; i++) {
+                c[i] = diagram[i].constructor.name;
+                c[i] = c[i].replace(/"/g,"");
+            }
+            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c});
+            localStorage.setItem('localdiagram', a);
+            return hexHash;
+        }
+    }
+}
+
+//--------------------------------------------------------------------------------
+// hashCurrent: This function is used to hash the current diagram, but not storing it locally,
+//              so we can compare the current hash with the hash after we have made some changes
+//              to see if it need to be saved.
+//--------------------------------------------------------------------------------
+
+function hashCurrent() {
+    var hash = 0;
+    var diagramToString = "";
+    for (var i = 0; i < diagram.length; i++) {
+        diagramToString += JSON.stringify(diagram[i])
+    }
+    for (var i = 0; i < diagramToString.length; i++) {
+        var char = diagramToString.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;         // Convert to 32bit integer
+    }
+    currentHash = hash.toString(16);
+}
+
+//---------------------------------------------
+// loadDiagram: retrive an old diagram if it exist.
+//---------------------------------------------
+
+function loadDiagram() {
+    var checkLocalStorage = localStorage.getItem('localdiagram');
+    //loacal storage and hash
+    if (checkLocalStorage != "" && checkLocalStorage != null) {
+        var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+    }
+    var localHexHash = localStorage.getItem('localhash');
+    var diagramToString = "";
+    var hash = 0;
+    for(var i = 0; i < diagram.length; i++) {
+        diagramToString += JSON.stringify(diagram[i]);
+    }
+    if (diagram.length != 0) {
+        for (var i = 0; i < diagramToString.length; i++) {
+            var char = diagramToString.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;         // Convert to 32bit integer
+        }
+        var hexHash = hash.toString(16);
+    }
+    if (typeof localHexHash !== "undefined" && typeof localDiagram !== "undefined") {
+        if (localHexHash != hexHash) {
+            b = JSON.parse(JSON.stringify(localDiagram));
+            for (var i = 0; i < b.diagram.length; i++) {
+                if (b.diagramNames[i] == "Symbol") {
+                    b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+                } else if (b.diagramNames[i] == "Path") {
+                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+                }
+            }
+            diagram.length = b.diagram.length;
+            for (var i = 0; i < b.diagram.length; i++) {
+                diagram[i] = b.diagram[i];
+            }
+            // Points fix
+            for (var i = 0; i < b.points.length; i++) {
+                b.points[i] = Object.assign(new Path, b.points[i]);
+            }
+            points.length = b.points.length;
+            for (var i = 0; i < b.points.length; i++) {
+                points[i] = b.points[i];
+            }
+        }
+    deselectObjects();
+    updateGraphics();
+    SaveState();
+}
+}
+
+//----------------------------------------------------------------------
+// removeLocalStorage: this function is running when you click the button clear diagram
+//----------------------------------------------------------------------
+
+function removeLocalStorage() {
+    for (var i = 0; i < localStorage.length; i++) {
+        localStorage.removeItem("localdiagram");
+    }
+}
+
 // This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
 function decimalPrecision(value, precision) {
   var multipler = Math.pow(10, precision || 0);
@@ -2026,30 +2157,36 @@ function decimalPrecision(value, precision) {
 //----------------------------------------------------------------------
 
 function reWrite() {
-    if(developerModeActive) {
+    if (developerModeActive) {
         //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + " </p>";
+        + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
-         + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-    if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
-      document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-       + Math.round((zoomValue * 100)) + "%" + " </p>";
-      document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-       + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)
-       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
-       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
-       + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-    }
+        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
+
+        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
+            document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+            + Math.round((zoomValue * 100)) + "%" + " </p>";
+            document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+            + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " )";
+            refreshedPage = false;
+        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+              document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+              + Math.round((zoomValue * 100)) + "%" + " </p>";
+              document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+              + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
+              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
+              + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+          }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + "   </p>";
+        + Math.round((zoomValue * 100)) + "%" + "   </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
+        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
     }
 }
 
@@ -2611,8 +2748,6 @@ function setOrientationIcon(element, check) {
 // DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
 
-var toolbarState;
-
 const toolbarER = 1;
 const toolbarUML = 2;
 const toolbarDeveloperMode = 3;
@@ -3012,9 +3147,7 @@ function mousemoveevt(ev, t) {
                     ctx.stroke();
                     ctx.setLineDash([]);
                     if (!developerModeActive) {
-                        crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                        crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                        crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                        hideCrosses();
                     }
                 }
             } else if (uimode == "CreateEREntity") {
@@ -3030,9 +3163,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateERRelation") {
                 ctx.setLineDash([3, 3]);
@@ -3049,9 +3180,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateERAttr") {
                 ctx.setLineDash([3, 3]);
@@ -3060,9 +3189,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateLine") {
                 // Path settings for preview line
@@ -3074,9 +3201,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateUMLLine") {
                 // Path settings for preview line
@@ -3088,10 +3213,8 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
-                    }
+                    hideCrosses();
+                }
                 } else {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
@@ -3105,9 +3228,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             }
         }

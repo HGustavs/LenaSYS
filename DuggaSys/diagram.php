@@ -42,7 +42,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); developerMode(event); initToolbox(); updateGraphics();"
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics();"
  onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
@@ -222,7 +222,7 @@
                             </div>
                             <div id="er-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
-                                <i id="hotkey-ER" class="hotKeys">Shift + M</i>
+                                <i id="hotkey-ER" class="hotKeys">Shift + N</i>
                             </div>
                             <div id="uml-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
