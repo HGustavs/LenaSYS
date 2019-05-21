@@ -1121,7 +1121,7 @@ function rowFilter(row) {
 	}
 
 	// divides the search on &&
-  searchterm = searchterm.replace(' ', '');
+  console.log(searchterm = searchterm.replace(' ', ''));
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
 
