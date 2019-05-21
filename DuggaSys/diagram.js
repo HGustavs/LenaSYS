@@ -1706,7 +1706,7 @@ function drawGrid() {
     var zoomGridSize = gridSize * zoomValue;
     var counter = 0;
 
-    for(var i = 0; i < canvas.width / zoomGridSize + Math.max(Math.abs(origoOffsetX), Math.abs(origoOffsetY)); i++){
+    for(var i = 0; i < Math.max(canvas.width, canvas.height) / zoomGridSize + Math.max(Math.abs(origoOffsetX), Math.abs(origoOffsetY)); i++){
         setLineColor(counter);
         counter++;
 
