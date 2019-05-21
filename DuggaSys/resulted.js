@@ -1071,7 +1071,7 @@ function smartSearch(splitSearch, row) {
 							if (colname == "lid:" + row[lid].lid) {
 								var name = "";
 								if (row[colname].entryname != null) {
-									name += row[colname].entryname; // + " ";
+									name += row[colname].entryname + " ";
 								}
                 // Makes sure that compares are posible even with å,ä and ö in the strings.
 								var txt = document.createElement("textarea");
