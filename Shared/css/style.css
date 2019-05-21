@@ -2827,6 +2827,7 @@ span.arrow {
   width: 24px;
   height: 24px;
   float: right;
+  cursor: pointer;
   /*margin-right:8px;*/
 }
 
