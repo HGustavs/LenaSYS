@@ -48,7 +48,7 @@ $info=$opt." ".$cid." ".$uid." ".$username." ".$newusers;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php",$userid,$info);
 
 
-if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid)) {
+if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
 	$hasAccess = true;
 } else {
 	$hasAccess = false;
