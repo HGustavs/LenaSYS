@@ -303,9 +303,6 @@ function leaves() {
 
 	if (!(ocol == col && odir == dir) || typechanged) {
 		typechanged = false;
-    // This one is only here due to a bug where sometimes you need to sort multiple times to get the correct one.
-    // But by always sorting by acending first then the correct one this can be avoided.
-    myTable.toggleSortStatus(allColumnIds[col],0);
     myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
 }
@@ -340,8 +337,9 @@ function sorttype(t) {
 		dir = this.value;
 	});
 	typechanged = true;
-	var allColumnIds = myTable.getColumnOrder();
 	if(col !== undefined && dir !== undefined){
+		typechanged = false;
+		var allColumnIds = myTable.getColumnOrder();
 		myTable.toggleSortStatus(allColumnIds[col],dir);
 	}
 }
