@@ -231,7 +231,6 @@ function process() {
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
 	dstr += "</td></tr></table>";
-	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
 	document.getElementById("dropdowns").innerHTML = dstr;
 }
 
@@ -282,29 +281,6 @@ function hovers() {
 
 function leaves() {
 	$('#dropdowns').css('display', 'none');
-	var col = 0;
-	var dir = 1;
-  var allColumnIds = myTable.getColumnOrder();
-
-	var ocol = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol");
-	var odir = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir");
-
-
-	$("input[name='sortcol']:checked").each(function () {
-		col = this.value;
-	});
-	$("input[name='sortdir']:checked").each(function () {
-		dir = this.value;
-	});
-
-	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol", col);
-	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir", dir);
-
-
-	if (!(ocol == col && odir == dir) || typechanged) {
-		typechanged = false;
-    myTable.toggleSortStatus(allColumnIds[col],dir);
-	}
 }
 
 function sorttype(t) {
