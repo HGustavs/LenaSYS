@@ -1063,6 +1063,7 @@ function smartSearch(splitSearch, row) {
 				var txt = document.createElement("textarea");
 				txt.innerHTML = row[lid].entryname;
 				var columnToFind = txt.value;
+        columnToFind = columnToFind.replace(' ', '');
 				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
 					if (sortingType === sortingValue) {
 						for (colname in row) {
@@ -1121,7 +1122,7 @@ function rowFilter(row) {
 	}
 
 	// divides the search on &&
-  console.log(searchterm = searchterm.replace(' ', ''));
+  searchterm = searchterm.replace(' ', '');
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
 
