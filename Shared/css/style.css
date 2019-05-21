@@ -3360,7 +3360,6 @@ rect[class*="activitymarker"]:hover {
 #searchBar,
 #testSearchContainer {
   padding-left: 20px;
-  display: block;
 }
 
 #searchinput,
@@ -4111,8 +4110,7 @@ only screen and (max-device-width: 530px) {
   }
 
   #searchBar,
-  .tooltip-searchbar,
-  #testSearchContainer {
+  .tooltip-searchbar {
     display: none;
   }
 
