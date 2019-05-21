@@ -112,6 +112,7 @@ var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+var modeSwitchDialogActive = false; // if the mode switch dialog is currently active 
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
@@ -152,6 +153,7 @@ var toolbarState = 1;                   // Set default toolbar state to ER.
 
 // Keyboard keys
 const backspaceKey = 8;
+const enterKey = 13;
 const shiftKey = 16;
 const ctrlKey = 17;
 const altKey = 18;
@@ -407,11 +409,11 @@ function resetButtonsPressed() {
 
 function keyDownHandler(e) {
     var key = e.keyCode;
-    if(appearanceMenuOpen) return;
-    if((key == deleteKey || key == backspaceKey)) {
+    if (appearanceMenuOpen) return;
+    if ((key == deleteKey || key == backspaceKey)) {
         eraseSelectedObject();
         SaveState();
-    } else if(key == spacebarKey) {
+    } else if (key == spacebarKey) {
         // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
         if (!spacebarKeyPressed) {
         spacebarKeyPressed = true;
@@ -423,7 +425,7 @@ function keyDownHandler(e) {
             e.stopPropagation();
             e.preventDefault();
         }
-        if(uimode != "MoveAround") {
+        if (uimode != "MoveAround") {
             activateMovearound();
         } else {
             deactivateMovearound();
@@ -436,19 +438,19 @@ function keyDownHandler(e) {
         }
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    } else if(key == shiftKey) {
+    } else if (key == shiftKey) {
         shiftIsClicked = true;
     } else if(key == altKey) {
         altIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == vKey ) {
+    } else if (ctrlIsClicked && key == vKey ) {
         //Ctrl + v
         var temp = [];
-        for(var i = 0; i < cloneTempArray.length; i++) {
+        for (var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line
+            if (cloneTempArray[i].symbolkind != symbolKind.line
                 && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
@@ -470,8 +472,18 @@ function keyDownHandler(e) {
         updateGraphics();
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
+    } else if (key == enterKey) {
+        if (modeSwitchDialogActive) {
+            // if the cancel button is focused then trigger that 
+            if (document.activeElement.id == "modeSwitchButtonCancel") {
+                modeSwitchConfirmed(false);
+            } else {
+               modeSwitchConfirmed(true);
+            }
+        }
     } else if(key == escapeKey) {
         cancelFreeDraw();
+        if (modeSwitchDialogActive) modeSwitchConfirmed(false);
     } else if((key == key1 || key == num1) && shiftIsClicked){
         moveToFront();
     } else if((key == key2 || key == num2) && shiftIsClicked){
@@ -1966,6 +1978,7 @@ function hideCrosses() {
 //------------------------------------------------------------------------------
 
 function modeSwitchConfirmed(confirmed) {
+    modeSwitchDialogActive = false;
     $("#modeSwitchDialog").hide();
     if(confirmed){
         if (targetMode == 'ER') {
@@ -1986,8 +1999,9 @@ function modeSwitchConfirmed(confirmed) {
 
 function switchToolbarTo(target) {
     targetMode = target;
+    modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
-    if(developerModeActive) {
+    if (developerModeActive) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
