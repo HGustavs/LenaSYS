@@ -1120,8 +1120,9 @@ function rowFilter(row) {
 		}
 	}
 
-	// divides the search on &&
+  // Removes spaces so that it can tolerate "wrong" inputs when searching
   searchterm = searchterm.replace(' ', '');
+  // divides the search on &&
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
 
