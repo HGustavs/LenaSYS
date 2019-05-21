@@ -222,7 +222,7 @@
                             </div>
                             <div id="er-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
-                                <i id="hotkey-ER" class="hotKeys">Shift + N</i>
+                                <i id="hotkey-ER" class="hotKeys">Shift + M</i>
                             </div>
                             <div id="uml-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
