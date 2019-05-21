@@ -1102,6 +1102,14 @@ diagram.updateLineRelations = function() {
 
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
+        // Keep recursive lines on the same side of objects, this keeps the ends of recursive lines
+        // right next to each other which helps when having several recursive lines on the same object
+        if (diagram[i].isRecursiveLine) {
+            points[diagram[i].topLeft].x = points[diagram[i].bottomRight].x;
+            points[diagram[i].topLeft].y = points[diagram[i].bottomRight].y;
+        }
+    }
+    for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
             diagram[i].sortAllConnectors();
         }
@@ -2913,6 +2921,15 @@ function mousemoveevt(ev, t) {
                 if(diagram[lastSelectedObject] && diagram[lastSelectedObject].kind == kind.path) {
                     diagram[lastSelectedObject].calculateBoundingBox();
                 }
+
+                // If recursive line, move both points at the same time to make sure
+                // they end up next to each other
+                var selObj = diagram[lastSelectedObject];
+                if (selObj && selObj.isRecursiveLine) {
+                    var otherPoint = points[selObj.topLeft] == sel.point ? points[selObj.bottomRight] : points[selObj.topLeft];
+                    otherPoint.x = sel.point.x;
+                    otherPoint.y = sel.point.y;
+                }
             // this is for the other two points that doesn't really exist: bottomLeft and topRight
             } else {
                 sel.point.x.x = currentMouseCoordinateX;
@@ -2932,6 +2949,14 @@ function mousemoveevt(ev, t) {
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         }
                         diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
+
+                        // Keep recursive lines together
+                        for (var i = 0; i < diagram.length; i++) {
+                            if (diagram[i].isRecursiveLine) {
+                                points[diagram[i].topLeft].x = points[diagram[i].bottomRight].x;
+                                points[diagram[i].topLeft].y = points[diagram[i].bottomRight].y;
+                            }
+                        }
                     }
                 }
                 startMouseCoordinateX = currentMouseCoordinateX;
@@ -3419,6 +3444,10 @@ function mouseupevt(ev) {
             umlLineA.bottomRight = p2;
             umlLineA.centerPoint = p3;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
+            if (umlLineA.isRecursiveLine) {
+                points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
+                points[umlLineA.topLeft].y = points[umlLineA.bottomRight].y;
+            }
             diagram.push(umlLineA);
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length - 1;
