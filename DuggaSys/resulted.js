@@ -1063,8 +1063,6 @@ function smartSearch(splitSearch, row) {
 				var txt = document.createElement("textarea");
 				txt.innerHTML = row[lid].entryname;
 				var columnToFind = txt.value;
-        columnToFind = columnToFind.replace(' ', '');
-        console.log(columnToFind);
 				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
 					if (sortingType === sortingValue) {
 						for (colname in row) {
@@ -1077,7 +1075,6 @@ function smartSearch(splitSearch, row) {
 								var txt = document.createElement("textarea");
 								txt.innerHTML = name;
 								var newName2 = txt.value;
-                newName2 = newName2.replace(' ', '');
 								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
 									return true;
 								}
@@ -1124,7 +1121,6 @@ function rowFilter(row) {
 	}
 
 	// divides the search on &&
-  searchterm = searchterm.replace(' ', '');
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
 
