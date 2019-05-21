@@ -4105,12 +4105,13 @@ only screen and (max-device-width: 530px) {
 
   /* Mobile view resulted filter / search */
   #searchBarMobile,
-  #tooltip-mobile {
+  #tooltip-mobile{
     display: block;
   }
 
   #searchBar,
-  .tooltip-searchbar {
+  .tooltip-searchbar,
+  #testSearchContainer {
     display: none;
   }
 
