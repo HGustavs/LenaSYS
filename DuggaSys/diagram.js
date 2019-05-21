@@ -40,16 +40,14 @@ AJAXService("get", {}, "DIAGRAM");
 
 var diagram = [];
 
-var serialNumbers = {
-    Attribute: 0,
-    Entity: 0,
-    Relation: 0,
-    UML: 0,
-    Text: 0,
-}
-
 var settings = { 
-    serialNumbers: serialNumbers,
+    serialNumbers: {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    },
 };
 
 const kind = {
