@@ -838,33 +838,28 @@ function newCompare(firstCell, secoundCell) {
 			}
 			return val;
 		}
-
-		// if(!isNaN(firstCellTemp) && !isNaN(secoundCellTemp)) {
-		// 	if ((status % 2) == 0) {
-		// 		val = firstCellTemp < secoundCellTemp;
-		// 		if(val) {
-		// 			val = 1;
-		// 		}else{
-		// 			val = -1;
-		// 		}
-		// 	} else {
-		// 		val = secoundCellTemp < firstCellTemp;
-		// 		if(val){
-		// 			val = 1;
-		// 		}else{
-		// 			val = -1;
-		// 		}
-		// 	}
-		// } else 
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
-					secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-
-			if (status == 0) {
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		if(!isNaN(firstCellTemp) && !isNaN(secoundCellTemp)) {
+			if ((status % 2) == 0) {
+				val = firstCellTemp < secoundCellTemp;
+				if(val) {
+					val = 1;
+				}else{
+					val = -1;
+				}
+			} else {
+				val = secoundCellTemp < firstCellTemp;
+				if(val){
+					val = 1;
+				}else{
+					val = -1;
+				}
+			}
+		} else if (status == 0) {
 			
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
-			// firstCellTemp = $('<div/>').html(firstCellTemp).text();
-			// secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
 	} else {
