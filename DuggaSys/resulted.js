@@ -1134,8 +1134,6 @@ function rowFilter(row) {
 			splitSearch.push(s.trim().split(":"));
 	})
 
-  console.log("splitsearch: "+splitSearch);
-
   // The else makes sure that you can search on names without a search-category.
 	if (searchterm != "" && splitSearch != searchterm) {
 		return smartSearch(splitSearch, row);
@@ -1149,9 +1147,7 @@ function rowFilter(row) {
 				if (row[colname]["lastname"] != null) {
 					name += row[colname]["lastname"];
 				}
-
         name = name.replace(' ', '');
-
 				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
 					return true;
 				}
