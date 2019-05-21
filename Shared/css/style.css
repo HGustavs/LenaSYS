@@ -1488,19 +1488,10 @@ input {
   right: 6px;
   top: 55px;
 }
+
 #hotkey-shift {
   right: 6px;
   top: 100px;
-}
-
-#hotkey-undo, #hotkey-save, #hotkey-Distribute-Horizontal {
-  right: 5px;
-  top: 10px;
-}
-
-#hotkey-redo, #hotkey-load, #hotkey-Distribute-Vertical {
-  right: 5px;
-  top: 43px;
 }
 
 #hotkey-global {
@@ -1523,6 +1514,11 @@ input {
   top: 395px;
 }
 
+#hotkey-developerMode {
+  right: 35px;
+  top: 10px;
+}
+
 #hotkey-displayTools {
   right: 36px;
   top: 45px;
@@ -1531,21 +1527,6 @@ input {
 #hotkey-displayA4 {
   right: 39px;
   top: 164px;
-}
-
-#hotkey-A4-Orientation {
-  right: 39px;
-  top: 200px;
-}
-
-#hotkey-Toggle-Holes {
-  right: 39px;
-  top: 232px;
-}
-
-#hotkey-Holes-Right {
-  right: 39px;
-  top: 264px;
 }
 
 #hotkey-import {
@@ -1561,11 +1542,6 @@ input {
 #hotkey-back {
   right: 5px ;
   top: 195px;
-}
-
-#hotkey-developerMode, #hotkey-Snap-Grid{
-    right: 35px;
-    top: 10px;
 }
 
 #hotkey-ER {
@@ -1596,16 +1572,6 @@ input {
 #hotkey-Align-Left {
   right: 5px;
   top: 151px;
-}
-
-#hotkey-Align-Horizontal {
-  right: 5px;
-  top: 195px;
-}
-
-#hotkey-Align-Vertical {
-  right: 5px;
-  top: 228px;
 }
 
 #hotkey-delete {

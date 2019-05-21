@@ -512,8 +512,6 @@ function keyDownHandler(e) {
           toggleVirtualA4HolesRight(event);
     } else if(shiftIsClicked && key == kKey) {
           toggleGrid(event);
-    } else if(shiftIsClicked && key == lessThanKey) {
-          distribute(event, 'vertically');
     } else if(shiftIsClicked && key == upArrow) {
           align(event, 'top');
     } else if(shiftIsClicked && key == rightArrow) {
@@ -526,10 +524,6 @@ function keyDownHandler(e) {
           align(event, 'horizontalCenter');
     } else if(shiftIsClicked && key == periodKey) {
           align(event, 'verticalCenter');
-    } else if(shiftIsClicked && key == zKey) {
-          distribute(event, 'horizontally');
-    } else if(shiftIsClicked && key == lessThanKey) {
-          distribute(event, 'vertically');
     } else if(altIsClicked && key == key1) {
           addGroupToSelected(event);
     } else if(altIsClicked && key == key2) {
