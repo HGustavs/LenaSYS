@@ -485,6 +485,9 @@ function keyDownHandler(e) {
     } else if(shiftIsClicked && key == dKey) {
       developerMode(event);
     } else if(shiftIsClicked && key == mKey) {
+        if(developerModeActive) {
+            developerMode(event);
+        }
         toggleMode();
     } else if(shiftIsClicked && key == gKey) {
           globalAppearanceMenu();
