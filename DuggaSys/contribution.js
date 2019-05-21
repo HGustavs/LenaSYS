@@ -709,7 +709,7 @@ function createTimeSheetTable(data) {
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
+    hasMagicHeadings: false,
     hasCounterColumn: true
   });
 
@@ -978,7 +978,7 @@ function createRankTable(data) {
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
+    hasMagicHeadings: false,
     hasCounterColumn: true
   });
   rankTable.renderTable();
@@ -1044,7 +1044,7 @@ function createGitHubcontributionTable(data) {
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
+    hasMagicHeadings: false,
     hasCounterColumn: true
   });
   ghContibTable.renderTable();
@@ -1134,6 +1134,32 @@ function renderCellForghContibTable(col, celldata, cellid) {
   return str;
 }
 
+function createAllRankTable(data){
+  var tabledata = {
+		tblhead:{
+      login:"Login",
+			eventrank:"Total events",
+			commentrank:"Total comments",
+			locrank:"Total lines of code",
+      commitrank:"Total commits"
+		},
+		tblbody: data,
+		tblfoot:{}
+  };
+	var colOrder=["login","eventrank","commentrank","locrank","commitrank"];
+	allRankTable = new SortableTable({
+		data:tabledata,
+    tableElementId:"allRankTable",
+		renderCellCallback:allRankRenderCell,
+		renderSortOptionsCallback:renderSortOptions,
+		columnOrder:colOrder,
+		freezePaneIndex:4,
+		hasRowHighlight:false,
+		hasMagicHeadings:false,
+		hasCounterColumn:true
+	});
+	allRankTable.renderTable();
+}
 
 /*
   This function is used to get the values from localStorage and toggles the tabs

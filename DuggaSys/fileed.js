@@ -38,7 +38,7 @@ function setup() {
   filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
   filt += `</button></td>`;
 
-	$("#menuHook").before(filt);
+    $("#menuHook").before(filt);
 
 	AJAXService("GET",{cid:querystring['cid']},"FILE");
 }
@@ -61,22 +61,30 @@ $(function() {
 //----------------------------------------------------------------------------
 
 function returnedFile(data) {
-	filez = data;
+    filez = data;
+    var tblheadPre = {
+        filename:"File name",
+        extension:"Extension",
+        kind:"Kind",
+        filesize:"Size",
+        uploaddate:"Upload date",
+        editor:""
+    }
+    var colOrderPre=["filename","extension","kind","filesize","uploaddate","editor"];
+
+    if(data['studentteacher']) {
+        document.getElementById('fabButton').style.display = "none";
+    } else {
+        tblheadPre["trashcan"] = "";
+        colOrderPre.push("trashcan");
+    }
 
     var tabledata = {
-        tblhead:{
-            filename:"File name",
-            extension:"Extension",
-            kind:"Kind",
-            filesize:"Size",
-            uploaddate:"Upload date",
-            editor:"",
-            trashcan:""
-        },
+        tblhead:tblheadPre,
         tblbody: data['entries'],
         tblfoot:{}
     };
-    var colOrder=["filename","extension","kind","filesize","uploaddate","editor","trashcan"];
+    var colOrder=colOrderPre;
 
 	  fileLink = new SortableTable({
         data:tabledata,

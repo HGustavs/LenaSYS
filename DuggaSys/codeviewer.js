@@ -278,6 +278,7 @@ function returned(data) {
 
 function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
+	
 	retData['box'][data.id - 1][4] = data.title;
 	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
@@ -624,6 +625,7 @@ function updateContent() {
 				var boxid = box[0];
 
 				AJAXService("EDITCONTENT", {
+					courseid: querystring['courseid'],
 					exampleid: exampleid,
 					boxid: boxid,
 					boxtitle: boxtitle,
@@ -647,6 +649,7 @@ function updateContent() {
 			try {
 				AJAXService("EDITTITLE", {
 					exampleid: querystring['exampleid'],
+					courseid: querystring['courseid'],
 					boxid: box[0],
 					boxtitle: $("#boxtitle2").text()
 				}, "BOXTITLE");
@@ -675,14 +678,16 @@ function updateTitle(e) {
 		}
 		title = title.trim(); // Trim title again if the substring caused trailing whitespaces
 
-		titleSpan.blur();
-		window.getSelection().removeAllRanges();
+		
 
 		AJAXService("EDITTITLE", {
 			exampleid: querystring['exampleid'],
+			courseid: querystring['courseid'],
 			boxid: boxid,
 			boxtitle: title
 		}, "BOXTITLE");
+		window.getSelection().removeAllRanges();
+		titleSpan.blur();
 	}
 }
 //----------------------------------------------------------------------------------
@@ -1394,7 +1399,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	cbcount = 0;
 	cbracket = new Array();
 
-	htmlArray = new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
+	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data','bdi', 'audio','aside','article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
 	htmlArrayNoSlash = new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'textview', 'webview', 'uses');
 	cssArray = new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right',
 		'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size',
@@ -3262,7 +3267,7 @@ $(document).mousedown(function (e) {
 	}
 });
 
-// Close the loginbox when clicking outside it. 
+// Close the loginbox when clicking outside it.
 $(document).mouseup(function (e) {
 	// Click outside the loginBox
 	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...

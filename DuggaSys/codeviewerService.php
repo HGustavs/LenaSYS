@@ -58,11 +58,12 @@
 	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php",$userid,$info);
 
 	// Checks and sets user rights
-	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
+	if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st'))){
 		$writeAccess="w";
 	}else{
 		$writeAccess="s";
 	}
+
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
 	$exampleCount = 0;
@@ -89,8 +90,9 @@
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
-		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
+		if(checklogin() && $writeAccess=="w" || isSuperUser($_SESSION['uid'])) {
 			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
+
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Parse content array
 				$content = getOP('content');
@@ -514,6 +516,7 @@
 			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename'], $row['fontsize']));
 		}
 		$array = array(
+			'opt' => $opt,
 			'before' => $backwardExamples,
 			'after' => $forwardExamples,
 			'templateid' => $templateId,
