@@ -1520,7 +1520,7 @@ input {
 
 #hotkey-resetView {
   right: 6px;
-  top: 317px;
+  top: 395px;
 }
 
 #hotkey-displayTools {
@@ -1608,9 +1608,19 @@ input {
   top: 228px;
 }
 
-.drop-down-item #hotkey-delete {
+#hotkey-delete {
   right: 6px;
   top: 272px;
+}
+
+#hotkey-addGroup {
+  right: 6px;
+  top: 317px;
+}
+
+#hotkey-removeGroup {
+  right: 6px;
+  top: 352px;
 }
 
 /* --------------================################================-------------- *
