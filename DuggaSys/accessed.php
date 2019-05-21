@@ -45,18 +45,16 @@
 
 	<!-- Import Users Dialog START -->
 	<div id='importUsers' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
+      <div class='loginBox'>
       		<div class='loginBoxheader'>
       			<h3>Import users</h3>
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
       		<div class='note'>
                   <p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
-                  <p>SSN&lt;tab&gt;Lastname,&lt;space&gt;Firstname&lt;tab&gt;CID&lt;tab&gt;Ny&lt;tab&gt;PID,&lt;space&gt;Term&lt;tab&gt;Email&lt;linebreak&gt;</p>
+                  <p>SSN; Firstname; Lastname; Student email; Email; PID; Status &lt;linebreak&gt;</p>
                   <p>Example:<br/>
-                      999102-5571	Gregersson, Greger	91001	Ny	WEBUG, H11	b17mahgo@student.his.se<br/>
-                      888107-4432	Sven Harkel, Egon	91001	Ny	WEBUG, H11	b14sveha@student.his.se<br/>
-                      777153-6699	Broskelsson, Dagmar	91001	Ny	WEBUG, H09	f16dagbr@student.his.se</p>
+				  "18481724-5557";"Fritfjof";"Nilsson Piraten";"a48fripi@student.his.se";"booboo@mail.nu";"WEBUG";"Avklarad"</p>
       		</div>
       		<div style='padding:5px;'>
       			<textarea id="import" ></textarea>

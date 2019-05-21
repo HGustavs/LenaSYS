@@ -30,9 +30,9 @@ How to use
 
 *********************************************************************************/
 
-var retData;				// Data returned from setup
-var tokens = [];            // Array to hold the tokens.
-var dmd=0;					// Variable used to determine forward/backward skipping with the forward/backward buttons
+var retData; // Data returned from setup
+var tokens = []; // Array to hold the tokens.
+var dmd = 0; // Variable used to determine forward/backward skipping with the forward/backward buttons
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";
 var querystring = parseGet();
@@ -46,20 +46,19 @@ var cvers;
 
 *********************************************************************************/
 
-function setup()
-{
-	try{
+function setup() {
+	try {
 		courseid = querystring['courseid'];
 		exampleid = querystring['exampleid'];
 		cvers = querystring['cvers'];
 
 		AJAXService("EDITEXAMPLE", {
-			courseid : courseid,
-			exampleid : exampleid,
-			cvers : cvers
+			courseid: courseid,
+			exampleid: exampleid,
+			cvers: cvers
 		}, "CODEVIEW");
-	}catch(e){
-		alert("Error while setting up: "+e.message)
+	} catch (e) {
+		alert("Error while setting up: " + e.message)
 	}
 }
 
@@ -67,161 +66,160 @@ function setup()
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
-function returned(data)
-{
-	retData=data;
+function returned(data) {
+	retData = data;
 
-	if(retData['writeaccess'] == "w"){
-		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid="+courseid+"&coursevers="+cvers+"');");
+	if (retData['writeaccess'] == "w") {
+		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid=" + courseid + "&coursevers=" + cvers + "');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 
-	if(retData['debug']!="NONE!") alert(retData['debug']);
+	if (retData['debug'] != "NONE!") alert(retData['debug']);
 
 	// Disables before and after button if there are no available example before or after.
 	// Works by checking if the current example is last or first in the order of examples.
 	//If there are no examples this disables being able to jump through (the non-existsing) examples
 
-	if(retData['before'].length!=0&& retData['after'].length!=0) {
+	if (retData['before'].length != 0 && retData['after'].length != 0) {
 		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
-			$("#beforebutton").css("opacity",0.4);
-			$("#beforebutton").css("pointer-events","none");
+			$("#beforebutton").css("opacity", 0.4);
+			$("#beforebutton").css("pointer-events", "none");
 		}
 		if (retData['exampleno'] == retData['after'][0][0] || retData['after'].length == 0) {
-			$("#afterbutton").css("opacity",0.4);
-			$("#afterbutton").css("pointer-events","none");
+			$("#afterbutton").css("opacity", 0.4);
+			$("#afterbutton").css("pointer-events", "none");
 		}
-	}else if(retData['before'].length==0&& retData['after'].length==0){
-		$("#beforebutton").css("opacity",0.4);
-		$("#beforebutton").css("pointer-events","none");
-		$("#afterbutton").css("opacity",0.4);
-		$("#afterbutton").css("pointer-events","none");
+	} else if (retData['before'].length == 0 && retData['after'].length == 0) {
+		$("#beforebutton").css("opacity", 0.4);
+		$("#beforebutton").css("pointer-events", "none");
+		$("#afterbutton").css("opacity", 0.4);
+		$("#afterbutton").css("pointer-events", "none");
 	}
 
-  // Disables the play button if there is no playlink
-  if(typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
-    $("#playbutton").css("opacity",0.4);
-    $("#playbutton").css("pointer-events","none");
-  }else{
-    retData['playlink']=retData['playlink'].replace(/\&\#47\;/g,"/");
-  }
+	// Disables the play button if there is no playlink
+	if (typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
+		$("#playbutton").css("opacity", 0.4);
+		$("#playbutton").css("pointer-events", "none");
+	} else {
+		retData['playlink'] = retData['playlink'].replace(/\&\#47\;/g, "/");
+	}
 
 	// Fill Section Name and Example Name
-	var exName= $('#exampleName');
-	if(data['examplename'] != null){
+	var exName = $('#exampleName');
+	if (data['examplename'] != null) {
 		exName.html(data['examplename']);
 	}
-	var exSection= $('#exampleSection');
-	if(data['sectionname'] != null){
-		exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
+	var exSection = $('#exampleSection');
+	if (data['sectionname'] != null) {
+		exSection.html(data['sectionname'] + "&nbsp;:&nbsp;");
 	}
 
 	// User can choose template if no template has been chosen and the user has write access.
-	if((retData['templateid'] == 0)){
-		if(retData['writeaccess'] == "w"){
+	if ((retData['templateid'] == 0)) {
+		if (retData['writeaccess'] == "w") {
 			alert("A template has not been chosen for this example. Please choose one.");
-			$("#chooseTemplateContainer").css("display","flex");
+			$("#chooseTemplateContainer").css("display", "flex");
 			return;
-		}else{
+		} else {
 			alert("The administrator of this code example has not yet chosen a template.");
 			return;
 		}
 	}
-	changeCSS("../Shared/css/"+retData['stylesheet']);
+	changeCSS("../Shared/css/" + retData['stylesheet']);
 
 	// Clear div2
 	$("#div2").html("");
 
 	// Possible crash warning if returned number of boxes is wrong
-	if(retData['numbox']==0 || retData['numbox']==null){
-		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
+	if (retData['numbox'] == 0 || retData['numbox'] == null) {
+		var debug = "Debug: Nr boxes ret: " + retData['numbox'] + ", may cause page crash"
 		console.log(debug);
 	}
 
-  // Create boxes
-  if(retData['numbox']>retData['box'].length){
-      alert("Number of boxes is inconsistent\n"+retData['numbox']+"\n"+retData['box'].length);
-  }
+	// Create boxes
+	if (retData['numbox'] > retData['box'].length) {
+		alert("Number of boxes is inconsistent\n" + retData['numbox'] + "\n" + retData['box'].length);
+	}
 
-  for(var i=0;i<retData['numbox'];i++){
-		var contentid="box"+retData['box'][i][0];
-		var boxid=retData['box'][i][0];
-		var boxtype=retData['box'][i][1].toUpperCase();
-		var boxcontent=retData['box'][i][2];
-		var boxwordlist=retData['box'][i][3];
-		var boxfilename=retData['box'][i][5];
+	for (var i = 0; i < retData['numbox']; i++) {
+		var contentid = "box" + retData['box'][i][0];
+		var boxid = retData['box'][i][0];
+		var boxtype = retData['box'][i][1].toUpperCase();
+		var boxcontent = retData['box'][i][2];
+		var boxwordlist = retData['box'][i][3];
+		var boxfilename = retData['box'][i][5];
 		var boxmenuheight = 0;
 
 		// don't create templatebox if it already exists
-		if($("#" + contentid).length == 0){
+		if ($("#" + contentid).length == 0) {
 			addTemplatebox(contentid);
 		}
 
-		if(boxtype === "CODE"){
+		if (boxtype === "CODE") {
 			// Print out code example in a code box
-			$("#"+contentid).removeAttr("contenteditable");
-			$("#"+contentid).removeClass("descbox").addClass("codebox");
-			createboxmenu(contentid,boxid,boxtype);
+			$("#" + contentid).removeAttr("contenteditable");
+			$("#" + contentid).removeClass("descbox").addClass("codebox");
+			createboxmenu(contentid, boxid, boxtype);
 
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
 			// Setting boxmenuheight to 0, possible cause to example malfunction?
-			if($("#"+contentid+"menu").height() == null){
+			if ($("#" + contentid + "menu").height() == null) {
 				boxmenuheight = 0;
-			}else{
-				boxmenuheight= $("#"+contentid+"menu").height();
+			} else {
+				boxmenuheight = $("#" + contentid + "menu").height();
 			}
-			$("#"+contentid).css("margin-top", boxmenuheight-1);
+			$("#" + contentid).css("margin-top", boxmenuheight - 1);
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
 
 			// Render code
-			rendercode(boxcontent,boxid,boxwordlist,boxfilename);
+			rendercode(boxcontent, boxid, boxwordlist, boxfilename);
 
 			// set font size
-			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
-		}else if(boxtype === "DOCUMENT"){
+			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
+		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
-			$("#"+contentid).removeClass("codebox").addClass("descbox");
+			$("#" + contentid).removeClass("codebox").addClass("descbox");
 			var desc = boxcontent;
-			desc = replaceAll("&nbsp;"," ",desc);
+			desc = replaceAll("&nbsp;", " ", desc);
 			desc = parseMarkdown(desc);
 
 			//Change all asterisks to the html code for asterisks
 			desc = desc.replace(/\*/g, "&#42;");
 			// Highlight important words
 			important = retData.impwords;
-			for(j=0;j<important.length;j++){
-				var sstr="<span id='IWW' class='impword' onmouseout='dehighlightKeyword(\""+important[j]+"\")' onmouseover='highlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";
+			for (j = 0; j < important.length; j++) {
+				var sstr = "<span id='IWW' class='impword' onmouseout='dehighlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
 				//Interpret asterisks in important word as literals and not as character with special meaning
-				if(important[j].indexOf('*') != -1){
+				if (important[j].indexOf('*') != -1) {
 					important[j] = important[j].replace(/\*/g, "&#42;");
 				}
 				//make sure that not partial words gets highlighted
-				var regExp = new RegExp("\\b"+ important[j] + "\\b", "g");
-				desc = desc.replace(regExp,sstr);
+				var regExp = new RegExp("\\b" + important[j] + "\\b", "g");
+				desc = desc.replace(regExp, sstr);
 			}
 			//Replace the html code for asterisks with asterisks
 			desc = desc.replace(/\&\#42\;/g, "*");
 
 			/* Assign Content */
-			$("#"+contentid).html(desc);
-			$("#"+contentid).css("margin-top", boxmenuheight);
-			createboxmenu(contentid,boxid,boxtype);
+			$("#" + contentid).html(desc);
+			$("#" + contentid).css("margin-top", boxmenuheight);
+			createboxmenu(contentid, boxid, boxtype);
 
 			// set font size
-			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
+			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 
 			// Make room for the menu by setting padding-top equals to height of menubox
-			if($("#"+contentid+"menu").height() == null){
+			if ($("#" + contentid + "menu").height() == null) {
 				boxmenuheight = 0;
-			}else{
-				boxmenuheight= $("#"+contentid+"menu").height();
+			} else {
+				boxmenuheight = $("#" + contentid + "menu").height();
 			}
-			$("#"+contentid).css("margin-top", boxmenuheight);
-		}else if(boxtype === "IFRAME") {
-			createboxmenu(contentid,boxid,boxtype);
-			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
+			$("#" + contentid).css("margin-top", boxmenuheight);
+		} else if (boxtype === "IFRAME") {
+			createboxmenu(contentid, boxid, boxtype);
+			$("#" + contentid).removeClass("codebox", "descbox").addClass("framebox");
 
 			// If multiple versions exists use the one with highest priority.
 			// cvers BEFORE courseid BEFORE global
@@ -229,38 +227,38 @@ function returned(data)
 			var previewLink = "";
 
 			// Remove html-entitied slashes...
-			previewFile=previewFile.replace(/&#47;/g, "/");
-			if(previewFile.indexOf("http://")==0||previewFile.indexOf("https://")==0){
-					// Preview to external link
-					previewLink=previewFile;
-			}else{
-					previewLink=retData['box'][i][2];;
+			previewFile = previewFile.replace(/&#47;/g, "/");
+			if (previewFile.indexOf("http://") == 0 || previewFile.indexOf("https://") == 0) {
+				// Preview to external link
+				previewLink = previewFile;
+			} else {
+				previewLink = retData['box'][i][2];;
 			}
 
-			if(window.location.protocol === "https:"){
-					previewLink=previewLink.replace("http://", "https://");
-			}else{
-					previewLink=previewLink.replace("https://", "http://");
+			if (window.location.protocol === "https:") {
+				previewLink = previewLink.replace("http://", "https://");
+			} else {
+				previewLink = previewLink.replace("https://", "http://");
 			}
 
-			$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
-			if($("#"+contentid+"menu").height() == null){
+			$("#box" + boxid).html("<iframe src='" + previewLink + "'></iframe>");
+			if ($("#" + contentid + "menu").height() == null) {
 				boxmenuheight = 0;
-			}else{
-				boxmenuheight= $("#"+contentid+"menu").height();
+			} else {
+				boxmenuheight = $("#" + contentid + "menu").height();
 			}
-			$("#"+contentid).css("margin-top", boxmenuheight);
+			$("#" + contentid).css("margin-top", boxmenuheight);
 
-		}else if(boxtype == "NOT DEFINED"){
-			if(retData['writeaccess'] == "w"){
-				createboxmenu(contentid,boxid,boxtype);
+		} else if (boxtype == "NOT DEFINED") {
+			if (retData['writeaccess'] == "w") {
+				createboxmenu(contentid, boxid, boxtype);
 				// Make room for the menu by setting padding-top equals to height of menubox
-				if($("#"+contentid+"menu").height() == null){
+				if ($("#" + contentid + "menu").height() == null) {
 					boxmenuheight = 0;
-				}else{
-					boxmenuheight= $("#"+contentid+"menu").height();
+				} else {
+					boxmenuheight = $("#" + contentid + "menu").height();
 				}
-				$("#"+contentid).css("margin-top", boxmenuheight);
+				$("#" + contentid).css("margin-top", boxmenuheight);
 			}
 		}
 	}
@@ -281,7 +279,7 @@ function returned(data)
 function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
 	retData['box'][data.id - 1][4] = data.title;
-	var boxWrapper = document.querySelector('#box'+data.id+'wrapper');
+	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
 	titleSpan.innerHTML = data.title;
 }
@@ -299,16 +297,15 @@ function returnedTitle(data) {
 //                Is called by returned(data) in codeviewer.js
 //---------------------------------------------------------------------------------
 
-var tabLine = function(text)
-{
-    var start = 0;
-    var tabIndex;
+var tabLine = function (text) {
+	var start = 0;
+	var tabIndex;
 
-    while ((tabIndex = text.indexOf('\t', start)) != -1) {
-        text = text.slice(0, tabIndex) + "&#9; " + text.slice(tabIndex + 1);
-        start = tabIndex;
-    }
-    return text;
+	while ((tabIndex = text.indexOf('\t', start)) != -1) {
+		text = text.slice(0, tabIndex) + "&#9; " + text.slice(tabIndex + 1);
+		start = tabIndex;
+	}
+	return text;
 };
 
 //----------------------------------------------------------------------------------
@@ -320,43 +317,42 @@ var tabLine = function(text)
 var addedWords = [];
 var removedWords = [];
 
-function editImpWords(editType)
-{
+function editImpWords(editType) {
 	var word = $("#impword").val();
 	var left = 0;
 	var right = 0;
 	//Check if the word contains an uneven amount of parenthesis
 	// * if so do not add the word to important words, it will break the page
-	for(var i = 0; i < word.length; i++){
-		if(word[i] == '(' ){
+	for (var i = 0; i < word.length; i++) {
+		if (word[i] == '(') {
 			left++;
-		}else if (word[i] == ')'){
+		} else if (word[i] == ')') {
 			right++;
 		}
 	}
 	//If there is an uneven amount set uneven
 	var uneven = false;
-	if(left != right){
+	if (left != right) {
 		uneven = true;
 	}
 	// word can't contain any whitespaces
 	if (editType == "+" && word != "" && /\s/.test(word) == false && uneven == false) {
 		var exists = false;
 		// Checks if the word already exists as an option in the selectbox
-		$('#impwords option').each(function() {
-    		if (this.value == word) {exists = true;}
+		$('#impwords option').each(function () {
+			if (this.value == word) {
+				exists = true;
+			}
 		});
 		if (exists == false) {
 			$("#impwords").append('<option>' + word + '</option>');
 			$("#impword").val("");
 			addedWords.push(word);
 		}
-	}
-
-	else if (editType == "-") {
+	} else if (editType == "-") {
 		word = $('option:selected', "#impwords").text();
 		$('option:selected', "#impwords").remove();
-    	removedWords.push(word);
+		removedWords.push(word);
 	}
 }
 
@@ -365,73 +361,71 @@ function editImpWords(editType)
 //
 //----------------------------------------------------------------------------------
 
-function displayEditExample(boxid)
-{
+function displayEditExample(boxid) {
 	$("#title").val($('<textarea />').html(retData['examplename']).text());
 	$("#secttitle").val($('<textarea />').html(retData['sectionname']).text());
 	$("#boxcontent").val(retData['box'][1][1]);
 	changeDirectory($("#boxcontent"));
 	$("#playlink").val(retData['playlink']);
 
-	var iw=retData['impwords'];
-	var str="";
-	for(var i=0;i<iw.length;i++){
-		str+="<option>"+iw[i]+"</option>";
+	var iw = retData['impwords'];
+	var str = "";
+	for (var i = 0; i < iw.length; i++) {
+		str += "<option>" + iw[i] + "</option>";
 	}
 	$("#impwords").html(str);
 
 	// Set beforeid and afterid if set
-	var beforeid="UNK";
-	if(retData['before']!==null){
-		if(retData['before'].length!==0){
-			beforeid=retData['before'][0][0];
+	var beforeid = "UNK";
+	if (retData['before'] !== null) {
+		if (retData['before'].length !== 0) {
+			beforeid = retData['before'][0][0];
 		}
 	}
-	var afterid="UNK";
-	if(retData['after']!==null){
-		if(retData['after'].length!==0){
-			afterid=retData['after'][0][0];
+	var afterid = "UNK";
+	if (retData['after'] !== null) {
+		if (retData['after'].length !== 0) {
+			afterid = retData['after'][0][0];
 		}
 	}
 	// Variables used to fetch filename for current codebox
-	var bestr="";
-	var afstr="";
-	var ba=retData['beforeafter'];
-	for(var i=0; i<ba.length; i++){
-		if(ba[i][0] == beforeid){
-			bestr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
-		}else{
-			bestr+="<option value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
+	var bestr = "";
+	var afstr = "";
+	var ba = retData['beforeafter'];
+	for (var i = 0; i < ba.length; i++) {
+		if (ba[i][0] == beforeid) {
+			bestr += "<option selected='selected' value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
+		} else {
+			bestr += "<option value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
 		}
-		if(ba[i][0] == afterid){
-			afstr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
-		}else{
-			afstr+="<option value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
+		if (ba[i][0] == afterid) {
+			afstr += "<option selected='selected' value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
+		} else {
+			afstr += "<option value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
 		}
 	}
 	$("#before").html(bestr);
 	$("#after").html(afstr);
-	$("#editExampleContainer").css("display","flex");
+	$("#editExampleContainer").css("display", "flex");
 }
 
 //----------------------------------------------------------------------------------
 // updateExample: Updates example data in the database if changed
 //----------------------------------------------------------------------------------
 
-function updateExample()
-{
+function updateExample() {
 	// Set beforeid if set
-	var beforeid="UNK";
-	if(retData['before'].length!=0){
-		beforeid=retData['before'][0][0];
+	var beforeid = "UNK";
+	if (retData['before'].length != 0) {
+		beforeid = retData['before'][0][0];
 	}
-	var afterid="UNK";
-	if(retData['after'].length!=0){
-		afterid=retData['after'][0][0];
+	var afterid = "UNK";
+	if (retData['after'].length != 0) {
+		afterid = retData['after'][0][0];
 	}
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
-	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before option:selected").val()!=beforeid&&beforeid!="UNK")||($("#after option:selected").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retData['playlink'])||($("#title").val()!=retData['examplename'])||($("#secttitle").val()!=retData['sectionname'])){
+	if ((removedWords.length > 0) || (addedWords.length > 0) || ($("#before option:selected").val() != beforeid && beforeid != "UNK") || ($("#after option:selected").val() != afterid && afterid != "UNK") || ($("#playlink").val() != retData['playlink']) || ($("#title").val() != retData['examplename']) || ($("#secttitle").val() != retData['sectionname'])) {
 		var courseid = querystring['courseid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
@@ -442,16 +436,16 @@ function updateExample()
 		var afterid = $("#after option:selected").val();
 
 		AJAXService("EDITEXAMPLE", {
-			courseid : courseid,
-			cvers : cvers,
-			exampleid : exampleid,
-			beforeid : beforeid,
-			afterid : afterid,
-			playlink : playlink,
-			examplename : examplename,
-			sectionname : sectionname,
-			addedWords : addedWords,
-			removedWords : removedWords
+			courseid: courseid,
+			cvers: cvers,
+			exampleid: exampleid,
+			beforeid: beforeid,
+			afterid: afterid,
+			playlink: playlink,
+			examplename: examplename,
+			sectionname: sectionname,
+			addedWords: addedWords,
+			removedWords: removedWords
 		}, "CODEVIEW");
 
 		// Clears the important words and prevents multiple inserts..
@@ -459,7 +453,7 @@ function updateExample()
 		removedWords = [];
 	}
 
-	$("#editExampleContainer").css("display","none");
+	$("#editExampleContainer").css("display", "none");
 }
 
 //----------------------------------------------------------------------------------
@@ -469,11 +463,10 @@ function updateExample()
 
 var openBoxID;
 
-function displayEditContent(boxid)
-{
+function displayEditContent(boxid) {
 	$("#boxtitle2").removeAttr("contenteditable");
 	// The information stored about the box is fetched
-	var box = retData['box'][boxid-1];
+	var box = retData['box'][boxid - 1];
 
 	// Keeps track of the currently open box. Used when saving the box content.
 	openBoxID = boxid;
@@ -483,31 +476,31 @@ function displayEditContent(boxid)
 
 	changeDirectory($("#boxcontent"));
 
-	if(box[5]!=null){
-			box[5]=box[5].replace(/&#47;/g, "/");
-			$("#filename").val(box[5]);
-	}else{
-			$("#filename").val("");
+	if (box[5] != null) {
+		box[5] = box[5].replace(/&#47;/g, "/");
+		$("#filename").val(box[5]);
+	} else {
+		$("#filename").val("");
 	}
 
 	$("#fontsize").val(box[6]);
 
-	var wordl=retData['wordlists'];
-	var str="";
-	for(var i=0;i<wordl.length;i++){
-		str+="<option value='"+wordl[i][0]+"'>"+wordl[i][1]+"</option>";
+	var wordl = retData['wordlists'];
+	var str = "";
+	for (var i = 0; i < wordl.length; i++) {
+		str += "<option value='" + wordl[i][0] + "'>" + wordl[i][1] + "</option>";
 	}
 	$("#wordlist").html(str);
 	$("#wordlist").val(box[3]);
 
-	var str="";
+	var str = "";
 	for (var i = 0; i < retData['improws'].length; i++) {
 		if (retData['improws'][i][0] == boxid) {
-			str+="<option>" + retData['improws'][i][1] + " - " + retData['improws'][i][2] + "</option>";
+			str += "<option>" + retData['improws'][i][1] + " - " + retData['improws'][i][2] + "</option>";
 		}
 	};
 	$("#improws").html(str);
-	$("#editContentContainer").css("display","flex");
+	$("#editContentContainer").css("display", "flex");
 }
 
 //----------------------------------------------------------------------------------
@@ -515,22 +508,21 @@ function displayEditContent(boxid)
 // 					in the Edit Content box.
 //----------------------------------------------------------------------------------
 
-function changeDirectory(kind)
-{
+function changeDirectory(kind) {
 	var dir;
-	var str="";
+	var str = "";
 
 	var kindNum;
 	if (kind.id) {
 		kindNum = kind.id.split('_')[1];
 	}
-	
+
 	if (kindNum) {
-		var chosen=$("#filename_"+kindNum).val();
-		var wordlist = $('#wordlist_'+kindNum);
-		var filenameBox = $("#filename_"+kindNum);
+		var chosen = $("#filename_" + kindNum).val();
+		var wordlist = $('#wordlist_' + kindNum);
+		var filenameBox = $("#filename_" + kindNum);
 	} else {
-		var chosen=$("#filename").val();
+		var chosen = $("#filename").val();
 		var wordlist = $('#wordlist');
 		var filenameBox = $("#filename");
 	}
@@ -538,10 +530,10 @@ function changeDirectory(kind)
 	if ($(kind).val() == "CODE") {
 		dir = retData['directory'][0];
 		wordlist.prop('disabled', false);
-	}else if($(kind).val() == "IFRAME"){
+	} else if ($(kind).val() == "IFRAME") {
 		dir = retData['directory'][2];
 		wordlist.prop('disabled', 'disabled');
-	}else if ($(kind).val() == "DOCUMENT") {
+	} else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
 		wordlist.val('4');
 		wordlist.prop('disabled', 'disabled');
@@ -550,11 +542,11 @@ function changeDirectory(kind)
 	// Fill the file selection dropdown with files
 	//---------------------------------------------------------------------
 
-	for(var i=0;i<dir.length;i++){
-		if(chosen==dir[i].filename){
-				str+="<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>"+dir[i].filename+"</option>";
-		}else{
-				str+="<option value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>"+dir[i].filename+"</option>";
+	for (var i = 0; i < dir.length; i++) {
+		if (chosen == dir[i].filename) {
+			str += "<option selected='selected' value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
+		} else {
+			str += "<option value='" + dir[i].filename.replace(/'/g, '&apos;') + "'>" + dir[i].filename + "</option>";
 		}
 	}
 
@@ -572,35 +564,35 @@ function changeDirectory(kind)
 var addedRows = new Array();
 var removedRows = new Array();
 
-function editImpRows(editType)
-{
+function editImpRows(editType) {
 	var rowFrom = parseInt($("#improwfrom").val());
 	var rowTo = parseInt($("#improwto").val());
 	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
 
 	if (editType == "+" &&
-	    rowFrom <= rowTo &&
-	    rowFrom > 0 &&
-	    rowTo > 0)
-	   {
+		rowFrom <= rowTo &&
+		rowFrom > 0 &&
+		rowTo > 0) {
 		var exists = false;
-		$('#improws option').each(function() {
-    		if (this.value == row) {exists = true;}
+		$('#improws option').each(function () {
+			if (this.value == row) {
+				exists = true;
+			}
 		});
 
 		if (exists == false) {
 			$("#improws").append('<option>' + row + '</option>');
 			$("#improwfrom").val("");
 			$("#improwto").val("");
-			addedRows.push([openBoxID,rowFrom,rowTo]);
+			addedRows.push([openBoxID, rowFrom, rowTo]);
 		}
-	}else if (editType == "-") {
+	} else if (editType == "-") {
 		FromTo = $('option:selected', "#improws").text().split(" - ");
 		$('option:selected', "#improws").remove();
-    	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
-	}else{
+		removedRows.push([openBoxID, FromTo[0], FromTo[1]]);
+	} else {
 		//alert("editType == +: " + (editType=="+") + " (rowFrom <= rowTo): " + (rowFrom <= rowTo) + " (rowFrom > 0): " + (rowFrom > 0) + " (rowTo > 0): " + (rowTo > 0) + " rowFrom: " + rowFrom + " rowTo: " + rowTo);
-		alert("Incorrect value(s) (from: "+rowFrom+" to: "+rowTo+")  for important rows!");
+		alert("Incorrect value(s) (from: " + rowFrom + " to: " + rowTo + ")  for important rows!");
 	}
 }
 
@@ -608,20 +600,19 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent()
-{
-	var box = retData['box'][openBoxID-1];
+function updateContent() {
+	var box = retData['box'][openBoxID - 1];
 	var useBoxContent = true;
 
 	// Default to using openbox data and use regular retData as fallback incase it's not open
-	if(!box) {
+	if (!box) {
 		useBoxContent = false;
-		box = retData['box'][retData['box'].length-1];
+		box = retData['box'][retData['box'].length - 1];
 	}
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
-	if(useBoxContent) {
+	if (useBoxContent) {
 		if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 			try {
 				var boxtitle = $("#boxtitle").val();
@@ -633,33 +624,33 @@ function updateContent()
 				var boxid = box[0];
 
 				AJAXService("EDITCONTENT", {
-					exampleid : exampleid,
-					boxid : boxid,
-					boxtitle : boxtitle,
-					boxcontent : boxcontent,
-					wordlist : wordlist,
-					filename : filename,
-					fontsize : fontsize,
-					addedRows : addedRows,
-					removedRows : removedRows
+					exampleid: exampleid,
+					boxid: boxid,
+					boxtitle: boxtitle,
+					boxcontent: boxcontent,
+					wordlist: wordlist,
+					filename: filename,
+					fontsize: fontsize,
+					addedRows: addedRows,
+					removedRows: removedRows
 				}, "BOXCONTENT");
 
 				addedRows = [];
 				removedRows = [];
-			}catch(e){
-				alert("Error when updating content: "+e.message);
+			} catch (e) {
+				alert("Error when updating content: " + e.message);
 			}
 			setTimeout("location.reload()", 500);
 		}
 	} else {
-		if(box[4] != $("#boxtitle2").text()) {
+		if (box[4] != $("#boxtitle2").text()) {
 			try {
 				AJAXService("EDITTITLE", {
-					exampleid : querystring['exampleid'],
-					boxid : box[0],
-					boxtitle : $("#boxtitle2").text()
+					exampleid: querystring['exampleid'],
+					boxid: box[0],
+					boxtitle: $("#boxtitle2").text()
 				}, "BOXTITLE");
-			} catch(e) {
+			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
 		}
@@ -667,30 +658,30 @@ function updateContent()
 }
 
 /*-----------------------------------------------------------------------
-  -              updateTitle: Updates the title being edited            -     
+  -              updateTitle: Updates the title being edited            -
   -----------------------------------------------------------------------*/
 function updateTitle(e) {
 	if (e.key === 'Enter') {
 		e.preventDefault();
 		var titleSpan = e.target;
 		var box = titleSpan.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-		var boxid = box.id.substring(3,4);
+		var boxid = box.id.substring(3, 4);
 		var title = titleSpan.innerHTML.replace(/&nbsp;/g, '');
 
 		// Trim title, max characters allowed is 20
 		title = title.trim();
 		if (title.length > 20) {
-			title = title.substring(0,20);
+			title = title.substring(0, 20);
 		}
 		title = title.trim(); // Trim title again if the substring caused trailing whitespaces
 
 		titleSpan.blur();
 		window.getSelection().removeAllRanges();
 
- 		AJAXService("EDITTITLE", {
-			exampleid : querystring['exampleid'],
-			boxid : boxid,
-			boxtitle : title
+		AJAXService("EDITTITLE", {
+			exampleid: querystring['exampleid'],
+			boxid: boxid,
+			boxtitle: title
 		}, "BOXTITLE");
 	}
 }
@@ -699,18 +690,17 @@ function updateTitle(e) {
 //				   Is called by returned(data) in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function addTemplatebox(id)
-{
-	str="<div id='"+id+"wrapper' ";
-	if(id==("box"+retData['numbox'])){
-		str+="class='boxwrapper activebox'>";
-	}else{
-		str+="class='boxwrapper deactivatedbox'>";
+function addTemplatebox(id) {
+	str = "<div id='" + id + "wrapper' ";
+	if (id == ("box" + retData['numbox'])) {
+		str += "class='boxwrapper activebox'>";
+	} else {
+		str += "class='boxwrapper deactivatedbox'>";
 	}
-	str+="<div id='"+id+"' class='box'></div>";
-	str+="</div>";
+	str += "<div id='" + id + "' class='box'></div>";
+	str += "</div>";
 
-	str=str+$("#div2").html();
+	str = str + $("#div2").html();
 	$("#div2").html(str);
 }
 
@@ -719,58 +709,57 @@ function addTemplatebox(id)
 //                Is called by returned(data) in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function createboxmenu(contentid, boxid, type)
-{
-	if($("#"+contentid+"menu").length == 0){
+function createboxmenu(contentid, boxid, type) {
+	if ($("#" + contentid + "menu").length == 0) {
 		var boxmenu = document.createElement("div");
-		$("#"+contentid+"wrapper").append(boxmenu);
+		$("#" + contentid + "wrapper").append(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
-		boxmenu.setAttribute("id", contentid+"menu");
+		boxmenu.setAttribute("id", contentid + "menu");
 
 		var str = "<table cellspacing='2'><tr>";
 
 		// If reader has write access the settings button is shown along with box title
-		if(retData['writeaccess'] == "w"){
-			if(type=="DOCUMENT"){
-				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
+		if (retData['writeaccess'] == "w") {
+			if (type == "DOCUMENT") {
+				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable"  contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 
-			}else if(type=="CODE"){
-				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';
-				
-			}else if(type=="IFRAME"){
-				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';
+			} else if (type == "CODE") {
+				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 
-			}else{
-				str+="<td class='butto2 showdesktop'>";
-				str+="<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
-				str+="<option>Choose content</option>";
-				str+="<option value='CODE'>Code example</option>";
-				str+="<option value='DOCUMENT'>Description section</option>";
-				str+="</select>";
-				str+='</td>';
+			} else if (type == "IFRAME") {
+				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable"  contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+
+			} else {
+				str += "<td class='butto2 showdesktop'>";
+				str += "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\"" + boxid + "\",\"" + contentid + "\");removeboxmenu(\"" + contentid + "menu\");'>";
+				str += "<option>Choose content</option>";
+				str += "<option value='CODE'>Code example</option>";
+				str += "<option value='DOCUMENT'>Description section</option>";
+				str += "</select>";
+				str += '</td>';
 			}
-		// If reader doesn't have write access, only the boxtitle is shown
-		}else{
-			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][4]+'</span></td>';
+			// If reader doesn't have write access, only the boxtitle is shown
+		} else {
+			str += '<td class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
 		// Add resize and reset buttons
-		str+="<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes("+boxid+");'><p>Maximize</p></div>";
-		str+="<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
 
 		// Show the copy to clipboard button for code views only
-		if (type=="CODE") {
-			str+="<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard("+boxid+");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+		if (type == "CODE") {
+			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 
-		str+='</tr></table>';
-		boxmenu.innerHTML=str;
-		$(boxmenu).click(function(event){
-			if($(window).width() <=1100){
-				toggleClass($("#"+boxmenu.parentNode.id).attr("id"));
+		str += '</tr></table>';
+		boxmenu.innerHTML = str;
+		$(boxmenu).click(function (event) {
+			if ($(window).width() <= 1100) {
+				toggleClass($("#" + boxmenu.parentNode.id).attr("id"));
 			}
 		});
 	}
@@ -781,14 +770,13 @@ function createboxmenu(contentid, boxid, type)
 //				Used by createboxmenu(contentid, boxid, type) in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function toggleClass(id)
-{
-	var className = $('#'+id).attr('class');
+function toggleClass(id) {
+	var className = $('#' + id).attr('class');
 	$(".boxwrapper").addClass("deactivatedbox").removeClass("activebox");
-	if(className.indexOf("activebox") >-1){
-		$("#"+id).removeClass("activebox").addClass("deactivatedbox");
-	}else{
-		$("#"+id).removeClass("deactivatedbox").addClass("activebox");
+	if (className.indexOf("activebox") > -1) {
+		$("#" + id).removeClass("activebox").addClass("deactivatedbox");
+	} else {
+		$("#" + id).removeClass("deactivatedbox").addClass("activebox");
 	}
 }
 
@@ -798,14 +786,15 @@ function toggleClass(id)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
 
-function displayDrop(dropid)
-{
-	drop = $("#"+dropid);
-	if($(drop).is(":hidden")){
-		$(".dropdown").css({display: "none"});
-		drop.style.display="block";
-	}else{
-		drop.style.display="none";
+function displayDrop(dropid) {
+	drop = $("#" + dropid);
+	if ($(drop).is(":hidden")) {
+		$(".dropdown").css({
+			display: "none"
+		});
+		drop.style.display = "block";
+	} else {
+		drop.style.display = "none";
 	}
 }
 
@@ -814,10 +803,9 @@ function displayDrop(dropid)
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function highlightop(otherop,thisop)
-{
-	$("#"+otherop).addClass("hi");
-	$("#"+thisop).addClass("hi");
+function highlightop(otherop, thisop) {
+	$("#" + otherop).addClass("hi");
+	$("#" + thisop).addClass("hi");
 }
 
 //----------------------------------------------------------------------------------
@@ -825,10 +813,9 @@ function highlightop(otherop,thisop)
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function dehighlightop(otherop,thisop)
-{
-	$("#"+otherop).removeClass("hi");
-	$("#"+thisop).removeClass("hi");
+function dehighlightop(otherop, thisop) {
+	$("#" + otherop).removeClass("hi");
+	$("#" + thisop).removeClass("hi");
 }
 
 //----------------------------------------------------------------------------------
@@ -836,10 +823,9 @@ function dehighlightop(otherop,thisop)
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function highlightHtml(otherTag,thisTag)
-{
-	$("#"+otherTag).addClass("html");
-	$("#"+thisTag).addClass("html");
+function highlightHtml(otherTag, thisTag) {
+	$("#" + otherTag).addClass("html");
+	$("#" + thisTag).addClass("html");
 }
 
 //----------------------------------------------------------------------------------
@@ -847,10 +833,9 @@ function highlightHtml(otherTag,thisTag)
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function deHighlightHtml(otherTag,thisTag)
-{
-	$("#"+otherTag).removeClass("html");
-	$("#"+thisTag).removeClass("html");
+function deHighlightHtml(otherTag, thisTag) {
+	$("#" + otherTag).removeClass("html");
+	$("#" + thisTag).removeClass("html");
 }
 
 //----------------------------------------------------------------------------------
@@ -861,30 +846,32 @@ function deHighlightHtml(otherTag,thisTag)
 //----------------------------------------------------------------------------------
 
 var dmd;
-function Skip(skipkind)
-{
-	if(skipkind=="bd"){
-			dmd=1;
-	}else if(skipkind=="bu"){
-			if(retData['before'].length!=0&&dmd==1){
-					navigateExample(retData['before'][0][0]);
-			}
-			dmd=0;
+
+function Skip(skipkind) {
+	if (skipkind == "bd") {
+		dmd = 1;
+	} else if (skipkind == "bu") {
+		if (retData['before'].length != 0 && dmd == 1) {
+			navigateExample(retData['before'][0][0]);
+		}
+		dmd = 0;
 	}
-	if(skipkind=="fd"){
-			dmd=2;
-	}else if(skipkind=="fu"){
-			if(retData['after'].length!=0&&dmd==2){
-					navigateExample(retData['after'][0][0]);
-			}
-			dmd=0;
+	if (skipkind == "fd") {
+		dmd = 2;
+	} else if (skipkind == "fu") {
+		if (retData['after'].length != 0 && dmd == 2) {
+			navigateExample(retData['after'][0][0]);
+		}
+		dmd = 0;
 	}
-	if(skipkind=="bd"||skipkind=="fd"){
-			$("#forwdrop").css("display","none");
-			$("#backwdrop").css("display","none");
+	if (skipkind == "bd" || skipkind == "fd") {
+		$("#forwdrop").css("display", "none");
+		$("#backwdrop").css("display", "none");
 	}
 
-	setTimeout(function(){execSkip()}, 1000);
+	setTimeout(function () {
+		execSkip()
+	}, 1000);
 }
 
 //----------------------------------------------------------------------------------
@@ -892,43 +879,42 @@ function Skip(skipkind)
 //				Used by Skip in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function execSkip()
-{
-	str="";
-	if(dmd==1){
-		for(i=0;i<retData['before'].length;i++){
-			str+="<span id='F"+retData['before'][i][1]+"' onclick='navigateExample(\""+retData['before'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retData['before'][i][1]+":"+retData['before'][i][2]+"</span>";
+function execSkip() {
+	str = "";
+	if (dmd == 1) {
+		for (i = 0; i < retData['before'].length; i++) {
+			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";
 		}
 		$("#backwdropc").html(str);
-		$("#backwdrop").css("display","block");
-		dmd=0;
-	}else if(dmd==2){
-		for(i=0;i<retData['after'].length;i++){
-			str+="<span id='F"+retData['after'][i][1]+"' onclick='navigateExample(\""+retData['after'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retData['after'][i][1]+":"+retData['after'][i][2]+"</span>";
+		$("#backwdrop").css("display", "block");
+		dmd = 0;
+	} else if (dmd == 2) {
+		for (i = 0; i < retData['after'].length; i++) {
+			str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
 		}
 		$("#forwdropc").html(str);
-		$("#forwdrop").css("display","block");
-		dmd=0;
+		$("#forwdrop").css("display", "block");
+		dmd = 0;
 	}
 }
 
 //Retrieve height for building menu.
-$(window).load(function() {
+$(window).load(function () {
 	var windowHeight = $(window).height();
-	textHeight= windowHeight-50;
+	textHeight = windowHeight - 50;
 	$("#table-scroll").css("height", textHeight);
 });
 
-$(window).resize(function() {
+$(window).resize(function () {
 	var windowHeight = $(window).height();
-	textHeight= windowHeight-50;
+	textHeight = windowHeight - 50;
 	$("#table-scroll").css("height", textHeight);
 
 });
 
-document.addEventListener("drop", function(e) {
-    // cancel drop
-    e.preventDefault();
+document.addEventListener("drop", function (e) {
+	// cancel drop
+	e.preventDefault();
 });
 
 /********************************************************************************
@@ -942,9 +928,8 @@ document.addEventListener("drop", function(e) {
 // 					Used by createboxmenu in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function changeboxcontent(boxcontent,boxid)
-{
-	AJAXService("changeboxcontent","&boxid="+boxid+"&boxcontent="+boxcontent);
+function changeboxcontent(boxcontent, boxid) {
+	AJAXService("changeboxcontent", "&boxid=" + boxid + "&boxcontent=" + boxcontent);
 }
 
 /********************************************************************************
@@ -958,10 +943,9 @@ function changeboxcontent(boxcontent,boxid)
 //			Used by switchDrop
 //----------------------------------------------------------------------------------
 
-function hideDrop(dname)
-{
-	var dropd= $("#"+dname);
-	if(dropd!=null) dropd.style.display="none";
+function hideDrop(dname) {
+	var dropd = $("#" + dname);
+	if (dropd != null) dropd.style.display = "none";
 }
 
 //----------------------------------------------------------------------------------
@@ -969,17 +953,16 @@ function hideDrop(dname)
 //				Is never used, code is kept for future use
 //----------------------------------------------------------------------------------
 
-function switchDrop(dname)
-{
-	var dropd=$("#"+dname);
-	if(dropd.style.display=="block"){
-		$( dropd ).slideUp("fast");
-	}else{
+function switchDrop(dname) {
+	var dropd = $("#" + dname);
+	if (dropd.style.display == "block") {
+		$(dropd).slideUp("fast");
+	} else {
 		hideDrop("forwdrop");
 		hideDrop("backwdrop");
 		$('#hotdogdrop').hide();
-		$( dropd ).slideDown("fast");
-		dropd.style.display="block";
+		$(dropd).slideDown("fast");
+		dropd.style.display = "block";
 	}
 }
 
@@ -988,12 +971,11 @@ function switchDrop(dname)
 //				Is never used, code is kept for future use
 //----------------------------------------------------------------------------------
 
-function issetDrop(dname)
-{
-	var dropd=$("#"+dname);
-	if(dropd.style.display=="block"){
+function issetDrop(dname) {
+	var dropd = $("#" + dname);
+	if (dropd.style.display == "block") {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }
@@ -1003,10 +985,9 @@ function issetDrop(dname)
 //                Is called by [this function] in codeviewer.js
 //----------------------------------------------------------
 
-function highlightKeyword(kw)
-{
-	$(".impword").each(function(){
-		if(this.innerHTML==kw){
+function highlightKeyword(kw) {
+	$(".impword").each(function () {
+		if (this.innerHTML == kw) {
 			$(this).addClass("imphi");
 		}
 	});
@@ -1017,10 +998,9 @@ function highlightKeyword(kw)
 //                Is called by [this function] in codeviewer.js
 //----------------------------------------------------------
 
-function dehighlightKeyword(kw)
-{
-	$(".impword").each(function(){
-		if(this.innerHTML==kw){
+function dehighlightKeyword(kw) {
+	$(".impword").each(function () {
+		if (this.innerHTML == kw) {
 			$(this).removeClass("imphi");
 		}
 	});
@@ -1037,7 +1017,7 @@ function dehighlightKeyword(kw)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------
 
-function token (kind,val,fromchar,tochar,row) {
+function token(kind, val, fromchar, tochar, row) {
 	this.kind = kind;
 	this.val = val;
 	this.from = fromchar;
@@ -1051,9 +1031,8 @@ function token (kind,val,fromchar,tochar,row) {
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------
 
-function maketoken(kind,val,from,to,rowno)
-{
-	newtoken=new token(kind,val,from,to,rowno);
+function maketoken(kind, val, from, to, rowno) {
+	newtoken = new token(kind, val, from, to, rowno);
 	tokens.push(newtoken);
 }
 
@@ -1062,10 +1041,9 @@ function maketoken(kind,val,from,to,rowno)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------
 
-function error(str,val,row)
-{
-	var debug = "Tokenizer error: "+ str+val+ " at row "+row;
-	alert("Tokenizer Error: "+str+val+" at row "+row);
+function error(str, val, row) {
+	var debug = "Tokenizer error: " + str + val + " at row " + row;
+	alert("Tokenizer Error: " + str + val + " at row " + row);
 }
 
 //----------------------------------------------------------------------------------
@@ -1074,9 +1052,8 @@ function error(str,val,row)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
 
-function replaceAll(find, replace, str)
-{
-    return str.replace(new RegExp(find, 'g'), replace);
+function replaceAll(find, replace, str) {
+	return str.replace(new RegExp(find, 'g'), replace);
 }
 
 //----------------------------------------------------------
@@ -1085,169 +1062,182 @@ function replaceAll(find, replace, str)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------
 
-function tokenize(instring,inprefix,insuffix)
-{
+function tokenize(instring, inprefix, insuffix) {
 	// replace HTML-entities
-	instring = replaceAll("&amp;","&",instring);
-	instring = replaceAll("&#9;"," ",instring);
+	instring = replaceAll("&amp;", "&", instring);
+	instring = replaceAll("&#9;", " ", instring);
 
-	var from;                   	// index of the start of the token.
-	var i = 0;                  	// index of the current character.
-	var length=instring.length;	// length of the string
-	var currentCharacter;           // current character.
-	var currentNum;                 // current numerical value
-	var currentQuoteChar;           // current quote character
-	var currentStr;                 // current string value.
-	var row=1;			// current row value
+	var from; // index of the start of the token.
+	var i = 0; // index of the current character.
+	var length = instring.length; // length of the string
+	var currentCharacter; // current character.
+	var currentNum; // current numerical value
+	var currentQuoteChar; // current quote character
+	var currentStr; // current string value.
+	var row = 1; // current row value
 
 	currentCharacter = instring.charAt(i);
-	while (currentCharacter) {		// currentCharacter == first character in each word
+	while (currentCharacter) { // currentCharacter == first character in each word
 		from = i;
-		if (currentCharacter <= ' '){		// White space and carriage return
-			if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
-				maketoken('newline',"",i,i,row);
-				currentStr="";
+		if (currentCharacter <= ' ') { // White space and carriage return
+			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
+				maketoken('newline', "", i, i, row);
+				currentStr = "";
 				row++;
-			}else{
-				currentStr=currentCharacter;
+			} else {
+				currentStr = currentCharacter;
 			}
 
 			i++;
-			while(true){
-				currentCharacter=instring.charAt(i);
-				if(currentCharacter>' '||!currentCharacter) break;
-				if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
-					maketoken('whitespace',currentStr,from,i,row);
-					maketoken('newline',"",i,i,row);
-					currentStr="";
+			while (true) {
+				currentCharacter = instring.charAt(i);
+				if (currentCharacter > ' ' || !currentCharacter) break;
+				if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
+					maketoken('whitespace', currentStr, from, i, row);
+					maketoken('newline', "", i, i, row);
+					currentStr = "";
 					// White space Row (so we get one white space token for each new row) also increase row number
 					row++;
-				}else{
+				} else {
 					currentStr += currentCharacter;
 				}
 				i++;
 			}
-			if(currentStr!="") maketoken('whitespace',currentStr,from,i,row);
-		}else if((currentCharacter >='a'&&currentCharacter<='z')||(currentCharacter>='A'&&currentCharacter<='Z')){					// Names i.e. Text
+			if (currentStr != "") maketoken('whitespace', currentStr, from, i, row);
+		} else if ((currentCharacter >= 'a' && currentCharacter <= 'z') || (currentCharacter >= 'A' && currentCharacter <= 'Z')) { // Names i.e. Text
 			currentStr = currentCharacter;
 			i++;
-			while(true){
+			while (true) {
 				currentCharacter = instring.charAt(i);
-				if ((currentCharacter >='a'&&currentCharacter<='z')||(currentCharacter>='A'&&currentCharacter<='Z')||(currentCharacter>='0'&&currentCharacter<='9')||currentCharacter=='_'){
+				if ((currentCharacter >= 'a' && currentCharacter <= 'z') || (currentCharacter >= 'A' && currentCharacter <= 'Z') || (currentCharacter >= '0' && currentCharacter <= '9') || currentCharacter == '_') {
 					currentStr += currentCharacter;
 					i++;
-				}else{
+				} else {
 					break;
 				}
 			}
-			maketoken('name',currentStr,from,i,row);
-		}else if(currentCharacter >= '0' && currentCharacter <= '9'){			// Number token
+			maketoken('name', currentStr, from, i, row);
+		} else if (currentCharacter >= '0' && currentCharacter <= '9') { // Number token
 			currentStr = currentCharacter;
 			i++;
-			while(true){
+			while (true) {
 				currentCharacter = instring.charAt(i);
 				if (currentCharacter < '0' || currentCharacter > '9') break;
 				i++;
-				currentStr+=currentCharacter;
+				currentStr += currentCharacter;
 			}
-			if(currentCharacter=='.'){
+			if (currentCharacter == '.') {
 				i++;
-				currentStr+=currentCharacter;
-				for(;;){
-					currentCharacter=instring.charAt(i);
+				currentStr += currentCharacter;
+				for (;;) {
+					currentCharacter = instring.charAt(i);
 					if (currentCharacter < '0' || currentCharacter > '9') break;
 					i++;
-					currentStr+=currentCharacter;
+					currentStr += currentCharacter;
 				}
 			}
-			if (currentCharacter=='#') {
+			if (currentCharacter == '#') {
 				for (var j = 0; j <= 6; j++) {
 					if ((currentCharacter >= '0' || currentCharacter <= '9') || (currentCharacter >= 'a' || currentCharacter <= 'f') || (currentCharacter >= 'A' || currentCharacter <= 'F')) {
 						i++;
-						currentStr+=currentCharacter;
-						currentCharacter=instring.charAt(i);
-					}
-					else {
+						currentStr += currentCharacter;
+						currentCharacter = instring.charAt(i);
+					} else {
 						break;
 					}
 				}
 				i++;
-				currentStr+=currentCharacter;
-				currentCharacter=instring.charAt(i);
+				currentStr += currentCharacter;
+				currentCharacter = instring.charAt(i);
 
-				if (currentCharacter=='e'||currentCharacter=='E') {
-				i++;
-				currentStr+=currentCharacter;
-				currentCharacter=instring.charAt(i);
-					if(currentCharacter=='-'||currentCharacter=='+'){
-						i+=1;
-						currentStr+=currentCharacter;
-						currentCharacter=instring.charAt(i);
+				if (currentCharacter == 'e' || currentCharacter == 'E') {
+					i++;
+					currentStr += currentCharacter;
+					currentCharacter = instring.charAt(i);
+					if (currentCharacter == '-' || currentCharacter == '+') {
+						i += 1;
+						currentStr += currentCharacter;
+						currentCharacter = instring.charAt(i);
 					}
-					if (currentCharacter < '0' || currentCharacter > '9') error('Bad Exponent in Number: ',currentStr,row);
+					if (currentCharacter < '0' || currentCharacter > '9') error('Bad Exponent in Number: ', currentStr, row);
 					do {
 						i++;
-						currentStr+=currentCharacter;
-						currentCharacter=instring.charAt(i);
-					}while(currentCharacter>='0'&&currentCharacter<='9');
+						currentStr += currentCharacter;
+						currentCharacter = instring.charAt(i);
+					} while (currentCharacter >= '0' && currentCharacter <= '9');
 				}
 
-				if (currentCharacter>='a'&&currentCharacter<='z'){
+				if (currentCharacter >= 'a' && currentCharacter <= 'z') {
 					//if currentStr is not finite (aka non-numerical) then it is a bad number!
-					if(!isFinite(currentStr)) {
+					if (!isFinite(currentStr)) {
 						currentStr += currentCharacter;
 						i += 1;
-						error('Bad Number: ',currentStr,row);
+						error('Bad Number: ', currentStr, row);
 					}
 				}
 			}
 
 			currentNum = currentStr;
 
-			if(isFinite(currentNum)){
-				maketoken('number',currentNum,from,i,row);
-			}else{
-				error('Bad Number: ',currentStr,row);
+			if (isFinite(currentNum)) {
+				maketoken('number', currentNum, from, i, row);
+			} else {
+				error('Bad Number: ', currentStr, row);
 			}
-		}else if(currentCharacter=='\''||currentCharacter=='"'){	   // String .. handles c style breaking codes. Ex: "elem" or "text"
-			currentStr='';
-			currentQuoteChar=currentCharacter;
+		} else if (currentCharacter == '\'' || currentCharacter == '"') { // String .. handles c style breaking codes. Ex: "elem" or "text"
+			currentStr = '';
+			currentQuoteChar = currentCharacter;
 			i++;
-			while(true){
-				currentCharacter=instring.charAt(i);
-				if (currentCharacter<' '){
-					if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter == '')) row++; 	// Add row if this white space is a row terminator
-					error('Unterminated String: ',currentStr,row);
+			while (true) {
+				currentCharacter = instring.charAt(i);
+				if (currentCharacter < ' ') {
+					if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) row++; // Add row if this white space is a row terminator
+					error('Unterminated String: ', currentStr, row);
 					break;
 				}
 
-				if (currentCharacter==currentQuoteChar) break;
+				if (currentCharacter == currentQuoteChar) break;
 
-				if (currentCharacter=='\\'){
+				if (currentCharacter == '\\') {
 					i += 1;
 					if (i >= length) {
-						error('Unterminated String: ',currentStr,row);
+						error('Unterminated String: ', currentStr, row);
 						break;
 					}
-					currentCharacter=instring.charAt(i);
+					currentCharacter = instring.charAt(i);
 
-					if(currentCharacter=='b'){ currentCharacter='\b'; break; }
-					if(currentCharacter=='f'){ currentCharacter='\f'; break; }
-					if(currentCharacter=='n'){ currentCharacter='\n'; break; }
-					if(currentCharacter=='r'){ currentCharacter='\r'; break; }
-					if(currentCharacter=='t'){ currentCharacter='\t'; break; }
-					if(currentCharacter=='u'){
+					if (currentCharacter == 'b') {
+						currentCharacter = '\b';
+						break;
+					}
+					if (currentCharacter == 'f') {
+						currentCharacter = '\f';
+						break;
+					}
+					if (currentCharacter == 'n') {
+						currentCharacter = '\n';
+						break;
+					}
+					if (currentCharacter == 'r') {
+						currentCharacter = '\r';
+						break;
+					}
+					if (currentCharacter == 't') {
+						currentCharacter = '\t';
+						break;
+					}
+					if (currentCharacter == 'u') {
 						if (i >= length) {
-							error('Unterminated String: ',currentStr,row);
+							error('Unterminated String: ', currentStr, row);
 							break;
 						}
 						currentCharacter = parseInt(this.substr(i + 1, 4), 16);
 						if (!isFinite(currentCharacter) || currentCharacter < 0) {
-							error('Unterminated String: ',currentStr,row);
+							error('Unterminated String: ', currentStr, row);
 							break;
 						}
 						currentCharacter = String.fromCharCode(currentCharacter);
-						i+=4;
+						i += 4;
 						break;
 					}
 				}
@@ -1255,79 +1245,79 @@ function tokenize(instring,inprefix,insuffix)
 				i++;
 			}
 			i++;
-			maketoken('string',currentCharacter+currentStr+currentCharacter,from,i,row);
-			currentCharacter=instring.charAt(i);
+			maketoken('string', currentCharacter + currentStr + currentCharacter, from, i, row);
+			currentCharacter = instring.charAt(i);
 
-		}else if (currentCharacter=='/'&&instring.charAt(i+1)=='/'){	// Comment of // type ... does not cover block comments
+		} else if (currentCharacter == '/' && instring.charAt(i + 1) == '/') { // Comment of // type ... does not cover block comments
 			i++;
-			currentStr=currentCharacter;
-			while(true){
-				currentCharacter=instring.charAt(i);
-				if (currentCharacter=='\n'||currentCharacter=='\r'||currentCharacter=='') {
+			currentStr = currentCharacter;
+			while (true) {
+				currentCharacter = instring.charAt(i);
+				if (currentCharacter == '\n' || currentCharacter == '\r' || currentCharacter == '') {
 					break;
-				}else{
-					currentStr+=currentCharacter;
+				} else {
+					currentStr += currentCharacter;
 				}
 				i++;
 			}
-			maketoken('rowcomment',currentStr,from,i,row);
+			maketoken('rowcomment', currentStr, from, i, row);
 			/* This does not have to be here because a newline creates in coderender function
 			maketoken('newline',"",i,i,row); */
 
-		}else if(currentCharacter == '<' && instring.charAt(i+1)=='!' && instring.charAt(i+2)=='-' && instring.charAt(i+3)=='-'){ // Comment of <!-- type
+		} else if (currentCharacter == '<' && instring.charAt(i + 1) == '!' && instring.charAt(i + 2) == '-' && instring.charAt(i + 3) == '-') { // Comment of <!-- type
 			i++;
 			currentStr = currentCharacter;
-			while(true){
-				currentCharacter=instring.charAt(i);
-				if (currentCharacter=='\n'||currentCharacter=='\r'||currentCharacter=='') {
+			while (true) {
+				currentCharacter = instring.charAt(i);
+				if (currentCharacter == '\n' || currentCharacter == '\r' || currentCharacter == '') {
 					break;
-				}else{
-					currentStr+=currentCharacter;
+				} else {
+					currentStr += currentCharacter;
 				}
 				i++;
 			}
-			maketoken('rowcomment',currentStr,from,i,row);
+			maketoken('rowcomment', currentStr, from, i, row);
 
-		}else if (currentCharacter=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
+		} else if (currentCharacter == '/' && instring.charAt(i + 1) == '*') { // Block comment of /* type
 			i++;
-			currentStr=currentCharacter;
-			while(true){
-				currentCharacter=instring.charAt(i);
-				if ((currentCharacter=='*'&&instring.charAt(i+1)=='/')||(i==length)) {
-					currentStr+="*/"
-					i+=2;
-					currentCharacter=instring.charAt(i);
+			currentStr = currentCharacter;
+			while (true) {
+				currentCharacter = instring.charAt(i);
+				if ((currentCharacter == '*' && instring.charAt(i + 1) == '/') || (i == length)) {
+					currentStr += "*/"
+					i += 2;
+					currentCharacter = instring.charAt(i);
 					break;
 				}
-				if (currentCharacter=='\n'||currentCharacter=='\r'||currentCharacter=='') {
+				if (currentCharacter == '\n' || currentCharacter == '\r' || currentCharacter == '') {
 					// don't make blockcomment or newline if currentStr is empty
-					if(currentStr != ""){
-						maketoken('blockcomment',currentStr,from,i,row);
-						maketoken('newline',"",i,i,row);
+					if (currentStr != "") {
+						maketoken('blockcomment', currentStr, from, i, row);
+						maketoken('newline', "", i, i, row);
 						row++;
-						currentStr="";
+						currentStr = "";
 					}
-				}else{
-					currentStr+=currentCharacter;
+				} else {
+					currentStr += currentCharacter;
 				}
 				i++;
 			}
-			maketoken('blockcomment',currentStr,from,i,row);
-		}else if(inprefix.indexOf(currentCharacter) >= 0) {		// Multi-character Operators
+			maketoken('blockcomment', currentStr, from, i, row);
+		} else if (inprefix.indexOf(currentCharacter) >= 0) { // Multi-character Operators
 			currentStr = currentCharacter;
 			i++;
-			while(true){
-				currentCharacter=instring.charAt(i);
+			while (true) {
+				currentCharacter = instring.charAt(i);
 				if (i >= length || insuffix.indexOf(currentCharacter) < 0) {
 					break;
 				}
 				currentStr += currentCharacter;
 				i++;
 			}
-			maketoken('operator',currentStr,from,i,row);
-		} else {												// Single-character Operators
+			maketoken('operator', currentStr, from, i, row);
+		} else { // Single-character Operators
 			i++;
-			maketoken('operator',currentCharacter,from,i,row);
+			maketoken('operator', currentCharacter, from, i, row);
 			currentCharacter = instring.charAt(i);
 		}
 	}
@@ -1338,23 +1328,22 @@ function tokenize(instring,inprefix,insuffix)
 //	The case name is the name of the html tag
 //----------------------------------------------------------------------------------
 
-function popoverbox(titleData)
-{
+function popoverbox(titleData) {
 	var popoverMessage = "test";
-	if(titleData=="html"){
-        popoverMessage = "Defines the root of an HTML document";
-	}else if(titleData=="head"){
-        popoverMessage = "Defines information about the document";
-	}else if(titleData=="body"){
-        popoverMessage = "Defines the document's body";
-	}else if(titleData=="div"){
-        popoverMessage = "Defines a section in a document";
-	}else if(titleData=="span"){
-        popoverMessage = "Defines a section in a document";
-	}else if(titleData=="doctype"){
-        popoverMessage = "An instruction to the web browser about what version of HTML the page is written in";
-	}else if(titleData==""){
-        popoverMessage = "";
+	if (titleData == "html") {
+		popoverMessage = "Defines the root of an HTML document";
+	} else if (titleData == "head") {
+		popoverMessage = "Defines information about the document";
+	} else if (titleData == "body") {
+		popoverMessage = "Defines the document's body";
+	} else if (titleData == "div") {
+		popoverMessage = "Defines a section in a document";
+	} else if (titleData == "span") {
+		popoverMessage = "Defines a section in a document";
+	} else if (titleData == "doctype") {
+		popoverMessage = "An instruction to the web browser about what version of HTML the page is written in";
+	} else if (titleData == "") {
+		popoverMessage = "";
 	}
 
 	return popoverMessage;
@@ -1366,341 +1355,340 @@ function popoverbox(titleData)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
 
-function rendercode(codestring,boxid,wordlistid,boxfilename)
-{
-  var destinationdiv = "box" + boxid;
+function rendercode(codestring, boxid, wordlistid, boxfilename) {
+	var destinationdiv = "box" + boxid;
 	tokens = [];
 
 	important = [];
-	for(var i=0;i<retData.impwords.length;i++){
+	for (var i = 0; i < retData.impwords.length; i++) {
 		important[i] = retData.impwords[i];
 	}
 
-	keywords= [];
-	for(var i=0;i<retData['words'].length;i++){
-		if(retData['words'][i][0]==wordlistid){
-			keywords[retData['words'][i][1]]=retData['words'][i][2];
+	keywords = [];
+	for (var i = 0; i < retData['words'].length; i++) {
+		if (retData['words'][i][0] == wordlistid) {
+			keywords[retData['words'][i][1]] = retData['words'][i][2];
 		}
 	}
 
-	improws=[];
-	for(var i=0;i<retData.improws.length;i++){
-        if ((retData['improws'][i][0]) == boxid){
-       		improws.push(retData.improws[i]);
+	improws = [];
+	for (var i = 0; i < retData.improws.length; i++) {
+		if ((retData['improws'][i][0]) == boxid) {
+			improws.push(retData.improws[i]);
 		}
 	}
-	tokenize(codestring,"<>+-&","=>&:");
+	tokenize(codestring, "<>+-&", "=>&:");
 
 	// Iterate over token objects and print kind of each token and token type in window
-	printout= $("#"+destinationdiv);
-	str="";
-	cont="";
-	lineno=0;
-	str+="<div id='notification" + boxid + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
-	str+="<div class='normtextwrapper'>";
+	printout = $("#" + destinationdiv);
+	str = "";
+	cont = "";
+	lineno = 0;
+	str += "<div id='notification" + boxid + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
+	str += "<div id='textwrapper" + boxid + "' class='normtextwrapper'>";
 
-	pcount=0;
-	parenthesis=new Array();
-	bcount=0;
-	bracket=new Array();
-	cbcount=0;
-	cbracket=new Array();
+	pcount = 0;
+	parenthesis = new Array();
+	bcount = 0;
+	bracket = new Array();
+	cbcount = 0;
+	cbracket = new Array();
 
-	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr','relativelayout','textview','webview','manifest','uses','permission','application','activity','intent');
-	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source','textview','webview','uses');
-	cssArray= new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right',
-						'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size',
-						'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'height', 'ime-mode', 'include-source', 'layer-background-color', 'layer-background-image', 'layout-flow', 'layout-grid', 'layout-grid-char', 'layout-grid-char-spacing', 'layout-grid-line', 'layout-grid-mode', 'layout-grid-type', 'left', 'letter-spacing', 'line-break', 'line-height', 'list-style', 'list-style-image', 'list-style-position', 'list-style-type', 'margin',
-						'margin-bottom', 'margin-left', 'margin-right', 'margin-top', 'marker-offset', 'marks', 'max-height', 'max-width', 'min-height', 'min-width', '-moz-binding', '-moz-border-radius', '-moz-border-radius-topleft', '-moz-border-radius-topright', '-moz-border-radius-bottomright', '-moz-border-radius-bottomleft', '-moz-border-top-colors', '-moz-border-right-colors', '-moz-border-bottom-colors', '-moz-border-left-colors', '-moz-opacity', '-moz-outline',
-						'-moz-outline-color', '-moz-outline-style', '-moz-outline-width' ,'-moz-user-focus' ,'-moz-user-input', '-moz-user-modify', '-moz-user-select', 'orphans', 'outline', 'outline-color', 'outline-style', 'outline-width', 'overflow', 'overflow-X', 'overflow-Y', 'padding', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'page', 'page-break-after', 'page-break-before', 'page-break-inside', 'pause', 'pause-after', 'pause-before', 'pitch',
-						'pitch-range','play-during', 'position', 'quotes', '-replace', 'richness', 'right', 'ruby-align', 'ruby-overhang', 'ruby-position', '-set-link-source', 'size', 'speak', 'speak-header', 'speak-numeral', 'speak-punctuation', 'speech-rate', 'stress', 'scrollbar-arrow-color', 'scrollbar-base-color', 'scrollbar-dark-shadow-color', 'scrollbar-face-color', 'scrollbar-highlight-color', 'scrollbar-shadow-color', 'scrollbar-3d-light-color', 'scrollbar-track-color',
-						'table-layout', 'text-align', 'text-align-last', 'text-decoration', 'text-indent', 'text-justify', 'text-overflow', 'text-shadow', 'text-transform', 'text-autospace', 'text-kashida-space', 'text-underline-position', 'top', 'unicode-bidi', '-use-link-source', 'vertical-align', 'visibility', 'voice-family', 'volume', 'white-space', 'widows', 'width', 'word-break', 'z-index', 'zoom', 'word-spacing', 'word-wrap', 'writing-mode');
-	var cssTagCount=0;
-	var htmlTagCount=0;
+	htmlArray = new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
+	htmlArrayNoSlash = new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'textview', 'webview', 'uses');
+	cssArray = new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right',
+		'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size',
+		'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'height', 'ime-mode', 'include-source', 'layer-background-color', 'layer-background-image', 'layout-flow', 'layout-grid', 'layout-grid-char', 'layout-grid-char-spacing', 'layout-grid-line', 'layout-grid-mode', 'layout-grid-type', 'left', 'letter-spacing', 'line-break', 'line-height', 'list-style', 'list-style-image', 'list-style-position', 'list-style-type', 'margin',
+		'margin-bottom', 'margin-left', 'margin-right', 'margin-top', 'marker-offset', 'marks', 'max-height', 'max-width', 'min-height', 'min-width', '-moz-binding', '-moz-border-radius', '-moz-border-radius-topleft', '-moz-border-radius-topright', '-moz-border-radius-bottomright', '-moz-border-radius-bottomleft', '-moz-border-top-colors', '-moz-border-right-colors', '-moz-border-bottom-colors', '-moz-border-left-colors', '-moz-opacity', '-moz-outline',
+		'-moz-outline-color', '-moz-outline-style', '-moz-outline-width', '-moz-user-focus', '-moz-user-input', '-moz-user-modify', '-moz-user-select', 'orphans', 'outline', 'outline-color', 'outline-style', 'outline-width', 'overflow', 'overflow-X', 'overflow-Y', 'padding', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'page', 'page-break-after', 'page-break-before', 'page-break-inside', 'pause', 'pause-after', 'pause-before', 'pitch',
+		'pitch-range', 'play-during', 'position', 'quotes', '-replace', 'richness', 'right', 'ruby-align', 'ruby-overhang', 'ruby-position', '-set-link-source', 'size', 'speak', 'speak-header', 'speak-numeral', 'speak-punctuation', 'speech-rate', 'stress', 'scrollbar-arrow-color', 'scrollbar-base-color', 'scrollbar-dark-shadow-color', 'scrollbar-face-color', 'scrollbar-highlight-color', 'scrollbar-shadow-color', 'scrollbar-3d-light-color', 'scrollbar-track-color',
+		'table-layout', 'text-align', 'text-align-last', 'text-decoration', 'text-indent', 'text-justify', 'text-overflow', 'text-shadow', 'text-transform', 'text-autospace', 'text-kashida-space', 'text-underline-position', 'top', 'unicode-bidi', '-use-link-source', 'vertical-align', 'visibility', 'voice-family', 'volume', 'white-space', 'widows', 'width', 'word-break', 'z-index', 'zoom', 'word-spacing', 'word-wrap', 'writing-mode');
+	var cssTagCount = 0;
+	var htmlTagCount = 0;
 
-	htmlTag=new Array();
-	cssTag=new Array();
+	htmlTag = new Array();
+	cssTag = new Array();
 
 	//html part
-	pid="";
-	var iwcounter=0;
-	for(i=0;i<tokens.length;i++){
-		tokenvalue=String(tokens[i].val);
+	pid = "";
+	var iwcounter = 0;
+	for (i = 0; i < tokens.length; i++) {
+		tokenvalue = String(tokens[i].val);
 
-		if(tokens[i].kind=="rowcomment"||tokens[i].kind=="blockcomment"||tokens[i].kind=="string"||tokens[i].kind=="number"||tokens[i].kind=="name"){
-				// Fix to remove html tags in strings
-				tokenvalue = tokenvalue.replace(/&/g,"&amp;");
-				tokenvalue = tokenvalue.replace(/\</g, "&lt;");
-				tokenvalue = tokenvalue.replace(/\>/g, "&gt;");
+		if (tokens[i].kind == "rowcomment" || tokens[i].kind == "blockcomment" || tokens[i].kind == "string" || tokens[i].kind == "number" || tokens[i].kind == "name") {
+			// Fix to remove html tags in strings
+			tokenvalue = tokenvalue.replace(/&/g, "&amp;");
+			tokenvalue = tokenvalue.replace(/\</g, "&lt;");
+			tokenvalue = tokenvalue.replace(/\>/g, "&gt;");
 		}
 		// Make white space characters
-		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
-		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
+		tokenvalue = tokenvalue.replace(/ /g, '&nbsp;');
+		tokenvalue = tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
 
-		if(tokens[i].kind=="rowcomment"){
-			cont+="<span class='comment'>"+tokenvalue+"</span>";
-		}else if(tokens[i].kind=="blockcomment"){
-			cont+="<span class='comment'>"+tokenvalue+"</span>";
-		}else if(tokens[i].kind=="string"){
-			cont+="<span class='string'>"+tokenvalue+"</span>";
-		}else if(tokens[i].kind=="number"){
-			cont+="<span class='number'>"+tokenvalue+"</span>";
-		}else if(tokens[i].kind=="name"){
-			var foundkey=0;
+		if (tokens[i].kind == "rowcomment") {
+			cont += "<span class='comment'>" + tokenvalue + "</span>";
+		} else if (tokens[i].kind == "blockcomment") {
+			cont += "<span class='comment'>" + tokenvalue + "</span>";
+		} else if (tokens[i].kind == "string") {
+			cont += "<span class='string'>" + tokenvalue + "</span>";
+		} else if (tokens[i].kind == "number") {
+			cont += "<span class='number'>" + tokenvalue + "</span>";
+		} else if (tokens[i].kind == "name") {
+			var foundkey = 0;
 			//If tokenvalue exists in the array for important words
-			if(important.indexOf(tokenvalue) != -1){
+			if (important.indexOf(tokenvalue) != -1) {
 				foundkey = 2;
-			//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
-			}else if(keywords[tokenvalue] != null){
+				//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
+			} else if (keywords[tokenvalue] != null) {
 				foundkey = 1;
 			}
 
-			if(foundkey==1){
-				cont+="<span class='keyword"+keywords[tokenvalue]+"'>"+tokenvalue+"</span>";
-			}else if(foundkey==2){
+			if (foundkey == 1) {
+				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
+			} else if (foundkey == 2) {
 				iwcounter++;
-				cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";
-			}else{
-				cont+=tokenvalue;
+				cont += "<span id='IW" + iwcounter + "' class='impword' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='dehighlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+			} else {
+				cont += tokenvalue;
 			}
 
-		}else if(tokens[i].kind=="operator"){
-			if(tokenvalue=="("){
-				pid="PA"+pcount+boxid;
+		} else if (tokens[i].kind == "operator") {
+			if (tokenvalue == "(") {
+				pid = "PA" + pcount + boxid;
 				pcount++;
 				parenthesis.push(pid);
-				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";
-			}else if(tokenvalue==")"){
-				pid=parenthesis.pop();
-				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";
-			}else if(tokenvalue=="["){
-				pid="BR"+bcount;
+				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
+			} else if (tokenvalue == ")") {
+				pid = parenthesis.pop();
+				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
+			} else if (tokenvalue == "[") {
+				pid = "BR" + bcount;
 				bcount++;
 				bracket.push(pid);
-				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";
-			}else if(tokenvalue=="]"){
-				pid=bracket.pop();
-				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";
-			}else if(tokenvalue=="{"){
-				pid="CBR"+cbcount+boxid;
+				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
+			} else if (tokenvalue == "]") {
+				pid = bracket.pop();
+				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
+			} else if (tokenvalue == "{") {
+				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
-				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";
-			}else if(tokenvalue=="}"){
-				pid=cbracket.pop();
-				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";
-			}else if(tokenvalue=="<"){
+				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
+			} else if (tokenvalue == "}") {
+				pid = cbracket.pop();
+				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
+			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
-				tokenvalue="&lt;";
-				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!" && tokens[i+1].val != "?"){
-					if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
+				tokenvalue = "&lt;";
+				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
+					if (htmlArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
 						var k = 2;
 						var foundEnd = false;
 
 						//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
-						while(i+k<tokens.length){
-								if(tokens[i+k].val == ">"){
-									foundEnd = true;
-									break;
-								}
-								k++;
+						while (i + k < tokens.length) {
+							if (tokens[i + k].val == ">") {
+								foundEnd = true;
+								break;
+							}
+							k++;
 						}
-						if(foundEnd){
-							pid="html"+htmlTagCount+boxid;
+						if (foundEnd) {
+							pid = "html" + htmlTagCount + boxid;
 							htmlTagCount++;
-							if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+							if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								htmlTag.push(pid);
 							}
-							cont+="&lt"+"<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
-							cont+="</span>";
-							i=i+1;
-						}else{
-							cont+="<span class='oper'>"+tokenvalue+"</span>";
+							cont += "&lt" + "<span id='" + pid + "' class='oper' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "</span>";
+							i = i + 1;
+						} else {
+							cont += "<span class='oper'>" + tokenvalue + "</span>";
 						}
-					}else{
-							cont+="<span class='oper'>"+tokenvalue+"</span>";
+					} else {
+						cont += "<span class='oper'>" + tokenvalue + "</span>";
 					}
-				}else if(tokens[i+1].val=="/"){
-						if(htmlArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
-							if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
-								pid=htmlTag.pop();
-							}else{
-								htmlTagCount++;
-								pid="html"+htmlTagCount+boxid;
-							}
-							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
-							i = i+3;
-						}else{
-								cont+="<span class='oper'>"+tokenvalue+"</span>";
+				} else if (tokens[i + 1].val == "/") {
+					if (htmlArray.indexOf(tokens[i + 2].val.toLowerCase()) > -1) {
+						if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
+							pid = htmlTag.pop();
+						} else {
+							htmlTagCount++;
+							pid = "html" + htmlTagCount + boxid;
 						}
-				}else{
-					cont+="<span class='oper'>"+tokenvalue+"</span>";
+						cont += "&lt" + tokens[i + 1].val + "<span id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						i = i + 3;
+					} else {
+						cont += "<span class='oper'>" + tokenvalue + "</span>";
+					}
+				} else {
+					cont += "<span class='oper'>" + tokenvalue + "</span>";
 				}
-			}else{
-				cont+="<span class='oper'>"+tokenvalue+"</span>";
+			} else {
+				cont += "<span class='oper'>" + tokenvalue + "</span>";
 			}
-		}else{
-			cont+=tokenvalue;
+		} else {
+			cont += tokenvalue;
 		}
 		// tokens.length-1 so the last line will be printed out
-		if(tokens[i].kind=="newline" || i==tokens.length-1){
+		if (tokens[i].kind == "newline" || i == tokens.length - 1) {
 			// Help empty lines to be printed out
-      //console.log("C:"+cont);
-			if(cont=="") cont="&nbsp;";
+			//console.log("C:"+cont);
+			if (cont == "") cont = "&nbsp;";
 			// Count how many linenumbers that'll be needed
 			lineno++;
 			// Print out normal rows if no important exists
-			if(improws.length==0){
-				str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
-			}else{
+			if (improws.length == 0) {
+				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+			} else {
 				// Print out important lines
-				for(var kp=0;kp<improws.length;kp++){
-					if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
-						str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
+				for (var kp = 0; kp < improws.length; kp++) {
+					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'>" + cont + "</div>";
 						break;
-					}else{
-						if(kp == (improws.length-1)){
-							str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+					} else {
+						if (kp == (improws.length - 1)) {
+							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
 						}
 					}
 				}
 			}
-			cont="";
+			cont = "";
 		}
 	}
-	str+="</div>";
+	str += "</div>";
 
 	// Print out rendered code and border with numbers
-	printout.html(createCodeborder(lineno,improws) + str);
+	printout.html(createCodeborder(lineno, improws) + str);
 
 	//css part
-	pid="";
-	var iwcounter=0;
-	for(i=0;i<tokens.length;i++){
-		tokenvalue=String(tokens[i].val);
+	pid = "";
+	var iwcounter = 0;
+	for (i = 0; i < tokens.length; i++) {
+		tokenvalue = String(tokens[i].val);
 		// Make white space characters
-		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
-		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
+		tokenvalue = tokenvalue.replace(/ /g, '&nbsp;');
+		tokenvalue = tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
 
-		if(tokens[i].kind=="rowcomment"){
-			cont+="<span class='comment'>"+tokenvalue+"</span>";
-		}else if(tokens[i].kind=="blockcomment"){
-			cont+="<span class='comment'>"+tokenvalue+"</span>";
-		}else if(tokens[i].kind=="string"){
-			cont+="<span class='string'>"+tokenvalue+"</span>";
-		}else if(tokens[i].kind=="number"){
-			cont+="<span class='number'>"+tokenvalue+"</span>";
-		}else if(tokens[i].kind=="name"){
-			var foundkey=0;
+		if (tokens[i].kind == "rowcomment") {
+			cont += "<span class='comment'>" + tokenvalue + "</span>";
+		} else if (tokens[i].kind == "blockcomment") {
+			cont += "<span class='comment'>" + tokenvalue + "</span>";
+		} else if (tokens[i].kind == "string") {
+			cont += "<span class='string'>" + tokenvalue + "</span>";
+		} else if (tokens[i].kind == "number") {
+			cont += "<span class='number'>" + tokenvalue + "</span>";
+		} else if (tokens[i].kind == "name") {
+			var foundkey = 0;
 			//If tokenvalue exists in the array for important words
-			if(important.indexOf(tokenvalue) != -1){
+			if (important.indexOf(tokenvalue) != -1) {
 				foundkey = 2;
-			//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
-			}else if(keywords[tokenvalue] != null){
+				//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
+			} else if (keywords[tokenvalue] != null) {
 				foundkey = 1;
 			}
 
-			if(foundkey==1){
-				cont+="<span class='keyword"+keywords[tokenvalue]+"'>"+tokenvalue+"</span>";
-			}else if(foundkey==2){
+			if (foundkey == 1) {
+				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
+			} else if (foundkey == 2) {
 				iwcounter++;
-				cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";
-			}else{
-				cont+=tokenvalue;
+				cont += "<span id='IW" + iwcounter + "' class='impword' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='dehighlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+			} else {
+				cont += tokenvalue;
 			}
 
-		}else if(tokens[i].kind=="operator"){
-			if(tokenvalue=="{"){
-				pid="CBR"+cbcount+boxid;
+		} else if (tokens[i].kind == "operator") {
+			if (tokenvalue == "{") {
+				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
-				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";
-			}else if(tokenvalue=="}"){
-				pid=cbracket.pop();
-				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";
-			}else if(tokenvalue=="<"){
+				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
+			} else if (tokenvalue == "}") {
+				pid = cbracket.pop();
+				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
+			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
-				tokenvalue="&lt;";
-				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!" && tokens[i+1].val != "?"){
-					if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
+				tokenvalue = "&lt;";
+				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
+					if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
 						var k = 2;
 						var foundEnd = false;
 
 						//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
-						while(i+k<tokens.length){
-								if(tokens[i+k].val == ">"){
-									foundEnd = true;
-									break;
-								}
-								k++;
+						while (i + k < tokens.length) {
+							if (tokens[i + k].val == ">") {
+								foundEnd = true;
+								break;
+							}
+							k++;
 						}
 
-						if(foundEnd){
-							pid="css"+cssTagCount+boxid;
+						if (foundEnd) {
+							pid = "css" + cssTagCount + boxid;
 							cssTagCount++;
-							if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+							if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								cssTag.push(pid);
 							}
-							cont+="&lt"+"<span id='"+pid+"' class='oper' onmouseover='highlightCss(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightCss(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
-							cont+="</span>";
-							i=i+1;
-						}else{
-							cont+="<span class='oper'>"+tokenvalue+"</span>";
+							cont += "&lt" + "<span id='" + pid + "' class='oper' onmouseover='highlightCss(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightCss(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "</span>";
+							i = i + 1;
+						} else {
+							cont += "<span class='oper'>" + tokenvalue + "</span>";
 						}
-					}else{
-							cont+="<span class='oper'>"+tokenvalue+"</span>";
+					} else {
+						cont += "<span class='oper'>" + tokenvalue + "</span>";
 					}
-				}else if(tokens[i+1].val=="/"){
-						if(cssArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
-							if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) == -1){
-								pid=cssTag.pop();
-							}else{
-								cssTagCount++;
-								pid="css"+cssTagCount+boxid;
-							}
-							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
-							i = i+3;
-						}else{
-								cont+="<span class='oper'>"+tokenvalue+"</span>";
+				} else if (tokens[i + 1].val == "/") {
+					if (cssArray.indexOf(tokens[i + 2].val.toLowerCase()) > -1) {
+						if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
+							pid = cssTag.pop();
+						} else {
+							cssTagCount++;
+							pid = "css" + cssTagCount + boxid;
 						}
-				}else{
-					cont+="<span class='oper'>"+tokenvalue+"</span>";
+						cont += "&lt" + tokens[i + 1].val + "<span id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						i = i + 3;
+					} else {
+						cont += "<span class='oper'>" + tokenvalue + "</span>";
+					}
+				} else {
+					cont += "<span class='oper'>" + tokenvalue + "</span>";
 				}
-			}else{
-				cont+="<span class='oper'>"+tokenvalue+"</span>";
+			} else {
+				cont += "<span class='oper'>" + tokenvalue + "</span>";
 			}
-		}else{
-			cont+=tokenvalue;
+		} else {
+			cont += tokenvalue;
 		}
 		// tokens.length-1 so the last line will be printed out
-		if(tokens[i].kind=="newline" || i==tokens.length-1){
+		if (tokens[i].kind == "newline" || i == tokens.length - 1) {
 			// Help empty lines to be printed out
-			if(cont=="") cont="&nbsp;";
+			if (cont == "") cont = "&nbsp;";
 			// Count how many linenumbers that'll be needed
 			lineno++;
 			// Print out normal rows if no important exists
-			if(improws.length==0){
-				str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
-			}else{
+			if (improws.length == 0) {
+				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+			} else {
 				// Print out important lines
-				for(var kp=0;kp<improws.length;kp++){
-					if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
-						str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
+				for (var kp = 0; kp < improws.length; kp++) {
+					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'>" + cont + "</div>";
 						break;
-					}else{
-						if(kp == (improws.length-1)){
-							str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+					} else {
+						if (kp == (improws.length - 1)) {
+							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
 						}
 					}
 				}
 			}
-			cont="";
+			cont = "";
 		}
 	}
-	str+="</div>";
+	str += "</div>";
 
 	// Print out rendered code and border with numbers
-	printout.css(createCodeborder(lineno,improws) + str);
+	printout.css(createCodeborder(lineno, improws) + str);
 }
 
 //----------------------------------------------------------------------------------
@@ -1708,30 +1696,29 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function createCodeborder(lineno,improws)
-{
-	var str="<div class='codeborder' style='z-index: 1;'>";		// The z-index places the code border above the copy to clipboard notification
+function createCodeborder(lineno, improws) {
+	var str = "<div class='codeborder' style='z-index: 1;'>"; // The z-index places the code border above the copy to clipboard notification
 
-	for(var i=1; i<=lineno; i++){
+	for (var i = 1; i <= lineno; i++) {
 		// Print out normal numbers
-		if(improws.length ==0){
-			str+="<div class='no'>"+(i)+"</div>";
-		}else{
+		if (improws.length == 0) {
+			str += "<div class='no'>" + (i) + "</div>";
+		} else {
 			// Print out numbers for an important row
-			for(var kp=0;kp<improws.length;kp++){
-				if(i>=parseInt(improws[kp][1])&&i<=parseInt(improws[kp][2])){
-					str+="<div class='impono'>"+(i)+"</div>";
+			for (var kp = 0; kp < improws.length; kp++) {
+				if (i >= parseInt(improws[kp][1]) && i <= parseInt(improws[kp][2])) {
+					str += "<div class='impono'>" + (i) + "</div>";
 					break;
-				}else{
-					if(kp==(improws.length-1)){
-						str+="<div class='no'>"+(i)+"</div>";
+				} else {
+					if (kp == (improws.length - 1)) {
+						str += "<div class='no'>" + (i) + "</div>";
 					}
 				}
 			}
 		}
 	}
 
-	str+="</div>";
+	str += "</div>";
 	return str;
 }
 
@@ -1740,56 +1727,65 @@ function createCodeborder(lineno,improws)
 //                Is called at line 223-229 in EditorV50.php
 //----------------------------------------------------------------------------------
 
-function changetemplate(templateno)
-{
-	$(".tmpl").each(function( index ) {
-		$(this).css("background","#ccc");
+function changetemplate(templateno) {
+	$(".tmpl").each(function (index) {
+		$(this).css("background", "#ccc");
 	});
 
-	$("#templat"+templateno).css("background","#fc4");
+	$("#templat" + templateno).css("background", "#fc4");
 	$("#templateno").val(templateno);
 
 	var templateOptions = document.getElementById('templateOptions');
 	var boxes;
 	switch (templateno) {
-		case '1': boxes = 2;
-						break;
-		case '2': boxes = 2;
-						break;
-		case '3': boxes = 3;
-						break;
-		case '4': boxes = 3;
-						break;
-		case '5': boxes = 4;
-						break;
-		case '6': boxes = 4;
-						break;
-		case '7': boxes = 4;
-						break;
-		case '8': boxes = 3;
-						break;
-		case '9': boxes = 5;
-						break;
-		case '10': boxes = 1;
-						break;
+		case '1':
+			boxes = 2;
+			break;
+		case '2':
+			boxes = 2;
+			break;
+		case '3':
+			boxes = 3;
+			break;
+		case '4':
+			boxes = 3;
+			break;
+		case '5':
+			boxes = 4;
+			break;
+		case '6':
+			boxes = 4;
+			break;
+		case '7':
+			boxes = 4;
+			break;
+		case '8':
+			boxes = 3;
+			break;
+		case '9':
+			boxes = 5;
+			break;
+		case '10':
+			boxes = 1;
+			break;
 	}
 
 	var str = "";
-	var wordl=retData['wordlists'];
+	var wordl = retData['wordlists'];
 
 	for (var i = 0; i < boxes; i++) {
-		str += "<tr><td><label>Kind: </label><select class='templateSelect' id='boxcontent_"+i+"' onchange='changeDirectory(this)'>";
+		str += "<tr><td><label>Kind: </label><select class='templateSelect' id='boxcontent_" + i + "' onchange='changeDirectory(this)'>";
 		str += "<option value='CODE'>Code</option><option value='IFRAME'>Preview</option><option value='DOCUMENT'>Document</option></select></td>";
-		str += "<td><label>File: </label><select class='templateSelect' id='filename_"+i+"'></select></td>";
-		str += "<td><label>Wordlist: </label><select class='templateSelect' id='wordlist_"+i+"'>";
-		for(var j=0;j<wordl.length;j++){
-			str+="<option value='"+wordl[j][0]+"'>"+wordl[j][1]+"</option>";
+		str += "<td><label>File: </label><select class='templateSelect' id='filename_" + i + "'></select></td>";
+		str += "<td><label>Wordlist: </label><select class='templateSelect' id='wordlist_" + i + "'>";
+		for (var j = 0; j < wordl.length; j++) {
+			str += "<option value='" + wordl[j][0] + "'>" + wordl[j][1] + "</option>";
 		}
 		str += "</select></td></tr>";
 	}
 	templateOptions.innerHTML = str;
 	for (var i = 0; i < boxes; i++) {
-		changeDirectory(document.querySelector('#boxcontent_'+i));
+		changeDirectory(document.querySelector('#boxcontent_' + i));
 	}
 }
 
@@ -1798,32 +1794,31 @@ function changetemplate(templateno)
 //                Is called at line 234 in EditorV50.php
 //----------------------------------------------------------------------------------
 
-function updateTemplate()
-{
-	templateno=$("#templateno").val();
-	$("#chooseTemplateContainer").css("display","none");
+function updateTemplate() {
+	templateno = $("#templateno").val();
+	$("#chooseTemplateContainer").css("display", "none");
 
 	var selectBoxes = [...document.querySelectorAll('#templateOptions select')];
 	var examples = selectBoxes.length / 3;
-	try{
+	try {
 		var courseid = querystring['courseid'];
 		var exampleid = querystring['exampleid'];
 		var cvers = querystring['cvers'];
 		var templateno = $("#templateno").val();
 		var content = [];
 		for (var i = 0; i < examples; i++) {
-			var values = [$("#boxcontent_"+i).val(), $("#filename_"+i).val(), $("#wordlist_"+i).val()];
+			var values = [$("#boxcontent_" + i).val(), $("#filename_" + i).val(), $("#wordlist_" + i).val()];
 			content.push(values);
 		}
 		AJAXService("SETTEMPL", {
-			courseid : courseid,
-			exampleid : exampleid,
-			cvers : cvers,
-			templateno : templateno,
-			content : content
+			courseid: courseid,
+			exampleid: exampleid,
+			cvers: cvers,
+			templateno: templateno,
+			content: content
 		}, "CODEVIEW");
-	}catch(e){
-		alert("Error when updating template: "+e.message)
+	} catch (e) {
+		alert("Error when updating template: " + e.message)
 	}
 	// setTimeout("location.reload()", 500);
 }
@@ -1833,10 +1828,9 @@ function updateTemplate()
 //                Is called at line 141 in EditorV50.php
 //----------------------------------------------------------------------------------
 
-function closeEditContent()
-{
+function closeEditContent() {
 	$("#boxtitle2").attr("contenteditable", true);
-	$("#editContentContainer").css("display","none");
+	$("#editContentContainer").css("display", "none");
 	openBoxID = null;
 }
 
@@ -1845,9 +1839,8 @@ function closeEditContent()
 //                Is called at line 183 in EditorV50.php
 //----------------------------------------------------------------------------------
 
-function closeEditExample()
-{
-	$("#editExampleContainer").css("display","none");
+function closeEditExample() {
+	$("#editExampleContainer").css("display", "none");
 }
 
 //----------------------------------------------------------------------------------
@@ -1855,9 +1848,8 @@ function closeEditExample()
 //                Is called at line 53 in EditorV50.php
 //----------------------------------------------------------------------------------
 
-function openTemplateWindow()
-{
-	$("#chooseTemplateContainer").css("display","flex");
+function openTemplateWindow() {
+	$("#chooseTemplateContainer").css("display", "flex");
 }
 
 //----------------------------------------------------------------------------------
@@ -1865,9 +1857,8 @@ function openTemplateWindow()
 //                Is called at line 218 in EditorV50.php
 //----------------------------------------------------------------------------------
 
-function closeTemplateWindow()
-{
-	$("#chooseTemplateContainer").css("display","none");
+function closeTemplateWindow() {
+	$("#chooseTemplateContainer").css("display", "none");
 }
 
 //----------------------------------------------------------------------------------
@@ -1875,28 +1866,26 @@ function closeTemplateWindow()
 //					Is called at line 195 in EditorV50.php and line 56 in navheader.php
 //----------------------------------------------------------------------------------
 
-function Play(event)
-{
-	if(retData['playlink']!=null){
-		if(retData['playlink'].indexOf("http")==0){
-				window.location.href=retData['playlink'];
-		}else{
-				var urlText = "";
-				if(retData['public'] === "1") {
-					urlText = "global/" + retData['playlink'];
-                }
-                else{
-					urlText = retData['courseid'] + "/" + retData['playlink'];
-				}
-				//current url for the page
-				surl=window.location.href;
-				//relative path
-				var prefix = "/../courses/";
-				surl= surl.substring(0 ,surl.lastIndexOf("/"));
-				var win = window.open(surl + prefix + urlText, '_blank');
-				win.focus();
+function Play(event) {
+	if (retData['playlink'] != null) {
+		if (retData['playlink'].indexOf("http") == 0) {
+			window.location.href = retData['playlink'];
+		} else {
+			var urlText = "";
+			if (retData['public'] === "1") {
+				urlText = "global/" + retData['playlink'];
+			} else {
+				urlText = retData['courseid'] + "/" + retData['playlink'];
+			}
+			//current url for the page
+			surl = window.location.href;
+			//relative path
+			var prefix = "/../courses/";
+			surl = surl.substring(0, surl.lastIndexOf("/"));
+			var win = window.open(surl + prefix + urlText, '_blank');
+			win.focus();
 
-        }
+		}
 	}
 }
 
@@ -1905,8 +1894,7 @@ function Play(event)
 //					Is called with onclick() by maximizeButton
 //-----------------------------------------------------------------------------
 
-function maximizeBoxes(boxid)
-{
+function maximizeBoxes(boxid) {
 	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
@@ -1915,15 +1903,15 @@ function maximizeBoxes(boxid)
 	getLocalStorageProperties(boxValArray);
 
 	//For template 1
-	if(templateid == 1){
-		if (boxid == 1){
+	if (templateid == 1) {
+		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			alignBoxesWidth(boxValArray, 1, 2);
 		}
 
-		if (boxid == 2){
+		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
@@ -1932,15 +1920,15 @@ function maximizeBoxes(boxid)
 	}
 
 	//for template 2
-	if(templateid == 2){
-		if (boxid == 1){
+	if (templateid == 2) {
+		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).height("0%");
 
 			$(boxValArray['box' + boxid]['id']).height("100%");
 			alignBoxesHeight2boxes(boxValArray, 1, 2);
 		}
 
-		if (boxid == 2){
+		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).height("0%");
 
 			$(boxValArray['box' + boxid]['id']).height("100%");
@@ -1949,8 +1937,8 @@ function maximizeBoxes(boxid)
 	}
 
 	//For template 3
-	if(templateid == 3){
-		if(boxid == 1){
+	if (templateid == 3) {
+		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("0%");
 
@@ -1958,7 +1946,7 @@ function maximizeBoxes(boxid)
 			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 		}
 
-		if(boxid == 2){
+		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).width("100%");
@@ -1970,7 +1958,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
-		if(boxid == 3){
+		if (boxid == 3) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -1984,8 +1972,8 @@ function maximizeBoxes(boxid)
 	}
 
 	//For template 4
-	if(templateid == 4){
-		if (boxid == 1){
+	if (templateid == 4) {
+		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("0%");
 
@@ -1995,7 +1983,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight2boxes(boxValArray, 1, 3);
 		}
 
-		if (boxid == 2){
+		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 1]['id']).width("0%");
 
@@ -2005,7 +1993,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight2boxes(boxValArray, 2, 3);
 		}
 
-		if (boxid == 3){
+		if (boxid == 3) {
 			$(boxValArray['box' + 2]['id']).height("0%");
 			$(boxValArray['box' + 2]['id']).width("50%");
 
@@ -2019,8 +2007,8 @@ function maximizeBoxes(boxid)
 	}
 
 	//For template 5
-	if (templateid == 5){
-		if(boxid == 1){
+	if (templateid == 5) {
+		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 2]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
@@ -2033,7 +2021,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight2boxes(boxValArray, 1, 3);
 		}
 
-		if(boxid == 2){
+		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
@@ -2046,7 +2034,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight2boxes(boxValArray, 2, 3);
 		}
 
-		if(boxid == 3){
+		if (boxid == 3) {
 			$(boxValArray['box' + 1]['id']).height("0%");
 			$(boxValArray['box' + 4]['id']).height("100%");
 			$(boxValArray['box' + 4]['id']).width("0%");
@@ -2058,7 +2046,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight2boxes(boxValArray, 3, 2);
 		}
 
-		if(boxid == 4){
+		if (boxid == 4) {
 			$(boxValArray['box' + 1]['id']).height("0%");
 			$(boxValArray['box' + 3]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).width("0%");
@@ -2072,8 +2060,8 @@ function maximizeBoxes(boxid)
 	}
 
 	//For template 6
-	if(templateid == 6){
-		if(boxid == 1){
+	if (templateid == 6) {
+		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("0%");
 			$(boxValArray['box' + 4]['id']).width("0%");
@@ -2084,7 +2072,7 @@ function maximizeBoxes(boxid)
 			alignBoxesWidth(boxValArray, 1, 2);
 		}
 
-		if(boxid == 2){
+		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
@@ -2098,7 +2086,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 
-		if(boxid == 3){
+		if (boxid == 3) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -2112,7 +2100,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 
-		if(boxid == 4){
+		if (boxid == 4) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -2128,8 +2116,8 @@ function maximizeBoxes(boxid)
 	}
 
 	//For template 7
-	if(templateid == 7){
-		if(boxid == 1){
+	if (templateid == 7) {
+		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).width("100%");
 			$(boxValArray['box' + 3]['id']).width("100%");
 			$(boxValArray['box' + 4]['id']).width("0%");
@@ -2140,7 +2128,7 @@ function maximizeBoxes(boxid)
 			alignBoxesWidth(boxValArray, 1, 4);
 		}
 
-		if(boxid == 2){
+		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
@@ -2154,7 +2142,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 
-		if(boxid == 3){
+		if (boxid == 3) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -2168,7 +2156,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 		}
 
-		if(boxid == 4){
+		if (boxid == 4) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -2184,8 +2172,8 @@ function maximizeBoxes(boxid)
 	}
 
 	//for template 8
-	if(templateid == 8){
-		if(boxid == 1){
+	if (templateid == 8) {
+		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("0%");
 
@@ -2193,7 +2181,7 @@ function maximizeBoxes(boxid)
 			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 		}
 
-		if(boxid == 2){
+		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).width("100%");
@@ -2205,7 +2193,7 @@ function maximizeBoxes(boxid)
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
-		if(boxid == 3){
+		if (boxid == 3) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -2220,16 +2208,16 @@ function maximizeBoxes(boxid)
 }
 
 //hide maximizeButton
-function hideMaximizeAndResetButton(){
+function hideMaximizeAndResetButton() {
 	var templateid = retData['templateid'];
-	if(templateid > 8){
-			$('.maximizebtn').hide();
-			$('.resetbtn').hide();
+	if (templateid > 8) {
+		$('.maximizebtn').hide();
+		$('.resetbtn').hide();
 	}
 }
 
 //reset boxes
-function resetBoxes(){
+function resetBoxes() {
 	resizeBoxes("#div2", retData["templateid"]);
 }
 
@@ -2238,8 +2226,7 @@ function resetBoxes(){
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
 
-function resizeBoxes(parent, templateId)
-{
+function resizeBoxes(parent, templateId) {
 	var boxValArray = initResizableBoxValues(parent);
 	var remainWidth;
 
@@ -2249,15 +2236,15 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 	} else if (templateId == 2) {
@@ -2266,16 +2253,16 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
 				$(boxValArray['box1']['id']).width("100%");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 	} else if (templateId == 3) {
@@ -2284,33 +2271,33 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 				$("#box2wrapper").css("left", "");
 				$("#box1wrapper").css("height", "100%");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 	} else if (templateId == 4) {
@@ -2319,34 +2306,34 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
 				$("#box2wrapper").css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 				alignBoxesWidth(boxValArray, 2, 1);
 				$("#box2wrapper").css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 	} else if (templateId == 5) {
@@ -2355,48 +2342,48 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight4boxes(boxValArray, 1, 2);
 				$("#box2wrapper").css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesHeight4boxes(boxValArray, 2, 1);
 				$("#box2wrapper").css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 3, 4);
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 	} else if (templateId == 6) {
@@ -2408,51 +2395,51 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 				$(boxValArray['box1']['id']).height(100 + "%");
 
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
-					alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-					$(boxValArray['box3']['id']).css("left", " ");
-					$(boxValArray['box2']['id']).css("left", " ");
+			resize: function (e, ui) {
+				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+				$(boxValArray['box3']['id']).css("left", " ");
+				$(boxValArray['box2']['id']).css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				$(boxValArray['box4']['id']).css("top", " ");
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				$(boxValArray['box4']['id']).css("top", " ");
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 	} else if (templateId == 7) {
@@ -2462,48 +2449,48 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s,e",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 				alignWidthTemplate7(boxValArray, 2, 3, 4, 1);
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "s,e",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 				alignWidthTemplate7(boxValArray, 3, 2, 4, 1);
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 		$(boxValArray['box4']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				$(boxValArray['box4']['id']).css("top", " ");
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				$(boxValArray['box4']['id']).css("top", " ");
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 	} else if (templateId == 8) {
@@ -2512,107 +2499,107 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "e, s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e, s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
-	} else if(templateId == 9) {
+	} else if (templateId == 9) {
 		getLocalStorageProperties(templateId, boxValArray);
 
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
 				$(boxValArray['box2']['id']).css("left", " ");
 				$(boxValArray['box3']['id']).css("left", " ");
 				$(boxValArray['box4']['id']).css("left", " ");
 				$(boxValArray['box5']['id']).css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
 				$(boxValArray['box2']['id']).css("left", " ");
 				$(boxValArray['box3']['id']).css("left", " ");
 				$(boxValArray['box4']['id']).css("left", " ");
 				$(boxValArray['box5']['id']).css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 		$(boxValArray['box4']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			start: function(event, ui) {
-				$('iframe').css('pointer-events','none');
+			start: function (event, ui) {
+				$('iframe').css('pointer-events', 'none');
 			},
-			resize: function(e, ui){
+			resize: function (e, ui) {
 				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
 				$(boxValArray['box2']['id']).css("left", " ");
 				$(boxValArray['box3']['id']).css("left", " ");
 				$(boxValArray['box4']['id']).css("left", " ");
 				$(boxValArray['box5']['id']).css("left", " ");
 			},
-			stop: function(e, ui) {
+			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events','auto');
+				$('iframe').css('pointer-events', 'auto');
 			}
 		});
 
@@ -2624,15 +2611,14 @@ function resizeBoxes(parent, templateId)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
-{
+function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
 
-	var remainWidthPer = (remainWidth/boxValArray['parent']['width'])*100;
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
@@ -2647,10 +2633,9 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
-{
+function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
@@ -2664,10 +2649,10 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 }
-function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
-{
+
+function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
@@ -2687,11 +2672,10 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
-{
+function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-	var basePer = 100-remainHeightPer;
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
+	var basePer = 100 - remainHeightPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
 	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
@@ -2705,11 +2689,10 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
-{
+function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig) {
 	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-	var remainHeightPer = (remainHeight / boxValArray['parent']['height'])*100;
-	var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height'])*100;
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
+	var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height']) * 100;
 
 	$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
 	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
@@ -2725,10 +2708,9 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
-{
+function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
 	var basePer = 100 - remainHeightPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
@@ -2746,12 +2728,12 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 // WIDTH MEASURMENT FOR TEMPLATE 6
 //---------------------------------
 
-function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
+function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird) {
 
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 
 
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
 
 
@@ -2776,11 +2758,11 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 // WIDTH MEASURMENT FOR TEMPLATE 7
 //-----------------------------------
 
-function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
+function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird) {
 
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
@@ -2802,30 +2784,30 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 // HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
 //---------------------------------------
 
-function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
+function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
 
 	//Get initial values.
 	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
-	var basePer = 100-(remainHeightPer + alignSecondPer);
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
+	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height']) * 100;
+	var basePer = 100 - (remainHeightPer + alignSecondPer);
 	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-	var atry2 = (atry/boxValArray['parent']['height'])*100;
+	var atry2 = (atry / boxValArray['parent']['height']) * 100;
 
 	if (remainHeightPer <= 10) {
 
-			atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-			atry2 = (atry/boxValArray['parent']['height'])*100;
+		atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+		atry2 = (atry / boxValArray['parent']['height']) * 100;
 
-			remainHeightPer = 10;
-			$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-			$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
-			$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
-			$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
+		remainHeightPer = 10;
+		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
+		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
 	} else {
-			$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-			$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
-			$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
 	}
 
 	//Update array
@@ -2838,20 +2820,26 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 // HEIGHT MEASURMENT FOR TEMPLATE 6
 //----------------------------------
 
-function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
-{
+function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
 	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
-	var basePer = 100-(remainHeightPer + alignSecondPer);
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
+	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height']) * 100;
+	var basePer = 100 - (remainHeightPer + alignSecondPer);
 	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-	var atry2 = (atry/boxValArray['parent']['height'])*100;
+	var atry2 = (atry / boxValArray['parent']['height']) * 100;
 
 	if (atry2 <= 10) {
-		$("#box3wrapper").css({"top": basePer + "%","height": remainHeightPer + "%"});
-	 } else {
+		$("#box3wrapper").css({
+			"top": basePer + "%",
+			"height": remainHeightPer + "%"
+		});
+	} else {
 		$("#box4wrapper").height(atry2 + "%");
-		$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
+		$("#box3wrapper").css({
+			"top": basePer + "%",
+			"height": remainHeightPer + "%",
+			"left": " "
+		});
 	}
 
 }
@@ -2860,11 +2848,11 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 // WIDTH MEASURMENT FOR TEMPLATE 9
 //----------------------------------
 
-function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive){
+function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive) {
 
 	//Width for the four smaller boxes.
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxOne]['id']).width();
-	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 
 	//Width for the left big box.
 	var basePer = 100 - remainWidthPer;
@@ -2895,20 +2883,19 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 // HEIGHT MEASURMENT FOR TEMPLATE 9
 //-----------------------------------
 
-function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
-{
+function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 
 	//Height of the two boxes between boxOne and boxFour (top most box and bottom most box)
 	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
-	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height']) * 100;
 
 	//fourth and third box height in percent.
-	var boxThreeHeightPer = ($(boxValArray['box' + boxThree]['id']).height() / boxValArray['parent']['height'])*100;
-	var boxFourHeightPer = ($(boxValArray['box' + boxFour]['id']).height() / boxValArray['parent']['height'])*100;
+	var boxThreeHeightPer = ($(boxValArray['box' + boxThree]['id']).height() / boxValArray['parent']['height']) * 100;
+	var boxFourHeightPer = ($(boxValArray['box' + boxFour]['id']).height() / boxValArray['parent']['height']) * 100;
 
 	//The second and first box height in percent.
 	var boxTwoHeightPer = (remainHeightPer - boxThreeHeightPer);
-	var boxOneHeightPer = 100-(remainHeightPer + boxFourHeightPer);
+	var boxOneHeightPer = 100 - (remainHeightPer + boxFourHeightPer);
 
 	//Set values if the boxes reaches minimum height.
 	if (boxTwoHeightPer <= 10 && boxThreeHeightPer <= 10) {
@@ -2934,7 +2921,7 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
 
 	$(boxValArray['box' + boxFour]['id']).css("height", (100 - (remainHeightPer + boxOneHeightPer)) + "%");
-	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer+remainHeightPer) + "%");
+	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
 
 
 	//Update array
@@ -2948,29 +2935,29 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 // HEIGHT MEASURMENT FOR TEMPLATE 9
 //-----------------------------------
 
-function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour){
+function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 
 	//Box three height. It is the box that is currently being resized.
 	var boxThreeHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
-	var boxThreeHeightPer = (boxThreeHeight/(boxValArray['parent']['height'])) * 100;
+	var boxThreeHeightPer = (boxThreeHeight / (boxValArray['parent']['height'])) * 100;
 
 	//Fourth box height in pixels then in percent.
 	var boxFourHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + boxThreeHeight));
-	var boxFourHeightPer = (boxFourHeight /(boxValArray['parent']['height'])) * 100;
+	var boxFourHeightPer = (boxFourHeight / (boxValArray['parent']['height'])) * 100;
 
 	//Second box height in pixels then in percent.
 	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + boxThreeHeight + boxFourHeight));
-	var boxTwoHeightPer = (boxTwoHeight/(boxValArray['parent']['height'])) * 100;
+	var boxTwoHeightPer = (boxTwoHeight / (boxValArray['parent']['height'])) * 100;
 
 	//First box height in pixels then in percent.
 	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + boxThreeHeight + boxFourHeight));
-	var boxOneHeightPer = (boxOneHeight/(boxValArray['parent']['height'])) * 100;
+	var boxOneHeightPer = (boxOneHeight / (boxValArray['parent']['height'])) * 100;
 
 	//Box three and four totalt height
-	var boxThreeAndFourHeightPer =  boxThreeHeightPer + boxFourHeightPer;
+	var boxThreeAndFourHeightPer = boxThreeHeightPer + boxFourHeightPer;
 
 	//check if box three and four is at minimum height.
-	if(boxThreeAndFourHeightPer <= 20) {
+	if (boxThreeAndFourHeightPer <= 20) {
 
 		//Set the height to the minimum.
 		boxThreeAndFourHeightPer = 20;
@@ -2979,13 +2966,13 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
 		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
 
-		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeAndFourHeightPer/2 + "%");
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeAndFourHeightPer / 2 + "%");
 		$(boxValArray['box' + boxThree]['id']).css("top", "80" + "%");
 
-		$(boxValArray['box' + boxFour]['id']).css("height", boxThreeAndFourHeightPer/2 + "%");
+		$(boxValArray['box' + boxFour]['id']).css("height", boxThreeAndFourHeightPer / 2 + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");
 
-	//Check if box three is at or below minimum height.
+		//Check if box three is at or below minimum height.
 	} else if (boxThreeHeightPer <= 10) {
 		boxThreeHeightPer = 10;
 
@@ -3024,15 +3011,14 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 // HEIGHT MEASURMENT FOR TEMPLATE 9
 //------------------------------------
 
-function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour)
-{
+function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	//Box four height in pixels then in percent. It is the box that is currently being resized.
 	var boxFourHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxThree]['id']).height());
-	var boxFourHeightPer = (boxFourHeight/boxValArray['parent']['height']) * 100;
+	var boxFourHeightPer = (boxFourHeight / boxValArray['parent']['height']) * 100;
 
 	//Second box height in pixels then in percent
 	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxThree]['id']).height() + boxFourHeight));
-	var boxTwoHeightPer = (boxTwoHeight/(boxValArray['parent']['height'])) * 100;
+	var boxTwoHeightPer = (boxTwoHeight / (boxValArray['parent']['height'])) * 100;
 
 	//First box height in pixels then in percent
 	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + $(boxValArray['box' + boxThree]['id']).height() + boxFourHeight));
@@ -3040,9 +3026,9 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 
 	//Third box height in pixels then in percent
 	var boxThreeHeight = (boxValArray['parent']['height'] - (boxOneHeight + boxTwoHeight + boxFourHeight));
-	var boxThreeHeightPer = boxThreeHeight/(boxValArray['parent']['height']) * 100;
+	var boxThreeHeightPer = boxThreeHeight / (boxValArray['parent']['height']) * 100;
 
-	if(boxFourHeightPer <= 10){
+	if (boxFourHeightPer <= 10) {
 
 		boxFourHeightPer = 10;
 
@@ -3053,9 +3039,9 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");
 
-	 } else {
+	} else {
 
-	 	//Set height and top on the boxes
+		//Set height and top on the boxes
 		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
 		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
 
@@ -3075,8 +3061,7 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function initResizableBoxValues(parent)
-{
+function initResizableBoxValues(parent) {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
 	var boxWidth;
@@ -3084,17 +3069,25 @@ function initResizableBoxValues(parent)
 	var boxId;
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	var boxValueArray = new Array();
-	boxValueArray["parent"] = {"id": parent, "width": parentWidth, "height": parentHeight};
+	boxValueArray["parent"] = {
+		"id": parent,
+		"width": parentWidth,
+		"height": parentHeight
+	};
 
 	for (var i = 1; i <= numBoxes; i++) {
 		boxWidth = $("#box" + i + "wrapper").width();
 		boxHeight = $("#box" + i + "wrapper").height();
 		boxId = "#box" + i + "wrapper";
-		boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
+		boxValueArray["box" + i] = {
+			"id": boxId,
+			"width": boxWidth,
+			"height": boxHeight
+		};
 	}
 
-	$(window).resize(function(event){
-		 if (!$(event.target).hasClass('ui-resizable')) {
+	$(window).resize(function (event) {
+		if (!$(event.target).hasClass('ui-resizable')) {
 			boxValueArray['parent']['height'] = $(parent).height();
 			boxValueArray['parent']['width'] = $(parent).width();
 		}
@@ -3107,24 +3100,23 @@ function initResizableBoxValues(parent)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function setLocalStorageProperties(templateId, boxValArray)
-{
+function setLocalStorageProperties(templateId, boxValArray) {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	var widthPer;
 	var heightPer;
 
-	for(var i = 1; i <= numBoxes; i++){
+	for (var i = 1; i <= numBoxes; i++) {
 		boxValArray['box' + i]['width'] = $(boxValArray['box' + i]['id']).width();
 		boxValArray['box' + i]['height'] = $(boxValArray['box' + i]['id']).height();
 
-		widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) *100;
-		heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) *100;
+		widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) * 100;
+		heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) * 100;
 
 		widthPer = Math.floor(widthPer, 100);
 		heightPer = Math.floor(heightPer, 100);
 
-		localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
-		localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
+		localStorage.setItem("template" + templateId + "box" + i + "widthPercent", widthPer);
+		localStorage.setItem("template" + templateId + "box" + i + "heightPercent", heightPer);
 	}
 	setResizableToPer(boxValArray);
 }
@@ -3135,13 +3127,13 @@ function setLocalStorageProperties(templateId, boxValArray)
 //----------------------------------------------------------------------------------
 
 document.onreadystatechange = function () {
-  var state = document.readyState
-  if (state == 'interactive') {
-       document.getElementById('content').style.visibility="hidden";
-  } else if (state == 'complete') {
-      document.getElementById('loader').style.visibility="hidden";
-      document.getElementById('content').style.visibility="visible";
-  }
+	var state = document.readyState
+	if (state == 'interactive') {
+		document.getElementById('content').style.visibility = "hidden";
+	} else if (state == 'complete') {
+		document.getElementById('loader').style.visibility = "hidden";
+		document.getElementById('content').style.visibility = "visible";
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -3151,15 +3143,14 @@ document.onreadystatechange = function () {
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function getLocalStorageProperties(templateId, boxValArray)
-{
+function getLocalStorageProperties(templateId, boxValArray) {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
-	for(var i = 1; i <= numBoxes; i++){
+	for (var i = 1; i <= numBoxes; i++) {
 		//Sanity checks
-		if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "widthPercent") > 0){
-			if(localStorage.getItem("template" + templateId + "box" + i + "heightPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "heightPercent") > 0){
+		if (localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "widthPercent") > 0) {
+			if (localStorage.getItem("template" + templateId + "box" + i + "heightPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "heightPercent") > 0) {
 				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
-				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
+				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId + "box" + i + "heightPercent") + "%");
 				erasePercentGap(templateId, boxValArray);
 			}
 		}
@@ -3171,32 +3162,31 @@ function getLocalStorageProperties(templateId, boxValArray)
 //                Is called by getLocalStorageProperties in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function erasePercentGap(templateId, boxValArray)
-{
-	if(templateId == 1){
+function erasePercentGap(templateId, boxValArray) {
+	if (templateId == 1) {
 		alignBoxesWidth(boxValArray, 1, 2);
-	}else if(templateId == 2){
+	} else if (templateId == 2) {
 		alignBoxesHeight2boxes(boxValArray, 1, 2);
-	}else if(templateId == 3){
+	} else if (templateId == 3) {
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
 		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-	}else if(templateId == 4){
+	} else if (templateId == 4) {
 		alignBoxesWidth(boxValArray, 1, 2);
 		alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-	}else if(templateId == 5){
+	} else if (templateId == 5) {
 		alignBoxesWidth(boxValArray, 1, 2);
 		alignBoxesWidth(boxValArray, 3, 4);
 		alignBoxesHeight4boxes(boxValArray, 1, 2);
-	}else if(templateId == 6){
+	} else if (templateId == 6) {
 		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-	}else if(templateId == 7){
+	} else if (templateId == 7) {
 		alignWidthTemplate7(boxValArray, 2, 3, 4, 1);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-	}else if(templateId == 8){
+	} else if (templateId == 8) {
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
 		alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
-	}else if(templateId == 9){
+	} else if (templateId == 9) {
 		alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
 		alignTemplate9Height(boxValArray, 2, 3, 4, 5);
 		alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
@@ -3208,12 +3198,11 @@ function erasePercentGap(templateId, boxValArray)
 //                Is called by setLocalStorageProperties in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function setResizableToPer(boxValArray)
-{
-	$("[class ^=ui][class $=resizable]").each(function( index ) {
-		var elemWidth =  $(this).width();
+function setResizableToPer(boxValArray) {
+	$("[class ^=ui][class $=resizable]").each(function (index) {
+		var elemWidth = $(this).width();
 		var elemHeight = $(this).height();
-		var newWidth = (elemWidth / ($(boxValArray['parent']['id']).width()))* 100;
+		var newWidth = (elemWidth / ($(boxValArray['parent']['id']).width())) * 100;
 		var newHeight = (elemHeight / ($(boxValArray['parent']['id']).height())) * 100;
 		$(this).height(newHeight + "%");
 		$(this).width(newWidth + "%");
@@ -3226,7 +3215,7 @@ function setResizableToPer(boxValArray)
 //                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function addHtmlLineBreak(inString){
+function addHtmlLineBreak(inString) {
 	return inString.replace(/\n/g, '<br>');
 }
 
@@ -3248,9 +3237,38 @@ function copyCodeToClipboard(boxid) {
 	selection.removeAllRanges();
 
 	// Notification animation
-	$("#notification" + boxid).css("display", "flex").hide().fadeIn("fast", function(){
-		setTimeout(function(){
+	$("#notification" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
+		setTimeout(function () {
 			$("#notification" + boxid).fadeOut("fast");
 		}, 500);
-	});	
+	});
+	$("#textwrapper" + boxid).hide();
+	setTimeout(function () {
+		$("#textwrapper" + boxid).fadeIn("fast");
+	}, 1000);
 }
+
+
+// Detects clicks
+$(document).mousedown(function (e) {
+	var box = $(e.target);
+	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
+		isClickedElementBox = true;
+	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
+		&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+		isClickedElementBox = true;
+	} else {
+		isClickedElementBox = false;
+	}
+});
+
+// Close the loginbox when clicking outside it. 
+$(document).mouseup(function (e) {
+	// Click outside the loginBox
+	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
+	{
+		closeWindows();
+	}
+});

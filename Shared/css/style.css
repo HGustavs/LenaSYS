@@ -233,7 +233,6 @@ p {
 
 #content {
   background: var(--color-background);
-  min-height: calc(100vh - 80px);
   margin: 65px 10px 15px 10px;
 }
 
@@ -1101,7 +1100,6 @@ input {
 }
 
 .loginBoxheader {
-  height: 25px;
   background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
@@ -1683,6 +1681,14 @@ div.submit-button {
   border-radius: 4px;
 }
 
+input.submit-button.resetpw-button {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  float: none;
+  margin: auto;
+  display: block;
+}
+
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
@@ -1823,6 +1829,7 @@ input.fileed-button {
 }
 
 input.submit-button:hover {
+  transition: 0.2s;
   filter: brightness(1.05);
 }
 
@@ -2103,7 +2110,7 @@ div.submit-button:disabled {
   width: 100%;
   padding: 1px;
   border-bottom: 2px solid var(--color-border-list);
-  /* margin-top: 20px; */
+  margin-top: 20px;
   font-size: 16px;
 }
 
@@ -3036,6 +3043,13 @@ span.arrow {
   background: var(--color-background);
 
   box-shadow: 2px 2px 8px #888;
+}
+
+#sortOptions {
+  border-bottom:1px solid #888;
+  border-top:1px solid #888;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .dugga-result-div {
