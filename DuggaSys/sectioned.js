@@ -1295,10 +1295,12 @@ function drawSwimlanes() {
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
-
+        
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
+          textcol = `url("#fadeTextRed")`;
+        } else if((fillcol == "#FFEB3B") && (entry.deadline - current < 0) && (entry.submitted != null)) {
           textcol = `url("#fadeTextRed")`;
         }
         if(duggalength < 0){
