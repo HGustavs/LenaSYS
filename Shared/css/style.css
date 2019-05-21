@@ -19,7 +19,7 @@
   --color-primary-hover: #7b5a96;
   --color-primary-light: #927b9e;
   --color-accent: rgb(254, 204, 86);
-  --color-accent-transparent: rgb(254, 204, 86, 0.5);
+  --color-accent-transparent: rgba(254, 204, 86, 0.5);
   --color-accent-hover: #ffd369;
   --color-background: #fff;
   --color-background-2: #ccc;
@@ -1295,7 +1295,7 @@ input {
 
 .application-toolbar h4.label {
   font-size: 11px;
-  font-weight: none;
+  font-weight: normal;
   margin-top: 8px;
   margin-bottom: 0px;
   padding: 0px 4px 0px 4px;
@@ -1414,7 +1414,6 @@ input {
 
 .menu-drop-drown,
 .export-drop-down-head {
-  display: relative;
   top: 22px;
 }
 
@@ -1919,7 +1918,7 @@ div.submit-button:disabled {
 
 #moveButton {
   right: 2px;
-  top: 100;
+  top: 100px;
   z-index: 2;
   position: absolute;
   border-radius: 0px;
@@ -2097,7 +2096,7 @@ div.submit-button:disabled {
   height: 30px;
   padding: 5px;
   margin-bottom: 10px;
-  margin-top: -1;
+  margin-top: -1px;
   color: white;
   background-color: var(--color-primary);
   cursor: pointer;
@@ -2264,7 +2263,7 @@ div.submit-button:disabled {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  size: 5;
+  size: 5px;
 }
 
 .list#testTable input,
@@ -3999,7 +3998,7 @@ only screen and (max-device-width: 860px) {
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
 
   ul.hamburgerList li.access {
@@ -4029,7 +4028,7 @@ only screen and (max-device-width: 790px) {
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
 
   ul.hamburgerList li.files {
@@ -4062,7 +4061,7 @@ only screen and (max-device-width: 670px) {
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
 
   ul.hamburgerList li.results,
@@ -5496,7 +5495,7 @@ textarea#filecont {
 }
 
 .tsTableDeleteCell {
-  border-radius: 0px 5px 5x 0px;
+  border-radius: 0px 5px 5px 0px;
   -moz-border-radius: 0px 5px 5px 0px;
   -webkit-border-radius: 0px 5px 5px 0px;
 }
