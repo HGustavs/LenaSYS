@@ -3360,6 +3360,7 @@ rect[class*="activitymarker"]:hover {
 #searchBar,
 #testSearchContainer {
   padding-left: 20px;
+  display: block;
 }
 
 #searchinput,
