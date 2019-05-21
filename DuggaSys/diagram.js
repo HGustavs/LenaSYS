@@ -1558,6 +1558,7 @@ function canvasSize() {
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setMoveButtonPosition();
     updateGraphics();
 }
 
@@ -3717,6 +3718,10 @@ function resize() {
     }
 }
 
+function setMoveButtonPosition() {
+    document.getElementById("moveButton").style.marginLeft = widthWindow + 4 + "px";
+}
+
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
@@ -3725,6 +3730,7 @@ function movemode(e, t) {
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
+    setMoveButtonPosition();
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
