@@ -82,7 +82,7 @@ function Save() {
     }
     var obj = {diagram:diagram, points:points, diagramNames:c};
     a = JSON.stringify(obj, null, "\t");
-    localStorage.setItem("SerialNumbers", JSON.stringify(diagram.serialNumbers));
+    localStorage.setItem("Settings", JSON.stringify(settings));
     console.log("State is saved");
 }
 
@@ -116,6 +116,10 @@ function LoadImport(fileContent) {
 //---------------------------------------------
 
 function loadDiagram() {
+    // Only retrieve settings if there are any saved
+    if(JSON.parse(localStorage.getItem("Settings"))){
+        settings = JSON.parse(localStorage.getItem("Settings"));
+    }
     diagramNumber = localStorage.getItem("diagramNumber");
     var checkLocalStorage = localStorage.getItem("diagram" + diagramNumber);
 
@@ -299,6 +303,7 @@ function Load() {
     for (var i = 0; i < b.points.length; i++) {
         points[i] = b.points[i];
     }
+
     console.log("State is loaded");
     //Redrawn old state.
     updateGraphics();

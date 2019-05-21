@@ -40,12 +40,16 @@ AJAXService("get", {}, "DIAGRAM");
 
 var diagram = [];
 
-diagram.serialNumbers = {
+var serialNumbers = {
     Attribute: 0,
     Entity: 0,
     Relation: 0,
     UML: 0,
     Text: 0,
+}
+
+var settings = { 
+    serialNumbers: serialNumbers,
 };
 
 const kind = {
@@ -1847,16 +1851,6 @@ function gridToSVG(width, height) {
 //              it hides the points by placing them beyond the users view.
 //------------------------------------------------------------------------------
 
-function resetSerialNumbers(){
-    diagram.serialNumbers = {
-        Attribute: 0,
-        Entity: 0,
-        Relation: 0,
-        UML: 0,
-        Text: 0,
-    }
-}
-
 function clearCanvas() {
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
@@ -1868,6 +1862,20 @@ function clearCanvas() {
     resetSerialNumbers();
     updateGraphics();
     SaveState();
+}
+
+//--------------------------------------------------------------------------
+// Used when canvas is cleared to avoid unnecessarily high serial numbers
+//--------------------------------------------------------------------------
+
+function resetSerialNumbers(){
+    settings.serialNumbers = {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    }
 }
 
 // the purpose is not very clear
@@ -3372,7 +3380,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        classB.name = "New " + diagram.serialNumbers.UML;
+        classB.name = "New " + settings.serialNumbers.UML;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3384,10 +3392,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
-        diagram.serialNumbers.UML++;
+        settings.serialNumbers.UML++;
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        erAttributeA.name = "Attr " + diagram.serialNumbers.Attribute;
+        erAttributeA.name = "Attr " + settings.serialNumbers.Attribute;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3398,10 +3406,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
-        diagram.serialNumbers.Attribute++;
+        settings.serialNumbers.Attribute++;
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        erEnityA.name = "Entity " + diagram.serialNumbers.Entity;
+        erEnityA.name = "Entity " + settings.serialNumbers.Entity;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3413,7 +3421,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
-        diagram.serialNumbers.Entity++;
+        settings.serialNumbers.Entity++;
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
@@ -3436,7 +3444,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        erRelationA.name = "Relation " + diagram.serialNumbers.Relation;
+        erRelationA.name = "Relation " + settings.serialNumbers.Relation;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3446,7 +3454,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
-        diagram.serialNumbers.Relation++;
+        settings.serialNumbers.Relation++;
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
         // clicking on a lock removes it
@@ -3533,8 +3541,8 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    text.name = "Text " + diagram.serialNumbers.Text;
-    diagram.serialNumbers.Text++;
+    text.name = "Text " + settings.serialNumbers.Text;
+    settings.serialNumbers.Text++;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
