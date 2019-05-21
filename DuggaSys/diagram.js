@@ -1981,8 +1981,9 @@ function modeSwitchConfirmed(confirmed) {
 
 function switchToolbarTo(target) {
     targetMode = target;
+    modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
-    if(developerModeActive) {
+    if (developerModeActive) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
