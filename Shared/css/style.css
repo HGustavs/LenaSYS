@@ -2753,7 +2753,7 @@ span.arrow {
 }
 
 .loginTransparent {
-  display: block;
+  display: flex;
   height: 60px;
   background-color: var(--color-primary);
   text-align: left;
@@ -2769,7 +2769,7 @@ span.arrow {
 }
 
 .loginTransparent p {
-  display: inline-block;
+  display: inherit;
   vertical-align: middle;
   padding-left: 15px;
   color: #fff;
