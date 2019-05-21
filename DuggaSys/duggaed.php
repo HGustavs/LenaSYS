@@ -41,8 +41,8 @@ pdoConnect();
       <div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
-								<b>Keywords:</b> templatename, name, date <br>
-								<b>Ex:</b> templatename:color-dugga
+								<b>Keywords:</b> template name, name, date <br>
+								<b>Ex:</b> template name:color-dugga
 					</div>
 					<span>?</span>
 				</div>
