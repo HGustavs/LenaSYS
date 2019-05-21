@@ -1410,12 +1410,12 @@ function Symbol(kindOfSymbol) {
                     let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent);
                     if (x1 == x2) {
                         valX = valX2 = x1 + 20 * dir;
-                        valY = y1 - 15;
-                        valY2 = y2 - 15;
+                        valY = y1 - 13;
+                        valY2 = y2 - 13;
                     }else {
-                        valY = valY2 = y1 + 15 * dir;
-                        valX = x1 - 15;
-                        valX2 = x2 - 15;
+                        valY = valY2 = y1 + 20 * dir;
+                        valX = x1 - 17;
+                        valX2 = x2 - 17;
                     }
                 }
                 ctx.fillText(this.cardinality[0].value, valX, valY);
