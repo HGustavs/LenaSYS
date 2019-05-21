@@ -888,7 +888,7 @@ function createRankTable(data) {
     freezePaneIndex: 4,
     hasRowHighlight: false,
     hasMagicHeadings: true,
-    hasCounterColumn: true
+    hasCounterColumn: false
   });
   rankTable.renderTable();
 }
@@ -954,7 +954,7 @@ function createGitHubcontributionTable(data) {
     freezePaneIndex: 4,
     hasRowHighlight: false,
     hasMagicHeadings: true,
-    hasCounterColumn: true
+    hasCounterColumn: false
   });
   ghContibTable.renderTable();
 }
