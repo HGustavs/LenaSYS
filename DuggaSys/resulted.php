@@ -83,7 +83,11 @@ pdoConnect();
 					<option value="Filter-VG">VG</option>
 					<option value="Filter-U">U</option>
 				</select>
-			</div>
+				</div>
+				<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+					<label>Examinator:</label>
+					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
+				</div>
 
 			<!-- Search bar for mobile versions --> 
 			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>

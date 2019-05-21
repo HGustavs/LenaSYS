@@ -95,10 +95,8 @@ function process() {
 
 		// Loop through all teacher names and store the appropriate name in a variable
 		for (j = 0; j < teacher.length; j++) {
-			var tuid = teacher[j].tuid;
-			if (uid == tuid) {
-				var setTeacher = teacher[j].teacher;
-			}
+			// var tuid = teacher[j].tuid;
+			var setTeacher = teacher[j].id;
 		}
 		if (setTeacher !== null) {
 			// Place spaces in the string when a lowercase is followed by a uppercase
@@ -117,7 +115,7 @@ function process() {
 		}
 		var student = new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname ,class: entries[i].class, access: entries[i].access, setTeacher, username: entries[i].username, ssn: entries[i].ssn });
+		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + entries[i].examiner + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname ,class: entries[i].class, access: entries[i].access, examiner: entries[i].examiner, username: entries[i].username, ssn: entries[i].ssn });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
 			if (momtmp[j].kind == 4) {
@@ -620,6 +618,15 @@ function returnedResults(data) {
 				ladmoments += "<option value='" + dugga.entryname + "'>" + dugga.entryname + "</option>";
 			}
 		}
+		var teacherList;
+		teacherList += "<option value='none'>none</option>";
+		for(var i = 0; i < teacher.length; i++){
+			if(!teacherList.includes(teacher[i].id)){
+				teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+			}
+		}
+		var uniqueTeacherList = [...new Set(teacherList)]
+		document.getElementById("teacherDropdown").innerHTML = teacherList;
 		document.getElementById("ladselect").innerHTML = ladmoments;
 		document.getElementById("laddate").valueAsDate = new Date();
 
@@ -1091,6 +1098,13 @@ function smartSearch(splitSearch, row) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
+	var teacherDropdown = document.getElementById("teacherDropdown").value;
+	if (teacherDropdown === "none"){
+		return true;
+	}
+	else if(row.FnameLname.examiner != teacherDropdown){
+		return false;
+	}
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
