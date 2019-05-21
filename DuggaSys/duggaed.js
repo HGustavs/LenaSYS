@@ -24,14 +24,13 @@ function setup() {
   var filt = "";
 
 	
-  filt += "<td id='testSearchContainer' class='navButt'>"
-  filt += "<input id='duggaSearch' type='text' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
-  filt += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
-  filt += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
-  filt += "</button>"
-	filt += "</td>"
-  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
-  filt += `</button></td>`;
+	filt += `<td id='testSearchContainer' class='navButt'>`;
+	filt += `<input id='duggasearch' type='text' name='search' placeholder='Search..'`;
+	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggatable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/>`;
+	filt += `<button id='searchbutton' class='switchContent'`;
+	filt += `onclick='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();' type='button'>`;
+	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
+	filt += `</button></td>`;
 
   $("#menuHook").before(filt);
 
