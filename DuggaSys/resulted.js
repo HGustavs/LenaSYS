@@ -346,13 +346,13 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	var currentTimeGetTime = currentTime.getTime();
 	if(document.getElementById('newFeedback') == null){
 		feedbackText = "";
-	} else {		
+	} else {
 		feedbackText = document.getElementById('newFeedback').value;
 	}
 
 	if ($(e.target).hasClass("Uc")) {
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
-		
+
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("Gc")) {
@@ -793,15 +793,15 @@ function renderCell(col, celldata, cellid) {
 			str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 			str += "</div>";
-			return str;	
+			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div style='padding:10px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "dugga-pending";
-			} 
+			}
 			str += "'>";
-			// Creation of grading buttons		
+			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
@@ -840,10 +840,10 @@ function renderCell(col, celldata, cellid) {
 				}
 				str += "</div>";
 			}
-			return str;	
-		} 
-	}	
-	
+			return str;
+		}
+	}
+
 	else if(filterList["passedDeadline"]){
 				// First column (Fname/Lname/SSN)
 			if (col == "FnameLname") {

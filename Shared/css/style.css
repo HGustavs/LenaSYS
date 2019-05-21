@@ -1771,8 +1771,8 @@ input.hide-moments-button {
 .fileUploadInfo:after {
   content: "";
   display: block;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid white;
@@ -2456,6 +2456,7 @@ span.arrow {
 
 .resultTableCell{
 		margin:2px;
+    height: 90%;
 }
 
 .resultTableText {
