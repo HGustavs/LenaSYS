@@ -1494,16 +1494,6 @@ input {
   top: 100px;
 }
 
-#hotkey-global {
-  right: 4px;
-  top: 86px;
-}
-
-#hotkey-appearance {
-  right: 5px;
-  top: 119px;
-}
-
 #hotkey-lock {
   right: 6px;
   top: 241px;
@@ -1527,11 +1517,6 @@ input {
 #hotkey-displayA4 {
   right: 39px;
   top: 164px;
-}
-
-#hotkey-import {
-  right: 7px;
-  top: 86px;
 }
 
 #hotkey-clear, #hotkey-front {
@@ -1577,16 +1562,6 @@ input {
 #hotkey-delete {
   right: 6px;
   top: 272px;
-}
-
-#hotkey-addGroup {
-  right: 6px;
-  top: 317px;
-}
-
-#hotkey-removeGroup {
-  right: 6px;
-  top: 352px;
 }
 
 /* --------------================################================-------------- *

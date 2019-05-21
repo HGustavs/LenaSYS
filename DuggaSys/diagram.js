@@ -164,35 +164,24 @@ const key0 = 48;
 const key1 = 49;
 const key2 = 50;
 const key4 = 52;
-const key5 = 53;
-const key6 = 54;
-const key7 = 55;
 const aKey = 65;
-const bKey = 66;
 const cKey = 67;
 const dKey = 68;
 const eKey = 69;
 const fKey = 70;
-const gKey = 71;
-const hKey = 72;
-const iKey = 73;
-const kKey = 75;
 const lKey = 76;
 const mKey = 77;
 const nKey = 78;
+const oKey = 79;
 const rKey = 82;
-const sKey = 83;
 const tKey = 84;
 const vKey = 86;
 const zKey = 90;
 const yKey = 89;
 const xKey = 88;
-const oKey = 79;
 const windowsKey = 91;
 const num1 = 97;
 const num2 = 98;
-const commaKey = 188;
-const periodKey = 190;
 const lessThanKey = 226;
 
 // Mouse clicks
@@ -492,26 +481,12 @@ function keyDownHandler(e) {
         switchToolbarTo("ER");
     } else if(shiftIsClicked && key == mKey) {
         switchToolbarTo("UML");
-    } else if(shiftIsClicked && key == gKey) {
-          globalAppearanceMenu();
-    } else if(shiftIsClicked && key == hKey) {
-          openAppearanceDialogMenu();
     } else if(shiftIsClicked && key == xKey) {
           lockSelected(event);
-    } else if(shiftIsClicked && key == key0) {
+    } else if(shiftIsClicked && key == oKey) {
           resetViewToOrigin();
-    } else if(shiftIsClicked && key == bKey) {
-          switchToolbarDev();
     } else if(shiftIsClicked && key == key4) {
           toggleVirtualA4(event);
-    } else if(shiftIsClicked && key == key5) {
-          toggleA4Orientation(event);
-    } else if(shiftIsClicked && key == key6) {
-          toggleVirtualA4Holes(event);
-    } else if(shiftIsClicked && key == key7) {
-          toggleVirtualA4HolesRight(event);
-    } else if(shiftIsClicked && key == kKey) {
-          toggleGrid(event);
     } else if(shiftIsClicked && key == upArrow) {
           align(event, 'top');
     } else if(shiftIsClicked && key == rightArrow) {
@@ -520,22 +495,7 @@ function keyDownHandler(e) {
           align(event, 'bottom');
     } else if(shiftIsClicked && key == leftArrow) {
           align(event, 'left');
-    } else if(shiftIsClicked && key == commaKey) {
-          align(event, 'horizontalCenter');
-    } else if(shiftIsClicked && key == periodKey) {
-          align(event, 'verticalCenter');
-    } else if(altIsClicked && key == key1) {
-          addGroupToSelected(event);
-    } else if(altIsClicked && key == key2) {
-          removeGroupFromSelected(event);
     }
-
-    /* Add this when we add function to load and save options in the menu.
-    else if(shiftIsClicked && key == oKey) {
-          Load function here...
-    } else if(shiftIsClicked && key == sKey) {
-          Save function here...
-    } */
 }
 
 //----------------------------------------------------
