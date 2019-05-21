@@ -193,9 +193,11 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='addGroupToSelected(event)'>Add group to selected</span>
+                                <i id="hotkey-addGroup" class="hotKeys">Alt + 1</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Remove group from selected</span>
+                                <i id="hotkey-removeGroup" class="hotKeys">Alt + 2</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
