@@ -47,10 +47,17 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$uid." ".$username." ".$newusers;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php",$userid,$info);
 
+
+if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
+	$hasAccess = true;
+} else {
+	$hasAccess = false;
+} 
+
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
-if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+if(checklogin() && $hasAccess) {
 
 	if(strcmp($opt,"UPDATE")==0){
 
@@ -277,7 +284,7 @@ $groups=array();
 $courses=array();
 $submissions=array();
 
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+if(checklogin() && $hasAccess) {
 	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){

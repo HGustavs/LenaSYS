@@ -45,6 +45,7 @@ $showgrps=getOP('showgrp');
 $grptype=getOP('grptype');
 $deadline=getOP('deadline');
 $jsondeadline = getOP('jsondeadline');
+$studentTeacher = false;
 
 $grpmembershp="UNK";
 $unmarked = 0;
@@ -68,6 +69,7 @@ if($gradesys=="UNK") $gradesys=0;
 		$isSuperUserVar=false;
 
 		$hasread=hasAccess($userid, $courseid, 'r');
+		$studentTeacher=hasAccess($userid, $courseid, 'st');
 		$haswrite=hasAccess($userid, $courseid, 'w');
 
 		if(checklogin()){
@@ -106,7 +108,7 @@ if($gradesys=="UNK") $gradesys=0;
 		        if($query->execute()) {
 		            $showgrps=explode(',',$showgrps);
 		            $showgrp=$showgrps[0];
-		            if($ha)$showgrp=explode('_',$showgrp)[0];
+		            if($ha || $studentTeacher)$showgrp=explode('_',$showgrp)[0];
 		            foreach($query->fetchAll() as $row) {
 		                $grpmembershp=$row['groups'];
 		                $idx=strpos($grpmembershp,$showgrp);
@@ -151,7 +153,7 @@ if($gradesys=="UNK") $gradesys=0;
 		        }
 		    }
 
-			if($ha) {
+			if($ha || $studentTeacher) {
 				// The code for modification using sessions
 				if(strcmp($opt,"DEL")===0) {
 					$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
@@ -565,7 +567,7 @@ if($gradesys=="UNK") $gradesys=0;
 		}
 		$codeexamples = array();
 
-		if($ha){
+		if($ha || $studentTeacher){
 			$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
 			$query->bindParam(':cid', $courseid);
 
@@ -699,6 +701,7 @@ if($gradesys=="UNK") $gradesys=0;
 			"entries" => $entries,
 			"debug" => $debug,
 			"writeaccess" => $ha,
+			"studentteacher" => $studentTeacher,
 			"readaccess" => $cvisibility,
 			"coursename" => $coursename,
 			"coursevers" => $coursevers,

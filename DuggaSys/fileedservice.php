@@ -20,16 +20,25 @@ $filename = getOP('filename');
 $kind = getOP('kind');
 $contents = getOP('contents');
 $debug = "NONE!";
+$studentTeacher = false;
 
 $log_uuid = getOP('log_uuid');
 $info = $opt . " " . $cid . " " . $coursevers . " " . $fid . " " . $filename . " " . $kind;
 logServiceEvent($userid, EventTypes::ServiceServerStart, "fileedservice.php", $userid, $info);
 
+if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid)) {
+    $hasAccess = true;
+} else {
+    $hasAccess = false;
+}
+if (hasAccess($userid, $cid, 'st')) {
+    $studentTeacher = true;
+}
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
-if (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-    if (strcmp($opt, "DELFILE") === 0) {
+if (checklogin() && $hasAccess) {
+    if (strcmp($opt, "DELFILE") === 0 && hasAccess($userid, $cid, 'w')) {
         // Remove file link from database
         $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
         $query = $pdo->prepare($querystring);
@@ -101,7 +110,7 @@ $files = array();
 $lfiles = array();
 $gfiles = array();
 $access = False;
-if (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+if (checklogin() && $hasAccess) {
     $query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
     $query->bindParam(':cid', $cid);
     $query->bindParam(':vers', $coursevers);
@@ -188,7 +197,8 @@ $array = array(
     'debug' => $debug,
     'gfiles' => $gfiles,
     'lfiles' => $lfiles,
-    'access' => $access
+    'access' => $access,
+    'studentteacher' => $studentTeacher
 );
 
 echo json_encode($array);
