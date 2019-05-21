@@ -3348,6 +3348,7 @@ function mouseupevt(ev) {
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
+                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
 
                 // Can't draw line between two ER attributes if one of them is not composite
                 if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
@@ -3472,8 +3473,7 @@ function mouseupevt(ev) {
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
-        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml || (symbolStartKind == symbolKind.erEntity
-        && symbolEndKind == symbolKind.erEntity)) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line)
+        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length
@@ -3481,7 +3481,6 @@ function mouseupevt(ev) {
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
             erLineA.centerPoint = p3;
-            erLineA.isRecursiveLine = lineStartObj == markedObject;
             diagram.push(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;

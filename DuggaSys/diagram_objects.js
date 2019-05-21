@@ -529,7 +529,7 @@ function Symbol(kindOfSymbol) {
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
         setIsLockHovered(this, mx, my);
-        if (this.symbolkind == symbolKind.line && !this.isRecursiveLine) {
+        if (this.symbolkind == symbolKind.line) {
             return this.linehover(mx, my);
         } else if(this.symbolkind == symbolKind.erEntity) {
             return this.entityhover(mx, my);
@@ -1373,38 +1373,12 @@ function Symbol(kindOfSymbol) {
             }
         }
 
-        // Check if this is a recursive line (connects to a single object twice)
-        let connObjects = this.getConnectedObjects();
-        let cornerX1 = x1, cornerY1 = y1, cornerX2 = x2, cornerY2 = y2;
-        if (connObjects.length == 1) {
-            if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
-                if (x1 > points[connObjects[0].centerPoint].x)
-                    this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
-                else
-                    this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
-                cornerX1 += this.recursiveLineExtent;
-                cornerX2 += this.recursiveLineExtent;
-            }else if (y1 == y2) {
-                if (y1 > points[connObjects[0].centerPoint].y)
-                    this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
-                else
-                    this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
-                cornerY1 += this.recursiveLineExtent;
-                cornerY2 += this.recursiveLineExtent;
-            }
-        }
-
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
             ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
             ctx.beginPath();
             ctx.moveTo(x1, y1);
-            // If this is a recursive line, go a bit out of the object, then go back in
-            if (connObjects.length == 1) {
-                ctx.lineTo(cornerX1, cornerY1);
-                ctx.lineTo(cornerX2, cornerY2);
-            }
             ctx.lineTo(x2, y2);
             ctx.stroke();
             //Draw a white line in the middle to simulate space (2 line illusion);
@@ -1418,13 +1392,6 @@ function Symbol(kindOfSymbol) {
 
         ctx.beginPath();
         ctx.moveTo(x1, y1);
-
-        // If this is a recursive line, go a bit out of the object, then go back in
-        if (connObjects.length == 1) {
-            ctx.lineTo(cornerX1, cornerY1);
-            ctx.lineTo(cornerX2, cornerY2);
-        }
-
         ctx.lineTo(x2, y2);
         ctx.stroke();
     }
