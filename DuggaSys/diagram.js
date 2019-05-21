@@ -33,6 +33,21 @@ AJAXService("get", {}, "DIAGRAM");
 
 ************************************************************/
 
+//--------------------------------------------------------------------
+// diagram - Stores a global list of diagram objects
+//           A diagram object could for instance be a path, or a symbol
+//--------------------------------------------------------------------
+
+var diagram = [];
+
+diagram.serialNumbers = {
+    Attribute: 0,
+    Entity: 0,
+    Relation: 0,
+    UML: 0,
+    Text: 0,
+};
+
 const kind = {
     path: 1,
     symbol: 2
@@ -124,7 +139,6 @@ var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramNumberHistory = 0;           // Is used for undo and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var classAppearanceOpen = false;
@@ -370,13 +384,6 @@ function resetButtonsPressed() {
     ctrlIsClicked = false;
     shiftIsClicked = false;
 }
-
-//--------------------------------------------------------------------
-// diagram - Stores a global list of diagram objects
-//           A diagram object could for instance be a path, or a symbol
-//--------------------------------------------------------------------
-
-var diagram = [];
 
 function keyDownHandler(e) {
     var key = e.keyCode;
@@ -855,6 +862,10 @@ diagram.deleteObject = function(object) {
             this.splice(i, 1);
         }
     }
+    if(diagram.length == 0){
+        resetSerialNumbers();
+        removeLocalStorage();
+    }
 }
 
 //--------------------------------------------------------------------
@@ -1124,7 +1135,6 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
-    setInterval(function() {Save()}, 10000);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
@@ -1487,10 +1497,6 @@ function canvasSize() {
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
-function mod(n, m) {
-  return  Math.round(Math.round(Math.round(n % m) + m) % m);
-}
-
 //----------------------------------------------------------
 // updateGraphics: used to redraw each object on the screen
 //----------------------------------------------------------
@@ -1680,47 +1686,41 @@ function connectedObjects(line) {
     return privateObjects;
 }
 
-//------------------------------------------
-// Draws the background lines of the canvas
-//------------------------------------------
+//-----------------------------------
+// Draws the gridlines of the canvas
+//-----------------------------------
 
 function drawGrid() {
-    ctx.lineWidth = 1 * zoomValue;
-    let zoomGridSize = Math.round(gridSize * zoomValue);
-    myOffsetX = mod(origoOffsetX, zoomGridSize);
-    myOffsetY = mod(origoOffsetY, zoomGridSize);
+    var zoomGridSize = gridSize * zoomValue;
+    var counter = 0;
 
-    // Draw a horizontal and a vertical line until the canvas is filled
-    for(let i = 0; i < Math.max(canvas.width, canvas.height) / (gridSize * zoomValue) * 1.5; i++) {
-        if(mod(myOffsetX, zoomGridSize * 5) == mod(origoOffsetX, zoomGridSize * 5)) {
-            // Every fifth line is a darker grey
-            ctx.strokeStyle = "rgb(208, 208, 220)";
-        }
-        else {
-            ctx.strokeStyle = "rgb(238, 238, 250)";
-        }
+    for(var i = 0; i < canvas.width / zoomGridSize + Math.max(Math.abs(origoOffsetX), Math.abs(origoOffsetY)); i++){
+        setLineColor(counter);
+        counter++;
 
-        ctx.beginPath();
-        ctx.moveTo(myOffsetX, 0);
-        ctx.lineTo(myOffsetX, canvas.height);
-        ctx.stroke();
-        ctx.closePath();
+        // Positive vertical lines
+        drawGridLine(origoOffsetX + zoomGridSize * i, 0, origoOffsetX + zoomGridSize * i, canvas.height);
 
-        if(mod(myOffsetY, zoomGridSize * 5) == mod(origoOffsetY, zoomGridSize * 5)) {
-            // Every fifth line is a darker grey
-            ctx.strokeStyle = "rgb(208, 208, 220)";
-        } else {
-            ctx.strokeStyle = "rgb(238, 238, 250)";
-        }
+        // Negative vertical lines
+        drawGridLine(origoOffsetX - zoomGridSize * i, 0, origoOffsetX - zoomGridSize * i, canvas.height);
 
-        ctx.beginPath();
-        ctx.moveTo(0, myOffsetY);
-        ctx.lineTo(canvas.width, myOffsetY);
-        ctx.stroke();
-        ctx.closePath();
+        // Positive horizontal lines
+        drawGridLine(0, origoOffsetY + zoomGridSize * i, canvas.width, origoOffsetY + zoomGridSize * i);
 
-        myOffsetX += zoomGridSize;
-        myOffsetY += zoomGridSize;
+        // Negative horizontal lines
+        drawGridLine(0, origoOffsetY - zoomGridSize * i, canvas.width, origoOffsetY - zoomGridSize * i);
+    }
+}
+
+//-------------------------------------------------------------------------------------
+// Sets the color depending on whether the gridline should be darker or brighter grey
+//-------------------------------------------------------------------------------------
+
+function setLineColor(counter){
+    if(counter % 5 == 0){
+        ctx.strokeStyle = "rgb(208, 208, 220)";
+    } else {
+        ctx.strokeStyle = "rgb(238, 238, 250)";
     }
 }
 
@@ -1750,14 +1750,15 @@ function drawOrigo() {
 function drawOrigoLine() {
     ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
+    drawGridLine(origoOffsetX, 0, origoOffsetX, canvas.height);
+    drawGridLine(0, origoOffsetY, canvas.width, origoOffsetY);
+}
+
+function drawGridLine(startX, startY, endX, endY) {
+    ctx.lineWidth = 1 * zoomValue;
     ctx.beginPath();
-    ctx.moveTo(0, origoOffsetY);
-    ctx.lineTo(canvas.width, origoOffsetY);
-    ctx.stroke();
-    ctx.closePath();
-    ctx.beginPath();
-    ctx.moveTo(origoOffsetX, 0);
-    ctx.lineTo(origoOffsetX, canvas.height);
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
     ctx.stroke();
     ctx.closePath();
 }
@@ -1786,6 +1787,16 @@ function gridToSVG(width, height) {
 //              it hides the points by placing them beyond the users view.
 //------------------------------------------------------------------------------
 
+function resetSerialNumbers(){
+    diagram.serialNumbers = {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    }
+}
+
 function clearCanvas() {
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
@@ -1794,6 +1805,7 @@ function clearCanvas() {
     for (var i = 0; i < points.length;) {
         points.pop();
     }
+    resetSerialNumbers();
     updateGraphics();
     SaveState();
 }
@@ -2480,8 +2492,9 @@ function distribute(event, axis) {
 
 function undoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumberHistory > 1) diagramNumberHistory--;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (diagramNumber > 0) diagramNumber--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
@@ -2491,8 +2504,13 @@ function undoDiagram(event) {
 
 function redoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    diagramNumber = localStorage.getItem("diagramNumber");
+    diagramNumber++;
+    if(!localStorage.getItem("diagram" + diagramNumber)){
+        diagramNumber--;
+    }
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
@@ -2815,13 +2833,21 @@ function changeZoom(zoomValue, event) {
 //-----------------------
 
 function scrollZoom(event) {
-    if(event.deltaY > 124){
+    var wheelZoom = 124;
+    var mousePadZoom = 5;
+
+    if(event.mozInputSource){
+        wheelZoom = 2;
+        mousePadZoom = 0;
+    }
+
+    if(event.deltaY > wheelZoom){
         changeZoom(-0.1, event);
-    } else if (event.deltaY < -124) {
+    } else if (event.deltaY < -wheelZoom) {
         changeZoom(0.1, event);
-    } else if(event.deltaY > 5) {
+    } else if(event.deltaY > mousePadZoom) {
         changeZoom(-0.01, event);
-    } else if (event.deltaY < -5) {
+    } else if (event.deltaY < -mousePadZoom) {
         changeZoom(0.01, event);
     }
 }
@@ -2919,31 +2945,36 @@ function mousemoveevt(ev, t) {
                 // when in movearound mode or if the point doesn't belong to a selected object then don't display different pointer when hovering points
                 if (uimode != "MoveAround" && pointBelongsToObject) {
                     //Change cursor if you are hovering over a point and its not a line
-                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine || sel.attachedSymbol.isLocked) {
                         //The point belongs to a umlLine or Line
-                        canvas.style.cursor = "pointer";
+                        canvas.style.cursor = "default";
                     } else {
                         canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                     }
                 }
             } else {
-                  if(uimode == "MoveAround") {
-                      canvas.style.cursor = "all-scroll";
-                  } else if (uimode == "CreateLine") {
-                      //When CreateLine-button is selected the cursor is "pointer".
-                      canvas.style.cursor = "pointer";
-                      //If objects are hovered while button is selected, the cursor remains the same (pointer).
-                  } else if(hoveredObject && !hoveredObject.isLocked) {
-                        if(hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
+                if (uimode == "MoveAround") {
+                    canvas.style.cursor = "all-scroll";
+                } else if (uimode == "CreateLine") {
+                    //When CreateLine-button is selected the cursor is "pointer".
+                    canvas.style.cursor = "pointer";
+                    //If objects are hovered while button is selected, the cursor remains the same (pointer).
+                } else if (hoveredObject && !hoveredObject.isLocked) {
+                    if (hoveredObject.symbolkind == symbolKind.line || hoveredObject.symbolkind == symbolKind.umlLine) {
+                        canvas.style.cursor = "pointer";
+                    } else {
+                        canvas.style.cursor = "all-scroll";
+                    }
+                } else {
+                    canvas.style.cursor = "default";
+                    // set cursor to pointer if a lock is hovered
+                    for (var i = 0; i < diagram.length; i++) {
+                        if (diagram[i].isLockHovered) {
                             canvas.style.cursor = "pointer";
-                        } else {
-                            canvas.style.cursor = "all-scroll";
                         }
-                  } else {
-                      canvas.style.cursor = "default";
-                  }
-              }
-
+                    }
+                }
+            }
             // If mouse is not pressed highlight closest point
             points.clearAllSelects();
             movobj = diagram.itemClicked();
@@ -3301,11 +3332,11 @@ function mouseupevt(ev) {
                     //Code for making sure enitities not connect to the same attribute multiple times
                     if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                         if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
-                            okToMakeLine= false;
+                            okToMakeLine = false;
                         }
                     } else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                         if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
-                            okToMakeLine= false;
+                            okToMakeLine = false;
                         }
                     } else if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
                         if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
@@ -3317,19 +3348,6 @@ function mouseupevt(ev) {
                         okToMakeLine = false;
                     }
                     if (diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
-
-                    // Can't draw line between two ER attributes if one of them is not composite
-                    if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                        if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
-                        okToMakeLine = true;
-                        } else {
-                            okToMakeLine = false;
-                            // Add error dialog
-                            $("#errorMessageDialog").css("display", "flex");
-                            var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
-                            document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
-                        }
-                    }
 
                     if (okToMakeLine) {
                         saveState = true;
@@ -3416,8 +3434,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        var newValue = checkDuplicate("New", symbolKind.uml);
-        classB.name = "New" + newValue;
+        classB.name = "New " + diagram.serialNumbers.UML;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3429,10 +3446,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        diagram.serialNumbers.UML++;
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        var newValue = checkDuplicate("Attr", symbolKind.erAttribute);
-        erAttributeA.name = "Attr" + newValue;
+        erAttributeA.name = "Attr " + diagram.serialNumbers.Attribute;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3443,10 +3460,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        diagram.serialNumbers.Attribute++;
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        var newValue = checkDuplicate("Entity", symbolKind.erEntity);
-        erEnityA.name = "Entity" + newValue;;
+        erEnityA.name = "Entity " + diagram.serialNumbers.Entity;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3458,13 +3475,14 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        diagram.serialNumbers.Entity++;
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             erLineA = new Symbol(symbolKind.line); // Lines
-            erLineA.name = "Line" + diagram.length
+            erLineA.name = "Line" + diagram.length;
             erLineA.topLeft = p1;
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
@@ -3480,8 +3498,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        var newValue = checkDuplicate("Relation", symbolKind.erRelation);
-        erRelationA.name = "Relation" + newValue;
+        erRelationA.name = "Relation " + diagram.serialNumbers.Relation;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3491,12 +3508,13 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        diagram.serialNumbers.Relation++;
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
         // clicking on a lock removes it
         if (currentMouseCoordinateX == startMouseCoordinateX && currentMouseCoordinateY == startMouseCoordinateY) {
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].isLocked){
+                if (diagram[i].isLocked) {
                     setIsLockHovered(diagram[i], currentMouseCoordinateX, currentMouseCoordinateY);
                     if (diagram[i].isLockHovered) {
                         diagram[i].isLocked = false;
@@ -3532,7 +3550,7 @@ function mouseupevt(ev) {
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
-            umlLineA.name = "Line" + diagram.length
+            umlLineA.name = "Line" + diagram.length;
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
@@ -3569,16 +3587,6 @@ function mouseupevt(ev) {
     if(saveState) SaveState();
 }
 
-function countNumberOfSymbolKind(kind) {
-  var numberOfSymbolKind = 0;
-  for(let i = 0; i < diagram.length; i++) {
-      if(diagram[i].symbolkind == kind) {
-          numberOfSymbolKind++;
-      }
-  }
-  return numberOfSymbolKind;
-}
-
 function doubleclick(ev) {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
@@ -3587,8 +3595,8 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    var newValue = checkDuplicate("Text ", symbolKind.text);
-    text.name = "Text " + newValue;
+    text.name = "Text " + diagram.serialNumbers.Text;
+    diagram.serialNumbers.Text++;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
@@ -3702,7 +3710,7 @@ function openAppearanceDialogMenu() {
 function closeAppearanceDialogMenu() {
      //if the X
      if(globalAppearanceValue == 1) {
-         var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+         var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
          if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
     $(".loginBox").draggable('destroy');
@@ -4037,25 +4045,11 @@ function changeCardinality(isUML) {
         }
     }
 }
-
+// Changes direction for uml line relations
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
-    console.log("lineDirection " + diagram[lastSelectedObject].lineDirection);
 }
-
 //Close the errorMessageDialog for Composite
 function closeErrorMessageDialog() {
     $("#errorMessageDialog").hide();
-}
-
-//Checks if there are any duplicates of entities with the same name.
-function checkDuplicate(name, kind) {
-    var numberOfSymbolKind = 0;
-    for(let i = 0; i < diagram.length; i++) {
-        //Checks for duplicates with the same number and adds +1 to it.
-        if (diagram[i].name == name + countNumberOfSymbolKind(kind)) {
-            numberOfSymbolKind = 1;
-        }
-    }
-    return countNumberOfSymbolKind(kind) + numberOfSymbolKind;
 }
