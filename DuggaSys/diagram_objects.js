@@ -528,6 +528,9 @@ function Symbol(kindOfSymbol) {
     // checkForHover: Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
+        if(this.symbolkind == symbolKind.umlLine){
+            return this.UMLLineHover();
+        }
         setIsLockHovered(this, mx, my);
         if (this.symbolkind == symbolKind.line) {
             return this.linehover(mx, my);
@@ -555,6 +558,20 @@ function Symbol(kindOfSymbol) {
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
+    }
+
+    this.UMLLineHover = function(){
+        var p1, p2;
+        for(var i = 0; i < this.anchors.length - 1; i++){
+            p1 = this.anchors[i];
+            p2 = this.anchors[i+1];
+
+            if(pointToLineDistance(points[p1], points[p2], currentMouseCoordinateX, currentMouseCoordinateY) < 11){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     this.entityhover = function(mx, my, c) {
