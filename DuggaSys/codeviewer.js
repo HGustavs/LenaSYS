@@ -986,8 +986,11 @@ function issetDrop(dname) {
 //----------------------------------------------------------
 
 function highlightKeyword(kw) {
+	kwDoubleQuotes = '"'+kw+'"';
+	kwSingleQuote = "'"+kw+"'";
+
 	$(".impword").each(function () {
-		if (this.innerHTML == kw) {
+		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
 			$(this).addClass("imphi");
 		}
 	});
@@ -999,8 +1002,10 @@ function highlightKeyword(kw) {
 //----------------------------------------------------------
 
 function dehighlightKeyword(kw) {
+	kwDoubleQuotes = '"'+kw+'"';
+	kwSingleQuote = "'"+kw+"'";
 	$(".impword").each(function () {
-		if (this.innerHTML == kw) {
+		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
 			$(this).removeClass("imphi");
 		}
 	});
@@ -1439,7 +1444,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				important.indexOf(withQuote) != -1 ||
 				important.indexOf(withSingleQuote) != -1) {
 
-				cont += "<span id='IW" + iwcounter + "' class='impword' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='dehighlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += "<span class='string'>" + tokenvalue + "</span>";
 			}
