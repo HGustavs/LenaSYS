@@ -709,7 +709,7 @@ function createTimeSheetTable(data) {
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
+    hasMagicHeadings: false,
     hasCounterColumn: true
   });
 
@@ -887,7 +887,7 @@ function createRankTable(data) {
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
+    hasMagicHeadings: false,
     hasCounterColumn: true
   });
   rankTable.renderTable();
@@ -953,7 +953,7 @@ function createGitHubcontributionTable(data) {
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
+    hasMagicHeadings: false,
     hasCounterColumn: true
   });
   ghContibTable.renderTable();
@@ -1052,7 +1052,7 @@ function createAllRankTable(data){
 		columnOrder:colOrder,
 		freezePaneIndex:4,
 		hasRowHighlight:false,
-		hasMagicHeadings:true,
+		hasMagicHeadings:false,
 		hasCounterColumn:true
 	});
 	allRankTable.renderTable();
