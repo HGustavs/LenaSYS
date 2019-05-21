@@ -1420,7 +1420,7 @@ function Symbol(kindOfSymbol) {
             middleBreakPointX = x1;
         }
 
-        if (y2 > y1) { // The code breaks if you don't use Math.abs, can be removed if fixed
+        if (y2 > y1) {
             middleBreakPointY = y1 + Math.abs(y2 - y1) / 2;
         } else if (y1 > y2) {
             middleBreakPointY = y2 + Math.abs(y1 - y2) / 2;
