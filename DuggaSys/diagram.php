@@ -114,14 +114,17 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option">Save</span>
+                                <i id="hotkey-save" class="hotKeys">Shift + S</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option">Load</span>
+                                <i id="hotkey-load" class="hotKeys">Shift + O</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" id="buttonid" onclick="openImportDialog();">Import</span>
+                                <span class="drop-down-option" onclick="openImportDialog();">Import</span>
+                                <i id="hotkey-import" class="hotKeys">Shift + I</i>
                             </div>
                             <div class="drop-down-item export-drop-down-head">
                                 <span class="drop-down-option" id="exportid">Export...</span>
@@ -141,7 +144,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
-                                <i id="hotkey-clear">Ctrl + A, Delete</i>
+                                <i id="hotkey-clear" class="hotKeys">Ctrl + A, Delete</i>
                             </div>
                         </div>
                     </div>
@@ -150,38 +153,41 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
-                                <i id="hotkey-undo">Ctrl + Z</i>
+                                <i id="hotkey-undo" class="hotKeys">Ctrl + Z</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
-                                <i id="hotkey-redo">Ctrl + Y</i>
+                                <i id="hotkey-redo" class="hotKeys">Ctrl + Y</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
+                                <i id="hotkey-global" class="hotKeys">Shift + G</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                                <i id="hotkey-appearance" class="hotKeys">Shift + H</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
-                                <i id="hotkey-front">Shift + 1</i>
+                                <i id="hotkey-front" class="hotKeys">Shift + 1</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
-                                <i id="hotkey-back">Shift + 2</i>
+                                <i id="hotkey-back" class="hotKeys">Shift + 2</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
+                                <i id="hotkey-lock" class="hotKeys">Shift + X</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
-                                <i id="hotkey-delete">Delete/Backspace</i>
+                                <i id="hotkey-delete" class="hotKeys">Delete/Backspace</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
@@ -195,6 +201,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                                <i id="hotkey-resetView" class="hotKeys">Shift + 0</i>
                             </div>
                         </div>
                     </div>
@@ -203,41 +210,46 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
-                                <i id="hotkey-developerMode">Shift + D</i>
+                                <i id="hotkey-developerMode" class="hotKeys">Shift + D</i>
                             </div>
                             <div class="drop-down-item">
                                 <div id="displayAllTools" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
+                                    <i id="hotkey-displayTools" class="hotKeys">Shift + B</i>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div id="er-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
-                                <i id="hotkey-ER">Shift + M</i>
+                                <i id="hotkey-ER" class="hotKeys">Shift + M</i>
                             </div>
                             <div id="uml-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
-                                <i id="hotkey-UML">Shift + M</i>
+                                <i id="hotkey-UML" class="hotKeys">Shift + M</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
+                                <i id="hotkey-displayA4" class="hotKeys">Shift + 4</i>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-orientation-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='toggleA4Orientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                                    <i id="hotkey-A4-Orientation" class="hotKeys">Shift + 5</i>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-holes-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='toggleVirtualA4Holes(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
+                                    <i id="hotkey-Toggle-Holes" class="hotKeys">Shift + 6</i>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-holes-item-right" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='toggleVirtualA4HolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                                    <i id="hotkey-Holes-Right" class="hotKeys">Shift + 7</i>
                                 </div>
                             </div>
                         </div>
@@ -247,28 +259,35 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="toggleGrid(event)">Snap to grid</span>
+                                <i id="hotkey-Snap-Grid" class="hotKeys">Shift + K</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
+                                <i id="hotkey-Align-Top" class="hotKeys">Shift + ⇧ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
+                                <i id="hotkey-Align-Right" class="hotKeys">Shift + ⇨ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
+                                <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ⇩ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
+                                <i id="hotkey-Align-Left" class="hotKeys">Shift + ⇦ </i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'horizontalCenter');">Horizontal center</span>
+                                <i id="hotkey-Align-Horizontal" class="hotKeys">Shift + ' , ' </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'verticalCenter');">Vertical center</span>
+                                <i id="hotkey-Align-Vertical" class="hotKeys">Shift + ' . ' </i>
                             </div>
                         </div>
                     </div>
@@ -277,9 +296,11 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="distribute(event, 'horizontally');">Horizontal</span>
+                                <i id="hotkey-Distribute-Vertical" class="hotKeys">Shift + ' < ' </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="distribute(event, 'vertically');">Vertical</span>
+                                <i id="hotkey-Distribute-Horizontal" class="hotKeys">Shift + Z </i>
                             </div>
                         </div>
                     </div>
@@ -288,7 +309,7 @@
                         <div class="drop-down">
                             <div class="drop-down-text-non-clickable">
                                 <span class="drop-down-option">Move camera</span>
-                                <div id="hotkey-space">
+                                <div id="hotkey-space" class="hotKeys">
                                     <i>Blankspace</i>
                                 </div>
                             </div>
@@ -296,7 +317,7 @@
                             </div>
                             <div class="drop-down-text-non-clickable">
                                 <span class="drop-down-option">Select multiple objects</span>
-                                <div id="hotkey-ctrl">
+                                <div id="hotkey-ctrl" class="hotKeys">
                                     <i>Ctrl + leftclick</i>
                                 </div>
                             </div>
@@ -304,7 +325,7 @@
                             </div>
                             <div class="drop-down-text-non-clickable">
                                 <span class="drop-down-option">Lock object proportions</span>
-                                <div id="hotkey-shift">
+                                <div id="hotkey-shift" class="hotKeys">
                                     <i>Shift</i>
                                 </div>
                             </div>
