@@ -1152,6 +1152,10 @@ function rowFilter(row) {
 
         name = name.replace(' ', '');
 
+        if(name.toUpperCase()).includes(searchterm.toUpperCase()) != false){
+          console.log("FOUND THE NAME " + searchterm + " IN " + name);
+        }
+
 				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
 					return true;
 				}
