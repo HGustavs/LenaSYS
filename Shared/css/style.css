@@ -1534,6 +1534,16 @@ input {
   top: 85px;
 }
 
+#hotkey-undo {
+  right: 5px;
+  top: 10px;
+}
+
+#hotkey-redo {
+  right: 5px;
+  top: 43px;
+}
+
 #hotkey-UML {
   right: 35px;
   top: 120px;
