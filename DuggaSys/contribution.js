@@ -1075,16 +1075,17 @@ function renderCellForghContibTable(col, celldata, cellid) {
       str += "</div>";
       str += "</div>";
     }
+
   } else if (col === 'githubContribution') {
      if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0 || obj.comments.length > 0) {
        str += "<div class='githubContribution'>";
        if(obj.commits.length > 0){
          str += "<div id='ghCommits' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made " + obj.commits.length + " commit(s).</span>";
-         str += "<div id='ghCommits"+rowNr+"' class='contribcontent'>";
+         str += "<div id='ghCommits"+rowNr+"' style='pointer-events:auto' class='contribcontent'>";
            for (j = 0; j < obj.commits.length; j++) {
              var message = obj.commits[j].message;
              var hash = obj.commits[j].cid;
-             str += "<span><a href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></span>";
+             str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></span>";
            }
            str += "</div>";
            str += "</div>";
@@ -1095,7 +1096,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
           for (j = 0; j < obj.issues.length; j++) {
             var issue = obj.issues[j];
             var issuestr = issue.issueno + " " + issue.title;
-            str += "<span><a href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+            str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></span>";
           }
           str += "</div>";
           str += "</div>";
@@ -1106,7 +1107,7 @@ function renderCellForghContibTable(col, celldata, cellid) {
             for (j = 0; j < obj.comments.length; j++) {
               var comment = obj.comments[j];
               var issuestr = comment.issueno + " " + comment.content;
-              str += "<span><a href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+              str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></span>";
             }
           str += "</div>";
           str += "</div>";
@@ -1169,43 +1170,47 @@ function toggleAfterLocalStorage(data){
 
 //Toggles the show/hide values in lovalstorage.
 function toggleContributionTable(element){
-  var clickedDiv = element.lastChild;
-  var tableCellId = element.lastChild.id[element.lastChild.id.length-1]; //fetch the weekNr from the end of the element id.
-  var localStorageArrStr = localStorage.getItem('contribToggleArr'); //Get the values from localstorage.
-  var togglevalues = JSON.parse(localStorageArrStr);
-  var status;
+  if(element.tagName.toLocaleLowerCase() == "div"){
+    var clickedDiv = element.lastChild;
+    var tableCellId = element.lastChild.id[element.lastChild.id.length-1]; //fetch the weekNr from the end of the element id.
+    var localStorageArrStr = localStorage.getItem('contribToggleArr'); //Get the values from localstorage.
+    var togglevalues = JSON.parse(localStorageArrStr);
+    var status;
 
-  if(clickedDiv.id == "ghCommits"+tableCellId){
-    if(togglevalues[tableCellId].commit == 1){
-      togglevalues[tableCellId].commit = 0;
-    }else{
-      togglevalues[tableCellId].commit = 1;
+    if(clickedDiv.id == "ghCommits"+tableCellId){
+      if(togglevalues[tableCellId].commit == 1){
+        togglevalues[tableCellId].commit = 0;
+      }else{
+        togglevalues[tableCellId].commit = 1;
+      }
+      status = togglevalues[tableCellId].commit;
+    }else if(clickedDiv.id == "ghIssues"+tableCellId){
+      if(togglevalues[tableCellId].issues == 1){
+        togglevalues[tableCellId].issues = 0;
+      }else{
+        togglevalues[tableCellId].issues = 1;
+      }
+      status = togglevalues[tableCellId].issues;
+    }else if(clickedDiv.id == "ghComments"+tableCellId){
+      if(togglevalues[tableCellId].comments == 1){
+        togglevalues[tableCellId].comments = 0;
+      }else{
+        togglevalues[tableCellId].comments = 1;
+      }
+      status = togglevalues[tableCellId].comments;
+    }else if(clickedDiv.id == "ghEvents"+tableCellId){
+      if(togglevalues[tableCellId].events == 1){
+        togglevalues[tableCellId].events = 0;
+      }else{
+        togglevalues[tableCellId].events = 1;
+      }
+      status = togglevalues[tableCellId].events;
     }
-    status = togglevalues[tableCellId].commit;
-  }else if(clickedDiv.id == "ghIssues"+tableCellId){
-    if(togglevalues[tableCellId].issues == 1){
-      togglevalues[tableCellId].issues = 0;
-    }else{
-      togglevalues[tableCellId].issues = 1;
-    }
-    status = togglevalues[tableCellId].issues;
-  }else if(clickedDiv.id == "ghComments"+tableCellId){
-    if(togglevalues[tableCellId].comments == 1){
-      togglevalues[tableCellId].comments = 0;
-    }else{
-      togglevalues[tableCellId].comments = 1;
-    }
-    status = togglevalues[tableCellId].comments;
-  }else if(clickedDiv.id == "ghEvents"+tableCellId){
-    if(togglevalues[tableCellId].events == 1){
-      togglevalues[tableCellId].events = 0;
-    }else{
-      togglevalues[tableCellId].events = 1;
-    }
-    status = togglevalues[tableCellId].events;
+    showMoreContribContent(element.lastChild.id,status);
+    localStorage.setItem('contribToggleArr', JSON.stringify(togglevalues)); //save the changed values to localStorage.
+  }else{
+
   }
-  showMoreContribContent(element.lastChild.id,status);
-  localStorage.setItem('contribToggleArr', JSON.stringify(togglevalues)); //save the changed values to localStorage.
 }
 
 //Hide or show more content.
@@ -1237,4 +1242,9 @@ function createDefault(){
     contibArr.push(values);
   }
   return contibArr;
+}
+
+//This function prevents the toggle from happening when the links is is clicked.
+function keepContribContentOpen(e){
+  e.stopPropagation();
 }
