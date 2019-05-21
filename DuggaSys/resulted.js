@@ -1126,10 +1126,10 @@ function rowFilter(row) {
 
 	tempSplitSearch.forEach(function (s) {
 		if (s.length > 0)
-			splitSearch.push(s.trim().split(":"));
+			splitSearch.push(s.trim().replace(' ', '').split(":"));
 	})
 
-  console.log("splitsearch: "+splitSearch);
+  console.log("splitsearch: " + splitSearch);
 
   // The else makes sure that you can search on names without a search-category.
 	if (searchterm != "" && splitSearch != searchterm) {
