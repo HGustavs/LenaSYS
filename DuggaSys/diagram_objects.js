@@ -1413,19 +1413,19 @@ function Symbol(kindOfSymbol) {
 
         // Calculating the mid point between start and end
         if (x2 > x1) {
-            middleBreakPointX = x1 + (x2 - x1) / 2;
+            middleBreakPointX = x1 + Math.abs(x2 - x1) / 2;
         } else if (x1 > x2) {
-            middleBreakPointX = x2 + (x1 - x2) / 2;
+            middleBreakPointX = x2 + Math.abs(x1 - x2) / 2;
         } else {
             middleBreakPointX = x1;
         }
 
         if (y2 > y1) { // The code breaks if you don't use Math.abs, can be removed if fixed
-            middleBreakPointY = Math.abs(y1) + Math.abs(y2 - y1) / 2;
+            middleBreakPointY = y1 + Math.abs(y2 - y1) / 2;
         } else if (y1 > y2) {
-            middleBreakPointY = Math.abs(y2) + Math.abs(y1 - y2) / 2;
+            middleBreakPointY = y2 + Math.abs(y1 - y2) / 2;
         } else {
-            middleBreakPointY = Math.abs(y1);
+            middleBreakPointY = y1;
         }
 
         // Start line
