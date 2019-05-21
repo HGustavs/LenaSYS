@@ -114,17 +114,14 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option">Save</span>
-                                <i id="hotkey-save" class="hotKeys">Shift + S</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option">Load</span>
-                                <i id="hotkey-load" class="hotKeys">Shift + O</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="openImportDialog();">Import</span>
-                                <i id="hotkey-import" class="hotKeys">Shift + I</i>
                             </div>
                             <div class="drop-down-item export-drop-down-head">
                                 <span class="drop-down-option" id="exportid">Export...</span>
@@ -163,11 +160,9 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
-                                <i id="hotkey-global" class="hotKeys">Shift + G</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
-                                <i id="hotkey-appearance" class="hotKeys">Shift + H</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
@@ -192,18 +187,16 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='addGroupToSelected(event)'>Add group to selected</span>
-                                <i id="hotkey-addGroup" class="hotKeys">Alt + 1</i>
+                                <span class="drop-down-option" onclick='addGroupToSelected(event)'>Group objects</span>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Remove group from selected</span>
-                                <i id="hotkey-removeGroup" class="hotKeys">Alt + 2</i>
+                                <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Ungroup objects</span>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
-                                <i id="hotkey-resetView" class="hotKeys">Shift + 0</i>
+                                <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
                         </div>
                     </div>

@@ -1493,24 +1493,14 @@ input {
   top: 100px;
 }
 
-#hotkey-undo, #hotkey-save, #hotkey-Distribute-Horizontal {
+#hotkey-undo, #hotkey-Distribute-Horizontal {
   right: 5px;
   top: 10px;
 }
 
-#hotkey-redo, #hotkey-load, #hotkey-Distribute-Vertical {
+#hotkey-redo, #hotkey-Distribute-Vertical {
   right: 5px;
   top: 43px;
-}
-
-#hotkey-global {
-  right: 4px;
-  top: 86px;
-}
-
-#hotkey-appearance {
-  right: 5px;
-  top: 119px;
 }
 
 #hotkey-lock {
@@ -1546,11 +1536,6 @@ input {
 #hotkey-Holes-Right {
   right: 39px;
   top: 264px;
-}
-
-#hotkey-import {
-  right: 7px;
-  top: 86px;
 }
 
 #hotkey-clear, #hotkey-front {
@@ -1611,16 +1596,6 @@ input {
 #hotkey-delete {
   right: 6px;
   top: 272px;
-}
-
-#hotkey-addGroup {
-  right: 6px;
-  top: 317px;
-}
-
-#hotkey-removeGroup {
-  right: 6px;
-  top: 352px;
 }
 
 /* --------------================################================-------------- *
