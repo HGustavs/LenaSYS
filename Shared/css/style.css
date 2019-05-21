@@ -1472,56 +1472,98 @@ input {
   cursor: default !important;
 }
 
+.hotKeys {
+  position: absolute;
+  font-size: 9px;
+  color: #3d3d3d;
+  opacity: 0.5;
+}
+
 #hotkey-space {
-  position: absolute  !important;
-  font-size: 11px !important;
-  color: #3d3d3d  !important;
   right: 6px;
   top: 10px;
 }
 
 #hotkey-ctrl {
-  position: absolute  !important;
-  font-size: 11px  !important;
-  color: #3d3d3d !important;
   right: 6px;
   top: 55px;
 }
 #hotkey-shift {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+  right: 6px;
   top: 100px;
 }
 
-#hotkey-undo, #hotkey-redo, #hotkey-clear, #hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
-}
-
-.drop-down-item #hotkey-undo {
-  right: 6px ;
+#hotkey-undo, #hotkey-save, #hotkey-Distribute-Horizontal {
+  right: 5px;
   top: 10px;
 }
 
-.drop-down-item #hotkey-redo {
-  right: 6px ;
+#hotkey-redo, #hotkey-load, #hotkey-Distribute-Vertical {
+  right: 5px;
+  top: 43px;
+}
+
+#hotkey-global {
+  right: 4px;
+  top: 86px;
+}
+
+#hotkey-appearance {
+  right: 5px;
+  top: 119px;
+}
+
+#hotkey-lock {
+  right: 6px;
+  top: 241px;
+}
+
+#hotkey-resetView {
+  right: 6px;
+  top: 317px;
+}
+
+#hotkey-displayTools {
+  right: 36px;
   top: 45px;
 }
 
+#hotkey-displayA4 {
+  right: 39px;
+  top: 164px;
+}
+
+#hotkey-A4-Orientation {
+  right: 39px;
+  top: 200px;
+}
+
+#hotkey-Toggle-Holes {
+  right: 39px;
+  top: 232px;
+}
+
+#hotkey-Holes-Right {
+  right: 39px;
+  top: 264px;
+}
+
+#hotkey-import {
+  right: 7px;
+  top: 86px;
+}
+
 #hotkey-clear, #hotkey-front {
-  right: 6px ;
+  right: 5px ;
   top: 165px;
 }
 
 #hotkey-back {
-  right: 6px ;
+  right: 5px ;
   top: 195px;
 }
 
-#hotkey-developerMode{
+#hotkey-developerMode, #hotkey-Snap-Grid{
     right: 35px;
     top: 10px;
 }
@@ -1536,10 +1578,37 @@ input {
   top: 120px;
 }
 
+#hotkey-Align-Top {
+  right: 5px;
+  top: 55px;
+}
+
+#hotkey-Align-Right {
+  right: 5px;
+  top: 87px;
+}
+
+#hotkey-Align-Bottom {
+  right: 5px;
+  top: 120px;
+}
+
+#hotkey-Align-Left {
+  right: 5px;
+  top: 151px;
+}
+
+#hotkey-Align-Horizontal {
+  right: 5px;
+  top: 195px;
+}
+
+#hotkey-Align-Vertical {
+  right: 5px;
+  top: 228px;
+}
+
 .drop-down-item #hotkey-delete {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
   right: 6px;
   top: 272px;
 }
