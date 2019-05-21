@@ -1771,8 +1771,8 @@ input.hide-moments-button {
 .fileUploadInfo:after {
   content: "";
   display: block;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid white;
@@ -2456,6 +2456,7 @@ span.arrow {
 
 .resultTableCell{
 		margin:2px;
+    height: 90%;
 }
 
 .resultTableText {
@@ -2826,6 +2827,7 @@ span.arrow {
   width: 24px;
   height: 24px;
   float: right;
+  cursor: pointer;
   /*margin-right:8px;*/
 }
 
@@ -2986,10 +2988,10 @@ span.arrow {
   font-size: 12px;
   display: none;
   position: absolute;
-  top: 35px;
   background: var(--color-background);
-
   box-shadow: 2px 2px 8px #888;
+  margin-top: 10px;
+  
 }
 
 .dugga-result-div {
@@ -5322,6 +5324,7 @@ textarea#filecont{
   font-size: 14px;
   transition: 0.1s background-color;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .resultedbuttons:hover{

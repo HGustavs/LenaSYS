@@ -95,10 +95,8 @@ function process() {
 
 		// Loop through all teacher names and store the appropriate name in a variable
 		for (j = 0; j < teacher.length; j++) {
-			var tuid = teacher[j].tuid;
-			if (uid == tuid) {
-				var setTeacher = teacher[j].teacher;
-			}
+			// var tuid = teacher[j].tuid;
+			var setTeacher = teacher[j].id;
 		}
 		if (setTeacher !== null) {
 			// Place spaces in the string when a lowercase is followed by a uppercase
@@ -117,7 +115,7 @@ function process() {
 		}
 		var student = new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname ,class: entries[i].class, access: entries[i].access, setTeacher, username: entries[i].username, ssn: entries[i].ssn });
+		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + entries[i].examiner + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname ,class: entries[i].class, access: entries[i].access, examiner: entries[i].examiner, username: entries[i].username, ssn: entries[i].ssn });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
 			if (momtmp[j].kind == 4) {
@@ -259,12 +257,12 @@ function toggleFilter(filter) {
 }
 
 function hoverc() {
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'block');
+	$('#dropdowns').css({display:'none'});
+	$('#dropdownc').css({display: 'block'});
 }
 
 function leavec() {
-	$('#dropdownc').css('display', 'none');
+	$('#dropdownc').css({display: 'none'});
 }
 
 function checkMomentParts(pos, id) {
@@ -275,8 +273,8 @@ function checkMomentParts(pos, id) {
 }
 
 function hovers() {
-	$('#dropdownc').css('display', 'none');
-	$('#dropdowns').css('display', 'block');
+	$('#dropdownc').css({display:'none'});
+	$('#dropdowns').css({display: 'block'});
 }
 
 function leaves() {
@@ -338,13 +336,13 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	var currentTimeGetTime = currentTime.getTime();
 	if(document.getElementById('newFeedback') == null){
 		feedbackText = "";
-	} else {		
+	} else {
 		feedbackText = document.getElementById('newFeedback').value;
 	}
 
 	if ($(e.target).hasClass("Uc")) {
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
-		
+
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("Gc")) {
@@ -610,6 +608,15 @@ function returnedResults(data) {
 				ladmoments += "<option value='" + dugga.entryname + "'>" + dugga.entryname + "</option>";
 			}
 		}
+		var teacherList;
+		teacherList += "<option value='none'>none</option>";
+		for(var i = 0; i < teacher.length; i++){
+			if(!teacherList.includes(teacher[i].id)){
+				teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+			}
+		}
+		var uniqueTeacherList = [...new Set(teacherList)]
+		document.getElementById("teacherDropdown").innerHTML = teacherList;
 		document.getElementById("ladselect").innerHTML = ladmoments;
 		document.getElementById("laddate").valueAsDate = new Date();
 
@@ -776,15 +783,15 @@ function renderCell(col, celldata, cellid) {
 			str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 			str += "</div>";
-			return str;	
+			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div style='padding:10px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "dugga-pending";
-			} 
+			}
 			str += "'>";
-			// Creation of grading buttons		
+			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
@@ -823,10 +830,10 @@ function renderCell(col, celldata, cellid) {
 				}
 				str += "</div>";
 			}
-			return str;	
-		} 
-	}	
-	
+			return str;
+		}
+	}
+
 	else if(filterList["passedDeadline"]){
 				// First column (Fname/Lname/SSN)
 			if (col == "FnameLname") {
@@ -1006,6 +1013,7 @@ function smartSearch(splitSearch, row) {
 	for (var i = 0; i < splitSearch.length; i++) {
 		var index = i;
 		columnToSearch = splitSearch[i][1];
+    columnToSearch = columnToSearch.replace(' ', '');
 
 		for (var i = 0; i < moments.length; i++) {
 			lid = "lid:" + moments[i]["lid"];
@@ -1040,6 +1048,7 @@ function smartSearch(splitSearch, row) {
 				var txt = document.createElement("textarea");
 				txt.innerHTML = row[lid].entryname;
 				var columnToFind = txt.value;
+        columnToFind = columnToFind.replace(' ', '');
 				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
 					if (sortingType === sortingValue) {
 						for (colname in row) {
@@ -1052,6 +1061,7 @@ function smartSearch(splitSearch, row) {
 								var txt = document.createElement("textarea");
 								txt.innerHTML = name;
 								var newName2 = txt.value;
+                newName2 = newName2.replace(' ', '');
 								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
 									return true;
 								}
@@ -1081,6 +1091,13 @@ function smartSearch(splitSearch, row) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
+	var teacherDropdown = document.getElementById("teacherDropdown").value;
+	if (teacherDropdown === "none"){
+		return true;
+	}
+	else if(row.FnameLname.examiner != teacherDropdown){
+		return false;
+	}
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
@@ -1097,9 +1114,12 @@ function rowFilter(row) {
 		}
 	}
 
-	// divides the search on &&
+  // Removes spaces so that it can tolerate "wrong" inputs when searching
+  searchterm = searchterm.replace(' ', '');
+  // divides the search on &&
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
+
 	tempSplitSearch.forEach(function (s) {
 		if (s.length > 0)
 			splitSearch.push(s.trim().split(":"));
@@ -1118,6 +1138,7 @@ function rowFilter(row) {
 				if (row[colname]["lastname"] != null) {
 					name += row[colname]["lastname"];
 				}
+        name = name.replace(' ', '');
 				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
 					return true;
 				}
