@@ -1569,11 +1569,11 @@ function Symbol(kindOfSymbol) {
             if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
                 if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
                 else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
-                middleBreakPointX += this.recursiveLineExtent;
+                middleBreakPointX += this.recursiveLineExtent * zoomValue;
             }else if (y1 == y2) {
                 if (startLineDirection === "down") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
                 else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
-                middleBreakPointY += this.recursiveLineExtent;
+                middleBreakPointY += this.recursiveLineExtent * zoomValue;
             }
         }
 
