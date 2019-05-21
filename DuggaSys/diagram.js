@@ -152,6 +152,7 @@ var toolbarState = 1;                   // Set default toolbar state to ER.
 const backspaceKey = 8;
 const shiftKey = 16;
 const ctrlKey = 17;
+const altKey = 18;
 const escapeKey = 27;
 const spacebarKey = 32;
 const leftArrow = 37;
@@ -276,6 +277,7 @@ window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
+var altIsClicked = false;
 
 // This event checks if the user leaves the diagram.php
 window.addEventListener('blur', resetButtonsPressed);
@@ -432,6 +434,8 @@ function keyDownHandler(e) {
         ctrlIsClicked = true;
     } else if(key == shiftKey) {
         shiftIsClicked = true;
+    } else if(key == altKey) {
+        altIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
@@ -526,6 +530,10 @@ function keyDownHandler(e) {
           distribute(event, 'horizontally');
     } else if(shiftIsClicked && key == lessThanKey) {
           distribute(event, 'vertically');
+    } else if(altIsClicked && key == key1) {
+          addGroupToSelected(event);
+    } else if(altIsClicked && key == key2) {
+          removeGroupFromSelected(event);
     }
 
     /* Add this when we add function to load and save options in the menu.
