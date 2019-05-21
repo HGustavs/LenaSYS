@@ -255,12 +255,12 @@ function toggleFilter(filter) {
 }
 
 function hoverc() {
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'block');
+	$('#dropdowns').css({display:'none'});
+	$('#dropdownc').css({display: 'block'});
 }
 
 function leavec() {
-	$('#dropdownc').css('display', 'none');
+	$('#dropdownc').css({display: 'none'});
 }
 
 function checkMomentParts(pos, id) {
@@ -271,12 +271,12 @@ function checkMomentParts(pos, id) {
 }
 
 function hovers() {
-	$('#dropdownc').css('display', 'none');
-	$('#dropdowns').css('display', 'block');
+	$('#dropdownc').css({display:'none'});
+	$('#dropdowns').css({display: 'block'});
 }
 
 function leaves() {
-	$('#dropdowns').css('display', 'none');
+	$('#dropdowns').css({display: 'none'});
 	var col = 0;
 	var dir = 1;
   var allColumnIds = myTable.getColumnOrder();
@@ -326,6 +326,11 @@ function sorttype(t) {
 		}
 	}
 	typechanged = true;
+	magicHeading();
+}
+
+function magicHeading() {
+
 }
 
 $(function () {

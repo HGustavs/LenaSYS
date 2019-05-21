@@ -2987,10 +2987,10 @@ span.arrow {
   font-size: 12px;
   display: none;
   position: absolute;
-  top: 35px;
   background: var(--color-background);
-
   box-shadow: 2px 2px 8px #888;
+  margin-top: 10px;
+  
 }
 
 .dugga-result-div {
