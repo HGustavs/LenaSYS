@@ -154,9 +154,9 @@
         echo "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
         echo "<img src='../Shared/icons/duggaLock.svg'>";
         if ($userid!="UNK") {
-          echo "<p>Not registered to the course!<br>You can view the assignment but you need to be registered to the course to save your dugga result.</p>";
+          echo "<p>Not registered to the course! You can view the assignment but you need to be registered to the course to save your dugga result.</p>";
         } else {
-  				echo "<p>Not logged in!<br>You can view the assignment but you need to be logged in and registered to the course to save your dugga result.</p>";
+  				echo "<p>Not logged in! You can view the assignment but you need to be logged in and registered to the course to save your dugga result.</p>";
         }
         echo "</div>";
 
