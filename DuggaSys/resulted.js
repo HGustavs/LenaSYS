@@ -1064,6 +1064,7 @@ function smartSearch(splitSearch, row) {
 				txt.innerHTML = row[lid].entryname;
 				var columnToFind = txt.value;
         columnToFind = columnToFind.replace(' ', '');
+        console.log(columnToFind);
 				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
 					if (sortingType === sortingValue) {
 						for (colname in row) {
@@ -1130,6 +1131,8 @@ function rowFilter(row) {
 		if (s.length > 0)
 			splitSearch.push(s.trim().split(":"));
 	})
+
+  console.log("splitsearch: "+splitSearch);
 
   // The else makes sure that you can search on names without a search-category.
 	if (searchterm != "" && splitSearch != searchterm) {
