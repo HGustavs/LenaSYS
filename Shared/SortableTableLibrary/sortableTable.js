@@ -806,11 +806,11 @@ function newCompare(firstCell, secoundCell) {
 			if (firstCell === null || secoundCell === null) {
 				firstCellTemp = firstCell;
 				secoundCellTemp = secoundCell;
-			} else if(typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp))){
-				tempTemp1 = firstCell.replace(/\D/g,'');
-				tempTemp2 = secoundCell.replace(/\D/g,'');
-				firstCellTemp = parseInt(tempTemp1, 10);
-				secoundCellTemp = parseInt(tempTemp2, 10);
+			// } else if(typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp))){
+			// 	tempTemp1 = firstCell.replace(/\D/g,'');
+			// 	tempTemp2 = secoundCell.replace(/\D/g,'');
+			// 	firstCellTemp = parseInt(tempTemp1, 10);
+			// 	secoundCellTemp = parseInt(tempTemp2, 10);
 			} else {
 				//Convert to json object
 				if (JSON.stringify(firstCell) || JSON.stringify(secoundCell)) {
@@ -838,8 +838,7 @@ function newCompare(firstCell, secoundCell) {
 			}
 			return val;
 		}
-		firstCellTemp = $('<div/>').html(firstCellTemp).text();
-		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+
 		if(!isNaN(firstCellTemp) && !isNaN(secoundCellTemp)) {
 			if ((status % 2) == 0) {
 				val = firstCellTemp < secoundCellTemp;
@@ -857,9 +856,12 @@ function newCompare(firstCell, secoundCell) {
 				}
 			}
 		} else if (status == 0) {
-			
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
 	} else {
