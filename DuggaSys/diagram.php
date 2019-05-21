@@ -236,19 +236,19 @@
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-orientation-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                                    <span class="drop-down-option" onclick='toggleA4Orientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
                                     <i id="hotkey-A4-Orientation" class="hotKeys">Shift + 5</i>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-holes-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
+                                    <span class="drop-down-option" onclick='toggleVirtualA4Holes(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                                     <i id="hotkey-Toggle-Holes" class="hotKeys">Shift + 6</i>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-holes-item-right" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleVirtualA4HolesRight();'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                                    <span class="drop-down-option" onclick='toggleVirtualA4HolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
                                     <i id="hotkey-Holes-Right" class="hotKeys">Shift + 7</i>
                                 </div>
                             </div>

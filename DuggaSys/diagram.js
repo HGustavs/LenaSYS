@@ -494,11 +494,11 @@ function keyDownHandler(e) {
     } else if(shiftIsClicked && key == key4) {
           toggleVirtualA4(event);
     } else if(shiftIsClicked && key == key5) {
-          toggleA4Orientation();
+          toggleA4Orientation(event);
     } else if(shiftIsClicked && key == key6) {
-          toggleVirtualA4Holes();
+          toggleVirtualA4Holes(event);
     } else if(shiftIsClicked && key == key7) {
-          toggleVirtualA4HolesRight();
+          toggleVirtualA4HolesRight(event);
     } else if(shiftIsClicked && key == kKey) {
           toggleGrid(event);
     } else if(shiftIsClicked && key == lessThanKey) {
@@ -1444,6 +1444,7 @@ function hideA4State() {
 }
 
 function toggleVirtualA4Holes(event) {
+    event.stopPropagation();
     // Toggle a4 holes to the A4-paper.
     if (toggleA4 && toggleA4Holes) {
         toggleA4Holes = false;
@@ -1464,6 +1465,7 @@ function toggleVirtualA4Holes(event) {
 }
 
 function toggleVirtualA4HolesRight(event) {
+    event.stopPropagation();
     // Switch a4 holes from left to right of the A4-paper.
     if (switchSideA4Holes == "right" && toggleA4) {
         switchSideA4Holes = "left";
@@ -1477,6 +1479,7 @@ function toggleVirtualA4HolesRight(event) {
 }
 
 function toggleA4Orientation(event) {
+    event.stopPropagation();
     if (A4Orientation == "portrait" && toggleA4) {
         A4Orientation = "landscape";
         setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
