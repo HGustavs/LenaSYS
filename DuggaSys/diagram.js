@@ -83,8 +83,8 @@ var startMouseCoordinateY = 0;      // Y coordinate for mouse to get diff from c
 var origoOffsetX = 0.0;             // Canvas x topleft offset from origo
 var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
-var canvasLeftClick = 0;            // Canvas left click state
-var canvasRightClick = 0;           // Canvas right click state
+var canvasLeftClick = false;            // Canvas left click state
+var canvasRightClick = false;           // Canvas right click state
 var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
@@ -189,76 +189,16 @@ const num2 = 98;
 const lessThanKey = 226;
 
 // Mouse clicks
+const leftMouseClick = 0;
+const scrollClick = 1;
 const rightMouseClick = 2;
 
 // This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
-var rightClick = false;
-
-// Used to set the coordinates where a right click was made.
-document.addEventListener("mousedown", function(e)
-    {
-        if (e.button == rightMouseClick) {
-            canvasRightClick = 1;
-            if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
-                InitPageX = e.pageX;
-                InitPageY = e.pageY;
-                rightClick = true;
-            }
-        }
-    },
-    false
-);
-
-// Makes sure that we don't enter MoveAround by simply pressing the right mouse button. Need to click and drag to enter MoveAround
-window.addEventListener("mousemove", function(e) {
-        // deltas are used to determine the range of which the mouse is allowed to move when pressed.
-        deltaX = 2;
-        deltaY = 2;
-        if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
-            // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
-            diffX = e.pageX - InitPageX;
-            diffY = e.pageY - InitPageY;
-            if (
-                (diffX > deltaX) || (diffX < -deltaX)
-                ||
-                (diffY > deltaY) || (diffY < -deltaY)
-            ) {
-                rightClick = false;
-                // Entering MoveAround mode
-                if (uimode != "MoveAround") {
-                    activateMovearound();
-                }
-                updateGraphics();
-            }
-            else {
-                // If click event is needed, it goes in here.
-                rightClick = true;
-            }
-        }
-    },
-    false
-);
-
-// Deactivate MoveAround by releasing the mouse
-window.addEventListener("mouseup", function(e) {
-        if (e.button == rightMouseClick) {
-            canvasRightClick = 0;
-        }
-
-        delete InitPageX;
-        delete InitPageY;
-        // Making sure the MoveAround was not initialized by the spacebar.
-        if (uimode == "MoveAround" && !spacebarKeyPressed) {
-            deactivateMovearound();
-            updateGraphics();
-        }
-    },
-    false
-);
+var dragDistanceReached = false;
 
 // Hides the context menu. Needed in order to be able to right click and drag to move the camera.
 window.addEventListener('contextmenu', function (e) {
-        if (rightClick != true) {
+        if (dragDistanceReached) {
             e.preventDefault();
         }
     },
@@ -2871,7 +2811,32 @@ function mousemoveevt(ev, t) {
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
-    if(canvasLeftClick == 1 && uimode == "MoveAround") {
+    // deltas are used to determine the range of which the mouse is allowed to move when pressed.
+    deltaX = 2;
+    deltaY = 2;
+    if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
+        // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
+        diffX = ev.pageX - InitPageX;
+        diffY = ev.pageY - InitPageY;
+        if (
+            (diffX > deltaX) || (diffX < -deltaX)
+            ||
+            (diffY > deltaY) || (diffY < -deltaY)
+        ) {
+            dragDistanceReached = true;
+            // Entering MoveAround mode
+            if (uimode != "MoveAround") {
+                activateMovearound();
+            }
+            updateGraphics();
+        }
+        else {
+            // If click event is needed, it goes in here.
+            dragDistanceReached = false;
+        }
+    }
+
+    if((canvasLeftClick || canvasRightClick) && uimode == "MoveAround") {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
@@ -2881,7 +2846,7 @@ function mousemoveevt(ev, t) {
     reWrite();
     updateGraphics();
 
-    if(canvasRightClick == 0) {
+    if(canvasRightClick == false) {
         if (md == mouseState.empty) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -3145,7 +3110,18 @@ function mousemoveevt(ev, t) {
 
 function mousedownevt(ev) {
     mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
-    canvasLeftClick = 1;
+    
+    if(ev.button == leftMouseClick){
+        canvasLeftClick = true;
+    } else if(ev.button == rightMouseClick){
+        canvasRightClick = true;
+        if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+            InitPageX = ev.pageX;
+            InitPageY = ev.pageY;
+            dragDistanceReached = false;
+        }
+    }
+
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
     startMouseCoordinateX = currentMouseCoordinateX;
@@ -3237,8 +3213,21 @@ function handleSelect() {
 }
 
 function mouseupevt(ev) {
-    canvasLeftClick = 0;
+    if(ev.button == leftMouseClick){
+        canvasLeftClick = false;
+    } else if(ev.button == rightMouseClick){
+        canvasRightClick = false;
+    }
+
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+
+    delete InitPageX;
+    delete InitPageY;
+    // Making sure the MoveAround was not initialized by the spacebar.
+    if (uimode == "MoveAround" && !spacebarKeyPressed) {
+        deactivateMovearound();
+        updateGraphics();
+    }
 
     //for checking the position of errelation before resize() overwrites values
     var p1BeforeResize;
