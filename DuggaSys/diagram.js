@@ -3533,6 +3533,8 @@ function mouseupevt(ev) {
     // set the linewidth for the created object
     if (lastSelectedObject >= 0) {
         diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
+        diagram[lastSelectedObject].properties['symbolColor'] = getFillColor();
+        diagram[lastSelectedObject].properties['sizeOftext'] = getTextSize();
     }
 
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
@@ -3768,6 +3770,8 @@ function loadFormIntoElement(element, dir) {
             } else {
                 // should only occur when changing global apperance
                 document.getElementById('line-thickness').value = getLineThickness();
+                document.getElementById('symbolColor').value = getFillColor();
+                document.getElementById('sizeOftext').value = getTextSize();
             }
         }
     }
@@ -3783,6 +3787,21 @@ function getLineThickness() {
     }
 }
 
+function getFillColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['symbolColor'];
+    } else {
+        return '#ffffff';
+    }
+}
+
+function getTextSize() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['sizeOftext'];
+    } else {
+        return 'Tiny';
+    }
+}
 //----------------------------------------------------------------------
 // loadLineForm: Loads the menu to change cardinality
 //----------------------------------------------------------------------

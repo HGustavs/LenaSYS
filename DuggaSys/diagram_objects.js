@@ -2732,6 +2732,8 @@ function figureFreeDraw() {
             selected_objects.push(figurePath);
             lastSelectedObject = diagram.length - 1;
             figurePath.properties['lineWidth'] = getLineThickness();
+            properties['symbolColor'] = getFillColor();
+            properties['sizeOftext'] = getTextSize();
             cleanUp();
             SaveState();
         } else {
