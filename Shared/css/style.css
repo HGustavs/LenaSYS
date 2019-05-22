@@ -2676,7 +2676,7 @@ span.arrow {
   display: none;
 }
 
-#ladexportContainer div {
+.ladDiv {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

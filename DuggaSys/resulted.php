@@ -51,11 +51,11 @@ pdoConnect();
 			<h1>Result</h1>
     </div>
     <div id="ladexportContainer">
-      <div>
+      <div class="ladDiv">
         <label>Delkurs</label>
         <select id="ladselect"></select>
       </div>
-      <div>
+      <div class="ladDiv">
         <label>Betygsskala</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
@@ -64,7 +64,7 @@ pdoConnect();
        	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
         </select>
       </div>
-      <div>
+      <div class="ladDiv">
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
       </div>
@@ -75,7 +75,7 @@ pdoConnect();
 			<?php }else{ ?>
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
-        <div>
+        <div class="ladDiv">
 					<label>Filtrera efter</label>
 					<select id="gradeFilterScale" onchange="updateTable();">
 						<option value="Filter-none" selected>inget</option>
@@ -84,7 +84,7 @@ pdoConnect();
 						<option value="Filter-U">U</option>
 					</select>
 				</div>
-				<div>
+				<div class="ladDiv">
 					<label>Examinator:</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
