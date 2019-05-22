@@ -222,7 +222,7 @@ function renderCell(col,celldata,cellid) {
 
 	if (col == "trashcan") {
 	    str = "<span class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		  str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
+		  str += " "/*"onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");'*/ + "></span>";
 	} else if (col == "filename") {
       if (obj.kind == "Link") {
         str+="<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
@@ -406,13 +406,15 @@ function convertFileKind(kind){
 	return retString;
 }
 
-function deleteFile(fileid,filename) {
-	if (confirm("Do you really want to delete the file/link: " + filename)) {
+//Commented code because the necessary functionality to delete files is not there yet
+//function deleteFile(fileid,filename) {
+	/*if (confirm("Do you really want to delete the file/link: " + filename)) {
 		AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
-	}
+	}*/
 	/*Reloads window when deleteFile has been called*/
-	window.location.reload(true);
-}
+	//window.location.reload(true);
+//}
+
 
 function createQuickItem()
 {
