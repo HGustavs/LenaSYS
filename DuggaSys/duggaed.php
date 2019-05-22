@@ -42,7 +42,7 @@ pdoConnect();
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
 								<b>Keywords:</b> template name, name, date <br>
-								<b>Ex:</b> template name:color-dugga
+								<b>Ex:</b> color-dugga
 					</div>
 					<span>?</span>
 				</div>

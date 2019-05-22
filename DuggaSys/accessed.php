@@ -38,7 +38,7 @@
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
 								<b>Keywords:</b> username, date <br>
-								<b>Ex:</b> date: 2019-05-21
+								<b>Ex:</b> 2019-05-21
 					</div>
 					<span>?</span>
 				</div>
