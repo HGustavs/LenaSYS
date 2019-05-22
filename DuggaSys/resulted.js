@@ -1384,6 +1384,36 @@ function ladexport() {
 	document.getElementById("resultlistpopover").style.display = "flex";
 
 }
+//----------------------------------------
+// LadExport
+//----------------------------------------
+function copyLadexport() {
+	var copyIcon = document.getElementById("copyClipboard");
+	copyIcon.style.backgroundColor = '#629c62';
+		setInterval(function(){ 
+			copyIcon.style.backgroundColor = '#afaeae';
+		 }, 5000);
+
+	var copieText = document.getElementById('resultlistarea');
+	copieText.select();
+	document.execCommand("copy");
+
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth() + 1; //January is 0!
+
+	var yyyy = today.getFullYear();
+	if (dd < 10) {
+		dd = '0' + dd; // Adds a 0 to days below 10
+	} 
+	if (mm < 10) {
+		mm = '0' + mm; // Adds a 0 to days below 10
+	} 
+ today = dd + '-' + mm + '-' + yyyy;
+
+	document.getElementById('lastExpDate').innerHTML = "Last exported: " + today ;
+
+}
 
 function closeLadexport() {
 	document.getElementById("resultlistarea").value = "";
