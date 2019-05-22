@@ -3531,7 +3531,7 @@ function mouseupevt(ev) {
         }
     }
 
-    // Sets the Global Apperance settings for each object
+    // Sets the Global Appearance settings for each object
     if (lastSelectedObject >= 0) {
         diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
         diagram[lastSelectedObject].properties['fontColor'] = getFontColor();
@@ -3750,7 +3750,7 @@ function dimDialogMenu(dim) {
 }
 
 //----------------------------------------------------------------------
-// loadFormIntoElement: Loads the menu which is used to change apperance of ER and free draw objects.
+// loadFormIntoElement: Loads the menu which is used to change appearance of ER and free draw objects.
 //----------------------------------------------------------------------
 
 function loadFormIntoElement(element, dir) {
@@ -3773,7 +3773,7 @@ function loadFormIntoElement(element, dir) {
                 document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
                 setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
             } else {
-                // should only occur when changing global apperance
+                // should only occur when changing global appearance
                 document.getElementById('line-thickness').value = getLineThickness();
             }
         }
@@ -3782,7 +3782,7 @@ function loadFormIntoElement(element, dir) {
 }
 
 //----------------------------------------------------------------------
-// The following functions are used to get Global Apperance changes
+// The following functions are used to get Global Appearance changes
 //----------------------------------------------------------------------
 
 // Return the line thickness of one of the current objects in the diagram
@@ -3932,7 +3932,7 @@ function loadTextForm(element, dir) {
 }
 
 //----------------------------------------------------------------------
-// setSelectedOption: used to implement the changes to apperances that has been made
+// setSelectedOption: used to implement the changes to appearances that has been made
 //----------------------------------------------------------------------
 
 function setSelectedOption(type, value) {
