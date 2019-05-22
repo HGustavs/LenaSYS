@@ -2680,6 +2680,7 @@ function figureFreeDraw() {
             figurePath.figureType = "Free";
             selected_objects.push(figurePath);
             lastSelectedObject = diagram.length - 1;
+            figurePath.properties['lineWidth'] = getLineThickness();
             cleanUp();
             SaveState();
         } else {
