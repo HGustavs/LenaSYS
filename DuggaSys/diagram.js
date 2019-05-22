@@ -3533,7 +3533,11 @@ function mouseupevt(ev) {
     // set the linewidth for the created object
     if (lastSelectedObject >= 0) {
         diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
+        diagram[lastSelectedObject].properties['fontColor'] = getFontColor();
+        diagram[lastSelectedObject].properties['font'] = getFont();
+        diagram[lastSelectedObject].properties['strokeColor'] = getStrokeColor();
     }
+
 
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
     if (diagramObject && diagramObject.symbolkind != symbolKind.erRelation) {
@@ -3768,6 +3772,9 @@ function loadFormIntoElement(element, dir) {
             } else {
                 // should only occur when changing global apperance
                 document.getElementById('line-thickness').value = getLineThickness();
+                document.getElementById('fontColor').value = getFontColor();
+                document.getElementById('font').value = getFont();
+                document.getElementById('strokeColor').value = getStrokeColor();
             }
         }
     }
@@ -3780,6 +3787,30 @@ function getLineThickness() {
         return value = diagram[0].properties['lineWidth'];
     } else {
         return 2;
+    }
+}
+
+function getFontColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['fontColor'];
+    } else {
+        return '#000000';
+    }
+}
+
+function getFont() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['font'];
+    } else {
+        return 'Arial';
+    }
+}
+
+function getStrokeColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['strokeColor'];
+    } else {
+        return '#000000';
     }
 }
 

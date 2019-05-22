@@ -819,7 +819,7 @@ function Symbol(kindOfSymbol) {
         privatePoints.push(this.centerPoint);
         return privatePoints;
     }
-    
+
     //-----------------------------------------------------------------------
     // isLineType: Checks if this is a line (ER or UML)
     //-----------------------------------------------------------------------
@@ -827,7 +827,7 @@ function Symbol(kindOfSymbol) {
         return this.symbolkind === symbolKind.line ||
                 this.symbolkind === symbolKind.umlLine;
     }
-    
+
     //----------------------------------------------------------------
     // getConnectedObjects: returns an array with the objects that a specific line is connected to,
     //                      function is used on line objects
@@ -1320,7 +1320,7 @@ function Symbol(kindOfSymbol) {
 
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
-        
+
         if (this.properties['key_type'] == "Weak") {
             this.drawWeakEntity(x1, y1, x2, y2);
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
@@ -2109,7 +2109,7 @@ function drawLockedTooltip(symbol) {
     var yOffset = 13;
     // Different size when hovering the lock itself and the entity, for displaying different amount of text
     var ySize = symbol.isLockHovered ? 34 : 16;
-    var xSize = 85; 
+    var xSize = 85;
     // Draw tooltip background
     ctx.fillStyle = "#f5f5f5";
     ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
@@ -2368,7 +2368,7 @@ function Path() {
             if (this.group != 0){
                 drawGroup(this);
             }
-    
+
             // Assign stroke style, color, transparency etc
             var shouldFill = true;
 
