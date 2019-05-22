@@ -2695,6 +2695,10 @@ function figureFreeDraw() {
 }
 
 function endFreeDraw(){
+    if(numberOfPointsInFigure < 2){
+        // Perhaps make a flash function to flash messaged to the view, for better error handling
+        return console.log('Draw more lines');
+    }
     // Read and set the values for p1 and p2
     p1 = p2;
     if (activePoint != null) {
