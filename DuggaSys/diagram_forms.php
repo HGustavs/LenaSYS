@@ -48,7 +48,6 @@
       "<option value=\'Partial key\'>Partial key</option>
       "<option value=\'normal\' selected="true">Normal</option>
       "<option value=\'Multivalue\'>Multivalue</option>
-      "<option value=\'Composite\'>Composite</option>
       "<option value=\'Drive\'>Derive</option>
       </select></br>
       '.$backgroundColor.$fontFamily.$fontColor.$textSize.$lineColors.$okButton;
@@ -129,7 +128,16 @@
   //form for lines
   else if($form == 'lineType') {
       $cardinality = $_GET['cardinality'];
-      if($cardinality != 1) {
+      if($cardinality == -1) {
+        echo"
+        Line type: </br>
+        <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
+            <option value='normal'>Normal</option>
+            <option value='Forced'>Forced</option>
+            <option value='Derived'>Derived</option>
+        </select></br>
+        ";
+      }else if($cardinality != 1) {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
