@@ -2676,6 +2676,13 @@ span.arrow {
   display: none;
 }
 
+#ladexportContainer div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5px;
+}
+
 
 /* End DuggaSys resulted*/
 

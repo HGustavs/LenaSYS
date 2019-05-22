@@ -51,11 +51,11 @@ pdoConnect();
 			<h1>Result</h1>
     </div>
     <div id="ladexportContainer">
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+      <div>
         <label>Delkurs</label>
         <select id="ladselect"></select>
       </div>
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+      <div>
         <label>Betygsskala</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
@@ -64,10 +64,10 @@ pdoConnect();
        	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
         </select>
       </div>
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+      <div>
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
-        </div>
+      </div>
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
 			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
@@ -75,16 +75,16 @@ pdoConnect();
 			<?php }else{ ?>
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
-        <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
-				<label>Filtrera efter</label>
-				<select id="gradeFilterScale" onchange="updateTable();">
-					<option value="Filter-none" selected>inget</option>
-					<option value="Filter-G">G</option>
-					<option value="Filter-VG">VG</option>
-					<option value="Filter-U">U</option>
-				</select>
+        <div>
+					<label>Filtrera efter</label>
+					<select id="gradeFilterScale" onchange="updateTable();">
+						<option value="Filter-none" selected>inget</option>
+						<option value="Filter-G">G</option>
+						<option value="Filter-VG">VG</option>
+						<option value="Filter-U">U</option>
+					</select>
 				</div>
-				<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+				<div>
 					<label>Examinator:</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
