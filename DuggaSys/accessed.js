@@ -41,10 +41,8 @@ function setup() {
 	var str = "<div id='sortOptionsContainer'>";
 	str += "<input type='radio' name='sortAscDesc' value='1'><label class='headerlabel'>Sort descending</label>";
 	str += "<input type='radio' name='sortAscDesc' value='0'><label class='headerlabel'>Sort ascending</label>";
-	str += "<fieldset style='margin-top: 10px;'><legend style='color: black; font-size: 16px;'>Columns</legend>";
 	str += "<div id='sortOptions'></div>";
-	str += "</fieldset>";
-	str += "<button onclick='parseSortOptions(this)'>Sort</button>";
+	str += "<button class='dropdown-button' onclick='parseSortOptions(this)'>Sort</button>";
 	document.getElementById("dropdowns").innerHTML = str;
 
 	AJAXService("GET", {
@@ -119,7 +117,9 @@ function importUsers() {
 	newusers = $("#import").val();
 	var myArr = newusers.split("\n");
 	for (var i = 0; i < myArr.length; i++) {
-		newUsersArr.push(myArr[i].replace(/\"/g, '').split(";"));
+		var input = myArr[i].replace(/\"/g, '').split(";");
+		newUsersArr.push(input);
+		if (!verifyUserInputForm(input)) return;
 	}
 	var newUserJSON = JSON.stringify(newUsersArr);
 
@@ -134,12 +134,15 @@ function importUsers() {
 function addSingleUser() {
 	var newUser = new Array();
 	newUser.push($("#addSsn").val());
-	newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
-	newUser.push($("#addCid").val());
-	newUser.push($("#addNy").val());
-	newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
+	newUser.push($("#addFirstname").val());
+	newUser.push($("#addLastname").val());
 	newUser.push($("#addEmail").val());
+	newUser.push($("#addCid").val());
+	newUser.push($("#addTerm").val());
+	newUser.push($("#addPid").val());
+	newUser.push($("#addNy").val());
 
+	if (!verifyUserInputForm(newUser)) return;
 	var outerArr = new Array();
 	outerArr.push(newUser);
 
@@ -150,6 +153,45 @@ function addSingleUser() {
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
 	hideCreateUserPopup();
+}
+
+function verifyUserInputForm(input) {
+	// Verify SSN <= 20 characters
+	if (input[0].length > 20) {
+		alert('Input exceeded max length for SSN (20)');
+		return false;
+	}
+
+	// Verify First/Last name <= 50 characters
+	if (input[1].length > 50 || input[2].length > 50) {
+		alert('Input exceeded max length for first or last name (50)');
+		return false;
+	}
+
+	// Verify PID <= 10 characters
+	if (input[input.length - 2].length > 10) {
+		alert('Input exceeded max length for PID (10)');
+		return false;
+	}
+
+	// Verify Email <= 256 characters, contains '@' and <= 80 characters before '@'
+	if (input[3].length > 256) {
+		alert('Input exceeded max length for Email (256)');
+		return false;
+	}
+	if (input[3] && input[3].indexOf('@') == -1) {
+		alert('Email input must contain "@"');
+		return false;
+	}
+	if (input[3] && input[3].indexOf('@') >= 80) {
+		alert('Email input too large to create a valid username\nMax allowed characters before "@" is 80');
+		return false;
+	}
+	if (input[3] && input[3].indexOf('@') == 0) {
+		alert('Email input must contain at least 1 character before "@" to create a username');
+		return false;
+	}
+	return true;
 }
 
 var inputVerified;
@@ -249,12 +291,13 @@ function renderCell(col, celldata, cellid) {
             }
         };
 	} else if (col == "access") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student"], ["W", "R"]) + "</select>";
+		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
+		
 		if (parseFloat(obj.recent) > 1440) {
-			str = "<input class='submit-button' type='button' value='Reset PW' style=''";
+			str = "<input class='submit-button' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
 		} else {
-			str = "<input class='submit-button' type='button' value='Reset PW' style='background-color: #fecc56; color:#614875'";
+			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
 		}
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 		str += "resetPw(\"" + obj.uid + "\",\"" + obj.username + "\"); return false;'>";
@@ -304,7 +347,7 @@ var sortColumns = [];
 function addToSortDropdown(colname, col) {
 	if (!sortColumns.includes(col)) {
 		var str = "";
-		str += "<div><input name='sort' class='sortRadioBtn' type='radio' value="+col+"><label class='headerlabel'>"+colname+"</label></div>";
+		str += "<div class='checkbox-dugga'><input name='sort' class='sortRadioBtn' type='radio' value="+col+"><label class='headerlabel'>"+colname+"</label></div>";
 		document.getElementById('sortOptions').innerHTML += str;
 		sortColumns.push(col);
 	}
@@ -328,7 +371,7 @@ function parseSortOptions(el) {
 
 	if (status && column) {
 		myTable.toggleSortStatus(column, status);
-	} 
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -420,7 +463,9 @@ function rowFilter(row) {
 //----------------------------------------------------------------------------
 
 function returnedAccess(data) {
-
+	if (!data.access) {
+		window.location.href = 'courseed.php';
+	}
 	filez = data;
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
@@ -464,7 +509,7 @@ function returnedAccess(data) {
 	myTable.renderTable();
 
 	var str = "<div class='checkbox-dugga'>";
-	str += "<button id='toggleAllButton' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
+	str += "<button id='toggleAllButton' class='dropdown-button' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
 	str += "</div>"
 	document.getElementById("dropdownc").innerHTML += str;
 }

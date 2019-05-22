@@ -424,7 +424,7 @@ svg text {
 .newRowButton:hover{
   background: #7B5A96;
 }
-#tsSubmit {
+.tsSubmit {
   background: var(--color-primary);
   color: white;
   margin-left: 50px;
@@ -433,7 +433,7 @@ svg text {
   border: 2px solid #614875;
   padding: 4px 8px 4px 8px;
 }
-#tsSubmit:hover {
+.tsSubmit:hover {
   background: #7B5A96;
   color: white;
   border: 2px solid #614875;
@@ -472,17 +472,6 @@ svg text {
 	.tsSmallInput {
 		width: 100%;
 		box-sizing: border-box;
-	}
-	#smallerViewportUploadButton{
-		margin-left: 3px;
-		height: 30px;
-		cursor: pointer;
-    background: var(--color-primary);
-    color: white;
-	}
-	#smallerViewportUploadButton:hover{
-		background-color: #614875;
-		color: #F0F0F0;
 	}
 	#prevSub{
 		margin-top: 10px;
