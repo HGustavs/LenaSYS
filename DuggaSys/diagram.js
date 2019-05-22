@@ -54,6 +54,13 @@ const kind = {
     path: 1,
     symbol: 2
 };
+
+var currentMode = {
+    er: "ER",
+    uml: "UML",
+    dev: "Dev"
+};
+
 const symbolKind = {
     uml: 1,
     erAttribute: 2,
@@ -63,6 +70,7 @@ const symbolKind = {
     text: 6,
     umlLine: 7
 };
+
 const mouseState = {
     empty: 0,                       // empty
     noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
@@ -1994,11 +2002,13 @@ function modeSwitchConfirmed(confirmed) {
     }
 }
 
-function toggleMode(){
-    if(targetMode == "ER"){
+function toggleMode() {
+    if(toolbarState == "ER"){
         switchToolbarTo("UML");
-    } else {
+    } else if (toolbarState == "UML") {
         switchToolbarTo("ER");
+    } else {
+      return;
     }
 }
 
@@ -2009,7 +2019,7 @@ function toggleMode(){
 //------------------------------------------------------------------------------
 
 function switchToolbarTo(target) {
-    if (targetMode == target) {
+    if (toolbarState == target) {
         return;
     }
     targetMode = target;
@@ -2032,7 +2042,7 @@ function switchToolbarTo(target) {
 
 var crossER = false;
 function switchToolbarER() {
-    toolbarState = 1;                                                               // Change the toolbar to ER.
+    toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
@@ -2049,7 +2059,7 @@ function switchToolbarER() {
 
 var crossUML = false;
 function switchToolbarUML() {
-    toolbarState = 2;                                                               // Change the toolbar to UML.
+    toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
     switchToolbar('UML');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
@@ -2069,7 +2079,7 @@ function switchToolbarDev() {
     if(!developerModeActive){
         return;
     }
-    toolbarState = 3;                                                               // Change the toolbar to DEV.
+    toolbarState = currentMode.Dev;                                                 // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
