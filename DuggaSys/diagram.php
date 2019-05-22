@@ -216,7 +216,7 @@
                             </div>
                             <div id="er-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
-                                <i id="hotkey-ER" class="hotKeys">Shift + N</i>
+                                <i id="hotkey-ER" class="hotKeys">Shift + M</i>
                             </div>
                             <div id="uml-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
@@ -415,11 +415,11 @@
                 </div>
             </div>
             <div class='mode-wrap'>
-                <div id="importButtonWrap" class="importButtonWrap">
-                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(true);">Accept</button>
+                <div id="modeSwitchButton1" class="importButtonWrap">
+                    <button id="modeSwitchButtonAccept" type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(true);">Accept</button>
                 </div>
-                <div id="importButtonWrap" class="importButtonWrap">
-                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
+                <div id="modeSwitchButton2" class="importButtonWrap">
+                    <button id="modeSwitchButtonCancel" type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
                 </div>
             </div>
         </div>

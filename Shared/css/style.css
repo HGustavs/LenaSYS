@@ -1925,8 +1925,6 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 2px;
-  top: 100;
   z-index: 2;
   position: absolute;
   border-radius: 0px;

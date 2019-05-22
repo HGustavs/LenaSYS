@@ -40,12 +40,14 @@ AJAXService("get", {}, "DIAGRAM");
 
 var diagram = [];
 
-diagram.serialNumbers = {
-    Attribute: 0,
-    Entity: 0,
-    Relation: 0,
-    UML: 0,
-    Text: 0,
+var settings = {
+    serialNumbers: {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    },
 };
 
 const kind = {
@@ -110,6 +112,7 @@ var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+var modeSwitchDialogActive = false; // if the mode switch dialog is currently active
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
@@ -150,6 +153,7 @@ var toolbarState = 1;                   // Set default toolbar state to ER.
 
 // Keyboard keys
 const backspaceKey = 8;
+const enterKey = 13;
 const shiftKey = 16;
 const ctrlKey = 17;
 const altKey = 18;
@@ -394,11 +398,11 @@ function resetButtonsPressed() {
 
 function keyDownHandler(e) {
     var key = e.keyCode;
-    if(appearanceMenuOpen) return;
-    if((key == deleteKey || key == backspaceKey)) {
+    if (appearanceMenuOpen) return;
+    if ((key == deleteKey || key == backspaceKey)) {
         eraseSelectedObject();
         SaveState();
-    } else if(key == spacebarKey) {
+    } else if (key == spacebarKey) {
         // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
         if (!spacebarKeyPressed) {
         spacebarKeyPressed = true;
@@ -410,7 +414,7 @@ function keyDownHandler(e) {
             e.stopPropagation();
             e.preventDefault();
         }
-        if(uimode != "MoveAround") {
+        if (uimode != "MoveAround") {
             activateMovearound();
         } else {
             deactivateMovearound();
@@ -418,22 +422,24 @@ function keyDownHandler(e) {
         updateGraphics();
     } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) {
         arrowKeyPressed(key);
-        moveCanvasView(key);
+        if (uimode == "MoveAround") {
+            moveCanvasView(key);
+        }
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    } else if(key == shiftKey) {
+    } else if (key == shiftKey) {
         shiftIsClicked = true;
     } else if(key == altKey) {
         altIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == vKey ) {
+    } else if (ctrlIsClicked && key == vKey ) {
         //Ctrl + v
         var temp = [];
-        for(var i = 0; i < cloneTempArray.length; i++) {
+        for (var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line
+            if (cloneTempArray[i].symbolkind != symbolKind.line
                 && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
@@ -455,8 +461,18 @@ function keyDownHandler(e) {
         updateGraphics();
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
+    } else if (key == enterKey) {
+        if (modeSwitchDialogActive) {
+            // if the cancel button is focused then trigger that
+            if (document.activeElement.id == "modeSwitchButtonCancel") {
+                modeSwitchConfirmed(false);
+            } else {
+               modeSwitchConfirmed(true);
+            }
+        }
     } else if(key == escapeKey) {
         cancelFreeDraw();
+        if (modeSwitchDialogActive) modeSwitchConfirmed(false);
     } else if((key == key1 || key == num1) && shiftIsClicked){
         moveToFront();
     } else if((key == key2 || key == num2) && shiftIsClicked){
@@ -477,10 +493,11 @@ function keyDownHandler(e) {
       document.getElementById("drawfreebutton").click();
     } else if(shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == nKey) {
-        switchToolbarTo("ER");
     } else if(shiftIsClicked && key == mKey) {
-        switchToolbarTo("UML");
+         if(developerModeActive) {
+            developerMode(event);
+        }
+        toggleMode(); 
     } else if(shiftIsClicked && key == xKey) {
           lockSelected(event);
     } else if(shiftIsClicked && key == oKey) {
@@ -616,19 +633,21 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if(key == leftArrow) {
-        xNew = -5;
-    }else if(key == upArrow) {
-        yNew = -5;
-    }else if(key == rightArrow) {
-        xNew = 5;
-    }else if(key == downArrow) {
-        yNew = 5;
+    if (uimode != "MoveAround") {
+        if(key == leftArrow) {
+            xNew = -5;
+        }else if(key == upArrow) {
+            yNew = -5;
+        }else if(key == rightArrow) {
+            xNew = 5;
+        }else if(key == downArrow) {
+            yNew = 5;
+        }
+        for(var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].move(xNew, yNew);
+        }
+        updateGraphics();
     }
-    for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(xNew, yNew);
-    }
-    updateGraphics();
 }
 
 //-----------------------------------------------------------------------------------
@@ -1512,6 +1531,7 @@ function canvasSize() {
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setMoveButtonPosition();
     updateGraphics();
 }
 
@@ -1808,16 +1828,6 @@ function gridToSVG(width, height) {
 //              it hides the points by placing them beyond the users view.
 //------------------------------------------------------------------------------
 
-function resetSerialNumbers(){
-    diagram.serialNumbers = {
-        Attribute: 0,
-        Entity: 0,
-        Relation: 0,
-        UML: 0,
-        Text: 0,
-    }
-}
-
 function clearCanvas() {
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
@@ -1829,6 +1839,20 @@ function clearCanvas() {
     resetSerialNumbers();
     updateGraphics();
     SaveState();
+}
+
+//--------------------------------------------------------------------------
+// Used when canvas is cleared to avoid unnecessarily high serial numbers
+//--------------------------------------------------------------------------
+
+function resetSerialNumbers(){
+    settings.serialNumbers = {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    }
 }
 
 // the purpose is not very clear
@@ -1910,6 +1934,7 @@ function hideCrosses() {
 //------------------------------------------------------------------------------
 
 function modeSwitchConfirmed(confirmed) {
+    modeSwitchDialogActive = false;
     $("#modeSwitchDialog").hide();
     if(confirmed){
         if (targetMode == 'ER') {
@@ -1922,6 +1947,14 @@ function modeSwitchConfirmed(confirmed) {
     }
 }
 
+function toggleMode(){
+    if(targetMode == "ER"){
+        switchToolbarTo("UML");
+    } else {
+        switchToolbarTo("ER");
+    }
+}
+
 //------------------------------------------------------------------------------
 // switchToolbarTo:
 // This function switch opens a dialog for confirmation and sets which mode
@@ -1930,8 +1963,9 @@ function modeSwitchConfirmed(confirmed) {
 
 function switchToolbarTo(target) {
     targetMode = target;
+    modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
-    if(developerModeActive) {
+    if (developerModeActive) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
@@ -1992,110 +2026,6 @@ function switchToolbarDev() {
         crossDEV=true);                                                             // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-}
-
-//------------------------------------------------------------------------------
-// hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
-//               then do some sort of calculation. used to save the diagram. it also save the local diagram
-//------------------------------------------------------------------------------
-
-function hashFunction() {
-    var diagramToString = "";
-    var hash = 0;
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-        if (currentHash != hexHash) {
-            localStorage.setItem('localhash', hexHash);
-            for (var i = 0; i < diagram.length; i++) {
-                c[i] = diagram[i].constructor.name;
-                c[i] = c[i].replace(/"/g,"");
-            }
-            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c});
-            localStorage.setItem('localdiagram', a);
-            return hexHash;
-        }
-    }
-}
-
-//--------------------------------------------------------------------------------
-// hashCurrent: This function is used to hash the current diagram, but not storing it locally,
-//              so we can compare the current hash with the hash after we have made some changes
-//              to see if it need to be saved.
-//--------------------------------------------------------------------------------
-
-function hashCurrent() {
-    var hash = 0;
-    var diagramToString = "";
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
-    }
-    for (var i = 0; i < diagramToString.length; i++) {
-        var char = diagramToString.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;         // Convert to 32bit integer
-    }
-    currentHash = hash.toString(16);
-}
-
-//---------------------------------------------
-// loadDiagram: retrive an old diagram if it exist.
-//---------------------------------------------
-
-function loadDiagram() {
-    var checkLocalStorage = localStorage.getItem('localdiagram');
-    //loacal storage and hash
-    if (checkLocalStorage != "" && checkLocalStorage != null) {
-        var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
-    }
-    var localHexHash = localStorage.getItem('localhash');
-    var diagramToString = "";
-    var hash = 0;
-    for(var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i]);
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-    }
-    if (typeof localHexHash !== "undefined" && typeof localDiagram !== "undefined") {
-        if (localHexHash != hexHash) {
-            b = JSON.parse(JSON.stringify(localDiagram));
-            for (var i = 0; i < b.diagram.length; i++) {
-                if (b.diagramNames[i] == "Symbol") {
-                    b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
-                } else if (b.diagramNames[i] == "Path") {
-                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-                }
-            }
-            diagram.length = b.diagram.length;
-            for (var i = 0; i < b.diagram.length; i++) {
-                diagram[i] = b.diagram[i];
-            }
-            // Points fix
-            for (var i = 0; i < b.points.length; i++) {
-                b.points[i] = Object.assign(new Path, b.points[i]);
-            }
-            points.length = b.points.length;
-            for (var i = 0; i < b.points.length; i++) {
-                points[i] = b.points[i];
-            }
-        }
-    deselectObjects();
-    updateGraphics();
-    SaveState();
-}
 }
 
 //----------------------------------------------------------------------
@@ -3081,6 +3011,18 @@ function mousemoveevt(ev, t) {
                 for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
                         if(snapToGrid) {
+                            // Set mouse start so it's snaped to grid.
+                            startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
+                            startMouseCoordinateY = Math.round(startMouseCoordinateY / gridSize) * gridSize;
+                            // Coordinates for the top left corner of the object
+                            var hoveredObjectStartTopLeftX = points[hoveredObject.topLeft].x;
+                            var hoveredObjectStartTopLeftY = points[hoveredObject.topLeft].y;
+                            // Coordinates for the point to snap to
+                            var hoveredObjectSnapTopLeftX = Math.round(points[hoveredObject.topLeft].x / gridSize) * gridSize;
+                            var hoveredObjectSnapTopLeftY = Math.round(points[hoveredObject.topLeft].y / gridSize) * gridSize;
+                            // Snap the object that is being moved. Rest of the objects are untouched
+                            diagram[movobj].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+                            // Move the objects dependable on the grid size
                             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         }
@@ -3202,6 +3144,7 @@ function mousemoveevt(ev, t) {
 //----------------------------------------------------------
 
 function mousedownevt(ev) {
+    mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
     canvasLeftClick = 1;
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
@@ -3455,7 +3398,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        classB.name = "New " + diagram.serialNumbers.UML;
+        classB.name = "New " + settings.serialNumbers.UML;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3467,10 +3410,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
-        diagram.serialNumbers.UML++;
+        settings.serialNumbers.UML++;
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        erAttributeA.name = "Attr " + diagram.serialNumbers.Attribute;
+        erAttributeA.name = "Attr " + settings.serialNumbers.Attribute;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3481,10 +3424,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
-        diagram.serialNumbers.Attribute++;
+        settings.serialNumbers.Attribute++;
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        erEnityA.name = "Entity " + diagram.serialNumbers.Entity;
+        erEnityA.name = "Entity " + settings.serialNumbers.Entity;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3496,7 +3439,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
-        diagram.serialNumbers.Entity++;
+        settings.serialNumbers.Entity++;
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
@@ -3512,6 +3455,7 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
+            diagram[lastSelectedObject - 1].targeted = false;
             selected_objects.push(diagram[lastSelectedObject]);
 
             createCardinality();
@@ -3519,7 +3463,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        erRelationA.name = "Relation " + diagram.serialNumbers.Relation;
+        erRelationA.name = "Relation " + settings.serialNumbers.Relation;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3529,7 +3473,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
-        diagram.serialNumbers.Relation++;
+        settings.serialNumbers.Relation++;
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
         // clicking on a lock removes it
@@ -3621,8 +3565,8 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    text.name = "Text " + diagram.serialNumbers.Text;
-    diagram.serialNumbers.Text++;
+    text.name = "Text " + settings.serialNumbers.Text;
+    settings.serialNumbers.Text++;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
@@ -3671,6 +3615,10 @@ function resize() {
     }
 }
 
+function setMoveButtonPosition() {
+    document.getElementById("moveButton").style.marginLeft = widthWindow + 4 + "px";
+}
+
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
@@ -3679,6 +3627,7 @@ function movemode(e, t) {
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
+    setMoveButtonPosition();
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
