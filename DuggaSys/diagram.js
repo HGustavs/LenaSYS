@@ -504,10 +504,11 @@ function keyDownHandler(e) {
       document.getElementById("drawfreebutton").click();
     } else if(shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == nKey) {
-        switchToolbarTo("ER");
     } else if(shiftIsClicked && key == mKey) {
-        switchToolbarTo("UML");
+        if(developerModeActive) {
+            developerMode(event);
+        }
+        toggleMode();
     } else if(shiftIsClicked && key == gKey) {
           globalAppearanceMenu();
     } else if(shiftIsClicked && key == hKey) {
@@ -1989,6 +1990,14 @@ function modeSwitchConfirmed(confirmed) {
         } else if (targetMode == 'Dev'){
             switchToolbarDev();
         }
+    }
+}
+
+function toggleMode(){
+    if(targetMode == "ER"){
+        switchToolbarTo("UML");
+    } else {
+        switchToolbarTo("ER");
     }
 }
 
