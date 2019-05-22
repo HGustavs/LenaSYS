@@ -518,7 +518,7 @@ function keyDownHandler(e) {
     } else if(shiftIsClicked && key == key0) {
           resetViewToOrigin();
     } else if(shiftIsClicked && key == bKey) {
-          switchToolbarDev();
+          switchToolbarDev(event);
     } else if(shiftIsClicked && key == key4) {
           toggleVirtualA4(event);
     } else if(shiftIsClicked && key == key5) {
@@ -1919,7 +1919,7 @@ function developerMode(event) {
     if(developerModeActive) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
-        switchToolbarDev();                                                             // ---||---
+        switchToolbarDev(event);                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
@@ -1988,7 +1988,7 @@ function modeSwitchConfirmed(confirmed) {
         } else if (targetMode == 'UML') {
             switchToolbarUML();
         } else if (targetMode == 'Dev'){
-            switchToolbarDev();
+            switchToolbarDev(event);
         }
     }
 }
