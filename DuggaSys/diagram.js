@@ -2005,8 +2005,8 @@ function reWrite() {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-
         document.getElementById("valuesCanvas").style.display = 'block';
+        
         //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
         var smallerScreensDev = window.matchMedia("(max-width: 745px)");
         if (smallerScreensDev.matches) {
@@ -2035,9 +2035,15 @@ function reWrite() {
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
         + Math.round((zoomValue * 100)) + "%" + "   </p>";
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
+        document.getElementById("valuesCanvas").style.display = 'none';
+
+        //If you're using smaller screens then the zoom-bar will scale.
+        var smallerScreens = window.matchMedia("(max-width: 900px)");
+        if (smallerScreens.matches) {
+            document.getElementById("selectDiv").style.maxWidth = '50%';
+        } else {
+            document.getElementById("selectDiv").style.minWidth = '10%';
+        }
     }
 }
 
