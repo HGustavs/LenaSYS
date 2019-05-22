@@ -3536,6 +3536,8 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].properties['fontColor'] = getFontColor();
         diagram[lastSelectedObject].properties['font'] = getFont();
         diagram[lastSelectedObject].properties['strokeColor'] = getStrokeColor();
+        diagram[lastSelectedObject].properties['symbolColor'] = getFillColor();
+        diagram[lastSelectedObject].properties['sizeOftext'] = getTextSize();
     }
 
 
@@ -3775,6 +3777,8 @@ function loadFormIntoElement(element, dir) {
                 document.getElementById('fontColor').value = getFontColor();
                 document.getElementById('font').value = getFont();
                 document.getElementById('strokeColor').value = getStrokeColor();
+                document.getElementById('symbolColor').value = getFillColor();
+                document.getElementById('sizeOftext').value = getTextSize();
             }
         }
     }
@@ -3811,6 +3815,22 @@ function getStrokeColor() {
         return value = diagram[0].properties['strokeColor'];
     } else {
         return '#000000';
+    }
+}
+
+function getFillColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['symbolColor'];
+    } else {
+        return '#ffffff';
+    }
+}
+
+function getTextSize() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['sizeOftext'];
+    } else {
+        return 'Tiny';
     }
 }
 
