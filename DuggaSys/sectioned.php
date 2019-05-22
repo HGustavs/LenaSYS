@@ -113,7 +113,7 @@
 			<<?php
 			echo "
 			<script type=\"text/javascript\">
-				document.getElementById('resultsBTN').href = 'resulted.php?cid=2&coursevers=97732';
+				navigatePage(document.getElementById('resultsBTN'), 'resulted.php')
 			</script>";
 			 ?>
 
