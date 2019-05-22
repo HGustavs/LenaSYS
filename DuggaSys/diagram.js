@@ -3795,7 +3795,7 @@ function loadLineForm(element, dir) {
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
             if(globalAppearanceValue == 0) {
-                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
+                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value;
                 var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
                 var lineDirection = diagram[lastSelectedObject].lineDirection;
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
@@ -3806,8 +3806,14 @@ function loadLineForm(element, dir) {
                     tempLineDirection = "First";
                 }
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                setSelectedOption('cardinality', tempCardinality);
-                setSelectedOption('line_direction', tempLineDirection);
+                // check if the form that is loaded is for a line can have cardinality 
+                if (cardinalityValue != 1) {
+                    setSelectedOption('cardinality', tempCardinality);
+                    // check if the form that is loaded is for a line can have a linedirection (uml lines) 
+                    if (cardinalityValue != 2) {
+                        setSelectedOption('line_direction', tempLineDirection);
+                    }
+                }
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
@@ -3910,6 +3916,9 @@ function globalAppearanceMenu() {
     loadFormIntoElement(form,'diagram_forms.php?form=globalType');
 }
 
+// determines which form should be loaded when line form is opened
+var cardinalityValue; 
+
 //----------------------------------------------------------------------
 // objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
 //----------------------------------------------------------------------
@@ -3946,11 +3955,17 @@ function objectAppearanceMenu(form) {
                 cardinalityOption = false;
         }
 
-        if (cardinalityOption) {
-            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
-        }else {
-            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=-1');
+        if (cardinalityOption) { // uml line or er line with cardinality
+            if (diagram[lastSelectedObject].cardinality[0].symbolKind == 1) { // uml line 
+                cardinalityValue = 3;
+            } else { //er line with cardinality
+                cardinalityValue = 2;
+            }
+        } else { // normal er line
+            cardinalityValue = 1;
         }
+
+        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + cardinalityValue);
     }
     // ER relation selected
     else if (diagram[lastSelectedObject].symbolkind == symbolKind.erRelation) {
