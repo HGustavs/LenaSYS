@@ -258,7 +258,8 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 
 function getURL()
 {
-	return "resulted.php"+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers'];
+	var link = document.getElementById(clicked_id);
+	link.href="resulted.php"+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers'];
 }
 
 function navigatePage(clicked_id, pagename)
