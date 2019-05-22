@@ -406,10 +406,11 @@ function updateCellCallback(rowno, colno, column, tableid) {
 //----------------------------------------------------------------
 function rowFilter(row) {
 	// First check if we want to filter by teachers/students. W = teacher, R = student.
-	if (row["access"].indexOf(accessFilter) != -1) {
+	var obj = JSON.parse(row["access"]);
+	if (obj.access == accessFilter) {
 		if (searchterm == "") {
 			return true;
-		} else {		// If the 
+		} else {
 			for (var property in row) {
 				if (row.hasOwnProperty(property)){
 					if (row[property] != null) {
