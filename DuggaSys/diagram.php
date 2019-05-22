@@ -216,7 +216,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <div id="displayAllTools" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
+                                    <span class="drop-down-option" onclick="switchToolbarDev(event);"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
                                     <i id="hotkey-displayTools" class="hotKeys">Shift + B</i>
                                 </div>
                             </div>
