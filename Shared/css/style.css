@@ -2683,6 +2683,17 @@ span.arrow {
   margin: 5px;
 }
 
+@media only screen and (max-width: 900px) {
+
+  #ladexportContainer {
+    display: block;
+  }
+
+  .ladDiv {
+    width: 60%;
+  }
+}
+
 
 /* End DuggaSys resulted*/
 
@@ -5443,10 +5454,6 @@ textarea#filecont {
 @media only screen and (max-width: 900px) {
   .optionButtons {
     top: 436px;
-  }
-
-  #ladexportContainer {
-    display: block;
   }
 }
 
