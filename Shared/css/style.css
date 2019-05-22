@@ -1253,29 +1253,18 @@ input {
 
 #diagram-toolbar {
   width: 130px;
-  height: auto;
+  height: 100%;
 }
 
 .application-toolbar-wrap {
+
   position: fixed;
   z-index: 1000;
-  border: 1px solid var(--color-border-4);
-  outline: 1px solid var(--color-border-3);
   background-color: var(--color-background);
 }
 
-.application-header {
-  height: 25px;
-  background-color: var(--color-primary);
-  color: var(--color-text-header);
-  vertical-align: bottom;
-  cursor: move;
-  display: flex;
-  justify-content: space-around;
-  margin: 0px;
-}
-
 .application-toolbar {
+  padding-left: 0px;
   padding-top: 0px;
 }
 
@@ -1284,7 +1273,13 @@ input {
 }
 
 .toolbar-drawer {
-  padding: 2px 2px;
+  padding-left: 4px;
+  border-top: 1px solid var(--color-border-3);
+}
+
+.toolbar-undo-redo-drawer {
+  width: 55px;
+  padding: 4px 2px;
   border-top: 1px solid var(--color-border-3);
 }
 
@@ -1293,7 +1288,7 @@ input {
   font-weight: normal;
   margin-top: 8px;
   margin-bottom: 0px;
-  padding: 0px 4px 0px 4px;
+  padding: 0px 4px 0px 0px;
 }
 
 .toolbarArrows {
@@ -1327,13 +1322,19 @@ input {
 .diagramAction {
   border-radius: 5px;
   background-color: var(--color-primary);
-  width: 47%;
+  width: 25px;
   transition: 0.25s background-color;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .diagramAction:hover {
   background-color: var(--color-primary-hover);
 }
+
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
@@ -1467,6 +1468,13 @@ input {
   cursor: default !important;
 }
 
+.hotKeys {
+  position: absolute;
+  font-size: 9px;
+  color: #3d3d3d;
+  opacity: 0.5;
+}
+
 #hotkey-space {
   position: absolute !important;
   font-size: 11px !important;
@@ -1484,45 +1492,18 @@ input {
 }
 
 #hotkey-shift {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+  right: 6px;
   top: 100px;
 }
 
-#hotkey-undo,
-#hotkey-redo,
-#hotkey-clear,
-#hotkey-front,
-#hotkey-back,
-#hotkey-developerMode,
-#hotkey-ER,
-#hotkey-UML {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
+#hotkey-lock {
+  right: 6px;
+  top: 241px;
 }
 
-.drop-down-item #hotkey-undo {
+#hotkey-resetView {
   right: 6px;
-  top: 10px;
-}
-
-.drop-down-item #hotkey-redo {
-  right: 6px;
-  top: 45px;
-}
-
-#hotkey-clear,
-#hotkey-front {
-  right: 6px;
-  top: 165px;
-}
-
-#hotkey-back {
-  right: 6px;
-  top: 195px;
+  top: 395px;
 }
 
 #hotkey-developerMode {
@@ -1530,9 +1511,39 @@ input {
   top: 10px;
 }
 
+#hotkey-displayTools {
+  right: 36px;
+  top: 45px;
+}
+
+#hotkey-displayA4 {
+  right: 39px;
+  top: 164px;
+}
+
+#hotkey-clear, #hotkey-front {
+  right: 5px ;
+  top: 165px;
+}
+
+#hotkey-back {
+  right: 5px ;
+  top: 195px;
+}
+
 #hotkey-ER {
   right: 35px;
   top: 85px;
+}
+
+#hotkey-undo {
+  right: 5px;
+  top: 10px;
+}
+
+#hotkey-redo {
+  right: 5px;
+  top: 43px;
 }
 
 #hotkey-UML {
@@ -1540,10 +1551,27 @@ input {
   top: 120px;
 }
 
-.drop-down-item #hotkey-delete {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
+#hotkey-Align-Top {
+  right: 5px;
+  top: 55px;
+}
+
+#hotkey-Align-Right {
+  right: 5px;
+  top: 87px;
+}
+
+#hotkey-Align-Bottom {
+  right: 5px;
+  top: 120px;
+}
+
+#hotkey-Align-Left {
+  right: 5px;
+  top: 151px;
+}
+
+#hotkey-delete {
   right: 6px;
   top: 272px;
 }
@@ -1910,8 +1938,6 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 2px;
-  top: 100px;
   z-index: 2;
   position: absolute;
   border-radius: 0px;
@@ -1920,6 +1946,11 @@ div.submit-button:disabled {
 #contentDiagram .toolboxButtons {
   width: 35px !important;
   height: 25px !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 #textButton {
@@ -1927,6 +1958,11 @@ div.submit-button:disabled {
   height: 22px;
   margin-top: 3px;
   filter: invert(100%);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 #moveButton img {
@@ -4259,13 +4295,11 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
-  padding-right: 90px;
+  padding-right: 10px;
   padding-left: 10px;
   background-color: var(--color-background);
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  padding-right: 80px;
-  padding-left: 10px;
   height: 30px;
   position: absolute;
   right: 14px;
@@ -4307,15 +4341,19 @@ only screen and (max-device-width: 320px) {
 }
 
 .tooltipDecrease button {
+  display: flex;
+  align-items: center;
   background-color: #614875;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  font-family: hack, "Lucida Console", Monaco, monospace;
   color: #fff;
   border: 0px;
   cursor: pointer;
   transition: 0.1s background-color;
-  border-radius: 4px;
-  margin-bottom: 5px;
-  align-items: center;
+  border-radius: 5px;
+  /* margin-bottom: 5px; */
+  /* width: 20px;
+  height: 20px; */
 }
 
 .tooltipDecrease .tooltiptextDec {
@@ -4343,18 +4381,24 @@ only screen and (max-device-width: 320px) {
 #range {
   display: inline-block;
   margin-left: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .tooltipIncrease button {
+  display: flex;
+  align-items: center;
   background-color: #614875;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  font-family: hack, "Lucida Console", Monaco, monospace;
   color: #fff;
   border: 0px;
   cursor: pointer;
   transition: 0.1s background-color;
-  border-radius: 4px;
-  margin-bottom: 5px;
-  align-items: center;
+  border-radius: 5px;
+  /* margin-bottom: 5px; */
+  /* width: 20px;
+  height: 20px; */
 }
 
 .tooltipIncrease .tooltiptextInc {
@@ -4379,10 +4423,10 @@ only screen and (max-device-width: 320px) {
 }
 
 #zoomV {
-  position: absolute;
-  width: 70px;
-  font-size: 12px;
-  right: 3%;
+  margin-left: 10px;
+  width: 80px;
+  font-size: 14px;
+  right: 1%;
 }
 
 
@@ -5113,25 +5157,6 @@ textarea#mrkdwntxt {
 .modeSwitchHeader h3 {
   padding-right: 10px;
 }
-
-/* Composite error message dialog */
-.errorMessageDialog {
-  display: none;
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.messageContainer {
-  min-height: 80px;
-}
-
-#cancelButton {
-  border-radius: 3px;
-}
-
-.messageHeader h3 {
-  padding-right: 10px;
-}
-
 
 /* Import diagram */
 
