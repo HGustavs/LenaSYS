@@ -1654,7 +1654,6 @@ function Symbol(kindOfSymbol) {
     // moveCardinality: Moves the value of the cardinality to avoid overlap with line
     //---------------------------------------------------------------
     this.moveCardinality = function(x1, y1, x2, y2, side) {
-        console.log(this.name, "moveCardinality")
         let boxCorners = this.corners();
         let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
 
@@ -1690,7 +1689,6 @@ function Symbol(kindOfSymbol) {
 		        if(correctBox.tl.y < y1 && correctBox.br.y > y1) {
 		            cardinality.axis = "Y";
 		        }
-                console.log("AXIS: ", cardinality.axis)
 		    }
 
 		    // Move the value from the line
@@ -1716,7 +1714,6 @@ function Symbol(kindOfSymbol) {
 		            cardinality.axis = "Y";
 		        }
 		    }
-            console.log("AXIS: ", cardinality.axis)
 
 		    // Move the value from the line
 		    cardinality.x = x2 > x1 ? x2-10 : x2+10;
