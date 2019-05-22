@@ -4106,10 +4106,6 @@ only screen and (max-device-width: 670px) {
     display: none;
   }
 
-  #ladexportContainer {
-    display: block;
-  }
-
 }
 
 @media only screen and (max-width: 530px),
@@ -5440,6 +5436,10 @@ textarea#filecont {
 @media only screen and (max-width: 900px) {
   .optionButtons {
     top: 436px;
+  }
+
+  #ladexportContainer {
+    display: block;
   }
 }
 
