@@ -710,7 +710,7 @@ function createTimeSheetTable(data) {
     freezePaneIndex: 4,
     hasRowHighlight: false,
     hasMagicHeadings: false,
-    hasCounterColumn: true
+    hasCounterColumn: false
   });
 
   myTable.renderTable();
