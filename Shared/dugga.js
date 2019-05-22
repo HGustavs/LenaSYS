@@ -256,6 +256,11 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 // navigatePage: Local function for converting static page navigation to dynamic
 //----------------------------------------------------------------------------------
 
+function getURL()
+{
+	return "resulted.php"+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers'];
+}
+
 function navigatePage(clicked_id, pagename)
 {
 		changeURL(clicked_id, pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
