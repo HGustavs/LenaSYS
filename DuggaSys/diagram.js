@@ -109,6 +109,7 @@ var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
+var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -2008,6 +2009,9 @@ function toggleMode(){
 //------------------------------------------------------------------------------
 
 function switchToolbarTo(target) {
+    if (targetMode == target) {
+        return;
+    }
     targetMode = target;
     modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
