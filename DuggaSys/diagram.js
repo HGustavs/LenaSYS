@@ -3505,7 +3505,7 @@ function mouseupevt(ev) {
             setTargetedForSymbolGroup(diagram[lastSelectedObject], true);
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
-        //Code for making a line, if start and end object are different, except attributes and if no object is text
+        // Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
@@ -3530,7 +3530,8 @@ function mouseupevt(ev) {
             updateGraphics();
         }
     }
-    // set the linewidth for the created object
+
+    // Sets the Global Apperance settings for each object
     if (lastSelectedObject >= 0) {
         diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
         diagram[lastSelectedObject].properties['fontColor'] = getFontColor();
@@ -3538,8 +3539,8 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].properties['strokeColor'] = getStrokeColor();
         diagram[lastSelectedObject].properties['symbolColor'] = getFillColor();
         diagram[lastSelectedObject].properties['sizeOftext'] = getTextSize();
+        diagram[lastSelectedObject].fillColor = getFillColor();
     }
-
 
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
     if (diagramObject && diagramObject.symbolkind != symbolKind.erRelation) {
@@ -3774,63 +3775,67 @@ function loadFormIntoElement(element, dir) {
             } else {
                 // should only occur when changing global apperance
                 document.getElementById('line-thickness').value = getLineThickness();
-                document.getElementById('fontColor').value = getFontColor();
-                document.getElementById('font').value = getFont();
-                document.getElementById('strokeColor').value = getStrokeColor();
-                document.getElementById('symbolColor').value = getFillColor();
-                document.getElementById('sizeOftext').value = getTextSize();
             }
         }
     }
     file.send();
 }
 
-// return the line thickness of one of the current objects in the diagram or else return the standard value: 2
+//----------------------------------------------------------------------
+// The following functions are used to get Global Apperance changes
+//----------------------------------------------------------------------
+
+// Return the line thickness of one of the current objects in the diagram
 function getLineThickness() {
     if (diagram.length > 0){
         return value = diagram[0].properties['lineWidth'];
     } else {
-        return 2;
+        return diagram[0].properties['lineWidth'];
     }
 }
 
+// Returns the font color of the objects in the diagram
 function getFontColor() {
     if (diagram.length > 0){
         return value = diagram[0].properties['fontColor'];
     } else {
-        return '#000000';
+        return diagram[0].properties['fontColor'];
     }
 }
 
+// Returns the font of the objects in the diagram
 function getFont() {
     if (diagram.length > 0){
         return value = diagram[0].properties['font'];
     } else {
-        return 'Arial';
+        return diagram[0].properties['font'];
     }
 }
 
+// Returns the stroke color of the objects in the diagram
 function getStrokeColor() {
     if (diagram.length > 0){
         return value = diagram[0].properties['strokeColor'];
     } else {
-        return '#000000';
+        return diagram[0].properties['strokeColor'];
     }
 }
 
+// Returns the fill color of the objects in the diagram
 function getFillColor() {
     if (diagram.length > 0){
         return value = diagram[0].properties['symbolColor'];
     } else {
-        return '#ffffff';
+        return diagram[0].properties['symbolColor'];
     }
 }
 
+// Returns the text size of the objects in the diagram
 function getTextSize() {
     if (diagram.length > 0){
         return value = diagram[0].properties['sizeOftext'];
     } else {
-        return 'Tiny';
+        return diagram[0].properties['sizeOftext'];
     }
 }
 
