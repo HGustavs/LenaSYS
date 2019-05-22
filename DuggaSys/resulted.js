@@ -1409,7 +1409,7 @@ function copyLadexport() {
 	if (mm < 10) {
 		mm = '0' + mm; // Adds a 0 to days below 10
 	} 
- today = dd + '-' + mm + '-' + yyyy;
+ today = yyyy + '-' + dd + '-' + mm ;
 
 	document.getElementById('lastExpDate').innerHTML = "Last exported: " + today + " " + time;
 
