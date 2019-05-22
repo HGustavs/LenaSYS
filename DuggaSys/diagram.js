@@ -40,7 +40,7 @@ AJAXService("get", {}, "DIAGRAM");
 
 var diagram = [];
 
-var settings = { 
+var settings = {
     serialNumbers: {
         Attribute: 0,
         Entity: 0,
@@ -112,7 +112,7 @@ var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
-var modeSwitchDialogActive = false; // if the mode switch dialog is currently active 
+var modeSwitchDialogActive = false; // if the mode switch dialog is currently active
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
@@ -474,7 +474,7 @@ function keyDownHandler(e) {
         ctrlIsClicked = true;
     } else if (key == enterKey) {
         if (modeSwitchDialogActive) {
-            // if the cancel button is focused then trigger that 
+            // if the cancel button is focused then trigger that
             if (document.activeElement.id == "modeSwitchButtonCancel") {
                 modeSwitchConfirmed(false);
             } else {
@@ -504,7 +504,7 @@ function keyDownHandler(e) {
       document.getElementById("drawfreebutton").click();
     } else if(shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == mKey) {
+    } else if(shiftIsClicked && key == mKey && !modeSwitchDialogActive) {
         if(developerModeActive) {
             developerMode(event);
         }
