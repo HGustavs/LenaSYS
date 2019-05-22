@@ -3328,19 +3328,6 @@ function mouseupevt(ev) {
                 }
                 if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
 
-                // Can't draw line between two ER attributes if one of them is not composite
-                if (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) {
-                    if (diagram[markedObject].properties.key_type === "Composite" || diagram[lineStartObj].properties.key_type === "Composite") {
-                        okToMakeLine = true;
-                    }else {
-                        okToMakeLine = false;
-                        // Add error dialog
-                        $("#errorMessageDialog").css("display", "flex");
-                        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
-                        document.getElementById("errorMessage").innerHTML = "Error! None of the objects are Composite";
-                    }
-                }
-
                 if (okToMakeLine) {
                     saveState = true;
                     if (createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -4066,8 +4053,4 @@ function changeCardinality(isUML) {
 // Changes direction for uml line relations
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
-}
-//Close the errorMessageDialog for Composite
-function closeErrorMessageDialog() {
-    $("#errorMessageDialog").hide();
 }
