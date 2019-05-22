@@ -774,14 +774,28 @@ diagram.closestPoint = function(mx, my) {
     var distance = 50000000;
     var point;
     let attachedSymbol;
-    this.filter(symbol => symbol.kind != kind.path && symbol.symbolkind != symbolKind.text).forEach(symbol => {
-        [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
+    this.filter(symbol => symbol.kind != kind.path && symbol.symbolkind != symbolKind.text && symbol.symbolkind != symbolKind.umlLine).forEach(symbol => {
+        [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, 
+        {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
             var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
             var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
             if (hypotenuseElevatedBy2 < distance) {
                 distance = hypotenuseElevatedBy2;
                 point = corner;
+                attachedSymbol = symbol;
+            }
+        });
+    });
+
+    this.filter(symbol => symbol.kind == kind.symbol && symbol.symbolkind == symbolKind.umlLine).forEach(symbol => {
+        symbol.draggablePoints.forEach(anchor => {            
+            var deltaX = mx - points[anchor].x;
+            var deltaY = my - points[anchor].y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = points[anchor];
                 attachedSymbol = symbol;
             }
         });
@@ -2735,7 +2749,7 @@ function mousemoveevt(ev, t) {
                 // when in movearound mode or if the point doesn't belong to a selected object then don't display different pointer when hovering points
                 if (uimode != "MoveAround" && pointBelongsToObject) {
                     //Change cursor if you are hovering over a point and its not a line
-                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line) {
                         //The point belongs to a umlLine or Line
                         canvas.style.cursor = "pointer";
                     } else {

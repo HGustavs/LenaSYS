@@ -562,12 +562,20 @@ function Symbol(kindOfSymbol) {
 
     this.UMLLineHover = function(){
         var p1, p2;
+
+        // Check for hover in each section of the line
         for(var i = 0; i < this.anchors.length - 1; i++){
             p1 = this.anchors[i];
             p2 = this.anchors[i+1];
 
-            if(pointToLineDistance(points[p1], points[p2], currentMouseCoordinateX, currentMouseCoordinateY) < 11){
-                return true;
+            if(Math.max(points[p1].x, points[p2].x) + tolerance > currentMouseCoordinateX && 
+               Math.min(points[p1].x, points[p2].x) - tolerance < currentMouseCoordinateX &&
+               Math.max(points[p1].y, points[p2].y) + tolerance > currentMouseCoordinateY && 
+               Math.min(points[p1].y, points[p2].y) - tolerance < currentMouseCoordinateY)
+            {
+                if(pointToLineDistance(points[p1], points[p2], currentMouseCoordinateX, currentMouseCoordinateY) < tolerance){
+                    return true;
+                }
             }
         }
 
@@ -965,7 +973,7 @@ function Symbol(kindOfSymbol) {
         }
 
         // Draggable points
-        if (this.symbolkind == symbolKind.umlLine && this.draggablePoints.length > 0) {
+        if (this.symbolkind == symbolKind.umlLine && this.draggablePoints.length > 1) {
             // Breakpoints
             var x7 = pixelsToCanvas(points[this.draggablePoints[0]].x).x;
             var y7 = pixelsToCanvas(0, points[this.draggablePoints[0]].y).y;
@@ -973,7 +981,7 @@ function Symbol(kindOfSymbol) {
             var y8 = pixelsToCanvas(0, points[this.draggablePoints[1]].y).y;
         }
 
-        if (this.symbolkind == symbolKind.umlLine && this.draggablePoints.length >= 3) {
+        if (this.symbolkind == symbolKind.umlLine && this.draggablePoints.length > 2) {
             var x9 = pixelsToCanvas(points[this.draggablePoints[2]].x).x;
             var y9 = pixelsToCanvas(0, points[this.draggablePoints[2]].y).y;
         }
