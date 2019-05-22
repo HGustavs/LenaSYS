@@ -437,7 +437,7 @@ function keyDownHandler(e) {
          if(developerModeActive) {
             developerMode(event);
         }
-        toggleMode(); 
+        toggleMode();
     } else if(shiftIsClicked && key == xKey) {
           lockSelected(event);
     } else if(shiftIsClicked && key == oKey) {
@@ -1813,7 +1813,7 @@ function developerMode(event) {
     if(developerModeActive) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
-        switchToolbarDev();                                                             // ---||---
+        switchToolbarDev(event);                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
@@ -1882,7 +1882,7 @@ function modeSwitchConfirmed(confirmed) {
         } else if (targetMode == 'UML') {
             switchToolbarUML();
         } else if (targetMode == 'Dev'){
-            switchToolbarDev();
+            switchToolbarDev(event);
         }
     }
 }
@@ -1955,7 +1955,8 @@ function switchToolbarUML() {
 //------------------------------------------------------------------------------
 
 var crossDEV = false;
-function switchToolbarDev() {
+function switchToolbarDev(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     if(!developerModeActive){
         return;
     }
@@ -3152,7 +3153,7 @@ function mousedownevt(ev) {
         md = mouseState.insideMovableObject;
         handleSelect();
     } else {
-        md = mouseState.boxSelectOrCreateMode; // Box select or Create mode. 
+        md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
         if(ev.button == rightMouseClick && uimode == "CreateFigure"){
             dragDistanceReached = true;
             endFreeDraw();
@@ -3756,10 +3757,10 @@ function loadFormIntoElement(element, dir) {
                 document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
                 setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
             } else {
-                // should only occur when changing global apperance 
+                // should only occur when changing global apperance
                 document.getElementById('line-thickness').value = getLineThickness();
             }
-        } 
+        }
     }
     file.send();
 }
