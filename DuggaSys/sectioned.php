@@ -114,6 +114,9 @@
 			echo "
 			<script type=\"text/javascript\">
 				navigatePage('resultsBTN', 'resulted.php');
+				navigatePage('testsBTN', 'duggaed.php');
+				navigatePage('filesBTN', 'fileed.php');
+				navigatePage('accessBTN', 'accessed.php');
 			</script>";
 			 ?>
 
