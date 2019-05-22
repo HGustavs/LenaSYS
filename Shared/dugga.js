@@ -259,6 +259,7 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 function navigatePage(clicked_id, pagename)
 {
 		changeURL(clicked_id, pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
+		return false;
 }
 
 //----------------------------------------------------------------------------------
@@ -968,7 +969,7 @@ function processLogin() {
           } else {
             displayAlertText("#login #message", "Wrong username or password");
 					}
-					
+
 					$("input#username").addClass("loginFail");
 					$("input#password").addClass("loginFail");
 					setTimeout(function(){
