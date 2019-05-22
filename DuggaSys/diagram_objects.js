@@ -27,6 +27,7 @@ function Symbol(kindOfSymbol) {
       {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null}
     ];
     this.lineDirection;
+    this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
     this.minHeight;
     this.group = 0;                 // What group this symbol belongs to
@@ -36,6 +37,7 @@ function Symbol(kindOfSymbol) {
     this.isAttribute = false;
     this.isRelation = false;
     this.isLine = false;
+    this.isRecursiveLine = false;
     this.pointsAtSamePosition = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
@@ -549,19 +551,39 @@ function Symbol(kindOfSymbol) {
         c.br.y += tolerance;
 
         if (!this.entityhover(mx, my, c)) {
-          return false;
+            return false;
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
 
     this.entityhover = function(mx, my, c) {
-        if(!c) {
-             c = this.corners();
+        if (!c) {
+            c = this.corners();
+        }
+        // Handle recursive lines
+        if (this.isLineType() && this.isRecursiveLine) {
+            if (c.tl.x == c.br.x) {
+                if (this.recursiveLineExtent > 0) {
+                    c.tr.x += this.recursiveLineExtent;
+                    c.br.x += this.recursiveLineExtent;
+                }else {
+                    c.tl.x += this.recursiveLineExtent;
+                    c.bl.x += this.recursiveLineExtent;
+                }
+            }else if (c.tl.y == c.br.y) {
+                if (this.recursiveLineExtent > 0) {
+                    c.bl.y += this.recursiveLineExtent;
+                    c.br.y += this.recursiveLineExtent;
+                }else {
+                    c.tl.y += this.recursiveLineExtent;
+                    c.tr.y += this.recursiveLineExtent;
+                }
+            }
         }
         // We have correct points in the four corners of a square.
-        if(mx > c.tl.x && mx < c.tr.x) {
-            if(my > c.tl.y && my < c.bl.y) {
+        if (mx > c.tl.x && mx < c.tr.x) {
+            if (my > c.tl.y && my < c.bl.y) {
                 return true;
             }
         }
@@ -797,19 +819,26 @@ function Symbol(kindOfSymbol) {
         privatePoints.push(this.centerPoint);
         return privatePoints;
     }
-
+    
+    //-----------------------------------------------------------------------
+    // isLineType: Checks if this is a line (ER or UML)
+    //-----------------------------------------------------------------------
+    this.isLineType = function() {
+        return this.symbolkind === symbolKind.line ||
+                this.symbolkind === symbolKind.umlLine;
+    }
+    
     //----------------------------------------------------------------
     // getConnectedObjects: returns an array with the objects that a specific line is connected to,
     //                      function is used on line objects
     //----------------------------------------------------------------
-
     this.getConnectedObjects = function () {
-        if (this.symbolkind == symbolKind.line) {
+        if (this.isLineType()) {
             var privateObjects = [];
 
             // Compare values of all symbols in diagram with current line
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) {
+                if (diagram[i].kind == kind.symbol && !diagram[i].isLineType()) {
                     // Top left and bottom right corners for the current object
                     dtlx = diagram[i].corners().tl.x;
                     dtly = diagram[i].corners().tl.y;
@@ -996,8 +1025,7 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------
     // Functions used to draw objects
     //---------------------------------------------------------
-    this.drawUML = function(x1, y1, x2, y2)
-    {
+    this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
 
@@ -1098,8 +1126,7 @@ function Symbol(kindOfSymbol) {
     }
 
     // This function is used in the drawEntity function and is run when ER entities are not in a weak state.
-    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2)
-    {
+    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) {
         var relationMidPoints = [];
 
         // Map input coordinates to canvas origo offset
@@ -1153,8 +1180,7 @@ function Symbol(kindOfSymbol) {
     }
 
     // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
-    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2)
-    {
+    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) {
         var relationMidPoints = [];
         var relationMidYPoints = [];
         var relationMidXPoints = [];
@@ -1347,7 +1373,6 @@ function Symbol(kindOfSymbol) {
             }
         }
 
-
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
@@ -1381,6 +1406,18 @@ function Symbol(kindOfSymbol) {
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
                 var valX2 = x2 > x1 ? x2-20 : x2+20;
+                if (this.isRecursiveLine) {
+                    let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent);
+                    if (x1 == x2) {
+                        valX = valX2 = x1 + 20 * dir;
+                        valY = y1 - 13;
+                        valY2 = y2 - 13;
+                    }else {
+                        valY = valY2 = y1 + 20 * dir;
+                        valX = x1 - 17;
+                        valX2 = x2 - 17;
+                    }
+                }
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
@@ -1495,6 +1532,20 @@ function Symbol(kindOfSymbol) {
             ctx.lineTo(x1, breakpointStartY);
         } else if (startLineDirection == "down") {
             ctx.lineTo(x1, breakpointStartY);
+        }
+
+        // Check if this is a recursive line (connects to a single object twice)
+        let connObjects = this.getConnectedObjects();
+        if (connObjects.length == 1) {
+            if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
+                if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                middleBreakPointX += this.recursiveLineExtent * zoomValue;
+            }else if (y1 == y2) {
+                if (startLineDirection === "down") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                middleBreakPointY += this.recursiveLineExtent * zoomValue;
+            }
         }
 
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
