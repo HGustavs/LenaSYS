@@ -1665,66 +1665,73 @@ function Symbol(kindOfSymbol) {
     										boxCorners.br.y);
 
         var connectedObjects = this.getConnectedObjects();
-        cardinality.parentBox = connectedObjects[0];
+        var offset = 10 * diagram.getZoomValue();
 
-        dtlx = connectedObjects[1].corners().tl.x;
-        dtly = connectedObjects[1].corners().tl.y;
-        dbrx = connectedObjects[1].corners().br.x;
-        dbry = connectedObjects[1].corners().br.y;
+        // Causes issues when removing objects if not checked
+        if(connectedObjects.length > 1){
+            // Assume that first object in array is parentBox
+            cardinality.parentBox = connectedObjects[0];
 
-        if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
-            cardinality.parentBox = connectedObjects[1];
-        }
+            dtlx = connectedObjects[1].corners().tl.x;
+            dtly = connectedObjects[1].corners().tl.y;
+            dbrx = connectedObjects[1].corners().br.x;
+            dbry = connectedObjects[1].corners().br.y;
 
-	    // Decide whether x1 and y1 is relevant or x2 and y2
-	    if(side == "CorrectSide") {
-		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[cardinality.parentBox.topLeft], points[cardinality.parentBox.bottomRight]);
-		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x1 && correctBox.br.x > x1) {
-		            cardinality.axis = "X";
-		        }
-		        if(correctBox.tl.y < y1 && correctBox.br.y > y1) {
-		            cardinality.axis = "Y";
-		        }
-		    }
+            // Check if other object in array is parentBox otherwise use the first one
+            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
+                cardinality.parentBox = connectedObjects[1];
+            }
 
-		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-10 : x1+10;
-		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
+            // Decide whether x1 and y1 is relevant or x2 and y2
+            if(side == "CorrectSide") {
+                if(cardinality.parentBox != null) {
+                    var correctBox = getCorners(points[cardinality.parentBox.topLeft], points[cardinality.parentBox.bottomRight]);
+                    // Determine on which side of the box the cardinality should be placed
+                    if(correctBox.tl.x < x1 && correctBox.br.x > x1) {
+                        cardinality.axis = "X";
+                    }
+                    if(correctBox.tl.y < y1 && correctBox.br.y > y1) {
+                        cardinality.axis = "Y";
+                    }
+                }
 
-		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X") {
-		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
-		    }
-		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
-		    }
-	    }
-	    else if(side == "IncorrectSide") {
-		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[this.cardinality[0].parentBox.topLeft], points[this.cardinality[0].parentBox.bottomRight]);
-		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
-		            cardinality.axis = "X";
-		        }
-		        if(correctBox.tl.y < y2 && correctBox.br.y > y2) {
-		            cardinality.axis = "Y";
-		        }
-		    }
+                // Move the value from the line
+                cardinality.x = x1 > x2 ? x1-offset : x1+offset;
+                cardinality.y = y1 > y2 ? y1-offset : y1+offset;
 
-		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-10 : x2+10;
-		    cardinality.y = y2 > y1 ? y2-10 : y2+10;
+                // Change side of the line to avoid overlap
+                if(cardinality.axis == "X") {
+                    cardinality.x = x1 > x2 ? x1+offset : x1-offset;
+                }
+                else if(cardinality.axis == "Y") {
+                    cardinality.y = y1 > y2 ? y1+offset : y1-offset;
+                }
+            }
+            else if(side == "IncorrectSide") {
+                if(cardinality.parentBox != null) {
+                    var correctBox = getCorners(points[this.cardinality[0].parentBox.topLeft], points[this.cardinality[0].parentBox.bottomRight]);
+                    // Determine on which side of the box the cardinality should be placed
+                    if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
+                        cardinality.axis = "X";
+                    }
+                    if(correctBox.tl.y < y2 && correctBox.br.y > y2) {
+                        cardinality.axis = "Y";
+                    }
+                }
 
-		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
-		    }
-		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y2 > y1 ? y2+10 : y2-10;
-		    }
-	    }
+                // Move the value from the line
+                cardinality.x = x2 > x1 ? x2-offset : x2+offset;
+                cardinality.y = y2 > y1 ? y2-offset : y2+offset;
+
+                // Change side of the line to avoid overlap
+                if(cardinality.axis == "X") {
+                    cardinality.x = x2 > x1 ? x2+offset : x2-offset;
+                }
+                else if(cardinality.axis == "Y") {
+                    cardinality.y = y2 > y1 ? y2+offset : y2-offset;
+                }
+            }
+        }        
     }
 
     this.drawWeakRelation = function(x1, y1, x2, y2) {
