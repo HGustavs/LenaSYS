@@ -2694,6 +2694,36 @@ function figureFreeDraw() {
     }
 }
 
+function endFreeDraw(){
+    if(numberOfPointsInFigure < 2){
+        // Perhaps make a flash function to flash messaged to the view, for better error handling
+        return console.log('Draw more lines');
+    }
+    // Read and set the values for p1 and p2
+    p1 = p2;
+    if (activePoint != null) {
+        p2 = activePoint;
+    } else {
+        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+    }
+
+    // Delete all previous rendered lines
+    for (var i = 0; i < numberOfPointsInFigure; i++) {
+        diagram.pop();
+    }
+    // Render the figure
+    points.splice(p2, 1);
+    p2 = startPosition;
+    figurePath.addsegment(1, p1, p2);
+    md = mouseState.empty; // To prevent selectbox spawn when clicking out of freedraw mode
+    diagram.push(figurePath);
+    figurePath.figureType = "Free";
+    selected_objects.push(figurePath);
+    lastSelectedObject = diagram.length - 1;
+    cleanUp();
+    SaveState();
+}
+
 function mouseDown() {
     globalMouseState = 1;
 }
