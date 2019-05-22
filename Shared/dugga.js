@@ -258,7 +258,7 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 
 function getURL()
 {
-	var link = document.getElementById(clicked_id);
+	var link = document.getElementById("resultsBTN");
 	link.href="resulted.php"+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers'];
 }
 
