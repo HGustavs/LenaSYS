@@ -1338,12 +1338,10 @@ function Symbol(kindOfSymbol) {
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
             else if(this.cardinality[0].isCorrectSide) {
-                console.log(this.name, "correct")
                 this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
             else {
-                console.log(this.name, "incorrect")
                 this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
