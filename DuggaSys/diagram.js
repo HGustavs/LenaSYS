@@ -1126,8 +1126,8 @@ function initializeCanvas() {
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
-                + "%   |   <b>Coordinates:</b> X=" + Math.round(origoOffsetX / zoomValue) + " & Y=" + Math.round(origoOffsetY / zoomValue) + "</p>";
+    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + " </p>";
+    document.getElementById("valuesCanvas").style.display = 'none';
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -2005,6 +2005,16 @@ function reWrite() {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
+
+        document.getElementById("valuesCanvas").style.display = 'block';
+        //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
+        var smallerScreensDev = window.matchMedia("(max-width: 745px)");
+        if (smallerScreensDev.matches) {
+            document.getElementById("selectDiv").style.maxWidth = '30%';
+            document.getElementById("valuesCanvas").style.maxWidth = '30%';
+        } else {
+            document.getElementById("selectDiv").style.minWidth = '10%';
+        }
 
         if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
             document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
