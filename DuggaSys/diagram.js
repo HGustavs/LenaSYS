@@ -54,6 +54,13 @@ const kind = {
     path: 1,
     symbol: 2
 };
+
+var currentMode = {
+    er: "ER",
+    uml: "UML",
+    dev: "Dev"
+};
+
 const symbolKind = {
     uml: 1,
     erAttribute: 2,
@@ -63,6 +70,7 @@ const symbolKind = {
     text: 6,
     umlLine: 7
 };
+
 const mouseState = {
     empty: 0,                       // empty
     noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
@@ -109,6 +117,7 @@ var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
+var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -433,7 +442,7 @@ function keyDownHandler(e) {
       document.getElementById("drawfreebutton").click();
     } else if(shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == mKey) {
+    } else if(shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
          if(developerModeActive) {
             developerMode(event);
         }
@@ -1895,11 +1904,13 @@ function modeSwitchConfirmed(confirmed) {
     }
 }
 
-function toggleMode(){
-    if(targetMode == "ER"){
+function toggleMode() {
+    if(toolbarState == "ER"){
         switchToolbarTo("UML");
-    } else {
+    } else if (toolbarState == "UML") {
         switchToolbarTo("ER");
+    } else {
+      return;
     }
 }
 
@@ -1910,6 +1921,9 @@ function toggleMode(){
 //------------------------------------------------------------------------------
 
 function switchToolbarTo(target) {
+    if (toolbarState == target) {
+      return;
+    }
     targetMode = target;
     modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
@@ -1930,7 +1944,7 @@ function switchToolbarTo(target) {
 
 var crossER = false;
 function switchToolbarER() {
-    toolbarState = 1;                                                               // Change the toolbar to ER.
+    toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
@@ -1947,7 +1961,7 @@ function switchToolbarER() {
 
 var crossUML = false;
 function switchToolbarUML() {
-    toolbarState = 2;                                                               // Change the toolbar to UML.
+    toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
     switchToolbar('UML');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
@@ -1968,7 +1982,7 @@ function switchToolbarDev(event) {
     if(!developerModeActive){
         return;
     }
-    toolbarState = 3;                                                               // Change the toolbar to DEV.
+    toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
