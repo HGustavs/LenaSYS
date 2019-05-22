@@ -1338,10 +1338,12 @@ function Symbol(kindOfSymbol) {
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
             else if(this.cardinality[0].isCorrectSide) {
+                console.log(this.name, "correct")
                 this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
             else {
+                console.log(this.name, "incorrect")
                 this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
@@ -1652,6 +1654,7 @@ function Symbol(kindOfSymbol) {
     // moveCardinality: Moves the value of the cardinality to avoid overlap with line
     //---------------------------------------------------------------
     this.moveCardinality = function(x1, y1, x2, y2, side) {
+        console.log(this.name, "moveCardinality")
         let boxCorners = this.corners();
         let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
 
@@ -1664,17 +1667,16 @@ function Symbol(kindOfSymbol) {
     										boxCorners.br.x,
     										boxCorners.br.y);
 
-        // Find which box the cardinality number is connected to
-        for(var i = 0; i < diagram.length; i++) {
-            dtlx = diagram[i].corners().tl.x;
-            dtly = diagram[i].corners().tl.y;
-            dbrx = diagram[i].corners().br.x;
-            dbry = diagram[i].corners().br.y;
+        var connectedObjects = this.getConnectedObjects();
+        cardinality.parentBox = connectedObjects[0];
 
-            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
-                cardinality.parentBox = diagram[i];
-                break;
-            }
+        dtlx = connectedObjects[1].corners().tl.x;
+        dtly = connectedObjects[1].corners().tl.y;
+        dbrx = connectedObjects[1].corners().br.x;
+        dbry = connectedObjects[1].corners().br.y;
+
+        if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
+            cardinality.parentBox = connectedObjects[1];
         }
 
 	    // Decide whether x1 and y1 is relevant or x2 and y2
@@ -1688,11 +1690,12 @@ function Symbol(kindOfSymbol) {
 		        if(correctBox.tl.y < y1 && correctBox.br.y > y1) {
 		            cardinality.axis = "Y";
 		        }
+                console.log("AXIS: ", cardinality.axis)
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-13 : x1+13;
-		    cardinality.y = y1 > y2 ? y1-15 : y1+15;
+		    cardinality.x = x1 > x2 ? x1-10 : x1+10;
+		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
@@ -1713,17 +1716,18 @@ function Symbol(kindOfSymbol) {
 		            cardinality.axis = "Y";
 		        }
 		    }
+            console.log("AXIS: ", cardinality.axis)
 
 		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-15 : x2+15;
-		    cardinality.y = y2 > y1 ? y2-15 : y2+15;
+		    cardinality.x = x2 > x1 ? x2-10 : x2+10;
+		    cardinality.y = y2 > y1 ? y2-10 : y2+10;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2+15 : x2-15;
+		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
 		    }
 		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y2 > y1 ? y2+15 : y2-15;
+		        cardinality.y = y2 > y1 ? y2+10 : y2-10;
 		    }
 	    }
     }
