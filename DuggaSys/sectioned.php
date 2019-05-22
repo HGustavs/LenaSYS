@@ -110,6 +110,13 @@
 
 			</table>
 
+			<<?php
+			echo "
+			<script type=\"text/javascript\">
+				document.getElementById('resultsBTN').href = 'resulted.php?cid=2&coursevers=97732';
+			</script>";
+			 ?>
+
 		</div>
 		<!-- Static Top Menu END -->
 
