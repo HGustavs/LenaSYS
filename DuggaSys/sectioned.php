@@ -113,6 +113,7 @@
 			<<?php
 			echo "
 			<script type=\"text/javascript\">
+				// This makes it possible to use the middle-mouse-button on the header alternatives
 				navigatePage('resultsBTN', 'resulted.php');
 				navigatePage('testsBTN', 'duggaed.php');
 				navigatePage('filesBTN', 'fileed.php');
