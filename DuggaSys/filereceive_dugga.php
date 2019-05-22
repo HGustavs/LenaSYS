@@ -141,15 +141,78 @@ if($ha){
 			// Save POST values in an array to loop over them
 			$indexedPOST = array_values($_POST);
 			$postEntries = count(preg_grep("/ts.+_\d+/", array_keys($_POST))) / 4;
+
+			// Get start date of course
+			$query=$pdo->prepare("SELECT startdate FROM vers WHERE cid=:cid AND vers=:vers LIMIT 1;");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':vers', $vers);
+
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading startdate".$error[2];
+			} else {
+				$row = $query->fetch(PDO::FETCH_ASSOC);
+				$startdate = $row["startdate"];
+
+				if ($startdate && $startdate !== 'NULL') {
+					$startdate = substr($startdate, 0, 10);
+				} else {
+					$year = date("Y");
+					$startdate = $year.'-04-01';
+				}
+
+				$weekend1 = date('Y-m-d', strtotime($startdate. ' + 7 days'));
+				$weekend2 = date('Y-m-d', strtotime($startdate. ' + 14 days'));
+				$weekend3 = date('Y-m-d', strtotime($startdate. ' + 21 days'));
+				$weekend4 = date('Y-m-d', strtotime($startdate. ' + 28 days'));
+				$weekend5 = date('Y-m-d', strtotime($startdate. ' + 35 days'));
+				$weekend6 = date('Y-m-d', strtotime($startdate. ' + 42 days'));
+				$weekend7 = date('Y-m-d', strtotime($startdate. ' + 49 days'));
+				$weekend8 = date('Y-m-d', strtotime($startdate. ' + 56 days'));
+				$weekend9 = date('Y-m-d', strtotime($startdate. ' + 63 days'));
+				$weekend10 = date('Y-m-d', strtotime($startdate. ' + 70 days'));
+			}
+ 
 			for($entryIdx = 0; $entryIdx < $postEntries; $entryIdx++) {
 				$date=$indexedPOST[0 + ($entryIdx * 4)];
 				$type=$indexedPOST[1 + ($entryIdx * 4)];
 				$ref=$indexedPOST[2 + ($entryIdx * 4)];
 				$comment=$indexedPOST[3 + ($entryIdx * 4)];
 
-				// Convert date to a DateTime object to calculate the week number
-				$datetime = new DateTime($date);
-				$week = $datetime->format("W");
+				// Derive course week from date
+				 switch (true) {
+					case (($date >= $startdate) && ($date < $weekend1)):
+					$week = 1;
+					break;
+					case (($date >= $weekend1) && ($date < $weekend2)):
+					$week = 2;
+					break;
+					case (($date >= $weekend2) && ($date < $weekend3)):
+					$week = 3;
+					break;
+					case (($date >= $weekend3) && ($date < $weekend4)):
+					$week = 4;
+					break;
+					case (($date >= $weekend4) && ($date < $weekend5)):
+					$week = 5;
+					break;
+					case (($date >= $weekend5) && ($date < $weekend6)):
+					$week = 6;
+					break;
+					case (($date >= $weekend6) && ($date < $weekend7)):
+					$week = 7;
+					break;
+					case (($date >= $weekend7) && ($date < $weekend8)):
+					$week = 8;
+					break;
+					case (($date >= $weekend8) && ($date < $weekend9)):
+					$week = 9;
+					break;
+					case (($date >= $weekend9) && ($date <= $weekend10)):
+					$week = 10;
+					break;
+				} 
 
 				$query = $pdo->prepare("INSERT INTO timesheet(uid, cid, did, vers, moment, day, week, type, reference, comment) VALUES(:uid,:cid,:did,:vers,:moment,:date,:week,:type,:reference,:comment);");
 				$query->bindParam(':uid', $userid);

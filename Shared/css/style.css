@@ -2,7 +2,7 @@
  *                                    Colors                                    *
  * --------------================################================-------------- */
 
- :root {
+:root {
   --color-text-primary: #775886;
   --color-text-secondary: #434343;
   --color-text-header: #fff;
@@ -19,7 +19,7 @@
   --color-primary-hover: #7b5a96;
   --color-primary-light: #927b9e;
   --color-accent: rgb(254, 204, 86);
-  --color-accent-transparent: rgb(254, 204, 86, 0.5);
+  --color-accent-transparent: rgba(254, 204, 86, 0.5);
   --color-accent-hover: #ffd369;
   --color-background: #fff;
   --color-background-2: #ccc;
@@ -155,7 +155,8 @@ h6 {
 
 hr {
   border: 0;
-  border-bottom: 1px dashed var(--color-border-2);;
+  border-bottom: 1px dashed var(--color-border-2);
+  ;
   background: var(--color-border);
 }
 
@@ -193,14 +194,14 @@ p {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
- #buttonDiv {
-   margin-left: 52px;
-   position: fixed;
-   margin-top: -27px;
-   height: 20px;
-   background: var(--color-background);
-   border-left: 1px solid var(--color-border-4);
- }
+#buttonDiv {
+  margin-left: 52px;
+  position: fixed;
+  margin-top: -27px;
+  height: 20px;
+  background: var(--color-background);
+  border-left: 1px solid var(--color-border-4);
+}
 
 .version {
   color: #EFF;
@@ -232,7 +233,6 @@ p {
 
 #content {
   background: var(--color-background);
-  min-height: calc(100vh - 80px);
   margin: 65px 10px 15px 10px;
 }
 
@@ -349,6 +349,7 @@ p {
   .item {
     font-size: 10pt;
   }
+
   .dateSize {
     width: 25%;
     font-size: 10pt;
@@ -393,7 +394,8 @@ p {
   height: 16px;
 }
 
-.iconBox, .fileLink_counter {
+.iconBox,
+.fileLink_counter {
   text-align: center;
   margin: 0;
   padding: 0;
@@ -580,38 +582,40 @@ p {
 
 /*  Statistics List */
 
-#courseList { /* Move up later*/
-    display: flex;
+#courseList {
+  /* Move up later*/
+  display: flex;
 }
 
-#Sectionlistc { /* Move up later*/
+#Sectionlistc {
+  /* Move up later*/
   display: block;
 }
 
- #statisticsList {
+#statisticsList {
   display: flex;
- }
-
- .statistics {
-   background-color: var(--color-primary-light);
-   color: white;
-   width: 36px;
-   min-height: calc(100vh - 122px);
-   box-shadow: 3px 0px 0px #aaa;
-   margin-right: 3px;
-   font-size: 14pt;
- }
-
- .statisticsContent {
-   width: 100%;
-   height: 100%;
-   background-color: var(--color-statistics);
 }
 
-.statisticsInnerBox{
-    margin: 10px 10px 10px 10px;
-    border: 2px solid darkgray;
-    background-color: var(--color-sectioned-table-lo);
+.statistics {
+  background-color: var(--color-primary-light);
+  color: white;
+  width: 36px;
+  min-height: calc(100vh - 122px);
+  box-shadow: 3px 0px 0px #aaa;
+  margin-right: 3px;
+  font-size: 14pt;
+}
+
+.statisticsContent {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-statistics);
+}
+
+.statisticsInnerBox {
+  margin: 10px 10px 10px 10px;
+  border: 2px solid darkgray;
+  background-color: var(--color-sectioned-table-lo);
 }
 
 /* --------------================################================-------------- *
@@ -725,7 +729,7 @@ header td {
 }
 
 .loggedout:hover {
-  background-color: var(--color-red-hover);
+  background-color: var(--color-green);
 }
 
 .loggedin {
@@ -733,7 +737,7 @@ header td {
 }
 
 .loggedin:hover {
-  background-color: var(--color-green-hover);
+  background-color: var(--color-red);
 }
 
 #loginbutton {
@@ -742,7 +746,6 @@ header td {
   width: 50px;
   vertical-align: middle;
   text-align: center;
-  background: var(--color-green);
 }
 
 #div2 {
@@ -832,7 +835,7 @@ header td {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-#variantBox{
+#variantBox {
   max-width: 100%;
   max-height: 100%;
   width: 90%;
@@ -841,20 +844,20 @@ header td {
   flex-direction: column;
 }
 
-#resultpopover{
-  position:fixed;
-  left:16px;
-  top:8px;
-  right:16px;
-  bottom:8px;
-  z-index:9000;
-  box-shadow:2px 2px 4px #000;
-  padding:4px;
+#resultpopover {
+  position: fixed;
+  left: 16px;
+  top: 8px;
+  right: 16px;
+  bottom: 8px;
+  z-index: 9000;
+  box-shadow: 2px 2px 4px #000;
+  padding: 4px;
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
 }
 
-#resultpopoverBox{
+#resultpopoverBox {
   max-width: 100%;
   max-height: 100%;
   width: 80%;
@@ -1093,7 +1096,6 @@ input {
 }
 
 .loginBoxheader {
-  height: 25px;
   background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
@@ -1120,7 +1122,6 @@ input {
   background-color: rgb(199, 80, 80);
   font-family: arial;
   font-weight: bold;
-  height: 21px;
 }
 
 .loginBoxheader div:hover {
@@ -1128,21 +1129,21 @@ input {
 }
 
 .loginBoxbody {
-  background-color:inherit;
+  background-color: inherit;
 }
 
-#variantBody{
+#variantBody {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow:auto;
+  overflow: auto;
 }
 
-#resultpopoverBody{
+#resultpopoverBody {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow:auto;
+  overflow: auto;
 }
 
 .loginBox form {
@@ -1289,20 +1290,20 @@ input {
 
 .application-toolbar h4.label {
   font-size: 11px;
-  font-weight: none;
+  font-weight: normal;
   margin-top: 8px;
   margin-bottom: 0px;
   padding: 0px 4px 0px 4px;
 }
 
-.toolbarArrows{
-  width:20%;
+.toolbarArrows {
+  width: 20%;
   background: var(--color-primary);
   border-radius: 5px;
   cursor: pointer;
 }
 
-#toolbarTypeText{
+#toolbarTypeText {
   height: 20px;
   font-size: 11px;
   color: #c0c0c0;
@@ -1311,16 +1312,16 @@ input {
   padding-top: 15px;
 }
 
-#toolbarLeftArrow{
+#toolbarLeftArrow {
   transform: rotate(-90deg);
   width: 50%;
-  filter:invert(100%);
+  filter: invert(100%);
 }
 
-#toolbarRightArrow{
+#toolbarRightArrow {
   transform: rotate(90deg);
   width: 50%;
-  filter:invert(100%);
+  filter: invert(100%);
 }
 
 .diagramAction {
@@ -1365,7 +1366,7 @@ input {
   padding: 0px 6px;
 }
 
-.menu-drop-down span.drop-down-label{
+.menu-drop-down span.drop-down-label {
   display: block;
   height: 20px;
   line-height: 22px;
@@ -1408,7 +1409,6 @@ input {
 
 .menu-drop-drown,
 .export-drop-down-head {
-  display: relative;
   top: 22px;
 }
 
@@ -1431,7 +1431,7 @@ input {
   padding: 8px 0px 8px 8px;
 }
 
-.drop-down-option{
+.drop-down-option {
   color: rgb(0, 0, 0);
   text-decoration: none;
   display: inline-block;
@@ -1459,7 +1459,7 @@ input {
 
 .drop-down-text:hover {
   background-color: var(--color-border-3);
-  cursor: default ;
+  cursor: default;
 }
 
 .drop-down-item-disabled {
@@ -1468,20 +1468,21 @@ input {
 }
 
 #hotkey-space {
-  position: absolute  !important;
+  position: absolute !important;
   font-size: 11px !important;
-  color: #3d3d3d  !important;
+  color: #3d3d3d !important;
   right: 6px;
   top: 10px;
 }
 
 #hotkey-ctrl {
-  position: absolute  !important;
-  font-size: 11px  !important;
+  position: absolute !important;
+  font-size: 11px !important;
   color: #3d3d3d !important;
   right: 6px;
   top: 55px;
 }
+
 #hotkey-shift {
   position: absolute !important;
   font-size: 11px !important;
@@ -1490,35 +1491,43 @@ input {
   top: 100px;
 }
 
-#hotkey-undo, #hotkey-redo, #hotkey-clear, #hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
+#hotkey-undo,
+#hotkey-redo,
+#hotkey-clear,
+#hotkey-front,
+#hotkey-back,
+#hotkey-developerMode,
+#hotkey-ER,
+#hotkey-UML {
   position: absolute;
   font-size: 11px;
   color: #3d3d3d;
 }
 
 .drop-down-item #hotkey-undo {
-  right: 6px ;
+  right: 6px;
   top: 10px;
 }
 
 .drop-down-item #hotkey-redo {
-  right: 6px ;
+  right: 6px;
   top: 45px;
 }
 
-#hotkey-clear, #hotkey-front {
-  right: 6px ;
+#hotkey-clear,
+#hotkey-front {
+  right: 6px;
   top: 165px;
 }
 
 #hotkey-back {
-  right: 6px ;
+  right: 6px;
   top: 195px;
 }
 
-#hotkey-developerMode{
-    right: 35px;
-    top: 10px;
+#hotkey-developerMode {
+  right: 35px;
+  top: 10px;
 }
 
 #hotkey-ER {
@@ -1664,6 +1673,14 @@ div.submit-button {
   border-radius: 4px;
 }
 
+input.submit-button.resetpw-button {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  float: none;
+  margin: auto;
+  display: block;
+}
+
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
@@ -1753,6 +1770,7 @@ input.hide-moments-button {
 .filePopUp {
   position: relative;
 }
+
 .fileUploadInfo {
   opacity: 0;
   width: 100px;
@@ -1771,8 +1789,8 @@ input.hide-moments-button {
 .fileUploadInfo:after {
   content: "";
   display: block;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid white;
@@ -1785,13 +1803,14 @@ input.hide-moments-button {
   font-size: 14px;
   margin: 0;
 }
+
 .fileUploadInfo p {
   margin: 0;
   font-size: 12px;
   line-height: 2;
 }
 
-#uploadedfile:hover + .fileUploadInfo{
+#uploadedfile:hover+.fileUploadInfo {
   opacity: 1;
 }
 
@@ -1802,6 +1821,7 @@ input.fileed-button {
 }
 
 input.submit-button:hover {
+  transition: 0.2s;
   filter: brightness(1.05);
 }
 
@@ -1814,6 +1834,7 @@ div.submit-button:hover {
   box-shadow: 0 0 0 2px #1e90ff;
   outline: none;
 }
+
 .submit-button::-moz-focus-inner {
   border: 0;
 }
@@ -1860,7 +1881,8 @@ div.submit-button:disabled {
   height: 40px;
 }
 
-.buttonsStyle[data]:hover:after, .diagramAction[data]:hover:after {
+.buttonsStyle[data]:hover:after,
+.diagramAction[data]:hover:after {
   content: attr(data);
   padding: 4px 8px;
   color: #fff;
@@ -1889,7 +1911,7 @@ div.submit-button:disabled {
 
 #moveButton {
   right: 2px;
-  top: 100;
+  top: 100px;
   z-index: 2;
   position: absolute;
   border-radius: 0px;
@@ -1913,11 +1935,13 @@ div.submit-button:disabled {
   padding: 2px;
 }
 
-#undoButton, #redoButton {
+#undoButton,
+#redoButton {
   border: none;
 }
 
-#undoButton img, #redoButton img {
+#undoButton img,
+#redoButton img {
   filter: invert(100%);
   text-align: center;
   margin-left: -15px;
@@ -1930,7 +1954,8 @@ div.submit-button:disabled {
   background: var(--color-primary);
 }
 
-.pressed, .pressed:hover {
+.pressed,
+.pressed:hover {
   background: #FFA500;
 }
 
@@ -2064,7 +2089,7 @@ div.submit-button:disabled {
   height: 30px;
   padding: 5px;
   margin-bottom: 10px;
-  margin-top: -1;
+  margin-top: -1px;
   color: white;
   background-color: var(--color-primary);
   cursor: pointer;
@@ -2118,6 +2143,7 @@ div.submit-button:disabled {
 .list tr {
   height: 48px;
 }
+
 /*
 .innertable {
   background: var(--color-background);
@@ -2177,8 +2203,8 @@ div.submit-button:disabled {
 #dorf {
   padding: 4px;
   border-radius: 2px;
-  display:block;
-  margin:auto;
+  display: block;
+  margin: auto;
 }
 
 #plorf {
@@ -2192,24 +2218,24 @@ div.submit-button:disabled {
 }
 
 .sortableHeading {
-  display:inline !important;
+  display: inline !important;
   cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
-  padding-left:16px;
-  padding-right:16px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 #editpopover {
-  border:1px solid #d7fdd9;
-  box-shadow:2px 2px 2px #434343;
-  position:absolute;
+  border: 1px solid #d7fdd9;
+  box-shadow: 2px 2px 2px #434343;
+  position: absolute;
   background-color: #d7fdd9;
   min-width: 150px;
   padding: 5px;
 }
 
-.popoveredit{
+.popoveredit {
   background-color: transparent;
   border: none;
 }
@@ -2222,7 +2248,7 @@ div.submit-button:disabled {
   transform: translateY(50%);
 }
 
-#input-container{
+#input-container {
   border-bottom: 2px solid #008000;
 }
 
@@ -2230,11 +2256,13 @@ div.submit-button:disabled {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  size: 5;
+  size: 5px;
 }
 
-.list#testTable input, .list#testTable select, .list#testTable label {
-    padding:0px;
+.list#testTable input,
+.list#testTable select,
+.list#testTable label {
+  padding: 0px;
 }
 
 .list tbody tr:nth-child(odd) {
@@ -2370,13 +2398,15 @@ span.arrow {
   /* ie 6/7 */
 }
 
-.arrowComp, #arrowStatisticsClosed {
+.arrowComp,
+#arrowStatisticsClosed {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
 }
 
-.arrowRight, #arrowStatisticsOpen {
+.arrowRight,
+#arrowStatisticsOpen {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
@@ -2412,10 +2442,10 @@ span.arrow {
   vertical-align: text-top;
 }
 
-.deadlineInfo{
-    display:flex;
-    align-content:space-between;
-    width:100%;
+.deadlineInfo {
+  display: flex;
+  align-content: space-between;
+  width: 100%;
 }
 
 /* End DuggaSys Sectioneed*/
@@ -2454,32 +2484,46 @@ span.arrow {
   background-color: var(--color-sectioned-table-lo);
 }
 
-.resultTableCell{
-		margin:2px;
+.resultTableCell {
+  margin: 2px;
 }
 
+.tableCellHighlightning {
+  box-shadow: inset 0px 0px 0px 3px rgba(97, 72, 117, 1) !important;
+}
+
+.tableRowHighlightning {
+  box-shadow: inset 0px 3px 0px 0px rgba(97, 72, 117, 1),
+    inset 0px -3px 0px 0px rgba(97, 72, 117, 1);
+}
+
+.tableColHighlightning {
+  box-shadow: inset 3px 0px 0px 0px rgba(97, 72, 117, 1),
+    inset -3px 0px 0px 0px rgba(97, 72, 117, 1);
+
+}
 .resultTableText {
   margin-left: 3px;
   margin-right: 3px;
   font-size: 13px;
 }
 
-.WriteOutTimesGraded{
+.WriteOutTimesGraded {
   font-weight: bold;
   font-size: 15px;
   margin: 0 auto;
 }
 
 .resultTableNormal {
-  height:70px;
-  align-items:center;
-  display:flex;
+  height: 70px;
+  align-items: center;
+  display: flex;
 }
 
 .resultTableMini {
-  height:25px;
-  align-items:center;
-  display:flex;
+  height: 25px;
+  align-items: center;
+  display: flex;
 }
 
 #resultTable td {
@@ -2489,7 +2533,7 @@ span.arrow {
 }
 
 .resultTable_counter {
-  text-align:center;
+  text-align: center;
 }
 
 .resultTable_counter span {
@@ -2498,7 +2542,7 @@ span.arrow {
 }
 
 #accessTable td {
-	padding: 0px;
+  padding: 0px;
   border-left: 2px solid #dbd0d8;
   border-right: 2px solid #dbd0d8;
 }
@@ -2513,58 +2557,60 @@ span.arrow {
 }
 
 .accessTableText {
-	margin-left: 3px;
-	margin-right: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 .accessTableCell {
-	height:60px;
-	text-align:center;
-	display:table-cell;
-	vertical-align:middle;
-	/* width:220px;  used make the table cell <div> exapnd to the parent td */
+  height: 60px;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  /* width:220px;  used make the table cell <div> exapnd to the parent td */
 }
 
 .accessTable_counter span {
-	margin-left: 5px;
+  margin-left: 5px;
 }
 
 .oldSubmissionIcon {
   height: 20px;
   margin-left: 10px;
-  cursor:pointer;
+  cursor: pointer;
   vertical-align: middle;
 }
 
 #user td {
   padding: 0px;
-  border-right: 3px dashed rgba(97,72,117,0);
-  border-left: 3px dashed rgba(97,72,117,0);
-  border-bottom: 3px dashed rgba(97,72,117,0);
-  border-top: 3px dashed rgba(97,72,117,0);
+  border-right: 3px dashed rgba(97, 72, 117, 0);
+  border-left: 3px dashed rgba(97, 72, 117, 0);
+  border-bottom: 3px dashed rgba(97, 72, 117, 0);
+  border-top: 3px dashed rgba(97, 72, 117, 0);
 }
 
 .tooltip-searchbar {
   font-size: 20px;
   padding: 0 2px;
   position: relative;
-  width:10px;
+  width: 10px;
   cursor: default;
 }
-.tooltip-searchbar-box{
+
+.tooltip-searchbar-box {
   box-sizing: border-box;
   display: none;
   font-size: 13px;
   position: absolute;
   background: #fff;
-  transform: translate(-48%,61%);
+  transform: translate(-48%, 61%);
   border-radius: 5px;
   padding: 5px;
   padding-bottom: 10px;
   line-height: 18px;
   color: black;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
+
 .tooltip-searchbar-box:before {
   display: block;
   content: "";
@@ -2577,6 +2623,7 @@ span.arrow {
   margin: 0 auto;
   transform: translateY(-140%);
 }
+
 .tooltip-searchbar:hover .tooltip-searchbar-box {
   display: inherit;
 }
@@ -2632,8 +2679,9 @@ span.arrow {
   float: right;
   line-height: 30px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
+
 
 #TopMenuStatic .submit-button {
   background-color: var(--color-primary-2);
@@ -2658,7 +2706,7 @@ span.arrow {
 }
 
 #uploadbuttonname .fileed-submit-button {
-  margin:15px 0 18px 0 !important;
+  margin: 15px 0 18px 0 !important;
 }
 
 #feedbackTable table {
@@ -2701,7 +2749,7 @@ span.arrow {
 }
 
 .loginTransparent {
-  display: block;
+  display: flex;
   height: 60px;
   background-color: var(--color-primary);
   text-align: left;
@@ -2717,7 +2765,7 @@ span.arrow {
 }
 
 .loginTransparent p {
-  display: inline-block;
+  display: inherit;
   vertical-align: middle;
   padding-left: 15px;
   color: #fff;
@@ -2751,29 +2799,29 @@ span.arrow {
 }
 
 .fab {
-  position:fixed;
-  width:50px;
-  height:50px;
-  border-radius:25px;
-  box-shadow:0px 2px 5px #888;
-  bottom:35px;
-  right:50px;
-  font-size:24px;
-  text-align:center;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  box-shadow: 0px 2px 5px #888;
+  bottom: 35px;
+  right: 50px;
+  font-size: 24px;
+  text-align: center;
   background-color: var(--color-accent);
   color: var(--color-primary);
-  z-index:4000;
-  border:0;
+  z-index: 4000;
+  border: 0;
   outline: none;
   cursor: pointer;
- }
+}
 
 .fab:hover {
   filter: brightness(103%);
 }
 
 .dugga-pass {
-  background-color: RGBA(100,255,80,0.3);
+  background-color: RGBA(100, 255, 80, 0.3);
 }
 
 .dugga-pending {
@@ -2781,7 +2829,7 @@ span.arrow {
 }
 
 .dugga-pending-late-submission {
-	background-color: RGBA(255, 160, 0, 0.45);
+  background-color: RGBA(255, 160, 0, 0.45);
 }
 
 .dugga-fail {
@@ -2846,7 +2894,7 @@ span.arrow {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow:auto;
+  overflow: auto;
 }
 
 #teacherFeedbackTable {
@@ -2908,8 +2956,8 @@ span.arrow {
   text-overflow: ellipsis;
 }
 
-.checkbox-dugga:nth-child(odd){
-    background-color: #eee;
+.checkbox-dugga:nth-child(odd) {
+  background-color: #eee;
 }
 
 .checkmoment {
@@ -2982,15 +3030,23 @@ span.arrow {
 .dropdown-list-container {
   padding: 8px;
   width: 300px;
-  height: 300px;
-  overflow-y: scroll;
+  max-height: calc(100vh - 100px);
+  height: auto;
   font-size: 12px;
+  overflow-y: auto;
   display: none;
   position: absolute;
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
   margin-top: 10px;
   
+}
+
+#sortOptions {
+  border-bottom:1px solid #888;
+  border-top:1px solid #888;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .dugga-result-div {
@@ -3061,8 +3117,8 @@ span.arrow {
 
 /*this was inline-CSS before, only moved it to the right file*/
 
-.contributionSort{
-  height:40px;
+.contributionSort {
+  height: 90px;
 }
 
 .fumho th {
@@ -3073,27 +3129,38 @@ span.arrow {
 }
 
 .fumho tr:nth-child(odd) {
-    background-color: var(--color-background);
-  }
+  background-color: var(--color-background);
+}
 
 .contribheading {
   background: #FFF8A5;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
-  border-radius: 4px 6px 0px 0px;
+  border-radius: 5px;
   max-width: 400px;
   overflow: hidden;
   margin-top: 8px;
 }
 
 .contribcontent {
-  position: relative;
-  background: #FFF8A5;
-  margin-bottom: 10px;
-  margin-top: 4px;
-  z-index: 0;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
-  padding-left: 8px;
-  width: 400px;
+  -webkit-transition: height 0.2s cubic-bezier(0, 1.4, 0.8,1 );
+ -moz-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ -ms-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ -o-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ transition: height 0.2s cubic-bezier(0,1.4, 0.8, 1);
+ height:0px;
+ overflow:hidden;
+ display: flex;
+ flex-direction: column;
+}
+
+.contribcontent span {
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+}
+
+.contribcontentToggle {
+  height: auto;
 }
 
 .contrib {
@@ -3143,11 +3210,11 @@ table {
 }
 
 .fumho td:first-child {
-  border-left:2px dotted rgba(0,0,0,0.2);
+  border-left: 2px dotted rgba(0, 0, 0, 0.2);
 }
 
 .fumho tr:last-child {
-  border-bottom:2px dotted rgba(0,0,0,0.2);
+  border-bottom: 2px dotted rgba(0, 0, 0, 0.2);
 }
 
 .fumho tr:nth-child(even) {
@@ -3158,12 +3225,13 @@ table {
   background-color: var(--color-background);
 }
 
- /* Styling for circle graph */
+/* Styling for circle graph */
 .circleGraph {
-  width:500px;
-  height:500px;
+  width: 500px;
+  height: 500px;
   position: relative;
 }
+
 #activityInfoBox {
   display: none;
   position: absolute;
@@ -3180,54 +3248,67 @@ table {
   font-family: sans-serif;
   z-index: 99999;
 }
+
 #activityInfoBox span {
   display: block;
   padding: 0px;
   font-weight: bold;
 }
+
 #activityInfoBox .activityInfoEntry {
   display: block;
   padding: 10px;
   font-weight: 100;
   width: 100px;
 }
+
 .circleGraphCircle {
-  stroke:black;
-  stroke-width:1px;
-  fill:white;
+  stroke: black;
+  stroke-width: 1px;
+  fill: white;
 }
+
 #circleGraphHours {
   text-anchor: middle;
 }
+
 .circleGraphBigline {
   fill: black;
-  stroke:black;
-  stroke-width:2px;
+  stroke: black;
+  stroke-width: 2px;
 }
+
 .circleGraphLine {
   fill: gray;
-  stroke:gray;
-  stroke-width:1px;
+  stroke: gray;
+  stroke-width: 1px;
 }
+
 .activitymarker {
   stroke-width: 0.5px;
   stroke: black;
 }
+
 rect[class*="activitymarker"]:hover {
   fill: #8AC926;
 }
+
 .activitymarker.commit {
   fill: #2AB7CA;
 }
+
 .activitymarker.comment {
   fill: #6A4C93;
 }
+
 .activitymarker.issue {
   fill: #FE4A49;
 }
+
 .activitymarker.mixed {
   fill: url("#mixedActivityGradient");
 }
+
 .activityPolygon {
   opacity: 0.8;
   fill: #FED766;
@@ -3249,9 +3330,9 @@ rect[class*="activitymarker"]:hover {
 
 /*end, styling for contribution.php*/
 #sortingBar {
-    width: 50%;
-    position:absolute;
-    margin-top: 5px;
+  width: 50%;
+  position: absolute;
+  margin-top: 5px;
 }
 
 .sortingBtn {
@@ -3260,21 +3341,21 @@ rect[class*="activitymarker"]:hover {
 }
 
 .sortingBtn input {
-    font-size: 12px;
-    margin-left: 10px;
-    position: relative;
-    bottom: 2px;
+  font-size: 12px;
+  margin-left: 10px;
+  position: relative;
+  bottom: 2px;
 }
 
 /* styling for dropdown and toggle all button in accessed */
-#toggleAllButton {
-  background-color: #614875;
+.dropdown-button {
+  background-color: var(--color-primary);
   color: white;
   width: 100px;
   cursor: pointer;
 }
 
-#toggleAllButton:hover {
+.dropdown-button:hover {
   background-color: #7b5a96;
 }
 
@@ -3283,16 +3364,21 @@ rect[class*="activitymarker"]:hover {
 }
 
 /* styling for the search bars in resulted, accessed, duggaed, filed */
-#searchBar, #testSearchContainer {
+#searchBar,
+#testSearchContainer {
   padding-left: 20px;
 }
 
-#searchinput, #duggaSearch, #searchinputMobile {
+#searchinput,
+#duggaSearch,
+#searchinputMobile {
   padding: 0 0 0 2px;
   height: 20px;
 }
 
-#searchBar, #searchbutton, #searchbuttonMobile {
+#searchBar,
+#searchbutton,
+#searchbuttonMobile {
   position: relative;
   width: 26px;
   height: 25px;
@@ -3305,7 +3391,8 @@ rect[class*="activitymarker"]:hover {
   margin-right: 2px;
 }
 
-#searchBar img, #testSearchContainer img {
+#searchBar img,
+#testSearchContainer img {
   margin: 0px;
 }
 
@@ -3589,6 +3676,7 @@ ul.hamburgerList button.menuButton {
   -moz-transition: opacity 300ms, width 300ms, margin 300ms;
   -o-transition: opacity 300ms, width 300ms, margin 300ms;
 }
+
 /* --------------================################================-------------- *
   *                        FILEED TABLE STYLING                         *
 * --------------================################================-------------- */
@@ -3601,18 +3689,26 @@ ul.hamburgerList button.menuButton {
 }
 */
 
-#sortingDiv{
-    height: 30px;
-    /*width: 80%;*/
-    margin: auto;
-    margin-top:20px;
-    min-width: 1050px;
+#sortingDiv {
+  height: 30px;
+  /*width: 80%;*/
+  margin: auto;
+  margin-top: 20px;
+  min-width: 1050px;
 }
-.fileLink-editor, .fileLink-trashcan, .fileLink-uploaddate, .fileLink-filesize, .fileLink-kind, .fileLink-extension{
-    text-align: center;
+
+.fileLink-editor,
+.fileLink-trashcan,
+.fileLink-uploaddate,
+.fileLink-filesize,
+.fileLink-kind,
+.fileLink-extension {
+  text-align: center;
 }
-.fileLink-editor, .fileLink-trashcan{
-    width:25px;
+
+.fileLink-editor,
+.fileLink-trashcan {
+  width: 25px;
 }
 
 .fileLink-filename {
@@ -3629,36 +3725,41 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (min-width: 1085px),
 only screen and (min-device-width: 1085px) {
-  #TopMenuStatic{
+  #TopMenuStatic {
     position: fixed;
     top: 3px;
     left: 100px;
+    right: 100px;
     z-index: 5001;
   }
 }
 
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
-     #sortingBar {
-        width: 135px;
-        position: relative;
-        top: 25px;
-    }
-    #sortingDiv{
-        height:130px;
-        width: 100%;
-        margin:0;
-        margin-top: 0px;
-        min-width: 375px;
-    }
-    #fileLink{
-        /*min-width: 375px;*/
-    }
-    #fileLink_tbl{
-        margin: 0 !important;
-        width: 100%;
-        min-width: 0px;
-    }
+  #sortingBar {
+    width: 135px;
+    position: relative;
+    top: 25px;
+  }
+
+  #sortingDiv {
+    height: 130px;
+    width: 100%;
+    margin: 0;
+    margin-top: 0px;
+    min-width: 375px;
+  }
+
+  #fileLink {
+    /*min-width: 375px;*/
+  }
+
+  #fileLink_tbl {
+    margin: 0 !important;
+    width: 100%;
+    min-width: 0px;
+  }
+
   /* moment date and course version */
   .dateField {
     opacity: 0.0;
@@ -3669,6 +3770,7 @@ only screen and (max-device-width: 1085px) {
     -moz-transition: opacity 300ms, width 300ms;
     -o-transition: opacity 300ms, width 300ms;
   }
+
   .courseVersionField {
     margin-right: 0px;
     opacity: 0.0;
@@ -3683,8 +3785,11 @@ only screen and (max-device-width: 1085px) {
 
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 800px) {
-	#addElement{display:none;}
-   table.navheader td.contribution{
+  #addElement {
+    display: none;
+  }
+
+  table.navheader td.contribution {
     margin-right: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
@@ -3699,13 +3804,15 @@ only screen and (max-device-width: 800px) {
 
 @media only screen and (max-width: 768px),
 only screen and (max-device-width: 768px) {
+
   .hideAll,
   .showAll {
     -webkit-transform: scale(0.7, 0.7);
     transform: scale(0.7, 0.7);
     left: 10px;
   }
-  #TopMenuStatic{
+
+  #TopMenuStatic {
     position: static;
     top: 66px;
     left: 0px;
@@ -3740,93 +3847,119 @@ only screen and (max-device-width: 768px) {
     display: none;
   }
 
-.fileLink_counter {
+  .fileLink_counter {
     font-size: 16px;
     color: var(--color-text-list);
-}
-.fileLink-editor, .fileLink-trashcan{
-    width:initial;
-}
-    /* Force table to not be like tables anymore */
-    #fileLink_body{
-		display: block;
-	}
+  }
 
-    #fileLink_tblhead{
-        display: none;
-    }
+  .fileLink-editor,
+  .fileLink-trashcan {
+    width: initial;
+  }
 
-    #fileLink_tbl_mh[style]{
-        display: none !important;
-    }
+  /* Force table to not be like tables anymore */
+  #fileLink_body {
+    display: block;
+  }
 
-    #fileLink_body tr[style]{
-        border: 1px solid var(--color-border-2) !important;
-        display: block !important;
-    }
-
-  #fileLink_tblhead{
+  #fileLink_tblhead {
     display: none;
   }
 
-  #fileLink_tbl_mh[style]{
+  #fileLink_tbl_mh[style] {
     display: none !important;
   }
 
-  #fileLink_body tr[style]{
+  #fileLink_body tr[style] {
     border: 1px solid var(--color-border-2) !important;
     display: block !important;
   }
 
-  #fileLink_tblhead{
+  #fileLink_tblhead {
     display: none;
   }
 
-  #fileLink_tbl_mh[style]{
-    display: none ;
+  #fileLink_tbl_mh[style] {
+    display: none !important;
   }
 
-  #fileLink_body tr[style]{
-    border: 1px solid #ccc ;
-    display: block ;
+  #fileLink_body tr[style] {
+    border: 1px solid var(--color-border-2) !important;
+    display: block !important;
   }
 
-  #fileLink_body>tr>td{
-		/* Behave  like a "row" */
+  #fileLink_tblhead {
+    display: none;
+  }
+
+  #fileLink_tbl_mh[style] {
+    display: none;
+  }
+
+  #fileLink_body tr[style] {
+    border: 1px solid #ccc;
     display: block;
-	 border: none;
-	 border-bottom: 1px solid #eee;
+  }
+
+  #fileLink_body>tr>td {
+    /* Behave  like a "row" */
+    display: block;
+    border: none;
+    border-bottom: 1px solid #eee;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 
-	}
+  }
 
-	#fileLink_body>tr>td:before {
-		/* Top/left values mimic padding */
+  #fileLink_body>tr>td:before {
+    /* Top/left values mimic padding */
     display: inline-block;
-		top: 6px;
-		left: 6px;
-		width: 20%;
-		padding-right: 28%;
-		white-space: nowrap;
+    top: 6px;
+    left: 6px;
+    width: 20%;
+    padding-right: 28%;
+    white-space: nowrap;
     font-weight: bold;
     font-size: 16px;
-    color:#000000;
-	}
+    color: #000000;
+  }
 
-    /*
+  /*
 	Label the data
 	*/
-	#fileLink_body>tr>td:nth-of-type(1):before { content: "Number: "; }
-  #fileLink_body>tr>td:nth-of-type(2):before { content: "File name: "; }
-	#fileLink_body>tr>td:nth-of-type(3):before { content: "Exstension: "; }
-  #fileLink_body>tr>td:nth-of-type(4):before { content: "Kind: "; }
-	#fileLink_body>tr>td:nth-of-type(5):before { content: "Size: "; }
-	#fileLink_body>tr>td:nth-of-type(6):before { content: "Upload date: "; }
-	#fileLink_body>tr>td:nth-of-type(7):before { content: "Edit: "; }
-	#fileLink_body>tr>td:nth-of-type(8):before { content: "Trash: "; }
+  #fileLink_body>tr>td:nth-of-type(1):before {
+    content: "Number: ";
+  }
+
+  #fileLink_body>tr>td:nth-of-type(2):before {
+    content: "File name: ";
+  }
+
+  #fileLink_body>tr>td:nth-of-type(3):before {
+    content: "Exstension: ";
+  }
+
+  #fileLink_body>tr>td:nth-of-type(4):before {
+    content: "Kind: ";
+  }
+
+  #fileLink_body>tr>td:nth-of-type(5):before {
+    content: "Size: ";
+  }
+
+  #fileLink_body>tr>td:nth-of-type(6):before {
+    content: "Upload date: ";
+  }
+
+  #fileLink_body>tr>td:nth-of-type(7):before {
+    content: "Edit: ";
+  }
+
+  #fileLink_body>tr>td:nth-of-type(8):before {
+    content: "Trash: ";
+  }
 }
 
 @media only screen and (max-width: 860px),
@@ -3840,10 +3973,12 @@ only screen and (max-device-width: 860px) {
     -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
     -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
   }
+
   ul.hamburgerList {
     display: block;
     height: 13px;
   }
+
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
@@ -3851,13 +3986,15 @@ only screen and (max-device-width: 860px) {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
+
   table.navheader div.access {
     pointer-events: none;
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
+
   ul.hamburgerList li.access {
     pointer-events: auto;
     display: block;
@@ -3879,13 +4016,15 @@ only screen and (max-device-width: 790px) {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
+
   table.navheader div.files {
     pointer-events: none;
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
+
   ul.hamburgerList li.files {
     pointer-events: auto;
     display: block;
@@ -3900,6 +4039,7 @@ only screen and (max-device-width: 790px) {
 
 @media only screen and (max-width: 670px),
 only screen and (max-device-width: 670px) {
+
   table.navheader td.results,
   table.navheader td.tests {
     margin-right: 0px;
@@ -3908,14 +4048,16 @@ only screen and (max-device-width: 670px) {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
+
   table.navheader div.results,
   table.navheader div.tests {
     pointer-events: none;
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
+
   ul.hamburgerList li.results,
   ul.hamburgerList li.tests {
     pointer-events: auto;
@@ -3936,16 +4078,19 @@ only screen and (max-device-width: 670px) {
 
 @media only screen and (max-width: 530px),
 only screen and (max-device-width: 530px) {
+
   .hideAll,
   .showAll {
     -webkit-transform: scale(0.6, 0.6);
     transform: scale(0.6, 0.6);
     left: 4px;
   }
+
   .loginBox {
     /*top: 8%;
     left: 10%;*/
   }
+
   #cookiemsg {
     background-color: var(--color-accent);
     z-index: 1000;
@@ -3957,6 +4102,7 @@ only screen and (max-device-width: 530px) {
     display: flex;
     text-align: center;
   }
+
   #Sectionlist .course {
     font-size: 16px;
   }
@@ -3966,15 +4112,18 @@ only screen and (max-device-width: 530px) {
   }
 
   /* Mobile view resulted filter / search */
-  #searchBarMobile, #tooltip-mobile {
+  #searchBarMobile,
+  #tooltip-mobile {
     display: block;
   }
 
-  #searchBar, .tooltip-searchbar {
+  #searchBar,
+  .tooltip-searchbar {
     display: none;
   }
 
-  #searchBarMobile, #searchbuttonMobile {
+  #searchBarMobile,
+  #searchbuttonMobile {
     width: 24px;
     height: 22px;
     margin-top: 10px;
@@ -4012,17 +4161,19 @@ only screen and (max-device-width: 530px) {
 
   .tooltip-searchbar-box {
     transform: translate(-10%, 30%);
-    box-shadow: 0 0px 17px 0 rgba(0,0,0,0.5);
+    box-shadow: 0 0px 17px 0 rgba(0, 0, 0, 0.5);
   }
 
   .tooltip-searchbar-box:before {
     margin: 0;
   }
+
   /* Mobile resulted end */
 }
 
 @media only screen and (max-width: 480px),
 only screen and (max-device-width: 480px) {
+
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -4031,6 +4182,7 @@ only screen and (max-device-width: 480px) {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
+
   table.navheader div.tests,
   table.navheader div.results {
     pointer-events: none;
@@ -4039,6 +4191,7 @@ only screen and (max-device-width: 480px) {
     -moz-transition: opacity 0.5s;
     -o-transition: opacity 0.5s;
   }
+
   ul.hamburgerList li.tests,
   ul.hamburgerList li.results {
     pointer-events: auto;
@@ -4046,16 +4199,19 @@ only screen and (max-device-width: 480px) {
     height: 26px;
     opacity: 1.0;
   }
+
   table.navheader input.hamburger {
     position: absolute;
     top: 66px;
     right: 5px;
   }
+
   table.navheader div.hamburger {
     position: absolute;
     top: 64px;
     right: 10px;
   }
+
   table.navheader div.hamburgerMenu {
     right: 10px;
     top: 110px;
@@ -4093,6 +4249,10 @@ only screen and (max-device-width: 320px) {
 
 #nametext {
   padding: 2px 0px 2px 10px;
+}
+
+#noAccessMessage {
+  padding: 5px;
 }
 
 /* Is used to style a Select-box in diagram.php. */
@@ -4176,7 +4336,7 @@ only screen and (max-device-width: 320px) {
   left: -20px;
 }
 
-#zoomDecrease:hover + .tooltiptextDec {
+#zoomDecrease:hover+.tooltiptextDec {
   visibility: visible;
 }
 
@@ -4214,7 +4374,7 @@ only screen and (max-device-width: 320px) {
   bottom: 100%;
 }
 
-#zoomIncrease:hover + .tooltiptextInc{
+#zoomIncrease:hover+.tooltiptextInc {
   visibility: visible;
 }
 
@@ -4228,14 +4388,21 @@ only screen and (max-device-width: 320px) {
 
 /* The slider itself */
 .zoomSlider {
-  -webkit-appearance: none;  /* Override default CSS styles */
+  -webkit-appearance: none;
+  /* Override default CSS styles */
   appearance: none;
-  width: 90%; /* Full-width */
-  height: 5px; /* Specified height */
-  background: #d3d3d3;  /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 1; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  width: 90%;
+  /* Full-width */
+  height: 5px;
+  /* Specified height */
+  background: #d3d3d3;
+  /* Grey background */
+  outline: none;
+  /* Remove outline */
+  opacity: 1;
+  /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s;
+  /* 0.2 seconds transition on hover */
   transition: opacity .2s;
 }
 
@@ -4250,22 +4417,31 @@ only screen and (max-device-width: 320px) {
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 .zoomSlider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none;
+  /* Override default look */
   appearance: none;
-  width: 15px; /* Set a specific slider handle width */
-  height: 15px; /* Slider handle height */
+  width: 15px;
+  /* Set a specific slider handle width */
+  height: 15px;
+  /* Slider handle height */
   border-radius: 50%;
-  background: var(--color-primary);  /*Purple background */
-  cursor: pointer; /* Cursor on hover */
+  background: var(--color-primary);
+  /*Purple background */
+  cursor: pointer;
+  /* Cursor on hover */
 }
 
 .zoomSlider::-moz-range-thumb {
   opacity: 1;
-  width: 15px; /* Set a specific slider handle width */
-  height: 15px; /* Slider handle height */
+  width: 15px;
+  /* Set a specific slider handle width */
+  height: 15px;
+  /* Slider handle height */
   border-radius: 50%;
-  background: var(--color-primary); /* Purple background */
-  cursor: pointer; /* Cursor on hover */
+  background: var(--color-primary);
+  /* Purple background */
+  cursor: pointer;
+  /* Cursor on hover */
 }
 
 /* Style for the div that presents the coordinants and zoomvalue in diagram */
@@ -4360,6 +4536,7 @@ only screen and (max-device-width: 320px) {
   z-index: 1;
   touch-action: none;
 }
+
 .fixed-action-button.sectioned {
   right: 75px;
 }
@@ -4398,18 +4575,19 @@ only screen and (max-device-width: 320px) {
 /* Large FAB button */
 
 .fab-btn-lg {
-    width: 56px;
-    height: 56px;
-    line-height: 56px;
-    background-color: var(--color-accent);
-    color: var(--color-primary);
-    font-size: 30px;
-    vertical-align: middle;
+  width: 56px;
+  height: 56px;
+  line-height: 56px;
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  font-size: 30px;
+  vertical-align: middle;
 }
 
 .fab-btn-lg:hover {
   background-color: #ffd369;
 }
+
 /* FAB bubble list container */
 
 .fab-btn-list {
@@ -4616,33 +4794,33 @@ only screen and (max-device-width: 320px) {
  *                               Markdown preview                              *
  * --------------================################================-------------- */
 .previewWindowContainer {
-    background-color: rgba(0, 0, 0, 0.6);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 8000;
-    display: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8000;
+  display: none;
 }
 
 
- .previewWindow {
-    height: 89%;
-    width: 95%;
-    margin: 0px auto;
-    border: solid var(--color-border-4);
-    background-color: var(--color-background-4);
-    box-shadow: 0px 5px 10px grey;
-    z-index: 12000;
-    display: none;
-    left: 0;
-    right: 0;
-    top: 5%;
-    position: fixed;
+.previewWindow {
+  height: 89%;
+  width: 95%;
+  margin: 0px auto;
+  border: solid var(--color-border-4);
+  background-color: var(--color-background-4);
+  box-shadow: 0px 5px 10px grey;
+  z-index: 12000;
+  display: none;
+  left: 0;
+  right: 0;
+  top: 5%;
+  position: fixed;
 }
 
-.markdownPart{
+.markdownPart {
   height: 100%;
 }
 
@@ -4655,12 +4833,15 @@ only screen and (max-device-width: 320px) {
   margin: 2% 1% 1% 1%;
   float: left;
 }
+
 #markset {
-    height: 93%;
+  height: 93%;
 }
+
 #markPrevSet {
-    height:93%;
+  height: 93%;
 }
+
 .markdownPrev {
   border: solid var(--color-border-4);
   width: 56%;
@@ -4671,7 +4852,7 @@ only screen and (max-device-width: 320px) {
 }
 
 #editForm {
-  height:100%;
+  height: 100%;
 }
 
 .save-close-button-md {
@@ -4692,7 +4873,7 @@ only screen and (max-device-width: 320px) {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-legend{
+legend {
   display: block;
   padding-left: 1.55%;
   padding-right: 1.55%;
@@ -4700,8 +4881,8 @@ legend{
 }
 
 #markPrev {
-    padding-left: 0%;
-    padding-right: 0%;
+  padding-left: 0%;
+  padding-right: 0%;
 }
 
 .optionButtons {
@@ -4711,6 +4892,7 @@ legend{
   height: 40px;
   width: 355px;
 }
+
 .prevSpan {
   max-width: 100%;
   padding: 10px;
@@ -4740,21 +4922,25 @@ legend{
   padding: 0px 5px 0px 5px;
   line-height: 25px;
 }
+
 .markText {
-  height:135%;
-  width:92%;
+  height: 135%;
+  width: 92%;
 }
+
 .markTextPrev {
   height: 100%;
 }
+
 #mrkdwntxt {
   resize: none;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   margin: 2%;
   word-wrap: break-word;
   overflow-y: scroll;
 }
+
 textarea#mrkdwntxt {
   width: 100%;
   height: 60%;
@@ -4773,7 +4959,7 @@ textarea#mrkdwntxt {
   cursor: pointer;
   margin-left: 6.75%;
   position: absolute;
-  margin-top:0%;
+  margin-top: 0%;
 }
 
 #lists {
@@ -4784,51 +4970,59 @@ textarea#mrkdwntxt {
   position: absolute;
   margin-top: -0.3%;
 }
+
 #codeBlockText {
-    cursor: pointer;
-    margin-left: 16.75%;
-    position: absolute;
-    margin-top: -0.55%
+  cursor: pointer;
+  margin-left: 16.75%;
+  position: absolute;
+  margin-top: -0.55%
 }
+
 #quoteText {
-    cursor: pointer;
-    margin-left: 21.75%;
-    font-size: 25px;
-    position: absolute;
-    margin-top:-0.65%;
+  cursor: pointer;
+  margin-left: 21.75%;
+  font-size: 25px;
+  position: absolute;
+  margin-top: -0.65%;
 }
+
 #img {
-    cursor: pointer;
-    margin-left: 3.75%;
+  cursor: pointer;
+  margin-left: 3.75%;
 }
+
 #insert-photo {
-    position: absolute;
-    margin-left: 23%;
-    margin-top: -0.75%;
+  position: absolute;
+  margin-left: 23%;
+  margin-top: -0.75%;
 }
+
 #link {
-    cursor: pointer;
-    margin-left: 14%;
+  cursor: pointer;
+  margin-left: 14%;
 }
 
 #linkFabBtnImgPrev {
-    position: absolute;
-    margin-left: 32.75%;
-    margin-top: -0.75%;
-    filter: invert(100%);
+  position: absolute;
+  margin-left: 32.75%;
+  margin-top: -0.75%;
+  filter: invert(100%);
 }
-.selectHeader > span {
-    display: block;
-    cursor: pointer;
-    color: var(--color-text-list);
-    background-color: var(--color-background);
+
+.selectHeader>span {
+  display: block;
+  cursor: pointer;
+  color: var(--color-text-list);
+  background-color: var(--color-background);
 }
-.selectHeader > span:hover {
-    background-color: var(--color-background-4);
+
+.selectHeader>span:hover {
+  background-color: var(--color-background-4);
 }
+
 #headerType1 {
-    font-size: 13px;
-    padding: 5px 7px 0px 3px;
+  font-size: 13px;
+  padding: 5px 7px 0px 3px;
 }
 
 #headerType2 {
@@ -4861,7 +5055,7 @@ textarea#mrkdwntxt {
 }
 
 .show-dropdown-content {
-    display: block;
+  display: block;
 }
 
 #select-header {
@@ -4878,23 +5072,28 @@ textarea#mrkdwntxt {
   .previewWindow {
     height: 89%;
   }
+
   .markdown {
     height: 38%;
     width: 97%;
     position: relative;
     float: left;
   }
+
   .markdownPrev {
     height: 38%;
     width: 97%;
     float: left;
   }
+
   .markText {
-    height:100%;
+    height: 100%;
   }
+
   .optionButtons {
     top: 686px;
   }
+
   .save-close-button-md {
     margin-top: 15px;
   }
@@ -4904,7 +5103,7 @@ textarea#mrkdwntxt {
 
 .modeSwitchDialog {
   display: none;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .modeSwitchContainer {
@@ -4918,7 +5117,7 @@ textarea#mrkdwntxt {
 /* Composite error message dialog */
 .errorMessageDialog {
   display: none;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .messageContainer {
@@ -5013,7 +5212,7 @@ textarea#mrkdwntxt {
  *                               Edit file preview                              *
  * --------------================################================-------------- */
 .markdown-icons {
-  cursor:pointer;
+  cursor: pointer;
   width: 24px;
   height: 24px;
   text-align: center;
@@ -5021,7 +5220,7 @@ textarea#mrkdwntxt {
   vertical-align: middle;
 }
 
-.markdown-icon-div{
+.markdown-icon-div {
   display: flex;
 }
 
@@ -5033,7 +5232,8 @@ textarea#mrkdwntxt {
   filter: invert(100%);
 }
 
-#imgIcon, #headerIcon {
+#imgIcon,
+#headerIcon {
   margin-left: 4px;
 }
 
@@ -5096,7 +5296,7 @@ textarea#mrkdwntxt {
   width: 355px;
 }
 
-.save-close-button-fe{
+.save-close-button-fe {
   border-radius: 4px;
   background-color: var(--color-primary);
   border: 0px;
@@ -5122,10 +5322,10 @@ textarea#mrkdwntxt {
   width: 100%;
   height: 100%;
   margin-left: -9px;
-  margin-top:20px;
+  margin-top: 20px;
 }
 
-textarea#filecont{
+textarea#filecont {
   width: 99%;
   height: 100%;
   display: block;
@@ -5149,14 +5349,14 @@ textarea#filecont{
 /* --------------================################================-------------- *
  *                           codeviewer - Loader                                *
  * --------------================################================-------------- */
- #loader {
+#loader {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   z-index: 9999;
-  background: url('../icons/loadingJS.gif')  50% 50% no-repeat rgb(93, 93, 93);
+  background: url('../icons/loadingJS.gif') 50% 50% no-repeat rgb(93, 93, 93);
 }
 
 /* --------------================################================-------------- *
@@ -5192,7 +5392,9 @@ textarea#filecont{
 }
 
 /*  Preview, Edit and Delete columns  */
-.variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
+.variant-arrowVariant,
+.variant-cogwheelVariant,
+.variant-trashcanVariant {
   width: 25px;
 }
 
@@ -5216,14 +5418,14 @@ textarea#filecont{
   }
 }
 
-.flexwrapper{
-    display:flex;
-    justify-content: space-between;
-    align-items: flex-start;
+.flexwrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .active-variant {
-    background-color: var(--color-accent) !important;
+  background-color: var(--color-accent) !important;
 }
 
 /* Styling for timesheet table */
@@ -5232,53 +5434,70 @@ textarea#filecont{
   border-collapse: separate;
   border-spacing: 0;
 }
+
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
 }
+
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
 }
-.tsTable td, .tsTable th {
+
+.tsTable td,
+.tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
+
 .tsTable thead {
   background: var(--color-primary);
   color: white;
 }
+
 .tsTable th {
   padding: 10px;
 }
-.tsTable tbody, .tsTable tfoot {
+
+.tsTable tbody,
+.tsTable tfoot {
   text-align: center;
 }
+
 .tsTable td {
   padding: 5px 10px 5px 10px;
 }
+
 .tsTable select {
   height: 30px;
   padding: 3px 0px 3px 5px;
   width: 150px;
 }
+
 .tsTable input {
   padding: 5px;
 }
+
 .tsTable tfoot {
   background: var(--color-background-3);
 }
+
 .tsTable tfoot:hover {
   background: #7B5A96;
 }
+
 .tsTable tfoot td {
   padding: 0;
 }
+
 .tsTableDeleteCell {
-  border-radius: 0px 5px 5x 0px;
+  border-radius: 0px 5px 5px 0px;
   -moz-border-radius: 0px 5px 5px 0px;
   -webkit-border-radius: 0px 5px 5px 0px;
 }
+
 .tsTableDeleteCell:hover {
   cursor: pointer;
 }
+
 .newRowButton {
   display: block;
   width: 100%;
@@ -5288,9 +5507,11 @@ textarea#filecont{
   background: var(--color-primary);
   color: white;
 }
-.newRowButton:hover{
+
+.newRowButton:hover {
   background: #7B5A96;
 }
+
 #tsSubmit {
   background: var(--color-primary);
   color: white;
@@ -5300,17 +5521,36 @@ textarea#filecont{
   border: 2px solid #614875;
   padding: 4px 8px 4px 8px;
 }
+
 #tsSubmit:hover {
   background: var(--color-primary);
   color: #fff;
   border: 2px solid var(--color-primary);
 }
 
-.previewTable tr:nth-child(even){
+.previewTable tr:nth-child(even) {
   background-color: #dad8db;
 }
 
-.resultedbuttons{
+.list td.personalRankTable-grpranking,
+.list td.personalRankTable-rank {
+  padding: 0;
+}
+
+.personalRankTable-grpranking div,
+.personalRankTable-rank div {
+  height: 48px;
+  width: 100%;
+}
+
+.personalRankTable-grpranking div div,
+.personalRankTable-rank div div {
+  display: table-cell;
+  padding-left: 8px;
+  vertical-align: middle;
+}
+
+.resultedbuttons {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 20px 2px 4px 2px;
   padding-left: 10px;
@@ -5326,6 +5566,6 @@ textarea#filecont{
   cursor: pointer;
 }
 
-.resultedbuttons:hover{
+.resultedbuttons:hover {
   filter: brightness(1.2);
 }

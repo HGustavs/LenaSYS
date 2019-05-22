@@ -606,6 +606,21 @@ function returnedSection(data) {
 
     }
 
+    if (data['studentteacher']) {
+      // Show FAB / Menu
+      document.getElementById("TopMenuStatic").style.display = "Block";
+      document.getElementById("FABStatic").style.display = "Block";
+      document.querySelector("td.results.menuButton").style.display = "none";
+      document.querySelector("td.tests.menuButton").style.display = "none";
+      document.querySelector("td.access.menuButton").style.display = "none";
+      document.querySelector(".course-dropdown-div").style.display = "none";
+      document.querySelector("td.editVers").style.display = "none";
+      document.querySelector("td.newVers").style.display = "none";
+
+      // Show addElement Button
+      document.getElementById("addElement").style.display = "Block";
+    }
+
     // hide som elements if to narrow
     var hiddenInline = "";
     var showInline = true;
@@ -911,7 +926,7 @@ function returnedSection(data) {
         }
 
         // Cog Wheel
-        if (data['writeaccess']) {
+        if (data['writeaccess'] || data['studentteacher']) {
           str += "<td style='width:32px;' ";
 
           if (itemKind === 0) str += "class='header" + hideState + "' ";

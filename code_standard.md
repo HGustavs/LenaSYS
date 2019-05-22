@@ -11,7 +11,7 @@
 + Text that uses <-- are used for commenting the coding style only, and are not part of the code nor the comments in the file
 + three periods ... denotes any section of random code
 + this file contains coding style for both javascript and php
-+ We use tabs rather than space and each tab corresponds to 2 spaces to view properly on the web add ts parameter https://github.com/HGustavs/LenaSYS/blob/master/code_standard.js?ts=2
++ We use tabs rather than space and each tab corresponds to 2 spaces to view properly on the web add ts parameter https://github.com/HGustavs/LenaSYS/blob/master/code_standard.md?ts=2
 
 ``` javascript
 /********************************************************************************

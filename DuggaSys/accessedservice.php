@@ -39,6 +39,7 @@ $gid = getOP('gid');
 $queryResult = 'NONE!';
 $prop=getOP('prop');
 $val=getOP('val');
+$access = false;
 
 $debug="NONE!";
 
@@ -46,10 +47,17 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$uid." ".$username." ".$newusers;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php",$userid,$info);
 
+
+if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
+	$hasAccess = true;
+} else {
+	$hasAccess = false;
+} 
+
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
-if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+if(checklogin() && $hasAccess) {
 
 	if(strcmp($opt,"UPDATE")==0){
 
@@ -167,8 +175,6 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
               $userquery = $pdo->prepare("SELECT uid FROM user WHERE ssn=:ssn");
               $userquery->bindParam(':ssn', $ssn);
 
-							echo $ssn." ".$userquery->execute() ." ". $userquery->rowCount()." ".$user[3]."<br>";
-
               if ($userquery->execute() && $userquery->rowCount() <= 0) {
 
                   $firstname = $user[1];
@@ -177,7 +183,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                   $saveemail = $user[3];
                   $regstatus = $user[count($user)-1];
 
-                  if(strcmp($saveemail,"UNK")!==0){
+                  if($saveemail){
                       $username = explode('@', $saveemail)[0];
                   }else{
                       $username=makeRandomString(6);
@@ -217,13 +223,22 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 											$stmt->bindParam(':password', $rnd);
 											$stmt->bindParam(':className', $className);
 
-											if(!$stmt->execute()) {
-												$error=$stmt->errorInfo();
-												$debug.="Error updating entries\n".$error[2];
-												$debug.="   ".$username."Does not Exist \n";
-												$debug.=" ".$uid;
+											try {
+												if(!$stmt->execute()) {
+													$error=$stmt->errorInfo();
+													$debug.="Error updating entries\n".$error[2];
+													$debug.="   ".$username."Does not Exist \n";
+													$debug.=" ".$uid;
+												}
+												$uid=$pdo->lastInsertId();
+											} catch (PDOException $e) {
+												if ($e->errorInfo[1] == 1062) {
+													$debug="Duplicate SSN or Username";
+												} else {
+													$debug="Error updating entries\n".$error[2];
+												}
 											}
-											$uid=$pdo->lastInsertId();
+
 									}
 
 								}else if($userquery->rowCount() > 0){
@@ -253,7 +268,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 								}
 						}
           }
-      } // End of foreach user
+			} // End of foreach user
 	} // End ADD_USER
 }
 
@@ -269,7 +284,7 @@ $groups=array();
 $courses=array();
 $submissions=array();
 
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+if(checklogin() && $hasAccess) {
 	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
@@ -384,6 +399,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			);
 		}
 	}
+
+	$access = true;
 }
 
 $array = array(
@@ -395,7 +412,8 @@ $array = array(
 	'groups' => $groups,
 	'queryResult' => $queryResult,
 	'examiners' => $examiners,
-	'submissions' => $submissions
+	'submissions' => $submissions,
+	'access' => $access
 );
 
 echo json_encode($array);
