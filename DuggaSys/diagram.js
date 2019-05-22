@@ -1956,7 +1956,6 @@ function switchToolbarUML() {
 
 var crossDEV = false;
 function switchToolbarDev(event) {
-    // HELLO
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     if(!developerModeActive){
         return;
