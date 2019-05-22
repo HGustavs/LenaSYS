@@ -3047,6 +3047,18 @@ function mousemoveevt(ev, t) {
                 for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
                         if(snapToGrid) {
+                            // Set mouse start so it's snaped to grid.
+                            startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
+                            startMouseCoordinateY = Math.round(startMouseCoordinateY / gridSize) * gridSize;
+                            // Coordinates for the top left corner of the object
+                            var hoveredObjectStartTopLeftX = points[hoveredObject.topLeft].x;
+                            var hoveredObjectStartTopLeftY = points[hoveredObject.topLeft].y;
+                            // Coordinates for the point to snap to
+                            var hoveredObjectSnapTopLeftX = Math.round(points[hoveredObject.topLeft].x / gridSize) * gridSize;
+                            var hoveredObjectSnapTopLeftY = Math.round(points[hoveredObject.topLeft].y / gridSize) * gridSize;
+                            // Snap the object that is being moved. Rest of the objects are untouched
+                            diagram[movobj].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+                            // Move the objects dependable on the grid size
                             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         }
