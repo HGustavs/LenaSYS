@@ -3515,12 +3515,16 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
-
             uimode = "CreateLine";
             createCardinality();
             updateGraphics();
         }
     }
+    // set the linewidth for the created object
+    if (lastSelectedObject >= 0) {
+        diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
+    }
+
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
     if (diagramObject && diagramObject.symbolkind != symbolKind.erRelation) {
         p1BeforeResize.x = points[diagramObject.topLeft].x;
@@ -3634,7 +3638,7 @@ function movemode(e, t) {
 }
 
 function activateMovearound() {
-   movemode();
+    movemode();
 }
 
 function deactivateMovearound() {
@@ -3673,11 +3677,11 @@ function openAppearanceDialogMenu() {
 //----------------------------------------------------------------------
 
 function closeAppearanceDialogMenu() {
-     //if the X
-     if(globalAppearanceValue == 1) {
-         var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-         if (tmpDiagram != null) LoadImport(tmpDiagram);
-     }
+    //if the X
+    if(globalAppearanceValue == 1) {
+        var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+        if (tmpDiagram != null) LoadImport(tmpDiagram);
+    }
     $(".loginBox").draggable('destroy');
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
@@ -3733,29 +3737,40 @@ function dimDialogMenu(dim) {
 //----------------------------------------------------------------------
 
 function loadFormIntoElement(element, dir) {
-  //Ajax
-  var file = new XMLHttpRequest();
-  file.open('GET', dir);
-  file.onreadystatechange = function() {
-
-    if(file.readyState === 4) {
-      element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.symbol) {
-        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-        setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-        setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
-        setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
-        setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
-        setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
-        setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
-      } else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
-        setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
-        document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-        setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
-      }
+    //Ajax
+    var file = new XMLHttpRequest();
+    file.open('GET', dir);
+    file.onreadystatechange = function() {
+        if(file.readyState === 4) {
+            element.innerHTML = file.responseText;
+            if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.symbol) {
+                document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
+                setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
+                setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
+                setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
+                setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
+                setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+            } else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
+                setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
+                document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
+                setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+            } else {
+                // should only occur when changing global apperance 
+                document.getElementById('line-thickness').value = getLineThickness();
+            }
+        } 
     }
-  }
-  file.send();
+    file.send();
+}
+
+// return the line thickness of one of the current objects in the diagram or else return the standard value: 2
+function getLineThickness() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['lineWidth'];
+    } else {
+        return 2;
+    }
 }
 
 //----------------------------------------------------------------------
@@ -3780,11 +3795,9 @@ function loadLineForm(element, dir) {
                     diagram[lastSelectedObject].lineDirection = "First";
                     tempLineDirection = "First";
                 }
-
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
                 setSelectedOption('cardinality', tempCardinality);
                 setSelectedOption('line_direction', tempLineDirection);
-
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
@@ -3857,17 +3870,17 @@ function loadTextForm(element, dir) {
 //----------------------------------------------------------------------
 
 function setSelectedOption(type, value) {
-  if(type != null) {
-    for(var i = 0; i < document.getElementById(type).options.length; i++) {
-      if(value == document.getElementById(type).options[i].value) {
-        document.getElementById(type).value = value;
-        document.getElementById(type).options[i].selected = "true";
-        break;
-      }else {
-        document.getElementById(type).options[i].selected = "false";
-      }
+    if(type != null) {
+        for (var i = 0; i < document.getElementById(type).options.length; i++) {
+            if (value == document.getElementById(type).options[i].value) {
+                document.getElementById(type).value = value;
+                document.getElementById(type).options[i].selected = "true";
+                break;
+            } else {
+                document.getElementById(type).options[i].selected = "false";
+            }
+        }
     }
-  }
 }
 
 //--------------------------------------------------------------------
@@ -3949,20 +3962,20 @@ function objectAppearanceMenu(form) {
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
-    if(diagram[lastSelectedObject].symbolkind == symbolKind.uml) { // UML-class appearance
-      diagram[lastSelectedObject].name = document.getElementById('nametext').value;
-      var attributeLines = $('#UMLAttributes').val().split('\n');
-      var operationLines = $('#UMLOperations').val().split('\n');
-      diagram[lastSelectedObject].attributes = [];
-      diagram[lastSelectedObject].operations = [];
+    if (diagram[lastSelectedObject].symbolkind == symbolKind.uml) { // UML-class appearance
+        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+        var attributeLines = $('#UMLAttributes').val().split('\n');
+        var operationLines = $('#UMLOperations').val().split('\n');
+        diagram[lastSelectedObject].attributes = [];
+        diagram[lastSelectedObject].operations = [];
 
-      //Inserts text for attributes and operations
-      for(var i = 0;i < attributeLines.length;i++) {
-        diagram[lastSelectedObject].attributes.push({text:attributeLines[i]});
-      }
-      for(var i = 0; i < operationLines.length; i++) {
-        diagram[lastSelectedObject].operations.push({text:operationLines[i]});
-      }
+        //Inserts text for attributes and operations
+        for (var i = 0;i < attributeLines.length;i++) {
+            diagram[lastSelectedObject].attributes.push({text:attributeLines[i]});
+        }
+        for (var i = 0; i < operationLines.length; i++) {
+            diagram[lastSelectedObject].operations.push({text:operationLines[i]});
+        }
 
     } else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
