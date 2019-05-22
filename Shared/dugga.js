@@ -259,7 +259,6 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 function navigatePage(clicked_id, pagename)
 {
 		changeURL(clicked_id, pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
-		return false;
 }
 
 //----------------------------------------------------------------------------------
