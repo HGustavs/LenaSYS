@@ -33,6 +33,23 @@ AJAXService("get", {}, "DIAGRAM");
 
 ************************************************************/
 
+//--------------------------------------------------------------------
+// diagram - Stores a global list of diagram objects
+//           A diagram object could for instance be a path, or a symbol
+//--------------------------------------------------------------------
+
+var diagram = [];
+
+var settings = {
+    serialNumbers: {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    },
+};
+
 const kind = {
     path: 1,
     symbol: 2
@@ -95,6 +112,7 @@ var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+var modeSwitchDialogActive = false; // if the mode switch dialog is currently active
 var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Entity are set by the values seen below.
@@ -124,7 +142,6 @@ var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramNumberHistory = 0;           // Is used for undo and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var classAppearanceOpen = false;
@@ -132,11 +149,14 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
+var toolbarState = 1;                   // Set default toolbar state to ER.
 
 // Keyboard keys
 const backspaceKey = 8;
+const enterKey = 13;
 const shiftKey = 16;
 const ctrlKey = 17;
+const altKey = 18;
 const escapeKey = 27;
 const spacebarKey = 32;
 const leftArrow = 37;
@@ -144,8 +164,10 @@ const upArrow = 38;
 const rightArrow = 39;
 const downArrow = 40;
 const deleteKey = 46;
+const key0 = 48;
 const key1 = 49;
 const key2 = 50;
+const key4 = 52;
 const aKey = 65;
 const cKey = 67;
 const dKey = 68;
@@ -153,14 +175,18 @@ const eKey = 69;
 const fKey = 70;
 const lKey = 76;
 const mKey = 77;
+const nKey = 78;
+const oKey = 79;
 const rKey = 82;
 const tKey = 84;
 const vKey = 86;
 const zKey = 90;
 const yKey = 89;
+const xKey = 88;
 const windowsKey = 91;
 const num1 = 97;
 const num2 = 98;
+const lessThanKey = 226;
 
 // Mouse clicks
 const leftMouseClick = 0;
@@ -184,6 +210,7 @@ window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
+var altIsClicked = false;
 
 // This event checks if the user leaves the diagram.php
 window.addEventListener('blur', resetButtonsPressed);
@@ -309,20 +336,13 @@ function resetButtonsPressed() {
     shiftIsClicked = false;
 }
 
-//--------------------------------------------------------------------
-// diagram - Stores a global list of diagram objects
-//           A diagram object could for instance be a path, or a symbol
-//--------------------------------------------------------------------
-
-var diagram = [];
-
 function keyDownHandler(e) {
     var key = e.keyCode;
-    if(appearanceMenuOpen) return;
-    if((key == deleteKey || key == backspaceKey)) {
+    if (appearanceMenuOpen) return;
+    if ((key == deleteKey || key == backspaceKey)) {
         eraseSelectedObject();
         SaveState();
-    } else if(key == spacebarKey) {
+    } else if (key == spacebarKey) {
         // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
         if (!spacebarKeyPressed) {
         spacebarKeyPressed = true;
@@ -334,28 +354,32 @@ function keyDownHandler(e) {
             e.stopPropagation();
             e.preventDefault();
         }
-        if(uimode != "MoveAround") {
+        if (uimode != "MoveAround") {
             activateMovearound();
         } else {
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
+    } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) {
         arrowKeyPressed(key);
-        moveCanvasView(key);
+        if (uimode == "MoveAround") {
+            moveCanvasView(key);
+        }
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    } else if(key == shiftKey) {
+    } else if (key == shiftKey) {
         shiftIsClicked = true;
+    } else if(key == altKey) {
+        altIsClicked = true;
     } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == vKey ) {
+    } else if (ctrlIsClicked && key == vKey ) {
         //Ctrl + v
         var temp = [];
-        for(var i = 0; i < cloneTempArray.length; i++) {
+        for (var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != symbolKind.line
+            if (cloneTempArray[i].symbolkind != symbolKind.line
                 && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
@@ -375,49 +399,59 @@ function keyDownHandler(e) {
             diagram[i].targeted = true;
         }
         updateGraphics();
-    }
-    else if (key == ctrlKey || key == windowsKey) {
+    } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    }
-    else if (key == escapeKey) {
-        cancelFreeDraw();
-    }
-    else if ((key == key1 || key == num1) && shiftIsClicked) {
-        moveToFront();
-    }
-    else if ((key == key2 || key == num2) && shiftIsClicked) {
-        moveToBack();
-    }
-    else if (shiftIsClicked && key == lKey) {
-        document.getElementById("linebutton").click();
-    }
-    else if (shiftIsClicked && key == aKey && targetMode == "ER") {
-        document.getElementById("attributebutton").click();
-    }
-    else if (shiftIsClicked && key == eKey && targetMode == "ER") {
-        document.getElementById("entitybutton").click();
-    }
-    else if (shiftIsClicked && key == rKey && targetMode == "ER") {
-        document.getElementById("relationbutton").click();
-    }
-    else if (shiftIsClicked && key == cKey && targetMode == "UML") {
-        document.getElementById("classbutton").click();
-    }
-    else if (shiftIsClicked && key == tKey && targetMode == "ER") {
-        document.getElementById("drawtextbutton").click();
-    }
-    else if (shiftIsClicked && key == fKey) {
-        document.getElementById("drawfreebutton").click();
-    }
-    else if (shiftIsClicked && key == dKey) {
-        developerMode(event);
-    }
-    else if (shiftIsClicked && key == mKey) {
-        if (targetMode == "ER"){
-            switchToolbarTo("UML");
-        } else {
-            switchToolbarTo("ER");
+    } else if (key == enterKey) {
+        if (modeSwitchDialogActive) {
+            // if the cancel button is focused then trigger that
+            if (document.activeElement.id == "modeSwitchButtonCancel") {
+                modeSwitchConfirmed(false);
+            } else {
+               modeSwitchConfirmed(true);
+            }
         }
+    } else if(key == escapeKey) {
+        cancelFreeDraw();
+        if (modeSwitchDialogActive) modeSwitchConfirmed(false);
+    } else if((key == key1 || key == num1) && shiftIsClicked){
+        moveToFront();
+    } else if((key == key2 || key == num2) && shiftIsClicked){
+        moveToBack();
+    } else if(shiftIsClicked && key == lKey) {
+      document.getElementById("linebutton").click();
+    } else if(shiftIsClicked && key == aKey && targetMode == "ER") {
+      document.getElementById("attributebutton").click();
+    } else if(shiftIsClicked && key == eKey && targetMode == "ER") {
+      document.getElementById("entitybutton").click();
+    } else if(shiftIsClicked && key == rKey && targetMode == "ER") {
+      document.getElementById("relationbutton").click();
+    } else if(shiftIsClicked && key == cKey && targetMode == "UML") {
+      document.getElementById("classbutton").click();
+    } else if(shiftIsClicked && key == tKey && targetMode == "ER") {
+      document.getElementById("drawtextbutton").click();
+    } else if(shiftIsClicked && key == fKey) {
+      document.getElementById("drawfreebutton").click();
+    } else if(shiftIsClicked && key == dKey) {
+      developerMode(event);
+    } else if(shiftIsClicked && key == mKey) {
+         if(developerModeActive) {
+            developerMode(event);
+        }
+        toggleMode(); 
+    } else if(shiftIsClicked && key == xKey) {
+          lockSelected(event);
+    } else if(shiftIsClicked && key == oKey) {
+          resetViewToOrigin();
+    } else if(shiftIsClicked && key == key4) {
+          toggleVirtualA4(event);
+    } else if(shiftIsClicked && key == upArrow) {
+          align(event, 'top');
+    } else if(shiftIsClicked && key == rightArrow) {
+          align(event, 'right');
+    } else if(shiftIsClicked && key == downArrow) {
+          align(event, 'bottom');
+    } else if(shiftIsClicked && key == leftArrow) {
+          align(event, 'left');
     }
 }
 
@@ -539,19 +573,21 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if(key == leftArrow) {
-        xNew = -5;
-    }else if(key == upArrow) {
-        yNew = -5;
-    }else if(key == rightArrow) {
-        xNew = 5;
-    }else if(key == downArrow) {
-        yNew = 5;
+    if (uimode != "MoveAround") {
+        if(key == leftArrow) {
+            xNew = -5;
+        }else if(key == upArrow) {
+            yNew = -5;
+        }else if(key == rightArrow) {
+            xNew = 5;
+        }else if(key == downArrow) {
+            yNew = 5;
+        }
+        for(var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].move(xNew, yNew);
+        }
+        updateGraphics();
     }
-    for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(xNew, yNew);
-    }
-    updateGraphics();
 }
 
 //-----------------------------------------------------------------------------------
@@ -806,6 +842,10 @@ diagram.deleteObject = function(object) {
             this.splice(i, 1);
         }
     }
+    if(diagram.length == 0){
+        resetSerialNumbers();
+        removeLocalStorage();
+    }
 }
 
 //--------------------------------------------------------------------
@@ -878,7 +918,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                         setTargetedForSymbolGroup(this[i], true);
                     } else if (hover) {
                         this[i].isHovered = true;
-                    } 
+                    }
                 }
             } else if (!ctrlIsClicked) {
                 if (!hover) this[i].targeted = false;
@@ -1075,7 +1115,6 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
-    setInterval(function() {Save()}, 10000);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
@@ -1096,13 +1135,12 @@ function initializeCanvas() {
     canvas.addEventListener('wheel', scrollZoom, false);
 }
 
-
 function deselectObjects() {
-	for(let i = 0; i < diagram.length; i++) {
-		diagram[i].targeted = false;
-		diagram[i].isSelected = false;
-		diagram[i].isHovered = false;
-	}
+    for(let i = 0; i < diagram.length; i++) {
+        diagram[i].targeted = false;
+        diagram[i].isSelected = false;
+        diagram[i].isHovered = false;
+    }
 }
 
 //-----------------------------------------------------------------------------------
@@ -1433,6 +1471,7 @@ function canvasSize() {
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setMoveButtonPosition();
     updateGraphics();
 }
 
@@ -1636,7 +1675,7 @@ function drawGrid() {
     var zoomGridSize = gridSize * zoomValue;
     var counter = 0;
 
-    for(var i = 0; i < canvas.width / zoomGridSize + Math.max(Math.abs(origoOffsetX), Math.abs(origoOffsetY)); i++){
+    for(var i = 0; i < Math.max(canvas.width, canvas.height) / zoomGridSize + Math.max(Math.abs(origoOffsetX), Math.abs(origoOffsetY)); i++){
         setLineColor(counter);
         counter++;
 
@@ -1658,11 +1697,11 @@ function drawGrid() {
 // Sets the color depending on whether the gridline should be darker or brighter grey
 //-------------------------------------------------------------------------------------
 
-function setLineColor(counter){    
+function setLineColor(counter){
     if(counter % 5 == 0){
         ctx.strokeStyle = "rgb(208, 208, 220)";
     } else {
-        ctx.strokeStyle = "rgb(238, 238, 250)";            
+        ctx.strokeStyle = "rgb(238, 238, 250)";
     }
 }
 
@@ -1737,8 +1776,23 @@ function clearCanvas() {
     for (var i = 0; i < points.length;) {
         points.pop();
     }
+    resetSerialNumbers();
     updateGraphics();
     SaveState();
+}
+
+//--------------------------------------------------------------------------
+// Used when canvas is cleared to avoid unnecessarily high serial numbers
+//--------------------------------------------------------------------------
+
+function resetSerialNumbers(){
+    settings.serialNumbers = {
+        Attribute: 0,
+        Entity: 0,
+        Relation: 0,
+        UML: 0,
+        Text: 0,
+    }
 }
 
 // the purpose is not very clear
@@ -1757,11 +1811,8 @@ function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
     if(developerModeActive) {
-        crossStrokeStyle1 = "#f64";
-        crossFillStyle = "#d51";
-        crossStrokeStyle2 = "#d51";
-        drawOrigo();
-        toolbarState = 3;                                                               // Change the toolbar to DEV.
+        showCrosses();
+        drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev();                                                             // ---||---
         document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
@@ -1769,33 +1820,52 @@ function developerMode(event) {
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
     } else {
-      toolbarState = localStorage.getItem("toolbarState");                             // Change the toolbar back to ER.
-        if(toolbarState == 1) {
-          switchToolbarER();
-        } else if(toolbarState == 2) {
-          switchToolbarUML();
-        } else if(toolbarState == 3) {
-          switchToolbar('Dev');                                                           // ---||---
-          document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
-          setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-              crossDEV=false);                                                             // Turn on crossDEV.
-          setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-          setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-          toolbarState = 1;
-          switchToolbarER();
-          $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
-        }
-        crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-        crossFillStyle = "rgba(255, 102, 68, 0.0)";
-        crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+        switchToolbarER();
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
+        hideCrosses();
     }
     reWrite();
     updateGraphics();
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
 }
 
-var targetMode = "ER";     // The mode that we want to change to when trying to switch the toolbar. Set default here.
+var refreshedPage = true;
+function setModeOnRefresh() {
+    toolbarState = localStorage.getItem("toolbarState");
+    if(toolbarState == 1) {
+        switchToolbarTo('ER');
+        hideCrosses();
+        developerModeActive = false;
+    } else if(toolbarState == 2) {
+        switchToolbarTo('UML');
+        hideCrosses();
+        developerModeActive = false;
+    } else if(toolbarState == 3) {
+        showCrosses();
+        developerModeActive = true;
+        switchToolbarTo('Dev');
+        setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        switchToolbarER();
+        hideCrosses();
+        developerModeActive = false;
+    }
+}
+
+function showCrosses() {
+    crossStrokeStyle1 = "#f64";
+    crossFillStyle = "#d51";
+    crossStrokeStyle2 = "#d51";
+}
+
+function hideCrosses() {
+    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+}
 
 //------------------------------------------------------------------------------
 // modeSwitchConfirmed:
@@ -1804,13 +1874,24 @@ var targetMode = "ER";     // The mode that we want to change to when trying to 
 //------------------------------------------------------------------------------
 
 function modeSwitchConfirmed(confirmed) {
+    modeSwitchDialogActive = false;
     $("#modeSwitchDialog").hide();
     if(confirmed){
         if (targetMode == 'ER') {
             switchToolbarER();
         } else if (targetMode == 'UML') {
             switchToolbarUML();
+        } else if (targetMode == 'Dev'){
+            switchToolbarDev();
         }
+    }
+}
+
+function toggleMode(){
+    if(targetMode == "ER"){
+        switchToolbarTo("UML");
+    } else {
+        switchToolbarTo("ER");
     }
 }
 
@@ -1822,8 +1903,9 @@ function modeSwitchConfirmed(confirmed) {
 
 function switchToolbarTo(target) {
     targetMode = target;
-    //only ask for confirmation when developer mode is off or if the user has started drawing something
-    if(developerModeActive || diagram.length < 1) {
+    modeSwitchDialogActive = true;
+    //only ask for confirmation when developer mode is off
+    if (developerModeActive) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
@@ -1886,110 +1968,6 @@ function switchToolbarDev() {
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
 }
 
-//------------------------------------------------------------------------------
-// hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
-//               then do some sort of calculation. used to save the diagram. it also save the local diagram
-//------------------------------------------------------------------------------
-
-function hashFunction() {
-    var diagramToString = "";
-    var hash = 0;
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-        if (currentHash != hexHash) {
-            localStorage.setItem('localhash', hexHash);
-            for (var i = 0; i < diagram.length; i++) {
-                c[i] = diagram[i].constructor.name;
-                c[i] = c[i].replace(/"/g,"");
-            }
-            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c});
-            localStorage.setItem('localdiagram', a);
-            return hexHash;
-        }
-    }
-}
-
-//--------------------------------------------------------------------------------
-// hashCurrent: This function is used to hash the current diagram, but not storing it locally,
-//              so we can compare the current hash with the hash after we have made some changes
-//              to see if it need to be saved.
-//--------------------------------------------------------------------------------
-
-function hashCurrent() {
-    var hash = 0;
-    var diagramToString = "";
-    for (var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i])
-    }
-    for (var i = 0; i < diagramToString.length; i++) {
-        var char = diagramToString.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;         // Convert to 32bit integer
-    }
-    currentHash = hash.toString(16);
-}
-
-//---------------------------------------------
-// loadDiagram: retrive an old diagram if it exist.
-//---------------------------------------------
-
-function loadDiagram() {
-    var checkLocalStorage = localStorage.getItem('localdiagram');
-    //loacal storage and hash
-    if (checkLocalStorage != "" && checkLocalStorage != null) {
-        var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
-    }
-    var localHexHash = localStorage.getItem('localhash');
-    var diagramToString = "";
-    var hash = 0;
-    for(var i = 0; i < diagram.length; i++) {
-        diagramToString += JSON.stringify(diagram[i]);
-    }
-    if (diagram.length != 0) {
-        for (var i = 0; i < diagramToString.length; i++) {
-            var char = diagramToString.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;         // Convert to 32bit integer
-        }
-        var hexHash = hash.toString(16);
-    }
-    if (typeof localHexHash !== "undefined" && typeof localDiagram !== "undefined") {
-        if (localHexHash != hexHash) {
-            b = JSON.parse(JSON.stringify(localDiagram));
-            for (var i = 0; i < b.diagram.length; i++) {
-                if (b.diagramNames[i] == "Symbol") {
-                    b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
-                } else if (b.diagramNames[i] == "Path") {
-                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-                }
-            }
-            diagram.length = b.diagram.length;
-            for (var i = 0; i < b.diagram.length; i++) {
-                diagram[i] = b.diagram[i];
-            }
-            // Points fix
-            for (var i = 0; i < b.points.length; i++) {
-                b.points[i] = Object.assign(new Path, b.points[i]);
-            }
-            points.length = b.points.length;
-            for (var i = 0; i < b.points.length; i++) {
-                points[i] = b.points[i];
-            }
-        }
-    }
-    deselectObjects();
-    updateGraphics();
-    SaveState();
-}
-
 //----------------------------------------------------------------------
 // removeLocalStorage: this function is running when you click the button clear diagram
 //----------------------------------------------------------------------
@@ -2011,30 +1989,36 @@ function decimalPrecision(value, precision) {
 //----------------------------------------------------------------------
 
 function reWrite() {
-    if(developerModeActive) {
+    if (developerModeActive) {
         //We are now in developer mode
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + " </p>";
+        + Math.round((zoomValue * 100)) + "%" + " </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
-         + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-    if(hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free"){
-      document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-       + Math.round((zoomValue * 100)) + "%" + " </p>";
-      document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-       + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-       + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) 
-       + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) " 
-       + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y=" 
-       + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-    }
+        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
+
+        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
+            document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+            + Math.round((zoomValue * 100)) + "%" + " </p>";
+            document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+            + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " )";
+            refreshedPage = false;
+        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+              document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
+              + Math.round((zoomValue * 100)) + "%" + " </p>";
+              document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
+              + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
+              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
+              + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
+          }
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + "   </p>";
+        + Math.round((zoomValue * 100)) + "%" + "   </p>";
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
+        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
+        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
     }
 }
 
@@ -2091,24 +2075,24 @@ function addGroupToSelected(event) {
     // find all symbols/freedraw objects that is going to be in the group
     for (var i = 0; i < selected_objects.length; i++) {
         // do not group lines
-        if(selected_objects[i].kind == kind.symbol && 
+        if(selected_objects[i].kind == kind.symbol &&
             (selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine)) {
             continue;
         } else {
             tempList.push(selected_objects[i]);
         }
     }
-    // remove the current group the objects have 
+    // remove the current group the objects have
     for (var i = 0; i < tempList.length; i++ ) {
         tempList[i].group = 0;
     }
     // check what group numbers already exist
     var currentGroups = [];
     for (var i = 0; i < diagram.length; i++) {
-        // don't check lines 
+        // don't check lines
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.line || diagram[i].symbolkind == symbolKind.umlLine)) {
-        } else { 
-            if (diagram[i].group != 0) { 
+        } else {
+            if (diagram[i].group != 0) {
                 currentGroups.push(diagram[i].group);
             }
         }
@@ -2138,7 +2122,7 @@ function removeGroupFromSelected(event) {
     event.stopPropagation();
     for (var i = 0; i < selected_objects.length; i++) {
         // do not do anything with lines
-        if (selected_objects[i].kind == kind.symbol && 
+        if (selected_objects[i].kind == kind.symbol &&
             (selected_objects[i].symbolkind == symbolKind.line || selected_objects[i].symbolkind == symbolKind.umlLine)) {
             continue;
         }
@@ -2399,8 +2383,9 @@ function distribute(event, axis) {
 
 function undoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumberHistory > 1) diagramNumberHistory--;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (diagramNumber > 0) diagramNumber--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
@@ -2410,8 +2395,13 @@ function undoDiagram(event) {
 
 function redoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    diagramNumber = localStorage.getItem("diagramNumber");
+    diagramNumber++;
+    if(!localStorage.getItem("diagram" + diagramNumber)){
+        diagramNumber--;
+    }
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
+    localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
@@ -2589,8 +2579,6 @@ function setOrientationIcon(element, check) {
 // ----------------------------------------------------------------------------
 // DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
-
-var toolbarState;
 
 const toolbarER = 1;
 const toolbarUML = 2;
@@ -2863,7 +2851,7 @@ function mousemoveevt(ev, t) {
             // Select a new point only if mouse is not already moving a point or selection box
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             if (sel.distance < tolerance / zoomValue) {
-                // check so that the point we're hovering over belongs to an object that's selected 
+                // check so that the point we're hovering over belongs to an object that's selected
                 var pointBelongsToObject = false;
                 for (var i = 0; i < selected_objects.length; i++) {
                     if (sel.attachedSymbol == selected_objects[i]) {
@@ -2873,9 +2861,9 @@ function mousemoveevt(ev, t) {
                 // when in movearound mode or if the point doesn't belong to a selected object then don't display different pointer when hovering points
                 if (uimode != "MoveAround" && pointBelongsToObject) {
                     //Change cursor if you are hovering over a point and its not a line
-                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine) {
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line || sel.attachedSymbol.symbolkind == symbolKind.umlLine || sel.attachedSymbol.isLocked) {
                         //The point belongs to a umlLine or Line
-                        canvas.style.cursor = "pointer";
+                        canvas.style.cursor = "default";
                     } else {
                         canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
                     }
@@ -2988,6 +2976,18 @@ function mousemoveevt(ev, t) {
                 for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
                         if(snapToGrid) {
+                            // Set mouse start so it's snaped to grid.
+                            startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
+                            startMouseCoordinateY = Math.round(startMouseCoordinateY / gridSize) * gridSize;
+                            // Coordinates for the top left corner of the object
+                            var hoveredObjectStartTopLeftX = points[hoveredObject.topLeft].x;
+                            var hoveredObjectStartTopLeftY = points[hoveredObject.topLeft].y;
+                            // Coordinates for the point to snap to
+                            var hoveredObjectSnapTopLeftX = Math.round(points[hoveredObject.topLeft].x / gridSize) * gridSize;
+                            var hoveredObjectSnapTopLeftY = Math.round(points[hoveredObject.topLeft].y / gridSize) * gridSize;
+                            // Snap the object that is being moved. Rest of the objects are untouched
+                            diagram[movobj].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+                            // Move the objects dependable on the grid size
                             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         }
@@ -3016,9 +3016,7 @@ function mousemoveevt(ev, t) {
                     ctx.stroke();
                     ctx.setLineDash([]);
                     if (!developerModeActive) {
-                        crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                        crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                        crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                        hideCrosses();
                     }
                 }
             } else if (uimode == "CreateEREntity") {
@@ -3034,9 +3032,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateERRelation") {
                 ctx.setLineDash([3, 3]);
@@ -3053,9 +3049,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateERAttr") {
                 ctx.setLineDash([3, 3]);
@@ -3064,9 +3058,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateLine") {
                 // Path settings for preview line
@@ -3078,9 +3070,7 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             } else if(uimode == "CreateUMLLine") {
                 // Path settings for preview line
@@ -3092,10 +3082,8 @@ function mousemoveevt(ev, t) {
                 ctx.stroke();
                 ctx.setLineDash([]);
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
-                    }
+                    hideCrosses();
+                }
                 } else {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
@@ -3109,9 +3097,7 @@ function mousemoveevt(ev, t) {
                 ctx.setLineDash([]);
                 ctx.closePath();
                 if (!developerModeActive) {
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                    hideCrosses();
                 }
             }
         }
@@ -3123,6 +3109,7 @@ function mousemoveevt(ev, t) {
 //----------------------------------------------------------
 
 function mousedownevt(ev) {
+    mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
     if(ev.button == leftMouseClick){
         canvasLeftClick = true;
     } else if(ev.button == rightMouseClick) {
@@ -3401,8 +3388,7 @@ function mouseupevt(ev) {
 
     if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         var classB = new Symbol(symbolKind.uml); // UML
-        var newValue = checkDuplicate("New", symbolKind.uml);
-        classB.name = "New" + newValue;
+        classB.name = "New " + settings.serialNumbers.UML;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
@@ -3414,10 +3400,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        settings.serialNumbers.UML++;
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
-        var newValue = checkDuplicate("Attr", symbolKind.erAttribute);
-        erAttributeA.name = "Attr" + newValue;
+        erAttributeA.name = "Attr " + settings.serialNumbers.Attribute;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
         erAttributeA.centerPoint = p3;
@@ -3428,10 +3414,10 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        settings.serialNumbers.Attribute++;
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
-        var newValue = checkDuplicate("Entity", symbolKind.erEntity);
-        erEnityA.name = "Entity" + newValue;;
+        erEnityA.name = "Entity " + settings.serialNumbers.Entity;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
@@ -3443,13 +3429,14 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        settings.serialNumbers.Entity++;
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             erLineA = new Symbol(symbolKind.line); // Lines
-            erLineA.name = "Line" + diagram.length
+            erLineA.name = "Line" + diagram.length;
             erLineA.topLeft = p1;
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
@@ -3458,6 +3445,7 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
+            diagram[lastSelectedObject - 1].targeted = false;
             selected_objects.push(diagram[lastSelectedObject]);
 
             createCardinality();
@@ -3465,8 +3453,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
-        var newValue = checkDuplicate("Relation", symbolKind.erRelation);
-        erRelationA.name = "Relation" + newValue;
+        erRelationA.name = "Relation " + settings.serialNumbers.Relation;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
@@ -3476,6 +3463,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
+        settings.serialNumbers.Relation++;
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
         // clicking on a lock removes it
@@ -3517,7 +3505,7 @@ function mouseupevt(ev) {
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
             umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
-            umlLineA.name = "Line" + diagram.length
+            umlLineA.name = "Line" + diagram.length;
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
@@ -3527,7 +3515,7 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             selected_objects.push(diagram[lastSelectedObject]);
-            
+
             uimode = "CreateLine";
             createCardinality();
             updateGraphics();
@@ -3546,22 +3534,17 @@ function mouseupevt(ev) {
     if (diagramObject && p1BeforeResize.x == p2BeforeResize.x && p1BeforeResize.y == p2BeforeResize.y) {
         diagramObject.pointsAtSamePosition = true;
     }
+
+    if(uimode == "MoveAround" && md === mouseState.boxSelectOrCreateMode) {
+        saveState = false;
+    }
+
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
     // Clear mouse state
     md = mouseState.empty;
     if(saveState) SaveState();
-}
-
-function countNumberOfSymbolKind(kind) {
-  var numberOfSymbolKind = 0;
-  for(let i = 0; i < diagram.length; i++) {
-      if(diagram[i].symbolkind == kind) {
-          numberOfSymbolKind++;
-      }
-  }
-  return numberOfSymbolKind;
 }
 
 function doubleclick(ev) {
@@ -3572,8 +3555,8 @@ function doubleclick(ev) {
 
 function createText(posX, posY) {
     var text = new Symbol(symbolKind.text);
-    var newValue = checkDuplicate("Text ", symbolKind.text);
-    text.name = "Text " + newValue;
+    text.name = "Text " + settings.serialNumbers.Text;
+    settings.serialNumbers.Text++;
     text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
@@ -3622,6 +3605,10 @@ function resize() {
     }
 }
 
+function setMoveButtonPosition() {
+    document.getElementById("moveButton").style.marginLeft = widthWindow + 4 + "px";
+}
+
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
@@ -3630,6 +3617,7 @@ function movemode(e, t) {
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
+    setMoveButtonPosition();
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
@@ -3687,7 +3675,7 @@ function openAppearanceDialogMenu() {
 function closeAppearanceDialogMenu() {
      //if the X
      if(globalAppearanceValue == 1) {
-         var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+         var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
          if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
     $(".loginBox").draggable('destroy');
@@ -3922,7 +3910,24 @@ function objectAppearanceMenu(form) {
     }
     // Lines selected
     else if (diagram[lastSelectedObject].symbolkind == symbolKind.line || diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
-        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
+        var cardinalityOption = true;
+        var connObjects = diagram[lastSelectedObject].getConnectedObjects();
+        // Only show cardinality option if the line goes between an entity and a relation
+        if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
+            var atLeastOneEntity = connObjects[0].symbolkind==symbolKind.erEntity ? true :
+                connObjects[1] && connObjects[1].symbolkind==symbolKind.erEntity;
+            var atLeastOneRelation = connObjects[0].symbolkind==symbolKind.erRelation ? true :
+                connObjects[1].symbolkind==symbolKind.erRelation;
+
+            if ((atLeastOneEntity && atLeastOneRelation) == false)
+                cardinalityOption = false;
+        }
+
+        if (cardinalityOption) {
+            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
+        }else {
+            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=-1');
+        }
     }
     // ER relation selected
     else if (diagram[lastSelectedObject].symbolkind == symbolKind.erRelation) {
@@ -4022,18 +4027,11 @@ function changeCardinality(isUML) {
         }
     }
 }
-// Changes direction for uml line relations 
+// Changes direction for uml line relations
 function changeLineDirection() {
     diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
 }
-// Checks if there are any duplicates of entities with the same name.
-function checkDuplicate(name, kind) {
-    var numberOfSymbolKind = 0;
-    for(let i = 0; i < diagram.length; i++) {
-        //Checks for duplicates with the same number and adds +1 to it.
-        if (diagram[i].name == name + countNumberOfSymbolKind(kind)) {
-            numberOfSymbolKind = 1;
-        }
-    }
-    return countNumberOfSymbolKind(kind) + numberOfSymbolKind;
+//Close the errorMessageDialog for Composite
+function closeErrorMessageDialog() {
+    $("#errorMessageDialog").hide();
 }

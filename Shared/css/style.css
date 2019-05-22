@@ -1472,58 +1472,61 @@ input {
   cursor: default !important;
 }
 
+.hotKeys {
+  position: absolute;
+  font-size: 9px;
+  color: #3d3d3d;
+  opacity: 0.5;
+}
+
 #hotkey-space {
-  position: absolute  !important;
-  font-size: 11px !important;
-  color: #3d3d3d  !important;
   right: 6px;
   top: 10px;
 }
 
 #hotkey-ctrl {
-  position: absolute  !important;
-  font-size: 11px  !important;
-  color: #3d3d3d !important;
   right: 6px;
   top: 55px;
 }
+
 #hotkey-shift {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+  right: 6px;
   top: 100px;
 }
 
-#hotkey-undo, #hotkey-redo, #hotkey-clear, #hotkey-front, #hotkey-back, #hotkey-developerMode, #hotkey-ER, #hotkey-UML {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
+#hotkey-lock {
+  right: 6px;
+  top: 241px;
 }
 
-.drop-down-item #hotkey-undo {
-  right: 6px ;
+#hotkey-resetView {
+  right: 6px;
+  top: 395px;
+}
+
+#hotkey-developerMode {
+  right: 35px;
   top: 10px;
 }
 
-.drop-down-item #hotkey-redo {
-  right: 6px ;
+#hotkey-displayTools {
+  right: 36px;
   top: 45px;
 }
 
+#hotkey-displayA4 {
+  right: 39px;
+  top: 164px;
+}
+
 #hotkey-clear, #hotkey-front {
-  right: 6px ;
+  right: 5px ;
   top: 165px;
 }
 
 #hotkey-back {
-  right: 6px ;
+  right: 5px ;
   top: 195px;
-}
-
-#hotkey-developerMode{
-    right: 35px;
-    top: 10px;
 }
 
 #hotkey-ER {
@@ -1531,15 +1534,42 @@ input {
   top: 85px;
 }
 
+#hotkey-undo {
+  right: 5px;
+  top: 10px;
+}
+
+#hotkey-redo {
+  right: 5px;
+  top: 43px;
+}
+
 #hotkey-UML {
   right: 35px;
   top: 120px;
 }
 
-.drop-down-item #hotkey-delete {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
+#hotkey-Align-Top {
+  right: 5px;
+  top: 55px;
+}
+
+#hotkey-Align-Right {
+  right: 5px;
+  top: 87px;
+}
+
+#hotkey-Align-Bottom {
+  right: 5px;
+  top: 120px;
+}
+
+#hotkey-Align-Left {
+  right: 5px;
+  top: 151px;
+}
+
+#hotkey-delete {
   right: 6px;
   top: 272px;
 }
@@ -1895,8 +1925,6 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 2px;
-  top: 100;
   z-index: 2;
   position: absolute;
   border-radius: 0px;
