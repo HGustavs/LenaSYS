@@ -975,6 +975,8 @@ function createRankTable(data) {
     tableElementId: "personalRankTable",
     renderCellCallback: rankRenderCell,
     renderSortOptionsCallback: renderSortOptions,
+    columnSum:["number","rank","grpranking"],
+    columnSumCallback: makeSumPersonalRank,
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
@@ -1049,8 +1051,6 @@ function createGitHubcontributionTable(data) {
   });
   ghContibTable.renderTable();
 }
-
-
 
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
@@ -1159,6 +1159,33 @@ function createAllRankTable(data){
 		hasCounterColumn:true
 	});
 	allRankTable.renderTable();
+}
+
+function makeSumPersonalRank(col,value,row){
+  if(col == "number"){
+    if (value == "UNK" || value == "NOT FOUND") {
+      return 0;
+    } else {
+      return parseFloat(value);
+    }
+  } else if(col == "rank") {
+    if (value.rank == "UNK" || value.rank == "NOT FOUND") {
+      var retVal = ((Math.floor(retdata.amountInCourse*100))/100);
+      return retVal;
+    } else {
+      var retVal = ((Math.floor(value.rank*100))/100)/5;
+      return retVal;
+    }
+  } else if(col == "grpranking") {
+    if (value.rank == "UNK" || value.rank == "NOT FOUND") {
+      var retVal = ((Math.floor(retdata.amountInGroups*100))/100);
+      return retVal;
+    } else {
+      var retVal = ((Math.floor(value.rank*100))/100)/5;
+      return retVal;
+    }
+  }
+	return 0;
 }
 
 /*
