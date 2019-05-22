@@ -113,7 +113,7 @@
 			<<?php
 			echo "
 			<script type=\"text/javascript\">
-				navigatePage(document.getElementById("resultsBTN"), "resulted.php");
+				navigatePage(document.getElementById('resultsBTN'), 'resulted.php');
 			</script>";
 			 ?>
 
