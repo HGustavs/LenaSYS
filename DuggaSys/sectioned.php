@@ -86,17 +86,21 @@
 						</div>
 					</td>
 
-					<td class='results menuButton' style='display: inline-block;'>
+					<td class='results' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
+							<a id='resultsBTN' title='Edit student results' value='Results' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'>
+								<img id='versionPlus' class="navButt" src='../Shared/icons/FistV.svg'>
+							</a>
 						</div>
 					</td>
-					<td class='tests menuButton' style='display: inline-block;'>
+					<td class='tests' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
+							<a id='testsBTN' value='Tests' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
+								<img id='testsBTN' class="navButt" src='../Shared/icons/Copy.svg'>
+							</a>
 						</div>
 					</td>
-					<td class='files menuButton' style='display: inline-block;'>
+					<td class='files' style='display: inline-block;'>
 						<div class='files menuButton'>
 						<a id='filesBTN' title='Show files' value='Files' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'>
 								<img class="navButt" src='../Shared/icons/general_upload_button.svg'>
