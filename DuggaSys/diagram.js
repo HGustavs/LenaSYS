@@ -160,7 +160,7 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
-var toolbarState = 1;                   // Set default toolbar state to ER.
+var toolbarState = currentMode.er;                   // Set default toolbar state to ER.
 
 // Keyboard keys
 const backspaceKey = 8;
@@ -1341,6 +1341,10 @@ function drawVirtualA4() {
     ctx.restore();
 }
 
+//------------------------------------------------------------------
+// Draws a crosshair in the middle of canvas while in developer mode
+//------------------------------------------------------------------
+
 function drawCrosshair(){
     let crosshairLength = 12;
     let centerX = canvas.width / 2;
@@ -1885,18 +1889,18 @@ function developerMode(event) {
 var refreshedPage = true;
 function setModeOnRefresh() {
     toolbarState = localStorage.getItem("toolbarState");
-    if(toolbarState == 1) {
-        switchToolbarTo('ER');
+    if(toolbarState == currentMode.er) {
+        switchToolbarER();
         hideCrosses();
         developerModeActive = false;
-    } else if(toolbarState == 2) {
-        switchToolbarTo('UML');
+    } else if(toolbarState == currentMode.uml) {
+        switchToolbarUML();
         hideCrosses();
         developerModeActive = false;
-    } else if(toolbarState == 3) {
+    } else if(toolbarState == currentMode.dev) {
         showCrosses();
         developerModeActive = true;
-        switchToolbarTo('Dev');
+        switchToolbarDev(event);
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
@@ -1978,7 +1982,7 @@ var crossER = false;
 function switchToolbarER() {
     toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
@@ -2052,7 +2056,7 @@ function reWrite() {
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
         document.getElementById("valuesCanvas").style.display = 'block';
-        
+
         //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
         var smallerScreensDev = window.matchMedia("(max-width: 745px)");
         if (smallerScreensDev.matches) {
@@ -2651,9 +2655,9 @@ function setOrientationIcon(element, check) {
 // DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
 
-const toolbarER = 1;
-const toolbarUML = 2;
-const toolbarDeveloperMode = 3;
+const toolbarER = currentMode.er;
+const toolbarUML = currentMode.uml;
+const toolbarDeveloperMode = currentMode.dev;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
@@ -2671,18 +2675,13 @@ function initToolbox() {
 //                not sure what the numbers 0 an 3 mean
 //----------------------------------------------------------------------
 
-function switchToolbar(direction) {
-  var text = ["ER", "UML"];
-  if(direction == 'left') {
-    toolbarState--;
-    if(toolbarState = 1) {
-      toolbarState = 2;
-    }
-  } else if(direction == 'right') {
-    toolbarState++;
-    if(toolbarState = 2) {
-      toolbarState = 1;
-    }
+function switchToolbar(mode) {
+  if(mode == currentMode.er) {
+      toolbarState = toolbarER;
+  } else if(mode == currentMode.uml) {
+      toolbarState = toolbarUML;
+  } else if(mode == currentMode.dev) {
+      toolbarState = toolbarDeveloperMode;
   }
 
   document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
