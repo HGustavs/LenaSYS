@@ -36,13 +36,13 @@ pdoConnect();
 
 	</div>
 
-	<div id='personalRankTable' style='width:75%; white-space: nowrap;'></div>
+	<div id='personalRankTable' style='width:50%; white-space: nowrap;'></div>
 
-	<div id='allRankTable' style='width:75%; white-space: nowrap;'></div>
+	<div id='allRankTable' style='width:50%; white-space: nowrap;'></div>
 
-	<div id='contribGithHubContribTable'style='width:75%; white-space: nowrap;'></div>
+	<div id='contribGithHubContribTable'style='width:50%; white-space: nowrap;'></div>
 
-	<div id='contribTsTable' style='width:100%; white-space: nowrap;'></div>
+	<div id='contribTsTable' style='width:50%; white-space: nowrap;'></div>
 
 	<!-- content END -->
 
