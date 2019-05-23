@@ -1170,18 +1170,18 @@ function makeSumPersonalRank(col,value,row){
     }
   } else if(col == "rank") {
     if (value.rank == "UNK" || value.rank == "NOT FOUND") {
-      var retVal = ((Math.floor(retdata.amountInCourse*100))/100);
+      var retVal = retdata.amountInCourse/5;
       return retVal;
     } else {
-      var retVal = ((Math.floor(value.rank*100))/100)/5;
+      var retVal = value.rank/5;
       return retVal;
     }
   } else if(col == "grpranking") {
     if (value.rank == "UNK" || value.rank == "NOT FOUND") {
-      var retVal = ((Math.floor(retdata.amountInGroups*100))/100);
+      var retVal = retdata.amountInGroups/5;
       return retVal;
     } else {
-      var retVal = ((Math.floor(value.rank*100))/100)/5;
+      var retVal = value.rank/5;
       return retVal;
     }
   }
