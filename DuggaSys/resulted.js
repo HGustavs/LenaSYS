@@ -282,7 +282,7 @@ function leaves() {
 }
 
 function sorttype(t) {
-  if(t == 0){
+  if(t==0){
     myTable.setNameColumn('Fname');
   }else if(t == 1){
     myTable.setNameColumn('Lname');
