@@ -2221,7 +2221,7 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
-// Fake handle resizing for reset
+// Fake handle resizing for reset, should fix a "bug" with JQuery.
 function fakeHandlePull() {
 	var handles = document.getElementsByClassName("ui-resizable-handle");
 	for(i = 0; i < handles.length; i++) {
