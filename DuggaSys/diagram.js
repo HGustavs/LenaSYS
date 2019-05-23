@@ -54,6 +54,13 @@ const kind = {
     path: 1,
     symbol: 2
 };
+
+var currentMode = {
+    er: "ER",
+    uml: "UML",
+    dev: "Dev"
+};
+
 const symbolKind = {
     uml: 1,
     erAttribute: 2,
@@ -63,6 +70,7 @@ const symbolKind = {
     text: 6,
     umlLine: 7
 };
+
 const mouseState = {
     empty: 0,                       // empty
     noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
@@ -109,6 +117,7 @@ var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
+var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -433,7 +442,7 @@ function keyDownHandler(e) {
       document.getElementById("drawfreebutton").click();
     } else if(shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == mKey) {
+    } else if(shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
          if(developerModeActive) {
             developerMode(event);
         }
@@ -1126,8 +1135,8 @@ function initializeCanvas() {
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
-                + "%   |   <b>Coordinates:</b> X=" + Math.round(origoOffsetX / zoomValue) + " & Y=" + Math.round(origoOffsetY / zoomValue) + "</p>";
+    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + " </p>";
+    document.getElementById("valuesCanvas").style.display = 'none';
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -1895,11 +1904,13 @@ function modeSwitchConfirmed(confirmed) {
     }
 }
 
-function toggleMode(){
-    if(targetMode == "ER"){
+function toggleMode() {
+    if(toolbarState == "ER"){
         switchToolbarTo("UML");
-    } else {
+    } else if (toolbarState == "UML") {
         switchToolbarTo("ER");
+    } else {
+      return;
     }
 }
 
@@ -1910,6 +1921,9 @@ function toggleMode(){
 //------------------------------------------------------------------------------
 
 function switchToolbarTo(target) {
+    if (toolbarState == target) {
+      return;
+    }
     targetMode = target;
     modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
@@ -1930,7 +1944,7 @@ function switchToolbarTo(target) {
 
 var crossER = false;
 function switchToolbarER() {
-    toolbarState = 1;                                                               // Change the toolbar to ER.
+    toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
@@ -1947,7 +1961,7 @@ function switchToolbarER() {
 
 var crossUML = false;
 function switchToolbarUML() {
-    toolbarState = 2;                                                               // Change the toolbar to UML.
+    toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
     switchToolbar('UML');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
@@ -1968,7 +1982,7 @@ function switchToolbarDev(event) {
     if(!developerModeActive){
         return;
     }
-    toolbarState = 3;                                                               // Change the toolbar to DEV.
+    toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
@@ -2005,6 +2019,16 @@ function reWrite() {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
+        document.getElementById("valuesCanvas").style.display = 'block';
+        
+        //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
+        var smallerScreensDev = window.matchMedia("(max-width: 745px)");
+        if (smallerScreensDev.matches) {
+            document.getElementById("selectDiv").style.maxWidth = '30%';
+            document.getElementById("valuesCanvas").style.maxWidth = '30%';
+        } else {
+            document.getElementById("selectDiv").style.minWidth = '10%';
+        }
 
         if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
             document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
@@ -2025,9 +2049,15 @@ function reWrite() {
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
         + Math.round((zoomValue * 100)) + "%" + "   </p>";
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
+        document.getElementById("valuesCanvas").style.display = 'none';
+
+        //If you're using smaller screens then the zoom-bar will scale.
+        var smallerScreens = window.matchMedia("(max-width: 900px)");
+        if (smallerScreens.matches) {
+            document.getElementById("selectDiv").style.maxWidth = '50%';
+        } else {
+            document.getElementById("selectDiv").style.minWidth = '10%';
+        }
     }
 }
 
@@ -3851,7 +3881,7 @@ function loadLineForm(element, dir) {
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
             if(globalAppearanceValue == 0) {
-                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
+                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value;
                 var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
                 var lineDirection = diagram[lastSelectedObject].lineDirection;
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
@@ -3862,8 +3892,14 @@ function loadLineForm(element, dir) {
                     tempLineDirection = "First";
                 }
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                setSelectedOption('cardinality', tempCardinality);
-                setSelectedOption('line_direction', tempLineDirection);
+                // check if the form that is loaded is for a line can have cardinality 
+                if (cardinalityValue != 1) {
+                    setSelectedOption('cardinality', tempCardinality);
+                    // check if the form that is loaded is for a line can have a linedirection (uml lines) 
+                    if (cardinalityValue != 2) {
+                        setSelectedOption('line_direction', tempLineDirection);
+                    }
+                }
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
@@ -3966,6 +4002,9 @@ function globalAppearanceMenu() {
     loadFormIntoElement(form,'diagram_forms.php?form=globalType');
 }
 
+// determines which form should be loaded when line form is opened
+var cardinalityValue; 
+
 //----------------------------------------------------------------------
 // objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
 //----------------------------------------------------------------------
@@ -4002,11 +4041,17 @@ function objectAppearanceMenu(form) {
                 cardinalityOption = false;
         }
 
-        if (cardinalityOption) {
-            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
-        }else {
-            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=-1');
+        if (cardinalityOption) { // uml line or er line with cardinality
+            if (diagram[lastSelectedObject].cardinality[0].symbolKind == 1) { // uml line 
+                cardinalityValue = 3;
+            } else { //er line with cardinality
+                cardinalityValue = 2;
+            }
+        } else { // normal er line
+            cardinalityValue = 1;
         }
+
+        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + cardinalityValue);
     }
     // ER relation selected
     else if (diagram[lastSelectedObject].symbolkind == symbolKind.erRelation) {

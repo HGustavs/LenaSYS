@@ -2780,7 +2780,6 @@ function figureFreeDraw() {
             figurePath.properties['lineWidth'] = getLineThickness();
             figurePath.fillColor = getFillColor();
             figurePath.properties['strokeColor'] = getStrokeColor();
-
             cleanUp();
             SaveState();
         } else {
@@ -2820,6 +2819,7 @@ function endFreeDraw(){
     md = mouseState.empty; // To prevent selectbox spawn when clicking out of freedraw mode
     diagram.push(figurePath);
     figurePath.figureType = "Free";
+    figurePath.properties['lineWidth'] = getLineThickness();
     selected_objects.push(figurePath);
     lastSelectedObject = diagram.length - 1;
 

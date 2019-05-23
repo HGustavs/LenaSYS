@@ -3075,7 +3075,7 @@ span.arrow {
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
   margin-top: 10px;
-  
+
 }
 
 #sortOptions {
@@ -3481,7 +3481,7 @@ rect[class*="activitymarker"]:hover {
   padding: 0 20px 0 0px;
   display: flex;
   text-align: center;
-  
+
 }
 
 .alertmsg p {
@@ -4311,7 +4311,7 @@ only screen and (max-device-width: 320px) {
 
 #selectDiv select {
   height: 34px;
-  font-size: 14px;
+  font-size: 12px;
   border: 0;
   -webkit-appearance: none;
   /*Removes default chrome and safari style*/
@@ -4371,7 +4371,7 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  left: -20px;
+  left: -10px;
 }
 
 #zoomDecrease:hover+.tooltiptextDec {
@@ -4424,11 +4424,10 @@ only screen and (max-device-width: 320px) {
 
 #zoomV {
   margin-left: 10px;
-  width: 80px;
-  font-size: 14px;
+  width: 67.5px;
+  font-size: 12px;
   right: 1%;
 }
-
 
 /* The slider itself */
 .zoomSlider {
