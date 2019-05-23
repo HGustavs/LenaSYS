@@ -2676,6 +2676,24 @@ span.arrow {
   display: none;
 }
 
+.ladDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5px;
+}
+
+@media only screen and (max-width: 900px) {
+
+  #ladexportContainer {
+    display: block;
+  }
+
+  .ladDiv {
+    width: 60%;
+  }
+}
+
 
 /* End DuggaSys resulted*/
 
@@ -4104,10 +4122,6 @@ only screen and (max-device-width: 670px) {
 
   #statisticsList {
     display: none;
-  }
-
-  #ladexportContainer {
-    display: block;
   }
 
 }
