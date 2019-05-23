@@ -76,16 +76,13 @@ function Save() {
     diagramNumber++;
     localStorage.setItem("diagramNumber", diagramNumber);
     c = [];
-    d = [];
     for (var i = 0; i < diagram.length; i++) {
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
-        d[i] = diagram[i].id;
     }
-    var obj = {diagram:diagram, points:points, diagramNames:c, diagramID:d};
+    var obj = {diagram:diagram, points:points, diagramNames:c};
     a = JSON.stringify(obj, null, "\t");
     localStorage.setItem("Settings", JSON.stringify(settings));
-    localStorage.setItem("diagramID", JSON.stringify(d));
     console.log("State is saved");
 }
 
@@ -124,7 +121,6 @@ function loadDiagram() {
         settings = JSON.parse(localStorage.getItem("Settings"));
     }
     diagramNumber = localStorage.getItem("diagramNumber");
-    diagramID = localStorage.getItem("diagramID");
     var checkLocalStorage = localStorage.getItem("diagram" + diagramNumber);
 
     //local storage and hash
@@ -158,7 +154,6 @@ function loadDiagram() {
             diagram.length = b.diagram.length;
             for (var i = 0; i < b.diagram.length; i++) {
                 diagram[i] = b.diagram[i];
-                diagram[i].setID(JSON.parse(diagramID)[i]);
             }
             // Points fix
             for (var i = 0; i < b.points.length; i++) {
@@ -198,9 +193,8 @@ function hashFunction() {
             for (var i = 0; i < diagram.length; i++) {
                 c[i] = diagram[i].constructor.name;
                 c[i] = c[i].replace(/"/g,"");
-                d[i] = diagram[i].id;
             }
-            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c, diagramID:d});
+            a = JSON.stringify({diagram:diagram, points:points, diagramNames:c});
             localStorage.setItem('localdiagram', a);
             return hexHash;
         }
