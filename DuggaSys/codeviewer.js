@@ -1973,8 +1973,8 @@ function testHideCoopyButton() {
 		boxWidth = $("#box" + i + "wrapper").width();
 		console.log(boxWidth);
 		if(boxWidth <= 230){
-			hideCopyButtons(templateid, "box" + i.toString);
-			console.log("seems to work");
+			copyButton = document.getElementById("box" + i + "wrapper").getElementsByClassName("copybutton")[0];
+			copyButton.style.display = 'none';
 		}
 	}
 }
