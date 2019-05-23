@@ -96,7 +96,6 @@ function process() {
 		// Loop through all teacher names and store the appropriate name in a variable
 		for (j = 0; j < teacher.length; j++) {
 			// var tuid = teacher[j].tuid;
-			
 			var setTeacher = teacher[j].id;
 		}
 		if (setTeacher !== null) {
