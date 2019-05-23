@@ -88,22 +88,22 @@
 
 					<td class='results menuButton' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
+							<a id='resultsBTN' href='' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
 						</div>
 					</td>
 					<td class='tests menuButton' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
+							<a id='testsBTN' href='' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
 						</div>
 					</td>
 					<td class='files menuButton' style='display: inline-block;'>
 						<div class='files menuButton'>
-						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
+						<a id='filesBTN' href='' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
 						<div class='access menuButton'>
-						<a id='accessBTN' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
+						<a id='accessBTN' href='' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
 						</div>
 					</td>
 				</tr>
