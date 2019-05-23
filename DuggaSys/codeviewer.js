@@ -1912,14 +1912,14 @@ function maximizeBoxes(boxid) {
 		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).width("0%");
 
-			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 1, 2);
 		}
 
 		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 
-			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 2, 1);
 		}
 	}
