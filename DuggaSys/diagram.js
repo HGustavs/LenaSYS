@@ -1866,7 +1866,7 @@ function setModeOnRefresh() {
     } else if(toolbarState == currentMode.dev) {
         showCrosses();
         developerModeActive = true;
-        SwitchToolbarDev();
+        switchToolbarDev();
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
