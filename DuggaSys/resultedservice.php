@@ -117,6 +117,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		from userAnswer
 		where marked is null or gradeLastExported is null or marked > gradeLastExported';
 		$statement = $pdo->prepare($rawSqlQuery);
+		//$lastExported = 
+		//$statment->bindParam(':gradeLastExported', $lastExported);
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
 			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' failed to prepare query';
