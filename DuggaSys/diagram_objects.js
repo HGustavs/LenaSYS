@@ -13,7 +13,6 @@
 function Symbol(kindOfSymbol) {
     this.kind = kind.symbol;        // Diagram object kind is always 2 for symbols
     this.name = "New Class";        // New Class default name in new class
-    this.id = globalObjectID++;
     this.targeted = false;
     this.symbolkind = kindOfSymbol; // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
     this.operations = [];           // Operations array
@@ -58,13 +57,6 @@ function Symbol(kindOfSymbol) {
         'textAlign': 'center',                          // Used to change alignment of free text.
         'key_type': 'normal'                            // Defult key type for a class.
     };
-
-    this.setID = function(id){
-        this.id = id;
-        if(globalObjectID <= id){
-            globalObjectID = id + 1;
-        }
-    }
 
     //--------------------------------------------------------------------
     // getquadrant: Returns the quadrant for a x,y coordinate in relation to bounding box and box center
