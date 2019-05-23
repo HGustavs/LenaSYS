@@ -196,6 +196,7 @@ function process() {
 
 	// Add custom filters to the filter menu.
 	var dstr = "";
+	dstr += makeCustomFilter("showStudents", "Show Students");
 	dstr += makeCustomFilter("showTeachers", "Show Teachers");
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
@@ -621,7 +622,7 @@ function returnedResults(data) {
 		document.getElementById("teacherDropdown").innerHTML = teacherList;
 		document.getElementById("ladselect").innerHTML = ladmoments;
 		document.getElementById("laddate").valueAsDate = new Date();
-
+		
 		//tim=performance.now();
 
 		subheading = 0;
@@ -1095,6 +1096,8 @@ function smartSearch(splitSearch, row) {
 function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
+		return false;
+	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
 		return false;
 	if (filterList["onlyPending"]) {
 		var rowPending = false;
