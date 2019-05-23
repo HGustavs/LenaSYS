@@ -8,6 +8,8 @@ var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
+var searchterm = "";
+var accessFilter = "";
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -19,14 +21,19 @@ function setup() {
 	// Add search bar to nav
 	filt += `<td id='searchBar' class='navButt'>`;
 	filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-	filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
+	filt += `onkeyup='searchTable()'/>`;
 	filt += `<button id='searchbutton' class='switchContent'`;
-	filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
+	filt += `onclick='searchTable()' type='button'>`;
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
 	filt += `</button></td>`;
 
 	$("#sort").after(filt);
 	/* Add filter menu */
+
+	// Get access filter options from local storage
+	if (localStorage.getItem("accessFilter"+querystring['cid']) != null) {
+		accessFilter = localStorage.getItem("accessFilter"+querystring['cid']);
+	}
 
 	document.getElementById("sort").style.display = "table-cell";
 	document.getElementById("select").style.display = "table-cell";
@@ -49,6 +56,8 @@ function setup() {
 		cid: querystring['cid'],
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
+
+	createCheckboxes();
 }
 
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
@@ -438,17 +447,19 @@ function updateCellCallback(rowno, colno, column, tableid) {
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
-var searchterm = "";
 
 function rowFilter(row) {
-	if (searchterm == "") {
-		return true;
-	} else {
-		for (var property in row) {
-			if (row.hasOwnProperty(property)) {
-				if (row[property] != null) {
-					if (row[property].indexOf != null) {
-						if (row[property].indexOf(searchterm) != -1) return true;
+	var obj = JSON.parse(row["access"]);
+	if (accessFilter.indexOf(obj.access) > -1) {
+		if (searchterm == "") {
+			return true;
+		} else {
+			for (var property in row) {
+				if (row.hasOwnProperty(property)) {
+					if (row[property] != null) {
+						if (row[property].indexOf != null) {
+							if (row[property].indexOf(searchterm) != -1) return true;
+						}
 					}
 				}
 			}
@@ -637,3 +648,70 @@ document.addEventListener("keyup", function(event)
     clearUpdateCellInternal();
   }
 });
+
+//----------------------------------------------------------------------------------
+// searchTable - Search the table and filter its contents
+//----------------------------------------------------------------------------------
+function searchTable() {
+	searchterm=document.getElementById("searchinput").value;
+	searchKeyUp(event);
+	myTable.reRender();
+}
+
+//----------------------------------------------------------------------------------
+// filterAccess - Filter by teachers/students (write access/read access)
+//----------------------------------------------------------------------------------
+function filterAccess() {
+	toggleTeachers = document.getElementById("filterAccess1");
+	toggleStudents = document.getElementById("filterAccess2");
+	toggleStudentTeachers = document.getElementById("filterAccess3");
+	accessFilter = "";
+
+	if (toggleTeachers.checked) {
+		accessFilter += "W";
+	}
+	if (toggleStudents.checked) {
+		accessFilter += "R";
+	}
+	if (toggleStudentTeachers.checked) {
+		accessFilter += "ST";
+	}
+	console.log(accessFilter);
+	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
+	localStorage.setItem("accessFilter"+querystring['cid'], accessFilter);
+	myTable.reRender();
+}
+
+//----------------------------------------------------------------------------------
+// createCheckboxes - Create checkboxes for filtering teachers/students
+//----------------------------------------------------------------------------------
+function createCheckboxes() {
+	
+	var labels = ["Show teachers", "Show students", "Show student teachers"];
+	var str = "";
+	for (i = 0; i < labels.length; i++) {
+		str += "<div class='checkbox-dugga checkmoment'>";
+		str += "<input id='filterAccess" + (i+1) + "' type='checkbox' value='" + (i+1) + "' onchange='filterAccess()' ";
+		str += "></input>";
+		str += "<label for='filterAccess" + (i+1) + "' class='headerlabel'>" + labels[i] + "</label>";
+		str += "</div>";
+	}
+
+	/*
+	if (accessFilter == "W") str += "checked";
+	
+
+	str += "<div class='checkbox-dugga checkmoment'>";
+	str += "<input id='filterStudents' type='checkbox' value='R' onchange='filterAccess()' "
+	if (accessFilter == "R") str += "checked";
+	str += "></input>";
+	str += "<label for='filterStudents' class='headerlabel'>Show students</label>";
+	str += "</div>";
+	str += "<div class='checkbox-dugga checkmoment'>";
+	str += "<input id='filterStudentTeachers' type='checkbox' value='ST' onchange='filterAccess()' "
+	if (accessFilter == "ST" || accessFilter == "") str += "checked";
+	str += "></input>";
+	str += "<label for='filterStudentTeachers' class='headerlabel'>Show student teachers</label>";
+	str += "</div>";*/
+	document.getElementById("customfilter").innerHTML=str;
+}
