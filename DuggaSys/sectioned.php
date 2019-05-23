@@ -44,7 +44,7 @@
 							<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this)' ></select>
 						</div>
 					</td>
-					<td class='editVers' style='display: inline-block;'>
+					<td class='editVers' style='display: inline-block;margin-left:5px;'>
 						<div class='editVers menuButton'>
 								<img id='versionCog' class="navButt" title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>
 						</div>
@@ -85,7 +85,7 @@
 					<td class='results' style='display: inline-block;'>
 						<div class='results menuButton'>
 							<a id='resultsBTN' title='Edit student results' value='Results' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'>
-								<img id='versionPlus' class="navButt" src='../Shared/icons/FistW.svg'>
+								<img id='versionPlus' class="navButt" src='../Shared/icons/fist_button.svg'>
 							</a>
 						</div>
 					</td>
