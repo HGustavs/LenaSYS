@@ -1079,6 +1079,7 @@ function tokenize(instring, inprefix, insuffix) {
 	var currentNum; // current numerical value
 	var currentQuoteChar; // current quote character
 	var currentStr; // current string value.
+	var currentBlock = {}; // current block value.
 	var row = 1; // current row value
 
 	currentCharacter = instring.charAt(i);
@@ -1419,6 +1420,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	bracket = new Array();
 	cbcount = 0;
 	cbracket = new Array();
+	allBlocks = new Array();
 
 	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data','bdi', 'audio','aside','article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
 	htmlArrayNoSlash = new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'textview', 'webview', 'uses');
@@ -1496,11 +1498,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = bracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "{") {
+				allBlocks.push([tokens[i].row, 1, parseInt(boxid)]);
 				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
 				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
+				allBlocks.push([tokens[i].row, 0, parseInt(boxid)]);
 				pid = cbracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
@@ -1715,6 +1719,71 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 	// Print out rendered code and border with numbers
 	printout.css(createCodeborder(lineno, improws) + str);
+
+	createBlocks(allBlocks);
+}
+
+function createBlocks(blocks) {
+	var boxBlocks = []; // Array to hold each box array
+
+	// Sort by boxid and split array depending on how many boxes we have
+	blocks.sort(([a,b,c], [d,e,f]) => f - c);
+
+	var tempArray = [];
+	for (var i = 0; i < blocks.length; i++) {
+		if (i !== 0 && blocks[i-1][2] !== blocks[i][2]) {
+			// Last iteration had a different boxid, start a new array
+			boxBlocks.push(tempArray);
+			tempArray = [];
+		}
+		tempArray.push(blocks[i]);
+	}
+	boxBlocks.push(tempArray);
+
+	// Sort the arrays
+	for (var i = 0; i < boxBlocks.length; i++) {
+		boxBlocks[i].sort(([a,b], [c,d]) => a - c);
+	}
+
+	// Determine block ranges
+	var ranges = [];
+	var openBlock = false;
+	var blocks;
+	for (var i = 0; i < boxBlocks.length; i++) {
+		blocks = boxBlocks[i];
+		for (var j = 0; j < blocks.length; j++) {
+			// If there are no open blocks and the bracket is a closing bracket, do nothing.
+			if (!openBlock && blocks[j][1] === 0) continue;
+			
+			// Opening bracket
+			if (blocks[j][1] === 1) {
+				ranges.push([blocks[j][0], 0]);
+				openBlock = true;
+			}
+			// Closing bracket
+			if (blocks[j][1] === 0) {
+				for (var k = ranges.length - 1; k > -1; k--) {
+					if (ranges[k][1] === 0) {
+						if (ranges[k][0] !== blocks[j][0]) {
+							ranges[k][1] = blocks[j][0];
+						} else {
+							ranges.splice(k, 1);
+						}
+						break;
+					}
+				}
+				
+				var containsOpenBlock = function(arr) {
+					return arr.includes(0)
+				}
+
+				if (!ranges.some(containsOpenBlock)) openBlock = false;
+			}
+		}
+		openBlock = false;
+	}
+
+	console.log(ranges);
 }
 
 //----------------------------------------------------------------------------------
