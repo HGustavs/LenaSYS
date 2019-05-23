@@ -1951,13 +1951,13 @@ function getTotalBoxes(template) {
 	return totalBoxes;
 }
 
+// Hides the copy button when there isnt enugh room for it
 function hideCopyButton() {
 	var boxWidth;
 	var templateid = retData['templateid'];
 
 	for(var i = 1; i <= getTotalBoxes(templateid); i++){
 		boxWidth = $("#box" + i + "wrapper").width();
-		console.log(boxWidth);
 		if(boxWidth <= 230){
 			copyButton = document.getElementById("box" + i + "wrapper").getElementsByClassName("copybutton")[0];
 			copyButton.style.display = 'none';
@@ -2284,7 +2284,6 @@ function maximizeBoxes(boxid) {
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
-	
 	hideCopyButton();
 }
 
