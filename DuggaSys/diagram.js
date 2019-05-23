@@ -2020,7 +2020,7 @@ function reWrite() {
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
         document.getElementById("valuesCanvas").style.display = 'block';
-        
+
         //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
         var smallerScreensDev = window.matchMedia("(max-width: 745px)");
         if (smallerScreensDev.matches) {
@@ -3140,7 +3140,7 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
-                } else {
+              } else if(uimode == "CreateClass") {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
                 ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
@@ -3836,10 +3836,10 @@ function loadLineForm(element, dir) {
                     tempLineDirection = "First";
                 }
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                // check if the form that is loaded is for a line can have cardinality 
+                // check if the form that is loaded is for a line can have cardinality
                 if (cardinalityValue != 1) {
                     setSelectedOption('cardinality', tempCardinality);
-                    // check if the form that is loaded is for a line can have a linedirection (uml lines) 
+                    // check if the form that is loaded is for a line can have a linedirection (uml lines)
                     if (cardinalityValue != 2) {
                         setSelectedOption('line_direction', tempLineDirection);
                     }
@@ -3947,7 +3947,7 @@ function globalAppearanceMenu() {
 }
 
 // determines which form should be loaded when line form is opened
-var cardinalityValue; 
+var cardinalityValue;
 
 //----------------------------------------------------------------------
 // objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
@@ -3986,7 +3986,7 @@ function objectAppearanceMenu(form) {
         }
 
         if (cardinalityOption) { // uml line or er line with cardinality
-            if (diagram[lastSelectedObject].cardinality[0].symbolKind == 1) { // uml line 
+            if (diagram[lastSelectedObject].cardinality[0].symbolKind == 1) { // uml line
                 cardinalityValue = 3;
             } else { //er line with cardinality
                 cardinalityValue = 2;
