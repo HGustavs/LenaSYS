@@ -753,7 +753,7 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Add resize and reset buttons
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Minimize</p></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
