@@ -128,7 +128,7 @@
   //form for lines
   else if($form == 'lineType') {
       $cardinality = $_GET['cardinality'];
-      if($cardinality == -1) {
+      if($cardinality == 1) {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
@@ -137,7 +137,7 @@
             <option value='Derived'>Derived</option>
         </select></br>
         ";
-      }else if($cardinality != 1) {
+      }else if($cardinality == 2) {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
@@ -153,7 +153,7 @@
           <option value='M'>M</option>
         </select><br/>
         ";
-      }else {
+      }else if ($cardinality == 3) {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
