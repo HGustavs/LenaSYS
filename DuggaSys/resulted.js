@@ -1368,6 +1368,9 @@ function exportColumnHeading(format, heading, colname) {
 	}
 	return str;
 }
+//----------------------------------------
+// LadExport
+//----------------------------------------
 
 //Function for exporting grades to ladoc
 function ladexport() {
@@ -1384,9 +1387,7 @@ function ladexport() {
 	document.getElementById("resultlistpopover").style.display = "flex";
 
 }
-//----------------------------------------
-// LadExport
-//----------------------------------------
+
 function copyLadexport() {
 	var copyIcon = document.getElementById("copyClipboard");
 	copyIcon.style.backgroundColor = '#629c62';
@@ -1401,18 +1402,22 @@ function copyLadexport() {
 	var today = new Date();
 	var dd = today.getDate();
 	var mm = today.getMonth() + 1; //January is 0!
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	var yyyy = today.getFullYear();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
 	if (dd < 10) {
 		dd = '0' + dd; // Adds a 0 to days below 10
 	} 
 	if (mm < 10) {
 		mm = '0' + mm; // Adds a 0 to days below 10
 	} 
- today = yyyy + '-' + dd + '-' + mm ;
+	 today = yyyy + '-' + dd + '-' + mm ;
+
 
 	document.getElementById('lastExpDate').innerHTML = "Last exported: " + today + " " + time;
-
+	AJAXService("getunexported", {
+		gradeLastExported: today
+	}, "RESULT");
 }
 
 function closeLadexport() {
