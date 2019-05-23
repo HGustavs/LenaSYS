@@ -1906,7 +1906,8 @@ function maximizeBoxes(boxid) {
 	var templateid = retData['templateid'];
 
 	getLocalStorageProperties(boxValArray);
-
+	saveInitialBoxValues();
+	
 	//For template 1
 	if (templateid == 1) {
 		if (boxid == 1) {
@@ -2241,9 +2242,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2261,9 +2259,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2282,9 +2277,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2320,9 +2312,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2359,9 +2348,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2415,9 +2401,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2472,9 +2455,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s,e",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2525,9 +2505,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "e, s",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2564,9 +2541,6 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
-			create: function(event, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -3093,6 +3067,14 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
+function saveInitialBoxValues() {
+	var templateId = retData["templateid"];
+	var parent = "#div2";
+	var boxValArray = initResizableBoxValues(parent);
+
+	setLocalStorageProperties(templateId, boxValArray);
+}
+
 function initResizableBoxValues(parent) {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
@@ -3124,6 +3106,7 @@ function initResizableBoxValues(parent) {
 			boxValueArray['parent']['width'] = $(parent).width();
 		}
 	});
+
 	return boxValueArray;
 }
 
