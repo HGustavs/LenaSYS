@@ -60,7 +60,7 @@ function statSort(value) {
     document.getElementById("personalRankTable").style.display = "none";
     document.getElementById("contribTsTable").style.display = "none";
     document.getElementById("contribGithHubContribTable").style.display = "none";
-    removeStatview('.group1 , .group3');
+    removeStatview('.group3');
   } else if (value == "Contribution") {
     document.getElementById("personalRankTable").style.display = "none";
     document.getElementById("contribTsTable").style.display = "block";
