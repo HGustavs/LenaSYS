@@ -1856,17 +1856,17 @@ var refreshedPage = true;
 function setModeOnRefresh() {
     toolbarState = localStorage.getItem("toolbarState");
     if(toolbarState == currentMode.er) {
-        switchToolbarTo('ER');
+        switchToolbarER();
         hideCrosses();
         developerModeActive = false;
     } else if(toolbarState == currentMode.uml) {
-        switchToolbarTo('UML');
+        switchToolbarUML();
         hideCrosses();
         developerModeActive = false;
     } else if(toolbarState == currentMode.dev) {
         showCrosses();
         developerModeActive = true;
-        switchToolbarTo('Dev');
+        SwitchToolbarDev();
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
