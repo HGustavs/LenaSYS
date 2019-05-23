@@ -50,6 +50,8 @@ var settings = {
     },
 };
 
+var globalObjectID = 0;       
+
 const kind = {
     path: 1,
     symbol: 2
