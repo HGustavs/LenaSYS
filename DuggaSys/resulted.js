@@ -1,7 +1,6 @@
 /********************************************************************************
  Globals
  *********************************************************************************/
-//testing:::::::::::::::::::::::::::::::::::
 var sessionkind = 0;
 var querystring = parseGet();
 var filez;
@@ -622,7 +621,7 @@ function returnedResults(data) {
 		document.getElementById("teacherDropdown").innerHTML = teacherList;
 		document.getElementById("ladselect").innerHTML = ladmoments;
 		document.getElementById("laddate").valueAsDate = new Date();
-		
+
 		//tim=performance.now();
 
 		subheading = 0;
