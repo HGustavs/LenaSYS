@@ -46,16 +46,12 @@
 					</td>
 					<td class='editVers' style='display: inline-block;'>
 						<div class='editVers menuButton'>
-								<button type='button' class='submit-button no-radius' style='width:35px;margin-left:0px' title='Edit the selected version' onclick='showEditVersion();'>
 									<img id='versionCog' style='margin-top:6px' src='../Shared/icons/CogwheelWhite.svg'>
-								</button>
 						</div>
 					</td>
 					<td class='newVers' style='display: inline-block;'>
 						<div class='newVers menuButton'>
-							<button type='button' value='New version' style='width:35px; margin-left:0px;border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius' title='Create a new version of this course' onclick='showCreateVersion();' >
 								<img id='versionPlus' style='margin-top:6px' src='../Shared/icons/PlusS.svg'>
-							</button>
 						</div>
 					</td>
 					<td class='hamburger hamburgerClickable'>
