@@ -1093,13 +1093,6 @@ function smartSearch(splitSearch, row) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	var teacherDropdown = document.getElementById("teacherDropdown").value;
-	if (teacherDropdown === "none"){
-		return true;
-	}
-	else if(row.FnameLname.examiner != teacherDropdown){
-		return false;
-	}
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
