@@ -1958,7 +1958,7 @@ function hideCopyButton() {
 
 	for(var i = 1; i <= getTotalBoxes(templateid); i++){
 		boxWidth = $("#box" + i + "wrapper").width();
-		if(boxWidth <= 230){
+		if(boxWidth <= 310){
 			copyButton = document.getElementById("box" + i + "wrapper").getElementsByClassName("copybutton")[0];
 			copyButton.style.display = 'none';
 		}else{
