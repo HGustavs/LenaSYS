@@ -89,7 +89,7 @@
 					<td class='results' style='display: inline-block;'>
 						<div class='results menuButton'>
 							<a id='resultsBTN' title='Edit student results' value='Results' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'>
-								<img id='versionPlus' class="navButt" src='../Shared/icons/FistV.svg'>
+								<img id='versionPlus' class="navButt" src='../Shared/icons/FistW.svg'>
 							</a>
 						</div>
 					</td>
@@ -103,7 +103,7 @@
 					<td class='files' style='display: inline-block;'>
 						<div class='files menuButton'>
 						<a id='filesBTN' title='Show files' value='Files' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'>
-								<img class="navButt" src='../Shared/icons/general_upload_button.svg'>
+								<img class="navButt" src='../Shared/icons/rounded_upload_button.svg'>
 							</a>
 						</div>
 					</td>

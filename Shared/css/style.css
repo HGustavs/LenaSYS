@@ -3567,6 +3567,7 @@ table.navheader td.menuButton {
 }
 
 table.navheader div.menuButton {
+  margin-right: 5px;
   pointer-events: auto;
   display: inline-block;
   opacity: 1.0;
