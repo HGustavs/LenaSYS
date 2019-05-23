@@ -319,7 +319,6 @@ function sorttype(t) {
 		typechanged = false;
 		var allColumnIds = myTable.getColumnOrder();
 		myTable.toggleSortStatus(allColumnIds[col],dir);
-    console.log("col: "+col+" dir: "+dir+" t: "+t);
 	}
 }
 
