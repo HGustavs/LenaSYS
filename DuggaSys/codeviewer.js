@@ -2221,8 +2221,17 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
+// Fake handle resizing for reset
+function fakeHandlePull() {
+	var handles = document.getElementsByClassName("ui-resizable-handle");
+	for(i = 0; i < handles.length; i++) {
+		console.log(handles);
+	}
+}
+
 //reset boxes
 function resetBoxes() {
+	fakeHandlePull();
 	resizeBoxes("#div2", retData["templateid"]);
 }
 
