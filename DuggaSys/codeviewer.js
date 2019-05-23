@@ -1210,26 +1210,47 @@ function tokenize(instring, inprefix, insuffix) {
 						break;
 					}
 					currentCharacter = instring.charAt(i);
+					nextCharacter = instring.charAt(i+1);
 
 					if (currentCharacter == 'b') {
-						currentCharacter = '\b';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\b";
+						} else {
+							currentCharacter = '\b';
+							break;
+						}
 					}
 					if (currentCharacter == 'f') {
-						currentCharacter = '\f';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\f";
+						} else {
+							currentCharacter = '\f';
+							break;
+						}
 					}
 					if (currentCharacter == 'n') {
-						currentCharacter = '\n';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\n";
+						} else {
+							currentCharacter = '\n';
+							break;
+						}
 					}
 					if (currentCharacter == 'r') {
-						currentCharacter = '\r';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\r";
+						} else {
+							currentCharacter = '\r';
+							break;
+						}
 					}
 					if (currentCharacter == 't') {
-						currentCharacter = '\t';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\t";
+						} else {
+							currentCharacter = '\t';
+							break;
+						}
 					}
 					if (currentCharacter == 'u') {
 						if (i >= length) {
