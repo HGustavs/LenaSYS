@@ -9,7 +9,7 @@ var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
 var searchterm = "";
-var accessFilter = "";
+var accessFilter = "WRST";
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -57,6 +57,7 @@ function setup() {
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
 
+	// Add check boxes to the filter dropdown for filtering teachers/students/student teachers
 	createCheckboxes();
 }
 
@@ -676,7 +677,7 @@ function filterAccess() {
 	if (toggleStudentTeachers.checked) {
 		accessFilter += "ST";
 	}
-	console.log(accessFilter);
+	//console.log(accessFilter);
 	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
 	localStorage.setItem("accessFilter"+querystring['cid'], accessFilter);
 	myTable.reRender();
@@ -692,26 +693,12 @@ function createCheckboxes() {
 	for (i = 0; i < labels.length; i++) {
 		str += "<div class='checkbox-dugga checkmoment'>";
 		str += "<input id='filterAccess" + (i+1) + "' type='checkbox' value='" + (i+1) + "' onchange='filterAccess()' ";
+		if (i == 0 && accessFilter.indexOf("W") > -1) str += "checked";
+		else if (i == 1 && accessFilter.indexOf("R") > -1) str += "checked";
+		else if (i == 2 && accessFilter.indexOf("ST") > -1) str += "checked";
 		str += "></input>";
 		str += "<label for='filterAccess" + (i+1) + "' class='headerlabel'>" + labels[i] + "</label>";
 		str += "</div>";
 	}
-
-	/*
-	if (accessFilter == "W") str += "checked";
-	
-
-	str += "<div class='checkbox-dugga checkmoment'>";
-	str += "<input id='filterStudents' type='checkbox' value='R' onchange='filterAccess()' "
-	if (accessFilter == "R") str += "checked";
-	str += "></input>";
-	str += "<label for='filterStudents' class='headerlabel'>Show students</label>";
-	str += "</div>";
-	str += "<div class='checkbox-dugga checkmoment'>";
-	str += "<input id='filterStudentTeachers' type='checkbox' value='ST' onchange='filterAccess()' "
-	if (accessFilter == "ST" || accessFilter == "") str += "checked";
-	str += "></input>";
-	str += "<label for='filterStudentTeachers' class='headerlabel'>Show student teachers</label>";
-	str += "</div>";*/
 	document.getElementById("customfilter").innerHTML=str;
 }
