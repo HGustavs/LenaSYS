@@ -2221,17 +2221,8 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
-// Fake handle resizing for reset, should fix a "bug" with JQuery.
-function fakeHandlePull() {
-	var handles = document.getElementsByClassName("ui-resizable-handle");
-	for(i = 0; i < handles.length; i++) {
-		console.log(handles);
-	}
-}
-
 //reset boxes
 function resetBoxes() {
-	fakeHandlePull();
 	resizeBoxes("#div2", retData["templateid"]);
 }
 
@@ -2250,6 +2241,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2267,6 +2261,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2285,6 +2282,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2320,6 +2320,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2356,6 +2359,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2409,6 +2415,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2463,6 +2472,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s,e",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2513,6 +2525,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "e, s",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
@@ -2549,6 +2564,9 @@ function resizeBoxes(parent, templateId) {
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			create: function(event, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			},
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
