@@ -3021,7 +3021,8 @@ function mousemoveevt(ev, t) {
             if (movobj != -1 ) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
-                for (var i = 0; i < diagram.length; i++) {
+                for (var i = 0; i < diagram.length; i++) { 
+                    console.log(diagram[i]);
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
                         if(snapToGrid) {
                             // Set mouse start so it's snaped to grid.
@@ -3039,13 +3040,14 @@ function mousemoveevt(ev, t) {
                             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         }
+
                         diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
 
                         // Keep recursive lines together
-                        for (var i = 0; i < diagram.length; i++) {
-                            if (diagram[i].isRecursiveLine) {
-                                points[diagram[i].topLeft].x = points[diagram[i].bottomRight].x;
-                                points[diagram[i].topLeft].y = points[diagram[i].bottomRight].y;
+                        for (var j = 0; j < diagram.length; j++) {
+                            if (diagram[j].isRecursiveLine) {
+                                points[diagram[j].topLeft].x = points[diagram[j].bottomRight].x;
+                                points[diagram[j].topLeft].y = points[diagram[j].bottomRight].y;
                             }
                         }
                     }
