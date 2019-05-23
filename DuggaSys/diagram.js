@@ -204,18 +204,6 @@ const leftMouseClick = 0;
 const scrollClick = 1;
 const rightMouseClick = 2;
 
-// This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
-var dragDistanceReached = true;
-
-// Hides the context menu. Needed in order to be able to right click and drag to move the camera.
-window.addEventListener('contextmenu', function (e) {
-        if (dragDistanceReached) {
-            e.preventDefault();
-        }
-    },
-    false
-);
-
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
@@ -2893,16 +2881,11 @@ function mousemoveevt(ev, t) {
             ||
             (diffY > deltaY) || (diffY < -deltaY)
         ) {
-            dragDistanceReached = true;
             // Entering MoveAround mode
             if (uimode != "MoveAround") {
                 activateMovearound();
             }
             updateGraphics();
-        }
-        else {
-            // If click event is needed, it goes in here.
-            dragDistanceReached = false;
         }
     }
 
@@ -3205,7 +3188,6 @@ function mousedownevt(ev) {
         if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
             InitPageX = ev.pageX;
             InitPageY = ev.pageY;
-            dragDistanceReached = false;
         }
     }
 
@@ -3242,7 +3224,6 @@ function mousedownevt(ev) {
     } else {
         md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
         if(ev.button == rightMouseClick && uimode == "CreateFigure"){
-            dragDistanceReached = true;
             endFreeDraw();
         }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
