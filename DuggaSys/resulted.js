@@ -1413,10 +1413,11 @@ function copyLadexport() {
 	} 
 	 today = yyyy + '-' + dd + '-' + mm ;
 
-
-	document.getElementById('lastExpDate').innerHTML = "Last exported: " + today + " " + time;
+ 	var lastExported = today + " " + time;
+	document.getElementById('lastExpDate').innerHTML = "Last exported:" +  lastExported;
+	 
 	AJAXService("getunexported", {
-		gradeLastExported: today
+		gradeLastExported: lastExported
 	}, "RESULT");
 }
 
