@@ -1906,6 +1906,7 @@ function maximizeBoxes(boxid) {
 	var templateid = retData['templateid'];
 
 	getLocalStorageProperties(boxValArray);
+	hideCopyButtons(templateid, boxid);
 	saveInitialBoxValues();
 	
 	//For template 1
