@@ -753,6 +753,7 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Add resize and reset buttons
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>Minimize</p></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
 
 		// Show the copy to clipboard button for code views only
@@ -1894,12 +1895,7 @@ function Play(event) {
 	}
 }
 
-//-----------------------------------------------------------------------------
-// maximizeBoxes: Adding maximize functionality for the boxes
-//					Is called with onclick() by maximizeButton
-//-----------------------------------------------------------------------------
-
-function maximizeBoxes(boxid) {
+function minimizeBoxes(boxid) {
 	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
@@ -1920,6 +1916,37 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
+			alignBoxesWidth(boxValArray, 2, 1);
+		}
+	}
+}
+
+//-----------------------------------------------------------------------------
+// maximizeBoxes: Adding maximize functionality for the boxes
+//					Is called with onclick() by maximizeButton
+//-----------------------------------------------------------------------------
+
+function maximizeBoxes(boxid) {
+	var boxid = boxid;
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+
+	getLocalStorageProperties(boxValArray);
+
+	//For template 1
+	if (templateid == 1) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			alignBoxesWidth(boxValArray, 1, 2);
+		}
+
+		if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
 			alignBoxesWidth(boxValArray, 2, 1);
 		}
 	}
