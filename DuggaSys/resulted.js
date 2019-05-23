@@ -1400,26 +1400,27 @@ function copyLadexport() {
 	document.execCommand("copy");
 
 	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth() + 1; //January is 0!
+	var dd = addZero(today.getDate());
+	var mm = addZero(today.getMonth() + 1); //January is 0!
 	var yyyy = today.getFullYear();
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
 
-	if (dd < 10) {
-		dd = '0' + dd; // Adds a 0 to days below 10
-	} 
-	if (mm < 10) {
-		mm = '0' + mm; // Adds a 0 to days below 10
-	} 
-	 today = yyyy + '-' + dd + '-' + mm ;
+	today = yyyy + '-' + mm + '-' + dd;
 
  	var lastExported = today + " " + time;
-	document.getElementById('lastExpDate').innerHTML = "Last exported:" +  lastExported;
+	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  lastExported;
 	 
 	AJAXService("getunexported", {
 		gradeLastExported: lastExported
 	}, "RESULT");
 }
+
+function addZero(i) {
+	if (i < 10) {
+	  i = "0" + i;
+	}
+	return i;
+  }
 
 function closeLadexport() {
 	document.getElementById("resultlistarea").value = "";
