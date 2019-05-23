@@ -96,7 +96,7 @@
 					<td class='tests' style='display: inline-block;'>
 						<div class='tests menuButton'>
 							<a id='testsBTN' value='Tests' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
-								<img id='testsBTN' class="navButt" src='../Shared/icons/Copy.svg'>
+								<img id='testsBTN' class="navButt" src='../Shared/icons/student_files.svg'>
 							</a>
 						</div>
 					</td>
