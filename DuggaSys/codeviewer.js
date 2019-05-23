@@ -1920,6 +1920,7 @@ function hideCopyButtons(templateid, boxid) {
 
 	for (var i = 1; i <= totalBoxes; i++) {
 		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
+
 		if (i !== boxid) {
 			copyBtn.style.display = "none";
 		} else {
@@ -1962,6 +1963,20 @@ function getTotalBoxes(template) {
 		break;
 	}
 	return totalBoxes;
+}
+
+function testHideCoopyButton() {
+	var boxWidth;
+	var templateid = retData['templateid'];
+
+	for(var i = 1; i <= getTotalBoxes(templateid); i++){
+		boxWidth = $("#box" + i + "wrapper").width();
+		console.log(boxWidth);
+		if(boxWidth <= 230){
+			hideCopyButtons(templateid, "box" + i.toString);
+			console.log("seems to work");
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -2463,6 +2478,9 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'auto');
 			}
 		});
+
+		testHideCoopyButton();
+
 	} else if (templateId == 6) {
 
 		getLocalStorageProperties(templateId, boxValArray);
@@ -2681,6 +2699,8 @@ function resizeBoxes(parent, templateId) {
 		});
 
 	}
+
+	
 };
 
 //----------------------------------------------------------------------------------
