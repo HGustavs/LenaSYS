@@ -3535,7 +3535,7 @@ function mouseupevt(ev) {
             setTargetedForSymbolGroup(diagram[lastSelectedObject], true);
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
-        //Code for making a line, if start and end object are different, except attributes and if no object is text
+        // Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
@@ -3560,9 +3560,16 @@ function mouseupevt(ev) {
             updateGraphics();
         }
     }
-    // set the linewidth for the created object
+
+    // Sets the Global Appearance settings for each object
     if (lastSelectedObject >= 0) {
         diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
+        diagram[lastSelectedObject].properties['fontColor'] = getFontColor();
+        diagram[lastSelectedObject].properties['font'] = getFont();
+        diagram[lastSelectedObject].properties['strokeColor'] = getStrokeColor();
+        diagram[lastSelectedObject].properties['symbolColor'] = getFillColor();
+        diagram[lastSelectedObject].properties['sizeOftext'] = getTextSize();
+        diagram[lastSelectedObject].fillColor = getFillColor();
     }
 
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
@@ -3773,7 +3780,7 @@ function dimDialogMenu(dim) {
 }
 
 //----------------------------------------------------------------------
-// loadFormIntoElement: Loads the menu which is used to change apperance of ER and free draw objects.
+// loadFormIntoElement: Loads the menu which is used to change appearance of ER and free draw objects.
 //----------------------------------------------------------------------
 
 function loadFormIntoElement(element, dir) {
@@ -3796,7 +3803,7 @@ function loadFormIntoElement(element, dir) {
                 document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
                 setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
             } else {
-                // should only occur when changing global apperance
+                // should only occur when changing global appearance
                 document.getElementById('line-thickness').value = getLineThickness();
             }
         }
@@ -3804,12 +3811,61 @@ function loadFormIntoElement(element, dir) {
     file.send();
 }
 
-// return the line thickness of one of the current objects in the diagram or else return the standard value: 2
+//----------------------------------------------------------------------
+// The following functions are used to get Global Appearance changes
+//----------------------------------------------------------------------
+
+// Return the line thickness of one of the current objects in the diagram
 function getLineThickness() {
     if (diagram.length > 0){
         return value = diagram[0].properties['lineWidth'];
     } else {
-        return 2;
+        return diagram[0].properties['lineWidth'];
+    }
+}
+
+// Returns the font color of the objects in the diagram
+function getFontColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['fontColor'];
+    } else {
+        return diagram[0].properties['fontColor'];
+    }
+}
+
+// Returns the font of the objects in the diagram
+function getFont() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['font'];
+    } else {
+        return diagram[0].properties['font'];
+    }
+}
+
+// Returns the stroke color of the objects in the diagram
+function getStrokeColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['strokeColor'];
+    } else {
+        return diagram[0].properties['strokeColor'];
+    }
+}
+
+// Returns the fill color of the objects in the diagram
+function getFillColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['symbolColor'];
+    } else {
+        return diagram[0].properties['symbolColor'];
+    }
+}
+
+// Returns the text size of the objects in the diagram
+function getTextSize() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['sizeOftext'];
+    } else {
+        return diagram[0].properties['sizeOftext'];
     }
 }
 
@@ -3912,7 +3968,7 @@ function loadTextForm(element, dir) {
 }
 
 //----------------------------------------------------------------------
-// setSelectedOption: used to implement the changes to apperances that has been made
+// setSelectedOption: used to implement the changes to appearances that has been made
 //----------------------------------------------------------------------
 
 function setSelectedOption(type, value) {

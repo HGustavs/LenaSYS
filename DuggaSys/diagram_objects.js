@@ -1027,11 +1027,16 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
+        this.properties['textSize'] = '14';
+        this.properties['strokeColor'] = '#000000';
+        this.properties['fontColor'] = '#000000';
+        this.properties['lineWidth'] = 2;
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
 
         // Clear Class Box
-        ctx.fillStyle = this.properties['symbolColor'];
+        ctx.fillStyle = '#ffffff';
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+
         // Box
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -1049,7 +1054,6 @@ function Symbol(kindOfSymbol) {
         ctx.fill();
         ctx.stroke();
         ctx.clip();
-
         ctx.fillStyle = this.properties['fontColor'];
         // Write Class Name
         ctx.textAlign = "center";
@@ -1091,10 +1095,32 @@ function Symbol(kindOfSymbol) {
             drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
             ctx.stroke();
             drawOval(x1, y1, x2, y2);
+            // Makes sure that the stroke color can not be white
+            if (this.properties['strokeColor'] == '#ffffff') {
+                this.properties['strokeColor'] = '#000000';
+            }
+            // Make sure that the font color is always able to be seen.
+            // Symbol and Font color should therefore not be the same
+            if (this.properties['fontColor'] == this.properties['symbolColor']) {
+                if (this.properties['symbolColor'] == '#000000') {
+                    this.properties['fontColor'] = '#ffffff';
+                } else {
+                    this.properties['fontColor'] = '#000000';
+                }
+            }
         // Drawing a normal attribute
         } else {
             drawOval(x1, y1, x2, y2);
             ctx.fill();
+            // Make sure that the font color is always able to be seen.
+            // Symbol and Font color should therefore not be the same
+            if (this.properties['fontColor'] == this.properties['symbolColor']) {
+                if (this.properties['symbolColor'] == '#000000') {
+                    this.properties['fontColor'] = '#ffffff';
+                } else {
+                    this.properties['fontColor'] = '#000000';
+                }
+            }
         }
         ctx.clip();
 
@@ -1308,7 +1334,7 @@ function Symbol(kindOfSymbol) {
             this.properties['strokeColor'] = '#000000';
         }
         // Make sure that the font color is always able to be seen.
-        //Symbol and Font color should therefore not be the same
+        // Symbol and Font color should therefore not be the same
         if (this.properties['fontColor'] == this.properties['symbolColor']) {
             if (this.properties['symbolColor'] == '#000000') {
                 this.properties['fontColor'] = '#ffffff';
@@ -1320,7 +1346,6 @@ function Symbol(kindOfSymbol) {
 
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
-        
         if (this.properties['key_type'] == "Weak") {
             this.drawWeakEntity(x1, y1, x2, y2);
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
@@ -1335,9 +1360,15 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x1, y1);
         ctx.closePath();
         ctx.fill();
+        if (this.properties['fontColor'] == this.properties['symbolColor']) {
+            if (this.properties['symbolColor'] == '#000000') {
+                this.properties['fontColor'] = '#ffffff';
+            } else {
+                this.properties['fontColor'] = '#000000';
+            }
+        }
         ctx.clip();
         ctx.stroke();
-
         ctx.fillStyle = this.properties['fontColor'];
 
         if(ctx.measureText(this.name).width >= (x2-x1) - 5) {
@@ -1397,6 +1428,8 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawUMLLine = function(x1, y1, x2, y2) {
+        this.properties['strokeColor'] = '#000000';
+        this.properties['lineWidth'] = 2;
         //Checks if there is cardinality set on this object
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
@@ -1825,10 +1858,20 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(midx, y1);
         ctx.closePath();
         ctx.fill();
+        // Make sure that the font color is always able to be seen.
+        // Symbol and Font color should therefore not be the same
+        if (this.properties['fontColor'] == this.properties['symbolColor']) {
+            if (this.properties['symbolColor'] == '#000000') {
+                this.properties['fontColor'] = '#ffffff';
+            } else {
+                this.properties['fontColor'] = '#000000';
+            }
+        }
         ctx.clip();
         ctx.stroke();
 
         ctx.fillStyle = this.properties['fontColor'];
+        
         if(ctx.measureText(this.name).width >= (x2-x1) - 12) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 10 , (y1 + ((y2 - y1) * 0.5)));
@@ -1851,11 +1894,12 @@ function Symbol(kindOfSymbol) {
             ctx.rect(x1, y1, x2-x1, y2-y1);
             ctx.stroke();
         }
-        this.properties['textSize'] = this.getFontsize();
-
+        
         ctx.fillStyle = this.properties['fontColor'];
         ctx.textAlign = this.textAlign;
-
+        this.properties['textSize'] = this.getFontsize();
+        this.properties['font'] = getFont();
+        this.properties['fontColor'] = getFontColor();
         for (var i = 0; i < this.textLines.length; i++) {
             ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
         }
@@ -1985,7 +2029,6 @@ function Symbol(kindOfSymbol) {
 				strokeWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
 				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
-
 				// Thin line used to divide thick line into two lines
 				strokeWidth = this.properties['lineWidth'] * diagram.getZoomValue();
 				svgStyle = "stroke:#fff; stroke-width:"+strokeWidth+";";
@@ -2167,6 +2210,7 @@ this.drawOval = function (x1, y1, x2, y2) {
     this.isOval = true;
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
+
     ctx.beginPath();
     ctx.moveTo(x1, middleY);
     ctx.quadraticCurveTo(x1, y1, middleX, y1);
@@ -2708,6 +2752,7 @@ function figureFreeDraw() {
         startPosition = p2;
         isFirstPoint = false;
     } else {
+
         // Read and set the values for p1 and p2
         p1 = p2;
         if (activePoint != null) {
@@ -2728,10 +2773,13 @@ function figureFreeDraw() {
             figurePath.addsegment(1, p1, p2);
             md = mouseState.empty; // To prevent selectbox spawn when clicking out of freedraw mode
             diagram.push(figurePath);
+
             figurePath.figureType = "Free";
-            figurePath.properties['lineWidth'] = getLineThickness();
             selected_objects.push(figurePath);
             lastSelectedObject = diagram.length - 1;
+            figurePath.properties['lineWidth'] = getLineThickness();
+            figurePath.fillColor = getFillColor();
+            figurePath.properties['strokeColor'] = getStrokeColor();
             cleanUp();
             SaveState();
         } else {
@@ -2744,6 +2792,7 @@ function figureFreeDraw() {
             numberOfPointsInFigure++;
         }
     }
+
 }
 
 function endFreeDraw(){
@@ -2773,6 +2822,7 @@ function endFreeDraw(){
     figurePath.properties['lineWidth'] = getLineThickness();
     selected_objects.push(figurePath);
     lastSelectedObject = diagram.length - 1;
+
     cleanUp();
     SaveState();
 }
