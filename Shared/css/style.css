@@ -668,6 +668,7 @@ header td {
 .navButt {
   width: 32px;
   vertical-align: middle;
+  
 }
 
 .navButt img {
@@ -678,6 +679,7 @@ header td {
 
 .navButt:hover {
   cursor: pointer;
+  -webkit-transition: padding 2s;
 }
 
 .navHeading {
