@@ -421,7 +421,7 @@ function keyDownHandler(e) {
                modeSwitchConfirmed(true);
             }
         }
-    } else if(key == escapeKey) {
+    } else if (key == escapeKey) {
         cancelFreeDraw();
         deselectObjects();
         
@@ -449,45 +449,45 @@ function keyDownHandler(e) {
         uimode = 'normal';
 
         if (modeSwitchDialogActive) modeSwitchConfirmed(false);
-
-    } else if((key == key1 || key == num1) && shiftIsClicked){
+    } else if ((key == key1 || key == num1) && shiftIsClicked){
         moveToFront();
-    } else if((key == key2 || key == num2) && shiftIsClicked){
+    } else if ((key == key2 || key == num2) && shiftIsClicked){
         moveToBack();
-    } else if(shiftIsClicked && key == lKey) {
+    } else if (shiftIsClicked && key == lKey) {
       document.getElementById("linebutton").click();
-    } else if(shiftIsClicked && key == aKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == aKey && targetMode == "ER") {
       document.getElementById("attributebutton").click();
-    } else if(shiftIsClicked && key == eKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == eKey && targetMode == "ER") {
       document.getElementById("entitybutton").click();
-    } else if(shiftIsClicked && key == rKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == rKey && targetMode == "ER") {
       document.getElementById("relationbutton").click();
-    } else if(shiftIsClicked && key == cKey && targetMode == "UML") {
+    } else if (shiftIsClicked && key == cKey && targetMode == "UML") {
       document.getElementById("classbutton").click();
-    } else if(shiftIsClicked && key == tKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == tKey && targetMode == "ER") {
       document.getElementById("drawtextbutton").click();
-    } else if(shiftIsClicked && key == fKey) {
+    } else if (shiftIsClicked && key == fKey) {
       document.getElementById("drawfreebutton").click();
-    } else if(shiftIsClicked && key == dKey) {
+    } else if (shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
-         if(developerModeActive) {
+    } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
+        if (developerModeActive) {
             developerMode(event);
+        } else {
+            toggleMode();
         }
-        toggleMode();
-    } else if(shiftIsClicked && key == xKey) {
+    } else if (shiftIsClicked && key == xKey) {
           lockSelected(event);
-    } else if(shiftIsClicked && key == oKey) {
+    } else if (shiftIsClicked && key == oKey) {
           resetViewToOrigin();
-    } else if(shiftIsClicked && key == key4) {
+    } else if (shiftIsClicked && key == key4) {
           toggleVirtualA4(event);
-    } else if(shiftIsClicked && key == upArrow) {
+    } else if (shiftIsClicked && key == upArrow) {
           align(event, 'top');
-    } else if(shiftIsClicked && key == rightArrow) {
+    } else if (shiftIsClicked && key == rightArrow) {
           align(event, 'right');
-    } else if(shiftIsClicked && key == downArrow) {
+    } else if (shiftIsClicked && key == downArrow) {
           align(event, 'bottom');
-    } else if(shiftIsClicked && key == leftArrow) {
+    } else if (shiftIsClicked && key == leftArrow) {
           align(event, 'left');
     }
 }
@@ -1851,11 +1851,15 @@ consloe.log = function(gobBluth) {
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
+var previousToolbarState = currentMode.er;
 var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
-    if(developerModeActive) {
+    // save the previous toolbarstate so that we can return to it
+    if (developerModeActive) previousToolbarState = toolbarState;
+    toolbarState = currentMode.dev;
+    if (developerModeActive) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev(event);                                                             // ---||---
@@ -1867,7 +1871,9 @@ function developerMode(event) {
             crossDEV=true);                                                             // Turn on crossDEV.
         setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
     } else {
-        switchToolbarER();
+        // switch to the saved toolbarstate
+        if (previousToolbarState == currentMode.er) switchToolbarER();
+        else if (previousToolbarState == currentMode.uml) switchToolbarUML();
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
         hideCrosses();
@@ -1926,8 +1932,6 @@ function modeSwitchConfirmed(confirmed) {
             switchToolbarER();
         } else if (targetMode == 'UML') {
             switchToolbarUML();
-        } else if (targetMode == 'Dev'){
-            switchToolbarDev(event);
         }
     }
 }
