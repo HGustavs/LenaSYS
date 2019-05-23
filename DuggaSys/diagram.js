@@ -421,7 +421,33 @@ function keyDownHandler(e) {
         }
     } else if(key == escapeKey) {
         cancelFreeDraw();
+        deselectObjects();
+        
+        // deselect attribute button
+        document.getElementById("attributebutton").classList.remove("pressed");
+        document.getElementById("attributebutton").classList.add("unpressed");
+        // deselect entity button
+        document.getElementById("entitybutton").classList.remove("pressed");
+        document.getElementById("entitybutton").classList.add("unpressed");
+        // deselect relation button
+        document.getElementById("relationbutton").classList.remove("pressed");
+        document.getElementById("relationbutton").classList.add("unpressed");
+        // deselect class button
+        document.getElementById("classbutton").classList.remove("pressed");
+        document.getElementById("classbutton").classList.add("unpressed");
+        // deselect line button
+        document.getElementById("linebutton").classList.remove("pressed");
+        document.getElementById("linebutton").classList.add("unpressed");
+        // deselect draw free button
+        document.getElementById("drawfreebutton").classList.remove("pressed");
+        document.getElementById("drawfreebutton").classList.add("unpressed");
+        // deselect draw text button
+        document.getElementById("drawtextbutton").classList.remove("pressed");
+        document.getElementById("drawtextbutton").classList.add("unpressed");
+        uimode = 'normal';
+
         if (modeSwitchDialogActive) modeSwitchConfirmed(false);
+
     } else if((key == key1 || key == num1) && shiftIsClicked){
         moveToFront();
     } else if((key == key2 || key == num2) && shiftIsClicked){
