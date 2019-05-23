@@ -1715,6 +1715,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 	// Print out rendered code and border with numbers
 	printout.css(createCodeborder(lineno, improws) + str);
+ 	var borders = [...document.querySelectorAll('.codeborder')];
+	borders.forEach(border => {
+		var parentScrollHeight = border.parentNode.scrollHeight;
+		var parentHeight = border.parentNode.clientHeight;
+		border.style.height = parentScrollHeight;
+		border.style.minHeight = parentHeight;
+	});
 }
 
 //----------------------------------------------------------------------------------
@@ -1724,7 +1731,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 function createCodeborder(lineno, improws) {
 	var str = "<div class='codeborder' style='z-index: 1;'>"; // The z-index places the code border above the copy to clipboard notification
-
 	for (var i = 1; i <= lineno; i++) {
 		// Print out normal numbers
 		if (improws.length == 0) {
