@@ -310,6 +310,10 @@
     background-color: #272822;
 }
 
+.normtext{
+    line-height: 15px;
+}
+
 .normtextend{
     height: 120px;
     margin: 0 auto;
