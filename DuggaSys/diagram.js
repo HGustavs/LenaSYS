@@ -50,6 +50,8 @@ var settings = {
     },
 };
 
+var globalObjectID = 0;       
+
 const kind = {
     path: 1,
     symbol: 2
@@ -421,6 +423,31 @@ function keyDownHandler(e) {
         }
     } else if (key == escapeKey) {
         cancelFreeDraw();
+        deselectObjects();
+        
+        // deselect attribute button
+        document.getElementById("attributebutton").classList.remove("pressed");
+        document.getElementById("attributebutton").classList.add("unpressed");
+        // deselect entity button
+        document.getElementById("entitybutton").classList.remove("pressed");
+        document.getElementById("entitybutton").classList.add("unpressed");
+        // deselect relation button
+        document.getElementById("relationbutton").classList.remove("pressed");
+        document.getElementById("relationbutton").classList.add("unpressed");
+        // deselect class button
+        document.getElementById("classbutton").classList.remove("pressed");
+        document.getElementById("classbutton").classList.add("unpressed");
+        // deselect line button
+        document.getElementById("linebutton").classList.remove("pressed");
+        document.getElementById("linebutton").classList.add("unpressed");
+        // deselect draw free button
+        document.getElementById("drawfreebutton").classList.remove("pressed");
+        document.getElementById("drawfreebutton").classList.add("unpressed");
+        // deselect draw text button
+        document.getElementById("drawtextbutton").classList.remove("pressed");
+        document.getElementById("drawtextbutton").classList.add("unpressed");
+        uimode = 'normal';
+
         if (modeSwitchDialogActive) modeSwitchConfirmed(false);
     } else if ((key == key1 || key == num1) && shiftIsClicked){
         moveToFront();
@@ -3026,7 +3053,7 @@ function mousemoveevt(ev, t) {
             if (movobj != -1 ) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
-                for (var i = 0; i < diagram.length; i++) {
+                for (var i = 0; i < diagram.length; i++) { 
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
                         if(snapToGrid) {
                             // Set mouse start so it's snaped to grid.
@@ -3044,13 +3071,14 @@ function mousemoveevt(ev, t) {
                             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         }
+
                         diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
 
                         // Keep recursive lines together
-                        for (var i = 0; i < diagram.length; i++) {
-                            if (diagram[i].isRecursiveLine) {
-                                points[diagram[i].topLeft].x = points[diagram[i].bottomRight].x;
-                                points[diagram[i].topLeft].y = points[diagram[i].bottomRight].y;
+                        for (var j = 0; j < diagram.length; j++) {
+                            if (diagram[j].isRecursiveLine) {
+                                points[diagram[j].topLeft].x = points[diagram[j].bottomRight].x;
+                                points[diagram[j].topLeft].y = points[diagram[j].bottomRight].y;
                             }
                         }
                     }
@@ -3540,7 +3568,7 @@ function mouseupevt(ev) {
             setTargetedForSymbolGroup(diagram[lastSelectedObject], true);
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
-        //Code for making a line, if start and end object are different, except attributes and if no object is text
+        // Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
@@ -3565,9 +3593,16 @@ function mouseupevt(ev) {
             updateGraphics();
         }
     }
-    // set the linewidth for the created object
+
+    // Sets the Global Appearance settings for each object
     if (lastSelectedObject >= 0) {
         diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
+        diagram[lastSelectedObject].properties['fontColor'] = getFontColor();
+        diagram[lastSelectedObject].properties['font'] = getFont();
+        diagram[lastSelectedObject].properties['strokeColor'] = getStrokeColor();
+        diagram[lastSelectedObject].properties['symbolColor'] = getFillColor();
+        diagram[lastSelectedObject].properties['sizeOftext'] = getTextSize();
+        diagram[lastSelectedObject].fillColor = getFillColor();
     }
 
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
@@ -3778,7 +3813,7 @@ function dimDialogMenu(dim) {
 }
 
 //----------------------------------------------------------------------
-// loadFormIntoElement: Loads the menu which is used to change apperance of ER and free draw objects.
+// loadFormIntoElement: Loads the menu which is used to change appearance of ER and free draw objects.
 //----------------------------------------------------------------------
 
 function loadFormIntoElement(element, dir) {
@@ -3801,7 +3836,7 @@ function loadFormIntoElement(element, dir) {
                 document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
                 setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
             } else {
-                // should only occur when changing global apperance
+                // should only occur when changing global appearance
                 document.getElementById('line-thickness').value = getLineThickness();
             }
         }
@@ -3809,12 +3844,61 @@ function loadFormIntoElement(element, dir) {
     file.send();
 }
 
-// return the line thickness of one of the current objects in the diagram or else return the standard value: 2
+//----------------------------------------------------------------------
+// The following functions are used to get Global Appearance changes
+//----------------------------------------------------------------------
+
+// Return the line thickness of one of the current objects in the diagram
 function getLineThickness() {
     if (diagram.length > 0){
         return value = diagram[0].properties['lineWidth'];
     } else {
-        return 2;
+        return diagram[0].properties['lineWidth'];
+    }
+}
+
+// Returns the font color of the objects in the diagram
+function getFontColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['fontColor'];
+    } else {
+        return diagram[0].properties['fontColor'];
+    }
+}
+
+// Returns the font of the objects in the diagram
+function getFont() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['font'];
+    } else {
+        return diagram[0].properties['font'];
+    }
+}
+
+// Returns the stroke color of the objects in the diagram
+function getStrokeColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['strokeColor'];
+    } else {
+        return diagram[0].properties['strokeColor'];
+    }
+}
+
+// Returns the fill color of the objects in the diagram
+function getFillColor() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['symbolColor'];
+    } else {
+        return diagram[0].properties['symbolColor'];
+    }
+}
+
+// Returns the text size of the objects in the diagram
+function getTextSize() {
+    if (diagram.length > 0){
+        return value = diagram[0].properties['sizeOftext'];
+    } else {
+        return diagram[0].properties['sizeOftext'];
     }
 }
 
@@ -3830,7 +3914,7 @@ function loadLineForm(element, dir) {
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
             if(globalAppearanceValue == 0) {
-                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
+                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value;
                 var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
                 var lineDirection = diagram[lastSelectedObject].lineDirection;
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
@@ -3841,8 +3925,14 @@ function loadLineForm(element, dir) {
                     tempLineDirection = "First";
                 }
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                setSelectedOption('cardinality', tempCardinality);
-                setSelectedOption('line_direction', tempLineDirection);
+                // check if the form that is loaded is for a line can have cardinality 
+                if (cardinalityValue != 1) {
+                    setSelectedOption('cardinality', tempCardinality);
+                    // check if the form that is loaded is for a line can have a linedirection (uml lines) 
+                    if (cardinalityValue != 2) {
+                        setSelectedOption('line_direction', tempLineDirection);
+                    }
+                }
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
@@ -3911,7 +4001,7 @@ function loadTextForm(element, dir) {
 }
 
 //----------------------------------------------------------------------
-// setSelectedOption: used to implement the changes to apperances that has been made
+// setSelectedOption: used to implement the changes to appearances that has been made
 //----------------------------------------------------------------------
 
 function setSelectedOption(type, value) {
@@ -3944,6 +4034,9 @@ function globalAppearanceMenu() {
     //AJAX
     loadFormIntoElement(form,'diagram_forms.php?form=globalType');
 }
+
+// determines which form should be loaded when line form is opened
+var cardinalityValue; 
 
 //----------------------------------------------------------------------
 // objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
@@ -3981,11 +4074,17 @@ function objectAppearanceMenu(form) {
                 cardinalityOption = false;
         }
 
-        if (cardinalityOption) {
-            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
-        }else {
-            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=-1');
+        if (cardinalityOption) { // uml line or er line with cardinality
+            if (diagram[lastSelectedObject].cardinality[0].symbolKind == 1) { // uml line 
+                cardinalityValue = 3;
+            } else { //er line with cardinality
+                cardinalityValue = 2;
+            }
+        } else { // normal er line
+            cardinalityValue = 1;
         }
+
+        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + cardinalityValue);
     }
     // ER relation selected
     else if (diagram[lastSelectedObject].symbolkind == symbolKind.erRelation) {
