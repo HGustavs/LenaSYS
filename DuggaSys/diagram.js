@@ -49,7 +49,7 @@ var settings = {
         Text: 0,
     },
 
-    properties: {        
+    properties: {
         symbolColor: '#ffffff',                       // Change background colors on entities.
         strokeColor: '#000000',                       // Change standard line color.
         fontColor: '#000000',                         // Change the color of the font.
@@ -428,7 +428,7 @@ function keyDownHandler(e) {
     } else if (key == escapeKey) {
         cancelFreeDraw();
         deselectObjects();
-        
+
         // deselect attribute button
         document.getElementById("attributebutton").classList.remove("pressed");
         document.getElementById("attributebutton").classList.add("unpressed");
@@ -474,11 +474,7 @@ function keyDownHandler(e) {
     } else if (shiftIsClicked && key == dKey) {
       developerMode(event);
     } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
-        if (developerModeActive) {
-            developerMode(event);
-        } else {
             toggleMode();
-        }
     } else if (shiftIsClicked && key == xKey) {
           lockSelected(event);
     } else if (shiftIsClicked && key == oKey) {
@@ -2034,12 +2030,16 @@ function modeSwitchConfirmed(confirmed) {
 //-----------------------------------
 
 function toggleMode() {
-    if(toolbarState == "ER"){
+    if(toolbarState == "ER" && !developerModeActive){
         switchToolbarTo("UML");
-    } else if (toolbarState == "UML") {
+    } else if (toolbarState == "UML" && !developerModeActive) {
         switchToolbarTo("ER");
     } else {
-      return;
+        if(toolbarState == "ER") {
+            switchToolbarTo("UML");
+        } else {
+            switchToolbarTo("ER");
+        }
     }
 }
 
@@ -2679,7 +2679,7 @@ function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
             diagram[i].properties['symbolColor'] = settings.properties.fillColor;
-        } else { 
+        } else {
             diagram[i].fillColor = settings.properties.fillColor;
         }
     }
@@ -3168,7 +3168,7 @@ function mousemoveevt(ev, t) {
             if (movobj != -1 ) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
-                for (var i = 0; i < diagram.length; i++) { 
+                for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
                             // Set mouse start so it's snaped to grid.
@@ -3861,7 +3861,7 @@ function showMenu() {
 //----------------------------------------------------------------------
 
 function openAppearanceDialogMenu() {
-    for(var i = 0; i < selected_objects.length; i++){ 
+    for(var i = 0; i < selected_objects.length; i++){
         if (selected_objects[i].isLocked) {
             return;
         }
@@ -4022,7 +4022,7 @@ function loadLineForm(element, dir) {
                     tempLineDirection = "First";
                 }
                 setSelectedOption('object_type', settings.properties.key_type);
-                // check if the form that is loaded is for a line can have cardinality 
+                // check if the form that is loaded is for a line can have cardinality
                 if (cardinalityValue != 1) {
                     setSelectedOption('cardinality', tempCardinality);
                     // check if the form that is loaded is for a line can have a linedirection (uml lines)
@@ -4212,7 +4212,7 @@ function changeObjectAppearance(object_type) {
             var operationLines = $('#UMLOperations').val().split('\n');
             selected_objects[i].attributes = [];
             selected_objects[i].operations = [];
-    
+
             //Inserts text for attributes and operations
             for (var j = 0; j < attributeLines.length; j++) {
                 selected_objects[i].attributes.push({text:attributeLines[j]});
@@ -4220,7 +4220,7 @@ function changeObjectAppearance(object_type) {
             for (var j = 0; j < operationLines.length; j++) {
                 selected_objects[i].operations.push({text:operationLines[j]});
             }
-    
+
         } else if (selected_objects[i].symbolkind == symbolKind.line) {
             selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
         } else if (selected_objects[i].symbolkind == symbolKind.umlLine) {
