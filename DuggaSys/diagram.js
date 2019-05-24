@@ -48,6 +48,18 @@ var settings = {
         UML: 0,
         Text: 0,
     },
+
+    properties: {        
+        symbolColor: '#ffffff',                       // Change background colors on entities.
+        strokeColor: '#000000',                       // Change standard line color.
+        fontColor: '#000000',                         // Change the color of the font.
+        font: 'Arial',                                // Set the standard font.
+        lineWidth: '2',                               // LineWidth preset is 2.
+        textSize: '14',                               // 14 pixels text size is default.
+        sizeOftext: 'Tiny',                           // Used to set size of text.
+        textAlign: 'center',                          // Used to change alignment of free text.
+        key_type: 'normal'                            // Defult key type for a class.
+    },
 };
 
 var globalObjectID = 0;       
@@ -2510,9 +2522,10 @@ function globalLineThickness() {
 //----------------------------------------------------------------------
 
 function globalFont() {
+    settings.properties.font = document.getElementById('font').value;
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.uml || diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
-            diagram[i].properties['font'] = document.getElementById('font').value;
+            diagram[i].properties['font'] = setting.properties.font;
         }
     }
 }
@@ -2522,9 +2535,10 @@ function globalFont() {
 //----------------------------------------------------------------------
 
 function globalFontColor() {
+    settings.properties.fontColor = document.getElementById('fontColor').value;
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
-            diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
+            diagram[i].properties['fontColor'] = settings.properties.fontColor;
         }
     }
 }
@@ -2534,9 +2548,10 @@ function globalFontColor() {
 //----------------------------------------------------------------------
 
 function globalTextSize() {
+    settings.properties.sizeOftext = document.getElementById('TextSize').value;
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
-            diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
+            diagram[i].properties['sizeOftext'] = settings.properties.sizeOftext;
         }
     }
 }
@@ -2546,10 +2561,13 @@ function globalTextSize() {
 //----------------------------------------------------------------------
 
 function globalFillColor() {
+    settings.properties.fillColor = document.getElementById('FillColor').value;
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
-            diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
-        } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
+            diagram[i].properties['symbolColor'] = settings.properties.fillColor;
+        } else { 
+            diagram[i].fillColor = settings.properties.fillColor;
+        }
     }
 }
 
@@ -2558,8 +2576,9 @@ function globalFillColor() {
 //----------------------------------------------------------------------
 
 function globalStrokeColor() {
+    settings.properties.strokeColor = document.getElementById('StrokeColor').value;
     for (var i = 0; i < diagram.length; i++) {
-            diagram[i].properties['strokeColor'] = document.getElementById('StrokeColor').value;
+            diagram[i].properties['strokeColor'] = settings.properties.strokeColor;
     }
 }
 
@@ -3589,17 +3608,6 @@ function mouseupevt(ev) {
         }
     }
 
-    // Sets the Global Appearance settings for each object
-    if (lastSelectedObject >= 0) {
-        diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
-        diagram[lastSelectedObject].properties['fontColor'] = getFontColor();
-        diagram[lastSelectedObject].properties['font'] = getFont();
-        diagram[lastSelectedObject].properties['strokeColor'] = getStrokeColor();
-        diagram[lastSelectedObject].properties['symbolColor'] = getFillColor();
-        diagram[lastSelectedObject].properties['sizeOftext'] = getTextSize();
-        diagram[lastSelectedObject].fillColor = getFillColor();
-    }
-
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
     if (diagramObject && diagramObject.symbolkind != symbolKind.erRelation) {
         p1BeforeResize.x = points[diagramObject.topLeft].x;
@@ -3738,8 +3746,10 @@ function showMenu() {
 //----------------------------------------------------------------------
 
 function openAppearanceDialogMenu() {
-    if (diagram[lastSelectedObject].isLocked) {
-        return;
+    for(var i = 0; i < selected_objects.length; i++){ 
+        if (selected_objects[i].isLocked) {
+            return;
+        }
     }
     $(".loginBox").draggable();
     var form = showMenu();
@@ -3796,6 +3806,7 @@ function clickEnterOnDialogMenu(ev) {
             // Called here since an enter press doesn't relate to any element
             changeObjectAppearance();
         }
+        SaveState();
     });
 }
 
@@ -3820,16 +3831,16 @@ function loadFormIntoElement(element, dir) {
             element.innerHTML = file.responseText;
             if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.symbol) {
                 document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
-                setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
-                setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
-                setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
-                setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+                setSelectedOption('object_type', settings.properties.key_type);
+                setSelectedOption('symbolColor', settings.properties.symbolColor);
+                setSelectedOption('font', settings.properties.font);
+                setSelectedOption('fontColor', settings.properties.fontColor);
+                setSelectedOption('TextSize', settings.properties.sizeOftext);
+                setSelectedOption('LineColor', settings.properties.strokeColor);
             } else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
-                setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
-                document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-                setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+                setSelectedOption('figureFillColor', settings.properties.fillColor);
+                document.getElementById('figureOpacity').value = (settings.properties.opacity * 100);
+                setSelectedOption('LineColor', settings.properties.strokeColor);
             } else {
                 // should only occur when changing global appearance
                 document.getElementById('line-thickness').value = getLineThickness();
@@ -3845,56 +3856,32 @@ function loadFormIntoElement(element, dir) {
 
 // Return the line thickness of one of the current objects in the diagram
 function getLineThickness() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['lineWidth'];
-    } else {
-        return diagram[0].properties['lineWidth'];
-    }
+    return settings.properties.lineWidth;
 }
 
 // Returns the font color of the objects in the diagram
 function getFontColor() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['fontColor'];
-    } else {
-        return diagram[0].properties['fontColor'];
-    }
+    return settings.properties.fontColor;
 }
 
 // Returns the font of the objects in the diagram
 function getFont() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['font'];
-    } else {
-        return diagram[0].properties['font'];
-    }
+    return settings.properties.font;
 }
 
 // Returns the stroke color of the objects in the diagram
 function getStrokeColor() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['strokeColor'];
-    } else {
-        return diagram[0].properties['strokeColor'];
-    }
+    return settings.properties.strokeColor;
 }
 
 // Returns the fill color of the objects in the diagram
 function getFillColor() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['symbolColor'];
-    } else {
-        return diagram[0].properties['symbolColor'];
-    }
+    return settings.properties.symbolColor;
 }
 
 // Returns the text size of the objects in the diagram
 function getTextSize() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['sizeOftext'];
-    } else {
-        return diagram[0].properties['sizeOftext'];
-    }
+    return settings.properties.sizeOftext;
 }
 
 //----------------------------------------------------------------------
@@ -3919,8 +3906,8 @@ function loadLineForm(element, dir) {
                     diagram[lastSelectedObject].lineDirection = "First";
                     tempLineDirection = "First";
                 }
-                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                // check if the form that is loaded is for a line can have cardinality
+                setSelectedOption('object_type', settings.properties.key_type);
+                // check if the form that is loaded is for a line can have cardinality 
                 if (cardinalityValue != 1) {
                     setSelectedOption('cardinality', tempCardinality);
                     // check if the form that is loaded is for a line can have a linedirection (uml lines)
@@ -3985,10 +3972,10 @@ function loadTextForm(element, dir) {
             if (i < diagram[lastSelectedObject].textLines.length - 1) text += "\n";
         }
         textarea.value = text;
-        setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
-        setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
-        setSelectedOption('textAlign', diagram[lastSelectedObject].properties['textAlign']);
-        setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
+        setSelectedOption('font', settings.properties.font);
+        setSelectedOption('fontColor', settings.properties.fontColor);
+        setSelectedOption('textAlign', settings.properties.textAlign);
+        setSelectedOption('TextSize', settings.properties.sizeOftext);
       }
     }
   }
@@ -4101,48 +4088,52 @@ function objectAppearanceMenu(form) {
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
-    if (diagram[lastSelectedObject].symbolkind == symbolKind.uml) { // UML-class appearance
-        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
-        var attributeLines = $('#UMLAttributes').val().split('\n');
-        var operationLines = $('#UMLOperations').val().split('\n');
-        diagram[lastSelectedObject].attributes = [];
-        diagram[lastSelectedObject].operations = [];
-
-        //Inserts text for attributes and operations
-        for (var i = 0;i < attributeLines.length;i++) {
-            diagram[lastSelectedObject].attributes.push({text:attributeLines[i]});
+    if(selected_objects.length == 1) {
+        selected_objects[0].name = document.getElementById('nametext').value;
+    }
+    for(var i = 0; i < selected_objects.length; i++) {
+        if (selected_objects[i].symbolkind == symbolKind.uml) { // UML-class appearance
+            var attributeLines = $('#UMLAttributes').val().split('\n');
+            var operationLines = $('#UMLOperations').val().split('\n');
+            selected_objects[i].attributes = [];
+            selected_objects[i].operations = [];
+    
+            //Inserts text for attributes and operations
+            for (var j = 0; j < attributeLines.length; j++) {
+                selected_objects[i].attributes.push({text:attributeLines[j]});
+            }
+            for (var j = 0; j < operationLines.length; j++) {
+                selected_objects[i].operations.push({text:operationLines[j]});
+            }
+    
+        } else if (selected_objects[i].symbolkind == symbolKind.line) {
+            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
+        } else if (selected_objects[i].symbolkind == symbolKind.umlLine) {
+            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
+            selected_objects[i].properties['key_type'] = document.getElementById('line_direction').value;
+        } else if (selected_objects[i].kind == kind.path) {
+            selected_objects[i].fillColor = document.getElementById('figureFillColor').value;
+            selected_objects[i].opacity = document.getElementById('figureOpacity').value / 100;
+            selected_objects[i].properties['strokeColor'] = document.getElementById('LineColor').value;
+        } else if (selected_objects[i].symbolkind == symbolKind.text) {
+            selected_objects[i].textLines = [];
+            var textArray = $('#freeText').val().split('\n');
+            for(var i = 0; i < textArray.length; i++) {
+              selected_objects[i].textLines.push({text:textArray[i]});
+            }
+            selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
+            selected_objects[i].properties['font'] = document.getElementById('font').value;
+            selected_objects[i].properties['textAlign'] = document.getElementById('textAlign').value;
+            selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
+        } else {
+            selected_objects[i].properties['symbolColor'] = document.getElementById('symbolColor').value;
+            selected_objects[i].name = document.getElementById('nametext').value;
+            selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
+            selected_objects[i].properties['font'] = document.getElementById('font').value;
+            selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
+            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
+            selected_objects[i].properties['strokeColor'] = document.getElementById('LineColor').value;
         }
-        for (var i = 0; i < operationLines.length; i++) {
-            diagram[lastSelectedObject].operations.push({text:operationLines[i]});
-        }
-
-    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
-        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
-        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('line_direction').value;
-    } else if (diagram[lastSelectedObject].kind == kind.path) {
-        diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
-        diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
-        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
-    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.text) {
-        diagram[lastSelectedObject].textLines = [];
-        var textArray = $('#freeText').val().split('\n');
-        for(var i = 0; i < textArray.length; i++) {
-          diagram[lastSelectedObject].textLines.push({text:textArray[i]});
-        }
-        diagram[lastSelectedObject].properties['fontColor'] = document.getElementById('fontColor').value;
-        diagram[lastSelectedObject].properties['font'] = document.getElementById('font').value;
-        diagram[lastSelectedObject].properties['textAlign'] = document.getElementById('textAlign').value;
-        diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
-    } else {
-        diagram[lastSelectedObject].properties['symbolColor'] = document.getElementById('symbolColor').value;
-        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
-        diagram[lastSelectedObject].properties['fontColor'] = document.getElementById('fontColor').value;
-        diagram[lastSelectedObject].properties['font'] = document.getElementById('font').value;
-        diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
-        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
     }
     updateGraphics();
 }
