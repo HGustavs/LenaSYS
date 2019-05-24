@@ -3155,6 +3155,21 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
+            } else if(figureType != "Text" || uimode == "normal") {
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.strokeStyle = "#000";
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.closePath();
+              if (!developerModeActive) {
+                  hideCrosses();
+              }
             }
         }
     }
