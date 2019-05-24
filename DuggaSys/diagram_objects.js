@@ -740,7 +740,7 @@ function Symbol(kindOfSymbol) {
     //             IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        if (this.symbolkind == symbolKind.line) return;
+        if (this.symbolkind == symbolKind.line || this.symbolkind == symbolKind.umlLine) return;
         points[this.topLeft] = waldoPoint;
         points[this.bottomRight] = waldoPoint;
         points[this.centerPoint] = waldoPoint;
