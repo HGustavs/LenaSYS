@@ -841,7 +841,8 @@ function returnedSection(data) {
           var param = {
             'exampleid': item['link'],
             'courseid': querystring['courseid'],
-            'cvers': querystring['coursevers']
+            'cvers': querystring['coursevers'],
+            'lid': item['lid']
           };
           str += "<div class='ellipsis nowrap'><span>" + makeanchor("codeviewer.php", hideState, "margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 3) {
