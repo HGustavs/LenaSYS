@@ -1878,23 +1878,23 @@ var refreshedPage = true;
 function setModeOnRefresh() {
     toolbarState = localStorage.getItem("toolbarState");
     if(toolbarState == currentMode.er) {
+        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
-        developerModeActive = false;
     } else if(toolbarState == currentMode.uml) {
+        developerModeActive = false;
         switchToolbarUML();
         hideCrosses();
-        developerModeActive = false;
     } else if(toolbarState == currentMode.dev) {
-        showCrosses();
         developerModeActive = true;
+        showCrosses();
         switchToolbarDev(event);
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
+        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
-        developerModeActive = false;
     }
 }
 
