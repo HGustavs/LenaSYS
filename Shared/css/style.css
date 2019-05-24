@@ -3577,8 +3577,8 @@ table.navheader div.menuButton {
   -o-transition: opacity 0.5s;
 }
 
-table.navheader div.menuButton:hover {
-    box-shadow: 0px 0px 5px #FFF
+table.navheader img.navBut:hover {
+    filter: drop-shadow(0px 0px 5px #fff)
 }
 
 /* Simple material design boxes */
