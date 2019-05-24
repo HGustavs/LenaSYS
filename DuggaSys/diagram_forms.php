@@ -14,7 +14,7 @@
           <option value=\'Impact\'>Impact</option>
           <option value=\'Calibri\'>Calibri</option>';
   $backgroundColor = 'Background color:<br>
-        <select onchange="changeObjectAppearance();" id=\'symbolColor\'>
+        <select onchange="changeObjectAppearance();" id=\'fillColor\'>
         '.$colors.'
         </select><br>';
   $fontFamily = 'Font family:<br>

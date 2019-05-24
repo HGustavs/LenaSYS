@@ -50,7 +50,7 @@ var settings = {
     },
 
     properties: {        
-        symbolColor: '#ffffff',                       // Change background colors on entities.
+        fillColor: '#ffffff',                       // Change background colors on entities.
         strokeColor: '#000000',                       // Change standard line color.
         fontColor: '#000000',                         // Change the color of the font.
         font: 'Arial',                                // Set the standard font.
@@ -2567,7 +2567,7 @@ function globalFillColor() {
     settings.properties.fillColor = document.getElementById('FillColor').value;
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
-            diagram[i].properties['symbolColor'] = settings.properties.fillColor;
+            diagram[i].properties['fillColor'] = settings.properties.fillColor;
         } else { 
             diagram[i].fillColor = settings.properties.fillColor;
         }
@@ -3810,7 +3810,6 @@ function clickEnterOnDialogMenu(ev) {
             // Called here since an enter press doesn't relate to any element
             changeObjectAppearance();
         }
-        SaveState();
     });
 }
 
@@ -3843,7 +3842,7 @@ function loadFormIntoElement(element, dir) {
             if(globalAppearanceValue == 0 && lastSelected.kind == kind.symbol) {
                 document.getElementById('nametext').value = names;
                 setSelectedOption('object_type', settings.properties.key_type);
-                setSelectedOption('symbolColor', settings.properties.symbolColor);
+                setSelectedOption('fillColor', settings.properties.fillColor);
                 setSelectedOption('font', settings.properties.font);
                 setSelectedOption('fontColor', settings.properties.fontColor);
                 setSelectedOption('TextSize', settings.properties.sizeOftext);
@@ -3887,7 +3886,7 @@ function getStrokeColor() {
 
 // Returns the fill color of the objects in the diagram
 function getFillColor() {
-    return settings.properties.symbolColor;
+    return settings.properties.fillColor;
 }
 
 // Returns the text size of the objects in the diagram
@@ -4143,8 +4142,7 @@ function changeObjectAppearance(object_type) {
             selected_objects[i].properties['textAlign'] = document.getElementById('textAlign').value;
             selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
         } else {
-            selected_objects[i].properties['symbolColor'] = document.getElementById('symbolColor').value;
-            selected_objects[i].name = document.getElementById('nametext').value;
+            selected_objects[i].properties['fillColor'] = document.getElementById('fillColor').value;
             selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
             selected_objects[i].properties['font'] = document.getElementById('font').value;
             selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
@@ -4153,6 +4151,7 @@ function changeObjectAppearance(object_type) {
         }
     }
     updateGraphics();
+    SaveState();
 }
 
 function createCardinality() {

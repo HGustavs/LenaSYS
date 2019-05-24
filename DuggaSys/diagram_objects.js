@@ -46,9 +46,9 @@ function Symbol(kindOfSymbol) {
     this.connectorLeft = [];
     this.connectorRight = [];
 
-    // Properties array that stores different kind of objects. Refer to the properties with "properties['symbolColor']"
+    // Properties array that stores different kind of objects. Refer to the properties with "properties['fillColor']"
     this.properties = {
-        'symbolColor': settings.properties.fillColor,      // Change background colors on entities.
+        'fillColor': settings.properties.fillColor,    // Change background colors on entities.
         'strokeColor': settings.properties.strokeColor,    // Change standard line color.
         'fontColor': settings.properties.fontColor,        // Change the color of the font.
         'font': settings.properties.font,                  // Set the standard font.
@@ -1096,7 +1096,7 @@ function Symbol(kindOfSymbol) {
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
         this.isAttribute = true;
-        ctx.fillStyle = this.properties['symbolColor'];
+        ctx.fillStyle = this.properties['fillColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
             drawOval(x1 - 7 * diagram.getZoomValue(), y1 - 7 * diagram.getZoomValue(), x2 + 7 * diagram.getZoomValue(), y2 + 7 * diagram.getZoomValue());
@@ -1108,8 +1108,8 @@ function Symbol(kindOfSymbol) {
             }
             // Make sure that the font color is always able to be seen.
             // Symbol and Font color should therefore not be the same
-            if (this.properties['fontColor'] == this.properties['symbolColor']) {
-                if (this.properties['symbolColor'] == '#000000') {
+            if (this.properties['fontColor'] == this.properties['fillColor']) {
+                if (this.properties['fillColor'] == '#000000') {
                     this.properties['fontColor'] = '#ffffff';
                 } else {
                     this.properties['fontColor'] = '#000000';
@@ -1121,8 +1121,8 @@ function Symbol(kindOfSymbol) {
             ctx.fill();
             // Make sure that the font color is always able to be seen.
             // Symbol and Font color should therefore not be the same
-            if (this.properties['fontColor'] == this.properties['symbolColor']) {
-                if (this.properties['symbolColor'] == '#000000') {
+            if (this.properties['fontColor'] == this.properties['fillColor']) {
+                if (this.properties['fillColor'] == '#000000') {
                     this.properties['fontColor'] = '#ffffff';
                 } else {
                     this.properties['fontColor'] = '#000000';
@@ -1342,8 +1342,8 @@ function Symbol(kindOfSymbol) {
         }
         // Make sure that the font color is always able to be seen.
         // Symbol and Font color should therefore not be the same
-        if (this.properties['fontColor'] == this.properties['symbolColor']) {
-            if (this.properties['symbolColor'] == '#000000') {
+        if (this.properties['fontColor'] == this.properties['fillColor']) {
+            if (this.properties['fillColor'] == '#000000') {
                 this.properties['fontColor'] = '#ffffff';
             } else {
                 this.properties['fontColor'] = '#000000';
@@ -1352,7 +1352,7 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawEntity = function(x1, y1, x2, y2) {
-        ctx.fillStyle = this.properties['symbolColor'];
+        ctx.fillStyle = this.properties['fillColor'];
         if (this.properties['key_type'] == "Weak") {
             this.drawWeakEntity(x1, y1, x2, y2);
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
@@ -1367,8 +1367,8 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x1, y1);
         ctx.closePath();
         ctx.fill();
-        if (this.properties['fontColor'] == this.properties['symbolColor']) {
-            if (this.properties['symbolColor'] == '#000000') {
+        if (this.properties['fontColor'] == this.properties['fillColor']) {
+            if (this.properties['fillColor'] == '#000000') {
                 this.properties['fontColor'] = '#ffffff';
             } else {
                 this.properties['fontColor'] = '#000000';
@@ -1838,8 +1838,8 @@ function Symbol(kindOfSymbol) {
       }
       // Make sure that the font color is always able to be seen.
       //Symbol and Font color should therefore not be the same
-      if (this.properties['fontColor'] == this.properties['symbolColor']) {
-          if (this.properties['symbolColor'] == '#000000') {
+      if (this.properties['fontColor'] == this.properties['fillColor']) {
+          if (this.properties['fillColor'] == '#000000') {
               this.properties['fontColor'] = '#ffffff';
           } else {
               this.properties['fontColor'] = '#000000';
@@ -1857,7 +1857,7 @@ function Symbol(kindOfSymbol) {
         }
 
         ctx.beginPath();
-        ctx.fillStyle = this.properties['symbolColor'];
+        ctx.fillStyle = this.properties['fillColor'];
         ctx.moveTo(midx, y1);
         ctx.lineTo(x2, midy);
         ctx.lineTo(midx, y2);
@@ -1867,8 +1867,8 @@ function Symbol(kindOfSymbol) {
         ctx.fill();
         // Make sure that the font color is always able to be seen.
         // Symbol and Font color should therefore not be the same
-        if (this.properties['fontColor'] == this.properties['symbolColor']) {
-            if (this.properties['symbolColor'] == '#000000') {
+        if (this.properties['fontColor'] == this.properties['fillColor']) {
+            if (this.properties['fillColor'] == '#000000') {
                 this.properties['fontColor'] = '#ffffff';
             } else {
                 this.properties['fontColor'] = '#000000';
@@ -1937,7 +1937,7 @@ function Symbol(kindOfSymbol) {
 
             // Box
             svgPos = x1+","+y1+" "+x2+","+y1+" "+x2+","+y2+" "+x1+","+y2;
-            svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+";stroke-width:"+strokeWidth+";";
+            svgStyle = "fill:"+this.properties['fillColor']+"; stroke:"+this.properties['strokeColor']+";stroke-width:"+strokeWidth+";";
             svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
             str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 
@@ -1975,7 +1975,7 @@ function Symbol(kindOfSymbol) {
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
             }
 		} else if (this.symbolkind == symbolKind.erAttribute) {
-            svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+            svgStyle = "fill:"+this.properties['fillColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
             // Outer oval for multivalued attributes
             if (this.properties['key_type'] == "Multivalue") {
                 str += this.ovalToSVG(x1-7, y1-7, x2+7, y2+7, svgStyle);
@@ -2005,7 +2005,7 @@ function Symbol(kindOfSymbol) {
 			}
             str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == symbolKind.erEntity) {
-			svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+			svgStyle = "fill:"+this.properties['fillColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
 			if (this.properties['key_type'] == "Weak") {
 				svgPos = (x1-5)+","+(y1-5)+" "+(x2+5)+","+(y1-5)+" "+(x2+5)+","+(y2+5)+" "+(x1-5)+","+(y2+5);
@@ -2052,14 +2052,14 @@ function Symbol(kindOfSymbol) {
 			var midx = points[this.centerPoint].x;
 			var midy = points[this.centerPoint].y;
 			// Relation
-			svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+			svgStyle = "fill:"+this.properties['fillColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 			svgPos = midx+","+y1+" "+x2+","+midy+" "+midx+","+y2+" "+x1+","+midy+" "+midx+","+y1;
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 			// Weak relation
 
 			if (this.properties['key_type'] == "Weak") {
-				svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+				svgStyle = "fill:"+this.properties['fillColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
