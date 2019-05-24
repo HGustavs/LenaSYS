@@ -3723,7 +3723,7 @@ function showMenu() {
 //----------------------------------------------------------------------
 
 function openAppearanceDialogMenu() {
-    if (selected_objects.length == 0 || diagram[lastSelectedObject].isLocked) {
+    if (selected_objects.length != 1 || diagram[lastSelectedObject].isLocked) {
         return;
     }
     $(".loginBox").draggable();
@@ -4082,7 +4082,7 @@ function objectAppearanceMenu(form) {
 }
 
 //----------------------------------------------------------------------
-// changeObjectAppearance: USES DIALOG TO CHANGE OBJECT APPEARANC
+// changeObjectAppearance: USES DIALOG TO CHANGE OBJECT APPEARANCE
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
