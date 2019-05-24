@@ -3723,7 +3723,7 @@ function showMenu() {
 //----------------------------------------------------------------------
 
 function openAppearanceDialogMenu() {
-    if (diagram[lastSelectedObject].isLocked) {
+    if (selected_objects.length == 0 || diagram[lastSelectedObject].isLocked) {
         return;
     }
     $(".loginBox").draggable();
