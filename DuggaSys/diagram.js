@@ -62,7 +62,7 @@ var settings = {
     },
 };
 
-var globalObjectID = 0;       
+var globalObjectID = 0;
 
 const kind = {
     path: 1,
@@ -107,7 +107,6 @@ var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = false;            // Canvas left click state
 var canvasRightClick = false;           // Canvas right click state
-var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
 var hoveredObject = false;
@@ -347,6 +346,10 @@ function resetButtonsPressed() {
     shiftIsClicked = false;
 }
 
+//--------------------------------------------------------------------
+// This handles all the key binds for diagram
+//--------------------------------------------------------------------
+
 function keyDownHandler(e) {
     var key = e.keyCode;
     if (appearanceMenuOpen) return;
@@ -424,7 +427,7 @@ function keyDownHandler(e) {
     } else if (key == escapeKey) {
         cancelFreeDraw();
         deselectObjects();
-        
+
         // deselect attribute button
         document.getElementById("attributebutton").classList.remove("pressed");
         document.getElementById("attributebutton").classList.add("unpressed");
@@ -470,11 +473,7 @@ function keyDownHandler(e) {
     } else if (shiftIsClicked && key == dKey) {
       developerMode(event);
     } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
-        if (developerModeActive) {
-            developerMode(event);
-        } else {
             toggleMode();
-        }
     } else if (shiftIsClicked && key == xKey) {
           lockSelected(event);
     } else if (shiftIsClicked && key == oKey) {
@@ -1154,6 +1153,10 @@ diagram.getZoomValue = function(){
     return zoomValue;
 }
 
+//--------------------------------------------------------------------
+// Initialization of canvas when the page is loaded
+//--------------------------------------------------------------------
+
 function initializeCanvas() {
     //hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
     setInterval(refreshFunction, refreshTimer);
@@ -1180,6 +1183,10 @@ function initializeCanvas() {
     canvas.addEventListener('wheel', scrollZoom, false);
 }
 
+//--------------------------------------------------------------------
+// Deselects all objects
+//--------------------------------------------------------------------
+
 function deselectObjects() {
     for(let i = 0; i < diagram.length; i++) {
         diagram[i].targeted = false;
@@ -1202,6 +1209,10 @@ function toggleGrid(event) {
     }
     setCheckbox($(".drop-down-option:contains('Snap to grid')"), snapToGrid);
 }
+
+//-----------------------------------------------------------------------
+// Toggles the virtual A4 On or Off
+//-----------------------------------------------------------------------
 
 function toggleVirtualA4(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
@@ -1229,6 +1240,10 @@ function toggleVirtualA4(event) {
 
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
+
+//--------------------------------------------------------------------
+// Draws virtual A4 on canvas
+//--------------------------------------------------------------------
 
 function drawVirtualA4() {
     if(!toggleA4) {
@@ -1378,7 +1393,7 @@ function drawDebugCircle(cx, cy, radius, color) {
 }
 
 //-------------------
-// Used for A4 holes
+// Draws circle
 //-------------------
 
 function drawCircle(cx, cy, radius) {
@@ -1390,6 +1405,10 @@ function drawCircle(cx, cy, radius) {
     ctx.stroke();
     ctx.restore();
 }
+
+//-----------------------------------------------------
+// Enables and shows the children menus for virtual A4
+//-----------------------------------------------------
 
 function showA4State() {
     // Sets icons based on the state of the A4
@@ -1403,6 +1422,10 @@ function showA4State() {
     $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
+
+//-----------------------------------------------------
+// Disables and hides the children menus for virtual A4
+//-----------------------------------------------------
 
 function hideA4State() {
     // Reset the variables after disable the A4
@@ -1420,6 +1443,10 @@ function hideA4State() {
     $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
+
+//---------------------------------
+// Toggles holes on the virtual A4
+//---------------------------------
 
 function toggleVirtualA4Holes(event) {
     event.stopPropagation();
@@ -1442,6 +1469,10 @@ function toggleVirtualA4Holes(event) {
     }
 }
 
+//-------------------------------------------------------------
+// Moves the holes on virtual A to the opposite side of the A4
+//-------------------------------------------------------------
+
 function toggleVirtualA4HolesRight(event) {
     event.stopPropagation();
     // Switch a4 holes from left to right of the A4-paper.
@@ -1455,6 +1486,10 @@ function toggleVirtualA4HolesRight(event) {
         updateGraphics();
     }
 }
+
+//---------------------------------------------------------------
+// Changes orientation of the virtual A4 (Landscape or portrait)
+//---------------------------------------------------------------
 
 function toggleA4Orientation(event) {
     event.stopPropagation();
@@ -1557,6 +1592,10 @@ function resetViewToOrigin(){
     SaveState();
 }
 
+//-------------------------------------------
+// Returns lines connected to the object
+//--------------------------------------------
+
 function getConnectedLines(object) {
     var privatePoints = object.getPoints();
     var lines = diagram.getLineObjects();
@@ -1577,6 +1616,10 @@ function getConnectedLines(object) {
     }
     return objectLines;
 }
+
+//---------------------------------
+// Erases the object from diagram
+//---------------------------------
 
 function eraseObject(object) {
     var objectsToDelete = [];
@@ -1644,6 +1687,11 @@ function changeLoginBoxTitleAppearance() {
     document.getElementById("loginBoxTitle").innerHTML = "Appearance";
 }
 
+//---------------------------------------------------
+// Calls the erase function for all selected objects
+// Ends up with erasing all selected objects
+//---------------------------------------------------
+
 function eraseSelectedObject() {
     //Issue: Need to remove the crosses
     if(selected_objects.length == 0) {
@@ -1659,7 +1707,11 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function setMode(mode) { //"CreateClass" yet to be implemented in .php
+//------------------------------------------------------
+// Sets the uimode variable depending on choice of tool
+//------------------------------------------------------
+
+function setMode(mode) {
     uimode = mode;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
@@ -1684,11 +1736,19 @@ $(document).ready(function() {
     });
 });
 
+//---------------------------------
+// Sets the size of text for entity
+//---------------------------------
+
 function setTextSizeEntity() {
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;        
     }
 }
+
+//---------------------------------------------------
+// Sets the type for last selected object in diagram
+//---------------------------------------------------
 
 function setType() {
     var elementVal = document.getElementById('object_type').value;
@@ -1697,6 +1757,10 @@ function setType() {
     }
     updateGraphics();
 }
+
+//--------------------------------------------------
+// Returns connected that are connected to the line
+//--------------------------------------------------
 
 function connectedObjects(line) {
     var privateObjects = [];
@@ -1757,6 +1821,10 @@ function setLineColor(counter){
     }
 }
 
+//---------------------------------
+// Draws origo when in developer mode
+//---------------------------------
+
 function drawOrigo() {
     const radius = 10;
     const colors = ['#0fbcf9','transparent','#0fbcf9','transparent'];
@@ -1780,12 +1848,20 @@ function drawOrigo() {
     ctx.restore();
 }
 
+//----------------------
+// Draws out origo line
+//----------------------
+
 function drawOrigoLine() {
     ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
     drawGridLine(origoOffsetX, 0, origoOffsetX, canvas.height);
     drawGridLine(0, origoOffsetY, canvas.width, origoOffsetY);
 }
+
+//---------------------
+// Draws out grid line
+//---------------------
 
 function drawGridLine(startX, startY, endX, endY) {
     ctx.lineWidth = 1 * zoomValue;
@@ -1870,7 +1946,7 @@ function developerMode(event) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev(event);                                                             // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -1893,31 +1969,39 @@ var refreshedPage = true;
 function setModeOnRefresh() {
     toolbarState = localStorage.getItem("toolbarState");
     if(toolbarState == currentMode.er) {
+        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
-        developerModeActive = false;
     } else if(toolbarState == currentMode.uml) {
+        developerModeActive = false;
         switchToolbarUML();
         hideCrosses();
-        developerModeActive = false;
     } else if(toolbarState == currentMode.dev) {
-        showCrosses();
         developerModeActive = true;
+        showCrosses();
         switchToolbarDev(event);
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
+        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
-        developerModeActive = false;
     }
 }
+
+//--------------------------------------
+// Shows crosses when in developer mode
+//--------------------------------------
 
 function showCrosses() {
     crossStrokeStyle1 = "#f64";
     crossFillStyle = "#d51";
     crossStrokeStyle2 = "#d51";
 }
+
+//-----------------------------------------
+// Hide crosses when not in developer mode
+//-----------------------------------------
 
 function hideCrosses() {
     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -1943,13 +2027,21 @@ function modeSwitchConfirmed(confirmed) {
     }
 }
 
+//-----------------------------------
+// Switches between modes ER and UML
+//-----------------------------------
+
 function toggleMode() {
-    if(toolbarState == "ER"){
+    if(toolbarState == "ER" && !developerModeActive){
         switchToolbarTo("UML");
-    } else if (toolbarState == "UML") {
+    } else if (toolbarState == "UML" && !developerModeActive) {
         switchToolbarTo("ER");
     } else {
-      return;
+        if(toolbarState == "ER") {
+            switchToolbarTo("UML");
+        } else {
+            switchToolbarTo("ER");
+        }
     }
 }
 
@@ -1984,8 +2076,12 @@ function switchToolbarTo(target) {
 var crossER = false;
 function switchToolbarER() {
     toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
-    switchToolbar('ER');                                                            // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
+    switchToolbar('ER');
+    if (developerModeActive) {
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV: ER';
+    } else {
+        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
+    }
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
@@ -2001,12 +2097,16 @@ function switchToolbarER() {
 var crossUML = false;
 function switchToolbarUML() {
     toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
-    switchToolbar('UML');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';             // Change the text to UML.
+    switchToolbar('UML');
+    if (developerModeActive) {
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV: UML';
+    } else {
+        document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';              // Change the text to UML.
+    }                                                           // ---||---
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-        crossDEV=false);                                                            // Turn off crossUML.
+    crossDEV=false);                                                            // Turn off crossUML.
 }
 
 //------------------------------------------------------------------------------
@@ -2023,7 +2123,7 @@ function switchToolbarDev(event) {
     }
     toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
+    document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=true);                                                             // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -2040,15 +2140,18 @@ function removeLocalStorage() {
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------
 // This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
+//----------------------------------------------------------------------------------------------------------------
+
 function decimalPrecision(value, precision) {
   var multipler = Math.pow(10, precision || 0);
   return Math.round(value * multipler) / multipler;
 }
 
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
 // reWrite: Function that rewrites the values of zoom and x+y that's under the canvas element
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
 
 function reWrite() {
     if (developerModeActive) {
@@ -2127,10 +2230,18 @@ function refreshFunction() {
     }
 }
 
+//--------------------
+// Gets current date
+//--------------------
+
 function getCurrentDate() {
     console.log("getCurrentDate running");
     return new Date().getTime();
 }
+
+//-------------------
+// Sets refresh time
+//-------------------
 
 function setRefreshTime() {
     var time = 5000;
@@ -2143,7 +2254,10 @@ function setRefreshTime() {
     return time;
 }
 
-// adds a group to selected objects
+//----------------------------------
+// Adds a group to selected objects
+//----------------------------------
+
 function addGroupToSelected(event) {
     event.stopPropagation();
 
@@ -2195,7 +2309,11 @@ function addGroupToSelected(event) {
     SaveState();
     updateGraphics();
 }
+
+//-----------------------------------------
 // removes the group from selected objects
+//-----------------------------------------
+
 function removeGroupFromSelected(event) {
     event.stopPropagation();
     for (var i = 0; i < selected_objects.length; i++) {
@@ -2209,7 +2327,10 @@ function removeGroupFromSelected(event) {
     SaveState();
     updateGraphics();
 }
+//------------------------------------------------------------------------------
 // all symbols with the same group as symbol is set to targeted (true or false)
+//------------------------------------------------------------------------------
+
 function setTargetedForSymbolGroup(symbol, targeted) {
     for (var i = 0; i < diagram.length; i++) {
         if (symbol.group != 0 && diagram[i] != symbol && diagram[i].group == symbol.group) {
@@ -2484,9 +2605,8 @@ function redoDiagram(event) {
 }
 
 //----------------------------------------------------------------------
-// diagramToSVG: not clear where this method is used
+// diagramToSVG: Used when exporting the diagram to svg
 //----------------------------------------------------------------------
-
 function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
@@ -2757,9 +2877,11 @@ function switchToolbar(mode) {
 // DIAGRAM MOUSE SECTION
 // ----------------------------------
 
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // zoomInMode: Function for the zoom in and zoom out in the canvas element
-//----------------------------------------------------------------------
+//             Zooms with pointer in focus when scrolling or center if
+//             zoomba is used
+//-------------------------------------------------------------------------
 
 function zoomInMode(event) {
     // Save coordinates before changing zoom value
@@ -2790,8 +2912,6 @@ function zoomInMode(event) {
     updateGraphics();
 }
 
-
-
 function changeZoom(zoomValue, event) {
     var value = parseFloat(document.getElementById("ZoomSelect").value);
     value = value + parseFloat(zoomValue);
@@ -2800,7 +2920,7 @@ function changeZoom(zoomValue, event) {
 }
 
 //-----------------------
-// Canvas zoom on scroll with mouse pointer in focus
+// Canvas zoom on scroll
 //-----------------------
 
 function scrollZoom(event) {
@@ -2823,9 +2943,9 @@ function scrollZoom(event) {
     }
 }
 
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
 function findPos(obj) {
     var curleft = 0;
@@ -3058,7 +3178,7 @@ function mousemoveevt(ev, t) {
             if (movobj != -1 ) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
-                for (var i = 0; i < diagram.length; i++) { 
+                for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
                             // Set mouse start so it's snaped to grid.
@@ -3347,7 +3467,7 @@ function mouseupevt(ev) {
         }
 
         if(figureType == "Free") {
-            createFigure();
+            figureFreeDraw();
             return;
         }
     }
@@ -3466,9 +3586,10 @@ function mouseupevt(ev) {
         }
     }
 
-    // Code for creating symbols when mouse is released
-    // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
-    //----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------
+// Code for creating symbols when mouse is released
+// Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
+//---------------------------------------------------------------------------------------------------
 
     var diagramObject;
 
@@ -3750,7 +3871,7 @@ function showMenu() {
 //----------------------------------------------------------------------
 
 function openAppearanceDialogMenu() {
-    for(var i = 0; i < selected_objects.length; i++){ 
+    for(var i = 0; i < selected_objects.length; i++){
         if (selected_objects[i].isLocked) {
             return;
         }
@@ -3929,7 +4050,7 @@ function loadLineForm(element, dir) {
                     tempLineDirection = "First";
                 }
                 setSelectedOption('object_type', settings.properties.key_type);
-                // check if the form that is loaded is for a line can have cardinality 
+                // check if the form that is loaded is for a line can have cardinality
                 if (cardinalityValue != 1) {
                     setSelectedOption('cardinality', tempCardinality);
                     // check if the form that is loaded is for a line can have a linedirection (uml lines)
@@ -4125,7 +4246,7 @@ function changeObjectAppearance(object_type) {
             var operationLines = $('#UMLOperations').val().split('\n');
             selected_objects[i].attributes = [];
             selected_objects[i].operations = [];
-    
+
             //Inserts text for attributes and operations
             for (var j = 0; j < attributeLines.length; j++) {
                 selected_objects[i].attributes.push({text:attributeLines[j]});
@@ -4133,7 +4254,7 @@ function changeObjectAppearance(object_type) {
             for (var j = 0; j < operationLines.length; j++) {
                 selected_objects[i].operations.push({text:operationLines[j]});
             }
-    
+
         } else if (selected_objects[i].symbolkind == symbolKind.line) {
             selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
         } else if (selected_objects[i].symbolkind == symbolKind.umlLine) {
@@ -4165,6 +4286,10 @@ function changeObjectAppearance(object_type) {
     updateGraphics();
     SaveState();
 }
+
+//---------------------------------
+// Creates cardinality at the line
+//---------------------------------
 
 function createCardinality() {
     //Setting cardinality on new line
