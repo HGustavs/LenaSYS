@@ -651,7 +651,12 @@ function returnedResults(data) {
 		}
 	}
 }
+//----------------------------------------
+// Success return function for LadExport lastGraded
+//----------------------------------------
+function returnedExportedGrades(){
 
+}
 var myTable;
 //----------------------------------------
 // Renderer
@@ -1414,7 +1419,7 @@ function copyLadexport() {
 /*
 	AJAXService("getunexported", {
 		gradeLastExported: gradeLastExported,
-	}, "RESULT");
+	}, "GEXPORT");
 	*/
 }
 
