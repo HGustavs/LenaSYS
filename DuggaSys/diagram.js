@@ -3057,7 +3057,10 @@ function mousemoveevt(ev, t) {
                         //The point belongs to a umlLine or Line
                         canvas.style.cursor = "default";
                     } else {
-                        canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                        // Should not change when drawing a line.
+                        if (uimode != "CreateLine") {
+                            canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                        }
                     }
                 }
             } else {
