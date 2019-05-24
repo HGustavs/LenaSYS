@@ -48,15 +48,15 @@ function Symbol(kindOfSymbol) {
 
     // Properties array that stores different kind of objects. Refer to the properties with "properties['symbolColor']"
     this.properties = {
-        'symbolColor': '#ffffff',                       // Change background colors on entities.
-        'strokeColor': '#000000',                       // Change standard line color.
-        'fontColor': '#000000',                         // Change the color of the font.
-        'font': 'Arial',                                // Set the standard font.
-        'lineWidth': '2',                               // LineWidth preset is 2.
-        'textSize': '14',                               // 14 pixels text size is default.
-        'sizeOftext': 'Tiny',                           // Used to set size of text.
-        'textAlign': 'center',                          // Used to change alignment of free text.
-        'key_type': 'normal'                            // Defult key type for a class.
+        'symbolColor': settings.properties.fillColor,      // Change background colors on entities.
+        'strokeColor': settings.properties.strokeColor,    // Change standard line color.
+        'fontColor': settings.properties.fontColor,        // Change the color of the font.
+        'font': settings.properties.font,                  // Set the standard font.
+        'lineWidth': settings.properties.lineWidth,        // LineWidth preset is 2.
+        'textSize': settings.properties.textSize,          // 14 pixels text size is default.
+        'sizeOftext': settings.properties.sizeOftext,      // Used to set size of text.
+        'textAlign': settings.properties.textAlign,        // Used to change alignment of free text.
+        'key_type': settings.properties.key_type           // Defult key type for a class.
     };
 
     //--------------------------------------------------------------------
@@ -755,7 +755,7 @@ function Symbol(kindOfSymbol) {
     //             IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        if (this.symbolkind == symbolKind.line) return;
+        if (this.symbolkind == symbolKind.line || this.symbolkind == symbolKind.umlLine) return;
         points[this.topLeft] = waldoPoint;
         points[this.bottomRight] = waldoPoint;
         points[this.centerPoint] = waldoPoint;
@@ -2355,7 +2355,10 @@ function Path() {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
-
+    
+    //--------------------------------------------------------------------
+    // setID: Assigns a global id to a symbol
+    //--------------------------------------------------------------------
     this.setID = function(id) {
         this.id = id;
         if (globalObjectID <= id) {
@@ -2364,7 +2367,7 @@ function Path() {
     }
 
     //---------------------------------------------------------
-    // getLockPosition: Returns the position of the lock for this object
+    // getLockPosition: Returns the position of the lock for this object, from the right most point of the object 
     //---------------------------------------------------------
     this.getLockPosition = function() {
         var RightMostPoint;
