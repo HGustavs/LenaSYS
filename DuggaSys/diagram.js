@@ -2528,7 +2528,7 @@ function globalFont() {
     settings.properties.font = document.getElementById('font').value;
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.uml || diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
-            diagram[i].properties['font'] = setting.properties.font;
+            diagram[i].properties['font'] = settings.properties.font;
         }
     }
 }
@@ -3830,9 +3830,20 @@ function loadFormIntoElement(element, dir) {
     var file = new XMLHttpRequest();
     var lastSelected = selected_objects[selected_objects.length - 1];
     var names = "";
+    var properties; 
 
-    for(var i = 0; i < selected_objects.length; i++){
-        names += selected_objects[i].name + ", ";
+    if(dir == "diagram_forms.php?form=globalType"){
+        properties = settings.properties;
+    } else {
+        properties = lastSelected.properties;
+    }
+
+    if(selected_objects.length > 1){
+        for(var i = 0; i < selected_objects.length; i++){
+            names += selected_objects[i].name + ", ";
+        }
+    } else {
+        names = selected_objects[0].name;
     }
 
     file.open('GET', dir);
@@ -3841,16 +3852,16 @@ function loadFormIntoElement(element, dir) {
             element.innerHTML = file.responseText;
             if(globalAppearanceValue == 0 && lastSelected.kind == kind.symbol) {
                 document.getElementById('nametext').value = names;
-                setSelectedOption('object_type', settings.properties.key_type);
-                setSelectedOption('fillColor', settings.properties.fillColor);
-                setSelectedOption('font', settings.properties.font);
-                setSelectedOption('fontColor', settings.properties.fontColor);
-                setSelectedOption('TextSize', settings.properties.sizeOftext);
-                setSelectedOption('LineColor', settings.properties.strokeColor);
+                setSelectedOption('object_type', properties.key_type);
+                setSelectedOption('fillColor', properties.fillColor);
+                setSelectedOption('font', properties.font);
+                setSelectedOption('fontColor', properties.fontColor);
+                setSelectedOption('TextSize', properties.sizeOftext);
+                setSelectedOption('LineColor', properties.strokeColor);
             } else if(globalAppearanceValue == 0 && lastSelected.kind == kind.path) {
-                setSelectedOption('figureFillColor', settings.properties.fillColor);
-                document.getElementById('figureOpacity').value = (settings.properties.opacity * 100);
-                setSelectedOption('LineColor', settings.properties.strokeColor);
+                setSelectedOption('figureFillColor', properties.fillColor);
+                document.getElementById('figureOpacity').value = (properties.opacity * 100);
+                setSelectedOption('LineColor', properties.strokeColor);
             } else {
                 // should only occur when changing global appearance
                 document.getElementById('line-thickness').value = getLineThickness();
@@ -4104,6 +4115,7 @@ function objectAppearanceMenu(form) {
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
+    console.log("HELo")
     if(selected_objects.length == 1) {
         selected_objects[0].name = document.getElementById('nametext').value;
     }
