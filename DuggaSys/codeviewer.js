@@ -1092,7 +1092,7 @@ function tokenize(instring, inprefix, insuffix) {
 	while (currentCharacter) { // currentCharacter == first character in each word
 		from = i;
 		if (currentCharacter <= ' ') { // White space and carriage return
-			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
+ 			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
 				maketoken('newline', "", i, i, row);
 				currentStr = "";
 				row++;
@@ -1100,16 +1100,13 @@ function tokenize(instring, inprefix, insuffix) {
 				currentStr = currentCharacter;
 			}
 
-			i++;
+			i++; 
 			while (true) {
 				currentCharacter = instring.charAt(i);
 				if (currentCharacter > ' ' || !currentCharacter) break;
 				if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
 					maketoken('whitespace', currentStr, from, i, row);
-					maketoken('newline', "", i, i, row);
 					currentStr = "";
-					// White space Row (so we get one white space token for each new row) also increase row number
-					row++;
 				} else {
 					currentStr += currentCharacter;
 				}
@@ -1810,36 +1807,36 @@ function createBlocks(ranges, boxid) {
 			button.classList.toggle('open-block');
 			button.classList.toggle('closed-block');
 			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
-			if (button.classList.contains('closed-block')) {
-				hideRows(rowsInBlock, button);
-			} else {
-				showRows(rowsInBlock, button);
-			}
-		})
+			toggleRows(rowsInBlock, button);
+		});
 	}
 }
 
-function hideRows(rows, button) {
+function toggleRows(rows, button) {
 	var baseRow = button.parentNode;
 	var wrapper = baseRow.parentNode;
 	var box = wrapper.parentNode;
 	var numbers = [...box.querySelectorAll('.codeborder div')];
+	var display;
+	var ellipses = document.createElement('span');
+	ellipses.classList.add('blockEllipses');
+	ellipses.innerHTML = ' ...';
+
+	if (button.classList.contains('closed-block')) {
+		display = 'none';
+		baseRow.appendChild(ellipses);
+	} else {
+		display = 'block';
+		ellipses = baseRow.querySelector('.blockEllipses');
+		baseRow.removeChild(ellipses);
+	}
+	
 	for (var i = 1; i < rows.length; i++) {
-		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = 'none';
-		numbers[rows[i] - 1].style.display = 'none';
+		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = display;
+		numbers[rows[i] - 1].style.display = display;
 	}
 }
 
-function showRows(rows, button) {
-	var baseRow = button.parentNode;
-	var wrapper = baseRow.parentNode;
-	var box = wrapper.parentNode;
-	var numbers = [...box.querySelectorAll('.codeborder div')];
-	for (var i = 1; i < rows.length; i++) {
-		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = 'block';
-		numbers[rows[i] - 1].style.display = 'block';
-	}
-}
 
 //----------------------------------------------------------------------------------
 // createCodeborder: function to create a border with line numbers
