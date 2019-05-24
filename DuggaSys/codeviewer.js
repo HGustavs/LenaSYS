@@ -62,12 +62,23 @@ function setup() {
 	}
 }
 
+
+function returnedError(error) {
+	if (error.responseText) {
+		document.querySelector('#div2').innerHTML += " and show them this message:<br><br>"+error.responseText;
+	}
+}
+
 //-----------------------------------------------------------------
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
 function returned(data) {
 	retData = data;
+
+	if (retData['deleted']) {
+		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
+	}
 
 	if (retData['writeaccess'] == "w") {
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid=" + courseid + "&coursevers=" + cvers + "');");
@@ -455,6 +466,20 @@ function updateExample() {
 	}
 
 	$("#editExampleContainer").css("display", "none");
+}
+
+function removeExample() {
+	var courseid = querystring['courseid'];
+	var cvers = querystring['cvers'];
+	var exampleid = querystring['exampleid'];
+	var lid = querystring['lid'];
+
+	AJAXService("DELEXAMPLE", {
+		courseid: courseid,
+		cvers: cvers,
+		exampleid: exampleid,
+		lid: lid
+	}, "CODEVIEW");
 }
 
 //----------------------------------------------------------------------------------

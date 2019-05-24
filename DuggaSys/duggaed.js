@@ -579,7 +579,7 @@ function returnedDugga(data) {
 			qstart: "Startdate",
 			deadline: "Deadline",
 			qrelease: "Result date",
-			modified: "Last modified",
+			modified: "Last Modified",
 			arrow: "",
 			cogwheel: "",
 			trashcan: ""
