@@ -2062,7 +2062,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2074,7 +2074,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 3, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2297,7 +2297,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2309,7 +2309,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 3, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
