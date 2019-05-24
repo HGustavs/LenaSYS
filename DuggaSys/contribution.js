@@ -652,7 +652,10 @@ function createTimeSheetTable(data) {
     hasCounterColumn: false
   });
 
-  myTable.renderTable();
+  // Render table only if there is tabledata
+  if(tabledata.tablebody != null || tabledata.tablebody != undefined) {
+    myTable.renderTable();
+  }
 }
 
 function renderCell(col, celldata, cellid) {
