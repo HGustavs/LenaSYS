@@ -62,7 +62,7 @@ var settings = {
     },
 };
 
-var globalObjectID = 0;       
+var globalObjectID = 0;
 
 const kind = {
     path: 1,
@@ -346,6 +346,10 @@ function resetButtonsPressed() {
     ctrlIsClicked = false;
     shiftIsClicked = false;
 }
+
+//--------------------------------------------------------------------
+// This handles all the key binds for diagram
+//--------------------------------------------------------------------
 
 function keyDownHandler(e) {
     var key = e.keyCode;
@@ -1154,6 +1158,10 @@ diagram.getZoomValue = function(){
     return zoomValue;
 }
 
+//--------------------------------------------------------------------
+// Initialization of canvas when the page is loaded
+//--------------------------------------------------------------------
+
 function initializeCanvas() {
     //hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
     setInterval(refreshFunction, refreshTimer);
@@ -1180,6 +1188,10 @@ function initializeCanvas() {
     canvas.addEventListener('wheel', scrollZoom, false);
 }
 
+//--------------------------------------------------------------------
+// Deselects all objects
+//--------------------------------------------------------------------
+
 function deselectObjects() {
     for(let i = 0; i < diagram.length; i++) {
         diagram[i].targeted = false;
@@ -1203,6 +1215,10 @@ function toggleGrid(event) {
     }
     setCheckbox($(".drop-down-option:contains('Snap to grid')"), snapToGrid);
 }
+
+//-----------------------------------------------------------------------
+// Toggles the virtual A4 On or Off
+//-----------------------------------------------------------------------
 
 function toggleVirtualA4(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
@@ -1230,6 +1246,10 @@ function toggleVirtualA4(event) {
 
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
+
+//--------------------------------------------------------------------
+// Draws virtual A4 on canvas
+//--------------------------------------------------------------------
 
 function drawVirtualA4() {
     if(!toggleA4) {
@@ -1379,7 +1399,7 @@ function drawDebugCircle(cx, cy, radius, color) {
 }
 
 //-------------------
-// Used for A4 holes
+// Draws circle
 //-------------------
 
 function drawCircle(cx, cy, radius) {
@@ -1391,6 +1411,10 @@ function drawCircle(cx, cy, radius) {
     ctx.stroke();
     ctx.restore();
 }
+
+//-----------------------------------------------------
+// Enables and shows the children menus for virtual A4
+//-----------------------------------------------------
 
 function showA4State() {
     // Sets icons based on the state of the A4
@@ -1404,6 +1428,10 @@ function showA4State() {
     $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
+
+//-----------------------------------------------------
+// Disables and hides the children menus for virtual A4
+//-----------------------------------------------------
 
 function hideA4State() {
     // Reset the variables after disable the A4
@@ -1421,6 +1449,10 @@ function hideA4State() {
     $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
+
+//---------------------------------
+// Toggles holes on the virtual A4
+//---------------------------------
 
 function toggleVirtualA4Holes(event) {
     event.stopPropagation();
@@ -1443,6 +1475,10 @@ function toggleVirtualA4Holes(event) {
     }
 }
 
+//-------------------------------------------------------------
+// Moves the holes on virtual A to the opposite side of the A4
+//-------------------------------------------------------------
+
 function toggleVirtualA4HolesRight(event) {
     event.stopPropagation();
     // Switch a4 holes from left to right of the A4-paper.
@@ -1456,6 +1492,10 @@ function toggleVirtualA4HolesRight(event) {
         updateGraphics();
     }
 }
+
+//---------------------------------------------------------------
+// Changes orientation of the virtual A4 (Landscape or portrait)
+//---------------------------------------------------------------
 
 function toggleA4Orientation(event) {
     event.stopPropagation();
@@ -1558,6 +1598,10 @@ function resetViewToOrigin(){
     SaveState();
 }
 
+//-------------------------------------------
+// Returns lines connected to the object
+//--------------------------------------------
+
 function getConnectedLines(object) {
     var privatePoints = object.getPoints();
     var lines = diagram.getLineObjects();
@@ -1578,6 +1622,10 @@ function getConnectedLines(object) {
     }
     return objectLines;
 }
+
+//---------------------------------
+// Erases the object from diagram
+//---------------------------------
 
 function eraseObject(object) {
     var objectsToDelete = [];
@@ -1645,6 +1693,11 @@ function changeLoginBoxTitleAppearance() {
     document.getElementById("loginBoxTitle").innerHTML = "Appearance";
 }
 
+//---------------------------------------------------
+// Calls the erase function for all selected objects
+// Ends up with erasing all selected objects
+//---------------------------------------------------
+
 function eraseSelectedObject() {
     //Issue: Need to remove the crosses
     if(selected_objects.length == 0) {
@@ -1660,7 +1713,11 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function setMode(mode) { //"CreateClass" yet to be implemented in .php
+//------------------------------------------------------
+// Sets the uimode variable depending on choice of tool
+//------------------------------------------------------
+
+function setMode(mode) {
     uimode = mode;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
@@ -1685,15 +1742,27 @@ $(document).ready(function() {
     });
 });
 
+//---------------------------------
+// Sets the size of text for entity
+//---------------------------------
+
 function setTextSizeEntity() {
     diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
 }
+
+//---------------------------------------------------
+// Sets the type for last selected object in diagram
+//---------------------------------------------------
 
 function setType() {
     var elementVal = document.getElementById('object_type').value;
     diagram[lastSelectedObject].properties['key_type'] = elementVal;
     updateGraphics();
 }
+
+//--------------------------------------------------
+// Returns connected that are connected to the line
+//--------------------------------------------------
 
 function connectedObjects(line) {
     var privateObjects = [];
@@ -1754,6 +1823,10 @@ function setLineColor(counter){
     }
 }
 
+//---------------------------------
+// Draws origo when in developer mode
+//---------------------------------
+
 function drawOrigo() {
     const radius = 10;
     const colors = ['#0fbcf9','transparent','#0fbcf9','transparent'];
@@ -1777,12 +1850,20 @@ function drawOrigo() {
     ctx.restore();
 }
 
+//----------------------
+// Draws out origo line
+//----------------------
+
 function drawOrigoLine() {
     ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
     drawGridLine(origoOffsetX, 0, origoOffsetX, canvas.height);
     drawGridLine(0, origoOffsetY, canvas.width, origoOffsetY);
 }
+
+//---------------------
+// Draws out grid line
+//---------------------
 
 function drawGridLine(startX, startY, endX, endY) {
     ctx.lineWidth = 1 * zoomValue;
@@ -1910,11 +1991,19 @@ function setModeOnRefresh() {
     }
 }
 
+//--------------------------------------
+// Shows crosses when in developer mode
+//--------------------------------------
+
 function showCrosses() {
     crossStrokeStyle1 = "#f64";
     crossFillStyle = "#d51";
     crossStrokeStyle2 = "#d51";
 }
+
+//-----------------------------------------
+// Hide crosses when not in developer mode
+//-----------------------------------------
 
 function hideCrosses() {
     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -1939,6 +2028,10 @@ function modeSwitchConfirmed(confirmed) {
         }
     }
 }
+
+//-----------------------------------
+// Switches between modes ER and UML
+//-----------------------------------
 
 function toggleMode() {
     if(toolbarState == "ER"){
@@ -2037,15 +2130,18 @@ function removeLocalStorage() {
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------
 // This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
+//----------------------------------------------------------------------------------------------------------------
+
 function decimalPrecision(value, precision) {
   var multipler = Math.pow(10, precision || 0);
   return Math.round(value * multipler) / multipler;
 }
 
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
 // reWrite: Function that rewrites the values of zoom and x+y that's under the canvas element
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
 
 function reWrite() {
     if (developerModeActive) {
@@ -2124,10 +2220,18 @@ function refreshFunction() {
     }
 }
 
+//--------------------
+// Gets current date
+//--------------------
+
 function getCurrentDate() {
     console.log("getCurrentDate running");
     return new Date().getTime();
 }
+
+//-------------------
+// Sets refresh time
+//-------------------
 
 function setRefreshTime() {
     var time = 5000;
@@ -2140,7 +2244,10 @@ function setRefreshTime() {
     return time;
 }
 
-// adds a group to selected objects
+//----------------------------------
+// Adds a group to selected objects
+//----------------------------------
+
 function addGroupToSelected(event) {
     event.stopPropagation();
 
@@ -2192,7 +2299,11 @@ function addGroupToSelected(event) {
     SaveState();
     updateGraphics();
 }
+
+//-----------------------------------------
 // removes the group from selected objects
+//-----------------------------------------
+
 function removeGroupFromSelected(event) {
     event.stopPropagation();
     for (var i = 0; i < selected_objects.length; i++) {
@@ -2206,7 +2317,10 @@ function removeGroupFromSelected(event) {
     SaveState();
     updateGraphics();
 }
+//------------------------------------------------------------------------------
 // all symbols with the same group as symbol is set to targeted (true or false)
+//------------------------------------------------------------------------------
+
 function setTargetedForSymbolGroup(symbol, targeted) {
     for (var i = 0; i < diagram.length; i++) {
         if (symbol.group != 0 && diagram[i] != symbol && diagram[i].group == symbol.group) {
@@ -2754,9 +2868,11 @@ function switchToolbar(mode) {
 // DIAGRAM MOUSE SECTION
 // ----------------------------------
 
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // zoomInMode: Function for the zoom in and zoom out in the canvas element
-//----------------------------------------------------------------------
+//             Zooms with pointer in focus when scrolling or center if
+//             zoomba is used
+//-------------------------------------------------------------------------
 
 function zoomInMode(event) {
     // Save coordinates before changing zoom value
@@ -2787,8 +2903,6 @@ function zoomInMode(event) {
     updateGraphics();
 }
 
-
-
 function changeZoom(zoomValue, event) {
     var value = parseFloat(document.getElementById("ZoomSelect").value);
     value = value + parseFloat(zoomValue);
@@ -2797,7 +2911,7 @@ function changeZoom(zoomValue, event) {
 }
 
 //-----------------------
-// Canvas zoom on scroll with mouse pointer in focus
+// Canvas zoom on scroll
 //-----------------------
 
 function scrollZoom(event) {
@@ -2820,9 +2934,9 @@ function scrollZoom(event) {
     }
 }
 
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
 function findPos(obj) {
     var curleft = 0;
@@ -3462,9 +3576,10 @@ function mouseupevt(ev) {
         }
     }
 
-    // Code for creating symbols when mouse is released
-    // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
-    //----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------
+// Code for creating symbols when mouse is released
+// Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
+//---------------------------------------------------------------------------------------------------
 
     var diagramObject;
 
@@ -4137,6 +4252,10 @@ function changeObjectAppearance(object_type) {
     }
     updateGraphics();
 }
+
+//---------------------------------
+// Creates cardinality at the line
+//---------------------------------
 
 function createCardinality() {
     //Setting cardinality on new line
