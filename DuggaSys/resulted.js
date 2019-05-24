@@ -1109,7 +1109,13 @@ function rowFilter(row) {
 			return false;
 		}
 	}
-
+	var teacherDropdown = document.getElementById("teacherDropdown").value;
+	if (teacherDropdown === "none"){
+		return true;
+	}
+	else if(row.FnameLname.examiner != teacherDropdown){
+		return false;
+	}
   // Removes spaces so that it can tolerate "wrong" inputs when searching
   searchterm = searchterm.replace(' ', '');
   // divides the search on &&
