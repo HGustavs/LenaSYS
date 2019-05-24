@@ -1717,18 +1717,26 @@ $(document).ready(function() {
 });
 
 //---------------------------------
-// Toggles holes on the virtual A4
+// Sets the size of text for entity
 //---------------------------------
 
 function setTextSizeEntity() {
     diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
 }
 
+//---------------------------------------------------
+// Sets the type for last selected object in diagram
+//---------------------------------------------------
+
 function setType() {
     var elementVal = document.getElementById('object_type').value;
     diagram[lastSelectedObject].properties['key_type'] = elementVal;
     updateGraphics();
 }
+
+//--------------------------------------------------
+// Returns connected that are connected to the line
+//--------------------------------------------------
 
 function connectedObjects(line) {
     var privateObjects = [];
@@ -1789,6 +1797,10 @@ function setLineColor(counter){
     }
 }
 
+//---------------------------------
+// Draws origo when in developer mode
+//---------------------------------
+
 function drawOrigo() {
     const radius = 10;
     const colors = ['#0fbcf9','transparent','#0fbcf9','transparent'];
@@ -1812,12 +1824,20 @@ function drawOrigo() {
     ctx.restore();
 }
 
+//----------------------
+// Draws out origo line
+//----------------------
+
 function drawOrigoLine() {
     ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
     drawGridLine(origoOffsetX, 0, origoOffsetX, canvas.height);
     drawGridLine(0, origoOffsetY, canvas.width, origoOffsetY);
 }
+
+//---------------------
+// Draws out grid line
+//---------------------
 
 function drawGridLine(startX, startY, endX, endY) {
     ctx.lineWidth = 1 * zoomValue;
@@ -1939,11 +1959,19 @@ function setModeOnRefresh() {
     }
 }
 
+//--------------------------------------
+// Shows crosses when in developer mode
+//--------------------------------------
+
 function showCrosses() {
     crossStrokeStyle1 = "#f64";
     crossFillStyle = "#d51";
     crossStrokeStyle2 = "#d51";
 }
+
+//-----------------------------------------
+// Hide crosses when not in developer mode
+//-----------------------------------------
 
 function hideCrosses() {
     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -1970,6 +1998,10 @@ function modeSwitchConfirmed(confirmed) {
         }
     }
 }
+
+//-----------------------------------
+// Switches between modes ER and UML
+//-----------------------------------
 
 function toggleMode() {
     if(toolbarState == "ER"){
@@ -2068,15 +2100,18 @@ function removeLocalStorage() {
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------
 // This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
+//----------------------------------------------------------------------------------------------------------------
+
 function decimalPrecision(value, precision) {
   var multipler = Math.pow(10, precision || 0);
   return Math.round(value * multipler) / multipler;
 }
 
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
 // reWrite: Function that rewrites the values of zoom and x+y that's under the canvas element
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
 
 function reWrite() {
     if (developerModeActive) {
@@ -2155,10 +2190,18 @@ function refreshFunction() {
     }
 }
 
+//--------------------
+// Gets current date
+//--------------------
+
 function getCurrentDate() {
     console.log("getCurrentDate running");
     return new Date().getTime();
 }
+
+//-------------------
+// Sets refresh time
+//-------------------
 
 function setRefreshTime() {
     var time = 5000;
@@ -2171,7 +2214,10 @@ function setRefreshTime() {
     return time;
 }
 
-// adds a group to selected objects
+//----------------------------------
+// Adds a group to selected objects
+//----------------------------------
+
 function addGroupToSelected(event) {
     event.stopPropagation();
 
@@ -2223,7 +2269,11 @@ function addGroupToSelected(event) {
     SaveState();
     updateGraphics();
 }
+
+//-----------------------------------------
 // removes the group from selected objects
+//-----------------------------------------
+
 function removeGroupFromSelected(event) {
     event.stopPropagation();
     for (var i = 0; i < selected_objects.length; i++) {
@@ -2237,7 +2287,10 @@ function removeGroupFromSelected(event) {
     SaveState();
     updateGraphics();
 }
+//------------------------------------------------------------------------------
 // all symbols with the same group as symbol is set to targeted (true or false)
+//------------------------------------------------------------------------------
+
 function setTargetedForSymbolGroup(symbol, targeted) {
     for (var i = 0; i < diagram.length; i++) {
         if (symbol.group != 0 && diagram[i] != symbol && diagram[i].group == symbol.group) {
@@ -2783,9 +2836,11 @@ function switchToolbar(direction) {
 // DIAGRAM MOUSE SECTION
 // ----------------------------------
 
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // zoomInMode: Function for the zoom in and zoom out in the canvas element
-//----------------------------------------------------------------------
+//             Zooms with pointer in focus when scrolling or center if
+//             zoomba is used
+//-------------------------------------------------------------------------
 
 function zoomInMode(event) {
     // Save coordinates before changing zoom value
@@ -2816,8 +2871,6 @@ function zoomInMode(event) {
     updateGraphics();
 }
 
-
-
 function changeZoom(zoomValue, event) {
     var value = parseFloat(document.getElementById("ZoomSelect").value);
     value = value + parseFloat(zoomValue);
@@ -2826,7 +2879,7 @@ function changeZoom(zoomValue, event) {
 }
 
 //-----------------------
-// Canvas zoom on scroll with mouse pointer in focus
+// Canvas zoom on scroll
 //-----------------------
 
 function scrollZoom(event) {
@@ -2849,9 +2902,9 @@ function scrollZoom(event) {
     }
 }
 
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
 function findPos(obj) {
     var curleft = 0;
@@ -3208,7 +3261,7 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
-                } else {
+              } else {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
                 ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
@@ -3483,9 +3536,10 @@ function mouseupevt(ev) {
         }
     }
 
-    // Code for creating symbols when mouse is released
-    // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
-    //----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------
+// Code for creating symbols when mouse is released
+// Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
+//---------------------------------------------------------------------------------------------------
 
     var diagramObject;
 
@@ -4186,6 +4240,10 @@ function changeObjectAppearance(object_type) {
     }
     updateGraphics();
 }
+
+//---------------------------------
+// Creates cardinality at the line
+//---------------------------------
 
 function createCardinality() {
     //Setting cardinality on new line
