@@ -42,7 +42,7 @@ $coursevers=getOP('coursevers');
 $qvariant=getOP("qvariant");
 $quizId=getOP("quizId");
 $teacher = getOP('teacher');
-
+$gradeLastExported=getOP('gradeLastExported');
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
 
@@ -113,12 +113,16 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		// * has never been graded
 		// * has never been exported
 		// * was updated since it was last exported
-		$rawSqlQuery = 'select aid, cid, vers, moment, quiz, uid, marked, gradeLastExported
+		/*$rawSqlQuery = 'select aid, cid, vers, moment, quiz, uid, marked, gradeLastExported
 		from userAnswer
 		where marked is null or gradeLastExported is null or marked > gradeLastExported';
-		$statement = $pdo->prepare($rawSqlQuery);
-		//$lastExported = 
-		//$statment->bindParam(':gradeLastExported', $lastExported);
+		
+		UPDATE userAnswer SET gradeLastExported = :gradeLastExported WHERE gradeLastExported IS NULL OR marked > gradeLastExported
+		*/
+		$statement = $pdo->prepare("SELECT aid, cid, vers, moment, quiz, uid, marked, gradeLastExported
+		from userAnswer
+		where marked is null or gradeLastExported is null or marked > gradeLastExported");
+		//$statment->bindParam(':gradeLastExported', $gradeLastExported);
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
 			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' failed to prepare query';

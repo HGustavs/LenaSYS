@@ -1407,12 +1407,15 @@ function copyLadexport() {
 
 	today = yyyy + '-' + mm + '-' + dd;
 
- 	var lastExported = today + " " + time;
-	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  lastExported;
-	 
+ 	var gradeLastExported = today + " " + time;
+	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  gradeLastExported;
+	
+	gradeLastExported = "'" + today + " " + time + "'";
+/*
 	AJAXService("getunexported", {
-		gradeLastExported: lastExported
+		gradeLastExported: gradeLastExported,
 	}, "RESULT");
+	*/
 }
 
 function addZero(i) {
