@@ -655,6 +655,7 @@ function returnedResults(data) {
 // Success return function for LadExport lastGraded
 //----------------------------------------
 function returnedExportedGrades(gradeData){
+
 	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  gradeData;
 	
 }
@@ -1417,7 +1418,7 @@ function copyLadexport() {
 	
 	//gradeLastExported = "'" + today + " " + time + "'";
 
-	AJAXService("getunexported", {
+	AJAXService("updateunexported", {
 		gradeLastExported: gradeLastExported,
 	}, "GEXPORT");
 

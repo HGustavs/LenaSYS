@@ -107,7 +107,7 @@ if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 
 // Services
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-	if ($opt === \resulted\Constants::getunexported_service_name) {
+	if ($opt === \resulted\Constants::updateunexported_service_name) {
 		// Get all answers where the result has never been exported or has changed.
 		// This is the case when the result:
 		// * has never been graded
