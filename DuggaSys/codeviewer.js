@@ -266,7 +266,8 @@ function returned(data) {
 
 	var ranges = getBlockRanges(allBlocks);
 	for (var i = 0; i < Object.keys(ranges).length; i++) {
-		createBlocks(ranges[i+1], i+1);
+		var boxid = Object.keys(ranges)[i];
+		createBlocks(ranges[boxid], boxid);
 	}
 
 	//hides maximize button if not supported
