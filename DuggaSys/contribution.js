@@ -749,7 +749,6 @@ function returnedSection(data) {
 
 
   document.getElementById('content').innerHTML = str;
-  sortRank(1); // default to allrank
 }
 
 function buildRankData(data) {
@@ -1005,6 +1004,8 @@ function createAllRankTable(data){
     tableElementId:"allRankTable",
 		renderCellCallback:allRankRenderCell,
 		renderSortOptionsCallback:renderSortOptions,
+    columnSum:["eventrank","commentrank","locrank","commitrank"],
+    columnSumCallback: makeSumAllRank,
 		columnOrder:colOrder,
 		freezePaneIndex:4,
 		hasRowHighlight:false,
@@ -1012,6 +1013,15 @@ function createAllRankTable(data){
 		hasCounterColumn:true
 	});
 	allRankTable.renderTable();
+}
+
+function makeSumAllRank(col,value,row){
+  if (value == "UNK" || value == "NOT FOUND"){
+    return 0;
+  } else {
+    return parseFloat(value)
+  }
+  return 0;
 }
 
 function makeSumPersonalRank(col,value,row){
@@ -1153,33 +1163,6 @@ function createDefault(){
 //This function prevents the toggle from happening when the links is is clicked.
 function keepContribContentOpen(e){
   e.stopPropagation();
-}
-
-function createAllRankTable(data){
-  var tabledata = {
-		tblhead:{
-      login:"Login",
-			eventrank:"Total events",
-			commentrank:"Total comments",
-			locrank:"Total lines of code",
-      commitrank:"Total commits"
-		},
-		tblbody: data,
-		tblfoot:{}
-  };
-	var colOrder=["login","eventrank","commentrank","locrank","commitrank"];
-	allRankTable = new SortableTable({
-		data:tabledata,
-    tableElementId:"allRankTable",
-		renderCellCallback:allRankRenderCell,
-		renderSortOptionsCallback:renderSortOptions,
-		columnOrder:colOrder,
-		freezePaneIndex:4,
-		hasRowHighlight:false,
-		hasMagicHeadings:false,
-		hasCounterColumn:false
-	});
-	allRankTable.renderTable();
 }
 
 /*
