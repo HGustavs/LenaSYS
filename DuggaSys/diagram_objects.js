@@ -378,9 +378,8 @@ function Symbol(kindOfSymbol) {
                     longestStr = this.textLines[i].text;
                 }
             }
-
-            var length = ctx.measureText(longestStr).width + 20;
-            var height = (this.textLines.length * fontsize) + fontsize;
+            var length = (ctx.measureText(longestStr).width / zoomValue) + 20;
+            var height = ((this.textLines.length * fontsize) + fontsize ) / zoomValue ;
 
             points[this.bottomRight].x = points[this.topLeft].x + length;
             points[this.bottomRight].y = points[this.topLeft].y + height;

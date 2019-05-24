@@ -160,7 +160,7 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
-var toolbarState = 1;                   // Set default toolbar state to ER.
+var toolbarState = currentMode.er;                   // Set default toolbar state to ER.
 
 // Keyboard keys
 const backspaceKey = 8;
@@ -203,18 +203,6 @@ const lessThanKey = 226;
 const leftMouseClick = 0;
 const scrollClick = 1;
 const rightMouseClick = 2;
-
-// This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
-var dragDistanceReached = true;
-
-// Hides the context menu. Needed in order to be able to right click and drag to move the camera.
-window.addEventListener('contextmenu', function (e) {
-        if (dragDistanceReached) {
-            e.preventDefault();
-        }
-    },
-    false
-);
 
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -425,47 +413,73 @@ function keyDownHandler(e) {
                modeSwitchConfirmed(true);
             }
         }
-    } else if(key == escapeKey) {
+    } else if (key == escapeKey) {
         cancelFreeDraw();
+        deselectObjects();
+        
+        // deselect attribute button
+        document.getElementById("attributebutton").classList.remove("pressed");
+        document.getElementById("attributebutton").classList.add("unpressed");
+        // deselect entity button
+        document.getElementById("entitybutton").classList.remove("pressed");
+        document.getElementById("entitybutton").classList.add("unpressed");
+        // deselect relation button
+        document.getElementById("relationbutton").classList.remove("pressed");
+        document.getElementById("relationbutton").classList.add("unpressed");
+        // deselect class button
+        document.getElementById("classbutton").classList.remove("pressed");
+        document.getElementById("classbutton").classList.add("unpressed");
+        // deselect line button
+        document.getElementById("linebutton").classList.remove("pressed");
+        document.getElementById("linebutton").classList.add("unpressed");
+        // deselect draw free button
+        document.getElementById("drawfreebutton").classList.remove("pressed");
+        document.getElementById("drawfreebutton").classList.add("unpressed");
+        // deselect draw text button
+        document.getElementById("drawtextbutton").classList.remove("pressed");
+        document.getElementById("drawtextbutton").classList.add("unpressed");
+        uimode = 'normal';
+
         if (modeSwitchDialogActive) modeSwitchConfirmed(false);
-    } else if((key == key1 || key == num1) && shiftIsClicked){
+    } else if ((key == key1 || key == num1) && shiftIsClicked){
         moveToFront();
-    } else if((key == key2 || key == num2) && shiftIsClicked){
+    } else if ((key == key2 || key == num2) && shiftIsClicked){
         moveToBack();
-    } else if(shiftIsClicked && key == lKey) {
+    } else if (shiftIsClicked && key == lKey) {
       document.getElementById("linebutton").click();
-    } else if(shiftIsClicked && key == aKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == aKey && targetMode == "ER") {
       document.getElementById("attributebutton").click();
-    } else if(shiftIsClicked && key == eKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == eKey && targetMode == "ER") {
       document.getElementById("entitybutton").click();
-    } else if(shiftIsClicked && key == rKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == rKey && targetMode == "ER") {
       document.getElementById("relationbutton").click();
-    } else if(shiftIsClicked && key == cKey && targetMode == "UML") {
+    } else if (shiftIsClicked && key == cKey && targetMode == "UML") {
       document.getElementById("classbutton").click();
-    } else if(shiftIsClicked && key == tKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == tKey && targetMode == "ER") {
       document.getElementById("drawtextbutton").click();
-    } else if(shiftIsClicked && key == fKey) {
+    } else if (shiftIsClicked && key == fKey) {
       document.getElementById("drawfreebutton").click();
-    } else if(shiftIsClicked && key == dKey) {
+    } else if (shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
-         if(developerModeActive) {
+    } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
+        if (developerModeActive) {
             developerMode(event);
+        } else {
+            toggleMode();
         }
-        toggleMode();
-    } else if(shiftIsClicked && key == xKey) {
+    } else if (shiftIsClicked && key == xKey) {
           lockSelected(event);
-    } else if(shiftIsClicked && key == oKey) {
+    } else if (shiftIsClicked && key == oKey) {
           resetViewToOrigin();
-    } else if(shiftIsClicked && key == key4) {
+    } else if (shiftIsClicked && key == key4) {
           toggleVirtualA4(event);
-    } else if(shiftIsClicked && key == upArrow) {
+    } else if (shiftIsClicked && key == upArrow) {
           align(event, 'top');
-    } else if(shiftIsClicked && key == rightArrow) {
+    } else if (shiftIsClicked && key == rightArrow) {
           align(event, 'right');
-    } else if(shiftIsClicked && key == downArrow) {
+    } else if (shiftIsClicked && key == downArrow) {
           align(event, 'bottom');
-    } else if(shiftIsClicked && key == leftArrow) {
+    } else if (shiftIsClicked && key == leftArrow) {
           align(event, 'left');
     }
 }
@@ -1335,9 +1349,9 @@ function drawVirtualA4() {
     ctx.restore();
 }
 
-//--------------------------------------------------------------------
-// Draws crosshair in the middle on canvas while in developer mode
-//--------------------------------------------------------------------
+//------------------------------------------------------------------
+// Draws a crosshair in the middle of canvas while in developer mode
+//------------------------------------------------------------------
 
 function drawCrosshair(){
     let crosshairLength = 12;
@@ -1910,11 +1924,15 @@ consloe.log = function(gobBluth) {
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
+var previousToolbarState = currentMode.er;
 var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     developerModeActive = !developerModeActive;
-    if(developerModeActive) {
+    // save the previous toolbarstate so that we can return to it
+    if (developerModeActive) previousToolbarState = toolbarState;
+    toolbarState = currentMode.dev;
+    if (developerModeActive) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev(event);                                                             // ---||---
@@ -1926,7 +1944,9 @@ function developerMode(event) {
             crossDEV=true);                                                             // Turn on crossDEV.
         setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
     } else {
-        switchToolbarER();
+        // switch to the saved toolbarstate
+        if (previousToolbarState == currentMode.er) switchToolbarER();
+        else if (previousToolbarState == currentMode.uml) switchToolbarUML();
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
         hideCrosses();
@@ -1938,18 +1958,18 @@ function developerMode(event) {
 var refreshedPage = true;
 function setModeOnRefresh() {
     toolbarState = localStorage.getItem("toolbarState");
-    if(toolbarState == 1) {
-        switchToolbarTo('ER');
+    if(toolbarState == currentMode.er) {
+        switchToolbarER();
         hideCrosses();
         developerModeActive = false;
-    } else if(toolbarState == 2) {
-        switchToolbarTo('UML');
+    } else if(toolbarState == currentMode.uml) {
+        switchToolbarUML();
         hideCrosses();
         developerModeActive = false;
-    } else if(toolbarState == 3) {
+    } else if(toolbarState == currentMode.dev) {
         showCrosses();
         developerModeActive = true;
-        switchToolbarTo('Dev');
+        switchToolbarDev(event);
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
@@ -1993,8 +2013,6 @@ function modeSwitchConfirmed(confirmed) {
             switchToolbarER();
         } else if (targetMode == 'UML') {
             switchToolbarUML();
-        } else if (targetMode == 'Dev'){
-            switchToolbarDev(event);
         }
     }
 }
@@ -2045,7 +2063,7 @@ var crossER = false;
 function switchToolbarER() {
     toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
     switchToolbar('ER');                                                            // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
@@ -2739,9 +2757,9 @@ function setOrientationIcon(element, check) {
 // DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
 
-const toolbarER = 1;
-const toolbarUML = 2;
-const toolbarDeveloperMode = 3;
+const toolbarER = currentMode.er;
+const toolbarUML = currentMode.uml;
+const toolbarDeveloperMode = currentMode.dev;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
@@ -2759,18 +2777,13 @@ function initToolbox() {
 //                not sure what the numbers 0 an 3 mean
 //----------------------------------------------------------------------
 
-function switchToolbar(direction) {
-  var text = ["ER", "UML"];
-  if(direction == 'left') {
-    toolbarState--;
-    if(toolbarState = 1) {
-      toolbarState = 2;
-    }
-  } else if(direction == 'right') {
-    toolbarState++;
-    if(toolbarState = 2) {
-      toolbarState = 1;
-    }
+function switchToolbar(mode) {
+  if(mode == currentMode.er) {
+      toolbarState = toolbarER;
+  } else if(mode == currentMode.uml) {
+      toolbarState = toolbarUML;
+  } else if(mode == currentMode.dev) {
+      toolbarState = toolbarDeveloperMode;
   }
 
   document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
@@ -2982,16 +2995,11 @@ function mousemoveevt(ev, t) {
             ||
             (diffY > deltaY) || (diffY < -deltaY)
         ) {
-            dragDistanceReached = true;
             // Entering MoveAround mode
             if (uimode != "MoveAround") {
                 activateMovearound();
             }
             updateGraphics();
-        }
-        else {
-            // If click event is needed, it goes in here.
-            dragDistanceReached = false;
         }
     }
 
@@ -3294,7 +3302,6 @@ function mousedownevt(ev) {
         if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
             InitPageX = ev.pageX;
             InitPageY = ev.pageY;
-            dragDistanceReached = false;
         }
     }
 
@@ -3331,7 +3338,6 @@ function mousedownevt(ev) {
     } else {
         md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
         if(ev.button == rightMouseClick && uimode == "CreateFigure"){
-            dragDistanceReached = true;
             endFreeDraw();
         }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
