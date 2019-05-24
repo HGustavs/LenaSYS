@@ -113,6 +113,7 @@
   background-color: #F2F2F2;
   white-space:nowrap;
   font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+  line-height: 15px;
 }
 
 .impo {
