@@ -652,7 +652,14 @@ function createTimeSheetTable(data) {
     hasCounterColumn: false
   });
 
-  myTable.renderTable();
+  // Render table only if there is tabledata
+  if(tabledata.tablebody != null || tabledata.tablebody != undefined) {
+    myTable.renderTable();
+  } else {
+    // Some kind of response feedback when there is no data
+    // This is just a placeholder for now
+    document.body.innerHTML += "<div style='width:50%; height:80px; background-color:#614875;'><span style='font-size:1.4em; color: white;'>Could not find any Timesheet data.</span></div>";
+  }
 }
 
 function renderCell(col, celldata, cellid) {
