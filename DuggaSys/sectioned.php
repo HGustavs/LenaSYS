@@ -110,7 +110,7 @@
 
 			</table>
 
-			<<?php
+			<?php
 			echo "
 			<script type=\"text/javascript\">
 				// This makes it possible to use the middle-mouse-button on the header alternatives
