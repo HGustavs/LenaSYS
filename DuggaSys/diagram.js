@@ -107,7 +107,6 @@ var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = false;            // Canvas left click state
 var canvasRightClick = false;           // Canvas right click state
-var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
 var hoveredObject = false;
@@ -2603,9 +2602,8 @@ function redoDiagram(event) {
 }
 
 //----------------------------------------------------------------------
-// diagramToSVG: not clear where this method is used
+// diagramToSVG: Used when exporting the diagram to svg
 //----------------------------------------------------------------------
-
 function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
@@ -3465,7 +3463,7 @@ function mouseupevt(ev) {
         }
 
         if(figureType == "Free") {
-            createFigure();
+            figureFreeDraw();
             return;
         }
     }
