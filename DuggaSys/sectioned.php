@@ -44,7 +44,7 @@
 							<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this)' ></select>
 						</div>
 					</td>
-					<td class='editVers' style='display: inline-block;margin-left:5px;'>
+					<td class='editVers' style='display: inline-block;margin-left:8px;'>
 						<div class='editVers menuButton'>
 								<img id='versionCog' class="navButt" title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>
 						</div>
