@@ -48,6 +48,18 @@ var settings = {
         UML: 0,
         Text: 0,
     },
+
+    properties: {        
+        symbolColor: '#ffffff',                       // Change background colors on entities.
+        strokeColor: '#000000',                       // Change standard line color.
+        fontColor: '#000000',                         // Change the color of the font.
+        font: 'Arial',                                // Set the standard font.
+        lineWidth: '2',                               // LineWidth preset is 2.
+        textSize: '14',                               // 14 pixels text size is default.
+        sizeOftext: 'Tiny',                           // Used to set size of text.
+        textAlign: 'center',                          // Used to change alignment of free text.
+        key_type: 'normal'                            // Defult key type for a class.
+    },
 };
 
 var globalObjectID = 0;       
@@ -3791,20 +3803,42 @@ function loadFormIntoElement(element, dir) {
     var file = new XMLHttpRequest();
     file.open('GET', dir);
     file.onreadystatechange = function() {
+        // if(file.readyState === 4) {
+        //     element.innerHTML = file.responseText;
+        //     if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.symbol) {
+        //         document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        //         setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
+        //         setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
+        //         setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
+        //         setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
+        //         setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
+        //         setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+        //     } else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
+        //         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
+        //         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
+        //         setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+        //     } else {
+        //         // should only occur when changing global appearance
+        //         document.getElementById('line-thickness').value = getLineThickness();
+        //     }
+        // }
+
+
+
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
             if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.symbol) {
                 document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
-                setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
-                setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
-                setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
-                setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+                setSelectedOption('object_type', settings.properties.key_type);
+                setSelectedOption('symbolColor', settings.properties.symbolColor);
+                setSelectedOption('font', settings.properties.font);
+                setSelectedOption('fontColor', settings.properties.fontColor);
+                setSelectedOption('TextSize', settings.properties.sizeOftext);
+                setSelectedOption('LineColor', settings.properties.strokeColor);
             } else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
-                setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
-                document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-                setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+                setSelectedOption('figureFillColor', settings.properties.fillColor);
+                document.getElementById('figureOpacity').value = (settings.properties.opacity * 100);
+                setSelectedOption('LineColor', settings.properties.strokeColor);
             } else {
                 // should only occur when changing global appearance
                 document.getElementById('line-thickness').value = getLineThickness();
@@ -3820,56 +3854,32 @@ function loadFormIntoElement(element, dir) {
 
 // Return the line thickness of one of the current objects in the diagram
 function getLineThickness() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['lineWidth'];
-    } else {
-        return diagram[0].properties['lineWidth'];
-    }
+    return settings.properties.lineWidth;
 }
 
 // Returns the font color of the objects in the diagram
 function getFontColor() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['fontColor'];
-    } else {
-        return diagram[0].properties['fontColor'];
-    }
+    return settings.properties.fontColor;
 }
 
 // Returns the font of the objects in the diagram
 function getFont() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['font'];
-    } else {
-        return diagram[0].properties['font'];
-    }
+    return settings.properties.font;
 }
 
 // Returns the stroke color of the objects in the diagram
 function getStrokeColor() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['strokeColor'];
-    } else {
-        return diagram[0].properties['strokeColor'];
-    }
+    return settings.properties.strokeColor;
 }
 
 // Returns the fill color of the objects in the diagram
 function getFillColor() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['symbolColor'];
-    } else {
-        return diagram[0].properties['symbolColor'];
-    }
+    return settings.properties.symbolColor;
 }
 
 // Returns the text size of the objects in the diagram
 function getTextSize() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['sizeOftext'];
-    } else {
-        return diagram[0].properties['sizeOftext'];
-    }
+    return settings.properties.textSize;
 }
 
 //----------------------------------------------------------------------
