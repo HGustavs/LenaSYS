@@ -17,7 +17,7 @@ function setup() {
 	var filt = "";
 
 	// Add search bar to nav
-	filt += `<td id='searchBar' style='vertical-align: middle;'>`;
+	filt += `<td id='searchBar' class='navButt'>`;
 	filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
 	filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
 	filt += `<button id='searchbutton' class='switchContent'`;
