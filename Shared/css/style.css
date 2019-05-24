@@ -686,6 +686,12 @@ a .navButt:hover {
   filter: drop-shadow(5px 5px 2px rgba(0,0,0,0.2))
 }
 
+div .navButt:hover {
+  cursor: pointer;
+  transition: 0.05s;
+  filter: drop-shadow(5px 5px 2px rgba(0,0,0,0.2))
+}
+
 .navHeading {
   font-size: 2.5em;
   vertical-align: middle;
