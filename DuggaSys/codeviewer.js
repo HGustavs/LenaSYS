@@ -2008,6 +2008,7 @@ function maximizeBoxes(boxid) {
 
 	getLocalStorageProperties(boxValArray);
 	hideCopyButtons(templateid, boxid);
+	saveInitialBoxValues();
 
 	//For template 1
 	if (templateid == 1) {
@@ -3169,6 +3170,14 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
+function saveInitialBoxValues() {
+	var templateId = retData["templateid"];
+	var parent = "#div2";
+	var boxValArray = initResizableBoxValues(parent);
+
+	setLocalStorageProperties(templateId, boxValArray);
+}
+
 function initResizableBoxValues(parent) {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
@@ -3200,6 +3209,7 @@ function initResizableBoxValues(parent) {
 			boxValueArray['parent']['width'] = $(parent).width();
 		}
 	});
+
 	return boxValueArray;
 }
 
