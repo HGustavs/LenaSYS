@@ -3155,7 +3155,7 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
-                } else {
+              } else if(uimode == "CreateClass") {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
                 ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
@@ -3170,6 +3170,21 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
+            } else if(figureType != "Text" || uimode == "normal") {
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.strokeStyle = "#000";
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.closePath();
+              if (!developerModeActive) {
+                  hideCrosses();
+              }
             }
         }
     }
@@ -3905,10 +3920,10 @@ function loadLineForm(element, dir) {
                     tempLineDirection = "First";
                 }
                 setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                // check if the form that is loaded is for a line can have cardinality 
+                // check if the form that is loaded is for a line can have cardinality
                 if (cardinalityValue != 1) {
                     setSelectedOption('cardinality', tempCardinality);
-                    // check if the form that is loaded is for a line can have a linedirection (uml lines) 
+                    // check if the form that is loaded is for a line can have a linedirection (uml lines)
                     if (cardinalityValue != 2) {
                         setSelectedOption('line_direction', tempLineDirection);
                     }
@@ -4016,7 +4031,7 @@ function globalAppearanceMenu() {
 }
 
 // determines which form should be loaded when line form is opened
-var cardinalityValue; 
+var cardinalityValue;
 
 //----------------------------------------------------------------------
 // objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
@@ -4055,7 +4070,7 @@ function objectAppearanceMenu(form) {
         }
 
         if (cardinalityOption) { // uml line or er line with cardinality
-            if (diagram[lastSelectedObject].cardinality[0].symbolKind == 1) { // uml line 
+            if (diagram[lastSelectedObject].cardinality[0].symbolKind == 1) { // uml line
                 cardinalityValue = 3;
             } else { //er line with cardinality
                 cardinalityValue = 2;
