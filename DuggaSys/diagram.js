@@ -564,19 +564,22 @@ function moveToBack() {
     updateGraphics();
 }
 
-//----------------------------------------------------------------------
-// cancelFreeDraw: removes all the lines that has been drawn when in the free draw mode
-//----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
+// cancelFreeDraw: removes all the lines, points and crosses that has been drawn when in the free draw mode
+//---------------------------------------------------------------------------------------------------------
 
 function cancelFreeDraw() {
     if(uimode == "CreateFigure" && figureType == "Free" && md == mouseState.boxSelectOrCreateMode) {
-        for (var i = 0; i < numberOfPointsInFigure; i++) {
+        for (var i = 0; i < numberOfPointsInFigure; i++) {;
+            points.pop();
             diagram.pop();
         }
+        points.pop();
         cleanUp();
         md = mouseState.empty;      //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
-      }
+    }
+    
 }
 
 //----------------------------------------------------------------------
@@ -745,6 +748,16 @@ function copySymbol(symbol) {
 //--------------------------------------------------------------------
 // drawPoints: Draws each of the points as a cross
 //--------------------------------------------------------------------
+function drawCross(point) {
+    let crossSize = 4 * zoomValue;
+    ctx.beginPath();
+    ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
+    ctx.lineTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y + crossSize);
+    ctx.moveTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y - crossSize);
+    ctx.lineTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y + crossSize);
+    ctx.stroke();
+}
+
 
 points.drawPoints = function() {
     let crossSize = 4 * zoomValue;
@@ -753,12 +766,7 @@ points.drawPoints = function() {
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
         if (!point.isSelected) {
-            ctx.beginPath();
-            ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
-            ctx.lineTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y + crossSize);
-            ctx.moveTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y - crossSize);
-            ctx.lineTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y + crossSize);
-            ctx.stroke();
+            drawCross(point);
         } else {
             ctx.save();
             ctx.fillStyle = crossFillStyle;
