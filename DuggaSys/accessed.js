@@ -459,7 +459,17 @@ function rowFilter(row) {
 				if (row.hasOwnProperty(property)) {
 					if (row[property] != null) {
 						if (row[property].indexOf != null) {
-							if (row[property].indexOf(searchterm) != -1) return true;
+							// Search case insensitive
+							searchterm = searchterm.toLocaleLowerCase();
+							caseIgnoreRow = row[property].toLocaleLowerCase();
+
+							// Support ÅÄÖ
+							searchterm = searchterm.replace(/\u00E5/, '&aring;');
+							searchterm = searchterm.replace(/\u00E5/, '&auml;');
+							searchterm = searchterm.replace(/\u00F6/, '&ouml;');
+
+							if (caseIgnoreRow.indexOf(searchterm) != -1) return true;
+							
 						}
 					}
 				}
