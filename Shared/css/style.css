@@ -678,8 +678,8 @@ header td {
 
 .navButt:hover {
   cursor: pointer;
-  transition: 0.2s;
-  filter: drop-shadow(2px 2px 1px #000)
+  transition: 0.1s;
+  filter: drop-shadow(2px 2px 1px #aaa)
 }
 
 .navHeading {
