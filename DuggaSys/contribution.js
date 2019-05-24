@@ -62,8 +62,8 @@ function statSort(value) {
     document.getElementById("personalRankTable").style.display = "none";
     document.getElementById("contribTsTable").style.display = "none";
     document.getElementById("contribGithHubContribTable").style.display = "none";
+    removeStatview('.group3');
     document.getElementById("allRankTable").style.display = "none";
-    removeStatview('.group1 , .group3');
   } else if (value == "Contribution") {
     document.getElementById("personalRankTable").style.display = "block";
     document.getElementById("contribTsTable").style.display = "block";
