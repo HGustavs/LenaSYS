@@ -3149,8 +3149,8 @@ function mousemoveevt(ev, t) {
             if (movobj != -1 ) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
-                for (var i = 0; i < diagram.length; i++) {
-                    if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
+                for (var i = 0; i < diagram.length; i++) { 
+                    if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
                             // Set mouse start so it's snaped to grid.
                             startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
@@ -3269,7 +3269,7 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
-              } else {
+              } else if(uimode == "CreateClass") {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
                 ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
@@ -3284,6 +3284,21 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
+            } else if(figureType != "Text" || uimode == "normal") {
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.strokeStyle = "#000";
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.closePath();
+              if (!developerModeActive) {
+                  hideCrosses();
+              }
             }
         }
     }
