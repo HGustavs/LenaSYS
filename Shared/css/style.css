@@ -678,6 +678,8 @@ header td {
 
 .navButt:hover {
   cursor: pointer;
+  transition: 0.5s;
+  filter: drop-shadow(0px 0px 1px #fff)
 }
 
 .navHeading {
@@ -3575,10 +3577,6 @@ table.navheader div.menuButton {
   -webkit-transition: opacity 0.5s;
   -moz-transition: opacity 0.5s;
   -o-transition: opacity 0.5s;
-}
-
-img:hover {
-    filter: drop-shadow(0px 0px 5px #fff)
 }
 
 /* Simple material design boxes */
