@@ -487,7 +487,7 @@ function toggleGradeBox(){
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire, feedbackText) {
 	var newFeedback = feedbackText;
-	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
+	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");	
 }
 
 function moveDist(e) {
@@ -654,8 +654,9 @@ function returnedResults(data) {
 //----------------------------------------
 // Success return function for LadExport lastGraded
 //----------------------------------------
-function returnedExportedGrades(){
-
+function returnedExportedGrades(gradeData){
+	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  gradeData;
+	
 }
 var myTable;
 //----------------------------------------
@@ -1413,14 +1414,13 @@ function copyLadexport() {
 	today = yyyy + '-' + mm + '-' + dd;
 
  	var gradeLastExported = today + " " + time;
-	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  gradeLastExported;
 	
-	gradeLastExported = "'" + today + " " + time + "'";
-/*
+	//gradeLastExported = "'" + today + " " + time + "'";
+
 	AJAXService("getunexported", {
 		gradeLastExported: gradeLastExported,
 	}, "GEXPORT");
-	*/
+
 }
 
 function addZero(i) {

@@ -113,16 +113,14 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		// * has never been graded
 		// * has never been exported
 		// * was updated since it was last exported
-		/*$rawSqlQuery = 'select aid, cid, vers, moment, quiz, uid, marked, gradeLastExported
+		/*$rawSqlQuery = 'SELECT aid, cid, vers, moment, quiz, uid, marked, gradeLastExported
 		from userAnswer
 		where marked is null or gradeLastExported is null or marked > gradeLastExported';
-		
-		UPDATE userAnswer SET gradeLastExported = :gradeLastExported WHERE gradeLastExported IS NULL OR marked > gradeLastExported
+
 		*/
-		$statement = $pdo->prepare("SELECT aid, cid, vers, moment, quiz, uid, marked, gradeLastExported
-		from userAnswer
-		where marked is null or gradeLastExported is null or marked > gradeLastExported");
-		//$statment->bindParam(':gradeLastExported', $gradeLastExported);
+		$statement = $pdo->prepare("	UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
+		$statement->bindParam(':gradeLastExported', $gradeLastExported);
+		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
 			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' failed to prepare query';
@@ -131,6 +129,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			echo json_encode(array('error' => 'Could not retrieve unexported grades'));
 			return;
 		}
+		
 		// Statement successfully prepared, attempt to execute it
 		if (!$statement->execute()) {
 			// Failed to execute query, log and return an error message
