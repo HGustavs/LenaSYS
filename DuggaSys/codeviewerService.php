@@ -539,6 +539,18 @@
             'courseid' => $courseId,
             'courseversion' => $courseVersion
 		);
+		
+		function checkForEncodingError($data) {
+			if (json_encode($data) === false) {
+				throw new Exception( json_last_error_msg() );
+			} 
+		}
+		try {
+			checkForEncodingError($array);
+		} catch (Exception $e)  {
+			echo $e;
+			die;
+		}
 		echo json_encode($array);
 	}else{
 		$debug = "Debug: Error occur at line " . __LINE__ . " in file " . __FILE__ . ". There are no examples or the ID of example is incorrect.\n";

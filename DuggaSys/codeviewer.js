@@ -62,6 +62,13 @@ function setup() {
 	}
 }
 
+
+function returnedError(error) {
+	if (error.responseText) {
+		document.querySelector('#div2').innerHTML += " and show them this message:<br><br>"+error.responseText;
+	}
+}
+
 //-----------------------------------------------------------------
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
