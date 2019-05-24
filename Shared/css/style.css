@@ -3093,7 +3093,7 @@ span.arrow {
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
   margin-top: 10px;
-  
+
 }
 
 #sortOptions {
@@ -3499,7 +3499,7 @@ rect[class*="activitymarker"]:hover {
   padding: 0 20px 0 0px;
   display: flex;
   text-align: center;
-  
+
 }
 
 .alertmsg p {
@@ -3524,19 +3524,15 @@ rect[class*="activitymarker"]:hover {
 }
 
 /*
-
-.alertmsg#cookiemsg {
-  bottom: 0;
-}
-
 .alertmsg#cookiemsg input {
   align-self: center;
 }
+*/
 
 .alertmsg#cookiemsg {
   bottom: 0;
 }
-*/
+
 
 .nowrap {
   white-space: nowrap;
