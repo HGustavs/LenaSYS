@@ -3036,7 +3036,7 @@ function mousemoveevt(ev, t) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) { 
-                    if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
+                    if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
                             // Set mouse start so it's snaped to grid.
                             startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
