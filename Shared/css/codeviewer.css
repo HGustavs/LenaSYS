@@ -839,3 +839,26 @@
     margin-right: auto;
     width: 30% !important;
   }
+
+  .blockBtnSlot {
+      min-width: 12px;
+      display: inline-block;
+      text-align: center;
+      line-height: 12px;
+      font-size: 10pt;
+  }
+  .blockBtnSlot.open-block::before {
+      content: '-';
+  }
+  .blockBtnSlot.closed-block::before {
+      content: '+';
+  }
+  .blockBtnSlot.occupied {
+    border: 1px solid black;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .blockBtnSlot.occupied:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }

@@ -32,6 +32,7 @@ How to use
 
 var retData; // Data returned from setup
 var tokens = []; // Array to hold the tokens.
+var allBlocks = [];
 var dmd = 0; // Variable used to determine forward/backward skipping with the forward/backward buttons
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";
@@ -261,6 +262,11 @@ function returned(data) {
 				$("#" + contentid).css("margin-top", boxmenuheight);
 			}
 		}
+	}
+
+	var ranges = getBlockRanges(allBlocks);
+	for (var i = 0; i < Object.keys(ranges).length; i++) {
+		createBlocks(ranges[i+1], i+1);
 	}
 
 	//hides maximize button if not supported
@@ -1420,7 +1426,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	bracket = new Array();
 	cbcount = 0;
 	cbracket = new Array();
-	allBlocks = new Array();
 
 	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data','bdi', 'audio','aside','article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
 	htmlArrayNoSlash = new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'textview', 'webview', 'uses');
@@ -1569,16 +1574,16 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
 					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'>" + cont + "</div>";
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
 				}
@@ -1698,16 +1703,16 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
 					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'>" + cont + "</div>";
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
 				}
@@ -1719,11 +1724,9 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 	// Print out rendered code and border with numbers
 	printout.css(createCodeborder(lineno, improws) + str);
-
-	createBlocks(allBlocks);
 }
 
-function createBlocks(blocks) {
+function getBlockRanges(blocks) {
 	var boxBlocks = []; // Array to hold each box array
 
 	// Sort by boxid and split array depending on how many boxes we have
@@ -1746,6 +1749,7 @@ function createBlocks(blocks) {
 	}
 
 	// Determine block ranges
+	var boxRanges = {};
 	var ranges = [];
 	var openBlock = false;
 	var blocks;
@@ -1762,28 +1766,79 @@ function createBlocks(blocks) {
 			}
 			// Closing bracket
 			if (blocks[j][1] === 0) {
+				// Find first entry in ranges array with no closing bracket
 				for (var k = ranges.length - 1; k > -1; k--) {
 					if (ranges[k][1] === 0) {
+						
 						if (ranges[k][0] !== blocks[j][0]) {
+							// We found the first open bracket, and the block is completed
 							ranges[k][1] = blocks[j][0];
-						} else {
+						} else { 
+							// If the opening bracket is on the same row as the closing bracket we remove that entry
 							ranges.splice(k, 1);
 						}
 						break;
 					}
 				}
 				
+				// Check if there are any open blocks in the ranges array
 				var containsOpenBlock = function(arr) {
 					return arr.includes(0)
 				}
-
 				if (!ranges.some(containsOpenBlock)) openBlock = false;
 			}
 		}
 		openBlock = false;
+		var key = boxBlocks[i][0][2];
+		boxRanges[key] = ranges;
+		ranges = [];
 	}
+	return boxRanges;
+}
 
-	console.log(ranges);
+function createBlocks(ranges, boxid) {
+	var wrapper = document.querySelector('#textwrapper'+boxid);
+	for (var i = 0; i < ranges.length; i++) {
+		var blockStartRow = wrapper.querySelector("div[id$='"+ranges[i][0]+"']");
+		var buttonSlot = blockStartRow.querySelector("span:first-child");
+		buttonSlot.classList.add('open-block');
+		buttonSlot.classList.add('occupied');
+		buttonSlot.id = i;
+
+		buttonSlot.addEventListener('click', (e) => {
+			var button = e.target;
+			button.classList.toggle('open-block');
+			button.classList.toggle('closed-block');
+			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
+			if (button.classList.contains('closed-block')) {
+				hideRows(rowsInBlock, button);
+			} else {
+				showRows(rowsInBlock, button);
+			}
+		})
+	}
+}
+
+function hideRows(rows, button) {
+	var baseRow = button.parentNode;
+	var wrapper = baseRow.parentNode;
+	var box = wrapper.parentNode;
+	var numbers = [...box.querySelectorAll('.codeborder div')];
+	for (var i = 1; i < rows.length; i++) {
+		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = 'none';
+		numbers[rows[i] - 1].style.display = 'none';
+	}
+}
+
+function showRows(rows, button) {
+	var baseRow = button.parentNode;
+	var wrapper = baseRow.parentNode;
+	var box = wrapper.parentNode;
+	var numbers = [...box.querySelectorAll('.codeborder div')];
+	for (var i = 1; i < rows.length; i++) {
+		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = 'block';
+		numbers[rows[i] - 1].style.display = 'block';
+	}
 }
 
 //----------------------------------------------------------------------------------
