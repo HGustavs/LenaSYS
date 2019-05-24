@@ -2287,6 +2287,14 @@ function Path() {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
+
+    this.setID = function(id){
+        this.id = id;
+        if(globalObjectID <= id){
+            globalObjectID = id + 1;
+        }
+    }
+
     //Gets the locks position from the right most point (X)
     this.getLockPosition = function() {
         var RightMostPoint;
