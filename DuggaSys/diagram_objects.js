@@ -1050,6 +1050,10 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------
     // Functions used to draw objects
     //---------------------------------------------------------
+
+    //---------------------------------------------------------------
+    // drawUML: Draws an uml symbol
+    //---------------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
         this.properties['textSize'] = '14';
@@ -1368,7 +1372,7 @@ function Symbol(kindOfSymbol) {
             }
         }
     }
-
+    
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         if (this.properties['key_type'] == "Weak") {
@@ -1404,7 +1408,10 @@ function Symbol(kindOfSymbol) {
         }
         ctx.font = parseInt(this.properties['textSize']) + "px " + this.properties['font'];
     }
-
+    
+    //---------------------------------------------------------------
+    // drawLine: Draws line between er objects 
+    //---------------------------------------------------------------
     this.drawLine = function(x1, y1, x2, y2) {
         this.isLine = true;
         //Checks if there is cardinality set on this object
@@ -1451,7 +1458,10 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, y2);
         ctx.stroke();
     }
-
+    
+    //---------------------------------------------------------------
+    // drawUMLLine: Draws uml line between uml objects 
+    //---------------------------------------------------------------
     this.drawUMLLine = function(x1, y1, x2, y2) {
         this.properties['strokeColor'] = '#000000';
         this.properties['lineWidth'] = 2;
@@ -1699,7 +1709,7 @@ function Symbol(kindOfSymbol) {
     }
     
     //---------------------------------------------------------------
-    // drawUmlLineRelation: decide which shape to draw
+    // drawUmlLineRelation: Decide which shape to draw
     //---------------------------------------------------------------
     this.drawUmlLineRelation = function(x, y, xC, yC, vertical, type) {
         if(type == "diamond"){
@@ -1714,8 +1724,8 @@ function Symbol(kindOfSymbol) {
     }
 
     //---------------------------------------------------------------
-    // drawDiamond: draws a diamond shape at the line end
-    //               Used for uml relation lines
+    // drawDiamond: Draws a diamond shape at the line end
+    //              Used for uml relation lines
     //---------------------------------------------------------------
     this.drawDiamond = function(x, y, xC, yC, vertical){
         ctx.beginPath();
@@ -1841,6 +1851,10 @@ function Symbol(kindOfSymbol) {
 	    }
     }
 
+    //---------------------------------------------------------------
+    // drawWeakRelation: Draws additional visuals for a weak relation
+    //                   Used in drawRelation
+    //---------------------------------------------------------------
     this.drawWeakRelation = function(x1, y1, x2, y2) {
       var midx = pixelsToCanvas(points[this.centerPoint].x).x;
       var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
@@ -1868,7 +1882,7 @@ function Symbol(kindOfSymbol) {
           }
       }
     }
-
+    
     this.drawRelation = function(x1, y1, x2, y2, midx, midy) {
         this.isRelation = true;
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
@@ -1908,7 +1922,7 @@ function Symbol(kindOfSymbol) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
-
+    
     this.drawText = function(x1, y1, x2, y2) {
         var midx = x1 + ((x2-x1)/2);
         var midy = y1 + ((y2-y1)/2);
