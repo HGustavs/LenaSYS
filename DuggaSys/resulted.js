@@ -655,12 +655,12 @@ function returnedResults(data) {
 // Success return function for LadExport lastGraded
 //----------------------------------------
 function returnedExportedGrades(gradeData){
-	if(gradeData == []){
-		console.log("Grade updated");
-	} else {
+	try {
 		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;	
-	}
-	
+	  }
+	  catch(err) {
+		console.log("Grade updated");
+	  } 
 }
 var myTable;
 //----------------------------------------
