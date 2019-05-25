@@ -659,7 +659,7 @@ function returnedExportedGrades(gradeData){
 		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;	
 	  }
 	  catch(err) {
-		console.log("Grade updated");
+		console.log("gradeLastExported updated in database");
 	  } 
 }
 var myTable;
