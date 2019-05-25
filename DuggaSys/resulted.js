@@ -1417,7 +1417,6 @@ function copyLadexport() {
 	today = yyyy + '-' + mm + '-' + dd;
 
 	 var gradeLastExported = today + " " + time;
-	 document.getElementById('okIcon').style.display = 'inline-block';
 	 lastExpDate.innerHTML =  gradeLastExported;
 	 lastExpDate.style.color = 'green';
 
