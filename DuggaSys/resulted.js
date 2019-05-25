@@ -656,7 +656,7 @@ function returnedResults(data) {
 //----------------------------------------
 function returnedExportedGrades(gradeData){
 
-	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  gradeData[0].gradeLastExported;	
+	document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;	
 	
 }
 var myTable;
@@ -1418,7 +1418,7 @@ function copyLadexport() {
 
 	 var gradeLastExported = today + " " + time;
 	 document.getElementById('okIcon').style.display = 'inline-block';
-	 lastExpDate.innerHTML = "Last exported: " +  gradeLastExported;
+	 lastExpDate.innerHTML =  gradeLastExported;
 	 lastExpDate.style.color = 'green';
 
 	 setInterval(function(){ 
