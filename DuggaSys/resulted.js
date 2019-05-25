@@ -1397,6 +1397,7 @@ function ladexport() {
 }
 
 function copyLadexport() {
+	var lastExpDate = document.getElementById('lastExpDate');
 	var copyIcon = document.getElementById("copyClipboard");
 	copyIcon.style.backgroundColor = '#629c62';
 		setInterval(function(){ 
@@ -1415,7 +1416,13 @@ function copyLadexport() {
 
 	today = yyyy + '-' + mm + '-' + dd;
 
- 	var gradeLastExported = today + " " + time;
+	 var gradeLastExported = today + " " + time;
+	 
+	 lastExpDate.innerHTML = "Last exported: " +  gradeLastExported;
+	 lastExpDate.style.color = 'green';
+	 setInterval(function(){ 
+		lastExpDate.style.color  = '#000';
+	 }, 5000);
 
 	AJAXService("updateunexported", {
 		gradeLastExported: gradeLastExported,
