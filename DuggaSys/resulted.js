@@ -1416,8 +1416,6 @@ function copyLadexport() {
 	today = yyyy + '-' + mm + '-' + dd;
 
  	var gradeLastExported = today + " " + time;
-	
-	//gradeLastExported = "'" + today + " " + time + "'";
 
 	AJAXService("updateunexported", {
 		gradeLastExported: gradeLastExported,
