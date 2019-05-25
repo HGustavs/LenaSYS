@@ -833,7 +833,8 @@ function createRankTable(data) {
     freezePaneIndex: 4,
     hasRowHighlight: false,
     hasMagicHeadings: false,
-    hasCounterColumn: false
+    hasCounterColumn: false,
+    hasFooter: true
   });
   rankTable.renderTable();
 }
