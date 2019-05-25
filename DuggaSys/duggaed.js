@@ -23,7 +23,7 @@ function setup() {
 
   var filt = "";
 
-	
+
 	filt += `<td id='testSearchContainer' class='navButt'>`
 	filt += `<input id='duggaSearch' type='text' name='search' placeholder='Search..'`;
 	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/>`;
@@ -597,7 +597,8 @@ function returnedDugga(data) {
 				columnOrder:colOrder,
 				hasRowHighlight:true,
 				hasMagicHeadings:false ,
-				hasCounterColumn:false
+				hasCounterColumn:false,
+        hasFooter:false
 		});
 
 		duggaTable.renderTable(); // Renders the dugga table
