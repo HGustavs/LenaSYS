@@ -656,7 +656,7 @@ function returnedResults(data) {
 //----------------------------------------
 function returnedExportedGrades(gradeData){
 
-	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  gradeData;
+	document.getElementById('lastExpDate').innerHTML = "Last exported: " +  gradeData[0].gradeLastExported;	
 	
 }
 var myTable;
@@ -1393,6 +1393,7 @@ function ladexport() {
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
+	AJAXService("getunexported", {}, "GEXPORT");
 }
 
 function copyLadexport() {

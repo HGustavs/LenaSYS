@@ -107,7 +107,44 @@ if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 
 // Services
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+
+	// Check if opt == updateunexported
 	if ($opt === \resulted\Constants::updateunexported_service_name) {
+		$statement = $pdo->prepare("	UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
+		$statement->bindParam(':gradeLastExported', $gradeLastExported);
+		
+		if ($statement === false) {
+			// Failed to prepare query, log and return an error message
+			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' failed to prepare query';
+			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
+			// return an error to the user and exit
+			echo json_encode(array('error' => 'Could not retrieve unexported grades'));
+			return;
+		}
+		
+		// Statement successfully prepared, attempt to execute it
+		if (!$statement->execute()) {
+			// Failed to execute query, log and return an error message
+			$error = $statement->errorInfo();
+			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' failed to execute query. PDO status and message: ' . error[1] . ' ' . error[2];
+			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
+			// return an error to the user and exit
+			echo json_encode(array('error' => 'Could not retrieve unexported grades'));
+			return;
+		} else {
+			// Success, log and return results as JSON.
+			// get all rows with fields indexed only by the same names as
+			// they were addressed by in the query
+			$resultRows = $statement->fetchAll(PDO::FETCH_ASSOC);
+			echo json_encode($resultRows);
+			// log success and exit
+			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' completed successfully';
+			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
+			return;
+		}
+	}
+	// Check if opt == getunexported
+	if ($opt === \resulted\Constants::getunexported_service_name) {
 		// Get all answers where the result has never been exported or has changed.
 		// This is the case when the result:
 		// * has never been graded
@@ -118,8 +155,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		where marked is null or gradeLastExported is null or marked > gradeLastExported';
 
 		*/
-		$statement = $pdo->prepare("	UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
-		$statement->bindParam(':gradeLastExported', $gradeLastExported);
+		$statement = $pdo->prepare("SELECT * FROM userAnswer");
 		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
