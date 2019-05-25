@@ -655,9 +655,7 @@ function returnedResults(data) {
 // Success return function for LadExport lastGraded
 //----------------------------------------
 function returnedExportedGrades(gradeData){
-
-	document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;	
-	
+	document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;		
 }
 var myTable;
 //----------------------------------------
