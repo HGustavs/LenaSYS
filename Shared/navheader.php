@@ -67,7 +67,7 @@
 						echo "</td>";
 
   					echo "<td id='sort' style='display:none' class='navButt'  onmouseover='hoverc();' onmouseleave='leaves();'>";
-						echo   "<span onmouseover='hovers();' onmouseleave='leavec();'>";
+						echo   "<span>";
   					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 						echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
 						echo     "<div id='filterOptions' onmouseover='hovers();' onmouseleave='leavec();'></div>";
