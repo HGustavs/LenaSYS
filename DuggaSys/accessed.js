@@ -52,6 +52,11 @@ function setup() {
 	str += "<button class='dropdown-button' onclick='parseSortOptions(this)'>Sort</button>";
 	document.getElementById("dropdowns").innerHTML = str;
 
+	var str = "<div class='checkbox-dugga'>";
+	str += "<button id='toggleAllButton' class='dropdown-button' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
+	str += "</div>"
+	document.getElementById("dropdownc").innerHTML += str;
+
 	AJAXService("GET", {
 		cid: querystring['cid'],
 		coursevers: querystring['coursevers']
@@ -529,11 +534,6 @@ function returnedAccess(data) {
 	});
 
 	myTable.renderTable();
-
-	var str = "<div class='checkbox-dugga'>";
-	str += "<button id='toggleAllButton' class='dropdown-button' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
-	str += "</div>"
-	document.getElementById("dropdownc").innerHTML += str;
 }
 
 //excuted onclick button for quick searching in table
