@@ -188,8 +188,14 @@ pdoConnect();
     </div>
     <div style='display:flex;flex-direction:column;flex:1;'>
       <textarea id='resultlistarea' style='resize:none;flex:1;overflow:scroll;padding:5px;margin:5px 0 5px 0;'></textarea>
-      <input type='button' value='Close' onclick='closeLadexport();' style='width:100px;align-self:flex-end'>
-    </div>
+			<span>
+				<img id ='copyClipboard'  src='../Shared/icons/Copy.svg' alt='copy to clipboard' onclick='copyLadexport();' title='Copy to clipboard / Mark as exported'>
+				<span style='padding-left: 15px; line-height: 28px'>Last exported: 
+				<span id='lastExpDate'></span>
+				<span>
+				<input type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>
+			</span>
+		</div>
 	</div>
 
 

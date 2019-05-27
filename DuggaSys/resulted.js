@@ -491,7 +491,7 @@ function toggleGradeBox(){
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire, feedbackText) {
 	var newFeedback = feedbackText;
-	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
+	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");	
 }
 
 function moveDist(e) {
@@ -655,7 +655,17 @@ function returnedResults(data) {
 		}
 	}
 }
-
+//----------------------------------------
+// Success return function for LadExport lastGraded
+//----------------------------------------
+function returnedExportedGrades(gradeData){
+	try {
+		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;	
+	  }
+	  catch(err) {
+		console.log("gradeLastExported updated in database");
+	  } 
+}
 var myTable;
 //----------------------------------------
 // Renderer
@@ -1404,6 +1414,9 @@ function exportColumnHeading(format, heading, colname) {
 	}
 	return str;
 }
+//----------------------------------------
+// LadExport
+//----------------------------------------
 
 //Function for exporting grades to ladoc
 function ladexport() {
@@ -1419,7 +1432,49 @@ function ladexport() {
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
+	AJAXService("getunexported", {}, "GEXPORT");
 }
+
+function copyLadexport() {
+	var lastExpDate = document.getElementById('lastExpDate');
+	var copyIcon = document.getElementById("copyClipboard");
+	copyIcon.style.backgroundColor = '#629c62';
+		setInterval(function(){ 
+			copyIcon.style.backgroundColor = '#afaeae';
+		 }, 5000);
+
+	var copieText = document.getElementById('resultlistarea');
+	copieText.select();
+	document.execCommand("copy");
+
+	var today = new Date();
+	var dd = addZero(today.getDate());
+	var mm = addZero(today.getMonth() + 1); //January is 0!
+	var yyyy = today.getFullYear();
+	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+
+	today = yyyy + '-' + mm + '-' + dd;
+
+	 var gradeLastExported = today + " " + time;
+	 lastExpDate.innerHTML =  gradeLastExported;
+	 lastExpDate.style.color = 'green';
+
+	 setInterval(function(){ 
+		lastExpDate.style.color  = '#000';
+	 }, 5000);
+
+	AJAXService("updateunexported", {
+		gradeLastExported: gradeLastExported,
+	}, "GEXPORT");
+
+}
+
+function addZero(i) {
+	if (i < 10) {
+	  i = "0" + i;
+	}
+	return i;
+  }
 
 function closeLadexport() {
 	document.getElementById("resultlistarea").value = "";
