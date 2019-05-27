@@ -1935,7 +1935,40 @@ function minimizeBoxes(boxid) {
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
+	//For template 3
+	if (templateid == 3) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
 
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+		}
+
+		if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
+
+		if (boxid == 3) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("0%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+		}
+	}
 
 }
 
