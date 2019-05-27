@@ -308,9 +308,9 @@ function renderCell(col, celldata, cellid) {
 	} else if (col == "access") {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
-		
+
 		if (parseFloat(obj.recent) > 1440) {
-			str = "<input class='submit-button' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
+			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
 		} else {
 			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
 		}
@@ -474,7 +474,7 @@ function rowFilter(row) {
 							searchterm = searchterm.replace(/\u00F6/, '&ouml;');
 
 							if (caseIgnoreRow.indexOf(searchterm) != -1) return true;
-							
+
 						}
 					}
 				}
@@ -697,7 +697,7 @@ function filterAccess() {
 // createCheckboxes - Create checkboxes for filtering teachers/students
 //----------------------------------------------------------------------------------
 function createCheckboxes() {
-	
+
 	var labels = ["Show teachers", "Show students", "Show student teachers"];
 	var str = "";
 	for (i = 0; i < labels.length; i++) {
