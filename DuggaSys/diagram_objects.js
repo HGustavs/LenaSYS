@@ -507,7 +507,7 @@ function Symbol(kindOfSymbol) {
     }
 
     //--------------------------------------------------------------------
-    // hasConnectorFromPoint: returns if this symbol has a connector to the point 
+    // hasConnectorFromPoint: returns if this symbol has a connector to the point
     //--------------------------------------------------------------------
     this.hasConnectorFromPoint = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
@@ -577,7 +577,7 @@ function Symbol(kindOfSymbol) {
     }
 
     //--------------------------------------------------------------------
-    // entityhover: returns if this entity, attribute or relation is hovered 
+    // entityhover: returns if this entity, attribute or relation is hovered
     //--------------------------------------------------------------------
     this.entityhover = function(mx, my, c) {
         if (!c) {
@@ -845,7 +845,7 @@ function Symbol(kindOfSymbol) {
         privatePoints.push(this.centerPoint);
         return privatePoints;
     }
-    
+
     //-----------------------------------------------------------------------
     // isLineType: Checks if this is a line (ER or UML)
     //-----------------------------------------------------------------------
@@ -853,7 +853,7 @@ function Symbol(kindOfSymbol) {
         return this.symbolkind === symbolKind.line ||
                 this.symbolkind === symbolKind.umlLine;
     }
-    
+
     //----------------------------------------------------------------
     // getConnectedObjects: Returns an array with the objects that a specific line is connected to,
     //                      function is used on line objects
@@ -1056,7 +1056,6 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
-        this.properties['textSize'] = '14';
         this.properties['strokeColor'] = '#000000';
         this.properties['fontColor'] = '#000000';
         this.properties['lineWidth'] = 2;
@@ -1372,7 +1371,7 @@ function Symbol(kindOfSymbol) {
             }
         }
     }
-    
+
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['fillColor'];
         if (this.properties['key_type'] == "Weak") {
@@ -1408,9 +1407,9 @@ function Symbol(kindOfSymbol) {
         }
         ctx.font = parseInt(this.properties['textSize']) + "px " + this.properties['font'];
     }
-    
+
     //---------------------------------------------------------------
-    // drawLine: Draws line between er objects 
+    // drawLine: Draws line between er objects
     //---------------------------------------------------------------
     this.drawLine = function(x1, y1, x2, y2) {
         this.isLine = true;
@@ -1458,9 +1457,9 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, y2);
         ctx.stroke();
     }
-    
+
     //---------------------------------------------------------------
-    // drawUMLLine: Draws uml line between uml objects 
+    // drawUMLLine: Draws uml line between uml objects
     //---------------------------------------------------------------
     this.drawUMLLine = function(x1, y1, x2, y2) {
         this.properties['strokeColor'] = '#000000';
@@ -1707,7 +1706,7 @@ function Symbol(kindOfSymbol) {
             }
         }
     }
-    
+
     //---------------------------------------------------------------
     // drawUmlLineRelation: Decide which shape to draw
     //---------------------------------------------------------------
@@ -1882,7 +1881,7 @@ function Symbol(kindOfSymbol) {
           }
       }
     }
-    
+
     this.drawRelation = function(x1, y1, x2, y2, midx, midy) {
         this.isRelation = true;
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
@@ -1914,7 +1913,7 @@ function Symbol(kindOfSymbol) {
         ctx.stroke();
 
         ctx.fillStyle = this.properties['fontColor'];
-        
+
         if(ctx.measureText(this.name).width >= (x2-x1) - 12) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 10 , (y1 + ((y2 - y1) * 0.5)));
@@ -1922,7 +1921,7 @@ function Symbol(kindOfSymbol) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
-    
+
     this.drawText = function(x1, y1, x2, y2) {
         var midx = x1 + ((x2-x1)/2);
         var midy = y1 + ((y2-y1)/2);
@@ -1938,7 +1937,7 @@ function Symbol(kindOfSymbol) {
             ctx.rect(x1, y1, x2-x1, y2-y1);
             ctx.stroke();
         }
-        
+
         ctx.fillStyle = this.properties['fontColor'];
         ctx.textAlign = this.textAlign;
         this.properties['textSize'] = this.getFontsize();
@@ -2167,7 +2166,7 @@ function Symbol(kindOfSymbol) {
 		}
 		return fontsize;
     }
-    
+
     //---------------------------------------------------------
     // getLockPosition: Returns the position of the lock for this object
     //---------------------------------------------------------
@@ -2215,7 +2214,7 @@ function drawLockedTooltip(symbol) {
     var yOffset = 13;
     // Different size when hovering the lock itself and the entity, for displaying different amount of text
     var ySize = symbol.isLockHovered ? 34 : 16;
-    var xSize = 85; 
+    var xSize = 85;
     // Draw tooltip background
     ctx.fillStyle = "#f5f5f5";
     ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
@@ -2252,7 +2251,7 @@ function setIsLockHovered(symbol, mx, my) {
 }
 
 //--------------------------------------------------------------------
-// drawGroup: Draws which group the symbol belongs to 
+// drawGroup: Draws which group the symbol belongs to
 //--------------------------------------------------------------------
 function drawGroup(symbol) {
     var position = symbol.getLockPosition();
@@ -2355,7 +2354,7 @@ function Path() {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
-    
+
     //--------------------------------------------------------------------
     // setID: Assigns a global id to a symbol
     //--------------------------------------------------------------------
@@ -2367,7 +2366,7 @@ function Path() {
     }
 
     //---------------------------------------------------------
-    // getLockPosition: Returns the position of the lock for this object, from the right most point of the object 
+    // getLockPosition: Returns the position of the lock for this object, from the right most point of the object
     //---------------------------------------------------------
     this.getLockPosition = function() {
         var RightMostPoint;
@@ -2385,7 +2384,7 @@ function Path() {
         };
     }
     //---------------------------------------------------------
-    // corners: 
+    // corners:
     //---------------------------------------------------------
     this.corners = function() {
         var point = false, tr = false, bl = false;
@@ -2501,7 +2500,7 @@ function Path() {
             if (this.group != 0){
                 drawGroup(this);
             }
-    
+
             // Assign stroke style, color, transparency etc
             var shouldFill = true;
 
@@ -2587,7 +2586,7 @@ function Path() {
         }
         return false;
     }
-    
+
     //--------------------------------------------------------------------
     // checkForHover: Returns if the free draw object is clicked
     //--------------------------------------------------------------------
