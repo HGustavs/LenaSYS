@@ -73,7 +73,7 @@
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
             "<br>" +
             "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
-            "<i>I promise i have done this and will not complain that it's not working</i></div>;"
+            "<i>I promise i have done this and will not complain that it's not working</i></div>";
             
         function haveRead(isTrue) {
             modalRead = isTrue;
