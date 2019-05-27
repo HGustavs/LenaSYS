@@ -4036,12 +4036,12 @@ function getTextSize() {
 function loadLineForm(element, dir) {
     //Ajax
     var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects - 1];
+    var lastSelected = selected_objects[selected_objects.length - 1];
     file.open('GET', dir);
     file.onreadystatechange = function() {
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected > -1) {
+            if(globalAppearanceValue == 0 && lastSelected) {
                 var cardinalityVal = lastSelected.cardinality[0].value;
                 var cardinalityValUML = lastSelected.cardinality[0].valueUML;
                 var lineDirection = lastSelected.lineDirection;
@@ -4074,12 +4074,12 @@ function loadLineForm(element, dir) {
 
 function loadUMLForm(element, dir) {
     var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects - 1];
+    var lastSelected = selected_objects[selected_objects.length - 1];
     file.open('GET', dir);
     file.onreadystatechange = function() {
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected > -1) {
+            if(globalAppearanceValue == 0 && lastSelected) {
                 var attributesText = "";
                 var operationsText = "";
                 var attributesTextArea = document.getElementById('UMLAttributes');
@@ -4112,7 +4112,7 @@ function loadTextForm(element, dir) {
     file.onreadystatechange = function() {
     if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0 && lastSelected > -1) {
+      if(globalAppearanceValue == 0 && lastSelected) {
         var text = "";
         var textarea = document.getElementById('freeText');
         for (var i = 0; i < lastSelected.textLines.length; i++) {
@@ -4239,6 +4239,7 @@ function objectAppearanceMenu(form) {
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
+    lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length - 1]);
     if(selected_objects.length == 1 && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine) {
         selected_objects[0].name = document.getElementById('nametext').value;
     }
