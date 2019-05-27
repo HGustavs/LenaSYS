@@ -58,16 +58,16 @@
 
 
 						echo "<td id='select' style='display:none;' class='navButt'>";
-						echo   "<span onmouseover='hoverc();' onmouseleave='leaves();'>";
+						echo   "<span onmouseover='hoverc();' onmouseleave='leavec();'>";
 				    echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 					  echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-  					echo     "<div id='filterOptions'></div>";
+  					echo     "<div id='filterOptions' onmouseleave='leaves();'></div>";
 						echo     "</div>";
 	          echo   "</span>";
 						echo "</td>";
 
   					echo "<td id='sort' style='display:none' class='navButt'>";
-						echo   "<span onmouseover='hovers();' onmouseleave='leavec();'>";
+						echo   "<span onmouseover='hovers();' onmouseleave='leaves();'>";
   					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
   			    echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
   					echo     "</div>";
