@@ -60,7 +60,7 @@
 						echo "<td id='select' style='display:none;' class='navButt'>";
 						echo   "<span onmouseover='hoverc();' onmouseleave='leaves();'>";
 				    echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-					  echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+					  echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
   					echo     "<div id='filterOptions' onmouseover='hoverc();' onmouseleave='leavec();'></div>";
 						echo     "</div>";
 	          echo   "</span>";
