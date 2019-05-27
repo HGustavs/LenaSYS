@@ -837,12 +837,12 @@ function Symbol(kindOfSymbol) {
     //----------------------------------------------------------------
 
     this.getConnectedObjects = function () {
-        if (this.symbolkind == symbolKind.line) {
+        if (this.symbolkind == symbolKind.line || this.symbolkind == symbolKind.umlLine) {
             var privateObjects = [];
 
             // Compare values of all symbols in diagram with current line
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) {
+                if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
                     // Top left and bottom right corners for the current object
                     dtlx = diagram[i].corners().tl.x;
                     dtly = diagram[i].corners().tl.y;
