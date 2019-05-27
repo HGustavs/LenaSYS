@@ -67,10 +67,10 @@
 						echo "</td>";
 
   					echo "<td id='sort' style='display:none' class='navButt'>";
-						echo   "<span onmouseover='hoverc();' onmouseleave='leaves();'>";
+						echo   "<span onmouseover='hovers();' onmouseleave='leavec();'>";
   					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 						echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
-						echo     "<div id='filterOptions' onmouseover='hoverc();' onmouseleave='leavec();'></div>";
+						echo     "<div id='filterOptions' onmouseover='hovers();' onmouseleave='leaves();'></div>";
 						
   					echo     "</div>";
   					echo   "</span>";
