@@ -266,6 +266,9 @@ function returned(data) {
 	//hides maximize button if not supported
 	hideMaximizeAndResetButton();
 
+	//hides minimize button if not supported
+	hideMinimizeButton()
+
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
 
