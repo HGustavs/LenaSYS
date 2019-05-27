@@ -194,6 +194,7 @@ function process() {
 
 	// Add custom filters to the filter menu.
 	var dstr = "";
+	dstr += makeCustomFilter("showStudents", "Show Students");
 	dstr += makeCustomFilter("showTeachers", "Show Teachers");
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
@@ -1197,6 +1198,8 @@ function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
+	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
+		return false;
 	if (filterList["onlyPending"]) {
 		var rowPending = false;
 		for (var colname in row) {
@@ -1208,6 +1211,63 @@ function rowFilter(row) {
 		if (!rowPending) {
 			return false;
 		}
+	}
+
+	var teacherDropdown = document.getElementById("teacherDropdown").value;
+	if (teacherDropdown === "none"){
+		return true;
+	}
+	else if(row.FnameLname.examiner != teacherDropdown){
+		return false;
+	}
+  // Removes spaces so that it can tolerate "wrong" inputs when searching
+  searchterm = searchterm.replace(' ', '');
+  // divides the search on &&
+	var tempSplitSearch = searchterm.split("&&");
+	var splitSearch = [];
+
+	tempSplitSearch.forEach(function (s) {
+		if (s.length > 0)
+			splitSearch.push(s.trim().split(":"));
+	})
+
+  // The else makes sure that you can search on names without a search-category.
+	if (searchterm != "" && splitSearch != searchterm) {
+		return smartSearch(splitSearch, row);
+	} else {
+		for (colname in row) {
+			if (colname == "FnameLname") {
+				var name = "";
+				if (row[colname]["firstname"] != null) {
+					name += row[colname]["firstname"] + " ";
+				}
+				if (row[colname]["lastname"] != null) {
+					name += row[colname]["lastname"];
+				}
+        name = name.replace(' ', '');
+				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+					return true;
+				}
+
+				 if (row[colname]["ssn"] != null) {
+				 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+				 		return true;
+					}
+				if (row[colname]["username"] != null) {
+					if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+						return true;
+				}
+				if (row[colname]["class"] != null) {
+					if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+						return true;
+				}
+				if (row[colname]["setTeacher"] != null) {
+					if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 }
 
