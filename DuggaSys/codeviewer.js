@@ -2265,6 +2265,14 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
+//hide maximizeButton
+function hideMinimizeButton() {
+	var templateid = retData['templateid'];
+	if (templateid > 2) {
+		$('.minimizebtn').hide();
+	}
+}
+
 //reset boxes
 function resetBoxes() {
 	resizeBoxes("#div2", retData["templateid"]);
