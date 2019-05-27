@@ -44,18 +44,14 @@
 							<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this)' ></select>
 						</div>
 					</td>
-					<td class='editVers' style='display: inline-block;'>
+					<td class='editVers' style='display: inline-block;margin-left:8px;'>
 						<div class='editVers menuButton'>
-								<button type='button' class='submit-button no-radius' style='width:35px;margin-left:0px' title='Edit the selected version' onclick='showEditVersion();'>
-									<img id='versionCog' style='margin-top:6px' src='../Shared/icons/CogwheelWhite.svg'>
-								</button>
+                            <img id='versionCog' class="navButt" title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>
 						</div>
 					</td>
-					<td class='newVers' style='display: inline-block;'>
+					<td class='newVers' style='display: inline-block;margin-right:2px;'>
 						<div class='newVers menuButton'>
-							<button type='button' value='New version' style='width:35px; margin-left:0px;border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius' title='Create a new version of this course' onclick='showCreateVersion();' >
-								<img id='versionPlus' style='margin-top:6px' src='../Shared/icons/PlusS.svg'>
-							</button>
+                            <img id='versionPlus' value='New version' class="navButt" title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>
 						</div>
 					</td>
 					<td class='hamburger hamburgerClickable'>
@@ -71,10 +67,10 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-								<a id='resultsBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
+								    <a id='resultsBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
 								</li>
 								<li class='tests'>
-										<a id='testsBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
+								    <a id='testsBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
 									</li>
 								<li class='files'>
 									<a id='filesBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
@@ -86,24 +82,32 @@
 						</div>
 					</td>
 
-					<td class='results menuButton' style='display: inline-block;'>
+					<td class='results' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<a id='resultsBTN' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
+							<a id='resultsBTN' title='Edit student results' value='Results' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'>
+								<img id='versionPlus' class="navButt" src='../Shared/icons/FistW.svg'>
+							</a>
 						</div>
 					</td>
-					<td class='tests menuButton' style='display: inline-block;'>
+					<td class='tests' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<a id='testsBTN' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
+							<a id='testsBTN' title='Show tests' value='Tests' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
+								<img id='testsBTN' class="navButt" src='../Shared/icons/student_files.svg'>
+							</a>
 						</div>
 					</td>
-					<td class='files menuButton' style='display: inline-block;'>
+					<td class='files' style='display: inline-block;'>
 						<div class='files menuButton'>
-						<a id='filesBTN' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
+                            <a id='filesBTN' title='Show files' value='Files' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'>
+                                <img class="navButt" src='../Shared/icons/rounded_upload_button.svg'>
+							</a>
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
 						<div class='access menuButton'>
-						<a id='accessBTN' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
+                            <a id='accessBTN' title='Give students access to the selected version' value='Access' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'>
+                                <img class="navButt" src='../Shared/icons/lock_symbol.svg'>
+							</a>
 						</div>
 					</td>
 				</tr>
