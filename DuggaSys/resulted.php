@@ -2,10 +2,8 @@
 /********************************************************************************
    Documentation
 *********************************************************************************
-
 This file displays the result of each student with access under this course, the teacher can grade students
 in this page.
-
 Execution: resulted.js has an ajax call that runs at start up and displays the returned data on this page.
 -------------==============######## Documentation End ###########==============-------------*/
 session_start();
@@ -51,11 +49,11 @@ pdoConnect();
 			<h1>Result</h1>
     </div>
     <div id="ladexportContainer">
-      <div class="ladDiv">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Delkurs</label>
         <select id="ladselect"></select>
       </div>
-      <div class="ladDiv">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Betygsskala</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
@@ -64,10 +62,10 @@ pdoConnect();
        	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
         </select>
       </div>
-      <div class="ladDiv">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
-      </div>
+        </div>
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
 			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
@@ -75,21 +73,21 @@ pdoConnect();
 			<?php }else{ ?>
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
-        <div class="ladDiv">
-					<label>Filtrera efter</label>
-					<select id="gradeFilterScale" onchange="updateTable();">
-						<option value="Filter-none" selected>inget</option>
-						<option value="Filter-G">G</option>
-						<option value="Filter-VG">VG</option>
-						<option value="Filter-U">U</option>
-					</select>
+        <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+				<label>Filtrera efter</label>
+				<select id="gradeFilterScale" onchange="updateTable();">
+					<option value="Filter-none" selected>inget</option>
+					<option value="Filter-G">G</option>
+					<option value="Filter-VG">VG</option>
+					<option value="Filter-U">U</option>
+				</select>
 				</div>
-				<div class="ladDiv">
+				<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 					<label>Examinator:</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
 
-			<!-- Search bar for mobile versions --> 
+			<!-- Search bar for mobile versions -->
 			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
@@ -106,7 +104,7 @@ pdoConnect();
 			</div>
 
     </div>
-    
+
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
 		<div id="resultTable"></div>
 	</div>
@@ -190,7 +188,7 @@ pdoConnect();
       <textarea id='resultlistarea' style='resize:none;flex:1;overflow:scroll;padding:5px;margin:5px 0 5px 0;'></textarea>
 			<span>
 				<img id ='copyClipboard'  src='../Shared/icons/Copy.svg' alt='copy to clipboard' onclick='copyLadexport();' title='Copy to clipboard / Mark as exported'>
-				<span style='padding-left: 15px; line-height: 28px'>Last exported: 
+				<span style='padding-left: 15px; line-height: 28px'>Last exported:
 				<span id='lastExpDate'></span>
 				<span>
 				<input type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>

@@ -283,9 +283,9 @@ function leaves() {
 }
 
 function sorttype(t) {
-  if(t==0){
+  if(t == 0){
     myTable.setNameColumn('Fname');
-  }else if(t == 1){
+  }else{
     myTable.setNameColumn('Lname');
   }
 
@@ -305,10 +305,6 @@ function sorttype(t) {
 
 	var col;
 	var dir;
-
-  localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol", col);
-  localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir", dir);
-
 	$("input[name='sortcol']:checked").each(function () {
 		col = this.value;
 	});
@@ -492,7 +488,7 @@ function toggleGradeBox(){
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire, feedbackText) {
 	var newFeedback = feedbackText;
-	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");	
+	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
 }
 
 function moveDist(e) {
@@ -661,11 +657,11 @@ function returnedResults(data) {
 //----------------------------------------
 function returnedExportedGrades(gradeData){
 	try {
-		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;	
+		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;
 	  }
 	  catch(err) {
 		console.log("gradeLastExported updated in database");
-	  } 
+	  }
 }
 var myTable;
 //----------------------------------------
@@ -1106,95 +1102,6 @@ function smartSearch(splitSearch, row) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	// Removes spaces so that it can tolerate "wrong" inputs when searching
-	searchterm = searchterm.replace(' ', '');
-	// divides the search on &&
-	var tempSplitSearch = searchterm.split("&&");
-	var splitSearch = [];
-	
-	tempSplitSearch.forEach(function (s) {
-		if (s.length > 0)
-			splitSearch.push(s.trim().split(":"));
-	});
-	var teacherDropdown = document.getElementById("teacherDropdown").value;
-	if (teacherDropdown === "none"){
-		// The else makes sure that you can search on names without a search-category.
-		if (searchterm != "" && splitSearch != searchterm) {
-			return smartSearch(splitSearch, row);
-		} else {
-			for (colname in row) {
-				if (colname == "FnameLname") {
-					var name = "";
-					if (row[colname]["firstname"] != null) {
-						name += row[colname]["firstname"] + " ";
-					}
-					if (row[colname]["lastname"] != null) {
-						name += row[colname]["lastname"];
-					}
-			name = name.replace(' ', '');
-					if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-						return true;
-					}
-					if (row[colname]["ssn"] != null) {
-						if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["username"] != null) {
-						if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["class"] != null) {
-						if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["setTeacher"] != null) {
-						if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-				}
-			}
-			return false;
-		}
-	}
-	else if(row.FnameLname.examiner == teacherDropdown){
-		if (searchterm != "" && splitSearch != searchterm) {
-			return smartSearch(splitSearch, row);
-		} else {
-			for (colname in row) {
-				if (colname == "FnameLname") {
-					var name = "";
-					if (row[colname]["firstname"] != null) {
-						name += row[colname]["firstname"] + " ";
-					}
-					if (row[colname]["lastname"] != null) {
-						name += row[colname]["lastname"];
-					}
-			name = name.replace(' ', '');
-					if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-						return true;
-					}
-
-					if (row[colname]["ssn"] != null) {
-						if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-						}
-					if (row[colname]["username"] != null) {
-						if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["class"] != null) {
-						if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["setTeacher"] != null) {
-						if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-				}
-			}
-			return false;
-		}
-	}
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
@@ -1212,7 +1119,6 @@ function rowFilter(row) {
 			return false;
 		}
 	}
-
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
 	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
 		return false;
@@ -1496,7 +1402,7 @@ function copyLadexport() {
 	var lastExpDate = document.getElementById('lastExpDate');
 	var copyIcon = document.getElementById("copyClipboard");
 	copyIcon.style.backgroundColor = '#629c62';
-		setInterval(function(){ 
+		setInterval(function(){
 			copyIcon.style.backgroundColor = '#afaeae';
 		 }, 5000);
 
@@ -1516,7 +1422,7 @@ function copyLadexport() {
 	 lastExpDate.innerHTML =  gradeLastExported;
 	 lastExpDate.style.color = 'green';
 
-	 setInterval(function(){ 
+	 setInterval(function(){
 		lastExpDate.style.color  = '#000';
 	 }, 5000);
 
