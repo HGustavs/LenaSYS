@@ -42,7 +42,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); developerMode(event); initToolbox(); updateGraphics();"
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics();"
  onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
@@ -52,16 +52,14 @@
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
         <div id="buttonDiv">
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none; margin-right: 0px; height: ; text-align: center;" onmousedown="">
-                    <div class="application-header">
-                    </div>
+                <div id="diagram-toolbar" class="application-toolbar-wrap" onmousedown="">
                     <div class='application-toolbar'>
                         <div id="toolbar-switcher">
-                            <div id="toolbarTypeText">Dev</div>
+                            <div id="toolbarTypeText" style ="text-align: center">Dev</div>
                             </div>
                             <div class="toolsContainer">
                                 <div class="labelToolContainer">
-                                    <h4 class="label tlabel" id="labelTools">Tools</h4>
+                                    <h4 class="label tlabel" id="labelTools" style ="text-align: center">Tools</h4>
                                     <div class="toolbar-drawer" id="drawerCreate">
                                         <div class="tooltipdialog">
                                             <!-- ER attribute -->
@@ -95,17 +93,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="labelToolContainer" style = "margin-bottom: 0px;">
+                                <div class="diagramLabelToolContainer">
                                     <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
-                                    <div class="toolbar-drawer" id="drawerUndo">
-                                      <!-- Undo -->
-                                      <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo">
+                                    <div class="toolbar-undo-redo-drawer" id="drawerUndo">
+                                        <!-- Undo -->
+                                        <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo (Ctrl + Z)">
                                           <img src="../Shared/icons/undo.svg">
-                                      </button>
-                                      <!-- Redo -->
-                                      <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo">
+                                        </button>
+                                        <!-- Redo -->
+                                        <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo (Ctrl + Y)">
                                           <img src="../Shared/icons/redo.svg">
-                                      </button>
+                                        </button>
                                     </div>
                                   </div>
                             </div>
@@ -123,7 +121,7 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" id="buttonid" onclick="openImportDialog();">Import</span>
+                                <span class="drop-down-option" onclick="openImportDialog();">Import</span>
                             </div>
                             <div class="drop-down-item export-drop-down-head">
                                 <span class="drop-down-option" id="exportid">Export...</span>
@@ -143,7 +141,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
-                                <i id="hotkey-clear">Ctrl + A, Delete</i>
+                                <i id="hotkey-clear" class="hotKeys">Ctrl + A, Delete</i>
                             </div>
                         </div>
                     </div>
@@ -152,11 +150,11 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
-                                <i id="hotkey-undo">Ctrl + Z</i>
+                                <i id="hotkey-undo" class="hotKeys">Ctrl + Z</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
-                                <i id="hotkey-redo">Ctrl + Y</i>
+                                <i id="hotkey-redo" class="hotKeys">Ctrl + Y</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
@@ -170,25 +168,35 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
-                                <i id="hotkey-front">Shift + 1</i>
+                                <i id="hotkey-front" class="hotKeys">Shift + 1</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
-                                <i id="hotkey-back">Shift + 2</i>
+                                <i id="hotkey-back" class="hotKeys">Shift + 2</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
+                                <i id="hotkey-lock" class="hotKeys">Shift + X</i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
-                                <i id="hotkey-delete">Delete/Backspace</i>
+                                <i id="hotkey-delete" class="hotKeys">Delete/Backspace</i>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='addGroupToSelected(event)'>Group objects</span>
+                            </div>
+                            <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Ungroup objects</span>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                                <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
                         </div>
                     </div>
@@ -197,34 +205,43 @@
                         <div class="drop-down">
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
-                                <i id="hotkey-developerMode">Shift + D</i>
+                                <i id="hotkey-developerMode" class="hotKeys">Shift + D</i>
                             </div>
-                            <div id="displayAllTools" class="drop-down-item">
-                                <span class="drop-down-option" onclick="switchToolbarDev();"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
+                            <div class="drop-down-item">
+                                <div id="displayAllTools" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="switchToolbarDev(event);"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
+                                </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div id="er-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
-                                <i id="hotkey-ER">Shift + M</i>
+                                <i id="hotkey-ER" class="hotKeys">Shift + M</i>
                             </div>
                             <div id="uml-item" class="drop-down-item">
                                 <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
-                                <i id="hotkey-UML">Shift + M</i>
+                                <i id="hotkey-UML" class="hotKeys">Shift + M</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
+                                <i id="hotkey-displayA4" class="hotKeys">Shift + 4</i>
                             </div>
-                            <div id="a4-orientation-item" class="drop-down-item-disabled">
-                                <span class="drop-down-option" onclick='toggleA4Orientation();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                            <div class="drop-down-item">
+                                <div id="a4-orientation-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='toggleA4Orientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                                </div>
                             </div>
-                            <div id="a4-holes-item" class="drop-down-item-disabled">
-                                <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
+                            <div class="drop-down-item">
+                                <div id="a4-holes-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='toggleVirtualA4Holes(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
+                                </div>
                             </div>
-                            <div id="a4-holes-item-right" class="drop-down-item-disabled">
-                                <span class="drop-down-option" onclick='toggleVirtualA4HolesRight();'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                            <div class="drop-down-item">
+                                <div id="a4-holes-item-right" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='toggleVirtualA4HolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -238,15 +255,19 @@
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
+                                <i id="hotkey-Align-Top" class="hotKeys">Shift + ⇧ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
+                                <i id="hotkey-Align-Right" class="hotKeys">Shift + ⇨ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
+                                <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ⇩ </i>
                             </div>
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
+                                <i id="hotkey-Align-Left" class="hotKeys">Shift + ⇦ </i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
@@ -274,7 +295,7 @@
                         <div class="drop-down">
                             <div class="drop-down-text-non-clickable">
                                 <span class="drop-down-option">Move camera</span>
-                                <div id="hotkey-space">
+                                <div id="hotkey-space" class="hotKeys">
                                     <i>Blankspace</i>
                                 </div>
                             </div>
@@ -282,16 +303,8 @@
                             </div>
                             <div class="drop-down-text-non-clickable">
                                 <span class="drop-down-option">Select multiple objects</span>
-                                <div id="hotkey-ctrl">
+                                <div id="hotkey-ctrl" class="hotKeys">
                                     <i>Ctrl + leftclick</i>
-                                </div>
-                            </div>
-                            <div class="drop-down-divider">
-                            </div>
-                            <div class="drop-down-text-non-clickable">
-                                <span class="drop-down-option">Lock object proportions</span>
-                                <div id="hotkey-shift">
-                                    <i>Shift</i>
                                 </div>
                             </div>
                         </div>
@@ -338,14 +351,14 @@
                 </div>
                 <div id="selectDiv">
                     <span class="tooltipDecrease">
-                        <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1);">-</button>
+                        <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1, event);">-</button>
                         <span class="tooltiptextDec">Zoom Out</span>
                     </span>
                     <span id="range">
-                        <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode();" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.01" class="zoomSlider">
+                        <input name="Zoom" id="ZoomSelect" type="range" oninput="zoomInMode(event);" onchange="zoomInMode(event);" min="0.1" max="2" value="1" step="0.01" class="zoomSlider">
                     </span>
                     <span class="tooltipIncrease">
-                        <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1);">+</button>
+                        <button name="Zoom" id="zoomIncrease" class="zoomButtonStyle" type="button" onclick="changeZoom(0.1, event);">+</button>
                         <span class="tooltiptextInc" style="right: 68px">Zoom In</span>
                     </span>
                     <span id="zoomV"></span>
@@ -402,28 +415,11 @@
                 </div>
             </div>
             <div class='mode-wrap'>
-                <div id="importButtonWrap" class="importButtonWrap">
-                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(true);">Accept</button>
+                <div id="modeSwitchButton1" class="importButtonWrap">
+                    <button id="modeSwitchButtonAccept" type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(true);">Accept</button>
                 </div>
-                <div id="importButtonWrap" class="importButtonWrap">
-                    <button type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Error message when non objects are not composite-->
-    <div id="errorMessageDialog" class="loginBoxContainer importDiagram">
-        <div class="loginBox messageContainer">
-            <div class="loginBoxheader messageHeader">
-                <h3 id="errorMessage"></h3>
-                <div class='cursorPointer' onclick='closeErrorMessageDialog();'>
-                    x
-                </div>
-            </div>
-            <div class="mode-wrap">
-                <div id="importButtonWrap" class="importButtonWrap">
-                    <button id="cancelButton" class="submit-button uploadButton" onclick="closeErrorMessageDialog();">Cancel</button>
+                <div id="modeSwitchButton2" class="importButtonWrap">
+                    <button id="modeSwitchButtonCancel" type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
                 </div>
             </div>
         </div>

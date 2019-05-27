@@ -19,7 +19,7 @@
   --color-primary-hover: #7b5a96;
   --color-primary-light: #927b9e;
   --color-accent: rgb(254, 204, 86);
-  --color-accent-transparent: rgb(254, 204, 86, 0.5);
+  --color-accent-transparent: rgba(254, 204, 86, 0.5);
   --color-accent-hover: #ffd369;
   --color-background: #fff;
   --color-background-2: #ccc;
@@ -326,10 +326,6 @@ p {
   min-height: 30px;
   margin-right: 8px;
   padding-right: 8px;
-}
-
-.dateSize {
-  width: 15%;
 }
 
 #Sectionlist {
@@ -1117,7 +1113,7 @@ input {
 }
 
 .loginBoxheader div {
-  padding: 2px 20px;
+  padding: 4px 20px;
   /*position: absolute;
   top: 4px;
   right: 4px;*/
@@ -1126,7 +1122,6 @@ input {
   background-color: rgb(199, 80, 80);
   font-family: arial;
   font-weight: bold;
-  height: 21px;
 }
 
 .loginBoxheader div:hover {
@@ -1258,29 +1253,18 @@ input {
 
 #diagram-toolbar {
   width: 130px;
-  height: auto;
+  height: 100%;
 }
 
 .application-toolbar-wrap {
+
   position: fixed;
   z-index: 1000;
-  border: 1px solid var(--color-border-4);
-  outline: 1px solid var(--color-border-3);
   background-color: var(--color-background);
 }
 
-.application-header {
-  height: 25px;
-  background-color: var(--color-primary);
-  color: var(--color-text-header);
-  vertical-align: bottom;
-  cursor: move;
-  display: flex;
-  justify-content: space-around;
-  margin: 0px;
-}
-
 .application-toolbar {
+  padding-left: 0px;
   padding-top: 0px;
 }
 
@@ -1289,16 +1273,22 @@ input {
 }
 
 .toolbar-drawer {
-  padding: 2px 2px;
+  padding-left: 4px;
+  border-top: 1px solid var(--color-border-3);
+}
+
+.toolbar-undo-redo-drawer {
+  width: 55px;
+  padding: 4px 2px;
   border-top: 1px solid var(--color-border-3);
 }
 
 .application-toolbar h4.label {
   font-size: 11px;
-  font-weight: none;
+  font-weight: normal;
   margin-top: 8px;
   margin-bottom: 0px;
-  padding: 0px 4px 0px 4px;
+  padding: 0px 4px 0px 0px;
 }
 
 .toolbarArrows {
@@ -1332,13 +1322,19 @@ input {
 .diagramAction {
   border-radius: 5px;
   background-color: var(--color-primary);
-  width: 47%;
+  width: 25px;
   transition: 0.25s background-color;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .diagramAction:hover {
   background-color: var(--color-primary-hover);
 }
+
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
@@ -1414,7 +1410,6 @@ input {
 
 .menu-drop-drown,
 .export-drop-down-head {
-  display: relative;
   top: 22px;
 }
 
@@ -1473,6 +1468,13 @@ input {
   cursor: default !important;
 }
 
+.hotKeys {
+  position: absolute;
+  font-size: 9px;
+  color: #3d3d3d;
+  opacity: 0.5;
+}
+
 #hotkey-space {
   position: absolute !important;
   font-size: 11px !important;
@@ -1490,45 +1492,18 @@ input {
 }
 
 #hotkey-shift {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
+  right: 6px;
   top: 100px;
 }
 
-#hotkey-undo,
-#hotkey-redo,
-#hotkey-clear,
-#hotkey-front,
-#hotkey-back,
-#hotkey-developerMode,
-#hotkey-ER,
-#hotkey-UML {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
+#hotkey-lock {
+  right: 6px;
+  top: 241px;
 }
 
-.drop-down-item #hotkey-undo {
+#hotkey-resetView {
   right: 6px;
-  top: 10px;
-}
-
-.drop-down-item #hotkey-redo {
-  right: 6px;
-  top: 45px;
-}
-
-#hotkey-clear,
-#hotkey-front {
-  right: 6px;
-  top: 165px;
-}
-
-#hotkey-back {
-  right: 6px;
-  top: 195px;
+  top: 395px;
 }
 
 #hotkey-developerMode {
@@ -1536,9 +1511,39 @@ input {
   top: 10px;
 }
 
+#hotkey-displayTools {
+  right: 36px;
+  top: 45px;
+}
+
+#hotkey-displayA4 {
+  right: 39px;
+  top: 164px;
+}
+
+#hotkey-clear, #hotkey-front {
+  right: 5px ;
+  top: 165px;
+}
+
+#hotkey-back {
+  right: 5px ;
+  top: 195px;
+}
+
 #hotkey-ER {
   right: 35px;
   top: 85px;
+}
+
+#hotkey-undo {
+  right: 5px;
+  top: 10px;
+}
+
+#hotkey-redo {
+  right: 5px;
+  top: 43px;
 }
 
 #hotkey-UML {
@@ -1546,10 +1551,27 @@ input {
   top: 120px;
 }
 
-.drop-down-item #hotkey-delete {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
+#hotkey-Align-Top {
+  right: 5px;
+  top: 55px;
+}
+
+#hotkey-Align-Right {
+  right: 5px;
+  top: 87px;
+}
+
+#hotkey-Align-Bottom {
+  right: 5px;
+  top: 120px;
+}
+
+#hotkey-Align-Left {
+  right: 5px;
+  top: 151px;
+}
+
+#hotkey-delete {
   right: 6px;
   top: 272px;
 }
@@ -1645,8 +1667,7 @@ button.option {
 }
 
 #MOTDbutton {
-  position: absolute;
-  top: -2px;
+ top: -2px;
 }
 
 input.submit-button {
@@ -1672,7 +1693,6 @@ div.submit-button {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 4px;
   font-size: 14px;
@@ -1918,8 +1938,6 @@ div.submit-button:disabled {
 }
 
 #moveButton {
-  right: 2px;
-  top: 100;
   z-index: 2;
   position: absolute;
   border-radius: 0px;
@@ -1928,6 +1946,11 @@ div.submit-button:disabled {
 #contentDiagram .toolboxButtons {
   width: 35px !important;
   height: 25px !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 #textButton {
@@ -1935,6 +1958,11 @@ div.submit-button:disabled {
   height: 22px;
   margin-top: 3px;
   filter: invert(100%);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 #moveButton img {
@@ -2097,7 +2125,7 @@ div.submit-button:disabled {
   height: 30px;
   padding: 5px;
   margin-bottom: 10px;
-  margin-top: -1;
+  margin-top: -1px;
   color: white;
   background-color: var(--color-primary);
   cursor: pointer;
@@ -2264,7 +2292,7 @@ div.submit-button:disabled {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  size: 5;
+  size: 5px;
 }
 
 .list#testTable input,
@@ -2510,7 +2538,6 @@ span.arrow {
     inset -3px 0px 0px 0px rgba(97, 72, 117, 1);
 
 }
-
 .resultTableText {
   margin-left: 3px;
   margin-right: 3px;
@@ -2691,7 +2718,12 @@ span.arrow {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
-#variantSearch {
+
+#TopMenuStatic .submit-button {
+  background-color: var(--color-primary-2);
+}
+
+#variantSearch{
   height: 30px;
   margin-top: 6px;
   margin-bottom: 2px;
@@ -2699,7 +2731,7 @@ span.arrow {
   font-size: 14px;
 }
 
-.submit-button:hover {
+.submit-button:hover, #TopMenuStatic .submit-button:hover {
   background-color: var(--color-primary-hover);
   border-radius: 4px;
 }
@@ -2753,7 +2785,7 @@ span.arrow {
 }
 
 .loginTransparent {
-  display: block;
+  display: flex;
   height: 60px;
   background-color: var(--color-primary);
   text-align: left;
@@ -2769,7 +2801,7 @@ span.arrow {
 }
 
 .loginTransparent p {
-  display: inline-block;
+  display: inherit;
   vertical-align: middle;
   padding-left: 15px;
   color: #fff;
@@ -2878,6 +2910,7 @@ span.arrow {
   width: 24px;
   height: 24px;
   float: right;
+  cursor: pointer;
   /*margin-right:8px;*/
 }
 
@@ -3039,10 +3072,10 @@ span.arrow {
   overflow-y: auto;
   display: none;
   position: absolute;
-  top: 35px;
   background: var(--color-background);
-
   box-shadow: 2px 2px 8px #888;
+  margin-top: 10px;
+
 }
 
 #sortOptions {
@@ -3076,22 +3109,6 @@ span.arrow {
   background-color: var(--color-background);
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
-}
-
-.vhighlight-border-color {
-  border: 4px solid var(--color-primary) !important;
-  box-shadow: 0px 0px 4px #202 inset;
-}
-
-.vhighlight-border-color-inverse {
-  border: 4px solid var(--color-accent) !important;
-  box-shadow: 0px 0px 4px var(--color-accent) inset;
-}
-
-.hhighlight-border-color {
-  border-bottom: 2px solid black !important;
-  border-top: 2px solid black !important;
-  box-shadow: 0px 0px 4px #202 inset;
 }
 
 .rowno>div {
@@ -3154,21 +3171,34 @@ span.arrow {
 .contribheading {
   background: #FFF8A5;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
-  border-radius: 4px 6px 0px 0px;
+  border-radius: 5px;
   max-width: 400px;
   overflow: hidden;
   margin-top: 8px;
+  margin-bottom: 10px;
+  padding: 5px;
 }
 
 .contribcontent {
-  position: relative;
-  background: #FFF8A5;
-  margin-bottom: 10px;
-  margin-top: 4px;
-  z-index: 0;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
-  padding-left: 8px;
-  width: 400px;
+  -webkit-transition: height 0.2s cubic-bezier(0, 1.4, 0.8,1 );
+ -moz-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ -ms-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ -o-transition: height 0.2s cubic-bezier(0, 1.4, 0.8, 1);
+ transition: height 0.2s cubic-bezier(0,1.4, 0.8, 1);
+ height:0px;
+ overflow:hidden;
+ display: flex;
+ flex-direction: column;
+}
+
+.contribcontent span {
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+}
+
+.contribcontentToggle {
+  height: auto;
 }
 
 .contrib {
@@ -3447,12 +3477,13 @@ rect[class*="activitymarker"]:hover {
   background-color: var(--color-accent);
   z-index: 1000;
   position: fixed;
-  bottom: 0px;
   width: 100%;
-  height: 40px;
+  height:-moz-max-content;
+  height:-webkit-max-content;
   padding: 0 20px 0 0px;
   display: flex;
   text-align: center;
+
 }
 
 .alertmsg p {
@@ -3999,7 +4030,7 @@ only screen and (max-device-width: 860px) {
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
 
   ul.hamburgerList li.access {
@@ -4029,7 +4060,7 @@ only screen and (max-device-width: 790px) {
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
 
   ul.hamburgerList li.files {
@@ -4062,7 +4093,7 @@ only screen and (max-device-width: 670px) {
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s, ;
+    -o-transition: opacity 0.5s;
   }
 
   ul.hamburgerList li.results,
@@ -4125,6 +4156,7 @@ only screen and (max-device-width: 530px) {
   }
 
   #searchBar,
+  #testSearchContainer,
   .tooltip-searchbar {
     display: none;
   }
@@ -4266,13 +4298,11 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
-  padding-right: 90px;
+  padding-right: 10px;
   padding-left: 10px;
   background-color: var(--color-background);
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  padding-right: 80px;
-  padding-left: 10px;
   height: 30px;
   position: absolute;
   right: 14px;
@@ -4314,15 +4344,19 @@ only screen and (max-device-width: 320px) {
 }
 
 .tooltipDecrease button {
+  display: flex;
+  align-items: center;
   background-color: #614875;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  font-family: hack, "Lucida Console", Monaco, monospace;
   color: #fff;
   border: 0px;
   cursor: pointer;
   transition: 0.1s background-color;
-  border-radius: 4px;
-  margin-bottom: 5px;
-  align-items: center;
+  border-radius: 5px;
+  /* margin-bottom: 5px; */
+  /* width: 20px;
+  height: 20px; */
 }
 
 .tooltipDecrease .tooltiptextDec {
@@ -4350,18 +4384,24 @@ only screen and (max-device-width: 320px) {
 #range {
   display: inline-block;
   margin-left: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .tooltipIncrease button {
+  display: flex;
+  align-items: center;
   background-color: #614875;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  font-family: hack, "Lucida Console", Monaco, monospace;
   color: #fff;
   border: 0px;
   cursor: pointer;
   transition: 0.1s background-color;
-  border-radius: 4px;
-  margin-bottom: 5px;
-  align-items: center;
+  border-radius: 5px;
+  /* margin-bottom: 5px; */
+  /* width: 20px;
+  height: 20px; */
 }
 
 .tooltipIncrease .tooltiptextInc {
@@ -4386,10 +4426,10 @@ only screen and (max-device-width: 320px) {
 }
 
 #zoomV {
-  position: absolute;
-  width: 70px;
-  font-size: 12px;
-  right: 3%;
+  margin-left: 10px;
+  width: 80px;
+  font-size: 14px;
+  right: 1%;
 }
 
 
@@ -5121,25 +5161,6 @@ textarea#mrkdwntxt {
   padding-right: 10px;
 }
 
-/* Composite error message dialog */
-.errorMessageDialog {
-  display: none;
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.messageContainer {
-  min-height: 80px;
-}
-
-#cancelButton {
-  border-radius: 3px;
-}
-
-.messageHeader h3 {
-  padding-right: 10px;
-}
-
-
 /* Import diagram */
 
 .importDiagram {
@@ -5496,7 +5517,7 @@ textarea#filecont {
 }
 
 .tsTableDeleteCell {
-  border-radius: 0px 5px 5x 0px;
+  border-radius: 0px 5px 5px 0px;
   -moz-border-radius: 0px 5px 5px 0px;
   -webkit-border-radius: 0px 5px 5px 0px;
 }
@@ -5570,6 +5591,7 @@ textarea#filecont {
   font-size: 14px;
   transition: 0.1s background-color;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .resultedbuttons:hover {

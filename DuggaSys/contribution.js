@@ -48,93 +48,32 @@ function statSort(value) {
     document.getElementById("contribTsTable").style.display = "block";
     document.getElementById("contribGithHubContribTable").style.display = "block";
     document.getElementById("personalRankTable").style.display = "block";
+    document.getElementById("allRankTable").style.display = "block";
     restoreStatView();
 
   } else if (value == "Basic") {
     document.getElementById("personalRankTable").style.display = "block";
     document.getElementById("contribTsTable").style.display = "none";
     document.getElementById("contribGithHubContribTable").style.display = "none";
+    document.getElementById("allRankTable").style.display = "none";
     removeStatview('.group2 , .group3');
 
   } else if (value == "Charts") {
     document.getElementById("personalRankTable").style.display = "none";
     document.getElementById("contribTsTable").style.display = "none";
     document.getElementById("contribGithHubContribTable").style.display = "none";
-    removeStatview('.group1 , .group3');
+    removeStatview('.group3');
+    document.getElementById("allRankTable").style.display = "none";
   } else if (value == "Contribution") {
-    document.getElementById("personalRankTable").style.display = "none";
+    document.getElementById("personalRankTable").style.display = "block";
     document.getElementById("contribTsTable").style.display = "block";
     document.getElementById("contribGithHubContribTable").style.display = "block";
+    document.getElementById("allRankTable").style.display = "block";
     removeStatview('.group1 , .group2');
   }
 }
 
-//----------------------------------------
-// Renderer
-//----------------------------------------
 
-function renderRankTable() {
-  if (contribDataArr.length == 0) return;
-  var str = "<table  class='fumho group3'><tr><th></th><th style='padding: 2px 10px;' onclick='sortRank(0);'>login</th><th style='padding: 2px 10px;' onclick='sortRank(2);'>alleventranks</th><th style='padding: 2px 10px;' onclick='sortRank(3);'>allcommentranks</th><th style='padding: 2px 10px;' onclick='sortRank(4);'>LOC rank</th><th style='padding: 2px 10px;' onclick='sortRank(5);'>Commit rank</th></tr>";
-  for (var j = 0; j < contribDataArr.length; j++) {
-    str += "<tr>";
-    str += "<td>" + j + "</td>";
-    str += "<td>" + contribDataArr[j].name + "</td>";
-    str += "<td>" + contribDataArr[j].alleventranks + "</td>";
-    str += "<td>" + contribDataArr[j].allcommentranks + "</td>";
-    str += "<td>" + contribDataArr[j].allrowrank + "</td>";
-    str += "<td>" + contribDataArr[j].allcommitrank + "</td>";
-    str += "</tr>";
-  }
-  str += "</table>";
-  document.getElementById("rankTable").innerHTML = str;
-}
-
-// sort rank based on column, col
-function sortRank(col) {
-  if (col === 0) {
-    contribDataArr.sort(function compare(a, b) {
-      if (a.name > b.name) {
-        return 1;
-      } else if (a.name < b.name) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-  } else if (col === 2) {
-    contribDataArr.sort(function compare(a, b) {
-      if (a.alleventranks > b.alleventranks) {
-        return -1;
-      } else if (a.alleventranks < b.alleventranks) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  } else if (col === 3) {
-    contribDataArr.sort(function compare(a, b) {
-      if (a.allcommentranks > b.allcommentranks) {
-        return -1;
-      } else if (a.allcommentranks < b.allcommentranks) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  } else if (col === 4) {
-    contribDataArr.sort(function compare(a, b) {
-      if (a.allrowrank > b.allrowrank) {
-        return -1;
-      } else if (a.allrowrank < b.allrowrank) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  }
-  renderRankTable();
-}
 
 function hideInfoText() {
   var text = document.getElementById("infoText");
@@ -179,7 +118,7 @@ function renderBarDiagram(data) {
 
   // Renders the diagram
 
-  var str = "<div class='group1' style='width:100%;overflow-x:scroll; margin-bottom:15px;'>";
+  var str = "<div class='group1' style='width:100%;overflow-x:scroll;'>";
   str += "<svg  class='chart fumho'  style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
   for (var i = 0; i < numOfWeeks; i++) {
     str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
@@ -709,11 +648,14 @@ function createTimeSheetTable(data) {
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
-    hasCounterColumn: true
+    hasMagicHeadings: false,
+    hasCounterColumn: false
   });
 
-  myTable.renderTable();
+  // Render table only if there is tabledata
+  if(tabledata.tablebody != null || tabledata.tablebody != undefined) {
+    myTable.renderTable();
+  }
 }
 
 function renderCell(col, celldata, cellid) {
@@ -776,25 +718,27 @@ function returnedSection(data) {
   str += "<input type='button' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)'></input>";
   str += "</div>";
 
-  if (data['allusers'].length > 0) {
-    str += "<select id='userid' onchange='selectuser();'>";
-    for (i = 0; i < data['allusers'].length; i++) {
-      str += "<option>" + data['allusers'][i] + "</option>";
-    }
-    str += "</select>";
-  }
+  localStorage.setItem('GitHubUser', data['githubuser'])
+     str+="<p>";
+     if(data['allusers'].length>0){
+         str+="<select id='userid' onchange='selectuser();'>";
+         str+="<option>"+localStorage.getItem('GitHubUser')+"</option>";
+         for(i=0;i<data['allusers'].length;i++){
+           if(data['allusers'][i] != localStorage.getItem('GitHubUser')){
+             str+="<option>"+data['allusers'][i]+"</option>";
+           }
+         }
+         str+="</select>";
+      }
+     str+="</p>";
+
+  str += "<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
 
 
-    str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
-
-    createAllRankTable(buildAllRankData(data));
-    createRankTable(buildRankData(data));
-    createGitHubcontributionTable(buildContributionData(data));
-    createTimeSheetTable(data['timesheets']);
-
-
+  createAllRankTable(buildAllRankData(data));
   createRankTable(buildRankData(data));
   createGitHubcontributionTable(buildContributionData(data));
+  toggleAfterLocalStorage(data);
   createTimeSheetTable(data['timesheets']);
 
   str += renderBarDiagram(data);
@@ -803,9 +747,8 @@ function returnedSection(data) {
   str += renderCircleDiagram(JSON.stringify(data['hourlyevents']));
   str += "</div>";
 
-    document.getElementById('content').innerHTML=str;
-    sortRank(1);  // default to allrank
 
+  document.getElementById('content').innerHTML = str;
 }
 
 function buildRankData(data) {
@@ -884,11 +827,14 @@ function createRankTable(data) {
     tableElementId: "personalRankTable",
     renderCellCallback: rankRenderCell,
     renderSortOptionsCallback: renderSortOptions,
+    columnSum:["number","rank","grpranking"],
+    columnSumCallback: makeSumPersonalRank,
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
-    hasCounterColumn: true
+    hasMagicHeadings: false,
+    hasCounterColumn: false,
+    hasFooter: true
   });
   rankTable.renderTable();
 }
@@ -953,16 +899,16 @@ function createGitHubcontributionTable(data) {
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
-    hasMagicHeadings: true,
-    hasCounterColumn: true
+    hasMagicHeadings: false,
+    hasCounterColumn: false
   });
   ghContibTable.renderTable();
 }
 
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
-
   obj = celldata;
+  var rowNr = cellid.charAt(1);
   if (col === 'weeks') {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + parseInt(obj) + "</span></div>";
   } else if (col === 'dates') {
@@ -972,59 +918,69 @@ function renderCellForghContibTable(col, celldata, cellid) {
       var file = obj.files[j];
       str += "<a href='https://github.com/HGustavs/LenaSYS/blame/" + file.path + file.filename + "'>";
       str += "<div class='contrib'>";
-      str += "<span class='contribheading' style='padding:4px;'>";
+      str += "<div class='contribheading'";
       str += "<span class='contribpath'>" + file.path + "</span>";
       str += "<span class='contribfile'>" + file.filename + "</span>";
-      str += "</span>";
       str += "</a>";
-      str += "<div class='contribcontent'>";
-      str += file.lines + " lines<br>";
+      str += "<br><span>";
+      str += file.lines + " lines";
+      str += "</span>";
       str += "</div>";
       str += "</div>";
     }
-  } else if (col === 'githubContribution') {
-    if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0) {
-      str += "<div class='contrib'>";
-      str += "<div class='contribcontent'>";
 
-      if (obj.commits.length > 0) {
-        str += "<div class='createissue'>Made " + obj.commits.length + " commit(s).</div>";
-        for (j = 0; j < obj.commits.length; j++) {
-          var message = obj.commits[j].message;
-          var hash = obj.commits[j].cid;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></div>";
-        }
-      }
-      if (obj.issues.length > 0) {
-        str += "<div class='createissue'>Created " + obj.issues.length + " issue(s).</div>";
-        for (j = 0; j < obj.issues.length; j++) {
-          var issue = obj.issues[j];
-          var issuestr = issue.issueno + " " + issue.title;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></div>";
-        }
-      }
-      if (obj.comments.length > 0) {
-        str += "<div class='createissue'>Made " + obj.comments.length + " comment(s).</div>";
-        for (j = 0; j < obj.comments.length; j++) {
-          var comment = obj.comments[j];
-          var issuestr = comment.issueno + " " + comment.content;
-          str += "<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></div>";
-        }
-      }
-      if (obj.events.length > 0) {
-        var totalAmountEvents = 0;
-        for (var j = 0; j < obj.events.length; j++) {
-          totalAmountEvents += parseInt(obj.events[j].cnt);
-        }
-        str += "<div class='createissue'>Performed " + totalAmountEvents + " event(s).</div>";
-        for (var j = 0; j < obj.events.length; j++) {
-          var eve = obj.events[j];
-          str += "<div class='contentissue'>" + eve.kind + " " + eve.cnt + "</div>";
-        }
-      }
-      str += "</div>";
-      str += "</div>";
-    }
+  } else if (col === 'githubContribution') {
+     if (obj.issues.length > 0 || obj.comments.length > 0 || obj.events.length > 0 || obj.comments.length > 0) {
+       str += "<div class='githubContribution'>";
+       if(obj.commits.length > 0){
+         str += "<div id='ghCommits' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made " + obj.commits.length + " commit(s).</span>";
+         str += "<div id='ghCommits"+rowNr+"' style='pointer-events:auto' class='contribcontent'>";
+           for (j = 0; j < obj.commits.length; j++) {
+             var message = obj.commits[j].message;
+             var hash = obj.commits[j].cid;
+             str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/commit/" + hash + "'>" + message + "</a></span>";
+           }
+           str += "</div>";
+           str += "</div>";
+       }
+       if (obj.issues.length > 0) {
+          str += "<div id='ghIssues' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Created " + obj.issues.length + " issue(s).</span>";
+          str += "<div id='ghIssues"+rowNr+"' class='contribcontent'>";
+          for (j = 0; j < obj.issues.length; j++) {
+            var issue = obj.issues[j];
+            var issuestr = issue.issueno + " " + issue.title;
+            str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/" + issue.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+          }
+          str += "</div>";
+          str += "</div>";
+       }
+       if (obj.comments.length > 0) {
+          str += "<div id='ghComments' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Made " + obj.comments.length + " comment(s).</span>";
+          str += "<div id='ghComments"+rowNr+"' class='contribcontent'>";
+            for (j = 0; j < obj.comments.length; j++) {
+              var comment = obj.comments[j];
+              var issuestr = comment.issueno + " " + comment.content;
+              str += "<span><a onclick='keepContribContentOpen(event)' target='_blank' href='https://github.com/HGustavs/LenaSYS/issues/" + comment.issueno.substr(1) + "'>" + issuestr + "</a></span>";
+            }
+          str += "</div>";
+          str += "</div>";
+       }
+       if (obj.events.length > 0) {
+         var totalAmountEvents = 0;
+         for (var j = 0; j < obj.events.length; j++) {
+           totalAmountEvents += parseInt(obj.events[j].cnt);
+         }
+         str += "<div id='ghEvents' onclick='toggleContributionTable(this)' class='contribheading' style='cursor:pointer;'><span>Performed " + totalAmountEvents + " event(s).</span>";
+         str += "<div id='ghEvents"+rowNr+"' class='contribcontent'>";
+         for (var j = 0; j < obj.events.length; j++) {
+           var eve = obj.events[j];
+           str += "<span>" + eve.kind + " " + eve.cnt + "</span>";
+         }
+         str += "</div>";
+         str += "</div>";
+       }
+     }
+     str += "</div>";
   } else {
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>" + obj + "</span></div>";
   }
@@ -1049,13 +1005,165 @@ function createAllRankTable(data){
     tableElementId:"allRankTable",
 		renderCellCallback:allRankRenderCell,
 		renderSortOptionsCallback:renderSortOptions,
+    columnSum:["eventrank","commentrank","locrank","commitrank"],
+    columnSumCallback: makeSumAllRank,
 		columnOrder:colOrder,
 		freezePaneIndex:4,
 		hasRowHighlight:false,
-		hasMagicHeadings:true,
+		hasMagicHeadings:false,
 		hasCounterColumn:true
 	});
 	allRankTable.renderTable();
+}
+
+function makeSumAllRank(col,value,row){
+  if (value == "UNK" || value == "NOT FOUND"){
+    return 0;
+  } else {
+    return parseFloat(value)
+  }
+  return 0;
+}
+
+function makeSumPersonalRank(col,value,row){
+  if(col == "number"){
+    if (value == "UNK" || value == "NOT FOUND") {
+      return 0;
+    } else {
+      return parseFloat(value);
+    }
+  } else if(col == "rank") {
+    if (value.rank == "UNK" || value.rank == "NOT FOUND") {
+      var retVal = retdata.amountInCourse/5;
+      return retVal;
+    } else {
+      var retVal = value.rank/5;
+      return retVal;
+    }
+  } else if(col == "grpranking") {
+    if (value.rank == "UNK" || value.rank == "NOT FOUND") {
+      var retVal = retdata.amountInGroups/5;
+      return retVal;
+    } else {
+      var retVal = value.rank/5;
+      return retVal;
+    }
+  }
+	return 0;
+}
+
+/*
+  This function is used to get the values from localStorage and toggles the tabs
+  in the table after it.
+*/
+function toggleAfterLocalStorage(data){
+  var nrOfWeeks = data['weeks'].length;
+  var toggledValues = JSON.parse(localStorage.getItem('contribToggleArr'));
+  var element;
+  var status;
+  for(var i=0; i<nrOfWeeks; i++){
+    var contributionCounter = Object.keys(toggledValues[i]);
+    for(var j=0; j<contributionCounter.length;j++){
+
+      if(j == 0){
+        element = document.getElementById("ghCommits"+i);
+        status = toggledValues[i].commit;
+      }else if(j == 1){
+        element = document.getElementById("ghIssues"+i);
+        status = toggledValues[i].issues;
+      }else if(j == 2){
+        element = document.getElementById("ghComments"+i);
+        status = toggledValues[i].comments;
+      }else if(j == 3){
+        element = document.getElementById("ghEvents"+i);
+        status = toggledValues[i].events;
+      }
+      if(!(element == null)){
+        showMoreContribContent(element.id,status);
+      }
+    }
+  }
+}
+
+//Toggles the show/hide values in lovalstorage.
+function toggleContributionTable(element){
+  if(element.tagName.toLocaleLowerCase() == "div"){
+    var clickedDiv = element.lastChild;
+    var tableCellId = element.lastChild.id[element.lastChild.id.length-1]; //fetch the weekNr from the end of the element id.
+    var localStorageArrStr = localStorage.getItem('contribToggleArr'); //Get the values from localstorage.
+    var togglevalues = JSON.parse(localStorageArrStr);
+    var status;
+
+    if(clickedDiv.id == "ghCommits"+tableCellId){
+      if(togglevalues[tableCellId].commit == 1){
+        togglevalues[tableCellId].commit = 0;
+      }else{
+        togglevalues[tableCellId].commit = 1;
+      }
+      status = togglevalues[tableCellId].commit;
+    }else if(clickedDiv.id == "ghIssues"+tableCellId){
+      if(togglevalues[tableCellId].issues == 1){
+        togglevalues[tableCellId].issues = 0;
+      }else{
+        togglevalues[tableCellId].issues = 1;
+      }
+      status = togglevalues[tableCellId].issues;
+    }else if(clickedDiv.id == "ghComments"+tableCellId){
+      if(togglevalues[tableCellId].comments == 1){
+        togglevalues[tableCellId].comments = 0;
+      }else{
+        togglevalues[tableCellId].comments = 1;
+      }
+      status = togglevalues[tableCellId].comments;
+    }else if(clickedDiv.id == "ghEvents"+tableCellId){
+      if(togglevalues[tableCellId].events == 1){
+        togglevalues[tableCellId].events = 0;
+      }else{
+        togglevalues[tableCellId].events = 1;
+      }
+      status = togglevalues[tableCellId].events;
+    }
+    showMoreContribContent(element.lastChild.id,status);
+    localStorage.setItem('contribToggleArr', JSON.stringify(togglevalues)); //save the changed values to localStorage.
+  }else{
+
+  }
+}
+
+//Hide or show more content.
+function showMoreContribContent(id,status){
+    if(status == 1){
+      document.getElementById(id).classList.add('contribcontentToggle')
+    }else{
+      document.getElementById(id).classList.remove('contribcontentToggle')
+    }
+}
+
+//Loads or Create a default localStorage if localStorage doesn't exists. Used onload.
+function loadContribFormLocalStorage(){
+  if(localStorage.getItem('contribToggleArr') == null){
+    localStorage.setItem('contribToggleArr', JSON.stringify(createDefault()));
+  }
+}
+
+//creates the default localStorage values. All tabs should be open from start.
+function createDefault(){
+  var contibArr = [];
+  for(var i =0; i<10; i++){ // 10 represents 10 weeks in the course.
+    var values = {
+      commit:1,
+      issues:1,
+      comments:1,
+      events:1
+    }
+    contibArr.push(values);
+  }
+  return contibArr;
+}
+
+//This function prevents the toggle from happening when the links is is clicked.
+function keepContribContentOpen(e){
+  e.stopPropagation();
 }
 
 /*

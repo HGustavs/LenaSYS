@@ -76,7 +76,7 @@ CREATE TABLE user_course(
 	examiner 				integer,
 	teacher					VARCHAR(30),
 	PRIMARY KEY (uid, cid),
-	FOREIGN KEY (uid)REFERENCES user (uid),
+	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -361,8 +361,10 @@ function hasAccess($userId, $courseId, $access_type)
 	if($access_type === 'w') {
 		return strtolower($access) == 'w';
 	} else if ($access_type === 'r') {
-		return strtolower($access) == 'r' || strtolower($access) == 'w';
-	} else {
+		return strtolower($access) == 'r' || strtolower($access) == 'w' || strtolower($access) == 'st';
+	} else if ($access_type === 'st') {
+        return strtolower($access) == 'st';
+    } else {
 		return false;
 	}
 }

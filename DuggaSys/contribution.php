@@ -2,7 +2,13 @@
 session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
+include_once "../Shared/basic.php";
 pdoConnect();
+$cid=getOPG('cid');
+$vers=getOPG('coursevers');
+if (!$_SERVER['HTTP_REFERER']) {
+	header('Location: sectioned.php?courseid='.$cid.'&coursevers='.$vers);
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +34,7 @@ pdoConnect();
 <!--the inline CSS was moved to the file shared/css/style.css-->
 
 </head>
-<body>
+<body onload="loadContribFormLocalStorage()">
 	<div id="infoText" style="background-color:#ffffff; border:1px solid black; top:100px; display:none;position:absolute;"></div>
 
 	<!-- content START -->
@@ -36,13 +42,13 @@ pdoConnect();
 
 	</div>
 
-	<div id='personalRankTable' style='width:75%; white-space: nowrap;'></div>
+	<div id='personalRankTable' style='width:50%; white-space: nowrap;'></div>
 
-	<div id='allRankTable' style='width:75%; white-space: nowrap;'></div>
+	<div id='allRankTable' style='width:50%; white-space: nowrap;'></div>
 
-	<div id='contribGithHubContribTable'style='width:75%; white-space: nowrap;'></div>
+	<div id='contribGithHubContribTable'style='width:50%; white-space: nowrap;'></div>
 
-	<div id='contribTsTable' style='width:100%; white-space: nowrap;'></div>
+	<div id='contribTsTable' style='width:50%; white-space: nowrap;'></div>
 
 	<!-- content END -->
 

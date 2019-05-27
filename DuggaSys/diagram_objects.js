@@ -27,14 +27,17 @@ function Symbol(kindOfSymbol) {
       {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null}
     ];
     this.lineDirection;
+    this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
     this.minHeight;
+    this.group = 0;                 // What group this symbol belongs to
     this.isLocked = false;          // If the symbol is locked
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the symbol
     this.isOval = false;
     this.isAttribute = false;
     this.isRelation = false;
     this.isLine = false;
+    this.isRecursiveLine = false;
     this.pointsAtSamePosition = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
@@ -548,19 +551,39 @@ function Symbol(kindOfSymbol) {
         c.br.y += tolerance;
 
         if (!this.entityhover(mx, my, c)) {
-          return false;
+            return false;
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
 
     this.entityhover = function(mx, my, c) {
-        if(!c) {
-             c = this.corners();
+        if (!c) {
+            c = this.corners();
+        }
+        // Handle recursive lines
+        if (this.isLineType() && this.isRecursiveLine) {
+            if (c.tl.x == c.br.x) {
+                if (this.recursiveLineExtent > 0) {
+                    c.tr.x += this.recursiveLineExtent;
+                    c.br.x += this.recursiveLineExtent;
+                }else {
+                    c.tl.x += this.recursiveLineExtent;
+                    c.bl.x += this.recursiveLineExtent;
+                }
+            }else if (c.tl.y == c.br.y) {
+                if (this.recursiveLineExtent > 0) {
+                    c.bl.y += this.recursiveLineExtent;
+                    c.br.y += this.recursiveLineExtent;
+                }else {
+                    c.tl.y += this.recursiveLineExtent;
+                    c.tr.y += this.recursiveLineExtent;
+                }
+            }
         }
         // We have correct points in the four corners of a square.
-        if(mx > c.tl.x && mx < c.tr.x) {
-            if(my > c.tl.y && my < c.bl.y) {
+        if (mx > c.tl.x && mx < c.tr.x) {
+            if (my > c.tl.y && my < c.bl.y) {
                 return true;
             }
         }
@@ -796,19 +819,26 @@ function Symbol(kindOfSymbol) {
         privatePoints.push(this.centerPoint);
         return privatePoints;
     }
-
+    
+    //-----------------------------------------------------------------------
+    // isLineType: Checks if this is a line (ER or UML)
+    //-----------------------------------------------------------------------
+    this.isLineType = function() {
+        return this.symbolkind === symbolKind.line ||
+                this.symbolkind === symbolKind.umlLine;
+    }
+    
     //----------------------------------------------------------------
-    // getConnectedObjects: returns an array with the two objects that a specific line is connected to,
+    // getConnectedObjects: returns an array with the objects that a specific line is connected to,
     //                      function is used on line objects
     //----------------------------------------------------------------
-
     this.getConnectedObjects = function () {
-        if (this.symbolkind == symbolKind.line) {
+        if (this.isLineType()) {
             var privateObjects = [];
 
             // Compare values of all symbols in diagram with current line
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) {
+                if (diagram[i].kind == kind.symbol && !diagram[i].isLineType()) {
                     // Top left and bottom right corners for the current object
                     dtlx = diagram[i].corners().tl.x;
                     dtly = diagram[i].corners().tl.y;
@@ -924,6 +954,9 @@ function Symbol(kindOfSymbol) {
                 drawLockedTooltip(this);
             }
         }
+        if (this.group != 0){
+            drawGroup(this);
+        }
 
         ctx.save();
 
@@ -992,13 +1025,12 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------
     // Functions used to draw objects
     //---------------------------------------------------------
-    this.drawUML = function(x1, y1, x2, y2)
-    {
+    this.drawUML = function(x1, y1, x2, y2) {
         var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
 
         // Clear Class Box
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = this.properties['symbolColor'];
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         // Box
         ctx.beginPath();
@@ -1014,6 +1046,7 @@ function Symbol(kindOfSymbol) {
         // Middie Divider
         ctx.moveTo(x1, midy);
         ctx.lineTo(x2, midy);
+        ctx.fill();
         ctx.stroke();
         ctx.clip();
 
@@ -1080,20 +1113,20 @@ function Symbol(kindOfSymbol) {
             ctx.strokeStyle = this.properties['strokeColor'];
 
         }
+        ctx.fill();
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = this.properties['fontColor'];
         if(ctx.measureText(this.name).width > (x2-x1) - 4) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
-        }else {
+        } else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
 
     // This function is used in the drawEntity function and is run when ER entities are not in a weak state.
-    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2)
-    {
+    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) {
         var relationMidPoints = [];
 
         // Map input coordinates to canvas origo offset
@@ -1147,8 +1180,7 @@ function Symbol(kindOfSymbol) {
     }
 
     // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
-    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2)
-    {
+    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) {
         var relationMidPoints = [];
         var relationMidYPoints = [];
         var relationMidXPoints = [];
@@ -1341,7 +1373,6 @@ function Symbol(kindOfSymbol) {
             }
         }
 
-
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
@@ -1375,6 +1406,18 @@ function Symbol(kindOfSymbol) {
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
                 var valX2 = x2 > x1 ? x2-20 : x2+20;
+                if (this.isRecursiveLine) {
+                    let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent);
+                    if (x1 == x2) {
+                        valX = valX2 = x1 + 20 * dir;
+                        valY = y1 - 13;
+                        valY2 = y2 - 13;
+                    }else {
+                        valY = valY2 = y1 + 20 * dir;
+                        valX = x1 - 17;
+                        valX2 = x2 - 17;
+                    }
+                }
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
@@ -1407,19 +1450,19 @@ function Symbol(kindOfSymbol) {
 
         // Calculating the mid point between start and end
         if (x2 > x1) {
-            middleBreakPointX = x1 + (x2 - x1) / 2;
+            middleBreakPointX = x1 + Math.abs(x2 - x1) / 2;
         } else if (x1 > x2) {
-            middleBreakPointX = x2 + (x1 - x2) / 2;
+            middleBreakPointX = x2 + Math.abs(x1 - x2) / 2;
         } else {
             middleBreakPointX = x1;
         }
 
-        if (y2 > y1) { // The code breaks if you don't use Math.abs, can be removed if fixed
-            middleBreakPointY = Math.abs(y1) + Math.abs(y2 - y1) / 2;
+        if (y2 > y1) {
+            middleBreakPointY = y1 + Math.abs(y2 - y1) / 2;
         } else if (y1 > y2) {
-            middleBreakPointY = Math.abs(y2) + Math.abs(y1 - y2) / 2;
+            middleBreakPointY = y2 + Math.abs(y1 - y2) / 2;
         } else {
-            middleBreakPointY = Math.abs(y1);
+            middleBreakPointY = y1;
         }
 
         // Start line
@@ -1489,6 +1532,20 @@ function Symbol(kindOfSymbol) {
             ctx.lineTo(x1, breakpointStartY);
         } else if (startLineDirection == "down") {
             ctx.lineTo(x1, breakpointStartY);
+        }
+
+        // Check if this is a recursive line (connects to a single object twice)
+        let connObjects = this.getConnectedObjects();
+        if (connObjects.length == 1) {
+            if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
+                if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                middleBreakPointX += this.recursiveLineExtent * zoomValue;
+            }else if (y1 == y2) {
+                if (startLineDirection === "down") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                middleBreakPointY += this.recursiveLineExtent * zoomValue;
+            }
         }
 
         if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
@@ -2052,19 +2109,20 @@ function drawLockedTooltip(symbol) {
     var yOffset = 13;
     // Different size when hovering the lock itself and the entity, for displaying different amount of text
     var ySize = symbol.isLockHovered ? 34 : 16;
+    var xSize = 85; 
     // Draw tooltip background
     ctx.fillStyle = "#f5f5f5";
-    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), 125 * diagram.getZoomValue(), ySize * diagram.getZoomValue());
+    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
     // Draws text, uses fillStyle to override default hover change.
     yOffset += 12;
     ctx.fillStyle = "black";
     ctx.font = 12 * diagram.getZoomValue()+ "px Arial";
-    ctx.fillText("Object position is locked", position.x, position.y + yOffset * diagram.getZoomValue());
+    ctx.fillText("Object is locked", position.x, position.y + yOffset * diagram.getZoomValue());
     // Draw additional text when hovering the lock itself
     if (symbol.isLockHovered) {
         ctx.fillStyle = "red";
         yOffset += 16;
-        ctx.fillText("Click to unlock object", position.x, position.y + yOffset * diagram.getZoomValue());
+        ctx.fillText("Click to unlock", position.x, position.y + yOffset * diagram.getZoomValue());
     }
     ctx.restore();
 }
@@ -2083,6 +2141,26 @@ function setIsLockHovered(symbol, mx, my) {
     } else {
         symbol.isLockHovered = false;
     }
+}
+
+function drawGroup(symbol) {
+    var position = symbol.getLockPosition();
+    ctx.save();
+    // Offset used to achive the correct y position since fillRect and fillText are drawn differently
+    var yOffset = -25;
+    // Different size when hovering the lock itself and the entity, for displaying different amount of text
+    var ySize = 16;
+    var xSize = symbol.group < 10 ? 45 : 50;
+    // Draw tooltip background
+    ctx.fillStyle = "white"; //ctx.fillStyle = "#f5f5f5";
+    ctx.fillRect(position.x, position.y + yOffset * diagram.getZoomValue(), xSize * diagram.getZoomValue(), ySize * diagram.getZoomValue());
+    // Draws text, uses fillStyle to override default hover change.
+    yOffset += 12;
+    ctx.fillStyle = "black";
+    ctx.font = 12 * diagram.getZoomValue()+ "px Arial";
+    ctx.fillText("Group:" + symbol.group, position.x, position.y + yOffset * diagram.getZoomValue());
+    // Draw additional text when hovering the lock itself
+    ctx.restore();
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
@@ -2149,6 +2227,7 @@ function Path() {
     this.opacity = 1;               // Opacity value for figures
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;           // An organized path can contain several sub-path, each of which must be organized
+    this.group = 0;
     this.isLocked = false;          // If the free draw object is locked
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
     this.isHovered = false;         // If the free draw object is hovered
@@ -2173,6 +2252,41 @@ function Path() {
             y: pixelsToCanvas(0,RightMostPoint.y).y
         };
     }
+
+    this.corners = function(){
+        var point = false, tr = false, bl = false;
+        var tl = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
+        var br = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };
+
+        for(var i = 0; i < this.segments.length; i++){
+            point = points[this.segments[i].pa];
+            if(point.x < tl.x) {
+                tl.x = point.x;
+            }
+            if(point.y < tl.y) {
+                tl.y = point.y;
+            }
+            if(point.x > br.x) {
+                br.x = point.x;
+            }
+            if(point.y > br.y) {
+                br.y = point.y;
+            }
+        }
+
+        tr = tl;
+        bl = br;
+        tr.x = br.x;
+        bl.x = tl.x;
+
+        return {
+            tl: tl,
+            tr: tr,
+            bl: bl,
+            br: br,
+        };
+    }
+
     //--------------------------------------------------------------------
     // move: Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
@@ -2251,7 +2365,10 @@ function Path() {
                     drawLockedTooltip(this);
                 }
             }
-
+            if (this.group != 0){
+                drawGroup(this);
+            }
+    
             // Assign stroke style, color, transparency etc
             var shouldFill = true;
 
@@ -2614,6 +2731,7 @@ function figureFreeDraw() {
             figurePath.figureType = "Free";
             selected_objects.push(figurePath);
             lastSelectedObject = diagram.length - 1;
+            figurePath.properties['lineWidth'] = getLineThickness();
             cleanUp();
             SaveState();
         } else {
@@ -2626,6 +2744,36 @@ function figureFreeDraw() {
             numberOfPointsInFigure++;
         }
     }
+}
+
+function endFreeDraw(){
+    if(numberOfPointsInFigure < 2){
+        // Perhaps make a flash function to flash messaged to the view, for better error handling
+        return console.log('Draw more lines');
+    }
+    // Read and set the values for p1 and p2
+    p1 = p2;
+    if (activePoint != null) {
+        p2 = activePoint;
+    } else {
+        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+    }
+
+    // Delete all previous rendered lines
+    for (var i = 0; i < numberOfPointsInFigure; i++) {
+        diagram.pop();
+    }
+    // Render the figure
+    points.splice(p2, 1);
+    p2 = startPosition;
+    figurePath.addsegment(1, p1, p2);
+    md = mouseState.empty; // To prevent selectbox spawn when clicking out of freedraw mode
+    diagram.push(figurePath);
+    figurePath.figureType = "Free";
+    selected_objects.push(figurePath);
+    lastSelectedObject = diagram.length - 1;
+    cleanUp();
+    SaveState();
 }
 
 function mouseDown() {

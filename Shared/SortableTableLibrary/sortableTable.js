@@ -236,6 +236,7 @@ function SortableTable(param) {
 	this.updateCell = getparam(param.updateCellCallback, null);
 	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false);
 	this.hasCounter = getparam(param.hasCounterColumn, false);
+	this.hasFooter = getparam(param.hasFooter, false);
 
 	// Prepare head and order with columns from rowsum list
 	for (let i = 0; i < rowsumList.length; i++) {
@@ -463,33 +464,35 @@ function SortableTable(param) {
 
 		str += "</tbody>";
 		mhvstr += "</tbody>";
-		mhvstr += "<tfoot style='border-top:2px solid #000'>";
-		mhvstr += "<tr style='font-style:italic;'>";
-		str += "<tfoot style='border-top:2px solid #000'>";
-		str += "<tr style='font-style:italic;'>";
+		if (this.hasFooter) {
+			mhvstr += "<tfoot style='border-top:2px solid #000'>";
+			mhvstr += "<tr style='font-style:italic;'>";
+			str += "<tfoot style='border-top:2px solid #000'>";
+			str += "<tr style='font-style:italic;'>";
 
-		if (this.hasCounter) {
-			str += "<td>&nbsp;</td>";
-			mhvstr += "<td>&nbsp;</td>";
-		}
-		for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
-			if (columnfilter[columnOrderIdx] !== null) {
-				if (typeof (sumContent[columnOrder[columnOrderIdx]]) !== 'undefined') {
-					str += "<td style='whitespace:nowrap;'>" + sumContent[columnOrder[columnOrderIdx]] + "</td>";
-					if (columnOrderIdx < freezePaneIndex) {
-						mhvstr += "<td style='whitespace:nowrap;'>" + sumContent[columnOrder[columnOrderIdx]] + "</td>";
-					}
-				} else {
-					str += "<td>&nbsp;</td>";
-					if (columnOrderIdx < freezePaneIndex) {
-						mhvstr += "<td>&nbsp;</td>";
+			if (this.hasCounter) {
+				str += "<td>&nbsp;</td>";
+				mhvstr += "<td>&nbsp;</td>";
+			}
+			for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
+				if (columnfilter[columnOrderIdx] !== null) {
+					if (typeof (sumContent[columnOrder[columnOrderIdx]]) !== 'undefined') {
+						str += "<td style='whitespace:nowrap;'>" + sumContent[columnOrder[columnOrderIdx]] + "</td>";
+						if (columnOrderIdx < freezePaneIndex) {
+							mhvstr += "<td style='whitespace:nowrap;'>" + sumContent[columnOrder[columnOrderIdx]] + "</td>";
+						}
+					} else {
+						str += "<td>&nbsp;</td>";
+						if (columnOrderIdx < freezePaneIndex) {
+							mhvstr += "<td>&nbsp;</td>";
+						}
 					}
 				}
 			}
+			str += "</tr></tfoot>";
+			mhvstr += "</tr></tfoot>";
 		}
-
-		str += "</tr></tfoot>";
-		mhvstr += "</tr></tfoot>";
+		
 		str += "</table>";
 		mhvstr += "</table>";
 
@@ -605,6 +608,7 @@ function SortableTable(param) {
 				if (document.getElementById(table.tableid + DELIMITER + "tbl") != null) {
 					var thetab = document.getElementById(table.tableid + DELIMITER + "tbl").getBoundingClientRect();
 					var thetabhead = document.getElementById(table.tableid + DELIMITER + "tblhead").getBoundingClientRect();
+					var tabheadsize = thetabhead.top + thetabhead.height;
 					// If top is negative and top+height is positive draw mh otherwise hide
 
 					// Vertical
@@ -617,7 +621,7 @@ function SortableTable(param) {
 					}
 					// Horizontal
 					if (thetab.left < 0 && thetab.right > 0) {
-						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = thetabhead.top + 38 + "px";
+						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.top = tabheadsize + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.left = -1 + "px";
 						document.getElementById(table.tableid + DELIMITER + "tbl" + DELIMITER + "mhv").style.display = "table";
 					} else {
@@ -778,10 +782,26 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-		if (status == 1) {
-			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-		} else if (status == 2 || status == 3) {
+		if (status == 0) {
+			//Ascending grade
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		} else if (status == 1) {
+			//descending grades
+			if(secoundCellTemp !== "" && firstCellTemp !== "" && secoundCellTemp !== "0" && firstCellTemp !== "0" ){
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			} else if((secoundCellTemp === "" || secoundCellTemp === "0") && (firstCellTemp !== "" || firstCellTemp !== "0")){
+				val = 1
+			} else if((firstCellTemp === "" || firstCellTemp === "0") && (secoundCellTemp !== "" || secoundCellTemp !== "0")){
+				val = -1
+			}
+		} else if (status == 2) {
+			//pending grades
+			if(secoundCellTemp === "0" && firstCellTemp !== "0"){
+				val = -1;
+			} else if(secoundCellTemp !== "0" && firstCellTemp === "0" || secoundCellTemp === ""){
+				val = 1;			 
+
+			}
 		}
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
@@ -793,7 +813,7 @@ function newCompare(firstCell, secoundCell) {
 			if (firstCell === null || secoundCell === null) {
 				firstCellTemp = firstCell;
 				secoundCellTemp = secoundCell;
-			} else if(typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp))){
+			} else if (typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp)) && (col.includes("filesize"))) {
 				tempTemp1 = firstCell.replace(/\D/g,'');
 				tempTemp2 = secoundCell.replace(/\D/g,'');
 				firstCellTemp = parseInt(tempTemp1, 10);
