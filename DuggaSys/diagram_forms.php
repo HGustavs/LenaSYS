@@ -37,7 +37,7 @@
         '.$colors.'
         </select><br>
         ';
-  $okButton = '<button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
+  $okButton = '<button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
   //form for attributes
   if($form == 'attributeType') {
       echo'Attribute name:</br>
@@ -56,7 +56,7 @@
   else if($form == 'classType') {
       echo'Class name: </br>
       <input onkeyup="changeObjectAppearance(\'classType\');" id=\'nametext\' type=\'text\'></br>
-      
+
       Attributes:<br>
       <textarea onkeyup="changeObjectAppearance(\'classType\');" id="UMLAttributes" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
@@ -165,13 +165,13 @@
             <option value='Aggregation'>Aggregation</option>
             <option value='Composition'>Composition</option>
         </select></br>
-        
+
         Line direction: <br/>
         <select onchange=\"changeLineDirection()\" id='line_direction'>
           <option value='First'>First object</option>
           <option value='Second'>Second object</option>
         </select><br/>
-        
+
         Cardinality: <br/>
         <select onchange=\"changeCardinality(true)\" id='cardinality'>
           <option value='None'>None</option>
