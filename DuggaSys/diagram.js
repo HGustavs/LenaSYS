@@ -4240,7 +4240,7 @@ function objectAppearanceMenu(form) {
 
 function changeObjectAppearance(object_type) {
     lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length - 1]);
-    if(selected_objects.length == 1 && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine) {
+    if(selected_objects.length == 1 && selected_objects[0].kind == kind.symbol && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine) {
         selected_objects[0].name = document.getElementById('nametext').value;
     }
     for(var i = 0; i < selected_objects.length; i++) {
