@@ -50,7 +50,7 @@ var settings = {
     },
 
     properties: {        
-        fillColor: '#ffffff',                       // Change background colors on entities.
+        fillColor: '#ffffff',                         // Change background colors on entities.
         strokeColor: '#000000',                       // Change standard line color.
         fontColor: '#000000',                         // Change the color of the font.
         font: 'Arial',                                // Set the standard font.
@@ -4239,8 +4239,7 @@ function objectAppearanceMenu(form) {
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
-    console.log("HELo")
-    if(selected_objects.length == 1) {
+    if(selected_objects.length == 1 && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine) {
         selected_objects[0].name = document.getElementById('nametext').value;
     }
     for(var i = 0; i < selected_objects.length; i++) {
@@ -4318,7 +4317,7 @@ function changeCardinality(isUML) {
     //Setting existing cardinality value on line
     if(val == "None") val = "";
     if(valUML == "None") valUML = "";
-    if(lastSelected > -1 && lastSelected.cardinality[0].value != null) {
+    if(lastSelected && lastSelected.cardinality[0].value != null) {
         if(lastSelected.cardinality[0].symbolKind != symbolKind.uml) {
             lastSelected.cardinality[0].value = val;
         } else {
