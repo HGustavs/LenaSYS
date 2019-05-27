@@ -2008,6 +2008,7 @@ function minimizeBoxes(boxid) {
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
+}
 
 function hideCopyButtons(templateid, boxid) {
 	var totalBoxes = getTotalBoxes(templateid);
@@ -2015,8 +2016,10 @@ function hideCopyButtons(templateid, boxid) {
 	for (var i = 1; i <= totalBoxes; i++) {
 		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
 		if (i !== boxid) {
+			if (!copyBtn) continue;
 			copyBtn.style.display = "none";
 		} else {
+			if (!copyBtn) continue;
 			copyBtn.style.display = "table-cell";
 		}
 	}
