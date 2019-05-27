@@ -1120,15 +1120,12 @@ function rowFilter(row) {
 		}
 	}
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
-	if (teacherDropdown === "none"){
-		return true;
-	}
-	else if(row.FnameLname.examiner != teacherDropdown){
+	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
 		return false;
 	}
-  // Removes spaces so that it can tolerate "wrong" inputs when searching
-  searchterm = searchterm.replace(' ', '');
-  // divides the search on &&
+  	// Removes spaces so that it can tolerate "wrong" inputs when searching
+  	searchterm = searchterm.replace(' ', '');
+  	// divides the search on &&
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
 
@@ -1137,7 +1134,7 @@ function rowFilter(row) {
 			splitSearch.push(s.trim().split(":"));
 	})
 
-  // The else makes sure that you can search on names without a search-category.
+  	// The else makes sure that you can search on names without a search-category.
 	if (searchterm != "" && splitSearch != searchterm) {
 		return smartSearch(splitSearch, row);
 	} else {
@@ -1150,7 +1147,7 @@ function rowFilter(row) {
 				if (row[colname]["lastname"] != null) {
 					name += row[colname]["lastname"];
 				}
-        name = name.replace(' ', '');
+        		name = name.replace(' ', '');
 				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
 					return true;
 				}
