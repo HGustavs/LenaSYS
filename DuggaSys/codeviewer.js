@@ -1919,6 +1919,24 @@ function minimizeBoxes(boxid) {
 			alignBoxesWidth(boxValArray, 2, 1);
 		}
 	}
+	//for template 2
+	if (templateid == 2) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight2boxes(boxValArray, 1, 2);
+		}
+
+		if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight2boxes(boxValArray, 2, 1);
+		}
+	}
+
+
 }
 
 //-----------------------------------------------------------------------------
