@@ -1020,8 +1020,11 @@ function issetDrop(dname) {
 //----------------------------------------------------------
 
 function highlightKeyword(kw) {
+	kwDoubleQuotes = '"'+kw+'"';
+	kwSingleQuote = "'"+kw+"'";
+
 	$(".impword").each(function () {
-		if (this.innerHTML == kw) {
+		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
 			$(this).addClass("imphi");
 		}
 	});
@@ -1033,8 +1036,10 @@ function highlightKeyword(kw) {
 //----------------------------------------------------------
 
 function dehighlightKeyword(kw) {
+	kwDoubleQuotes = '"'+kw+'"';
+	kwSingleQuote = "'"+kw+"'";
 	$(".impword").each(function () {
-		if (this.innerHTML == kw) {
+		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
 			$(this).removeClass("imphi");
 		}
 	});
@@ -1485,7 +1490,20 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
-			cont += "<span class='string'>" + tokenvalue + "</span>";
+
+			var withoutQuote = tokenvalue.replace(/(?:\"|')/g, "");
+			var withQuote = tokenvalue.replace(/(?:\"|')/g, "&quot;");
+			var withSingleQuote = tokenvalue.replace(/(?:\"|')/g, "\'");
+
+			if (important.indexOf(withoutQuote) != -1 ||
+				important.indexOf(withQuote) != -1 ||
+				important.indexOf(withSingleQuote) != -1) {
+
+				cont += "<span id='IW" + iwcounter + "' class='impword' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + tokenvalue + "</span>";
+			} else {
+				cont += "<span class='string'>" + tokenvalue + "</span>";
+			}
+
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "name") {
