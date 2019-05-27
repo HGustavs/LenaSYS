@@ -746,7 +746,7 @@ function copySymbol(symbol) {
 }
 
 //--------------------------------------------------------------------
-// drawPoints: Draws each of the points as a cross
+// drawCross: Draws a cross at point position
 //--------------------------------------------------------------------
 function drawCross(point) {
     let crossSize = 4 * zoomValue;
@@ -758,7 +758,9 @@ function drawCross(point) {
     ctx.stroke();
 }
 
-
+//--------------------------------------------------------------------
+// drawPoints: Draws each of the points as a cross
+//--------------------------------------------------------------------
 points.drawPoints = function() {
     let crossSize = 4 * zoomValue;
     ctx.strokeStyle = crossStrokeStyle1;
