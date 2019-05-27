@@ -4028,7 +4028,7 @@ function loadFormIntoElement(element, dir) {
         for(var i = 0; i < selected_objects.length; i++){
             names += selected_objects[i].name + ", ";
         }
-    } else {
+    } else if(selected_objects.length == 1) {
         names = selected_objects[0].name;
     }
 
