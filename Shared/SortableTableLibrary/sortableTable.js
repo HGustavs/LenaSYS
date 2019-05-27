@@ -236,6 +236,7 @@ function SortableTable(param) {
 	this.updateCell = getparam(param.updateCellCallback, null);
 	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false);
 	this.hasCounter = getparam(param.hasCounterColumn, false);
+	this.hasFooter = getparam(param.hasFooter, false);
 
 	// Prepare head and order with columns from rowsum list
 	for (let i = 0; i < rowsumList.length; i++) {
@@ -463,33 +464,35 @@ function SortableTable(param) {
 
 		str += "</tbody>";
 		mhvstr += "</tbody>";
-		mhvstr += "<tfoot style='border-top:2px solid #000'>";
-		mhvstr += "<tr style='font-style:italic;'>";
-		str += "<tfoot style='border-top:2px solid #000'>";
-		str += "<tr style='font-style:italic;'>";
+		if (this.hasFooter) {
+			mhvstr += "<tfoot style='border-top:2px solid #000'>";
+			mhvstr += "<tr style='font-style:italic;'>";
+			str += "<tfoot style='border-top:2px solid #000'>";
+			str += "<tr style='font-style:italic;'>";
 
-		if (this.hasCounter) {
-			str += "<td>&nbsp;</td>";
-			mhvstr += "<td>&nbsp;</td>";
-		}
-		for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
-			if (columnfilter[columnOrderIdx] !== null) {
-				if (typeof (sumContent[columnOrder[columnOrderIdx]]) !== 'undefined') {
-					str += "<td style='whitespace:nowrap;'>" + sumContent[columnOrder[columnOrderIdx]] + "</td>";
-					if (columnOrderIdx < freezePaneIndex) {
-						mhvstr += "<td style='whitespace:nowrap;'>" + sumContent[columnOrder[columnOrderIdx]] + "</td>";
-					}
-				} else {
-					str += "<td>&nbsp;</td>";
-					if (columnOrderIdx < freezePaneIndex) {
-						mhvstr += "<td>&nbsp;</td>";
+			if (this.hasCounter) {
+				str += "<td>&nbsp;</td>";
+				mhvstr += "<td>&nbsp;</td>";
+			}
+			for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
+				if (columnfilter[columnOrderIdx] !== null) {
+					if (typeof (sumContent[columnOrder[columnOrderIdx]]) !== 'undefined') {
+						str += "<td style='whitespace:nowrap;'>" + sumContent[columnOrder[columnOrderIdx]] + "</td>";
+						if (columnOrderIdx < freezePaneIndex) {
+							mhvstr += "<td style='whitespace:nowrap;'>" + sumContent[columnOrder[columnOrderIdx]] + "</td>";
+						}
+					} else {
+						str += "<td>&nbsp;</td>";
+						if (columnOrderIdx < freezePaneIndex) {
+							mhvstr += "<td>&nbsp;</td>";
+						}
 					}
 				}
 			}
+			str += "</tr></tfoot>";
+			mhvstr += "</tr></tfoot>";
 		}
-
-		str += "</tr></tfoot>";
-		mhvstr += "</tr></tfoot>";
+		
 		str += "</table>";
 		mhvstr += "</table>";
 

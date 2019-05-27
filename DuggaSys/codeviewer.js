@@ -62,12 +62,23 @@ function setup() {
 	}
 }
 
+
+function returnedError(error) {
+	if (error.responseText) {
+		document.querySelector('#div2').innerHTML += " and show them this message:<br><br>"+error.responseText;
+	}
+}
+
 //-----------------------------------------------------------------
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
 function returned(data) {
 	retData = data;
+
+	if (retData['deleted']) {
+		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
+	}
 
 	if (retData['writeaccess'] == "w") {
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid=" + courseid + "&coursevers=" + cvers + "');");
@@ -458,6 +469,20 @@ function updateExample() {
 	}
 
 	$("#editExampleContainer").css("display", "none");
+}
+
+function removeExample() {
+	var courseid = querystring['courseid'];
+	var cvers = querystring['cvers'];
+	var exampleid = querystring['exampleid'];
+	var lid = querystring['lid'];
+
+	AJAXService("DELEXAMPLE", {
+		courseid: courseid,
+		cvers: cvers,
+		exampleid: exampleid,
+		lid: lid
+	}, "CODEVIEW");
 }
 
 //----------------------------------------------------------------------------------
@@ -1214,26 +1239,47 @@ function tokenize(instring, inprefix, insuffix) {
 						break;
 					}
 					currentCharacter = instring.charAt(i);
+					nextCharacter = instring.charAt(i+1);
 
 					if (currentCharacter == 'b') {
-						currentCharacter = '\b';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\b";
+						} else {
+							currentCharacter = '\b';
+							break;
+						}
 					}
 					if (currentCharacter == 'f') {
-						currentCharacter = '\f';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\f";
+						} else {
+							currentCharacter = '\f';
+							break;
+						}
 					}
 					if (currentCharacter == 'n') {
-						currentCharacter = '\n';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\n";
+						} else {
+							currentCharacter = '\n';
+							break;
+						}
 					}
 					if (currentCharacter == 'r') {
-						currentCharacter = '\r';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\r";
+						} else {
+							currentCharacter = '\r';
+							break;
+						}
 					}
 					if (currentCharacter == 't') {
-						currentCharacter = '\t';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\t";
+						} else {
+							currentCharacter = '\t';
+							break;
+						}
 					}
 					if (currentCharacter == 'u') {
 						if (i >= length) {
@@ -1698,6 +1744,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 	// Print out rendered code and border with numbers
 	printout.css(createCodeborder(lineno, improws) + str);
+ 	var borders = [...document.querySelectorAll('.codeborder')];
+	borders.forEach(border => {
+		var parentScrollHeight = border.parentNode.scrollHeight;
+		var parentHeight = border.parentNode.clientHeight;
+		border.style.height = parentScrollHeight;
+		border.style.minHeight = parentHeight;
+	});
 }
 
 //----------------------------------------------------------------------------------
@@ -1707,7 +1760,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 function createCodeborder(lineno, improws) {
 	var str = "<div class='codeborder' style='z-index: 1;'>"; // The z-index places the code border above the copy to clipboard notification
-
 	for (var i = 1; i <= lineno; i++) {
 		// Print out normal numbers
 		if (improws.length == 0) {
@@ -1939,6 +1991,53 @@ function minimizeBoxes(boxid) {
 		}
 	}
 
+function hideCopyButtons(templateid, boxid) {
+	var totalBoxes = getTotalBoxes(templateid);
+
+	for (var i = 1; i <= totalBoxes; i++) {
+		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
+		if (i !== boxid) {
+			copyBtn.style.display = "none";
+		} else {
+			copyBtn.style.display = "table-cell";
+		}
+	}
+}
+
+function showCopyButtons(templateid) {
+	var totalBoxes = getTotalBoxes(templateid);
+
+	for (var i = 1; i <= totalBoxes; i++) {
+		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
+		copyBtn.style.display = "table-cell";
+	}
+}
+
+function getTotalBoxes(template) {
+	var totalBoxes;
+	switch (template) {
+		case '10': totalBoxes = 1;
+		break;
+		case '1': 
+		//fall through
+		case '2': totalBoxes = 2;
+		break;
+		case '3': 
+		//fall through
+		case '4':
+		//fall through
+		case '8': totalBoxes = 3;
+		break;
+		case '5':
+		//fall through
+		case '6':
+		//fall through
+		case '7': totalBoxes = 4;
+		break;
+		case '9': totalBoxes = 5;
+		break;
+	}
+	return totalBoxes;
 }
 
 //-----------------------------------------------------------------------------
@@ -1953,6 +2052,8 @@ function maximizeBoxes(boxid) {
 	var templateid = retData['templateid'];
 
 	getLocalStorageProperties(boxValArray);
+	hideCopyButtons(templateid, boxid);
+	saveInitialBoxValues();
 
 	//For template 1
 	if (templateid == 1) {
@@ -2006,7 +2107,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2018,7 +2119,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 3, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2241,7 +2342,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2253,7 +2354,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 3, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2279,6 +2380,7 @@ function hideMinimizeButton() {
 //reset boxes
 function resetBoxes() {
 	resizeBoxes("#div2", retData["templateid"]);
+	showCopyButtons(retData["templateid"]);
 }
 
 //-----------------------------------------------------------------------------
@@ -3121,6 +3223,14 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
+function saveInitialBoxValues() {
+	var templateId = retData["templateid"];
+	var parent = "#div2";
+	var boxValArray = initResizableBoxValues(parent);
+
+	setLocalStorageProperties(templateId, boxValArray);
+}
+
 function initResizableBoxValues(parent) {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
@@ -3152,6 +3262,7 @@ function initResizableBoxValues(parent) {
 			boxValueArray['parent']['width'] = $(parent).width();
 		}
 	});
+
 	return boxValueArray;
 }
 
