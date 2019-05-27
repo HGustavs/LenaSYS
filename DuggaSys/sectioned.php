@@ -84,35 +84,46 @@
 
 					<td class='results' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<a id='resultsBTN' title='Edit student results' value='Results' href='' onclick='navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'>
+							<a id='resultsBTN' title='Edit student results' value='Results' href='' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'>
 								<img id='versionPlus' class="navButt" src='../Shared/icons/FistW.svg'>
 							</a>
 						</div>
 					</td>
 					<td class='tests' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<a id='testsBTN' title='Show tests' value='Tests' href='' onclick='navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
+							<a id='testsBTN' title='Show tests' value='Tests' href='' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
 								<img id='testsBTN' class="navButt" src='../Shared/icons/student_files.svg'>
 							</a>
 						</div>
 					</td>
 					<td class='files' style='display: inline-block;'>
 						<div class='files menuButton'>
-                            <a id='filesBTN' title='Show files' value='Files' href='' onclick='navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'>
-                                <img class="navButt" src='../Shared/icons/rounded_upload_button.svg'>
+              <a id='filesBTN' title='Show files' value='Files' href='' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'>
+                <img class="navButt" src='../Shared/icons/rounded_upload_button.svg'>
 							</a>
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
 						<div class='access menuButton'>
-                            <a id='accessBTN' title='Give students access to the selected version' value='Access' href='' onclick='navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'>
-                                <img class="navButt" src='../Shared/icons/lock_symbol.svg'>
+               <a id='accessBTN' title='Give students access to the selected version' value='Access' href='' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'>
+                 <img class="navButt" src='../Shared/icons/lock_symbol.svg'>
 							</a>
 						</div>
 					</td>
 				</tr>
 
 			</table>
+
+			<?php
+			echo "
+			<script type=\"text/javascript\">
+				// This makes it possible to use the middle-mouse-button on the header alternatives
+				navigatePage('resultsBTN', 'resulted.php');
+				navigatePage('testsBTN', 'duggaed.php');
+				navigatePage('filesBTN', 'fileed.php');
+				navigatePage('accessBTN', 'accessed.php');
+			</script>";
+			 ?>
 
 		</div>
 		<!-- Static Top Menu END -->
