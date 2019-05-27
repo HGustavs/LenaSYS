@@ -283,9 +283,9 @@ function leaves() {
 }
 
 function sorttype(t) {
-  if(t==0){
+  if(t == 0){
     myTable.setNameColumn('Fname');
-  }else if(t == 1){
+  }else{
     myTable.setNameColumn('Lname');
   }
 
@@ -305,10 +305,6 @@ function sorttype(t) {
 
 	var col;
 	var dir;
-
-  localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol", col);
-  localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir", dir);
-
 	$("input[name='sortcol']:checked").each(function () {
 		col = this.value;
 	});
@@ -341,13 +337,13 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	var currentTimeGetTime = currentTime.getTime();
 	if(document.getElementById('newFeedback') == null){
 		feedbackText = "";
-	} else {
+	} else {		
 		feedbackText = document.getElementById('newFeedback').value;
 	}
 
 	if ($(e.target).hasClass("Uc")) {
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
-
+		
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("Gc")) {
@@ -798,15 +794,15 @@ function renderCell(col, celldata, cellid) {
 			str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 			str += "</div>";
-			return str;
+			return str;	
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div style='padding:10px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "dugga-pending";
-			}
+			} 
 			str += "'>";
-			// Creation of grading buttons
+			// Creation of grading buttons		
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
@@ -845,10 +841,10 @@ function renderCell(col, celldata, cellid) {
 				}
 				str += "</div>";
 			}
-			return str;
-		}
-	}
-
+			return str;	
+		} 
+	}	
+	
 	else if(filterList["passedDeadline"]){
 				// First column (Fname/Lname/SSN)
 			if (col == "FnameLname") {
@@ -1106,95 +1102,6 @@ function smartSearch(splitSearch, row) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	// Removes spaces so that it can tolerate "wrong" inputs when searching
-	searchterm = searchterm.replace(' ', '');
-	// divides the search on &&
-	var tempSplitSearch = searchterm.split("&&");
-	var splitSearch = [];
-	
-	tempSplitSearch.forEach(function (s) {
-		if (s.length > 0)
-			splitSearch.push(s.trim().split(":"));
-	});
-	var teacherDropdown = document.getElementById("teacherDropdown").value;
-	if (teacherDropdown === "none"){
-		// The else makes sure that you can search on names without a search-category.
-		if (searchterm != "" && splitSearch != searchterm) {
-			return smartSearch(splitSearch, row);
-		} else {
-			for (colname in row) {
-				if (colname == "FnameLname") {
-					var name = "";
-					if (row[colname]["firstname"] != null) {
-						name += row[colname]["firstname"] + " ";
-					}
-					if (row[colname]["lastname"] != null) {
-						name += row[colname]["lastname"];
-					}
-			name = name.replace(' ', '');
-					if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-						return true;
-					}
-					if (row[colname]["ssn"] != null) {
-						if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["username"] != null) {
-						if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["class"] != null) {
-						if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["setTeacher"] != null) {
-						if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-				}
-			}
-			return false;
-		}
-	}
-	else if(row.FnameLname.examiner == teacherDropdown){
-		if (searchterm != "" && splitSearch != searchterm) {
-			return smartSearch(splitSearch, row);
-		} else {
-			for (colname in row) {
-				if (colname == "FnameLname") {
-					var name = "";
-					if (row[colname]["firstname"] != null) {
-						name += row[colname]["firstname"] + " ";
-					}
-					if (row[colname]["lastname"] != null) {
-						name += row[colname]["lastname"];
-					}
-			name = name.replace(' ', '');
-					if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-						return true;
-					}
-
-					if (row[colname]["ssn"] != null) {
-						if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-						}
-					if (row[colname]["username"] != null) {
-						if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["class"] != null) {
-						if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-					if (row[colname]["setTeacher"] != null) {
-						if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-							return true;
-					}
-				}
-			}
-			return false;
-		}
-	}
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
@@ -1212,7 +1119,6 @@ function rowFilter(row) {
 			return false;
 		}
 	}
-
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
 	if (teacherDropdown === "none"){
 		return true;
