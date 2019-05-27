@@ -69,18 +69,18 @@
 }
 
 .codeborder{
-	position: absolute;
-	top:0px;
+  position: sticky;
+  position: -webkit-sticky;
+  min-height: 100%;
 	bottom: 0px;
-	left:0px;
-	margin: 0px !important;
+  left:0px;
+  margin: 0px !important;
 	padding: 5px 0px 0px 0px !important;
 	background-color: #614875;
-	text-align: right;
+  text-align: right;
 	
 	/* Width of .no and .impo */
 	width: 32px !important;
-	
 }
 
 .codeborder .no {
@@ -103,7 +103,9 @@
 }
 
 .normtextwrapper{
-	 /* Width of codeborder */
+   /* Width of codeborder */
+    position: absolute;
+    top: 0px;
   	margin-left: 32px;
   	padding: 5px 0px 0px 5px;
 }
@@ -113,6 +115,7 @@
   background-color: #F2F2F2;
   white-space:nowrap;
   font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+  line-height: 15px;
 }
 
 .impo {

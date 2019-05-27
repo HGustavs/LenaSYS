@@ -63,12 +63,23 @@ function setup() {
 	}
 }
 
+
+function returnedError(error) {
+	if (error.responseText) {
+		document.querySelector('#div2').innerHTML += " and show them this message:<br><br>"+error.responseText;
+	}
+}
+
 //-----------------------------------------------------------------
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
 function returned(data) {
 	retData = data;
+
+	if (retData['deleted']) {
+		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
+	}
 
 	if (retData['writeaccess'] == "w") {
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid=" + courseid + "&coursevers=" + cvers + "');");
@@ -273,6 +284,9 @@ function returned(data) {
 	//hides maximize button if not supported
 	hideMaximizeAndResetButton();
 
+	//hides minimize button if not supported
+	hideMinimizeButton()
+
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
 
@@ -285,7 +299,7 @@ function returned(data) {
 
 function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
-	
+
 	retData['box'][data.id - 1][4] = data.title;
 	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
@@ -462,6 +476,20 @@ function updateExample() {
 	}
 
 	$("#editExampleContainer").css("display", "none");
+}
+
+function removeExample() {
+	var courseid = querystring['courseid'];
+	var cvers = querystring['cvers'];
+	var exampleid = querystring['exampleid'];
+	var lid = querystring['lid'];
+
+	AJAXService("DELEXAMPLE", {
+		courseid: courseid,
+		cvers: cvers,
+		exampleid: exampleid,
+		lid: lid
+	}, "CODEVIEW");
 }
 
 //----------------------------------------------------------------------------------
@@ -685,7 +713,7 @@ function updateTitle(e) {
 		}
 		title = title.trim(); // Trim title again if the substring caused trailing whitespaces
 
-		
+
 
 		AJAXService("EDITTITLE", {
 			exampleid: querystring['exampleid'],
@@ -760,7 +788,8 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Add resize and reset buttons
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>Minimize</p></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
@@ -998,8 +1027,11 @@ function issetDrop(dname) {
 //----------------------------------------------------------
 
 function highlightKeyword(kw) {
+	kwDoubleQuotes = '"'+kw+'"';
+	kwSingleQuote = "'"+kw+"'";
+
 	$(".impword").each(function () {
-		if (this.innerHTML == kw) {
+		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
 			$(this).addClass("imphi");
 		}
 	});
@@ -1011,8 +1043,10 @@ function highlightKeyword(kw) {
 //----------------------------------------------------------
 
 function dehighlightKeyword(kw) {
+	kwDoubleQuotes = '"'+kw+'"';
+	kwSingleQuote = "'"+kw+"'";
 	$(".impword").each(function () {
-		if (this.innerHTML == kw) {
+		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
 			$(this).removeClass("imphi");
 		}
 	});
@@ -1425,7 +1459,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	cbcount = 0;
 	cbracket = new Array();
 
-	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data','bdi', 'audio','aside','article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
+	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data', 'bdi', 'audio', 'aside', 'article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
 	htmlArrayNoSlash = new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'textview', 'webview', 'uses');
 	cssArray = new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right',
 		'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size',
@@ -1461,7 +1495,20 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
-			cont += "<span class='string'>" + tokenvalue + "</span>";
+
+			var withoutQuote = tokenvalue.replace(/(?:\"|')/g, "");
+			var withQuote = tokenvalue.replace(/(?:\"|')/g, "&quot;");
+			var withSingleQuote = tokenvalue.replace(/(?:\"|')/g, "\'");
+
+			if (important.indexOf(withoutQuote) != -1 ||
+				important.indexOf(withQuote) != -1 ||
+				important.indexOf(withSingleQuote) != -1) {
+
+				cont += "<span id='IW" + iwcounter + "' class='impword' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + tokenvalue + "</span>";
+			} else {
+				cont += "<span class='string'>" + tokenvalue + "</span>";
+			}
+
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "name") {
@@ -1722,6 +1769,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 	// Print out rendered code and border with numbers
 	printout.css(createCodeborder(lineno, improws) + str);
+ 	var borders = [...document.querySelectorAll('.codeborder')];
+	borders.forEach(border => {
+		var parentScrollHeight = border.parentNode.scrollHeight;
+		var parentHeight = border.parentNode.clientHeight;
+		border.style.height = parentScrollHeight;
+		border.style.minHeight = parentHeight;
+	});
 }
 
 function getBlockRanges(blocks) {
@@ -1846,7 +1900,6 @@ function toggleRows(rows, button) {
 
 function createCodeborder(lineno, improws) {
 	var str = "<div class='codeborder' style='z-index: 1;'>"; // The z-index places the code border above the copy to clipboard notification
-
 	for (var i = 1; i <= lineno; i++) {
 		// Print out normal numbers
 		if (improws.length == 0) {
@@ -2037,6 +2090,47 @@ function Play(event) {
 	}
 }
 
+function minimizeBoxes(boxid) {
+	var boxid = boxid;
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+
+	getLocalStorageProperties(boxValArray);
+
+	//For template 1
+	if (templateid == 1) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("0%");
+			alignBoxesWidth(boxValArray, 1, 2);
+		}
+
+		if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("0%");
+			alignBoxesWidth(boxValArray, 2, 1);
+		}
+	}
+	//for template 2
+	if (templateid == 2) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight2boxes(boxValArray, 1, 2);
+		}
+
+		if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight2boxes(boxValArray, 2, 1);
+		}
+	}
+
 function hideCopyButtons(templateid, boxid) {
 	var totalBoxes = getTotalBoxes(templateid);
 
@@ -2099,6 +2193,7 @@ function maximizeBoxes(boxid) {
 
 	getLocalStorageProperties(boxValArray);
 	hideCopyButtons(templateid, boxid);
+	saveInitialBoxValues();
 
 	//For template 1
 	if (templateid == 1) {
@@ -2152,7 +2247,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2164,7 +2259,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 3, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2387,7 +2482,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2399,7 +2494,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 3, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2411,6 +2506,14 @@ function hideMaximizeAndResetButton() {
 	if (templateid > 8) {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
+	}
+}
+
+//hide maximizeButton
+function hideMinimizeButton() {
+	var templateid = retData['templateid'];
+	if (templateid > 2) {
+		$('.minimizebtn').hide();
 	}
 }
 
@@ -3260,6 +3363,14 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
+function saveInitialBoxValues() {
+	var templateId = retData["templateid"];
+	var parent = "#div2";
+	var boxValArray = initResizableBoxValues(parent);
+
+	setLocalStorageProperties(templateId, boxValArray);
+}
+
 function initResizableBoxValues(parent) {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
@@ -3291,6 +3402,7 @@ function initResizableBoxValues(parent) {
 			boxValueArray['parent']['width'] = $(parent).width();
 		}
 	});
+
 	return boxValueArray;
 }
 
@@ -3454,7 +3566,8 @@ $(document).mousedown(function (e) {
 	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
 		isClickedElementBox = true;
 	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
-		&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+		&&
+		(findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
 		isClickedElementBox = true;
 	} else {
 		isClickedElementBox = false;
@@ -3465,8 +3578,10 @@ $(document).mousedown(function (e) {
 $(document).mouseup(function (e) {
 	// Click outside the loginBox
 	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
-		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
-		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
+		&&
+		$('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&&
+		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
 		closeWindows();
 	}

@@ -42,34 +42,33 @@ function removeStatview(value) {
 
   }
 }
+
+function restoreSpecStatView(value) {
+  var all = document.querySelectorAll(value),
+    i = 0,
+    l = all.length;
+
+    for (i; i < l; i++) {
+      all[i].style.display = 'block';
+
+    }
+}
+
 // Gives the buttons functionality
 function statSort(value) {
   if (value == "All") {
-    document.getElementById("contribTsTable").style.display = "block";
-    document.getElementById("contribGithHubContribTable").style.display = "block";
-    document.getElementById("personalRankTable").style.display = "block";
-    document.getElementById("allRankTable").style.display = "block";
     restoreStatView();
 
   } else if (value == "Basic") {
-    document.getElementById("personalRankTable").style.display = "block";
-    document.getElementById("contribTsTable").style.display = "none";
-    document.getElementById("contribGithHubContribTable").style.display = "none";
-    document.getElementById("allRankTable").style.display = "none";
     removeStatview('.group2 , .group3');
+    restoreSpecStatView('.group1');
 
   } else if (value == "Charts") {
-    document.getElementById("personalRankTable").style.display = "none";
-    document.getElementById("contribTsTable").style.display = "none";
-    document.getElementById("contribGithHubContribTable").style.display = "none";
-    document.getElementById("allRankTable").style.display = "none";
     removeStatview('.group1 , .group3');
+    restoreSpecStatView('.group2');
   } else if (value == "Contribution") {
-    document.getElementById("personalRankTable").style.display = "block";
-    document.getElementById("contribTsTable").style.display = "block";
-    document.getElementById("contribGithHubContribTable").style.display = "block";
-    document.getElementById("allRankTable").style.display = "block";
     removeStatview('.group1 , .group2');
+    restoreSpecStatView('.group3');
   }
 }
 
@@ -118,7 +117,8 @@ function renderBarDiagram(data) {
 
   // Renders the diagram
 
-  var str = "<div class='group1' style='width:100%;overflow-x:scroll;'>";
+  var str = "<div style='width:100%;overflow-x:scroll;'>";
+  str += "<h2 style='padding-top:10px'>Weekly bar chart</h2>";
   str += "<svg  class='chart fumho'  style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
   for (var i = 0; i < numOfWeeks; i++) {
     str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
@@ -178,7 +178,8 @@ function renderLineDiagram(data) {
 
 
   //Selectbox to choose week
-  str = '<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
+  str = "<h2 style='padding-top:10px'>Weekly line chart</h2>";
+  str += '<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
   str += '<option value="' + firstweek + '">All weeks</option>';
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
@@ -652,7 +653,10 @@ function createTimeSheetTable(data) {
     hasCounterColumn: false
   });
 
-  myTable.renderTable();
+  // Render table only if there is tabledata
+  if(tabledata.tablebody != null || tabledata.tablebody != undefined) {
+    myTable.renderTable();
+  }
 }
 
 function renderCell(col, celldata, cellid) {
@@ -731,22 +735,17 @@ function returnedSection(data) {
 
   str += "<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
 
-
   createAllRankTable(buildAllRankData(data));
   createRankTable(buildRankData(data));
   createGitHubcontributionTable(buildContributionData(data));
   toggleAfterLocalStorage(data);
   createTimeSheetTable(data['timesheets']);
 
-  str += renderBarDiagram(data);
-  str += renderLineDiagram(data);
-  str += "<div class='group2' id='hourlyGraph'>";
-  str += renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-  str += "</div>";
-
+  document.getElementById('barchart').innerHTML = renderBarDiagram(data);
+  document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
+  document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
 
   document.getElementById('content').innerHTML = str;
-  sortRank(1); // default to allrank
 }
 
 function buildRankData(data) {
@@ -825,11 +824,14 @@ function createRankTable(data) {
     tableElementId: "personalRankTable",
     renderCellCallback: rankRenderCell,
     renderSortOptionsCallback: renderSortOptions,
+    columnSum:["number","rank","grpranking"],
+    columnSumCallback: makeSumPersonalRank,
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
     hasMagicHeadings: false,
-    hasCounterColumn: false
+    hasCounterColumn: false,
+    hasFooter: true
   });
   rankTable.renderTable();
 }
@@ -899,8 +901,6 @@ function createGitHubcontributionTable(data) {
   });
   ghContibTable.renderTable();
 }
-
-
 
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
@@ -1002,6 +1002,8 @@ function createAllRankTable(data){
     tableElementId:"allRankTable",
 		renderCellCallback:allRankRenderCell,
 		renderSortOptionsCallback:renderSortOptions,
+    columnSum:["eventrank","commentrank","locrank","commitrank"],
+    columnSumCallback: makeSumAllRank,
 		columnOrder:colOrder,
 		freezePaneIndex:4,
 		hasRowHighlight:false,
@@ -1009,6 +1011,42 @@ function createAllRankTable(data){
 		hasCounterColumn:true
 	});
 	allRankTable.renderTable();
+}
+
+function makeSumAllRank(col,value,row){
+  if (value == "UNK" || value == "NOT FOUND"){
+    return 0;
+  } else {
+    return parseFloat(value)
+  }
+  return 0;
+}
+
+function makeSumPersonalRank(col,value,row){
+  if(col == "number"){
+    if (value == "UNK" || value == "NOT FOUND") {
+      return 0;
+    } else {
+      return parseFloat(value);
+    }
+  } else if(col == "rank") {
+    if (value.rank == "UNK" || value.rank == "NOT FOUND") {
+      var retVal = retdata.amountInCourse/5;
+      return retVal;
+    } else {
+      var retVal = value.rank/5;
+      return retVal;
+    }
+  } else if(col == "grpranking") {
+    if (value.rank == "UNK" || value.rank == "NOT FOUND") {
+      var retVal = retdata.amountInGroups/5;
+      return retVal;
+    } else {
+      var retVal = value.rank/5;
+      return retVal;
+    }
+  }
+	return 0;
 }
 
 /*
@@ -1123,33 +1161,6 @@ function createDefault(){
 //This function prevents the toggle from happening when the links is is clicked.
 function keepContribContentOpen(e){
   e.stopPropagation();
-}
-
-function createAllRankTable(data){
-  var tabledata = {
-		tblhead:{
-      login:"Login",
-			eventrank:"Total events",
-			commentrank:"Total comments",
-			locrank:"Total lines of code",
-      commitrank:"Total commits"
-		},
-		tblbody: data,
-		tblfoot:{}
-  };
-	var colOrder=["login","eventrank","commentrank","locrank","commitrank"];
-	allRankTable = new SortableTable({
-		data:tabledata,
-    tableElementId:"allRankTable",
-		renderCellCallback:allRankRenderCell,
-		renderSortOptionsCallback:renderSortOptions,
-		columnOrder:colOrder,
-		freezePaneIndex:4,
-		hasRowHighlight:false,
-		hasMagicHeadings:false,
-		hasCounterColumn:false
-	});
-	allRankTable.renderTable();
 }
 
 /*
