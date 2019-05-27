@@ -1678,8 +1678,10 @@ function eraseObject(object) {
     var objectsToDelete = [];
     if (object.kind == kind.symbol) {
         // None lines
-        if(object.symbolkind != 4) {
+        if(object.symbolkind != symbolKind.line && object.symbolkind != symbolKind.umlLine) {
             var lines = diagram.filter(symbol => symbol.symbolkind == symbolKind.line);
+            var umlLines = diagram.filter(symbol => symbol.symbolkind == symbolKind.umlLine);
+            if(object.symbolkind != symbolKind.uml) {
             objectsToDelete = lines.filter(
                 line => line.topLeft == object.middleDivider
                 || line.topLeft == object.centerPoint
@@ -1687,7 +1689,14 @@ function eraseObject(object) {
                 || line.bottomRight == object.centerPoint
                 || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
                 || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
+            );  
+            } else if (object.symbolkind == symbolKind.uml) {
+            objectsToDelete = umlLines.filter(
+                umlLine => umlLine.topLeft == object.middleDivider
+                || (object.hasConnectorFromPoint(umlLine.topLeft) && (object.symbolkind == symbolKind.uml))
+                || (object.hasConnectorFromPoint(umlLine.bottomRight) && (object.symbolkind == symbolKind.uml))
             );
+            }
         // lines
         } else {
             diagram.filter(
