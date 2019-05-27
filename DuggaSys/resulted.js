@@ -21,7 +21,7 @@ var sortcolumn = 1;
 var clickedindex;
 var typechanged = false;
 var teacher;
-var entriesNoSSN;
+var entries;
 var moments;
 var results;
 var versions;
@@ -65,19 +65,9 @@ function setup() {
   document.getElementById("dropdownc").appendChild(customFilterDiv);
 
 	window.onscroll = function () {
-		magicHeading()
 	};
 
 	AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
-}
-
-
-function resort() {
-
-}
-
-function toggleSortDir(col) {
-
 }
 
 function process() {
@@ -99,16 +89,14 @@ function process() {
 
 	// Reconstitute table
 	students = new Array;
-	for (i = 0; i < entriesNoSSN.length; i++) {
+	for (i = 0; i < entries.length; i++) {
 
-		var uid = entriesNoSSN[i].uid;
+		var uid = entries[i].uid;
 
 		// Loop through all teacher names and store the appropriate name in a variable
 		for (j = 0; j < teacher.length; j++) {
-			var tuid = teacher[j].tuid;
-			if (uid == tuid) {
-				var setTeacher = teacher[j].teacher;
-			}
+			// var tuid = teacher[j].tuid;
+			var setTeacher = teacher[j].id;
 		}
 		if (setTeacher !== null) {
 			// Place spaces in the string when a lowercase is followed by a uppercase
@@ -127,7 +115,7 @@ function process() {
 		}
 		var student = new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({ grade: ("<div class='dugga-result-div'>" + entriesNoSSN[i].firstname + " " + entriesNoSSN[i].lastname + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].username + " / " + entriesNoSSN[i].class + "</div><div class='dugga-result-div'>" + entriesNoSSN[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, class: entriesNoSSN[i].class, access: entriesNoSSN[i].access, setTeacher, username: entriesNoSSN[i].username });
+		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + entries[i].examiner + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname ,class: entries[i].class, access: entries[i].access, examiner: entries[i].examiner, username: entries[i].username, ssn: entries[i].ssn });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
 			if (momtmp[j].kind == 4) {
@@ -139,9 +127,9 @@ function process() {
 				var momentresult = restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if (typeof momentresult != 'undefined') {
-					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
+					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
 				} else {
-					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entriesNoSSN[i].firstname, lastname: entriesNoSSN[i].lastname, deadline: new Date(momtmp[j].deadline), });
+					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadline), });
 				}
 			} else {
 				var momentresult = restmp[momtmp[j].lid];
@@ -165,8 +153,8 @@ function process() {
 						quizfile: momtmp[j].quizfile,
 						timesGraded: momentresult.timesGraded,
 						gradeExpire: momentresult.gradeExpire,
-						firstname: entriesNoSSN[i].firstname,
-						lastname: entriesNoSSN[i].lastname,
+						firstname: entries[i].firstname,
+						lastname: entries[i].lastname,
 						deadline: new Date((momtmp[j].deadlinets * 1000)),
 					});
 				} else {
@@ -189,8 +177,8 @@ function process() {
 						quizfile: momtmp[j].quizfile,
 						timesGraded: 0,
 						gradeExpire: "UNK",
-						firstname: entriesNoSSN[i].firstname,
-						lastname: entriesNoSSN[i].lastname,
+						firstname: entries[i].firstname,
+						lastname: entries[i].lastname,
 						deadline: new Date(momtmp[j].deadline),
 					});
 				}
@@ -206,6 +194,7 @@ function process() {
 
 	// Add custom filters to the filter menu.
 	var dstr = "";
+	dstr += makeCustomFilter("showStudents", "Show Students");
 	dstr += makeCustomFilter("showTeachers", "Show Teachers");
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
@@ -215,12 +204,12 @@ function process() {
 	var dstr = "";
 
 	// Sorting
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
-	dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
-	dstr += "<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";
-	dstr += "<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
-	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(4)' value='0' id='sortcol0_4'><label class='headerlabel' for='sortcol0_4' >Teacher</label></div>";
+	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'>";
+	dstr += "<input type='radio' class='headercheck' name='sortdir' value='0' ' onclick='sorttype(-1)' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Ascending</label>";
+	dstr += "<input name='sortdir' type='radio' class='headercheck' value='1' ' onclick='sorttype(-1)' id='sortdir'> <label class='headerlabel' for='sortdir'>Sort descending</label>";
+	dstr += "<div><input name='sortdir' type='radio' class='headercheck' value='2' ' onclick='sorttype(-1)' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Pending</label></div></div>";
+  dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
+	dstr += "<div class='checkbox-dugga'style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
 
 	dstr += "<table><tr><td>";
 	for (var j = 0; j < momtmp.length; j++) {
@@ -240,15 +229,8 @@ function process() {
 		}
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(0)' id='sorttype0' value='0'><label class='headerlabel' for='sorttype0' >FIFO</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(1)' id='sorttype1' value='1'><label class='headerlabel' for='sorttype1' >Grade</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(2)' id='sorttype2' value='2'><label class='headerlabel' for='sorttype2' >Submitted</label></div>";
-	dstr += "<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
 	dstr += "</td></tr></table>";
-	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
 	document.getElementById("dropdowns").innerHTML = dstr;
-
-	resort();
 }
 
 function makeCustomFilter(filtername, labeltext) {
@@ -259,6 +241,7 @@ function makeCustomFilter(filtername, labeltext) {
 	}
 	if (filterList[filtername]) {
 		str += " checked";
+
 	}
 	str += "><label class='headerlabel' for='" + filtername + "'>" + labeltext + "</label></div>";
 	return str;
@@ -275,12 +258,12 @@ function toggleFilter(filter) {
 }
 
 function hoverc() {
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'block');
+	$('#dropdowns').css({display:'none'});
+	$('#dropdownc').css({display: 'block'});
 }
 
 function leavec() {
-	$('#dropdownc').css('display', 'none');
+	$('#dropdownc').css({display: 'none'});
 }
 
 function checkMomentParts(pos, id) {
@@ -291,38 +274,21 @@ function checkMomentParts(pos, id) {
 }
 
 function hovers() {
-	$('#dropdownc').css('display', 'none');
-	$('#dropdowns').css('display', 'block');
+	$('#dropdownc').css({display:'none'});
+	$('#dropdowns').css({display: 'block'});
 }
 
 function leaves() {
 	$('#dropdowns').css('display', 'none');
-	var col = 0;
-	var dir = 1;
-
-	var ocol = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol");
-	var odir = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir");
-
-
-	$("input[name='sortcol']:checked").each(function () {
-		col = this.value;
-	});
-	$("input[name='sortdir']:checked").each(function () {
-		dir = this.value;
-	});
-
-	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortcol", col);
-	localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sortdir", dir);
-
-
-	if (!(ocol == col && odir == dir) || typechanged) {
-		typechanged = false;
-		resort();
-	}
-	magicHeading();
 }
 
 function sorttype(t) {
+  if(t == 0){
+    myTable.setNameColumn('Fname');
+  }else{
+    myTable.setNameColumn('Lname');
+  }
+
 	var c = $("input[name='sortcol']:checked").val();
 	if (c == 0) {
 		localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
@@ -336,11 +302,21 @@ function sorttype(t) {
 			$("#sorttype" + t).prop("checked", true);
 		}
 	}
-	typechanged = true;
-	magicHeading();
-}
 
-function magicHeading() {
+	var col;
+	var dir;
+	$("input[name='sortcol']:checked").each(function () {
+		col = this.value;
+	});
+	$("input[name='sortdir']:checked").each(function () {
+		dir = this.value;
+	});
+	typechanged = true;
+	if(col !== undefined && dir !== undefined){
+		typechanged = false;
+		var allColumnIds = myTable.getColumnOrder();
+		myTable.toggleSortStatus(allColumnIds[col],dir);
+	}
 }
 
 $(function () {
@@ -359,17 +335,23 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	var momentGrab = moment;
 	var currentTime = new Date();
 	var currentTimeGetTime = currentTime.getTime();
+	if(document.getElementById('newFeedback') == null){
+		feedbackText = "";
+	} else {
+		feedbackText = document.getElementById('newFeedback').value;
+	}
 
 	if ($(e.target).hasClass("Uc")) {
-		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
+
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
-		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("Gc")) {
-		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("VGc")) {
-		changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 	} else if ($(e.target).hasClass("U")) {
-		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 	} else if ($(e.target).hasClass("Uh")) {
 		for (var a = 0; a < students.length; a++) {
 			var student = students[a];
@@ -390,7 +372,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					if (newGradeExpirePlusOneDay > currentTimeGetTime) {
 						//The user must press the ctrl-key to activate if-statement
 						if (event.ctrlKey || event.metaKey) {
-							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
 						} else {
 							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
 						}
@@ -404,9 +386,14 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		//alert("This grading is not OK!");
 	}
 }
+function clearFeedback() {
+	if(document.getElementById('newFeedback') !== null) {
+		document.getElementById('newFeedback').value = "";
+	}
+}
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind, gfx, cls, qvariant, qid) {
-	return "<img src=\"" + gfx + "\" id=\"grade-" + moment + "-" + uid + "\" class=\"" + cls + "\" onclick=\"gradeDugga(event," + gradesys + "," + cid + ",'" + vers + "'," + moment + "," + uid + "," + mark + ",'" + ukind + "'," + qvariant + "," + qid + ");\"  />";
+	return "<img src=\"" + gfx + "\" id=\"grade-" + moment + "-" + uid + "\" class=\"" + cls + "\" onclick=\"gradeDugga(event," + gradesys + "," + cid + ",'" + vers + "'," + moment + "," + uid + "," + mark + ",'" + ukind + "'," + qvariant + "," + qid + ");clearFeedback();\"  />";
 }
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid) {
@@ -499,11 +486,8 @@ function toggleGradeBox(){
 	}
 }
 
-function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
-	var newFeedback = "UNK";
-	if (document.getElementById('newFeedback') !== null) {
-		newFeedback = document.getElementById('newFeedback').value;
-	}
+function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire, feedbackText) {
+	var newFeedback = feedbackText;
 	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
 }
 
@@ -611,7 +595,7 @@ function returnedResults(data) {
 		myTable.renderTable();
 	} else {
 
-		entriesNoSSN = data.entriesNoSSN;
+		entries = data.entries;
 		moments = data.moments;
 		versions = data.versions;
 		results = data.results;
@@ -625,6 +609,15 @@ function returnedResults(data) {
 				ladmoments += "<option value='" + dugga.entryname + "'>" + dugga.entryname + "</option>";
 			}
 		}
+		var teacherList;
+		teacherList += "<option value='none'>none</option>";
+		for(var i = 0; i < teacher.length; i++){
+			if(!teacherList.includes(teacher[i].id)){
+				teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+			}
+		}
+		var uniqueTeacherList = [...new Set(teacherList)]
+		document.getElementById("teacherDropdown").innerHTML = teacherList;
 		document.getElementById("ladselect").innerHTML = ladmoments;
 		document.getElementById("laddate").valueAsDate = new Date();
 
@@ -659,7 +652,17 @@ function returnedResults(data) {
 		}
 	}
 }
-
+//----------------------------------------
+// Success return function for LadExport lastGraded
+//----------------------------------------
+function returnedExportedGrades(gradeData){
+	try {
+		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;
+	  }
+	  catch(err) {
+		console.log("gradeLastExported updated in database");
+	  }
+}
 var myTable;
 //----------------------------------------
 // Renderer
@@ -791,15 +794,15 @@ function renderCell(col, celldata, cellid) {
 			str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 			str += "</div>";
-			return str;	
+			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div style='padding:10px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "dugga-pending";
-			} 
+			}
 			str += "'>";
-			// Creation of grading buttons		
+			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
@@ -838,10 +841,10 @@ function renderCell(col, celldata, cellid) {
 				}
 				str += "</div>";
 			}
-			return str;	
-		} 
-	}	
-	
+			return str;
+		}
+	}
+
 	else if(filterList["passedDeadline"]){
 				// First column (Fname/Lname/SSN)
 			if (col == "FnameLname") {
@@ -850,15 +853,15 @@ function renderCell(col, celldata, cellid) {
 				str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 				str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 				str += "</div>";
-				return str;	
+				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
 				str = "<div style='padding:10px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
-				} 
+				}
 				str += "'>";
-				// Creation of grading buttons		
+				// Creation of grading buttons
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "<div class='gradeContainer resultTableText'>";
 					if (celldata.grade === null) {
@@ -906,9 +909,9 @@ function renderCell(col, celldata, cellid) {
 					}
 					str += "</div>";
 				}
-				return str;	
-			} 
-	}	
+				return str;
+			}
+	}
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
@@ -917,6 +920,7 @@ function renderCell(col, celldata, cellid) {
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
+		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
 		str += "</div>";
 		return str;
 
@@ -1004,7 +1008,7 @@ function renderCell(col, celldata, cellid) {
 		return str;
 	}
 
-	return celldata;
+	return celldata; //editor says it is never reached, might be safe to remove
 }
 
 function smartSearch(splitSearch, row) {
@@ -1020,6 +1024,7 @@ function smartSearch(splitSearch, row) {
 	for (var i = 0; i < splitSearch.length; i++) {
 		var index = i;
 		columnToSearch = splitSearch[i][1];
+    columnToSearch = columnToSearch.replace(' ', '');
 
 		for (var i = 0; i < moments.length; i++) {
 			lid = "lid:" + moments[i]["lid"];
@@ -1054,6 +1059,7 @@ function smartSearch(splitSearch, row) {
 				var txt = document.createElement("textarea");
 				txt.innerHTML = row[lid].entryname;
 				var columnToFind = txt.value;
+        columnToFind = columnToFind.replace(' ', '');
 				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
 					if (sortingType === sortingValue) {
 						for (colname in row) {
@@ -1066,6 +1072,7 @@ function smartSearch(splitSearch, row) {
 								var txt = document.createElement("textarea");
 								txt.innerHTML = name;
 								var newName2 = txt.value;
+                newName2 = newName2.replace(' ', '');
 								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
 									return true;
 								}
@@ -1098,6 +1105,8 @@ function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
+	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
+		return false;
 	if (filterList["onlyPending"]) {
 		var rowPending = false;
 		for (var colname in row) {
@@ -1110,16 +1119,22 @@ function rowFilter(row) {
 			return false;
 		}
 	}
-
-	// divides the search on &&
+	var teacherDropdown = document.getElementById("teacherDropdown").value;
+	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
+		return false;
+	}
+  	// Removes spaces so that it can tolerate "wrong" inputs when searching
+  	searchterm = searchterm.replace(' ', '');
+  	// divides the search on &&
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
+
 	tempSplitSearch.forEach(function (s) {
 		if (s.length > 0)
 			splitSearch.push(s.trim().split(":"));
 	})
 
-  // The else makes sure that you can search on names without a search-category.
+  	// The else makes sure that you can search on names without a search-category.
 	if (searchterm != "" && splitSearch != searchterm) {
 		return smartSearch(splitSearch, row);
 	} else {
@@ -1132,14 +1147,15 @@ function rowFilter(row) {
 				if (row[colname]["lastname"] != null) {
 					name += row[colname]["lastname"];
 				}
+        		name = name.replace(' ', '');
 				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
 					return true;
 				}
 
-				// if (row[colname]["ssn"] != null) {
-				// 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-				// 		return true;
-				// }
+				 if (row[colname]["ssn"] != null) {
+				 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+				 		return true;
+					}
 				if (row[colname]["username"] != null) {
 					if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
 						return true;
@@ -1159,7 +1175,7 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-	
+
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
@@ -1214,15 +1230,11 @@ function renderSortOptions(col, status, colname) {
 			}
 		} else {
 			if (status == 0) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>P </span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>ASC </span>" + colname + "</span>";
 			} else if (status == 1) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>U </span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>DES </span>" + colname + "</span>";
 			} else if (status == 2) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",3)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>G </span>" + colname + "</span>";
-			} else if (status == 3) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",4)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>VG </span>" + colname + "</span>";
-			} else {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>- </span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>PEN </span>" + colname + "</span>";
 			}
 		}
 	}
@@ -1302,6 +1314,12 @@ function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
+			if (cell.ssn.length > 11) {
+				str = cell.ssn + ";";
+			} else {
+				str = "19" + cell.ssn + ";";
+			}
+
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
 			str = str.replace(/\&Aring\;/g, "Å");
@@ -1342,7 +1360,7 @@ function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
-			str = "Namn";
+			str = "Personnummer;Namn";
 		} else {
 			heading = heading.replace(/\&aring\;/g, "å");
 			heading = heading.replace(/\&Aring\;/g, "Å");
@@ -1359,9 +1377,14 @@ function exportColumnHeading(format, heading, colname) {
 	}
 	return str;
 }
+//----------------------------------------
+// LadExport
+//----------------------------------------
 
+//Function for exporting grades to ladoc
 function ladexport() {
 	let expo = "";
+
 	expo += document.getElementById("ladselect").value + "\n";
 	expo += document.getElementById("ladgradescale").value + "\n";
 	expo += document.getElementById("laddate").value + "\n";
@@ -1372,7 +1395,49 @@ function ladexport() {
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
+	AJAXService("getunexported", {}, "GEXPORT");
 }
+
+function copyLadexport() {
+	var lastExpDate = document.getElementById('lastExpDate');
+	var copyIcon = document.getElementById("copyClipboard");
+	copyIcon.style.backgroundColor = '#629c62';
+		setInterval(function(){
+			copyIcon.style.backgroundColor = '#afaeae';
+		 }, 5000);
+
+	var copieText = document.getElementById('resultlistarea');
+	copieText.select();
+	document.execCommand("copy");
+
+	var today = new Date();
+	var dd = addZero(today.getDate());
+	var mm = addZero(today.getMonth() + 1); //January is 0!
+	var yyyy = today.getFullYear();
+	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+
+	today = yyyy + '-' + mm + '-' + dd;
+
+	 var gradeLastExported = today + " " + time;
+	 lastExpDate.innerHTML =  gradeLastExported;
+	 lastExpDate.style.color = 'green';
+
+	 setInterval(function(){
+		lastExpDate.style.color  = '#000';
+	 }, 5000);
+
+	AJAXService("updateunexported", {
+		gradeLastExported: gradeLastExported,
+	}, "GEXPORT");
+
+}
+
+function addZero(i) {
+	if (i < 10) {
+	  i = "0" + i;
+	}
+	return i;
+  }
 
 function closeLadexport() {
 	document.getElementById("resultlistarea").value = "";
@@ -1404,3 +1469,9 @@ $(window).scroll(function() {
 		});
 	}
 });
+
+function hideSSN(ssn){
+	var hiddenSSN;
+	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
+	return hiddenSSN;
+}

@@ -42,7 +42,7 @@ $coursevers=getOP('coursevers');
 $qvariant=getOP("qvariant");
 $quizId=getOP("quizId");
 $teacher = getOP('teacher');
-
+$gradeLastExported=getOP('gradeLastExported');
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
 
@@ -63,7 +63,8 @@ $duggagrade="";
 $gradeupdated=false;
 
 $entries=array();
-$entriesNoSSN=array();
+
+//$entriesNoSSN=array();
 $gentries=array();
 $sentries=array();
 $lentries=array();
@@ -106,16 +107,12 @@ if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 
 // Services
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-	if ($opt === \resulted\Constants::getunexported_service_name) {
-		// Get all answers where the result has never been exported or has changed.
-		// This is the case when the result:
-		// * has never been graded
-		// * has never been exported
-		// * was updated since it was last exported
-		$rawSqlQuery = 'select aid, cid, vers, moment, quiz, uid, marked, gradeLastExported
-		from userAnswer
-		where marked is null or gradeLastExported is null or marked > gradeLastExported';
-		$statement = $pdo->prepare($rawSqlQuery);
+
+	// Check if opt == updateunexported
+	if ($opt === \resulted\Constants::updateunexported_service_name) {
+		$statement = $pdo->prepare("	UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
+		$statement->bindParam(':gradeLastExported', $gradeLastExported);
+		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
 			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' failed to prepare query';
@@ -124,6 +121,51 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			echo json_encode(array('error' => 'Could not retrieve unexported grades'));
 			return;
 		}
+		
+		// Statement successfully prepared, attempt to execute it
+		if (!$statement->execute()) {
+			// Failed to execute query, log and return an error message
+			$error = $statement->errorInfo();
+			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' failed to execute query. PDO status and message: ' . error[1] . ' ' . error[2];
+			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
+			// return an error to the user and exit
+			echo json_encode(array('error' => 'Could not retrieve unexported grades'));
+			return;
+		} else {
+			// Success, log and return results as JSON.
+			// get all rows with fields indexed only by the same names as
+			// they were addressed by in the query
+			$resultRows = $statement->fetchAll(PDO::FETCH_ASSOC);
+			echo json_encode($resultRows);
+			// log success and exit
+			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' completed successfully';
+			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
+			return;
+		}
+	}
+	// Check if opt == getunexported
+	if ($opt === \resulted\Constants::getunexported_service_name) {
+		// Get all answers where the result has never been exported or has changed.
+		// This is the case when the result:
+		// * has never been graded
+		// * has never been exported
+		// * was updated since it was last exported
+		/*$rawSqlQuery = 'SELECT aid, cid, vers, moment, quiz, uid, marked, gradeLastExported
+		from userAnswer
+		where marked is null or gradeLastExported is null or marked > gradeLastExported';
+
+		*/
+		$statement = $pdo->prepare("SELECT * FROM userAnswer");
+		
+		if ($statement === false) {
+			// Failed to prepare query, log and return an error message
+			$info = $opt . ' ' . $cid . ' ' . $coursevers . ' failed to prepare query';
+			logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php", $userid, $info);
+			// return an error to the user and exit
+			echo json_encode(array('error' => 'Could not retrieve unexported grades'));
+			return;
+		}
+		
 		// Statement successfully prepared, attempt to execute it
 		if (!$statement->execute()) {
 			// Failed to execute query, log and return an error message
@@ -443,6 +485,8 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 
 			// The array which is displayed on resulted without SSN
+			//keeping this array until verified that changes made does not break anything.
+			/*
 			$entryNoSSN = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -453,7 +497,9 @@ if(strcmp($opt,"CHGR")!==0){
 				'access' => $row['access'],
 				'examiner' => $row['examiner']
 			);
+			*/
 /*
+//This array seems like and old duplicate and could possibly be removed
 			$entry = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -465,7 +511,7 @@ if(strcmp($opt,"CHGR")!==0){
 			);
 			*/
 			array_push($entries, $entry);
-			array_push($entriesNoSSN, $entryNoSSN);
+			//array_push($entriesNoSSN, $entryNoSSN);
 		}
 
 		// All results from current course and vers?
@@ -665,18 +711,23 @@ if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 $teachers=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("
-    SELECT examiner, uid
-    FROM user_course;
+    SELECT user.uid, user.firstname, user.lastname, user.username
+		FROM user_course 
+		INNER JOIN user ON user_course.examiner = user.uid
+		WHERE user_course.cid=:cid AND user_course.vers=:cvers;
   ");
 	$query->bindParam(':cid', $cid);
+	$query->bindParam(':cvers', $vers);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
-				'teacher' => $row['examiner'],
-				'tuid' => $row['uid'],
+				'id' => $row['uid'],
+				'username' => $row['username'],
+				'firstname' => $row['firstname'],		
+				'lastname' => $row['lastname']
 			);
 			array_push($teachers, $teacher);
 		}
@@ -702,7 +753,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 }
 
 $array = array(
-	'entriesNoSSN' => $entriesNoSSN,
+	//'entriesNoSSN' => $entriesNoSSN,
 	'entries' => $entries,
 	'moments' => $gentries,
 	'versions' => $sentries,

@@ -58,11 +58,12 @@
 	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php",$userid,$info);
 
 	// Checks and sets user rights
-	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
+	if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st'))){
 		$writeAccess="w";
 	}else{
 		$writeAccess="s";
 	}
+
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
 	$exampleCount = 0;
@@ -89,8 +90,9 @@
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
-		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
+		if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
 			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
+
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Parse content array
 				$content = getOP('content');
@@ -130,7 +132,7 @@
 						$query->bindValue(':boxtitle', 'Title');
 						$query->bindValue(':boxcontent', $kind);
 						$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
-						$query->bindValue(':filename', $file); 
+						$query->bindValue(':filename', $file);
 						$query->bindValue(':wordlistid', $wordlist);
 
 						// Update code example to reflect change of template
@@ -274,7 +276,7 @@
 				$query->bindParam(':boxid', $boxId);
 				$query->execute();
 
-				echo json_encode($boxTitle);
+				echo json_encode(array('title' => $boxTitle, 'id' => $boxId));
 				return;
 			}
 		}
@@ -408,8 +410,8 @@
 		$codeFiles=array(".html", ".htm", ".xhtml", ".php", ".css", ".js", ".c", ".cpp", ".java", ".sl", ".glsl", ".rib", ".sql", ".xml", ".svg", ".rss", ".json", ".aspx", ".asp");	// File extensions for code view
 		$descFiles=array(".txt", ".md", ".doc", ".docx", ".odt");	// File extensions for document view
 		$prevFiles=array(".pdf", ".png", ".jpg", ".jpeg", ".svg", ".bmp", ".gif", ".html", ".txt");	// File extensions for preview view
-		
-		// We add only local files to code (no reading code from external sources) and allow preview to files or links.				
+
+		// We add only local files to code (no reading code from external sources) and allow preview to files or links.
 		if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error reading entries\n".$error[2];
@@ -423,29 +425,29 @@
 					array_push($prevDir,array('fileid' => -1,'filename' => "---===######===---"));
 				}
 				$oldkind=$row['kind'];
-				
+
 				// List only .md, .txt, etc files for Document view
 				foreach($descFiles as $filetype){
 					if(endsWith($row['filename'],$filetype)){
-						array_push($descDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+						array_push($descDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
 					}
 				}
-				
+
 				// List only .js, .css, .html, .c, .cpp, .xml, .sl, .rib, .glsl, .sql, etc files for Code view
 				foreach($codeFiles as $filetype){
 					if(endsWith($row['filename'],$filetype)){
-						array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+						array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
 					}
 				}
 
 				// List only .pdf, .png, .jpg, .svg, etc for Preview view
 				foreach($prevFiles as $filetype){
 					if(endsWith($row['filename'],$filetype)){
-						array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+						array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
 					}
 				}
 				//if($row['kind']!=1) array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
-				//array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));				
+				//array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
 		}
 		array_push($directories, $codeDir);
 		array_push($directories, $descDir);
@@ -514,6 +516,7 @@
 			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename'], $row['fontsize']));
 		}
 		$array = array(
+			'opt' => $opt,
 			'before' => $backwardExamples,
 			'after' => $forwardExamples,
 			'templateid' => $templateId,

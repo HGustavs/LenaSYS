@@ -249,36 +249,40 @@ function selectVariant(vid, el) {
 
 		//Get information for leftDivDialog and display it.
 		if(isSelected) {
-			var obj = JSON.parse(target_variant['param']);
-			var it = Object.keys(obj).length;
-			for(var i = 0; i<it; i++){
-				var result = Object.keys(obj)[i];
+      try {
+        var obj = JSON.parse(target_variant['param']);
+  			var it = Object.keys(obj).length;
+  			for(var i = 0; i<it; i++){
+  				var result = Object.keys(obj)[i];
 
-				if(result == "type"){
-					document.getElementById('type').value = obj[result];
-				}
-				else if(result == "filelink"){
-					document.getElementById('filelink').value = obj[result];
-				}
-				else if(result == "extraparam"){
-					document.getElementById('extraparam').value = obj[result];
-				}
-			}
+  				if(result == "type"){
+  					document.getElementById('type').value = obj[result];
+  				}
+  				else if(result == "filelink"){
+  					document.getElementById('filelink').value = obj[result];
+  				}
+  				else if(result == "extraparam"){
+  					document.getElementById('extraparam').value = obj[result];
+  				}
+  			}
 
-      var submissionTypes = obj.submissions;
-      if (submissionTypes) {
-			  document.getElementById('submissionType0').value = submissionTypes[0].type;
-			  document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
-			  document.getElementById('instruction0').value = submissionTypes[0].instruction;
+        var submissionTypes = obj.submissions;
+        if (submissionTypes) {
+  			  document.getElementById('submissionType0').value = submissionTypes[0].type;
+  			  document.getElementById('fieldname0').value = submissionTypes[0].fieldname;
+  			  document.getElementById('instruction0').value = submissionTypes[0].instruction;
 
-			  for (var i = 1; i < submissionTypes.length; i++) {
-				  addVariantSubmissionRow();
-				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
-				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
-				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
-				  document.getElementById('variantparameterText').value = target_variant['param'];
-			 }
-		  }
+  			  for (var i = 1; i < submissionTypes.length; i++) {
+  				  addVariantSubmissionRow();
+  				  document.getElementById('submissionType'+i).value = submissionTypes[i].type;
+  				  document.getElementById('fieldname'+i).value = submissionTypes[i].fieldname;
+  				  document.getElementById('instruction'+i).value = submissionTypes[i].instruction;
+  				  document.getElementById('variantparameterText').value = target_variant['param'];
+  			 }
+  		  }
+      } catch (e) {
+        console.log("Unable to parse json data.");
+      }
 		} else {
 				// Hide information if it is deselected.
 				document.getElementById('type').value = "";
@@ -335,7 +339,9 @@ function showVariantEditor() {
     // The submission row doesn't go away when leaving the modal
     // so without the if statement a new submission div would be created each time.
     addVariantSubmissionRow();
-  }
+  } else if (submissionRow > 1) {
+		removeExtraSubmissionRows();
+	}
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 }
@@ -375,6 +381,16 @@ function removeVariantSubmissionRow(buttonElement){
   subRow.remove();
   submissionRow = submissionRow-1;
   $("#variantparameterText").val(createJSONString($("#jsonForm").serializeArray()));
+}
+
+function removeExtraSubmissionRows() {
+	for (var i = submissionRow-1; i > 0; i--) {
+		// The function needs an element of the row to be removed, so this is what we have to do
+		var rows = [...document.getElementById('submissions').childNodes];
+		var elements = [...rows[i].childNodes];
+		var element = elements[0];
+		removeVariantSubmissionRow(element);
+	}
 }
 
 function createJSONString(formData) {
@@ -417,13 +433,7 @@ function createJSONFormData(){
 
     // Remove extra submission rows
     if (submissionRow > 0) {
-      for (var i = submissionRow-1; i > 0; i--) {
-        // The function needs an element of the row to be removed, so this is what we have to do
-        var rows = [...document.getElementById('submissions').childNodes];
-        var elements = [...rows[i].childNodes];
-        var element = elements[0];
-        removeVariantSubmissionRow(element);
-      }
+      removeExtraSubmissionRows();
     }
 
     var it = Object.keys(obj).length;
@@ -612,7 +622,7 @@ function returnedDugga(data) {
 		var result = 0;
 		filez = data['files'];
 		duggaPages = data['duggaPages'];
-		document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+		document.getElementById("sectionedPageTitle").innerHTML = "Dugga editor - " + data.coursename + " - " + data.coursecode;
 		str = "";
 		if (globalVariant){
 				renderVariant(globalVariant);

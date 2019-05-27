@@ -13,6 +13,7 @@ var stepsUsed;
 var inParams = "UNK";
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
+var pressTimer;
 
 $(function () {  // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off"){
@@ -771,7 +772,15 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="GROUP"){
+	}else if(kind=="GEXPORT"){
+		$.ajax({
+			url: "resultedservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedExportedGrades
+		});
+}else if(kind=="GROUP"){
 			$.ajax({
 				url: "groupedservice.php",
 				type: "POST",
@@ -987,7 +996,7 @@ function processLogin() {
 
 
 function displayAlertText(selector, text){
-  $(selector).html("<div class='alert' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
+  $(selector).html("<div style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
 }
 
 function processLogout() {
@@ -1236,8 +1245,11 @@ $(window).load(function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
       	if(event.keyCode == 27) {
-          closeWindows();
-          //closeSelect();
+					if (window.location.href.indexOf('sectioned') !== -1) {
+						closeSelect();
+					} else {
+						closeWindows();
+					}          
         }
       });
 });

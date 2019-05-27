@@ -779,10 +779,26 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-		if (status == 1) {
-			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-		} else if (status == 2 || status == 3) {
+		if (status == 0) {
+			//Ascending grade
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		} else if (status == 1) {
+			//descending grades
+			if(secoundCellTemp !== "" && firstCellTemp !== "" && secoundCellTemp !== "0" && firstCellTemp !== "0" ){
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			} else if((secoundCellTemp === "" || secoundCellTemp === "0") && (firstCellTemp !== "" || firstCellTemp !== "0")){
+				val = 1
+			} else if((firstCellTemp === "" || firstCellTemp === "0") && (secoundCellTemp !== "" || secoundCellTemp !== "0")){
+				val = -1
+			}
+		} else if (status == 2) {
+			//pending grades
+			if(secoundCellTemp === "0" && firstCellTemp !== "0"){
+				val = -1;
+			} else if(secoundCellTemp !== "0" && firstCellTemp === "0" || secoundCellTemp === ""){
+				val = 1;			 
+
+			}
 		}
 	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
@@ -794,7 +810,7 @@ function newCompare(firstCell, secoundCell) {
 			if (firstCell === null || secoundCell === null) {
 				firstCellTemp = firstCell;
 				secoundCellTemp = secoundCell;
-			} else if(typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp))){
+			} else if (typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp)) && (col.includes("filesize"))) {
 				tempTemp1 = firstCell.replace(/\D/g,'');
 				tempTemp2 = secoundCell.replace(/\D/g,'');
 				firstCellTemp = parseInt(tempTemp1, 10);
