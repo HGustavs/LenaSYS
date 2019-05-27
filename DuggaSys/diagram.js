@@ -517,7 +517,8 @@ function canvasToPixels(pixelX = 0, pixelY = 0) {
 // Move selected objects to front of canvas
 //-----------------------------------------
 
-function moveToFront() {
+function moveToFront(event) {
+    event.stopPropagation();
     let front = [];
     let back = [];
     let diagramLength = diagram.length;
@@ -543,7 +544,8 @@ function moveToFront() {
 // Move selected objects to back of canvas
 //-----------------------------------------
 
-function moveToBack() {
+function moveToBack(event) {
+    event.stopPropagation();
     let front = [];
     let back = [];
     let diagramLength = diagram.length;
@@ -1516,7 +1518,7 @@ function toggleA4Orientation(event) {
 //-----------------------------------------------------------------------------------
 // When an item is selected, enable all options related to having an object selected
 //-----------------------------------------------------------------------------------
-
+var selectedItems = false;
 function enableSelectedItemOptions() {
       if (selected_objects.length > 0) {
         $("#change-appearance-item").removeClass("drop-down-item drop-down-item-disabled");
@@ -1635,7 +1637,8 @@ function updateGraphics() {
 // resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------------------------------------------------
 
-function resetViewToOrigin(){
+function resetViewToOrigin(event){
+    event.stopPropagation();
     origoOffsetX = 0;
     origoOffsetY = 0;
     updateGraphics();
@@ -1742,13 +1745,8 @@ function changeLoginBoxTitleAppearance() {
 // Ends up with erasing all selected objects
 //---------------------------------------------------
 
-function eraseSelectedObject() {
-    //Issue: Need to remove the crosses
-    if(selected_objects.length == 0) {
-        showMenu().innerHTML = "No item selected<type='text'>";
-        changeLoginBoxTitleDelete();
-        $(".loginBox").draggable();
-    }
+function eraseSelectedObject(event) {
+    event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
         eraseObject(selected_objects[i]);
     }
@@ -3924,11 +3922,15 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 
-function openAppearanceDialogMenu() {
+function openAppearanceDialogMenu(event) {
+    event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++){
         if (selected_objects[i].isLocked) {
             return;
         }
+    }
+    if (selected_objects.length == 0) {
+        return;
     }
     $(".loginBox").draggable();
     var form = showMenu();
@@ -4208,7 +4210,8 @@ function setSelectedOption(type, value) {
 // globalAppearanceMenu: open a menu to change appearance on all entities.
 //----------------------------------------------------------------------
 
-function globalAppearanceMenu() {
+function globalAppearanceMenu(event) {
+    event.stopPropagation();
     globalAppearanceValue = 1;
     $(".loginBox").draggable();
     var form = showMenu();

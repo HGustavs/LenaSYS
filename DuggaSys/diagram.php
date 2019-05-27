@@ -158,24 +158,24 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
+                                <span class="drop-down-option" onclick='globalAppearanceMenu(event);'>Global Appearance</span>
                             </div>
                             <div class="drop-down-item">
                                 <div id="change-appearance-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                                    <span class="drop-down-option" onclick='openAppearanceDialogMenu(event);'>Change Appearance</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
                                 <div id="move-selected-front-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
+                                    <span class="drop-down-option" onclick='moveToFront(event)'>Move selected to front</span>
                                     <i id="hotkey-front" class="hotKeys">Shift + 1</i>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="move-selected-back-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
+                                    <span class="drop-down-option" onclick='moveToBack(event)'>Move selected to back</span>
                                     <i id="hotkey-back" class="hotKeys">Shift + 2</i>
                                 </div>
                             </div>
@@ -189,7 +189,7 @@
                             </div>
                             <div class="drop-down-item">
                                 <div id="delete-object-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
+                                    <span class="drop-down-option" onclick='eraseSelectedObject(event);'>Delete Object</span>
                                     <i id="hotkey-delete" class="hotKeys">Delete/Backspace</i>
                                 </div>
                             </div>
@@ -208,7 +208,7 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                                <span class="drop-down-option" onclick='resetViewToOrigin(event);'>Reset view to origin</span>
                                 <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
                         </div>
