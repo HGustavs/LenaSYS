@@ -38,17 +38,21 @@ if (!$_SERVER['HTTP_REFERER']) {
 	<div id="infoText" style="background-color:#ffffff; border:1px solid black; top:100px; display:none;position:absolute;"></div>
 
 	<!-- content START -->
-	<div id="content">
+	<div id="content"></div>
 
-	</div>
+	<div class='group3 group1' id='personalRankTable' style='width:50%; white-space: nowrap;'></div>
 
-	<div id='personalRankTable' style='width:50%; white-space: nowrap;'></div>
+	<div class='group2 group1' id='barchart' style='white-space: nowrap;'></div>
 
-	<div id='allRankTable' style='width:50%; white-space: nowrap;'></div>
+	<div class='group2' id='lineDiagram+select' style='white-space: nowrap;'></div>
 
-	<div id='contribGithHubContribTable'style='width:50%; white-space: nowrap;'></div>
+	<div class='group2' id='hourlyGraph' style='white-space: nowrap;'></div>
 
-	<div id='contribTsTable' style='width:50%; white-space: nowrap;'></div>
+	<div class='group3' id='contribGithHubContribTable'style='width:50%; white-space: nowrap;'></div>
+
+	<div class='group3' id='allRankTable' style='width:50%; white-space: nowrap;'></div>
+
+	<div class='group3' id='contribTsTable' style='width:50%; white-space: nowrap;'></div>
 
 	<!-- content END -->
 
