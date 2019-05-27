@@ -49,7 +49,7 @@ var settings = {
         Text: 0,
     },
 
-    properties: {        
+    properties: {
         fillColor: '#ffffff',                         // Change background colors on entities.
         strokeColor: '#000000',                       // Change standard line color.
         fontColor: '#000000',                         // Change the color of the font.
@@ -517,7 +517,8 @@ function canvasToPixels(pixelX = 0, pixelY = 0) {
 // Move selected objects to front of canvas
 //-----------------------------------------
 
-function moveToFront() {
+function moveToFront(event) {
+    event.stopPropagation();
     let front = [];
     let back = [];
     let diagramLength = diagram.length;
@@ -543,7 +544,8 @@ function moveToFront() {
 // Move selected objects to back of canvas
 //-----------------------------------------
 
-function moveToBack() {
+function moveToBack(event) {
+    event.stopPropagation();
     let front = [];
     let back = [];
     let diagramLength = diagram.length;
@@ -579,7 +581,7 @@ function cancelFreeDraw() {
         md = mouseState.empty;      //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
     }
-    
+
 }
 
 //----------------------------------------------------------------------
@@ -1513,6 +1515,46 @@ function toggleA4Orientation(event) {
     updateGraphics();
 }
 
+//-----------------------------------------------------------------------------------
+// When an item is selected, enable all options related to having an object selected
+//-----------------------------------------------------------------------------------
+var selectedItems = false;
+function enableSelectedItemOptions() {
+      if (selected_objects.length > 0) {
+        $("#change-appearance-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#move-selected-front-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#move-selected-back-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#lock-selected-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
+      } else {
+        $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#move-selected-back-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#lock-selected-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#align-left-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#horizontal-c-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
+    }
+}
+
 //----------------------------------------------------
 // openImportDialog: Opens the dialog menu for import
 //----------------------------------------------------
@@ -1595,7 +1637,8 @@ function updateGraphics() {
 // resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------------------------------------------------
 
-function resetViewToOrigin(){
+function resetViewToOrigin(event){
+    event.stopPropagation();
     origoOffsetX = 0;
     origoOffsetY = 0;
     updateGraphics();
@@ -1702,13 +1745,8 @@ function changeLoginBoxTitleAppearance() {
 // Ends up with erasing all selected objects
 //---------------------------------------------------
 
-function eraseSelectedObject() {
-    //Issue: Need to remove the crosses
-    if(selected_objects.length == 0) {
-        showMenu().innerHTML = "No item selected<type='text'>";
-        changeLoginBoxTitleDelete();
-        $(".loginBox").draggable();
-    }
+function eraseSelectedObject(event) {
+    event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
         eraseObject(selected_objects[i]);
     }
@@ -1752,7 +1790,7 @@ $(document).ready(function() {
 
 function setTextSizeEntity() {
     for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;        
+        selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
     }
 }
 
@@ -2211,6 +2249,7 @@ function reWrite() {
             document.getElementById("selectDiv").style.minWidth = '10%';
         }
     }
+    enableSelectedItemOptions();
 }
 
 //----------------------------------------
@@ -2698,7 +2737,7 @@ function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
             diagram[i].properties['fillColor'] = settings.properties.fillColor;
-        } else { 
+        } else {
             diagram[i].fillColor = settings.properties.fillColor;
         }
     }
@@ -3883,11 +3922,15 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 
-function openAppearanceDialogMenu() {
+function openAppearanceDialogMenu(event) {
+    event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++){
         if (selected_objects[i].isLocked) {
             return;
         }
+    }
+    if (selected_objects.length == 0) {
+        return;
     }
     $(".loginBox").draggable();
     var form = showMenu();
@@ -3964,7 +4007,7 @@ function loadFormIntoElement(element, dir) {
     var file = new XMLHttpRequest();
     var lastSelected = selected_objects[selected_objects.length - 1];
     var names = "";
-    var properties; 
+    var properties;
 
     if(dir == "diagram_forms.php?form=globalType"){
         properties = settings.properties;
@@ -4167,7 +4210,8 @@ function setSelectedOption(type, value) {
 // globalAppearanceMenu: open a menu to change appearance on all entities.
 //----------------------------------------------------------------------
 
-function globalAppearanceMenu() {
+function globalAppearanceMenu(event) {
+    event.stopPropagation();
     globalAppearanceValue = 1;
     $(".loginBox").draggable();
     var form = showMenu();
