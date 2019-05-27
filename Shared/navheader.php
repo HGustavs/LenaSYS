@@ -61,7 +61,7 @@
 						echo   "<span onmouseover='hoverc();' onmouseleave='leavec();'>";
 				    echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 					  echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-  					echo     "<div id='filterOptions1' onmouseover='hovers();' onmouseleave='leaves();'></div>";
+  					echo     "<div id='filterOptions' onmouseover='hovers();' onmouseleave='leaves();'></div>";
 						echo     "</div>";
 	          echo   "</span>";
 						echo "</td>";
@@ -70,7 +70,7 @@
 						echo   "<span onmouseover='hovers();' onmouseleave='leaves();'>";
   					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 						echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
-						echo     "<div id='filterOptions2' onmouseover='hovers();' onmouseleave='leaves();'></div>";
+						echo     "<div id='filterOptions' onmouseover='hovers();' onmouseleave='leaves();'></div>";
   					echo     "</div>";
   					echo   "</span>";
 						echo "</td>";
