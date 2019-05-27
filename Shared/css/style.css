@@ -967,8 +967,8 @@ header td {
   font-size: 0.95em;
 }
 
-.loginBox .cursorPointer {
-  cursor: pointer;
+.cursorPointer {
+  cursor: pointer !important;
 }
 
 #playlink {
