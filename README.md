@@ -14,6 +14,9 @@ What the installer will do is to help you create a new user in the MySQL databas
 1. To start the installation, put the LenaSYS directory at the place you want the system located. 
 2. When the the directory is in the right place, go to the installer from a web browser of your choosing.
 3. On this page you will have to fill out 6 fields (**NOTHING CAN BE LEFT EMPTY**).
+
+![Install_1](Shared/Documentation/Install/Install_1?raw=true "Install_1")
+
 * In the first field you will need to provide the desired username to be used in the database.
 * A password for this user will be needed for identification when logging in to the database later. This will need to be filled in the next field.
 * Provide the name of the database you want to use. You can use an existing database here and choose later if you want to write over it. If you dont want to write over you will need to provide a unique name.
