@@ -46,6 +46,10 @@ function Symbol(kindOfSymbol) {
     this.connectorLeft = [];
     this.connectorRight = [];
 
+    // UML line point arrays
+    this.anchors = [];          // Points that will not be manually manipulated
+    this.draggablePoints = [];  // Points that the user can move
+
     // Properties array that stores different kind of objects. Refer to the properties with "properties['fillColor']"
     this.properties = {
         'fillColor': settings.properties.fillColor,    // Change background colors on entities.
@@ -574,6 +578,31 @@ function Symbol(kindOfSymbol) {
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
+    }
+
+    //--------------------------------------------------------------------
+    // UMLLineHover: returns if this line is hovered
+    //--------------------------------------------------------------------
+    this.UMLLineHover = function() {
+        var p1, p2;
+
+         // Check for hover in each section of the line
+        for(var i = 0; i < this.anchors.length - 1; i++){
+            p1 = this.anchors[i];
+            p2 = this.anchors[i+1];
+
+             if(Math.max(points[p1].x, points[p2].x) + tolerance > currentMouseCoordinateX && 
+               Math.min(points[p1].x, points[p2].x) - tolerance < currentMouseCoordinateX &&
+               Math.max(points[p1].y, points[p2].y) + tolerance > currentMouseCoordinateY && 
+               Math.min(points[p1].y, points[p2].y) - tolerance < currentMouseCoordinateY)
+            {
+                if(pointToLineDistance(points[p1], points[p2], currentMouseCoordinateX, currentMouseCoordinateY) < tolerance){
+                    return true;
+                }
+            }
+        }
+
+         return false;
     }
 
     //--------------------------------------------------------------------
@@ -2591,6 +2620,9 @@ function Path() {
     // checkForHover: Returns if the free draw object is clicked
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
+        if(this.symbolkind == symbolKind.umlLine){
+            return this.UMLLineHover();
+        }
         setIsLockHovered(this, mx, my);
         return this.isClicked(mx, my);
     }
