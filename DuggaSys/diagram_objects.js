@@ -1563,8 +1563,8 @@ function Symbol(kindOfSymbol) {
         var breakpointEndY = 0;       // Y Coordinate for end breakpoint
         var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
         var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
-        var startLineDirection = "";  // Which side of the class the line starts from
-        var endLineDirection = "";    // Which side of the class the line ends in
+        var startLineDirection = "left";  // Which side of the class the line starts from
+        var endLineDirection = "left";    // Which side of the class the line ends in
 
         let connObjects = this.getConnectedObjects();
         var conobj1 = connObjects[0].corners();
@@ -1635,9 +1635,6 @@ function Symbol(kindOfSymbol) {
         } else if (startLineDirection == "down") {
             breakpointStartY = y1 + 35 * diagram.getZoomValue();
             breakpointStartX = x1;
-        } else {
-            breakpointStartX = x1;
-            breakpointStartY = y1;
         }
 
         if (endLineDirection == "left") {
@@ -1652,9 +1649,6 @@ function Symbol(kindOfSymbol) {
         } else if (endLineDirection == "down") {
             breakpointEndY = y2 + 35 * diagram.getZoomValue();
             breakpointEndX = x2;
-        } else {
-            breakpointEndX = x2;
-            breakpointEndY = y2;
         }
 
         if (connObjects.length == 1) {
