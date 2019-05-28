@@ -1006,6 +1006,12 @@ function Symbol(kindOfSymbol) {
         var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
         var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
 
+        // Draggable UML line point
+        if (this.symbolkind == symbolKind.umlLine && this.draggablePoints.length > 1) {
+            var x3 = pixelsToCanvas(points[this.draggablePoints[0]].x).x;
+            var y3 = pixelsToCanvas(0, points[this.draggablePoints[0]].y).y;
+        }
+
         if (this.isLocked) {
             drawLock(this);
             if (this.isHovered || this.isLockHovered) {
@@ -1064,6 +1070,15 @@ function Symbol(kindOfSymbol) {
             ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
+
+            // Draggable UML line point
+            if (this.symbolkind == symbolKind.umlLine && this.draggablePoints.length > 0) {
+                ctx.beginPath();
+                ctx.arc(x3,y3,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                ctx.fillStyle = '#ccc';
+                ctx.fill();
+            }
+
             if (this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
                 ctx.beginPath();
                 ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
