@@ -1502,7 +1502,7 @@ function Symbol(kindOfSymbol) {
 
         // Set as dotted lines depending on value
         if (this.properties['key_type'] == "Implementation" || this.properties['key_type'] == "Dependency") {
-            ctx.setLineDash([10, 10]);
+            ctx.setLineDash([8*zoomValue, 8*zoomValue]);
         }
 
         // Variables for UML line breakpoints
@@ -1536,12 +1536,10 @@ function Symbol(kindOfSymbol) {
         ctx.beginPath();
         ctx.moveTo(x1, y1);
 
-
         // Check all symbols in diagram and see if anyone matches current line's points coordinate
         for (var i = 0; i < diagram.length; i++) {
             if (diagram[i].symbolkind == symbolKind.uml) { // filter UML class
                 var currentSymbol = diagram[i].corners();
-
                 // Check if line's start point matches any class diagram
                 if (x1 == pixelsToCanvas(currentSymbol.tl.x).x) {
                     startLineDirection = "left";
@@ -1711,6 +1709,8 @@ function Symbol(kindOfSymbol) {
     // drawUmlLineRelation: Decide which shape to draw
     //---------------------------------------------------------------
     this.drawUmlLineRelation = function(x, y, xC, yC, vertical, type) {
+        xC *= zoomValue;
+        yC *= zoomValue;
         if(type == "diamond"){
             this.drawDiamond(x, y, xC, yC, vertical);
         }
@@ -1847,7 +1847,7 @@ function Symbol(kindOfSymbol) {
 		    else if(cardinality.axis == "Y") {
 		        cardinality.y = y2 > y1 ? y2+15 : y2-15;
 		    }
-	    }
+        }
     }
 
     //---------------------------------------------------------------
