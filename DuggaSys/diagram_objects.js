@@ -1563,8 +1563,8 @@ function Symbol(kindOfSymbol) {
         var startLineDirection = "";  // Which side of the class the line starts from
         var endLineDirection = "";    // Which side of the class the line ends in
 
-        var conobj1 = this.getConnectedObjects()[0].corners();
-        var conobj2 = this.getConnectedObjects()[1].corners();
+        let connObjects = this.getConnectedObjects();
+        var conobj1 = connObjects[0].corners();
 
         // Check if line's start point matches any class diagram
         if (canvasToPixels(x1).x == conobj1.tl.x) {
@@ -1577,15 +1577,19 @@ function Symbol(kindOfSymbol) {
             startLineDirection = "down";
         }
 
-        // Check if line's end point matches any class diagram
-        if (canvasToPixels(x2).x == conobj2.tl.x) {
-            endLineDirection = "left";
-        } else if (canvasToPixels(x2).x == conobj2.br.x) {
-            endLineDirection = "right";
-        } else if (canvasToPixels(0, y2).y == conobj2.tl.y) {
-            endLineDirection = "up";
-        } else if (canvasToPixels(0, y2).y == conobj2.br.y) {
-            endLineDirection = "down";
+        if (connObjects.length > 1) {
+            var conobj2 = this.getConnectedObjects()[1].corners();
+
+            // Check if line's end point matches any class diagram
+            if (canvasToPixels(x2).x == conobj2.tl.x) {
+                endLineDirection = "left";
+            } else if (canvasToPixels(x2).x == conobj2.br.x) {
+                endLineDirection = "right";
+            } else if (canvasToPixels(0, y2).y == conobj2.tl.y) {
+                endLineDirection = "up";
+            } else if (canvasToPixels(0, y2).y == conobj2.br.y) {
+                endLineDirection = "down";
+            }
         }
 
         // Default if something breaks
@@ -1647,17 +1651,16 @@ function Symbol(kindOfSymbol) {
 
         // Draw to start breakpoint based on direction
         if (startLineDirection == "left") {
-            ctx.lineTo(breakpointStartX, y1);
+            ctx.lineTo(breakpointStartX, breakpointStartY);
         } else if (startLineDirection == "right") {
-            ctx.lineTo(breakpointStartX, y1);
+            ctx.lineTo(breakpointStartX, breakpointStartY);
         } else if (startLineDirection == "up") {
-            ctx.lineTo(x1, breakpointStartY);
+            ctx.lineTo(breakpointStartX, breakpointStartY);
         } else if (startLineDirection == "down") {
-            ctx.lineTo(x1, breakpointStartY);
+            ctx.lineTo(breakpointStartX, breakpointStartY);
         }
 
         // Check if this is a recursive line (connects to a single object twice)
-        let connObjects = this.getConnectedObjects();
         if (connObjects.length == 1) {
             if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
                 if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
@@ -1686,13 +1689,13 @@ function Symbol(kindOfSymbol) {
 
         // Draw to end breakpoint based on direction
         if (endLineDirection == "left") {
-            ctx.lineTo(breakpointEndX, y2);
+            ctx.lineTo(breakpointEndX, breakpointEndY);
         } else if (endLineDirection == "right") {
-            ctx.lineTo(breakpointEndX, y2);
+            ctx.lineTo(breakpointEndX, breakpointEndY);
         } else if (endLineDirection == "up") {
-            ctx.lineTo(x2, breakpointEndY);
+            ctx.lineTo(breakpointEndX, breakpointEndY);
         } else if (endLineDirection == "down") {
-            ctx.lineTo(x2, breakpointEndY);
+            ctx.lineTo(breakpointEndX, breakpointEndY);
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
