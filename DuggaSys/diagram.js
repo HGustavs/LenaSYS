@@ -817,7 +817,7 @@ diagram.closestPoint = function(mx, my) {
     var distance = 50000000;
     var point;
     let attachedSymbol;
-    this.filter(symbol => symbol.kind != kind.path && symbol.symbolkind != symbolKind.text).forEach(symbol => {
+    this.filter(symbol => symbol.kind != kind.path && symbol.symbolkind != symbolKind.text && symbol.symbolkind != symbolKind.umlLine).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
             var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
@@ -825,6 +825,19 @@ diagram.closestPoint = function(mx, my) {
             if (hypotenuseElevatedBy2 < distance) {
                 distance = hypotenuseElevatedBy2;
                 point = corner;
+                attachedSymbol = symbol;
+            }
+        });
+    });
+
+    this.filter(symbol => symbol.kind == kind.symbol && symbol.symbolkind == symbolKind.umlLine).forEach(symbol => {
+        symbol.draggablePoints.forEach(anchor => {            
+            var deltaX = mx - points[anchor].x;
+            var deltaY = my - points[anchor].y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = points[anchor];
                 attachedSymbol = symbol;
             }
         });
