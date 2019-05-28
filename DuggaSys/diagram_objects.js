@@ -1632,6 +1632,9 @@ function Symbol(kindOfSymbol) {
         } else if (startLineDirection == "down") {
             breakpointStartY = y1 + 35 * diagram.getZoomValue();
             breakpointStartX = x1;
+        } else {
+            breakpointStartX = x1;
+            breakpointStartY = y1;
         }
 
         if (endLineDirection == "left") {
@@ -1646,23 +1649,16 @@ function Symbol(kindOfSymbol) {
         } else if (endLineDirection == "down") {
             breakpointEndY = y2 + 35 * diagram.getZoomValue();
             breakpointEndX = x2;
+        } else {
+            breakpointEndX = x2;
+            breakpointEndY = y2;
         }
 
         if (connObjects.length == 1) {
             // Start line
             ctx.beginPath();
             ctx.moveTo(x1, y1);
-
-            // Draw to start breakpoint based on direction
-            if (startLineDirection == "left") {
-                ctx.lineTo(breakpointStartX, breakpointStartY);
-            } else if (startLineDirection == "right") {
-                ctx.lineTo(breakpointStartX, breakpointStartY);
-            } else if (startLineDirection == "up") {
-                ctx.lineTo(breakpointStartX, breakpointStartY);
-            } else if (startLineDirection == "down") {
-                ctx.lineTo(breakpointStartX, breakpointStartY);
-            }
+            ctx.lineTo(breakpointStartX, breakpointStartY);
 
             // Check if this is a recursive line (connects to a single object twice)
             if (connObjects.length == 1) {
@@ -1692,15 +1688,7 @@ function Symbol(kindOfSymbol) {
             }
 
             // Draw to end breakpoint based on direction
-            if (endLineDirection == "left") {
-                ctx.lineTo(breakpointEndX, breakpointEndY);
-            } else if (endLineDirection == "right") {
-                ctx.lineTo(breakpointEndX, breakpointEndY);
-            } else if (endLineDirection == "up") {
-                ctx.lineTo(breakpointEndX, breakpointEndY);
-            } else if (endLineDirection == "down") {
-                ctx.lineTo(breakpointEndX, breakpointEndY);
-            }
+            ctx.lineTo(breakpointEndX, breakpointEndY);
             ctx.lineTo(x2, y2);
             ctx.stroke();
         } else if (this.anchors.length == 0) {
