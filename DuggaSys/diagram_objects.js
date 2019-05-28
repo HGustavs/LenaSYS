@@ -1569,7 +1569,7 @@ function Symbol(kindOfSymbol) {
         let connObjects = this.getConnectedObjects();
         var conobj1 = connObjects[0].corners();
 
-        // Check if line's start point matches any class diagram
+        // Check if line's start point matches coordinates of any UML class symbols
         if (canvasToPixels(x1).x == conobj1.tl.x) {
             startLineDirection = "left";
         } else if (canvasToPixels(x1).x == conobj1.br.x) {
@@ -1582,8 +1582,7 @@ function Symbol(kindOfSymbol) {
 
         if (connObjects.length > 1) {
             var conobj2 = this.getConnectedObjects()[1].corners();
-
-            // Check if line's end point matches any class diagram
+            // Check if line's end point matches coordinates of any UML class symbols
             if (canvasToPixels(x2).x == conobj2.tl.x) {
                 endLineDirection = "left";
             } else if (canvasToPixels(x2).x == conobj2.br.x) {
@@ -1594,7 +1593,7 @@ function Symbol(kindOfSymbol) {
                 endLineDirection = "down";
             }
         } else if (connObjects.length == 1) {            
-            // Check if line's end point matches any class diagram
+            // If line is recursive, use the same object for end line direction as start
             if (canvasToPixels(x2).x == conobj1.tl.x) {
                 endLineDirection = "left";
             } else if (canvasToPixels(x2).x == conobj1.br.x) {
@@ -1623,6 +1622,7 @@ function Symbol(kindOfSymbol) {
             middleBreakPointY = y1;
         }
 
+        // Set breakpoint coordinates based on line directions
         if (startLineDirection == "left") {
             breakpointStartX = x1 - 35 * diagram.getZoomValue();
             breakpointStartY = y1;
@@ -1651,23 +1651,21 @@ function Symbol(kindOfSymbol) {
             breakpointEndX = x2;
         }
 
-        if (connObjects.length == 1) {
+        if (connObjects.length == 1) { // If line is recursive, in place to skip anchors
             // Start line
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(breakpointStartX, breakpointStartY);
 
             // Check if this is a recursive line (connects to a single object twice)
-            if (connObjects.length == 1) {
-                if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
-                    if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
-                    else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
-                    middleBreakPointX += this.recursiveLineExtent * zoomValue;
-                } else if (y1 == y2) {
-                    if (startLineDirection === "down") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
-                    else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
-                    middleBreakPointY += this.recursiveLineExtent * zoomValue;
-                }
+            if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
+                if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                middleBreakPointX += this.recursiveLineExtent * zoomValue;
+            } else if (y1 == y2) {
+                if (startLineDirection === "down") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                middleBreakPointY += this.recursiveLineExtent * zoomValue;
             }
 
             if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
