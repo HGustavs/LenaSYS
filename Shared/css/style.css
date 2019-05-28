@@ -5606,5 +5606,16 @@ textarea#filecont {
   color: white;
   position: absolute;
   margin-top: -30px;
+  animation-duration: 0.2s;
+  animation-name: tooltipFade;
+}
 
+@keyframes tooltipFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
