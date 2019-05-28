@@ -12,11 +12,11 @@ This installer is located in the LenaSYS directory.
 What the installer will do is to help you create a new user in the MySQL database and a new database and fill it with some test data (if desired) to help you get started. It will also guide you through the steps necessary to link LenaSYS to this newly created database and get it running. 
 
 1. To start the installation, put the LenaSYS directory at the place you want the system located. 
+
 2. When the the directory is in the right place, go to the installer from a web browser of your choosing.
+
 3. Database credentials used by the system
-
 ![Install_1](Shared/Documentation/Install/Install_1.png?raw=true "Install_1")
-
 * In the first field you will need to provide the desired username to be used in the database.
 * A password for this user will be needed for identification when logging in to the database later. This will need to be filled in the next field.
 * Provide the name of the database you want to use. You can use an existing database here and choose later if you want to write over it. If you dont want to write over you will need to provide a unique name.
@@ -26,12 +26,12 @@ What the installer will do is to help you create a new user in the MySQL databas
 ![Install_2](Shared/Documentation/Install/Install_2.png?raw=true "Install_2")
 * You will need to enter the credentials for root access (to get this - ask someone that have knowledge of this information).
 
-5. 
+5. Database creation
 ![Install_3](Shared/Documentation/Install/Install_3.png?raw=true "Install_3")
 * The last step is to fill the three boxes. The upper box should be checked if a new database with the provided name should be created (this will only initialize a new database for the site and create empty tables to hold information). 
 * If the created database should be filled with some test data (this includes some courses, users, etc.). This can be used to easily test the new installation of the system.
 
-6.
+6. Database overwrite
 ![Install_4](Shared/Documentation/Install/Install_4.png?raw=true "Install_4")
 * The box should be checked if you provided an existing database or/and user and wish to overwrite this. (**WARNING! THIS WILL DESTROY ALL PREVIOUS INFORMATION IN THIS DATABASE**).
 
@@ -41,8 +41,8 @@ What the installer will do is to help you create a new user in the MySQL databas
 8. The installer will automatically create all you need and fill the new database with data (if this was selected). If the first rows of the installation progress are GREEN (successull messages) it means everything was successfull and you will not need to do any further investigation.
 * If you get error-messages (RED) that tells you something has failed - please check what went wrong and try again. A common error is that the creation of database or user failed because they already exist in the database (and you did not check the box that writes over the existing one).
 * If you get other error messages (with weird exceptions and such) this will probably mean that connection failed (the hostname is incorrect or unavailable) or the root credentials were wrong. Please look this information up and try again.
-9. The installer will, after successful creation of database, tell you what to do next.
 
+9. The installer will, after successful creation of database, tell you what to do next.
 ![Install_6](Shared/Documentation/Install/Install_6.png?raw=true "Install_6")
 
 
