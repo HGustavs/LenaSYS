@@ -35,10 +35,12 @@ What the installer will do is to help you create a new user in the MySQL databas
 <img src="Shared/Documentation/Install/Install_4.png" width="512">
 * The box should be checked if you provided an existing database or/and user and wish to overwrite this. (**WARNING! THIS WILL DESTROY ALL PREVIOUS INFORMATION IN THIS DATABASE**).
 
-## 7. When everything is filled, press 'Install!'.
+## 7. Installation start
+* When everything is filled, press 'Install!'.
 <img src="Shared/Documentation/Install/Install_5.png" width="512">
 
-## 8. The installer will automatically create all you need and fill the new database with data (if this was selected). If the first rows of the installation progress are GREEN (successull messages) it means everything was successfull and you will not need to do any further investigation.
+## 8. Installation finished
+* The installer will automatically create all you need and fill the new database with data (if this was selected). If the first rows of the installation progress are GREEN (successull messages) it means everything was successfull and you will not need to do any further investigation.
 * If you get error-messages (RED) that tells you something has failed - please check what went wrong and try again. A common error is that the creation of database or user failed because they already exist in the database (and you did not check the box that writes over the existing one).
 * If you get other error messages (with weird exceptions and such) this will probably mean that connection failed (the hostname is incorrect or unavailable) or the root credentials were wrong. Please look this information up and try again.
 
