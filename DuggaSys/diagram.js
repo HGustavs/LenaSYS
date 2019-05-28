@@ -4391,6 +4391,7 @@ function changeCardinality(isUML) {
     }
     updateGraphics();
 }
+
 // Changes direction for uml line relations
 function changeLineDirection() {
     for(var i = 0; i < selected_objects.length; i++){
