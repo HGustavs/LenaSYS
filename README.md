@@ -15,7 +15,7 @@ What the installer will do is to help you create a new user in the MySQL databas
 2. When the the directory is in the right place, go to the installer from a web browser of your choosing.
 3. On this page you will have to fill out 6 fields (**NOTHING CAN BE LEFT EMPTY**).
 
-![Install_1](Shared/Documentation/Install/Install_1.png?raw=true "Install_1" | width=256)
+![Install_1](Shared/Documentation/Install/Install_1.png?raw=true "Install_1" {width=256})
 
 * In the first field you will need to provide the desired username to be used in the database.
 * A password for this user will be needed for identification when logging in to the database later. This will need to be filled in the next field.
