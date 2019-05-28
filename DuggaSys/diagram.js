@@ -347,6 +347,36 @@ function resetButtonsPressed() {
 }
 
 //--------------------------------------------------------------------
+// This function unpresses all the classList buttons
+// Used between mode switches to ensure right objects in right mode
+//--------------------------------------------------------------------
+
+function resetToolButtonsPressed() {
+    // deselect attribute button
+    document.getElementById("attributebutton").classList.remove("pressed");
+    document.getElementById("attributebutton").classList.add("unpressed");
+    // deselect entity button
+    document.getElementById("entitybutton").classList.remove("pressed");
+    document.getElementById("entitybutton").classList.add("unpressed");
+    // deselect relation button
+    document.getElementById("relationbutton").classList.remove("pressed");
+    document.getElementById("relationbutton").classList.add("unpressed");
+    // deselect class button
+    document.getElementById("classbutton").classList.remove("pressed");
+    document.getElementById("classbutton").classList.add("unpressed");
+    // deselect line button
+    document.getElementById("linebutton").classList.remove("pressed");
+    document.getElementById("linebutton").classList.add("unpressed");
+    // deselect draw free button
+    document.getElementById("drawfreebutton").classList.remove("pressed");
+    document.getElementById("drawfreebutton").classList.add("unpressed");
+    // deselect draw text button
+    document.getElementById("drawtextbutton").classList.remove("pressed");
+    document.getElementById("drawtextbutton").classList.add("unpressed");
+    uimode = 'normal';
+}
+
+//--------------------------------------------------------------------
 // This handles all the key binds for diagram
 //--------------------------------------------------------------------
 
@@ -428,28 +458,6 @@ function keyDownHandler(e) {
         cancelFreeDraw();
         deselectObjects();
 
-        // deselect attribute button
-        document.getElementById("attributebutton").classList.remove("pressed");
-        document.getElementById("attributebutton").classList.add("unpressed");
-        // deselect entity button
-        document.getElementById("entitybutton").classList.remove("pressed");
-        document.getElementById("entitybutton").classList.add("unpressed");
-        // deselect relation button
-        document.getElementById("relationbutton").classList.remove("pressed");
-        document.getElementById("relationbutton").classList.add("unpressed");
-        // deselect class button
-        document.getElementById("classbutton").classList.remove("pressed");
-        document.getElementById("classbutton").classList.add("unpressed");
-        // deselect line button
-        document.getElementById("linebutton").classList.remove("pressed");
-        document.getElementById("linebutton").classList.add("unpressed");
-        // deselect draw free button
-        document.getElementById("drawfreebutton").classList.remove("pressed");
-        document.getElementById("drawfreebutton").classList.add("unpressed");
-        // deselect draw text button
-        document.getElementById("drawtextbutton").classList.remove("pressed");
-        document.getElementById("drawtextbutton").classList.add("unpressed");
-        uimode = 'normal';
 
         if (modeSwitchDialogActive) modeSwitchConfirmed(false);
     } else if ((key == key1 || key == num1) && shiftIsClicked){
@@ -1995,6 +2003,7 @@ var previousToolbarState = currentMode.er;
 var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    resetToolButtonsPressed();
     developerModeActive = !developerModeActive;
     // save the previous toolbarstate so that we can return to it
     if (developerModeActive) previousToolbarState = toolbarState;
@@ -2076,6 +2085,7 @@ function modeSwitchConfirmed(confirmed) {
     modeSwitchDialogActive = false;
     $("#modeSwitchDialog").hide();
     if(confirmed){
+        resetToolButtonsPressed();
         if (targetMode == 'ER') {
             switchToolbarER();
         } else if (targetMode == 'UML') {
