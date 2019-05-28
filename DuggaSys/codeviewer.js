@@ -1899,7 +1899,7 @@ function toggleRows(rows, button) {
 //----------------------------------------------------------------------------------
 
 function createCodeborder(lineno, improws) {
-	var str = "<div class='codeborder' style='z-index: 1;'>"; // The z-index places the code border above the copy to clipboard notification
+	var str = "<div class='codeborder' style='z-index: 2;'>"; // The z-index places the code border above the copy to clipboard notification
 	for (var i = 1; i <= lineno; i++) {
 		// Print out normal numbers
 		if (improws.length == 0) {
@@ -3554,10 +3554,10 @@ function copyCodeToClipboard(boxid) {
 			$("#notification" + boxid).fadeOut("fast");
 		}, 500);
 	});
-	$("#textwrapper" + boxid).hide();
+	/*$("#textwrapper" + boxid).hide();
 	setTimeout(function () {
 		$("#textwrapper" + boxid).fadeIn("fast");
-	}, 1000);
+	}, 1000);*/
 }
 
 
