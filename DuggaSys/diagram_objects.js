@@ -548,6 +548,9 @@ function Symbol(kindOfSymbol) {
     // checkForHover: Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
+        if(this.symbolkind == symbolKind.umlLine){
+            return this.UMLLineHover();
+        }
         setIsLockHovered(this, mx, my);
         if (this.symbolkind == symbolKind.line) {
             return this.linehover(mx, my);
@@ -2839,9 +2842,6 @@ function Path() {
     // checkForHover: Returns if the free draw object is clicked
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
-        if(this.symbolkind == symbolKind.umlLine){
-            return this.UMLLineHover();
-        }
         setIsLockHovered(this, mx, my);
         return this.isClicked(mx, my);
     }
