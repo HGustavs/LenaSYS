@@ -47,9 +47,8 @@
 						echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
 						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/general_upload_button.svg' /></td>";
-						
 					}
-					echo "<td class='navButt' id='codeBurger' onclick='' title='Show box' ><img src='../Shared/icons/hotdog_button.svg' /></td>";
+					echo "<td class='navButt' id='codeBurger' onclick='showBurgerMenu();' title='Show box' ><img src='../Shared/icons/hotdog_button.svg' /></td>";
 					echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
 					echo "<td id='navHeading' class='navHeading codeheader'>";
 					echo "<span id='exampleSection'>Example Section : </span>";

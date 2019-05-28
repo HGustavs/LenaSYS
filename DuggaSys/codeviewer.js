@@ -75,7 +75,7 @@ function returnedError(error) {
 
 function returned(data) {
 	retData = data;
-
+	
 	if (retData['deleted']) {
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
@@ -292,6 +292,12 @@ function returned(data) {
 	titles.forEach(title => {
 		title.addEventListener('keypress', updateTitle);
 	})
+
+	fillBurger();
+
+	if (querystring['showPane']) {
+		showBox(querystring['showPane']);
+	}
 }
 
 function returnedTitle(data) {
@@ -301,6 +307,7 @@ function returnedTitle(data) {
 	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
 	titleSpan.innerHTML = data.title;
+	fillBurger();
 }
 
 //---------------------------------------------------------------------------------
@@ -3455,6 +3462,9 @@ $(document).mousedown(function (e) {
 	} else {
 		isClickedElementBox = false;
 	}
+	if (!box[0].classList.contains("burgerOption")) {
+		closeBurgerMenu();
+	}
 });
 
 // Close the loginbox when clicking outside it.
@@ -3469,3 +3479,53 @@ $(document).mouseup(function (e) {
 		closeWindows();
 	}
 });
+
+function showBurgerMenu() {
+	var menu = document.querySelector('#burgerMenu');
+	var burgerPos = document.querySelector('#codeBurger').getBoundingClientRect();
+	menu.style.display = 'block';
+	menu.style.top = burgerPos.top + 50 + 'px';
+	menu.style.left = burgerPos.left+'px';
+}
+
+function closeBurgerMenu() {
+	document.querySelector('#burgerMenu').style.display = 'none';
+}
+
+function fillBurger() {
+	var boxes = retData['box'];
+	var burgerMenu = document.querySelector('#burgerMenu');
+	var str = "";
+	boxes.forEach(box => {
+		str += "<div class='burgerOption' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";
+	});
+	burgerMenu.innerHTML = str;
+}
+
+function setShowPane(id) {
+	closeBurgerMenu();
+	var loc = window.location.href;
+	if (loc.indexOf('&showPane=') !== -1) {
+		loc = loc.substring(0,loc.indexOf('showPane=') - 1)+'&showPane='+id;
+		window.location.href = loc;
+	} else {
+		loc = loc+'&showPane='+id;
+		window.location.href = loc;
+	}
+}
+
+function showBox(id) {
+ 	var container = document.querySelector('#div2');
+	var boxes = [...container.childNodes];
+	
+	boxes.forEach(box => {
+		if (box.id === 'box'+id+'wrapper') {
+			box.style.display = 'block';
+			box.style.width = '100%';
+			box.style.maxWidth = '100%';
+			box.style.height = '100%';
+		} else {
+			box.style.display = 'none';
+		}
+	});
+}

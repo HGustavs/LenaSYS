@@ -908,4 +908,14 @@
     #div2 {
         top: 85px;
     }
+    #burgerMenu {
+        position: absolute;
+        z-index: 9999;
+        background-color: var(--color-background-2);
+        border: 2px solid var(--color-border);
+        display: none;
+    }
+    .burgerOption {
+        padding: 15px 15px 15px 15px;
+    }
 }
