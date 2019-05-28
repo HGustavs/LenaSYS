@@ -880,3 +880,32 @@
     margin-right: auto;
     width: 30% !important;
 }
+
+#codeBurger {
+    display: none;
+}
+
+#mobileNavHeading {
+    display: none;
+}
+
+@media only screen and (max-width: 800px) {
+    #codeBurger {
+        display: table-cell;
+    }
+    .navButt img {
+        width: 20px;
+    }
+    #navHeading {
+        display: none;
+    }
+    #mobileNavHeading {
+        display: block;
+        height: 25px;
+        text-align: center;
+        color:black;
+    }
+    #div2 {
+        top: 85px;
+    }
+}

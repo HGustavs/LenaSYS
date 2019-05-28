@@ -124,6 +124,10 @@ function returned(data) {
 	if (data['sectionname'] != null) {
 		exSection.html(data['sectionname'] + "&nbsp;:&nbsp;");
 	}
+	var mobExName = document.querySelector('#mobileExampleName');
+	var mobExSection = document.querySelector('#mobileExampleSection');
+	mobExName.innerHTML = data['examplename'];
+	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
 	// User can choose template if no template has been chosen and the user has write access.
 	if ((retData['templateid'] == 0)) {
@@ -2008,6 +2012,7 @@ function minimizeBoxes(boxid) {
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
+}
 
 function hideCopyButtons(templateid, boxid) {
 	var totalBoxes = getTotalBoxes(templateid);
