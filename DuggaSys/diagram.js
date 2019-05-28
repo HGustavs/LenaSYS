@@ -354,7 +354,7 @@ function keyDownHandler(e) {
     var key = e.keyCode;
     if (appearanceMenuOpen) return;
     if ((key == deleteKey || key == backspaceKey)) {
-        eraseSelectedObject();
+        eraseSelectedObject(event);
         SaveState();
     } else if (key == spacebarKey) {
         // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
@@ -453,9 +453,9 @@ function keyDownHandler(e) {
 
         if (modeSwitchDialogActive) modeSwitchConfirmed(false);
     } else if ((key == key1 || key == num1) && shiftIsClicked){
-        moveToFront();
+        moveToFront(event);
     } else if ((key == key2 || key == num2) && shiftIsClicked){
-        moveToBack();
+        moveToBack(event);
     } else if (shiftIsClicked && key == lKey) {
       document.getElementById("linebutton").click();
     } else if (shiftIsClicked && key == aKey && targetMode == "ER") {
@@ -477,7 +477,7 @@ function keyDownHandler(e) {
     } else if (shiftIsClicked && key == xKey) {
           lockSelected(event);
     } else if (shiftIsClicked && key == oKey) {
-          resetViewToOrigin();
+          resetViewToOrigin(event);
     } else if (shiftIsClicked && key == key4) {
           toggleVirtualA4(event);
     } else if (shiftIsClicked && key == upArrow) {
@@ -3822,7 +3822,7 @@ function mouseupevt(ev) {
 
 function doubleclick(ev) {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
-        openAppearanceDialogMenu();
+        openAppearanceDialogMenu(event);
     }
 }
 
