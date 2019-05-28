@@ -1731,6 +1731,109 @@ function Symbol(kindOfSymbol) {
             }
             this.addAnchor(canvasToPixels(breakpointEndX).x, canvasToPixels(0, breakpointEndY).y);
             this.createDraggablePoints();
+        } else {
+            // These two anchors are fixed points
+            points[this.anchors[0]].x = canvasToPixels(breakpointStartX).x;
+            points[this.anchors[0]].y = canvasToPixels(0, breakpointStartY).y;
+            points[this.anchors[3]].x = canvasToPixels(breakpointEndX).x;
+            points[this.anchors[3]].y = canvasToPixels(0, breakpointEndY).y;
+
+            // Set coordinates for anchors based on where the draggable point is positioned
+            if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
+                if (x1 == x2) {
+                    points[this.anchors[1]].x = points[this.draggablePoints[0]].x;
+                    points[this.anchors[1]].y = canvasToPixels(0, breakpointStartY).y;
+                    points[this.anchors[2]].x = points[this.draggablePoints[0]].x;
+                    points[this.anchors[2]].y = canvasToPixels(0, breakpointEndY).y;
+                } else {
+                    points[this.anchors[1]].x = canvasToPixels(breakpointStartX).x;
+                    points[this.anchors[1]].y = points[this.draggablePoints[0]].y;
+                    points[this.anchors[2]].x = canvasToPixels(breakpointEndX).x;
+                    points[this.anchors[2]].y = points[this.draggablePoints[0]].y;
+                }
+            } else if ((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
+                if (y1 == y2) {
+                    points[this.anchors[1]].x = canvasToPixels(breakpointStartX).x;
+                    points[this.anchors[1]].y = points[this.draggablePoints[0]].y;
+                    points[this.anchors[2]].x = canvasToPixels(breakpointEndX).x;
+                    points[this.anchors[2]].y = points[this.draggablePoints[0]].y;
+                } else {
+                    points[this.anchors[1]].x = canvasToPixels(breakpointStartX).x;
+                    points[this.anchors[1]].y = points[this.draggablePoints[0]].y;
+                    points[this.anchors[2]].x = canvasToPixels(breakpointEndX).x;
+                    points[this.anchors[2]].y = points[this.draggablePoints[0]].y;
+                }
+            } else if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
+                points[this.anchors[1]].x = canvasToPixels(breakpointStartX).x;
+                points[this.anchors[1]].y = points[this.draggablePoints[0]].y;
+                points[this.anchors[2]].x = canvasToPixels(breakpointEndX).x;
+                points[this.anchors[2]].y = points[this.draggablePoints[0]].y;
+            } else if ((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
+                points[this.anchors[1]].x = canvasToPixels(breakpointStartX).x;
+                points[this.anchors[1]].y = points[this.draggablePoints[0]].y;
+                points[this.anchors[2]].x = canvasToPixels(breakpointEndX).x;
+                points[this.anchors[2]].y = points[this.draggablePoints[0]].y;
+            }
+
+            // Prevent from moving point so lines draw back into the UML class
+            if ((startLineDirection === "up" && points[this.anchors[1]].y > canvasToPixels(0, breakpointStartY).y)
+                || (startLineDirection === "down" && points[this.anchors[1]].y < canvasToPixels(0, breakpointStartY).y)) {
+                points[this.anchors[1]].y = canvasToPixels(0, breakpointStartY).y;
+                points[this.anchors[2]].y = canvasToPixels(0, breakpointStartY).y;
+            } else if ((startLineDirection === "left" && points[this.anchors[1]].x > canvasToPixels(breakpointStartX).x)
+                || (startLineDirection === "right" && points[this.anchors[1]].x < canvasToPixels(breakpointStartX).x)) {
+                points[this.anchors[1]].x = canvasToPixels(breakpointStartX).x;
+                points[this.anchors[2]].x = canvasToPixels(breakpointStartX).x;
+            }
+
+            if ((endLineDirection === "up" && points[this.anchors[2]].y > canvasToPixels(0, breakpointEndY).y)
+                || (endLineDirection === "down" && points[this.anchors[2]].y < canvasToPixels(0, breakpointEndY).y)) {
+                points[this.anchors[1]].y = canvasToPixels(0, breakpointEndY).y;
+                points[this.anchors[2]].y = canvasToPixels(0, breakpointEndY).y;
+            } else if ((endLineDirection === "left" && points[this.anchors[2]].x > canvasToPixels(breakpointEndX).x)
+                || (endLineDirection === "down" && points[this.anchors[2]].x < canvasToPixels(breakpointEndX).x)) {
+                points[this.anchors[1]].x = canvasToPixels(breakpointEndX).x;
+                points[this.anchors[2]].x = canvasToPixels(breakpointEndX).x;
+            }
+
+            // Only move draggable points on one axis based on line direction
+            if (points[this.anchors[1]].x == points[this.anchors[2]].x) {
+                // You can only move the point left and right
+                if (points[this.anchors[2]].y > points[this.anchors[1]].y) { // If second anchor is lower (on canvas) than first anchor
+                    points[this.draggablePoints[0]].y = points[this.anchors[1]].y + Math.abs(points[this.anchors[1]].y - points[this.anchors[2]].y) / 2;
+                } else if (points[this.anchors[1]].y > points[this.anchors[2]].y) { // If first anchor is lower (on canvas) than second anchor
+                    points[this.draggablePoints[0]].y = points[this.anchors[2]].y + Math.abs(points[this.anchors[1]].y - points[this.anchors[2]].y) / 2;
+                } else {
+                    points[this.draggablePoints[0]].y = points[this.anchors[1]].y;
+                }
+
+                if (points[this.draggablePoints[0]].x < points[this.anchors[1]].x || points[this.draggablePoints[0]].x > points[this.anchors[1]].x) {
+                    points[this.draggablePoints[0]].x = points[this.anchors[1]].x;
+                }
+            } else if (points[this.anchors[1]].y == points[this.anchors[2]].y) {
+                // You can only move the point up and down
+                if (points[this.anchors[2]].x > points[this.anchors[1]].x) { // If second anchor is more to the right than first anchor
+                    points[this.draggablePoints[0]].x = points[this.anchors[1]].x + Math.abs(points[this.anchors[1]].x - points[this.anchors[2]].x) / 2;
+                } else if (points[this.anchors[1]].x > points[this.anchors[2]].x) { // If first anchor is more to the right than second anchor
+                    points[this.draggablePoints[0]].x = points[this.anchors[2]].x + Math.abs(points[this.anchors[1]].x - points[this.anchors[2]].x) / 2;
+                } else {
+                    points[this.draggablePoints[0]].x = points[this.anchors[1]].x;
+                }
+
+                if (points[this.draggablePoints[0]].y < points[this.anchors[1]].y || points[this.draggablePoints[0]].y > points[this.anchors[1]].y) {
+                    points[this.draggablePoints[0]].y = points[this.anchors[1]].y;
+                }
+            }
+
+            // Start line
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(pixelsToCanvas(points[this.anchors[0]].x).x, pixelsToCanvas(0, points[this.anchors[0]].y).y);
+            ctx.lineTo(pixelsToCanvas(points[this.anchors[1]].x).x, pixelsToCanvas(0, points[this.anchors[1]].y).y);
+            ctx.lineTo(pixelsToCanvas(points[this.anchors[2]].x).x, pixelsToCanvas(0, points[this.anchors[2]].y).y);
+            ctx.lineTo(pixelsToCanvas(points[this.anchors[3]].x).x, pixelsToCanvas(0, points[this.anchors[3]].y).y);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
         }
 
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
