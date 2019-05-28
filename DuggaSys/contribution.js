@@ -654,7 +654,7 @@ function createTimeSheetTable(data) {
   });
 
   // Render table only if there is tabledata
-  if(tabledata.tablebody != null || tabledata.tablebody != undefined) {
+  if(tabledata.tblbody != null || tabledata.tblbody != undefined) {
     myTable.renderTable();
   }
 }
