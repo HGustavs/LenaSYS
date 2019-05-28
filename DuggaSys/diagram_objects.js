@@ -1590,9 +1590,7 @@ function Symbol(kindOfSymbol) {
             } else if (canvasToPixels(0, y2).y == conobj2.br.y) {
                 endLineDirection = "down";
             }
-        } else if (connObjects.length == 1) {
-            console.log("test");
-            
+        } else if (connObjects.length == 1) {            
             // Check if line's end point matches any class diagram
             if (canvasToPixels(x2).x == conobj1.tl.x) {
                 endLineDirection = "left";
@@ -1650,60 +1648,62 @@ function Symbol(kindOfSymbol) {
             breakpointEndX = x2;
         }
 
-        // Start line
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-
-        // Draw to start breakpoint based on direction
-        if (startLineDirection == "left") {
-            ctx.lineTo(breakpointStartX, breakpointStartY);
-        } else if (startLineDirection == "right") {
-            ctx.lineTo(breakpointStartX, breakpointStartY);
-        } else if (startLineDirection == "up") {
-            ctx.lineTo(breakpointStartX, breakpointStartY);
-        } else if (startLineDirection == "down") {
-            ctx.lineTo(breakpointStartX, breakpointStartY);
-        }
-
-        // Check if this is a recursive line (connects to a single object twice)
         if (connObjects.length == 1) {
-            if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
-                if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
-                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
-                middleBreakPointX += this.recursiveLineExtent * zoomValue;
-            }else if (y1 == y2) {
-                if (startLineDirection === "down") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
-                else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
-                middleBreakPointY += this.recursiveLineExtent * zoomValue;
+            // Start line
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+
+            // Draw to start breakpoint based on direction
+            if (startLineDirection == "left") {
+                ctx.lineTo(breakpointStartX, breakpointStartY);
+            } else if (startLineDirection == "right") {
+                ctx.lineTo(breakpointStartX, breakpointStartY);
+            } else if (startLineDirection == "up") {
+                ctx.lineTo(breakpointStartX, breakpointStartY);
+            } else if (startLineDirection == "down") {
+                ctx.lineTo(breakpointStartX, breakpointStartY);
             }
-        }
 
-        if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
-            ctx.lineTo(breakpointStartX, middleBreakPointY);
-            ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
-            ctx.lineTo(breakpointEndX, middleBreakPointY);
-        } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
-            ctx.lineTo(middleBreakPointX, breakpointStartY);
-            ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
-            ctx.lineTo(middleBreakPointX, breakpointEndY);
-        }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
-            ctx.lineTo(breakpointStartX, breakpointEndY);
-        }  else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
-            ctx.lineTo(breakpointEndX, breakpointStartY);
-        }
+            // Check if this is a recursive line (connects to a single object twice)
+            if (connObjects.length == 1) {
+                if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
+                    if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                    else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                    middleBreakPointX += this.recursiveLineExtent * zoomValue;
+                } else if (y1 == y2) {
+                    if (startLineDirection === "down") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
+                    else this.recursiveLineExtent = -Math.abs(this.recursiveLineExtent);
+                    middleBreakPointY += this.recursiveLineExtent * zoomValue;
+                }
+            }
 
-        // Draw to end breakpoint based on direction
-        if (endLineDirection == "left") {
-            ctx.lineTo(breakpointEndX, breakpointEndY);
-        } else if (endLineDirection == "right") {
-            ctx.lineTo(breakpointEndX, breakpointEndY);
-        } else if (endLineDirection == "up") {
-            ctx.lineTo(breakpointEndX, breakpointEndY);
-        } else if (endLineDirection == "down") {
-            ctx.lineTo(breakpointEndX, breakpointEndY);
+            if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
+                ctx.lineTo(breakpointStartX, middleBreakPointY);
+                ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+                ctx.lineTo(breakpointEndX, middleBreakPointY);
+            } else if ((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
+                ctx.lineTo(middleBreakPointX, breakpointStartY);
+                ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+                ctx.lineTo(middleBreakPointX, breakpointEndY);
+            } else if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
+                ctx.lineTo(breakpointStartX, breakpointEndY);
+            } else if ((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
+                ctx.lineTo(breakpointEndX, breakpointStartY);
+            }
+
+            // Draw to end breakpoint based on direction
+            if (endLineDirection == "left") {
+                ctx.lineTo(breakpointEndX, breakpointEndY);
+            } else if (endLineDirection == "right") {
+                ctx.lineTo(breakpointEndX, breakpointEndY);
+            } else if (endLineDirection == "up") {
+                ctx.lineTo(breakpointEndX, breakpointEndY);
+            } else if (endLineDirection == "down") {
+                ctx.lineTo(breakpointEndX, breakpointEndY);
+            }
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
         }
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
 
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
