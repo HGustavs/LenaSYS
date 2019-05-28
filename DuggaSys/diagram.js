@@ -4169,7 +4169,7 @@ function loadUMLForm(element, dir) {
 
 function loadTextForm(element, dir) {
     var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects - 1];
+    var lastSelected = selected_objects[selected_objects.length - 1];
     file.open('GET', dir);
     file.onreadystatechange = function() {
     if(file.readyState === 4) {
@@ -4303,9 +4303,10 @@ function objectAppearanceMenu(form) {
 
 function changeObjectAppearance(object_type) {
     lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length - 1]);
-    if(selected_objects.length == 1 && selected_objects[0].kind == kind.symbol && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine) {
+    if(selected_objects.length == 1 && selected_objects[0].kind == kind.symbol && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine && selected_objects[0].symbolkind != symbolKind.text) {
         selected_objects[0].name = document.getElementById('nametext').value;
     }
+
     for(var i = 0; i < selected_objects.length; i++) {
         if (selected_objects[i].symbolkind == symbolKind.uml) { // UML-class appearance
             var attributeLines = $('#UMLAttributes').val().split('\n');
@@ -4333,8 +4334,8 @@ function changeObjectAppearance(object_type) {
         } else if (selected_objects[i].symbolkind == symbolKind.text) {
             selected_objects[i].textLines = [];
             var textArray = $('#freeText').val().split('\n');
-            for(var i = 0; i < textArray.length; i++) {
-              selected_objects[i].textLines.push({text:textArray[i]});
+            for(var j = 0; j < textArray.length; j++) {
+              selected_objects[i].textLines.push({text:textArray[j]});
             }
             selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
             selected_objects[i].properties['font'] = document.getElementById('font').value;
@@ -4350,7 +4351,6 @@ function changeObjectAppearance(object_type) {
         }
     }
     updateGraphics();
-    SaveState();
 }
 
 //---------------------------------
