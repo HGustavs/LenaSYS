@@ -1731,7 +1731,7 @@ function Symbol(kindOfSymbol) {
             }
             this.addAnchor(canvasToPixels(breakpointEndX).x, canvasToPixels(0, breakpointEndY).y);
             this.createDraggablePoints();
-        } else {
+        } else if (this.anchors.length > 0) {
             // These two anchors are fixed points
             points[this.anchors[0]].x = canvasToPixels(breakpointStartX).x;
             points[this.anchors[0]].y = canvasToPixels(0, breakpointStartY).y;
