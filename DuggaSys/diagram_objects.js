@@ -1591,6 +1591,8 @@ function Symbol(kindOfSymbol) {
                 endLineDirection = "down";
             }
         } else if (connObjects.length == 1) {
+            console.log("test");
+            
             // Check if line's end point matches any class diagram
             if (canvasToPixels(x2).x == conobj1.tl.x) {
                 endLineDirection = "left";
