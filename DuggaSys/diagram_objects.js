@@ -548,7 +548,7 @@ function Symbol(kindOfSymbol) {
     // checkForHover: Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
-        if(this.symbolkind == symbolKind.umlLine){
+        if(this.symbolkind == symbolKind.umlLine && this.isRecursiveLine == false){
             return this.UMLLineHover();
         }
         setIsLockHovered(this, mx, my);
