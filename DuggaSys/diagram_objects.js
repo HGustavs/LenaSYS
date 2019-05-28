@@ -1592,14 +1592,6 @@ function Symbol(kindOfSymbol) {
             }
         }
 
-        // Default if something breaks
-        if (startLineDirection === "") {
-            startLineDirection = "left";
-        }
-        if (endLineDirection === "") {
-            endLineDirection = "left";
-        }
-
         // Calculating the mid point between start and end
         if (x2 > x1) {
             middleBreakPointX = x1 + Math.abs(x2 - x1) / 2;
