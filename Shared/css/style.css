@@ -5593,3 +5593,7 @@ textarea#filecont {
 .resultedbuttons:hover {
   filter: brightness(1.2);
 }
+
+#arrow {
+  font-size: 150px;
+}

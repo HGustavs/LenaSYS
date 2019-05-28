@@ -269,25 +269,25 @@
                             <div class="drop-down-item">
                                 <div id="align-top-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
-                                    <i id="hotkey-Align-Top" class="hotKeys">Shift + ⇧ </i>
+                                    <i id="hotkey-Align-Top" class="hotKeys">Shift + ▲</i>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="align-right-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
-                                    <i id="hotkey-Align-Right" class="hotKeys">Shift + ⇨ </i>
+                                    <i id="hotkey-Align-Right" class="hotKeys">Shift + ►</i>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="align-bottom-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
-                                    <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ⇩ </i>
+                                    <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ▼ </i>
                                 </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="align-left-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
-                                    <i id="hotkey-Align-Left" class="hotKeys">Shift + ⇦ </i>
+                                    <i id="hotkey-Align-Left" class="hotKeys">Shift + ◄ </i>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
