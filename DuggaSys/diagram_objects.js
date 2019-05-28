@@ -1563,6 +1563,39 @@ function Symbol(kindOfSymbol) {
         var startLineDirection = "";  // Which side of the class the line starts from
         var endLineDirection = "";    // Which side of the class the line ends in
 
+        var conobj1 = this.getConnectedObjects()[0].corners();
+        var conobj2 = this.getConnectedObjects()[1].corners();
+
+        // Check if line's start point matches any class diagram
+        if (canvasToPixels(x1).x == conobj1.tl.x) {
+            startLineDirection = "left";
+        } else if (canvasToPixels(x1).x == conobj1.br.x) {
+            startLineDirection = "right";
+        } else if (canvasToPixels(0, y1).y == conobj1.tl.y) {
+            startLineDirection = "up";
+        } else if (canvasToPixels(0, y1).y == conobj1.br.y) {
+            startLineDirection = "down";
+        }
+
+        // Check if line's end point matches any class diagram
+        if (canvasToPixels(x2).x == conobj2.tl.x) {
+            endLineDirection = "left";
+        } else if (canvasToPixels(x2).x == conobj2.br.x) {
+            endLineDirection = "right";
+        } else if (canvasToPixels(0, y2).y == conobj2.tl.y) {
+            endLineDirection = "up";
+        } else if (canvasToPixels(0, y2).y == conobj2.br.y) {
+            endLineDirection = "down";
+        }
+
+        // Default if something breaks
+        if (startLineDirection === "") {
+            startLineDirection = "left";
+        }
+        if (endLineDirection === "") {
+            endLineDirection = "left";
+        }
+
         // Calculating the mid point between start and end
         if (x2 > x1) {
             middleBreakPointX = x1 + Math.abs(x2 - x1) / 2;
@@ -1580,63 +1613,37 @@ function Symbol(kindOfSymbol) {
             middleBreakPointY = y1;
         }
 
+        if (startLineDirection == "left") {
+            breakpointStartX = x1 - 35 * diagram.getZoomValue();
+            breakpointStartY = y1;
+        } else if (startLineDirection == "right") {
+            breakpointStartX = x1 + 35 * diagram.getZoomValue();
+            breakpointStartY = y1;
+        } else if (startLineDirection == "up") {
+            breakpointStartY = y1 - 35 * diagram.getZoomValue();
+            breakpointStartX = x1;
+        } else if (startLineDirection == "down") {
+            breakpointStartY = y1 + 35 * diagram.getZoomValue();
+            breakpointStartX = x1;
+        }
+
+        if (endLineDirection == "left") {
+            breakpointEndX = x2 - 35 * diagram.getZoomValue();
+            breakpointEndY = y2;
+        } else if (endLineDirection == "right") {
+            breakpointEndX = x2 + 35 * diagram.getZoomValue();
+            breakpointEndY = y2;
+        } else if (endLineDirection == "up") {
+            breakpointEndY = y2 - 35 * diagram.getZoomValue();
+            breakpointEndX = x2;
+        } else if (endLineDirection == "down") {
+            breakpointEndY = y2 + 35 * diagram.getZoomValue();
+            breakpointEndX = x2;
+        }
+
         // Start line
         ctx.beginPath();
         ctx.moveTo(x1, y1);
-
-
-        // Check all symbols in diagram and see if anyone matches current line's points coordinate
-        for (var i = 0; i < diagram.length; i++) {
-            if (diagram[i].symbolkind == symbolKind.uml) { // filter UML class
-                var currentSymbol = diagram[i].corners();
-
-                // Check if line's start point matches any class diagram
-                if (x1 == pixelsToCanvas(currentSymbol.tl.x).x) {
-                    startLineDirection = "left";
-                    breakpointStartX = x1 - 30;
-                    breakpointStartY = y1;
-                } else if (x1 == pixelsToCanvas(currentSymbol.br.x).x) {
-                    startLineDirection = "right";
-                    breakpointStartX = x1 + 30;
-                    breakpointStartY = y1;
-                } else if (y1 == pixelsToCanvas(0, currentSymbol.tl.y).y) {
-                    startLineDirection = "up"
-                    breakpointStartY = y1 - 30;
-                    breakpointStartX = x1;
-                } else if (y1 == pixelsToCanvas(0, currentSymbol.br.y).y) {
-                    startLineDirection = "down"
-                    breakpointStartY = y1 + 30;
-                    breakpointStartX = x1;
-                }
-
-                // Check if line's end point matches any class diagram
-                if (x2 == pixelsToCanvas(currentSymbol.tl.x).x) {
-                    endLineDirection = "left";
-                    breakpointEndX = x2 - 30;
-                    breakpointEndY = y2;
-                } else if (x2 == pixelsToCanvas(currentSymbol.br.x).x) {
-                    endLineDirection = "right";
-                    breakpointEndX = x2 + 30;
-                    breakpointEndY = y2;
-                } else if (y2 == pixelsToCanvas(0, currentSymbol.tl.y).y) {
-                    endLineDirection = "up"
-                    breakpointEndY = y2 - 30;
-                    breakpointEndX = x2;
-                } else if (y2 == pixelsToCanvas(0, currentSymbol.br.y).y) {
-                    endLineDirection = "down"
-                    breakpointEndY = y2 + 30;
-                    breakpointEndX = x2;
-                }
-
-                // If start and end points are too close to each other, set breakpoints to same as start and end points
-                if((Math.abs(x1 - x2) < 60) || (Math.abs(y1 - y2) < 60)) {
-                    breakpointStartX = x1;
-                    breakpointStartY = y1;
-                    breakpointEndX = x2;
-                    breakpointEndY = y2;
-                }
-            }
-        }
 
         // Draw to start breakpoint based on direction
         if (startLineDirection == "left") {
