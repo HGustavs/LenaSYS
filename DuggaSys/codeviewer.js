@@ -2138,8 +2138,10 @@ function hideCopyButtons(templateid, boxid) {
 	for (var i = 1; i <= totalBoxes; i++) {
 		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
 		if (i !== boxid) {
+			if (!copyBtn) continue;
 			copyBtn.style.display = "none";
 		} else {
+			if (!copyBtn) continue;
 			copyBtn.style.display = "table-cell";
 		}
 	}
@@ -2150,6 +2152,7 @@ function showCopyButtons(templateid) {
 
 	for (var i = 1; i <= totalBoxes; i++) {
 		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
+		if (!copyBtn) continue;
 		copyBtn.style.display = "table-cell";
 	}
 }
