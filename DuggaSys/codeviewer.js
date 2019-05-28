@@ -1807,6 +1807,7 @@ function getBlockRanges(blocks) {
 	var blocks;
 	for (var i = 0; i < boxBlocks.length; i++) {
 		blocks = boxBlocks[i];
+		if (blocks.length < 1) continue;
 		for (var j = 0; j < blocks.length; j++) {
 			// If there are no open blocks and the bracket is a closing bracket, do nothing.
 			if (!openBlock && blocks[j][1] === 0) continue;
