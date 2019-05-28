@@ -1,9 +1,7 @@
-    <header>
+<header>
 		<?php
 			echo "<table class='navheader'><tr>";
-
 			include_once "../Shared/basic.php";
-
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if(isset($_GET['courseid'])){
 					$_SESSION['courseid']=$_GET['courseid'];
@@ -11,10 +9,8 @@
 			if(isset($_GET['coursevers'])){
 					$_SESSION['coursevers']=$_GET['coursevers'];
 			}
-
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
-
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -23,7 +19,6 @@
 			if($noup!='NONE') {
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
-
 			if($noup=='COURSE'){
 					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
@@ -37,7 +32,6 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
-
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
@@ -48,34 +42,28 @@
 						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/general_upload_button.svg' /></td>";
 					}
-
 					echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
 					echo "<td id='navHeading' class='navHeading codeheader'>";
 					echo "<span id='exampleSection'>Example Section : </span>";
 					echo "<span id='exampleName'> Example Name</span>";
 					echo "</td>";
 				}else{
-
-
-						echo "<td id='select' style='display:none;' class='navButt'>";
-						echo   "<span onmouseover='hoverc();' onmouseleave='leavec();'>";
+						echo "<td id='select' style='display:none;' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
+						echo   "<span>";
 				    echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 					  echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
   					echo     "<div id='filterOptions'></div>";
 						echo     "</div>";
 	          echo   "</span>";
 						echo "</td>";
-
-  					echo "<td id='sort' style='display:none' class='navButt'>";
-						echo   "<span onmouseover='hovers();' onmouseleave='leaves();'>";
+  					echo "<td id='sort' style='display:none' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
+						echo   "<span>";
   					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
   			    echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
   					echo     "</div>";
   					echo   "</span>";
 						echo "</td>";
-
 						echo "</td>";
-
             echo "<td id='menuHook' class='navSpacer'>";
 			}
           if(checklogin()) {
@@ -92,13 +80,9 @@
 			// 		echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
 			// 		echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' title='Login'/></td>";
 			// }
-
-
 		echo "</tr></table>";
-
 		//Cookie message
 		echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
-
 	?>
 </header>
 <script type="text/javascript">
@@ -107,7 +91,6 @@
 		}else{
 			$("#cookiemsg").css("display", "flex");
 		}
-
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
 	function cookieMessage(){
 		hideCookieMessage();
