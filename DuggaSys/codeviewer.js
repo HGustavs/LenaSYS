@@ -2130,6 +2130,7 @@ function minimizeBoxes(boxid) {
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
+}
 
 function hideCopyButtons(templateid, boxid) {
 	var totalBoxes = getTotalBoxes(templateid);
