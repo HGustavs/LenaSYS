@@ -17,6 +17,7 @@ What the installer will do is to help you create a new user in the MySQL databas
 
 ## 3. Database credentials used by the system
 <img src="Shared/Documentation/Install/Install_1.png" width="512">
+
 * In the first field you will need to provide the desired username to be used in the database.
 * A password for this user will be needed for identification when logging in to the database later. This will need to be filled in the next field.
 * Provide the name of the database you want to use. You can use an existing database here and choose later if you want to write over it. If you dont want to write over you will need to provide a unique name.
@@ -24,20 +25,25 @@ What the installer will do is to help you create a new user in the MySQL databas
 
 ## 4. Database credentials for installer
 <img src="Shared/Documentation/Install/Install_2.png" width="512">
+
 * You will need to enter the credentials for root access (to get this - ask someone that have knowledge of this information).
 
 ## 5. Database creation
 <img src="Shared/Documentation/Install/Install_3.png" width="512">
+
 * The last step is to fill the three boxes. The upper box should be checked if a new database with the provided name should be created (this will only initialize a new database for the site and create empty tables to hold information). 
 * If the created database should be filled with some test data (this includes some courses, users, etc.). This can be used to easily test the new installation of the system.
 
 ## 6. Database overwrite
 <img src="Shared/Documentation/Install/Install_4.png" width="512">
+
 * The box should be checked if you provided an existing database or/and user and wish to overwrite this. (**WARNING! THIS WILL DESTROY ALL PREVIOUS INFORMATION IN THIS DATABASE**).
 
 ## 7. Installation start
-* When everything is filled, press 'Install!'.
 <img src="Shared/Documentation/Install/Install_5.png" width="512">
+
+* When everything is filled, press 'Install!'.
+
 
 ## 8. Installation finished
 * The installer will automatically create all you need and fill the new database with data (if this was selected). If the first rows of the installation progress are GREEN (successull messages) it means everything was successfull and you will not need to do any further investigation.
