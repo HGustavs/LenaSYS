@@ -1703,9 +1703,103 @@ function Symbol(kindOfSymbol) {
             }
             ctx.lineTo(x2, y2);
             ctx.stroke();
+        } else if (this.anchors.length == 0) {
+            this.addAnchor(canvasToPixels(breakpointStartX).x, canvasToPixels(0, breakpointStartY).y);
+
+            if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
+                if (x1 == x2) {
+                    this.addAnchor(canvasToPixels(breakpointStartX).x, canvasToPixels(0, breakpointStartY).y);
+                    this.addAnchor(canvasToPixels(breakpointEndX).x, canvasToPixels(0, breakpointEndY).y);
+                } else {
+                    this.addAnchor(canvasToPixels(breakpointStartX).x, canvasToPixels(0, middleBreakPointY).y);
+                    this.addAnchor(canvasToPixels(breakpointEndX).x, canvasToPixels(0, middleBreakPointY).y);
+                }
+            } else if ((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
+                if (y1 == y2) {
+                    this.addAnchor(canvasToPixels(breakpointStartX).x, canvasToPixels(0, breakpointStartY).y);
+                    this.addAnchor(canvasToPixels(breakpointEndX).x, canvasToPixels(0, breakpointEndY).y);
+                } else {
+                    this.addAnchor(canvasToPixels(middleBreakPointX).x, canvasToPixels(0, breakpointStartY).y);
+                    this.addAnchor(canvasToPixels(middleBreakPointX).x, canvasToPixels(0, breakpointEndY).y);
+                }
+            } else if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
+                this.addAnchor(canvasToPixels(middleBreakPointX).x, canvasToPixels(0, middleBreakPointY).y);
+                this.addAnchor(canvasToPixels(breakpointEndX).x, canvasToPixels(0, breakpointEndY).y);
+            } else if ((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
+                this.addAnchor(canvasToPixels(breakpointStartX).x, canvasToPixels(0, breakpointStartY).y);
+                this.addAnchor(canvasToPixels(middleBreakPointX).x, canvasToPixels(0, middleBreakPointY).y);
+            }
+            this.addAnchor(canvasToPixels(breakpointEndX).x, canvasToPixels(0, breakpointEndY).y);
+            this.createDraggablePoints();
         }
 
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
+    }
+
+    //---------------------------------------------------------------
+    // addAnchor: create UML line anchor point
+    //---------------------------------------------------------------
+    this.addAnchor = function(anchorx, anchory) {
+        var newAnchor;
+        newAnchor = points.addPoint(anchorx, anchory, false);
+        this.anchors.push(newAnchor);
+    }
+
+    //---------------------------------------------------------------
+    // clearAnchors: remove all anchors from a UML line
+    //---------------------------------------------------------------
+    this.clearAnchors = function() {
+        for (var i = 0; i < this.anchors.length; i++) {
+            points[this.anchors[i]] = waldoPoint;
+        }
+        this.anchors = [];
+    }
+
+    //---------------------------------------------------------------
+    // addDraggablePoint: create UML line draggable point
+    //---------------------------------------------------------------
+    this.addDraggablePoint = function(dragpointx, dragpointy) {
+        var newDraggablePoint;
+        newDraggablePoint = points.addPoint(dragpointx, dragpointy, false);
+        this.draggablePoints.push(newDraggablePoint);
+    }
+
+    //---------------------------------------------------------------
+    // clearDraggablePoints: remove all draggable points from a UML line
+    //---------------------------------------------------------------
+    this.clearDraggablePoints = function() {
+        for (var i = 0; i < this.draggablePoints.length; i++) {
+            points[this.draggablePoints[i]] = waldoPoint;
+        }
+        this.draggablePoints = [];
+    }
+
+    //---------------------------------------------------------------
+    // createDraggablePoints: dynamically create draggable points between every anchor
+    //---------------------------------------------------------------
+    this.createDraggablePoints = function() {
+        for (var i = 2; i < this.anchors.length; i++) { // i = depending on when to start creating draggable points
+            var firstAnchorPoint = this.anchors[i - 1];
+            var secondAnchorPoint = this.anchors[i];
+
+            // Find X coordinate between anchor points
+            var newX = Math.abs(points[firstAnchorPoint].x - points[secondAnchorPoint].x) / 2;
+            if (points[firstAnchorPoint].x > points[secondAnchorPoint].x) {
+                newX += points[secondAnchorPoint].x;
+            } else {
+                newX += points[firstAnchorPoint].x;
+            }
+
+            // Find Y coordinate between anchor points
+            var newY = Math.abs(points[firstAnchorPoint].y - points[secondAnchorPoint].y) / 2;
+            if (points[firstAnchorPoint].y > points[secondAnchorPoint].y) {
+                newY += points[secondAnchorPoint].y;
+            } else {
+                newY += points[firstAnchorPoint].y;
+            }
+
+            this.addDraggablePoint(newX, newY);
+        }
     }
 
     //---------------------------------------------------------------
