@@ -872,6 +872,10 @@ function Symbol(kindOfSymbol) {
         privatePoints.push(this.bottomRight);
         privatePoints.push(this.middleDivider);
         privatePoints.push(this.centerPoint);
+        if (this.symbolkind == symbolKind.umlLine) {
+            privatePoints.push(this.anchors);
+            privatePoints.push(this.draggablePoints);
+        }
         return privatePoints;
     }
 
