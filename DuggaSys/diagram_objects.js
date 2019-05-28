@@ -752,6 +752,10 @@ function Symbol(kindOfSymbol) {
     // erase: attempts to erase object completely from canvas
     //--------------------------------------------------------------------
     this.erase = function () {
+        if (this.symbolkind == symbolKind.umlLine) {
+            this.clearAnchors();
+            this.clearDraggablePoints();
+        }
         this.movePoints();
         this.emptyConnectors();
     }
