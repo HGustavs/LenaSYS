@@ -1672,6 +1672,7 @@ function Symbol(kindOfSymbol) {
                 middleBreakPointY += this.recursiveLineExtent * zoomValue;
             }
 
+            // Draw rest of lineTos based on directions
             if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
                 ctx.lineTo(breakpointStartX, middleBreakPointY);
                 ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
@@ -1685,14 +1686,15 @@ function Symbol(kindOfSymbol) {
             } else if ((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
                 ctx.lineTo(breakpointEndX, breakpointStartY);
             }
-
-            // Draw to end breakpoint based on direction
             ctx.lineTo(breakpointEndX, breakpointEndY);
             ctx.lineTo(x2, y2);
             ctx.stroke();
         } else if (this.anchors.length == 0) {
+            // This code is run once on regular UML lines and creates all anchors and draggable point(s)
+            //------------------------------------------------------------------------------------------
             this.addAnchor(canvasToPixels(breakpointStartX).x, canvasToPixels(0, breakpointStartY).y);
 
+            // Rules for anchors' starting positions
             if ((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
                 if (x1 == x2) {
                     this.addAnchor(canvasToPixels(breakpointStartX).x, canvasToPixels(0, breakpointStartY).y);
