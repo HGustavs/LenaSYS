@@ -4114,7 +4114,7 @@ function loadLineForm(element, dir) {
                     lastSelected.lineDirection = "First";
                     tempLineDirection = "First";
                 }
-                setSelectedOption('object_type', settings.properties.key_type);
+                setSelectedOption('object_type', lastSelected.properties.key_type);
                 // check if the form that is loaded is for a line can have cardinality
                 if (cardinalityValue != 1) {
                     setSelectedOption('cardinality', tempCardinality);
@@ -4325,7 +4325,7 @@ function changeObjectAppearance(object_type) {
             selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
         } else if (selected_objects[i].symbolkind == symbolKind.umlLine) {
             selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
-            selected_objects[i].properties['key_type'] = document.getElementById('line_direction').value;
+            selected_objects[i].lineDirection = document.getElementById('line_direction').value;
         } else if (selected_objects[i].kind == kind.path) {
             selected_objects[i].fillColor = document.getElementById('figureFillColor').value;
             selected_objects[i].opacity = document.getElementById('figureOpacity').value / 100;
@@ -4389,10 +4389,13 @@ function changeCardinality(isUML) {
             lastSelected.cardinality[0].value = val;
         }
     }
+    updateGraphics();
 }
+
 // Changes direction for uml line relations
 function changeLineDirection() {
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].lineDirection = document.getElementById('line_direction').value;
     }
+    updateGraphics();
 }
