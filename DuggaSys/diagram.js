@@ -466,7 +466,7 @@ function keyDownHandler(e) {
       document.getElementById("relationbutton").click();
     } else if (shiftIsClicked && key == cKey && targetMode == "UML") {
       document.getElementById("classbutton").click();
-    } else if (shiftIsClicked && key == tKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == tKey) {
       document.getElementById("drawtextbutton").click();
     } else if (shiftIsClicked && key == fKey) {
       document.getElementById("drawfreebutton").click();
