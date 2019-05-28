@@ -919,3 +919,32 @@
         padding: 15px 15px 15px 15px;
     }
 }
+  .blockBtnSlot {
+      min-width: 11px;
+      display: inline-block;
+      text-align: center;
+      line-height: 8px;
+      max-height: 11px;
+      -webkit-box-sizing:border-box;
+      -moz-box-sizing:border-box;
+      -ms-box-sizing:border-box;
+      box-sizing:border-box;
+  }
+  .blockBtnSlot.open-block::before {
+      content: '-';
+  }
+  .blockBtnSlot.closed-block::before {
+      content: '+';
+  }
+  .blockBtnSlot.occupied {
+    border: 1px  solid black;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .blockBtnSlot.occupied:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .blockEllipses {
+      font-weight: bold;
+  }

@@ -32,6 +32,7 @@ How to use
 
 var retData; // Data returned from setup
 var tokens = []; // Array to hold the tokens.
+var allBlocks = [];
 var dmd = 0; // Variable used to determine forward/backward skipping with the forward/backward buttons
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";
@@ -276,6 +277,12 @@ function returned(data) {
 				$("#" + contentid).css("margin-top", boxmenuheight);
 			}
 		}
+	}
+
+	var ranges = getBlockRanges(allBlocks);
+	for (var i = 0; i < Object.keys(ranges).length; i++) {
+		var boxid = Object.keys(ranges)[i];
+		createBlocks(ranges[boxid], boxid);
 	}
 
 	//hides maximize button if not supported
@@ -1124,13 +1131,14 @@ function tokenize(instring, inprefix, insuffix) {
 	var currentNum; // current numerical value
 	var currentQuoteChar; // current quote character
 	var currentStr; // current string value.
+	var currentBlock = {}; // current block value.
 	var row = 1; // current row value
 
 	currentCharacter = instring.charAt(i);
 	while (currentCharacter) { // currentCharacter == first character in each word
 		from = i;
 		if (currentCharacter <= ' ') { // White space and carriage return
-			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
+ 			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
 				maketoken('newline', "", i, i, row);
 				currentStr = "";
 				row++;
@@ -1138,16 +1146,13 @@ function tokenize(instring, inprefix, insuffix) {
 				currentStr = currentCharacter;
 			}
 
-			i++;
+			i++; 
 			while (true) {
 				currentCharacter = instring.charAt(i);
 				if (currentCharacter > ' ' || !currentCharacter) break;
 				if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
 					maketoken('whitespace', currentStr, from, i, row);
-					maketoken('newline', "", i, i, row);
 					currentStr = "";
-					// White space Row (so we get one white space token for each new row) also increase row number
-					row++;
 				} else {
 					currentStr += currentCharacter;
 				}
@@ -1554,11 +1559,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = bracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "{") {
+				allBlocks.push([tokens[i].row, 1, parseInt(boxid)]);
 				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
 				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
+				allBlocks.push([tokens[i].row, 0, parseInt(boxid)]);
 				pid = cbracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
@@ -1623,16 +1630,16 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
 					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'>" + cont + "</div>";
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
 				}
@@ -1752,16 +1759,16 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
 					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'>" + cont + "</div>";
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
 				}
@@ -1781,6 +1788,121 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		border.style.minHeight = parentHeight;
 	});
 }
+
+function getBlockRanges(blocks) {
+	var boxBlocks = []; // Array to hold each box array
+
+	// Sort by boxid and split array depending on how many boxes we have
+	blocks.sort(([a,b,c], [d,e,f]) => f - c);
+
+	var tempArray = [];
+	for (var i = 0; i < blocks.length; i++) {
+		if (i !== 0 && blocks[i-1][2] !== blocks[i][2]) {
+			// Last iteration had a different boxid, start a new array
+			boxBlocks.push(tempArray);
+			tempArray = [];
+		}
+		tempArray.push(blocks[i]);
+	}
+	boxBlocks.push(tempArray);
+
+	// Sort the arrays
+	for (var i = 0; i < boxBlocks.length; i++) {
+		boxBlocks[i].sort(([a,b], [c,d]) => a - c);
+	}
+
+	// Determine block ranges
+	var boxRanges = {};
+	var ranges = [];
+	var openBlock = false;
+	var blocks;
+	for (var i = 0; i < boxBlocks.length; i++) {
+		blocks = boxBlocks[i];
+		for (var j = 0; j < blocks.length; j++) {
+			// If there are no open blocks and the bracket is a closing bracket, do nothing.
+			if (!openBlock && blocks[j][1] === 0) continue;
+			
+			// Opening bracket
+			if (blocks[j][1] === 1) {
+				ranges.push([blocks[j][0], 0]);
+				openBlock = true;
+			}
+			// Closing bracket
+			if (blocks[j][1] === 0) {
+				// Find first entry in ranges array with no closing bracket
+				for (var k = ranges.length - 1; k > -1; k--) {
+					if (ranges[k][1] === 0) {
+						
+						if (ranges[k][0] !== blocks[j][0]) {
+							// We found the first open bracket, and the block is completed
+							ranges[k][1] = blocks[j][0];
+						} else { 
+							// If the opening bracket is on the same row as the closing bracket we remove that entry
+							ranges.splice(k, 1);
+						}
+						break;
+					}
+				}
+				
+				// Check if there are any open blocks in the ranges array
+				var containsOpenBlock = function(arr) {
+					return arr.includes(0)
+				}
+				if (!ranges.some(containsOpenBlock)) openBlock = false;
+			}
+		}
+		openBlock = false;
+		var key = boxBlocks[i][0][2];
+		boxRanges[key] = ranges;
+		ranges = [];
+	}
+	return boxRanges;
+}
+
+function createBlocks(ranges, boxid) {
+	var wrapper = document.querySelector('#textwrapper'+boxid);
+	for (var i = 0; i < ranges.length; i++) {
+		var blockStartRow = wrapper.querySelector("div[id$='"+ranges[i][0]+"']");
+		var buttonSlot = blockStartRow.querySelector("span:first-child");
+		buttonSlot.classList.add('open-block');
+		buttonSlot.classList.add('occupied');
+		buttonSlot.id = i;
+
+		buttonSlot.addEventListener('click', (e) => {
+			var button = e.target;
+			button.classList.toggle('open-block');
+			button.classList.toggle('closed-block');
+			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
+			toggleRows(rowsInBlock, button);
+		});
+	}
+}
+
+function toggleRows(rows, button) {
+	var baseRow = button.parentNode;
+	var wrapper = baseRow.parentNode;
+	var box = wrapper.parentNode;
+	var numbers = [...box.querySelectorAll('.codeborder div')];
+	var display;
+	var ellipses = document.createElement('span');
+	ellipses.classList.add('blockEllipses');
+	ellipses.innerHTML = ' ...';
+
+	if (button.classList.contains('closed-block')) {
+		display = 'none';
+		baseRow.appendChild(ellipses);
+	} else {
+		display = 'block';
+		ellipses = baseRow.querySelector('.blockEllipses');
+		baseRow.removeChild(ellipses);
+	}
+	
+	for (var i = 1; i < rows.length; i++) {
+		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = display;
+		numbers[rows[i] - 1].style.display = display;
+	}
+}
+
 
 //----------------------------------------------------------------------------------
 // createCodeborder: function to create a border with line numbers
