@@ -1590,6 +1590,17 @@ function Symbol(kindOfSymbol) {
             } else if (canvasToPixels(0, y2).y == conobj2.br.y) {
                 endLineDirection = "down";
             }
+        } else if (connObjects.length == 1) {
+            // Check if line's end point matches any class diagram
+            if (canvasToPixels(x2).x == conobj1.tl.x) {
+                endLineDirection = "left";
+            } else if (canvasToPixels(x2).x == conobj1.br.x) {
+                endLineDirection = "right";
+            } else if (canvasToPixels(0, y2).y == conobj1.tl.y) {
+                endLineDirection = "up";
+            } else if (canvasToPixels(0, y2).y == conobj1.br.y) {
+                endLineDirection = "down";
+            }
         }
 
         // Calculating the mid point between start and end
