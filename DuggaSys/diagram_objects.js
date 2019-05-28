@@ -1014,7 +1014,7 @@ function Symbol(kindOfSymbol) {
         var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
 
         // Draggable UML line point
-        if (this.symbolkind == symbolKind.umlLine && this.draggablePoints.length > 1) {
+        if (this.symbolkind == symbolKind.umlLine && this.draggablePoints.length > 0) {
             var x3 = pixelsToCanvas(points[this.draggablePoints[0]].x).x;
             var y3 = pixelsToCanvas(0, points[this.draggablePoints[0]].y).y;
         }
@@ -1868,7 +1868,7 @@ function Symbol(kindOfSymbol) {
     // createDraggablePoints: dynamically create draggable points between every anchor
     //---------------------------------------------------------------
     this.createDraggablePoints = function() {
-        for (var i = 2; i < this.anchors.length; i++) { // values depending on when to start and stop creating draggable points
+        for (var i = 2; i < this.anchors.length - 1; i++) { // values depending on when to start and stop creating draggable points
             var firstAnchorPoint = this.anchors[i - 1];
             var secondAnchorPoint = this.anchors[i];
 
