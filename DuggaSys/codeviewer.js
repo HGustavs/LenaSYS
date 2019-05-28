@@ -2030,6 +2030,7 @@ function showCopyButtons(templateid) {
 
 	for (var i = 1; i <= totalBoxes; i++) {
 		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
+		if (!copyBtn) continue;
 		copyBtn.style.display = "table-cell";
 	}
 }
