@@ -5595,3 +5595,27 @@ textarea#filecont {
 .resultedbuttons:hover {
   filter: brightness(1.2);
 }
+
+.contribToolTip {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  height: 20px;
+  padding: 5px;
+  background-color: var(--color-primary);
+  border-radius: 4px;
+  color: white;
+  position: absolute;
+  margin-top: -30px;
+  animation-duration: 0.2s;
+  animation-name: tooltipFade;
+}
+
+@keyframes tooltipFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

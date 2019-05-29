@@ -710,7 +710,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable icon in its designated column that opens a window for acess to variants.
 	else if (col == "arrow") {
 		clickedElement = JSON.parse(cellid.match(/\d+/));
-		str = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg'";
+		str = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
 		str += " onclick='renderVariant(\"" + clickedElement + "\"); showVariantEditor();'>";
 		return str;
 	}
@@ -718,7 +718,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel") {
 		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
 		str += " onclick='selectDugga(\"" + object + "\");' >";
 
 		return str;
@@ -727,7 +727,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan") {
 		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+		str = "<img id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
 		str += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"dugga\");' >";
 		return str;
 	}

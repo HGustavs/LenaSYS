@@ -654,7 +654,7 @@ function createTimeSheetTable(data) {
   });
 
   // Render table only if there is tabledata
-  if(tabledata.tablebody != null || tabledata.tablebody != undefined) {
+  if(tabledata.tblbody != null || tabledata.tblbody != undefined) {
     myTable.renderTable();
   }
 }
@@ -681,6 +681,19 @@ function renderSortOptions(col, status, colname) {
     str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
   } else {
     str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+  }
+  return str;
+}
+
+function renderAllRankSortOptions(col, status, colname) {
+
+  str = "";
+  if (status == -1) {
+    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+  } else if (status == 0) {
+    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+  } else {
+    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
   }
   return str;
 }
@@ -712,11 +725,11 @@ function returnedSection(data) {
 
   var str = "";
 
-  str += "<div class='contributionSort'>";
-  str += "<input type='button' value='All' class='submit-button title='All' onclick='statSort(value)'></input>";
-  str += "<input type='button' value='Basic' class='submit-button title='Basic' onclick='statSort(value)'></input>";
-  str += "<input type='button' value='Charts' class='submit-button title='Charts' onclick='statSort(value)'></input>";
-  str += "<input type='button' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)'></input>";
+  str += "<div id='contributionContainer' class='contributionSort'>";
+  str += "<input type='button' id='allBtn' value='All' class='submit-button title='All' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
+  str += "<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
+  str += "<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
+  str += "<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
   str += "</div>";
 
   localStorage.setItem('GitHubUser', data['githubuser'])
@@ -1001,14 +1014,15 @@ function createAllRankTable(data){
 		data:tabledata,
     tableElementId:"allRankTable",
 		renderCellCallback:allRankRenderCell,
-		renderSortOptionsCallback:renderSortOptions,
+		renderSortOptionsCallback:renderAllRankSortOptions,
     columnSum:["eventrank","commentrank","locrank","commitrank"],
     columnSumCallback: makeSumAllRank,
 		columnOrder:colOrder,
 		freezePaneIndex:4,
 		hasRowHighlight:false,
 		hasMagicHeadings:false,
-		hasCounterColumn:true
+		hasCounterColumn:true,
+    hasFooter:true
 	});
 	allRankTable.renderTable();
 }
@@ -1290,4 +1304,46 @@ function allRankRenderCell(col,celldata,cellid){
     str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+celldata+"</span></div>";
   }
   return str;
+}
+
+// Tooltips for sorting buttons on hover
+
+function showTooltip(hoverBtn) {
+  var TTtext = "";
+  var leftOffset = 0;
+
+  switch(hoverBtn.value) {
+    case "All":
+      TTtext = "Show all";
+      leftOffset = 0;
+    break;
+    case "Basic":
+      TTtext = "Show basic";
+      leftOffset = 115;
+    break;
+    case "Charts":
+      TTtext = "Show charts";
+      leftOffset = 230;
+    break;
+    case "Contribution":
+      TTtext = "Show contribution";
+      leftOffset = 345;
+    break;
+  }
+  
+  var TTtextContainer = document.createElement("P");
+  var TTtextNode = document.createTextNode(TTtext);
+  TTtextContainer.appendChild(TTtextNode);
+  document.getElementById("contributionContainer").appendChild(TTtextContainer);
+  TTtextContainer.classList.add("contribToolTip");
+  TTtextContainer.style.marginLeft = leftOffset + "px";
+}
+
+function hideTooltip() {
+  var childrens = document.getElementById("contributionContainer").children;
+    for(i = 0; i < childrens.length; i++) {
+      if(childrens[i].classList.contains('contribToolTip')) {
+        document.getElementById("contributionContainer").removeChild(childrens[i]);
+      }
+    }
 }
