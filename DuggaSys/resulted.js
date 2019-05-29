@@ -194,6 +194,7 @@ function process() {
 
 	// Add custom filters to the filter menu.
 	var dstr = "";
+	dstr += makeCustomFilter("showStudents", "Show Students");
 	dstr += makeCustomFilter("showTeachers", "Show Teachers");
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
@@ -336,13 +337,13 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	var currentTimeGetTime = currentTime.getTime();
 	if(document.getElementById('newFeedback') == null){
 		feedbackText = "";
-	} else {		
+	} else {
 		feedbackText = document.getElementById('newFeedback').value;
 	}
 
 	if ($(e.target).hasClass("Uc")) {
 		changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, null, feedbackText);
-		
+
 	} else if (($(e.target).hasClass("G")) || ($(e.target).hasClass("VG")) || ($(e.target).hasClass("U"))) {
 		changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire, feedbackText);
 	} else if ($(e.target).hasClass("Gc")) {
@@ -651,7 +652,17 @@ function returnedResults(data) {
 		}
 	}
 }
-
+//----------------------------------------
+// Success return function for LadExport lastGraded
+//----------------------------------------
+function returnedExportedGrades(gradeData){
+	try {
+		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;
+	  }
+	  catch(err) {
+		console.log("gradeLastExported updated in database");
+	  }
+}
 var myTable;
 //----------------------------------------
 // Renderer
@@ -783,15 +794,15 @@ function renderCell(col, celldata, cellid) {
 			str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 			str += "</div>";
-			return str;	
+			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div style='padding:10px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "dugga-pending";
-			} 
+			}
 			str += "'>";
-			// Creation of grading buttons		
+			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
@@ -830,10 +841,10 @@ function renderCell(col, celldata, cellid) {
 				}
 				str += "</div>";
 			}
-			return str;	
-		} 
-	}	
-	
+			return str;
+		}
+	}
+
 	else if(filterList["passedDeadline"]){
 				// First column (Fname/Lname/SSN)
 			if (col == "FnameLname") {
@@ -1091,15 +1102,10 @@ function smartSearch(splitSearch, row) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	var teacherDropdown = document.getElementById("teacherDropdown").value;
-	if (teacherDropdown === "none"){
-		return true;
-	}
-	else if(row.FnameLname.examiner != teacherDropdown){
-		return false;
-	}
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != -1)
+		return false;
+	if(!filterList["showStudents"] && row["FnameLname"]["access"].toUpperCase().indexOf("W") != 0)
 		return false;
 	if (filterList["onlyPending"]) {
 		var rowPending = false;
@@ -1113,10 +1119,13 @@ function rowFilter(row) {
 			return false;
 		}
 	}
-
-  // Removes spaces so that it can tolerate "wrong" inputs when searching
-  searchterm = searchterm.replace(' ', '');
-  // divides the search on &&
+	var teacherDropdown = document.getElementById("teacherDropdown").value;
+	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
+		return false;
+	}
+  	// Removes spaces so that it can tolerate "wrong" inputs when searching
+  	searchterm = searchterm.replace(' ', '');
+  	// divides the search on &&
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
 
@@ -1125,7 +1134,7 @@ function rowFilter(row) {
 			splitSearch.push(s.trim().split(":"));
 	})
 
-  // The else makes sure that you can search on names without a search-category.
+  	// The else makes sure that you can search on names without a search-category.
 	if (searchterm != "" && splitSearch != searchterm) {
 		return smartSearch(splitSearch, row);
 	} else {
@@ -1138,7 +1147,7 @@ function rowFilter(row) {
 				if (row[colname]["lastname"] != null) {
 					name += row[colname]["lastname"];
 				}
-        name = name.replace(' ', '');
+        		name = name.replace(' ', '');
 				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
 					return true;
 				}
@@ -1368,6 +1377,9 @@ function exportColumnHeading(format, heading, colname) {
 	}
 	return str;
 }
+//----------------------------------------
+// LadExport
+//----------------------------------------
 
 //Function for exporting grades to ladoc
 function ladexport() {
@@ -1383,7 +1395,49 @@ function ladexport() {
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
+	AJAXService("getunexported", {}, "GEXPORT");
 }
+
+function copyLadexport() {
+	var lastExpDate = document.getElementById('lastExpDate');
+	var copyIcon = document.getElementById("copyClipboard");
+	copyIcon.style.backgroundColor = '#629c62';
+		setInterval(function(){
+			copyIcon.style.backgroundColor = '#afaeae';
+		 }, 5000);
+
+	var copieText = document.getElementById('resultlistarea');
+	copieText.select();
+	document.execCommand("copy");
+
+	var today = new Date();
+	var dd = addZero(today.getDate());
+	var mm = addZero(today.getMonth() + 1); //January is 0!
+	var yyyy = today.getFullYear();
+	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+
+	today = yyyy + '-' + mm + '-' + dd;
+
+	 var gradeLastExported = today + " " + time;
+	 lastExpDate.innerHTML =  gradeLastExported;
+	 lastExpDate.style.color = 'green';
+
+	 setInterval(function(){
+		lastExpDate.style.color  = '#000';
+	 }, 5000);
+
+	AJAXService("updateunexported", {
+		gradeLastExported: gradeLastExported,
+	}, "GEXPORT");
+
+}
+
+function addZero(i) {
+	if (i < 10) {
+	  i = "0" + i;
+	}
+	return i;
+  }
 
 function closeLadexport() {
 	document.getElementById("resultlistarea").value = "";

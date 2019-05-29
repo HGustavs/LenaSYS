@@ -206,6 +206,7 @@
 .normtext .oper {
     color: white;
     font-weight: bold;
+    line-height: 15px;
 }
 
 .impo .oper {

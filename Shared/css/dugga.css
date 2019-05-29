@@ -51,6 +51,17 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
  touch-action: none;
 }
 
+#copyClipboard {
+	float: left; 
+	padding: 2px; 
+	background-color: #afaeae;
+}
+#copyClipboard:hover{
+	cursor: pointer;
+	background-color:#868585;
+}
+
+
 
 h1{color: #000;}
 
