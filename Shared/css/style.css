@@ -4319,6 +4319,7 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
+  left: 65px;
   padding-right: 10px;
   padding-left: 10px;
   background-color: var(--color-background);
@@ -4326,7 +4327,6 @@ only screen and (max-device-width: 320px) {
   border: 2px solid #d4d4d4;
   height: 30px;
   position: absolute;
-  right: 14px;
   bottom: 11px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -4335,7 +4335,7 @@ only screen and (max-device-width: 320px) {
 
 #selectDiv select {
   height: 34px;
-  font-size: 14px;
+  font-size: 12px;
   border: 0;
   -webkit-appearance: none;
   /*Removes default chrome and safari style*/
@@ -4395,7 +4395,7 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  left: -20px;
+  left: -10px;
 }
 
 #zoomDecrease:hover+.tooltiptextDec {
@@ -4448,11 +4448,10 @@ only screen and (max-device-width: 320px) {
 
 #zoomV {
   margin-left: 10px;
-  width: 80px;
-  font-size: 14px;
+  width: 67.5px;
+  font-size: 12px;
   right: 1%;
 }
-
 
 /* The slider itself */
 .zoomSlider {
@@ -4525,7 +4524,7 @@ only screen and (max-device-width: 320px) {
   border: 2px solid #d4d4d4;
   font-size: 14px;
   bottom: 11px;
-  left: 65px;
+  right: 14px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
