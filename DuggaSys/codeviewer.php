@@ -255,7 +255,7 @@ Testing Link:
 								<td>Important Words:(No spaces)<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>
 							</tr>
 							<tr>
-								<td></td>
+								<td><input class='submit-button' type='button' value='Remove' onclick='removeExample();' /></td>
 								<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
 							</tr>
 						</table>
@@ -294,6 +294,7 @@ Testing Link:
 					</table>
 				</div>
 		</div>
+		<div id="burgerMenu"></div>
 		<div id="underlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;opacity:0.6;background-color:#000; z-index:8000;"></div>
 		<!-- Template Choosing Box -->
 		<?php

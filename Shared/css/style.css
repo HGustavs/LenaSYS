@@ -979,8 +979,8 @@ div .navButt:hover {
   font-size: 0.95em;
 }
 
-.loginBox .cursorPointer {
-  cursor: pointer;
+.cursorPointer {
+  cursor: pointer !important;
 }
 
 #playlink {
@@ -1125,7 +1125,7 @@ input {
 }
 
 .loginBoxheader div {
-  padding: 2px 20px;
+  padding: 4px 20px;
   /*position: absolute;
   top: 4px;
   right: 4px;*/
@@ -3104,7 +3104,6 @@ span.arrow {
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
   margin-top: 10px;
-
 }
 
 #sortOptions {
@@ -3204,6 +3203,8 @@ span.arrow {
   max-width: 400px;
   overflow: hidden;
   margin-top: 8px;
+  margin-bottom: 10px;
+  padding: 5px;
 }
 
 .contribcontent {
@@ -4176,6 +4177,7 @@ only screen and (max-device-width: 530px) {
   }
 
   #searchBar,
+  #testSearchContainer,
   .tooltip-searchbar {
     display: none;
   }
@@ -5615,4 +5617,28 @@ textarea#filecont {
 
 .resultedbuttons:hover {
   filter: brightness(1.2);
+}
+
+.contribToolTip {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  height: 20px;
+  padding: 5px;
+  background-color: var(--color-primary);
+  border-radius: 4px;
+  color: white;
+  position: absolute;
+  margin-top: -30px;
+  animation-duration: 0.2s;
+  animation-name: tooltipFade;
+}
+
+@keyframes tooltipFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
