@@ -737,6 +737,8 @@ function addTemplatebox(id) {
 	} else {
 		str += "class='boxwrapper deactivatedbox'>";
 	}
+	// Add copy to clipboard notification. Must be added here for everything to work correctly.
+	str += "<div id='notification" + id + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
 	str += "<div id='" + id + "' class='box'></div>";
 	str += "</div>";
 
@@ -1449,7 +1451,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	str = "";
 	cont = "";
 	lineno = 0;
-	str += "<div id='notification" + boxid + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
 	str += "<div id='textwrapper" + boxid + "' class='normtextwrapper'>";
 
 	pcount = 0;
@@ -3549,9 +3550,9 @@ function copyCodeToClipboard(boxid) {
 	selection.removeAllRanges();
 
 	// Notification animation
-	$("#notification" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
+	$("#notificationbox" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
 		setTimeout(function () {
-			$("#notification" + boxid).fadeOut("fast");
+			$("#notificationbox" + boxid).fadeOut("fast");
 		}, 500);
 	});
 	/*$("#textwrapper" + boxid).hide();

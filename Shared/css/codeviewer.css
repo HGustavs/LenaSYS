@@ -75,6 +75,7 @@
     width: calc(100%);
     margin: 0;
     overflow: hidden;
+    z-index: 2;
 }
 
 .buttomenu2 table td img {
@@ -858,8 +859,8 @@
 }
 
 .copy-notification {
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 17px);
+    height: calc(100% - 17px);
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -877,7 +878,13 @@
     z-index: 1;
 }
 
+.copy-notification-icon {
+
+}
+
 .copy-notification img {
+    position: sticky;
+    top: 0;
     margin-left: auto;
     margin-right: auto;
     width: 10% !important;
