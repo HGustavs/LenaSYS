@@ -610,9 +610,9 @@ function returnedSection(data) {
       // Show FAB / Menu
       document.getElementById("TopMenuStatic").style.display = "Block";
       document.getElementById("FABStatic").style.display = "Block";
-      document.querySelector("td.results.menuButton").style.display = "none";
-      document.querySelector("td.tests.menuButton").style.display = "none";
-      document.querySelector("td.access.menuButton").style.display = "none";
+      document.querySelector("td.results").style.display = "none";
+      document.querySelector("td.tests").style.display = "none";
+      document.querySelector("td.access").style.display = "none";
       document.querySelector(".course-dropdown-div").style.display = "none";
       document.querySelector("td.editVers").style.display = "none";
       document.querySelector("td.newVers").style.display = "none";
