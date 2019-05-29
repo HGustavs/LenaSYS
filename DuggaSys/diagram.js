@@ -2705,7 +2705,7 @@ function globalLineThickness() {
 function globalFont() {
     settings.properties.font = document.getElementById('font').value;
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.uml || diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
             diagram[i].properties['font'] = settings.properties.font;
         }
     }
@@ -2718,7 +2718,7 @@ function globalFont() {
 function globalFontColor() {
     settings.properties.fontColor = document.getElementById('fontColor').value;
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
             diagram[i].properties['fontColor'] = settings.properties.fontColor;
         }
     }
@@ -2731,7 +2731,7 @@ function globalFontColor() {
 function globalTextSize() {
     settings.properties.sizeOftext = document.getElementById('TextSize').value;
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
             diagram[i].properties['sizeOftext'] = settings.properties.sizeOftext;
         }
     }
@@ -2744,7 +2744,7 @@ function globalTextSize() {
 function globalFillColor() {
     settings.properties.fillColor = document.getElementById('FillColor').value;
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
             diagram[i].properties['fillColor'] = settings.properties.fillColor;
         } else {
             diagram[i].fillColor = settings.properties.fillColor;
