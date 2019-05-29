@@ -256,7 +256,6 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 //----------------------------------------------------------------------------------
 // navigatePage: Local function for converting static page navigation to dynamic
 //----------------------------------------------------------------------------------
-
 function navigatePage(clicked_id, pagename)
 {
 		changeURL(clicked_id, pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
@@ -773,7 +772,15 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="GROUP"){
+	}else if(kind=="GEXPORT"){
+		$.ajax({
+			url: "resultedservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedExportedGrades
+		});
+}else if(kind=="GROUP"){
 			$.ajax({
 				url: "groupedservice.php",
 				type: "POST",
@@ -970,7 +977,7 @@ function processLogin() {
           } else {
             displayAlertText("#login #message", "Wrong username or password");
 					}
-					
+
 					$("input#username").addClass("loginFail");
 					$("input#password").addClass("loginFail");
 					setTimeout(function(){
