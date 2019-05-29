@@ -2108,6 +2108,7 @@ function minimizeBoxes(boxid) {
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
+	document.querySelector('#box'+boxid+'wrapper #copyClipboard').style.display = 'none';
 
 	getLocalStorageProperties(boxValArray);
 
