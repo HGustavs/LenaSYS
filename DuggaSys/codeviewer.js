@@ -748,6 +748,8 @@ function addTemplatebox(id) {
 	} else {
 		str += "class='boxwrapper deactivatedbox'>";
 	}
+	// Add copy to clipboard notification. Must be added here for everything to work correctly.
+	str += "<div id='notification" + id + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
 	str += "<div id='" + id + "' class='box'></div>";
 	str += "</div>";
 
@@ -1460,7 +1462,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	str = "";
 	cont = "";
 	lineno = 0;
-	str += "<div id='notification" + boxid + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
 	str += "<div id='textwrapper" + boxid + "' class='normtextwrapper'>";
 
 	pcount = 0;
@@ -1911,7 +1912,7 @@ function toggleRows(rows, button) {
 //----------------------------------------------------------------------------------
 
 function createCodeborder(lineno, improws) {
-	var str = "<div class='codeborder' style='z-index: 1;'>"; // The z-index places the code border above the copy to clipboard notification
+	var str = "<div class='codeborder' style='z-index: 2;'>"; // The z-index places the code border above the copy to clipboard notification
 	for (var i = 1; i <= lineno; i++) {
 		// Print out normal numbers
 		if (improws.length == 0) {
@@ -3564,15 +3565,15 @@ function copyCodeToClipboard(boxid) {
 	selection.removeAllRanges();
 
 	// Notification animation
-	$("#notification" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
+	$("#notificationbox" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
 		setTimeout(function () {
-			$("#notification" + boxid).fadeOut("fast");
+			$("#notificationbox" + boxid).fadeOut("fast");
 		}, 500);
 	});
-	$("#textwrapper" + boxid).hide();
+	/*$("#textwrapper" + boxid).hide();
 	setTimeout(function () {
 		$("#textwrapper" + boxid).fadeIn("fast");
-	}, 1000);
+	}, 1000);*/
 }
 
 
