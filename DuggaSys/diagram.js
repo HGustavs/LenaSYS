@@ -4180,22 +4180,22 @@ function loadTextForm(element, dir) {
     var lastSelected = selected_objects[selected_objects.length - 1];
     file.open('GET', dir);
     file.onreadystatechange = function() {
-    if(file.readyState === 4) {
-      element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0 && lastSelected) {
-        var text = "";
-        var textarea = document.getElementById('freeText');
-        for (var i = 0; i < lastSelected.textLines.length; i++) {
-            text += lastSelected.textLines[i].text;
-            if (i < lastSelected.textLines.length - 1) text += "\n";
+        if(file.readyState === 4) {
+            element.innerHTML = file.responseText;
+            if(globalAppearanceValue == 0 && lastSelected) {
+                var text = "";
+                var textarea = document.getElementById('freeText');
+                for (var i = 0; i < lastSelected.textLines.length; i++) {
+                    text += lastSelected.textLines[i].text;
+                    if (i < lastSelected.textLines.length - 1) text += "\n";
+                }
+                textarea.value = text;
+                setSelectedOption('font', lastSelected.properties.font);
+                setSelectedOption('fontColor', lastSelected.properties.fontColor);
+                setSelectedOption('textAlign', lastSelected.properties.textAlign);
+                setSelectedOption('TextSize', lastSelected.properties.sizeOftext);
+            }
         }
-        textarea.value = text;
-        setSelectedOption('font', settings.properties.font);
-        setSelectedOption('fontColor', settings.properties.fontColor);
-        setSelectedOption('textAlign', settings.properties.textAlign);
-        setSelectedOption('TextSize', settings.properties.sizeOftext);
-      }
-    }
     }
     file.send();
 }
