@@ -42,99 +42,37 @@ function removeStatview(value) {
 
   }
 }
+
+function restoreSpecStatView(value) {
+  var all = document.querySelectorAll(value),
+    i = 0,
+    l = all.length;
+
+    for (i; i < l; i++) {
+      all[i].style.display = 'block';
+
+    }
+}
+
 // Gives the buttons functionality
 function statSort(value) {
   if (value == "All") {
-    document.getElementById("contribTsTable").style.display = "block";
-    document.getElementById("contribGithHubContribTable").style.display = "block";
-    document.getElementById("personalRankTable").style.display = "block";
     restoreStatView();
 
   } else if (value == "Basic") {
-    document.getElementById("personalRankTable").style.display = "block";
-    document.getElementById("contribTsTable").style.display = "none";
-    document.getElementById("contribGithHubContribTable").style.display = "none";
     removeStatview('.group2 , .group3');
+    restoreSpecStatView('.group1');
 
   } else if (value == "Charts") {
-    document.getElementById("personalRankTable").style.display = "none";
-    document.getElementById("contribTsTable").style.display = "none";
-    document.getElementById("contribGithHubContribTable").style.display = "none";
     removeStatview('.group1 , .group3');
+    restoreSpecStatView('.group2');
   } else if (value == "Contribution") {
-    document.getElementById("personalRankTable").style.display = "none";
-    document.getElementById("contribTsTable").style.display = "block";
-    document.getElementById("contribGithHubContribTable").style.display = "block";
     removeStatview('.group1 , .group2');
+    restoreSpecStatView('.group3');
   }
 }
 
-//----------------------------------------
-// Renderer
-//----------------------------------------
 
-function renderRankTable() {
-  if (contribDataArr.length == 0) return;
-  var str = "<table  class='fumho group3'><tr><th></th><th style='padding: 2px 10px;' onclick='sortRank(0);'>login</th><th style='padding: 2px 10px;' onclick='sortRank(2);'>alleventranks</th><th style='padding: 2px 10px;' onclick='sortRank(3);'>allcommentranks</th><th style='padding: 2px 10px;' onclick='sortRank(4);'>LOC rank</th><th style='padding: 2px 10px;' onclick='sortRank(5);'>Commit rank</th></tr>";
-  for (var j = 0; j < contribDataArr.length; j++) {
-    str += "<tr>";
-    str += "<td>" + j + "</td>";
-    str += "<td>" + contribDataArr[j].name + "</td>";
-    str += "<td>" + contribDataArr[j].alleventranks + "</td>";
-    str += "<td>" + contribDataArr[j].allcommentranks + "</td>";
-    str += "<td>" + contribDataArr[j].allrowrank + "</td>";
-    str += "<td>" + contribDataArr[j].allcommitrank + "</td>";
-    str += "</tr>";
-  }
-  str += "</table>";
-  document.getElementById("rankTable").innerHTML = str;
-}
-
-// sort rank based on column, col
-function sortRank(col) {
-  if (col === 0) {
-    contribDataArr.sort(function compare(a, b) {
-      if (a.name > b.name) {
-        return 1;
-      } else if (a.name < b.name) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-  } else if (col === 2) {
-    contribDataArr.sort(function compare(a, b) {
-      if (a.alleventranks > b.alleventranks) {
-        return -1;
-      } else if (a.alleventranks < b.alleventranks) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  } else if (col === 3) {
-    contribDataArr.sort(function compare(a, b) {
-      if (a.allcommentranks > b.allcommentranks) {
-        return -1;
-      } else if (a.allcommentranks < b.allcommentranks) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  } else if (col === 4) {
-    contribDataArr.sort(function compare(a, b) {
-      if (a.allrowrank > b.allrowrank) {
-        return -1;
-      } else if (a.allrowrank < b.allrowrank) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  }
-  renderRankTable();
-}
 
 function hideInfoText() {
   var text = document.getElementById("infoText");
@@ -179,7 +117,8 @@ function renderBarDiagram(data) {
 
   // Renders the diagram
 
-  var str = "<div class='group1' style='width:100%;overflow-x:scroll;'>";
+  var str = "<div style='width:100%;overflow-x:scroll;'>";
+  str += "<h2 style='padding-top:10px'>Weekly bar chart</h2>";
   str += "<svg  class='chart fumho'  style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
   for (var i = 0; i < numOfWeeks; i++) {
     str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
@@ -239,7 +178,8 @@ function renderLineDiagram(data) {
 
 
   //Selectbox to choose week
-  str = '<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
+  str = "<h2 style='padding-top:10px'>Weekly line chart</h2>";
+  str += '<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
   str += '<option value="' + firstweek + '">All weeks</option>';
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
@@ -710,10 +650,13 @@ function createTimeSheetTable(data) {
     freezePaneIndex: 4,
     hasRowHighlight: false,
     hasMagicHeadings: false,
-    hasCounterColumn: true
+    hasCounterColumn: false
   });
 
-  myTable.renderTable();
+  // Render table only if there is tabledata
+  if(tabledata.tblbody != null || tabledata.tblbody != undefined) {
+    myTable.renderTable();
+  }
 }
 
 function renderCell(col, celldata, cellid) {
@@ -738,6 +681,19 @@ function renderSortOptions(col, status, colname) {
     str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
   } else {
     str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+  }
+  return str;
+}
+
+function renderAllRankSortOptions(col, status, colname) {
+
+  str = "";
+  if (status == -1) {
+    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+  } else if (status == 0) {
+    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+  } else {
+    str += "<span class='sortableHeading' onclick='allRankTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
   }
   return str;
 }
@@ -769,134 +725,40 @@ function returnedSection(data) {
 
   var str = "";
 
-  str += "<div class='contributionSort'>";
-  str += "<input type='button' value='All' class='submit-button title='All' onclick='statSort(value)'></input>";
-  str += "<input type='button' value='Basic' class='submit-button title='Basic' onclick='statSort(value)'></input>";
-  str += "<input type='button' value='Charts' class='submit-button title='Charts' onclick='statSort(value)'></input>";
-  str += "<input type='button' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)'></input>";
+  str += "<div id='contributionContainer' class='contributionSort'>";
+  str += "<input type='button' id='allBtn' value='All' class='submit-button title='All' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
+  str += "<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
+  str += "<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
+  str += "<input type='button' id='contributionBtn' value='Contribution' class='submit-button title='Contribution' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
   str += "</div>";
 
-  if (data['allusers'].length > 0) {
-    str += "<select id='userid' onchange='selectuser();'>";
-    for (i = 0; i < data['allusers'].length; i++) {
-      str += "<option>" + data['allusers'][i] + "</option>";
-    }
-    str += "</select>";
-  }
+  localStorage.setItem('GitHubUser', data['githubuser'])
+     str+="<p>";
+     if(data['allusers'].length>0){
+         str+="<select id='userid' onchange='selectuser();'>";
+         str+="<option>"+localStorage.getItem('GitHubUser')+"</option>";
+         for(i=0;i<data['allusers'].length;i++){
+           if(data['allusers'][i] != localStorage.getItem('GitHubUser')){
+             str+="<option>"+data['allusers'][i]+"</option>";
+           }
+         }
+         str+="</select>";
+      }
+     str+="</p>";
 
   str += "<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
 
+  createAllRankTable(buildAllRankData(data));
   createRankTable(buildRankData(data));
   createGitHubcontributionTable(buildContributionData(data));
   toggleAfterLocalStorage(data);
   createTimeSheetTable(data['timesheets']);
 
-  str += renderBarDiagram(data);
-  str += renderLineDiagram(data);
-  str += "<div class='group2' id='hourlyGraph'>";
-  str += renderCircleDiagram(JSON.stringify(data['hourlyevents']));
-  str += "</div>";
+  document.getElementById('barchart').innerHTML = renderBarDiagram(data);
+  document.getElementById('lineDiagram+select').innerHTML = renderLineDiagram(data);
+  document.getElementById('hourlyGraph').innerHTML = renderCircleDiagram(JSON.stringify(data['hourlyevents']));
 
-
-  str += "<div id='rankTable'></div>";
-  var contribData = [];
-
-  if (data['allrowranks'].length > 0) {
-    for (i = 0; i < data['allrowranks'].length; i++) {
-      if (data['allrowranks'][i][1].length < 9) {
-        if (contribData[data['allrowranks'][i][1]] == undefined) {
-          contribData[data['allrowranks'][i][1]] = {
-            name: data['allrowranks'][i][1]
-          };
-          contribData[data['allrowranks'][i][1]].allrowrank = parseInt(data['allrowranks'][i][0]);
-          // Also add -1 for allrowrank,allcommentranks,alleventranks
-          contribData[data['allrowranks'][i][1]].allrank = parseInt(-1);
-          contribData[data['allrowranks'][i][1]].allcommentranks = parseInt(-1);
-          contribData[data['allrowranks'][i][1]].alleventranks = parseInt(-1);
-
-        } else {
-          contribData[data['allrowranks'][i][1]].allrank = data['allrowranks'][i][0];
-        }
-      }
-    }
-  }
-
-  if (data['allcommentranks'].length > 0) {
-    for (i = 0; i < data['allcommentranks'].length; i++) {
-      if (data['allcommentranks'][i][1].length < 9) {
-        if (contribData[data['allcommentranks'][i][1]] == undefined) {
-          contribData[data['allcommentranks'][i][1]] = {
-            name: data['allcommentranks'][i][1]
-          };
-          contribData[data['allcommentranks'][i][1]].allcommentranks = parseInt(data['allcommentranks'][i][0]);
-          // Also add -1 for allrowrank,alleventranks,allrank
-          contribData[data['allcommentranks'][i][1]].allrowrank = parseInt(-1);
-          contribData[data['allcommentranks'][i][1]].allrank = parseInt(-1);
-          contribData[data['allcommentranks'][i][1]].alleventranks = parseInt(-1);
-        } else {
-          contribData[data['allcommentranks'][i][1]].allcommentranks = parseInt(data['allcommentranks'][i][0]);
-        }
-      }
-    }
-  }
-
-  if (data['alleventranks'].length > 0) {
-    for (i = 0; i < data['alleventranks'].length; i++) {
-      var student = data['alleventranks'][i][1];
-      var studentRank = data['alleventranks'][i][0];
-      if (student.length < 9) {
-        if (contribData[student] == undefined) {
-          contribData[student] = {
-            name: student
-          };
-          if (studentRank === "undefined") {
-            contribData[student].alleventranks = parseInt(-1);
-          } else {
-            contribData[student].alleventranks = parseInt(studentRank);
-          }
-          // Also add -1 for allrowrank,allcommentranks,alleventranks
-          contribData[student].allrank = parseInt(-1);
-          contribData[student].allrowrank = parseInt(-1);
-          contribData[student].allcommentranks = parseInt(-1);
-          contribData[student].allcommitranks = parseInt(-1);
-        } else {
-          contribData[student].alleventranks = parseInt(studentRank);
-        }
-      }
-    }
-  }
-
-  if (data['allcommitranks'].length > 0) {
-    for (i = 0; i < data['allcommitranks'].length; i++) {
-      var student = data['allcommitranks'][i][1];
-      var studentRank = data['allcommitranks'][i][0];
-      if (student.length < 9) {
-        if (contribData[student] == undefined) {
-          contribData[student] = {
-            name: student
-          };
-          if (studentRank === "undefined") {
-            contribData[student].allcommitrank = parseInt(-1);
-          } else {
-            contribData[student].allcommitrank = parseInt(studentRank);
-          }
-          // Also add -1 for allrowrank,allcommentranks,alleventranks
-          contribData[student].allrank = parseInt(-1);
-          contribData[student].allrowrank = parseInt(-1);
-          contribData[student].allcommentranks = parseInt(-1);
-        } else {
-          contribData[student].allcommitrank = parseInt(studentRank);
-        }
-      }
-    }
-  }
-  for (var stud in contribData) {
-    // If the position in the array is not a object, continue
-    if (!(typeof contribData[stud] === "object")) continue;
-    contribDataArr.push(contribData[stud]);
-  }
   document.getElementById('content').innerHTML = str;
-  sortRank(1); // default to allrank
 }
 
 function buildRankData(data) {
@@ -975,11 +837,14 @@ function createRankTable(data) {
     tableElementId: "personalRankTable",
     renderCellCallback: rankRenderCell,
     renderSortOptionsCallback: renderSortOptions,
+    columnSum:["number","rank","grpranking"],
+    columnSumCallback: makeSumPersonalRank,
     columnOrder: colOrder,
     freezePaneIndex: 4,
     hasRowHighlight: false,
     hasMagicHeadings: false,
-    hasCounterColumn: false
+    hasCounterColumn: false,
+    hasFooter: true
   });
   rankTable.renderTable();
 }
@@ -1049,8 +914,6 @@ function createGitHubcontributionTable(data) {
   });
   ghContibTable.renderTable();
 }
-
-
 
 function renderCellForghContibTable(col, celldata, cellid) {
   var str = "";
@@ -1151,14 +1014,53 @@ function createAllRankTable(data){
 		data:tabledata,
     tableElementId:"allRankTable",
 		renderCellCallback:allRankRenderCell,
-		renderSortOptionsCallback:renderSortOptions,
+		renderSortOptionsCallback:renderAllRankSortOptions,
+    columnSum:["eventrank","commentrank","locrank","commitrank"],
+    columnSumCallback: makeSumAllRank,
 		columnOrder:colOrder,
 		freezePaneIndex:4,
 		hasRowHighlight:false,
 		hasMagicHeadings:false,
-		hasCounterColumn:true
+		hasCounterColumn:true,
+    hasFooter:true
 	});
 	allRankTable.renderTable();
+}
+
+function makeSumAllRank(col,value,row){
+  if (value == "UNK" || value == "NOT FOUND"){
+    return 0;
+  } else {
+    return parseFloat(value)
+  }
+  return 0;
+}
+
+function makeSumPersonalRank(col,value,row){
+  if(col == "number"){
+    if (value == "UNK" || value == "NOT FOUND") {
+      return 0;
+    } else {
+      return parseFloat(value);
+    }
+  } else if(col == "rank") {
+    if (value.rank == "UNK" || value.rank == "NOT FOUND") {
+      var retVal = retdata.amountInCourse/5;
+      return retVal;
+    } else {
+      var retVal = value.rank/5;
+      return retVal;
+    }
+  } else if(col == "grpranking") {
+    if (value.rank == "UNK" || value.rank == "NOT FOUND") {
+      var retVal = retdata.amountInGroups/5;
+      return retVal;
+    } else {
+      var retVal = value.rank/5;
+      return retVal;
+    }
+  }
+	return 0;
 }
 
 /*
@@ -1273,4 +1175,175 @@ function createDefault(){
 //This function prevents the toggle from happening when the links is is clicked.
 function keepContribContentOpen(e){
   e.stopPropagation();
+}
+
+/*
+  We cant assume that the users will be on exactly the same position in different
+  databases tables. This function is implemented to handle cases where the user information
+  is on different rows in different database tables.
+*/
+function buildAllRankData(data){
+  var rankData = [];
+  var nextUser;
+  var usersData;
+  var positionTracker;
+  for(var i =0; i<data.allusers.length; i++){
+    var allRanks = {}
+    allRanks.login = data.allusers[i];
+    nextUser = data.allusers[i];
+
+//*************************
+//Adding a allevent value.
+//*************************
+  if(data.alleventranks[i] != undefined){ // Checks if the row exist
+    if(!checkIfDataContanisUser(nextUser,data.alleventranks[i])){ //checks if the data contains nextuser.
+      positionTracker = checkForRightUser(nextUser,data.alleventranks); //If not check for the correct users content and store the position.
+    }else{
+      positionTracker = i; //The data contains the correct user. Stores the position.
+    }
+  }else{
+    positionTracker = -1; // The user does not exist in the data.
+  }
+    if(positionTracker != -1){
+      allRanks.eventrank = allRankContentSelection(nextUser, data.alleventranks[positionTracker]);
+    }else{
+      allRanks.eventrank = 0; // If the user does not have any data display 0.
+    }
+  //*************************
+  //Adding a allcomment value.
+  //*************************
+    if(data.allcommentranks[i] != undefined){ // Checks if the row exist
+      if(!checkIfDataContanisUser(nextUser,data.allcommentranks[i])){ //checks if the data contains nextuser.
+        positionTracker = checkForRightUser(nextUser,data.allcommentranks); //If not check for the correct users content and store the position.
+      }else{
+        positionTracker = i; //The data contains the correct user. Stores the position.
+      }
+    }else{
+      positionTracker = -1; // The user does not exist in the data.
+    }
+      if(positionTracker != -1){
+        allRanks.commentrank = allRankContentSelection(nextUser, data.allcommentranks[positionTracker]);
+      }else{
+        allRanks.commentrank = 0;  // If the user does not have any data display 0.
+      }
+
+
+    //*************************
+    //Adding a all Lines of code value.
+    //*************************
+      if(data.allrowranks[i] != undefined){ // Checks if the row exist
+        if(!checkIfDataContanisUser(nextUser,data.allrowranks[i])){ //checks if the data contains nextuser.
+          positionTracker = checkForRightUser(nextUser,data.allrowranks); //If not check for the correct users content and store the position.
+        }else{
+          positionTracker = i; //The data contains the correct user. Stores the position.
+        }
+      }else{
+        positionTracker = -1; // The user does not exist in the data.
+      }
+        if(positionTracker != -1){
+          allRanks.locrank = allRankContentSelection(nextUser, data.allrowranks[positionTracker]);
+        }else{
+          allRanks.locrank = 0; // If the user does not have any data display 0.
+        }
+
+    //*************************
+    //Adding a all Lines of code value.
+    //*************************
+      if(data.allcommitranks[i] != undefined){ // Checks if the row exist
+        if(!checkIfDataContanisUser(nextUser,data.allcommitranks[i])){ //checks if the data contains nextuser.
+          positionTracker = checkForRightUser(nextUser,data.allcommitranks); //If not check for the correct users content and store the position.
+        }else{
+          positionTracker = i; //The data contains the correct user. Stores the position.
+        }
+      }else{
+        positionTracker = -1; // The user does not exist in the data.
+      }
+        if(positionTracker != -1){
+          allRanks.commitrank = allRankContentSelection(nextUser, data.allcommitranks[positionTracker]);
+        }else{
+          allRanks.commitrank = 0; // If the user does not have any data. display 0.
+        }
+
+    rankData.push(allRanks);
+  }
+  return rankData;
+}
+function checkIfDataContanisUser(user,data){
+  if(user === data[1]){
+    return true;
+  }else{
+    return false;
+  }
+}
+function checkForRightUser(user,data){
+  var positionTracker;
+  for(var j=0; j<data.length; j++){ //Checks if the user has content in the data.
+    if(user ===  data[j][1]){
+      positionTracker = j;
+      break;
+    }else{
+      positionTracker = -1;
+    }
+  }
+  return positionTracker;
+}
+function allRankContentSelection(user,data){
+  if(data != undefined){ // Checks that the row exists
+       if(data[0]!= undefined){  //checks that the value is not undefined.
+        return data[0];
+       }else {
+         return 0;
+       }
+   }else{
+     return 0;
+   }
+}
+function allRankRenderCell(col,celldata,cellid){
+  var str = "";
+  if(col === 'login' || col === 'eventrank' || col === 'commentrank' || col === 'locrank' || col === 'commitrank' ){
+    str = "<div style='display:flex;'><span style='margin:0 4px;flex-grow:1;'>"+celldata+"</span></div>";
+  }
+  return str;
+}
+
+// Tooltips for sorting buttons on hover
+
+function showTooltip(hoverBtn) {
+  var TTtext = "";
+  var leftOffset = 0;
+
+  switch(hoverBtn.value) {
+    case "All":
+      TTtext = "Show all";
+      leftOffset = 0;
+    break;
+    case "Basic":
+      TTtext = "Show basic";
+      leftOffset = 115;
+    break;
+    case "Charts":
+      TTtext = "Show charts";
+      leftOffset = 230;
+    break;
+    case "Contribution":
+      TTtext = "Show contribution";
+      leftOffset = 345;
+    break;
+  }
+  
+  var TTtextContainer = document.createElement("P");
+  var TTtextNode = document.createTextNode(TTtext);
+  TTtextContainer.appendChild(TTtextNode);
+  document.getElementById("contributionContainer").appendChild(TTtextContainer);
+  TTtextContainer.classList.add("contribToolTip");
+  TTtextContainer.style.marginLeft = leftOffset + "px";
+}
+
+function hideTooltip() {
+  var childrens = document.getElementById("contributionContainer").children;
+    for(i = 0; i < childrens.length; i++) {
+      if(childrens[i].classList.contains('contribToolTip')) {
+        document.getElementById("contributionContainer").removeChild(childrens[i]);
+      }
+    }
 }

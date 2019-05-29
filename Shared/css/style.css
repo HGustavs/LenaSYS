@@ -370,8 +370,8 @@ p {
 #Sectionlist .moment {
   color: var(--color-text-header);
   background-color: var(--color-primary-light);
-  cursor: pointer;
   /*
+  cursor: pointer;
   box-shadow: 0px 3px 0px #aaa;
   margin-bottom: 3px;
   */
@@ -680,6 +680,18 @@ header td {
   cursor: pointer;
 }
 
+a .navButt:hover {
+  cursor: pointer;
+  transition: 0.05s;
+  filter: drop-shadow(5px 5px 2px rgba(0,0,0,0.2))
+}
+
+div .navButt:hover {
+  cursor: pointer;
+  transition: 0.05s;
+  filter: drop-shadow(5px 5px 2px rgba(0,0,0,0.2))
+}
+
 .navHeading {
   font-size: 2.5em;
   vertical-align: middle;
@@ -967,8 +979,8 @@ header td {
   font-size: 0.95em;
 }
 
-.loginBox .cursorPointer {
-  cursor: pointer;
+.cursorPointer {
+  cursor: pointer !important;
 }
 
 #playlink {
@@ -1113,7 +1125,7 @@ input {
 }
 
 .loginBoxheader div {
-  padding: 2px 20px;
+  padding: 4px 20px;
   /*position: absolute;
   top: 4px;
   right: 4px;*/
@@ -2454,8 +2466,7 @@ span.arrow {
 
 .course-dropdown-div {
   border: 1px solid var(--color-border-2);
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+  border-radius: 3px;
   overflow: hidden;
   background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
@@ -2674,6 +2685,24 @@ span.arrow {
 
 .mobileSearch {
   display: none;
+}
+
+.ladDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5px;
+}
+
+@media only screen and (max-width: 900px) {
+
+  #ladexportContainer {
+    display: block;
+  }
+
+  .ladDiv {
+    width: 60%;
+  }
 }
 
 
@@ -3075,7 +3104,6 @@ span.arrow {
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
   margin-top: 10px;
-  
 }
 
 #sortOptions {
@@ -3175,6 +3203,8 @@ span.arrow {
   max-width: 400px;
   overflow: hidden;
   margin-top: 8px;
+  margin-bottom: 10px;
+  padding: 5px;
 }
 
 .contribcontent {
@@ -3481,7 +3511,7 @@ rect[class*="activitymarker"]:hover {
   padding: 0 20px 0 0px;
   display: flex;
   text-align: center;
-  
+
 }
 
 .alertmsg p {
@@ -3506,19 +3536,15 @@ rect[class*="activitymarker"]:hover {
 }
 
 /*
-
-.alertmsg#cookiemsg {
-  bottom: 0;
-}
-
 .alertmsg#cookiemsg input {
   align-self: center;
 }
+*/
 
 .alertmsg#cookiemsg {
   bottom: 0;
 }
-*/
+
 
 .nowrap {
   white-space: nowrap;
@@ -3567,6 +3593,7 @@ table.navheader td.menuButton {
 }
 
 table.navheader div.menuButton {
+  margin-right: 10px;
   pointer-events: auto;
   display: inline-block;
   opacity: 1.0;
@@ -4106,10 +4133,6 @@ only screen and (max-device-width: 670px) {
     display: none;
   }
 
-  #ladexportContainer {
-    display: block;
-  }
-
 }
 
 @media only screen and (max-width: 530px),
@@ -4154,6 +4177,7 @@ only screen and (max-device-width: 530px) {
   }
 
   #searchBar,
+  #testSearchContainer,
   .tooltip-searchbar {
     display: none;
   }
@@ -4295,6 +4319,7 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
+  left: 65px;
   padding-right: 10px;
   padding-left: 10px;
   background-color: var(--color-background);
@@ -4302,7 +4327,6 @@ only screen and (max-device-width: 320px) {
   border: 2px solid #d4d4d4;
   height: 30px;
   position: absolute;
-  right: 14px;
   bottom: 11px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -4311,7 +4335,7 @@ only screen and (max-device-width: 320px) {
 
 #selectDiv select {
   height: 34px;
-  font-size: 14px;
+  font-size: 12px;
   border: 0;
   -webkit-appearance: none;
   /*Removes default chrome and safari style*/
@@ -4371,7 +4395,7 @@ only screen and (max-device-width: 320px) {
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  left: -20px;
+  left: -10px;
 }
 
 #zoomDecrease:hover+.tooltiptextDec {
@@ -4424,11 +4448,10 @@ only screen and (max-device-width: 320px) {
 
 #zoomV {
   margin-left: 10px;
-  width: 80px;
-  font-size: 14px;
+  width: 67.5px;
+  font-size: 12px;
   right: 1%;
 }
-
 
 /* The slider itself */
 .zoomSlider {
@@ -4501,7 +4524,7 @@ only screen and (max-device-width: 320px) {
   border: 2px solid #d4d4d4;
   font-size: 14px;
   bottom: 11px;
-  left: 65px;
+  right: 14px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -5593,4 +5616,28 @@ textarea#filecont {
 
 .resultedbuttons:hover {
   filter: brightness(1.2);
+}
+
+.contribToolTip {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  height: 20px;
+  padding: 5px;
+  background-color: var(--color-primary);
+  border-radius: 4px;
+  color: white;
+  position: absolute;
+  margin-top: -30px;
+  animation-duration: 0.2s;
+  animation-name: tooltipFade;
+}
+
+@keyframes tooltipFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

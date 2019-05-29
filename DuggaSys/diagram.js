@@ -48,12 +48,33 @@ var settings = {
         UML: 0,
         Text: 0,
     },
+
+    properties: {
+        fillColor: '#ffffff',                         // Change background colors on entities.
+        strokeColor: '#000000',                       // Change standard line color.
+        fontColor: '#000000',                         // Change the color of the font.
+        font: 'Arial',                                // Set the standard font.
+        lineWidth: '2',                               // LineWidth preset is 2.
+        textSize: '14',                               // 14 pixels text size is default.
+        sizeOftext: 'Tiny',                           // Used to set size of text.
+        textAlign: 'center',                          // Used to change alignment of free text.
+        key_type: 'normal'                            // Defult key type for a class.
+    },
 };
+
+var globalObjectID = 0;
 
 const kind = {
     path: 1,
     symbol: 2
 };
+
+var currentMode = {
+    er: "ER",
+    uml: "UML",
+    dev: "Dev"
+};
+
 const symbolKind = {
     uml: 1,
     erAttribute: 2,
@@ -63,6 +84,7 @@ const symbolKind = {
     text: 6,
     umlLine: 7
 };
+
 const mouseState = {
     empty: 0,                       // empty
     noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
@@ -85,7 +107,6 @@ var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = false;            // Canvas left click state
 var canvasRightClick = false;           // Canvas right click state
-var globalMouseState = 0;           // Global left click state (not only for canvas)
 var zoomValue = 1.00;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
 var hoveredObject = false;
@@ -109,6 +130,7 @@ var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
+var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -149,7 +171,7 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
-var toolbarState = 1;                   // Set default toolbar state to ER.
+var toolbarState = currentMode.er;                   // Set default toolbar state to ER.
 
 // Keyboard keys
 const backspaceKey = 8;
@@ -192,18 +214,6 @@ const lessThanKey = 226;
 const leftMouseClick = 0;
 const scrollClick = 1;
 const rightMouseClick = 2;
-
-// This bool is used so the contextmenu will be hidden on mouse drag, and shown on right mouse click.
-var dragDistanceReached = true;
-
-// Hides the context menu. Needed in order to be able to right click and drag to move the camera.
-window.addEventListener('contextmenu', function (e) {
-        if (dragDistanceReached) {
-            e.preventDefault();
-        }
-    },
-    false
-);
 
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -336,11 +346,45 @@ function resetButtonsPressed() {
     shiftIsClicked = false;
 }
 
+//--------------------------------------------------------------------
+// This function unpresses all the classList buttons
+// Used between mode switches to ensure right objects in right mode
+//--------------------------------------------------------------------
+
+function resetToolButtonsPressed() {
+    // deselect attribute button
+    document.getElementById("attributebutton").classList.remove("pressed");
+    document.getElementById("attributebutton").classList.add("unpressed");
+    // deselect entity button
+    document.getElementById("entitybutton").classList.remove("pressed");
+    document.getElementById("entitybutton").classList.add("unpressed");
+    // deselect relation button
+    document.getElementById("relationbutton").classList.remove("pressed");
+    document.getElementById("relationbutton").classList.add("unpressed");
+    // deselect class button
+    document.getElementById("classbutton").classList.remove("pressed");
+    document.getElementById("classbutton").classList.add("unpressed");
+    // deselect line button
+    document.getElementById("linebutton").classList.remove("pressed");
+    document.getElementById("linebutton").classList.add("unpressed");
+    // deselect draw free button
+    document.getElementById("drawfreebutton").classList.remove("pressed");
+    document.getElementById("drawfreebutton").classList.add("unpressed");
+    // deselect draw text button
+    document.getElementById("drawtextbutton").classList.remove("pressed");
+    document.getElementById("drawtextbutton").classList.add("unpressed");
+    uimode = 'normal';
+}
+
+//--------------------------------------------------------------------
+// This handles all the key binds for diagram
+//--------------------------------------------------------------------
+
 function keyDownHandler(e) {
     var key = e.keyCode;
     if (appearanceMenuOpen) return;
     if ((key == deleteKey || key == backspaceKey)) {
-        eraseSelectedObject();
+        eraseSelectedObject(event);
         SaveState();
     } else if (key == spacebarKey) {
         // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
@@ -410,47 +454,47 @@ function keyDownHandler(e) {
                modeSwitchConfirmed(true);
             }
         }
-    } else if(key == escapeKey) {
+    } else if (key == escapeKey) {
         cancelFreeDraw();
+        deselectObjects();
+
+
         if (modeSwitchDialogActive) modeSwitchConfirmed(false);
-    } else if((key == key1 || key == num1) && shiftIsClicked){
-        moveToFront();
-    } else if((key == key2 || key == num2) && shiftIsClicked){
-        moveToBack();
-    } else if(shiftIsClicked && key == lKey) {
+    } else if ((key == key1 || key == num1) && shiftIsClicked){
+        moveToFront(event);
+    } else if ((key == key2 || key == num2) && shiftIsClicked){
+        moveToBack(event);
+    } else if (shiftIsClicked && key == lKey) {
       document.getElementById("linebutton").click();
-    } else if(shiftIsClicked && key == aKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == aKey && targetMode == "ER") {
       document.getElementById("attributebutton").click();
-    } else if(shiftIsClicked && key == eKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == eKey && targetMode == "ER") {
       document.getElementById("entitybutton").click();
-    } else if(shiftIsClicked && key == rKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == rKey && targetMode == "ER") {
       document.getElementById("relationbutton").click();
-    } else if(shiftIsClicked && key == cKey && targetMode == "UML") {
+    } else if (shiftIsClicked && key == cKey && targetMode == "UML") {
       document.getElementById("classbutton").click();
-    } else if(shiftIsClicked && key == tKey && targetMode == "ER") {
+    } else if (shiftIsClicked && key == tKey) {
       document.getElementById("drawtextbutton").click();
-    } else if(shiftIsClicked && key == fKey) {
+    } else if (shiftIsClicked && key == fKey) {
       document.getElementById("drawfreebutton").click();
-    } else if(shiftIsClicked && key == dKey) {
+    } else if (shiftIsClicked && key == dKey) {
       developerMode(event);
-    } else if(shiftIsClicked && key == mKey) {
-         if(developerModeActive) {
-            developerMode(event);
-        }
-        toggleMode();
-    } else if(shiftIsClicked && key == xKey) {
+    } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
+            toggleMode();
+    } else if (shiftIsClicked && key == xKey) {
           lockSelected(event);
-    } else if(shiftIsClicked && key == oKey) {
-          resetViewToOrigin();
-    } else if(shiftIsClicked && key == key4) {
+    } else if (shiftIsClicked && key == oKey) {
+          resetViewToOrigin(event);
+    } else if (shiftIsClicked && key == key4) {
           toggleVirtualA4(event);
-    } else if(shiftIsClicked && key == upArrow) {
+    } else if (shiftIsClicked && key == upArrow) {
           align(event, 'top');
-    } else if(shiftIsClicked && key == rightArrow) {
+    } else if (shiftIsClicked && key == rightArrow) {
           align(event, 'right');
-    } else if(shiftIsClicked && key == downArrow) {
+    } else if (shiftIsClicked && key == downArrow) {
           align(event, 'bottom');
-    } else if(shiftIsClicked && key == leftArrow) {
+    } else if (shiftIsClicked && key == leftArrow) {
           align(event, 'left');
     }
 }
@@ -481,7 +525,8 @@ function canvasToPixels(pixelX = 0, pixelY = 0) {
 // Move selected objects to front of canvas
 //-----------------------------------------
 
-function moveToFront() {
+function moveToFront(event) {
+    event.stopPropagation();
     let front = [];
     let back = [];
     let diagramLength = diagram.length;
@@ -507,7 +552,8 @@ function moveToFront() {
 // Move selected objects to back of canvas
 //-----------------------------------------
 
-function moveToBack() {
+function moveToBack(event) {
+    event.stopPropagation();
     let front = [];
     let back = [];
     let diagramLength = diagram.length;
@@ -528,19 +574,22 @@ function moveToBack() {
     updateGraphics();
 }
 
-//----------------------------------------------------------------------
-// cancelFreeDraw: removes all the lines that has been drawn when in the free draw mode
-//----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
+// cancelFreeDraw: removes all the lines, points and crosses that has been drawn when in the free draw mode
+//---------------------------------------------------------------------------------------------------------
 
 function cancelFreeDraw() {
     if(uimode == "CreateFigure" && figureType == "Free" && md == mouseState.boxSelectOrCreateMode) {
-        for (var i = 0; i < numberOfPointsInFigure; i++) {
+        for (var i = 0; i < numberOfPointsInFigure; i++) {;
+            points.pop();
             diagram.pop();
         }
+        points.pop();
         cleanUp();
         md = mouseState.empty;      //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
-      }
+    }
+
 }
 
 //----------------------------------------------------------------------
@@ -707,9 +756,21 @@ function copySymbol(symbol) {
 }
 
 //--------------------------------------------------------------------
+// drawCross: Draws a cross at point position
+//--------------------------------------------------------------------
+function drawCross(point) {
+    let crossSize = 4 * zoomValue;
+    ctx.beginPath();
+    ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
+    ctx.lineTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y + crossSize);
+    ctx.moveTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y - crossSize);
+    ctx.lineTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y + crossSize);
+    ctx.stroke();
+}
+
+//--------------------------------------------------------------------
 // drawPoints: Draws each of the points as a cross
 //--------------------------------------------------------------------
-
 points.drawPoints = function() {
     let crossSize = 4 * zoomValue;
     ctx.strokeStyle = crossStrokeStyle1;
@@ -717,12 +778,7 @@ points.drawPoints = function() {
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
         if (!point.isSelected) {
-            ctx.beginPath();
-            ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
-            ctx.lineTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y + crossSize);
-            ctx.moveTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y - crossSize);
-            ctx.lineTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y + crossSize);
-            ctx.stroke();
+            drawCross(point);
         } else {
             ctx.save();
             ctx.fillStyle = crossFillStyle;
@@ -1117,6 +1173,10 @@ diagram.getZoomValue = function(){
     return zoomValue;
 }
 
+//--------------------------------------------------------------------
+// Initialization of canvas when the page is loaded
+//--------------------------------------------------------------------
+
 function initializeCanvas() {
     //hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
     setInterval(refreshFunction, refreshTimer);
@@ -1126,8 +1186,8 @@ function initializeCanvas() {
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
                 + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
                 + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100))
-                + "%   |   <b>Coordinates:</b> X=" + Math.round(origoOffsetX / zoomValue) + " & Y=" + Math.round(origoOffsetY / zoomValue) + "</p>";
+    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + " </p>";
+    document.getElementById("valuesCanvas").style.display = 'none';
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -1143,10 +1203,13 @@ function initializeCanvas() {
     canvas.addEventListener('wheel', scrollZoom, false);
 }
 
+//--------------------------------------------------------------------
+// Deselects all objects
+//--------------------------------------------------------------------
+
 function deselectObjects() {
     for(let i = 0; i < diagram.length; i++) {
         diagram[i].targeted = false;
-        diagram[i].isSelected = false;
         diagram[i].isHovered = false;
     }
 }
@@ -1166,6 +1229,10 @@ function toggleGrid(event) {
     }
     setCheckbox($(".drop-down-option:contains('Snap to grid')"), snapToGrid);
 }
+
+//-----------------------------------------------------------------------
+// Toggles the virtual A4 On or Off
+//-----------------------------------------------------------------------
 
 function toggleVirtualA4(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
@@ -1193,6 +1260,10 @@ function toggleVirtualA4(event) {
 
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
+
+//--------------------------------------------------------------------
+// Draws virtual A4 on canvas
+//--------------------------------------------------------------------
 
 function drawVirtualA4() {
     if(!toggleA4) {
@@ -1304,6 +1375,10 @@ function drawVirtualA4() {
     ctx.restore();
 }
 
+//------------------------------------------------------------------
+// Draws a crosshair in the middle of canvas while in developer mode
+//------------------------------------------------------------------
+
 function drawCrosshair(){
     let crosshairLength = 12;
     let centerX = canvas.width / 2;
@@ -1338,7 +1413,7 @@ function drawDebugCircle(cx, cy, radius, color) {
 }
 
 //-------------------
-// Used for A4 holes
+// Draws circle
 //-------------------
 
 function drawCircle(cx, cy, radius) {
@@ -1350,6 +1425,10 @@ function drawCircle(cx, cy, radius) {
     ctx.stroke();
     ctx.restore();
 }
+
+//-----------------------------------------------------
+// Enables and shows the children menus for virtual A4
+//-----------------------------------------------------
 
 function showA4State() {
     // Sets icons based on the state of the A4
@@ -1363,6 +1442,10 @@ function showA4State() {
     $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
+
+//-----------------------------------------------------
+// Disables and hides the children menus for virtual A4
+//-----------------------------------------------------
 
 function hideA4State() {
     // Reset the variables after disable the A4
@@ -1380,6 +1463,10 @@ function hideA4State() {
     $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
+
+//---------------------------------
+// Toggles holes on the virtual A4
+//---------------------------------
 
 function toggleVirtualA4Holes(event) {
     event.stopPropagation();
@@ -1402,6 +1489,10 @@ function toggleVirtualA4Holes(event) {
     }
 }
 
+//-------------------------------------------------------------
+// Moves the holes on virtual A to the opposite side of the A4
+//-------------------------------------------------------------
+
 function toggleVirtualA4HolesRight(event) {
     event.stopPropagation();
     // Switch a4 holes from left to right of the A4-paper.
@@ -1416,6 +1507,10 @@ function toggleVirtualA4HolesRight(event) {
     }
 }
 
+//---------------------------------------------------------------
+// Changes orientation of the virtual A4 (Landscape or portrait)
+//---------------------------------------------------------------
+
 function toggleA4Orientation(event) {
     event.stopPropagation();
     if (A4Orientation == "portrait" && toggleA4) {
@@ -1426,6 +1521,46 @@ function toggleA4Orientation(event) {
         setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
     }
     updateGraphics();
+}
+
+//-----------------------------------------------------------------------------------
+// When an item is selected, enable all options related to having an object selected
+//-----------------------------------------------------------------------------------
+var selectedItems = false;
+function enableSelectedItemOptions() {
+      if (selected_objects.length > 0) {
+        $("#change-appearance-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#move-selected-front-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#move-selected-back-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#lock-selected-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
+      } else {
+        $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#move-selected-back-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#lock-selected-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#align-left-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#horizontal-c-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
+    }
 }
 
 //----------------------------------------------------
@@ -1510,12 +1645,17 @@ function updateGraphics() {
 // resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------------------------------------------------
 
-function resetViewToOrigin(){
+function resetViewToOrigin(event){
+    event.stopPropagation();
     origoOffsetX = 0;
     origoOffsetY = 0;
     updateGraphics();
     SaveState();
 }
+
+//-------------------------------------------
+// Returns lines connected to the object
+//--------------------------------------------
 
 function getConnectedLines(object) {
     var privatePoints = object.getPoints();
@@ -1538,12 +1678,18 @@ function getConnectedLines(object) {
     return objectLines;
 }
 
+//---------------------------------
+// Erases the object from diagram
+//---------------------------------
+
 function eraseObject(object) {
     var objectsToDelete = [];
     if (object.kind == kind.symbol) {
         // None lines
-        if(object.symbolkind != 4) {
+        if(object.symbolkind != symbolKind.line && object.symbolkind != symbolKind.umlLine) {
             var lines = diagram.filter(symbol => symbol.symbolkind == symbolKind.line);
+            var umlLines = diagram.filter(symbol => symbol.symbolkind == symbolKind.umlLine);
+            if(object.symbolkind != symbolKind.uml) {
             objectsToDelete = lines.filter(
                 line => line.topLeft == object.middleDivider
                 || line.topLeft == object.centerPoint
@@ -1551,7 +1697,14 @@ function eraseObject(object) {
                 || line.bottomRight == object.centerPoint
                 || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
                 || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
+            );  
+            } else if (object.symbolkind == symbolKind.uml) {
+            objectsToDelete = umlLines.filter(
+                umlLine => umlLine.topLeft == object.middleDivider
+                || (object.hasConnectorFromPoint(umlLine.topLeft) && (object.symbolkind == symbolKind.uml))
+                || (object.hasConnectorFromPoint(umlLine.bottomRight) && (object.symbolkind == symbolKind.uml))
             );
+            }
         // lines
         } else {
             diagram.filter(
@@ -1604,13 +1757,13 @@ function changeLoginBoxTitleAppearance() {
     document.getElementById("loginBoxTitle").innerHTML = "Appearance";
 }
 
-function eraseSelectedObject() {
-    //Issue: Need to remove the crosses
-    if(selected_objects.length == 0) {
-        showMenu().innerHTML = "No item selected<type='text'>";
-        changeLoginBoxTitleDelete();
-        $(".loginBox").draggable();
-    }
+//---------------------------------------------------
+// Calls the erase function for all selected objects
+// Ends up with erasing all selected objects
+//---------------------------------------------------
+
+function eraseSelectedObject(event) {
+    event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
         eraseObject(selected_objects[i]);
     }
@@ -1619,7 +1772,11 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function setMode(mode) { //"CreateClass" yet to be implemented in .php
+//------------------------------------------------------
+// Sets the uimode variable depending on choice of tool
+//------------------------------------------------------
+
+function setMode(mode) {
     uimode = mode;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
@@ -1644,15 +1801,31 @@ $(document).ready(function() {
     });
 });
 
+//---------------------------------
+// Sets the size of text for entity
+//---------------------------------
+
 function setTextSizeEntity() {
-    diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
+    }
 }
+
+//---------------------------------------------------
+// Sets the type for last selected object in diagram
+//---------------------------------------------------
 
 function setType() {
     var elementVal = document.getElementById('object_type').value;
-    diagram[lastSelectedObject].properties['key_type'] = elementVal;
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].properties['key_type'] = elementVal;
+    }
     updateGraphics();
 }
+
+//--------------------------------------------------
+// Returns connected that are connected to the line
+//--------------------------------------------------
 
 function connectedObjects(line) {
     var privateObjects = [];
@@ -1713,6 +1886,10 @@ function setLineColor(counter){
     }
 }
 
+//---------------------------------
+// Draws origo when in developer mode
+//---------------------------------
+
 function drawOrigo() {
     const radius = 10;
     const colors = ['#0fbcf9','transparent','#0fbcf9','transparent'];
@@ -1736,12 +1913,20 @@ function drawOrigo() {
     ctx.restore();
 }
 
+//----------------------
+// Draws out origo line
+//----------------------
+
 function drawOrigoLine() {
     ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
     drawGridLine(origoOffsetX, 0, origoOffsetX, canvas.height);
     drawGridLine(0, origoOffsetY, canvas.width, origoOffsetY);
 }
+
+//---------------------
+// Draws out grid line
+//---------------------
 
 function drawGridLine(startX, startY, endX, endY) {
     ctx.lineWidth = 1 * zoomValue;
@@ -1814,15 +1999,20 @@ consloe.log = function(gobBluth) {
 // this function show and hides developer options.
 //------------------------------------------------------------------------------
 
+var previousToolbarState = currentMode.er;
 var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    resetToolButtonsPressed();
     developerModeActive = !developerModeActive;
-    if(developerModeActive) {
+    // save the previous toolbarstate so that we can return to it
+    if (developerModeActive) previousToolbarState = toolbarState;
+    toolbarState = currentMode.dev;
+    if (developerModeActive) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev(event);                                                             // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to DEV.
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -1830,7 +2020,9 @@ function developerMode(event) {
             crossDEV=true);                                                             // Turn on crossDEV.
         setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
     } else {
-        switchToolbarER();
+        // switch to the saved toolbarstate
+        if (previousToolbarState == currentMode.er) switchToolbarER();
+        else if (previousToolbarState == currentMode.uml) switchToolbarUML();
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
         hideCrosses();
@@ -1842,32 +2034,40 @@ function developerMode(event) {
 var refreshedPage = true;
 function setModeOnRefresh() {
     toolbarState = localStorage.getItem("toolbarState");
-    if(toolbarState == 1) {
-        switchToolbarTo('ER');
-        hideCrosses();
+    if(toolbarState == currentMode.er) {
         developerModeActive = false;
-    } else if(toolbarState == 2) {
-        switchToolbarTo('UML');
+        switchToolbarER();
         hideCrosses();
+    } else if(toolbarState == currentMode.uml) {
         developerModeActive = false;
-    } else if(toolbarState == 3) {
-        showCrosses();
+        switchToolbarUML();
+        hideCrosses();
+    } else if(toolbarState == currentMode.dev) {
         developerModeActive = true;
-        switchToolbarTo('Dev');
+        showCrosses();
+        switchToolbarDev(event);
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
+        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
-        developerModeActive = false;
     }
 }
+
+//--------------------------------------
+// Shows crosses when in developer mode
+//--------------------------------------
 
 function showCrosses() {
     crossStrokeStyle1 = "#f64";
     crossFillStyle = "#d51";
     crossStrokeStyle2 = "#d51";
 }
+
+//-----------------------------------------
+// Hide crosses when not in developer mode
+//-----------------------------------------
 
 function hideCrosses() {
     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -1885,21 +2085,30 @@ function modeSwitchConfirmed(confirmed) {
     modeSwitchDialogActive = false;
     $("#modeSwitchDialog").hide();
     if(confirmed){
+        resetToolButtonsPressed();
         if (targetMode == 'ER') {
             switchToolbarER();
         } else if (targetMode == 'UML') {
             switchToolbarUML();
-        } else if (targetMode == 'Dev'){
-            switchToolbarDev(event);
         }
     }
 }
 
-function toggleMode(){
-    if(targetMode == "ER"){
+//-----------------------------------
+// Switches between modes ER and UML
+//-----------------------------------
+
+function toggleMode() {
+    if(toolbarState == "ER" && !developerModeActive){
         switchToolbarTo("UML");
-    } else {
+    } else if (toolbarState == "UML" && !developerModeActive) {
         switchToolbarTo("ER");
+    } else {
+        if(toolbarState == "ER") {
+            switchToolbarTo("UML");
+        } else {
+            switchToolbarTo("ER");
+        }
     }
 }
 
@@ -1910,6 +2119,9 @@ function toggleMode(){
 //------------------------------------------------------------------------------
 
 function switchToolbarTo(target) {
+    if (toolbarState == target) {
+      return;
+    }
     targetMode = target;
     modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
@@ -1930,9 +2142,13 @@ function switchToolbarTo(target) {
 
 var crossER = false;
 function switchToolbarER() {
-    toolbarState = 1;                                                               // Change the toolbar to ER.
-    switchToolbar('ER');                                                            // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';                    // Change the text to ER.
+    toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
+    switchToolbar('ER');
+    if (developerModeActive) {
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV: ER';
+    } else {
+        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
+    }
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
@@ -1947,13 +2163,17 @@ function switchToolbarER() {
 
 var crossUML = false;
 function switchToolbarUML() {
-    toolbarState = 2;                                                               // Change the toolbar to UML.
-    switchToolbar('UML');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';             // Change the text to UML.
+    toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
+    switchToolbar('UML');
+    if (developerModeActive) {
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV: UML';
+    } else {
+        document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';              // Change the text to UML.
+    }                                                           // ---||---
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-        crossDEV=false);                                                            // Turn off crossUML.
+    crossDEV=false);                                                            // Turn off crossUML.
 }
 
 //------------------------------------------------------------------------------
@@ -1968,9 +2188,9 @@ function switchToolbarDev(event) {
     if(!developerModeActive){
         return;
     }
-    toolbarState = 3;                                                               // Change the toolbar to DEV.
+    toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: DEV';             // Change the text to UML.
+    document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=true);                                                             // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -1987,15 +2207,18 @@ function removeLocalStorage() {
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------
 // This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
+//----------------------------------------------------------------------------------------------------------------
+
 function decimalPrecision(value, precision) {
   var multipler = Math.pow(10, precision || 0);
   return Math.round(value * multipler) / multipler;
 }
 
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
 // reWrite: Function that rewrites the values of zoom and x+y that's under the canvas element
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
 
 function reWrite() {
     if (developerModeActive) {
@@ -2005,6 +2228,16 @@ function reWrite() {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
+        document.getElementById("valuesCanvas").style.display = 'block';
+
+        //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
+        var smallerScreensDev = window.matchMedia("(max-width: 745px)");
+        if (smallerScreensDev.matches) {
+            document.getElementById("selectDiv").style.maxWidth = '30%';
+            document.getElementById("valuesCanvas").style.maxWidth = '30%';
+        } else {
+            document.getElementById("selectDiv").style.minWidth = '10%';
+        }
 
         if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
             document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
@@ -2025,10 +2258,17 @@ function reWrite() {
     } else {
         document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
         + Math.round((zoomValue * 100)) + "%" + "   </p>";
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + "</p>";
+        document.getElementById("valuesCanvas").style.display = 'none';
+
+        //If you're using smaller screens then the zoom-bar will scale.
+        var smallerScreens = window.matchMedia("(max-width: 900px)");
+        if (smallerScreens.matches) {
+            document.getElementById("selectDiv").style.maxWidth = '50%';
+        } else {
+            document.getElementById("selectDiv").style.minWidth = '10%';
+        }
     }
+    enableSelectedItemOptions();
 }
 
 //----------------------------------------
@@ -2058,10 +2298,18 @@ function refreshFunction() {
     }
 }
 
+//--------------------
+// Gets current date
+//--------------------
+
 function getCurrentDate() {
     console.log("getCurrentDate running");
     return new Date().getTime();
 }
+
+//-------------------
+// Sets refresh time
+//-------------------
 
 function setRefreshTime() {
     var time = 5000;
@@ -2074,7 +2322,10 @@ function setRefreshTime() {
     return time;
 }
 
-// adds a group to selected objects
+//----------------------------------
+// Adds a group to selected objects
+//----------------------------------
+
 function addGroupToSelected(event) {
     event.stopPropagation();
 
@@ -2126,7 +2377,11 @@ function addGroupToSelected(event) {
     SaveState();
     updateGraphics();
 }
+
+//-----------------------------------------
 // removes the group from selected objects
+//-----------------------------------------
+
 function removeGroupFromSelected(event) {
     event.stopPropagation();
     for (var i = 0; i < selected_objects.length; i++) {
@@ -2140,7 +2395,10 @@ function removeGroupFromSelected(event) {
     SaveState();
     updateGraphics();
 }
+//------------------------------------------------------------------------------
 // all symbols with the same group as symbol is set to targeted (true or false)
+//------------------------------------------------------------------------------
+
 function setTargetedForSymbolGroup(symbol, targeted) {
     for (var i = 0; i < diagram.length; i++) {
         if (symbol.group != 0 && diagram[i] != symbol && diagram[i].group == symbol.group) {
@@ -2415,9 +2673,8 @@ function redoDiagram(event) {
 }
 
 //----------------------------------------------------------------------
-// diagramToSVG: not clear where this method is used
+// diagramToSVG: Used when exporting the diagram to svg
 //----------------------------------------------------------------------
-
 function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
@@ -2456,9 +2713,10 @@ function globalLineThickness() {
 //----------------------------------------------------------------------
 
 function globalFont() {
+    settings.properties.font = document.getElementById('font').value;
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.uml || diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation)) {
-            diagram[i].properties['font'] = document.getElementById('font').value;
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
+            diagram[i].properties['font'] = settings.properties.font;
         }
     }
 }
@@ -2468,9 +2726,10 @@ function globalFont() {
 //----------------------------------------------------------------------
 
 function globalFontColor() {
+    settings.properties.fontColor = document.getElementById('fontColor').value;
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
-            diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
+            diagram[i].properties['fontColor'] = settings.properties.fontColor;
         }
     }
 }
@@ -2480,9 +2739,10 @@ function globalFontColor() {
 //----------------------------------------------------------------------
 
 function globalTextSize() {
+    settings.properties.sizeOftext = document.getElementById('TextSize').value;
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
-            diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
+            diagram[i].properties['sizeOftext'] = settings.properties.sizeOftext;
         }
     }
 }
@@ -2492,10 +2752,11 @@ function globalTextSize() {
 //----------------------------------------------------------------------
 
 function globalFillColor() {
+    settings.properties.fillColor = document.getElementById('FillColor').value;
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && (diagram[i].symbolkind == symbolKind.erAttribute || diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml)) {
-            diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
-        } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
+        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
+            diagram[i].properties['fillColor'] = settings.properties.fillColor;
+        }
     }
 }
 
@@ -2504,8 +2765,9 @@ function globalFillColor() {
 //----------------------------------------------------------------------
 
 function globalStrokeColor() {
+    settings.properties.strokeColor = document.getElementById('StrokeColor').value;
     for (var i = 0; i < diagram.length; i++) {
-            diagram[i].properties['strokeColor'] = document.getElementById('StrokeColor').value;
+            diagram[i].properties['strokeColor'] = settings.properties.strokeColor;
     }
 }
 
@@ -2589,9 +2851,9 @@ function setOrientationIcon(element, check) {
 // DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
 
-const toolbarER = 1;
-const toolbarUML = 2;
-const toolbarDeveloperMode = 3;
+const toolbarER = currentMode.er;
+const toolbarUML = currentMode.uml;
+const toolbarDeveloperMode = currentMode.dev;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
@@ -2609,18 +2871,13 @@ function initToolbox() {
 //                not sure what the numbers 0 an 3 mean
 //----------------------------------------------------------------------
 
-function switchToolbar(direction) {
-  var text = ["ER", "UML"];
-  if(direction == 'left') {
-    toolbarState--;
-    if(toolbarState = 1) {
-      toolbarState = 2;
-    }
-  } else if(direction == 'right') {
-    toolbarState++;
-    if(toolbarState = 2) {
-      toolbarState = 1;
-    }
+function switchToolbar(mode) {
+  if(mode == currentMode.er) {
+      toolbarState = toolbarER;
+  } else if(mode == currentMode.uml) {
+      toolbarState = toolbarUML;
+  } else if(mode == currentMode.dev) {
+      toolbarState = toolbarDeveloperMode;
   }
 
   document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
@@ -2686,9 +2943,11 @@ function switchToolbar(direction) {
 // DIAGRAM MOUSE SECTION
 // ----------------------------------
 
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // zoomInMode: Function for the zoom in and zoom out in the canvas element
-//----------------------------------------------------------------------
+//             Zooms with pointer in focus when scrolling or center if
+//             zoomba is used
+//-------------------------------------------------------------------------
 
 function zoomInMode(event) {
     // Save coordinates before changing zoom value
@@ -2719,8 +2978,6 @@ function zoomInMode(event) {
     updateGraphics();
 }
 
-
-
 function changeZoom(zoomValue, event) {
     var value = parseFloat(document.getElementById("ZoomSelect").value);
     value = value + parseFloat(zoomValue);
@@ -2729,7 +2986,7 @@ function changeZoom(zoomValue, event) {
 }
 
 //-----------------------
-// Canvas zoom on scroll with mouse pointer in focus
+// Canvas zoom on scroll
 //-----------------------
 
 function scrollZoom(event) {
@@ -2752,9 +3009,9 @@ function scrollZoom(event) {
     }
 }
 
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
 function findPos(obj) {
     var curleft = 0;
@@ -2816,6 +3073,7 @@ function minSizeCheck(value, object, type) {
 //---------------------------------------------------
 
 function mousemoveevt(ev, t) {
+
     // Get canvasMouse coordinates for both X & Y.
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
@@ -2832,16 +3090,11 @@ function mousemoveevt(ev, t) {
             ||
             (diffY > deltaY) || (diffY < -deltaY)
         ) {
-            dragDistanceReached = true;
             // Entering MoveAround mode
             if (uimode != "MoveAround") {
                 activateMovearound();
             }
             updateGraphics();
-        }
-        else {
-            // If click event is needed, it goes in here.
-            dragDistanceReached = false;
         }
     }
 
@@ -2874,7 +3127,10 @@ function mousemoveevt(ev, t) {
                         //The point belongs to a umlLine or Line
                         canvas.style.cursor = "default";
                     } else {
-                        canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                        // Should not change when drawing a line.
+                        if (uimode != "CreateLine") {
+                            canvas.style.cursor = "url('../Shared/icons/hand_move.cur'), auto";
+                        }
                     }
                 }
             } else {
@@ -2992,7 +3248,7 @@ function mousemoveevt(ev, t) {
                 uimode = "Moved";
                 $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
-                    if (diagram[i].targeted == true && !diagram[movobj].isLocked) {
+                    if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
                             // Set mouse start so it's snaped to grid.
                             startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
@@ -3009,13 +3265,14 @@ function mousemoveevt(ev, t) {
                             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         }
+
                         diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
 
                         // Keep recursive lines together
-                        for (var i = 0; i < diagram.length; i++) {
-                            if (diagram[i].isRecursiveLine) {
-                                points[diagram[i].topLeft].x = points[diagram[i].bottomRight].x;
-                                points[diagram[i].topLeft].y = points[diagram[i].bottomRight].y;
+                        for (var j = 0; j < diagram.length; j++) {
+                            if (diagram[j].isRecursiveLine) {
+                                points[diagram[j].topLeft].x = points[diagram[j].bottomRight].x;
+                                points[diagram[j].topLeft].y = points[diagram[j].bottomRight].y;
                             }
                         }
                     }
@@ -3110,7 +3367,7 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
-                } else {
+              } else if(uimode == "CreateClass") {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
                 ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
@@ -3125,6 +3382,21 @@ function mousemoveevt(ev, t) {
                 if (!developerModeActive) {
                     hideCrosses();
                 }
+            } else if(figureType != "Text" || uimode == "normal") {
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+              ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+              ctx.strokeStyle = "#000";
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.closePath();
+              if (!developerModeActive) {
+                  hideCrosses();
+              }
             }
         }
     }
@@ -3143,7 +3415,6 @@ function mousedownevt(ev) {
         if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
             InitPageX = ev.pageX;
             InitPageY = ev.pageY;
-            dragDistanceReached = false;
         }
     }
 
@@ -3180,7 +3451,6 @@ function mousedownevt(ev) {
     } else {
         md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
         if(ev.button == rightMouseClick && uimode == "CreateFigure"){
-            dragDistanceReached = true;
             endFreeDraw();
         }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
@@ -3266,7 +3536,7 @@ function mouseupevt(ev) {
         }
 
         if(figureType == "Free") {
-            createFigure();
+            figureFreeDraw();
             return;
         }
     }
@@ -3385,9 +3655,10 @@ function mouseupevt(ev) {
         }
     }
 
-    // Code for creating symbols when mouse is released
-    // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
-    //----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------
+// Code for creating symbols when mouse is released
+// Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
+//---------------------------------------------------------------------------------------------------
 
     var diagramObject;
 
@@ -3505,7 +3776,7 @@ function mouseupevt(ev) {
             setTargetedForSymbolGroup(diagram[lastSelectedObject], true);
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
-        //Code for making a line, if start and end object are different, except attributes and if no object is text
+        // Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
@@ -3529,10 +3800,6 @@ function mouseupevt(ev) {
             createCardinality();
             updateGraphics();
         }
-    }
-    // set the linewidth for the created object
-    if (lastSelectedObject >= 0) {
-        diagram[lastSelectedObject].properties['lineWidth'] = getLineThickness();
     }
 
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
@@ -3563,7 +3830,7 @@ function mouseupevt(ev) {
 
 function doubleclick(ev) {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
-        openAppearanceDialogMenu();
+        openAppearanceDialogMenu(event);
     }
 }
 
@@ -3672,8 +3939,14 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 
-function openAppearanceDialogMenu() {
-    if (diagram[lastSelectedObject].isLocked) {
+function openAppearanceDialogMenu(event) {
+    event.stopPropagation();
+    for(var i = 0; i < selected_objects.length; i++){
+        if (selected_objects[i].isLocked) {
+            return;
+        }
+    }
+    if (selected_objects.length == 0) {
         return;
     }
     $(".loginBox").draggable();
@@ -3743,30 +4016,48 @@ function dimDialogMenu(dim) {
 }
 
 //----------------------------------------------------------------------
-// loadFormIntoElement: Loads the menu which is used to change apperance of ER and free draw objects.
+// loadFormIntoElement: Loads the menu which is used to change appearance of ER and free draw objects.
 //----------------------------------------------------------------------
 
 function loadFormIntoElement(element, dir) {
     //Ajax
     var file = new XMLHttpRequest();
+    var lastSelected = selected_objects[selected_objects.length - 1];
+    var names = "";
+    var properties;
+
+    if(dir == "diagram_forms.php?form=globalType"){
+        properties = settings.properties;
+    } else {
+        properties = lastSelected.properties;
+    }
+
+    if(selected_objects.length > 1){
+        for(var i = 0; i < selected_objects.length; i++){
+            names += selected_objects[i].name + ", ";
+        }
+    } else if(selected_objects.length == 1) {
+        names = selected_objects[0].name;
+    }
+
     file.open('GET', dir);
     file.onreadystatechange = function() {
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.symbol) {
-                document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
-                setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
-                setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
-                setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
-                setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
-            } else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == kind.path) {
-                setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
-                document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-                setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
+            if(globalAppearanceValue == 0 && lastSelected.kind == kind.symbol) {
+                document.getElementById('nametext').value = names;
+                setSelectedOption('object_type', properties.key_type);
+                setSelectedOption('fillColor', properties.fillColor);
+                setSelectedOption('font', properties.font);
+                setSelectedOption('fontColor', properties.fontColor);
+                setSelectedOption('TextSize', properties.sizeOftext);
+                setSelectedOption('LineColor', properties.strokeColor);
+            } else if(globalAppearanceValue == 0 && lastSelected.kind == kind.path) {
+                setSelectedOption('figureFillColor', properties.fillColor);
+                document.getElementById('figureOpacity').value = (properties.opacity * 100);
+                setSelectedOption('LineColor', properties.strokeColor);
             } else {
-                // should only occur when changing global apperance
+                // should only occur when changing global appearance
                 document.getElementById('line-thickness').value = getLineThickness();
             }
         }
@@ -3774,13 +4065,38 @@ function loadFormIntoElement(element, dir) {
     file.send();
 }
 
-// return the line thickness of one of the current objects in the diagram or else return the standard value: 2
+//----------------------------------------------------------------------
+// The following functions are used to get Global Appearance changes
+//----------------------------------------------------------------------
+
+// Return the line thickness of one of the current objects in the diagram
 function getLineThickness() {
-    if (diagram.length > 0){
-        return value = diagram[0].properties['lineWidth'];
-    } else {
-        return 2;
-    }
+    return settings.properties.lineWidth;
+}
+
+// Returns the font color of the objects in the diagram
+function getFontColor() {
+    return settings.properties.fontColor;
+}
+
+// Returns the font of the objects in the diagram
+function getFont() {
+    return settings.properties.font;
+}
+
+// Returns the stroke color of the objects in the diagram
+function getStrokeColor() {
+    return settings.properties.strokeColor;
+}
+
+// Returns the fill color of the objects in the diagram
+function getFillColor() {
+    return settings.properties.fillColor;
+}
+
+// Returns the text size of the objects in the diagram
+function getTextSize() {
+    return settings.properties.sizeOftext;
 }
 
 //----------------------------------------------------------------------
@@ -3790,24 +4106,31 @@ function getLineThickness() {
 function loadLineForm(element, dir) {
     //Ajax
     var file = new XMLHttpRequest();
+    var lastSelected = selected_objects[selected_objects.length - 1];
     file.open('GET', dir);
     file.onreadystatechange = function() {
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0) {
-                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
-                var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
-                var lineDirection = diagram[lastSelectedObject].lineDirection;
+            if(globalAppearanceValue == 0 && lastSelected) {
+                var cardinalityVal = lastSelected.cardinality[0].value;
+                var cardinalityValUML = lastSelected.cardinality[0].valueUML;
+                var lineDirection = lastSelected.lineDirection;
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
                 var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
                 var tempLineDirection = lineDirection;
                 if (lineDirection == "" || lineDirection == null) {
-                    diagram[lastSelectedObject].lineDirection = "First";
+                    lastSelected.lineDirection = "First";
                     tempLineDirection = "First";
                 }
-                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
-                setSelectedOption('cardinality', tempCardinality);
-                setSelectedOption('line_direction', tempLineDirection);
+                setSelectedOption('object_type', lastSelected.properties.key_type);
+                // check if the form that is loaded is for a line can have cardinality
+                if (cardinalityValue != 1) {
+                    setSelectedOption('cardinality', tempCardinality);
+                    // check if the form that is loaded is for a line can have a linedirection (uml lines)
+                    if (cardinalityValue != 2) {
+                        setSelectedOption('line_direction', tempLineDirection);
+                    }
+                }
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
@@ -3821,24 +4144,25 @@ function loadLineForm(element, dir) {
 
 function loadUMLForm(element, dir) {
     var file = new XMLHttpRequest();
+    var lastSelected = selected_objects[selected_objects.length - 1];
     file.open('GET', dir);
     file.onreadystatechange = function() {
         if(file.readyState === 4) {
             element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0) {
+            if(globalAppearanceValue == 0 && lastSelected) {
                 var attributesText = "";
                 var operationsText = "";
                 var attributesTextArea = document.getElementById('UMLAttributes');
                 var operationsTextArea = document.getElementById('UMLOperations');
-                for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++) {
-                    attributesText += diagram[lastSelectedObject].attributes[i].text;
-                    if(i < diagram[lastSelectedObject].attributes.length - 1) attributesText += "\n";
+                for(var i = 0; i < lastSelected.attributes.length;i++) {
+                    attributesText += lastSelected.attributes[i].text;
+                    if(i < lastSelected.attributes.length - 1) attributesText += "\n";
                 }
-                for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++) {
-                    operationsText += diagram[lastSelectedObject].operations[i].text
-                    if(i < diagram[lastSelectedObject].operations.length - 1) operationsText += "\n";
+                for(var i = 0; i < lastSelected.operations.length;i++) {
+                    operationsText += lastSelected.operations[i].text
+                    if(i < lastSelected.operations.length - 1) operationsText += "\n";
                 }
-                document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+                document.getElementById('nametext').value = lastSelected.name;
                 attributesTextArea.value = attributesText;
                 operationsTextArea.value = operationsText;
             }
@@ -3852,31 +4176,32 @@ function loadUMLForm(element, dir) {
 //----------------------------------------------------------------------
 
 function loadTextForm(element, dir) {
-  var file = new XMLHttpRequest();
-  file.open('GET', dir);
-  file.onreadystatechange = function() {
-    if(file.readyState === 4) {
-      element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0) {
-        var text = "";
-        var textarea = document.getElementById('freeText');
-        for (var i = 0; i < diagram[lastSelectedObject].textLines.length; i++) {
-            text += diagram[lastSelectedObject].textLines[i].text;
-            if (i < diagram[lastSelectedObject].textLines.length - 1) text += "\n";
+    var file = new XMLHttpRequest();
+    var lastSelected = selected_objects[selected_objects.length - 1];
+    file.open('GET', dir);
+    file.onreadystatechange = function() {
+        if(file.readyState === 4) {
+            element.innerHTML = file.responseText;
+            if(globalAppearanceValue == 0 && lastSelected) {
+                var text = "";
+                var textarea = document.getElementById('freeText');
+                for (var i = 0; i < lastSelected.textLines.length; i++) {
+                    text += lastSelected.textLines[i].text;
+                    if (i < lastSelected.textLines.length - 1) text += "\n";
+                }
+                textarea.value = text;
+                setSelectedOption('font', lastSelected.properties.font);
+                setSelectedOption('fontColor', lastSelected.properties.fontColor);
+                setSelectedOption('textAlign', lastSelected.properties.textAlign);
+                setSelectedOption('TextSize', lastSelected.properties.sizeOftext);
+            }
         }
-        textarea.value = text;
-        setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
-        setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
-        setSelectedOption('textAlign', diagram[lastSelectedObject].properties['textAlign']);
-        setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
-      }
     }
-  }
-  file.send();
+    file.send();
 }
 
 //----------------------------------------------------------------------
-// setSelectedOption: used to implement the changes to apperances that has been made
+// setSelectedOption: used to implement the changes to appearances that has been made
 //----------------------------------------------------------------------
 
 function setSelectedOption(type, value) {
@@ -3902,7 +4227,8 @@ function setSelectedOption(type, value) {
 // globalAppearanceMenu: open a menu to change appearance on all entities.
 //----------------------------------------------------------------------
 
-function globalAppearanceMenu() {
+function globalAppearanceMenu(event) {
+    event.stopPropagation();
     globalAppearanceValue = 1;
     $(".loginBox").draggable();
     var form = showMenu();
@@ -3910,33 +4236,39 @@ function globalAppearanceMenu() {
     loadFormIntoElement(form,'diagram_forms.php?form=globalType');
 }
 
+// determines which form should be loaded when line form is opened
+var cardinalityValue;
+
 //----------------------------------------------------------------------
 // objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
 //----------------------------------------------------------------------
 
 function objectAppearanceMenu(form) {
     form.innerHTML = "No item selected<type='text'>";
+
+    var lastSelected = selected_objects[selected_objects.length - 1];
+
     //if no item has been selected
-    if(!diagram[lastSelectedObject]) { return;}
+    if(selected_objects.length < 1) { return;}
     // UML selected
-    if (diagram[lastSelectedObject].symbolkind == symbolKind.uml) {
+    if (lastSelected.symbolkind == symbolKind.uml) {
         classAppearanceOpen = true;
         loadUMLForm(form, 'diagram_forms.php?form=classType');
     }
     // ER attributes selected
-    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erAttribute) {
+    else if (lastSelected.symbolkind == symbolKind.erAttribute) {
         loadFormIntoElement(form, 'diagram_forms.php?form=attributeType');
     }
     // ER entity selected
-    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erEntity) {
+    else if (lastSelected.symbolkind == symbolKind.erEntity) {
         loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
     }
     // Lines selected
-    else if (diagram[lastSelectedObject].symbolkind == symbolKind.line || diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
+    else if (lastSelected.symbolkind == symbolKind.line || lastSelected.symbolkind == symbolKind.umlLine) {
         var cardinalityOption = true;
-        var connObjects = diagram[lastSelectedObject].getConnectedObjects();
+        var connObjects = lastSelected.getConnectedObjects();
         // Only show cardinality option if the line goes between an entity and a relation
-        if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
+        if (lastSelected.symbolkind == symbolKind.line) {
             var atLeastOneEntity = connObjects[0].symbolkind==symbolKind.erEntity ? true :
                 connObjects[1] && connObjects[1].symbolkind==symbolKind.erEntity;
             var atLeastOneRelation = connObjects[0].symbolkind==symbolKind.erRelation ? true :
@@ -3946,23 +4278,29 @@ function objectAppearanceMenu(form) {
                 cardinalityOption = false;
         }
 
-        if (cardinalityOption) {
-            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
-        }else {
-            loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=-1');
+        if (cardinalityOption) { // uml line or er line with cardinality
+            if (lastSelected.cardinality[0].symbolKind == 1) { // uml line
+                cardinalityValue = 3;
+            } else { //er line with cardinality
+                cardinalityValue = 2;
+            }
+        } else { // normal er line
+            cardinalityValue = 1;
         }
+
+        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + cardinalityValue);
     }
     // ER relation selected
-    else if (diagram[lastSelectedObject].symbolkind == symbolKind.erRelation) {
+    else if (lastSelected.symbolkind == symbolKind.erRelation) {
         loadFormIntoElement(form, 'diagram_forms.php?form=relationType');
     }
     // Text selected
-    else if (diagram[lastSelectedObject].symbolkind == symbolKind.text) {
+    else if (lastSelected.symbolkind == symbolKind.text) {
         textAppearanceOpen = true;
         loadTextForm(form, 'diagram_forms.php?form=textType');
     }
     // Fill color of the object
-    else if (diagram[lastSelectedObject].kind == kind.path) {
+    else if (lastSelected.kind == kind.path) {
         loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }
 }
@@ -3972,51 +4310,60 @@ function objectAppearanceMenu(form) {
 //----------------------------------------------------------------------
 
 function changeObjectAppearance(object_type) {
-    if (diagram[lastSelectedObject].symbolkind == symbolKind.uml) { // UML-class appearance
-        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
-        var attributeLines = $('#UMLAttributes').val().split('\n');
-        var operationLines = $('#UMLOperations').val().split('\n');
-        diagram[lastSelectedObject].attributes = [];
-        diagram[lastSelectedObject].operations = [];
+    lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length - 1]);
+    if(selected_objects.length == 1 && selected_objects[0].kind == kind.symbol && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine && selected_objects[0].symbolkind != symbolKind.text) {
+        selected_objects[0].name = document.getElementById('nametext').value;
+    }
 
-        //Inserts text for attributes and operations
-        for (var i = 0;i < attributeLines.length;i++) {
-            diagram[lastSelectedObject].attributes.push({text:attributeLines[i]});
-        }
-        for (var i = 0; i < operationLines.length; i++) {
-            diagram[lastSelectedObject].operations.push({text:operationLines[i]});
-        }
+    for(var i = 0; i < selected_objects.length; i++) {
+        if (selected_objects[i].symbolkind == symbolKind.uml) { // UML-class appearance
+            var attributeLines = $('#UMLAttributes').val().split('\n');
+            var operationLines = $('#UMLOperations').val().split('\n');
+            selected_objects[i].attributes = [];
+            selected_objects[i].operations = [];
 
-    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.line) {
-        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.umlLine) {
-        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('line_direction').value;
-    } else if (diagram[lastSelectedObject].kind == kind.path) {
-        diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
-        diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
-        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
-    } else if (diagram[lastSelectedObject].symbolkind == symbolKind.text) {
-        diagram[lastSelectedObject].textLines = [];
-        var textArray = $('#freeText').val().split('\n');
-        for(var i = 0; i < textArray.length; i++) {
-          diagram[lastSelectedObject].textLines.push({text:textArray[i]});
+            //Inserts text for attributes and operations
+            for (var j = 0; j < attributeLines.length; j++) {
+                selected_objects[i].attributes.push({text:attributeLines[j]});
+            }
+            for (var j = 0; j < operationLines.length; j++) {
+                selected_objects[i].operations.push({text:operationLines[j]});
+            }
+
+        } else if (selected_objects[i].symbolkind == symbolKind.line) {
+            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
+        } else if (selected_objects[i].symbolkind == symbolKind.umlLine) {
+            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
+            selected_objects[i].lineDirection = document.getElementById('line_direction').value;
+        } else if (selected_objects[i].kind == kind.path) {
+            selected_objects[i].fillColor = document.getElementById('figureFillColor').value;
+            selected_objects[i].opacity = document.getElementById('figureOpacity').value / 100;
+            selected_objects[i].properties['strokeColor'] = document.getElementById('LineColor').value;
+        } else if (selected_objects[i].symbolkind == symbolKind.text) {
+            selected_objects[i].textLines = [];
+            var textArray = $('#freeText').val().split('\n');
+            for(var j = 0; j < textArray.length; j++) {
+              selected_objects[i].textLines.push({text:textArray[j]});
+            }
+            selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
+            selected_objects[i].properties['font'] = document.getElementById('font').value;
+            selected_objects[i].properties['textAlign'] = document.getElementById('textAlign').value;
+            selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
+        } else {
+            selected_objects[i].properties['fillColor'] = document.getElementById('fillColor').value;
+            selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
+            selected_objects[i].properties['font'] = document.getElementById('font').value;
+            selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
+            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
+            selected_objects[i].properties['strokeColor'] = document.getElementById('LineColor').value;
         }
-        diagram[lastSelectedObject].properties['fontColor'] = document.getElementById('fontColor').value;
-        diagram[lastSelectedObject].properties['font'] = document.getElementById('font').value;
-        diagram[lastSelectedObject].properties['textAlign'] = document.getElementById('textAlign').value;
-        diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
-    } else {
-        diagram[lastSelectedObject].properties['symbolColor'] = document.getElementById('symbolColor').value;
-        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
-        diagram[lastSelectedObject].properties['fontColor'] = document.getElementById('fontColor').value;
-        diagram[lastSelectedObject].properties['font'] = document.getElementById('font').value;
-        diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
-        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
     }
     updateGraphics();
 }
+
+//---------------------------------
+// Creates cardinality at the line
+//---------------------------------
 
 function createCardinality() {
     //Setting cardinality on new line
@@ -4034,6 +4381,7 @@ function createCardinality() {
 function changeCardinality(isUML) {
     var val = document.getElementById('cardinality').value;
     var valUML;
+    var lastSelected = selected_objects[selected_objects.length - 1];
     if(isUML) {
         valUML = document.getElementById('cardinalityUml').value;
     }
@@ -4041,16 +4389,21 @@ function changeCardinality(isUML) {
     //Setting existing cardinality value on line
     if(val == "None") val = "";
     if(valUML == "None") valUML = "";
-    if(diagram[lastSelectedObject].cardinality[0].value != null) {
-        if(diagram[lastSelectedObject].cardinality[0].symbolKind != symbolKind.uml) {
-            diagram[lastSelectedObject].cardinality[0].value = val;
+    if(lastSelected && lastSelected.cardinality[0].value != null) {
+        if(lastSelected.cardinality[0].symbolKind != symbolKind.uml) {
+            lastSelected.cardinality[0].value = val;
         } else {
-            diagram[lastSelectedObject].cardinality[0].valueUML = valUML;
-            diagram[lastSelectedObject].cardinality[0].value = val;
+            lastSelected.cardinality[0].valueUML = valUML;
+            lastSelected.cardinality[0].value = val;
         }
     }
+    updateGraphics();
 }
+
 // Changes direction for uml line relations
 function changeLineDirection() {
-    diagram[lastSelectedObject].lineDirection = document.getElementById('line_direction').value;
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].lineDirection = document.getElementById('line_direction').value;
+    }
+    updateGraphics();
 }

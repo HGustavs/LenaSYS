@@ -42,8 +42,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics();"
- onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics();" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -159,43 +158,57 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
+                                <span class="drop-down-option" onclick='globalAppearanceMenu(event);'>Global Appearance</span>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                                <div id="change-appearance-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='openAppearanceDialogMenu(event);'>Change Appearance</span>
+                                </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='moveToFront()'>Move selected to front</span>
-                                <i id="hotkey-front" class="hotKeys">Shift + 1</i>
+                                <div id="move-selected-front-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='moveToFront(event)'>Move selected to front</span>
+                                    <i id="hotkey-front" class="hotKeys">Shift + 1</i>
+                                </div>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='moveToBack()'>Move selected to back</span>
-                                <i id="hotkey-back" class="hotKeys">Shift + 2</i>
+                                <div id="move-selected-back-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='moveToBack(event)'>Move selected to back</span>
+                                    <i id="hotkey-back" class="hotKeys">Shift + 2</i>
+                                </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
-                                <i id="hotkey-lock" class="hotKeys">Shift + X</i>
+                                <div id="lock-selected-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
+                                    <i id="hotkey-lock" class="hotKeys">Shift + X</i>
+                                </div>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
-                                <i id="hotkey-delete" class="hotKeys">Delete/Backspace</i>
+                                <div id="delete-object-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='eraseSelectedObject(event);'>Delete Object</span>
+                                    <i id="hotkey-delete" class="hotKeys">Delete/Backspace</i>
+                                </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='addGroupToSelected(event)'>Group objects</span>
+                                <div id="group-objects-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='addGroupToSelected(event)'>Group objects</span>
+                                </div>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Ungroup objects</span>
+                                <div id="ungroup-objects-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Ungroup objects</span>
+                                </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                                <span class="drop-down-option" onclick='resetViewToOrigin(event);'>Reset view to origin</span>
                                 <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
                         </div>
@@ -254,28 +267,40 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
-                                <i id="hotkey-Align-Top" class="hotKeys">Shift + ⇧ </i>
+                                <div id="align-top-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
+                                    <i id="hotkey-Align-Top" class="hotKeys">Shift + ▲</i>
+                                </div>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
-                                <i id="hotkey-Align-Right" class="hotKeys">Shift + ⇨ </i>
+                                <div id="align-right-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
+                                    <i id="hotkey-Align-Right" class="hotKeys">Shift + ►</i>
+                                </div>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
-                                <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ⇩ </i>
+                                <div id="align-bottom-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
+                                    <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ▼ </i>
+                                </div>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
-                                <i id="hotkey-Align-Left" class="hotKeys">Shift + ⇦ </i>
+                                <div id="align-left-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
+                                    <i id="hotkey-Align-Left" class="hotKeys">Shift + ◄ </i>
+                                </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick="align(event, 'horizontalCenter');">Horizontal center</span>
+                                <div id="horizontal-c-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="align(event, 'horizontalCenter');">Horizontal center</span>
+                                </div>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick="align(event, 'verticalCenter');">Vertical center</span>
+                                <div id="vertical-c-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="align(event, 'verticalCenter');">Vertical center</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -283,10 +308,14 @@
                         <span class="drop-down-label">Distribute</span>
                         <div class="drop-down">
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick="distribute(event, 'horizontally');">Horizontal</span>
+                                <div id="distribute-horizontal-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="distribute(event, 'horizontally');">Horizontal</span>
+                                </div>
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick="distribute(event, 'vertically');">Vertical</span>
+                                <div id="distribute-vertical-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick="distribute(event, 'vertically');">Vertical</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -338,7 +367,7 @@
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
-            <div id="canvasDiv" style = "margin-left: 52px">
+            <div id="canvasDiv" style = "margin-left: 52px" oncontextmenu="return false;">
             </div>
             <div id="consoleDiv">
                 <!--

@@ -29,6 +29,7 @@ $allcommitranks=array();
 
 $draught=false;
 
+if (!checklogin()) die;
 if(strcmp($opt,"get")==0) {
 	if(checklogin() && isSuperUser($_SESSION['uid'])) {
 		$gituser = getOP('userid');

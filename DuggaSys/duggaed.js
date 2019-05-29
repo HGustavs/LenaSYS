@@ -23,12 +23,16 @@ function setup() {
 
   var filt = "";
 
-  filt += "<td id='testSearchContainer' class='navButt'>"
-  filt += "<input id='duggaSearch' type='text' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
-  filt += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
-  filt += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
-  filt += "</button>"
-  filt += "</td>"
+
+	filt += `<td id='testSearchContainer' class='navButt'>`
+	filt += `<input id='duggaSearch' type='text' name='search' placeholder='Search..'`;
+	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/>`;
+  filt += `<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>`
+  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>`
+  filt += `</button>`
+	filt += `</td>`
+  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
+	filt += `</button></td>`;
 
   $("#menuHook").before(filt);
 
@@ -575,7 +579,7 @@ function returnedDugga(data) {
 			qstart: "Startdate",
 			deadline: "Deadline",
 			qrelease: "Result date",
-			modified: "Last modified",
+			modified: "Last Modified",
 			arrow: "",
 			cogwheel: "",
 			trashcan: ""
@@ -593,7 +597,8 @@ function returnedDugga(data) {
 				columnOrder:colOrder,
 				hasRowHighlight:true,
 				hasMagicHeadings:false ,
-				hasCounterColumn:false
+				hasCounterColumn:false,
+        hasFooter:false
 		});
 
 		duggaTable.renderTable(); // Renders the dugga table
@@ -705,7 +710,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable icon in its designated column that opens a window for acess to variants.
 	else if (col == "arrow") {
 		clickedElement = JSON.parse(cellid.match(/\d+/));
-		str = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg'";
+		str = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
 		str += " onclick='renderVariant(\"" + clickedElement + "\"); showVariantEditor();'>";
 		return str;
 	}
@@ -713,7 +718,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel") {
 		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
 		str += " onclick='selectDugga(\"" + object + "\");' >";
 
 		return str;
@@ -722,7 +727,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan") {
 		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+		str = "<img id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
 		str += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"dugga\");' >";
 		return str;
 	}

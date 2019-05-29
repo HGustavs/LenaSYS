@@ -32,6 +32,7 @@ How to use
 
 var retData; // Data returned from setup
 var tokens = []; // Array to hold the tokens.
+var allBlocks = [];
 var dmd = 0; // Variable used to determine forward/backward skipping with the forward/backward buttons
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";
@@ -62,12 +63,23 @@ function setup() {
 	}
 }
 
+
+function returnedError(error) {
+	if (error.responseText) {
+		document.querySelector('#div2').innerHTML += " and show them this message:<br><br>"+error.responseText;
+	}
+}
+
 //-----------------------------------------------------------------
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
 function returned(data) {
 	retData = data;
+	
+	if (retData['deleted']) {
+		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
+	}
 
 	if (retData['writeaccess'] == "w") {
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid=" + courseid + "&coursevers=" + cvers + "');");
@@ -113,6 +125,10 @@ function returned(data) {
 	if (data['sectionname'] != null) {
 		exSection.html(data['sectionname'] + "&nbsp;:&nbsp;");
 	}
+	var mobExName = document.querySelector('#mobileExampleName');
+	var mobExSection = document.querySelector('#mobileExampleSection');
+	mobExName.innerHTML = data['examplename'];
+	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
 	// User can choose template if no template has been chosen and the user has write access.
 	if ((retData['templateid'] == 0)) {
@@ -263,8 +279,17 @@ function returned(data) {
 		}
 	}
 
+	var ranges = getBlockRanges(allBlocks);
+	for (var i = 0; i < Object.keys(ranges).length; i++) {
+		var boxid = Object.keys(ranges)[i];
+		createBlocks(ranges[boxid], boxid);
+	}
+
 	//hides maximize button if not supported
 	hideMaximizeAndResetButton();
+
+	//hides minimize button if not supported
+	hideMinimizeButton()
 
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
@@ -274,15 +299,22 @@ function returned(data) {
 	titles.forEach(title => {
 		title.addEventListener('keypress', updateTitle);
 	})
+
+	fillBurger();
+
+	if (querystring['showPane']) {
+		showBox(querystring['showPane']);
+	}
 }
 
 function returnedTitle(data) {
 	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
-	
+
 	retData['box'][data.id - 1][4] = data.title;
 	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
 	var titleSpan = boxWrapper.querySelector('#boxtitle2');
 	titleSpan.innerHTML = data.title;
+	fillBurger();
 }
 
 //---------------------------------------------------------------------------------
@@ -455,6 +487,20 @@ function updateExample() {
 	}
 
 	$("#editExampleContainer").css("display", "none");
+}
+
+function removeExample() {
+	var courseid = querystring['courseid'];
+	var cvers = querystring['cvers'];
+	var exampleid = querystring['exampleid'];
+	var lid = querystring['lid'];
+
+	AJAXService("DELEXAMPLE", {
+		courseid: courseid,
+		cvers: cvers,
+		exampleid: exampleid,
+		lid: lid
+	}, "CODEVIEW");
 }
 
 //----------------------------------------------------------------------------------
@@ -678,7 +724,7 @@ function updateTitle(e) {
 		}
 		title = title.trim(); // Trim title again if the substring caused trailing whitespaces
 
-		
+
 
 		AJAXService("EDITTITLE", {
 			exampleid: querystring['exampleid'],
@@ -702,6 +748,8 @@ function addTemplatebox(id) {
 	} else {
 		str += "class='boxwrapper deactivatedbox'>";
 	}
+	// Add copy to clipboard notification. Must be added here for everything to work correctly.
+	str += "<div id='notification" + id + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
 	str += "<div id='" + id + "' class='box'></div>";
 	str += "</div>";
 
@@ -753,7 +801,8 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Add resize and reset buttons
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset</p></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>Minimize</p></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
@@ -991,8 +1040,11 @@ function issetDrop(dname) {
 //----------------------------------------------------------
 
 function highlightKeyword(kw) {
+	kwDoubleQuotes = '"'+kw+'"';
+	kwSingleQuote = "'"+kw+"'";
+
 	$(".impword").each(function () {
-		if (this.innerHTML == kw) {
+		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
 			$(this).addClass("imphi");
 		}
 	});
@@ -1004,8 +1056,10 @@ function highlightKeyword(kw) {
 //----------------------------------------------------------
 
 function dehighlightKeyword(kw) {
+	kwDoubleQuotes = '"'+kw+'"';
+	kwSingleQuote = "'"+kw+"'";
 	$(".impword").each(function () {
-		if (this.innerHTML == kw) {
+		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
 			$(this).removeClass("imphi");
 		}
 	});
@@ -1079,13 +1133,14 @@ function tokenize(instring, inprefix, insuffix) {
 	var currentNum; // current numerical value
 	var currentQuoteChar; // current quote character
 	var currentStr; // current string value.
+	var currentBlock = {}; // current block value.
 	var row = 1; // current row value
 
 	currentCharacter = instring.charAt(i);
 	while (currentCharacter) { // currentCharacter == first character in each word
 		from = i;
 		if (currentCharacter <= ' ') { // White space and carriage return
-			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
+ 			if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
 				maketoken('newline', "", i, i, row);
 				currentStr = "";
 				row++;
@@ -1093,16 +1148,13 @@ function tokenize(instring, inprefix, insuffix) {
 				currentStr = currentCharacter;
 			}
 
-			i++;
+			i++; 
 			while (true) {
 				currentCharacter = instring.charAt(i);
 				if (currentCharacter > ' ' || !currentCharacter) break;
 				if ((currentCharacter == '\n') || (currentCharacter == '\r') || (currentCharacter == '')) {
 					maketoken('whitespace', currentStr, from, i, row);
-					maketoken('newline', "", i, i, row);
 					currentStr = "";
-					// White space Row (so we get one white space token for each new row) also increase row number
-					row++;
 				} else {
 					currentStr += currentCharacter;
 				}
@@ -1210,26 +1262,47 @@ function tokenize(instring, inprefix, insuffix) {
 						break;
 					}
 					currentCharacter = instring.charAt(i);
+					nextCharacter = instring.charAt(i+1);
 
 					if (currentCharacter == 'b') {
-						currentCharacter = '\b';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\b";
+						} else {
+							currentCharacter = '\b';
+							break;
+						}
 					}
 					if (currentCharacter == 'f') {
-						currentCharacter = '\f';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\f";
+						} else {
+							currentCharacter = '\f';
+							break;
+						}
 					}
 					if (currentCharacter == 'n') {
-						currentCharacter = '\n';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\n";
+						} else {
+							currentCharacter = '\n';
+							break;
+						}
 					}
 					if (currentCharacter == 'r') {
-						currentCharacter = '\r';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\r";
+						} else {
+							currentCharacter = '\r';
+							break;
+						}
 					}
 					if (currentCharacter == 't') {
-						currentCharacter = '\t';
-						break;
+						if (nextCharacter == currentQuoteChar) {
+							currentCharacter = "\\t";
+						} else {
+							currentCharacter = '\t';
+							break;
+						}
 					}
 					if (currentCharacter == 'u') {
 						if (i >= length) {
@@ -1389,7 +1462,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	str = "";
 	cont = "";
 	lineno = 0;
-	str += "<div id='notification" + boxid + "' class='copy-notification'><img src='../Shared/icons/Copy.svg' />Copied To Clipboard</div>";
 	str += "<div id='textwrapper" + boxid + "' class='normtextwrapper'>";
 
 	pcount = 0;
@@ -1399,7 +1471,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	cbcount = 0;
 	cbracket = new Array();
 
-	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data','bdi', 'audio','aside','article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
+	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data', 'bdi', 'audio', 'aside', 'article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
 	htmlArrayNoSlash = new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'textview', 'webview', 'uses');
 	cssArray = new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right',
 		'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size',
@@ -1435,7 +1507,20 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
-			cont += "<span class='string'>" + tokenvalue + "</span>";
+
+			var withoutQuote = tokenvalue.replace(/(?:\"|')/g, "");
+			var withQuote = tokenvalue.replace(/(?:\"|')/g, "&quot;");
+			var withSingleQuote = tokenvalue.replace(/(?:\"|')/g, "\'");
+
+			if (important.indexOf(withoutQuote) != -1 ||
+				important.indexOf(withQuote) != -1 ||
+				important.indexOf(withSingleQuote) != -1) {
+
+				cont += "<span id='IW" + iwcounter + "' class='impword' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + tokenvalue + "</span>";
+			} else {
+				cont += "<span class='string'>" + tokenvalue + "</span>";
+			}
+
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "name") {
@@ -1475,11 +1560,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = bracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "{") {
+				allBlocks.push([tokens[i].row, 1, parseInt(boxid)]);
 				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
 				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
+				allBlocks.push([tokens[i].row, 0, parseInt(boxid)]);
 				pid = cbracket.pop();
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
@@ -1544,16 +1631,16 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
 					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'>" + cont + "</div>";
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
 				}
@@ -1673,16 +1760,16 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			lineno++;
 			// Print out normal rows if no important exists
 			if (improws.length == 0) {
-				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+				str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 			} else {
 				// Print out important lines
 				for (var kp = 0; kp < improws.length; kp++) {
 					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'>" + cont + "</div>";
+						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						break;
 					} else {
 						if (kp == (improws.length - 1)) {
-							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'>" + cont + "</div>";
+							str += "<div id='" + boxfilename + "-line" + lineno + "' class='normtext'><span class='blockBtnSlot'></span>" + cont + "</div>";
 						}
 					}
 				}
@@ -1694,7 +1781,130 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 	// Print out rendered code and border with numbers
 	printout.css(createCodeborder(lineno, improws) + str);
+ 	var borders = [...document.querySelectorAll('.codeborder')];
+	borders.forEach(border => {
+		var parentScrollHeight = border.parentNode.scrollHeight;
+		var parentHeight = border.parentNode.clientHeight;
+		border.style.height = parentScrollHeight;
+		border.style.minHeight = parentHeight;
+	});
 }
+
+function getBlockRanges(blocks) {
+	var boxBlocks = []; // Array to hold each box array
+
+	// Sort by boxid and split array depending on how many boxes we have
+	blocks.sort(([a,b,c], [d,e,f]) => f - c);
+
+	var tempArray = [];
+	for (var i = 0; i < blocks.length; i++) {
+		if (i !== 0 && blocks[i-1][2] !== blocks[i][2]) {
+			// Last iteration had a different boxid, start a new array
+			boxBlocks.push(tempArray);
+			tempArray = [];
+		}
+		tempArray.push(blocks[i]);
+	}
+	boxBlocks.push(tempArray);
+
+	// Sort the arrays
+	for (var i = 0; i < boxBlocks.length; i++) {
+		boxBlocks[i].sort(([a,b], [c,d]) => a - c);
+	}
+
+	// Determine block ranges
+	var boxRanges = {};
+	var ranges = [];
+	var openBlock = false;
+	var blocks;
+	for (var i = 0; i < boxBlocks.length; i++) {
+		blocks = boxBlocks[i];
+		if (blocks.length < 1) continue;
+		for (var j = 0; j < blocks.length; j++) {
+			// If there are no open blocks and the bracket is a closing bracket, do nothing.
+			if (!openBlock && blocks[j][1] === 0) continue;
+			
+			// Opening bracket
+			if (blocks[j][1] === 1) {
+				ranges.push([blocks[j][0], 0]);
+				openBlock = true;
+			}
+			// Closing bracket
+			if (blocks[j][1] === 0) {
+				// Find first entry in ranges array with no closing bracket
+				for (var k = ranges.length - 1; k > -1; k--) {
+					if (ranges[k][1] === 0) {
+						
+						if (ranges[k][0] !== blocks[j][0]) {
+							// We found the first open bracket, and the block is completed
+							ranges[k][1] = blocks[j][0];
+						} else { 
+							// If the opening bracket is on the same row as the closing bracket we remove that entry
+							ranges.splice(k, 1);
+						}
+						break;
+					}
+				}
+				
+				// Check if there are any open blocks in the ranges array
+				var containsOpenBlock = function(arr) {
+					return arr.includes(0)
+				}
+				if (!ranges.some(containsOpenBlock)) openBlock = false;
+			}
+		}
+		openBlock = false;
+		var key = boxBlocks[i][0][2];
+		boxRanges[key] = ranges;
+		ranges = [];
+	}
+	return boxRanges;
+}
+
+function createBlocks(ranges, boxid) {
+	var wrapper = document.querySelector('#textwrapper'+boxid);
+	for (var i = 0; i < ranges.length; i++) {
+		var blockStartRow = wrapper.querySelector("div[id$='"+ranges[i][0]+"']");
+		var buttonSlot = blockStartRow.querySelector("span:first-child");
+		buttonSlot.classList.add('open-block');
+		buttonSlot.classList.add('occupied');
+		buttonSlot.id = i;
+
+		buttonSlot.addEventListener('click', (e) => {
+			var button = e.target;
+			button.classList.toggle('open-block');
+			button.classList.toggle('closed-block');
+			var rowsInBlock = Array(ranges[button.id][1] - ranges[button.id][0]).fill().map((_, idx) => ranges[button.id][0] + idx);
+			toggleRows(rowsInBlock, button);
+		});
+	}
+}
+
+function toggleRows(rows, button) {
+	var baseRow = button.parentNode;
+	var wrapper = baseRow.parentNode;
+	var box = wrapper.parentNode;
+	var numbers = [...box.querySelectorAll('.codeborder div')];
+	var display;
+	var ellipses = document.createElement('span');
+	ellipses.classList.add('blockEllipses');
+	ellipses.innerHTML = ' ...';
+
+	if (button.classList.contains('closed-block')) {
+		display = 'none';
+		baseRow.appendChild(ellipses);
+	} else {
+		display = 'block';
+		ellipses = baseRow.querySelector('.blockEllipses');
+		baseRow.removeChild(ellipses);
+	}
+	
+	for (var i = 1; i < rows.length; i++) {
+		wrapper.querySelector("div[id$='"+rows[i]+"']").style.display = display;
+		numbers[rows[i] - 1].style.display = display;
+	}
+}
+
 
 //----------------------------------------------------------------------------------
 // createCodeborder: function to create a border with line numbers
@@ -1702,8 +1912,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 //----------------------------------------------------------------------------------
 
 function createCodeborder(lineno, improws) {
-	var str = "<div class='codeborder' style='z-index: 1;'>"; // The z-index places the code border above the copy to clipboard notification
-
+	var str = "<div class='codeborder' style='z-index: 2;'>"; // The z-index places the code border above the copy to clipboard notification
 	for (var i = 1; i <= lineno; i++) {
 		// Print out normal numbers
 		if (improws.length == 0) {
@@ -1894,6 +2103,101 @@ function Play(event) {
 	}
 }
 
+function minimizeBoxes(boxid) {
+	var boxid = boxid;
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+	document.querySelector('#box'+boxid+'wrapper #copyClipboard').style.display = 'none';
+
+	getLocalStorageProperties(boxValArray);
+
+	//For template 1
+	if (templateid == 1) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("0%");
+			alignBoxesWidth(boxValArray, 1, 2);
+		}
+
+		if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("0%");
+			alignBoxesWidth(boxValArray, 2, 1);
+		}
+	}
+	//for template 2
+	if (templateid == 2) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight2boxes(boxValArray, 1, 2);
+		}
+
+		if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).height("0%");
+
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight2boxes(boxValArray, 2, 1);
+		}
+	}
+}
+
+function hideCopyButtons(templateid, boxid) {
+	var totalBoxes = getTotalBoxes(templateid);
+
+	for (var i = 1; i <= totalBoxes; i++) {
+		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
+		if (i !== boxid) {
+			if (!copyBtn) continue;
+			copyBtn.style.display = "none";
+		} else {
+			if (!copyBtn) continue;
+			copyBtn.style.display = "table-cell";
+		}
+	}
+}
+
+function showCopyButtons(templateid) {
+	var totalBoxes = getTotalBoxes(templateid);
+
+	for (var i = 1; i <= totalBoxes; i++) {
+		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
+		if (!copyBtn) continue;
+		copyBtn.style.display = "table-cell";
+	}
+}
+
+function getTotalBoxes(template) {
+	var totalBoxes;
+	switch (template) {
+		case '10': totalBoxes = 1;
+		break;
+		case '1': 
+		//fall through
+		case '2': totalBoxes = 2;
+		break;
+		case '3': 
+		//fall through
+		case '4':
+		//fall through
+		case '8': totalBoxes = 3;
+		break;
+		case '5':
+		//fall through
+		case '6':
+		//fall through
+		case '7': totalBoxes = 4;
+		break;
+		case '9': totalBoxes = 5;
+		break;
+	}
+	return totalBoxes;
+}
+
 //-----------------------------------------------------------------------------
 // maximizeBoxes: Adding maximize functionality for the boxes
 //					Is called with onclick() by maximizeButton
@@ -1906,6 +2210,8 @@ function maximizeBoxes(boxid) {
 	var templateid = retData['templateid'];
 
 	getLocalStorageProperties(boxValArray);
+	hideCopyButtons(templateid, boxid);
+	saveInitialBoxValues();
 
 	//For template 1
 	if (templateid == 1) {
@@ -1959,7 +2265,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -1971,7 +2277,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 3, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2194,7 +2500,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 2, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2206,7 +2512,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth2Boxes(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 3, 1);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2221,9 +2527,18 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
+//hide maximizeButton
+function hideMinimizeButton() {
+	var templateid = retData['templateid'];
+	if (templateid > 2) {
+		$('.minimizebtn').hide();
+	}
+}
+
 //reset boxes
 function resetBoxes() {
 	resizeBoxes("#div2", retData["templateid"]);
+	showCopyButtons(retData["templateid"]);
 }
 
 //-----------------------------------------------------------------------------
@@ -3066,6 +3381,14 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
+function saveInitialBoxValues() {
+	var templateId = retData["templateid"];
+	var parent = "#div2";
+	var boxValArray = initResizableBoxValues(parent);
+
+	setLocalStorageProperties(templateId, boxValArray);
+}
+
 function initResizableBoxValues(parent) {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
@@ -3097,6 +3420,7 @@ function initResizableBoxValues(parent) {
 			boxValueArray['parent']['width'] = $(parent).width();
 		}
 	});
+
 	return boxValueArray;
 }
 
@@ -3242,15 +3566,15 @@ function copyCodeToClipboard(boxid) {
 	selection.removeAllRanges();
 
 	// Notification animation
-	$("#notification" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
+	$("#notificationbox" + boxid).css("display", "flex").hide().fadeIn("fast", function () {
 		setTimeout(function () {
-			$("#notification" + boxid).fadeOut("fast");
+			$("#notificationbox" + boxid).fadeOut("fast");
 		}, 500);
 	});
-	$("#textwrapper" + boxid).hide();
+	/*$("#textwrapper" + boxid).hide();
 	setTimeout(function () {
 		$("#textwrapper" + boxid).fadeIn("fast");
-	}, 1000);
+	}, 1000);*/
 }
 
 
@@ -3260,10 +3584,14 @@ $(document).mousedown(function (e) {
 	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
 		isClickedElementBox = true;
 	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
-		&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+		&&
+		(findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
 		isClickedElementBox = true;
 	} else {
 		isClickedElementBox = false;
+	}
+	if (!box[0].classList.contains("burgerOption")) {
+		closeBurgerMenu();
 	}
 });
 
@@ -3271,9 +3599,61 @@ $(document).mousedown(function (e) {
 $(document).mouseup(function (e) {
 	// Click outside the loginBox
 	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
-		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
-		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
+		&&
+		$('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&&
+		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
 		closeWindows();
 	}
 });
+
+function showBurgerMenu() {
+	var menu = document.querySelector('#burgerMenu');
+	var burgerPos = document.querySelector('#codeBurger').getBoundingClientRect();
+	menu.style.display = 'block';
+	menu.style.top = burgerPos.top + 50 + 'px';
+	menu.style.left = burgerPos.left+'px';
+}
+
+function closeBurgerMenu() {
+	document.querySelector('#burgerMenu').style.display = 'none';
+}
+
+function fillBurger() {
+	var boxes = retData['box'];
+	var burgerMenu = document.querySelector('#burgerMenu');
+	var str = "";
+	boxes.forEach(box => {
+		str += "<div class='burgerOption' onclick='setShowPane("+box[0]+");'>"+box[4]+"</div>";
+	});
+	burgerMenu.innerHTML = str;
+}
+
+function setShowPane(id) {
+	closeBurgerMenu();
+	var loc = window.location.href;
+	if (loc.indexOf('&showPane=') !== -1) {
+		loc = loc.substring(0,loc.indexOf('showPane=') - 1)+'&showPane='+id;
+		window.location.href = loc;
+	} else {
+		loc = loc+'&showPane='+id;
+		window.location.href = loc;
+	}
+}
+
+function showBox(id) {
+ 	var container = document.querySelector('#div2');
+	var boxes = [...container.childNodes];
+	
+	boxes.forEach(box => {
+		if (box.id === 'box'+id+'wrapper') {
+			box.style.display = 'block';
+			box.style.width = '100%';
+			box.style.maxWidth = '100%';
+			box.style.height = '100%';
+		} else {
+			box.style.display = 'none';
+		}
+	});
+}

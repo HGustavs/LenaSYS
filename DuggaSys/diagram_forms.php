@@ -14,7 +14,7 @@
           <option value=\'Impact\'>Impact</option>
           <option value=\'Calibri\'>Calibri</option>';
   $backgroundColor = 'Background color:<br>
-        <select onchange="changeObjectAppearance();" id=\'symbolColor\'>
+        <select onchange="changeObjectAppearance();" id=\'fillColor\'>
         '.$colors.'
         </select><br>';
   $fontFamily = 'Font family:<br>
@@ -37,7 +37,7 @@
         '.$colors.'
         </select><br>
         ';
-  $okButton = '<button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
+  $okButton = '<button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
   //form for attributes
   if($form == 'attributeType') {
       echo'Attribute name:</br>
@@ -56,14 +56,14 @@
   else if($form == 'classType') {
       echo'Class name: </br>
       <input onkeyup="changeObjectAppearance(\'classType\');" id=\'nametext\' type=\'text\'></br>
-      
+
       Attributes:<br>
       <textarea onkeyup="changeObjectAppearance(\'classType\');" id="UMLAttributes" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
       Operations:<br>
       <textarea onkeyup="changeObjectAppearance(\'classType\');" id="UMLOperations" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
-      <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
+      <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
       ';
   }
   //form for entities
@@ -86,7 +86,7 @@
       </select><br>'.$lineColors.'
       Opacity:<br>
       <input type="range" id="figureOpacity" oninput="changeObjectAppearance(\'figureType\');" style="width:100%; margin: -2px; padding: 0px;"><br>
-      <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'figureType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
+      <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(\'figureType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
       ';
   }
   //form for global
@@ -128,7 +128,7 @@
   //form for lines
   else if($form == 'lineType') {
       $cardinality = $_GET['cardinality'];
-      if($cardinality == -1) {
+      if($cardinality == 1) {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
@@ -137,7 +137,7 @@
             <option value='Derived'>Derived</option>
         </select></br>
         ";
-      }else if($cardinality != 1) {
+      }else if($cardinality == 2) {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
@@ -153,7 +153,7 @@
           <option value='M'>M</option>
         </select><br/>
         ";
-      }else {
+      }else if ($cardinality == 3) {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
@@ -165,13 +165,13 @@
             <option value='Aggregation'>Aggregation</option>
             <option value='Composition'>Composition</option>
         </select></br>
-        
+
         Line direction: <br/>
         <select onchange=\"changeLineDirection()\" id='line_direction'>
           <option value='First'>First object</option>
           <option value='Second'>Second object</option>
         </select><br/>
-        
+
         Cardinality: <br/>
         <select onchange=\"changeCardinality(true)\" id='cardinality'>
           <option value='None'>None</option>
@@ -189,7 +189,7 @@
         </select><br/>
         ";
       }
-      echo"<button type='submit' class='submit-button' onclick=\"changeObjectAppearance('lineType'); setType(form); closeAppearanceDialogMenu();\" style='float: none; display: block; margin: 10px auto;'>OK</button>";
+      echo"<button type='submit' class='submit-button' onclick=\"SaveState(); changeObjectAppearance('lineType'); setType(form); closeAppearanceDialogMenu();\" style='float: none; display: block; margin: 10px auto;'>OK</button>";
 
   }
   //form for relations
@@ -214,6 +214,6 @@
       <option value="center" selected="true">Center</option>
       <option value="end">Right</option>
       </select><br>'.$textSize
-      .'<button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'textType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
+      .'<button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(\'textType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
   }
  ?>
