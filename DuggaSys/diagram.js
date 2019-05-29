@@ -2746,8 +2746,6 @@ function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
             diagram[i].properties['fillColor'] = settings.properties.fillColor;
-        } else {
-            diagram[i].fillColor = settings.properties.fillColor;
         }
     }
 }
