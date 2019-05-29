@@ -1940,9 +1940,6 @@ function Symbol(kindOfSymbol) {
 
         ctx.fillStyle = this.properties['fontColor'];
         ctx.textAlign = this.textAlign;
-        this.properties['textSize'] = this.getFontsize();
-        this.properties['font'] = getFont();
-        this.properties['fontColor'] = getFontColor();
         for (var i = 0; i < this.textLines.length; i++) {
             ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
         }

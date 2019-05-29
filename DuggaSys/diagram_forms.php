@@ -63,7 +63,7 @@
       Operations:<br>
       <textarea onkeyup="changeObjectAppearance(\'classType\');" id="UMLOperations" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
-      <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
+      <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
       ';
   }
   //form for entities
@@ -86,7 +86,7 @@
       </select><br>'.$lineColors.'
       Opacity:<br>
       <input type="range" id="figureOpacity" oninput="changeObjectAppearance(\'figureType\');" style="width:100%; margin: -2px; padding: 0px;"><br>
-      <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'figureType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
+      <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(\'figureType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
       ';
   }
   //form for global
@@ -189,7 +189,7 @@
         </select><br/>
         ";
       }
-      echo"<button type='submit' class='submit-button' onclick=\"changeObjectAppearance('lineType'); setType(form); closeAppearanceDialogMenu();\" style='float: none; display: block; margin: 10px auto;'>OK</button>";
+      echo"<button type='submit' class='submit-button' onclick=\"SaveState(); changeObjectAppearance('lineType'); setType(form); closeAppearanceDialogMenu();\" style='float: none; display: block; margin: 10px auto;'>OK</button>";
 
   }
   //form for relations
@@ -214,6 +214,6 @@
       <option value="center" selected="true">Center</option>
       <option value="end">Right</option>
       </select><br>'.$textSize
-      .'<button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'textType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
+      .'<button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(\'textType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
   }
  ?>
