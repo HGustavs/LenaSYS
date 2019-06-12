@@ -460,8 +460,8 @@ function accessCourse() {
 
 function verifyCourseVersionInputForm(input) {
   console.log("Testing the verifyCourseVersionInputForm");
-  // Verify if course name is <= 100 characters.
-  if (input.versname.length >= 100){
+  // Verify if course name is <= 50 characters.
+  if (input.versname.length >= 50){
     alert('Input exceeded max length for version name (100)');
     return false;
   }
