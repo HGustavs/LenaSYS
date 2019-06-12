@@ -468,8 +468,8 @@ function verifyCourseVersionInputForm(input) {
     return false;
   }
   // Verify if the course code is a number.
-  if (!isNaN(input.versid)){
-    alert('Input is not a number. Version ID has to be a number.');
+  if (isNaN(input.versid)){
+    alert('Input for version ID is not a number. Version ID has to be a number.');
     return false;
   }
   return true;
