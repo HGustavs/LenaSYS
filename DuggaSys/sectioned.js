@@ -408,6 +408,8 @@ function createVersion() {
 
   newversid = param.versid;
 
+  if(!verifyCourseVersionInputForm(param)) return;
+
   if (param.versid == "" || param.versname == "") {
     alert("Version Name and Version ID must be entered!");
   } else {
@@ -466,7 +468,7 @@ function verifyCourseVersionInputForm(input) {
     return false;
   }
   // Verify if the course code is a number.
-  if (isNaN(input.versid)){
+  if (!isNaN(input.versid)){
     alert('Input is not a number. Version ID has to be a number.');
     return false;
   }
