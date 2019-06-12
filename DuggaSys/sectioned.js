@@ -441,6 +441,8 @@ function updateVersion() {
   param.startdate = $("#estartdate").val();
   param.enddate = $("#eenddate").val();
 
+  if(!verifyCourseInputForm(param)) return;
+
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
@@ -454,6 +456,20 @@ function goToVersion(courseDropDown) {
 function accessCourse() {
   var coursevers = $("#course-coursevers").text();
   window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
+}
+
+function verifyCourseInputForm(input) {
+  // Verify if course name is <= 100 characters.
+  if (input.coursename.length() <= 100){
+    alert('Input exceeded max length for course version name (100)');
+    return false;
+  }
+  // Verify if the course code is a number.
+  if (isNaN(input.coursecode)){
+    alert('Input is not a number. Course code has to be a number.');
+    return false;
+  }
+  return true;
 }
 
 //----------------------------------------
@@ -1026,7 +1042,7 @@ function returnedSection(data) {
 
   // Change title of the current page depending on which page the user is on.
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
-    
+
   // Sets a title on the course heading name
   document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
 
@@ -1267,7 +1283,7 @@ function drawSwimlanes() {
   var tempNumb = 2;
 
   var str = "";
-  // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not. 
+  // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not.
   str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'><stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> <linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'><stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
@@ -1312,7 +1328,7 @@ function drawSwimlanes() {
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
-        
+
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
@@ -1324,7 +1340,7 @@ function drawSwimlanes() {
           duggalength = duggalength * -1;
         }
         var tempVariable = duggalength*daywidth;
-        
+
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }
