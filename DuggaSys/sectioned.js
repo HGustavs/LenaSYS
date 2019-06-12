@@ -441,7 +441,7 @@ function updateVersion() {
   param.startdate = $("#estartdate").val();
   param.enddate = $("#eenddate").val();
 
-  if(!verifyCourseInputForm(param)) return;
+  if(!verifyCourseVersionInputForm(param)) return;
 
   AJAXService("UPDATEVRS", param, "SECTION");
 
@@ -458,15 +458,16 @@ function accessCourse() {
   window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
-function verifyCourseInputForm(input) {
+function verifyCourseVersionInputForm(input) {
+  console.log("Testing the verifyCourseVersionInputForm");
   // Verify if course name is <= 100 characters.
-  if (input.coursename.length() <= 100){
-    alert('Input exceeded max length for course version name (100)');
+  if (input.versname.length() <= 100){
+    alert('Input exceeded max length for version name (100)');
     return false;
   }
   // Verify if the course code is a number.
-  if (isNaN(input.coursecode)){
-    alert('Input is not a number. Course code has to be a number.');
+  if (isNaN(input.versid)){
+    alert('Input is not a number. Version ID has to be a number.');
     return false;
   }
   return true;
