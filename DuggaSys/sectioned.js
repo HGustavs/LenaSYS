@@ -464,7 +464,7 @@ function verifyCourseVersionInputForm(input) {
   console.log("Testing the verifyCourseVersionInputForm");
   // Verify if course name is <= 45 characters.
   if (input.versname.length >= 45){
-    alert('Input exceeded max length for version name (100)');
+    alert('Input exceeded max length for version name (45).');
     return false;
   }
   // Verify if the course code is a number.
