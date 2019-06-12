@@ -36,7 +36,7 @@ function updateCourse()
 
 	$("#overlay").css("display", "none");
 
-  if (!verifyCourseInputForm) return;
+  if (!verifyCourseInputForm(coursename, coursecode)) return;
 
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
 }
@@ -72,7 +72,7 @@ function createNewCourse()
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
 
-  if (!verifyCourseInputForm) return;
+  if (!verifyCourseInputForm(coursename, coursecode)) return;
 
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
