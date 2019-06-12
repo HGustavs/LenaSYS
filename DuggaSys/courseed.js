@@ -36,6 +36,8 @@ function updateCourse()
 
 	$("#overlay").css("display", "none");
 
+  if (!verifyCourseInputForm) return;
+
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
 }
 
@@ -69,7 +71,26 @@ function createNewCourse()
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
 	//$("#overlay").css("display", "none");
+
+  if (!verifyCourseInputForm) return;
+
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
+}
+
+
+function verifyCourseInputForm(coursename, coursecoude) {
+  console.log("Testing the verifyCourseVersionInputForm");
+  // Verify if course name is <= 45 characters.
+  if (coursename.length >= 45){
+    alert('Input exceeded max length for Course name (45).');
+    return false;
+  }
+  // Verify if the course code is a number.
+  if (isNaN(coursecode)){
+    alert('Input for Course ID is not a number. Course ID has to be a number.');
+    return false;
+  }
+  return true;
 }
 
 function copyVersion()
@@ -380,7 +401,7 @@ function returnedCourse(data)
         		str += "<span style='margin-bottom: 0px'>";
 
 				    str += "<span><img id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
-        
+
         		str += "</span>";
       		} else {
         		str += "<div class='ellipsis' style='margin-right:15px;'>";
