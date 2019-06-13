@@ -1299,20 +1299,35 @@ function drawVirtualA4() {
     ctx.setLineDash([10]);
 
     // Draw A4 sheets in portrait mode
+    testvar = true;
     if(A4Orientation == "portrait") {
+      if(testvar) {
+        ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
+      } else {
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
                 ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);
+                ctx.strokeRect(zeroX - a4Width * j, zeroY - a4Height * i, a4Width, a4Height);
+                ctx.strokeRect(zeroX - a4Width * j, zeroY + a4Height * i, a4Width, a4Height);
+                ctx.strokeRect(zeroX + a4Width * j, zeroY - a4Height * i, a4Width, a4Height);
             }
         }
+      }
     }
     // Draw A4 sheets in landscape mode
     else if(A4Orientation == "landscape") {
+      if(testvar){
+        ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);
+      } else {
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
                 ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);
+                ctx.strokeRect(zeroX - a4Height * j, zeroY - a4Width * i, a4Height, a4Width);
+                ctx.strokeRect(zeroX - a4Height * j, zeroY + a4Width * i, a4Height, a4Width);
+                ctx.strokeRect(zeroX + a4Height * j, zeroY - a4Width * i, a4Height, a4Width);
             }
         }
+      }
     }
 
     // Draw A4 holes
@@ -1697,7 +1712,7 @@ function eraseObject(object) {
                 || line.bottomRight == object.centerPoint
                 || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
                 || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
-            );  
+            );
             } else if (object.symbolkind == symbolKind.uml) {
             objectsToDelete = umlLines.filter(
                 umlLine => umlLine.topLeft == object.middleDivider
