@@ -1299,9 +1299,9 @@ function drawVirtualA4() {
     ctx.setLineDash([10]);
 
     // Draw A4 sheets in portrait mode
-    testvar = true;
+    oneA4 = true;
     if(A4Orientation == "portrait") {
-      if(testvar) {
+      if(oneA4) {
         ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
       } else {
         for (var i = 0; i < a4Rows; i++) {
@@ -1316,7 +1316,7 @@ function drawVirtualA4() {
     }
     // Draw A4 sheets in landscape mode
     else if(A4Orientation == "landscape") {
-      if(testvar){
+      if(oneA4){
         ctx.strokeRect(zeroX, zeroY, a4Height, a4Width);
       } else {
         for (var i = 0; i < a4Rows; i++) {
@@ -1334,33 +1334,62 @@ function drawVirtualA4() {
     if(toggleA4Holes) {
         if(A4Orientation == "portrait") {
             if (switchSideA4Holes == "left") {
-                // The Holes on the left side.
+              if(oneA4){
+                //Upper 2 holes
+                drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+                drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+
+                //Latter two holes
+                drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+                drawCircle(leftHoleOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+              } else {
                 for (var i = 0; i < a4Rows; i++) {
                     for (var j = 0; j < a4Columns; j++) {
                         //Upper 2 holes
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+
+                        drawCircle(leftHoleOffsetX - zeroX - a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) - zeroY - a4Height * i, holeRadius);
+                        drawCircle(leftHoleOffsetX - zeroX - a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) - zeroY - a4Height * i, holeRadius);
                         //Latter two holes
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                     }
                 }
+              }
             } else {
                 // The holes on the right side.
-                for (var i = 0; i < a4Rows; i++) {
-                    for (var j = 0; j < a4Columns; j++) {
-                        //Upper 2 holes
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        //Latter two holes
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                    }
+                if(oneA4){
+                  //Upper 2 holes
+                  drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+                  drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+                  //Latter two holes
+                  drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+                  drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+                } else {
+                  for (var i = 0; i < a4Rows; i++) {
+                      for (var j = 0; j < a4Columns; j++) {
+                          //Upper 2 holes
+                          drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                          drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                          //Latter two holes
+                          drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                          drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                      }
+                  }
                 }
             }
         }
         else if(A4Orientation == "landscape") {
             if (switchSideA4Holes == "left") {
+              if(oneA4){
+                //Upper 2 holes
+                drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+                drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+                //Latter two holes
+                drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+                drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+              } else {
                 // The holes on the upper side.
                 for (var i = 0; i < a4Rows; i++) {
                     for (var j = 0; j < a4Columns; j++) {
@@ -1372,7 +1401,16 @@ function drawVirtualA4() {
                         drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                     }
                 }
-            }else {
+              }
+            } else {
+              if(oneA4){
+                //Upper 2 holes
+                drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+                drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+                //Latter two holes
+                drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+                drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+              } else {
                 // The holes on the bottom side.
                 for (var i = 0; i < a4Rows; i++) {
                     for (var j = 0; j < a4Columns; j++) {
@@ -1384,6 +1422,7 @@ function drawVirtualA4() {
                         drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                     }
                 }
+              }
             }
         }
     }
