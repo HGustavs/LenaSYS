@@ -128,6 +128,7 @@ var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
+var oneA4 = false;                  // toggle if single a4 is prefered
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var targetMode = "ER";              // Default targetMode
@@ -1243,6 +1244,7 @@ function toggleVirtualA4(event) {
         $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
         $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
         $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-singleA4-item").addClass("drop-down-item drop-down-item-disabled");
         hideA4State();
         updateGraphics();
     } else {
@@ -1254,6 +1256,7 @@ function toggleVirtualA4(event) {
         } else {
             $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         }
+        $("#a4-singleA4-item").removeClass("drop-down-item drop-down-item-disabled");
         showA4State();
         updateGraphics();
     }
@@ -1299,7 +1302,6 @@ function drawVirtualA4() {
     ctx.setLineDash([10]);
 
     // Draw A4 sheets in portrait mode
-    oneA4 = false;
     if(A4Orientation == "portrait") {
       if(oneA4) {
         ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
@@ -1505,6 +1507,19 @@ function drawVirtualA4() {
     ctx.restore();
 }
 
+// Function that toggles if the user wants multiple A4 or only one
+function toggleSingleA4(event) {
+  event.stopPropagation();
+  if(oneA4 && toggleA4){
+    oneA4 = false;
+    setCheckbox($(".drop-down-option:contains('Toggle Single A4')"), oneA4);
+  } else if (!oneA4 && toggleA4) {
+    oneA4 = true;
+    setCheckbox($(".drop-down-option:contains('Toggle Single A4')"), oneA4);
+  }
+  updateGraphics();
+}
+
 //------------------------------------------------------------------
 // Draws a crosshair in the middle of canvas while in developer mode
 //------------------------------------------------------------------
@@ -1571,6 +1586,7 @@ function showA4State() {
     $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+    $("#a4-singleA4-item").removeClass("drop-down-item drop-down-item-disabled");
 }
 
 //-----------------------------------------------------
@@ -1581,17 +1597,20 @@ function hideA4State() {
     // Reset the variables after disable the A4
     toggleA4Holes = false;
     switchSideA4Holes = "left";
+    oneA4 = false;
 
     // Hides icons when toggling off the A4
     setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
     setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+    setCheckbox($(".drop-down-option:contains('Toggle Single A4')"), false);
 
     // Grey out disabled options
     $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
     $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+    $("#a4-singleA4-item").addClass("drop-down-item drop-down-item-disabled");
 }
 
 //---------------------------------
