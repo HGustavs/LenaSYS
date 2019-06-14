@@ -1299,7 +1299,7 @@ function drawVirtualA4() {
     ctx.setLineDash([10]);
 
     // Draw A4 sheets in portrait mode
-    oneA4 = true;
+    oneA4 = false;
     if(A4Orientation == "portrait") {
       if(oneA4) {
         ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
@@ -1345,15 +1345,31 @@ function drawVirtualA4() {
               } else {
                 for (var i = 0; i < a4Rows; i++) {
                     for (var j = 0; j < a4Columns; j++) {
-                        //Upper 2 holes
+                        //Upper 2 holes, from origo, all cords that are positive (+, +)
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                        //Upper 2 holes, from origo, all cords that are negative (-, -)
+                        drawCircle(leftHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                        //Upper 2 holes, from origo, cords that are negative and positive (+, -)
+                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                        //Upper 2 holes, from origo, cords that are negative and positive (-, +)
+                        drawCircle(leftHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
 
-                        drawCircle(leftHoleOffsetX - zeroX - a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) - zeroY - a4Height * i, holeRadius);
-                        drawCircle(leftHoleOffsetX - zeroX - a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) - zeroY - a4Height * i, holeRadius);
-                        //Latter two holes
+                        //Latter two holes, from origo, all cords that are positive (+, +)
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                         drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                        //Latter two holes, from origo, all cords that are negative (-, -)
+                        drawCircle(leftHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                        //Latter two holes, from origo, cords that are negative and positive (+, -)
+                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                        //Latter two holes, from origo, cords that are negative and positive (-, +)
+                        drawCircle(leftHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                     }
                 }
               }
@@ -1363,18 +1379,38 @@ function drawVirtualA4() {
                   //Upper 2 holes
                   drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
                   drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+
                   //Latter two holes
                   drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
                   drawCircle(rightHoleOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
                 } else {
                   for (var i = 0; i < a4Rows; i++) {
                       for (var j = 0; j < a4Columns; j++) {
-                          //Upper 2 holes
+                          //Upper 2 holes, from origo, all cords that are positive (+, +)
                           drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                           drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                          //Latter two holes
+                          //Upper 2 holes, from origo, all cords that are negative (-, -)
+                          drawCircle(rightHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                          drawCircle(rightHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                          //Upper 2 holes, from origo, cords that are negative and positive (+, -)
+                          drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                          drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                          //Upper 2 holes, from origo, cords that are negative and positive (-, +)
+                          drawCircle(rightHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                          drawCircle(rightHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+
+                          //Latter two holes, from origo, all cords that are positive (+, +)
                           drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                           drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                          //Latter two holes, from origo, all cords that are negative (-, -)
+                          drawCircle(rightHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                          drawCircle(rightHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                          //Latter two holes, from origo, cords that are negative and positive (+, -)
+                          drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                          drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY - a4Height * i, holeRadius);
+                          //Latter two holes, from origo, cords that are negative and positive (-, +)
+                          drawCircle(rightHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                          drawCircle(rightHoleOffsetX + zeroX - a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
                       }
                   }
                 }
@@ -1386,6 +1422,7 @@ function drawVirtualA4() {
                 //Upper 2 holes
                 drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
                 drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+
                 //Latter two holes
                 drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
                 drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
@@ -1393,12 +1430,31 @@ function drawVirtualA4() {
                 // The holes on the upper side.
                 for (var i = 0; i < a4Rows; i++) {
                     for (var j = 0; j < a4Columns; j++) {
-                        //Upper 2 holes
+                        //Upper 2 holes, from origo, all cords that are positive (+, +)
                         drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        //Latter two holes
+                        //Upper 2 holes, from origo, all cords that are negative (-, -)
+                        drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX - a4Height * j, leftHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX - a4Height * j, leftHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        //Upper 2 holes, from origo, cords that are negative and positive (+, -)
+                        drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        //Upper 2 holes, from origo, cords that are negative and positive (-, +)
+                        drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX - a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX - a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
+
+                        //Latter two holes, from origo, all cords that are positive (+, +)
                         drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
+                        //Latter two holes, from origo, all cords that are negative (-, -)
+                        drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX - a4Height * j, leftHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX - a4Height * j, leftHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        //Latter two holes, from origo, cords that are negative and positive (+, -)
+                        drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        //Latter two holes, from origo, cords that are negative and positive (-, +)
+                        drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX - a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX - a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
                     }
                 }
               }
@@ -1407,6 +1463,7 @@ function drawVirtualA4() {
                 //Upper 2 holes
                 drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
                 drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+
                 //Latter two holes
                 drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
                 drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
@@ -1414,12 +1471,31 @@ function drawVirtualA4() {
                 // The holes on the bottom side.
                 for (var i = 0; i < a4Rows; i++) {
                     for (var j = 0; j < a4Columns; j++) {
-                        //Upper 2 holes
+                        //Upper 2 holes, from origo, all cords that are positive (+, +)
                         drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        //Latter two holes
+                        //Upper 2 holes, from origo, all cords that are negative (-, -)
+                        drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX - a4Height * j, rightHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX - a4Height * j, rightHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        //Upper 2 holes, from origo, cords that are negative and positive (+, -)
+                        drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        //Upper 2 holes, from origo, cords that are negative and positive (-, +)
+                        drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX - a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX - a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
+
+                        //Latter two holes, from origo, all cords that are positive (+, +)
                         drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                         drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
+                        //Latter two holes, from origo, all cords that are negative (-, -)
+                        drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX - a4Height * j, rightHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX - a4Height * j, rightHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        //Latter two holes, from origo, cords that are negative and positive (+, -)
+                        drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY - a4Width * i, holeRadius);
+                        //Latter two holes, from origo, cords that are negative and positive (-, +)
+                        drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX - a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
+                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX - a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
                     }
                 }
               }
