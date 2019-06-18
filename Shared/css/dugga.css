@@ -45,9 +45,10 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 	height: 56px;
 	width: 56px;
 	border-radius: 50%;
-  bottom: 30px;
-  right: 30px;
+  bottom: 40px;
+  right: 40px;
 	z-index: 1;
+	box-shadow: 2px 2px 5px #888888;
  touch-action: none;
 }
 
