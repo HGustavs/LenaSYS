@@ -3196,6 +3196,9 @@ span.arrow {
   background-color: var(--color-background);
 }
 
+.group2 {
+  padding: 10px;
+}
 .contribheading {
   background: #FFF8A5;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);

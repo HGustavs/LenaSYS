@@ -179,7 +179,7 @@ function renderLineDiagram(data) {
 
   //Selectbox to choose week
   str = "<h2 style='padding-top:10px'>Weekly line chart</h2>";
-  str += '<select class="group2" id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
+  str += '<select class="group2" id="weekoption" value="0" style="margin-top:15px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
   str += '<option value="' + firstweek + '">All weeks</option>';
   for (i = 0; i < weeks.length; i++) {
     var week = weeks[i];
@@ -401,7 +401,7 @@ function renderCircleDiagram(data, day) {
 
   var activities = JSON.parse(data);
   var str = "";
-  str += "<h2 style='padding:10px'>Hourly activities</h2>";
+  str += "<h2>Hourly activities</h2>";
   str += "<input type='date' style='margin-left: 10px' id='circleGraphDatepicker' ";
   if (day) {
     str += "value=" + today + " ";
@@ -733,7 +733,7 @@ function returnedSection(data) {
   str += "</div>";
 
   localStorage.setItem('GitHubUser', data['githubuser'])
-     str+="<p>";
+     str+="<p style='padding-left: 10px;'>";
      if(data['allusers'].length>0){
          str+="<select id='userid' onchange='selectuser();'>";
          str+="<option>"+localStorage.getItem('GitHubUser')+"</option>";
@@ -746,7 +746,7 @@ function returnedSection(data) {
       }
      str+="</p>";
 
-  str += "<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
+  str += "<h2 class='section' style='padding-left: 10px'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
 
   createAllRankTable(buildAllRankData(data));
   createRankTable(buildRankData(data));
@@ -1330,7 +1330,7 @@ function showTooltip(hoverBtn) {
       leftOffset = 345;
     break;
   }
-  
+
   var TTtextContainer = document.createElement("P");
   var TTtextNode = document.createTextNode(TTtext);
   TTtextContainer.appendChild(TTtextNode);

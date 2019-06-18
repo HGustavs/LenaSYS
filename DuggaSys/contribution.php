@@ -40,7 +40,7 @@ if (!$_SERVER['HTTP_REFERER']) {
 	<!-- content START -->
 	<div id="content"></div>
 
-	<div class='group3 group1' id='personalRankTable' style='margin-left: 12px; width:50%; white-space: nowrap;'></div>
+	<div class='group3 group1' id='personalRankTable' style='margin-left: 12px; width:50%; white-space: nowrap; padding-left: 10px;'></div>
 
 	<div class='group2 group1' id='barchart' style='margin-left: 12px; white-space: nowrap;'></div>
 
