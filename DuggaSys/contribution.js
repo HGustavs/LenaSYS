@@ -725,7 +725,7 @@ function returnedSection(data) {
 
   var str = "";
 
-  str += "<div id='contributionContainer' class='contributionSort'>";
+  str += "<div id='contributionContainer' style='padding-top: 20px;' class='contributionSort'>";
   str += "<input type='button' id='allBtn' value='All' class='submit-button title='All' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
   str += "<input type='button' id='basicBtn' value='Basic' class='submit-button title='Basic' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
   str += "<input type='button' id='chartsBtn' value='Charts' class='submit-button title='Charts' onclick='statSort(value)' onmouseover='showTooltip(this)' onmouseout='hideTooltip(this)'></input>";
@@ -1330,7 +1330,7 @@ function showTooltip(hoverBtn) {
       leftOffset = 345;
     break;
   }
-  
+
   var TTtextContainer = document.createElement("P");
   var TTtextNode = document.createTextNode(TTtext);
   TTtextContainer.appendChild(TTtextNode);
