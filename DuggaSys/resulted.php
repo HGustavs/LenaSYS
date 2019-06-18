@@ -49,23 +49,6 @@ pdoConnect();
 			<h1>Result</h1>
     </div>
     <div id="ladexportContainer">
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Delkurs</label>
-        <select id="ladselect"></select>
-      </div>
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Betygsskala</label>
-        <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
-        <select id="ladgradescale">
-          <option value="U-G-VG" selected>U-G-VG</option>
-          <option value="U-G">U-G</option>
-       	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
-        </select>
-      </div>
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Betygsdatum</label>
-        <input id="laddate" type="date" style="font-size:12px;">
-        </div>
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
 			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
@@ -193,6 +176,27 @@ pdoConnect();
 				<span>
 				<input type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>
 			</span>
+		</div>
+		<!-- Ladexport filter -->
+		<h3 style="font-size:0.8em;margin-top:10px;margin-left:5px;margin-bottom:-5px;">Filteringsalternativ:</h3>
+		<div style="display:flex;flex-direction:row;">
+		<div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;width:33%;">
+			<label>Delkurs</label>
+			<select id="ladselect"  onchange="ladexport();"></select>
+		</div>
+		<div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;width:33%;">
+			<label>Betygsskala</label>
+			<!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
+			<select id="ladgradescale" onchange="ladexport();">
+			<option value="U-G-VG" selected>U-G-VG</option>
+			<option value="U-G">U-G</option>
+			<!-- <option value="U-3-4-5">U-3-4-5</option> -->
+			</select>
+		</div>
+		<div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;width:33%;">
+			<label>Betygsdatum</label>
+			<input id="laddate" type="date" style="font-size:12px;"  oninput="ladexport();">
+			</div>
 		</div>
 	</div>
 
