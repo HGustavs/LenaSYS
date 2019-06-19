@@ -1070,6 +1070,12 @@ function hideReceiptPopup()
 	//$("#overlay").css("display","none");
 }
 
+function hideFeedbackPopup()
+{
+	$("#feedbackBox").css("display", "none");
+	//$("#overlay").css("display","none");
+}
+
 function hideDuggaStatsPopup()
 {
 	$("#duggaStats").css("display", "none");
