@@ -1192,6 +1192,15 @@ input {
   text-decoration: underline;
 }
 
+.forgotPw {
+  text-decoration: underline;
+}
+
+.forgotPw:hover {
+  text-decoration: none;
+  color: var(--color-primary-hover);
+}
+
 .loginBox .form-control {
   margin: 3px 0px 3px 0px;
 }
