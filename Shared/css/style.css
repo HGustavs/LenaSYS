@@ -4312,7 +4312,15 @@ only screen and (max-device-width: 320px) {
 }
 
 #noAccessMessage {
-  padding: 5px;
+  color:#FFE;
+  background-color:#964C4D;
+  border-radius: 4px;
+  display: block;
+  box-shadow:0px 2px 4px #DCD;
+  padding:5px;
+  text-shadow:1px 1px #000;
+  margin-left: 5px;
+  margin-top: 5px;
 }
 
 /* Is used to style a Select-box in diagram.php. */
