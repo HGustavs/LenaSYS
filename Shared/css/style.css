@@ -1683,12 +1683,12 @@ button.option {
 }
 
 input.submit-button {
-  background-color: var(--color-primary);
+  background-color: #60c606;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 110px;
   height: 30px;
-  color: #fff;
+  color: #000000;
   cursor: pointer;
   margin: 8px 2px 4px 2px;
   font-size: 14px;
@@ -2761,7 +2761,7 @@ span.arrow {
 }
 
 .submit-button:hover, #TopMenuStatic .submit-button:hover {
-  background-color: var(--color-primary-hover);
+  background-color: #6cdf07;
   border-radius: 4px;
 }
 
