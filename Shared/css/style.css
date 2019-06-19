@@ -5538,6 +5538,7 @@ textarea#filecont {
 
 .tsTableDeleteCell {
   border-radius: 0px 5px 5px 0px;
+  border: 1px solid #cdd0d6;
   -moz-border-radius: 0px 5px 5px 0px;
   -webkit-border-radius: 0px 5px 5px 0px;
 }
