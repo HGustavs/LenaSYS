@@ -49,7 +49,7 @@
                             <img id='versionCog' class="navButt" title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>
 						</div>
 					</td>
-					<td class='newVers' style='display: inline-block;margin-right:2px;'>
+					<td class='newVers' style='display: inline-block;margin-right:15px;'>
 						<div class='newVers menuButton'>
                             <img id='versionPlus' value='New version' class="navButt" title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>
 						</div>

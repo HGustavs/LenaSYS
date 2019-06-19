@@ -666,7 +666,7 @@ header td {
 }
 
 .navButt {
-  width: 32px;
+  width: 28px;
   vertical-align: middle;
 }
 
@@ -3593,7 +3593,7 @@ table.navheader td.menuButton {
 }
 
 table.navheader div.menuButton {
-  margin-right: 10px;
+  margin-right: 14px;
   pointer-events: auto;
   display: inline-block;
   opacity: 1.0;
