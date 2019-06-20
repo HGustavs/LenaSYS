@@ -92,7 +92,7 @@
 					<td class='tests' style='display: inline-block;'>
 						<div class='tests menuButton'>
 							<a id='testsBTN' title='Show tests' value='Tests' href='' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'>
-								<img id='testsBTN' class="navButt" src='../Shared/icons/student_files.svg'>
+								<img id='testsBTN' class="navButt" src='../Shared/icons/student_files_test.svg'>
 							</a>
 						</div>
 					</td>
