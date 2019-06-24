@@ -2402,6 +2402,25 @@ span.arrow {
   margin-top: 2px !important;
 }
 
+.feedbackBoxContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0, 0.6);
+    z-index: 8000;
+}
+
+.feedbackBoxContainer .loginBox {
+  display: block;
+  margin: 0 auto;
+  width: 65%;
+}
+
 .feedback-list th,
 .feedback-list td {
   font-size: 12px;
@@ -2410,7 +2429,26 @@ span.arrow {
 
 .feedback-list td {
   line-height: normal;
+  padding: 4px;
 }
+
+.feedback-list thead tr {
+  height: 10px !important;
+  max-height: 10px !important;
+}
+
+.feedback-list thead tr th {
+  background-color:#777777;
+}
+
+.feedback-list thead tr th:first-child {
+  width: 130px;
+}
+
+.feedback-list tbody tr td:first-child {
+  text-align: center;
+}
+
 
 @media print {
   header {
@@ -2785,6 +2823,8 @@ span.arrow {
 #feedbackBox {
   display: none;
   position: absolute;
+  width: 100%;
+  margin: 0 auto;
   top: 0;
   right: 0;
 }
