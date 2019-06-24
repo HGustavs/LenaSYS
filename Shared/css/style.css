@@ -1911,6 +1911,11 @@ div.submit-button:disabled {
   cursor: pointer;
 }
 
+.buttonsStyle:focus {
+  outline:0;
+  border: 1px solid #614875;
+}
+
 .buttonsStyle:hover {
   background-color: var(--color-primary-hover);
 }
