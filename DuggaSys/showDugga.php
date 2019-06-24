@@ -167,7 +167,7 @@
 	</div>
 
 	<!-- LoginBox (receiptbox) Start! -->
-	<div id='receiptBox' class="feedbackBoxContainer" style="display:none">
+	<div id='receiptBox' class="loginBoxContainer" style="display:none">
       <div class="loginBox" style="max-width:400px;">
     		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
     		<div id='receiptInfo'></div>
