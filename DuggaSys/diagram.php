@@ -342,26 +342,8 @@
                 </br>
                 </br>
 
-                <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
-                <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
-
-                <!--
-                    Needs to be implemented in the new navbar
-
-                   <select id='download' onchange='downloadMode(this)'>
-                        <option selected='selected' disabled>State</option>
-                        <option value='getImage'>getImage</option>
-                        <option value='Save'>Save</option>
-                        <option value='Load'>Load</option>
-                    </select>
-
-                    <input id='fileid' type='file' name='file_name' hidden multiple/>
-                -->
-
             </div>
 
-            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
-            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
             <div class="tooltipdialog">
                 <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
