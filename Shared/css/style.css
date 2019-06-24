@@ -2418,7 +2418,7 @@ span.arrow {
 .feedbackBoxContainer .loginBox {
   display: block;
   margin: 0 auto;
-  width: 65%;
+  width: 50%;
 }
 
 .feedback-list th,
@@ -2432,7 +2432,7 @@ span.arrow {
   padding: 4px;
 }
 
-.feedback-list thead tr {
+.feedback-list thead tr { 
   height: 10px !important;
   max-height: 10px !important;
 }
