@@ -3515,7 +3515,7 @@ rect[class*="activitymarker"]:hover {
 }
 
 .alertmsg p {
-  /*padding-left: 117px; */
+  padding-left: 75px;
   /* margin: 0px; */
   /* margin-left: 5px; */
   display: inline;
