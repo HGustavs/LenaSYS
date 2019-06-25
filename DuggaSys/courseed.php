@@ -55,7 +55,7 @@ $noup="NONE";
 
 	<!-- Server Msg -->
 	<div id="servermsgcontainer" class="alertmsg" style="display:none;">
-			<p id="servermsg"></p>
+			<p id="servermsg">Komplettering POG</p>
 			<input type='button' id="MOTDbutton" value='Close' class='submit-button' onclick='hideServerMessage()'/>
 	</div>
 	<!-- Server Msg END -->
