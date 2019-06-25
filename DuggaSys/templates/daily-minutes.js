@@ -4,7 +4,7 @@
 
 *********************************************************************************
 
-Use daily-minutes as template when creating the dugga in the test editor. 
+Use daily-minutes as template when creating the dugga in the test editor.
 Add custom instructions via the variant parameters. Example parameters:
 {"type":"html","filelink":"daily-minutes-instructions.html","submissions":
 [{"type":"timesheet","fieldname":"timesheet","instruction":"Fyll i din aktivitet i projektet"}]}
@@ -30,11 +30,11 @@ function setup()
 			if (tomten.firstChild.lastChild.firstChild.id === 'tsSmallForm') {
 				createFileUploadArea(duggaParams["submissions"]);
 			}
-		} 
+		}
 		if(windowWidth <= 850){
 			if (tomten.firstChild.lastChild.firstChild.id === 'tsBigForm') {
 				createSmallerViewportForm(duggaParams["submissions"]);
-			}		
+			}
 		}
 	})
 	AJAXService("GETPARAM", { }, "PDUGGA");
@@ -141,10 +141,10 @@ function returnedDugga(data)
 		var duggaFiles = data["files"][inParams["moment"]];
 		if($("#submitButtonTable").length != 0) {
 			if(windowWidth > 850){
-				createFileUploadArea(duggaParams["submissions"]);		
-			} 
+				createFileUploadArea(duggaParams["submissions"]);
+			}
 			if(windowWidth <= 850){
-				createSmallerViewportForm(duggaParams["submissions"]);		
+				createSmallerViewportForm(duggaParams["submissions"]);
 			}
 			for (var k=0; k < duggaParams["submissions"].length; k++){
 				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
@@ -235,7 +235,7 @@ function createFileUploadArea(params){
 	form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php'>";
 	form +="<table class='tsTable'><thead>";
 	form +="<th>Date</th><th>Type</th>";
-	form +="<th>Reference</th><th>Comment</th></thead>";	
+	form +="<th>Reference</th><th>Comment</th></thead>";
 	form +="<tbody id='tsTableBody'><tr class='tsInputRow' id='tsTableRow_0'>";
 	form +="<td><input id='tsDate_0' required type='date' name='tsDate_0' /></td>";
 	form +="<td><select id='tsType_0' required name='tsType_0'>";
@@ -262,7 +262,7 @@ function createFileUploadArea(params){
 	str += form;
 	str += "</div>";
 	str += "</div>";
-	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str +="<div id='"+fieldname+"Prev' style='height:200px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
 	document.getElementById("tomten").innerHTML=str;
@@ -309,7 +309,7 @@ function createSmallerViewportForm(params){
 	str += form;
 	str += "</div>";
 	str += "</div>";
-	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str +="<div id='"+fieldname+"Prev' style='height:200px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
 	document.getElementById("tomten").innerHTML=str;
