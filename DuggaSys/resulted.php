@@ -50,11 +50,11 @@ pdoConnect();
     </div>
     <div id="ladexportContainer">
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Delkurs</label>
+        <label>Moment</label>
         <select id="ladselect"></select>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Betygsskala</label>
+        <label>Grading scale</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
           <option value="U-G-VG" selected>U-G-VG</option>
@@ -63,7 +63,7 @@ pdoConnect();
         </select>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Betygsdatum</label>
+        <label>Grading date</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
@@ -74,9 +74,9 @@ pdoConnect();
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
         <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
-				<label>Filtrera efter</label>
+				<label>Filter by</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
-					<option value="Filter-none" selected>inget</option>
+					<option value="Filter-none" selected>None</option>
 					<option value="Filter-G">G</option>
 					<option value="Filter-VG">VG</option>
 					<option value="Filter-U">U</option>
