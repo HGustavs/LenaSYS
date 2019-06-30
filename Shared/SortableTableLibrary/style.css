@@ -2540,6 +2540,8 @@ ul.hamburgerList button.menuButton {
   -o-transition: opacity 300ms, width 300ms, margin 300ms;
 }
 
+
+
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
   table.navheader td.editVers,
   table.navheader td.contribution,
@@ -2804,3 +2806,4 @@ ul.hamburgerList button.menuButton {
        -ms-user-select: none;
            user-select: none;
 }
+

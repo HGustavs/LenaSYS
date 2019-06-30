@@ -4023,6 +4023,17 @@ only screen and (max-device-width: 768px) {
   #fileLink_body>tr>td:nth-of-type(8):before {
     content: "Trash: ";
   }
+
+  table.navheader div.menuButton {
+    background-color: var(--color-primary-2);
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px #888;
+  }
+  table.navheader div.menuButton img {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+  }
 }
 
 @media only screen and (max-width: 860px),
