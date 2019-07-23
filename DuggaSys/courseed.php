@@ -56,7 +56,7 @@ $noup="NONE";
 	<!-- Server Msg -->
 	<div id="servermsgcontainer" class="alertmsg" style="display:none;">
 			<p id="servermsg"></p>
-			<input type='button' id="MOTDbutton" value='Close' class='submit-button' onclick='hideServerMessage()'/>
+			<input type='button' id="MOTDbutton" value='x' onclick='hideServerMessage()'/>
 	</div>
 	<!-- Server Msg END -->
 
