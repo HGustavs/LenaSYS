@@ -610,7 +610,7 @@ function returnedResults(data) {
 			}
 		}
 		var teacherList;
-		teacherList += "<option value='none'>none</option>";
+		teacherList += "<option value='-'>-</option>";
 		for(var i = 0; i < teacher.length; i++){
 			if(!teacherList.includes(teacher[i].id)){
 				teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
@@ -1120,7 +1120,7 @@ function rowFilter(row) {
 		}
 	}
 	var teacherDropdown = document.getElementById("teacherDropdown").value;
-	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
+	if(teacherDropdown !== "-" && row.FnameLname.examiner != teacherDropdown){
 		return false;
 	}
   	// Removes spaces so that it can tolerate "wrong" inputs when searching
