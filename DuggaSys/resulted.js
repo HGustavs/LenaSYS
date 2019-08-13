@@ -477,7 +477,6 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 }
 
 function toggleGradeBox(){
-	var toggleGrade = document.getElementById('toggleGrade');
 	$('#toggleGrade').animate({opacity: 'toggle'}, 200);
 }
 
