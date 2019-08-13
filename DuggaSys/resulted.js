@@ -478,12 +478,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 
 function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
-	var width = toggleGrade.offsetWidth;
-
-	$('#toggleGrade').animate({width: 'toggle'});
-	if(width <= 0){
-		toggleGrade.style.position = 'absolute';
-	}
+	$('#toggleGrade').animate({opacity: 'toggle'}, 200);
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire, feedbackText) {
