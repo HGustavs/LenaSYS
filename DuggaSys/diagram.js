@@ -4407,3 +4407,12 @@ function changeLineDirection() {
     }
     updateGraphics();
 }
+
+// Workaround for displaying the file selected with a span for changing button styling
+function loadWorkaround() {
+    $('#importFile').change(function() {
+        document.getElementById("importFileText").innerHTML = this.files[0].name;
+    });
+}
+
+// End of workaround
