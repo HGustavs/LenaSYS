@@ -42,7 +42,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics();" style="overflow-y: hidden;">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics(); loadWorkaround();" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -422,7 +422,9 @@
             <div class='table-wrap'>
                 <div class="importWrap">
                     <div>
-                        <input type="file" id="importFile" accept=".txt, text/plain" />
+                        <label for="importFile" class="import-submit-button">Browse...</label>
+                        <span id="importFileText">No file selected.</span>
+                        <input type="file" id="importFile" accept=".txt, text/plain" style="display: none"/>
                     </div>
                     <div id="importError" class="importError">
                         <span>Only .txt-files allowed</span>
