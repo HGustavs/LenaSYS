@@ -1114,6 +1114,7 @@ input {
   cursor: default;
   display: flex;
   justify-content: space-around;
+  margin-bottom: 5px;
 }
 
 .loginBoxheader h3 {
@@ -4309,6 +4310,10 @@ only screen and (max-device-width: 320px) {
 
 #nametext {
   padding: 2px 0px 2px 10px;
+}
+
+#font, #fontColor, #TextSize, #FillColor, #StrokeColor {
+  margin-bottom: 11px;
 }
 
 #noAccessMessage {
