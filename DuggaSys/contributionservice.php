@@ -17,7 +17,7 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:../../GHData/GHDataTest.db');
+$log_db = new PDO('sqlite:../../GHData/GHdata_2019_10.db');
 
 $opt = getOP('opt');
 
