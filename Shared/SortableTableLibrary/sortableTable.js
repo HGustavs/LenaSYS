@@ -237,6 +237,9 @@ function SortableTable(param) {
 	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false);
 	this.hasCounter = getparam(param.hasCounterColumn, false);
 	this.hasFooter = getparam(param.hasFooter, false);
+	
+	// Set email column for table or null
+	var emailColumn = getparam(param.emailColumn, null);	
 
 	// Prepare head and order with columns from rowsum list
 	for (let i = 0; i < rowsumList.length; i++) {
@@ -655,12 +658,66 @@ function SortableTable(param) {
 		}
 	}
 
-	this.mail = function(cidMail, crsMail, reqType) {
-		var filteredUsernames = [];
-		//get usernames of the filtered rows
-		for(var i = 0; i < filteredRows.length; i++){ 
-			filteredUsernames.push(filteredRows[i]['FnameLname'].username);
+	this.mail = function(subjectline,bodytext) {
+		// We need input params for:
+		// subject
+		// body
+		
+		if(this.emailColumn!=NULL){
+				var filteredUsernames = "";
+				//get usernames of the filtered rows
+
+				// generic: ['FnameLname'].username -> [this.emailColumn]
+				// We check if emailColumn is set if not we do nothing
+				// if(this.emailColumn!=NULL){
+				// }
+				for(var i = 0; i < filteredRows.length; i++){ 
+						if(i>0) filteredUsernames+=";"				
+						filteredUsernames.push(filteredRows[i][this.emailColumn]);
+				}
+				alert(filteredUsernames);
+
+				var data="?subject="+encodeURIComponent(subjectline)+"?body="+encodeURIComponent(bodytext);
+			
+				window.location.assign("mailto:?bcc="+encodeURIComponent(filteredUsernames)+data);
 		}
+				
+		// Was done on server in 2019... which obviously is not generic btw, server side check is not any more secure ...
+		
+		/*
+		
+				// checks if the user is logged in and has access to send mail, only admins (superusers) will be able to mail
+				if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){
+				$emailsArray = array();
+
+				for($i = 0; $i < $lenghtOfVisibleUserIDs; $i++) {
+					$studentID = $visibleUserIDs[$i];
+					$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND user.username =:studentid");
+
+					$mailQuery->bindParam(':studentid', $studentID);
+					$mailQuery->bindParam(':cid', $courseid);
+					$mailQuery->bindParam(':cvers', $coursevers);
+
+					if(!$mailQuery->execute()) {
+						$error=$mailQuery->errorInfo();
+						$debug="Error reading user entries".$error[2];
+					}
+
+					array_push($emailsArray, $mailQuery->fetch()[0]);
+				}
+
+				// Seperates the emails with a ;.
+				$implodedEmails=implode('; ',$emailsArray);
+				// Returns the emails in a string representation.
+				echo json_encode($implodedEmails);
+				} else {
+		
+		*/
+	
+		/*
+		
+		Non-generic code
+		
 	$.ajax({
 		url: "resultedservice.php",
 		type: "POST",
@@ -678,6 +735,7 @@ function SortableTable(param) {
 			window.location.assign("mailto:?bcc=" + data);
 		}
 	});
+		*/ 
 }
 
 	this.export = function (format, del) {
@@ -721,6 +779,10 @@ function SortableTable(param) {
 		return str;
 	}
 }
+
+
+// This is not generic should be local function for each module.
+/*
 
 function newCompare(firstCell, secoundCell) {
 	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
@@ -882,3 +944,5 @@ function newCompare(firstCell, secoundCell) {
 	return val;
 
 }
+
+*/
