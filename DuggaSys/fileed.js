@@ -355,28 +355,40 @@ function renderSortOptions(col, status, colname) {
 
 function compare(a, b) {
     var col = sortableTable.currentTable.getSortcolumn();
-    var tempA = a;
-    var tempB = b;
+		var status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+
+		if(status==1){
+				var tempA = a;
+				var tempB = b;
+		
+		}else{
+				var tempA = b;
+				var tempB = a;
+		}
+	
     if (col == "filename") {
         tempA = JSON.parse(tempA);
         tempB = JSON.parse(tempB);
         tempA = tempA.shortfilename.toUpperCase();
         tempB = tempB.shortfilename.toUpperCase();
-    } else if (col == "filesize") {
+    }else if (col == "filesize") {
         tempA = JSON.parse(tempA);
         tempB = JSON.parse(tempB);
-        if (tempA.kind != "Link") {
-            tempA = parseInt(tempA.size);
-        } else {
-            tempA = -1;
-        }
-        if (tempB.kind != "Link") {
-            tempB = parseInt(tempB.size);
-        } else {
-            tempB = -1;
-        }
-    }
-
+				if(tempA.kind=="Link") tempA.size=-2;
+				if(tempB.kind=="Link") tempB.size=-2;
+				tempA=parseInt(tempA.size);
+				tempB=parseInt(tempB.size);
+				if(isNaN(tempA)) tempA=-1;
+				if(isNaN(tempB)) tempB=-1;
+    }else if (col == "uploaddate") {
+				tempA=Date.parse(tempA);
+				tempB=Date.parse(tempB);
+				if(isNaN(tempA)) tempA=-1;
+				if(isNaN(tempB)) tempB=-1;			
+				console.log(tempA,tempB);
+		}
+	
+	
     if (tempA > tempB) {
         return 1;
     } else if (tempA < tempB) {
@@ -384,7 +396,7 @@ function compare(a, b) {
     } else {
         return 0;
     }
-    return tempA - tempB;
+    // return tempA - tempB;
 }
 
 function formatBytes(bytes, decimals) {

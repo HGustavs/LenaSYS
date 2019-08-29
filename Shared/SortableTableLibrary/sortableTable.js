@@ -1,5 +1,4 @@
-//all visible rows will be stored to this array
-var filteredRows = []; 
+
 
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
@@ -53,10 +52,10 @@ function sortableInternalSort(a, b) {
 
 	if ((sortableTable.currentTable.sortkind % 2) == 0) {
 		//alert("Compare: "+a+" "+b);
-		ret = newCompare(a[colname], b[colname]);
+		ret = compare(a[colname], b[colname]);
 	} else {
 		//alert("Compare: "+b+" "+a);
-		ret = newCompare(b[colname], a[colname]);
+		ret = compare(b[colname], a[colname]);
 	}
 	return ret;
 }
@@ -238,9 +237,6 @@ function SortableTable(param) {
 	this.hasCounter = getparam(param.hasCounterColumn, false);
 	this.hasFooter = getparam(param.hasFooter, false);
 	
-	// Set email column for table or null
-	var emailColumn = getparam(param.emailColumn, null);	
-
 	// Prepare head and order with columns from rowsum list
 	for (let i = 0; i < rowsumList.length; i++) {
 		tbl.tblhead[rowsumList[i][0]['id']] = rowsumList[i][0]['name'];
