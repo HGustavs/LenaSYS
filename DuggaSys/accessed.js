@@ -712,3 +712,99 @@ function createCheckboxes() {
 	}
 	document.getElementById("customfilter").innerHTML=str;
 }
+
+//--------------------------------------------------------------------------
+//  Callback function with different compare alternatives for the column sort
+//--------------------------------------------------------------------------
+
+function compare(a, b) {
+    var col = sortableTable.currentTable.getSortcolumn();
+		var status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+	
+		if(status==1){
+				var tempA = a;
+				var tempB = b;
+		
+		}else{
+				var tempA = b;
+				var tempB = a;
+		}
+	
+		if(col=="firstname"||col=="lastname"||col=="class"||col=="examiner"){
+				tempA = JSON.parse(tempA);
+				tempB = JSON.parse(tempB);
+				if(col=="firstname"){
+						tempA=tempA.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	
+						tempB=tempB.firstname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	
+				}else if(col=="lastname"){
+						tempA=tempA.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;	
+						tempB=tempB.lastname.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");	;	
+				}else if(col=="class"){
+						tempA=tempA.class;
+						tempB=tempB.class;
+						if(tempA==null) return -1;
+						if(tempB==null) return 1;
+				}else if(col=="examiner"){
+						tempA=tempA.examiner;
+						tempB=tempB.examiner;
+						if(tempA==null) return -1;
+						if(tempB==null) return 1;
+				}else if(col=="version"){
+						tempA=tempA.version;
+						tempB=tempB.version;
+				}					
+				return tempA.toLocaleUpperCase().localeCompare(tempB.toLocaleUpperCase(), "sv");
+		}else if(col=="lastmodified"){
+				tempA=Date.parse(tempA);
+				tempB=Date.parse(tempB);
+				if(isNaN(tempA)) tempA=-1;
+				if(isNaN(tempB)) tempB=-1;						
+		}
+	
+		if (tempA > tempB) {
+				return 1;
+		} else if (tempA < tempB) {
+				return -1;
+		} else {
+				return 0;
+		}	
+	
+		/*
+    if (col == "filename") {
+        tempA = JSON.parse(tempA);
+        tempB = JSON.parse(tempB);
+        tempA = tempA.shortfilename.toUpperCase();
+        tempB = tempB.shortfilename.toUpperCase();
+    }else if (col == "filesize") {
+        tempA = JSON.parse(tempA);
+        tempB = JSON.parse(tempB);
+				if(tempA.kind=="Link") tempA.size=-2;
+				if(tempB.kind=="Link") tempB.size=-2;
+				tempA=parseInt(tempA.size);
+				tempB=parseInt(tempB.size);
+				if(isNaN(tempA)) tempA=-1;
+				if(isNaN(tempB)) tempB=-1;
+    }else if (col == "uploaddate") {
+				tempA=Date.parse(tempA);
+				tempB=Date.parse(tempB);
+				if(isNaN(tempA)) tempA=-1;
+				if(isNaN(tempB)) tempB=-1;			
+		}else if(col=="editor"||col=="trashcan"){
+				tempA=-1;
+				tempB=-1;
+		}
+
+
+    if (tempA > tempB) {
+        return 1;
+    } else if (tempA < tempB) {
+        return -1;
+    } else {
+        return 0;
+    }
+		
+*/
+
+
+    // return tempA - tempB;
+}

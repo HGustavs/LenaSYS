@@ -385,10 +385,11 @@ function compare(a, b) {
 				tempB=Date.parse(tempB);
 				if(isNaN(tempA)) tempA=-1;
 				if(isNaN(tempB)) tempB=-1;			
-				console.log(tempA,tempB);
+		}else if(col=="editor"||col=="trashcan"){
+				tempA=-1;
+				tempB=-1;
 		}
-	
-	
+
     if (tempA > tempB) {
         return 1;
     } else if (tempA < tempB) {
