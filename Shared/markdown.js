@@ -140,7 +140,7 @@ function parseLineByLine(inString) {
     let nextLine = "UNK";
     for(let i=0;i<lines.length;i++){
         currentLine=lines[i];
-        if((i-1)>0){
+        if((i-1)>=0){
             prevLine=lines[(i-1)];
         }else{
             prevLine = "UNK";
@@ -206,10 +206,13 @@ function isTable(item) {
 function handleLists(currentLine, prevLine, nextLine) {
     var markdown = "";
     var value = "";
-    var currentLineIndentation = currentLine.match(/^\s*/)[0].length;
-    var nextLineIndentation = nextLine.match(/^\s*/)[0].length;
+    var currentLineIndentation = currentLine.match(/^\s*/)[0].length;    
+    var nextLineIndentation = currentLineIndentation;
+    if(isOrderdList(nextLine)||isUnorderdList(nextLine)){
+        nextLineIndentation = nextLine.match(/^\s*/)[0].length;
+    }
     // decide value
-    if(isOrderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
+    if(isOrderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*[\d]+\.\s*/)[0].length, currentLine.length);
     if(isUnorderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*[\-\*]\s*/gm)[0].length, currentLine.length);
     // Open new list
     if(!isOrderdList(prevLine) && isOrderdList(currentLine) && !isUnorderdList(prevLine)) markdown += "<ol>"; // Open a new ordered list
