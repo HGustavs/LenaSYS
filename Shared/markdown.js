@@ -183,7 +183,7 @@ function identifier(prevLine, currentLine, markdown, nextLine){
 // Checks if a parsed markdown string is a block element, e.g., a <h1> 
 function isBlockElement(mdstr)
 {
-    return new RegExp(/^\<h[1,2,3,4,5,6]?\>/g).test(mdstr);;
+    return new RegExp(/^\<h[1,2,3,4,5,6]?\>|\<img\s/g).test(mdstr);;
 }
 
 // Check if its an unordered list
