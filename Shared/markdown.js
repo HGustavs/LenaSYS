@@ -252,11 +252,41 @@ function handleLists(currentLine, prevLine, nextLine) {
                 markdown += "</ul>";
             }
             markdown += "</li>";
-        }
+        }        
     }
     // Close list
-    if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine) && !isTable(nextLine)) markdown += "</ol>"; // Close ordered list
-    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine) && !isTable(nextLine)) markdown += "</ul>"; // Close unordered list
+    /*
+    if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine) && !isTable(nextLine)){
+        markdown += "</ol>"; // Close ordered list
+        openedSublists = [];
+    } 
+    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine) && !isTable(nextLine)){
+        markdown += "</ul>"; // Close unordered list
+        openedSublists = [];
+    } 
+    */
+    if(!(isOrderdList(nextLine) || isUnorderdList(nextLine))){
+        if(isOrderdList(currentLine)){
+            markdown += "</ol>"; // Close ordered list
+        }else{
+            markdown += "</ul>"; // Close unordered list
+        }
+        if(openedSublists.length>0){
+            for(var i = 0; i < openedSublists.length; i++) {
+                let whatSublistToClose = openedSublists[openedSublists.length - 1];
+                openedSublists.pop();
+    
+                if(whatSublistToClose === 0) { // close ordered list
+                    markdown += "</ol>";
+                }else{ // close unordered list
+                    markdown += "</ul>";
+                }
+                markdown += "</li>";
+            }    
+            // TODO: We must also close the main list, however, we don't know if it is a UL or OL
+        }
+    } 
+
     return markdown;
 }
 
