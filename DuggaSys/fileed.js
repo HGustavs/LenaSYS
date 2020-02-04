@@ -28,6 +28,7 @@ var filepath;
 var filekind;
 
 function setup() {
+    /*
     var filt = "";
     // Add search bar to nav
     filt += `<td id='searchBar' class='navButt'>`;
@@ -39,6 +40,7 @@ function setup() {
     filt += `</button></td>`;
 
     $("#menuHook").before(filt);
+    */
 
     AJAXService("GET", {
         cid: querystring['cid']

@@ -51,20 +51,24 @@
                 echo "<span id='exampleSection'>Example Section : </span>";
                 echo "<span id='exampleName'> Example Name</span>";
                 echo "</td>";
-            } else if(strcmp($requestedService,"accessed.php")===0){
+            } else if(strcmp($requestedService,"accessed.php")===0 || strcmp($requestedService,"resulted.php")===0){
                 echo "<td id='searchBar' class='navButt'>";
-                echo "<input id='searchinput' type='text' name='search' placeholder='Search..'";
-                echo "onkeyup='searchTable()'/>";
-                echo "<button id='searchbutton' class='switchContent'";
-                echo "onclick='searchTable()' type='button'>";
-                echo "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
-                echo "</button></td>";
-
+                echo   "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
+                echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
+                echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+                echo   "</button>";
+                echo "</td>";
+                if(strcmp($requestedService,"resulted.php")===0){
+                    echo "<td class='tooltip-searchbar'>";
+                    echo "<div class='tooltip-searchbar-box'>";
+                    echo "<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga";
+                    echo "</div><span>?</span></td>";    
+                }
                 echo "<td id='select' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
                 echo   "<span>";
                 echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
                 echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-                echo     "<div id='filterOptions'></div>";
+                echo       "<div id='filterOptions'></div>";
                 echo     "</div>";
                 echo   "</span>";
                 echo "</td>";
@@ -74,6 +78,14 @@
                 echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
                 echo     "</div>";
                 echo   "</span>";
+                echo "</td>";
+                echo "<td id='menuHook' class='navSpacer'>";
+                echo "</td>";
+            } else if(strcmp($requestedService,"fileed.php")===0){
+                echo   "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=this.value;fileLink.reRender()'/>";
+                echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;fileLink.reRender()' type='button'>";
+                echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+                echo   "</button>";
                 echo "</td>";
                 echo "<td id='menuHook' class='navSpacer'>";
                 echo "</td>";

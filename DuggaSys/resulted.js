@@ -34,7 +34,7 @@ var tableCellName = "resultTableCell";
 function setup() {
 	//Benchmarking function
 	//benchmarkData = performance.timing;
-
+/*
   // Add search bar to nav
   var filt = "";
   filt += `<td id='searchBar' class='navButt'>`;
@@ -52,10 +52,10 @@ function setup() {
 
 	$("#sort").after(filt);
 
-
+*/
 	/*  Add filter menu   */
-  document.getElementById("sort").style.display = "table-cell";
-  document.getElementById("select").style.display = "table-cell";
+  //document.getElementById("sort").style.display = "table-cell";
+  //document.getElementById("select").style.display = "table-cell";
 
   var customFilterDiv = document.createElement("div");
   customFilterDiv.id = "customfilter";

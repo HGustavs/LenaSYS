@@ -8,7 +8,6 @@ var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
-var searchterm = "";
 var accessFilter = "WRST";
 
 //----------------------------------------------------------------------------
@@ -643,6 +642,7 @@ document.addEventListener("keyup", function(event)
   }
 });
 
+/*
 //----------------------------------------------------------------------------------
 // searchTable - Search the table and filter its contents
 //----------------------------------------------------------------------------------
@@ -651,6 +651,7 @@ function searchTable() {
 	searchKeyUp(event);
 	myTable.reRender();
 }
+*/
 
 //----------------------------------------------------------------------------------
 // filterAccess - Filter by teachers/students (write access/read access)
