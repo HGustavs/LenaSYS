@@ -94,9 +94,9 @@ function parseMarkdown(inString)
     inString = inString.replace(/\>/g, "&gt;");
 
     // append '@@@' to all code block indicators '~~~'
-    inString = inString.replace(/^\~{3}(\r\n|\n|\r)/gm, '~~~@@@');
+    inString = inString.replace(/^\~{3}[\r\n|\n|\r]?/gm, '~~~@@@');
     // append '&&&' to all console block indicators '=|='
-    inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
+    inString = inString.replace(/^\=\|\=[\r\n|\n|\r]?/gm, '=|=&&&');
 
     //One line break
     //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
@@ -119,8 +119,8 @@ function parseMarkdown(inString)
         } else if(workstr.substr(0,3)==="&&&" && specialBlockStart===true) {
             specialBlockStart=false;
             workstr='<div class="console"><pre>'+workstr.substr(3)+'</pre></div>';
-        } else if(workstr !== "") {
-            workstr=parseLineByLine(workstr.replace(/^\&{3}|^\@{3}/gm, ''));
+        }else if(workstr !== "") {
+            workstr=parseLineByLine(workstr.replace(/^[\&{3}]|[\@{3}]/gm, ''));
             specialBlockStart=true;
         }
         str+=workstr;
@@ -137,35 +137,61 @@ function parseMarkdown(inString)
 
 // This function will parse the text line by line
 function parseLineByLine(inString) {
+    /*
     var str = inString;
     var markdown = "";
 
     var currentLineFeed = str.indexOf("\n");
-    /*if no \n is present, the first line will never
-    be written as currentlinefeed will be -1. The
-    while-loop will never run and markdown will remain = ""*/
+    //if no \n is present, the first line will never
+    //be written as currentlinefeed will be -1. The
+    //while-loop will never run and markdown will remain = ""
     if(currentLineFeed == -1)
     {
         currentLineFeed = str.length;
     }
-    var currentLine = "";
-    var prevLine = "";
-    var remainingLines = "";
-    var nextLine = "";
+    var currentLine = "UNK";
+    var prevLine = "UNK";
+    var remainingLines = "UNK";
+    var nextLine = "UNK";
 
-    while(currentLineFeed != -1){ /* EOF */
+    let cnt=0
+    while(currentLineFeed != -1){ // EOF
+        cnt++;
+        
         prevLine = currentLine;
         currentLine = str.substr(0, currentLineFeed);
-        remainingLines = str.substr(currentLineFeed + 1, str.length);
+        remainingLines = str.substr(currentLineFeed + 1);
         nextLine= remainingLines.substr(0,remainingLines.indexOf("\n"));
-
-        markdown = identifier(prevLine, currentLine, markdown, nextLine);
+        //remainingLines.substr(remainingLines.indexOf("\n")+1);
+        console.log(cnt,"PRE:"+prevLine,"CURR:"+currentLine,"MARK:"+markdown,"NEXT:"+nextLine,"REM:"+remainingLines)
+        markdown = identifier(prevLine, currentLine, markdown, nextLine, remainingLines);
 
         // line done parsing. change start position to next line
         str = remainingLines;
         currentLineFeed = str.indexOf("\n");
     }
-    markdown = identifier(prevLine, remainingLines, markdown, nextLine);
+    markdown = identifier(prevLine, remainingLines, markdown, nextLine, remainingLines);
+    return markdown;
+    */
+    let markdown="";
+    let lines = inString.split("\n");
+    let currentLine = "UNK";
+    let prevLine = "UNK";
+    let nextLine = "UNK";
+    for(let i=0;i<lines.length;i++){
+        currentLine=lines[i];
+        if((i-1)>0){
+            prevLine=lines[(i-1)];
+        }else{
+            prevLine = "UNK";
+        }
+        if((i+1)<lines.length){
+            nextLine=lines[(i+1)]
+        }else{
+            nextLine = "UNK";
+        }
+        markdown = identifier(prevLine, currentLine, markdown, nextLine);
+    }
     return markdown;
 }
 // This function detect the text type
@@ -178,18 +204,40 @@ function identifier(prevLine, currentLine, markdown, nextLine){
         markdown += handleTable(currentLine, prevLine, nextLine);
     }else{
         // If its ordinary text then show it directly
-        let lastChar=currentLine.substr(currentLine.length - 1);
+        //let lastChar=currentLine.substr(currentLine.length - 1);
         let markedStr=markdownBlock(currentLine);
-        let markedStrLastChar=markedStr.substr(markedStr.length - 1);
-        if(lastChar===markedStrLastChar)markedStr+="<BR>"
+        //console.log(markedStr,isBlockElement(markedStr))
+        //let markedStrLastChar=markedStr.substr(markedStr.length - 1);
+        //if(lastChar===markedStrLastChar){
+        //console.log(prevLine,currentLine.length,nextLine)
+
+        /*
+        if(currentLine==""&&(remainingLines.match(/\n/g) || []).length>0){
+                markedStr+="<br>";
+        }
+        */
+        
+        // Don't add a <br> if we just added a block element or if
+        // we are about to add a code/console block
+        if(!isBlockElement(markedStr)&&nextLine!=="UNK"){
+            markedStr+="<br>";
+        }
+
         markdown += markedStr;
     }
     // close table
-    if(!isTable(currentLine) && !isTable(nextLine)){
+    if(isTable(prevLine) && !isTable(currentLine) && !isTable(nextLine)){
         markdown += "</tbody></table>";
     }
     return markdown;
 }
+
+// Checks if a parsed markdownstring is a block element, e.g., a <h1> 
+function isBlockElement(mdstr)
+{
+    return new RegExp(/^\<h[1,2,3,4,5,6]?\>/g).test(mdstr);;
+}
+
 // Check if its an unordered list
 function isUnorderdList(item) {
     // return true if space followed by a dash or astersik
