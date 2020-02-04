@@ -16,6 +16,7 @@ var accessFilter = "WRST";
 //----------------------------------------------------------------------------
 
 function setup() {
+    /*
 	var filt = "";
 
 	// Add search bar to nav
@@ -27,7 +28,8 @@ function setup() {
 	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
 	filt += `</button></td>`;
 
-	$("#sort").after(filt);
+    $("#sort").after(filt);
+    */
 	/* Add filter menu */
 
 	// Get access filter options from local storage
@@ -35,8 +37,10 @@ function setup() {
 		accessFilter = localStorage.getItem("accessFilter"+querystring['cid']);
 	}
 
+    /*
 	document.getElementById("sort").style.display = "table-cell";
-	document.getElementById("select").style.display = "table-cell";
+    document.getElementById("select").style.display = "table-cell";
+    */
 
 	var customFilterDiv = document.createElement("div");
 	customFilterDiv.id = "customfilter";

@@ -1,5 +1,7 @@
 <header>
-		<?php
+        <?php
+            $requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
+            $requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
 			echo "<table class='navheader'><tr>";
 			include_once "../Shared/basic.php";
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
@@ -31,49 +33,76 @@
 					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-			}
+            }
+
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
-					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
-					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
-					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play(event);'><img src='../Shared/icons/play_button.svg' /></td>";
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {
-						echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
-						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/general_upload_button.svg' /></td>";
-					}
-					echo "<td class='navButt' id='codeBurger' onclick='showBurgerMenu();' title='Show box' ><img src='../Shared/icons/hotdog_button.svg' /></td>";
-					echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
-					echo "<td id='navHeading' class='navHeading codeheader'>";
-					echo "<span id='exampleSection'>Example Section : </span>";
-					echo "<span id='exampleName'> Example Name</span>";
-					echo "</td>";
-				}else{
-						echo "<td id='select' style='display:none;' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
-						echo   "<span>";
-				    echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-					  echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-  					echo     "<div id='filterOptions'></div>";
-						echo     "</div>";
-	          echo   "</span>";
-						echo "</td>";
-  					echo "<td id='sort' style='display:none' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
-						echo   "<span>";
-  					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-  			    echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
-  					echo     "</div>";
-  					echo   "</span>";
-						echo "</td>";
-						echo "</td>";
-            echo "<td id='menuHook' class='navSpacer'>";
-			}
-          if(checklogin()) {
-            echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-            echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
-          }else{
-            echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
-            echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
-          }
+                echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
+                echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
+                echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play(event);'><img src='../Shared/icons/play_button.svg' /></td>";
+                if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {
+                    echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
+                    echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+                    echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/general_upload_button.svg' /></td>";
+                }
+                echo "<td class='navButt' id='codeBurger' onclick='showBurgerMenu();' title='Show box' ><img src='../Shared/icons/hotdog_button.svg' /></td>";
+                echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
+                echo "<td id='navHeading' class='navHeading codeheader'>";
+                echo "<span id='exampleSection'>Example Section : </span>";
+                echo "<span id='exampleName'> Example Name</span>";
+                echo "</td>";
+            } else if(strcmp($requestedService,"accessed.php")===0){
+                echo "<td id='searchBar' class='navButt'>";
+                echo "<input id='searchinput' type='text' name='search' placeholder='Search..'";
+                echo "onkeyup='searchTable()'/>";
+                echo "<button id='searchbutton' class='switchContent'";
+                echo "onclick='searchTable()' type='button'>";
+                echo "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+                echo "</button></td>";
+
+                echo "<td id='select' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
+                echo   "<span>";
+                echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+                echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+                echo     "<div id='filterOptions'></div>";
+                echo     "</div>";
+                echo   "</span>";
+                echo "</td>";
+                echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
+                echo   "<span>";
+                echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+                echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
+                echo     "</div>";
+                echo   "</span>";
+                echo "</td>";
+                echo "<td id='menuHook' class='navSpacer'>";
+                echo "</td>";
+            } else{
+                echo "<td id='select' style='display:none;' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
+                echo   "<span>";
+                echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+                echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+                echo     "<div id='filterOptions'></div>";
+                echo     "</div>";
+                echo   "</span>";
+                echo "</td>";
+                echo "<td id='sort' style='display:none' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
+                echo   "<span>";
+                echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+                echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
+                echo     "</div>";
+                echo   "</span>";
+                echo "</td>";
+                echo "</td>";
+                echo "<td id='menuHook' class='navSpacer'>";
+            }
+            if(checklogin()) {
+                echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
+                echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+            }else{
+                echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
+                echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
+            }
 			// if(checklogin()) {
 			// 		echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
 			// 		echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' title='Logout'/></td>";
@@ -81,13 +110,13 @@
 			// 		echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
 			// 		echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' title='Login'/></td>";
 			// }
-		echo "</tr></table>";
-		if(isset($codeviewer)){
-			echo "<div id='mobileNavHeading'><span id='mobileExampleSection'></span><span id='mobileExampleName'></span></div>";
-		}
-		//Cookie message
-		echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
-	?>
+		    echo "</tr></table>";
+		    if(isset($codeviewer)){
+			    echo "<div id='mobileNavHeading'><span id='mobileExampleSection'></span><span id='mobileExampleName'></span></div>";
+		    }
+		    //Cookie message
+		    echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
+	    ?>
 </header>
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
