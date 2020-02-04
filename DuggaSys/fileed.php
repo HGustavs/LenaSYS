@@ -159,8 +159,8 @@ pdoConnect();
                     <fieldset id="markPrevSet" style="overflow:scroll;"><legend id="markPrev">Markdown preview</legend>
                     <div class="markTextPrev">
                         <div class="prevSpan">
-                            <div class="descbox">
-                                <span id="markdown"></span>
+                            <div id="mdtarget" class="descbox">
+                                <!--<span id="markdown"></span>-->
                             </div>
                         </div>
                     </div>
