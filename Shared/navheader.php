@@ -53,6 +53,10 @@
                 echo "</td>";
             } else if(strcmp($requestedService,"accessed.php")===0 || strcmp($requestedService,"resulted.php")===0){
                 echo "<td id='searchBar' class='navButt'>";
+                // Chrome insists on autofilling search field with username. This is a workaround to void that error.
+                echo   "<input id='curveball' type='text' style='display:none;' name='uname' placeholder='username'/>";
+                echo   "<input id='curveball2' type='password' style='display:none;' name='pwd' placeholder='password'/>";
+                // <--- end autofill workaround
                 echo   "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
                 echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
                 echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
@@ -82,6 +86,11 @@
                 echo "<td id='menuHook' class='navSpacer'>";
                 echo "</td>";
             } else if(strcmp($requestedService,"fileed.php")===0){
+                echo "<td id='searchBar' class='navButt'>";
+                // Chrome insists on autofilling search field with username. This is a workaround to void that error.
+                echo   "<input id='curveball' type='text' style='display:none;' name='uname' placeholder='username'/>";
+                echo   "<input id='curveball2' type='password' style='display:none;' name='pwd' placeholder='password'/>";
+                // <--- end autofill workaround
                 echo   "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=this.value;fileLink.reRender()'/>";
                 echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;fileLink.reRender()' type='button'>";
                 echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
