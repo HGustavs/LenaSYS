@@ -34,14 +34,6 @@ var tableCellName = "resultTableCell";
 function setup() {
     //Benchmarking function
     //benchmarkData = performance.timing;
-/*
-    var customFilterDiv = document.createElement("div");
-    customFilterDiv.id = "customfilter";
-    var columnFilterDiv = document.createElement("div");
-    columnFilterDiv.id = "columnfilter";
-    document.getElementById("dropdownc").appendChild(columnFilterDiv);
-    document.getElementById("dropdownc").appendChild(customFilterDiv);
-*/
     window.onscroll = function () {
 
     };
