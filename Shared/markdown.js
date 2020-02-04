@@ -254,17 +254,8 @@ function handleLists(currentLine, prevLine, nextLine) {
             markdown += "</li>";
         }        
     }
-    // Close list
-    /*
-    if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine) && !isTable(nextLine)){
-        markdown += "</ol>"; // Close ordered list
-        openedSublists = [];
-    } 
-    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine) && !isTable(nextLine)){
-        markdown += "</ul>"; // Close unordered list
-        openedSublists = [];
-    } 
-    */
+
+    // If we have no more list items coming we must close current list and all remaining lists
     if(!(isOrderdList(nextLine) || isUnorderdList(nextLine))){
         if(isOrderdList(currentLine)){
             markdown += "</ol>"; // Close ordered list
