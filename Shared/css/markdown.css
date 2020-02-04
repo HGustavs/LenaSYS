@@ -31,7 +31,8 @@
 #markdown img{
 		box-shadow: 2px 2px 4px RGBA(0,0,0,0.7);
 		border: 2px solid black;
-		border-radius: 2px;
+        border-radius: 2px;
+        max-width:100%;
 }
 
 .descbox code {
