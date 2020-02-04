@@ -126,18 +126,15 @@ pdoConnect();
 
                 <div class="markdown">
                     <fieldset id="markset">
-                        <legend>  Markdown</legend>
+                        <legend>Markdown</legend>
                         <div class="markdown-icon-div">
                         <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
                         <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
                         <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
-                        <span class="markdown-icons" onclick="lists()" title="lists"><img
-                                                                                src="../Shared/icons/list-symbol.svg"></span>
+                        <span class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></span>
                         <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
-                        <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img
-                                                                                src="../Shared/icons/link-icon.svg"></span>
-                        <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img
-                                                                                src="../Shared/icons/insert-photo.svg"></span>
+                        <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
+                        <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
                         <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
 
                         <div class="selectHeader" id="select-header">
@@ -149,21 +146,21 @@ pdoConnect();
                             <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
                         </div>
                         </div>
-                            <div class="markText">
-                            <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
-                            </div>
-                            </fieldset>
+                        <div class="markText">
+                            <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                        </div>
+                    </fieldset>
                 </div>
 
                 <div class="markdownPrev">
-                    <fieldset id="markPrevSet" style="overflow:scroll;"><legend id="markPrev">Markdown preview</legend>
-                    <div class="markTextPrev">
-                        <div class="prevSpan">
-                            <div id="mdtarget" class="descbox">
-                                <!--<span id="markdown"></span>-->
+                    <fieldset id="markPrevSet" style="overflow:scroll;">
+                        <legend id="markPrev">Markdown preview</legend>
+                        <div class="markTextPrev">
+                            <div class="prevSpan">
+                                <div id="mdtarget" class="descbox">
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </fieldset>
                 </div>
                 <button class="save-close-button-md" type="submit" onclick="saveMarkdown()">Save</button>
