@@ -19,14 +19,14 @@ function setup() {
 	if (localStorage.getItem("accessFilter"+querystring['cid']) != null) {
 		accessFilter = localStorage.getItem("accessFilter"+querystring['cid']);
 	}
-
+/*
 	var customFilterDiv = document.createElement("div");
 	customFilterDiv.id = "customfilter";
 	var columnFilterDiv = document.createElement("div");
 	columnFilterDiv.id = "columnfilter";
 	document.getElementById("dropdownc").appendChild(columnFilterDiv);
 	document.getElementById("dropdownc").appendChild(customFilterDiv);
-
+*/
 	var str = "<div id='sortOptionsContainer'>";
 	str += "<input type='radio' name='sortAscDesc' value='1'><label class='headerlabel'>Sort descending</label>";
 	str += "<input type='radio' name='sortAscDesc' value='0'><label class='headerlabel'>Sort ascending</label>";

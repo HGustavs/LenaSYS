@@ -73,6 +73,8 @@
                 echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
                 echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
                 echo       "<div id='filterOptions'></div>";
+                echo       "<div id='columnfilter'></div>";
+                echo       "<div id='customfilter'></div>";                
                 echo     "</div>";
                 echo   "</span>";
                 echo "</td>";
@@ -103,7 +105,9 @@
                 echo   "<span>";
                 echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
                 echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-                echo     "<div id='filterOptions'></div>";
+                echo       "<div id='filterOptions'></div>";
+                echo       "<div id='columnfilter'></div>";
+                echo       "<div id='customfilter'></div>";                
                 echo     "</div>";
                 echo   "</span>";
                 echo "</td>";
