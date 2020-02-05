@@ -204,19 +204,28 @@ function isTable(item) {
 }
 // The creation and destruction of lists
 function handleLists(currentLine, prevLine, nextLine) {
+    const indentationLength = 2;
     var markdown = "";
     var value = "";
-    var currentLineIndentation = currentLine.match(/^\s*/)[0].length;    
+    var currentLineIndentation = Math.floor(currentLine.match(/^\s*/)[0].length/indentationLength);    
     var nextLineIndentation = currentLineIndentation;
     if(isOrderdList(nextLine)||isUnorderdList(nextLine)){
-        nextLineIndentation = nextLine.match(/^\s*/)[0].length;
+        nextLineIndentation = Math.floor(nextLine.match(/^\s*/)[0].length/indentationLength);        
+    }else{
+        nextLineIndentation=0;
     }
     // decide value
     if(isOrderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*[\d]+\.\s*/)[0].length, currentLine.length);
     if(isUnorderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*[\-\*]\s*/gm)[0].length, currentLine.length);
     // Open new list
-    if(!isOrderdList(prevLine) && isOrderdList(currentLine) && !isUnorderdList(prevLine)) markdown += "<ol>"; // Open a new ordered list
-    if(!isUnorderdList(prevLine) && isUnorderdList(currentLine) && !isOrderdList(prevLine)) markdown += "<ul>"; //Open a new unordered list
+    if(!isOrderdList(prevLine) && isOrderdList(currentLine) && !isUnorderdList(prevLine)){
+        markdown += "<ol>"; // Open a new ordered list
+        openedSublists.push(0);  
+    } 
+    if(!isUnorderdList(prevLine) && isUnorderdList(currentLine) && !isOrderdList(prevLine)){
+        markdown += "<ul>"; //Open a new unordered list
+        openedSublists.push(1);
+    } 
     // Open a new sublist
     if(currentLineIndentation < nextLineIndentation) {
         markdown += "<li>";
@@ -236,32 +245,30 @@ function handleLists(currentLine, prevLine, nextLine) {
         markdown +=  markdownBlock(value);
         markdown += "</li>";
     }
-    // Close sublists
+    // Close one or more sublists
     if(currentLineIndentation > nextLineIndentation) {
         markdown += "<li>";
         markdown +=  markdownBlock(value);
         markdown += "</li>";
-        var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
+        
+        var sublistsToClose = Math.abs(nextLineIndentation-currentLineIndentation);
         for(var i = 0; i < sublistsToClose; i++) {
-            var whatSublistToClose = openedSublists[openedSublists.length - 1];
+            let whatSublistToClose = openedSublists[openedSublists.length - 1];
             openedSublists.pop();
 
             if(whatSublistToClose === 0) { // close ordered list
                 markdown += "</ol>";
-            }else{ // close unordered list
+            }else if(whatSublistToClose === 1){ // close unordered list
                 markdown += "</ul>";
+            }else{
+
             }
             markdown += "</li>";
         }        
     }
 
-    // If we have no more list items coming we must close current list and all remaining lists
+    // If we have no more list items coming we must close all remaining lists
     if(!(isOrderdList(nextLine) || isUnorderdList(nextLine))){
-        if(isOrderdList(currentLine)){
-            markdown += "</ol>"; // Close ordered list
-        }else{
-            markdown += "</ul>"; // Close unordered list
-        }
         if(openedSublists.length>0){
             for(var i = 0; i < openedSublists.length; i++) {
                 let whatSublistToClose = openedSublists[openedSublists.length - 1];
@@ -274,7 +281,6 @@ function handleLists(currentLine, prevLine, nextLine) {
                 }
                 markdown += "</li>";
             }    
-            // TODO: We must also close the main list, however, we don't know if it is a UL or OL
         }
     } 
 
