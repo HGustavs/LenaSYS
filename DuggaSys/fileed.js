@@ -15,9 +15,10 @@ Execution order:
    Globals
 *********************************************************************/
 
+var myTable=null;
 var sessionkind = 0;
 var querystring = parseGet();
-var filez, fileLink = '';
+var filez;
 var fileKind = "";
 var searchterm = "";
 var pressTimer;
@@ -33,9 +34,9 @@ function setup() {
     // Add search bar to nav
     filt += `<td id='searchBar' class='navButt'>`;
     filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-    filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);fileLink.reRender();'/>`;
+    filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
     filt += `<button id='searchbutton' class='switchContent'`;
-    filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);fileLink.reRender();' type='button'>`;
+    filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
     filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
     filt += `</button></td>`;
 
@@ -48,7 +49,7 @@ function setup() {
 }
 
 window.onresize = function () {
-    fileLink.renderTable();
+    myTable.renderTable();
 }
 
 $(document).on('click', '.last', function (e) {
@@ -94,7 +95,7 @@ function returnedFile(data) {
     };
     var colOrder = colOrderPre;
 
-    fileLink = new SortableTable({
+    myTable = new SortableTable({
         data: tabledata,
         tableElementId: "fileLink",
         filterElementId: "filterOptions",
@@ -108,7 +109,7 @@ function returnedFile(data) {
     });
 
 
-    fileLink.renderTable();
+    myTable.renderTable();
     if (querystring['confirmation'] != undefined) {
         $(".confirmationWindow").css("display", "block");
         document.getElementById('editedFile').innerHTML = querystring['confirmation'] + " has been successfully saved!";
@@ -342,11 +343,11 @@ function renderSortOptions(col, status, colname) {
     str = "";
 
     if (status == -1) {
-        str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
     } else if (status == 0) {
-        str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
     } else {
-        str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
     }
     return str;
 }

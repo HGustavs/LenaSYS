@@ -156,6 +156,39 @@
 					}
 			}
 	
+			// Sort dialog - accessed / resulted /fileed
+      if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
+					echo "<td id='searchBar' class='navButt'>";
+					echo   "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
+					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
+					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+					echo   "</button>";
+					echo "</td>";
+			}
+
+	    if($requestedService=="resulted.php" ){
+					echo "<td id='select' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
+					echo   "<span>";
+					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+					echo       "<div id='filterOptions'></div>";
+					echo       "<div id='columnfilter'></div>";
+					echo       "<div id='customfilter'></div>";                
+					echo     "</div>";
+					echo   "</span>";
+					echo "</td>";
+					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
+					echo   "<span>";
+					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+					echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
+					echo     "</div>";
+					echo   "</span>";
+					echo "</td>";
+					echo "<td id='menuHook' class='navSpacer'>";
+					echo "</td>";
+			}
+	
+	
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
