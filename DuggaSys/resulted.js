@@ -32,42 +32,13 @@ var tableName = "resultTable";
 var tableCellName = "resultTableCell";
 
 function setup() {
-	//Benchmarking function
-	//benchmarkData = performance.timing;
+    //Benchmarking function
+    //benchmarkData = performance.timing;
+    window.onscroll = function () {
 
-  // Add search bar to nav
-  var filt = "";
-  filt += `<td id='searchBar' class='navButt'>`;
-  filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-  filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinputMobile").value=document.getElementById("searchinput").value;'/>`;
-  filt += `<button id='searchbutton' class='switchContent'`;
-  filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
-  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
-  filt += `</button></td>`;
-  filt += `<td class='tooltip-searchbar'>`;
-  filt += `<div class='tooltip-searchbar-box'>`;
-  filt += `<b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga`;
-  filt += `</div><span>?</span></td>`;
+    };
 
-
-	$("#sort").after(filt);
-
-
-	/*  Add filter menu   */
-  document.getElementById("sort").style.display = "table-cell";
-  document.getElementById("select").style.display = "table-cell";
-
-  var customFilterDiv = document.createElement("div");
-  customFilterDiv.id = "customfilter";
-  var columnFilterDiv = document.createElement("div");
-  columnFilterDiv.id = "columnfilter";
-  document.getElementById("dropdownc").appendChild(columnFilterDiv);
-  document.getElementById("dropdownc").appendChild(customFilterDiv);
-
-	window.onscroll = function () {
-	};
-
-	AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
+    AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
 function process() {

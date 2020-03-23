@@ -28,6 +28,7 @@ var filepath;
 var filekind;
 
 function setup() {
+    /*
     var filt = "";
     // Add search bar to nav
     filt += `<td id='searchBar' class='navButt'>`;
@@ -39,6 +40,7 @@ function setup() {
     filt += `</button></td>`;
 
     $("#menuHook").before(filt);
+    */
 
     AJAXService("GET", {
         cid: querystring['cid']
@@ -578,6 +580,8 @@ function returnedPreview(data) {
     updatePreview(data);
     //$('#mrkdwntxt').html(data);
     //https://stackoverflow.com/questions/1147359/how-to-decode-html-entities-using-jquery/1395954#1395954
+    data = data.replace(/\</g, "&lt;");
+    data = data.replace(/\>/g, "&gt;");
     decoded = $('<textarea/>').html(data).text();
     document.getElementById("mrkdwntxt").value = decoded;
 }
@@ -588,10 +592,10 @@ function updatePreview(str) {
         /*Here we check if the input field is empty (str.length == 0).
           If it is, clear the content of the txtHint placeholder
           and exit the function.*/
-        document.getElementById("markdown").innerHTML = " ";
+        document.getElementById("mdtarget").innerHTML = " ";
         return;
     } else {
-        document.getElementById("markdown").innerHTML = parseMarkdown(str);
+        document.getElementById("mdtarget").innerHTML = parseMarkdown(str);
     };
 }
 

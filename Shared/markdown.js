@@ -94,13 +94,9 @@ function parseMarkdown(inString)
     inString = inString.replace(/\>/g, "&gt;");
 
     // append '@@@' to all code block indicators '~~~'
-    inString = inString.replace(/^\~{3}(\r\n|\n|\r)/gm, '~~~@@@');
+    inString = inString.replace(/^\~{3}[\r\n|\n|\r]?/gm, '~~~@@@');
     // append '&&&' to all console block indicators '=|='
-    inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
-
-    //One line break
-    //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
-    //inString=inString.replace(/(\n)$/gm, "<br>");
+    inString = inString.replace(/^\=\|\=[\r\n|\n|\r]?/gm, '=|=&&&');
 
     //Tab
     inString=inString.replace(/(\t)/gm, "<span style=\"padding-left:4em\"></span>");
@@ -119,8 +115,8 @@ function parseMarkdown(inString)
         } else if(workstr.substr(0,3)==="&&&" && specialBlockStart===true) {
             specialBlockStart=false;
             workstr='<div class="console"><pre>'+workstr.substr(3)+'</pre></div>';
-        } else if(workstr !== "") {
-            workstr=parseLineByLine(workstr.replace(/^\&{3}|^\@{3}/gm, ''));
+        }else if(workstr !== "") {
+            workstr=parseLineByLine(workstr.replace(/^[\&{3}]|[\@{3}]/gm, ''));
             specialBlockStart=true;
         }
         str+=workstr;
@@ -137,35 +133,25 @@ function parseMarkdown(inString)
 
 // This function will parse the text line by line
 function parseLineByLine(inString) {
-    var str = inString;
-    var markdown = "";
-
-    var currentLineFeed = str.indexOf("\n");
-    /*if no \n is present, the first line will never
-    be written as currentlinefeed will be -1. The
-    while-loop will never run and markdown will remain = ""*/
-    if(currentLineFeed == -1)
-    {
-        currentLineFeed = str.length;
-    }
-    var currentLine = "";
-    var prevLine = "";
-    var remainingLines = "";
-    var nextLine = "";
-
-    while(currentLineFeed != -1){ /* EOF */
-        prevLine = currentLine;
-        currentLine = str.substr(0, currentLineFeed);
-        remainingLines = str.substr(currentLineFeed + 1, str.length);
-        nextLine= remainingLines.substr(0,remainingLines.indexOf("\n"));
-
+    let markdown="";
+    let lines = inString.split("\n");
+    let currentLine = "UNK";
+    let prevLine = "UNK";
+    let nextLine = "UNK";
+    for(let i=0;i<lines.length;i++){
+        currentLine=lines[i];
+        if((i-1)>=0){
+            prevLine=lines[(i-1)];
+        }else{
+            prevLine = "UNK";
+        }
+        if((i+1)<lines.length){
+            nextLine=lines[(i+1)]
+        }else{
+            nextLine = "UNK";
+        }
         markdown = identifier(prevLine, currentLine, markdown, nextLine);
-
-        // line done parsing. change start position to next line
-        str = remainingLines;
-        currentLineFeed = str.indexOf("\n");
     }
-    markdown = identifier(prevLine, remainingLines, markdown, nextLine);
     return markdown;
 }
 // This function detect the text type
@@ -177,19 +163,29 @@ function identifier(prevLine, currentLine, markdown, nextLine){
         // handle tables
         markdown += handleTable(currentLine, prevLine, nextLine);
     }else{
-        // If its ordinary text then show it directly
-        let lastChar=currentLine.substr(currentLine.length - 1);
         let markedStr=markdownBlock(currentLine);
-        let markedStrLastChar=markedStr.substr(markedStr.length - 1);
-        if(lastChar===markedStrLastChar)markedStr+="<BR>"
+        
+        // Don't add a <br> if we just added a block element or if
+        // we are about to add a code/console block
+        if(!isBlockElement(markedStr)&&nextLine!=="UNK"){
+            markedStr+="<br>";
+        }
+
         markdown += markedStr;
     }
     // close table
-    if(!isTable(currentLine) && !isTable(nextLine)){
+    if(isTable(prevLine) && !isTable(currentLine) && !isTable(nextLine)){
         markdown += "</tbody></table>";
     }
     return markdown;
 }
+
+// Checks if a parsed markdown string is a block element, e.g., a <h1> 
+function isBlockElement(mdstr)
+{
+    return new RegExp(/^\<h[1,2,3,4,5,6]?\>|\<img\s/g).test(mdstr);;
+}
+
 // Check if its an unordered list
 function isUnorderdList(item) {
     // return true if space followed by a dash or astersik
@@ -208,16 +204,28 @@ function isTable(item) {
 }
 // The creation and destruction of lists
 function handleLists(currentLine, prevLine, nextLine) {
+    const indentationLength = 2;
     var markdown = "";
     var value = "";
-    var currentLineIndentation = currentLine.match(/^\s*/)[0].length;
-    var nextLineIndentation = nextLine.match(/^\s*/)[0].length;
+    var currentLineIndentation = Math.floor(currentLine.match(/^\s*/)[0].length/indentationLength);    
+    var nextLineIndentation = currentLineIndentation;
+    if(isOrderdList(nextLine)||isUnorderdList(nextLine)){
+        nextLineIndentation = Math.floor(nextLine.match(/^\s*/)[0].length/indentationLength);        
+    }else{
+        nextLineIndentation=0;
+    }
     // decide value
-    if(isOrderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
+    if(isOrderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*[\d]+\.\s*/)[0].length, currentLine.length);
     if(isUnorderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*[\-\*]\s*/gm)[0].length, currentLine.length);
     // Open new list
-    if(!isOrderdList(prevLine) && isOrderdList(currentLine) && !isUnorderdList(prevLine)) markdown += "<ol>"; // Open a new ordered list
-    if(!isUnorderdList(prevLine) && isUnorderdList(currentLine) && !isOrderdList(prevLine)) markdown += "<ul>"; //Open a new unordered list
+    if(!isOrderdList(prevLine) && isOrderdList(currentLine) && !isUnorderdList(prevLine)){
+        markdown += "<ol>"; // Open a new ordered list
+        openedSublists.push(0);  
+    } 
+    if(!isUnorderdList(prevLine) && isUnorderdList(currentLine) && !isOrderdList(prevLine)){
+        markdown += "<ul>"; //Open a new unordered list
+        openedSublists.push(1);
+    } 
     // Open a new sublist
     if(currentLineIndentation < nextLineIndentation) {
         markdown += "<li>";
@@ -237,27 +245,45 @@ function handleLists(currentLine, prevLine, nextLine) {
         markdown +=  markdownBlock(value);
         markdown += "</li>";
     }
-    // Close sublists
+    // Close one or more sublists
     if(currentLineIndentation > nextLineIndentation) {
         markdown += "<li>";
         markdown +=  markdownBlock(value);
         markdown += "</li>";
-        var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
+        
+        var sublistsToClose = Math.abs(nextLineIndentation-currentLineIndentation);
         for(var i = 0; i < sublistsToClose; i++) {
-            var whatSublistToClose = openedSublists[openedSublists.length - 1];
+            let whatSublistToClose = openedSublists[openedSublists.length - 1];
             openedSublists.pop();
 
             if(whatSublistToClose === 0) { // close ordered list
                 markdown += "</ol>";
-            }else{ // close unordered list
+            }else if(whatSublistToClose === 1){ // close unordered list
                 markdown += "</ul>";
+            }else{
+
             }
             markdown += "</li>";
-        }
+        }        
     }
-    // Close list
-    if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine) && !isTable(nextLine)) markdown += "</ol>"; // Close ordered list
-    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine) && !isTable(nextLine)) markdown += "</ul>"; // Close unordered list
+
+    // If we have no more list items coming we must close all remaining lists
+    if(!(isOrderdList(nextLine) || isUnorderdList(nextLine))){
+        if(openedSublists.length>0){
+            for(var i = 0; i < openedSublists.length; i++) {
+                let whatSublistToClose = openedSublists[openedSublists.length - 1];
+                openedSublists.pop();
+    
+                if(whatSublistToClose === 0) { // close ordered list
+                    markdown += "</ol>";
+                }else{ // close unordered list
+                    markdown += "</ul>";
+                }
+                markdown += "</li>";
+            }    
+        }
+    } 
+
     return markdown;
 }
 

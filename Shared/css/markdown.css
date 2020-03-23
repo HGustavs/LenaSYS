@@ -31,7 +31,8 @@
 #markdown img{
 		box-shadow: 2px 2px 4px RGBA(0,0,0,0.7);
 		border: 2px solid black;
-		border-radius: 2px;
+        border-radius: 2px;
+        max-width:100%;
 }
 
 .descbox code {
@@ -56,23 +57,14 @@
 		font-style: italic;
 }
 
-.descbox ul {
-  /*
-		margin-top: 0;
-		margin-bottom: 16px;
-		padding-left: 2em;
-    */
+.descbox ul, .descbox ol {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
-.descbox ul > li {
-		font-style: normal;
-		font-weight: normal;
-}
-
-.descbox ol {
-  /*
-		margin-left: 36px;
-    */
+.descbox ul > li, .descbox ol > li  {
+	font-style: normal;
+	font-weight: normal;
 }
 
 .descbox blockquote {

@@ -8,7 +8,6 @@ var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
-var searchterm = "";
 var accessFilter = "WRST";
 
 //----------------------------------------------------------------------------
@@ -16,35 +15,10 @@ var accessFilter = "WRST";
 //----------------------------------------------------------------------------
 
 function setup() {
-	var filt = "";
-
-	// Add search bar to nav
-	filt += `<td id='searchBar' class='navButt'>`;
-	filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
-	filt += `onkeyup='searchTable()'/>`;
-	filt += `<button id='searchbutton' class='switchContent'`;
-	filt += `onclick='searchTable()' type='button'>`;
-	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
-	filt += `</button></td>`;
-
-	$("#sort").after(filt);
-	/* Add filter menu */
-
 	// Get access filter options from local storage
 	if (localStorage.getItem("accessFilter"+querystring['cid']) != null) {
 		accessFilter = localStorage.getItem("accessFilter"+querystring['cid']);
 	}
-
-	document.getElementById("sort").style.display = "table-cell";
-	document.getElementById("select").style.display = "table-cell";
-
-	var customFilterDiv = document.createElement("div");
-	customFilterDiv.id = "customfilter";
-	var columnFilterDiv = document.createElement("div");
-	columnFilterDiv.id = "columnfilter";
-	document.getElementById("dropdownc").appendChild(columnFilterDiv);
-	document.getElementById("dropdownc").appendChild(customFilterDiv);
-
 	var str = "<div id='sortOptionsContainer'>";
 	str += "<input type='radio' name='sortAscDesc' value='1'><label class='headerlabel'>Sort descending</label>";
 	str += "<input type='radio' name='sortAscDesc' value='0'><label class='headerlabel'>Sort ascending</label>";
@@ -660,6 +634,7 @@ document.addEventListener("keyup", function(event)
   }
 });
 
+/*
 //----------------------------------------------------------------------------------
 // searchTable - Search the table and filter its contents
 //----------------------------------------------------------------------------------
@@ -668,6 +643,7 @@ function searchTable() {
 	searchKeyUp(event);
 	myTable.reRender();
 }
+*/
 
 //----------------------------------------------------------------------------------
 // filterAccess - Filter by teachers/students (write access/read access)
