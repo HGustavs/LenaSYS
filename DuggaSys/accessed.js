@@ -16,8 +16,8 @@ var accessFilter = "WRST";
 
 function setup() {
 	// Get access filter options from local storage
-	if (localStorage.getItem("accessFilter"+querystring['cid']) != null) {
-		accessFilter = localStorage.getItem("accessFilter"+querystring['cid']);
+	if (localStorage.getItem("accessFilter"+querystring['courseid']) != null) {
+		accessFilter = localStorage.getItem("accessFilter"+querystring['courseid']);
 	}
 	var str = "<div id='sortOptionsContainer'>";
 	str += "<input type='radio' name='sortAscDesc' value='1'><label class='headerlabel'>Sort descending</label>";
@@ -32,7 +32,7 @@ function setup() {
 	document.getElementById("dropdownc").innerHTML += str;
 
 	AJAXService("GET", {
-		cid: querystring['cid'],
+		courseid: querystring['courseid'],
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
 
@@ -113,7 +113,7 @@ function importUsers() {
 	var newUserJSON = JSON.stringify(newUsersArr);
 
 	AJAXService("ADDUSR", {
-		cid: querystring['cid'],
+		courseid: querystring['courseid'],
 		newusers: newUserJSON,
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
@@ -121,6 +121,7 @@ function importUsers() {
 }
 
 function addSingleUser() {
+	
 	var newUser = new Array();
 	newUser.push($("#addSsn").val());
 	newUser.push($("#addFirstname").val());
@@ -137,7 +138,7 @@ function addSingleUser() {
 
 	var newUserJSON = JSON.stringify(outerArr);
 	AJAXService("ADDUSR", {
-		cid: querystring['cid'],
+		courseid: querystring['courseid'],
 		newusers: newUserJSON,
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
@@ -204,7 +205,7 @@ function addClass() {
 
 		var newClassJSON = JSON.stringify(outerArr);
 		AJAXService("ADDCLASS", {
-			cid: querystring['cid'],
+			courseid: querystring['courseid'],
 			newclass: newClassJSON,
 			coursevers: querystring['coursevers']
 		}, "ACCESS");
@@ -218,7 +219,7 @@ function resetPw(uid, username) {
 	window.location = "mailto:" + username + "@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20" + rnd + "%0A%0A/LENASys Administrators";
 
 	AJAXService("CHPWD", {
-		cid: querystring['cid'],
+		courseid: querystring['courseid'],
 		uid: uid,
 		pw: rnd,
 		coursevers: querystring['coursevers']
@@ -232,7 +233,7 @@ function changeOpt(e) {
 
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
-		cid: querystring['cid'],
+		courseid: querystring['courseid'],
 		uid: targetobj,
 		prop: propertyname,
 		val: propertyvalue
@@ -240,7 +241,7 @@ function changeProperty(targetobj, propertyname, propertyvalue) {
 }
 
 function showVersion(vers) {
-	window.location.href = "../DuggaSys/sectioned.php?courseid=" + querystring['cid'] + "&coursevers=" + vers;
+	window.location.href = "../DuggaSys/sectioned.php?courseid=" + querystring['courseid'] + "&coursevers=" + vers;
 }
 
 //----------------------------------------------------------------
@@ -665,7 +666,7 @@ function filterAccess() {
 	}
 	//console.log(accessFilter);
 	// Save to local storage to remember the filtering. Add the course ID to key to allow for different filterings for each course
-	localStorage.setItem("accessFilter"+querystring['cid'], accessFilter);
+	localStorage.setItem("accessFilter"+querystring['courseid'], accessFilter);
 	myTable.reRender();
 }
 
@@ -745,42 +746,4 @@ function compare(a, b) {
 				return 0;
 		}	
 	
-		/*
-    if (col == "filename") {
-        tempA = JSON.parse(tempA);
-        tempB = JSON.parse(tempB);
-        tempA = tempA.shortfilename.toUpperCase();
-        tempB = tempB.shortfilename.toUpperCase();
-    }else if (col == "filesize") {
-        tempA = JSON.parse(tempA);
-        tempB = JSON.parse(tempB);
-				if(tempA.kind=="Link") tempA.size=-2;
-				if(tempB.kind=="Link") tempB.size=-2;
-				tempA=parseInt(tempA.size);
-				tempB=parseInt(tempB.size);
-				if(isNaN(tempA)) tempA=-1;
-				if(isNaN(tempB)) tempB=-1;
-    }else if (col == "uploaddate") {
-				tempA=Date.parse(tempA);
-				tempB=Date.parse(tempB);
-				if(isNaN(tempA)) tempA=-1;
-				if(isNaN(tempB)) tempB=-1;			
-		}else if(col=="editor"||col=="trashcan"){
-				tempA=-1;
-				tempB=-1;
-		}
-
-
-    if (tempA > tempB) {
-        return 1;
-    } else if (tempA < tempB) {
-        return -1;
-    } else {
-        return 0;
-    }
-		
-*/
-
-
-    // return tempA - tempB;
 }

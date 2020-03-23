@@ -110,7 +110,7 @@
 					echo "</td>";
 			}
 
-	    if($requestedService=="resulted.php" ){
+      if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
 					echo "<td id='select' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
 					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
@@ -120,7 +120,10 @@
 					echo       "<div id='customfilter'></div>";                
 					echo     "</div>";
 					echo   "</span>";
-					echo "</td>";
+					echo "</td>";	
+			}
+	
+	    if($requestedService=="resulted.php" ){
 					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
 					echo   "<span>";
 					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";

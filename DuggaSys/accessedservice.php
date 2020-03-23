@@ -18,7 +18,7 @@ if(isset($_SESSION['uid'])){
 }
 
 $pw = getOP('pw');
-$cid = getOP('cid');
+$cid = getOP('courseid');
 $opt = getOP('opt');
 $uid = getOP('uid');
 $ssn = getOP('ssn');
@@ -151,7 +151,7 @@ if(checklogin() && $hasAccess) {
 
 						$uid="UNK";
 						$regstatus="UNK";
-
+					
             if (count($user) == 1&&strcmp($user[0],"")!==0) {
                 // See if we have added with username or SSN
                 $userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2");
@@ -176,7 +176,7 @@ if(checklogin() && $hasAccess) {
               $userquery->bindParam(':ssn', $ssn);
 
               if ($userquery->execute() && $userquery->rowCount() <= 0) {
-
+								
                   $firstname = $user[1];
                   $lastname = $user[2];
                   $className = $user[count($user)-2];
@@ -247,9 +247,11 @@ if(checklogin() && $hasAccess) {
                 }
 
 					}
+					
           // We have a user, connect to current course
           if($uid!="UNK"){
-						if($regstatus=="Registrerad"){
+						$debug=$regstatus;						
+						if($regstatus=="Registrerad"||$regstatus=="UNK"){
 								$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R',:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
 								$stmt->bindParam(':uid', $uid);
 								$stmt->bindParam(':cid', $cid);
@@ -285,6 +287,7 @@ $courses=array();
 $submissions=array();
 
 if(checklogin() && $hasAccess) {
+	
 	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
@@ -299,6 +302,7 @@ if(checklogin() && $hasAccess) {
 			array_push($examiners, $row);
 		}
 	}
+
 	foreach($result as $row){
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
@@ -358,6 +362,7 @@ if(checklogin() && $hasAccess) {
 	}
 
 	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers WHERE cid=:cid;");
+	
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
