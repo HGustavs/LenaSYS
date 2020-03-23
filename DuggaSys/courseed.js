@@ -351,8 +351,6 @@ function returnedCourse(data)
 
 			str += "<div class='bigg item nowrap' style='display: flex; align-items: center;justify-content: center;' id='C" + item['cid'] + "'>";
 
-
-
 			var textStyle ="";
 			if (parseInt(item['visibility']) == 0) {
 				textStyle += "hidden";
@@ -362,18 +360,18 @@ function returnedCourse(data)
 				textStyle += "deleted"
 			}
 
-      		var courseString = item['coursename'];
-      		var courseBegin = "";
-      		var courseEnd = "";
-      		var courseSplitIndex = courseString.lastIndexOf(" ");
-      		if(courseSplitIndex>0) { // There is a space in the course name
-    			courseBegin = courseString.substr(0, courseSplitIndex);
-        		courseEnd = courseString.substr(courseSplitIndex);
-    		} else { // No space in course name, so just split the name in half *chop chop*
-        		courseSplitIndex = parseInt(courseString.length/2);
-        		courseBegin = courseString.substr(0, courseSplitIndex);
-        		courseEnd = courseString.substr(courseSplitIndex);
-    		}
+			var courseString = item['coursename'];
+			var courseBegin = "";
+			var courseEnd = "";
+			var courseSplitIndex = courseString.lastIndexOf(" ");
+			if(courseSplitIndex>0) { // There is a space in the course name
+					courseBegin = courseString.substr(0, courseSplitIndex);
+					courseEnd = courseString.substr(courseSplitIndex);
+			} else { // No space in course name, so just split the name in half *chop chop*
+					courseSplitIndex = parseInt(courseString.length/2);
+					courseBegin = courseString.substr(0, courseSplitIndex);
+					courseEnd = courseString.substr(courseSplitIndex);
+			}
 
 			if (data['writeaccess']) {
         		str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";

@@ -594,21 +594,18 @@ function returnedSection(data) {
       document.getElementById("copyvers").innerHTML = bstr;
 
       // Show FAB / Menu
-      document.getElementById("TopMenuStatic").style.display = "Block";
       document.getElementById("FABStatic").style.display = "Block";
 
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     } else {
       // Hide FAB / Menu
-      document.getElementById("TopMenuStatic").style.display = "None";
       document.getElementById("FABStatic").style.display = "None";
 
     }
 
     if (data['studentteacher']) {
       // Show FAB / Menu
-      document.getElementById("TopMenuStatic").style.display = "Block";
       document.getElementById("FABStatic").style.display = "Block";
       document.querySelector("td.results.menuButton").style.display = "none";
       document.querySelector("td.tests.menuButton").style.display = "none";
