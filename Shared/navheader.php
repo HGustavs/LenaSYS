@@ -13,7 +13,7 @@
 			if(isset($_GET['courseid'])){
 					$_SESSION['courseid']=$_GET['courseid'];
 			}
-			if(isset($_GET['coursevers'])){
+			if(isset($_GET['courseve<rs'])){
 					$_SESSION['coursevers']=$_GET['coursevers'];
 			}
 			
@@ -25,62 +25,6 @@
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
-	
-	
-	/*
-	
-			<div id='TopMenuStatic' style="display:none;">
-
-			<table class='navheader' style='overflow: hidden; table-layout: fixed;'>
-				<tr class='trsize nowrap'>
-
-					<td class='hamburger hamburgerClickable'>
-						<div tabindex='0' class='package'>
-							<div id='hamburgerIcon' class='submit-button hamburger' onclick='hamburgerChange();bigMac();' >
-								<div class='container'>
-									<div class='bar1'></div>
-									<div class='bar2'></div>
-									<div class='bar3'></div>
-								</div>
-							</div>
-						</div>
-						<div class='hamburgerMenu'>
-							<ul class='hamburgerList'>
-								<li class='results'>
-								    <a id='resultsBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "resulted.php");' oncontextmenu='javascript:navigatePage(this.id, "resulted.php");'><input type='button' value='Results' class='submit-button' title='Edit student results' /></a>
-								</li>
-								<li class='tests'>
-								    <a id='testsBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "duggaed.php");' oncontextmenu='javascript:navigatePage(this.id, "duggaed.php");'><input type='button' value='Tests' class='submit-button' title='Show tests' /></a>
-									</li>
-								<li class='files'>
-									<a id='filesBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "fileed.php");' oncontextmenu='javascript:navigatePage(this.id, "fileed.php");'><input type='button' value='Files' class='submit-button' title='Show files'/></a>
-								</li>
-								<li class='access'>
-									<a id='accessBtnBurger' href='' onclick='bigMac(); navigatePage(this.id, "accessed.php");' oncontextmenu='javascript:navigatePage(this.id, "accessed.php");'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version'/></a>
-								</li>
-							</ul>
-						</div>
-					</td>
-
-				</tr>
-
-			</table>
-
-			<?php
-			echo "
-			<script type=\"text/javascript\">
-				// This makes it possible to use the middle-mouse-button on the header alternatives
-				navigatePage('resultsBTN', 'resulted.php');
-				navigatePage('testsBTN', 'duggaed.php');
-				navigatePage('filesBTN', 'fileed.php');
-				navigatePage('accessBTN', 'accessed.php');
-			</script>";
-			 ?>
-
-		</div>
-		<!-- Static Top Menu END -->
-	
-	*/
 	
 			if($noup!='NONE') {
 				  echo "<td class='navButt' id='back' title='Back'>";
@@ -141,7 +85,7 @@
 							echo "<td class='files' style='display: inline-block;'>";
 							echo "    <div class='files menuButton'>";
               echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-              echo "        <img class='navButt' src='../Shared/icons/rounded_upload_button.svg'>";
+              echo "        <img class='navButt' src='../Shared/icons/files_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
