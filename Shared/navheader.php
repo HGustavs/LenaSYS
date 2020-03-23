@@ -13,7 +13,7 @@
 			if(isset($_GET['courseid'])){
 					$_SESSION['courseid']=$_GET['courseid'];
 			}
-			if(isset($_GET['courseve<rs'])){
+			if(isset($_GET['coursevers'])){
 					$_SESSION['coursevers']=$_GET['coursevers'];
 			}
 			
