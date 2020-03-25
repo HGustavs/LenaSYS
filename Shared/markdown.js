@@ -356,6 +356,9 @@ function handleTable(currentLine, prevLine, nextLine) {
 //----------------------------------------------------------------------------------
 function markdownBlock(inString)
 {        
+    //Regular expression for inline code
+    inString = inString.replace(/\`(.*?\S)\`/g, '<code>$1</code>');
+
     //Regular expressions for italics and bold formatting
     inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<strong><em>$1</em></strong>');
     inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<strong>$1</strong>');
