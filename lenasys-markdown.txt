@@ -63,10 +63,13 @@ And:
 Horizontal line
 ---
 
+Inline code
+`var i = 0;`
+
 Code block
-~~~
+```
 var i = 0;
-~~~
+```
 
 Line break
 2 clean rows prints 1 line break(<br>)
