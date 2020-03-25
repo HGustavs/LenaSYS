@@ -520,7 +520,7 @@ function lists(){
 
 function codeBlockText(){
     this.setCarotPosition();
-    var finText = txtarea.value.substring(0, start) + '~~~\n\n' + sel + '~~~' + txtarea.value.substring(end);
+    var finText = txtarea.value.substring(0, start) + '```\n\n' + sel + '```' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 4;
