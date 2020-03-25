@@ -93,7 +93,8 @@ function parseMarkdown(inString)
     inString = inString.replace(/\</g, "&lt;");
     inString = inString.replace(/\>/g, "&gt;");
 
-    // append '@@@' to all code block indicators '~~~'
+    // append '@@@' to all code block indicators '```' and '~~~'
+    inString = inString.replace(/^\`{3}[\r\n|\n|\r]?/gm, '```@@@');
     inString = inString.replace(/^\~{3}[\r\n|\n|\r]?/gm, '~~~@@@');
     // append '&&&' to all console block indicators '=|='
     inString = inString.replace(/^\=\|\=[\r\n|\n|\r]?/gm, '=|=&&&');
@@ -102,7 +103,7 @@ function parseMarkdown(inString)
     inString=inString.replace(/(\t)/gm, "<span style=\"padding-left:4em\"></span>");
 
     // Split on code or console block
-    var codearray=inString.split(/\~{3}|\=\|\=/);
+    var codearray=inString.split(/\`{3}|~{3}|\=\|\=/);
     var str="";
     var specialBlockStart=true;
 
