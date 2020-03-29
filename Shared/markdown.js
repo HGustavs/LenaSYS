@@ -93,7 +93,8 @@ function parseMarkdown(inString)
     inString = inString.replace(/\</g, "&lt;");
     inString = inString.replace(/\>/g, "&gt;");
 
-    // append '@@@' to all code block indicators '~~~'
+    // append '@@@' to all code block indicators '```' and '~~~'
+    inString = inString.replace(/^\`{3}[\r\n|\n|\r]?/gm, '```@@@');
     inString = inString.replace(/^\~{3}[\r\n|\n|\r]?/gm, '~~~@@@');
     // append '&&&' to all console block indicators '=|='
     inString = inString.replace(/^\=\|\=[\r\n|\n|\r]?/gm, '=|=&&&');
@@ -102,7 +103,7 @@ function parseMarkdown(inString)
     inString=inString.replace(/(\t)/gm, "<span style=\"padding-left:4em\"></span>");
 
     // Split on code or console block
-    var codearray=inString.split(/\~{3}|\=\|\=/);
+    var codearray=inString.split(/\`{3}|~{3}|\=\|\=/);
     var str="";
     var specialBlockStart=true;
 
@@ -356,6 +357,9 @@ function handleTable(currentLine, prevLine, nextLine) {
 //----------------------------------------------------------------------------------
 function markdownBlock(inString)
 {        
+    //Regular expression for inline code
+    inString = inString.replace(/\`(.*?\S)\`/g, '<code>$1</code>');
+
     //Regular expressions for italics and bold formatting
     inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<strong><em>$1</em></strong>');
     inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<strong>$1</strong>');
@@ -516,7 +520,7 @@ function lists(){
 
 function codeBlockText(){
     this.setCarotPosition();
-    var finText = txtarea.value.substring(0, start) + '~~~\n\n' + sel + '~~~' + txtarea.value.substring(end);
+    var finText = txtarea.value.substring(0, start) + '```\n\n' + sel + '```' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 4;

@@ -28,13 +28,13 @@
 				$inString=preg_replace("/\</", "&lt;",$inString);
 				$inString=preg_replace("/\>/", "&gt;",$inString);
 
+				$inString=preg_replace("/^\`{3}(\r\n|\n|\r)/m", "```@@@",$inString);
 				$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
 				$inString=preg_replace("/^\=\|\=(\r\n|\n|\r)/m", "=|=&&&",$inString);
 				
 				$str="";
 
-				//$codearray=explode('~~~', $inString);
-				$codearray=preg_split("/\~{3}|\=\|\=/", $inString);
+				$codearray=preg_split("/\`{3}|~{3}|\=\|\=/", $inString);
 				
 				$specialBlockStart=true;
 				foreach ($codearray as $workstr) {
