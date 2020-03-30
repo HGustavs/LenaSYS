@@ -11,11 +11,12 @@ To install a fresh copy of LenaSYS on your system an installes has been created 
 This installer is located in the LenaSYS directory.
 What the installer will do is to help you create a new user in the MySQL database and a new database and fill it with some test data (if desired) to help you get started. It will also guide you through the steps necessary to link LenaSYS to this newly created database and get it running. 
 
-## 1. To start the installation, put the LenaSYS directory at the place you want the system located. 
+**1. To start the installation, put the LenaSYS directory at the place you want the system located.**
 
-## 2. When the the directory is in the right place, go to the installer from a web browser of your choosing.
+**2. When the the directory is in the right place, go to the installer from a web browser of your choosing.**
 
-## 3. Database credentials used by the system
+**3. Database credentials used by the system**
+
 <img src="Shared/Documentation/Install/Install_1.png" width="512">
 
 * In the first field you will need to provide the desired username to be used in the database.
