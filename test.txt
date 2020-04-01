@@ -1,5 +1,8 @@
 hejhej
 
 Christopher was here
+<<<<<<< Updated upstream
 
 walla
+=======
+>>>>>>> Stashed changes
