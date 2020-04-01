@@ -89,6 +89,12 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
+
+							echo "<td class='coursePage' style='display: inline-block;margin-right:2px;'>";
+							echo "    <div class='newVers menuButton'>";
+              echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
+							echo "    </div>";
+							echo "</td>";
 						
 							echo "<td class='access menuButton' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
