@@ -2,7 +2,7 @@
        <?php
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
-
+			
 			echo "<table class='navheader'><tr>";
 			include_once "../Shared/basic.php";
 			
@@ -90,9 +90,16 @@
 							echo "    </div>";
 							echo "</td>";
 
+							$pdo = new PDO('mysql:dbname=lenasys;host=localhost', 'root', 'root123');
+							$query = $pdo->query("SELECT coursecode FROM vers WHERE cid=".$_SESSION['courseid']."");
+							$fetch = $query->fetch();
+							$result = $fetch['coursecode'];
+
 							echo "<td class='coursePage' style='display: inline-block;margin-right:2px;'>";
 							echo "    <div class='newVers menuButton'>";
-              echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
+							echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=20201&coursecode=".$result."'>";
+              				echo "        <img id='versionPlus' value='New version' class='navButt' title='Course page for ".$result."' src='../Shared/icons/PlusS.svg'>";
+							echo "		</a>";
 							echo "    </div>";
 							echo "</td>";
 						

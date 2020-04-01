@@ -291,6 +291,11 @@ function showCreateVersion() {
 
 }
 
+function openCoursePage() {
+  //window.open('https://personal.his.se/utbildning/kurs/?semester=20201&coursecode=IT385G','_blank');
+  $("#newCourseVersion").css("display", "flex");
+}
+
 function createQuickItem() {
   selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
   newItem();
