@@ -48,45 +48,48 @@ pdoConnect();
 		<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="ladexportContainer">
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Delkurs</label>
-        <select id="ladselect"></select>
-      </div>
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Betygsskala</label>
-        <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
-        <select id="ladgradescale">
-          <option value="U-G-VG" selected>U-G-VG</option>
-          <option value="U-G">U-G</option>
-       	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
-        </select>
-      </div>
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Betygsdatum</label>
-        <input id="laddate" type="date" style="font-size:12px;">
-        </div>
-      <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
-			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
-			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
-				<button class="resultedbuttons" onclick="mail();">Mail students</button>
-			<?php }else{ ?>
-				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
-			<?php } ?>
-        <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
-				<label>Filtrera efter</label>
-				<select id="gradeFilterScale" onchange="updateTable();">
-					<option value="Filter-none" selected>inget</option>
-					<option value="Filter-G">G</option>
-					<option value="Filter-VG">VG</option>
-					<option value="Filter-U">U</option>
-				</select>
-				</div>
-				<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
-					<label>Examinator:</label>
-					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
-				</div>
-
+    <div id="resultFormsContainer">
+			<div id="ladexportContainer">
+	      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+	        <label>Delkurs</label>
+	        <select id="ladselect"></select>
+	      </div>
+	      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+	        <label>Betygsskala</label>
+	        <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
+	        <select id="ladgradescale">
+	          <option value="U-G-VG" selected>U-G-VG</option>
+	          <option value="U-G">U-G</option>
+	       	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
+	        </select>
+	      </div>
+	      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+	        <label>Betygsdatum</label>
+	        <input id="laddate" type="date" style="font-size:12px;">
+	      </div>
+	      <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
+			</div>
+			<div style="display: flex;">
+				<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
+				<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
+					<button class="resultedbuttons" onclick="mail();">Mail students</button>
+				<?php }else{ ?>
+					<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
+				<?php } ?>
+	        <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+					<label>Filtrera efter</label>
+					<select id="gradeFilterScale" onchange="updateTable();">
+						<option value="Filter-none" selected>inget</option>
+						<option value="Filter-G">G</option>
+						<option value="Filter-VG">VG</option>
+						<option value="Filter-U">U</option>
+					</select>
+					</div>
+					<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+						<label>Examinator:</label>
+						<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
+					</div>
+			</div>
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
