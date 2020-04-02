@@ -90,7 +90,8 @@
 							echo "    </div>";
 							echo "</td>";
 
-							$pdo = new PDO('mysql:dbname=lenasys;host=localhost', 'root', 'root123');
+							include_once "../Shared/database.php";
+							pdoConnect();	
 							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']."");
 							$fetch = $query->fetch();
 							$result['coursecode'] = $fetch['coursecode'];
