@@ -15,6 +15,8 @@
   --color-logo-background: #775886;
 
   --color-primary: #614875;
+  --color-new-user: #93A561;
+  --color-new-user-hover:#B6C58C;
   --color-primary-2: #775886;
   --color-primary-hover: #7b5a96;
   --color-primary-light: #927b9e;
@@ -1719,6 +1721,16 @@ input.submit-button.resetpw-button {
   float: none;
   margin: auto;
   display: block;
+}
+input.submit-button.new-user {
+  background-color: var(--color-new-user);
+  color: var(--color-primary);
+  float: none;
+  margin: auto;
+  display: block;
+}
+input.submit-button.new-user:hover{
+  background-color: var(--color-new-user-hover);
 }
 
 input.submit-button-newitem {

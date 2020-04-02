@@ -284,8 +284,8 @@ function renderCell(col, celldata, cellid) {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		
-		if (parseFloat(obj.recent) > 1440) {
-			str = "<input class='submit-button' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
+		if (parseFloat(obj.recent) < 1440) {
+			str = "<input class='submit-button new-user' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
 		} else {
 			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
 		}
