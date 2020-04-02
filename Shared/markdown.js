@@ -420,8 +420,8 @@ function markdownBlock(inString)
     // ^ Text you want to quote ^
     inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
 
-    // Iframe, embed youtube link
-    // 
+    // Iframe, embedding youtube
+	// [YOUTUBE:IDNUM,WIDTH,LENGTH]
     inString = inString.replace(/\[YOUTUBE:{1}(.*?\S),(.*?\S),(.*?\S)\]{1}/g, '<iframe id="ytplayer" type="text/html" width="$2" height="$3" src="https://www.youtube.com/embed/$1" frameborder="0"></iframe>');
 
     //Markdown smileys

@@ -335,7 +335,8 @@
 				// Iframe, website inside a inline frame - (--url,width,height--)
 				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$2px; height:$3px;'></iframe>", $instring);
 				
-				 //Iframe, ***youtubelink*** 
+				 // Iframe, youtube embedding
+				 // [YOUTUBE:IDNUM,WIDTH,LENGTH]
 				$instring = preg_replace("/\[YOUTUBE:{1}(.*?\S),(.*?\S),(.*?\S)\]{1}/", '<iframe id="ytplayer" type="text/html" width="$2" height="$3" src="https://www.youtube.com/embed/$1" frameborder="0"></iframe>', $instring);
 
 				// Quote text, this will be displayed in an additional box
