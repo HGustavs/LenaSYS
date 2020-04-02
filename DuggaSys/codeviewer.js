@@ -2933,8 +2933,6 @@ function resizeBoxes(parent, templateId) {
 
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-	console.log(boxValArray);
-
 	
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
@@ -2949,10 +2947,15 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
 
-	if(basePer < 14.5) {
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
 		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
 	}
-	console.log(basePer);
 }
 
 //----------------------------------------------------------------------------------
