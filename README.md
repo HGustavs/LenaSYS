@@ -1,6 +1,8 @@
 LenaSYS
 ==============
 
+TEST
+
 University of Skövde Code Viewer and Course Organization System
 
 # Install Instructions
