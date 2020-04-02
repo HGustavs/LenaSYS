@@ -89,7 +89,7 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
-							
+
 							$pdo = new PDO('mysql:dbname=lenasys;host=localhost', 'root', 'root123');
 							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']."");
 							$fetch = $query->fetch();
@@ -107,13 +107,13 @@
 								$term = 1;
 
 							echo "<td class='coursePage' style='display: inline-block;'>";
-							echo "    <div class='newVers menuButton'>";
+							echo "    <div class='course menuButton'>";
 							echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
-              				echo "        <img id='courseButton' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
+              				echo "        <img id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
 							echo "		</a>";
 							echo "    </div>";
 							echo "</td>";
-						
+
 							echo "<td class='access menuButton' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
               echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
