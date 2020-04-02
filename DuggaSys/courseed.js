@@ -9,6 +9,7 @@ var querystring = parseGet();
 var versions;
 var entries;
 var motd;
+var readonly;
 
 $(document).ready(function(){
     $('#startdate').datepicker({
@@ -237,18 +238,30 @@ function editVersion(cid, cname, ccode) {
 }
 
 function editSettings(){
-		if(motd!=="UNK") $("#motd").val(motd);
-		document.getElementById('editSettings').style.display = "flex";
+		const messageElement = document.getElementById('motd');
+		const readOnlyCheckbox = document.getElementById('readonly');
 
+		if(motd !== "UNK") {
+			messageElement.value = motd;
+		} 
+
+		if(readonly === 1) {
+			readOnlyCheckbox.checked = true;
+		} else if(readonly === 0) {
+			readOnlyCheckbox.checked = false;
+		}
+
+		document.getElementById('editSettings').style.display = "flex";
 }
 
 function updateSettings() {
-		const messageElement = document.getElementById("motd");
-		const readOnlyCheckbox = document.getElementById("readonly");
+		const messageElement = document.getElementById('motd');
+		const readOnlyCheckbox = document.getElementById('readonly');
 
-		let readonly = 0;
 		if(readOnlyCheckbox.checked) {
 			readonly = 1;
+		} else {
+			readonly = 0;
 		}
 
 		//Hide settings popup
@@ -411,7 +424,10 @@ function returnedCourse(data)
 	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
 	}
-	motd=data["motd"]
+
+	motd=data["motd"];
+	readonly=parseInt(data["readonly"]);
+
 	if(motd!=="UNK"){
 		document.getElementById("servermsg").innerHTML=data["motd"];
 		document.getElementById("servermsgcontainer").style.display="flex";
@@ -420,7 +436,6 @@ function returnedCourse(data)
 	}
 
 	resetinputs();
-	console.log(data)
 	//resets all inputs
 }
 
