@@ -106,10 +106,10 @@
 							else if ($array[0] = "V")
 								$term = 1;
 
-							echo "<td class='coursePage' style='display: inline-block;margin-right:2px;'>";
+							echo "<td class='coursePage' style='display: inline-block;'>";
 							echo "    <div class='newVers menuButton'>";
 							echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
-              				echo "        <img id='versionPlus' value='New version' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
+              				echo "        <img id='courseButton' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
 							echo "		</a>";
 							echo "    </div>";
 							echo "</td>";
