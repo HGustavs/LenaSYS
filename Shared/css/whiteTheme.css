@@ -136,9 +136,22 @@
     float: left;
     text-align: right;
 }
-#html41{
+
+
+#html51{
     color: #50a750;
 }
+#Phtml51{
+    color: #50a750;
+}
+html01{
+     color: #ff0000;
+}
+phtml01{
+    color: #ff0000;
+}
+
+
 
 .normtext:hover {
     background-color: rgba(0,0,0,0.1);
