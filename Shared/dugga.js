@@ -184,10 +184,12 @@ function addOrRemoveFromArray(elementID, array) {
 
 function makeoptions(option,optionlist,valuelist)
 {
+
 		var str="";
 		for(var i=0;i<optionlist.length;i++){
 				str+="<option ";
 				if(valuelist==null){
+					
 						if(i==option){
 								str+="selected='selected' ";
 						}
@@ -208,6 +210,7 @@ function makeoptions(option,optionlist,valuelist)
 
 function makeoptionsItem(option,optionlist,optionstring,valuestring)
 {
+
 		var str="";
 		for(var i=0;i<optionlist.length;i++){
 				str+="<option ";
@@ -227,7 +230,7 @@ function makedivItem(div,divlist,divstring,divalue)
 		var str="";
 		for(var i=0;i<divlist.length;i++){
 				str+="<div ";
-				str+="class='testinnerclass'>" + divlist[i][divstring] + "</div>";
+				str+="id='Child_of_"+divalue+"' onclick='changePrimaryDiv(\"span_of_"+divalue+"\", \""+ divlist[i][divstring] +"\")'>" + divlist[i][divstring] + "</div>";
 		}
 		return str;
 }

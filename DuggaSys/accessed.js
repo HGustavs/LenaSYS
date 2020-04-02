@@ -231,21 +231,29 @@ function changeOpt(e) {
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
-function toggledropdown(cell){
-	console.log("Inside toggledropdown function")
-	console.log(cell);
+//Support for dropdown meny useing Divs
+function changeOptDiv(e) {
+	
+	var paramlist = e.target.parentElement.id.split("_");
+	console.log(paramlist[1], paramlist[0], e.target.value);
+	changeProperty(paramlist[1], paramlist[0], e.target.innerHTML);
+}
 
+function toggledropdown(cell){
 	if(document.getElementById(cell).style.display == "block"){
 		document.getElementById(cell).style.display = "none";
 	}
 	else{
 		document.getElementById(cell).style.display = "block";
 	}
+}
 
-	
+function changePrimaryDiv(cell, value){
+	document.getElementById(cell).innerHTML = value;
 }
 
 function changeProperty(targetobj, propertyname, propertyvalue) {
+	console.log(targetobj, propertyname, propertyvalue);
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
 		uid: targetobj,
@@ -283,11 +291,13 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-
-
-		str = "<div onclick='toggledropdown(\"" + col + "_" + obj.uid + "\")' class='dropdown'> Click me!";
+		if(obj.class == null){
+			obj.class = "None";
+		}
+		str = "<div onclick='toggledropdown(\"" + col + "_" + obj.uid + "\")' class='dropdown'>";
+		str += "<span style='margin-left:2px;' id='span_of_"+obj.uid+"'>"+obj.class+"</span>";
 		
-		str += "<div id='" + col + "_" + obj.uid + "' class='dropdown-content'>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
+		str += "<div onclick='changeOptDiv(event)' id='" + col + "_" + obj.uid + "' class='dropdown-content'>" + makedivItem(obj.class, filez['classes'], col, obj.uid) + "</div>";
 	
 		str += "</div>";
 	} else if (col == "examiner") {
