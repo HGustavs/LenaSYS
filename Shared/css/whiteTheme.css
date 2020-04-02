@@ -136,6 +136,9 @@
     float: left;
     text-align: right;
 }
+#html41{
+    color: #50a750;
+}
 
 .normtext:hover {
     background-color: rgba(0,0,0,0.1);
