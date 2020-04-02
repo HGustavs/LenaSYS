@@ -231,6 +231,20 @@ function changeOpt(e) {
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
+function toggledropdown(cell){
+	console.log("Inside toggledropdown function")
+	console.log(cell);
+
+	if(document.getElementById(cell).style.display == "block"){
+		document.getElementById(cell).style.display = "none";
+	}
+	else{
+		document.getElementById(cell).style.display = "block";
+	}
+
+	
+}
+
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
@@ -269,7 +283,13 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.class, filez['classes'], "class", "class") + "</select>";
+
+
+		str = "<div onclick='toggledropdown(\"" + col + "_" + obj.uid + "\")' class='dropdown'> Click me!";
+		
+		str += "<div id='" + col + "_" + obj.uid + "' class='dropdown-content'>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
+	
+		str += "</div>";
 	} else if (col == "examiner") {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
 	} else if (col == "vers") {
@@ -465,10 +485,13 @@ function rowFilter(row) {
 //----------------------------------------------------------------------------
 
 function returnedAccess(data) {
+
+
 	if (!data.access) {
 		window.location.href = 'courseed.php';
 	}
 	filez = data;
+
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
 

@@ -218,6 +218,19 @@ function makeoptionsItem(option,optionlist,optionstring,valuestring)
 		}
 		return str;
 }
+//----------------------------------------------------------------------------------
+// makedivItem: Prepares a dropdown list specifically for items such as code examples / dugga etc
+//----------------------------------------------------------------------------------
+
+function makedivItem(div,divlist,divstring,divalue)
+{
+		var str="";
+		for(var i=0;i<divlist.length;i++){
+				str+="<div ";
+				str+="class='testinnerclass'>" + divlist[i][divstring] + "</div>";
+		}
+		return str;
+}
 
 //----------------------------------------------------------------------------------
 // makeparams: Help function for hassle free preparation of a clickable param list
