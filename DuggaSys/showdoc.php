@@ -304,8 +304,8 @@
 				// External img src !!!
 				// |||src|||	
 				//$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);        
-        $instring = preg_replace("/\|{3}(.+),([0-9]+)?,([0-9]+)?\|{3}/","<img class='imgzoom' src='$1' onmouseover='originalImg(this, $3)' onmouseout='thumbnailImg(this, $2)' width='$2px' style='border: 3px solid #614875;' />",$instring);
-        $instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
+        		$instring = preg_replace("/\|{3}(.+),([0-9]+)?,([0-9]+)?\|{3}/","<img class='imgzoom' src='$1' onmouseover='originalImg(this, $3)' onmouseout='thumbnailImg(this, $2)' width='$2px' style='border: 3px solid #614875;' />",$instring);
+        		$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
 
 				// External mp4 src !!!
 				// ==[src]==	
@@ -335,12 +335,17 @@
 				// Iframe, website inside a inline frame - (--url,width,height--)
 				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$2px; height:$3px;'></iframe>", $instring);
 				
+				 //Iframe, ***youtubelink*** 
+				$instring = preg_replace("/\[YOUTUBE:{1}(.*?\S),(.*?\S),(.*?\S)\]{1}/", '<iframe id="ytplayer" type="text/html" width="$2" height="$3" src="https://www.youtube.com/embed/$1" frameborder="0"></iframe>', $instring);
+
 				// Quote text, this will be displayed in an additional box
 				// ^ Text you want to quote ^
 				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br/>", $instring);
+				
 
 				return $instring;		
 		}
+		
 
 		
 		// If no course version is given, read course version from session
