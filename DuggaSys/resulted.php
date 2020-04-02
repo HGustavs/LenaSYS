@@ -101,7 +101,7 @@ pdoConnect();
 			<span id="hoverRes" ></span>
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
 			onmouseout="hideHover();" >Show Results</h3>
-			<button id='gradeBtn' onclick="toggleGradeBox();">
+			<button id='gradeBtn' onclick="toggleGradeBox();"  style='position: absolute; right: 5%; bottom:5%;'>
 				<img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px">
 			</button>
 			<div class='cursorPointer' onclick='closeWindows();'>x</div>

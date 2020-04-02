@@ -41,19 +41,16 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 #gradeBtn {
 	background-color:var(--color-accent);
 	border: none;
-	position: fixed;
 	height: 56px;
 	width: 56px;
 	border-radius: 50%;
-  bottom: 30px;
-  right: 30px;
 	z-index: 1;
  touch-action: none;
 }
 
 #copyClipboard {
-	float: left; 
-	padding: 2px; 
+	float: left;
+	padding: 2px;
 	background-color: #afaeae;
 }
 #copyClipboard:hover{
@@ -495,7 +492,7 @@ svg text {
 
  @media only screen and (max-width: 800px) {
 	#htmlCssTable > tbody,
-	#htmlCssTable > tbody > tr, 
+	#htmlCssTable > tbody > tr,
 	#htmlCssTable > tbody > tr > td {
 		display: block;
 	}

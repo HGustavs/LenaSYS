@@ -1,14 +1,14 @@
-<div id="container" style="display:flex; justify-content:flex-end;">
+<div id="container" style="display:flex; justify-content:center;">
     <div id='duggaInfoBox2' style="inline-block; width:300px;">
-      
+
           <div class='loginBoxheader'>
                 <h3>Dugga 4 - Transformationer</h3>
           </div>
-                <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er. 
+                <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er.
                     Till ert förfogande finns de klassiska transformationerna: transelera (T), rotera (R) och skala (S). För att rita ut planeter så väljer ni draw R/G/B beroende på vilken färg som önskas.</p>
                 <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
                 <p style="margin-left: 4px;">Lycka till!</p>
-            
+
     </div>
 
     <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; display:block;'></canvas>
@@ -28,7 +28,7 @@
                   <option value="PUSH">Push (remember state)</option>
         					<option value="POP">Pop (jump back)</option>
               </optgroup>
-              <optgroup label="Translate">          
+              <optgroup label="Translate">
         					<option value="T1">Translate 1</option>
         					<option value="T2">Translate 2</option>
         					<option value="T3">Translate 3</option>
@@ -38,7 +38,7 @@
         					<option value="T7">Translate 7</option>
         					<option value="T8">Translate 8</option>
               </optgroup>
-              <optgroup label="Rotate">          
+              <optgroup label="Rotate">
         					<option value="R0">Rotate +3</option>
         					<option value="R1">Rotate +2</option>
         					<option value="R2">Rotate +1</option>
@@ -50,15 +50,15 @@
         					<option value="R8">Rotate -2</option>
         					<option value="R9">Rotate -3</option>
               </optgroup>
-              <optgroup label="Scale">          
+              <optgroup label="Scale">
         					<option value="S0">Scale 0.2</option>
         					<option value="S1">Scale 0.3</option>
         					<option value="S2">Scale 0.5</option>
         					<option value="S3">Scale 1.0</option>
         					<option value="S4">Scale 1.25</option>
               </optgroup>
-    			</select>			
-    			
+    			</select>
+
     			<input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
         </div>
     		<div id="opTableContainer" style="min-height:300px;background-color:#FFF; overflow-y:scroll;">
@@ -71,12 +71,11 @@
                     </tr>
                 </thead>
                 <tbody id="operationList" ></tbody>
-            </table>			
+            </table>
     		</div>
     	</div>
     </div>
 
-</div>
 
 <div id='duggaInfoBox' class="loginBox" style="display:none">
   <div>
@@ -88,7 +87,7 @@
             <table>
                 <tr>
                     <td>
-                        <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er. 
+                        <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er.
                             Till ert förfogande finns de klassiska transformationerna: transelera (T), rotera (R) och skala (S). För att rita ut planeter så väljer ni draw R/G/B beroende på vilken färg som önskas.</p>
                         <p style="margin-left: 4px;">Lycka till!</p>
                     </td>
