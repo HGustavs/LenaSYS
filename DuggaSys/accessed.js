@@ -231,6 +231,7 @@ function changeOpt(e) {
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
+<<<<<<< Updated upstream
 //Support for dropdown meny useing Divs
 function changeOptDiv(e) {
 	
@@ -252,6 +253,8 @@ function changePrimaryDiv(cell, value){
 	document.getElementById(cell).innerHTML = value;
 }
 
+=======
+>>>>>>> Stashed changes
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
