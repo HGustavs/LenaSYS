@@ -541,6 +541,15 @@ function boldText() {
     updatePreview(txtarea.value);
 }
 
+function pickFile(selectedFile){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + selectedFile + sel  + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.foucs();
+    txtarea.selcetionEnd= end + 2;
+    updatePreview(txtarea.value);
+}
+
 function linkYoutube(){
     this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '[YOUTUBE:' + 'IDNUM,WIDTH,LENGTH' + sel + ']' + txtarea.value.substring(end);

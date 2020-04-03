@@ -5283,7 +5283,8 @@ textarea#mrkdwntxt {
 
 #imgIcon,
 #headerIcon {
-  margin-left: 4px;
+  margin-left: 2px;
+  margin-right: 10px;
 }
 
 
