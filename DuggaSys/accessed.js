@@ -253,7 +253,6 @@ function changePrimaryDiv(cell, value){
 }
 
 function changeProperty(targetobj, propertyname, propertyvalue) {
-	console.log(targetobj, propertyname, propertyvalue);
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
 		uid: targetobj,
@@ -279,6 +278,9 @@ function hideSSN(ssn) {
 
 function renderCell(col, celldata, cellid) {
 	var str = "UNK";
+	if(obj.class == null){
+		obj.class = "None";
+	}
 	if (col == "username" || col == "ssn" || col == "firstname" || col == "lastname" || col == "class" || col == "examiner" || col == "groups" || col == "vers" || col == "access" || col == "requestedpasswordchange") {
 		obj = JSON.parse(celldata);
 	}
@@ -291,9 +293,7 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-		if(obj.class == null){
-			obj.class = "None";
-		}
+
 		str = "<div onclick='toggledropdown(\"" + col + "_" + obj.uid + "\")' class='dropdown'>";
 		str += "<span style='margin-left:2px;' id='span_of_"+obj.uid+"'>"+obj.class+"</span>";
 		
@@ -301,7 +301,23 @@ function renderCell(col, celldata, cellid) {
 	
 		str += "</div>";
 	} else if (col == "examiner") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
+		for(i = 0; i < filez['teachers'].length;i++){
+			var trueName;
+			if(obj.examiner == filez['teachers'][i].uid){
+				trueName = filez['teachers'][i].name
+				console.log(trueName);
+			}
+		}
+
+		str = "<div onclick='toggledropdown(\"" + col + "_" + obj.uid + "\")' class='dropdown'>";
+
+
+		str += "<span style='margin-left:2px;' id='span_of_"+obj.uid+"'>"+trueName+"</span>";
+
+		str += "<div onclick='changeOptDiv(event)' id='" + col + "_" + obj.uid + "' class='dropdown-content'>" + makedivItem(obj.examiner, filez['teachers'], col, obj.uid) + "</div>";
+	
+		str += "</div>";
+	
 	} else if (col == "vers") {
         str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {

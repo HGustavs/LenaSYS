@@ -396,7 +396,6 @@ function SortableTable(param) {
 		// Render table body
 		str += "<tbody id='" + this.tableid + DELIMITER + "body'>";
 		mhvstr += "<tbody id='" + this.tableid + DELIMITER + "mhvbody'>";
-		for(var j = 0; j < 5;j++){
 			for (var i = 0; i < tbl.tblbody.length; i++) {
 				var row = tbl.tblbody[i];
 				if (rowFilter(row)) {
@@ -462,7 +461,6 @@ function SortableTable(param) {
 				}
 		
 			}
-		}
 		str += "</tbody>";
 		mhvstr += "</tbody>";
 		if (this.hasFooter) {
