@@ -2977,7 +2977,7 @@ function resizeBoxes(parent, templateId) {
 
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-
+	
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
@@ -2990,6 +2990,16 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -3012,6 +3022,18 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
@@ -3029,6 +3051,18 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer > 85) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer < 15) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -3116,6 +3150,19 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //-----------------------------------
@@ -3142,6 +3189,20 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer > 85) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer < 15) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //---------------------------------------
@@ -3241,6 +3302,22 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	boxValArray['box' + boxThree]['width'] = $(boxValArray['box' + boxThree]['id']).width();
 	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
 	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //-----------------------------------
