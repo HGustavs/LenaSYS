@@ -238,6 +238,20 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 		str +="</div>"
 		return str;
 }
+function makedivItemWithValue(option,optionlist,optionstring,valuestring)
+{
+		var str="";
+		str +="<div class='access-dropdown-content'>"
+			for(var i=0;i<optionlist.length;i++){
+					str+="<div onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'> ";
+					if(optionlist[i][valuestring]==option){
+							
+					}
+					str+=""+optionlist[i][optionstring]+"</div>";
+			}
+		str +="</div>"
+		return str;
+}
 
 function makeDivItemStudent(option,optionlist,valuelist)
 {

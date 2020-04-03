@@ -284,14 +284,16 @@ function renderCell(col, celldata, cellid) {
 		
 		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
-
+		var examinerName;
 		for(i = 0; i < filez['teachers'].length; i++){
-			if(obj.examiner == filez['teachers'].uid){
-				var examinerName = filez['teachers'][i].name;
+			if(obj.examiner == filez['teachers'][i].uid){
+				examinerName = filez['teachers'][i].name;
 			}
 		}
-
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+examinerName+"</Div>" + makedivItem(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
+		if(examinerName == null){
+			examinerName = "None";
+		}
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+examinerName+"</Div>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
         str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+filez['courses'][0].versname+"</Div>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
@@ -332,7 +334,7 @@ function renderCell(col, celldata, cellid) {
 			optstr += tgroups[i].substr(1 + tgroups[i].indexOf("_"));
 		}
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
-		str += "<select><option>" + optstr + "</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+		str += "<div><div>" + optstr + "</div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
