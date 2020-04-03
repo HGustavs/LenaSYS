@@ -1366,6 +1366,7 @@ $(document).on("touchstart", function (e) {
     e.preventDefault();
   }
 
+  $("#fabBtnList").show();
   mouseDown(e);
   TouchFABDown(e);
 });
