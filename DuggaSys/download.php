@@ -73,6 +73,8 @@
 			}else {
 				echo "failed to find a file";
 			}
+		} else{
+			echo "failed to go to download your files."
 		}
 		 
 		

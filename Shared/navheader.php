@@ -126,7 +126,7 @@
               //Adds the download files button to the toolbar
               echo "<td class='Downlad all files' style='display: inline-block;'>";
               echo "    <div class='Downlad all files'>";
-              echo "      <a id='downloadBTN' title='Download all content in a zip file' value='Download' href='download.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+              echo "      <a id='downloadBTN' title='Download all content in a zip file' value='Download' target = '_blank' href='download.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."'  >";
               echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
               echo "      </a>";
               echo "    </div>";
