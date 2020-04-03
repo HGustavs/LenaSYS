@@ -22,12 +22,13 @@ session_start();
 
 pdoConnect(); // Connect to database and start session
 
-$cid = getOP('cid');
+$cid = getOP('courseid');
 $vers = getOP('coursevers');
 $kind = getOP('kind');
 $link = getOP('link');
 $selectedfile = getOP('selectedfile');
 $error = false;
+
 
 if (isset($_SESSION['uid'])) {
     $userid = $_SESSION['uid'];
@@ -249,7 +250,7 @@ if ($storefile) {
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $userid, $info);
 
 if (!$error) {
-    echo "<meta http-equiv='refresh' content='0;URL=fileed.php?cid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
+    echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 
 ?>
@@ -260,7 +261,7 @@ if (!$error) {
 <?php
 if (!$error) {
 
-    echo "<script>window.location.replace('fileed.php?cid=" . $cid . "&coursevers=" . $vers . "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
+    echo "<script>window.location.replace('fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 ?>
 </body>

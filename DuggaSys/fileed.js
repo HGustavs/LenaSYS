@@ -44,7 +44,7 @@ function setup() {
     */
 
     AJAXService("GET", {
-        cid: querystring['cid']
+        cid: querystring['courseid']
     }, "FILE");
 }
 
@@ -129,7 +129,7 @@ function showLinkPopUp() {
     $(".linkPopUp").css("display", "block");
     $("#selecty").css("display", "none");
     $("#kind").val("LINK");
-    $("#cid").val(querystring['cid']);
+    $("#cid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
 }
 
@@ -170,7 +170,7 @@ function uploadFile(kind) {
     }
 
     $("#kind").val(kind);
-    $("#cid").val(querystring['cid']);
+    $("#courseid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
 }
 
@@ -192,7 +192,7 @@ function closeEditFile() {
 
 function closeConfirmation() {
     $(".confirmationWindow").css("display", "none");
-    window.location.replace('fileed.php?cid=' + querystring['cid'] + '&coursevers=' + querystring['coursevers']);
+    window.location.replace('fileed.php?courseid=' + querystring['courseid'] + '&coursevers=' + querystring['coursevers']);
 }
 
 //------------------------------------------------------------------
@@ -236,7 +236,7 @@ function renderCell(col, celldata, cellid) {
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
         } else {
-            str += "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?cid=" + querystring['cid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + obj.filename + "\")'>" + obj.shortfilename + "</span>";
+            str += "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + obj.filename + "\")'>" + obj.shortfilename + "</span>";
         }
     } else if (col == "filesize") {
         if (obj.kind == "Link") {
@@ -432,7 +432,7 @@ function deleteFile(fileid, filename) {
     if (confirm("Do you really want to delete the file/link: " + filename)) {
         AJAXService("DELFILE", {
             fid: fileid,
-            cid: querystring['cid']
+            cid: querystring['courseid']
         }, "FILE");
     }
     /*Reloads window when deleteFile has been called*/
@@ -463,7 +463,7 @@ function loadFile(fileUrl, fileNamez, fileKind) {
     $(".editFilePart").show();
 
     $.ajax({
-        url: "showdoc.php?courseid=" + querystring['cid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileNamez + "&read=yes",
+        url: "showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileNamez + "&read=yes",
         type: 'post',
         dataType: 'html',
         success: returnFile
@@ -495,7 +495,7 @@ function saveMarkdown() {
     let content = document.getElementById("mrkdwntxt").value;
     content = content.replace(/\+/g, '%2B');
     AJAXService("SAVEFILE", {
-        cid: querystring['cid'],
+        cid: querystring['courseid'],
         contents: content,
         filename: filename,
         filepath: filepath,
@@ -510,7 +510,7 @@ function saveTextToFile() {
     let content = document.getElementById("filecont").value;
     content = content.replace(/\+/g, '%2B');
     AJAXService("SAVEFILE", {
-        cid: querystring['cid'],
+        cid: querystring['courseid'],
         contents: content,
         filename: filename,
         filepath: filepath,
@@ -570,7 +570,7 @@ function loadPreview(fileUrl, fileName, fileKind) {
 
     //$.ajax({url: fileUrl, type: 'get', dataType: 'html', success: returnedPreview});
     $.ajax({
-        url: "showdoc.php?courseid=" + querystring['cid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileName + "&read=yes",
+        url: "showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileName + "&read=yes",
         type: 'post',
         dataType: 'html',
         success: returnedPreview
