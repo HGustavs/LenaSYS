@@ -2282,15 +2282,22 @@ div.submit-button:disabled {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-.access-dropdown-content a {
+.access-dropdown-content div {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
+  cursor: pointer;
+}
+.access-dropdown-content div:hover {
+  background-color: rgb(228, 227, 226);
 }
 .access-dropdown{
   position: relative;
   display: inline-block;
+}
+.access-dropdown:hover .access-dropdown-content {
+  display: block;
 }
 
 #editpopover {

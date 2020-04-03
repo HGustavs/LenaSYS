@@ -245,19 +245,6 @@ function changeProperty(targetobj, propertyname, propertyvalue) {
 	}, "ACCESS");
 }
 
-
-//----------------------------------------------------------------
-// Functions for Div dropdown menues
-//----------------------------------------------------------------
-function toggleAccessMenu(element){
-
-	element.children[1].style.display = "block";
-}
-function toggleAcessMenuLeave(element){
-	element.children[1].style.display = "none";
-}
-
-
 function showVersion(vers) {
 	window.location.href = "../DuggaSys/sectioned.php?courseid=" + querystring['courseid'] + "&coursevers=" + vers;
 }
@@ -288,7 +275,7 @@ function renderCell(col, celldata, cellid) {
 		}
 	} else if (col == "class") {
 		console.log("hej");
-		str = "<div class='access-dropdown' onmouseleave='toggleAcessMenuLeave(this)' onmouseover='toggleAccessMenu(this)' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
 	} else if (col == "vers") {
