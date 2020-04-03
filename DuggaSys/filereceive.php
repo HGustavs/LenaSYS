@@ -22,12 +22,13 @@ session_start();
 
 pdoConnect(); // Connect to database and start session
 
-$cid = getOP('cid');
+$cid = $_SESSION['courseid'];
 $vers = getOP('coursevers');
 $kind = getOP('kind');
 $link = getOP('link');
 $selectedfile = getOP('selectedfile');
 $error = false;
+
 
 if (isset($_SESSION['uid'])) {
     $userid = $_SESSION['uid'];
@@ -43,7 +44,6 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve.php", $u
 
 //  Handle files! One by one  -- if all is ok add file name to database
 //  login for user is successful & has either write access or is superuser					
-
 $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 if ($ha) {
     $storefile = false;
@@ -79,9 +79,9 @@ if ($ha) {
         }
     } else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
-        if (!file_exists($currcvd . "/courses/" . $cid)) {
+        if (!file_exists($currcvd . "/courses/" . $cid . "/versionIndependence")) {
             echo $currcvd . "/courses/" . $cid;
-            $storefile = mkdir($currcvd . "/courses/" . $cid,0777,true);
+						$storefile = mkdir($currcvd . "/courses/" . $cid . "/versionIndependence",0777,true);
         } else {
             $storefile = true;
         }
@@ -147,14 +147,13 @@ if ($storefile) {
 
         //  if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process.
         if ($filea["name"] != "") {
-
-            $temp = explode(".", $filea["name"]);
+          $temp = explode(".", $filea["name"]);
             $extension = end($temp); //stores the file type
-            // Determine file MIME-type
-            $filetype = mime_content_type($filea["tmp_name"]);
+						// Determine file MIME-type
+						
+						//$filetype = mime_content_type($filea["name"]);
             if (array_key_exists($extension, $allowedExtensions)) {
                 //  if file type is allowed, continue the uploading process.
-
                 $fname = $filea['name'];
                 // Remove white space and non ascii characters
                 $fname = preg_replace('/[[:^print:]]/', '', $fname);
@@ -163,7 +162,7 @@ if ($storefile) {
                 if ($kind == "LFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fname;
                 } else if ($kind == "MFILE") {
-                    $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
+                    $movname = $currcvd . "/courses/" . $cid . "/versionIndependence/" . $fname;
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;
                 }
@@ -199,15 +198,15 @@ if ($storefile) {
                             $kindid = 2;
                             $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
                         }
-
+												
                         $query->bindParam(':cid', $cid);
                         $query->bindParam(':filename', $fname);
                         $query->bindParam(':filesize', $filesize);
                         $query->bindParam(':kindid', $kindid);
 
                         if (!$query->execute()) {
-                            $error = $query->errorInfo();
-                            echo "Error updating file entries" . $error[2];
+													$error = $query->errorInfo();
+                            echo " Error updating file entries " . $error[2];
                         }
                     }
                     $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
@@ -224,8 +223,9 @@ if ($storefile) {
                     $query->bindParam(':kindid', $kindid);
 
                     if (!$query->execute()) {
-                        $error = $query->errorInfo();
+                        
                         echo "Error updating filesize and uploaddate: " . $error[2];
+                        $error = $query->errorInfo();
                     }
 
                 } else {
@@ -234,9 +234,9 @@ if ($storefile) {
                 }
 
             } else {
-                //if the file extension is not allowed
+								//if the file extension is not allowed
                 if (!array_key_exists($extension, $allowedExtensions)) echo "Extension \"" . $extension . "\" not allowed.\n";
-                else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
+                //else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
                 $error = true;
             }
         }
@@ -247,7 +247,6 @@ if ($storefile) {
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $userid, $info);
-
 if (!$error) {
     echo "<meta http-equiv='refresh' content='0;URL=fileed.php?cid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
@@ -259,7 +258,6 @@ if (!$error) {
 <body>
 <?php
 if (!$error) {
-
     echo "<script>window.location.replace('fileed.php?cid=" . $cid . "&coursevers=" . $vers . "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 ?>

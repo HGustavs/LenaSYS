@@ -2,22 +2,22 @@
        <?php
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
-			
+
 			echo "<table class='navheader'><tr>";
 			include_once "../Shared/basic.php";
-			
+
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if(!isset($_SESSION['courseid'])) $_SESSION['courseid']="UNK";
 			if(!isset($_SESSION['coursevers'])) $_SESSION['coursevers']="UNK";
-	
+
 			if(isset($_GET['courseid'])){
 					$_SESSION['courseid']=$_GET['courseid'];
 			}
 			if(isset($_GET['coursevers'])){
 					$_SESSION['coursevers']=$_GET['coursevers'];
 			}
-			
-	
+
+
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 			// Generate different back buttons depending on which page is including
@@ -25,14 +25,14 @@
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
-	
+
 			if($noup!='NONE') {
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
 					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-					// echo "<td>GREGER!</td>";	
+					// echo "<td>GREGER!</td>";
 			}else if($noup=='SECTION'){
 					$cid=getOPG('cid');
 					if($cid=="UNK") $cid=getOPG('courseid');
@@ -43,29 +43,29 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
-	
+
 			// Adding buttons for courses
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {				
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {
 							echo "<td style='display: inline-block;'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
 							echo "    </div>";
 							echo "</td>";
-						
+
 							echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
 							echo "    <div class='editVers menuButton'>";
               echo "      <img id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 							echo "    </div>";
 							echo "</td>";
-							
+
 							echo "<td class='newVers' style='display: inline-block;margin-right:2px;'>";
 							echo "    <div class='newVers menuButton'>";
               echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
 							echo "    </div>";
-							echo "</td>";						
-					
+							echo "</td>";
+
 							echo "<td class='results' style='display: inline-block;'>";
 							echo "    <div class='results menuButton'>";
 							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
@@ -73,7 +73,7 @@
 							echo "    </a>";
 							echo "    </div>";
 							echo "</td>";
-						
+
 							echo "<td class='tests' style='display: inline-block;'>";
 							echo "    <div class='tests menuButton'>";
 							echo "      <a id='testsBTN' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
@@ -81,7 +81,7 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
-						
+
 							echo "<td class='files' style='display: inline-block;'>";
 							echo "    <div class='files menuButton'>";
               echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
@@ -91,7 +91,7 @@
 							echo "</td>";
 
 							include_once "../Shared/database.php";
-							pdoConnect();	
+							pdoConnect();
 							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']."");
 							$fetch = $query->fetch();
 							$result['coursecode'] = $fetch['coursecode'];
@@ -99,7 +99,7 @@
 
 							// Changes format from 'HT20' to numbers to create the URL
 							$array = explode("T", $result['versname']);
-							$array[0]; 
+							$array[0];
 							$year = "20";
 							$year .= $array[1];
 							if ($array[0] = "H")
@@ -122,9 +122,18 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
+
+              //Adds the download files button to the toolbar
+              echo "<td class='Downlad all files' style='display: inline-block;'>";
+              echo "    <div class='Downlad all files'>";
+              echo "      <a id='downloadBTN' title='Download all content in a zip file' value='Download' href='download.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+              echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
+              echo "      </a>";
+              echo "    </div>";
+              echo "</td>";
 					}
 			}
-	
+
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
 					echo "<td id='searchBar' class='navButt'>";
@@ -142,12 +151,12 @@
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";
-					echo       "<div id='customfilter'></div>";                
+					echo       "<div id='customfilter'></div>";
 					echo     "</div>";
 					echo   "</span>";
-					echo "</td>";	
+					echo "</td>";
 			}
-	
+
 	    if($requestedService=="resulted.php" ){
 					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
 					echo   "<span>";
@@ -159,8 +168,8 @@
 					echo "<td id='menuHook' class='navSpacer'>";
 					echo "</td>";
 			}
-	
-	
+
+
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
@@ -196,7 +205,7 @@
 						echo "</td>";
             echo "<td id='menuHook' class='navSpacer'>";
 			}
-	
+
 			if(checklogin()) {
 				echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
 				echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";

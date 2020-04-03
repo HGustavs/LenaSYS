@@ -67,14 +67,14 @@
         document.getElementById('dialogText').innerHTML="<div><h1>" +
             "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
             "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
-            "current owner: <?php echo posix_getpwuid(fileowner($putFileHere))['name']; ?>" +
+            "current owner: b18phibe" +
             "<br><br>" +
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
             "<br>" +
             "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
             "<i>I promise i have done this and will not complain that it's not working</i></div>";
-            
+
         function haveRead(isTrue) {
             modalRead = isTrue;
         }
@@ -148,9 +148,9 @@
     echo 'Enter hostname (e.g localhost). <br>';
     echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
     echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
-    
+
     if($dbUsername || $dbHostname || $dbName || $dbPassword){
-        echo "<br><b>Values from existing coursesyspw.php were used </b><br>"; 
+        echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
     }
 
     echo '</div>';
@@ -839,7 +839,7 @@ define(\"DB_NAME\",\"".$databaseName."\");
           echo "</code></div>";
           echo '<div id="copied1">Copied to clipboard!<br></div>';
         }
-		
+
 		//Check upload_max_filesize parameter
 		if(ini_get('upload_max_filesize')!='128M'){
 			echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
