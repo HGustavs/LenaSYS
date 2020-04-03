@@ -132,8 +132,6 @@ pdoConnect();
                         <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
                         <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
                         <span class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></span>
-
-                        <span class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></span>
                         <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
                         <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
                         <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>

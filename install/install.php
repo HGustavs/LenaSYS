@@ -11,7 +11,7 @@
     // query time also affects php executiion time. This will not work when php is running
     // in safe mode.
     $timeOutSeconds = ini_get('max_execution_time');
-    set_time_limit(120);
+    set_time_limit(300);
     $errors = 0;
     // Create a version of dirname for <PHP7 compability
     function cdirname($path, $level) {
@@ -67,7 +67,12 @@
         document.getElementById('dialogText').innerHTML="<div><h1>" +
             "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
             "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
-            "current owner: <?php echo posix_getpwuid(fileowner($putFileHere))['name']; ?>" +
+            "current owner: " +
+            if(function_exists('posix_getpwuid')) {
+                echo posix_getpwuid(fileowner($putFileHere))['name'];
+            } else {
+                echo getenv(fileowner($putFileHere))['name'];
+            }
             "<br><br>" +
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
