@@ -2294,7 +2294,10 @@ div.submit-button:disabled {
 }
 .access-dropdown{
   position: relative;
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
+
+padding: 10px;
 }
 .access-dropdown:hover .access-dropdown-content {
   display: block;

@@ -282,7 +282,7 @@ function renderCell(col, celldata, cellid) {
 		}
 	} else if (col == "class") {
 		
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
 		var examinerName;
 		for(i = 0; i < filez['teachers'].length; i++){
@@ -293,9 +293,9 @@ function renderCell(col, celldata, cellid) {
 		if(examinerName == null){
 			examinerName = "None";
 		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+examinerName+"</Div>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
-        str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+filez['courses'][0].versname+"</Div>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
+        str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+filez['courses'][0].versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
@@ -312,7 +312,7 @@ function renderCell(col, celldata, cellid) {
 		else {
 			var trueTeacher = "Student teacher";
 		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		
 		if (parseFloat(obj.recent) > 1440) {
@@ -333,8 +333,8 @@ function renderCell(col, celldata, cellid) {
 			if (i > 0) optstr += " ";
 			optstr += tgroups[i].substr(1 + tgroups[i].indexOf("_"));
 		}
-		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
-		str += "<div><div>" + optstr + "</div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+		str = "<div class='multiselect-group'><div class='group-select-box' onmouseover='showCheckboxes(this)'>";
+		str += "<div><div class='access-dropdown'>" + optstr + "<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
