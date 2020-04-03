@@ -67,12 +67,7 @@
         document.getElementById('dialogText').innerHTML="<div><h1>" +
             "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
             "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
-            "current owner: " +
-            if(function_exists('posix_getpwuid')) {
-                echo posix_getpwuid(fileowner($putFileHere))['name'];
-            } else {
-                echo getenv(fileowner($putFileHere))['name'];
-            }
+            "current owner: <?php echo posix_getpwuid(fileowner($putFileHere))['name']; ?>" +
             "<br><br>" +
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
