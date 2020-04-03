@@ -415,9 +415,14 @@ function markdownBlock(inString)
     // Iframe, website inside a inline frame - (--url,width,height--)
     inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
 
+
     // Quote text, this will be displayed in an additional box
     // ^ Text you want to quote ^
     inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
+
+    // Iframe, embedding youtube
+	// [YOUTUBE:IDNUM,WIDTH,LENGTH]
+    inString = inString.replace(/\[YOUTUBE:{1}(.*?\S),(.*?\S),(.*?\S)\]{1}/g, '<iframe id="ytplayer" type="text/html" width="$2" height="$3" src="https://www.youtube.com/embed/$1" frameborder="0"></iframe>');
 
     //Markdown smileys
     //Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
@@ -432,7 +437,7 @@ function markdownBlock(inString)
     inString = inString.replace(/\s&lt;3(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/heart.svg'/>");
     inString = inString.replace(/\s\(Y\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsup.svg'/>");
     inString = inString.replace(/\s\(N\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsdown.svg'/>");
-
+    
     return inString;
 }
 
@@ -533,6 +538,15 @@ function boldText() {
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
+}
+
+function linkYoutube(){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '[YOUTUBE:' + 'IDNUM,WIDTH,LENGTH' + sel + ']' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.foucs();
+    txtarea.selcetionEnd= end + 2;
     updatePreview(txtarea.value);
 }
 

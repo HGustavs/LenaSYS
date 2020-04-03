@@ -1491,7 +1491,9 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	var iwcounter = 0;
 	for (i = 0; i < tokens.length; i++) {
 		tokenvalue = String(tokens[i].val);
-
+ 
+         if(tokenvalue=="header")cont += "<span style='color: #00ff00;'<Header</span>";
+        
 		if (tokens[i].kind == "rowcomment" || tokens[i].kind == "blockcomment" || tokens[i].kind == "string" || tokens[i].kind == "number" || tokens[i].kind == "name") {
 			// Fix to remove html tags in strings
 			tokenvalue = tokenvalue.replace(/&/g, "&amp;");
@@ -1537,7 +1539,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
 			} else if (foundkey == 2) {
 				iwcounter++;
-				cont += "<span id='IW" + iwcounter + "' class='impword' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='dehighlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword'  onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='dehighlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += tokenvalue;
 			}
@@ -1571,6 +1573,44 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
+                                coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
+                console.log(coloringcode);
+                switch(coloringcode) {
+
+                    case "<html>":
+                    case "</html":
+                        fontcolor = "#00ff00";
+                        break;
+
+                    case "<link ":
+                        fontcolor = "blue";
+                        break;
+
+           
+                    case "<h1>":
+                    case "</h1":
+                        fontcolor = "#00ff00";
+                        break;
+                    case "<title>":
+                    case "</title":
+                        fontcolor = "#00ff00";
+                        break;
+                    case "<body>":
+                    case "</body":
+                        fontcolor = "#00ff00";
+                        break;
+                    case "<p>":
+                    case "</p":
+                        fontcolor = "#00ff00";
+                        break;
+                    case "<script ":
+                    case "</script":
+                        fontcolor = "#ff8000";
+                        break;
+                    default: 
+                        fontcolor = "#00ff";
+                        break;
+                }
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
 					if (htmlArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
@@ -1586,12 +1626,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							k++;
 						}
 						if (foundEnd) {
+                            
 							pid = "html" + htmlTagCount + boxid;
 							htmlTagCount++;
 							if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								htmlTag.push(pid);
 							}
-							cont += "&lt" + "<span id='" + pid + "' class='oper' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
 							cont += "</span>";
 							i = i + 1;
 						} else {
@@ -1601,6 +1642,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
 					}
 				} else if (tokens[i + 1].val == "/") {
+                    
 					if (htmlArray.indexOf(tokens[i + 2].val.toLowerCase()) > -1) {
 						if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 							pid = htmlTag.pop();
@@ -1608,7 +1650,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							htmlTagCount++;
 							pid = "html" + htmlTagCount + boxid;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						cont += "&lt" + tokens[i + 1].val + "<span  style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
@@ -1690,6 +1732,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			}
 
 		} else if (tokens[i].kind == "operator") {
+            
 			if (tokenvalue == "{") {
 				pid = "CBR" + cbcount + boxid;
 				cbcount++;
@@ -1716,12 +1759,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						}
 
 						if (foundEnd) {
+                            
 							pid = "css" + cssTagCount + boxid;
 							cssTagCount++;
 							if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								cssTag.push(pid);
 							}
-							cont += "&lt" + "<span id='" + pid + "' class='oper' onmouseover='highlightCss(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightCss(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onmouseover='highlightCss(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightCss(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
 							cont += "</span>";
 							i = i + 1;
 						} else {
@@ -1738,7 +1782,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							cssTagCount++;
 							pid = "css" + cssTagCount + boxid;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						cont += "&lt" + tokens[i + 1].val + "<span  style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
@@ -2933,7 +2977,7 @@ function resizeBoxes(parent, templateId) {
 
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-
+	
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
@@ -2946,6 +2990,16 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -2968,6 +3022,18 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
@@ -2985,6 +3051,18 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer > 85) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer < 15) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -3072,6 +3150,19 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //-----------------------------------
@@ -3098,6 +3189,20 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer > 85) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer < 15) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //---------------------------------------
@@ -3197,6 +3302,22 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	boxValArray['box' + boxThree]['width'] = $(boxValArray['box' + boxThree]['id']).width();
 	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
 	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //-----------------------------------
