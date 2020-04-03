@@ -315,13 +315,12 @@ function renderCell(col, celldata, cellid) {
 	} else if (col == "requestedpasswordchange") {
 		
 		if (parseFloat(obj.recent) > 1440) {
-			str = "<div class='submit-button' style='display:block;margin:auto;float:none;'";
+			str = "<input class='submit-button' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
 		} else {
-			str = "<div class='submit-button resetpw-button' style='width:80%; margin-left:20px; background-color: rgb(254, 204, 86); color: #614875'";
+			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
 		}
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 		str += "resetPw(\"" + obj.uid + "\",\"" + obj.username + "\"); return false;'>";
-        str += "Reset PW";
 	} else if (col == "groups") {
 		if (obj.groups == null) {
 			tgroups = [];
