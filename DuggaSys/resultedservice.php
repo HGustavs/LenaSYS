@@ -5,9 +5,6 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 
-// resulted-specific constants
-include_once './resultedconstants.php';
-
 // Connect to database and start session
 pdoConnect();
 session_start();
@@ -62,6 +59,9 @@ $duggatimesgraded="";
 $duggagrade="";
 $gradeupdated=false;
 
+const updateunexported_service_name = "updateunexported";
+const getunexported_service_name = "getunexported";
+
 $entries=array();
 
 //$entriesNoSSN=array();
@@ -109,7 +109,7 @@ if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 
 	// Check if opt == updateunexported
-	if ($opt === \resulted\Constants::updateunexported_service_name) {
+	if ($opt === updateunexported_service_name) {
 		$statement = $pdo->prepare("	UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
 		$statement->bindParam(':gradeLastExported', $gradeLastExported);
 		
@@ -144,7 +144,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 	}
 	// Check if opt == getunexported
-	if ($opt === \resulted\Constants::getunexported_service_name) {
+	if ($opt === getunexported_service_name) {
 		// Get all answers where the result has never been exported or has changed.
 		// This is the case when the result:
 		// * has never been graded
