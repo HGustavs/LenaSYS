@@ -242,9 +242,10 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 function makeDivItemStudent(option,optionlist,valuelist)
 {
 		var str="";
+		var stringArray = ["W","R","ST"];
 		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
-				str+="<div ";
+				str+="<div onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
 				if(valuelist==null){
 						if(i==option){
 						}

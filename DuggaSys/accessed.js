@@ -232,8 +232,15 @@ function changeOpt(e) {
 }
 
 function changeOptDiv(e) {
+	console.log(e.target.parentElement.parentElement.id);
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	changeProperty(paramlist[1], paramlist[0], e.target.innerHTML);
+}
+function changeOptDivStudent(e,value){
+	console.log(e.target.parentElement.parentElement.id);
+	console.log(value);
+	var paramlist = e.target.parentElement.parentElement.id.split("_");
+	changeProperty(paramlist[1], paramlist[0], value);
 }
 
 function changeProperty(targetobj, propertyname, propertyvalue) {
