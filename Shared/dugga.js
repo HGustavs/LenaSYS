@@ -239,6 +239,26 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 		return str;
 }
 
+function makeDivItemStudent(option,optionlist,valuelist)
+{
+		var str="";
+		str +="<div class='access-dropdown-content'>"
+		for(var i=0;i<optionlist.length;i++){
+				str+="<div ";
+				if(valuelist==null){
+						if(i==option){
+						}
+						str+=">"+optionlist[i]+"</div>";
+				}else{
+						if(valuelist[i]==option){
+						}
+						str+=">"+optionlist[i]+"</div>";
+				}
+		}
+		str +="</div>"
+		return str;
+}
+
 //----------------------------------------------------------------------------------
 // makeparams: Help function for hassle free preparation of a clickable param list
 //----------------------------------------------------------------------------------

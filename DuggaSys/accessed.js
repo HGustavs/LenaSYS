@@ -245,19 +245,6 @@ function changeProperty(targetobj, propertyname, propertyvalue) {
 	}, "ACCESS");
 }
 
-
-//----------------------------------------------------------------
-// Functions for Div dropdown menues
-//----------------------------------------------------------------
-function toggleAccessMenu(element){
-
-	element.children[1].style.display = "block";
-}
-function toggleAcessMenuLeave(element){
-	element.children[1].style.display = "none";
-}
-
-
 function showVersion(vers) {
 	window.location.href = "../DuggaSys/sectioned.php?courseid=" + querystring['courseid'] + "&coursevers=" + vers;
 }
@@ -288,21 +275,18 @@ function renderCell(col, celldata, cellid) {
 		}
 	} else if (col == "class") {
 		
-		str = "<div class='access-dropdown' onmouseleave='toggleAcessMenuLeave(this)' onmouseover='toggleAccessMenu(this)' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
-		console.log(obj.examiner,filez['teachers']);
 
 		for(i = 0; i < filez['teachers'].length; i++){
-			if(obj.examiner = filez['teachers'].uid){
-				
+			if(obj.examiner == filez['teachers'].uid){
+				var examinerName = filez['teachers'][i].name;
 			}
 		}
 
-
-		console.log(filez['teachers']);
-		str = "<div class='access-dropdown' onmouseleave='toggleAcessMenuLeave(this)' onmouseover='toggleAccessMenu(this)' id='" + col + "_" + obj.uid + "'><Div >"+obj.examiner+"</Div>" + makedivItem(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+examinerName+"</Div>" + makedivItem(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
-        str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
+        str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+filez['courses'][0].versname+"</Div>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
@@ -310,7 +294,16 @@ function renderCell(col, celldata, cellid) {
             }
         };
 	} else if (col == "access") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
+		if(obj.access == "W"){
+			var trueTeacher = "Teacher";
+		}
+		else if (obj.access == "R"){
+			var trueTeacher = "Student";
+		}
+		else {
+			var trueTeacher = "Student teacher";
+		}
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		
 		if (parseFloat(obj.recent) > 1440) {
