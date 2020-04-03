@@ -210,7 +210,7 @@ function makeoptions(option,optionlist,valuelist)
 
 function makeoptionsItem(option,optionlist,optionstring,valuestring)
 {
-
+	console.log(option,optionlist,optionstring,valuestring)
 		var str="";
 		for(var i=0;i<optionlist.length;i++){
 				str+="<option ";
@@ -227,6 +227,7 @@ function makeoptionsItem(option,optionlist,optionstring,valuestring)
 
 function makedivItem(div,divlist,divstring,divalue)
 {
+
 		var str="";
 		for(var i=0;i<divlist.length;i++){
 				str+="<div ";
