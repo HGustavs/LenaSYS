@@ -287,10 +287,20 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-		console.log("hej");
+		
 		str = "<div class='access-dropdown' onmouseleave='toggleAcessMenuLeave(this)' onmouseover='toggleAccessMenu(this)' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
+		console.log(obj.examiner,filez['teachers']);
+
+		for(i = 0; i < filez['teachers'].length; i++){
+			if(obj.examiner = filez['teachers'].uid){
+				
+			}
+		}
+
+
+		console.log(filez['teachers']);
+		str = "<div class='access-dropdown' onmouseleave='toggleAcessMenuLeave(this)' onmouseover='toggleAccessMenu(this)' id='" + col + "_" + obj.uid + "'><Div >"+obj.examiner+"</Div>" + makedivItem(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
         str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
