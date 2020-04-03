@@ -231,30 +231,11 @@ function changeOpt(e) {
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
-<<<<<<< Updated upstream
-//Support for dropdown meny useing Divs
 function changeOptDiv(e) {
-	
-	var paramlist = e.target.parentElement.id.split("_");
-	console.log(paramlist[1], paramlist[0], e.target.value);
+	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	changeProperty(paramlist[1], paramlist[0], e.target.innerHTML);
 }
 
-function toggledropdown(cell){
-	if(document.getElementById(cell).style.display == "block"){
-		document.getElementById(cell).style.display = "none";
-	}
-	else{
-		document.getElementById(cell).style.display = "block";
-	}
-}
-
-function changePrimaryDiv(cell, value){
-	document.getElementById(cell).innerHTML = value;
-}
-
-=======
->>>>>>> Stashed changes
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
@@ -263,6 +244,19 @@ function changeProperty(targetobj, propertyname, propertyvalue) {
 		val: propertyvalue
 	}, "ACCESS");
 }
+
+
+//----------------------------------------------------------------
+// Functions for Div dropdown menues
+//----------------------------------------------------------------
+function toggleAccessMenu(element){
+
+	element.children[1].style.display = "block";
+}
+function toggleAcessMenuLeave(element){
+	element.children[1].style.display = "none";
+}
+
 
 function showVersion(vers) {
 	window.location.href = "../DuggaSys/sectioned.php?courseid=" + querystring['courseid'] + "&coursevers=" + vers;
@@ -281,9 +275,6 @@ function hideSSN(ssn) {
 
 function renderCell(col, celldata, cellid) {
 	var str = "UNK";
-	if(obj.class == null){
-		obj.class = "None";
-	}
 	if (col == "username" || col == "ssn" || col == "firstname" || col == "lastname" || col == "class" || col == "examiner" || col == "groups" || col == "vers" || col == "access" || col == "requestedpasswordchange") {
 		obj = JSON.parse(celldata);
 	}
@@ -296,31 +287,9 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-
-		str = "<div onclick='toggledropdown(\"" + col + "_" + obj.uid + "\")' class='dropdown'>";
-		str += "<span style='margin-left:2px;' id='span_of_"+obj.uid+"'>"+obj.class+"</span>";
-		
-		str += "<div onclick='changeOptDiv(event)' id='" + col + "_" + obj.uid + "' class='dropdown-content'>" + makedivItem(obj.class, filez['classes'], col, obj.uid) + "</div>";
-	
-		str += "</div>";
+		str = "<div class='access-dropdown' onmouseleave='toggleAcessMenuLeave(this)' onmouseover='toggleAccessMenu(this)' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
-		for(i = 0; i < filez['teachers'].length;i++){
-			var trueName;
-			if(obj.examiner == filez['teachers'][i].uid){
-				trueName = filez['teachers'][i].name
-				console.log(trueName);
-			}
-		}
-
-		str = "<div onclick='toggledropdown(\"" + col + "_" + obj.uid + "\")' class='dropdown'>";
-
-
-		str += "<span style='margin-left:2px;' id='span_of_"+obj.uid+"'>"+trueName+"</span>";
-
-		str += "<div onclick='changeOptDiv(event)' id='" + col + "_" + obj.uid + "' class='dropdown-content'>" + makedivItem(obj.examiner, filez['teachers'], col, obj.uid) + "</div>";
-	
-		str += "</div>";
-	
+		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
 	} else if (col == "vers") {
         str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
@@ -514,13 +483,10 @@ function rowFilter(row) {
 //----------------------------------------------------------------------------
 
 function returnedAccess(data) {
-
-
 	if (!data.access) {
 		window.location.href = 'courseed.php';
 	}
 	filez = data;
-
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
 

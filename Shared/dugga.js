@@ -184,12 +184,10 @@ function addOrRemoveFromArray(elementID, array) {
 
 function makeoptions(option,optionlist,valuelist)
 {
-
 		var str="";
 		for(var i=0;i<optionlist.length;i++){
 				str+="<option ";
 				if(valuelist==null){
-					
 						if(i==option){
 								str+="selected='selected' ";
 						}
@@ -210,29 +208,34 @@ function makeoptions(option,optionlist,valuelist)
 
 function makeoptionsItem(option,optionlist,optionstring,valuestring)
 {
-	console.log(option,optionlist,optionstring,valuestring)
-		var str="";
-		for(var i=0;i<optionlist.length;i++){
-				str+="<option ";
-				if(optionlist[i][valuestring]==option){
-						str+="selected='selected' ";
-				}
-				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
-		}
-		return str;
+	var str="";
+	for(var i=0;i<optionlist.length;i++){
+			str+="<option ";
+			if(optionlist[i][valuestring]==option){
+					str+="selected='selected' ";
+			}
+			str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
+	}
+	return str;
 }
+
+
 //----------------------------------------------------------------------------------
 // makedivItem: Prepares a dropdown list specifically for items such as code examples / dugga etc
 //----------------------------------------------------------------------------------
 
-function makedivItem(div,divlist,divstring,divalue)
+function makedivItem(option,optionlist,optionstring,valuestring)
 {
-
 		var str="";
-		for(var i=0;i<divlist.length;i++){
-				str+="<div ";
-				str+="id='Child_of_"+divalue+"' onclick='changePrimaryDiv(\"span_of_"+divalue+"\", \""+ divlist[i][divstring] +"\")'>" + divlist[i][divstring] + "</div>";
-		}
+		str +="<div class='access-dropdown-content'>"
+			for(var i=0;i<optionlist.length;i++){
+					str+="<div onclick='changeOptDiv(event)'> ";
+					if(optionlist[i][valuestring]==option){
+							
+					}
+					str+=""+optionlist[i][optionstring]+"</div>";
+			}
+		str +="</div>"
 		return str;
 }
 
@@ -1611,11 +1614,13 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
-	$("#servermsgcontainer").animate({ opacity: 0, top: 0 }, 200, "easeInOutSine");
-	setTimeout(function () {
-		$("#servermsgcontainer").css("display", "none");
-		$("#servermsgcontainer").css("opacity", "1");
-	}, 200);
+	const $containerHeight = $("#servermsgcontainer");
+	$containerHeight.animate({ 
+		opacity: 0, 
+		top: -$containerHeight.outerHeight() 
+	}, 200, "easeInOutSine", () => {
+		$containerHeight.css(opacity, 1);
+	});
 }
 
 function hideCookieMessage() {
