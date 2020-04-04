@@ -543,10 +543,10 @@ function boldText() {
 
 function pickFile(selectedFile){
     this.setCarotPosition();
-    var finText = txtarea.value.substring(0, start) + selectedFile + sel  + txtarea.value.substring(end);
+    var finText = txtarea.value.substring(0, start) + '|||' + '../testfiles/' +selectedFile + ', thumbnail in width px here,  full width here' + sel + '|||'  + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.foucs();
-    txtarea.selcetionEnd= end + 2;
+    txtarea.selcetionEnd= end + 12;
     updatePreview(txtarea.value);
 }
 
