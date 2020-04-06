@@ -26,6 +26,7 @@
 		<title><?php echo $title; ?></title>
 		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
+		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
