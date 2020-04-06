@@ -38,7 +38,7 @@
 		<!-- FAB Start -->
 		<div class='fixed-action-button sectioned' id="FABStatic" style="display:none">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
-				<ol class='fab-btn-list' id="fabBtnList" style='margin: 0; padding: 0; display: none;' reversed>
+				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
