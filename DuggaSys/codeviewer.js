@@ -1492,7 +1492,10 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	for (i = 0; i < tokens.length; i++) {
 		tokenvalue = String(tokens[i].val);
  
-         if(tokenvalue=="header")cont += "<span style='color: blue;'<Header</span>";
+         if(tokenvalue=="header")cont += "<span style='color: #FF1493;' </span>";
+        if(tokenvalue=="World")cont += "<span style='color: black;' </span>";
+        if(tokenvalue==">")cont += "<span style='color: black;' </span>";
+        if(tokenvalue=="<")cont += "<span style='color: black;' </span>";
         
 		if (tokens[i].kind == "rowcomment" || tokens[i].kind == "blockcomment" || tokens[i].kind == "string" || tokens[i].kind == "number" || tokens[i].kind == "name") {
 			// Fix to remove html tags in strings
@@ -1574,7 +1577,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
                                 coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
-                console.log(coloringcode);
+              
                 switch(coloringcode) {
 
                     case "<html>":
