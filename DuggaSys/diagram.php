@@ -135,6 +135,9 @@
                                     <div class="export-drop-down-item" tabindex="0">
                                         <a class="drop-down-option" id="picid">Export Picture</a>
                                     </div>
+                                    <div class="export-drop-down-item" tabindex="0">
+                                        <a class="drop-down-option" id="svgidA4" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
