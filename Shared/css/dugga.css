@@ -35,7 +35,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 #toggleGrade {
 	display: none;
 	background:#bbb;
-	width: 80%;
+	width: 20%;
 	border: 2px solid var(--color-border);
 }
 #gradeBtn {
