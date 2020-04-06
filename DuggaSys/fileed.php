@@ -1,10 +1,19 @@
 <?php
-session_start();
+
 include_once "../../coursesyspw.php";
+include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
+
+// Connect to database and start session
+session_start();
 pdoConnect();
 
-$query = $pdo->prepare( "SELECT filename FROM fileLink");     
+$cid = getOPG('courseid');
+
+echo("<script>console.log('PHP: " . $cid . "');</script>");
+
+$query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
+$query->bindParam(':cid', $cid);
 $query->execute();      
 
 ?>
@@ -146,13 +155,16 @@ $query->execute();
                         <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
                         <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
 
-                        <select name=";" onchange="pickFile(this.options[this.selectedIndex].value);" >
-                        <option value='$fileName'>Choose file</option>
+                        <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
+                        <option value='defaultOption'>Choose file</option>
                         <?php
                             while($row = $query->FETCH(PDO::FETCH_ASSOC)){  
                                 $fileName = $row['filename'];
+                                $cid = $row['cid'];
+                                $fileInfo = $fileName . ',' . $cid;
                                 if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){              
-                                    echo "<option value='$fileName'>$fileName</option>";     
+                                    echo "<option value='$fileInfo'>$fileName</option>"; 
+
                                 }   
                             } 
                         ?>

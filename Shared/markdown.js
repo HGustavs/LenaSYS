@@ -541,13 +541,18 @@ function boldText() {
     updatePreview(txtarea.value);
 }
 
-function pickFile(selectedFile){
+function chooseFile(selectedFile){
+    var fields = selectedFile.split(',');
+    var fileName = fields[0];
+    var cid = fields[1];
+    if(fileName !== "defaultOption"){
     this.setCarotPosition();
-    var finText = txtarea.value.substring(0, start) + '|||' + '../testfiles/' +selectedFile + ', thumbnail in width px here,  full width here' + sel + '|||'  + txtarea.value.substring(end);
+    var finText = txtarea.value.substring(0, start) + '|||' + '../courses/' + cid + '/' +  fileName + ', thumbnail in width px here,  full width here' + sel + '|||'  + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.foucs();
     txtarea.selcetionEnd= end + 12;
     updatePreview(txtarea.value);
+    }
 }
 
 function linkYoutube(){
