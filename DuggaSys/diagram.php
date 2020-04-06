@@ -396,7 +396,7 @@
         </div>
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
-    <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
+    <div id="appearance" class='loginBoxContainer'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3 id='loginBoxTitle'>Appearance</h3>
@@ -405,8 +405,64 @@
                 </div>
             </div>
             <div class='table-wrap'>
-                <div id="f01">
+                <div id="appearanceForm">
+                    <div class="form-group" data-types="attribute, class, entity, relation">
+                        <label for="name">TYPE name:</label>
+                        <input type="text" id="name">
+                    </div>
+                    <div class="form-group" data-types="attribute, entity, line, relation">
+                        <label for="type">TYPE type:</label>
+                        <select id="type"></select>
+                    </div>
+                    <div class="form-group" data-types="attribute, entity, relation">
+                        <label for="">Background color:</label>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="attribute, entity, relation, text">
+                        <label for="">Font family:</label>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="attribute, entity, relation, text">
+                        <label for="">Font color:</label>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="attribute, entity, relation, text">
+                        <label for="">Text size:</label>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="attribute, entity, relation, figure">
+                        <label for="">Line color:</label>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="text">
+                        <label for="">Text alignment:</label>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="line">
+                        <label for="">Line direction:</label>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="line">
+                        <label for="">Cardinality:</label>
+                        <select id=""></select></br>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="class">
+                        <label for="">Attributes:</label>
+                        <textarea id="umlAttributes" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="form-group" data-types="class">
+                        <label for="">Operations:</label>
+                        <textarea id="umlOperations" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="form-group" data-types="text">
+                        <textarea id="freeText" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="form-group" data-types="" style="text-align:center;">
+                        <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
+                    </div>
                 </div>
+                <!--<div id="f01"></div>-->
             </div>
         </div>
     </div>
