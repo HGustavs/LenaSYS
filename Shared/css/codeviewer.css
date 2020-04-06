@@ -97,6 +97,34 @@
     outline: none;
 }
 
+/* Select-element for changing boxcontent*/
+.buttomenu2 .boxcontentselect {
+    top: 0px;
+    bottom: 0px;
+    width: 150px;
+    margin: 0px;
+    padding: 3px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-overflow: '';
+    text-indent: 1px;
+    outline: none;
+}
+
+/* Select-element for picking a wordlist*/
+.buttomenu2 .wordlistselect {
+    top: 0px;
+    bottom: 0px;
+    width: 70px;
+    margin: 0px;
+    padding: 3px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-overflow: '';
+    text-indent: 1px;
+    outline: none;
+}
+
 /* BOXMENU STYLING STOP */
 
 #buttomenu {
@@ -605,45 +633,6 @@
 }
 
 /* USER FEEDBACK BOX STOP*/
-
-/* BOXMENU STYLING START */
-.buttomenu2 {
-    position: absolute;
-    top: 0px;
-    width: -moz-calc(100%);
-    width: -webkit-calc(100%);
-    margin: 0;
-}
-
-/* Select-element for changing boxcontent*/
-.buttomenu2 .boxcontentselect {
-    top: 0px;
-    bottom: 0px;
-    width: 150px;
-    margin: 0px;
-    padding: 3px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-overflow: '';
-    text-indent: 1px;
-    outline: none;
-}
-
-/* Select-element for picking a wordlist*/
-.buttomenu2 .wordlistselect {
-    top: 0px;
-    bottom: 0px;
-    width: 70px;
-    margin: 0px;
-    padding: 3px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-overflow: '';
-    text-indent: 1px;
-    outline: none;
-}
-
-/* BOXMENU STYLING STOP */
 
 /* RESIZABLE UI START*/
 /* Resizable jQuery UI fix for absolute positioning east*/
