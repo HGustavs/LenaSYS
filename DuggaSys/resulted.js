@@ -1432,10 +1432,10 @@ function mail() {
 // Puts filter buttons at a fixed point when scrolling horizontally
 $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
-	var ladExportWidth = document.getElementById("ladexportContainer").offsetWidth;
+	var ladExportWidth = document.getElementById("resultedFormContainer").offsetWidth;
 	var scrolled = $(this).scrollLeft();
 	if((scrolled + ladExportWidth) < resultTableWidth){
-		$('#ladexportContainer').css({
+		$('#resultedFormContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
 		});
 	}
