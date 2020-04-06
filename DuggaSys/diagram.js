@@ -1536,14 +1536,6 @@ function enableSelectedItemOptions() {
         $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
       } else {
         $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
         $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
@@ -1552,15 +1544,26 @@ function enableSelectedItemOptions() {
         $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
         $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
         $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
-    }
+		}
+			if (selected_objects.length > 1){
+				$("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
+				$("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
+				$("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
+				$("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
+				$("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
+				$("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
+				$("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
+				$("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
+			} else {
+				$("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
+				$("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
+				$("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
+				$("#align-left-item").addClass("drop-down-item drop-down-item-disabled");
+				$("#horizontal-c-item").addClass("drop-down-item drop-down-item-disabled");
+				$("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
+				$("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
+				$("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
+				}
 }
 
 //----------------------------------------------------
