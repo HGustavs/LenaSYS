@@ -117,7 +117,7 @@ function parseMarkdown(inString)
             specialBlockStart=false;
             workstr='<div class="console"><pre>'+workstr.substr(3)+'</pre></div>';
         }else if(workstr !== "") {
-            workstr=parseLineByLine(workstr.replace(/^[\&{3}]|[\@{3}]/gm, ''));
+            workstr=parseLineByLine(workstr.replace(/^\&{3}|\@{3}/gm, ''));
             specialBlockStart=true;
         }
         str+=workstr;
