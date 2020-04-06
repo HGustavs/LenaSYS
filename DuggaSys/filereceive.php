@@ -150,8 +150,16 @@ if ($storefile) {
 
             $temp = explode(".", $filea["name"]);
             $extension = end($temp); //stores the file type
-            // Determine file MIME-type
-            $filetype = mime_content_type($filea["tmp_name"]);
+
+           
+            $filetype = "";
+            if (function_exists('mime_content_type'))
+                // Determine file MIME-type
+                $filetype = mime_content_type($filea["tmp_name"]);
+            else
+                // Use the file type given at upload because the extension "fileinfo" has not been enabled in php.ini
+                $filetype = $filea['type'];
+            
             if (array_key_exists($extension, $allowedExtensions)) {
                 //  if file type is allowed, continue the uploading process.
 
