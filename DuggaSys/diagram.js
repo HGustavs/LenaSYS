@@ -2642,6 +2642,7 @@ function distribute(event, axis) {
     // There is a posibility for more types
     updateGraphics();
     hashFunction();
+    SaveState();
 }
 
 //----------------------------------------------------------------------
