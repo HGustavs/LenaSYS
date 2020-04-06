@@ -1492,7 +1492,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	for (i = 0; i < tokens.length; i++) {
 		tokenvalue = String(tokens[i].val);
  
-         if(tokenvalue=="header")cont += "<span style='color: #00ff00;'<Header</span>";
+         if(tokenvalue=="header")cont += "<span style='color: blue;'<Header</span>";
         
 		if (tokens[i].kind == "rowcomment" || tokens[i].kind == "blockcomment" || tokens[i].kind == "string" || tokens[i].kind == "number" || tokens[i].kind == "name") {
 			// Fix to remove html tags in strings
@@ -1579,7 +1579,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
                     case "<html>":
                     case "</html":
-                        fontcolor = "#00ff00";
+                        fontcolor = "red";
                         break;
 
                     case "<link ":
@@ -1589,19 +1589,19 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
            
                     case "<h1>":
                     case "</h1":
-                        fontcolor = "#00ff00";
+                        fontcolor = "darkorchid";
                         break;
                     case "<title>":
                     case "</title":
-                        fontcolor = "#00ff00";
+                        fontcolor = "green";
                         break;
                     case "<body>":
                     case "</body":
-                        fontcolor = "#00ff00";
+                        fontcolor = "#941535";
                         break;
                     case "<p>":
                     case "</p":
-                        fontcolor = "#00ff00";
+                        fontcolor = "#a3a300";
                         break;
                     case "<script ":
                     case "</script":

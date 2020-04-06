@@ -208,7 +208,7 @@ Testing Link:
 						<tr>
 							<td><select id='fontsize'><?php for($i = 9; $i <= 22; $i++) echo '<option value="' . $i . '">' . $i .' px</option>'; ?></select></td>
 							<td>&nbsp;</td>
-						</td>
+						
 						</tr>
 						<tr>
 							<td>Important Rows:</td>
