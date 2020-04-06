@@ -68,8 +68,6 @@
 .buttomenu2 {
     position: absolute;
     top: 0px;
-    width: -moz-calc(100%);
-    width: -webkit-calc(100%);
     width: calc(100%);
     margin: 0;
     overflow: hidden;
@@ -345,109 +343,6 @@
 
 /* TAB-MENU STOP */
 
-/* TOOLTIPS START */
-.tooltip,
-.arrow:after,
-.arrow2:after {
-    background: black;
-}
-
-.tooltip {
-    pointer-events: none;
-    opacity: 0;
-    display: inline-block;
-    position: fixed;
-    padding: 5px 10px;
-    color: orange;
-    border-radius: 5px;
-    margin-top: 20px;
-    text-align: center;
-    font-stretch: condensed;
-    text-decoration: none;
-    text-transform: uppercase;
-    z-index: 10000;
-}
-
-.arrow {
-    width: 70px;
-    height: 18px;
-    overflow: hidden;
-    position: absolute;
-    bottom: -16px;
-}
-
-.arrow::after {
-    content: "";
-    position: absolute;
-    top: -20px;
-    width: 25px;
-    height: 25px;
-    left: 22.5;
-    /* 22.5 to place the arrow in the middle. arrowwidth/2 - arrow:afterwidth/2=22.5 */
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-}
-
-.arrow2 {
-    width: 70px;
-    height: 18px;
-    overflow: hidden;
-    position: absolute;
-    top: -16px;
-}
-
-.arrow2::after {
-    content: "";
-    position: absolute;
-    bottom: -20px;
-    width: 25px;
-    height: 25px;
-    left: 22.5;
-    /* 22.5 to place the arrow in the middle. arrow2width/2 - arrow2:afterwidth/2=22.5 */
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-}
-
-.tooltip.active {
-    opacity: 1;
-    margin-top: 5px;
-    transition-delay: 0.5s !important;
-    -webkit-transition-delay: 1s !important;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
-}
-
-.tooltip.active2 {
-    opacity: 1;
-    margin-top: 5px;
-    transition-delay: 0.5s !important;
-    -webkit-transition-delay: 1s !important;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
-}
-
-.tooltip.out {
-    opacity: 0;
-    margin-top: -5px;
-    transition-delay: 0s !important;
-}
-
-.tooltip.out2 {
-    opacity: 0;
-    margin-top: 15px;
-    transition-delay: 0s !important;
-}
-
-/* TOOLTIPS STOP */
-
 /*Prevent new lines to enter (which creates screen-errors) when editing names in lists*/
 .norm>[contenteditable="true"] br,
 .butt>[contenteditable="true"] br {
@@ -679,14 +574,6 @@
     cursor: pointer;
 }
 
-#editExample {
-    /*
-    top: 185px;
-    width: 464px;
-    margin-left: -232px;
-    */
-}
-
 #editExample td {
     width: 50%;
     padding: 5px 5px 0px 5px;
@@ -814,10 +701,6 @@
     font-size: 24px;
     user-select: none;
     z-index: 1;
-}
-
-.copy-notification-icon {
-
 }
 
 .copy-notification img {
