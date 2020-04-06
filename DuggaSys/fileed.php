@@ -82,7 +82,7 @@ pdoConnect();
             </div>
             <form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
                 <div>
-                    <input type='hidden' id='cid' name='cid' value='Toddler'/>
+                    <input type='hidden' id='courseid' name='courseid' value='Toddler'/>
                     <input type='hidden' id='coursevers' name='coursevers' value='Toddler'/>
                     <input type='hidden' id='kind' name='kind' value='Toddler'/>
                     <div class='inputwrapper filePopUp'>
