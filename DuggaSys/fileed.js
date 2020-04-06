@@ -44,7 +44,7 @@ function setup() {
     */
 
     AJAXService("GET", {
-        cid: querystring['cid']
+        cid: querystring['courseid']
     }, "FILE");
 }
 
