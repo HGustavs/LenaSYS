@@ -1606,41 +1606,40 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
 
-            coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
-              
-            switch(coloringcode) {
-                case "<html>":
-                case "</html":
-                    fontcolor = "red";
-                    break;
-                case "<link ":
-                    fontcolor = "blue";
-                    break;
-                case "<h1>":
-                case "</h1":
-                    fontcolor = "darkorchid";
-                    break;
-                case "<title>":
-                case "</title":
-                    fontcolor = "green";
-                    break;
-                case "<body>":
-                case "</body":
-                    fontcolor = "#941535";
-                    break;
-                case "<p>":
-                case "</p":
-                    fontcolor = "#a3a300";
-                    break;
-                case "<script ":
-                case "</script":
-                    fontcolor = "#ff8000";
-                    break;
-                default: 
-                    fontcolor = "#00ff";
-                    break;
-            }
+				coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
 
+				switch(coloringcode) {
+					case "<html>":
+					case "</html":
+						fontcolor = "red";
+						break;
+					case "<link ":
+						fontcolor = "blue";
+						break;
+					case "<h1>":
+					case "</h1":
+						fontcolor = "darkorchid";
+						break;
+					case "<title>":
+					case "</title":
+						fontcolor = "green";
+						break;
+					case "<body>":
+					case "</body":
+						fontcolor = "#941535";
+						break;
+					case "<p>":
+					case "</p":
+						fontcolor = "#a3a300";
+						break;
+					case "<script ":
+					case "</script":
+						fontcolor = "#ff8000";
+						break;
+					default: 
+						fontcolor = "#00ff";
+						break;
+				}
 
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
@@ -1662,7 +1661,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								htmlTag.push(pid);
 							}
-							cont += "&lt" + "<span id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
 							cont += "</span>";
 							i = i + 1;
 						} else {
@@ -1679,7 +1678,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							htmlTagCount++;
 							pid = "html" + htmlTagCount + boxid;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
