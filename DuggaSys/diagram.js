@@ -3509,6 +3509,15 @@ function handleSelect() {
     }
 }
 
+function enterEditMode() {
+    resetToolButtonsPressed();
+    deselectObjects();
+    uimode = "CreateFigure";
+    lastSelectedObject = markedObject;
+    diagram[lastSelectedObject].targeted = true;
+    selected_objects.push(diagram[lastSelectedObject]);
+}
+
 function mouseupevt(ev) {
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
@@ -3596,8 +3605,10 @@ function mouseupevt(ev) {
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                 }
-                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
-
+                //Code for exiting CreateLine mode and letting user move around figures when pressing an object
+                if (diagram[lineStartObj] == diagram[markedObject]) {
+                    enterEditMode();
+                } 
                 if (okToMakeLine) {
                     saveState = true;
                     if (createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -3609,6 +3620,8 @@ function mouseupevt(ev) {
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
                     diagram[markedObject].connectorTop.push({from:p2, to:p1});
                 }
+            } else {
+                enterEditMode();    // Else if you end on a line/text, let user edit it
             }
         }
     }
