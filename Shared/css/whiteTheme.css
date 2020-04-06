@@ -1,73 +1,3 @@
-.buttomenuStyle {
-    background-color: #614875;
-}
-
-.mbuttoStyle {
-    background-color: #614875;
-}
-
-.mbuttoStyleLight {
-    background-color: #9868bd;
-}
-
-.mbuttoStyle:hover{
-	background-color: #7D5CA0;
-}
-
-.menutextStyle {
-   	color: white;
-}
-
-.hotdogdropStyle{
-	color: white;
-}
-.hotdogdropStyle table td{
-	color: white;
-}
-
-.dropdownStyle {
-    color: white;
-    /*background: #614875;*/
-}
-
-.dropdownbackStyle {
-	background-color: #614875;
-    color: white;
-}
-
-.codedropStyle {
-    background-color: #614875;
-    border-color: rgb(0,0,0) transparent;	
-}
-
-.docudropStyle {
-    background-color: #614875; 
-    background: rgb(0, 0, 0) transparent;
-}
-
-.themedropStyle {
-	background-color: #614875;
-}
-
-.imgdropStyle{
-	background-color: #614875;
-}
-.imgdropStyle img:hover{
-	border-style:solid;
-	border-width:1px;
-	border-color: white;
-	padding: 4px;
-}
-
-.dropdownitemStyle {
-    background: #614875;
-    color: #fff;
-}
-
-.dropdownitem:hover {
-	background-color: #7D5CA0;
-}
-
 .codeborder{
   position: sticky;
   position: -webkit-sticky;
@@ -136,11 +66,6 @@
     float: left;
     text-align: right;
 }
-
-
-
-
-
 
 .normtext:hover {
     background-color: rgba(0,0,0,0.1);
