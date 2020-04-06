@@ -158,11 +158,11 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='globalAppearanceMenu(event);'>Global Appearance</span>
+                                <span class="drop-down-option" onclick='loadAppearanceForm();'>Global Appearance</span>
                             </div>
                             <div class="drop-down-item">
                                 <div id="change-appearance-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='openAppearanceDialogMenu(event);'>Change Appearance</span>
+                                    <span class="drop-down-option" onclick='loadAppearanceForm();'>Change Appearance</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
@@ -406,77 +406,75 @@
             </div>
             <div class='table-wrap'>
                 <div id="appearanceForm">
-                    <div class="form-group" data-types="attribute, class, entity, relation">
-                        <label for="name">[TYPE] name:</label>
+                    <div class="form-group" data-types="1,2,3,5">
+                        <label for="name">Name:</label>
                         <input type="text" id="name">
                     </div>
-                    <div class="form-group" data-types="attribute, entity, line, relation">
-                        <label for="type">[TYPE] type:</label>
+                    <div class="form-group" data-types="2,3,4,5">
+                        <label for="type">Type:</label>
                         <select id="type"></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation, figure, global">
+                    <div class="form-group" data-types="2,3,5,0,-1">
                         <label for="">Fill color:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation, text, global">
+                    <div class="form-group" data-types="6">
+                        <label for="">Text:</label>
+                        <textarea id="freeText" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,6,-1">
                         <label for="">Font family:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation, text, global">
+                    <div class="form-group" data-types="2,3,5,6,-1">
                         <label for="">Font color:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation, text, global">
+                    <div class="form-group" data-types="2,3,5,6,-1">
                         <label for="">Text size:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation, figure">
+                    <div class="form-group" data-types="2,3,5,0">
                         <label for="">Line color:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="global">
+                    <div class="form-group" data-types="-1">
                         <label for="">Stroke color:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="text">
+                    <div class="form-group" data-types="6">
                         <label for="">Text alignment:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="line">
+                    <div class="form-group" data-types="4">
                         <label for="">Line direction:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="line">
+                    <div class="form-group" data-types="4">
                         <label for="">Cardinality:</label>
                         <select id=""></select></br>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="class">
+                    <div class="form-group" data-types="1">
                         <label for="">Attributes:</label>
                         <textarea id="umlAttributes" cols="30" rows="10"></textarea>
                     </div>
-                    <div class="form-group" data-types="class">
+                    <div class="form-group" data-types="1">
                         <label for="">Operations:</label>
                         <textarea id="umlOperations" cols="30" rows="10"></textarea>
                     </div>
-                    <div class="form-group" data-types="text">
-                        <textarea id="freeText" cols="30" rows="10"></textarea>
-                    </div>
-                    <div class="form-group" data-types="figure">
+                    <div class="form-group" data-types="0">
                         <label for="figureOpacity">Opacity:</label>
                         <input type="range" id="figureOpacity">
                     </div>
-                    <div class="form-group" data-types="global">
+                    <div class="form-group" data-types="-1">
                         <label for="line-thickness">Line thickness:</label>
                         <input type="range" id="line-thickness">
                     </div>
-                    <div class="form-group" data-types="" style="text-align:center;">
+                    <div class="form-group" style="text-align:center;" data-types="all">
                         <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
                     </div>
                 </div>
-                
-                
-                <div id="f01"></div>
             </div>
         </div>
     </div>

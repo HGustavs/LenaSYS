@@ -4596,12 +4596,12 @@ only screen and (max-device-width: 320px) {
 
 #appearance {
   display: none;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0);
   box-sizing: border-box;
 }
 
 .form-group {
-  margin: 8px 0;
+  margin: 4px 0;
 }
 
 .form-group label {
@@ -4612,6 +4612,11 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   border: 0;
   margin: 0;
+}
+
+#appearanceForm textarea {
+  height: 100px;
+  resize: none;
 }
 
 /* --------------================################================-------------- *

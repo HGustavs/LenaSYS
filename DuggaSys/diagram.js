@@ -3922,18 +3922,6 @@ function deactivateMovearound() {
     movemode();
 }
 
-//--------------------------------------------------------------------
-// Basic functionality
-// The building blocks for creating the menu
-//--------------------------------------------------------------------
-
-function showMenu() {
-    $("#appearance").show();
-    $("#appearance").width("auto");
-    dimDialogMenu(true);
-    hashCurrent();
-    return document.getElementById("f01");
-}
 
 //----------------------------------------------------------------------
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
@@ -3950,9 +3938,9 @@ function openAppearanceDialogMenu(event) {
         return;
     }
     $(".loginBox").draggable();
-    var form = showMenu();
-    appearanceMenuOpen = true;
-    objectAppearanceMenu(form);
+    toggleApperanceElement(true);
+    loadAppearanceForm();
+    objectAppearanceMenu();
 }
 
 //----------------------------------------------------------------------
@@ -3972,7 +3960,7 @@ function closeAppearanceDialogMenu() {
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
-    dimDialogMenu(false);
+    toggleApperanceElement(false);
     document.removeEventListener("click", clickOutsideDialogMenu);
 }
 
@@ -4007,11 +3995,13 @@ function clickEnterOnDialogMenu(ev) {
     });
 }
 
-function dimDialogMenu(dim) {
-    if (dim == true) {
-        $("#appearance").css("display", "flex");
+function toggleApperanceElement(show) {
+    const appearanceElement = document.getElementById("appearance");
+    if(show) {
+        appearanceElement.style.display = "flex";
+        appearanceMenuOpen = true;
     } else {
-        $("#appearance").css("display", "none");
+        appearanceElement.style.display = "none";
     }
 }
 
@@ -4019,12 +4009,13 @@ function dimDialogMenu(dim) {
 // loadFormIntoElement: Loads the menu which is used to change appearance of ER and free draw objects.
 //----------------------------------------------------------------------
 
-function loadFormIntoElement(element, dir) {
+function loadFormIntoElement(dir) {
     //Ajax
     var file = new XMLHttpRequest();
     var lastSelected = selected_objects[selected_objects.length - 1];
     var names = "";
     var properties;
+    const element = document.getElementById("appearanceForm");
 
     if(dir == "diagram_forms.php?form=globalType"){
         properties = settings.properties;
@@ -4231,9 +4222,9 @@ function globalAppearanceMenu(event) {
     event.stopPropagation();
     globalAppearanceValue = 1;
     $(".loginBox").draggable();
-    var form = showMenu();
+    toggleApperanceElement(true);
     //AJAX
-    loadFormIntoElement(form,'diagram_forms.php?form=globalType');
+    loadFormIntoElement('diagram_forms.php?form=globalType');
 }
 
 // determines which form should be loaded when line form is opened
@@ -4244,13 +4235,15 @@ var cardinalityValue;
 //----------------------------------------------------------------------
 
 function objectAppearanceMenu(form) {
-    form.innerHTML = "No item selected<type='text'>";
-
-    var lastSelected = selected_objects[selected_objects.length - 1];
-
     //if no item has been selected
-    if(selected_objects.length < 1) { return;}
+    if(selected_objects.length < 1) {
+        return;
+    }
+
+    const form = document.getElementById("appearanceForm");
+    const lastSelected = selected_objects[selected_objects.length - 1];
     // UML selected
+
     if (lastSelected.symbolkind == symbolKind.uml) {
         classAppearanceOpen = true;
         loadUMLForm(form, 'diagram_forms.php?form=classType');
@@ -4406,4 +4399,62 @@ function changeLineDirection() {
         selected_objects[i].lineDirection = document.getElementById('line_direction').value;
     }
     updateGraphics();
+}
+
+
+
+
+
+function loadAppearanceForm() {
+    //Should not load a form if no symbol was selected or any selected symbol is locked
+    if(selected_objects.length < 1) return;
+    for(let i = 0; i < selected_objects.length; i++){
+        if(selected_objects[i].isLocked) return;
+    }
+
+    //Get type of previously selected symbol according to symbolKind object
+    let type = selected_objects[selected_objects.length - 1].symbolkind;
+
+    //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
+    if(typeof type === "undefined") type = 0;
+
+    const formGroups = document.querySelectorAll("#appearanceForm .form-group");
+    formGroups.forEach(group => {
+        const types = group.dataset.types.split(",");
+        group.style.display = "none";
+        if(types.includes(type.toString()) || types.includes("all")) {
+            group.style.display = "block";
+        }
+    });
+
+    switch(type) {
+        case symbolKind.erAttribute:
+
+            break;
+        case symbolKind.erEntity:
+
+            break;
+        case symbolKind.erRelation:
+
+            break;
+        case symbolKind.line:
+
+            break;
+        case symbolKind.text:
+
+            break;
+        case symbolKind.uml:
+     
+            break;
+        case symbolKind.umlLine:
+
+            break;
+        case 0:
+            
+            break;
+        default:
+            break;
+    }
+
+    document.getElementById("appearance").style.display = "flex";
 }
