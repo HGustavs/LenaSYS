@@ -432,7 +432,7 @@ function deleteFile(fileid, filename) {
     if (confirm("Do you really want to delete the file/link: " + filename)) {
         AJAXService("DELFILE", {
             fid: fileid,
-            cid: querystring['cid']
+            cid: querystring['courseid']
         }, "FILE");
     }
     /*Reloads window when deleteFile has been called*/
