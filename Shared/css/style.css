@@ -4930,8 +4930,7 @@ only screen and (max-device-width: 320px) {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: 20px;
-  margin-bottom: 2px;
+  margin-top: auto;
   margin-right: 3%;
   font-size: 14px;
   transition: 1s background-color;
@@ -5283,7 +5282,8 @@ textarea#mrkdwntxt {
 
 #imgIcon,
 #headerIcon {
-  margin-left: 4px;
+  margin-left: 2px;
+  margin-right: 10px;
 }
 
 
