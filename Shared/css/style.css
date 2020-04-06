@@ -666,9 +666,9 @@ header td {
 }
 
 .navButt {
-    width: 32px;
-    vertical-align: middle;
-    margin-top: 9px;
+  width: 32px;
+  vertical-align: middle;
+  margin-top: 9px;
 }
 
 .navButt img {
@@ -2466,14 +2466,14 @@ span.arrow {
 /* Course version dropdown div */
 
 .course-dropdown-div {
-    border: 1px solid var(--color-border-2);
-    border-radius: 3px;
-    overflow: hidden;
-    background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-    background-position: right;
-    margin-top: 7px;
-    margin-left: 3px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 3px;
+  overflow: hidden;
+  background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  background-position: right;
+  margin-top: 7px;
+  margin-left: 3px;
 }
 
 /* Course version dropdown */
