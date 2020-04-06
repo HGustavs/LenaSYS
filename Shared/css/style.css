@@ -112,6 +112,7 @@ body {
 
 table {
   border-collapse: collapse;
+  font-family: Roboto, Arial Narrow;
 }
 
 th,
@@ -3258,11 +3259,6 @@ span.arrow {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-table {
-  border-collapse: collapse;
-  font-family: Roboto, Arial Narrow;
 }
 
 .fumho {
