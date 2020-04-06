@@ -1492,7 +1492,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	for (i = 0; i < tokens.length; i++) {
 		tokenvalue = String(tokens[i].val);
  
-         if(tokenvalue=="header")cont += "<span style='color: #FF1493;' </span>";
+        if(tokenvalue=="header")cont += "<span style='color: #FF1493;' </span>";
         if(tokenvalue=="World")cont += "<span style='color: black;' </span>";
         if(tokenvalue==">")cont += "<span style='color: black;' </span>";
         if(tokenvalue=="<")cont += "<span style='color: black;' </span>";
@@ -1576,44 +1576,40 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
-                                coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
+            coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
               
-                switch(coloringcode) {
-
-                    case "<html>":
-                    case "</html":
-                        fontcolor = "red";
-                        break;
-
-                    case "<link ":
-                        fontcolor = "blue";
-                        break;
-
-           
-                    case "<h1>":
-                    case "</h1":
-                        fontcolor = "darkorchid";
-                        break;
-                    case "<title>":
-                    case "</title":
-                        fontcolor = "green";
-                        break;
-                    case "<body>":
-                    case "</body":
-                        fontcolor = "#941535";
-                        break;
-                    case "<p>":
-                    case "</p":
-                        fontcolor = "#a3a300";
-                        break;
-                    case "<script ":
-                    case "</script":
-                        fontcolor = "#ff8000";
-                        break;
-                    default: 
-                        fontcolor = "#00ff";
-                        break;
-                }
+            switch(coloringcode) {
+                case "<html>":
+                case "</html":
+                    fontcolor = "red";
+                    break;
+                case "<link ":
+                    fontcolor = "blue";
+                    break;
+                case "<h1>":
+                case "</h1":
+                    fontcolor = "darkorchid";
+                    break;
+                case "<title>":
+                case "</title":
+                    fontcolor = "green";
+                    break;
+                case "<body>":
+                case "</body":
+                    fontcolor = "#941535";
+                    break;
+                case "<p>":
+                case "</p":
+                    fontcolor = "#a3a300";
+                    break;
+                case "<script ":
+                case "</script":
+                    fontcolor = "#ff8000";
+                    break;
+                default: 
+                    fontcolor = "#00ff";
+                    break;
+            }
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
 					if (htmlArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
