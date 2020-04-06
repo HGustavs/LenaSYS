@@ -4,13 +4,7 @@
 
 
 
-.impo {
-    color: #000;
-    background-color: rgba(186, 96, 255, 0.09);
-    white-space:nowrap;
-    min-width: 660px;
-	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
-}
+
 
 .normtext .no {
     color: white;
@@ -22,31 +16,20 @@
     text-align: right;
 }
 
-.normtext:hover {
-    background-color: rgba(0,0,0,0.1);
-}
+
 
 .impo .no {
     color: white;
     background-color: #9569BD;
 }
 
-.comment {
-    color: #50a750;
-		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
-}
 
 
 
-.impo .oper {
-    color: #000;
-		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
-}
 
-.normtext .string {
-    color: #03b;
-		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
-}
+
+
+
 
 .impo .string {
     color: #000;

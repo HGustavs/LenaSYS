@@ -322,13 +322,13 @@
 
 /* DROPDOWN STOP */
 
-/* BOX TEXT STYLING START */
+
+/* TEXTWRAPPER START */
+
 .norm {
     color: #fff;
     background-color: #272822;
 }
-/* NORMTEXTWRAPPER START */
-
 .normtextwrapper{
     /* Width of codeborder */
     position: absolute;
@@ -345,14 +345,30 @@
     line-height: 15px;
   }
 
-.normtext .oper {
+.normtext:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.normtext .string {
+    color: #03b;
+}
+
+.impo {
     color: #000;
+    background-color: rgba(186, 96, 255, 0.09);
+    white-space:nowrap;
+    min-width: 660px;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+}
+
+.comment {
+    color: #50a750;
 	font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
-/* NORMTEXTWRAPPER STOP */
+/* TEXTWRAPPER STOP */
 
-/* BOX TEXT STYLING STOP */
+
 
 #playlinkErrorMsg {
     display: none;
