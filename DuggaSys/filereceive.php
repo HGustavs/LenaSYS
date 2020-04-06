@@ -263,5 +263,8 @@ if (!$error) {
     echo "<script>window.location.replace('fileed.php?cid=" . $cid . "&coursevers=" . $vers . "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 ?>
+
+
+
 </body>
 </html>
