@@ -541,7 +541,7 @@ function validateForm(formid) {
 		if (window.bool4 === true && window.bool2 === true) {
 			alert('The course updated');
 			updateCourse();
-			$('#editCourse input').val("");
+			
 
 
 		} else {
