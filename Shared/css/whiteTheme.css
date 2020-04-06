@@ -1,20 +1,8 @@
 
 
-.normtextwrapper{
-   /* Width of codeborder */
-    position: absolute;
-    top: 0px;
-  	margin-left: 32px;
-  	padding: 5px 0px 0px 5px;
-}
 
-.normtext {
-  color: #000;
-  background-color: #F2F2F2;
-  white-space:nowrap;
-  font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
-  line-height: 15px;
-}
+
+
 
 .impo {
     color: #000;
@@ -48,10 +36,7 @@
 		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
-.normtext .oper {
-    color: #000;
-		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
-}
+
 
 .impo .oper {
     color: #000;

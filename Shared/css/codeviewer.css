@@ -327,16 +327,30 @@
     color: #fff;
     background-color: #272822;
 }
+/* NORMTEXTWRAPPER START */
 
-.normtext{
+.normtextwrapper{
+    /* Width of codeborder */
+    position: absolute;
+    top: 0px;
+    margin-left: 32px;
+    padding: 5px 0px 0px 5px;
+ }
+
+.normtext {
+    color: #000;
+    background-color: #F2F2F2;
+    white-space:nowrap;
+    font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
     line-height: 15px;
+  }
+
+.normtext .oper {
+    color: #000;
+	font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
-.normtextend{
-    height: 120px;
-    margin: 0 auto;
-    position: relative;
-}
+/* NORMTEXTWRAPPER STOP */
 
 /* BOX TEXT STYLING STOP */
 
