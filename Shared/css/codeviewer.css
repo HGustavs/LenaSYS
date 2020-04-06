@@ -188,6 +188,38 @@
     width: 20px;
 }
 
+.codeborder{
+    position: sticky;
+    min-height: 100%;
+    bottom: 0px;
+    left:0px;
+    margin: 0px !important;
+	padding: 5px 0px 0px 0px !important;
+	background-color: #614875;
+    text-align: right;
+    line-height: 15px;
+	/* Width of .no and .impo */
+	width: 32px !important;
+}
+
+.codeborder .no {
+    color: #D8D8D8;
+    padding-left: 4px;
+    padding-right: 6px;
+    width: 22px;
+	background-color: #614875;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+}
+
+.codeborder .impono {
+    color: white;
+    width: 22px;
+    background-color: #9569BD;
+    padding-left: 4px;
+    padding-right: 6px;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+}
+
 /* DROPDOWN STARTS */
 .dropdown {
     display: none;
@@ -778,3 +810,4 @@
   .blockEllipses {
       font-weight: bold;
   }
+
