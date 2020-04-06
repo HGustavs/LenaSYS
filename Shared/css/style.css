@@ -658,6 +658,8 @@ header td {
   height: 20px;
   margin-bottom: 10px;
   width: 100%;
+  position: fixed;
+  z-index: 8000;
 }
 
 .trsize {
@@ -812,8 +814,14 @@ div .navButt:hover {
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
 }
-
-#overlay {
+@media screen and (max-width: 600px) {
+  .navheader {
+    float: none;
+    width: 100%;
+  }
+}
+.overlay {
+  display: block;
   position: fixed;
   top: 0;
   background-color: #000;
@@ -824,16 +832,19 @@ div .navButt:hover {
 }
 
 .loginBoxContainer {
-  display: flex;
+  display: block;
   justify-content: center;
   align-items: center;
   position: fixed;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 8000;
+  margin:0 auto;
 }
 
 .loginBox {
