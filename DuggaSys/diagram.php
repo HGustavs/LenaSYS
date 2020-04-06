@@ -407,31 +407,35 @@
             <div class='table-wrap'>
                 <div id="appearanceForm">
                     <div class="form-group" data-types="attribute, class, entity, relation">
-                        <label for="name">TYPE name:</label>
+                        <label for="name">[TYPE] name:</label>
                         <input type="text" id="name">
                     </div>
                     <div class="form-group" data-types="attribute, entity, line, relation">
-                        <label for="type">TYPE type:</label>
+                        <label for="type">[TYPE] type:</label>
                         <select id="type"></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation">
-                        <label for="">Background color:</label>
+                    <div class="form-group" data-types="attribute, entity, relation, figure, global">
+                        <label for="">Fill color:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation, text">
+                    <div class="form-group" data-types="attribute, entity, relation, text, global">
                         <label for="">Font family:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation, text">
+                    <div class="form-group" data-types="attribute, entity, relation, text, global">
                         <label for="">Font color:</label>
                         <select id=""></select>
                     </div>
-                    <div class="form-group" data-types="attribute, entity, relation, text">
+                    <div class="form-group" data-types="attribute, entity, relation, text, global">
                         <label for="">Text size:</label>
                         <select id=""></select>
                     </div>
                     <div class="form-group" data-types="attribute, entity, relation, figure">
                         <label for="">Line color:</label>
+                        <select id=""></select>
+                    </div>
+                    <div class="form-group" data-types="global">
+                        <label for="">Stroke color:</label>
                         <select id=""></select>
                     </div>
                     <div class="form-group" data-types="text">
@@ -458,11 +462,21 @@
                     <div class="form-group" data-types="text">
                         <textarea id="freeText" cols="30" rows="10"></textarea>
                     </div>
+                    <div class="form-group" data-types="figure">
+                        <label for="figureOpacity">Opacity:</label>
+                        <input type="range" id="figureOpacity">
+                    </div>
+                    <div class="form-group" data-types="global">
+                        <label for="line-thickness">Line thickness:</label>
+                        <input type="range" id="line-thickness">
+                    </div>
                     <div class="form-group" data-types="" style="text-align:center;">
                         <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
                     </div>
                 </div>
-                <!--<div id="f01"></div>-->
+                
+                
+                <div id="f01"></div>
             </div>
         </div>
     </div>

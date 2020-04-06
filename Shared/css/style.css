@@ -4596,7 +4596,8 @@ only screen and (max-device-width: 320px) {
 
 #appearance {
   display: none;
-  background-color: rgba(0, 0, 0, 0.2)
+  background-color: rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
 .form-group {
@@ -4605,6 +4606,12 @@ only screen and (max-device-width: 320px) {
 
 .form-group label {
   display: block;
+}
+
+#figureOpacity, #line-thickness {
+  width: 100%;
+  border: 0;
+  margin: 0;
 }
 
 /* --------------================################================-------------- *
