@@ -188,7 +188,7 @@
     width: 20px;
 }
 
-.codeborder{
+.codeborder {
     position: sticky;
     min-height: 100%;
     bottom: 0px;
@@ -325,17 +325,13 @@
 
 /* TEXTWRAPPER START */
 
-.norm {
-    color: #fff;
-    background-color: #272822;
-}
 .normtextwrapper{
     /* Width of codeborder */
     position: absolute;
     top: 0px;
     margin-left: 32px;
     padding: 5px 0px 0px 5px;
- }
+}
 
 .normtext {
     color: #000;
@@ -343,7 +339,7 @@
     white-space:nowrap;
     font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
     line-height: 15px;
-  }
+}
 
 .normtext:hover {
     background-color: rgba(0,0,0,0.1);
@@ -353,12 +349,35 @@
     color: #03b;
 }
 
+.normtext .hi {
+    background-color: #9569BD;
+    font-weight: bold;
+}
+
+.normtext .html {
+	background-color: #9569BD;
+}
+
 .impo {
     color: #000;
     background-color: rgba(186, 96, 255, 0.09);
     white-space:nowrap;
     min-width: 660px;
 	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+}
+
+.impo .html {
+	background-color: #9569BD;
+}
+
+.impo .hi {
+   font-weight: bold;
+   background-color: #9569BD;
+}
+
+.impo .no {
+    color: white;
+    background-color: #9569BD;
 }
 
 .comment {
