@@ -17,6 +17,7 @@ $noup="NONE";
 <!DOCTYPE html>
 <html>
 <head>
+
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -70,7 +71,7 @@ $noup="NONE";
     		<div style='padding:5px;'>
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'><span>Course Name:</span><input oninput="validateCourseName('ncoursename', 'dialog4')" class='textinput' type='text' id='ncoursename' placeholder='Course Name' /></div>
-				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 25px; display:none;">Only letters</p>
+				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 25px; display:none;">Only letters (not åäö)</p>
     			<div class='inputwrapper'><span>Course code:</span><input oninput="validateCourseCode('ncoursecode', 'dialog3')" class='textinput' type='text' id='ncoursecode' placeholder='Course Code' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 25px; display:none;">2 Letters, 3 digits, 1 letter</p>
     		</div>
