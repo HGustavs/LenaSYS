@@ -9,6 +9,8 @@ var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
 var accessFilter = "WRST";
+var trueTeacher;
+var examinerName;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -284,7 +286,7 @@ function renderCell(col, celldata, cellid) {
 		
 		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
-		var examinerName;
+		
 		for(i = 0; i < filez['teachers'].length; i++){
 			if(obj.examiner == filez['teachers'][i].uid){
 				examinerName = filez['teachers'][i].name;
@@ -304,13 +306,13 @@ function renderCell(col, celldata, cellid) {
         };
 	} else if (col == "access") {
 		if(obj.access == "W"){
-			var trueTeacher = "Teacher";
+			trueTeacher = "Teacher";
 		}
 		else if (obj.access == "R"){
-			var trueTeacher = "Student";
+			trueTeacher = "Student";
 		}
 		else {
-			var trueTeacher = "Student teacher";
+			trueTeacher = "Student teacher";
 		}
 		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
@@ -333,7 +335,11 @@ function renderCell(col, celldata, cellid) {
 			if (i > 0) optstr += " ";
 			optstr += tgroups[i].substr(1 + tgroups[i].indexOf("_"));
 		}
-		str = "<div class='multiselect-group'><div class='group-select-box' onmouseover='showCheckboxes(this)'>";
+		if(optstr === ""){
+			optstr = "None";
+		}
+		console.log(optstr);
+		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 		str += "<div><div class='access-dropdown'>" + optstr + "<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
