@@ -2679,6 +2679,13 @@ span.arrow {
   display: flex;
 }
 
+.resultedFormsFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5px;
+}
+
 #laddate {
   border: 1px solid var(--color-border);
 }
