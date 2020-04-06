@@ -3633,9 +3633,19 @@ $(document).mouseup(function (e) {
 		closeWindows();
 	}
 });
-
+var bool;
 function showBurgerMenu() {
-	var menu = document.querySelector('#burgerMenu');
+    if(bool==true){
+        showBurgerDropdown();
+        bool=false;
+    }else{
+        closeBurgerMenu();
+        bool=true;
+    }
+}
+
+function showBurgerDropdown(){
+ 	var menu = document.querySelector('#burgerMenu');
 	var burgerPos = document.querySelector('#codeBurger').getBoundingClientRect();
 	menu.style.display = 'block';
 	menu.style.top = burgerPos.top + 50 + 'px';
