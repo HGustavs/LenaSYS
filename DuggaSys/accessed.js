@@ -302,6 +302,9 @@ function renderCell(col, celldata, cellid) {
 			if (i > 0) optstr += " ";
 			optstr += tgroups[i].substr(1 + tgroups[i].indexOf("_"));
 		}
+		if(optstr.includes('None')){
+            optstr = "";
+        }
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 		str += "<select><option>" + optstr + "</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
