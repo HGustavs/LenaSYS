@@ -541,12 +541,12 @@ function chooseFile(selectedFile){
     var fileName = fields[0];
     var cid = fields[1];
     if(fileName !== "defaultOption"){
-    this.setCarotPosition();
-    var finText = txtarea.value.substring(0, start) + '|||' + '../courses/' + cid + '/' +  fileName + ', thumbnail in width px here,  full width here' + sel + '|||'  + txtarea.value.substring(end);
-    txtarea.value = finText;
-    txtarea.foucs();
-    txtarea.selcetionEnd= end + 12;
-    updatePreview(txtarea.value);
+        this.setCarotPosition();
+        var finText = txtarea.value.substring(0, start) + '|||' + '../courses/' + cid + '/' +  fileName + ', thumbnail in width px here,  full width here' + sel + '|||'  + txtarea.value.substring(end);
+        txtarea.value = finText;
+        txtarea.foucs();
+        txtarea.selcetionEnd= end + 12;
+        updatePreview(txtarea.value);
     }
 }
 
