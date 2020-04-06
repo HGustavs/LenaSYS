@@ -3618,6 +3618,7 @@ function mouseupevt(ev) {
         //Check if you release on canvas or try to draw a line from entity to entity
         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
             md = mouseState.empty;
+            uimode = "CreateLine";
         }else {
             //Get which kind of symbol mouseupevt execute on
             symbolEndKind = diagram[markedObject].symbolkind;
