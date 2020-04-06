@@ -1,9 +1,23 @@
 <?php
-session_start();
+
 include_once "../../coursesyspw.php";
+include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
+
+// Connect to database and start session
+session_start();
 pdoConnect();
+
+$cid = getOPG('courseid');
+
+echo("<script>console.log('PHP: " . $cid . "');</script>");
+
+$query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
+$query->bindParam(':cid', $cid);
+$query->execute();      
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -132,10 +146,26 @@ pdoConnect();
                         <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
                         <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
                         <span class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></span>
+                        <span class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></span>
                         <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
                         <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
                         <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
                         <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
+
+                        <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
+                        <option value='defaultOption'>Choose file</option>
+                        <?php
+                            while($row = $query->FETCH(PDO::FETCH_ASSOC)){  
+                                $fileName = $row['filename'];
+                                $cid = $row['cid'];
+                                $fileInfo = $fileName . ',' . $cid;
+                                if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){              
+                                    echo "<option value='$fileInfo'>$fileName</option>"; 
+
+                                }   
+                            } 
+                        ?>
+                        </select>
 
                         <div class="selectHeader" id="select-header">
                             <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
@@ -145,6 +175,9 @@ pdoConnect();
                             <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
                             <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
                         </div>
+
+
+
                         </div>
                         <div class="markText">
                             <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
