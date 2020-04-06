@@ -71,9 +71,9 @@ $noup="NONE";
     		<div style='padding:5px;'>
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'><span>Course Name:</span><input oninput="validateCourseName('ncoursename', 'dialog4')" class='textinput' type='text' id='ncoursename' placeholder='Course Name' /></div>
-				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 25px; display:none;">Only letters (not åäö)</p>
+				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 5px; display:none;">Only letters (not åäö)</p>
     			<div class='inputwrapper'><span>Course code:</span><input oninput="validateCourseCode('ncoursecode', 'dialog3')" class='textinput' type='text' id='ncoursecode' placeholder='Course Code' /></div>
-				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 25px; display:none;">2 Letters, 3 digits, 1 letter</p>
+				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 5px; display:none;">2 Letters, 3 digits, 1 letter</p>
     		</div>
     		<div style='padding:5px;'>
     			<input class='submit-button' type='button' value='Create' title='Create course' onclick="validateForm('newCourse')" />
@@ -93,9 +93,9 @@ $noup="NONE";
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'><span>Course Name:</span><input oninput="validateCourseName('coursename', 'dialog')"  class='textinput' type='text' id='coursename' placeholder='Course Name' />
 				</div>
-				<p id="dialog" style="font-size:11px; border:0px; margin-left: 25px; display:none;">Only</p>
+				<p id="dialog" style="font-size:11px; border:0px; margin-left: 5px; display:none;">Only</p>
     			<div class='inputwrapper'><span>Course code:</span><input  oninput="validateCourseCode('coursecode', 'dialog2')" class='textinput' type='text' id='coursecode' placeholder='Course Code' /></div>
-				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 25px; display:none;">2 letters, 3 digits, 1 letter</p>
+				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 5px; display:none;">2 letters, 3 digits, 1 letter</p>
     			<div class='inputwrapper'><span>Visibility:</span><select class='selectinput' id='visib'></select></div>
     		</div>
     		<div style='padding:5px;'>

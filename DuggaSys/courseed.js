@@ -454,7 +454,7 @@ function htmlFix(text){
 
 /*Validates all coursenames*/ 
 function validateCourseName(nameid, dialogid) {
-	var Name = /[a-zA-Z]+/g;
+	var Name = /[a-zA-Z]+/;
 	//regex for only letters
 	var name = document.getElementById(nameid);
 	var x = document.getElementById(dialogid);
