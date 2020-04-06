@@ -9,7 +9,6 @@ var querystring = parseGet();
 var versions;
 var entries;
 var motd;
-var readonly;
 
 $(document).ready(function(){
     $('#startdate').datepicker({
@@ -238,36 +237,23 @@ function editVersion(cid, cname, ccode) {
 }
 
 function editSettings(){
-		const messageElement = document.getElementById('motd');
-		const readOnlyCheckbox = document.getElementById('readonly');
-
-		if(motd !== "UNK") {
-			messageElement.value = motd;
-		} 
-
-		if(readonly === 1) {
-			readOnlyCheckbox.checked = true;
-		} else if(readonly === 0) {
-			readOnlyCheckbox.checked = false;
-		}
-
+		if(motd!=="UNK") $("#motd").val(motd);
 		document.getElementById('editSettings').style.display = "flex";
+
 }
 
 function updateSettings() {
-		const messageElement = document.getElementById('motd');
-		const readOnlyCheckbox = document.getElementById('readonly');
 
-		if(readOnlyCheckbox.checked) {
+		var motd = $("#motd").val();
+		var readonly = 0;
+		if ($("#readonly").val() == "yes"){
 			readonly = 1;
-		} else {
-			readonly = 0;
 		}
 
-		//Hide settings popup
-		document.getElementById("editSettings").style.display = "none";
+		// Show dialog
+		$("#editSettings").css("display", "none");
 
-		AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
+		AJAXService("SETTINGS", {	motd : motd, readonly : readonly}, "COURSE");
 }
 
 function createVersion(){
@@ -424,10 +410,7 @@ function returnedCourse(data)
 	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
 	}
-
-	motd=data["motd"];
-	readonly=parseInt(data["readonly"]);
-
+	motd=data["motd"]
 	if(motd!=="UNK"){
 		document.getElementById("servermsg").innerHTML=data["motd"];
 		document.getElementById("servermsgcontainer").style.display="flex";

@@ -109,7 +109,7 @@ $noup="NONE";
     		</div>
     		<div style='padding:5px;'>
     			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
-    			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Usefull for active backup servers.'></select></div>
+    			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' value="no" title='Disables uploads/submits. Usefull for active backup servers.'></select></div>
     		</div>
     		<div style='padding:5px;'>
     			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
