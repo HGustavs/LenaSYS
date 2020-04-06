@@ -108,7 +108,7 @@ pdoConnect();
 		</div>
 
 		<div id="MarkCont" style="position: absolute; left:4px; width: 99%; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
-		<div id="toggleGrade" style="left: 40%; top:  20%;">
+		<div id="toggleGrade">
 		<div id='markMenuPlaceholder'></div>
 		<div id="teacherFeedbackTable"></div>
 		</div>
