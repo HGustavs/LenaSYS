@@ -117,7 +117,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	// Convert representation of swedish letters
 	var tempCoursename = coursename;
 	tempCoursename = tempCoursename.replace(/&Aring;/g, "Å");
-	tempCoursename = tempCoursename.replace(/&aring;/g, "a");
+	tempCoursename = tempCoursename.replace(/&aring;/g, "å");
 	tempCoursename = tempCoursename.replace(/&Auml;/g, "Ä");
 	tempCoursename = tempCoursename.replace(/&auml;/g, "ä");
 	tempCoursename = tempCoursename.replace(/&Ouml;/g, "Ö");
