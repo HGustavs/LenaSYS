@@ -136,7 +136,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   if (kind != 3 || kind != 4) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
@@ -210,10 +210,10 @@ function changedType(kind) {
   if (kind == 2) {
     $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
   } else if (kind == 3) {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 4) {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
