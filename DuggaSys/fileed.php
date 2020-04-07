@@ -176,7 +176,7 @@ $codeLinkQuery->execute();
                                 $cid = $row['cid'];
                                 $fileid = $row['fileid'];
                                 $fileOption = $fileid . ',' . $cid . ',' . $fileName;
-                                if(preg_match('/(\.txt|\.html|\.js)$/i', $fileName)){              
+                                if(preg_match('/(\.txt|\.html|\.js|\.css)$/i', $fileName)){              
                                     echo "<option value='$fileOption'>$fileName</option>"; 
                                 }   
                             } 
