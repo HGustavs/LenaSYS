@@ -4460,46 +4460,37 @@ function setSelections(object) {
                 } else if(access.length === 2) {
                     value = object[access[0]][access[1]];
                 }
-                console.log(element, value)
                 setSelectedOption(element, value);
             }
         });
     });
+
 }
 
 //Do not handle globals yet -> -1 Line thickness and stroke color
 function setObjectProperties() {
     for(const object of selected_objects) {
-        const properties = object.properties;
+        let groups = [];
         if(object.kind === kind.symbol) {
-            properties.fillColor = document.getElementById("fillColor").value;
-            properties.strokeColor = document.getElementById("lineColor").value;
-            properties.fontColor = document.getElementById("fontColor").value;
-            properties.font = document.getElementById("fontFamily").value;
-            properties.sizeOftext = document.getElementById("textSize").value;
-            properties.key_type = document.getElementById("type").value;
-            object.name = document.getElementById("name").value;
-    
-            if(object.symbolkind === symbolKind.text) {
-                properties.textAlign = document.getElementById("textAlignment").value;
-                object.textLines = setTextareaText(document.getElementById("freeText"), object.textLines);
-            } else if(object.symbolkind === symbolKind.umlLine) {
-                object.lineDirection = document.getElementById("lineDirection").value;
-            } else if(object.symbolkind === symbolKind.uml) {
-                object.attributes = setTextareaText(document.getElementById("umlAttributes"), object.attributes);
-                object.operations = setTextareaText(document.getElementById("umlOperations"), object.operations);
-            }
-    
-            document.getElementById("cardinality").value;
-            document.getElementById("cardinalityUML").value;
-        } else if(object.kind == kind.path) {
-            object.opacity = document.getElementById("figureOpacity").value / 100;
-            object.fillColor = document.getElementById("fillColor").value;
-            properties.strokeColor = document.getElementById("lineColor").value;
+            groups = getGroupsByType(object.symbolkind);
+        } else if(object.kind === kind.path) {
+            groups = getGroupsByType(0);
         }
-    
-        //REWORK THIS
-        
+        groups.forEach(group => {
+            const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
+            elements.forEach(element => {
+                let access = element.dataset.access.split(".");
+                if(element.nodeName === "TEXTAREA") {
+                    object[access[0]] = setTextareaText(element, object[access[0]]);
+                } else if(element.type === "range") {
+                    object[access[0]] = element.value / 100;
+                } else if(access.length === 1) {
+                    object[access[0]] = element.value;
+                } else if(access.length === 2) {
+                    object[access[0]][access[1]] = element.value;
+                }
+            });
+        });        
     }
     updateGraphics();
 }
