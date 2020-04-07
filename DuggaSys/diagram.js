@@ -4363,6 +4363,8 @@ function changeObjectAppearance(object_type) {
             for (var j = 0; j < operationLines.length; j++) {
                 selected_objects[i].operations.push({text:operationLines[j]});
             }
+            //Resizes the symbol to minimum width and height values.
+            diagram[lastSelectedObject].resizeUMLToMinimum();
 
         } else if (selected_objects[i].symbolkind == symbolKind.line) {
             selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
