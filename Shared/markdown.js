@@ -550,6 +550,13 @@ function chooseFile(selectedFile){
     }
 }
 
+function codeLink(file) {
+    jQuery.get(file, function(textString) {
+        updatePreview("");
+        updatePreview(textString);
+    });
+  }
+
 function linkYoutube(){
     this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '[YOUTUBE:' + 'IDNUM,WIDTH,LENGTH' + sel + ']' + txtarea.value.substring(end);

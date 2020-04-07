@@ -15,7 +15,9 @@ $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
 $query->bindParam(':cid', $cid);
 $query->execute();      
 
-$query = $pdo->prepare( "SELECT filename FROM fileLink");
+$codeLinkQuery = $pdo->prepare( "SELECT filename FROM fileLink");
+$codeLinkQuery->execute(); 
+
 ?>
 
 
@@ -167,8 +169,17 @@ $query = $pdo->prepare( "SELECT filename FROM fileLink");
                         ?>
                         </select>
 
-                        <select name=";" onchange="codeLink();" >
-                        <option value='defaultOption'>Code Link</option>
+                        <select name="test" onchange="codeLink(this.options.value);" >
+                        <option value='defaultOption'>Choose file</option>
+                        <?php
+                            while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){  
+                                $fileName = $row['filename'];
+                                $fileOption = $fileName;
+                                if(preg_match('/(\.txt|\.html|\.js)$/i', $fileName)){              
+                                    echo "<option value='$fileOption'>$fileName</option>"; 
+                                }   
+                            } 
+                        ?>
                         </select>
 
                         <div class="selectHeader" id="select-header">
