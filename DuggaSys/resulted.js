@@ -228,6 +228,16 @@ function toggleFilter(filter) {
 	myTable.renderTable();
 }
 
+//displays dropdown when hovering search bar
+function hoverSearch() {
+	$('#dropdownSearch').css({display:'block'});
+}
+
+//stops displaying the dropdown when removing cursor from search bar
+function leaveSearch() {
+	$('#dropdownSearch').css({display:'none'});
+}
+
 function hoverc() {
 	$('#dropdowns').css({display:'none'});
 	$('#dropdownc').css({display: 'block'});

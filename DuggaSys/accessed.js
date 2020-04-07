@@ -43,6 +43,16 @@ function setup() {
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
 //  function content was commented out to avoid having a white empty box appear.
 
+//displays dropdown when hovering search bar
+function hoverSearch() {
+	$('#dropdownSearch').css({display:'block'});
+}
+
+//stops displaying the dropdown when removing cursor from search bar
+function leaveSearch() {
+	$('#dropdownSearch').css({display:'none'});
+}
+
 function hoverc() {
 	$('#dropdowns').css('display', 'none');
 	$('#dropdownc').css('display', 'block');
