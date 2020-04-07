@@ -15,7 +15,7 @@ $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
 $query->bindParam(':cid', $cid);
 $query->execute();      
 
-$codeLinkQuery = $pdo->prepare( "SELECT filename FROM fileLink");
+$codeLinkQuery = $pdo->prepare( "SELECT filename, fileid, cid FROM fileLink");
 $codeLinkQuery->execute(); 
 
 ?>
@@ -160,23 +160,25 @@ $codeLinkQuery->execute();
                             while($row = $query->FETCH(PDO::FETCH_ASSOC)){  
                                 $fileName = $row['filename'];
                                 $cid = $row['cid'];
-                                $fileInfo = $fileName . ',' . $cid;
+                                $fileOption = $fileName . ',' . $cid;
                                 if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){              
-                                    echo "<option value='$fileInfo'>$fileName</option>"; 
+                                    echo "<option value='$fileOption'>$fileName</option>"; 
 
                                 }   
                             } 
                         ?>
                         </select>
 
-                        <select name="test" onchange="codeLink(this.options.value);" >
-                        <option value='defaultOption'>Choose file</option>
+                        <select name="codeLinkDropDown" onchange="codeLink(this.options[this.selectedIndex].value);" >
+                        <option value='defaultOption'>Choose example</option>
                         <?php
                             while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){  
                                 $fileName = $row['filename'];
-                                $fileOption = $fileName;
+                                $cid = $row['cid'];
+                                $fileid = $row['fileid'];
+                                $fileInfo = $fileid . ',' . $cid . ',' . $fileName;
                                 if(preg_match('/(\.txt|\.html|\.js)$/i', $fileName)){              
-                                    echo "<option value='$fileOption'>$fileName</option>"; 
+                                    echo "<option value='$fileInfo'>$fileName</option>"; 
                                 }   
                             } 
                         ?>

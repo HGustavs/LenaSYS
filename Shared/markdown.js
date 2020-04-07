@@ -551,11 +551,18 @@ function chooseFile(selectedFile){
 }
 
 function codeLink(file) {
-    jQuery.get(file, function(textString) {
-        updatePreview("");
-        updatePreview(textString);
-    });
-  }
+    var fields = file.split(',');
+    var fileId = fields[0];
+    var cid = fields[1];
+    var fileName = fields[2];
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '!!!' + 'http://localhost/LenaSYS/DuggaSys/codeviewer.php?exampleid=' + fileId + '&courseid=' + cid + ', ' + fileName + '!!!'  + txtarea.value.substring(end);;
+    txtarea.value = finText;
+    txtarea.foucs();
+    txtarea.selcetionEnd= end + 12;
+    updatePreview(txtarea.value);
+
+}
 
 function linkYoutube(){
     this.setCarotPosition();
