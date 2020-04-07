@@ -11,11 +11,11 @@ pdoConnect();
 $cid = getOPG('courseid');
 
 echo("<script>console.log('PHP: " . $cid . "');</script>");
-
 $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
 $query->bindParam(':cid', $cid);
 $query->execute();      
 
+$query = $pdo->prepare( "SELECT filename FROM fileLink");
 ?>
 
 
@@ -165,6 +165,10 @@ $query->execute();
                                 }   
                             } 
                         ?>
+                        </select>
+
+                        <select name=";" onchange="codeLink();" >
+                        <option value='defaultOption'>Code Link</option>
                         </select>
 
                         <div class="selectHeader" id="select-header">
