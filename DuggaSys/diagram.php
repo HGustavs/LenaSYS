@@ -242,6 +242,11 @@
                                 <i id="hotkey-displayA4" class="hotKeys">Shift + 4</i>
                             </div>
                             <div class="drop-down-item">
+                                <div id="a4-single-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='togglesingleA4(event);'><img src="../Shared/icons/Arrow_down_right.png">Single A4</span>
+                                </div>
+                            </div>
+                            <div class="drop-down-item">
                                 <div id="a4-orientation-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='toggleA4Orientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
                                 </div>
