@@ -1469,10 +1469,10 @@ function Symbol(kindOfSymbol) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             if(this.cardinality[0].symbolKind == symbolKind.uml) {
-                var valX = x1 > x2 ? x1-20 : x1+20;
-                var valY = y1 > y2 ? y1-15 : y1+15;
-                var valY2 = y2 > y1 ? y2-15 : y2+15;
-                var valX2 = x2 > x1 ? x2-20 : x2+20;
+                var valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
+                var valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
+                var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
+                var valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
                 if (this.isRecursiveLine) {
                     let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent);
                     if (x1 == x2) {

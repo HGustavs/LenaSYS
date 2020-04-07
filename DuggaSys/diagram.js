@@ -4385,6 +4385,7 @@ function changeCardinality(isUML) {
     var val = document.getElementById('cardinality').value;
     var valUML;
     var lastSelected = selected_objects[selected_objects.length - 1];
+    console.log(lastSelected = selected_objects[selected_objects.length - 1]);
     if(isUML) {
         valUML = document.getElementById('cardinalityUml').value;
     }
