@@ -647,7 +647,6 @@ document.addEventListener('DOMContentLoaded', function (){
     editor = ace.edit("editor");
     editor.getSession().on('change', function () {
         editFile(editor.getSession().getValue());
-        var textarea = document.getElementById("filecont").value
 
      }); 
     editor.setTheme("ace/theme/monokai");
