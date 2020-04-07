@@ -329,7 +329,7 @@ function ExportSVG(el) {
 }
 
 function ExportSVGA4(el) {
-    const pixelsPerMillimeter = 3.781;
+    const pixelsPerMillimeter = 3.781 * zoomValue;
     a4Width = 210 * pixelsPerMillimeter;
     a4Height = 297 * pixelsPerMillimeter;
     if(A4Orientation == "landscape"){
