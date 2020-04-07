@@ -1477,11 +1477,11 @@ function Symbol(kindOfSymbol) {
                     let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent) * diagram.getZoomValue();
                     if (x1 == x2) {
                         valX = valX2 = x1 + 20 * dir;
-                        valY = y1 - 13;
-                        valY2 = y2 - 13;
+                        valY = y1 - 13 * diagram.getZoomValue();
+                        valY2 = y2 - 13 * diagram.getZoomValue();
                     }else {
                         valY = valY2 = y1 + 20 * dir;
-                        valX = x1 - 17  * diagram.getZoomValue();
+                        valX = x1 - 17 * diagram.getZoomValue();
                         valX2 = x2 - 17 * diagram.getZoomValue();
                     }
                 }
