@@ -595,7 +595,7 @@ function mouseUp(e) {
 		var checkboxes = $(activeElement).find(".checkboxes");
 		checkboxes = activeElement.parentElement.lastChild;
 
-		if (expanded && !checkboxes.contains(e.target)) {
+		if (expanded && e.target.parentElement != activeElement) {
 			checkboxes.style.display = "none";
 			var str = "";
 			for (i = 0; i < checkboxes.childNodes.length; i++) {
