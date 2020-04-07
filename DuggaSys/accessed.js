@@ -609,6 +609,10 @@ function mouseUp(e) {
 			else changeProperty(checkboxes.id.substr(3), "group", "None");
 		}
 	}
+	// if the target of the click is outside of the current cell being edited -> close the cell editing interface
+ 	else if (!document.getElementById('editpopover').contains(e.target)) {
+ 		clearUpdateCellInternal();
+ 	}
 }
 
 //----------------------------------------------------------------------------------
