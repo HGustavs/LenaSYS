@@ -853,47 +853,25 @@ function displayDrop(dropid) {
 }
 
 //----------------------------------------------------------------------------------
-// highlightop: Highlights an operator and corresponding operator in code window
+// highlightop: Highlights and Dehighlights an operator and corresponding operator in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function highlightop(otherop, thisop) {
-	if(otherop.classList.contains("hi") && thisop.classList.contains("hi")){
-		$("#" + otherop).removeClass("hi");
-		$("#" + thisop).removeClass("hi");
-	}
-	else{
-		$("#" + otherop).addClass("hi");
-		$("#" + thisop).addClass("hi");
-	}
+	document.getElementById(otherop).classList.toggle("hi");
+	document.getElementById(thisop).classList.toggle("hi");
 }
 
 //----------------------------------------------------------------------------------
-// dehighlightop: Dehighlights an operator and corresponding operator in code window
-//                Is called by rendercode in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function dehighlightop(otherop, thisop) {
-	$("#" + otherop).removeClass("hi");
-	$("#" + thisop).removeClass("hi");
-}
-
-//----------------------------------------------------------------------------------
-// highlightHtml: Highlights an html-tag and corresponding html-tag in code window
+// highlightHtml: Highlights and Dehighlights an html-tag and corresponding html-tag in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function highlightHtml(otherTag, thisTag) {
-	if(otherTag.className == "html" && thisTag.className == "html"){
-		$("#" + otherTag).removeClass("html");
-		$("#" + thisTag).removeClass("html");
-	}
-	else{
-		$("#" + otherTag).addClass("html");
-		$("#" + thisTag).addClass("html");
-	}
-	
-}
+	document.getElementById(otherTag).classList.toggle("html");
+	document.getElementById(thisTag).classList.toggle("html");
+}	
+
 //----------------------------------------------------------------------------------
 // 	popupDocumentation: Creates a pop-up window containing relevant documentation to a
 //	specified important word that has been clicked. Diffrent types of documentation
@@ -1080,7 +1058,6 @@ function highlightKeyword(kw) {
 		}
 	});
 }
-
 
 /********************************************************************************
 
