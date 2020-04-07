@@ -431,7 +431,6 @@ function convertFileKind(kind) {
 }
 
 function deleteFile(fileid, filename, filekind) {
-    // console.log(fileid, filename, filekind);
     var tempData = {
         fid: fileid,
         cid: querystring['courseid'],
@@ -439,8 +438,6 @@ function deleteFile(fileid, filename, filekind) {
         filename: filename,
         kind: filekind,
     };
-
-    // console.log(tempData); 
 
     if (confirm("Do you really want to delete the file/link: " + filename)) {
         AJAXService("DELFILE", tempData

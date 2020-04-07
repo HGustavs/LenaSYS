@@ -59,17 +59,10 @@ if (checklogin() && $hasAccess) {
             $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
         }
 
-        if (file_exists($currcwd)) {
+        // Unlinks (deletes) a file from the directory given if it exists.
+        if (file_exists($currcwd))
             unlink($currcwd);
 
-            // if (unlink($currcwd))
-            //     echo json_encode("The file was deleted successfully");
-            // else
-            //     echo json_encode("The file was not deleted succesfully");
-        }
-        // Remove file from filesystem?
-        // Only for local files ... Course-wide and Global files could be used in other courses/course versions
-        // TODO:
     } else if (strcmp($opt, "SAVEFILE") === 0) {
         // Change path to file depending on filename and filekind
         chdir("../");

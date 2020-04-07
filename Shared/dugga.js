@@ -599,10 +599,6 @@ function htmlEntities(str) {
 //----------------------------------------------------------------------------------
 
 function AJAXService(opt, apara, kind) {
-	console.log("Operation: " + opt);
-	console.log("Parameters: ", apara);
-	console.log("Kind: " + kind);
-
 	var tex = "";
 	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	for (var i = 0; i < 15; i++) {
