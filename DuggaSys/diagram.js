@@ -4195,15 +4195,15 @@ function loadTextForm(element, dir) {
 // setSelectedOption: used to implement the changes to appearances that has been made
 //----------------------------------------------------------------------
 
-function setSelectedOption(type, value) {
-    if(type != null) {
-        for (var i = 0; i < document.getElementById(type).options.length; i++) {
-            if (value == document.getElementById(type).options[i].value) {
-                document.getElementById(type).value = value;
-                document.getElementById(type).options[i].selected = "true";
+function setSelectedOption(select, value) {
+    if(select !== null) {
+        for(const option of select.options) {
+            if(value === option.value) {
+                select.value = value;
+                option.selected = true;
                 break;
             } else {
-                document.getElementById(type).options[i].selected = "false";
+                option.selected = false;
             }
         }
     }
@@ -4298,62 +4298,6 @@ function objectAppearanceMenu() {
     }
 }
 
-//----------------------------------------------------------------------
-// changeObjectAppearance: USES DIALOG TO CHANGE OBJECT APPEARANC
-//----------------------------------------------------------------------
-
-function changeObjectAppearance(object_type) {
-    lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length - 1]);
-    if(selected_objects.length == 1 && selected_objects[0].kind == kind.symbol && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine && selected_objects[0].symbolkind != symbolKind.text) {
-        selected_objects[0].name = document.getElementById('nametext').value;
-    }
-
-    for(var i = 0; i < selected_objects.length; i++) {
-        if (selected_objects[i].symbolkind == symbolKind.uml) { // UML-class appearance
-            var attributeLines = $('#UMLAttributes').val().split('\n');
-            var operationLines = $('#UMLOperations').val().split('\n');
-            selected_objects[i].attributes = [];
-            selected_objects[i].operations = [];
-
-            //Inserts text for attributes and operations
-            for (var j = 0; j < attributeLines.length; j++) {
-                selected_objects[i].attributes.push({text:attributeLines[j]});
-            }
-            for (var j = 0; j < operationLines.length; j++) {
-                selected_objects[i].operations.push({text:operationLines[j]});
-            }
-
-        } else if (selected_objects[i].symbolkind == symbolKind.line) {
-            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
-        } else if (selected_objects[i].symbolkind == symbolKind.umlLine) {
-            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
-            selected_objects[i].lineDirection = document.getElementById('line_direction').value;
-        } else if (selected_objects[i].kind == kind.path) {
-            selected_objects[i].fillColor = document.getElementById('figureFillColor').value;
-            selected_objects[i].opacity = document.getElementById('figureOpacity').value / 100;
-            selected_objects[i].properties['strokeColor'] = document.getElementById('LineColor').value;
-        } else if (selected_objects[i].symbolkind == symbolKind.text) {
-            selected_objects[i].textLines = [];
-            var textArray = $('#freeText').val().split('\n');
-            for(var j = 0; j < textArray.length; j++) {
-              selected_objects[i].textLines.push({text:textArray[j]});
-            }
-            selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
-            selected_objects[i].properties['font'] = document.getElementById('font').value;
-            selected_objects[i].properties['textAlign'] = document.getElementById('textAlign').value;
-            selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
-        } else {
-            selected_objects[i].properties['fillColor'] = document.getElementById('fillColor').value;
-            selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
-            selected_objects[i].properties['font'] = document.getElementById('font').value;
-            selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
-            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
-            selected_objects[i].properties['strokeColor'] = document.getElementById('LineColor').value;
-        }
-    }
-    updateGraphics();
-}
-
 //---------------------------------
 // Creates cardinality at the line
 //---------------------------------
@@ -4415,54 +4359,67 @@ function loadAppearanceForm() {
     appearanceMenuOpen = true;
 
     //Get type of previously selected symbol according to symbolKind object
-    const lastSelected = selected_objects[selected_objects.length - 1];
-    let type = lastSelected.symbolkind;
+    const object = selected_objects[selected_objects.length - 1];
+    let type = object.symbolkind;
 
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
 
-    const formGroups = document.querySelectorAll("#appearanceForm .form-group");
-    formGroups.forEach(group => {
-        const types = group.dataset.types.split(",");
-        group.style.display = "none";
-        if(types.includes(type.toString()) || types.includes("all")) {
-            group.style.display = "block";
-        }
-    });
+    showFormGroups(type);
 
-    //setSelections(lastSelected);
     const typeElement = document.getElementById("type");
+    const nameElement = document.getElementById("name");
 
     switch(type) {
         case symbolKind.erAttribute:
             typeElement.innerHTML = makeoptions("", ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"], ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"]);
+            nameElement.value = object.name;
             break;
         case symbolKind.erEntity:
-            typeElement.innerHTML = makeoptions("", ["Weak", "Strong"], ["Weak", "Strong"]);
-            break;
         case symbolKind.erRelation:
             typeElement.innerHTML = makeoptions("", ["Weak", "Strong"], ["Weak", "Strong"]);
+            nameElement.value = object.name;
             break;
         case symbolKind.line:
-
-        case symbolKind.text:
-            document.getElementById("freeText").value = getTextareaText(lastSelected.textLines);
-            break;
-        case symbolKind.uml:
-            document.getElementById("umlAttributes").value = getTextareaText(lastSelected.attributes);
-            document.getElementById("umlOperations").value = getTextareaText(lastSelected.operations);
+            const connections = object.getConnectedObjects();
+            const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
+            const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
+            typeElement.innerHTML = makeoptions("", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
+            if(entities.length > 0 && relations.length > 0) {
+                document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
+                document.getElementById("cardinalityUML").style.display = "none";
+            } else {
+                document.getElementById("cardinality").parentNode.style.display = "none";
+            }
             break;
         case symbolKind.umlLine:
-            
+            const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
+            const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
+            typeElement.innerHTML = makeoptions("", lineTypes, lineTypes);
+            document.getElementById("cardinalityUML").style.display = "block";
+            document.getElementById("cardinality").innerHTML = makeoptions("", cardinalities, cardinalities);
+            document.getElementById("cardinalityUML").innerHTML = makeoptions("", cardinalities, cardinalities);
+        case symbolKind.text:
+            document.getElementById("freeText").value = getTextareaText(object.textLines);
+            break;
+        case symbolKind.uml:
+            nameElement.value = object.name;
+            document.getElementById("umlAttributes").value = getTextareaText(object.attributes);
+            document.getElementById("umlOperations").value = getTextareaText(object.operations);
             break;
         case 0:
-            
-            break;
-        default:
+            document.getElementById("figureOpacity").value = object.opacity * 100;
             break;
     }
-
+    setSelections(object);
     document.getElementById("appearance").style.display = "flex";
+}
+
+function showFormGroups(type) {
+    const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
+    const formGroupsToShow = getGroupsByType(type);
+    allformGroups.forEach(group => group.style.display = "none");
+    formGroupsToShow.forEach(group => group.style.display = "block");
 }
 
 function getTextareaText(array) {
@@ -4476,24 +4433,95 @@ function getTextareaText(array) {
     return text;
 }
 
-function setSelections(lastSelected) {
-    const properties = lastSelected.properties;
-    setSelectedOption("lineColor", properties.strokeColor);
-    setSelectedOption("fillColor", properties.fillColor);
-    switch(lastSelected.kind) {
-        case kind.symbol: 
-            document.getElementById("name").value = lastSelected.name;
-            setSelectedOption("type", properties.key_type);
-            setSelectedOption("fontFamily", properties.font);
-            setSelectedOption("fontColor", properties.fontColor);
-            setSelectedOption("textSize", properties.sizeOftext);
-            setSelectedOption('textAlign', properties.textAlign);
-            break;
-        case kind.path: 
-            document.getElementById("figureOpacity").value = lastSelected.opacity * 100;
-            break;
-        default:
-            document.getElementById('line-thickness').value = getLineThickness();
-            break;
+function setTextareaText(element, array) {
+    const textLines = element.value.split('\n');
+    array = [];
+    textLines.forEach(text => array.push({"text": text}));
+    return array;
+}
+
+//Does not take all into consideration yet - example cardinality
+function setSelections(object) {
+    let groups = [];
+    if(object.kind === kind.symbol) {
+        groups = getGroupsByType(object.symbolkind);
+    } else if(object.kind === kind.path) {
+        groups = getGroupsByType(0);
     }
+
+    groups.forEach(group => {
+        const elements = group.querySelectorAll("input, select, textarea");
+        elements.forEach(element => {
+            if(element.nodeName === "SELECT") {
+                let access = element.dataset.access.split(".");
+                let value = "";
+                if(access.length === 1) {
+                    value = object[access[0]];
+                } else if(access.length === 2) {
+                    value = object[access[0]][access[1]];
+                }
+                console.log(element, value)
+                setSelectedOption(element, value);
+            }
+        });
+    });
+}
+
+//Do not handle globals yet -> -1 Line thickness and stroke color
+function setObjectProperties() {
+    for(const object of selected_objects) {
+        const properties = object.properties;
+        if(object.kind === kind.symbol) {
+            properties.fillColor = document.getElementById("fillColor").value;
+            properties.strokeColor = document.getElementById("lineColor").value;
+            properties.fontColor = document.getElementById("fontColor").value;
+            properties.font = document.getElementById("fontFamily").value;
+            properties.sizeOftext = document.getElementById("textSize").value;
+            properties.key_type = document.getElementById("type").value;
+            object.name = document.getElementById("name").value;
+    
+            if(object.symbolkind === symbolKind.text) {
+                properties.textAlign = document.getElementById("textAlignment").value;
+                object.textLines = setTextareaText(document.getElementById("freeText"), object.textLines);
+            } else if(object.symbolkind === symbolKind.umlLine) {
+                object.lineDirection = document.getElementById("lineDirection").value;
+            } else if(object.symbolkind === symbolKind.uml) {
+                object.attributes = setTextareaText(document.getElementById("umlAttributes"), object.attributes);
+                object.operations = setTextareaText(document.getElementById("umlOperations"), object.operations);
+            }
+    
+            document.getElementById("cardinality").value;
+            document.getElementById("cardinalityUML").value;
+        } else if(object.kind == kind.path) {
+            object.opacity = document.getElementById("figureOpacity").value / 100;
+            object.fillColor = document.getElementById("fillColor").value;
+            properties.strokeColor = document.getElementById("lineColor").value;
+        }
+    
+        //REWORK THIS
+        
+    }
+    updateGraphics();
+}
+
+function initAppearanceForm() {
+    const formGroups = document.querySelectorAll("#appearanceForm .form-group");
+    formGroups.forEach(group => {
+        const elements = group.querySelectorAll("input, select, textarea");
+        elements.forEach(element => {
+            if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+                element.addEventListener("input", setObjectProperties);
+            } else if(element.tagName === "SELECT") {
+                element.addEventListener("change", setObjectProperties);
+            }
+        });
+    });
+}
+
+function getGroupsByType(type) {
+    const formGroups = document.querySelectorAll("#appearanceForm .form-group");
+    return [...formGroups].filter(group => {
+        const types = group.dataset.types.split(",");
+        return types.includes(type.toString());
+    });
 }

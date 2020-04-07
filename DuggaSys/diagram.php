@@ -42,7 +42,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics();" style="overflow-y: hidden;">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics(); initAppearanceForm();" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -420,23 +420,23 @@
                 <div id="appearanceForm">
                     <div class="form-group" data-types="1,2,3,5">
                         <label for="name">Name:</label>
-                        <input type="text" id="name">
+                        <input type="text" id="name" data-access="name">
                     </div>
-                    <div class="form-group" data-types="2,3,4,5">
+                    <div class="form-group" data-types="2,3,4,5,7">
                         <label for="type">Type:</label>
-                        <select id="type"></select>
+                        <select id="type" data-access="properties.key_type"></select>
                     </div>
                     <div class="form-group" data-types="2,3,5,0,-1">
                         <label for="fillColor">Fill color:</label>
-                        <select id="fillColor"><?=$colors;?></select>
+                        <select id="fillColor" data-access="properties.fillColor"><?=$colors;?></select>
                     </div>
                     <div class="form-group" data-types="6">
                         <label for="freeText">Text:</label>
-                        <textarea id="freeText"></textarea>
+                        <textarea id="freeText" data-access="textLines"></textarea>
                     </div>
                     <div class="form-group" data-types="2,3,5,6,-1">
                         <label for="fontFamily">Font family:</label>
-                        <select id="fontFamily">
+                        <select id="fontFamily" data-access="properties.font">
                             <option value="Arial">Arial</option>
                             <option value="Courier New">Courier New</option>
                             <option value="Impact">Impact</option>
@@ -445,11 +445,11 @@
                     </div>
                     <div class="form-group" data-types="2,3,5,6,-1">
                         <label for="fontColor">Font color:</label>
-                        <select id="fontColor"><?=$colors;?></select>
+                        <select id="fontColor" data-access="properties.fontColor"><?=$colors;?></select>
                     </div>
                     <div class="form-group" data-types="2,3,5,6,-1">
                         <label for="textSize">Text size:</label>
-                        <select id="textSize">
+                        <select id="textSize" data-access="properties.sizeOftext">
                             <option value="Tiny">Tiny</option>
                             <option value="Small">Small</option>
                             <option value="Medium">Medium</option>
@@ -458,7 +458,7 @@
                     </div>
                     <div class="form-group" data-types="2,3,5,0">
                         <label for="lineColor">Line color:</label>
-                        <select id="lineColor"><?=$colors;?></select>
+                        <select id="lineColor" data-access="properties.strokeColor"><?=$colors;?></select>
                     </div>
                     <div class="form-group" data-types="-1">
                         <label for="strokeColor">Stroke color:</label>
@@ -466,41 +466,41 @@
                     </div>
                     <div class="form-group" data-types="6">
                         <label for="textAlignment">Text alignment:</label>
-                        <select id="textAlignment">
+                        <select id="textAlignment" data-access="properties.textAlign">
                             <option value="start">Left</option>
                             <option value="center" selected>Center</option>
                             <option value="end">Right</option>
                         </select>
                     </div>
-                    <div class="form-group" data-types="4">
+                    <div class="form-group" data-types="7">
                         <label for="lineDirection">Line direction:</label>
-                        <select id="lineDirection">
+                        <select id="lineDirection" data-access="lineDirection">
                             <option value="First">First object</option>
                             <option value="Second">Second object</option>
                         </select>
                     </div>
-                    <div class="form-group" data-types="4">
+                    <div class="form-group" data-types="4,7">
                         <label for="cardinality">Cardinality:</label>
-                        <select id="cardinality"></select></br>
-                        <select id="cardinality2"></select>
+                        <select id="cardinality" data-access="cardinality"></select></br>
+                        <select id="cardinalityUML" data-access="cardinality"></select>
                     </div>
                     <div class="form-group" data-types="1">
                         <label for="umlAttributes">Attributes:</label>
-                        <textarea id="umlAttributes"></textarea>
+                        <textarea id="umlAttributes" data-access="attributes"></textarea>
                     </div>
                     <div class="form-group" data-types="1">
                         <label for="umlOperations">Operations:</label>
-                        <textarea id="umlOperations"></textarea>
+                        <textarea id="umlOperations" data-access="operations"></textarea>
                     </div>
                     <div class="form-group" data-types="0">
                         <label for="figureOpacity">Opacity:</label>
-                        <input type="range" id="figureOpacity">
+                        <input type="range" id="figureOpacity" data-access="opacity">
                     </div>
                     <div class="form-group" data-types="-1">
                         <label for="line-thickness">Line thickness:</label>
                         <input type="range" id="line-thickness">
                     </div>
-                    <div class="form-group" style="text-align:center;" data-types="all">
+                    <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
                         <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
                     </div>
                 </div>
