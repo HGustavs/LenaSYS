@@ -130,6 +130,7 @@ var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
+var singleA4 = false;               // Toggle between single/repeated A4
 var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
@@ -1243,12 +1244,14 @@ function toggleVirtualA4(event) {
         $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
         $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
         $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-single-item").addClass("drop-down-item drop-down-item-disabled");
         hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
         $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#a4-single-item").removeClass("drop-down-item drop-down-item-disabled");
         if (toggleA4Holes) {
             $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         } else {
@@ -1281,17 +1284,22 @@ function drawVirtualA4() {
     const leftHoleOffsetX = 12 * pixelsPerMillimeter;
     const rightHoleOffsetX = 198 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
-
+    
     // Number of A4 sheets to draw out
     var a4Rows;
     var a4Columns;
 
-    if (A4Orientation == "portrait") {
-        a4Rows = 6;
-        a4Columns = 20;
-    } else if(A4Orientation == "landscape") {
-        a4Rows = 9;
-        a4Columns = 14;
+    if(!singleA4){
+        if (A4Orientation == "portrait") {
+            a4Rows = 6;
+            a4Columns = 20;
+        } else if(A4Orientation == "landscape") {
+            a4Rows = 9;
+            a4Columns = 14;
+        }
+    } else {
+        a4Rows = 1;
+        a4Columns = 1;
     }
 
     ctx.save();
@@ -1523,6 +1531,23 @@ function toggleA4Orientation(event) {
     updateGraphics();
 }
 
+//---------------------------------------------------------------
+// Changes between single and repeated virtual A4 view
+//---------------------------------------------------------------
+
+function togglesingleA4(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    // Switch between single and repeated
+    if (singleA4) {
+        singleA4 = false;
+        setCheckbox($(".drop-down-option:contains('Single A4')"), singleA4);
+    } else {
+        singleA4 = true;
+        setCheckbox($(".drop-down-option:contains('Single A4')"), singleA4);
+    }
+    updateGraphics();
+}
+
 //-----------------------------------------------------------------------------------
 // When an item is selected, enable all options related to having an object selected
 //-----------------------------------------------------------------------------------
@@ -1536,14 +1561,6 @@ function enableSelectedItemOptions() {
         $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
       } else {
         $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
         $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
@@ -1552,6 +1569,17 @@ function enableSelectedItemOptions() {
         $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
         $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
         $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
+		}
+      if (selected_objects.length > 1){
+        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
+        } else {
         $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
         $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
         $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
@@ -1560,7 +1588,7 @@ function enableSelectedItemOptions() {
         $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
         $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
         $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
-    }
+      }
 }
 
 //----------------------------------------------------
@@ -2642,6 +2670,7 @@ function distribute(event, axis) {
     // There is a posibility for more types
     updateGraphics();
     hashFunction();
+    SaveState();
 }
 
 //----------------------------------------------------------------------
@@ -3618,6 +3647,7 @@ function mouseupevt(ev) {
         //Check if you release on canvas or try to draw a line from entity to entity
         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
             md = mouseState.empty;
+            uimode = "CreateLine";
         }else {
             //Get which kind of symbol mouseupevt execute on
             symbolEndKind = diagram[markedObject].symbolkind;
