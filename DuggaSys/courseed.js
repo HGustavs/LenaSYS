@@ -462,7 +462,7 @@ function htmlFix(text){
 /*Validates all coursenames*/
 function validateCourseName(nameid, dialogid) {
 	//regex for only letters
-	var Name = /^[a-zA-Z]+$/;
+	var Name = /^[a-zA-Z_ ]+$/;
 	var name = document.getElementById(nameid);
 	var x = document.getElementById(dialogid);
 
