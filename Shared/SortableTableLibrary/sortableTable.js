@@ -396,71 +396,71 @@ function SortableTable(param) {
 		// Render table body
 		str += "<tbody id='" + this.tableid + DELIMITER + "body'>";
 		mhvstr += "<tbody id='" + this.tableid + DELIMITER + "mhvbody'>";
-			for (var i = 0; i < tbl.tblbody.length; i++) {
-				var row = tbl.tblbody[i];
-				if (rowFilter(row)) {
-					filteredRows.push(row);
-					str += "<tr id='" + this.tableid + DELIMITER + i + "'";
-					if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
+		for (var i = 0; i < tbl.tblbody.length; i++) {
+			var row = tbl.tblbody[i];
+			if (rowFilter(row)) {
+				filteredRows.push(row);
+				str += "<tr id='" + this.tableid + DELIMITER + i + "'";
+				if (this.hasRowHighlight) str += " onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
-					//Check if row contains requestedpasswordchange & set styling accordingly
-					if (row["requestedpasswordchange"] != null) {
-						obj = JSON.parse(row["requestedpasswordchange"])
-						if (obj.requested == 1) {
-							str += " style='box-sizing:border-box; background-color: #ff3f4c'>";
-						} else {
-							str += " style='box-sizing:border-box'>";
-						}
+				//Check if row contains requestedpasswordchange & set styling accordingly
+				if (row["requestedpasswordchange"] != null) {
+					obj = JSON.parse(row["requestedpasswordchange"])
+					if (obj.requested == 1) {
+						str += " style='box-sizing:border-box; background-color: #ff3f4c'>";
 					} else {
 						str += " style='box-sizing:border-box'>";
 					}
+				} else {
+					str += " style='box-sizing:border-box'>";
+				}
 
-					mhvstr += "<tr id='" + this.tableid + DELIMITER + i + DELIMITER + "mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
+				mhvstr += "<tr id='" + this.tableid + DELIMITER + i + DELIMITER + "mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 
-					// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
-					if (this.hasCounter) {
-						str += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex + "</span></td>";
-						mhvstr += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex++ + "</span></td>";
-					}
-					result++;
-					for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
-						if (columnfilter[columnOrderIdx] !== null) {
-							// check if this column is a row-sum column
-							for (let j = 0; j < rowsumList.length; j++) {
-								if (columnOrder[columnOrderIdx].indexOf(rowsumList[j][0]['id']) > -1) {
-									tbl.tblbody[i][columnOrder[columnOrderIdx]] = 0;
-									for (let k = 1; k < rowsumList[j].length; k++) {
-										if (typeof (tbl.tblbody[i][rowsumList[j][k].substring(0, rowsumList[j][k].indexOf('.'))]) === 'object') {
-											tbl.tblbody[i][columnOrder[columnOrderIdx]] += parseFloat(byString(tbl.tblbody[i][rowsumList[j][k].substring(0, rowsumList[j][k].indexOf('.'))], rowsumList[j][k]));
-										} else {
-											tbl.tblbody[i][columnOrder[columnOrderIdx]] += parseFloat(tbl.tblbody[i][rowsumList[j][k]]);
-										}
-
+				// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
+				if (this.hasCounter) {
+					str += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex + "</span></td>";
+					mhvstr += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex++ + "</span></td>";
+				}
+				result++;
+				for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
+					if (columnfilter[columnOrderIdx] !== null) {
+						// check if this column is a row-sum column
+						for (let j = 0; j < rowsumList.length; j++) {
+							if (columnOrder[columnOrderIdx].indexOf(rowsumList[j][0]['id']) > -1) {
+								tbl.tblbody[i][columnOrder[columnOrderIdx]] = 0;
+								for (let k = 1; k < rowsumList[j].length; k++) {
+									if (typeof (tbl.tblbody[i][rowsumList[j][k].substring(0, rowsumList[j][k].indexOf('.'))]) === 'object') {
+										tbl.tblbody[i][columnOrder[columnOrderIdx]] += parseFloat(byString(tbl.tblbody[i][rowsumList[j][k].substring(0, rowsumList[j][k].indexOf('.'))], rowsumList[j][k]));
+									} else {
+										tbl.tblbody[i][columnOrder[columnOrderIdx]] += parseFloat(tbl.tblbody[i][rowsumList[j][k]]);
 									}
+
 								}
 							}
+						}
 
-							// This condition is true if column is in summing list and in that case perform the sum like a BOSS
-							if (colsumList.indexOf(columnOrder[columnOrderIdx]) > -1) {
-								if (typeof (sumContent[columnOrder[columnOrderIdx]]) == "undefined") sumContent[columnOrder[columnOrderIdx]] = 0;
-								sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
-							}
+						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
+						if (colsumList.indexOf(columnOrder[columnOrderIdx]) > -1) {
+							if (typeof (sumContent[columnOrder[columnOrderIdx]]) == "undefined") sumContent[columnOrder[columnOrderIdx]] = 0;
+							sumContent[columnOrder[columnOrderIdx]] += sumFunc(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], row);
+						}
 
-							var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];	
-							str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
+						var cellid = "r" + i + DELIMITER + this.tableid + DELIMITER + columnOrder[columnOrderIdx];	
+						str += "<td style='white-space:nowrap;' id='" + cellid + "' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
 
 
-							//Prints student name to mvh
-							if (columnOrderIdx < 1) {
-								mhvstr += "<td style='white-space:nowrap;' id='" + cellid + DELIMITER + "mhv' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
-							}
+						//Prints student name to mvh
+						if (columnOrderIdx < 1) {
+							mhvstr += "<td style='white-space:nowrap;' id='" + cellid + DELIMITER + "mhv' onclick='clickedInternal(event,this);' class='" + this.tableid + "-" + columnOrder[columnOrderIdx] + "'>" + renderCell(columnOrder[columnOrderIdx], tbl.tblbody[i][columnOrder[columnOrderIdx]], cellid) + "</td>";
 						}
 					}
-					str += "</tr>";
-					mhvstr += "</tr>";
 				}
-		
+				str += "</tr>";
+				mhvstr += "</tr>";
 			}
+		}
+
 		str += "</tbody>";
 		mhvstr += "</tbody>";
 		if (this.hasFooter) {
