@@ -1474,15 +1474,15 @@ function Symbol(kindOfSymbol) {
                 var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
                 var valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
                 if (this.isRecursiveLine) {
-                    let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent);
+                    let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent)* diagram.getZoomValue();
                     if (x1 == x2) {
                         valX = valX2 = x1 + 20 * dir;
                         valY = y1 - 13;
                         valY2 = y2 - 13;
                     }else {
                         valY = valY2 = y1 + 20 * dir;
-                        valX = x1 - 17;
-                        valX2 = x2 - 17;
+                        valX = x1 - 17 * diagram.getZoomValue();
+                        valX2 = x2 - 17 * diagram.getZoomValue();
                     }
                 }
                 ctx.fillText(this.cardinality[0].value, valX, valY);
