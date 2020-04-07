@@ -160,25 +160,25 @@ $codeLinkQuery->execute();
                             while($row = $query->FETCH(PDO::FETCH_ASSOC)){  
                                 $fileName = $row['filename'];
                                 $cid = $row['cid'];
-                                $fileOption = $fileName . ',' . $cid;
+                                $fileInfo = $fileName . ',' . $cid;
                                 if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){              
-                                    echo "<option value='$fileOption'>$fileName</option>"; 
+                                    echo "<option value='$fileInfo'>$fileName</option>"; 
 
                                 }   
                             } 
                         ?>
                         </select>
 
-                        <select name="codeLinkDropDown" onchange="codeLink(this.options[this.selectedIndex].value);" >
-                        <option value='defaultOption'>Choose example</option>
+                        <select name="test" onchange="codeLink(this.options.value);" >
+                        <option value='defaultOption'>Choose file</option>
                         <?php
                             while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){  
                                 $fileName = $row['filename'];
                                 $cid = $row['cid'];
                                 $fileid = $row['fileid'];
-                                $fileInfo = $fileid . ',' . $cid . ',' . $fileName;
+                                $fileOption = $fileName . ',' . $cid . ',' . $fileid;
                                 if(preg_match('/(\.txt|\.html|\.js)$/i', $fileName)){              
-                                    echo "<option value='$fileInfo'>$fileName</option>"; 
+                                    echo "<option value='$fileOption'>$fileName</option>"; 
                                 }   
                             } 
                         ?>
