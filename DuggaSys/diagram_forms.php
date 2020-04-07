@@ -85,7 +85,7 @@
       '.$colors.'
       </select><br>'.$lineColors.'
       Opacity:<br>
-      <input type="range" id="figureOpacity" oninput="changeObjectAppearance(\'figureType\');" style="width:100%; margin: -2px; padding: 0px;"><br>
+      <input type="range" id="figureOpacity" oninput="changeObjectAppearance(\'figureType\');" class="diagram_figuretype_input"><br>
       <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(\'figureType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
       ';
   }

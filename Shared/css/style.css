@@ -4377,6 +4377,18 @@ only screen and (max-device-width: 320px) {
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
 }
+.diagram_figuretype_input{
+  width:100%; 
+  margin: -2px; 
+  padding: 0px;
+  background: #ffffff;
+}
+.diagram_figuretype_input:hover{
+  cursor: pointer;
+}
+input[type=range]::-moz-range-thumb{
+  background-color: green;
+}
 
 #selectDiv select {
   height: 34px;
