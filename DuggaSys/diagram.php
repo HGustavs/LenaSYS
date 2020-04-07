@@ -426,9 +426,13 @@
                         <label for="type">Type:</label>
                         <select id="type" data-access="properties.key_type"></select>
                     </div>
-                    <div class="form-group" data-types="2,3,5,0,-1">
+                    <div class="form-group" data-types="2,3,5,-1">
+                        <label for="backgroundColor">Background color:</label>
+                        <select id="backgroundColor" data-access="properties.fillColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="0">
                         <label for="fillColor">Fill color:</label>
-                        <select id="fillColor" data-access="properties.fillColor"><?=$colors;?></select>
+                        <select id="fillColor" data-access="fillColor"><?=$colors;?></select>
                     </div>
                     <div class="form-group" data-types="6">
                         <label for="freeText">Text:</label>
