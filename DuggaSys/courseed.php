@@ -60,8 +60,8 @@ $noup="NONE";
 	</div>
 	<!-- Server Msg END -->
 
-		<!-- New Course Section Dialog START -->
-		<div id='newCourse' class='loginBoxContainer' style='display:none;'>
+	<!-- New Course Section Dialog START -->
+	<div id='newCourse' class='loginBoxContainer' style='display:none;'>
     <div class='loginBox' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>New Course</h3>
@@ -69,36 +69,31 @@ $noup="NONE";
     		</div>
     		<div style='padding:5px;'>
     			<input type='hidden' id='cid' value='Toddler' />
-    			<div class='inputwrapper'><span>Course Name:</span><input oninput="validateCourseName('ncoursename', 'dialog4')" class='textinput' type='text' id='ncoursename' placeholder='Course Name' /></div>
-				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only letters (not åäö)</p>
-    			<div class='inputwrapper'><span>Course code:</span><input oninput="validateCourseCode('ncoursecode', 'dialog3')" class='textinput' type='text' id='ncoursecode' placeholder='Course Code' /></div>
-				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 Letters, 3 digits, 1 letter</p>
+    			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' id='ncoursename' placeholder='Course Name' /></div>
+    			<div class='inputwrapper'><span>Course code:</span><input class='textinput' type='text' id='ncoursecode' placeholder='Course Code' /></div>
     		</div>
     		<div style='padding:5px;'>
-    			<input class='submit-button' type='button' value='Create' title='Create course' onclick="validateForm('newCourse')" />
+    			<input class='submit-button' type='button' value='Create' title='Create course' onclick='createNewCourse();' />
     		</div>
       </div>
 	</div>
 	<!-- New Course Section Dialog END -->
 
 	<!-- Edit Section Dialog START -->
-	<div id='editCourse' class='loginBoxContainer' style='display:none;' onmouseover="validateCourseName('coursename', 'dialog')" >
-      <div class='loginBox' style='width:464px;'onmouseover="validateCourseCode('coursecode', 'dialog2')"   >
+	<div id='editCourse' class='loginBoxContainer' style='display:none;'>
+      <div class='loginBox' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
     		<div style='padding:5px;'>
     			<input type='hidden' id='cid' value='Toddler' />
-    			<div class='inputwrapper'><span>Course Name:</span><input oninput="validateCourseName('coursename', 'dialog')"  class='textinput' type='text' id='coursename' placeholder='Course Name' />
-				</div>
-				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only letters (not åäö)</p>
-    			<div class='inputwrapper'><span>Course code:</span><input  oninput="validateCourseCode('coursecode', 'dialog2')" class='textinput' type='text' id='coursecode' placeholder='Course Code' /></div>
-				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 letters, 3 digits, 1 letter</p>
+    			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' id='coursename' placeholder='Course Name' /></div>
+    			<div class='inputwrapper'><span>Course code:</span><input class='textinput' type='text' id='coursecode' placeholder='Course Code' /></div>
     			<div class='inputwrapper'><span>Visibility:</span><select class='selectinput' id='visib'></select></div>
     		</div>
     		<div style='padding:5px;'>
-    			<input class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
+    			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateCourse();' />
     		</div>
       </div>
 	</div>
