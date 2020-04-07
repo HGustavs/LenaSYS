@@ -244,7 +244,6 @@ function changeOptDivStudent(e,value){
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	changeProperty(paramlist[1], paramlist[0], value);
 }
-
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
@@ -283,10 +282,8 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-		
 		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
-		
 		for(i = 0; i < filez['teachers'].length; i++){
 			if(obj.examiner == filez['teachers'][i].uid){
 				examinerName = filez['teachers'][i].name;
@@ -318,7 +315,6 @@ function renderCell(col, celldata, cellid) {
 	} else if (col == "requestedpasswordchange") {
 		
 		if (parseFloat(obj.recent) > 1440) {
-		
 			str = "<div class='submit-button' style='display:block;margin:auto;float:none;'";
 		} else {
 			str = "<div class='submit-button' id='reset-pw' style='display:block;margin:auto;float:none;'";
@@ -340,7 +336,6 @@ function renderCell(col, celldata, cellid) {
 		if(optstr === ""){
 			optstr = "None";
 		}
-		console.log(optstr);
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 		str += "<div><div class='access-dropdown'>" + optstr + "<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
