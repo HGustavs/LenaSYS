@@ -3620,6 +3620,10 @@ function mouseupevt(ev) {
                     if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
                     if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erAttribute) {
+                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) okToMakeLine = false;
+                }else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erRelation) {
+                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) okToMakeLine = false;
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
