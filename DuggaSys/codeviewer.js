@@ -775,15 +775,15 @@ function createboxmenu(contentid, boxid, type) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable"  contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable"  contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 
 			} else {
 				str += "<td class='butto2 showdesktop'>";
