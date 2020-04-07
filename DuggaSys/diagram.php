@@ -46,6 +46,18 @@
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
+
+        $colors = '
+            <option value=\'#64B5F6\'>Blue</option>
+            <option value=\'#81C784\'>Green</option>
+            <option value=\'#e6e6e6\'>Grey</option>
+            <option value=\'#E57373\'>Red</option>
+            <option value=\'#FFF176\'>Yellow</option>
+            <option value=\'#FFB74D\'>Orange</option>
+            <option value=\'#BA68C8\'>Purple</option>
+            <option value=\'#ffffff\'>White</option>
+            <option value=\'#000000\'>Black</option>
+        ';
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
@@ -415,53 +427,70 @@
                         <select id="type"></select>
                     </div>
                     <div class="form-group" data-types="2,3,5,0,-1">
-                        <label for="">Fill color:</label>
-                        <select id=""></select>
+                        <label for="fillColor">Fill color:</label>
+                        <select id="fillColor"><?=$colors;?></select>
                     </div>
                     <div class="form-group" data-types="6">
-                        <label for="">Text:</label>
-                        <textarea id="freeText" cols="30" rows="10"></textarea>
+                        <label for="freeText">Text:</label>
+                        <textarea id="freeText"></textarea>
                     </div>
                     <div class="form-group" data-types="2,3,5,6,-1">
-                        <label for="">Font family:</label>
-                        <select id=""></select>
+                        <label for="fontFamily">Font family:</label>
+                        <select id="fontFamily">
+                            <option value="Arial">Arial</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Calibri">Calibri</option>
+                        </select>
                     </div>
                     <div class="form-group" data-types="2,3,5,6,-1">
-                        <label for="">Font color:</label>
-                        <select id=""></select>
+                        <label for="fontColor">Font color:</label>
+                        <select id="fontColor"><?=$colors;?></select>
                     </div>
                     <div class="form-group" data-types="2,3,5,6,-1">
-                        <label for="">Text size:</label>
-                        <select id=""></select>
+                        <label for="textSize">Text size:</label>
+                        <select id="textSize">
+                            <option value="Tiny">Tiny</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
                     </div>
                     <div class="form-group" data-types="2,3,5,0">
-                        <label for="">Line color:</label>
-                        <select id=""></select>
+                        <label for="lineColor">Line color:</label>
+                        <select id="lineColor"><?=$colors;?></select>
                     </div>
                     <div class="form-group" data-types="-1">
-                        <label for="">Stroke color:</label>
-                        <select id=""></select>
+                        <label for="strokeColor">Stroke color:</label>
+                        <select id="strokeColor"><?=$colors;?></select>
                     </div>
                     <div class="form-group" data-types="6">
-                        <label for="">Text alignment:</label>
-                        <select id=""></select>
+                        <label for="textAlignment">Text alignment:</label>
+                        <select id="textAlignment">
+                            <option value="start">Left</option>
+                            <option value="center" selected>Center</option>
+                            <option value="end">Right</option>
+                        </select>
                     </div>
                     <div class="form-group" data-types="4">
-                        <label for="">Line direction:</label>
-                        <select id=""></select>
+                        <label for="lineDirection">Line direction:</label>
+                        <select id="lineDirection">
+                            <option value="First">First object</option>
+                            <option value="Second">Second object</option>
+                        </select>
                     </div>
                     <div class="form-group" data-types="4">
-                        <label for="">Cardinality:</label>
-                        <select id=""></select></br>
-                        <select id=""></select>
+                        <label for="cardinality">Cardinality:</label>
+                        <select id="cardinality"></select></br>
+                        <select id="cardinality2"></select>
                     </div>
                     <div class="form-group" data-types="1">
-                        <label for="">Attributes:</label>
-                        <textarea id="umlAttributes" cols="30" rows="10"></textarea>
+                        <label for="umlAttributes">Attributes:</label>
+                        <textarea id="umlAttributes"></textarea>
                     </div>
                     <div class="form-group" data-types="1">
-                        <label for="">Operations:</label>
-                        <textarea id="umlOperations" cols="30" rows="10"></textarea>
+                        <label for="umlOperations">Operations:</label>
+                        <textarea id="umlOperations"></textarea>
                     </div>
                     <div class="form-group" data-types="0">
                         <label for="figureOpacity">Opacity:</label>

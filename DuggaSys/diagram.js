@@ -3828,9 +3828,9 @@ function mouseupevt(ev) {
     if(saveState) SaveState();
 }
 
-function doubleclick(ev) {
+function doubleclick() {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
-        openAppearanceDialogMenu(event);
+        loadAppearanceForm();
     }
 }
 
@@ -4234,7 +4234,7 @@ var cardinalityValue;
 // objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
 //----------------------------------------------------------------------
 
-function objectAppearanceMenu(form) {
+function objectAppearanceMenu() {
     //if no item has been selected
     if(selected_objects.length < 1) {
         return;
@@ -4411,9 +4411,12 @@ function loadAppearanceForm() {
     for(let i = 0; i < selected_objects.length; i++){
         if(selected_objects[i].isLocked) return;
     }
+    $(".loginBox").draggable();
+    appearanceMenuOpen = true;
 
     //Get type of previously selected symbol according to symbolKind object
-    let type = selected_objects[selected_objects.length - 1].symbolkind;
+    const lastSelected = selected_objects[selected_objects.length - 1];
+    let type = lastSelected.symbolkind;
 
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
@@ -4427,27 +4430,30 @@ function loadAppearanceForm() {
         }
     });
 
+    //setSelections(lastSelected);
+    const typeElement = document.getElementById("type");
+
     switch(type) {
         case symbolKind.erAttribute:
-
+            typeElement.innerHTML = makeoptions("", ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"], ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"]);
             break;
         case symbolKind.erEntity:
-
+            typeElement.innerHTML = makeoptions("", ["Weak", "Strong"], ["Weak", "Strong"]);
             break;
         case symbolKind.erRelation:
-
+            typeElement.innerHTML = makeoptions("", ["Weak", "Strong"], ["Weak", "Strong"]);
             break;
         case symbolKind.line:
 
-            break;
         case symbolKind.text:
-
+            document.getElementById("freeText").value = getTextareaText(lastSelected.textLines);
             break;
         case symbolKind.uml:
-     
+            document.getElementById("umlAttributes").value = getTextareaText(lastSelected.attributes);
+            document.getElementById("umlOperations").value = getTextareaText(lastSelected.operations);
             break;
         case symbolKind.umlLine:
-
+            
             break;
         case 0:
             
@@ -4457,4 +4463,37 @@ function loadAppearanceForm() {
     }
 
     document.getElementById("appearance").style.display = "flex";
+}
+
+function getTextareaText(array) {
+    let text = "";
+    for (let i = 0; i < array.length; i++) {
+        text += array[i].text;
+        if (i < array.length - 1) {
+            text += "\n";
+        }
+    }
+    return text;
+}
+
+function setSelections(lastSelected) {
+    const properties = lastSelected.properties;
+    setSelectedOption("lineColor", properties.strokeColor);
+    setSelectedOption("fillColor", properties.fillColor);
+    switch(lastSelected.kind) {
+        case kind.symbol: 
+            document.getElementById("name").value = lastSelected.name;
+            setSelectedOption("type", properties.key_type);
+            setSelectedOption("fontFamily", properties.font);
+            setSelectedOption("fontColor", properties.fontColor);
+            setSelectedOption("textSize", properties.sizeOftext);
+            setSelectedOption('textAlign', properties.textAlign);
+            break;
+        case kind.path: 
+            document.getElementById("figureOpacity").value = lastSelected.opacity * 100;
+            break;
+        default:
+            document.getElementById('line-thickness').value = getLineThickness();
+            break;
+    }
 }

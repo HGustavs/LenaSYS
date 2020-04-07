@@ -4307,10 +4307,6 @@ only screen and (max-device-width: 320px) {
   color: var(--color-text-primary);
 }
 
-#nametext {
-  padding: 2px 0px 2px 10px;
-}
-
 #noAccessMessage {
   padding: 5px;
 }
@@ -4618,6 +4614,12 @@ only screen and (max-device-width: 320px) {
   height: 100px;
   resize: none;
 }
+
+
+#name {
+  padding: 2px 0px 2px 10px;
+}
+
 
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *

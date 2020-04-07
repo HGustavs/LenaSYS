@@ -46,7 +46,7 @@
       <select onchange="changeObjectAppearance(\'attributeType\');" id=\'object_type\'>
       "<option value=\'Primary key\'>Primary key</option>
       "<option value=\'Partial key\'>Partial key</option>
-      "<option value=\'normal\' selected="true">Normal</option>
+      "<option value=\'Normal\' selected="true">Normal</option>
       "<option value=\'Multivalue\'>Multivalue</option>
       "<option value=\'Drive\'>Derive</option>
       </select></br>
