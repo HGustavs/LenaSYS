@@ -210,11 +210,11 @@ function makeoptionsItem(option,optionlist,optionstring,valuestring)
 {
 	var str="";
 	for(var i=0;i<optionlist.length;i++){
-			str+="<option ";
-			if(optionlist[i][valuestring]==option){
-					str+="selected='selected' ";
-			}
-			str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
+		str+="<option ";
+		if(optionlist[i][valuestring]==option){
+			str+="selected='selected' ";
+		}
+		str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
 	}
 	return str;
 }
