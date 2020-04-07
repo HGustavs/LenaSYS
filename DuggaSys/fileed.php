@@ -169,14 +169,14 @@ $codeLinkQuery->execute();
                         ?>
                         </select>
 
-                        <select name="test" onchange="codeLink(this.options.value);" >
+                        <select name="test" onchange="codeLink(this.options[this.selectedIndex].value);" >
                         <option value='defaultOption'>Choose file</option>
                         <?php
                             while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){  
                                 $fileName = $row['filename'];
                                 $cid = $row['cid'];
                                 $fileid = $row['fileid'];
-                                $fileOption = $fileName . ',' . $cid . ',' . $fileid;
+                                $fileOption = $cid . ',' . $fileid . ',' . $fileName;
                                 if(preg_match('/(\.txt|\.html|\.js)$/i', $fileName)){              
                                     echo "<option value='$fileOption'>$fileName</option>"; 
                                 }   
