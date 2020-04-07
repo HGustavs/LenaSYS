@@ -47,12 +47,30 @@ if (checklogin() && $hasAccess) {
             $error = $query->errorInfo();
             $debug = "Error updating file list " . $error[2];
         }
+
+        chdir("../");
+        $currcwd = getcwd();
+
+        if ($kind == 2) {
+            $currcwd .= "/courses/global/" . $filename;
+        } else if ($kind == 3) {
+            $currcwd .= "/courses/" . $cid . "/" . $filename;
+        } else if ($kind == 4) {
+            $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
+        }
+
+        if (file_exists($currcwd)) {
+            unlink($currcwd);
+
+            // if (unlink($currcwd))
+            //     echo json_encode("The file was deleted successfully");
+            // else
+            //     echo json_encode("The file was not deleted succesfully");
+        }
         // Remove file from filesystem?
         // Only for local files ... Course-wide and Global files could be used in other courses/course versions
         // TODO:
     } else if (strcmp($opt, "SAVEFILE") === 0) {
-
-
         // Change path to file depending on filename and filekind
         chdir("../");
         $currcwd = getcwd();
@@ -152,11 +170,11 @@ if (checklogin() && $hasAccess) {
         $entry = array(
             'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname]),
             'extension' => $extension,
-            'kind' => $filekindname,
+            'kind' => $filekind,
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
             'uploaddate' => $row['uploaddate'],
             'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension]),
-            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
+            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind])
         );
 
         array_push($entries, $entry);
