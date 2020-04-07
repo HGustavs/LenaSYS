@@ -252,7 +252,6 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 		str +="</div>"
 		return str;
 }
-
 function makeDivItemStudent(option,optionlist,valuelist)
 {
 		var str="";
