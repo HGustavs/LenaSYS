@@ -30,6 +30,8 @@ $selectedfile = getOP('selectedfile');
 $error = false;
 
 
+
+
 if (isset($_SESSION['uid'])) {
     $userid = $_SESSION['uid'];
 } else {
@@ -151,6 +153,7 @@ if ($storefile) {
 
             $temp = explode(".", $filea["name"]);
             $extension = end($temp); //stores the file type
+            $extension = strtolower($extension);
 
            
             $filetype = "";
