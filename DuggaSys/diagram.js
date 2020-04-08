@@ -1293,10 +1293,10 @@ function drawVirtualA4() {
     if(!singleA4){
         if (A4Orientation == "portrait") {
             a4Rows = 6;
-            a4Columns = 20;
+            a4Columns = 12;
         } else if(A4Orientation == "landscape") {
-            a4Rows = 9;
-            a4Columns = 14;
+            a4Rows = 10;
+            a4Columns = 8;
         }
     } else {
         a4Rows = 1;
@@ -1306,20 +1306,27 @@ function drawVirtualA4() {
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
-
-    // Draw A4 sheets in portrait mode
-    if(A4Orientation == "portrait") {
+    
+    if(A4Orientation == "portrait") {           // Draw A4 sheets in portrait mode
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);
+                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);               // Bottom right
+                if(!singleA4){
+                    ctx.strokeRect(zeroX - a4Width * (j+1), zeroY + a4Height * i, a4Width, a4Height);       // Bottom left
+                    ctx.strokeRect(zeroX + a4Width * j, zeroY - a4Height * (i+1), a4Width, a4Height);       // Top right
+                    ctx.strokeRect(zeroX - a4Width * (j+1), zeroY - a4Height * (i+1), a4Width, a4Height);   // Top left
+                }
             }
         }
-    }
-    // Draw A4 sheets in landscape mode
-    else if(A4Orientation == "landscape") {
+    } else if(A4Orientation == "landscape") {   // Draw A4 sheets in landscape mode
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);
+                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);               // Bottom right
+                if(!singleA4){
+                    ctx.strokeRect(zeroX - a4Height * (j+1), zeroY + a4Width * i, a4Height, a4Width);       // Bottom left
+                    ctx.strokeRect(zeroX + a4Height * j, zeroY - a4Width * (i+1), a4Height, a4Width);       // Top right
+                    ctx.strokeRect(zeroX - a4Height * (j+1), zeroY - a4Width * (i+1), a4Height, a4Width);   // Top left
+                }
             }
         }
     }
