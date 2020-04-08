@@ -393,6 +393,18 @@ function Symbol(kindOfSymbol) {
     }
 
     //--------------------------------------------------------------------
+    // resizeUMLToMinimum: Resizes an UML Symbol to the minimum Width and Height values
+    //--------------------------------------------------------------------
+
+    this.resizeUMLToMinimum = function() {
+
+        //console.log("Resized");
+        points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
+        points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+
+    }
+
+    //--------------------------------------------------------------------
     // sortConnector: Sorts the connector
     //--------------------------------------------------------------------
     this.sortConnector = function (connector, direction, start, end, otherside) {
@@ -2184,6 +2196,8 @@ function Symbol(kindOfSymbol) {
             x: pixelsToCanvas(x2 + xOffset).x,
             y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
+
+
 }
 
 //----------------------------------------------------------------------
