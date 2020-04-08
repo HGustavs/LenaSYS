@@ -128,7 +128,7 @@ function Symbol(kindOfSymbol) {
     //--------------------------------------------------------------------
     // quadrants: Iterates over all relation ends and checks if any need to change quadrants
     //--------------------------------------------------------------------
-    this.quadrants = function () {
+    this.quadrants = function (kind) {
         // Fix right connector box (1)
         var changed = false;
         var i = 0;
@@ -218,6 +218,34 @@ function Symbol(kindOfSymbol) {
                 i++;
             }
         }
+        // Fixes lines when thes same entity connects to a relation twice     
+        if (kind == symbolKind.erRelation){
+            if (this.connectorTop.length == 2){
+                changed = true;
+                conn = this.connectorTop.splice(0, 2);
+                this.connectorLeft.push(conn[1]);
+                this.connectorRight.push(conn[0]);
+            }
+            else if (this.connectorBottom.length == 2){
+                changed = true;
+                conn = this.connectorBottom.splice(0, 2);
+                this.connectorLeft.push(conn[1]);
+                this.connectorRight.push(conn[0]);
+            }            
+            else if (this.connectorLeft.length == 2){
+                changed = true;
+                conn = this.connectorLeft.splice(0, 2);
+                this.connectorTop.push(conn[1]);
+                this.connectorBottom.push(conn[0]);
+            }
+            else if (this.connectorRight.length == 2){
+                changed = true;
+                conn = this.connectorRight.splice(0, 2);
+                this.connectorTop.push(conn[0]);
+                this.connectorBottom.push(conn[1]);
+            }
+        }
+
         return changed;
     }
 
