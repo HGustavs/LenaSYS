@@ -82,7 +82,7 @@ function returned(data) {
 	}
 
 	if (retData['writeaccess'] == "w") {
-		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid=" + courseid + "&coursevers=" + cvers + "');");
+		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 
