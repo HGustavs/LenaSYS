@@ -485,8 +485,8 @@
                     </div>
                     <div class="form-group" data-types="4,7">
                         <label for="cardinality">Cardinality:</label>
-                        <select id="cardinality" data-access="cardinality"></select></br>
-                        <select id="cardinalityUML" data-access="cardinality"></select>
+                        <select id="cardinality" data-access="cardinality.value"></select></br>
+                        <select id="cardinalityUML" data-access="cardinality.valueUML"></select>
                     </div>
                     <div class="form-group" data-types="1">
                         <label for="umlAttributes">Attributes:</label>

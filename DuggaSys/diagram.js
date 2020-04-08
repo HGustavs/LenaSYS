@@ -4315,26 +4315,22 @@ function createCardinality() {
     }
 }
 
-function changeCardinality(isUML) {
-    var val = document.getElementById('cardinality').value;
-    var valUML;
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    if(isUML) {
-        valUML = document.getElementById('cardinalityUml').value;
-    }
+function changeCardinality() {
+    let cardinality = document.getElementById("cardinality").value;
+    let cardinalityUML = document.getElementById("cardinalityUML").value;
+    const lastSelected = selected_objects[selected_objects.length - 1];
 
-    //Setting existing cardinality value on line
-    if(val == "None") val = "";
-    if(valUML == "None") valUML = "";
-    if(lastSelected && lastSelected.cardinality[0].value != null) {
-        if(lastSelected.cardinality[0].symbolKind != symbolKind.uml) {
-            lastSelected.cardinality[0].value = val;
+    if(cardinality === "None") cardinality = "";
+    if(cardinalityUML === "None") cardinalityUML = "";
+
+    if(typeof lastSelected !== "undefined" && lastSelected.cardinality[0].value !== null) {
+        if(lastSelected.cardinality[0].symbolKind === symbolKind.uml) {
+            lastSelected.cardinality[0].valueUML = cardinalityUML;
+            lastSelected.cardinality[0].value = cardinality;
         } else {
-            lastSelected.cardinality[0].valueUML = valUML;
-            lastSelected.cardinality[0].value = val;
+            lastSelected.cardinality[0].value = cardinality;
         }
     }
-    updateGraphics();
 }
 
 // Changes direction for uml line relations
@@ -4450,21 +4446,22 @@ function setSelections(object) {
     }
 
     groups.forEach(group => {
-        const elements = group.querySelectorAll("input, select, textarea");
+        const elements = group.querySelectorAll("select");
         elements.forEach(element => {
-            if(element.nodeName === "SELECT") {
-                let access = element.dataset.access.split(".");
-                let value = "";
-                if(access.length === 1) {
-                    value = object[access[0]];
-                } else if(access.length === 2) {
-                    value = object[access[0]][access[1]];
+            const access = element.dataset.access.split(".");
+            let value = "";
+            if(access[0] === "cardinality") {
+                if(element.style.display !== "none") {
+                    value = object[access[0]][0][access[1]];
                 }
-                setSelectedOption(element, value);
+            } else if(access.length === 1) {
+                value = object[access[0]];
+            } else if(access.length === 2) {
+                value = object[access[0]][access[1]];
             }
+            setSelectedOption(element, value);
         });
     });
-
 }
 
 //Do not handle globals yet -> -1 Line thickness and stroke color
@@ -4480,11 +4477,18 @@ function setObjectProperties() {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
                 let access = element.dataset.access.split(".");
+                //console.log(element, access)
                 if(element.nodeName === "TEXTAREA") {
                     object[access[0]] = setTextareaText(element, object[access[0]]);
                 } else if(element.type === "range") {
                     object[access[0]] = element.value / 100;
-                } else if(access.length === 1) {
+                } else if(access[0] === "cardinality") {
+                    if(element.style.display !== "none") {
+                        if(element.value === "None") element.value = "";
+                        object[access[0]][0][access[1]] = element.value;
+                    }
+                } 
+                else if(access.length === 1) {
                     object[access[0]] = element.value;
                 } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
