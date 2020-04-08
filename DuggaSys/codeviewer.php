@@ -130,7 +130,7 @@ Testing Link:
 				}
 			}
 			//	FOR TESTING:	uncomment line below to see log output of #username, 
-			//echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
+			echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
 
 			// Logs users who view example, along with the example they have viewed
 			if ($userid == "00") {
