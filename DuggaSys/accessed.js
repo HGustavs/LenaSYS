@@ -284,8 +284,8 @@ function renderCell(col, celldata, cellid) {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		
-		if (parseFloat(obj.recent) > 1440) {
-			str = "<input class='submit-button' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
+		if (parseFloat(obj.recent) < 1440) {
+			str = "<input class='submit-button new-user' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
 		} else {
 			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
 		}
@@ -302,6 +302,9 @@ function renderCell(col, celldata, cellid) {
 			if (i > 0) optstr += " ";
 			optstr += tgroups[i].substr(1 + tgroups[i].indexOf("_"));
 		}
+		if(optstr.includes('None')){
+            optstr = "";
+        }
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 		str += "<select><option>" + optstr + "</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
@@ -609,6 +612,10 @@ function mouseUp(e) {
 			else changeProperty(checkboxes.id.substr(3), "group", "None");
 		}
 	}
+	// if the target of the click is outside of the current cell being edited -> close the cell editing interface
+ 	else if (!document.getElementById('editpopover').contains(e.target)) {
+ 		clearUpdateCellInternal();
+ 	}
 }
 
 //----------------------------------------------------------------------------------

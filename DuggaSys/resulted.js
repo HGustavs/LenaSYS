@@ -1285,11 +1285,7 @@ function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
-			if (cell.ssn.length > 11) {
-				str = cell.ssn + ";";
-			} else {
-				str = "19" + cell.ssn + ";";
-			}
+			str = cell.ssn + ";";
 
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");

@@ -18,6 +18,8 @@
   --color-primary-2: #775886;
   --color-primary-hover: #7b5a96;
   --color-primary-light: #927b9e;
+  --color-new-user: #93A561;
+  --color-new-user-hover: #B6C58C;
   --color-accent: rgb(254, 204, 86);
   --color-accent-transparent: rgba(254, 204, 86, 0.5);
   --color-accent-hover: #ffd369;
@@ -1720,6 +1722,16 @@ input.submit-button.resetpw-button {
   margin: auto;
   display: block;
 }
+input.submit-button.new-user {
+  background-color: var(--color-new-user);
+  color: var(--color-primary);
+  float: none;
+  margin: auto;
+  display: block;
+}
+input.submit-button.new-user:hover {
+    background-color: var(--color-new-user-hover);
+}
 
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -2686,6 +2698,13 @@ span.arrow {
   border-radius: 4px;
   padding: 10px;
   width: min-content;
+}
+
+.resultedFormsFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5px;
 }
 
 #laddate {

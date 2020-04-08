@@ -49,12 +49,12 @@ pdoConnect();
 			<h1>Result</h1>
     </div>
     <div id="resultedFormContainer">
-			<div id="ladexportContainer">
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+      <div id="ladexportContainer">
+      <div class="resultedFormsFlex">
         <label>Delkurs</label>
         <select id="ladselect"></select>
       </div>
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+      <div class="resultedFormsFlex">
         <label>Betygsskala</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
@@ -63,7 +63,7 @@ pdoConnect();
        	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
         </select>
       </div>
-      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+      <div class="resultedFormsFlex">
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
@@ -76,7 +76,7 @@ pdoConnect();
 			<?php }else{ ?>
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
-        <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+        <div class="resultedFormsFlex">
 				<label>Filtrera efter</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>none</option>
@@ -85,7 +85,7 @@ pdoConnect();
 					<option value="Filter-U">U</option>
 				</select>
 				</div>
-				<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+				<div class="resultedFormsFlex">
 					<label>Examinator:</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
@@ -110,7 +110,7 @@ pdoConnect();
 			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 
-		<div id="MarkCont" style="position: absolute; left:4px; width: 99%; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
+		<div id="MarkCont" style="position: absolute; left:4px; width: 99%; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb;"> </div>
 		<div id="toggleGrade">
 		<div id='markMenuPlaceholder'></div>
 		<div id="teacherFeedbackTable"></div>
