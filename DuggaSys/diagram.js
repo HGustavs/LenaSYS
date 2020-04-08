@@ -1169,7 +1169,7 @@ diagram.sortConnectors = function() {
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
-            if(diagram[i].quadrants()) break;
+            if(diagram[i].quadrants(diagram[i].symbolkind)) /*break*/;
         }
     }
 }
