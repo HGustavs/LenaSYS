@@ -225,13 +225,13 @@ function Symbol(kindOfSymbol) {
 	// adjust: Moves midpoint or other fixed point to geometric center of object again
 	//         Restricts resizing for classes
 	//--------------------------------------------------------------------
-	this.adjust = function () {
-			var x1 = points[this.topLeft].x;
-			var y1 = points[this.topLeft].y;
+	this.adjust = function () {
+			var x1 = points[this.topLeft].x;
+			var y1 = points[this.topLeft].y;
 			var x2 = points[this.bottomRight].x;
 			var y2 = points[this.bottomRight].y;
-			var hw = (points[this.bottomRight].x - x1) * 0.5;
-			var hh = (points[this.bottomRight].y - y1) * 0.5;
+			var hw = (points[this.bottomRight].x - x1) * 0.5;
+			var hh = (points[this.bottomRight].y - y1) * 0.5;
 			if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erEntity) {
 					if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
 							// If the width is less than the minimum, push out the
@@ -266,8 +266,8 @@ function Symbol(kindOfSymbol) {
 							}
 							this.pointsAtSamePosition = false;
 					}
-			} else if (this.symbolkind == symbolKind.uml) {
-					// Place middle divider point in middle between x1 and y1
+			} else if (this.symbolkind == symbolKind.uml) {
+					// Place middle divider point in middle between x1 and y1
 					points[this.middleDivider].x = x1 + hw;
 					points[this.topLeft].y = y1;
 
@@ -329,7 +329,7 @@ function Symbol(kindOfSymbol) {
 							}
 							this.pointsAtSamePosition = false;
 					}
-			} else if (this.symbolkind == symbolKind.erRelation) {
+			} else if (this.symbolkind == symbolKind.erRelation) {
 					if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
 							// If the width is less than the minimum, push out the
 							// point that the user is dragging
@@ -727,7 +727,7 @@ function Symbol(kindOfSymbol) {
 	//--------------------------------------------------------------------
 	// emptyConnectors: Empties every connector of the object
 	//--------------------------------------------------------------------
-	this.emptyConnectors = function () {
+	this.emptyConnectors = function () {
 			for (var i = 0; i < this.connectorTop.length; i++) {
 					points[this.connectorTop[i].from] = "";
 					this.connectorTop.splice(i, 1);
@@ -1451,14 +1451,14 @@ function Symbol(kindOfSymbol) {
 					ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
 					ctx.setLineDash([5, 4]);
 			}
-
+			
 			checkLineIntersection(x1,y1,x2,y2);
 			ctx.beginPath();
 			ctx.moveTo(x1, y1);
 			ctx.lineTo(x2, y2);
 			ctx.stroke();
-		
 	}
+
 	//---------------------------------------------------------------
 	// drawUMLLine: Draws uml line between uml objects
 	//---------------------------------------------------------------
@@ -1470,20 +1470,20 @@ function Symbol(kindOfSymbol) {
 					//Updates x and y position
 					ctx.fillStyle = '#000';
 					if(this.cardinality[0].symbolKind == symbolKind.uml) {
-							var valX = x1 > x2 ? x1-20 : x1+20;
-							var valY = y1 > y2 ? y1-15 : y1+15;
-							var valY2 = y2 > y1 ? y2-15 : y2+15;
-							var valX2 = x2 > x1 ? x2-20 : x2+20;
+							var valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
+							var valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
+							var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
+							var valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
 							if (this.isRecursiveLine) {
-									let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent);
+									let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent) * diagram.getZoomValue();
 									if (x1 == x2) {
 											valX = valX2 = x1 + 20 * dir;
-											valY = y1 - 13;
-											valY2 = y2 - 13;
+											valY = y1 - 13 * diagram.getZoomValue();
+											valY2 = y2 - 13 * diagram.getZoomValue();
 									}else {
 											valY = valY2 = y1 + 20 * dir;
-											valX = x1 - 17;
-											valX2 = x2 - 17;
+											valX = x1 - 17 * diagram.getZoomValue();
+											valX2 = x2 - 17 * diagram.getZoomValue();
 									}
 							}
 							ctx.fillText(this.cardinality[0].value, valX, valY);
@@ -1638,8 +1638,8 @@ function Symbol(kindOfSymbol) {
 			} else if (endLineDirection == "down") {
 					ctx.lineTo(x2, breakpointEndY);
 			}
-				ctx.lineTo(x2, y2);
-				ctx.stroke();
+			ctx.lineTo(x2, y2);
+			ctx.stroke();
 
 			this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
 	}
@@ -2180,27 +2180,6 @@ this.getFontsize = function() {
 					y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
 	}
 }
-
-//----------------------------------------------------------------------
-// drawLock: This function draws out the actual lock for the specified symbol
-//----------------------------------------------------------------------
-function drawLock(symbol) {
-	var position = symbol.getLockPosition();
-	ctx.save();
-	ctx.fillStyle = "orange";
-	ctx.strokeStyle = "orange";
-	ctx.lineWidth = diagram.getZoomValue();
-	// A slight x offset to get the correct position
-	var xOffset = 5;
-	// Draws the upper part of the lock
-	ctx.beginPath();
-	ctx.arc(position.x + (xOffset * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
-	ctx.stroke();
-	ctx.closePath();
-	// Draws the lock body
-	ctx.fillRect(position.x, position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
-	ctx.restore();
-}
 //--------------------------------------------------------------
 //checkLineIntersection: checks if any two lines does intersect
 //--------------------------------------------------------------
@@ -2268,7 +2247,27 @@ function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
  }
 }
 
-//
+//----------------------------------------------------------------------
+// drawLock: This function draws out the actual lock for the specified symbol
+//----------------------------------------------------------------------
+function drawLock(symbol) {
+	var position = symbol.getLockPosition();
+	ctx.save();
+	ctx.fillStyle = "orange";
+	ctx.strokeStyle = "orange";
+	ctx.lineWidth = diagram.getZoomValue();
+	// A slight x offset to get the correct position
+	var xOffset = 5;
+	// Draws the upper part of the lock
+	ctx.beginPath();
+	ctx.arc(position.x + (xOffset * diagram.getZoomValue()), position.y, 4 * diagram.getZoomValue(), 1 * Math.PI, 2 * Math.PI);
+	ctx.stroke();
+	ctx.closePath();
+	// Draws the lock body
+	ctx.fillRect(position.x, position.y, 10 * diagram.getZoomValue(), 10 * diagram.getZoomValue());
+	ctx.restore();
+}
+
 //----------------------------------------------------------------------
 // drawLockedTooltip: Draws out a tooltip that tells the user the object is locked.
 //----------------------------------------------------------------------
@@ -2415,6 +2414,8 @@ function Path() {
 	this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
 	this.isHovered = false;         // If the free draw object is hovered
 	this.figureType = "Free";
+	this.topLeft = 1;
+	this.bottomRight = 2;
 	this.properties = {
 			'strokeColor': '#000000',   // Stroke color (default is black)
 			'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
@@ -2693,7 +2694,7 @@ function Path() {
 
 	//--------------------------------------------------------------------
 	// intersection: Line to line intersection
-	// Does not detect intersections on end points (we do not want end points to be part of intersection set)
+	//               Does not detect intersections on end points (we do not want end points to be part of intersection set)
 	//--------------------------------------------------------------------
 	this.intersection = function(p1, p2, p3, p4) {
 			var x1 = points[p1].x;
