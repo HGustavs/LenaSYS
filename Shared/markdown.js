@@ -550,6 +550,19 @@ function chooseFile(selectedFile){
     }
 }
 
+function codeLink(file) {
+    var parts = file.split(',');
+    var fileId = parts[0];
+    var cid = parts[1];
+    var fileName = parts[2];
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '!!!' + 'codeviewer.php?exampleid=' + fileId + '&courseid=' + cid + '&cvers=0&lid=0' + ', ' + fileName + '!!!'  + txtarea.value.substring(end);;
+    txtarea.value = finText;
+    txtarea.foucs();
+    txtarea.selcetionEnd= end + 12;
+    updatePreview(txtarea.value);
+}
+
 function linkYoutube(){
     this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '[YOUTUBE:' + 'IDNUM,WIDTH,LENGTH' + sel + ']' + txtarea.value.substring(end);

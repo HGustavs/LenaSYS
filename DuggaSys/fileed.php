@@ -11,10 +11,12 @@ pdoConnect();
 $cid = getOPG('courseid');
 
 echo("<script>console.log('PHP: " . $cid . "');</script>");
-
 $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
 $query->bindParam(':cid', $cid);
 $query->execute();      
+
+$codeLinkQuery = $pdo->prepare( "SELECT filename, fileid, cid FROM fileLink");
+$codeLinkQuery->execute(); 
 
 ?>
 
@@ -161,7 +163,21 @@ $query->execute();
                                 $fileInfo = $fileName . ',' . $cid;
                                 if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){              
                                     echo "<option value='$fileInfo'>$fileName</option>"; 
+                                }   
+                            } 
+                        ?>
+                        </select>
 
+                        <select name="test" onchange="codeLink(this.options[this.selectedIndex].value);" >
+                        <option value='defaultOption'>Choose file</option>
+                        <?php
+                            while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){  
+                                $fileName = $row['filename'];
+                                $cid = $row['cid'];
+                                $fileid = $row['fileid'];
+                                $fileOption = $fileid . ',' . $cid . ',' . $fileName;
+                                if(preg_match('/(\.txt|\.html|\.js|\.css)$/i', $fileName)){              
+                                    echo "<option value='$fileOption'>$fileName</option>"; 
                                 }   
                             } 
                         ?>
