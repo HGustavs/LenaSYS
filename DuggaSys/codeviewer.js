@@ -1534,60 +1534,87 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		// Make white space characters
 		tokenvalue = tokenvalue.replace(/ /g, '&nbsp;');
 		tokenvalue = tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
-
+		
 		if (tokens[i].kind == "rowcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
-
 			var splitString = tokens[i].val.split(" ");
 			
 			
-
 			for(j = 0; j < splitString.length; j++){
 				
 				var withoutQuote = splitString[j].replace(/(?:\"|')/g, "");
 				var withQuote = splitString[j].replace(/(?:\"|')/g, "&quot;");
 				var withSingleQuote = splitString[j].replace(/(?:\"|')/g, "\'");
-
-				console.log("QUOTE: " + withoutQuote);
-				
-				//Decide if important word is first, last or in the middle of a string
+				// Decide if the word is important or not.
 				if (important.indexOf(withoutQuote) != -1 ||
 					important.indexOf(withQuote) != -1 ||
 					important.indexOf(withSingleQuote) != -1) {
-					if(j == splitString.length - 1) {
-						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
-						cont += tokenvalue[tokenvalue.length-1] + "</span>";
-						console.log("HELLO111");
-					}else if(j == 0) {
-						cont += "<span class='string'>" + tokenvalue[0];
-						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
-						cont += "<span class='string'>" + " ";
-						console.log("HELLOO222");
-					}else {
-					cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withQuote + "</span>";
-					cont += "<span class='string'>" + " ";
-					console.log("HELLO 3333");
+					
+					// Decide if important word is first, last or in the middle of the string.
+					if(j == 0){
+						// Checks if the word is a string within a string.
+						if(splitString[j].charAt(1) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
+							// If string within a string, print single quotes around the word.
+							cont += "<span class='string'>" + '"' + "'";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span class='string'>" + "'";
+							cont += "<span>" + " ";
+						}else{
+							cont += "<span class='string'>" + '"';
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span>" + " ";
+						}
+						
 					}
-				//Else if the word is not important, implement it as a normal word in a string (blue text) and decide if it's first last or in the middle
-				}else {
-					if(j == splitString.length -1) {
-						cont += "<span class='string'>" + splitString[j] + "</span>";
-					}else if(j == 0) {
-						cont += "<span class='string'>" + splitString[j] + "</span>";
-						cont += "<span class='string'>" + " ";
-					}else {
-						console.log(tokenvalue[0]);
-						cont += "<span class='string'>" + splitString[j] + "</span>";
-						cont += "<span class='string'>" + " ";
+					else if(j == splitString.length - 1){
+						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 2) == "'"){
+							cont += "<span class='string'>" + "'";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span class='string'>" + "'" + '"';
+						}else{
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span class='string'>" + '"' + "</span>";
+						}
+						
+					} 
+					else{
+						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
+							cont += "<span class='string'>" + "'";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span class='string'>" + "'" + " ";
+						}else{
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span>" + " " + "</span>";
+						}
+						
 					}
-				}
+				// Else if the word is not important, implement it as a normal word in a string.		
+			} 	else {
+					// Decide if the word is first, last or in the middle.
+					if(j == 0){
+						// Variable is a substring of a non-important word in a string that is either first or last.
+						// Removes extra double quotes before or after the word if so.
+						var stringWithSingleQuotes = splitString[j].substring(1, splitString[j].length);
+						cont += "<span class='string'>" + '"';
+						cont += "<span class='string'>" + stringWithSingleQuotes + "</span>";
+						cont += "<span>" + " ";
+					} 
+					else if (j == splitString.length - 1){
+						var stringWithSingleQuotes = splitString[j].substring(0, splitString[j].length - 1);
+						cont += "<span class='string'>" + stringWithSingleQuotes + "</span>";
+						cont += "<span class='string'>" + '"' + "</span>";
+					}
+					else{
+						cont += "<span class='string'>" + splitString[j] + "</span>";
+						cont += "<span>" + " ";
+					}
+					
 			}
-
+			}
 			
-
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "name") {
