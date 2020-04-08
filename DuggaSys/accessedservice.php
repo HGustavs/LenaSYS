@@ -220,6 +220,18 @@ if(checklogin() && $hasAccess) {
                   }
 
 									if($user[0]!="PNR"){
+											$firstname = str_replace("&aring;","å",$firstname);
+											$firstname = str_replace("&Aring;","Å",$firstname);
+											$firstname = str_replace("&auml;","ä",$firstname);
+											$firstname = str_replace("&Auml;","Ä",$firstname);
+											$firstname = str_replace("&ouml;","ö",$firstname);
+											$firstname = str_replace("&Ouml;","Ö",$firstname);
+											$lastname = str_replace("&aring;","å",$lastname);
+											$lastname = str_replace("&Aring;","Å",$lastname);
+											$lastname = str_replace("&auml;","ä",$lastname);
+											$lastname = str_replace("&Auml;","Ä",$lastname);
+											$lastname = str_replace("&ouml;","ö",$lastname);
+											$lastname = str_replace("&Ouml;","Ö",$lastname);
 											$rnd=standardPasswordHash(makeRandomString(9));
 											$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
 											$stmt = $pdo->prepare($querystring);
