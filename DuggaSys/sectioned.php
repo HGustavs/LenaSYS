@@ -123,8 +123,8 @@
 		include '../Shared/loginbox.php';
 	?>
 
-	<!-- Edit Section Dialog START -->
-	<div id='editSection' class='loginBoxContainer' style='display:none;'>
+		<!-- Edit Section Dialog START -->
+		<div id='editSection' onmouseover="validateSectionName('sectionname','dialog7'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
@@ -134,22 +134,19 @@
 				<input type='hidden' id='lid' value='Toddler' />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<div class="tooltipDugga">
-						<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
-					</div>
-					<input type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input oninput="validateSectionName('sectionname','dialog7')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
+				<p id="dialog7" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only letters (not åäö)</p>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
-					<div class="tooltipDuggaType">
-						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt"></span>
-					</div> <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
+					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
 						If they don't, change the width of loginbox select in the CSS file -->
-						<select id='type' value='type' onchange='changedType(document.getElementById("type").value);'></select>
+					<select id='type' value='type' onchange='changedType(document.getElementById("type").value);'></select>
 					</div>
 					<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 					<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
-					<div id='inputwrapper-deadline' class='inputwrapper'><span>Set Deadline:</span><span style='float:right'><input class='textinput' type='date' id='setDeadlineValue' value='' /><select style='width:55px;' id='deadlineminutes'></select><select style='width:55px;' id='deadlinehours'></select></span></div>
+					<div id='inputwrapper-deadline' class='inputwrapper'><span>Set Deadline:</span><span style='float:right'><input onchange="validateDate2('setDeadlineValue','dialog8')" class='textinput' type='date' id='setDeadlineValue' value='' /><select style='width:55px;' id='deadlineminutes'></select><select style='width:55px;' id='deadlinehours'></select></span></div>
+			        <p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Deadline has to be between start date and end date</p>
 					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
@@ -203,30 +200,33 @@
 	</div>
 	<!-- Confirm Missing Material Dialog END -->
 
-	<!-- New Version Dialog START -->
-	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
+		<!-- New Version Dialog START -->
+		<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
     	<div class='loginBox' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>New Course Version</h3>
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
-				<div class='inputwrapper'><span>Start Date:</span><input class='textinput' type='date' id='startdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input class='textinput' type='date' id='enddate' value='' /></div>
+				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
+				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
+				<div class='inputwrapper'><span>Version ID:</span><input oninput="validateCourseID('versid', 'dialog2')" class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
+				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
+				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
+				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
 			<div style='padding:5px;'>
-				<input class='submit-button' type='button' value='Create' title='Create new version' onclick='createVersion();' />
+				<input class='submit-button' type='button' value='Create' title='Create new version' onclick="validateForm('newCourseVersion')" />
 			</div>
 		</div>
 	</div>
 	<!-- New Verison Dialog END -->
 
-	<!-- Edit Version Dialog START -->
-	<div id='editCourseVersion' class='loginBoxContainer' style='display:none;'>
+<!-- Edit Version Dialog START -->
+<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6');" class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Course Version</h3>
@@ -235,13 +235,15 @@
 			<div style='padding:5px;'>
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
-				<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<div class='inputwrapper'><span>Start Date:</span><input class='textinput' type='date' id='estartdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input class='textinput' type='date' id='eenddate' value='' /></div>
+				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('eversname', 'dialog5')" class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
+				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
+				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
+				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 			</div>
 			<div style='padding:5px;'>
-				<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />
+				<input class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
 			</div>
 		</div>
 	</div>
