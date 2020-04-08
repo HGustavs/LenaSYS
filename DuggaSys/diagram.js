@@ -1291,6 +1291,8 @@ function drawVirtualA4() {
 
     if(!singleA4){
         if (A4Orientation == "portrait") {
+            //a4Rows = canvas.height;
+            //a4Columns = canvas.width;
             a4Rows = 6;
             a4Columns = 20;
         } else if(A4Orientation == "landscape") {
@@ -1306,6 +1308,18 @@ function drawVirtualA4() {
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
 
+
+    // Draw A4 sheets in portrait mode
+    if(A4Orientation == "portrait") {
+        for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < a4Columns; j++) {
+                ctx.strokeRect(zeroX, zeroY + a4Height * i, a4Width, a4Height);
+                //ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, 200, 20);
+            }
+        }
+    }
+
+/*
     // Draw A4 sheets in portrait mode
     if(A4Orientation == "portrait") {
         for (var i = 0; i < a4Rows; i++) {
@@ -1313,7 +1327,7 @@ function drawVirtualA4() {
                 ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);
             }
         }
-    }
+    }*/
     // Draw A4 sheets in landscape mode
     else if(A4Orientation == "landscape") {
         for (var i = 0; i < a4Rows; i++) {
