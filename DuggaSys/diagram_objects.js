@@ -1193,7 +1193,7 @@ function Symbol(kindOfSymbol) {
         ctx.clip();
 
         //drawing an derived attribute
-        if (this.properties['key_type'] == 'Drive') {
+        if (this.properties['key_type'] == 'Derive') {
 
             ctx.setLineDash([5, 4]);
         }
@@ -2058,7 +2058,7 @@ function Symbol(kindOfSymbol) {
                 str += this.ovalToSVG(x1-7, y1-7, x2+7, y2+7, svgStyle);
             }
             // Oval
-            if (this.properties['key_type'] == "Drive") {
+            if (this.properties['key_type'] == "Derive") {
                 str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, lineDash);
             } else {
                 str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, "");

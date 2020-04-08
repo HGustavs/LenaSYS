@@ -42,10 +42,22 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics();" style="overflow-y: hidden;">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics(); initAppearanceForm();" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
+
+        $colors = '
+            <option value=\'#64B5F6\'>Blue</option>
+            <option value=\'#81C784\'>Green</option>
+            <option value=\'#e6e6e6\'>Grey</option>
+            <option value=\'#E57373\'>Red</option>
+            <option value=\'#FFF176\'>Yellow</option>
+            <option value=\'#FFB74D\'>Orange</option>
+            <option value=\'#BA68C8\'>Purple</option>
+            <option value=\'#ffffff\'>White</option>
+            <option value=\'#000000\'>Black</option>
+        ';
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
@@ -163,11 +175,11 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick='globalAppearanceMenu(event);'>Global Appearance</span>
+                                <span class="drop-down-option" onclick='loadGlobalAppearanceForm();'>Global Appearance</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
                                 <div id="change-appearance-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='openAppearanceDialogMenu(event);'>Change Appearance</span>
+                                    <span class="drop-down-option" onclick='loadAppearanceForm();'>Change Appearance</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
@@ -406,16 +418,131 @@
         </div>
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
-    <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
+    <div id="appearance" class='loginBoxContainer'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3 id='loginBoxTitle'>Appearance</h3>
-                <div class='cursorPointer' onclick='closeAppearanceDialogMenu();changeLoginBoxTitleAppearance();'>
+                <div class='cursorPointer' onclick='toggleApperanceElement();'>
                     x
                 </div>
             </div>
             <div class='table-wrap'>
-                <div id="f01">
+                <div id="appearanceForm">
+                    <div class="form-group" data-types="1,2,3,5">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" data-access="name">
+                    </div>
+                    <div class="form-group" data-types="2,3,4,5,7">
+                        <label for="type">Type:</label>
+                        <select id="type" data-access="properties.key_type"></select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5">
+                        <label for="backgroundColor">Background color:</label>
+                        <select id="backgroundColor" data-access="properties.fillColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="0">
+                        <label for="fillColor">Fill color:</label>
+                        <select id="fillColor" data-access="fillColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="6">
+                        <label for="freeText">Text:</label>
+                        <textarea id="freeText" data-access="textLines"></textarea>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,6">
+                        <label for="fontFamily">Font family:</label>
+                        <select id="fontFamily" data-access="properties.font">
+                            <option value="Arial">Arial</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Calibri">Calibri</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,6">
+                        <label for="fontColor">Font color:</label>
+                        <select id="fontColor" data-access="properties.fontColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,6">
+                        <label for="textSize">Text size:</label>
+                        <select id="textSize" data-access="properties.sizeOftext">
+                            <option value="Tiny">Tiny</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,0">
+                        <label for="lineColor">Line color:</label>
+                        <select id="lineColor" data-access="properties.strokeColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="6">
+                        <label for="textAlignment">Text alignment:</label>
+                        <select id="textAlignment" data-access="properties.textAlign">
+                            <option value="start">Left</option>
+                            <option value="center" selected>Center</option>
+                            <option value="end">Right</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="7">
+                        <label for="lineDirection">Line direction:</label>
+                        <select id="lineDirection" data-access="lineDirection">
+                            <option value="First">First object</option>
+                            <option value="Second">Second object</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="4,7">
+                        <label for="cardinality">Cardinality:</label>
+                        <select id="cardinality" data-access="cardinality.value"></select></br>
+                        <select id="cardinalityUML" data-access="cardinality.valueUML"></select>
+                    </div>
+                    <div class="form-group" data-types="1">
+                        <label for="umlAttributes">Attributes:</label>
+                        <textarea id="umlAttributes" data-access="attributes"></textarea>
+                    </div>
+                    <div class="form-group" data-types="1">
+                        <label for="umlOperations">Operations:</label>
+                        <textarea id="umlOperations" data-access="operations"></textarea>
+                    </div>
+                    <div class="form-group" data-types="0">
+                        <label for="figureOpacity">Opacity:</label>
+                        <input type="range" id="figureOpacity" data-access="opacity">
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="backgroundColorGlobal">Background color:</label>
+                        <select id="backgroundColorGlobal" data-access="properties.fillColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="fontFamilyGlobal">Font family:</label>
+                        <select id="fontFamilyGlobal" data-access="properties.font">
+                            <option value="Arial">Arial</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Calibri">Calibri</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="fontColorGlobal">Font color:</label>
+                        <select id="fontColorGlobal" data-access="properties.fontColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                    <label for="textSizeGlobal">Text size:</label>
+                    <select id="textSizeGlobal" data-access="properties.sizeOftext">
+                        <option value="Tiny">Tiny</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="lineColorGlobal">Line color:</label>
+                        <select id="lineColorGlobal" data-access="properties.strokeColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="lineThicknessGlobal">Line thickness:</label>
+                        <input type="range" id="lineThicknessGlobal" min="1" max="4" value="2" data-access="properties.lineWidth">
+                    </div>
+                    <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
+                        <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
+                    </div>
                 </div>
             </div>
         </div>
