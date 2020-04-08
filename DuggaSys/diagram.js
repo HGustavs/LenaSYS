@@ -58,7 +58,7 @@ var settings = {
         textSize: '14',                               // 14 pixels text size is default.
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
-        key_type: 'normal'                            // Defult key type for a class.
+        key_type: 'Normal'                            // Defult key type for a class.
     },
 };
 
@@ -1800,28 +1800,6 @@ $(document).ready(function() {
         }
     });
 });
-
-//---------------------------------
-// Sets the size of text for entity
-//---------------------------------
-
-function setTextSizeEntity() {
-    for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
-    }
-}
-
-//---------------------------------------------------
-// Sets the type for last selected object in diagram
-//---------------------------------------------------
-
-function setType() {
-    var elementVal = document.getElementById('object_type').value;
-    for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].properties['key_type'] = elementVal;
-    }
-    updateGraphics();
-}
 
 //--------------------------------------------------
 // Returns connected that are connected to the line
@@ -4006,57 +3984,6 @@ function toggleApperanceElement(show) {
 }
 
 //----------------------------------------------------------------------
-// loadFormIntoElement: Loads the menu which is used to change appearance of ER and free draw objects.
-//----------------------------------------------------------------------
-
-function loadFormIntoElement(dir) {
-    //Ajax
-    var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    var names = "";
-    var properties;
-    const element = document.getElementById("appearanceForm");
-
-    if(dir == "diagram_forms.php?form=globalType"){
-        properties = settings.properties;
-    } else {
-        properties = lastSelected.properties;
-    }
-
-    if(selected_objects.length > 1){
-        for(var i = 0; i < selected_objects.length; i++){
-            names += selected_objects[i].name + ", ";
-        }
-    } else if(selected_objects.length == 1) {
-        names = selected_objects[0].name;
-    }
-
-    file.open('GET', dir);
-    file.onreadystatechange = function() {
-        if(file.readyState === 4) {
-            element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected.kind == kind.symbol) {
-                document.getElementById('nametext').value = names;
-                setSelectedOption('object_type', properties.key_type);
-                setSelectedOption('fillColor', properties.fillColor);
-                setSelectedOption('font', properties.font);
-                setSelectedOption('fontColor', properties.fontColor);
-                setSelectedOption('TextSize', properties.sizeOftext);
-                setSelectedOption('LineColor', properties.strokeColor);
-            } else if(globalAppearanceValue == 0 && lastSelected.kind == kind.path) {
-                setSelectedOption('figureFillColor', properties.fillColor);
-                document.getElementById('figureOpacity').value = (properties.opacity * 100);
-                setSelectedOption('LineColor', properties.strokeColor);
-            } else {
-                // should only occur when changing global appearance
-                document.getElementById('line-thickness').value = getLineThickness();
-            }
-        }
-    }
-    file.send();
-}
-
-//----------------------------------------------------------------------
 // The following functions are used to get Global Appearance changes
 //----------------------------------------------------------------------
 
@@ -4091,108 +4018,7 @@ function getTextSize() {
 }
 
 //----------------------------------------------------------------------
-// loadLineForm: Loads the menu to change cardinality
-//----------------------------------------------------------------------
-
-function loadLineForm(element, dir) {
-    //Ajax
-    var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    file.open('GET', dir);
-    file.onreadystatechange = function() {
-        if(file.readyState === 4) {
-            element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected) {
-                var cardinalityVal = lastSelected.cardinality[0].value;
-                var cardinalityValUML = lastSelected.cardinality[0].valueUML;
-                var lineDirection = lastSelected.lineDirection;
-                var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
-                var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
-                var tempLineDirection = lineDirection;
-                if (lineDirection == "" || lineDirection == null) {
-                    lastSelected.lineDirection = "First";
-                    tempLineDirection = "First";
-                }
-                setSelectedOption('object_type', lastSelected.properties.key_type);
-                // check if the form that is loaded is for a line can have cardinality
-                if (cardinalityValue != 1) {
-                    setSelectedOption('cardinality', tempCardinality);
-                    // check if the form that is loaded is for a line can have a linedirection (uml lines)
-                    if (cardinalityValue != 2) {
-                        setSelectedOption('line_direction', tempLineDirection);
-                    }
-                }
-                if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
-            }
-        }
-    }
-    file.send();
-}
-
-//----------------------------------------------------------------------
-// loadUMLForm: Loads the appearance menu for UML-class
-//----------------------------------------------------------------------
-
-function loadUMLForm(element, dir) {
-    var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    file.open('GET', dir);
-    file.onreadystatechange = function() {
-        if(file.readyState === 4) {
-            element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected) {
-                var attributesText = "";
-                var operationsText = "";
-                var attributesTextArea = document.getElementById('UMLAttributes');
-                var operationsTextArea = document.getElementById('UMLOperations');
-                for(var i = 0; i < lastSelected.attributes.length;i++) {
-                    attributesText += lastSelected.attributes[i].text;
-                    if(i < lastSelected.attributes.length - 1) attributesText += "\n";
-                }
-                for(var i = 0; i < lastSelected.operations.length;i++) {
-                    operationsText += lastSelected.operations[i].text
-                    if(i < lastSelected.operations.length - 1) operationsText += "\n";
-                }
-                document.getElementById('nametext').value = lastSelected.name;
-                attributesTextArea.value = attributesText;
-                operationsTextArea.value = operationsText;
-            }
-        }
-    }
-    file.send();
-}
-
-//----------------------------------------------------------------------
-// loadTextForm: Loads the appearance menu for text
-//----------------------------------------------------------------------
-
-function loadTextForm(element, dir) {
-    var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    file.open('GET', dir);
-    file.onreadystatechange = function() {
-        if(file.readyState === 4) {
-            element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected) {
-                var text = "";
-                var textarea = document.getElementById('freeText');
-                for (var i = 0; i < lastSelected.textLines.length; i++) {
-                    text += lastSelected.textLines[i].text;
-                    if (i < lastSelected.textLines.length - 1) text += "\n";
-                }
-                textarea.value = text;
-                setSelectedOption('font', lastSelected.properties.font);
-                setSelectedOption('fontColor', lastSelected.properties.fontColor);
-                setSelectedOption('textAlign', lastSelected.properties.textAlign);
-                setSelectedOption('TextSize', lastSelected.properties.sizeOftext);
-            }
-        }
-    }
-    file.send();
-}
-
-//----------------------------------------------------------------------
-// setSelectedOption: used to implement the changes to appearances that has been made
+// setSelectedOption: used to select an option in passed select by passed value
 //----------------------------------------------------------------------
 
 function setSelectedOption(select, value) {
@@ -4209,11 +4035,6 @@ function setSelectedOption(select, value) {
     }
 }
 
-//--------------------------------------------------------------------
-// Functionality
-// Different types of dialog windows
-//--------------------------------------------------------------------
-
 //----------------------------------------------------------------------
 // globalAppearanceMenu: open a menu to change appearance on all entities.
 //----------------------------------------------------------------------
@@ -4225,77 +4046,6 @@ function globalAppearanceMenu(event) {
     toggleApperanceElement(true);
     //AJAX
     loadFormIntoElement('diagram_forms.php?form=globalType');
-}
-
-// determines which form should be loaded when line form is opened
-var cardinalityValue;
-
-//----------------------------------------------------------------------
-// objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
-//----------------------------------------------------------------------
-
-function objectAppearanceMenu() {
-    //if no item has been selected
-    if(selected_objects.length < 1) {
-        return;
-    }
-
-    const form = document.getElementById("appearanceForm");
-    const lastSelected = selected_objects[selected_objects.length - 1];
-    // UML selected
-
-    if (lastSelected.symbolkind == symbolKind.uml) {
-        classAppearanceOpen = true;
-        loadUMLForm(form, 'diagram_forms.php?form=classType');
-    }
-    // ER attributes selected
-    else if (lastSelected.symbolkind == symbolKind.erAttribute) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=attributeType');
-    }
-    // ER entity selected
-    else if (lastSelected.symbolkind == symbolKind.erEntity) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
-    }
-    // Lines selected
-    else if (lastSelected.symbolkind == symbolKind.line || lastSelected.symbolkind == symbolKind.umlLine) {
-        var cardinalityOption = true;
-        var connObjects = lastSelected.getConnectedObjects();
-        // Only show cardinality option if the line goes between an entity and a relation
-        if (lastSelected.symbolkind == symbolKind.line) {
-            var atLeastOneEntity = connObjects[0].symbolkind==symbolKind.erEntity ? true :
-                connObjects[1] && connObjects[1].symbolkind==symbolKind.erEntity;
-            var atLeastOneRelation = connObjects[0].symbolkind==symbolKind.erRelation ? true :
-                connObjects[1].symbolkind==symbolKind.erRelation;
-
-            if ((atLeastOneEntity && atLeastOneRelation) == false)
-                cardinalityOption = false;
-        }
-
-        if (cardinalityOption) { // uml line or er line with cardinality
-            if (lastSelected.cardinality[0].symbolKind == 1) { // uml line
-                cardinalityValue = 3;
-            } else { //er line with cardinality
-                cardinalityValue = 2;
-            }
-        } else { // normal er line
-            cardinalityValue = 1;
-        }
-
-        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + cardinalityValue);
-    }
-    // ER relation selected
-    else if (lastSelected.symbolkind == symbolKind.erRelation) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=relationType');
-    }
-    // Text selected
-    else if (lastSelected.symbolkind == symbolKind.text) {
-        textAppearanceOpen = true;
-        loadTextForm(form, 'diagram_forms.php?form=textType');
-    }
-    // Fill color of the object
-    else if (lastSelected.kind == kind.path) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
-    }
 }
 
 //---------------------------------
@@ -4314,36 +4064,6 @@ function createCardinality() {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
-
-function changeCardinality() {
-    let cardinality = document.getElementById("cardinality").value;
-    let cardinalityUML = document.getElementById("cardinalityUML").value;
-    const lastSelected = selected_objects[selected_objects.length - 1];
-
-    if(cardinality === "None") cardinality = "";
-    if(cardinalityUML === "None") cardinalityUML = "";
-
-    if(typeof lastSelected !== "undefined" && lastSelected.cardinality[0].value !== null) {
-        if(lastSelected.cardinality[0].symbolKind === symbolKind.uml) {
-            lastSelected.cardinality[0].valueUML = cardinalityUML;
-            lastSelected.cardinality[0].value = cardinality;
-        } else {
-            lastSelected.cardinality[0].value = cardinality;
-        }
-    }
-}
-
-// Changes direction for uml line relations
-function changeLineDirection() {
-    for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].lineDirection = document.getElementById('line_direction').value;
-    }
-    updateGraphics();
-}
-
-
-
-
 
 function loadAppearanceForm() {
     //Should not load a form if no symbol was selected or any selected symbol is locked
@@ -4368,19 +4088,19 @@ function loadAppearanceForm() {
 
     switch(type) {
         case symbolKind.erAttribute:
-            typeElement.innerHTML = makeoptions("", ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"], ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"]);
+            typeElement.innerHTML = makeoptions("Normal", ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"], ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"]);
             nameElement.value = object.name;
             break;
         case symbolKind.erEntity:
         case symbolKind.erRelation:
-            typeElement.innerHTML = makeoptions("", ["Weak", "Strong"], ["Weak", "Strong"]);
+            typeElement.innerHTML = makeoptions("Strong", ["Weak", "Strong"], ["Weak", "Strong"]);
             nameElement.value = object.name;
             break;
         case symbolKind.line:
             const connections = object.getConnectedObjects();
             const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
             const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
-            typeElement.innerHTML = makeoptions("", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
+            typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
             if(entities.length > 0 && relations.length > 0) {
                 document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
                 document.getElementById("cardinalityUML").style.display = "none";
@@ -4391,10 +4111,10 @@ function loadAppearanceForm() {
         case symbolKind.umlLine:
             const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
             const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
-            typeElement.innerHTML = makeoptions("", lineTypes, lineTypes);
+            typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
             document.getElementById("cardinalityUML").style.display = "block";
-            document.getElementById("cardinality").innerHTML = makeoptions("", cardinalities, cardinalities);
-            document.getElementById("cardinalityUML").innerHTML = makeoptions("", cardinalities, cardinalities);
+            document.getElementById("cardinality").innerHTML = makeoptions("None", cardinalities, cardinalities);
+            document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
         case symbolKind.text:
             document.getElementById("freeText").value = getTextareaText(object.textLines);
             break;
@@ -4464,7 +4184,6 @@ function setSelections(object) {
     });
 }
 
-//Do not handle globals yet -> -1 Line thickness and stroke color
 function setObjectProperties() {
     for(const object of selected_objects) {
         let groups = [];
@@ -4477,7 +4196,6 @@ function setObjectProperties() {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
                 let access = element.dataset.access.split(".");
-                //console.log(element, access)
                 if(element.nodeName === "TEXTAREA") {
                     object[access[0]] = setTextareaText(element, object[access[0]]);
                 } else if(element.type === "range") {
