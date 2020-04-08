@@ -77,7 +77,7 @@
 							echo "<td class='tests' style='display: inline-block;'>";
 							echo "    <div class='tests menuButton'>";
 							echo "      <a id='testsBTN' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/testIcon1.2.svg'>";
+							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/testIcon2.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
