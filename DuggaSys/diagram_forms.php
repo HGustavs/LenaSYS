@@ -54,13 +54,13 @@
   }
   //form for classes
   else if($form == 'classType') {
-      echo'<label style="display:inline-block; margin-top: 10px; margin-bottom: 5px"; for=\'nametext\'>Class name:</label></br>
+      echo'Class name: </br>
       <input onkeyup="changeObjectAppearance(\'classType\');" id=\'nametext\' type=\'text\'></br>
 
-      <label style="display:inline-block; margin-top: 10px"; for="UMLAttributes">Attributes:</label><br>
+      Attributes:<br>
       <textarea onkeyup="changeObjectAppearance(\'classType\');" id="UMLAttributes" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
-      <label style="display:inline-block; margin-top: 10px"; for="UMLOperations">Operations:</label><br>
+      Operations:<br>
       <textarea onkeyup="changeObjectAppearance(\'classType\');" id="UMLOperations" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
       <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
