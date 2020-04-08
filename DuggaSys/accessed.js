@@ -623,7 +623,7 @@ function mouseUp(e) {
 		}
 	}
 	// if the target of the click is outside of the current cell being edited -> close the cell editing interface
- 	else if (!document.getElementById('editpopover').contains(e.target)) {
+ 	if (!document.getElementById('editpopover').contains(e.target)) {
  		clearUpdateCellInternal();
  	}
 }
