@@ -145,6 +145,7 @@ var currentHash = 0;
 var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last date the diagram was change in milisecounds.
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
 var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
+var moved = false;                  //used to check if object has moved
 var attributeTemplate = {           // Defines entity/attribute/relations predefined sizes
   width: 7 * gridSize,
   height: 4 * gridSize
@@ -2486,7 +2487,9 @@ function align(event, mode) {
     }
     updateGraphics();
     hashFunction();
-    SaveState();
+    if(moved == true){
+        SaveState();
+    }
 }
 
 //---------------------------------------------------------------------
@@ -2495,57 +2498,76 @@ function align(event, mode) {
 
 function alignLeft(selected_objects) {
     var lowest_x = 99999;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
-        console.log(selected_objects[i]);
         if(points[selected_objects[i].topLeft].x < lowest_x) {
             lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
+        var oldPosition = points[selected_objects[i].topLeft].x;
         if(selected_objects[i].kind==2){
             selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
         }
     }
 }
 
 function alignTop(selected_objects) {
     var lowest_y = 99999;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].topLeft].y < lowest_y) {
             lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
+        var oldPosition = points[selected_objects[i].topLeft].y;
         if(selected_objects[i].kind==2){
             selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
         }
     }
 }
 
 function alignRight(selected_objects) {
     var highest_x = 0;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].bottomRight].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
+        var oldPosition = points[selected_objects[i].topLeft].x;
         if(selected_objects[i].kind==2){
             selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
         }
     }
 }
 
 function alignBottom(selected_objects) {
     var highest_y = 0;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].bottomRight].y > highest_y) {
             highest_y = points[selected_objects[i].bottomRight].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
+        var oldPosition = points[selected_objects[i].topLeft].y;
         if(selected_objects[i].kind==2){
             selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
         }
     }
 }
@@ -2557,6 +2579,7 @@ function alignBottom(selected_objects) {
 function alignVerticalCenter(selected_objects) {
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].topLeft].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
@@ -2567,9 +2590,13 @@ function alignVerticalCenter(selected_objects) {
     }
     selected_center_x = (highest_x-lowest_x)/2;
     for(var i = 0; i < selected_objects.length; i++) {
+        var oldPosition = points[selected_objects[i].topLeft].x;
         if(selected_objects[i].kind==2){
             var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
             selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
         }
     }
 }
@@ -2577,6 +2604,7 @@ function alignVerticalCenter(selected_objects) {
 function alignHorizontalCenter(selected_objects) {
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     var temporary_objects = [];
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         temporary_objects.push(selected_objects[i]);
         if(points[selected_objects[i].bottomRight].y > highest_y) {
@@ -2588,9 +2616,13 @@ function alignHorizontalCenter(selected_objects) {
     }
     selected_center_y = (highest_y-lowest_y)/2;
     for(var i = 0; i < selected_objects.length; i++) {
+        var oldPosition = points[selected_objects[i].topLeft].y;
         if(selected_objects[i].kind==2){
             var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
             selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
         }
     }
 }
@@ -2653,8 +2685,8 @@ function sortObjects(selected_objects, mode) {
 //----------------------------------------------------------------------
 
 function distribute(event, axis) {
-  let spacing = 30;
-
+    let spacing = 30;
+    moved = false;
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
 
     if(axis=='vertically') {
@@ -2664,8 +2696,12 @@ function distribute(event, axis) {
       temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
       for(var i = 1; i < temporary_objects.length; i++) {
           if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + spacing) {
+              var oldPosition = points[selected_objects[i].topLeft].y;
               var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - spacing;
               temporary_objects[i].move(0, -difference);
+            if(oldPosition != points[selected_objects[i].topLeft].y){
+                moved = true;
+            }
           }
       }
     } else if(axis=='horizontally') {
@@ -2675,15 +2711,21 @@ function distribute(event, axis) {
       temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
       for(var i = 1; i < temporary_objects.length; i++) {
            if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + spacing) {
-               var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - spacing;
+             var oldPosition = points[selected_objects[i].topLeft].x;
+             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - spacing;
              temporary_objects[i].move(-difference, 0);
+             if(oldPosition != points[selected_objects[i].topLeft].x){
+                moved = true;
+             }
           }
        }
     }
     // There is a posibility for more types
     updateGraphics();
     hashFunction();
-    SaveState();
+    if(moved == true){
+        SaveState();
+    }
 }
 
 //----------------------------------------------------------------------
