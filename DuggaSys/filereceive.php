@@ -22,12 +22,13 @@ session_start();
 
 pdoConnect(); // Connect to database and start session
 
-$cid = getOP('cid');
+$cid = getOP('courseid');
 $vers = getOP('coursevers');
 $kind = getOP('kind');
 $link = getOP('link');
 $selectedfile = getOP('selectedfile');
 $error = false;
+
 
 if (isset($_SESSION['uid'])) {
     $userid = $_SESSION['uid'];
@@ -150,8 +151,16 @@ if ($storefile) {
 
             $temp = explode(".", $filea["name"]);
             $extension = end($temp); //stores the file type
-            // Determine file MIME-type
-            $filetype = mime_content_type($filea["tmp_name"]);
+
+           
+            $filetype = "";
+            if (function_exists('mime_content_type'))
+                // Determine file MIME-type
+                $filetype = mime_content_type($filea["tmp_name"]);
+            else
+                // Use the file type given at upload because the extension "fileinfo" has not been enabled in php.ini
+                $filetype = $filea['type'];
+            
             if (array_key_exists($extension, $allowedExtensions)) {
                 //  if file type is allowed, continue the uploading process.
 
@@ -249,7 +258,7 @@ if ($storefile) {
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $userid, $info);
 
 if (!$error) {
-    echo "<meta http-equiv='refresh' content='0;URL=fileed.php?cid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
+    echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 
 ?>
@@ -260,7 +269,7 @@ if (!$error) {
 <?php
 if (!$error) {
 
-    echo "<script>window.location.replace('fileed.php?cid=" . $cid . "&coursevers=" . $vers . "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
+    echo "<script>window.location.replace('fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 ?>
 </body>
