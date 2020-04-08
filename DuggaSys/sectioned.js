@@ -590,6 +590,7 @@ function returnedSection(data) {
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
+      document.getElementById("courseDropdownTop-mobile").innerHTML = bstr;
       bstr = "<option value='None'>None</option>" + bstr;
       document.getElementById("copyvers").innerHTML = bstr;
 
