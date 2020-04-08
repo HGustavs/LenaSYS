@@ -2347,6 +2347,8 @@ function Path() {
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
     this.isHovered = false;         // If the free draw object is hovered
     this.figureType = "Free";
+    this.topLeft = 1;
+    this.bottomRight = 2;
     this.properties = {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)

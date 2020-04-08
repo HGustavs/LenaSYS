@@ -2496,12 +2496,15 @@ function align(event, mode) {
 function alignLeft(selected_objects) {
     var lowest_x = 99999;
     for(var i = 0; i < selected_objects.length; i++) {
+        console.log(selected_objects[i]);
         if(points[selected_objects[i].topLeft].x < lowest_x) {
             lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+        }
     }
 }
 
@@ -2513,7 +2516,9 @@ function alignTop(selected_objects) {
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+        }
     }
 }
 
@@ -2525,7 +2530,9 @@ function alignRight(selected_objects) {
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+        }
     }
 }
 
@@ -2537,7 +2544,9 @@ function alignBottom(selected_objects) {
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+        }
     }
 }
 
@@ -2558,8 +2567,10 @@ function alignVerticalCenter(selected_objects) {
     }
     selected_center_x = (highest_x-lowest_x)/2;
     for(var i = 0; i < selected_objects.length; i++) {
-        var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
-        selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+        if(selected_objects[i].kind==2){
+            var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
+            selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+        }
     }
 }
 
@@ -2577,8 +2588,10 @@ function alignHorizontalCenter(selected_objects) {
     }
     selected_center_y = (highest_y-lowest_y)/2;
     for(var i = 0; i < selected_objects.length; i++) {
-        var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
-        selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+        if(selected_objects[i].kind==2){
+            var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
+            selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+        }
     }
 }
 
