@@ -1541,18 +1541,52 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
 
-			var withoutQuote = tokenvalue.replace(/(?:\"|')/g, "");
-			var withQuote = tokenvalue.replace(/(?:\"|')/g, "&quot;");
-			var withSingleQuote = tokenvalue.replace(/(?:\"|')/g, "\'");
+			var splitString = tokens[i].val.split(" ");
+			
+			
 
-			if (important.indexOf(withoutQuote) != -1 ||
-				important.indexOf(withQuote) != -1 ||
-				important.indexOf(withSingleQuote) != -1) {
+			for(j = 0; j < splitString.length; j++){
+				
+				var withoutQuote = splitString[j].replace(/(?:\"|')/g, "");
+				var withQuote = splitString[j].replace(/(?:\"|')/g, "&quot;");
+				var withSingleQuote = splitString[j].replace(/(?:\"|')/g, "\'");
 
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + tokenvalue + "</span>";
-			} else {
-				cont += "<span class='string'>" + tokenvalue + "</span>";
+				console.log("QUOTE: " + withoutQuote);
+				
+				//Decide if important word is first, last or in the middle of a string
+				if (important.indexOf(withoutQuote) != -1 ||
+					important.indexOf(withQuote) != -1 ||
+					important.indexOf(withSingleQuote) != -1) {
+					if(j == splitString.length - 1) {
+						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+						cont += tokenvalue[tokenvalue.length-1] + "</span>";
+						console.log("HELLO111");
+					}else if(j == 0) {
+						cont += "<span class='string'>" + tokenvalue[0];
+						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+						cont += "<span class='string'>" + " ";
+						console.log("HELLOO222");
+					}else {
+					cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withQuote + "</span>";
+					cont += "<span class='string'>" + " ";
+					console.log("HELLO 3333");
+					}
+				//Else if the word is not important, implement it as a normal word in a string (blue text) and decide if it's first last or in the middle
+				}else {
+					if(j == splitString.length -1) {
+						cont += "<span class='string'>" + splitString[j] + "</span>";
+					}else if(j == 0) {
+						cont += "<span class='string'>" + splitString[j] + "</span>";
+						cont += "<span class='string'>" + " ";
+					}else {
+						console.log(tokenvalue[0]);
+						cont += "<span class='string'>" + splitString[j] + "</span>";
+						cont += "<span class='string'>" + " ";
+					}
+				}
 			}
+
+			
 
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
