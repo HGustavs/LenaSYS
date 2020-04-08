@@ -535,17 +535,46 @@ function keyUpSearch() {
 	});
 }
 
+// onclick for group dropdown
 function showCheckboxes(element) {
-	activeElement = element;
-	var checkboxes = $(element).find(".checkboxes");
-	checkboxes = element.parentElement.lastChild;
-	if (!expanded) {
+	var activeElementWasNull = false;
+	if (typeof(activeElement) === "undefined") { // first open dropdown
+		activeElement = element;
+		activeElementWasNull = true;
+	}
+	
+	var checkboxes = $(activeElement).find(".checkboxes");
+	checkboxes = activeElement.parentElement.lastChild;
+	
+	// save and close current dropdown
+	if (expanded) updateAndCloseGroupDropdown(checkboxes);
+
+	if (activeElement !== element || activeElementWasNull) { // if clicked on new dropdown -> open new
+		activeElement = element;
+		checkboxes = activeElement.parentElement.lastChild;
 		checkboxes.style.display = "block";
 		expanded = true;
-	} else {
-		checkboxes.style.display = "none";
-		expanded = false;
 	}
+}
+
+//----------------------------------------------------------------------------------
+// updateAndCloseGroupDropdown: updates group allegiances. Is run when a group dropdown is closed.
+//----------------------------------------------------------------------------------
+
+function updateAndCloseGroupDropdown(checkboxes){
+	var str = "";
+	for (i = 0; i < checkboxes.childNodes.length; i++) {
+		if (checkboxes.childNodes[i].childNodes[0].checked) {
+			str += checkboxes.childNodes[i].childNodes[0].value + " ";
+		}
+	}
+	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
+	// if user unpresses all checkboxes it the student will now belong to no group
+	else changeProperty(checkboxes.id.substr(3), "group", "None");
+
+	// close dropdown
+	checkboxes.style.display = "none";
+	expanded = false;
 }
 
 $(document).mouseover(function (e) {
@@ -602,26 +631,15 @@ function mouseDown(e) {
 //----------------------------------------------------------------------------------
 
 function mouseUp(e) {
-
 	// if the target of the click isn't the container nor a descendant of the container
 	if (activeElement) {
 		var checkboxes = $(activeElement).find(".checkboxes");
 		checkboxes = activeElement.parentElement.lastChild;
-
-		if (expanded && !checkboxes.contains(e.target)) {
-			checkboxes.style.display = "none";
-			var str = "";
-			for (i = 0; i < checkboxes.childNodes.length; i++) {
-				if (checkboxes.childNodes[i].childNodes[0].checked) {
-					str += checkboxes.childNodes[i].childNodes[0].value + " ";
-				}
-			}
-			expanded = false;
-			if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
-			// if user unpresses all checkboxes it the student will now belong to no group
-			else changeProperty(checkboxes.id.substr(3), "group", "None");
+		if (expanded && !checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
+			updateAndCloseGroupDropdown(checkboxes);
 		}
 	}
+
 	// if the target of the click is outside of the current cell being edited -> close the cell editing interface
  	if (!document.getElementById('editpopover').contains(e.target)) {
  		clearUpdateCellInternal();
