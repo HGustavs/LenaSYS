@@ -954,8 +954,11 @@ function processLogin() {
         password: password,
         opt: "LOGIN"
       },
-      success:function(data) {
-				var result = JSON.parse(data);
+      success:function(data) {  
+		  
+		document.cookie = "cookie_guest=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //Removes guest cookie at login
+ 		
+		var result = JSON.parse(data);
         if(result['login'] == "success") {
 					hideLoginPopup();
           // was commented out before which resulted in the session to never end
@@ -986,7 +989,8 @@ function processLogin() {
 						displayAlertText("#login #message", "Try again");
 					}, 2000);
           //closeWindows();
-        }
+		}
+		
 
       },
       error:function() {
