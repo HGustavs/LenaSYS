@@ -473,34 +473,29 @@ function validateCourseName(nameid, dialogid) {
 		x.style.display = "none";
 
 		if (nameid === 'ncoursename') {
-
 	     	window.bool3 = true;
 		}
 
 		if (nameid === 'coursename') {
-
 			window.bool4 = true;
 		}
 
 	} else {
-		
 		name.style.borderColor = "#E54";
 		x.style.display = "block";
 		name.style.borderWidth = "2px";
 
 		if (nameid === 'ncoursename') {
-
 			window.bool3 = false;
 		}
 
 		if (nameid === 'coursename') {
-
 			window.bool4 = false;
 		}
 	}
 }
 
-/*Validates all coursecodes*/
+/*Validates all coursecodes */
 function validateCourseCode(codeid, dialogid) {
 	//regex for 2 letters, 3 digits, 1 letter
 	var Code = /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/;
@@ -514,12 +509,10 @@ function validateCourseCode(codeid, dialogid) {
 		x2.style.display = "none";
 
 		if (codeid === 'ncoursecode') {
-
 			window.bool = true;
 		}
 
 		if (codeid === 'coursecode') {
-
 			window.bool2 = true;
 		}
 
@@ -530,11 +523,9 @@ function validateCourseCode(codeid, dialogid) {
 		code.style.borderWidth = "2px";
 		
 		if (codeid === 'ncoursecode') {
-			
 			window.bool = false;
 		}
 		if (codeid === 'coursecode') {
-			
 			window.bool2 = false;
 		}
 	}
