@@ -846,7 +846,28 @@ div .navButt:hover {
   overflow-y: auto;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
+/* <<<<<<<<<<< Create new empty file >>>>>>>>>>>>>>> */
+#createNewEmptyFile input[type=text]{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+#createNewEmptyFile input[type="submit"] {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
+/* <<<<<<<<<<< End of create new empty file >>>>>>>>>>>>>>> */
 #variantBox {
   max-width: 100%;
   max-height: 100%;

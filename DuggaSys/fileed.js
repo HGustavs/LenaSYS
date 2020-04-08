@@ -140,6 +140,8 @@ function showFilePopUp(fileKind) {
     $("#selecty").css("display", "block");
     $("#addFile").css("display", "flex");
     $(".linkPopUp").css("display", "none");
+    $("#createNewEmptyFile").css("display", "none");
+    $(".addNewFile").css("display", "block");
 
     if (fileKind == "MFILE") {
         $("#mFileHeadline").css("display", "block");
@@ -147,6 +149,11 @@ function showFilePopUp(fileKind) {
         $("#lFileHeadline").css("display", "block");
     } else if (fileKind == "GFILE") {
         $("#gFileHeadline").css("display", "block");
+    }else if(fileKind == "EFILE"){
+        $("#eFileHeadline").css("display", "block");
+        $(".addNewFile").css("display", "none");
+        $("#createNewEmptyFile").css("display", "block");
+
     }
 }
 
