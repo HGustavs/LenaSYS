@@ -206,7 +206,7 @@ function returned(data) {
 			// Highlight important words
 			important = retData.impwords;
 			for (j = 0; j < important.length; j++) {
-				var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(this.id, \"unspecified\");' onmouseout='highlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
+				var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(\"" + important[j] + "\", \"unspecified\");' onmouseout='highlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
 				//Interpret asterisks in important word as literals and not as character with special meaning
 				if (important[j].indexOf('*') != -1) {
 					important[j] = important[j].replace(/\*/g, "&#42;");
@@ -869,30 +869,41 @@ function highlightHtml(otherTag, thisTag) {
 	document.getElementById(thisTag).classList.toggle("html");
 }	
 
+//Array containing HTML attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
+htmlAttrArray = new Array('action', 'class', 'disabled', 'href', 'id', 'rel', 'src', 'style', 'title', 'type');
+
 //----------------------------------------------------------------------------------
 // 	popupDocumentation: Creates a pop-up window containing relevant documentation to a
 //	specified important word that has been clicked. Diffrent types of documentation
-//	appears for different kinds of words clicked on (HTML directs to W3Schools, PHP
-//	directs to PHP.net).    
+//	appears for different kinds of words clicked on (HTML documentation directs to W3Schools, PHP
+//	documentation directs to PHP.net).    
 //----------------------------------------------------------------------------------
 
 function popupDocumentation(id, lang) {
 	var url;
-	var elementValue = document.getElementById(id).textContent;
-	if(elementValue == "h1" || elementValue == "h2" || elementValue == "h3" || elementValue == "h4" || elementValue == "h5" || elementValue == "h6"){
-		elementValue = "hn";
+
+	// If id exists in htmlArray, change type of popup to HTML Tag (if id is "var", send to PHP-documentation anyways due to var being a PHP variable). 
+	// This is used to prevent HTML tags within PHP code from sending PHP-documentation.
+	if(htmlArray.includes(id) && id != "var"){
+		lang = "html";
 	}
-	if(lang =="html"){
+	if(lang == "html"){
+		var elementValue = document.getElementById(id).textContent;
+		// Change HTML h1-h6 tags to hn in order to link to correct documentation.
+		if(elementValue == "h1" || elementValue == "h2" || elementValue == "h3" || elementValue == "h4" || elementValue == "h5" || elementValue == "h6"){
+			elementValue = "hn";
+		}
 		url = "https://www.w3schools.com/tags/tag_"+elementValue+".asp";
+	}else if(lang == "php"){
+		if(htmlAttrArray.includes(id)){
+			url = "https://www.w3schools.com/tags/att_"+id+".asp";
+		}else{
+			url = "https://www.php.net/results.php?q="+id+"&l=en&p=all";
+		}
+	}else{
+		url ="https://www.google.com/search?q="+id;
 	}
-	else if(lang == "php"){
-		url = "https://www.php.net/results.php?q="+elementValue+"&l=en&p=all";
-	}
-	else{
-		url ="https://www.google.com/search?q="+elementValue;
-	}
-	target = "popup";
-	window.open(url,'popup','width=600,height=600');
+	window.open(url,'popup','width=600, height=600');
 }
 
 //----------------------------------------------------------------------------------
@@ -1462,7 +1473,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	cbcount = 0;
 	cbracket = new Array();
 
-	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data', 'bdi', 'audio', 'aside', 'article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
+	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'header', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data', 'bdi', 'audio', 'aside', 'article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
 	htmlArrayNoSlash = new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'textview', 'webview', 'uses');
 	cssArray = new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right',
 		'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size',
@@ -1501,6 +1512,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 			var splitString = tokens[i].val.split(" ");
 
+
 			for(j = 0; j < splitString.length; j++){
 				
 				var withoutQuote = splitString[j].replace(/(?:\"|')/g, "");
@@ -1535,6 +1547,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						cont += "<span class='string'>" + " ";
 					}
 				}
+
 			}
 
 		} else if (tokens[i].kind == "number") {
@@ -1553,7 +1566,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
 			} else if (foundkey == 2) {
 				iwcounter++;
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(\"" + tokenvalue + "\", \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += tokenvalue;
 			}
@@ -3025,9 +3038,9 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 
 	// makes the element dissapear when certain treshold is met
-	if(basePer > 85) {
+	if(basePer < 15) {
 		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-	}else if (basePer < 15) {
+	}else if (basePer > 85) {
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
 	} else {
