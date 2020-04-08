@@ -61,6 +61,14 @@ if(checklogin() && $hasAccess) {
 
 	if(strcmp($opt,"UPDATE")==0){
 
+		//Replaces the HTML enconding to orignial latin letters åäö
+		$val = str_replace("&aring;","å",$val);
+		$val = str_replace("&Aring;","Å",$val);
+		$val = str_replace("&auml;","ä",$val);
+		$val = str_replace("&Auml;","Ä",$val);
+		$val = str_replace("&ouml;","ö",$val);
+		$val = str_replace("&Ouml;","Ö",$val);
+
 		// User Table Updates
 		if($prop=="firstname"){
 				$query = $pdo->prepare("UPDATE user SET firstname=:firstname WHERE uid=:uid;");
