@@ -178,7 +178,7 @@ pdoConnect();
 				<span style='padding-left: 15px; line-height: 28px'>Last exported:
 				<span id='lastExpDate'></span>
 				<span>
-				<input type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>
+				<input class='cursorPointer' type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>
 			</span>
 		</div>
 	</div>
