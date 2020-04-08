@@ -1500,17 +1500,12 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "string") {
 
 			var splitString = tokens[i].val.split(" ");
-			
-			
-
 
 			for(j = 0; j < splitString.length; j++){
 				
 				var withoutQuote = splitString[j].replace(/(?:\"|')/g, "");
 				var withQuote = splitString[j].replace(/(?:\"|')/g, "&quot;");
 				var withSingleQuote = splitString[j].replace(/(?:\"|')/g, "\'");
-
-				console.log("QUOTE: " + withoutQuote);
 				
 				//Decide if important word is first, last or in the middle of a string
 				if (important.indexOf(withoutQuote) != -1 ||
@@ -1519,16 +1514,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					if(j == splitString.length - 1) {
 						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 						cont += tokenvalue[tokenvalue.length-1] + "</span>";
-						console.log("HELLO111");
 					}else if(j == 0) {
 						cont += "<span class='string'>" + tokenvalue[0];
 						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 						cont += "<span class='string'>" + " ";
-						console.log("HELLOO222");
 					}else {
 					cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withQuote + "</span>";
 					cont += "<span class='string'>" + " ";
-					console.log("HELLO 3333");
 					}
 				//Else if the word is not important, implement it as a normal word in a string (blue text) and decide if it's first last or in the middle
 				}else {
@@ -1544,8 +1536,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					}
 				}
 			}
-
-			
 
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
