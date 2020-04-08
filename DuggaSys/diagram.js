@@ -1293,8 +1293,8 @@ function drawVirtualA4() {
         if (A4Orientation == "portrait") {
             //a4Rows = canvas.height;
             //a4Columns = canvas.width;
-            a4Rows = 6;
-            a4Columns = 20;
+            a4Rows = 3;
+            a4Columns = 4;
         } else if(A4Orientation == "landscape") {
             a4Rows = 9;
             a4Columns = 14;
@@ -1311,10 +1311,10 @@ function drawVirtualA4() {
 
     // Draw A4 sheets in portrait mode
     if(A4Orientation == "portrait") {
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX, zeroY + a4Height * i, a4Width, a4Height);
-                //ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, 200, 20);
+                ctx.strokeRect(zeroX + a4Width * j, zeroY - a4Height * (i+1), a4Width, a4Height);       // Top right
+                ctx.strokeRect(zeroX - a4Width * (j+1), zeroY - a4Height * (i+1), a4Width, a4Height);   // Top left
             }
         }
     }
