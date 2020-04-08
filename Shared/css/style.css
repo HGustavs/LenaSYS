@@ -4387,7 +4387,12 @@ only screen and (max-device-width: 320px) {
   cursor: pointer;
 }
 input[type=range]::-moz-range-thumb{
-  background-color: green;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  width: 8px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
 }
 
 #selectDiv select {
