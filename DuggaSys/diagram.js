@@ -1296,8 +1296,8 @@ function drawVirtualA4() {
             a4Rows = 3;
             a4Columns = 6;
         } else if(A4Orientation == "landscape") {
-            a4Rows = 9;
-            a4Columns = 14;
+            a4Rows = 3;
+            a4Columns = 5;
         }
     } else {
         a4Rows = 1;
@@ -1325,7 +1325,10 @@ function drawVirtualA4() {
     else if(A4Orientation == "landscape") {
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);
+                ctx.strokeRect(zeroX + a4Height * j, zeroY - a4Width * (i+1), a4Height, a4Width);       // Top right
+                ctx.strokeRect(zeroX - a4Height * (j+1), zeroY - a4Width * (i+1), a4Height, a4Width);   // Top left
+                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);           // Bottom right
+                ctx.strokeRect(zeroX - a4Height * (j+1), zeroY + a4Width * i, a4Height, a4Width);       // Bottom left
             }
         }
     }
