@@ -133,7 +133,7 @@ Testing Link:
 			//echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
 
 			// Logs users who view example, along with the example they have viewed
-			if (!isset($_COOKIE["cookie_guest"])) {
+			if ($userid == "00") {
 				logUserEvent($username, EventTypes::DuggaRead, $exampleid." ".$courseID." ".$cvers);
 			}
 			else{
