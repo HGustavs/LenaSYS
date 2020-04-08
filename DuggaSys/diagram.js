@@ -759,7 +759,7 @@ function copySymbol(symbol) {
 // drawCross: Draws a cross at point position
 //--------------------------------------------------------------------
 function drawCross(point) {
-    let crossSize = 4 * zoomValue;
+    var crossSize = 4 * zoomValue;
     ctx.beginPath();
     ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
     ctx.lineTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y + crossSize);
@@ -772,7 +772,7 @@ function drawCross(point) {
 // drawPoints: Draws each of the points as a cross
 //--------------------------------------------------------------------
 points.drawPoints = function() {
-    let crossSize = 4 * zoomValue;
+    var crossSize = 4 * zoomValue;
     ctx.strokeStyle = crossStrokeStyle1;
     ctx.lineWidth = 2 * zoomValue;
     for (var i = 0; i < this.length; i++) {
