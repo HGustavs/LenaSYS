@@ -130,6 +130,7 @@ var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
+var singleA4 = false;               // Toggle between single/repeated A4
 var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
@@ -144,6 +145,7 @@ var currentHash = 0;
 var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last date the diagram was change in milisecounds.
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
 var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
+var moved = false;                  //used to check if object has moved
 var attributeTemplate = {           // Defines entity/attribute/relations predefined sizes
   width: 7 * gridSize,
   height: 4 * gridSize
@@ -1164,7 +1166,7 @@ diagram.sortConnectors = function() {
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
-            if(diagram[i].quadrants()) break;
+            if(diagram[i].quadrants(diagram[i].symbolkind)) /*break*/;
         }
     }
 }
@@ -1243,12 +1245,14 @@ function toggleVirtualA4(event) {
         $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
         $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
         $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-single-item").addClass("drop-down-item drop-down-item-disabled");
         hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
         $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#a4-single-item").removeClass("drop-down-item drop-down-item-disabled");
         if (toggleA4Holes) {
             $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         } else {
@@ -1281,36 +1285,48 @@ function drawVirtualA4() {
     const leftHoleOffsetX = 12 * pixelsPerMillimeter;
     const rightHoleOffsetX = 198 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
-
+    
     // Number of A4 sheets to draw out
     var a4Rows;
     var a4Columns;
 
-    if (A4Orientation == "portrait") {
-        a4Rows = 6;
-        a4Columns = 20;
-    } else if(A4Orientation == "landscape") {
-        a4Rows = 9;
-        a4Columns = 14;
+    if(!singleA4){
+        if (A4Orientation == "portrait") {
+            a4Rows = 6;
+            a4Columns = 12;
+        } else if(A4Orientation == "landscape") {
+            a4Rows = 10;
+            a4Columns = 8;
+        }
+    } else {
+        a4Rows = 1;
+        a4Columns = 1;
     }
 
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
-
-    // Draw A4 sheets in portrait mode
-    if(A4Orientation == "portrait") {
+    
+    if(A4Orientation == "portrait") {           // Draw A4 sheets in portrait mode
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);
+                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);               // Bottom right
+                if(!singleA4){
+                    ctx.strokeRect(zeroX - a4Width * (j+1), zeroY + a4Height * i, a4Width, a4Height);       // Bottom left
+                    ctx.strokeRect(zeroX + a4Width * j, zeroY - a4Height * (i+1), a4Width, a4Height);       // Top right
+                    ctx.strokeRect(zeroX - a4Width * (j+1), zeroY - a4Height * (i+1), a4Width, a4Height);   // Top left
+                }
             }
         }
-    }
-    // Draw A4 sheets in landscape mode
-    else if(A4Orientation == "landscape") {
+    } else if(A4Orientation == "landscape") {   // Draw A4 sheets in landscape mode
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);
+                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);               // Bottom right
+                if(!singleA4){
+                    ctx.strokeRect(zeroX - a4Height * (j+1), zeroY + a4Width * i, a4Height, a4Width);       // Bottom left
+                    ctx.strokeRect(zeroX + a4Height * j, zeroY - a4Width * (i+1), a4Height, a4Width);       // Top right
+                    ctx.strokeRect(zeroX - a4Height * (j+1), zeroY - a4Width * (i+1), a4Height, a4Width);   // Top left
+                }
             }
         }
     }
@@ -1523,6 +1539,23 @@ function toggleA4Orientation(event) {
     updateGraphics();
 }
 
+//---------------------------------------------------------------
+// Changes between single and repeated virtual A4 view
+//---------------------------------------------------------------
+
+function togglesingleA4(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    // Switch between single and repeated
+    if (singleA4) {
+        singleA4 = false;
+        setCheckbox($(".drop-down-option:contains('Single A4')"), singleA4);
+    } else {
+        singleA4 = true;
+        setCheckbox($(".drop-down-option:contains('Single A4')"), singleA4);
+    }
+    updateGraphics();
+}
+
 //-----------------------------------------------------------------------------------
 // When an item is selected, enable all options related to having an object selected
 //-----------------------------------------------------------------------------------
@@ -1536,14 +1569,6 @@ function enableSelectedItemOptions() {
         $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
       } else {
         $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
         $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
@@ -1552,6 +1577,17 @@ function enableSelectedItemOptions() {
         $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
         $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
         $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
+		}
+      if (selected_objects.length > 1){
+        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
+        } else {
         $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
         $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
         $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
@@ -1560,7 +1596,7 @@ function enableSelectedItemOptions() {
         $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
         $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
         $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
-    }
+      }
 }
 
 //----------------------------------------------------
@@ -2458,7 +2494,9 @@ function align(event, mode) {
     }
     updateGraphics();
     hashFunction();
-    SaveState();
+    if(moved == true){
+        SaveState();
+    }
 }
 
 //---------------------------------------------------------------------
@@ -2467,49 +2505,77 @@ function align(event, mode) {
 
 function alignLeft(selected_objects) {
     var lowest_x = 99999;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].topLeft].x < lowest_x) {
             lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+        var oldPosition = points[selected_objects[i].topLeft].x;
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
+        }
     }
 }
 
 function alignTop(selected_objects) {
     var lowest_y = 99999;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].topLeft].y < lowest_y) {
             lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+        var oldPosition = points[selected_objects[i].topLeft].y;
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
+        }
     }
 }
 
 function alignRight(selected_objects) {
     var highest_x = 0;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].bottomRight].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+        var oldPosition = points[selected_objects[i].topLeft].x;
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
+        }
     }
 }
 
 function alignBottom(selected_objects) {
     var highest_y = 0;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].bottomRight].y > highest_y) {
             highest_y = points[selected_objects[i].bottomRight].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+        var oldPosition = points[selected_objects[i].topLeft].y;
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
+        }
     }
 }
 
@@ -2520,6 +2586,7 @@ function alignBottom(selected_objects) {
 function alignVerticalCenter(selected_objects) {
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].topLeft].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
@@ -2530,14 +2597,21 @@ function alignVerticalCenter(selected_objects) {
     }
     selected_center_x = (highest_x-lowest_x)/2;
     for(var i = 0; i < selected_objects.length; i++) {
-        var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
-        selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+        var oldPosition = points[selected_objects[i].topLeft].x;
+        if(selected_objects[i].kind==2){
+            var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
+            selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
+        }
     }
 }
 
 function alignHorizontalCenter(selected_objects) {
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     var temporary_objects = [];
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         temporary_objects.push(selected_objects[i]);
         if(points[selected_objects[i].bottomRight].y > highest_y) {
@@ -2549,8 +2623,14 @@ function alignHorizontalCenter(selected_objects) {
     }
     selected_center_y = (highest_y-lowest_y)/2;
     for(var i = 0; i < selected_objects.length; i++) {
-        var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
-        selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+        var oldPosition = points[selected_objects[i].topLeft].y;
+        if(selected_objects[i].kind==2){
+            var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
+            selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
+        }
     }
 }
 
@@ -2612,8 +2692,8 @@ function sortObjects(selected_objects, mode) {
 //----------------------------------------------------------------------
 
 function distribute(event, axis) {
-  let spacing = 30;
-
+    let spacing = 30;
+    moved = false;
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
 
     if(axis=='vertically') {
@@ -2623,8 +2703,12 @@ function distribute(event, axis) {
       temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
       for(var i = 1; i < temporary_objects.length; i++) {
           if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + spacing) {
+              var oldPosition = points[selected_objects[i].topLeft].y;
               var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - spacing;
               temporary_objects[i].move(0, -difference);
+            if(oldPosition != points[selected_objects[i].topLeft].y){
+                moved = true;
+            }
           }
       }
     } else if(axis=='horizontally') {
@@ -2634,14 +2718,21 @@ function distribute(event, axis) {
       temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
       for(var i = 1; i < temporary_objects.length; i++) {
            if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + spacing) {
-               var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - spacing;
+             var oldPosition = points[selected_objects[i].topLeft].x;
+             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - spacing;
              temporary_objects[i].move(-difference, 0);
+             if(oldPosition != points[selected_objects[i].topLeft].x){
+                moved = true;
+             }
           }
        }
     }
     // There is a posibility for more types
     updateGraphics();
     hashFunction();
+    if(moved == true){
+        SaveState();
+    }
 }
 
 //----------------------------------------------------------------------
@@ -3591,6 +3682,10 @@ function mouseupevt(ev) {
                     if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
                     if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erAttribute) {
+                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) okToMakeLine = false;
+                }else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erRelation) {
+                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) okToMakeLine = false;
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
@@ -3618,6 +3713,7 @@ function mouseupevt(ev) {
         //Check if you release on canvas or try to draw a line from entity to entity
         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
             md = mouseState.empty;
+            uimode = "CreateLine";
         }else {
             //Get which kind of symbol mouseupevt execute on
             symbolEndKind = diagram[markedObject].symbolkind;
@@ -3717,11 +3813,12 @@ function mouseupevt(ev) {
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
             erLineA.centerPoint = p3;
-            diagram.push(erLineA);
+            //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
+            diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
-            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = false;
+            lastSelectedObject = 0;
             diagram[lastSelectedObject].targeted = true;
-            diagram[lastSelectedObject - 1].targeted = false;
             selected_objects.push(diagram[lastSelectedObject]);
 
             createCardinality();
@@ -4329,6 +4426,8 @@ function changeObjectAppearance(object_type) {
             for (var j = 0; j < operationLines.length; j++) {
                 selected_objects[i].operations.push({text:operationLines[j]});
             }
+            //Resizes the symbol to minimum width and height values.
+            diagram[lastSelectedObject].resizeUMLToMinimum();
 
         } else if (selected_objects[i].symbolkind == symbolKind.line) {
             selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
