@@ -5642,3 +5642,73 @@ textarea#filecont {
     opacity: 1;
   }
 }
+
+.mobile-view{
+  display: none;
+}
+
+@media only screen and (max-width: 450px) {
+  .mobile-view {
+    display: block;
+    visibility: visible;
+    background-color:var(--color-primary);
+    display: flex;
+  }
+
+  .course{
+    margin-top:5px;
+  }
+  .mobile-view .navButt{
+    margin: 2px 10px 2px 10px;
+    border: 2px;
+    border-radius: 2px;
+    border-color: black;
+  }
+
+  header #versionPlus{
+    display: none;
+  }
+
+  header #versionCog{
+    display: none;
+  }
+
+  header #courseIMG{
+    display: none;
+  }
+
+  header .course-dropdown-div {
+    border: 1px solid var(--color-border-2);
+    border-radius: 3px;
+    overflow: hidden;
+    background: #ff1111 url("../icons/desc_primary.svg") no-repeat 90% 50%;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    background-position: right;
+    display: none !important;
+    margin: 5px;
+    display: inline-table;
+  }
+
+  header {
+    /*overflow: hidden;*/
+    color: var(--color-text-header);
+  
+    width: 100%;
+    background: var(--color-primary);
+    position: fixed;
+    z-index: 5000;
+    top: 0px;
+    left: 0px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .navheader {
+    height: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  table.navheader div.menuButton{
+    margin-right: 0px;
+  }
+}
