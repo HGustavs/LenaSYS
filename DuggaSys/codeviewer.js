@@ -3111,6 +3111,19 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //-----------------------------------
