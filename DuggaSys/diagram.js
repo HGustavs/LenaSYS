@@ -3751,11 +3751,12 @@ function mouseupevt(ev) {
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
             erLineA.centerPoint = p3;
-            diagram.push(erLineA);
+            //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
+            diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
-            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = false;
+            lastSelectedObject = 0;
             diagram[lastSelectedObject].targeted = true;
-            diagram[lastSelectedObject - 1].targeted = false;
             selected_objects.push(diagram[lastSelectedObject]);
 
             createCardinality();
