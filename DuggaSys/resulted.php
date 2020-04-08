@@ -48,7 +48,8 @@ pdoConnect();
 		<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="ladexportContainer">
+    <div id="resultedFormContainer">
+      <div id="ladexportContainer">
       <div class="resultedFormsFlex">
         <label>Delkurs</label>
         <select id="ladselect"></select>
@@ -67,6 +68,8 @@ pdoConnect();
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
+			</div>
+			<div style="display: flex;">
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
 			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
 				<button class="resultedbuttons" onclick="mail();">Mail students</button>
@@ -86,7 +89,7 @@ pdoConnect();
 					<label>Examinator:</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
-
+			</div>
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
