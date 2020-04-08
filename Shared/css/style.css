@@ -1379,6 +1379,14 @@ input {
   padding: 0px 6px;
 }
 
+.menu-drop-down:focus-within .drop-down{
+  display: block !important;
+}
+
+.export-drop-down-head:focus-within .export-drop-down {
+  display: block !important;
+}
+
 .menu-drop-down span.drop-down-label {
   display: block;
   height: 20px;
