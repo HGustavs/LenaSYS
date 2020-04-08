@@ -384,6 +384,9 @@ function resetToolButtonsPressed() {
 
 function keyDownHandler(e) {
     var key = e.keyCode;
+    if(key == escapeKey && appearanceMenuOpen) {
+        closeAppearanceDialogMenu();
+    }
     if (appearanceMenuOpen) return;
     if ((key == deleteKey || key == backspaceKey)) {
         eraseSelectedObject(event);
