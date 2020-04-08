@@ -1,5 +1,5 @@
 /* This template makes three boxes, one to the upper left and one to the upper right.
-   The third fills out the bottom of the test. */
+   The third fills out the bottom of the window. */
 #box1wrapper{
 	position: absolute;
 	top: 0px;

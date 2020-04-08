@@ -208,58 +208,14 @@ function makeoptions(option,optionlist,valuelist)
 
 function makeoptionsItem(option,optionlist,optionstring,valuestring)
 {
-	var str="";
-	for(var i=0;i<optionlist.length;i++){
-		str+="<option ";
-		if(optionlist[i][valuestring]==option){
-			str+="selected='selected' ";
-		}
-		str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
-	}
-	return str;
-}
-
-
-//----------------------------------------------------------------------------------
-// makedivItem: Prepares a dropdown list specifically for items such as code examples / dugga etc
-//----------------------------------------------------------------------------------
-
-function makedivItem(option,optionlist,optionstring,valuestring)
-{
 		var str="";
-		str +="<div class='access-dropdown-content'>"
-			for(var i=0;i<optionlist.length;i++){
-				str+="<div onclick='changeOptDiv(event)'> ";
-				str+=""+optionlist[i][optionstring]+"</div>";
-			}
-		str +="</div>"
-		return str;
-}
-function makedivItemWithValue(option,optionlist,optionstring,valuestring)
-{
-		var str="";
-		str +="<div class='access-dropdown-content'>"
-			for(var i=0;i<optionlist.length;i++){
-				str+="<div onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'> ";
-				str+=""+optionlist[i][optionstring]+"</div>";
-			}
-		str +="</div>"
-		return str;
-}
-function makeDivItemStudent(option,optionlist,valuelist)
-{
-		var str="";
-		var stringArray = ["W","R","ST"];
-		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
-			str+="<div onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
-			if(valuelist==null){
-				str+=">"+optionlist[i]+"</div>";
-			}else{
-				str+=">"+optionlist[i]+"</div>";
-			}
+				str+="<option ";
+				if(optionlist[i][valuestring]==option){
+						str+="selected='selected' ";
+				}
+				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
 		}
-		str +="</div>"
 		return str;
 }
 
