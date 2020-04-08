@@ -141,6 +141,7 @@ if ($storefile) {
     echo "<pre>";
     // Uncomment for debug printing
     //print_r($swizzled);
+    //testcommit
 
     foreach ($swizzled as $key => $filea) {
         // Uncomment for debug printing
@@ -272,5 +273,8 @@ if (!$error) {
     echo "<script>window.location.replace('fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 ?>
+
+
+
 </body>
 </html>

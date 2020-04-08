@@ -42,7 +42,7 @@ function setup() {
 
     $("#menuHook").before(filt);
     */
-
+    
     AJAXService("GET", {
         cid: querystring['courseid']
     }, "FILE");
@@ -461,7 +461,7 @@ function loadFile(fileUrl, fileNamez, fileKind) {
     filename = fileNamez;
     filepath = fileUrl;
     filekind = fileKind;
-
+    
     $("#fileName").val(fileNamez);
     $("#fileKind").val(fileKind);
 
@@ -469,7 +469,7 @@ function loadFile(fileUrl, fileNamez, fileKind) {
     $(".previewWindowContainer").css("display", "block");
     $(".markdownPart").hide();
     $(".editFilePart").show();
-
+    
     $.ajax({
         url: "showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileNamez + "&read=yes",
         type: 'post',
@@ -479,6 +479,7 @@ function loadFile(fileUrl, fileNamez, fileKind) {
 }
 
 function returnFile(data) {
+   
     document.getElementById("filecont").innerHTML = data;
     $(".fileName").html(fileName);
     editFile(data);
@@ -515,7 +516,9 @@ function saveMarkdown() {
 }
 
 function saveTextToFile() {
+    
     let content = document.getElementById("filecont").value;
+    
     content = content.replace(/\+/g, '%2B');
     AJAXService("SAVEFILE", {
         cid: querystring['courseid'],
@@ -526,6 +529,7 @@ function saveTextToFile() {
     }, "FILE");
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
+    location.reload();
 }
 
 function validatePreviewForm() {
@@ -596,6 +600,7 @@ function returnedPreview(data) {
 }
 
 function updatePreview(str) {
+    
     //This function is triggered when key is pressed down in the input field
     if (str.length == 0) {
         /*Here we check if the input field is empty (str.length == 0).
@@ -604,10 +609,18 @@ function updatePreview(str) {
         document.getElementById("mdtarget").innerHTML = " ";
         return;
     } else {
+        
         document.getElementById("mdtarget").innerHTML = parseMarkdown(str);
     };
 }
-
+function newUpdateFile(fileUrl, fileName, fileKind){
+    filename = fileName;
+    filepath = fileUrl;
+    filekind = fileKind;
+    querystring['cid'] = querystring['courseid'];
+    loadFile(filepath,filename,filekind);
+    
+}
 
 // ---------------------------------------------------
 // Event listeners for fab button
