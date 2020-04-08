@@ -231,7 +231,7 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan") {
         str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-        str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
+        str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
     } else if (col == "filename") {
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
@@ -244,7 +244,7 @@ function renderCell(col, celldata, cellid) {
         } else {
             str += "<span>" + formatBytes(obj.size, 0) + "</span>";
         }
-    } else if (col == "extension" || col == "uploaddate" || col == "kind") {
+    } else if (col == "extension" || col == "uploaddate") {
         str += "<span>" + celldata + "</span>";
     } else if (col == "editor") {
         if (obj.extension == "md" || obj.extension == "txt") {
@@ -254,7 +254,10 @@ function renderCell(col, celldata, cellid) {
             str = "<span class='iconBox'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
+    } else if (col == "kind") {
+        str += "<span>" + convertFileKind(celldata) + "</span>";
     }
+    
     return str;
 }
 
@@ -428,12 +431,17 @@ function convertFileKind(kind) {
     return retString;
 }
 
-function deleteFile(fileid, filename) {
+function deleteFile(fileid, filename, filekind) {
+    var fileData = {
+        fid: fileid,
+        cid: querystring['courseid'],
+        coursevers: querystring['coursevers'],
+        filename: filename,
+        kind: filekind
+    };
+    
     if (confirm("Do you really want to delete the file/link: " + filename)) {
-        AJAXService("DELFILE", {
-            fid: fileid,
-            cid: querystring['courseid']
-        }, "FILE");
+        AJAXService("DELFILE", fileData, "FILE");
     }
     /*Reloads window when deleteFile has been called*/
     window.location.reload(true);
