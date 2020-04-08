@@ -541,7 +541,6 @@ function showCheckboxes(element) {
 		checkboxes = activeElement.parentElement.lastChild;
 		checkboxes.style.display = "block";
 		expanded = true;
-		alert("opening dropdown")
 	}
 }
 
@@ -550,7 +549,6 @@ function showCheckboxes(element) {
 //----------------------------------------------------------------------------------
 
 function updateAndCloseGroupDropdown(checkboxes){
-	alert("saving and closing dropdown");
 	var str = "";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
