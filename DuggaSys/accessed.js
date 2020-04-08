@@ -9,8 +9,6 @@ var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
 var accessFilter = "WRST";
-var trueTeacher;
-var examinerName;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -233,17 +231,6 @@ function changeOpt(e) {
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
-function changeOptDiv(e) {
-	console.log(e.target.parentElement.parentElement.id);
-	var paramlist = e.target.parentElement.parentElement.id.split("_");
-	changeProperty(paramlist[1], paramlist[0], e.target.innerHTML);
-}
-function changeOptDivStudent(e,value){
-	console.log(e.target.parentElement.parentElement.id);
-	console.log(value);
-	var paramlist = e.target.parentElement.parentElement.id.split("_");
-	changeProperty(paramlist[1], paramlist[0], value);
-}
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
 		courseid: querystring['courseid'],
@@ -282,19 +269,11 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
+		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.class, filez['classes'], "class", "class") + "</select>";
 	} else if (col == "examiner") {
-		for(i = 0; i < filez['teachers'].length; i++){
-			if(obj.examiner == filez['teachers'][i].uid){
-				examinerName = filez['teachers'][i].name;
-			}
-		}
-		if(examinerName == null){
-			examinerName = "None";
-		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
+		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
 	} else if (col == "vers") {
-        str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+filez['courses'][0].versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
+        str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
@@ -302,26 +281,16 @@ function renderCell(col, celldata, cellid) {
             }
         };
 	} else if (col == "access") {
-		if(obj.access == "W"){
-			trueTeacher = "Teacher";
-		}
-		else if (obj.access == "R"){
-			trueTeacher = "Student";
-		}
-		else {
-			trueTeacher = "Student teacher";
-		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
+		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		
 		if (parseFloat(obj.recent) > 1440) {
-			str = "<div class='submit-button' style='display:block;margin:auto;float:none;'";
+			str = "<input class='submit-button' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
 		} else {
-			str = "<div class='submit-button' id='reset-pw' style='display:block;margin:auto;float:none;'";
+			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
 		}
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 		str += "resetPw(\"" + obj.uid + "\",\"" + obj.username + "\"); return false;'>";
-		str += "Reset PW";
 	} else if (col == "groups") {
 		if (obj.groups == null) {
 			tgroups = [];
@@ -333,11 +302,8 @@ function renderCell(col, celldata, cellid) {
 			if (i > 0) optstr += " ";
 			optstr += tgroups[i].substr(1 + tgroups[i].indexOf("_"));
 		}
-		if(optstr === ""){
-			optstr = "None";
-		}
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
-		str += "<div><div class='access-dropdown'>" + optstr + "<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+		str += "<select><option>" + optstr + "</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
