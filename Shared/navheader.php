@@ -69,7 +69,7 @@
 							echo "<td class='results' style='display: inline-block;'>";
 							echo "    <div class='results menuButton'>";
 							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/FistW.svg'>";
+							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/icon6V2.2.2.svg'>";
 							echo "    </a>";
 							echo "    </div>";
 							echo "</td>";
