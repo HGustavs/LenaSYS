@@ -4597,14 +4597,14 @@ only screen and (max-device-width: 320px) {
 }
 
 .form-group {
-  margin: 4px 0;
+  margin: 16px 0;
 }
 
 .form-group label {
   display: block;
 }
 
-#figureOpacity, #line-thickness {
+#figureOpacity, #lineThicknessGlobal {
   width: 100%;
   border: 0;
   margin: 0;

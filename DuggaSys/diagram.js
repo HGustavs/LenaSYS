@@ -162,11 +162,12 @@ var classTemplate = {
 };
 var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
-var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not
+var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
-var classAppearanceOpen = false;
+var classAppearanceOpen = false;        // True if appearance menu is open for type class
+var textAppearanceOpen = false;         // True if appearance menu is open for type text
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
@@ -1739,24 +1740,6 @@ function eraseObject(object) {
     updateGraphics();
 }
 
-//-------------------------------------------------------------------------
-// changeLoginBoxTitleDelete: Create function that changes
-//                            the id "loginBoxTitle" to "Delete Object"
-//-------------------------------------------------------------------------
-
-function changeLoginBoxTitleDelete() {
-    document.getElementById("loginBoxTitle").innerHTML = "Delete Object";
-}
-
-//-------------------------------------------------------------------------
-// changeLoginBoxTitleAppearance: Create function that changes
-//                                the id "loginBoxTitle" to "Appearance"
-//-------------------------------------------------------------------------
-
-function changeLoginBoxTitleAppearance() {
-    document.getElementById("loginBoxTitle").innerHTML = "Appearance";
-}
-
 //---------------------------------------------------
 // Calls the erase function for all selected objects
 // Ends up with erasing all selected objects
@@ -2668,85 +2651,6 @@ function diagramToSVG() {
         if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     return str;
-}
-
-//------------------------------------------------------------------------------
-// Functions which are used to change the global appearance of each object
-// that has been drawn on the screen
-//------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------
-// globalLineThickness: changes the thickness of the lines between objects,
-//                      and the lines surrounding each object
-//----------------------------------------------------------------------
-
-function globalLineThickness() {
-    for (var i = 0; i < diagram.length; i++) {
-        diagram[i].properties['lineWidth'] = document.getElementById('line-thickness').value;
-    }
-}
-
-//----------------------------------------------------------------------
-// globalFont: change the font on all entities to the same font.
-//----------------------------------------------------------------------
-
-function globalFont() {
-    settings.properties.font = document.getElementById('font').value;
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
-            diagram[i].properties['font'] = settings.properties.font;
-        }
-    }
-}
-
-//----------------------------------------------------------------------
-// globalFontColor: change the font color on all entities to the same color.
-//----------------------------------------------------------------------
-
-function globalFontColor() {
-    settings.properties.fontColor = document.getElementById('fontColor').value;
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
-            diagram[i].properties['fontColor'] = settings.properties.fontColor;
-        }
-    }
-}
-
-//----------------------------------------------------------------------
-// globalTextSize: change the text size on all entities to the same size.
-//----------------------------------------------------------------------
-
-function globalTextSize() {
-    settings.properties.sizeOftext = document.getElementById('TextSize').value;
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
-            diagram[i].properties['sizeOftext'] = settings.properties.sizeOftext;
-        }
-    }
-}
-
-//----------------------------------------------------------------------
-// globalFillColor: change the fillcolor on all entities to the same size.
-//----------------------------------------------------------------------
-
-function globalFillColor() {
-    settings.properties.fillColor = document.getElementById('FillColor').value;
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
-            diagram[i].properties['fillColor'] = settings.properties.fillColor;
-        }
-    }
-}
-
-//----------------------------------------------------------------------
-// globalStrokeColor: change the strokecolor on all entities to the same size.
-//----------------------------------------------------------------------
-
-function globalStrokeColor() {
-    settings.properties.strokeColor = document.getElementById('StrokeColor').value;
-    for (var i = 0; i < diagram.length; i++) {
-            diagram[i].properties['strokeColor'] = settings.properties.strokeColor;
-    }
 }
 
 function diagramToSVG() {
@@ -3900,48 +3804,6 @@ function deactivateMovearound() {
     movemode();
 }
 
-
-//----------------------------------------------------------------------
-//  openAppearanceDialogMenu: Opens the dialog menu for appearance.
-//----------------------------------------------------------------------
-
-function openAppearanceDialogMenu(event) {
-    event.stopPropagation();
-    for(var i = 0; i < selected_objects.length; i++){
-        if (selected_objects[i].isLocked) {
-            return;
-        }
-    }
-    if (selected_objects.length == 0) {
-        return;
-    }
-    $(".loginBox").draggable();
-    toggleApperanceElement(true);
-    loadAppearanceForm();
-    objectAppearanceMenu();
-}
-
-//----------------------------------------------------------------------
-// closeAppearanceDialogMenu: Closes the dialog menu for appearance.
-//----------------------------------------------------------------------
-
-function closeAppearanceDialogMenu() {
-    //if the X
-    if(globalAppearanceValue == 1) {
-        var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-        if (tmpDiagram != null) LoadImport(tmpDiagram);
-    }
-    $(".loginBox").draggable('destroy');
-    appearanceMenuOpen = false;
-    classAppearanceOpen = false;
-    textAppearanceOpen = false;
-    globalAppearanceValue = 0;
-    hashFunction();
-    $("#appearance").hide();
-    toggleApperanceElement(false);
-    document.removeEventListener("click", clickOutsideDialogMenu);
-}
-
 //----------------------------------------------------------------------
 // clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
 //----------------------------------------------------------------------
@@ -3950,8 +3812,8 @@ function clickOutsideDialogMenu(ev) {
     $(document).mousedown(function (ev) {
         var container = $("#appearance");
         if (!container.is(ev.target) && container.has(ev.target).length === 0) {
-            globalAppearanceValue = 0;
-            closeAppearanceDialogMenu();
+            globalappearanceMenuOpen = false;
+            toggleApperanceElement();
         }
     });
 }
@@ -3962,24 +3824,37 @@ function clickOutsideDialogMenu(ev) {
 
 function clickEnterOnDialogMenu(ev) {
     $(document).keypress(function (ev) {
-        var container = $("#appearance");
         if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
-            globalAppearanceValue = 0;
-            closeAppearanceDialogMenu();
+            globalappearanceMenuOpen = false;
+            toggleApperanceElement();
             // Is called in the separate appearance php-files at the buttons.
             // Called here since an enter press doesn't relate to any element
-            changeObjectAppearance();
+            setObjectProperties();
         }
     });
 }
 
-function toggleApperanceElement(show) {
+function toggleApperanceElement(show = false) {
     const appearanceElement = document.getElementById("appearance");
     if(show) {
         appearanceElement.style.display = "flex";
         appearanceMenuOpen = true;
+        $(".loginBox").draggable();
     } else {
         appearanceElement.style.display = "none";
+
+        if(globalappearanceMenuOpen) {
+            const diagram = localStorage.getItem("diagram" + diagramNumber);
+            if (diagram != null) LoadImport(diagram);
+        }
+
+        appearanceMenuOpen = false;
+        classAppearanceOpen = false;
+        textAppearanceOpen = false;
+        globalappearanceMenuOpen = false;
+        $(".loginBox").draggable('destroy');
+        hashFunction();
+        document.removeEventListener("click", clickOutsideDialogMenu);
     }
 }
 
@@ -4035,19 +3910,6 @@ function setSelectedOption(select, value) {
     }
 }
 
-//----------------------------------------------------------------------
-// globalAppearanceMenu: open a menu to change appearance on all entities.
-//----------------------------------------------------------------------
-
-function globalAppearanceMenu(event) {
-    event.stopPropagation();
-    globalAppearanceValue = 1;
-    $(".loginBox").draggable();
-    toggleApperanceElement(true);
-    //AJAX
-    loadFormIntoElement('diagram_forms.php?form=globalType');
-}
-
 //---------------------------------
 // Creates cardinality at the line
 //---------------------------------
@@ -4065,14 +3927,20 @@ function createCardinality() {
     }
 }
 
+function loadGlobalAppearanceForm() {
+    showFormGroups(-1);
+    globalappearanceMenuOpen = true;
+    toggleApperanceElement(true);
+    document.getElementById("lineThicknessGlobal").value = settings.properties.lineWidth;
+    setGlobalSelections();
+}
+
 function loadAppearanceForm() {
     //Should not load a form if no symbol was selected or any selected symbol is locked
     if(selected_objects.length < 1) return;
     for(let i = 0; i < selected_objects.length; i++){
         if(selected_objects[i].isLocked) return;
     }
-    $(".loginBox").draggable();
-    appearanceMenuOpen = true;
 
     //Get type of previously selected symbol according to symbolKind object
     const object = selected_objects[selected_objects.length - 1];
@@ -4093,7 +3961,7 @@ function loadAppearanceForm() {
             break;
         case symbolKind.erEntity:
         case symbolKind.erRelation:
-            typeElement.innerHTML = makeoptions("Strong", ["Weak", "Strong"], ["Weak", "Strong"]);
+            typeElement.innerHTML = makeoptions("Normal", ["Weak", "Strong"], ["Weak", "Normal"]);
             nameElement.value = object.name;
             break;
         case symbolKind.line:
@@ -4117,18 +3985,20 @@ function loadAppearanceForm() {
             document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
         case symbolKind.text:
             document.getElementById("freeText").value = getTextareaText(object.textLines);
+            textAppearanceOpen = true;
             break;
         case symbolKind.uml:
             nameElement.value = object.name;
             document.getElementById("umlAttributes").value = getTextareaText(object.attributes);
             document.getElementById("umlOperations").value = getTextareaText(object.operations);
+            classAppearanceOpen = true;
             break;
         case 0:
             document.getElementById("figureOpacity").value = object.opacity * 100;
             break;
     }
     setSelections(object);
-    document.getElementById("appearance").style.display = "flex";
+    toggleApperanceElement(true);
 }
 
 function showFormGroups(type) {
@@ -4156,7 +4026,33 @@ function setTextareaText(element, array) {
     return array;
 }
 
-//Does not take all into consideration yet - example cardinality
+function setGlobalSelections() {
+    const groups = getGroupsByType(-1);
+    groups.forEach(group => {
+        const select = group.querySelector("select");
+        if(select !== null) {
+            const access = select.dataset.access.split(".");
+            setSelectedOption(select, settings[access[0]][access[1]]);
+        }
+    });
+}
+
+function setGlobalProperties() {
+    const groups = getGroupsByType(-1);
+    for(let i = 0; i < diagram.length; i++) {
+        const object = diagram[i];
+        groups.forEach(group => {
+            const element = group.querySelector("select, input:not([type='submit'])");
+            if(element !== null) {
+                const access = element.dataset.access.split(".");
+                object[access[0]][access[1]] = element.value;
+                settings[access[0]][access[1]] = element.value;
+            }
+        });
+    }
+    updateGraphics();
+}
+
 function setSelections(object) {
     let groups = [];
     if(object.kind === kind.symbol) {
@@ -4222,8 +4118,22 @@ function initAppearanceForm() {
     formGroups.forEach(group => {
         const elements = group.querySelectorAll("input, select, textarea");
         elements.forEach(element => {
-            if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-                element.addEventListener("input", setObjectProperties);
+            if(element.id.includes("Global")) {
+                if(element.tagName === "SELECT") {
+                    element.addEventListener("change", setGlobalProperties);
+                } else if(element.tagName === "INPUT") {
+                    element.addEventListener("input", setGlobalProperties);
+                }
+            } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+                if(element.type === "submit") {
+                    element.addEventListener("click", () => {
+                        SaveState();
+                        setObjectProperties();
+                        toggleApperanceElement();
+                    });
+                } else {
+                    element.addEventListener("input", setObjectProperties);
+                }
             } else if(element.tagName === "SELECT") {
                 element.addEventListener("change", setObjectProperties);
             }
