@@ -398,7 +398,7 @@ function Symbol(kindOfSymbol) {
 
     this.resizeUMLToMinimum = function() {
 
-        console.log("Resized");
+        //console.log("Resized");
         points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
         points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
 
