@@ -532,7 +532,24 @@ function showCheckboxes(element) {
 	} else {
 		checkboxes.style.display = "none";
 		expanded = false;
+		updateGroups(checkboxes);
 	}
+}
+
+//----------------------------------------------------------------------------------
+// updateGroup: updates group allegiances. Is run when a group dropdown is closed.
+//----------------------------------------------------------------------------------
+
+function updateGroups(checkboxes){
+	var str = "";
+			for (i = 0; i < checkboxes.childNodes.length; i++) {
+				if (checkboxes.childNodes[i].childNodes[0].checked) {
+					str += checkboxes.childNodes[i].childNodes[0].value + " ";
+				}
+			}
+	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
+	// if user unpresses all checkboxes it the student will now belong to no group
+	else changeProperty(checkboxes.id.substr(3), "group", "None");
 }
 
 $(document).mouseover(function (e) {
@@ -594,19 +611,10 @@ function mouseUp(e) {
 	if (activeElement) {
 		var checkboxes = $(activeElement).find(".checkboxes");
 		checkboxes = activeElement.parentElement.lastChild;
-
-		if (expanded && e.target.parentElement != activeElement) {
+		if (expanded && !checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
 			checkboxes.style.display = "none";
-			var str = "";
-			for (i = 0; i < checkboxes.childNodes.length; i++) {
-				if (checkboxes.childNodes[i].childNodes[0].checked) {
-					str += checkboxes.childNodes[i].childNodes[0].value + " ";
-				}
-			}
 			expanded = false;
-			if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
-			// if user unpresses all checkboxes it the student will now belong to no group
-			else changeProperty(checkboxes.id.substr(3), "group", "None");
+			updateGroups(checkboxes);
 		}
 	}
 	// if the target of the click is outside of the current cell being edited -> close the cell editing interface
