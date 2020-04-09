@@ -614,7 +614,6 @@ function returnedSection(data) {
       document.querySelector(".course-dropdown-div").style.display = "none";
       document.querySelector("td.editVers").style.display = "none";
       document.querySelector("td.newVers").style.display = "none";
-      document.querySelector("td.coursePage").style.display = "none";
 
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
@@ -1368,7 +1367,6 @@ $(fabBtn).on("touchstart", function (e) {
     e.preventDefault();
   }
 
-  $("#fabBtnList").show();
   mouseDown(e);
   TouchFABDown(e);
 });
