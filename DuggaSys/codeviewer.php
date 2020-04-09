@@ -26,7 +26,6 @@
 		<title><?php echo $title; ?></title>
 		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
@@ -124,10 +123,23 @@ Testing Link:
 				$username = $row['username'];
 			}
 			if($userid == "00"){
-				$username = "Guest" . $userid . rand(0,50000); // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
+				if (!isset($_COOKIE["cookie_guest"])) {
+					// Cookie for guest username is not present, send a guest cookie to user.
+					$username = "Guest" . $userid . rand(0,50000);  // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
+					setcookie("cookie_guest", $username, time() + 3600, "/");
+					
+				}
 			}
+			//	FOR TESTING:	uncomment line below to see log output of #username, 
+			//echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
+
 			// Logs users who view example, along with the example they have viewed
-			logUserEvent($username, EventTypes::DuggaRead, $exampleid." ".$courseID." ".$cvers);
+			if ($userid == "00") {
+				logUserEvent($username, EventTypes::DuggaRead, $exampleid." ".$courseID." ".$cvers);
+			}
+			else{
+				logUserEvent($_COOKIE["cookie_guest"], EventTypes::DuggaRead, $exampleid." ".$courseID." ".$cvers);
+			}
 
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
@@ -209,7 +221,7 @@ Testing Link:
 						<tr>
 							<td><select id='fontsize'><?php for($i = 9; $i <= 22; $i++) echo '<option value="' . $i . '">' . $i .' px</option>'; ?></select></td>
 							<td>&nbsp;</td>
-						</td>
+						
 						</tr>
 						<tr>
 							<td>Important Rows:</td>
