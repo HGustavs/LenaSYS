@@ -548,7 +548,7 @@ if(!$query->execute()) {
 	$debug="Error reading settings\n".$error[2];
 }else{
 	$motd="UNK";
-	$readonly=0;
+	$readonly=false;
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$motd=$row["motd"];
 		$readonly=$row["readonly"];

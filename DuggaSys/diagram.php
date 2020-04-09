@@ -42,10 +42,22 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics();" style="overflow-y: hidden;">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics(); initAppearanceForm();" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
+
+        $colors = '
+            <option value=\'#64B5F6\'>Blue</option>
+            <option value=\'#81C784\'>Green</option>
+            <option value=\'#e6e6e6\'>Grey</option>
+            <option value=\'#E57373\'>Red</option>
+            <option value=\'#FFF176\'>Yellow</option>
+            <option value=\'#FFB74D\'>Orange</option>
+            <option value=\'#BA68C8\'>Purple</option>
+            <option value=\'#ffffff\'>White</option>
+            <option value=\'#000000\'>Black</option>
+        ';
     ?>
     <!-- content START -->
     <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
@@ -108,72 +120,77 @@
                             </div>
                         </div>
                     </div>
-                    <div class="menu-drop-down">
+
+                    <div class="menu-drop-down" tabindex="0">
                         <span class="drop-down-label">File</span>
                         <div class="drop-down">
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option">Save</span>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option">Load</span>
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="openImportDialog();">Import</span>
                             </div>
-                            <div class="drop-down-item export-drop-down-head">
+                            <div class="drop-down-item export-drop-down-head" tabindex="0">
                                 <span class="drop-down-option" id="exportid">Export...</span>
                                 <div class="export-drop-down">
-                                    <div class="export-drop-down-item">
+                                    <div class="export-drop-down-item" tabindex="0">
                                         <a class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                                     </div>
-                                    <div class="export-drop-down-item">
+                                    <div class="export-drop-down-item" tabindex="0">
                                         <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
                                     </div>
-                                    <div class="export-drop-down-item">
+                                    <div class="export-drop-down-item" tabindex="0">
                                         <a class="drop-down-option" id="picid">Export Picture</a>
+                                    </div>
+                                    <div class="export-drop-down-item" tabindex="0">
+                                        <a class="drop-down-option" id="svgidA4" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
                                 <i id="hotkey-clear" class="hotKeys">Ctrl + A, Delete</i>
                             </div>
                         </div>
                     </div>
-                    <div class="menu-drop-down">
+
+                    <div class="menu-drop-down" tabindex="0">
                         <span class="drop-down-label">Edit</span>
                         <div class="drop-down">
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
                                 <i id="hotkey-undo" class="hotKeys">Ctrl + Z</i>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
                                 <i id="hotkey-redo" class="hotKeys">Ctrl + Y</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='globalAppearanceMenu(event);'>Global Appearance</span>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick='loadGlobalAppearanceForm();'>Global Appearance</span>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="change-appearance-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='openAppearanceDialogMenu(event);'>Change Appearance</span>
+                                    <span class="drop-down-option" onclick='loadAppearanceForm();'>Change Appearance</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="move-selected-front-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='moveToFront(event)'>Move selected to front</span>
                                     <i id="hotkey-front" class="hotKeys">Shift + 1</i>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="move-selected-back-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='moveToBack(event)'>Move selected to back</span>
                                     <i id="hotkey-back" class="hotKeys">Shift + 2</i>
@@ -181,13 +198,13 @@
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="lock-selected-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
                                     <i id="hotkey-lock" class="hotKeys">Shift + X</i>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="delete-object-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='eraseSelectedObject(event);'>Delete Object</span>
                                     <i id="hotkey-delete" class="hotKeys">Delete/Backspace</i>
@@ -195,43 +212,43 @@
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="group-objects-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='addGroupToSelected(event)'>Group objects</span>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="ungroup-objects-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='removeGroupFromSelected(event)'>Ungroup objects</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick='resetViewToOrigin(event);'>Reset view to origin</span>
                                 <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
                         </div>
                     </div>
-                    <div class="menu-drop-down">
+                    <div class="menu-drop-down" tabindex="0">
                         <span class="drop-down-label">View</span>
                         <div class="drop-down">
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
                                 <i id="hotkey-developerMode" class="hotKeys">Shift + D</i>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="displayAllTools" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="switchToolbarDev(event);"><img src="../Shared/icons/Arrow_down_right.png">Display All Tools</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div id="er-item" class="drop-down-item">
+                            <div id="er-item" class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
                                 <i id="hotkey-ER" class="hotKeys">Shift + M</i>
                             </div>
-                            <div id="uml-item" class="drop-down-item">
+                            <div id="uml-item" class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
                                 <i id="hotkey-UML" class="hotKeys">Shift + M</i>
                             </div>
@@ -240,6 +257,11 @@
                             <div class="drop-down-item">
                                 <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
                                 <i id="hotkey-displayA4" class="hotKeys">Shift + 4</i>
+                            </div>
+                            <div class="drop-down-item">
+                                <div id="a4-single-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='togglesingleA4(event);'><img src="../Shared/icons/Arrow_down_right.png">Single A4</span>
+                                </div>
                             </div>
                             <div class="drop-down-item">
                                 <div id="a4-orientation-item" class="drop-down-item-disabled">
@@ -258,33 +280,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="menu-drop-down">
+                    <div class="menu-drop-down" tabindex="0">
                         <span class="drop-down-label">Align</span>
                         <div class="drop-down">
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="toggleGrid(event)">Snap to grid</span>
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="align-top-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
                                     <i id="hotkey-Align-Top" class="hotKeys">Shift + ▲</i>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="align-right-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
                                     <i id="hotkey-Align-Right" class="hotKeys">Shift + ►</i>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="align-bottom-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
                                     <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ▼ </i>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="align-left-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
                                     <i id="hotkey-Align-Left" class="hotKeys">Shift + ◄ </i>
@@ -292,12 +314,12 @@
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="horizontal-c-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'horizontalCenter');">Horizontal center</span>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="vertical-c-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="align(event, 'verticalCenter');">Vertical center</span>
                                 </div>
@@ -305,14 +327,14 @@
                         </div>
                     </div>
                     <div class="menu-drop-down">
-                        <span class="drop-down-label">Distribute</span>
+                        <span class="drop-down-label" tabindex="0">Distribute</span>
                         <div class="drop-down">
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="distribute-horizontal-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="distribute(event, 'horizontally');">Horizontal</span>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="distribute-vertical-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick="distribute(event, 'vertically');">Vertical</span>
                                 </div>
@@ -320,9 +342,9 @@
                         </div>
                     </div>
                     <div class="menu-drop-down">
-                        <span class="drop-down-label">Help</span>
+                        <span class="drop-down-label" tabindex="0">Help</span>
                         <div class="drop-down">
-                            <div class="drop-down-text-non-clickable">
+                            <div class="drop-down-text-non-clickable" tabindex="0">
                                 <span class="drop-down-option">Move camera</span>
                                 <div id="hotkey-space" class="hotKeys">
                                     <i>Blankspace</i>
@@ -330,7 +352,7 @@
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-text-non-clickable">
+                            <div class="drop-down-text-non-clickable" tabindex="0">
                                 <span class="drop-down-option">Select multiple objects</span>
                                 <div id="hotkey-ctrl" class="hotKeys">
                                     <i>Ctrl + leftclick</i>
@@ -396,16 +418,131 @@
         </div>
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
-    <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
+    <div id="appearance" class='loginBoxContainer'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3 id='loginBoxTitle'>Appearance</h3>
-                <div class='cursorPointer' onclick='closeAppearanceDialogMenu();changeLoginBoxTitleAppearance();'>
+                <div class='cursorPointer' onclick='toggleApperanceElement();'>
                     x
                 </div>
             </div>
             <div class='table-wrap'>
-                <div id="f01">
+                <div id="appearanceForm">
+                    <div class="form-group" data-types="1,2,3,5">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" data-access="name">
+                    </div>
+                    <div class="form-group" data-types="2,3,4,5,7">
+                        <label for="type">Type:</label>
+                        <select id="type" data-access="properties.key_type"></select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5">
+                        <label for="backgroundColor">Background color:</label>
+                        <select id="backgroundColor" data-access="properties.fillColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="0">
+                        <label for="fillColor">Fill color:</label>
+                        <select id="fillColor" data-access="fillColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="6">
+                        <label for="freeText">Text:</label>
+                        <textarea id="freeText" data-access="textLines"></textarea>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,6">
+                        <label for="fontFamily">Font family:</label>
+                        <select id="fontFamily" data-access="properties.font">
+                            <option value="Arial">Arial</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Calibri">Calibri</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,6">
+                        <label for="fontColor">Font color:</label>
+                        <select id="fontColor" data-access="properties.fontColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,6">
+                        <label for="textSize">Text size:</label>
+                        <select id="textSize" data-access="properties.sizeOftext">
+                            <option value="Tiny">Tiny</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,0">
+                        <label for="lineColor">Line color:</label>
+                        <select id="lineColor" data-access="properties.strokeColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="6">
+                        <label for="textAlignment">Text alignment:</label>
+                        <select id="textAlignment" data-access="properties.textAlign">
+                            <option value="start">Left</option>
+                            <option value="center" selected>Center</option>
+                            <option value="end">Right</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="7">
+                        <label for="lineDirection">Line direction:</label>
+                        <select id="lineDirection" data-access="lineDirection">
+                            <option value="First">First object</option>
+                            <option value="Second">Second object</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="4,7">
+                        <label for="cardinality">Cardinality:</label>
+                        <select id="cardinality" data-access="cardinality.value"></select></br>
+                        <select id="cardinalityUML" data-access="cardinality.valueUML"></select>
+                    </div>
+                    <div class="form-group" data-types="1">
+                        <label for="umlAttributes">Attributes:</label>
+                        <textarea id="umlAttributes" data-access="attributes"></textarea>
+                    </div>
+                    <div class="form-group" data-types="1">
+                        <label for="umlOperations">Operations:</label>
+                        <textarea id="umlOperations" data-access="operations"></textarea>
+                    </div>
+                    <div class="form-group" data-types="0">
+                        <label for="figureOpacity">Opacity:</label>
+                        <input type="range" id="figureOpacity" data-access="opacity">
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="backgroundColorGlobal">Background color:</label>
+                        <select id="backgroundColorGlobal" data-access="properties.fillColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="fontFamilyGlobal">Font family:</label>
+                        <select id="fontFamilyGlobal" data-access="properties.font">
+                            <option value="Arial">Arial</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Calibri">Calibri</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="fontColorGlobal">Font color:</label>
+                        <select id="fontColorGlobal" data-access="properties.fontColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                    <label for="textSizeGlobal">Text size:</label>
+                    <select id="textSizeGlobal" data-access="properties.sizeOftext">
+                        <option value="Tiny">Tiny</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="lineColorGlobal">Line color:</label>
+                        <select id="lineColorGlobal" data-access="properties.strokeColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="-1">
+                        <label for="lineThicknessGlobal">Line thickness:</label>
+                        <input type="range" id="lineThicknessGlobal" min="1" max="4" value="2" data-access="properties.lineWidth">
+                    </div>
+                    <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
+                        <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
+                    </div>
                 </div>
             </div>
         </div>
