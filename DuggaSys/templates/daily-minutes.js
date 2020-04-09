@@ -262,7 +262,7 @@ function createFileUploadArea(params){
 	str += form;
 	str += "</div>";
 	str += "</div>";
-	str +="<div id='"+fieldname+"Prev' style='height:200px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
 	document.getElementById("tomten").innerHTML=str;
@@ -309,7 +309,7 @@ function createSmallerViewportForm(params){
 	str += form;
 	str += "</div>";
 	str += "</div>";
-	str +="<div id='"+fieldname+"Prev' style='height:200px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
 	document.getElementById("tomten").innerHTML=str;

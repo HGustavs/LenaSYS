@@ -42,9 +42,9 @@ function setup() {
 
     $("#menuHook").before(filt);
     */
-
+    
     AJAXService("GET", {
-        cid: querystring['cid']
+        cid: querystring['courseid']
     }, "FILE");
 }
 
@@ -129,7 +129,7 @@ function showLinkPopUp() {
     $(".linkPopUp").css("display", "block");
     $("#selecty").css("display", "none");
     $("#kind").val("LINK");
-    $("#cid").val(querystring['cid']);
+    $("#cid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
 }
 
@@ -170,7 +170,7 @@ function uploadFile(kind) {
     }
 
     $("#kind").val(kind);
-    $("#cid").val(querystring['cid']);
+    $("#courseid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
 }
 
@@ -192,7 +192,7 @@ function closeEditFile() {
 
 function closeConfirmation() {
     $(".confirmationWindow").css("display", "none");
-    window.location.replace('fileed.php?cid=' + querystring['cid'] + '&coursevers=' + querystring['coursevers']);
+    window.location.replace('fileed.php?courseid=' + querystring['courseid'] + '&coursevers=' + querystring['coursevers']);
 }
 
 //------------------------------------------------------------------
@@ -231,12 +231,12 @@ function renderCell(col, celldata, cellid) {
 
     if (col == "trashcan") {
         str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-        str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
+        str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
     } else if (col == "filename") {
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
         } else {
-            str += "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?cid=" + querystring['cid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + obj.filename + "\")'>" + obj.shortfilename + "</span>";
+            str += "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + obj.filename + "\")'>" + obj.shortfilename + "</span>";
         }
     } else if (col == "filesize") {
         if (obj.kind == "Link") {
@@ -244,7 +244,7 @@ function renderCell(col, celldata, cellid) {
         } else {
             str += "<span>" + formatBytes(obj.size, 0) + "</span>";
         }
-    } else if (col == "extension" || col == "uploaddate" || col == "kind") {
+    } else if (col == "extension" || col == "uploaddate") {
         str += "<span>" + celldata + "</span>";
     } else if (col == "editor") {
         if (obj.extension == "md" || obj.extension == "txt") {
@@ -254,6 +254,8 @@ function renderCell(col, celldata, cellid) {
             str = "<span class='iconBox'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
+    } else if (col == "kind") {
+        str += "<span>" + convertFileKind(celldata) + "</span>";
     }
     return str;
 }
@@ -428,12 +430,18 @@ function convertFileKind(kind) {
     return retString;
 }
 
-function deleteFile(fileid, filename) {
+function deleteFile(fileid, filename, filekind) {
+    var tempData = {
+        fid: fileid,
+        cid: querystring['courseid'],
+        coursevers: querystring['coursevers'],
+        filename: filename,
+        kind: filekind,
+    };
+
     if (confirm("Do you really want to delete the file/link: " + filename)) {
-        AJAXService("DELFILE", {
-            fid: fileid,
-            cid: querystring['cid']
-        }, "FILE");
+        AJAXService("DELFILE", tempData
+        , "FILE");
     }
     /*Reloads window when deleteFile has been called*/
     window.location.reload(true);
@@ -453,7 +461,7 @@ function loadFile(fileUrl, fileNamez, fileKind) {
     filename = fileNamez;
     filepath = fileUrl;
     filekind = fileKind;
-
+    
     $("#fileName").val(fileNamez);
     $("#fileKind").val(fileKind);
 
@@ -461,9 +469,9 @@ function loadFile(fileUrl, fileNamez, fileKind) {
     $(".previewWindowContainer").css("display", "block");
     $(".markdownPart").hide();
     $(".editFilePart").show();
-
+    
     $.ajax({
-        url: "showdoc.php?courseid=" + querystring['cid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileNamez + "&read=yes",
+        url: "showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileNamez + "&read=yes",
         type: 'post',
         dataType: 'html',
         success: returnFile
@@ -471,6 +479,7 @@ function loadFile(fileUrl, fileNamez, fileKind) {
 }
 
 function returnFile(data) {
+   
     document.getElementById("filecont").innerHTML = data;
     $(".fileName").html(fileName);
     editFile(data);
@@ -495,7 +504,7 @@ function saveMarkdown() {
     let content = document.getElementById("mrkdwntxt").value;
     content = content.replace(/\+/g, '%2B');
     AJAXService("SAVEFILE", {
-        cid: querystring['cid'],
+        cid: querystring['courseid'],
         contents: content,
         filename: filename,
         filepath: filepath,
@@ -507,10 +516,12 @@ function saveMarkdown() {
 }
 
 function saveTextToFile() {
+    
     let content = document.getElementById("filecont").value;
+    
     content = content.replace(/\+/g, '%2B');
     AJAXService("SAVEFILE", {
-        cid: querystring['cid'],
+        cid: querystring['courseid'],
         contents: content,
         filename: filename,
         filepath: filepath,
@@ -518,6 +529,7 @@ function saveTextToFile() {
     }, "FILE");
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
+    location.reload();
 }
 
 function validatePreviewForm() {
@@ -570,7 +582,7 @@ function loadPreview(fileUrl, fileName, fileKind) {
 
     //$.ajax({url: fileUrl, type: 'get', dataType: 'html', success: returnedPreview});
     $.ajax({
-        url: "showdoc.php?courseid=" + querystring['cid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileName + "&read=yes",
+        url: "showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileName + "&read=yes",
         type: 'post',
         dataType: 'html',
         success: returnedPreview
@@ -588,6 +600,7 @@ function returnedPreview(data) {
 }
 
 function updatePreview(str) {
+    
     //This function is triggered when key is pressed down in the input field
     if (str.length == 0) {
         /*Here we check if the input field is empty (str.length == 0).
@@ -596,10 +609,18 @@ function updatePreview(str) {
         document.getElementById("mdtarget").innerHTML = " ";
         return;
     } else {
+        
         document.getElementById("mdtarget").innerHTML = parseMarkdown(str);
     };
 }
-
+function newUpdateFile(fileUrl, fileName, fileKind){
+    filename = fileName;
+    filepath = fileUrl;
+    filekind = fileKind;
+    querystring['cid'] = querystring['courseid'];
+    loadFile(filepath,filename,filekind);
+    
+}
 
 // ---------------------------------------------------
 // Event listeners for fab button

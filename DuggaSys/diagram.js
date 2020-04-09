@@ -58,7 +58,7 @@ var settings = {
         textSize: '14',                               // 14 pixels text size is default.
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
-        key_type: 'normal'                            // Defult key type for a class.
+        key_type: 'Normal'                            // Defult key type for a class.
     },
 };
 
@@ -130,6 +130,7 @@ var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
+var singleA4 = false;               // Toggle between single/repeated A4
 var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
@@ -144,6 +145,7 @@ var currentHash = 0;
 var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last date the diagram was change in milisecounds.
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
 var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
+var moved = false;                  //used to check if object has moved
 var attributeTemplate = {           // Defines entity/attribute/relations predefined sizes
   width: 7 * gridSize,
   height: 4 * gridSize
@@ -162,11 +164,12 @@ var classTemplate = {
 };
 var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
-var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not
+var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
-var classAppearanceOpen = false;
+var classAppearanceOpen = false;        // True if appearance menu is open for type class
+var textAppearanceOpen = false;         // True if appearance menu is open for type text
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
@@ -1164,7 +1167,7 @@ diagram.sortConnectors = function() {
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == symbolKind.erEntity || diagram[i].symbolkind == symbolKind.erRelation || diagram[i].symbolkind == symbolKind.uml) {
-            if(diagram[i].quadrants()) break;
+            if(diagram[i].quadrants(diagram[i].symbolkind)) /*break*/;
         }
     }
 }
@@ -1243,12 +1246,14 @@ function toggleVirtualA4(event) {
         $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
         $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
         $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        $("#a4-single-item").addClass("drop-down-item drop-down-item-disabled");
         hideA4State();
         updateGraphics();
     } else {
         toggleA4 = true;
         $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#a4-single-item").removeClass("drop-down-item drop-down-item-disabled");
         if (toggleA4Holes) {
             $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         } else {
@@ -1281,36 +1286,48 @@ function drawVirtualA4() {
     const leftHoleOffsetX = 12 * pixelsPerMillimeter;
     const rightHoleOffsetX = 198 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
-
+    
     // Number of A4 sheets to draw out
     var a4Rows;
     var a4Columns;
 
-    if (A4Orientation == "portrait") {
-        a4Rows = 6;
-        a4Columns = 20;
-    } else if(A4Orientation == "landscape") {
-        a4Rows = 9;
-        a4Columns = 14;
+    if(!singleA4){
+        if (A4Orientation == "portrait") {
+            a4Rows = 6;
+            a4Columns = 12;
+        } else if(A4Orientation == "landscape") {
+            a4Rows = 10;
+            a4Columns = 8;
+        }
+    } else {
+        a4Rows = 1;
+        a4Columns = 1;
     }
 
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
-
-    // Draw A4 sheets in portrait mode
-    if(A4Orientation == "portrait") {
+    
+    if(A4Orientation == "portrait") {           // Draw A4 sheets in portrait mode
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);
+                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);               // Bottom right
+                if(!singleA4){
+                    ctx.strokeRect(zeroX - a4Width * (j+1), zeroY + a4Height * i, a4Width, a4Height);       // Bottom left
+                    ctx.strokeRect(zeroX + a4Width * j, zeroY - a4Height * (i+1), a4Width, a4Height);       // Top right
+                    ctx.strokeRect(zeroX - a4Width * (j+1), zeroY - a4Height * (i+1), a4Width, a4Height);   // Top left
+                }
             }
         }
-    }
-    // Draw A4 sheets in landscape mode
-    else if(A4Orientation == "landscape") {
+    } else if(A4Orientation == "landscape") {   // Draw A4 sheets in landscape mode
         for (var i = 0; i < a4Rows; i++) {
             for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);
+                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);               // Bottom right
+                if(!singleA4){
+                    ctx.strokeRect(zeroX - a4Height * (j+1), zeroY + a4Width * i, a4Height, a4Width);       // Bottom left
+                    ctx.strokeRect(zeroX + a4Height * j, zeroY - a4Width * (i+1), a4Height, a4Width);       // Top right
+                    ctx.strokeRect(zeroX - a4Height * (j+1), zeroY - a4Width * (i+1), a4Height, a4Width);   // Top left
+                }
             }
         }
     }
@@ -1523,6 +1540,23 @@ function toggleA4Orientation(event) {
     updateGraphics();
 }
 
+//---------------------------------------------------------------
+// Changes between single and repeated virtual A4 view
+//---------------------------------------------------------------
+
+function togglesingleA4(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    // Switch between single and repeated
+    if (singleA4) {
+        singleA4 = false;
+        setCheckbox($(".drop-down-option:contains('Single A4')"), singleA4);
+    } else {
+        singleA4 = true;
+        setCheckbox($(".drop-down-option:contains('Single A4')"), singleA4);
+    }
+    updateGraphics();
+}
+
 //-----------------------------------------------------------------------------------
 // When an item is selected, enable all options related to having an object selected
 //-----------------------------------------------------------------------------------
@@ -1536,14 +1570,6 @@ function enableSelectedItemOptions() {
         $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
       } else {
         $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
         $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
@@ -1552,6 +1578,17 @@ function enableSelectedItemOptions() {
         $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
         $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
         $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
+		}
+      if (selected_objects.length > 1){
+        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
+        } else {
         $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
         $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
         $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
@@ -1560,7 +1597,7 @@ function enableSelectedItemOptions() {
         $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
         $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
         $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
-    }
+      }
 }
 
 //----------------------------------------------------
@@ -1739,24 +1776,6 @@ function eraseObject(object) {
     updateGraphics();
 }
 
-//-------------------------------------------------------------------------
-// changeLoginBoxTitleDelete: Create function that changes
-//                            the id "loginBoxTitle" to "Delete Object"
-//-------------------------------------------------------------------------
-
-function changeLoginBoxTitleDelete() {
-    document.getElementById("loginBoxTitle").innerHTML = "Delete Object";
-}
-
-//-------------------------------------------------------------------------
-// changeLoginBoxTitleAppearance: Create function that changes
-//                                the id "loginBoxTitle" to "Appearance"
-//-------------------------------------------------------------------------
-
-function changeLoginBoxTitleAppearance() {
-    document.getElementById("loginBoxTitle").innerHTML = "Appearance";
-}
-
 //---------------------------------------------------
 // Calls the erase function for all selected objects
 // Ends up with erasing all selected objects
@@ -1800,28 +1819,6 @@ $(document).ready(function() {
         }
     });
 });
-
-//---------------------------------
-// Sets the size of text for entity
-//---------------------------------
-
-function setTextSizeEntity() {
-    for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
-    }
-}
-
-//---------------------------------------------------
-// Sets the type for last selected object in diagram
-//---------------------------------------------------
-
-function setType() {
-    var elementVal = document.getElementById('object_type').value;
-    for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].properties['key_type'] = elementVal;
-    }
-    updateGraphics();
-}
 
 //--------------------------------------------------
 // Returns connected that are connected to the line
@@ -2458,7 +2455,9 @@ function align(event, mode) {
     }
     updateGraphics();
     hashFunction();
-    SaveState();
+    if(moved == true){
+        SaveState();
+    }
 }
 
 //---------------------------------------------------------------------
@@ -2467,49 +2466,77 @@ function align(event, mode) {
 
 function alignLeft(selected_objects) {
     var lowest_x = 99999;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].topLeft].x < lowest_x) {
             lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+        var oldPosition = points[selected_objects[i].topLeft].x;
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
+        }
     }
 }
 
 function alignTop(selected_objects) {
     var lowest_y = 99999;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].topLeft].y < lowest_y) {
             lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+        var oldPosition = points[selected_objects[i].topLeft].y;
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
+        }
     }
 }
 
 function alignRight(selected_objects) {
     var highest_x = 0;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].bottomRight].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+        var oldPosition = points[selected_objects[i].topLeft].x;
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
+        }
     }
 }
 
 function alignBottom(selected_objects) {
     var highest_y = 0;
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].bottomRight].y > highest_y) {
             highest_y = points[selected_objects[i].bottomRight].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++) {
-        selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+        var oldPosition = points[selected_objects[i].topLeft].y;
+        if(selected_objects[i].kind==2){
+            selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
+        }
     }
 }
 
@@ -2520,6 +2547,7 @@ function alignBottom(selected_objects) {
 function alignVerticalCenter(selected_objects) {
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         if(points[selected_objects[i].topLeft].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
@@ -2530,14 +2558,21 @@ function alignVerticalCenter(selected_objects) {
     }
     selected_center_x = (highest_x-lowest_x)/2;
     for(var i = 0; i < selected_objects.length; i++) {
-        var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
-        selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+        var oldPosition = points[selected_objects[i].topLeft].x;
+        if(selected_objects[i].kind==2){
+            var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
+            selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].x){
+            moved = true;
+        }
     }
 }
 
 function alignHorizontalCenter(selected_objects) {
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     var temporary_objects = [];
+    moved = false;
     for(var i = 0; i < selected_objects.length; i++) {
         temporary_objects.push(selected_objects[i]);
         if(points[selected_objects[i].bottomRight].y > highest_y) {
@@ -2549,8 +2584,14 @@ function alignHorizontalCenter(selected_objects) {
     }
     selected_center_y = (highest_y-lowest_y)/2;
     for(var i = 0; i < selected_objects.length; i++) {
-        var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
-        selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+        var oldPosition = points[selected_objects[i].topLeft].y;
+        if(selected_objects[i].kind==2){
+            var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
+            selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+        }
+        if(oldPosition != points[selected_objects[i].topLeft].y){
+            moved = true;
+        }
     }
 }
 
@@ -2612,8 +2653,8 @@ function sortObjects(selected_objects, mode) {
 //----------------------------------------------------------------------
 
 function distribute(event, axis) {
-  let spacing = 30;
-
+    let spacing = 30;
+    moved = false;
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
 
     if(axis=='vertically') {
@@ -2623,8 +2664,12 @@ function distribute(event, axis) {
       temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
       for(var i = 1; i < temporary_objects.length; i++) {
           if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + spacing) {
+              var oldPosition = points[selected_objects[i].topLeft].y;
               var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - spacing;
               temporary_objects[i].move(0, -difference);
+            if(oldPosition != points[selected_objects[i].topLeft].y){
+                moved = true;
+            }
           }
       }
     } else if(axis=='horizontally') {
@@ -2634,14 +2679,21 @@ function distribute(event, axis) {
       temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
       for(var i = 1; i < temporary_objects.length; i++) {
            if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + spacing) {
-               var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - spacing;
+             var oldPosition = points[selected_objects[i].topLeft].x;
+             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - spacing;
              temporary_objects[i].move(-difference, 0);
+             if(oldPosition != points[selected_objects[i].topLeft].x){
+                moved = true;
+             }
           }
        }
     }
     // There is a posibility for more types
     updateGraphics();
     hashFunction();
+    if(moved == true){
+        SaveState();
+    }
 }
 
 //----------------------------------------------------------------------
@@ -2690,85 +2742,6 @@ function diagramToSVG() {
         if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) str += diagram[i].symbolToSVG(i);
     }
     return str;
-}
-
-//------------------------------------------------------------------------------
-// Functions which are used to change the global appearance of each object
-// that has been drawn on the screen
-//------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------
-// globalLineThickness: changes the thickness of the lines between objects,
-//                      and the lines surrounding each object
-//----------------------------------------------------------------------
-
-function globalLineThickness() {
-    for (var i = 0; i < diagram.length; i++) {
-        diagram[i].properties['lineWidth'] = document.getElementById('line-thickness').value;
-    }
-}
-
-//----------------------------------------------------------------------
-// globalFont: change the font on all entities to the same font.
-//----------------------------------------------------------------------
-
-function globalFont() {
-    settings.properties.font = document.getElementById('font').value;
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
-            diagram[i].properties['font'] = settings.properties.font;
-        }
-    }
-}
-
-//----------------------------------------------------------------------
-// globalFontColor: change the font color on all entities to the same color.
-//----------------------------------------------------------------------
-
-function globalFontColor() {
-    settings.properties.fontColor = document.getElementById('fontColor').value;
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
-            diagram[i].properties['fontColor'] = settings.properties.fontColor;
-        }
-    }
-}
-
-//----------------------------------------------------------------------
-// globalTextSize: change the text size on all entities to the same size.
-//----------------------------------------------------------------------
-
-function globalTextSize() {
-    settings.properties.sizeOftext = document.getElementById('TextSize').value;
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
-            diagram[i].properties['sizeOftext'] = settings.properties.sizeOftext;
-        }
-    }
-}
-
-//----------------------------------------------------------------------
-// globalFillColor: change the fillcolor on all entities to the same size.
-//----------------------------------------------------------------------
-
-function globalFillColor() {
-    settings.properties.fillColor = document.getElementById('FillColor').value;
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line && diagram[i].symbolkind != symbolKind.umlLine) {
-            diagram[i].properties['fillColor'] = settings.properties.fillColor;
-        }
-    }
-}
-
-//----------------------------------------------------------------------
-// globalStrokeColor: change the strokecolor on all entities to the same size.
-//----------------------------------------------------------------------
-
-function globalStrokeColor() {
-    settings.properties.strokeColor = document.getElementById('StrokeColor').value;
-    for (var i = 0; i < diagram.length; i++) {
-            diagram[i].properties['strokeColor'] = settings.properties.strokeColor;
-    }
 }
 
 function diagramToSVG() {
@@ -3591,6 +3564,10 @@ function mouseupevt(ev) {
                     if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
                     if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erAttribute) {
+                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) okToMakeLine = false;
+                }else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erRelation) {
+                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) okToMakeLine = false;
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
@@ -3618,6 +3595,7 @@ function mouseupevt(ev) {
         //Check if you release on canvas or try to draw a line from entity to entity
         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
             md = mouseState.empty;
+            uimode = "CreateLine";
         }else {
             //Get which kind of symbol mouseupevt execute on
             symbolEndKind = diagram[markedObject].symbolkind;
@@ -3717,11 +3695,12 @@ function mouseupevt(ev) {
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
             erLineA.centerPoint = p3;
-            diagram.push(erLineA);
+            //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
+            diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
-            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = false;
+            lastSelectedObject = 0;
             diagram[lastSelectedObject].targeted = true;
-            diagram[lastSelectedObject - 1].targeted = false;
             selected_objects.push(diagram[lastSelectedObject]);
 
             createCardinality();
@@ -3828,9 +3807,9 @@ function mouseupevt(ev) {
     if(saveState) SaveState();
 }
 
-function doubleclick(ev) {
+function doubleclick() {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
-        openAppearanceDialogMenu(event);
+        loadAppearanceForm();
     }
 }
 
@@ -3922,60 +3901,6 @@ function deactivateMovearound() {
     movemode();
 }
 
-//--------------------------------------------------------------------
-// Basic functionality
-// The building blocks for creating the menu
-//--------------------------------------------------------------------
-
-function showMenu() {
-    $("#appearance").show();
-    $("#appearance").width("auto");
-    dimDialogMenu(true);
-    hashCurrent();
-    return document.getElementById("f01");
-}
-
-//----------------------------------------------------------------------
-//  openAppearanceDialogMenu: Opens the dialog menu for appearance.
-//----------------------------------------------------------------------
-
-function openAppearanceDialogMenu(event) {
-    event.stopPropagation();
-    for(var i = 0; i < selected_objects.length; i++){
-        if (selected_objects[i].isLocked) {
-            return;
-        }
-    }
-    if (selected_objects.length == 0) {
-        return;
-    }
-    $(".loginBox").draggable();
-    var form = showMenu();
-    appearanceMenuOpen = true;
-    objectAppearanceMenu(form);
-}
-
-//----------------------------------------------------------------------
-// closeAppearanceDialogMenu: Closes the dialog menu for appearance.
-//----------------------------------------------------------------------
-
-function closeAppearanceDialogMenu() {
-    //if the X
-    if(globalAppearanceValue == 1) {
-        var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
-        if (tmpDiagram != null) LoadImport(tmpDiagram);
-    }
-    $(".loginBox").draggable('destroy');
-    appearanceMenuOpen = false;
-    classAppearanceOpen = false;
-    textAppearanceOpen = false;
-    globalAppearanceValue = 0;
-    hashFunction();
-    $("#appearance").hide();
-    dimDialogMenu(false);
-    document.removeEventListener("click", clickOutsideDialogMenu);
-}
-
 //----------------------------------------------------------------------
 // clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
 //----------------------------------------------------------------------
@@ -3984,8 +3909,8 @@ function clickOutsideDialogMenu(ev) {
     $(document).mousedown(function (ev) {
         var container = $("#appearance");
         if (!container.is(ev.target) && container.has(ev.target).length === 0) {
-            globalAppearanceValue = 0;
-            closeAppearanceDialogMenu();
+            globalappearanceMenuOpen = false;
+            toggleApperanceElement();
         }
     });
 }
@@ -3996,73 +3921,38 @@ function clickOutsideDialogMenu(ev) {
 
 function clickEnterOnDialogMenu(ev) {
     $(document).keypress(function (ev) {
-        var container = $("#appearance");
         if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
-            globalAppearanceValue = 0;
-            closeAppearanceDialogMenu();
+            globalappearanceMenuOpen = false;
+            toggleApperanceElement();
             // Is called in the separate appearance php-files at the buttons.
             // Called here since an enter press doesn't relate to any element
-            changeObjectAppearance();
+            setObjectProperties();
         }
     });
 }
 
-function dimDialogMenu(dim) {
-    if (dim == true) {
-        $("#appearance").css("display", "flex");
+function toggleApperanceElement(show = false) {
+    const appearanceElement = document.getElementById("appearance");
+    if(show) {
+        appearanceElement.style.display = "flex";
+        appearanceMenuOpen = true;
+        $(".loginBox").draggable();
     } else {
-        $("#appearance").css("display", "none");
-    }
-}
+        appearanceElement.style.display = "none";
 
-//----------------------------------------------------------------------
-// loadFormIntoElement: Loads the menu which is used to change appearance of ER and free draw objects.
-//----------------------------------------------------------------------
-
-function loadFormIntoElement(element, dir) {
-    //Ajax
-    var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    var names = "";
-    var properties;
-
-    if(dir == "diagram_forms.php?form=globalType"){
-        properties = settings.properties;
-    } else {
-        properties = lastSelected.properties;
-    }
-
-    if(selected_objects.length > 1){
-        for(var i = 0; i < selected_objects.length; i++){
-            names += selected_objects[i].name + ", ";
+        if(globalappearanceMenuOpen) {
+            const diagram = localStorage.getItem("diagram" + diagramNumber);
+            if (diagram != null) LoadImport(diagram);
         }
-    } else if(selected_objects.length == 1) {
-        names = selected_objects[0].name;
-    }
 
-    file.open('GET', dir);
-    file.onreadystatechange = function() {
-        if(file.readyState === 4) {
-            element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected.kind == kind.symbol) {
-                document.getElementById('nametext').value = names;
-                setSelectedOption('object_type', properties.key_type);
-                setSelectedOption('fillColor', properties.fillColor);
-                setSelectedOption('font', properties.font);
-                setSelectedOption('fontColor', properties.fontColor);
-                setSelectedOption('TextSize', properties.sizeOftext);
-                setSelectedOption('LineColor', properties.strokeColor);
-            } else if(globalAppearanceValue == 0 && lastSelected.kind == kind.path) {
-                setSelectedOption('figureFillColor', properties.fillColor);
-                document.getElementById('figureOpacity').value = (properties.opacity * 100);
-                setSelectedOption('LineColor', properties.strokeColor);
-            } else {
-                // should only occur when changing global appearance
-                document.getElementById('line-thickness').value = getLineThickness();
-            }
-        }
+        appearanceMenuOpen = false;
+        classAppearanceOpen = false;
+        textAppearanceOpen = false;
+        globalappearanceMenuOpen = false;
+        $(".loginBox").draggable('destroy');
+        hashFunction();
+        document.removeEventListener("click", clickOutsideDialogMenu);
     }
-    file.send();
 }
 
 //----------------------------------------------------------------------
@@ -4100,265 +3990,21 @@ function getTextSize() {
 }
 
 //----------------------------------------------------------------------
-// loadLineForm: Loads the menu to change cardinality
+// setSelectedOption: used to select an option in passed select by passed value
 //----------------------------------------------------------------------
 
-function loadLineForm(element, dir) {
-    //Ajax
-    var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    file.open('GET', dir);
-    file.onreadystatechange = function() {
-        if(file.readyState === 4) {
-            element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected) {
-                var cardinalityVal = lastSelected.cardinality[0].value;
-                var cardinalityValUML = lastSelected.cardinality[0].valueUML;
-                var lineDirection = lastSelected.lineDirection;
-                var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
-                var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
-                var tempLineDirection = lineDirection;
-                if (lineDirection == "" || lineDirection == null) {
-                    lastSelected.lineDirection = "First";
-                    tempLineDirection = "First";
-                }
-                setSelectedOption('object_type', lastSelected.properties.key_type);
-                // check if the form that is loaded is for a line can have cardinality
-                if (cardinalityValue != 1) {
-                    setSelectedOption('cardinality', tempCardinality);
-                    // check if the form that is loaded is for a line can have a linedirection (uml lines)
-                    if (cardinalityValue != 2) {
-                        setSelectedOption('line_direction', tempLineDirection);
-                    }
-                }
-                if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
-            }
-        }
-    }
-    file.send();
-}
-
-//----------------------------------------------------------------------
-// loadUMLForm: Loads the appearance menu for UML-class
-//----------------------------------------------------------------------
-
-function loadUMLForm(element, dir) {
-    var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    file.open('GET', dir);
-    file.onreadystatechange = function() {
-        if(file.readyState === 4) {
-            element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected) {
-                var attributesText = "";
-                var operationsText = "";
-                var attributesTextArea = document.getElementById('UMLAttributes');
-                var operationsTextArea = document.getElementById('UMLOperations');
-                for(var i = 0; i < lastSelected.attributes.length;i++) {
-                    attributesText += lastSelected.attributes[i].text;
-                    if(i < lastSelected.attributes.length - 1) attributesText += "\n";
-                }
-                for(var i = 0; i < lastSelected.operations.length;i++) {
-                    operationsText += lastSelected.operations[i].text
-                    if(i < lastSelected.operations.length - 1) operationsText += "\n";
-                }
-                document.getElementById('nametext').value = lastSelected.name;
-                attributesTextArea.value = attributesText;
-                operationsTextArea.value = operationsText;
-            }
-        }
-    }
-    file.send();
-}
-
-//----------------------------------------------------------------------
-// loadTextForm: Loads the appearance menu for text
-//----------------------------------------------------------------------
-
-function loadTextForm(element, dir) {
-    var file = new XMLHttpRequest();
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    file.open('GET', dir);
-    file.onreadystatechange = function() {
-        if(file.readyState === 4) {
-            element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0 && lastSelected) {
-                var text = "";
-                var textarea = document.getElementById('freeText');
-                for (var i = 0; i < lastSelected.textLines.length; i++) {
-                    text += lastSelected.textLines[i].text;
-                    if (i < lastSelected.textLines.length - 1) text += "\n";
-                }
-                textarea.value = text;
-                setSelectedOption('font', lastSelected.properties.font);
-                setSelectedOption('fontColor', lastSelected.properties.fontColor);
-                setSelectedOption('textAlign', lastSelected.properties.textAlign);
-                setSelectedOption('TextSize', lastSelected.properties.sizeOftext);
-            }
-        }
-    }
-    file.send();
-}
-
-//----------------------------------------------------------------------
-// setSelectedOption: used to implement the changes to appearances that has been made
-//----------------------------------------------------------------------
-
-function setSelectedOption(type, value) {
-    if(type != null) {
-        for (var i = 0; i < document.getElementById(type).options.length; i++) {
-            if (value == document.getElementById(type).options[i].value) {
-                document.getElementById(type).value = value;
-                document.getElementById(type).options[i].selected = "true";
+function setSelectedOption(select, value) {
+    if(select !== null) {
+        for(const option of select.options) {
+            if(value === option.value) {
+                select.value = value;
+                option.selected = true;
                 break;
             } else {
-                document.getElementById(type).options[i].selected = "false";
+                option.selected = false;
             }
         }
     }
-}
-
-//--------------------------------------------------------------------
-// Functionality
-// Different types of dialog windows
-//--------------------------------------------------------------------
-
-//----------------------------------------------------------------------
-// globalAppearanceMenu: open a menu to change appearance on all entities.
-//----------------------------------------------------------------------
-
-function globalAppearanceMenu(event) {
-    event.stopPropagation();
-    globalAppearanceValue = 1;
-    $(".loginBox").draggable();
-    var form = showMenu();
-    //AJAX
-    loadFormIntoElement(form,'diagram_forms.php?form=globalType');
-}
-
-// determines which form should be loaded when line form is opened
-var cardinalityValue;
-
-//----------------------------------------------------------------------
-// objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
-//----------------------------------------------------------------------
-
-function objectAppearanceMenu(form) {
-    form.innerHTML = "No item selected<type='text'>";
-
-    var lastSelected = selected_objects[selected_objects.length - 1];
-
-    //if no item has been selected
-    if(selected_objects.length < 1) { return;}
-    // UML selected
-    if (lastSelected.symbolkind == symbolKind.uml) {
-        classAppearanceOpen = true;
-        loadUMLForm(form, 'diagram_forms.php?form=classType');
-    }
-    // ER attributes selected
-    else if (lastSelected.symbolkind == symbolKind.erAttribute) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=attributeType');
-    }
-    // ER entity selected
-    else if (lastSelected.symbolkind == symbolKind.erEntity) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
-    }
-    // Lines selected
-    else if (lastSelected.symbolkind == symbolKind.line || lastSelected.symbolkind == symbolKind.umlLine) {
-        var cardinalityOption = true;
-        var connObjects = lastSelected.getConnectedObjects();
-        // Only show cardinality option if the line goes between an entity and a relation
-        if (lastSelected.symbolkind == symbolKind.line) {
-            var atLeastOneEntity = connObjects[0].symbolkind==symbolKind.erEntity ? true :
-                connObjects[1] && connObjects[1].symbolkind==symbolKind.erEntity;
-            var atLeastOneRelation = connObjects[0].symbolkind==symbolKind.erRelation ? true :
-                connObjects[1].symbolkind==symbolKind.erRelation;
-
-            if ((atLeastOneEntity && atLeastOneRelation) == false)
-                cardinalityOption = false;
-        }
-
-        if (cardinalityOption) { // uml line or er line with cardinality
-            if (lastSelected.cardinality[0].symbolKind == 1) { // uml line
-                cardinalityValue = 3;
-            } else { //er line with cardinality
-                cardinalityValue = 2;
-            }
-        } else { // normal er line
-            cardinalityValue = 1;
-        }
-
-        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + cardinalityValue);
-    }
-    // ER relation selected
-    else if (lastSelected.symbolkind == symbolKind.erRelation) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=relationType');
-    }
-    // Text selected
-    else if (lastSelected.symbolkind == symbolKind.text) {
-        textAppearanceOpen = true;
-        loadTextForm(form, 'diagram_forms.php?form=textType');
-    }
-    // Fill color of the object
-    else if (lastSelected.kind == kind.path) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
-    }
-}
-
-//----------------------------------------------------------------------
-// changeObjectAppearance: USES DIALOG TO CHANGE OBJECT APPEARANC
-//----------------------------------------------------------------------
-
-function changeObjectAppearance(object_type) {
-    lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length - 1]);
-    if(selected_objects.length == 1 && selected_objects[0].kind == kind.symbol && selected_objects[0].symbolkind != symbolKind.line && selected_objects[0].symbolkind != symbolKind.umlLine && selected_objects[0].symbolkind != symbolKind.text) {
-        selected_objects[0].name = document.getElementById('nametext').value;
-    }
-
-    for(var i = 0; i < selected_objects.length; i++) {
-        if (selected_objects[i].symbolkind == symbolKind.uml) { // UML-class appearance
-            var attributeLines = $('#UMLAttributes').val().split('\n');
-            var operationLines = $('#UMLOperations').val().split('\n');
-            selected_objects[i].attributes = [];
-            selected_objects[i].operations = [];
-
-            //Inserts text for attributes and operations
-            for (var j = 0; j < attributeLines.length; j++) {
-                selected_objects[i].attributes.push({text:attributeLines[j]});
-            }
-            for (var j = 0; j < operationLines.length; j++) {
-                selected_objects[i].operations.push({text:operationLines[j]});
-            }
-
-        } else if (selected_objects[i].symbolkind == symbolKind.line) {
-            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
-        } else if (selected_objects[i].symbolkind == symbolKind.umlLine) {
-            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
-            selected_objects[i].lineDirection = document.getElementById('line_direction').value;
-        } else if (selected_objects[i].kind == kind.path) {
-            selected_objects[i].fillColor = document.getElementById('figureFillColor').value;
-            selected_objects[i].opacity = document.getElementById('figureOpacity').value / 100;
-            selected_objects[i].properties['strokeColor'] = document.getElementById('LineColor').value;
-        } else if (selected_objects[i].symbolkind == symbolKind.text) {
-            selected_objects[i].textLines = [];
-            var textArray = $('#freeText').val().split('\n');
-            for(var j = 0; j < textArray.length; j++) {
-              selected_objects[i].textLines.push({text:textArray[j]});
-            }
-            selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
-            selected_objects[i].properties['font'] = document.getElementById('font').value;
-            selected_objects[i].properties['textAlign'] = document.getElementById('textAlign').value;
-            selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
-        } else {
-            selected_objects[i].properties['fillColor'] = document.getElementById('fillColor').value;
-            selected_objects[i].properties['fontColor'] = document.getElementById('fontColor').value;
-            selected_objects[i].properties['font'] = document.getElementById('font').value;
-            selected_objects[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
-            selected_objects[i].properties['key_type'] = document.getElementById('object_type').value;
-            selected_objects[i].properties['strokeColor'] = document.getElementById('LineColor').value;
-        }
-    }
-    updateGraphics();
 }
 
 //---------------------------------
@@ -4378,32 +4024,224 @@ function createCardinality() {
     }
 }
 
-function changeCardinality(isUML) {
-    var val = document.getElementById('cardinality').value;
-    var valUML;
-    var lastSelected = selected_objects[selected_objects.length - 1];
-    if(isUML) {
-        valUML = document.getElementById('cardinalityUml').value;
+function loadGlobalAppearanceForm() {
+    showFormGroups(-1);
+    globalappearanceMenuOpen = true;
+    toggleApperanceElement(true);
+    document.getElementById("lineThicknessGlobal").value = settings.properties.lineWidth;
+    setGlobalSelections();
+}
+
+function loadAppearanceForm() {
+    //Should not load a form if no symbol was selected or any selected symbol is locked
+    if(selected_objects.length < 1) return;
+    for(let i = 0; i < selected_objects.length; i++){
+        if(selected_objects[i].isLocked) return;
     }
 
-    //Setting existing cardinality value on line
-    if(val == "None") val = "";
-    if(valUML == "None") valUML = "";
-    if(lastSelected && lastSelected.cardinality[0].value != null) {
-        if(lastSelected.cardinality[0].symbolKind != symbolKind.uml) {
-            lastSelected.cardinality[0].value = val;
-        } else {
-            lastSelected.cardinality[0].valueUML = valUML;
-            lastSelected.cardinality[0].value = val;
+    //Get type of previously selected symbol according to symbolKind object
+    const object = selected_objects[selected_objects.length - 1];
+    let type = object.symbolkind;
+
+    //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
+    if(typeof type === "undefined") type = 0;
+
+    showFormGroups(type);
+
+    const typeElement = document.getElementById("type");
+    const nameElement = document.getElementById("name");
+
+    switch(type) {
+        case symbolKind.erAttribute:
+            typeElement.innerHTML = makeoptions("Normal", ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"], ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"]);
+            nameElement.value = object.name;
+            break;
+        case symbolKind.erEntity:
+        case symbolKind.erRelation:
+            typeElement.innerHTML = makeoptions("Normal", ["Weak", "Strong"], ["Weak", "Normal"]);
+            nameElement.value = object.name;
+            break;
+        case symbolKind.line:
+            const connections = object.getConnectedObjects();
+            const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
+            const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
+            typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
+            if(entities.length > 0 && relations.length > 0) {
+                document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
+                document.getElementById("cardinalityUML").style.display = "none";
+            } else {
+                document.getElementById("cardinality").parentNode.style.display = "none";
+            }
+            break;
+        case symbolKind.umlLine:
+            const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
+            const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
+            typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
+            document.getElementById("cardinalityUML").style.display = "block";
+            document.getElementById("cardinality").innerHTML = makeoptions("None", cardinalities, cardinalities);
+            document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
+        case symbolKind.text:
+            document.getElementById("freeText").value = getTextareaText(object.textLines);
+            textAppearanceOpen = true;
+            break;
+        case symbolKind.uml:
+            nameElement.value = object.name;
+            document.getElementById("umlAttributes").value = getTextareaText(object.attributes);
+            document.getElementById("umlOperations").value = getTextareaText(object.operations);
+            classAppearanceOpen = true;
+            break;
+        case 0:
+            document.getElementById("figureOpacity").value = object.opacity * 100;
+            break;
+    }
+    setSelections(object);
+    toggleApperanceElement(true);
+}
+
+function showFormGroups(type) {
+    const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
+    const formGroupsToShow = getGroupsByType(type);
+    allformGroups.forEach(group => group.style.display = "none");
+    formGroupsToShow.forEach(group => group.style.display = "block");
+}
+
+function getTextareaText(array) {
+    let text = "";
+    for (let i = 0; i < array.length; i++) {
+        text += array[i].text;
+        if (i < array.length - 1) {
+            text += "\n";
         }
+    }
+    return text;
+}
+
+function setTextareaText(element, array) {
+    const textLines = element.value.split('\n');
+    array = [];
+    textLines.forEach(text => array.push({"text": text}));
+    return array;
+}
+
+function setGlobalSelections() {
+    const groups = getGroupsByType(-1);
+    groups.forEach(group => {
+        const select = group.querySelector("select");
+        if(select !== null) {
+            const access = select.dataset.access.split(".");
+            setSelectedOption(select, settings[access[0]][access[1]]);
+        }
+    });
+}
+
+function setGlobalProperties() {
+    const groups = getGroupsByType(-1);
+    for(let i = 0; i < diagram.length; i++) {
+        const object = diagram[i];
+        groups.forEach(group => {
+            const element = group.querySelector("select, input:not([type='submit'])");
+            if(element !== null) {
+                const access = element.dataset.access.split(".");
+                object[access[0]][access[1]] = element.value;
+                settings[access[0]][access[1]] = element.value;
+            }
+        });
     }
     updateGraphics();
 }
 
-// Changes direction for uml line relations
-function changeLineDirection() {
-    for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].lineDirection = document.getElementById('line_direction').value;
+function setSelections(object) {
+    let groups = [];
+    if(object.kind === kind.symbol) {
+        groups = getGroupsByType(object.symbolkind);
+    } else if(object.kind === kind.path) {
+        groups = getGroupsByType(0);
+    }
+
+    groups.forEach(group => {
+        const elements = group.querySelectorAll("select");
+        elements.forEach(element => {
+            const access = element.dataset.access.split(".");
+            let value = "";
+            if(access[0] === "cardinality") {
+                if(element.style.display !== "none") {
+                    value = object[access[0]][0][access[1]];
+                }
+            } else if(access.length === 1) {
+                value = object[access[0]];
+            } else if(access.length === 2) {
+                value = object[access[0]][access[1]];
+            }
+            setSelectedOption(element, value);
+        });
+    });
+}
+
+function setObjectProperties() {
+    for(const object of selected_objects) {
+        let groups = [];
+        if(object.kind === kind.symbol) {
+            groups = getGroupsByType(object.symbolkind);
+        } else if(object.kind === kind.path) {
+            groups = getGroupsByType(0);
+        }
+        groups.forEach(group => {
+            const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
+            elements.forEach(element => {
+                let access = element.dataset.access.split(".");
+                if(element.nodeName === "TEXTAREA") {
+                    object[access[0]] = setTextareaText(element, object[access[0]]);
+                } else if(element.type === "range") {
+                    object[access[0]] = element.value / 100;
+                } else if(access[0] === "cardinality") {
+                    if(element.style.display !== "none") {
+                        if(element.value === "None") element.value = "";
+                        object[access[0]][0][access[1]] = element.value;
+                    }
+                } 
+                else if(access.length === 1) {
+                    object[access[0]] = element.value;
+                } else if(access.length === 2) {
+                    object[access[0]][access[1]] = element.value;
+                }
+            });
+        });        
     }
     updateGraphics();
+}
+
+function initAppearanceForm() {
+    const formGroups = document.querySelectorAll("#appearanceForm .form-group");
+    formGroups.forEach(group => {
+        const elements = group.querySelectorAll("input, select, textarea");
+        elements.forEach(element => {
+            if(element.id.includes("Global")) {
+                if(element.tagName === "SELECT") {
+                    element.addEventListener("change", setGlobalProperties);
+                } else if(element.tagName === "INPUT") {
+                    element.addEventListener("input", setGlobalProperties);
+                }
+            } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+                if(element.type === "submit") {
+                    element.addEventListener("click", () => {
+                        SaveState();
+                        setObjectProperties();
+                        toggleApperanceElement();
+                    });
+                } else {
+                    element.addEventListener("input", setObjectProperties);
+                }
+            } else if(element.tagName === "SELECT") {
+                element.addEventListener("change", setObjectProperties);
+            }
+        });
+    });
+}
+
+function getGroupsByType(type) {
+    const formGroups = document.querySelectorAll("#appearanceForm .form-group");
+    return [...formGroups].filter(group => {
+        const types = group.dataset.types.split(",");
+        return types.includes(type.toString());
+    });
 }
