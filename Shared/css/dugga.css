@@ -35,18 +35,20 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 #toggleGrade {
 	display: none;
 	background:#bbb;
-	width: 80%;
+	width: 20%;
+	left: 40%; 
+	top:  20%;
 	border: 2px solid var(--color-border);
 }
 #gradeBtn {
-	position:fixed;
 	background-color:var(--color-accent);
 	border: none;
+	position: fixed;
 	height: 56px;
 	width: 56px;
-	right: 55px;
-	bottom: 45px;
 	border-radius: 50%;
+  bottom: 30px;
+  right: 30px;
 	z-index: 1;
  touch-action: none;
 }

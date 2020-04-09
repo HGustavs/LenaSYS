@@ -9,7 +9,6 @@ var querystring = parseGet();
 var versions;
 var entries;
 var motd;
-var readonly;
 
 $(document).ready(function(){
     $('#startdate').datepicker({
@@ -238,36 +237,23 @@ function editVersion(cid, cname, ccode) {
 }
 
 function editSettings(){
-		const messageElement = document.getElementById('motd');
-		const readOnlyCheckbox = document.getElementById('readonly');
-
-		if(motd !== "UNK") {
-			messageElement.value = motd;
-		} 
-
-		if(readonly === 1) {
-			readOnlyCheckbox.checked = true;
-		} else if(readonly === 0) {
-			readOnlyCheckbox.checked = false;
-		}
-
+		if(motd!=="UNK") $("#motd").val(motd);
 		document.getElementById('editSettings').style.display = "flex";
+
 }
 
 function updateSettings() {
-		const messageElement = document.getElementById('motd');
-		const readOnlyCheckbox = document.getElementById('readonly');
 
-		if(readOnlyCheckbox.checked) {
+		var motd = $("#motd").val();
+		var readonly = 0;
+		if ($("#readonly").val() == "yes"){
 			readonly = 1;
-		} else {
-			readonly = 0;
 		}
 
-		//Hide settings popup
-		document.getElementById("editSettings").style.display = "none";
+		// Show dialog
+		$("#editSettings").css("display", "none");
 
-		AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
+		AJAXService("SETTINGS", {	motd : motd, readonly : readonly}, "COURSE");
 }
 
 function createVersion(){
@@ -424,10 +410,7 @@ function returnedCourse(data)
 	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
 	}
-
-	motd=data["motd"];
-	readonly=parseInt(data["readonly"]);
-
+	motd=data["motd"]
 	if(motd!=="UNK"){
 		document.getElementById("servermsg").innerHTML=data["motd"];
 		document.getElementById("servermsgcontainer").style.display="flex";
@@ -450,4 +433,125 @@ function htmlFix(text){
     };
 
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+/*Validates all coursenames*/
+function validateCourseName(nameid, dialogid) {
+	//regex for only letters
+	var Name = /^[a-zA-Z_ ]+$/;
+	var name = document.getElementById(nameid);
+	var x = document.getElementById(dialogid);
+
+	//if input contains only letters
+	if (name.value.match(Name)) {
+		name.style.borderColor = "#383";
+		name.style.borderWidth = "2px";
+		x.style.display = "none";
+
+		if (nameid === 'ncoursename') {
+	     	window.bool3 = true;
+		}
+
+		if (nameid === 'coursename') {
+			window.bool4 = true;
+		}
+
+	} else {
+		name.style.borderColor = "#E54";
+		x.style.display = "block";
+		name.style.borderWidth = "2px";
+
+		if (nameid === 'ncoursename') {
+			window.bool3 = false;
+		}
+
+		if (nameid === 'coursename') {
+			window.bool4 = false;
+		}
+	}
+}
+
+/*Validates all coursecodes */
+function validateCourseCode(codeid, dialogid) {
+	//regex for 2 letters, 3 digits, 1 letter
+	var Code = /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/;
+	var code = document.getElementById(codeid);
+	var x2 = document.getElementById(dialogid);
+
+	//if input is 2 letters, 3 digits, 1 letter
+	if (code.value.match(Code)) {
+		code.style.borderColor = "#383";
+		code.style.borderWidth = "2px";
+		x2.style.display = "none";
+
+		if (codeid === 'ncoursecode') {
+			window.bool = true;
+		}
+
+		if (codeid === 'coursecode') {
+			window.bool2 = true;
+		}
+
+	} else {
+
+		code.style.borderColor = "#E54";
+		x2.style.display = "block";
+		code.style.borderWidth = "2px";
+		
+		if (codeid === 'ncoursecode') {
+			window.bool = false;
+		}
+		if (codeid === 'coursecode') {
+			window.bool2 = false;
+		}
+	}
+}
+
+/*Validates all forms*/
+function validateForm(formid) {
+	
+	if (formid === 'newCourse') {
+		var nName = document.getElementById("ncoursename").value;
+		var nCode = document.getElementById("ncoursecode").value;
+		
+		//if inputs are empty
+		if (nName == null || nName == "", nCode == null || nCode == "") {
+			
+			alert("Fill in all fields");
+		}
+		
+		//if coursecode and coursenames are correct
+		if (window.bool3 === true && window.bool === true) {
+			
+			alert('The course is now added');
+			createNewCourse();
+			$('#newCourse input').val("");
+		} 
+		else {
+			
+			alert("You have entered incorrect information");
+		}
+	}
+
+	if (formid === 'editCourse') {
+		var Name = document.getElementById("coursename").value;
+		var Code = document.getElementById("coursecode").value;
+
+		//if inputs are empty
+		if (Name == null || Name == "", Code == null || Code == "") {
+			
+			alert("Fill in all fields");
+		}
+		
+        //if coursecode and coursenames are correct
+		if (window.bool4 === true && window.bool2 === true) {
+			
+			alert('The course updated');
+			updateCourse();
+
+		} else {
+			
+			alert("You have entered incorrect information");
+		}
+	}
 }
