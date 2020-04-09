@@ -954,8 +954,11 @@ function processLogin() {
         password: password,
         opt: "LOGIN"
       },
-      success:function(data) {
-				var result = JSON.parse(data);
+      success:function(data) {  
+		  
+		document.cookie = "cookie_guest=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //Removes guest cookie at login
+ 		
+		var result = JSON.parse(data);
         if(result['login'] == "success") {
 					hideLoginPopup();
           // was commented out before which resulted in the session to never end
@@ -986,7 +989,8 @@ function processLogin() {
 						displayAlertText("#login #message", "Try again");
 					}, 2000);
           //closeWindows();
-        }
+		}
+		
 
       },
       error:function() {
@@ -1594,13 +1598,11 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
-	const $containerHeight = $("#servermsgcontainer");
-	$containerHeight.animate({ 
-		opacity: 0, 
-		top: -$containerHeight.outerHeight() 
-	}, 200, "easeInOutSine", () => {
-		$containerHeight.css(opacity, 1);
-	});
+	$("#servermsgcontainer").animate({ opacity: 0, top: 0 }, 200, "easeInOutSine");
+	setTimeout(function () {
+		$("#servermsgcontainer").css("display", "none");
+		$("#servermsgcontainer").css("opacity", "1");
+	}, 200);
 }
 
 function hideCookieMessage() {
