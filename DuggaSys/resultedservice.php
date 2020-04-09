@@ -737,7 +737,7 @@ $courseteachers=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("
     SELECT DISTINCT examiner
-    FROM user_course where cid=$cid;
+    FROM user_course where cid=:cid;
   ");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
