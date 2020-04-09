@@ -48,13 +48,12 @@ pdoConnect();
 		<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="resultedFormContainer">
-      <div id="ladexportContainer">
-      <div class="resultedFormsFlex">
+    <div id="ladexportContainer">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Delkurs</label>
         <select id="ladselect"></select>
       </div>
-      <div class="resultedFormsFlex">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Betygsskala</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
@@ -63,33 +62,31 @@ pdoConnect();
        	  <!-- <option value="U-3-4-5">U-3-4-5</option> -->
         </select>
       </div>
-      <div class="resultedFormsFlex">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
-			</div>
-			<div style="display: flex;">
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
 			<?php if (checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))){ ?>
 				<button class="resultedbuttons" onclick="mail();">Mail students</button>
 			<?php }else{ ?>
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
-        <div class="resultedFormsFlex">
+        <div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Filtrera efter</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
-					<option value="Filter-none" selected>inget</option>
+					<option value="Filter-none" selected>none</option>
 					<option value="Filter-G">G</option>
 					<option value="Filter-VG">VG</option>
 					<option value="Filter-U">U</option>
 				</select>
 				</div>
-				<div class="resultedFormsFlex">
+				<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 					<label>Examinator:</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
-			</div>
+
     </div>
 
 		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
@@ -104,13 +101,13 @@ pdoConnect();
 			<span id="hoverRes" ></span>
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
 			onmouseout="hideHover();" >Show Results</h3>
-			<button id='gradeBtn' class='cursorPointer' onclick="toggleGradeBox();">
+			<button id='gradeBtn' onclick="toggleGradeBox();">
 				<img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px">
 			</button>
 			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 
-		<div id="MarkCont" style="position: absolute; left:4px; width: 99%; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb;"> </div>
+		<div id="MarkCont" style="position: absolute; left:4px; width: 99%; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
 		<div id="toggleGrade">
 		<div id='markMenuPlaceholder'></div>
 		<div id="teacherFeedbackTable"></div>
@@ -178,7 +175,7 @@ pdoConnect();
 				<span style='padding-left: 15px; line-height: 28px'>Last exported:
 				<span id='lastExpDate'></span>
 				<span>
-				<input class='cursorPointer' type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>
+				<input type='button' value='Close' onclick='closeLadexport();' style=' width:100px; float: right;'>
 			</span>
 		</div>
 	</div>

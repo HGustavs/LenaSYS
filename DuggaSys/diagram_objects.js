@@ -128,7 +128,7 @@ function Symbol(kindOfSymbol) {
     //--------------------------------------------------------------------
     // quadrants: Iterates over all relation ends and checks if any need to change quadrants
     //--------------------------------------------------------------------
-    this.quadrants = function (kind) {
+    this.quadrants = function () {
         // Fix right connector box (1)
         var changed = false;
         var i = 0;
@@ -218,34 +218,6 @@ function Symbol(kindOfSymbol) {
                 i++;
             }
         }
-        // Fixes lines when thes same entity connects to a relation twice     
-        if (kind == symbolKind.erRelation){
-            if (this.connectorTop.length == 2){
-                changed = true;
-                conn = this.connectorTop.splice(0, 2);
-                this.connectorLeft.push(conn[1]);
-                this.connectorRight.push(conn[0]);
-            }
-            else if (this.connectorBottom.length == 2){
-                changed = true;
-                conn = this.connectorBottom.splice(0, 2);
-                this.connectorLeft.push(conn[1]);
-                this.connectorRight.push(conn[0]);
-            }            
-            else if (this.connectorLeft.length == 2){
-                changed = true;
-                conn = this.connectorLeft.splice(0, 2);
-                this.connectorTop.push(conn[1]);
-                this.connectorBottom.push(conn[0]);
-            }
-            else if (this.connectorRight.length == 2){
-                changed = true;
-                conn = this.connectorRight.splice(0, 2);
-                this.connectorTop.push(conn[0]);
-                this.connectorBottom.push(conn[1]);
-            }
-        }
-
         return changed;
     }
 
@@ -418,18 +390,6 @@ function Symbol(kindOfSymbol) {
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
         }
-    }
-
-    //--------------------------------------------------------------------
-    // resizeUMLToMinimum: Resizes an UML Symbol to the minimum Width and Height values
-    //--------------------------------------------------------------------
-
-    this.resizeUMLToMinimum = function() {
-
-        //console.log("Resized");
-        points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
-        points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
-
     }
 
     //--------------------------------------------------------------------
@@ -1193,7 +1153,7 @@ function Symbol(kindOfSymbol) {
         ctx.clip();
 
         //drawing an derived attribute
-        if (this.properties['key_type'] == 'Derive') {
+        if (this.properties['key_type'] == 'Drive') {
 
             ctx.setLineDash([5, 4]);
         }
@@ -1509,20 +1469,20 @@ function Symbol(kindOfSymbol) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             if(this.cardinality[0].symbolKind == symbolKind.uml) {
-                var valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
-                var valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
-                var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
-                var valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
+                var valX = x1 > x2 ? x1-20 : x1+20;
+                var valY = y1 > y2 ? y1-15 : y1+15;
+                var valY2 = y2 > y1 ? y2-15 : y2+15;
+                var valX2 = x2 > x1 ? x2-20 : x2+20;
                 if (this.isRecursiveLine) {
-                    let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent) * diagram.getZoomValue();
+                    let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent);
                     if (x1 == x2) {
                         valX = valX2 = x1 + 20 * dir;
-                        valY = y1 - 13 * diagram.getZoomValue();
-                        valY2 = y2 - 13 * diagram.getZoomValue();
+                        valY = y1 - 13;
+                        valY2 = y2 - 13;
                     }else {
                         valY = valY2 = y1 + 20 * dir;
-                        valX = x1 - 17 * diagram.getZoomValue();
-                        valX2 = x2 - 17 * diagram.getZoomValue();
+                        valX = x1 - 17;
+                        valX2 = x2 - 17;
                     }
                 }
                 ctx.fillText(this.cardinality[0].value, valX, valY);
@@ -2058,7 +2018,7 @@ function Symbol(kindOfSymbol) {
                 str += this.ovalToSVG(x1-7, y1-7, x2+7, y2+7, svgStyle);
             }
             // Oval
-            if (this.properties['key_type'] == "Derive") {
+            if (this.properties['key_type'] == "Drive") {
                 str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, lineDash);
             } else {
                 str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, "");
@@ -2168,14 +2128,8 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------
     this.getTextX = function(x1, midX, x2) {
         var textX = 0;
-        if (this.properties['textAlign'] == "start" && this.properties['sizeOftext'] == 'Large') textX = x1 + 70 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "end" && this.properties['sizeOftext'] == 'Large') textX = x2 - 70 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "start" && this.properties['sizeOftext'] == 'Medium') textX = x1 + 43 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "end" && this.properties['sizeOftext'] == 'Medium') textX = x2 - 43 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "start" && this.properties['sizeOftext'] == 'Small') textX = x1 + 30 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "end" && this.properties['sizeOftext'] == 'Small') textX = x2 - 30 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "start" && this.properties['sizeOftext'] == 'Tiny') textX = x1 + 22 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "end" && this.properties['sizeOftext'] == 'Tiny') textX = x2 - 22 * diagram.getZoomValue();
+        if (this.properties['textAlign'] == "start") textX = x1 + 10;
+        else if (this.properties['textAlign'] == "end") textX = x2 - 10;
         else textX = midX;
         return textX;
     }
@@ -2224,8 +2178,6 @@ function Symbol(kindOfSymbol) {
             x: pixelsToCanvas(x2 + xOffset).x,
             y: pixelsToCanvas(0, (y2 - (y2-y1)/2)).y};
     }
-
-
 }
 
 //----------------------------------------------------------------------
@@ -2395,8 +2347,6 @@ function Path() {
     this.isLockHovered = false;     // Checks if the lock itself is hovered on the free draw object
     this.isHovered = false;         // If the free draw object is hovered
     this.figureType = "Free";
-    this.topLeft = 1;
-    this.bottomRight = 2;
     this.properties = {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)

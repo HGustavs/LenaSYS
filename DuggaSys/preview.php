@@ -202,6 +202,8 @@
             function boldText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
             }
+
+
             function cursiveText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
                 
