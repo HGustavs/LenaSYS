@@ -136,11 +136,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   if (kind != 3 || kind != 4) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
+  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
   $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
@@ -210,10 +210,10 @@ function changedType(kind) {
   if (kind == 2) {
     $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
   } else if (kind == 3) {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 4) {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
@@ -590,6 +590,7 @@ function returnedSection(data) {
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
+      document.getElementById("courseDropdownTop-mobile").innerHTML = bstr;
       bstr = "<option value='None'>None</option>" + bstr;
       document.getElementById("copyvers").innerHTML = bstr;
 
@@ -804,7 +805,7 @@ function returnedSection(data) {
             }
           }
 
-          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>";
           str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
         } else if (itemKind === 7) { //Message
@@ -1362,7 +1363,7 @@ $(document).mouseup(function (e) {
   }
 });
 
-$(document).on("touchstart", function (e) {
+$(fabBtn).on("touchstart", function (e) {
   if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
     e.preventDefault();
   }
@@ -1407,7 +1408,11 @@ function mouseDown(e) {
 function mouseUp(e) {
   // if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) && $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
+    
+    event.preventDefault();
+     
     closeWindows();
+    console.log(e.target);
     closeSelect();
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
