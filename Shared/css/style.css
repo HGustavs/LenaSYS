@@ -1143,7 +1143,7 @@ input {
   top: 4px;
   right: 4px;*/
   color: rgb(255, 255, 255);
-  cursor: default;
+  cursor: pointer;
   background-color: rgb(199, 80, 80);
   font-family: arial;
   font-weight: bold;
