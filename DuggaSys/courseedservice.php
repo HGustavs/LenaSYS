@@ -147,9 +147,6 @@ if(checklogin()){
 				$debug="Error updating entries\n".$error[2];
 			}
 		}else if(strcmp($opt, "CPYVRS")===0){
-			try{
-				$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$pdo->beginTransaction();
         $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate);");
 
 				$query->bindParam(':cid', $cid);
@@ -408,13 +405,6 @@ if(checklogin()){
 			}
 			*/
 
-			$pdo->commit();
-		} catch(Exception $e)
-		{
-			$pdo->rollBack();
-
-			$debug = "Error duplicate course name\n" . $error[2];
-		}
 			}else if(strcmp($opt,"UPDATE")===0){
 			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
 

@@ -178,10 +178,10 @@
 	
 			if(checklogin()) {
 				echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
-				echo "<td id='loginbutton' class='loggedin' tabindex='0'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
+				echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";
 			}else{
 				echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
-				echo "<td id='loginbutton' class='loggedout' tabindex='0'><img id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
+				echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' src='../Shared/icons/login_button.svg' title='Login'/></td>";
 			}
 
 			echo "</tr></table>";

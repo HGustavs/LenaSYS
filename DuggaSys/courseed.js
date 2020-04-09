@@ -113,17 +113,9 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$(".item").css("box-shadow", "none");
 	$(".item").css("background", "#fff");
 
-	// Convert representation of swedish letters
-	var tempCoursename = coursename;
-	tempCoursename = tempCoursename.replace(/&Aring;/g, "Å");
-	tempCoursename = tempCoursename.replace(/&aring;/g, "å");
-	tempCoursename = tempCoursename.replace(/&Auml;/g, "Ä");
-	tempCoursename = tempCoursename.replace(/&auml;/g, "ä");
-	tempCoursename = tempCoursename.replace(/&Ouml;/g, "Ö");
-	tempCoursename = tempCoursename.replace(/&ouml;/g, "ö");
 
 	// Set Name
-	$("#coursename").val(tempCoursename);
+	$("#coursename").val(coursename);
 	// Set Cid
 	$("#cid").val(cid);
 	// Set Code
@@ -442,6 +434,7 @@ function htmlFix(text){
 
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
+
 /*Validates all coursenames*/
 function validateCourseName(nameid, dialogid) {
 	//regex for only letters
@@ -562,10 +555,3 @@ function validateForm(formid) {
 		}
 	}
 }
-
-
-
-
-
-
-
