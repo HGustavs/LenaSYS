@@ -69,7 +69,7 @@
 							echo "<td class='results' style='display: inline-block;'>";
 							echo "    <div class='results menuButton'>";
 							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/FistW.svg'>";
+							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/marking_icon.svg'>";
 							echo "    </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -77,7 +77,7 @@
 							echo "<td class='tests' style='display: inline-block;'>";
 							echo "    <div class='tests menuButton'>";
 							echo "      <a id='testsBTN' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/student_files.svg'>";
+							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/test_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";

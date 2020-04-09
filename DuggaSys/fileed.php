@@ -75,6 +75,7 @@ pdoConnect();
         <div class='loginBox' style='width:464px; overflow-y: visible'>
             <div class='loginBoxheader' style='cursor:default;'>
                 <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
+                <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
                 <h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
                 <h3 class="fileHeadline" id="lFileHeadline">Add Version Local File</h3>
                 <h3 class="linkPopUp">Add Link</h3>
@@ -82,7 +83,7 @@ pdoConnect();
             </div>
             <form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
                 <div>
-                    <input type='hidden' id='cid' name='cid' value='Toddler'/>
+                    <input type='hidden' id='courseid' name='courseid' value='Toddler'/>
                     <input type='hidden' id='coursevers' name='coursevers' value='Toddler'/>
                     <input type='hidden' id='kind' name='kind' value='Toddler'/>
                     <div class='inputwrapper filePopUp'>
@@ -191,11 +192,17 @@ pdoConnect();
 <div class="fixed-action-button" id="fabButton">
     <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
     <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-				<li onclick="showFilePopUp('GFILE');" >
-					<a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'>
-							<img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
-					</a>
-				</li>
+	
+        <li>
+            <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Dummy Empty File'>
+                    <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/.....">
+            </a>
+        </li>		
+        <li onclick="showFilePopUp('GFILE');" >
+			<a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'>
+					<img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
+			</a>
+		</li>
       	<li  onclick="showFilePopUp('LFILE');" >
 					<a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'>
 							<img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">

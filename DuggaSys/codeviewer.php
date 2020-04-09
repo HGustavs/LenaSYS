@@ -34,6 +34,7 @@
 		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 		<script type="text/javascript" src="../Shared/dugga.js"></script>
 		<script type="text/javascript" src="../Shared/markdown.js"></script>
+		<script type="text/javascript" src="fileed.js"></script>
 		<script type="text/javascript" src="codeviewer.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
@@ -303,5 +304,77 @@ Testing Link:
 
 			include '../Shared/loginbox.php';
 		?>
+		<div class="previewWindowContainer">
+    <div class="previewWindow">
+        <div class="loginBoxheader">
+            <h3 class ="fileName"></h3>
+            <div style="cursor:pointer;" onclick="closePreview();">x</div>
+        </div>
+            <input type='hidden' id='cID' name='cid' value='Toddler'/>
+            <input type='hidden' id='courseVers' name='coursevers' value='Toddler'/>
+            <input type='hidden' id='fileKind' name='kind' value='Toddler'/>
+            <input type='hidden' id='fileName' name='filename' value='Toddler'/>
+            <input type='hidden' id='textField' name='textField' value='Toddler'/>
+            <div class="markdownPart">
+
+                <div class="markdown">
+                    <fieldset id="markset">
+                        <legend>Markdown</legend>
+                        <div class="markdown-icon-div">
+                        <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
+                        <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
+                        <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
+                        <span class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></span>
+                        <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
+                        <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
+                        <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
+                        <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
+
+                        <div class="selectHeader" id="select-header">
+                            <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
+                            <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
+                            <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
+                            <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
+                            <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
+                            <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
+                        </div>
+                        </div>
+                        <div class="markText">
+                            <textarea id="mrkdwntxt" style="font-family:monospace;" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="markdownPrev">
+                    <fieldset id="markPrevSet" style="overflow:scroll;">
+                        <legend id="markPrev">Markdown preview</legend>
+                        <div class="markTextPrev">
+                            <div class="prevSpan">
+                                <div id="mdtarget" class="descbox">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <button class="save-close-button-md" type="submit" onclick="saveMarkdown()">Save</button>
+                <button class="save-close-button-md" onclick="cancelPreview()">Close</button>
+            </div>
+            <div class="editFilePart">
+                <div class="editFileWindow">
+                    <div class="editFileCode">
+                        <div class="fileText">
+                            <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
+                        </div>
+                    </div>
+
+                    <button class="save-close-button-fe" type="submit" onclick="saveTextToFile()"> Save </button>
+                    <button class="save-close-button-fe" onclick="cancelPreview()">Close</button>
+                    <div class="optionButtons">
+
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
 	</body>
 </html>
