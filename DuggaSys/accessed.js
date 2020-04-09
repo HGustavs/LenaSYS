@@ -43,16 +43,6 @@ function setup() {
 //  Instead of commenting out the functions as previously which caused uncaught reference errors
 //  function content was commented out to avoid having a white empty box appear.
 
-//displays dropdown when hovering search bar
-function hoverSearch() {
-	$('#dropdownSearch').css({display:'block'});
-}
-
-//stops displaying the dropdown when removing cursor from search bar
-function leaveSearch() {
-	$('#dropdownSearch').css({display:'none'});
-}
-
 function hoverc() {
 	$('#dropdowns').css('display', 'none');
 	$('#dropdownc').css('display', 'block');
@@ -294,10 +284,8 @@ function renderCell(col, celldata, cellid) {
 		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		
-
-		if (parseFloat(obj.recent) < 1440) {
-			str = "<input class='submit-button new-user' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
-
+		if (parseFloat(obj.recent) > 1440) {
+			str = "<input class='submit-button' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
 		} else {
 			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
 		}
@@ -314,11 +302,6 @@ function renderCell(col, celldata, cellid) {
 			if (i > 0) optstr += " ";
 			optstr += tgroups[i].substr(1 + tgroups[i].indexOf("_"));
 		}
-
-		if(optstr.includes('None')){
-            optstr = "";
-        }
-
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 		str += "<select><option>" + optstr + "</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
@@ -539,46 +522,17 @@ function keyUpSearch() {
 	});
 }
 
-// onclick for group dropdown
 function showCheckboxes(element) {
-	var activeElementWasNull = false;
-	if (typeof(activeElement) === "undefined") { // first open dropdown
-		activeElement = element;
-		activeElementWasNull = true;
-	}
-	
-	var checkboxes = $(activeElement).find(".checkboxes");
-	checkboxes = activeElement.parentElement.lastChild;
-	
-	// save and close current dropdown
-	if (expanded) updateAndCloseGroupDropdown(checkboxes);
-
-	if (activeElement !== element || activeElementWasNull) { // if clicked on new dropdown -> open new
-		activeElement = element;
-		checkboxes = activeElement.parentElement.lastChild;
+	activeElement = element;
+	var checkboxes = $(element).find(".checkboxes");
+	checkboxes = element.parentElement.lastChild;
+	if (!expanded) {
 		checkboxes.style.display = "block";
 		expanded = true;
+	} else {
+		checkboxes.style.display = "none";
+		expanded = false;
 	}
-}
-
-//----------------------------------------------------------------------------------
-// updateAndCloseGroupDropdown: updates group allegiances. Is run when a group dropdown is closed.
-//----------------------------------------------------------------------------------
-
-function updateAndCloseGroupDropdown(checkboxes){
-	var str = "";
-	for (i = 0; i < checkboxes.childNodes.length; i++) {
-		if (checkboxes.childNodes[i].childNodes[0].checked) {
-			str += checkboxes.childNodes[i].childNodes[0].value + " ";
-		}
-	}
-	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
-	// if user unpresses all checkboxes it the student will now belong to no group
-	else changeProperty(checkboxes.id.substr(3), "group", "None");
-
-	// close dropdown
-	checkboxes.style.display = "none";
-	expanded = false;
 }
 
 $(document).mouseover(function (e) {
@@ -635,19 +589,26 @@ function mouseDown(e) {
 //----------------------------------------------------------------------------------
 
 function mouseUp(e) {
+
 	// if the target of the click isn't the container nor a descendant of the container
 	if (activeElement) {
 		var checkboxes = $(activeElement).find(".checkboxes");
 		checkboxes = activeElement.parentElement.lastChild;
-		if (expanded && !checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
-			updateAndCloseGroupDropdown(checkboxes);
+
+		if (expanded && !checkboxes.contains(e.target)) {
+			checkboxes.style.display = "none";
+			var str = "";
+			for (i = 0; i < checkboxes.childNodes.length; i++) {
+				if (checkboxes.childNodes[i].childNodes[0].checked) {
+					str += checkboxes.childNodes[i].childNodes[0].value + " ";
+				}
+			}
+			expanded = false;
+			if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
+			// if user unpresses all checkboxes it the student will now belong to no group
+			else changeProperty(checkboxes.id.substr(3), "group", "None");
 		}
 	}
-
-	// if the target of the click is outside of the current cell being edited -> close the cell editing interface
- 	if (!document.getElementById('editpopover').contains(e.target)) {
- 		clearUpdateCellInternal();
- 	}
 }
 
 //----------------------------------------------------------------------------------
