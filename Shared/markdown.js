@@ -117,7 +117,7 @@ function parseMarkdown(inString)
             specialBlockStart=false;
             workstr='<div class="console"><pre>'+workstr.substr(3)+'</pre></div>';
         }else if(workstr !== "") {
-            workstr=parseLineByLine(workstr.replace(/^\&{3}|\@{3}/gm, ''));
+            workstr=parseLineByLine(workstr.replace(/^[\&{3}]|[\@{3}]/gm, ''));
             specialBlockStart=true;
         }
         str+=workstr;
@@ -415,9 +415,14 @@ function markdownBlock(inString)
     // Iframe, website inside a inline frame - (--url,width,height--)
     inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
 
+
     // Quote text, this will be displayed in an additional box
     // ^ Text you want to quote ^
     inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
+
+    // Iframe, embedding youtube
+	// [YOUTUBE:IDNUM,WIDTH,LENGTH]
+    inString = inString.replace(/\[YOUTUBE:{1}(.*?\S),(.*?\S),(.*?\S)\]{1}/g, '<iframe id="ytplayer" type="text/html" width="$2" height="$3" src="https://www.youtube.com/embed/$1" frameborder="0"></iframe>');
 
     //Markdown smileys
     //Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
@@ -432,7 +437,7 @@ function markdownBlock(inString)
     inString = inString.replace(/\s&lt;3(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/heart.svg'/>");
     inString = inString.replace(/\s\(Y\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsup.svg'/>");
     inString = inString.replace(/\s\(N\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsdown.svg'/>");
-
+    
     return inString;
 }
 
@@ -533,33 +538,6 @@ function boldText() {
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 2;
-    updatePreview(txtarea.value);
-}
-
-function chooseFile(selectedFile){
-    var fields = selectedFile.split(',');
-    var fileName = fields[0];
-    var cid = fields[1];
-    if(fileName !== "defaultOption"){
-        this.setCarotPosition();
-        var finText = txtarea.value.substring(0, start) + '|||' + '../courses/' + cid + '/' +  fileName + ', thumbnail in width px here,  full width here' + sel + '|||'  + txtarea.value.substring(end);
-        txtarea.value = finText;
-        txtarea.foucs();
-        txtarea.selcetionEnd= end + 12;
-        updatePreview(txtarea.value);
-    }
-}
-
-function codeLink(file) {
-    var parts = file.split(',');
-    var fileId = parts[0];
-    var cid = parts[1];
-    var fileName = parts[2];
-    this.setCarotPosition();
-    var finText = txtarea.value.substring(0, start) + '!!!' + 'codeviewer.php?exampleid=' + fileId + '&courseid=' + cid + '&cvers=0&lid=0' + ', ' + fileName + '!!!'  + txtarea.value.substring(end);;
-    txtarea.value = finText;
-    txtarea.foucs();
-    txtarea.selcetionEnd= end + 12;
     updatePreview(txtarea.value);
 }
 

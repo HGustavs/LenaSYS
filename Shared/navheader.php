@@ -2,7 +2,7 @@
        <?php
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
-
+			
 			echo "<table class='navheader'><tr>";
 			include_once "../Shared/basic.php";
 			
@@ -69,7 +69,7 @@
 							echo "<td class='results' style='display: inline-block;'>";
 							echo "    <div class='results menuButton'>";
 							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/marking_icon.svg'>";
+							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/FistW.svg'>";
 							echo "    </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -77,7 +77,7 @@
 							echo "<td class='tests' style='display: inline-block;'>";
 							echo "    <div class='tests menuButton'>";
 							echo "      <a id='testsBTN' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/test_icon.svg'>";
+							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/student_files.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -89,7 +89,32 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
-						
+
+							include_once "../Shared/database.php";
+							pdoConnect();	
+							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']."");
+							$fetch = $query->fetch();
+							$result['coursecode'] = $fetch['coursecode'];
+							$result['versname'] = $fetch['versname'];
+
+							// Changes format from 'HT20' to numbers to create the URL
+							$array = explode("T", $result['versname']);
+							$array[0]; 
+							$year = "20";
+							$year .= $array[1];
+							if ($array[0] = "H")
+							  $term = 2;
+							else if ($array[0] = "V")
+								$term = 1;
+
+							echo "<td class='coursePage' style='display: inline-block;'>";
+							echo "    <div class='course menuButton'>";
+							echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
+              				echo "        <img id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
+							echo "		</a>";
+							echo "    </div>";
+							echo "</td>";
+
 							echo "<td class='access menuButton' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
               echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
@@ -103,11 +128,7 @@
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
 					echo "<td id='searchBar' class='navButt'>";
-					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
-					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
-					echo	"<p><b>Keywords:</b> markG, markU, date</p>";
-					echo	"<p><b>Ex:</b> markG:färgdugga</p>";
-					echo	"</div>";
+					echo   "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
 					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
