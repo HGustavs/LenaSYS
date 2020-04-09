@@ -419,8 +419,8 @@ function SortableTable(param) {
 
 				// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
 				if (this.hasCounter) {
-					str += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex + "</span></td>";
-					mhvstr += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex++ + "</span></td>";
+					str += "<td style='white-space:nowrap;' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex + "</span></td>";
+					mhvstr += "<td style='white-space:nowrap;' class='" + this.tableid + DELIMITER + "counter'><span>" + this.rowIndex++ + "</span></td>";
 				}
 				result++;
 				for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {

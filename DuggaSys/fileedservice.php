@@ -47,58 +47,66 @@ if (checklogin() && $hasAccess) {
             $error = $query->errorInfo();
             $debug = "Error updating file list " . $error[2];
         }
-        // Remove file from filesystem?
-        // Only for local files ... Course-wide and Global files could be used in other courses/course versions
-        // TODO:
-    }else if(strcmp($opt, "SAVEFILE") === 0){
-				
 
-						// Change path to file depending on filename and filekind
-						chdir("../");
-						$currcwd = getcwd();
+        chdir("../");
+        $currcwd = getcwd();
 
-						if ($kind==2) {
-								$currcwd .= "/courses/global/".$filename;
-						}  else if($kind == 3) {
-								$currcwd .= "/courses/".$cid."/".$filename;
-						} else if($kind == 4) {
-								$currcwd .= "/courses/".$cid."/".$vers."/".$filename;
-						}
+        if ($kind == 2) {
+            $currcwd .= "/courses/global/" . $filename;
+        } else if ($kind == 3) {
+            $currcwd .= "/courses/" . $cid . "/" . $filename;
+        } else if ($kind == 4) {
+            $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
+        }
 
-						// Only edit the file if it already exisiting
-						if(file_exists($currcwd)){
-								// Uppdate the database if the save was successful
-								if(file_put_contents($currcwd, html_entity_decode($contents))){
-										$fileSize = filesize($currcwd);
+        // Unlinks (deletes) a file from the directory given if it exists.
+        if (file_exists($currcwd))
+            unlink($currcwd);
 
-										if($kind == 2) {
-												$query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE kind=:kindid AND filename=:filename;");
+    } else if (strcmp($opt, "SAVEFILE") === 0) {
+        // Change path to file depending on filename and filekind
+        chdir("../");
+        $currcwd = getcwd();
 
-										}else if ($kind == 3) {
-												$query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
-												$query->bindParam(':cid', $cid);
-										} else if($kind == 4) {
-												$query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND cid=:cid AND kind=:kindid AND filename=:filename;");
-												$query->bindParam(':cid', $cid);
-												$query->bindParam(':vers', $vers);
-										}
+        if ($kind == 2) {
+            $currcwd .= "/courses/global/" . $filename;
+        } else if ($kind == 3) {
+            $currcwd .= "/courses/" . $cid . "/" . $filename;
+        } else if ($kind == 4) {
+            $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
+        }
 
-										$query->bindParam(':filename', $filename);
-										$query->bindParam(':filesize', $fileSize);
-										$query->bindParam(':kindid', $kind);
+        // Only edit the file if it already exisiting
+        if (file_exists($currcwd)) {
+            // Uppdate the database if the save was successful
+            if (file_put_contents($currcwd, html_entity_decode($contents))) {
+                $fileSize = filesize($currcwd);
 
-										if (!$query->execute()) {
-												$error = $query->errorInfo();
-												echo "Error updating filesize and uploaddate: " . $error[2];
-										}
-								} else {
-										echo "Something went wrong when updating the file, Try again?";
-										$error = True;
-								}
+                if ($kind == 2) {
+                    $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE kind=:kindid AND filename=:filename;");
+                } else if ($kind == 3) {
+                    $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
+                    $query->bindParam(':cid', $cid);
+                } else if ($kind == 4) {
+                    $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND cid=:cid AND kind=:kindid AND filename=:filename;");
+                    $query->bindParam(':cid', $cid);
+                    $query->bindParam(':vers', $vers);
+                }
 
-				}
-			
-		}
+                $query->bindParam(':filename', $filename);
+                $query->bindParam(':filesize', $fileSize);
+                $query->bindParam(':kindid', $kind);
+
+                if (!$query->execute()) {
+                    $error = $query->errorInfo();
+                    echo "Error updating filesize and uploaddate: " . $error[2];
+                }
+            } else {
+                echo "Something went wrong when updating the file, Try again?";
+                $error = True;
+            }
+        }
+    }
 }
 
 //------------------------------------------------------------------------------------------------
@@ -155,11 +163,11 @@ if (checklogin() && $hasAccess) {
         $entry = array(
             'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname]),
             'extension' => $extension,
-            'kind' => $filekindname,
+            'kind' => $filekind,
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
             'uploaddate' => $row['uploaddate'],
             'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension]),
-            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
+            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind])
         );
 
         array_push($entries, $entry);
@@ -203,5 +211,3 @@ $array = array(
 
 echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "fileedservice.php", $userid, $info);
-
-?>
