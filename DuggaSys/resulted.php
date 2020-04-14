@@ -45,10 +45,11 @@ pdoConnect();
   ?>
   <!-- content START -->
 	<div id="content">
-		<div class="titles" style="justify-content:center;">
+		
+    <div id="resultedFormContainer">
+	<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="resultedFormContainer">
       <div id="ladexportContainer">
       <div class="resultedFormsFlex">
         <label>Delkurs</label>
