@@ -1641,6 +1641,10 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					case "</script":
 						fontcolor = "#ff8000";
 						break;
+                    case "<header>":
+					case "</header":
+						fontcolor = "#FF1493";
+						break;
 					default: 
 						fontcolor = "#00ff";
 						break;
