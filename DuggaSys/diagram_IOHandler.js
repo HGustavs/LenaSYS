@@ -328,6 +328,28 @@ function ExportSVG(el) {
     el.setAttribute("download", "diagram.svg");
 }
 
+function ExportSVGA4(el) {
+    const pixelsPerMillimeter = 3.781;
+    a4Width = 210 * pixelsPerMillimeter;
+    a4Height = 297 * pixelsPerMillimeter;
+    if(A4Orientation == "landscape"){
+        temp = a4Width;
+        a4Width = a4Height;
+        a4Height = temp
+        //downloads file with swapped height and width for landscape oriented A4
+    }
+    var svgstr = "";
+    var width = a4Width, height = a4Height;
+    svgstr += "<svg width='"+width+"' height='"+height+"' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>";
+    svgstr += gridToSVG(width, height);
+    svgstr += diagramToSVG();
+    svgstr += "</svg>";
+    var data = "text/json;charset=utf-8," + encodeURIComponent(svgstr);
+    el.setAttribute("class", 'icon-download');
+    el.setAttribute("href", "data:" + data);
+    el.setAttribute("download", "diagram.svg");
+}
+
 //------------------------------------------------
 // used when exporting the file as a .png image.
 //------------------------------------------------
