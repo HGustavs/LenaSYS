@@ -1546,7 +1546,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						}else if (splitString.length == 1){
 							cont += "<span class='string'>" + '"';
 							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
-							cont += "<span>" + '"' + " ";
+							cont += "<span>" + '"';
 						}else{
 							cont += "<span class='string'>" + '"';
 							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
