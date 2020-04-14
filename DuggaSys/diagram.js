@@ -2963,7 +2963,9 @@ function changeZoom(zoomValue, event) {
 //-----------------------
 
 function scrollZoom(event) {
-    var wheelZoom = 124;
+    // deltaY is different for different browsers so 
+    // wheelZoom might need to be changed in the future
+    var wheelZoom = 99;
     var mousePadZoom = 5;
 
     if(event.mozInputSource){
