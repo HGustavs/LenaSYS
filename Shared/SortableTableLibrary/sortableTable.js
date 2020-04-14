@@ -505,9 +505,9 @@ function SortableTable(param) {
 		console.log("Table: " + this.tableNumber);
 		this.rrCount++;
 		console.log("RE-RENDER " + this.rrCount);
-		for (i = 0; i < tbl.tblbody.length; i++) {
-			console.log(tbl.tblbody[i]["firstname"]);
-		}
+		//for (i = 0; i < tbl.tblbody.length; i++) {
+		//	console.log(tbl.tblbody[i]["firstname"]);
+		//}
 	}
 
 	this.toggleColumn = function (colname, col, override) {
