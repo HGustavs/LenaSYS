@@ -38,6 +38,8 @@ AJAXService("get", {}, "DIAGRAM");
 //           A diagram object could for instance be a path, or a symbol
 //--------------------------------------------------------------------
 
+//TEST
+
 var diagram = [];
 
 var settings = {
