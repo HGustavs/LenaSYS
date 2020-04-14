@@ -1,5 +1,4 @@
 
-globalTblCount = 0;
 
 // Keep track of Currently active Table and all sortable tables
 var sortableTable = {
@@ -237,9 +236,7 @@ function SortableTable(param) {
 	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false);
 	this.hasCounter = getparam(param.hasCounterColumn, false);
 	this.hasFooter = getparam(param.hasFooter, false);
-	this.rrCount = 0;
-	this.tableNumber = ++globalTblCount; // start on 1
-	
+
 	// Prepare head and order with columns from rowsum list
 	for (let i = 0; i < rowsumList.length; i++) {
 		tbl.tblhead[rowsumList[i][0]['id']] = rowsumList[i][0]['name'];
@@ -500,14 +497,6 @@ function SortableTable(param) {
 
 		this.magicHeader();
 		freezePaneHandler();
-
-		console.log("\n\n\n");
-		console.log("Table: " + this.tableNumber);
-		this.rrCount++;
-		console.log("RE-RENDER " + this.rrCount);
-		//for (i = 0; i < tbl.tblbody.length; i++) {
-		//	console.log(tbl.tblbody[i]["firstname"]);
-		//}
 	}
 
 	this.toggleColumn = function (colname, col, override) {
