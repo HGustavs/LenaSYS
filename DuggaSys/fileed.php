@@ -238,7 +238,7 @@ $codeLinkQuery->execute();
 <!--Fab-button-->
 <div class="fixed-action-button" id="fabButton">
     <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
-    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
 	
         <li>
             <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Dummy Empty File'>

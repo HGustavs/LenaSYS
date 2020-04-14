@@ -646,12 +646,14 @@ $(document).mouseup(function (e) {
     }
 });
 
-$(document).on("touchstart", function (e) {
+$(document).ready(function(){
+$("#fabBtn").on("touchstart", function (e) {
     if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
         e.preventDefault();
     }
-
+$("#fab-btn-list").show();
     TouchFABDown(e);
+});
 });
 
 $(document).on("touchend", function (e) {
