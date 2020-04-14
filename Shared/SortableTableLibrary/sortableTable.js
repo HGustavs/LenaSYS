@@ -236,7 +236,7 @@ function SortableTable(param) {
 	this.hasMagicHeadings = getparam(param.hasMagicHeadings, false);
 	this.hasCounter = getparam(param.hasCounterColumn, false);
 	this.hasFooter = getparam(param.hasFooter, false);
-
+	
 	// Prepare head and order with columns from rowsum list
 	for (let i = 0; i < rowsumList.length; i++) {
 		tbl.tblhead[rowsumList[i][0]['id']] = rowsumList[i][0]['name'];

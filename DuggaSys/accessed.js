@@ -521,6 +521,7 @@ function returnedAccess(data) {
 		hasMagicHeadings: false,
 		hasCounterColumn: true
 	});
+	
 	myTable.renderTable();
 	}
 }
