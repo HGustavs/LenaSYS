@@ -4642,8 +4642,12 @@ only screen and (max-device-width: 320px) {
   border: 1px solid #000000;
   width: 8px;
   border-radius: 3px;
-  background: #ffffff;
+  background-color: white;
   cursor: pointer;
+}
+.form-group input[type=range]::-moz-range-thumb:active{
+  cursor: grabbing;
+  background-color: #57db3bc2;
 }
 
 .form-group label {
