@@ -1406,6 +1406,14 @@ input {
   background-color: var(--color-border-3);
 }
 
+.menu-drop-down:focus-within .drop-down{
+  display: block !important;
+}
+
+.export-drop-down-head:focus-within .export-drop-down {
+  display: block !important;
+}
+
 .document-settings span.label:hover {
   cursor: pointer;
   background-color: var(--color-border-3);
