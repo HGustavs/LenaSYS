@@ -266,6 +266,26 @@ function renderCell(col, celldata, cellid) {
     }
     return str;
 }
+//---------------------------------------------------------------
+//sortFilesByKind <- Callback function sorts the files by its kind
+//---------------------------------------------------------------
+
+function sortFilesByKind(kind){
+    $("#fileLink table tbody tr").hide();
+    if(kind == "Global"){
+        $( "td:contains('Global')" ).parents("tr").show();
+
+    }if(kind == "CourseLocal"){
+        $( "td:contains('Course local')" ).parents("tr").show();
+
+    }if(kind == "Local"){
+        $( "td:contains('Local')" ).parents("tr").show();
+
+    }else if(kind == "AllFiles"){
+        $("#fileLink table tr").show();
+    }
+
+}
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
