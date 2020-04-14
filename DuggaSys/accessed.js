@@ -504,6 +504,7 @@ function returnedAccess(data) {
 		tblfoot: {}
 	}
 	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
+	if (typeof myTable === "undefined") { // only create a table if none exists
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: "accessTable",
@@ -520,8 +521,8 @@ function returnedAccess(data) {
 		hasMagicHeadings: false,
 		hasCounterColumn: true
 	});
-
 	myTable.renderTable();
+	}
 }
 
 //excuted onclick button for quick searching in table
