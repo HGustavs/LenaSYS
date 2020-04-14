@@ -1126,7 +1126,7 @@ input {
   background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
-  cursor: default;
+  cursor: pointer;
   display: flex;
   justify-content: space-around;
 }
