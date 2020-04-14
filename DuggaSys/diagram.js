@@ -1306,7 +1306,7 @@ function drawVirtualA4() {
 
     ctx.save();
     ctx.strokeStyle = "black"
-    ctx.setLineDash([10]);
+    ctx.setLineDash([10 * (pixelsPerMillimeter / 3)]);
     
     if(A4Orientation == "portrait") {           // Draw A4 sheets in portrait mode
         for (var i = 0; i < a4Rows; i++) {
