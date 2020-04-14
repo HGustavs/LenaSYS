@@ -559,7 +559,8 @@
             <div class='table-wrap'>
                 <div class="importWrap">
                     <div>
-                        <input type="file" id="importFile" accept=".txt, text/plain" />
+                        <input type="file" class="import-file-button" id="importFile" accept=".txt, text/plain" />
+                        <label for="importFile" class="custom-file-upload">Choose file</label>
                     </div>
                     <div id="importError" class="importError">
                         <span>Only .txt-files allowed</span>
