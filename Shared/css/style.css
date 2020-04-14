@@ -2415,7 +2415,7 @@ span.arrow {
 }
 
 .feedback-list caption {
-  border-left: 2px solid var(--color-border-list);
+  border-bottom: 1px solid var(--color-border-list);
   background: var(--color-primary);
   color: #fff;
   line-height: 28px;
