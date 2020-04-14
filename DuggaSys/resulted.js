@@ -169,7 +169,7 @@ function process() {
 	dstr += makeCustomFilter("showTeachers", "Show Teachers");
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
-	dstr += makeCustomFilter("passedDeadline", "Passed Deadline");
+	dstr += makeCustomFilter("passedDeadline", "Late submissions");
 
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
