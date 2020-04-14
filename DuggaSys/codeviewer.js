@@ -1517,8 +1517,10 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 		if (tokens[i].kind == "rowcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
+			console.log("Rowcomment");
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
+			console.log("Blockcomment");
 		} else if (tokens[i].kind == "string") {
 
 			var splitString = tokens[i].val.split(" ");
@@ -1529,38 +1531,40 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				var withoutQuote = splitString[j].replace(/(?:\"|')/g, "");
 				var withQuote = splitString[j].replace(/(?:\"|')/g, "&quot;");
 				var withSingleQuote = splitString[j].replace(/(?:\"|')/g, "\'");
+				var typeOut = withoutQuote
+				//Removes special characters, such as . , ! and ?
+				withoutQuote = withoutQuote.replace(/\W|_/g, "");
 				// Decide if the word is important or not.
 				if (important.indexOf(withoutQuote) != -1 ||
 					important.indexOf(withQuote) != -1 ||
 					important.indexOf(withSingleQuote) != -1) {
-					console.log(splitString.length)
+
 					// Decide if important word is first, last or in the middle of the string.
 					if(j == 0){
 						// Checks if the word is a string within a string.
 						if(splitString[j].charAt(1) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
 							// If string within a string, print single quotes around the word.
 							cont += "<span class='string'>" + '"' + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + typeOut + "\")' onmouseout='highlightKeyword(\"" + typeOut + "\")'>" + typeOut + "</span>";
 							cont += "<span class='string'>" + "'";
 							cont += "<span>" + " ";
 						}else if (splitString.length == 1){
 							cont += "<span class='string'>" + '"';
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + typeOut + "\")' onmouseout='highlightKeyword(\"" + typeOut + "\")'>" + typeOut + "</span>";
 							cont += "<span>" + '"';
 						}else{
 							cont += "<span class='string'>" + '"';
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + typeOut + "\")' onmouseout='highlightKeyword(\"" + typeOut + "\")'>" + typeOut + "</span>";
 							cont += "<span>" + " ";
 						}
 						
-					}
-					else if(j == splitString.length - 1){
+					}else if(j == splitString.length - 1){
 						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 2) == "'"){
 							cont += "<span class='string'>" + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + typeOut + "\")' onmouseout='highlightKeyword(\"" + typeOut + "\")'>" + typeOut + "</span>";
 							cont += "<span class='string'>" + "'" + '"';
 						}else{
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + typeOut + "\")' onmouseout='highlightKeyword(\"" + typeOut + "\")'>" + typeOut + "</span>";
 							cont += "<span class='string'>" + '"' + "</span>";
 						}
 						
@@ -1568,10 +1572,10 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					else{
 						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
 							cont += "<span class='string'>" + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + typeOut + "\")' onmouseout='highlightKeyword(\"" + typeOut + "\")'>" + typeOut + "</span>";
 							cont += "<span class='string'>" + "'" + " ";
 						}else{
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + typeOut + "\")' onmouseout='highlightKeyword(\"" + typeOut + "\")'>" + typeOut + "</span>";
 							cont += "<span>" + " " + "</span>";
 						}
 						
@@ -1605,7 +1609,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "name") {
 			var foundkey = 0;
 			//If tokenvalue exists in the array for important words
-			if (important.indexOf(tokenvalue) !=1) {
+			if (important.indexOf(tokenvalue) != -1) {
 				foundkey = 2;
 				//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
 			} else if (keywords[tokenvalue] != null) {
