@@ -38,7 +38,7 @@ function setup() {
 
     };
 
-    AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
+    AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
 function process() {
@@ -158,7 +158,7 @@ function process() {
 		students.push(student);
 	}
 	// Update filter list from local storage.
-	filterList = JSON.parse(localStorage.getItem("resultTable_filter_" + querystring['cid'] + "-" + querystring['coursevers']));
+	filterList = JSON.parse(localStorage.getItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers']));
 	if (filterList == null) {
 		filterList = {};
 	}
@@ -224,8 +224,18 @@ function toggleFilter(filter) {
 	} else {
 		filterList[filter] = false;
 	}
-	localStorage.setItem("resultTable_filter_" + querystring['cid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
+	localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
 	myTable.renderTable();
+}
+
+//displays dropdown when hovering search bar
+function hoverSearch() {
+	$('#dropdownSearch').css({display:'block'});
+}
+
+//stops displaying the dropdown when removing cursor from search bar
+function leaveSearch() {
+	$('#dropdownSearch').css({display:'none'});
 }
 
 function hoverc() {
@@ -262,14 +272,14 @@ function sorttype(t) {
 
 	var c = $("input[name='sortcol']:checked").val();
 	if (c == 0) {
-		localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort1", t);
+		localStorage.setItem("lena_" + querystring['courseid'] + "-" + querystring['coursevers'] + "-sort1", t);
 		$("input[name='sorttype']").prop("checked", false);
 	} else {
 		if (t == -1) {
-			t = localStorage.getItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort2", t);
+			t = localStorage.getItem("lena_" + querystring['courseid'] + "-" + querystring['coursevers'] + "-sort2", t);
 			$("#sorttype" + t).prop("checked", true);
 		} else {
-			localStorage.setItem("lena_" + querystring['cid'] + "-" + querystring['coursevers'] + "-sort2", t);
+			localStorage.setItem("lena_" + querystring['courseid'] + "-" + querystring['coursevers'] + "-sort2", t);
 			$("#sorttype" + t).prop("checked", true);
 		}
 	}
@@ -431,13 +441,13 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "<tr><td>";
 
 	if ((foundgrade === null && submitted === null)) {
-		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
+		menu += makeSelect(parseInt(gradeSystem), querystring['courseid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
 	} else if (foundgrade == -1) {
-		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "IFeedback", parseInt(qvariant), parseInt(qid));
+		menu += makeSelect(parseInt(gradeSystem), querystring['courseid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "IFeedback", parseInt(qvariant), parseInt(qid));
 	} else if (foundgrade !== null) {
-		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U", parseInt(qvariant), parseInt(qid));
+		menu += makeSelect(parseInt(gradeSystem), querystring['courseid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U", parseInt(qvariant), parseInt(qid));
 	} else {
-		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U", parseInt(qvariant), parseInt(qid));
+		menu += makeSelect(parseInt(gradeSystem), querystring['courseid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U", parseInt(qvariant), parseInt(qid));
 	}
 	menu += "</td></tr>";
 	menu += "</table>";
@@ -535,7 +545,7 @@ function saveResponse() {
 
 	var filename = allData["files"][allData["duggaentry"]][clickedindex].filename + allData["files"][allData["duggaentry"]][clickedindex].seq;
 
-	AJAXService("RESP", { cid: querystring['cid'], vers: querystring['coursevers'], resptext: respo, respfile: filename, duggaid: allData["duggaid"], luid: allData["duggauser"], moment: allData["duggaentry"], luid: allData["duggauser"] }, "RESULT");
+	AJAXService("RESP", { cid: querystring['courseid'], vers: querystring['coursevers'], resptext: respo, respfile: filename, duggaid: allData["duggaid"], luid: allData["duggauser"], moment: allData["duggaentry"], luid: allData["duggauser"] }, "RESULT");
 	document.getElementById("responseArea").innerHTML = "";
 	$("#previewpopover").css("display", "none");
 }
@@ -777,17 +787,17 @@ function renderCell(col, celldata, cellid) {
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
-					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
 				} else if (celldata.grade === -1) {
-					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
 				} else {
-					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
 				}
 				str += "<img id='korf' class='fist";
 				if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
 					str += " grading-hidden";
 				}
-				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
 				str += "/>";
 				//Print times graded
 				str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
@@ -836,17 +846,17 @@ function renderCell(col, celldata, cellid) {
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "<div class='gradeContainer resultTableText'>";
 					if (celldata.grade === null) {
-						str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
 					} else if (celldata.grade === -1) {
-						str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
 					} else {
-						str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
 					}
 					str += "<img id='korf' class='fist";
 					if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
 						str += " grading-hidden";
 					}
-					str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+					str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
 					str += "/>";
 					//Print times graded
 					str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
@@ -920,17 +930,17 @@ function renderCell(col, celldata, cellid) {
 		if (celldata.ishere === true || celldata.kind == 4) {
 			str += "<div class='gradeContainer resultTableText'>";
 			if (celldata.grade === null) {
-				str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
 			} else if (celldata.grade === -1) {
-				str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
 			} else {
-				str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
 			}
 			str += "<img id='korf' class='fist";
 			if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
 				str += " grading-hidden";
 			}
-			str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+			str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
 			str += "/>";
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
@@ -1285,11 +1295,7 @@ function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
-			if (cell.ssn.length > 11) {
-				str = cell.ssn + ";";
-			} else {
-				str = "19" + cell.ssn + ";";
-			}
+			str = cell.ssn + ";";
 
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
@@ -1432,10 +1438,10 @@ function mail() {
 // Puts filter buttons at a fixed point when scrolling horizontally
 $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
-	var ladExportWidth = document.getElementById("ladexportContainer").offsetWidth;
+	var ladExportWidth = document.getElementById("resultedFormContainer").offsetWidth;
 	var scrolled = $(this).scrollLeft();
 	if((scrolled + ladExportWidth) < resultTableWidth){
-		$('#ladexportContainer').css({
+		$('#resultedFormContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
 		});
 	}

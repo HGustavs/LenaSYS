@@ -10,7 +10,6 @@
 /* DOCUMENT CONTENT STYLE START */
 #docucontent h1 {
     display: block;
-    /*    font-family: Arial,Sans-Serif;*/
     text-align: center;
     font-size: 18px;
     font-weight: bold;
@@ -25,11 +24,18 @@
 
 /* DOCUMENT CONTENT STYLE STOP */
 
+.tooltip{
+	color:white;
+}
+
+.errormsg{
+	color: red;
+}
+
 /* BOX STYLE START */
 .box h1 {
     display: block;
     color: #000;
-    /*font-family: Arial,Sans-Serif;*/
     text-align: center;
     font-size: 18px;
     font-weight: bold;
@@ -70,8 +76,6 @@
 .buttomenu2 {
     position: absolute;
     top: 0px;
-    width: -moz-calc(100%);
-    width: -webkit-calc(100%);
     width: calc(100%);
     margin: 0;
     overflow: hidden;
@@ -88,6 +92,34 @@
     top: 0px;
     bottom: 0px;
     width: 150px;
+    margin: 0px;
+    padding: 3px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-overflow: '';
+    text-indent: 1px;
+    outline: none;
+}
+
+/* Select-element for changing boxcontent*/
+.buttomenu2 .boxcontentselect {
+    top: 0px;
+    bottom: 0px;
+    width: 150px;
+    margin: 0px;
+    padding: 3px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-overflow: '';
+    text-indent: 1px;
+    outline: none;
+}
+
+/* Select-element for picking a wordlist*/
+.buttomenu2 .wordlistselect {
+    top: 0px;
+    bottom: 0px;
+    width: 70px;
     margin: 0px;
     padding: 3px;
     -webkit-appearance: none;
@@ -121,7 +153,6 @@
 
 #picktemplate h1 {
     text-align: center;
-    /*font-family: Arial, Sans-Serif;*/
 }
 
 #picktemplate img {
@@ -165,49 +196,37 @@
     width: 20px;
 }
 
-/* HOTDOG MENU START */
-#hotdogdrop {
-    display: none;
-    right: 0px;
-    height: auto;
-    width: auto;
-    border-color: rgb(0, 0, 0) transparent;
-    /*font-family: Arial,Serif;*/
-    font-size: 14px;
+.codeborder {
+    position: sticky;
+    min-height: 100%;
+    bottom: 0px;
+    left:0px;
+    margin: 0px !important;
+	padding: 5px 0px 0px 0px !important;
+	background-color: #614875;
+    text-align: right;
+    line-height: 15px;
+	/* Width of .no and .impo */
+	width: 32px !important;
 }
 
-#hotdogdrop table td img {
-    /*font-family: Arial,Serif;*/
-    font-size: 14px;
+.codeborder .no {
+    color: #D8D8D8;
+    padding-left: 4px;
+    padding-right: 6px;
+    width: 22px;
+	background-color: #614875;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+}
+
+.codeborder .impono {
     color: white;
-    float: right;
+    width: 22px;
+    background-color: #9569BD;
+    padding-left: 4px;
+    padding-right: 6px;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
 }
-
-#hotdogdrop table td {
-    border-bottom: solid 1px #2A120A;
-    /*font-family: Arial,Serif;*/
-    font-size: 14px;
-}
-
-/* SCROLL HOTDOG MENU */
-#table-wrapper {
-    position: relative;
-}
-
-#table-scroll {
-    height: 100%;
-    overflow-y: scroll;
-}
-
-#table-wrapper table {
-    width: 100%;
-}
-
-#table-wrapper table * {
-    color: white;
-}
-
-/* HOTDOG MENU STOP */
 
 /* DROPDOWN STARTS */
 .dropdown {
@@ -216,7 +235,6 @@
     top: 50px;
     z-index: 4000;
     font-size: 14px;
-    /*font-family: Arial,Sans-serif;*/
 }
 
 .dropdownback {
@@ -224,7 +242,6 @@
     background-color: #614875;
     border-color: rgb(0, 0, 0) transparent;
     color: white;
-    /*font-family: Arial,Serif;*/
     font-size: 19px;
     font-weight: normal;
 }
@@ -300,7 +317,6 @@
 .dropdownitem {
     display: block;
     font-size: 14px;
-    /*font-family: Verdana,Arial,Sans-serif;*/
     cursor: default;
     padding-left: 5px;
     border-bottom: solid 1px #2A120A;
@@ -314,13 +330,19 @@
 
 /* DROPDOWN STOP */
 
-/* BOX TEXT STYLING START */
-.norm {
-    color: #fff;
-    background-color: #272822;
+
+/* TEXTWRAPPER START */
+
+.normtextwrapper{
+    /* Width of codeborder */
+    position: absolute;
+    top: 0px;
+    margin-left: 32px;
+    padding: 5px 0px 0px 5px;
 }
 
 .normtext {
+
     line-height: 15px;
 }
 
@@ -328,9 +350,94 @@
     height: 120px;
     margin: 0 auto;
     position: relative;
+
+    color: #000;
+    background-color: #F2F2F2;
+    white-space:nowrap;
+    font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+    line-height: 15px;
 }
 
-/* BOX TEXT STYLING STOP */
+.normtext:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.normtext .string {
+    color: #03b;
+}
+
+.normtext .html, .hi {
+	background-color: #9569BD;
+}
+
+.normtext .impword, .impword2 {
+  background-color: #F2F2F2;
+  color: #000;
+  border-bottom: 2px solid #9971AF; 
+}
+
+.normtext .imphi {
+  color: #fff;
+  background-color: #614875;
+  border: none;
+}
+
+.impo {
+    color: #000;
+    background-color: rgba(186, 96, 255, 0.09);
+    white-space:nowrap;
+    min-width: 660px;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+}
+
+.impo .html, .hi {
+	background-color: #9569BD;
+}
+
+.impo .no {
+    color: white;
+    background-color: #9569BD;
+}
+
+.impo .impword, .impword2 {
+  background-color: #F2F2F2;
+  color: #000;
+  border-bottom: 2px solid #9971AF; 
+  font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+}
+
+.impo .imphi {
+  color: #fff;
+  background-color: #614875;
+  border: none;
+}
+
+.comment {
+    color: #50a750;
+	font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+}
+
+/* TEXTWRAPPER STOP */
+
+/* COLOR FOR KEYWORDS */
+
+.keywordA {
+    color: #e90000;
+}
+
+.keywordB {
+    color: #0004ff;
+}
+
+.keywordC {
+    color: rgba(6, 129, 19, 1);
+}
+
+.keywordD {
+    color: rgba(231, 0, 255, 1);
+
+}
+
 
 #playlinkErrorMsg {
     display: none;
@@ -366,110 +473,6 @@
 }
 
 /* TAB-MENU STOP */
-
-/* TOOLTIPS START */
-.tooltip,
-.arrow:after,
-.arrow2:after {
-    background: black;
-}
-
-.tooltip {
-    pointer-events: none;
-    opacity: 0;
-    display: inline-block;
-    position: fixed;
-    padding: 5px 10px;
-    color: orange;
-    border-radius: 5px;
-    margin-top: 20px;
-    text-align: center;
-    /*font: 10px Arial, Sans-Serif;*/
-    font-stretch: condensed;
-    text-decoration: none;
-    text-transform: uppercase;
-    z-index: 10000;
-}
-
-.arrow {
-    width: 70px;
-    height: 18px;
-    overflow: hidden;
-    position: absolute;
-    bottom: -16px;
-}
-
-.arrow::after {
-    content: "";
-    position: absolute;
-    top: -20px;
-    width: 25px;
-    height: 25px;
-    left: 22.5;
-    /* 22.5 to place the arrow in the middle. arrowwidth/2 - arrow:afterwidth/2=22.5 */
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-}
-
-.arrow2 {
-    width: 70px;
-    height: 18px;
-    overflow: hidden;
-    position: absolute;
-    top: -16px;
-}
-
-.arrow2::after {
-    content: "";
-    position: absolute;
-    bottom: -20px;
-    width: 25px;
-    height: 25px;
-    left: 22.5;
-    /* 22.5 to place the arrow in the middle. arrow2width/2 - arrow2:afterwidth/2=22.5 */
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-}
-
-.tooltip.active {
-    opacity: 1;
-    margin-top: 5px;
-    transition-delay: 0.5s !important;
-    -webkit-transition-delay: 1s !important;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
-}
-
-.tooltip.active2 {
-    opacity: 1;
-    margin-top: 5px;
-    transition-delay: 0.5s !important;
-    -webkit-transition-delay: 1s !important;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
-}
-
-.tooltip.out {
-    opacity: 0;
-    margin-top: -5px;
-    transition-delay: 0s !important;
-}
-
-.tooltip.out2 {
-    opacity: 0;
-    margin-top: 15px;
-    transition-delay: 0s !important;
-}
-
-/* TOOLTIPS STOP */
 
 /*Prevent new lines to enter (which creates screen-errors) when editing names in lists*/
 .norm > [contenteditable="true"] br,
@@ -539,13 +542,130 @@
     display: none;
 }
 
+/* START OF BOXES LAYOUT */
+
+.box{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    overflow: auto;
+    font-size: 14px;
+    outline: 0 none;
+    background-color: #F2F2F2; 
+}
+
+.box iframe {
+    width:100%;
+    height: 99%;
+}
+
 .codebox {
     padding: 0px !important;
 }
 
 /* DESCRIPTION BOX STYLE START */
-.descbox {
+.descbox, .framebox{
+    padding-top: 4px;
+    padding-left: 4px;
+    border-left-style: solid;
+    border-left-width: 3px;
+    border-color: #5A5757;
     padding: 10px !important;
+}
+
+.descbox .impword {
+  background-color: #F2F2F2;
+  color: #000;
+  border-bottom: 2px solid #9971AF; 
+}
+
+.descbox code .impword {
+  background-color: #FFFFFF;
+  color: #000;
+  border-bottom: 2px solid #9971AF; 
+}
+
+.descbox .imphi {
+  color: #fff !important;
+  background-color: #614875 !important;
+  border: none !important;
+}
+
+/* BOXMENU STYLING START */
+.buttomenu2Style{
+	background-color: #5A5757;
+}
+
+.buttomenu2Style .wordlistselect{
+   color: white;
+   background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+
+.buttomenu2Style .boxcontentselect{
+    color: white;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+
+.buttomenu2Style .chooseContentSelect{
+    color: white;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+
+.buttomenu2Style select:hover{
+  background-color: #938C8C;
+    cursor: pointer;
+}
+.butto2:hover{
+    background-color: #938C8C;
+    cursor: pointer;
+}
+.boxtitleEditable{
+	color: white;
+	cursor:text;
+    	font-family: Arial, Sans-Serif;
+    	font-size: 15px;
+}
+.boxtitle{
+	font-family: Arial, Sans-Serif !important;
+	cursor:default !important;
+	color: white !important;
+	  font-size: 15px;
+}
+
+.editcontentbtn {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+}
+
+.boxtitlewrap {
+    font-size: 15px;
+    height: 32px;
+    vertical-align: middle;
+    padding: 0px 5px;
+}
+
+/* BOXMENU STYLING STOP */
+
+.playlinkErrorMsgStyle{
+	color: red;
+}
+
+.templatethumbicon:hover{
+    background-color: #7D5CA0;
+}
+
+.themeicon:hover {
+	background-color: #7D5CA0;
 }
 
 /* USER FEEDBACK BOX START  */
@@ -605,45 +725,6 @@
 }
 
 /* USER FEEDBACK BOX STOP*/
-
-/* BOXMENU STYLING START */
-.buttomenu2 {
-    position: absolute;
-    top: 0px;
-    width: -moz-calc(100%);
-    width: -webkit-calc(100%);
-    margin: 0;
-}
-
-/* Select-element for changing boxcontent*/
-.buttomenu2 .boxcontentselect {
-    top: 0px;
-    bottom: 0px;
-    width: 150px;
-    margin: 0px;
-    padding: 3px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-overflow: '';
-    text-indent: 1px;
-    outline: none;
-}
-
-/* Select-element for picking a wordlist*/
-.buttomenu2 .wordlistselect {
-    top: 0px;
-    bottom: 0px;
-    width: 70px;
-    margin: 0px;
-    padding: 3px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-overflow: '';
-    text-indent: 1px;
-    outline: none;
-}
-
-/* BOXMENU STYLING STOP */
 
 /* RESIZABLE UI START*/
 /* Resizable jQuery UI fix for absolute positioning east*/
@@ -739,14 +820,6 @@
     padding: 10px;
     background: #614875;
     cursor: pointer;
-}
-
-#editExample {
-    /*
-    top: 185px;
-    width: 464px;
-    margin-left: -232px;
-    */
 }
 
 #editExample td {

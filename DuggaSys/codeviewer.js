@@ -82,7 +82,7 @@ function returned(data) {
 	}
 
 	if (retData['writeaccess'] == "w") {
-		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?cid=" + courseid + "&coursevers=" + cvers + "');");
+		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 
@@ -206,7 +206,7 @@ function returned(data) {
 			// Highlight important words
 			important = retData.impwords;
 			for (j = 0; j < important.length; j++) {
-				var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(this.id, \"unspecified\");' onmouseout='dehighlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
+				var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(\"" + important[j] + "\", \"unspecified\");' onmouseout='highlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
 				//Interpret asterisks in important word as literals and not as character with special meaning
 				if (important[j].indexOf('*') != -1) {
 					important[j] = important[j].replace(/\*/g, "&#42;");
@@ -775,16 +775,13 @@ function createboxmenu(contentid, boxid, type) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable"  contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-
+				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-
+				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable"  contenteditable="true" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
-
+				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else {
 				str += "<td class='butto2 showdesktop'>";
 				str += "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\"" + boxid + "\",\"" + contentid + "\");removeboxmenu(\"" + contentid + "menu\");'>";
@@ -799,11 +796,22 @@ function createboxmenu(contentid, boxid, type) {
 			str += '<td class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
-		// Add resize and reset buttons
+		if(retData['box'][boxid - 1][1] == "DOCUMENT"){
+			var kind = 2;
+		}
+		if(retData['box'][boxid - 1][1] == "CODE"){
+			var kind = 3;
+		}
+		if(retData['box'][boxid - 1][1] == "PREVIEW"){
+			var kind = 2;
+		}
+
+		// Add resize, reset and edit buttons
+		
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>Minimize</p></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
-
+		str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
 			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
@@ -853,68 +861,60 @@ function displayDrop(dropid) {
 }
 
 //----------------------------------------------------------------------------------
-// highlightop: Highlights an operator and corresponding operator in code window
+// highlightop: Highlights and Dehighlights an operator and corresponding operator in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function highlightop(otherop, thisop) {
-	$("#" + otherop).addClass("hi");
-	$("#" + thisop).addClass("hi");
+	document.getElementById(otherop).classList.toggle("hi");
+	document.getElementById(thisop).classList.toggle("hi");
 }
 
 //----------------------------------------------------------------------------------
-// dehighlightop: Dehighlights an operator and corresponding operator in code window
-//                Is called by rendercode in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function dehighlightop(otherop, thisop) {
-	$("#" + otherop).removeClass("hi");
-	$("#" + thisop).removeClass("hi");
-}
-
-//----------------------------------------------------------------------------------
-// highlightHtml: Highlights an html-tag and corresponding html-tag in code window
+// highlightHtml: Highlights and Dehighlights an html-tag and corresponding html-tag in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function highlightHtml(otherTag, thisTag) {
-	$("#" + otherTag).addClass("html");
-	$("#" + thisTag).addClass("html");
-}
-//----------------------------------------------------------------------------------
-// deHighlightHtml: Dehighlights an html-tag and corresponding html-tag in code window
-//                Is called by rendercode in codeviewer.js
-//----------------------------------------------------------------------------------
+	document.getElementById(otherTag).classList.toggle("html");
+	document.getElementById(thisTag).classList.toggle("html");
+}	
 
-function deHighlightHtml(otherTag, thisTag) {
-	$("#" + otherTag).removeClass("html");
-	$("#" + thisTag).removeClass("html");
-}
+//Array containing HTML attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
+htmlAttrArray = new Array('action', 'class', 'disabled', 'href', 'id', 'rel', 'src', 'style', 'title', 'type');
 
 //----------------------------------------------------------------------------------
 // 	popupDocumentation: Creates a pop-up window containing relevant documentation to a
 //	specified important word that has been clicked. Diffrent types of documentation
-//	appears for different kinds of words clicked on (HTML directs to W3Schools, PHP
-//	directs to PHP.net).    
+//	appears for different kinds of words clicked on (HTML documentation directs to W3Schools, PHP
+//	documentation directs to PHP.net).    
 //----------------------------------------------------------------------------------
 
 function popupDocumentation(id, lang) {
 	var url;
-	var elementValue = document.getElementById(id).textContent;
-	if(elementValue == "h1" || elementValue == "h2" || elementValue == "h3" || elementValue == "h4" || elementValue == "h5" || elementValue == "h6"){
-		elementValue = "hn";
+
+	// If id exists in htmlArray, change type of popup to HTML Tag (if id is "var", send to PHP-documentation anyways due to var being a PHP variable). 
+	// This is used to prevent HTML tags within PHP code from sending PHP-documentation.
+	if(htmlArray.includes(id) && id != "var"){
+		lang = "html";
 	}
-	if(lang =="html"){
+	if(lang == "html"){
+		var elementValue = document.getElementById(id).textContent;
+		// Change HTML h1-h6 tags to hn in order to link to correct documentation.
+		if(elementValue == "h1" || elementValue == "h2" || elementValue == "h3" || elementValue == "h4" || elementValue == "h5" || elementValue == "h6"){
+			elementValue = "hn";
+		}
 		url = "https://www.w3schools.com/tags/tag_"+elementValue+".asp";
+	}else if(lang == "php"){
+		if(htmlAttrArray.includes(id)){
+			url = "https://www.w3schools.com/tags/att_"+id+".asp";
+		}else{
+			url = "https://www.php.net/results.php?q="+id+"&l=en&p=all";
+		}
+	}else{
+		url ="https://www.google.com/search?q="+id;
 	}
-	else if(lang == "php"){
-		url = "https://www.php.net/results.php?q="+elementValue+"&l=en&p=all";
-	}
-	else{
-		url ="https://www.google.com/search?q="+elementValue;
-	}
-	target = "popup";
-	window.open(url,'popup','width=600,height=600');
+	window.open(url,'popup','width=600, height=600');
 }
 
 //----------------------------------------------------------------------------------
@@ -1060,7 +1060,7 @@ function issetDrop(dname) {
 }
 
 //----------------------------------------------------------
-// highlightKeyword: Highlights an important word from the important word list
+// highlightKeyword: Highlights and Dehighlights an important word from the important word list
 //                Is called by [this function] in codeviewer.js
 //----------------------------------------------------------
 
@@ -1069,23 +1069,11 @@ function highlightKeyword(kw) {
 	kwSingleQuote = "'"+kw+"'";
 
 	$(".impword").each(function () {
-		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
-			$(this).addClass("imphi");
-		}
-	});
-}
-
-//----------------------------------------------------------
-// dehighlightKeyword: DeHighlights an important word from the important word list
-//                Is called by [this function] in codeviewer.js
-//----------------------------------------------------------
-
-function dehighlightKeyword(kw) {
-	kwDoubleQuotes = '"'+kw+'"';
-	kwSingleQuote = "'"+kw+"'";
-	$(".impword").each(function () {
-		if (this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
+		if(this.classList.contains("imphi")){
 			$(this).removeClass("imphi");
+		}
+		else if(this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
+			$(this).addClass("imphi");
 		}
 	});
 }
@@ -1496,7 +1484,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	cbcount = 0;
 	cbracket = new Array();
 
-	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data', 'bdi', 'audio', 'aside', 'article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
+	htmlArray = new Array('wbr', 'video', 'u', 'time', 'template', 'svg', 'summary', 'section', 's', 'ruby', 'rt', 'rp', 'progress', 'picture', 'output', 'nav', 'meter', 'mark', 'main', 'img', 'iframe', 'header', 'footer', 'figure', 'figcaption', 'dialog', 'details', 'datalist', 'data', 'bdi', 'audio', 'aside', 'article', 'html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr', 'relativelayout', 'textview', 'webview', 'manifest', 'uses', 'permission', 'application', 'activity', 'intent');
 	htmlArrayNoSlash = new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'textview', 'webview', 'uses');
 	cssArray = new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right',
 		'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size',
@@ -1517,14 +1505,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	for (i = 0; i < tokens.length; i++) {
 		tokenvalue = String(tokens[i].val);
 
- 
-        if(tokenvalue=="header")cont += "<span style='color: #FF1493;' </span>";
-        if(tokenvalue=="World")cont += "<span style='color: black;' </span>";
-        if(tokenvalue==">")cont += "<span style='color: black;' </span>";
-        if(tokenvalue=="<")cont += "<span style='color: black;' </span>";
-        
-
-
 		if (tokens[i].kind == "rowcomment" || tokens[i].kind == "blockcomment" || tokens[i].kind == "string" || tokens[i].kind == "number" || tokens[i].kind == "name") {
 			// Fix to remove html tags in strings
 			tokenvalue = tokenvalue.replace(/&/g, "&amp;");
@@ -1541,17 +1521,44 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
 
-			var withoutQuote = tokenvalue.replace(/(?:\"|')/g, "");
-			var withQuote = tokenvalue.replace(/(?:\"|')/g, "&quot;");
-			var withSingleQuote = tokenvalue.replace(/(?:\"|')/g, "\'");
+			var splitString = tokens[i].val.split(" ");
 
-			if (important.indexOf(withoutQuote) != -1 ||
-				important.indexOf(withQuote) != -1 ||
-				important.indexOf(withSingleQuote) != -1) {
 
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + tokenvalue + "</span>";
-			} else {
-				cont += "<span class='string'>" + tokenvalue + "</span>";
+			for(j = 0; j < splitString.length; j++){
+				
+				var withoutQuote = splitString[j].replace(/(?:\"|')/g, "");
+				var withQuote = splitString[j].replace(/(?:\"|')/g, "&quot;");
+				var withSingleQuote = splitString[j].replace(/(?:\"|')/g, "\'");
+				
+				//Decide if important word is first, last or in the middle of a string
+				if (important.indexOf(withoutQuote) != -1 ||
+					important.indexOf(withQuote) != -1 ||
+					important.indexOf(withSingleQuote) != -1) {
+					if(j == splitString.length - 1) {
+						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+						cont += tokenvalue[tokenvalue.length-1] + "</span>";
+					}else if(j == 0) {
+						cont += "<span class='string'>" + tokenvalue[0];
+						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+						cont += "<span class='string'>" + " ";
+					}else {
+					cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withQuote + "</span>";
+					cont += "<span class='string'>" + " ";
+					}
+				//Else if the word is not important, implement it as a normal word in a string (blue text) and decide if it's first last or in the middle
+				}else {
+					if(j == splitString.length -1) {
+						cont += "<span class='string'>" + splitString[j] + "</span>";
+					}else if(j == 0) {
+						cont += "<span class='string'>" + splitString[j] + "</span>";
+						cont += "<span class='string'>" + " ";
+					}else {
+						console.log(tokenvalue[0]);
+						cont += "<span class='string'>" + splitString[j] + "</span>";
+						cont += "<span class='string'>" + " ";
+					}
+				}
+
 			}
 
 		} else if (tokens[i].kind == "number") {
@@ -1559,7 +1566,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "name") {
 			var foundkey = 0;
 			//If tokenvalue exists in the array for important words
-			if (important.indexOf(tokenvalue) != -1) {
+			if (important.indexOf(tokenvalue) !=1) {
 				foundkey = 2;
 				//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
 			} else if (keywords[tokenvalue] != null) {
@@ -1570,8 +1577,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
 			} else if (foundkey == 2) {
 				iwcounter++;
-				//HÄR ÄR DET VIKTIGT
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='dehighlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(\"" + tokenvalue + "\", \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += tokenvalue;
 			}
@@ -1581,33 +1587,32 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = "PA" + pcount + boxid;
 				pcount++;
 				parenthesis.push(pid);
-				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
+				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == ")") {
 				pid = parenthesis.pop();
-				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
+				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "[") {
 				pid = "BR" + bcount;
 				bcount++;
 				bracket.push(pid);
-				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
+				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "]") {
 				pid = bracket.pop();
-				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
+				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "{") {
 				allBlocks.push([tokens[i].row, 1, parseInt(boxid)]);
 				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
-				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
+				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
 				allBlocks.push([tokens[i].row, 0, parseInt(boxid)]);
 				pid = cbracket.pop();
-				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
+				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
-
-				coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
-
+                                coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
+                console.log()
 				switch(coloringcode) {
 					case "<html>":
 					case "</html":
@@ -1636,11 +1641,14 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					case "</script":
 						fontcolor = "#ff8000";
 						break;
+                    case "<header>":
+					case "</header":
+						fontcolor = "#FF1493";
+						break;
 					default: 
 						fontcolor = "#00ff";
 						break;
 				}
-
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
 					if (htmlArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
@@ -1661,7 +1669,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								htmlTag.push(pid);
 							}
-							cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
 							cont += "</span>";
 							i = i + 1;
 						} else {
@@ -1678,7 +1686,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							htmlTagCount++;
 							pid = "html" + htmlTagCount + boxid;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"'  id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
@@ -1737,7 +1745,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "string") {
-			cont += "<span class='string'>" + tokenvalue + "</span>";
+			cont += "<span class='string' >" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "number") {
 			cont += "<span class='number'>" + tokenvalue + "</span>";
 		} else if (tokens[i].kind == "name") {
@@ -1754,7 +1762,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
 			} else if (foundkey == 2) {
 				iwcounter++;
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='dehighlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += tokenvalue;
 			}
@@ -1764,12 +1772,13 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				pid = "CBR" + cbcount + boxid;
 				cbcount++;
 				cbracket.push(pid);
-				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='dehighlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
+				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "}") {
 				pid = cbracket.pop();
-				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='dehighlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
+				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
+
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
 					if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
@@ -1791,7 +1800,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								cssTag.push(pid);
 							}
-							cont += "&lt" + "<span id='" + pid + "' class='oper' onmouseover='highlightCss(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightCss(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "&lt" + "<span style='color: "+fontcolor+"'  id='" + pid + "' class='oper' onmouseover='highlightCss(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightCss(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
 							cont += "</span>";
 							i = i + 1;
 						} else {
@@ -1808,7 +1817,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							cssTagCount++;
 							pid = "css" + cssTagCount + boxid;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='deHighlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
@@ -3016,6 +3025,16 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
+		
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -3038,6 +3057,18 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
@@ -3049,12 +3080,23 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 
-	//$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -3142,6 +3184,19 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //-----------------------------------
@@ -3168,6 +3223,20 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer > 85) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer < 15) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //---------------------------------------
@@ -3267,6 +3336,22 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	boxValArray['box' + boxThree]['width'] = $(boxValArray['box' + boxThree]['id']).width();
 	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
 	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();
+
+	// makes the element dissapear when certain treshold is met
+	if(basePer < 15) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+	} else {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+	}
 }
 
 //-----------------------------------

@@ -69,7 +69,7 @@
 							echo "<td class='results' style='display: inline-block;'>";
 							echo "    <div class='results menuButton'>";
 							echo "    <a id='resultsBTN' title='Edit student results' value='Results' href='resulted.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/FistW.svg'>";
+							echo "      <img id='versionPlus' class='navButt' src='../Shared/icons/marking_icon.svg'>";
 							echo "    </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -77,7 +77,7 @@
 							echo "<td class='tests' style='display: inline-block;'>";
 							echo "    <div class='tests menuButton'>";
 							echo "      <a id='testsBTN' title='Show tests' value='Tests' href='duggaed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/student_files.svg'>";
+							echo "        <img id='testsBTN' class='navButt' src='../Shared/icons/test_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -103,7 +103,11 @@
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
 					echo "<td id='searchBar' class='navButt'>";
-					echo   "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
+					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
+					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
+					echo	"<p><b>Keywords:</b> markG, markU, date</p>";
+					echo	"<p><b>Ex:</b> markG:färgdugga</p>";
+					echo	"</div>";
 					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
 					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";

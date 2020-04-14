@@ -136,11 +136,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   if (kind != 3 || kind != 4) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
+  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
   $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
@@ -210,10 +210,10 @@ function changedType(kind) {
   if (kind == 2) {
     $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
   } else if (kind == 3) {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 4) {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
@@ -590,6 +590,7 @@ function returnedSection(data) {
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
+      document.getElementById("courseDropdownTop-mobile").innerHTML = bstr;
       bstr = "<option value='None'>None</option>" + bstr;
       document.getElementById("copyvers").innerHTML = bstr;
 
@@ -803,7 +804,7 @@ function returnedSection(data) {
             }
           }
 
-          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>";
           str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
         } else if (itemKind === 7) { //Message
@@ -1361,7 +1362,7 @@ $(document).mouseup(function (e) {
   }
 });
 
-$(document).on("touchstart", function (e) {
+$(fabBtn).on("touchstart", function (e) {
   if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
     e.preventDefault();
   }
@@ -1405,7 +1406,11 @@ function mouseDown(e) {
 function mouseUp(e) {
   // if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) && $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
+    
+    event.preventDefault();
+     
     closeWindows();
+    console.log(e.target);
     closeSelect();
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
@@ -1541,5 +1546,222 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   }
   else {
     return false;
+  }
+}
+/*Validates all versionnames*/
+function validateVersionName(versionName, dialogid) {
+  //Regex for 2 capital letters, 2 numbers
+  var Name = /^[A-Z]{2}\d{2}$/;
+  var name = document.getElementById(versionName);
+  var x = document.getElementById(dialogid);
+  
+  //if versionname is 2 capital letters, 2 numbers
+  if (name.value.match(Name)) {
+    name.style.borderColor = "#383";
+    name.style.borderWidth = "2px";
+    x.style.display = "none";
+    if (versionName === 'versname') {
+      window.bool3 = true;
+    }
+    if (versionName === 'eversname') {
+      window.bool4 = true;
+    }
+
+  } else {
+
+    name.style.borderColor = "#E54";
+    x.style.display = "block";
+    name.style.borderWidth = "2px";
+
+    if (versionName === 'versname') {
+      window.bool3 = false;
+    }
+    if (versionName === 'eversname') {
+      window.bool4 = false;
+    }
+  }
+}
+
+/*Validate versionID */
+function validateCourseID(courseid, dialogid) {
+  //regex for only numbers, between 3 and 6 numbers
+  var Code = /^[0-9]{3,6}$/;
+  var code = document.getElementById(courseid);
+  var x2 = document.getElementById(dialogid);
+
+  if (code.value.match(Code)) {
+    code.style.borderColor = "#383";
+    code.style.borderWidth = "2px";
+    x2.style.display = "none";
+    window.bool == true;
+  } else {
+
+    code.style.borderColor = "#E54";
+    x2.style.display = "block";
+    code.style.borderWidth = "2px";
+    window.bool == false;
+  }
+
+
+}
+/*Validates that start date comes before end date*/
+function validateDate(startDate, endDate, dialogID) {
+  var sdate = document.getElementById(startDate);
+  var edate = document.getElementById(endDate);
+  var x3 = document.getElementById(dialogID);
+
+  var date1 = new Date(sdate.value);
+  var date2 = new Date(edate.value);
+
+  // If one of the dates is not filled in
+  if (sdate.value == 'yyyy-mm-dd' || sdate.value == "" || edate.value == 'yyyy-mm-dd' || edate.value == "") {
+    sdate.style.borderColor = "#E54";
+    edate.style.borderColor = "#E54";
+    sdate.style.borderWidth = "2px";
+    edate.style.borderWidth = "2px";
+    x3.innerHTML = "Both start date and end date must be filled in";
+    x3.style.display = "block";
+  }
+ // if start date is less than end date
+  if (date1 < date2) {
+    sdate.style.borderColor = "#383";
+    edate.style.borderColor = "#383";
+    sdate.style.borderWidth = "2px";
+    edate.style.borderWidth = "2px";
+    x3.style.display = "none";
+    if (startDate === 'startdate' && endDate === 'enddate') {
+      window.bool5 == true;
+    }
+    if (startDate === 'estartdate' && endDate === 'eenddate') {
+      window.bool6 = true;
+    }
+  }
+  // if end date is less than start date
+  if (date2 < date1) {
+    sdate.style.borderColor = "#E54";
+    edate.style.borderColor = "#E54";
+    x3.innerHTML = "Start date has to be before end date";
+    x3.style.display = "block";
+    sdate.style.borderWidth = "2px";
+    edate.style.borderWidth = "2px";
+    if (startDate === 'startdate' && endDate === 'enddate') {
+      window.bool5 == false;
+    }
+    if (startDate === 'estartdate' && endDate === 'eenddate') {
+      window.bool6 = false;
+    }
+  }
+}
+
+// Validates sectionname
+function validateSectionName(nameid, dialogid) {
+  //Regex for space and uppercase+lowercase letters
+  var Name = /^[a-zA-Z_ ]+$/;
+  var name = document.getElementById(nameid);
+  var x = document.getElementById(dialogid);
+
+  //If sectionname is only letters
+  if (name.value.match(Name)) {
+    name.style.borderColor = "#383";
+    name.style.borderWidth = "2px";
+    x.style.display = "none";
+    window.bool7 = true;
+  } else {
+    name.style.borderColor = "#E54";
+    x.style.display = "block";
+    name.style.borderWidth = "2px";
+    window.bool7 = false;
+  }
+}
+
+/*Validates if deadline is between start and end date*/ 
+function validateDate2(ddate, dialogid) {
+  var ddate = document.getElementById(ddate);
+  var x = document.getElementById(dialogid);
+  var deadline = new Date(ddate.value);
+  //Dates from database
+  var startdate = new Date(retdata['startdate']);
+  var enddate = new Date(retdata['enddate']);
+
+  //if deadline is between start date and end date
+  if (startdate < deadline && enddate > deadline) {
+    ddate.style.borderColor = "#383";
+    ddate.style.borderWidth = "2px";
+    x.style.display = "none";
+    window.bool8 = true;
+
+  } else {
+
+    ddate.style.borderColor = "#E54";
+    x.style.display = "block";
+    ddate.style.borderWidth = "2px";
+    window.bool8 = false;
+
+  }
+}
+
+/*Validates all forms*/ 
+
+function validateForm(formid) {
+
+  //Validates Item form
+  if (formid === 'editSection') {
+    var sName = document.getElementById("sectionname").value;
+    var deadDate = document.getElementById("setDeadlineValue").value;
+
+    //If fields empty
+    if (sName == null || sName == "", deadDate == null || deadDate == "") {
+      alert("Fill in all fields");
+
+    }
+    // if all information is correct
+    if (window.bool7 === true && window.bool8 === true) {
+      alert('The item is now updated');
+      updateItem();
+      updateDeadline();
+
+    } else {
+      alert("You have entered incorrect information");
+    }
+  }
+   //Validates new course version form
+  if (formid === 'newCourseVersion') {
+    var versName = document.getElementById("versname").value;
+    var versId = document.getElementById("versid").value;
+
+    //If fields empty
+    if (versName == null || versName == "", versId == null || versId == "") {
+      alert("Fill in all fields");
+
+    }
+    // if all information is correct
+    if (window.bool5 === true && window.bool3 === true && window.bool === true) {
+      alert('New version created');
+      createVersion();
+      $('#newCourseVersion input').val("");
+
+    } else {
+      alert("You have entered incorrect information");
+    }
+  }
+  
+  // validates edit course version form
+  if (formid === 'editCourseVersion') {
+    var eversName = document.getElementById("eversname").value;
+
+    //If fields empty
+    if (eversName == null || eversName == "") {
+      alert("Fill in all fields");
+
+    }
+
+    // if all information is correct
+    if (window.bool4 === true && window.bool6 === true) {
+      alert('Version updated');
+      updateVersion();
+
+    } else {
+      alert("You have entered incorrect information");
+    }
   }
 }

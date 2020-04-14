@@ -18,6 +18,8 @@
   --color-primary-2: #775886;
   --color-primary-hover: #7b5a96;
   --color-primary-light: #927b9e;
+  --color-new-user: #93A561;
+  --color-new-user-hover: #B6C58C;
   --color-accent: rgb(254, 204, 86);
   --color-accent-transparent: rgba(254, 204, 86, 0.5);
   --color-accent-hover: #ffd369;
@@ -112,6 +114,7 @@ body {
 
 table {
   border-collapse: collapse;
+  font-family: Roboto, Arial Narrow;
 }
 
 th,
@@ -658,6 +661,8 @@ header td {
   height: 20px;
   margin-bottom: 10px;
   width: 100%;
+  position: fixed;
+  z-index: 8000;
 }
 
 .trsize {
@@ -668,6 +673,7 @@ header td {
 .navButt {
   width: 32px;
   vertical-align: middle;
+  margin-top: 9px;
 }
 
 .navButt img {
@@ -818,8 +824,14 @@ div .navButt:hover {
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
 }
-
-#overlay {
+@media screen and (max-width: 600px) {
+  .navheader {
+    float: none;
+    width: 100%;
+  }
+}
+.overlay {
+  display: block;
   position: fixed;
   top: 0;
   background-color: #000;
@@ -830,16 +842,19 @@ div .navButt:hover {
 }
 
 .loginBoxContainer {
-  display: flex;
+  display: block;
   justify-content: center;
   align-items: center;
   position: fixed;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 8000;
+  margin:0 auto;
 }
 
 .loginBox {
@@ -1726,6 +1741,16 @@ input.submit-button.resetpw-button {
   margin: auto;
   display: block;
 }
+input.submit-button.new-user {
+  background-color: var(--color-new-user);
+  color: var(--color-primary);
+  float: none;
+  margin: auto;
+  display: block;
+}
+input.submit-button.new-user:hover {
+    background-color: var(--color-new-user-hover);
+}
 
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -2477,6 +2502,8 @@ span.arrow {
   background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
   background-position: right;
+  margin-top: 7px;
+  margin-left: 3px;
 }
 
 /* Course version dropdown */
@@ -2681,8 +2708,24 @@ span.arrow {
   display: inherit;
 }
 
+#resultedFormContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 #ladexportContainer {
   display: flex;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  padding: 10px;
+  width: min-content;
+}
+
+.resultedFormsFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5px;
 }
 
 #laddate {
@@ -3264,11 +3307,6 @@ span.arrow {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-table {
-  border-collapse: collapse;
-  font-family: Roboto, Arial Narrow;
 }
 
 .fumho {
@@ -4313,10 +4351,6 @@ only screen and (max-device-width: 320px) {
   color: var(--color-text-primary);
 }
 
-#nametext {
-  padding: 2px 0px 2px 10px;
-}
-
 #noAccessMessage {
   padding: 5px;
 }
@@ -4595,6 +4629,41 @@ only screen and (max-device-width: 320px) {
     display: none;
   }
 }
+
+/* --------------================################================-------------- *
+ *                            Appearance form (Diagram)                         *
+ * --------------================################================-------------- */
+
+#appearance {
+  display: none;
+  background-color: rgba(0, 0, 0, 0);
+  box-sizing: border-box;
+}
+
+.form-group {
+  margin: 16px 0;
+}
+
+.form-group label {
+  display: block;
+}
+
+#figureOpacity, #lineThicknessGlobal {
+  width: 100%;
+  border: 0;
+  margin: 0;
+}
+
+#appearanceForm textarea {
+  height: 100px;
+  resize: none;
+}
+
+
+#name {
+  padding: 2px 0px 2px 10px;
+}
+
 
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
@@ -5646,5 +5715,75 @@ textarea#filecont {
 
   to {
     opacity: 1;
+  }
+}
+
+.mobile-view{
+  display: none;
+}
+
+@media only screen and (max-width: 450px) {
+  .mobile-view {
+    display: block;
+    visibility: visible;
+    background-color:var(--color-primary);
+    display: flex;
+  }
+
+  .course{
+    margin-top:5px;
+  }
+  .mobile-view .navButt{
+    margin: 2px 10px 2px 10px;
+    border: 2px;
+    border-radius: 2px;
+    border-color: black;
+  }
+
+  header #versionPlus{
+    display: none;
+  }
+
+  header #versionCog{
+    display: none;
+  }
+
+  header #courseIMG{
+    display: none;
+  }
+
+  header .course-dropdown-div {
+    border: 1px solid var(--color-border-2);
+    border-radius: 3px;
+    overflow: hidden;
+    background: #ff1111 url("../icons/desc_primary.svg") no-repeat 90% 50%;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    background-position: right;
+    display: none !important;
+    margin: 5px;
+    display: inline-table;
+  }
+
+  header {
+    /*overflow: hidden;*/
+    color: var(--color-text-header);
+  
+    width: 100%;
+    background: var(--color-primary);
+    position: fixed;
+    z-index: 5000;
+    top: 0px;
+    left: 0px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .navheader {
+    height: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  table.navheader div.menuButton{
+    margin-right: 0px;
   }
 }

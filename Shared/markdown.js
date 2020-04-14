@@ -117,7 +117,7 @@ function parseMarkdown(inString)
             specialBlockStart=false;
             workstr='<div class="console"><pre>'+workstr.substr(3)+'</pre></div>';
         }else if(workstr !== "") {
-            workstr=parseLineByLine(workstr.replace(/^[\&{3}]|[\@{3}]/gm, ''));
+            workstr=parseLineByLine(workstr.replace(/^\&{3}|\@{3}/gm, ''));
             specialBlockStart=true;
         }
         str+=workstr;
@@ -548,6 +548,19 @@ function chooseFile(selectedFile){
         txtarea.selcetionEnd= end + 12;
         updatePreview(txtarea.value);
     }
+}
+
+function codeLink(file) {
+    var parts = file.split(',');
+    var fileId = parts[0];
+    var cid = parts[1];
+    var fileName = parts[2];
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '!!!' + 'codeviewer.php?exampleid=' + fileId + '&courseid=' + cid + '&cvers=0&lid=0' + ', ' + fileName + '!!!'  + txtarea.value.substring(end);;
+    txtarea.value = finText;
+    txtarea.foucs();
+    txtarea.selcetionEnd= end + 12;
+    updatePreview(txtarea.value);
 }
 
 function linkYoutube(){
