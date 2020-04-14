@@ -251,17 +251,18 @@ function editSettings(){
 }
 
 function updateSettings() {
+	const messageElement = document.getElementById("motd");
+	const readOnlyCheckbox = document.getElementById("readonly");
+	const popupContainer = document.getElementById("editSettings");
 
-		var motd = $("#motd").val();
-		var readonly = 0;
-		if ($("#readonly").val() == "yes"){
-			readonly = 1;
-		}
+	let readonly = 0;
+	if(readOnlyCheckbox.checked) {
+		readonly = 1;
+	}
 
-		// Show dialog
-		$("#editSettings").css("display", "none");
+	popupContainer.style.display = "none";
 
-		AJAXService("SETTINGS", {	motd : motd, readonly : readonly}, "COURSE");
+	AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
 }
 
 function createVersion(){
