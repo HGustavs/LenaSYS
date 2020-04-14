@@ -4647,7 +4647,7 @@ only screen and (max-device-width: 320px) {
 }
 .form-group input[type=range]::-moz-range-thumb:active{
   cursor: grabbing;
-  background-color: #57db3bc2;
+  background-color: #614875;
 }
 
 .form-group label {
