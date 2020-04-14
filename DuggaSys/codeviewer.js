@@ -3041,7 +3041,6 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 
-	//$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
@@ -3050,10 +3049,10 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-	}else if (basePer > 85) {
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 	} else {
 		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
@@ -3116,20 +3115,6 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
 	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
-
-	// makes the element dissapear when certain treshold is met
-	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
-	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
-	}
 }
 
 //---------------------------------
