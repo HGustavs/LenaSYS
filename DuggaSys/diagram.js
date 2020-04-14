@@ -1640,6 +1640,17 @@ function importFile() {
     reader.readAsText(file, "UTF-8");
 }
 
+//-------------------------------------------------------
+// Change name of label to filename when importing file
+//-------------------------------------------------------
+
+$(document).ready(function(){
+        $('.import-file-button').change(function(e){
+            var fileName = e.target.files[0].name;
+          $('#importLabel').text(fileName);
+        });
+    });
+
 //---------------------------------------------------
 // canvasSize: Function that is used for the resize
 //             Making the page more responsive
