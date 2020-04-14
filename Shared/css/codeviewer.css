@@ -381,6 +381,10 @@
 	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
 }
 
+.impo .string {
+    color: #0000ff !important
+}
+
 .impo .html, .hi {
 	background-color: #9569BD;
 }
