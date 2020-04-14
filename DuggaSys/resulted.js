@@ -1104,10 +1104,8 @@ function rowFilter(row) {
 	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
 		return false;
 	}
-  	// Removes spaces so that it can tolerate "wrong" inputs when searching
-  	searchterm = searchterm.replace(' ', '');
-  	// divides the search on &&
-	var tempSplitSearch = searchterm.split("&&");
+  	// divides the search on white space
+	var tempSplitSearch = searchterm.split(" ");
 	var splitSearch = [];
 
 	tempSplitSearch.forEach(function (s) {
