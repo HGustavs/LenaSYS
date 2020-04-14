@@ -102,12 +102,15 @@ var currentMouseCoordinateX = 0;
 var currentMouseCoordinateY = 0;
 var startMouseCoordinateX = 0;      // X coordinate for mouse to get diff from current when moving
 var startMouseCoordinateY = 0;      // Y coordinate for mouse to get diff from current when moving
-var origoOffsetX = 0.0;             // Canvas x topleft offset from origo
-var origoOffsetY = 0.0;             // Canvas y topleft offset from origo
+var cameraPosX = parseInt(localStorage.getItem("cameraPosX") || 0); //Fetches last camera X position recorded, uses 0 if non recorded
+var cameraPosY = parseInt(localStorage.getItem("cameraPosY") || 0); //Fetches last camera Y position recorded, uses 0 if non recorded
+var origoOffsetX = cameraPosX         // Canvas x topleft offset from origo
+var origoOffsetY = cameraPosY          // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = false;            // Canvas left click state
 var canvasRightClick = false;           // Canvas right click state
-var zoomValue = 1.00;
+var lastZoomValue = localStorage.getItem("zoomValue") || 1.00;      //Records last zoomvalue, 1.00 if none has been recorded
+var zoomValue = lastZoomValue;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
 var hoveredObject = false;
 var markedObject = false;
@@ -657,6 +660,8 @@ function moveCanvasView(key) {
       origoOffsetY += -10;
     }
     updateGraphics();
+    localStorage.setItem("cameraPosX", origoOffsetX);
+    localStorage.setItem("cameraPosY", origoOffsetY);
   }
 }
 
@@ -2932,6 +2937,9 @@ function zoomInMode(event) {
 
     let oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
+    localStorage.setItem("zoomValue", document.getElementById("ZoomSelect").value);
+    localStorage.setItem("cameraPosX", origoOffsetX);
+    localStorage.setItem("cameraPosY", origoOffsetY);
     let zoomDifference = 1 + (zoomValue - oldZoom);
 
     // Move to mouse
@@ -3077,6 +3085,8 @@ function mousemoveevt(ev, t) {
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
         startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
+        localStorage.setItem("cameraPosX", origoOffsetX);
+        localStorage.setItem("cameraPosY", origoOffsetY);
     }
     reWrite();
     updateGraphics();
