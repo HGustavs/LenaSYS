@@ -4788,7 +4788,7 @@ only screen and (max-device-width: 320px) {
 
 [data-tooltip]:before {
   visibility: visible;
-  opacity: 0.2;
+  opacity: 0.6;
   transform: scale(1);
   transform-origin: right center 0;
 }
