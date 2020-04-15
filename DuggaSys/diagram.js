@@ -134,6 +134,7 @@ var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var singleA4 = false;               // Toggle between single/repeated A4
+var enableShortcuts = true;         // Used to toggle on/off keyboard shortcuts
 var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
@@ -1771,6 +1772,22 @@ function resetViewToOrigin(event){
     origoOffsetY = 0;
     updateGraphics();
     SaveState();
+}
+
+//---------------------------------------------------------------------------------
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
+//---------------------------------------------------------------------------------
+
+function disableShortcuts(event){
+    event.stopPropagation();
+    if (enableShortcuts) {
+        setCheckbox($(".drop-down-option:contains('Disable keyboard shortcuts')"), enableShortcuts);
+        enableShortcuts = false;
+    } else {
+        setCheckbox($(".drop-down-option:contains('Disable keyboard shortcuts')"), enableShortcuts);
+        enableShortcuts = true;
+    }
+    updateGraphics();
 }
 
 //-------------------------------------------

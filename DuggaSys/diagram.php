@@ -228,6 +228,9 @@
                                 <span class="drop-down-option" onclick='resetViewToOrigin(event);'>Reset view to origin</span>
                                 <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick='disableShortcuts(event);'>Disable keyboard shortcuts</span>
+                            </div>
                         </div>
                     </div>
                     <div class="menu-drop-down" tabindex="0">
