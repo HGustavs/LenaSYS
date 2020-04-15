@@ -254,26 +254,26 @@
                             </div>
                             <div class="drop-down-divider">
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
                                 <i id="hotkey-displayA4" class="hotKeys">Shift + 4</i>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="a4-single-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='togglesingleA4(event);'><img src="../Shared/icons/Arrow_down_right.png">Single A4</span>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="a4-orientation-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='toggleA4Orientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="a4-holes-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='toggleVirtualA4Holes(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                                 </div>
                             </div>
-                            <div class="drop-down-item">
+                            <div class="drop-down-item" tabindex="0">
                                 <div id="a4-holes-item-right" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='toggleVirtualA4HolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
                                 </div>
@@ -559,7 +559,8 @@
             <div class='table-wrap'>
                 <div class="importWrap">
                     <div>
-                        <input type="file" id="importFile" accept=".txt, text/plain" />
+                        <input type="file" class="import-file-button" id="importFile" accept=".txt, text/plain" />
+                        <label for="importFile" id="importLabel" class="submit-button custom-file-upload">Choose a file</label>
                     </div>
                     <div id="importError" class="importError">
                         <span>Only .txt-files allowed</span>

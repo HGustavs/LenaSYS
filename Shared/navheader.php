@@ -89,6 +89,31 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
+
+							include_once "../Shared/database.php";
+							pdoConnect();	
+							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']."");
+							$fetch = $query->fetch();
+							$result['coursecode'] = $fetch['coursecode'];
+							$result['versname'] = $fetch['versname'];
+
+							// Changes format from 'HT20' to numbers to create the URL
+							$array = explode("T", $result['versname']);
+							$array[0]; 
+							$year = "20";
+							$year .= $array[1];
+							if ($array[0] = "H")
+							  $term = 2;
+							else if ($array[0] = "V")
+								$term = 1;
+
+							echo "<td class='coursePage' style='display: inline-block;'>";
+							echo "    <div class='course menuButton'>";
+							echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
+              echo "        <img id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
+							echo "		</a>";
+							echo "    </div>";
+							echo "</td>";
 						
 							echo "<td class='access menuButton' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";

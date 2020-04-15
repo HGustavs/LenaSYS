@@ -1598,11 +1598,14 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
-	$("#servermsgcontainer").animate({ opacity: 0, top: 0 }, 200, "easeInOutSine");
-	setTimeout(function () {
-		$("#servermsgcontainer").css("display", "none");
-		$("#servermsgcontainer").css("opacity", "1");
-	}, 200);
+	const $containerHeight = $("#servermsgcontainer");
+	$containerHeight.animate({ 
+		opacity: 0, 
+		top: -$containerHeight.outerHeight() 
+	}, 200, "easeInOutSine", () => {
+		//After animation is done.
+		$containerHeight.css("opacity", "1");
+	});
 }
 
 function hideCookieMessage() {

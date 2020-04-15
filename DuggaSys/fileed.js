@@ -140,6 +140,8 @@ function showFilePopUp(fileKind) {
     $("#selecty").css("display", "block");
     $("#addFile").css("display", "flex");
     $(".linkPopUp").css("display", "none");
+    $("#createNewEmptyFile").css("display", "none");
+    $(".addNewFile").css("display", "block");
 
     if (fileKind == "MFILE") {
         $("#mFileHeadline").css("display", "block");
@@ -147,6 +149,11 @@ function showFilePopUp(fileKind) {
         $("#lFileHeadline").css("display", "block");
     } else if (fileKind == "GFILE") {
         $("#gFileHeadline").css("display", "block");
+    }else if(fileKind == "EFILE"){
+        $("#eFileHeadline").css("display", "block");
+        $(".addNewFile").css("display", "none");
+        $("#createNewEmptyFile").css("display", "block");
+
     }
 }
 
@@ -258,6 +265,26 @@ function renderCell(col, celldata, cellid) {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     }
     return str;
+}
+//---------------------------------------------------------------
+//sortFilesByKind <- Callback function sorts the files by its kind
+//---------------------------------------------------------------
+
+function sortFilesByKind(kind){
+    $("#fileLink table tbody tr").hide();
+    if(kind == "Global"){
+        $( "td:contains('Global')" ).parents("tr").show();
+
+    }if(kind == "CourseLocal"){
+        $( "td:contains('Course local')" ).parents("tr").show();
+
+    }if(kind == "Local"){
+        $( "td:contains('Local')" ).parents("tr").show();
+
+    }else if(kind == "AllFiles"){
+        $("#fileLink table tr").show();
+    }
+
 }
 
 //----------------------------------------------------------------
@@ -646,12 +673,14 @@ $(document).mouseup(function (e) {
     }
 });
 
-$(document).on("touchstart", function (e) {
+$(document).ready(function(){
+$("#fabBtn").on("touchstart", function (e) {
     if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
         e.preventDefault();
     }
-
+$("#fab-btn-list").show();
     TouchFABDown(e);
+});
 });
 
 $(document).on("touchend", function (e) {

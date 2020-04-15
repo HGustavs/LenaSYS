@@ -32,10 +32,10 @@
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 		<script type="text/javascript" src="../Shared/dugga.js"></script>
-		<script type="text/javascript" src="../Shared/markdown.js"></script>
-		<script type="text/javascript" src="fileed.js"></script>
+        <script type="text/javascript" src="../Shared/markdown.js"></script>
 		<script type="text/javascript" src="codeviewer.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/> 
 	</head>
 
 <!--
@@ -91,6 +91,7 @@ Testing Link:
 		<!-- content START -->
 		<div id="content">
 		<?php
+          
 			$exampleid = getOPG('exampleid');
 			$courseID = getOPG('courseid');
 			$cvers = getOPG('cvers');
@@ -130,6 +131,13 @@ Testing Link:
 					
 				}
 			}
+			else{
+				// refreshes session cookies, thereby extending the time before users sees the alert or get logged out
+				// refreshes takes place when navigating to codeviewer.php, courseed.php, and sectioned.php 
+				setcookie("sessionEndTime", "expireC", time() + 2700, "/"); // Alerts user in 45min
+				setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends session in 60min, user gets logged out
+			}
+			
 			//	FOR TESTING:	uncomment line below to see log output of #username, 
 			//echo "<script>console.log('Debug Objects: " . $_COOKIE["cookie_guest"] . "' );</script>";
 
@@ -186,6 +194,7 @@ Testing Link:
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 			echo "</div>";
 		?>
+        </div>
 		<!-- Dropdowns START -->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
 		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'>Forw</div><span id='forwdropc'>bii</span></span>
