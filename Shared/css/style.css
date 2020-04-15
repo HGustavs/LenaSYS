@@ -621,6 +621,19 @@ p {
   background-color: var(--color-sectioned-table-lo);
 }
 
+#errorBox{
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+}
+
+#errorMSG {
+  padding: 4px;
+  border-radius: 5px;
+  margin:0;
+}
+
 /* --------------================################================-------------- *
  *                                    Header                                    *
  * --------------================################================-------------- */
