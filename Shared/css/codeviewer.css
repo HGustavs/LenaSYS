@@ -1066,6 +1066,9 @@
     .burgerOption {
         padding: 15px 15px 15px 15px;
     }
+    .err{
+    display: none;
+    }
 } 
 @media only screen and (max-width: 364px) {
         #mobileNavHeading {
