@@ -1126,17 +1126,31 @@ function rowFilter(row) {
 		for (colname in row) {
 			if (colname == "FnameLname") {
 				var name = "";
+				if(searchterm.length == 1){ //if only 1 character has been entered in the search field
 				if (row[colname]["firstname"] != null) {
 					name += row[colname]["firstname"] + " ";
 				}
 				if (row[colname]["lastname"] != null) {
 					name += row[colname]["lastname"];
 				}
-        		name = name.replace(' ', '');
-				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+        		var nameArray = name.split(" "); //Array with [firstname, lastname]
+				//Checks for the first character in firstname and/or lastname
+				if (nameArray[0].toUpperCase().startsWith(searchterm.toUpperCase()) || nameArray[1].toUpperCase().startsWith(searchterm.toUpperCase())) {
+					console.log(name);
 					return true;
 				}
-
+				//when more characters than 1 has been entered
+			} else {
+				if (row[colname]["firstname"] != null) {
+					name += row[colname]["firstname"] + " ";
+				}
+				if (row[colname]["lastname"] != null) {
+					name += row[colname]["lastname"];
+				}
+				name = name.replace(" ", "");
+				if(name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1){
+					return true;
+				}
 				 if (row[colname]["ssn"] != null) {
 				 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
 				 		return true;
@@ -1152,7 +1166,8 @@ function rowFilter(row) {
 				if (row[colname]["setTeacher"] != null) {
 					if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
 						return true;
-				}
+				} 
+			}
 			}
 		}
 		return false;
