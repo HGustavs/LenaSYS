@@ -558,6 +558,7 @@
     font-size: 14px;
     outline: 0 none;
     background-color: #F2F2F2; 
+    margin-top: 30px !important;
 }
 
 .box iframe {
@@ -1050,9 +1051,10 @@
         height: 25px;
         text-align: center;
         color:black;
+        margin-top: 50px;
     }
     #div2 {
-        top: 100px;
+        top: 80px;
     }
     #burgerMenu {
         position: absolute;
@@ -1065,7 +1067,11 @@
         padding: 15px 15px 15px 15px;
     }
 } 
-
+@media only screen and (max-width: 364px) {
+        #mobileNavHeading {
+            font-size: 13px;
+    }
+}
 .blockBtnSlot {
     min-width: 11px;
     display: inline-block;
