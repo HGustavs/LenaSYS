@@ -1517,14 +1517,11 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 
 		if (tokens[i].kind == "rowcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
-			console.log("Rowcomment");
 		} else if (tokens[i].kind == "blockcomment") {
 			cont += "<span class='comment'>" + tokenvalue + "</span>";
-			console.log("Blockcomment");
 		} else if (tokens[i].kind == "string") {
 
 			var splitString = tokens[i].val.split(" ");
-			
 			
 			for(j = 0; j < splitString.length; j++){
 				
@@ -1533,39 +1530,37 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				var withSingleQuote = splitString[j].replace(/(?:\"|')/g, "\'");
 				var operator = "";
 				var typeOut = withoutQuote;
+				//Removes special characters, such as . , ! and ?
 				if(withoutQuote.charAt(withoutQuote.length - 1) == "." || withoutQuote.charAt(withoutQuote.length - 1) == "," || withoutQuote.charAt(withoutQuote.length - 1) == "!" || withoutQuote.charAt(withoutQuote.length - 1) == "?"){
 					operator = withoutQuote.charAt(withoutQuote.length - 1);
 					withoutQuote = withoutQuote.substring(0, withoutQuote.length - 1);
 				}
 				
-				//Removes special characters, such as . , ! and ?
-				
-
 				// Decide if the word is important or not.
 				if (important.indexOf(withoutQuote) != -1 ||
 					important.indexOf(withQuote) != -1 ||
 					important.indexOf(withSingleQuote) != -1) {
 
 					// Decide if important word is first, last or in the middle of the string.
-					if(j == 0){
+					if(j == 0) {
 						// Checks if the word is a string within a string.
-						if(splitString[j].charAt(1) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
+						if(splitString[j].charAt(1) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'") {
 							// If string within a string, print single quotes around the word.
 							cont += "<span class='string'>" + '"' + "'";
 							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + "'" + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
-						}else if (splitString.length == 1){
+						}else if (splitString.length == 1) {
 							cont += "<span class='string'>" + '"';
 							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + '"' + "</span>";
-						}else{
+						}else {
 							cont += "<span class='string'>" + '"';
 							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
 						}
 						
-					}else if(j == splitString.length - 1){
+					}else if(j == splitString.length - 1) {
 						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 2) == "'"){
 							cont += "<span class='string'>" + "'";
 							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
@@ -1575,23 +1570,21 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							cont += "<span class='string'>" + operator + '"' + "</span>";
 							cont += "</span>";
 						}
-						
-					} 
-					else{
+						} 
+					else {
 						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
 							cont += "<span class='string'>" + "'";
 							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + operator + "'" + " " + "</span>";
-						}else{
+						}else {
 							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
 						}
-						
 					}
 				// Else if the word is not important, implement it as a normal word in a string.		
-			} 	else {
+				}else {
 					// Decide if the word is first, last or in the middle.
-					if(j == 0 && splitString > 1){
+					if(j == 0 && splitString > 1) {
 						// Variable is a substring of a non-important word in a string that is either first or last.
 						// Removes extra double quotes before or after the word if so.
 						var stringWithSingleQuotes = splitString[j].substring(1, splitString[j].length);
@@ -1600,24 +1593,23 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						cont += "<span>" + " " + "</span>";
 						cont += "</span>";
 					}
-					else if(splitString == 1){
+					else if(splitString == 1) {
 						var stringWithSingleQuotes = splitString[j].substring(1, splitString[j].length);
 						cont += "<span class='string'>" + '"';
 						cont += "<span class='string'>" + stringWithSingleQuotes + "</span>";
 						cont += "<span>" + "</span>";
 						cont += "</span>";
 					}
-					else if (j == splitString.length - 1){
+					else if (j == splitString.length - 1) {
 						var stringWithSingleQuotes = splitString[j].substring(0, splitString[j].length - 1);
 						cont += "<span class='string'>" + stringWithSingleQuotes + "</span>";
 						cont += "<span class='string'>" + '"' + "</span>";
 					}
-					else{
+					else {
 						cont += "<span class='string'>" + splitString[j] + "</span>";
 						cont += "<span>" + " ";
 					}
-					
-			}
+				}
 			}
 
 		} else if (tokens[i].kind == "number") {

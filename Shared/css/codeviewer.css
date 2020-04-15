@@ -354,7 +354,7 @@
 }
 
 .normtext .string {
-    color: #03b;
+    color: #03b !important;
 }
 
 .normtext .html, .hi {
@@ -382,7 +382,7 @@
 }
 
 .impo .string {
-    color: #0000ff !important
+    color: #03b !important;
 }
 
 .impo .html, .hi {
