@@ -3366,19 +3366,23 @@ function mousemoveevt(ev, t) {
                     }
                 }
             } else if (uimode == "CreateEREntity") {
-                ctx.setLineDash([3, 3]);
-                ctx.beginPath();
-                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(entityTemplate.width / 2 < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && entityTemplate.height / 2 < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateERRelation") {
                 ctx.setLineDash([3, 3]);
