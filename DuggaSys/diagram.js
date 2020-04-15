@@ -4325,3 +4325,12 @@ function getGroupsByType(type) {
         return types.includes(type.toString());
     });
 }
+
+function isIntersecting(x, y, bounds) {
+    return (
+        x >= bounds.x && 
+        x <= bounds.x + bounds.width &&
+        y >= bounds.y && 
+        y <= bounds.y + bounds.height
+    );
+}
