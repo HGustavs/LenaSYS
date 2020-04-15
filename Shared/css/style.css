@@ -773,6 +773,12 @@ div .navButt:hover {
   left: 0px;
   right: 0px;
   background: var(--color-background);
+    width:100%
+
+}
+
+
+
 }
 
 /* --------------================################================-------------- *
