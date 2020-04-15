@@ -35,6 +35,7 @@
         <script type="text/javascript" src="../Shared/markdown.js"></script>
 		<script type="text/javascript" src="codeviewer.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/> 
 	</head>
 
 <!--
@@ -90,6 +91,7 @@ Testing Link:
 		<!-- content START -->
 		<div id="content">
 		<?php
+          
 			$exampleid = getOPG('exampleid');
 			$courseID = getOPG('courseid');
 			$cvers = getOPG('cvers');
@@ -192,6 +194,7 @@ Testing Link:
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 			echo "</div>";
 		?>
+        </div>
 		<!-- Dropdowns START -->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
 		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'>Forw</div><span id='forwdropc'>bii</span></span>

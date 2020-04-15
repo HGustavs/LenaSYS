@@ -342,6 +342,15 @@
 }
 
 .normtext {
+
+    line-height: 15px;
+}
+
+.normtextend {
+    height: 120px;
+    margin: 0 auto;
+    position: relative;
+
     color: #000;
     background-color: #F2F2F2;
     white-space:nowrap;
@@ -430,6 +439,7 @@
 
 .keywordD {
     color: rgba(231, 0, 255, 1);
+
 }
 
 
@@ -469,8 +479,8 @@
 /* TAB-MENU STOP */
 
 /*Prevent new lines to enter (which creates screen-errors) when editing names in lists*/
-.norm>[contenteditable="true"] br,
-.butt>[contenteditable="true"] br {
+.norm > [contenteditable="true"] br,
+.butt > [contenteditable="true"] br {
     display: none;
 }
 
@@ -915,6 +925,13 @@
     font-size: 13px;
 }
 
+
+
+
+
+
+
+
 /* style for the copy button and copy notification*/
 .copybutton {
     position: absolute;
@@ -945,6 +962,8 @@
     z-index: 1;
 }
 
+.copy-notification-icon {}
+
 .copy-notification img {
     position: sticky;
     top: 0;
@@ -960,6 +979,61 @@
 #mobileNavHeading {
     display: none;
 }
+
+
+@media only screen and (max-device-width : 438px) {
+    .maximizebtn {
+        display: none;
+    }
+
+
+
+    @media only screen and (max-device-width : 555px) {
+        .minimizebtn {
+            display: none;
+        }
+
+
+    }
+
+
+
+}
+
+@media only screen and (max-device-width : 710px) {
+    .buttomenu2 table td img {
+        display: none;
+
+    }
+
+    .codeheader {
+        font-size: 20px !important;
+    }
+
+
+
+
+
+}
+
+@media only screen and (max-device-width : 598px) {
+    .codeheader {
+        font-size: 15px !important;
+    }
+
+}
+
+@media only screen and (max-device-width : 528px) {
+    .codeheader {
+        display: none;
+    }
+
+}
+
+
+
+
+
 
 @media only screen and (max-width: 800px) {
     #codeBurger {
@@ -978,7 +1052,7 @@
         color:black;
     }
     #div2 {
-        top: 85px;
+        top: 100px;
     }
     #burgerMenu {
         position: absolute;
@@ -990,34 +1064,39 @@
     .burgerOption {
         padding: 15px 15px 15px 15px;
     }
+} 
+
+.blockBtnSlot {
+    min-width: 11px;
+    display: inline-block;
+    text-align: center;
+    line-height: 8px;
+    max-height: 11px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
-  .blockBtnSlot {
-      min-width: 11px;
-      display: inline-block;
-      text-align: center;
-      line-height: 8px;
-      max-height: 11px;
-      -webkit-box-sizing:border-box;
-      -moz-box-sizing:border-box;
-      -ms-box-sizing:border-box;
-      box-sizing:border-box;
-  }
-  .blockBtnSlot.open-block::before {
-      content: '-';
-  }
-  .blockBtnSlot.closed-block::before {
-      content: '+';
-  }
-  .blockBtnSlot.occupied {
-    border: 1px  solid black;
+
+.blockBtnSlot.open-block::before {
+    content: '-';
+}
+
+.blockBtnSlot.closed-block::before {
+    content: '+';
+}
+
+.blockBtnSlot.occupied {
+    border: 1px solid black;
     border-radius: 50%;
     cursor: pointer;
-  }
-  .blockBtnSlot.occupied:hover {
+}
+
+.blockBtnSlot.occupied:hover {
     background: var(--color-primary);
     color: #fff;
-  }
-  .blockEllipses {
-      font-weight: bold;
-  }
+}
 
+.blockEllipses {
+    font-weight: bold;
+}
