@@ -47,8 +47,8 @@ pdoConnect();
 	<div id="content">
 		
     <div id="resultedFormContainer">
-	<div class="titles" style="justify-content:center;">
-			<h1>Result</h1>
+	<div class="titles" style="justify-content:flex-start;">
+			<h1>Edit student results</h1>
     </div>
       <div id="ladexportContainer">
       <div class="resultedFormsFlex">
