@@ -258,35 +258,34 @@ $codeLinkQuery->execute();
 <div class="fixed-action-button" id="fabButton">
     <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
     <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-
-
         <li onclick="showFilePopUp('EFILE');">
             <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Dummy Empty File'>
-                    <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/.....">
+                <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/.....">
             </a>
         </li>   
         <li onclick="showFilePopUp('GFILE');" >
             <a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'>
-                    <img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
+                <img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
             </a>
         </li>
         <li  onclick="showFilePopUp('LFILE');" >
-                    <a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'>
-                            <img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
-                    </a>
-                </li>
-                
+            <a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'>
+                <img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
+            </a>
+        </li>           
         <li onclick="showFilePopUp('MFILE');" >
-                    <a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'>
-                            <img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
-                    </a>
-                </li>
-        <li onclick="showLinkPopUp();" >
-                    <a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
-                            <img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
-                    </a>
+            <a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'>
+                    <img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
+            </a>
         </li>
+        <li onclick="showLinkPopUp();" >
+            <a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
+                    <img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
+            </a>
+        </li>
+
     </ol>
+
 </div>
 
 <div class="confirmationWindow">
