@@ -387,7 +387,6 @@ function resetToolButtonsPressed() {
 //--------------------------------------------------------------------
 
 function keyDownHandler(e) {
-    clickEnterOnDialogMenu();
     var key = e.keyCode;
     if(key == escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
@@ -4335,4 +4334,15 @@ function getGroupsByType(type) {
         const types = group.dataset.types.split(",");
         return types.includes(type.toString());
     });
+}
+
+//Shoud simulate button click or enter click in appearance menu to save and close
+function submitAppearanceForm() {
+    if(globalappearanceMenuOpen) {
+        setGlobalProperties();
+    } else {
+        setObjectProperties();
+    }
+    SaveState();
+    toggleApperanceElement();
 }
