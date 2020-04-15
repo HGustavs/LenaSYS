@@ -354,7 +354,7 @@
 }
 
 .normtext .string {
-    color: #03b;
+    color: #03b !important;
 }
 
 .normtext .html, .hi {
@@ -379,6 +379,10 @@
     white-space:nowrap;
     min-width: 660px;
 	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+}
+
+.impo .string {
+    color: #03b !important;
 }
 
 .impo .html, .hi {
