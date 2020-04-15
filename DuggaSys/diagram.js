@@ -390,6 +390,8 @@ function keyDownHandler(e) {
     var key = e.keyCode;
     if(key == escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
+    } else if(key == enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
+        submitAppearanceForm();
     }
     if (appearanceMenuOpen) return;
     if ((key == deleteKey || key == backspaceKey)) {
@@ -4297,11 +4299,7 @@ function initAppearanceForm() {
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
                 if(element.type === "submit") {
-                    element.addEventListener("click", () => {
-                        SaveState();
-                        setObjectProperties();
-                        toggleApperanceElement();
-                    });
+                    element.addEventListener("click", submitAppearanceForm);
                 } else {
                     element.addEventListener("input", setObjectProperties);
                 }
