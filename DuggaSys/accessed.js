@@ -563,15 +563,19 @@ function showCheckboxes(element) {
 //----------------------------------------------------------------------------------
 
 function updateAndCloseGroupDropdown(checkboxes){
-	var str = "";
+	var str = "", readStr = "";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
 			str += checkboxes.childNodes[i].childNodes[0].value + " ";
+			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3) + " ";
 		}
 	}
 	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
 	// if user unpresses all checkboxes it the student will now belong to no group
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
+
+	activeElement.children[0].children[0].innerHTML = readStr;
+	console.log(readStr);
 
 	// close dropdown
 	checkboxes.style.display = "none";
