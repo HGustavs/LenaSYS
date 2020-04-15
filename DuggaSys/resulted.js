@@ -169,7 +169,7 @@ function process() {
 	dstr += makeCustomFilter("showTeachers", "Show Teachers");
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
-	dstr += makeCustomFilter("passedDeadline", "Passed Deadline");
+	dstr += makeCustomFilter("passedDeadline", "Late submissions");
 
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
@@ -594,7 +594,11 @@ function returnedResults(data) {
 		teacherList += "<option value='none'>none</option>";
 		for(var i = 0; i < teacher.length; i++){
 			if(!teacherList.includes(teacher[i].id)){
-				teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+				if(teacher[i].id == localStorage.getItem('examinatorFilter')){
+					teacherList += "<option value='"+ teacher[i].id +"' selected>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+				} else {
+					teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+				}
 			}
 		}
 		var uniqueTeacherList = [...new Set(teacherList)]
@@ -1423,6 +1427,8 @@ function closeLadexport() {
 
 function updateTable() {
 	myTable.renderTable();
+	var sel = document.getElementById("teacherDropdown");
+	localStorage.setItem('examinatorFilter', sel.value);
 }
 
 function mail() {

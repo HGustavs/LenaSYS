@@ -45,10 +45,11 @@ pdoConnect();
   ?>
   <!-- content START -->
 	<div id="content">
-		<div class="titles" style="justify-content:center;">
+		
+    <div id="resultedFormContainer">
+	<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="resultedFormContainer">
       <div id="ladexportContainer">
       <div class="resultedFormsFlex">
         <label>Delkurs</label>
@@ -79,7 +80,7 @@ pdoConnect();
         <div class="resultedFormsFlex">
 				<label>Filtrera efter</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
-					<option value="Filter-none" selected>inget</option>
+					<option value="Filter-none" selected>none</option>
 					<option value="Filter-G">G</option>
 					<option value="Filter-VG">VG</option>
 					<option value="Filter-U">U</option>
