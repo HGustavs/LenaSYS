@@ -80,7 +80,7 @@ pdoConnect();
         <div class="resultedFormsFlex">
 				<label>Filtrera efter</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
-					<option value="Filter-none" selected>inget</option>
+					<option value="Filter-none" selected>none</option>
 					<option value="Filter-G">G</option>
 					<option value="Filter-VG">VG</option>
 					<option value="Filter-U">U</option>
