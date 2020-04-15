@@ -1004,18 +1004,18 @@ function smartSearch(splitSearch, row) {
   var sortingDate2;
 	var sortingValue;
 	var isDate = false;
+	var returnValue;
 
   // Loops through the different search attributes that were seperated by &&, if you want to add multiple search this is the place
 	for (var i = 0; i < splitSearch.length; i++) {
-		var index = i;
 		columnToSearch = splitSearch[i][1];
     columnToSearch = columnToSearch.replace(' ', '');
 
-		for (var i = 0; i < moments.length; i++) {
-			lid = "lid:" + moments[i]["lid"];
+		for (var j = 0; j < moments.length; j++) {
+			lid = "lid:" + moments[j]["lid"];
 
       // All the different types of search categories
-			switch (splitSearch[index][0].toUpperCase()) {
+			switch (splitSearch[i][0].toUpperCase()) {
 				case "MARKG":
 					sortingValue = 2;
 					sortingType = row[lid].grade;
@@ -1033,7 +1033,7 @@ function smartSearch(splitSearch, row) {
 					break;
 				case "DATE":
 					isDate = true;
-					var date = new Date(splitSearch[index][1]);
+					var date = new Date(splitSearch[i][1]);
 					sortingValue = date;
           sortingDate1 = 0;
           sortingDate2 = 0;
@@ -1059,12 +1059,13 @@ function smartSearch(splitSearch, row) {
 								var newName2 = txt.value;
                 newName2 = newName2.replace(' ', '');
 								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-									return true;
+									returnValue = true;
+								}else{
+									returnValue = false;
 								}
 							}
 						}
 					}
-					return false;
 				}
 			} else {
 				var dates = "";
@@ -1081,6 +1082,7 @@ function smartSearch(splitSearch, row) {
 			}
 		}
 	}
+	return returnValue;
 }
 
 //----------------------------------------------------------------
@@ -1108,10 +1110,8 @@ function rowFilter(row) {
 	if(teacherDropdown !== "none" && row.FnameLname.examiner != teacherDropdown){
 		return false;
 	}
-  	// Removes spaces so that it can tolerate "wrong" inputs when searching
-  	searchterm = searchterm.replace(' ', '');
-  	// divides the search on &&
-	var tempSplitSearch = searchterm.split("&&");
+  	// divides the search on white space
+	var tempSplitSearch = searchterm.split(" ");
 	var splitSearch = [];
 
 	tempSplitSearch.forEach(function (s) {
