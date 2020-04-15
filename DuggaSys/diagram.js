@@ -387,6 +387,7 @@ function resetToolButtonsPressed() {
 //--------------------------------------------------------------------
 
 function keyDownHandler(e) {
+    clickEnterOnDialogMenu();
     var key = e.keyCode;
     if(key == escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
