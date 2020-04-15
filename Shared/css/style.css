@@ -1151,7 +1151,7 @@ input {
   top: 4px;
   right: 4px;*/
   color: rgb(255, 255, 255);
-  cursor: default;
+  cursor: pointer;
   background-color: rgb(199, 80, 80);
   font-family: arial;
   font-weight: bold;
@@ -2429,7 +2429,7 @@ span.arrow {
 }
 
 .feedback-list caption {
-  border-left: 2px solid var(--color-border-list);
+  border-bottom: 1px solid var(--color-border-list);
   background: var(--color-primary);
   color: #fff;
   line-height: 28px;
