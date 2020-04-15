@@ -614,6 +614,7 @@ function returnedSection(data) {
       document.querySelector(".course-dropdown-div").style.display = "none";
       document.querySelector("td.editVers").style.display = "none";
       document.querySelector("td.newVers").style.display = "none";
+      document.querySelector("td.coursePage").style.display = "none";
 
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
@@ -1362,13 +1363,16 @@ $(document).mouseup(function (e) {
   }
 });
 
+$(document).ready(function(){
 $(fabBtn).on("touchstart", function (e) {
   if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
     e.preventDefault();
   }
 
+  $("#fabBtnList").show();
   mouseDown(e);
   TouchFABDown(e);
+});
 });
 
 $(document).on("touchend", function (e) {
@@ -1593,13 +1597,13 @@ function validateCourseID(courseid, dialogid) {
     code.style.borderColor = "#383";
     code.style.borderWidth = "2px";
     x2.style.display = "none";
-    window.bool == true;
+    window.bool = true;
   } else {
 
     code.style.borderColor = "#E54";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
-    window.bool == false;
+    window.bool = false;
   }
 
 
@@ -1630,7 +1634,7 @@ function validateDate(startDate, endDate, dialogID) {
     edate.style.borderWidth = "2px";
     x3.style.display = "none";
     if (startDate === 'startdate' && endDate === 'enddate') {
-      window.bool5 == true;
+      window.bool5 = true;
     }
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = true;
@@ -1645,7 +1649,7 @@ function validateDate(startDate, endDate, dialogID) {
     sdate.style.borderWidth = "2px";
     edate.style.borderWidth = "2px";
     if (startDate === 'startdate' && endDate === 'enddate') {
-      window.bool5 == false;
+      window.bool5 = false;
     }
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = false;
