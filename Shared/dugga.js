@@ -324,7 +324,7 @@ function removeYearFromDate(date){
 }
 
 //----------------------------------------------------------------------------------
-// cookie that after 45 minutes will let the user know (through another function)
+// cookie that after 1 hour and 45 minutes will let the user know (through another function)
 // that there is 15 minutes left of session.
 //----------------------------------------------------------------------------------
 
@@ -333,13 +333,13 @@ function setExpireCookie(){
 				var expireDate = new Date();
 				// a test date so you dont have to actually wait 45 minutes
 				// expireDate.setMinutes(expireDate.getMinutes() + 1);
-				expireDate.setMinutes(expireDate.getMinutes() + 45);
+				expireDate.setMinutes(expireDate.getMinutes() + 105);
         document.cookie = "sessionEndTime=expireC; expires=" + expireDate.toGMTString() + "; path=/";
     }
 }
 
 //----------------------------------------------------------------------------------
-// a cookie that will end the session after 1 hour
+// a cookie that will end the session after 2 hours
 //----------------------------------------------------------------------------------
 
 function setExpireCookieLogOut() {
@@ -347,7 +347,7 @@ function setExpireCookieLogOut() {
 				var expireDate = new Date();
 				// test date
 				// expireDate.setMinutes(expireDate.getMinutes() + 2);
-				expireDate.setMinutes(expireDate.getMinutes() + 60);
+				expireDate.setMinutes(expireDate.getMinutes() + 120);
         document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toGMTString() + "; path=/";
     }
 }
