@@ -4313,9 +4313,7 @@ function initAppearanceForm() {
     });
 
     const appearanceContainer = document.getElementById("appearance");
-    appearanceContainer.addEventListener("click", e => {
-
-    });
+    appearanceContainer.addEventListener("click", clickOutsideAppearanceForm);
 }
 
 function getGroupsByType(type) {
@@ -4324,6 +4322,13 @@ function getGroupsByType(type) {
         const types = group.dataset.types.split(",");
         return types.includes(type.toString());
     });
+}
+
+function clickOutsideAppearanceForm(e) {
+    const bounds = document.querySelector(".loginBox").getBoundingClientRect();
+    if(!isIntersecting(e.clientX, e.clientY, bounds)) {
+        toggleApperanceElement();
+    }
 }
 
 function isIntersecting(x, y, bounds) {
