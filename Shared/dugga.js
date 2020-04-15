@@ -1173,7 +1173,6 @@ function sessionExpireMessage() {
 
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
 				$(".expiremessagebox").css("display","block");
-
 				clearInterval(intervalId);
 			}
 
@@ -1195,6 +1194,7 @@ function sessionExpireLogOut() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
+				$(".expiremessagebox").css("display","none");
 				$(".endsessionmessagebox").css("display","block");
 				processLogout();
 				clearInterval(intervalId);
