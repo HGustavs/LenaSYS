@@ -571,7 +571,7 @@ function validateForm(formid) {
         //if coursecode and coursenames are correct
 		if (window.bool4 === true && window.bool2 === true) {
 			
-			alert('The course updated');
+			alert('The course is now updated');
 			updateCourse();
 
 		} else {
