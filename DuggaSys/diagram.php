@@ -539,10 +539,15 @@
                     <div class="form-group" data-types="-1">
                         <label for="lineThicknessGlobal">Line thickness:</label>
                         <input type="range" id="lineThicknessGlobal" min="1" max="4" value="2" data-access="properties.lineWidth">
-                    </div>
+                    </div>	
+										<div class="form-check">
+  										<input class="form-check-input" type="checkbox" value="" id="commentCheck">
+  										<label class="form-check-label" for="defaultCheck1">Comment</label>
+										</div>
                     <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
                         <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
                     </div>
+									
                 </div>
             </div>
         </div>
