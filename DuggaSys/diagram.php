@@ -398,9 +398,9 @@
                 <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
                 <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
                 -->
-                <div id='valuesCanvas'>
+                <div id="valuesCanvas" style="position: fixed">
                 </div>
-                <div id="selectDiv">
+                <div id="selectDiv" style="position: fixed">
                     <span class="tooltipDecrease">
                         <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1, event);">-</button>
                         <span class="tooltiptextDec">Zoom Out</span>
