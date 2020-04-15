@@ -558,7 +558,6 @@
     font-size: 14px;
     outline: 0 none;
     background-color: #F2F2F2; 
-    margin-top: 30px !important;
 }
 
 .box iframe {
@@ -1069,7 +1068,12 @@
     .err{
     display: none;
     }
-} 
+}
+@media only screen and (max-width: 725px) {
+        .box{
+        margin-top: 30px !important;
+    }
+}
 @media only screen and (max-width: 364px) {
         #mobileNavHeading {
             font-size: 13px;
