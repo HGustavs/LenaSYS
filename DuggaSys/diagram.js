@@ -4311,6 +4311,11 @@ function initAppearanceForm() {
             }
         });
     });
+
+    const appearanceContainer = document.getElementById("appearance");
+    appearanceContainer.addEventListener("click", e => {
+
+    });
 }
 
 function getGroupsByType(type) {
