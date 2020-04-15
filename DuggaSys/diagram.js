@@ -4005,22 +4005,6 @@ function clickOutsideDialogMenu(ev) {
     });
 }
 
-//----------------------------------------------------------------------
-// clickEnterOnDialogMenu: Closes the dialog menu when the enter button is pressed.
-//----------------------------------------------------------------------
-
-function clickEnterOnDialogMenu(ev) {
-    $(document).keypress(function (ev) {
-        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
-            globalappearanceMenuOpen = false;
-            toggleApperanceElement();
-            // Is called in the separate appearance php-files at the buttons.
-            // Called here since an enter press doesn't relate to any element
-            setObjectProperties();
-        }
-    });
-}
-
 function toggleApperanceElement(show = false) {
     const appearanceElement = document.getElementById("appearance");
     if(show) {
