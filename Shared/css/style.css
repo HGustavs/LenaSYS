@@ -2012,6 +2012,7 @@ div.submit-button:disabled {
 #moveButton {
   z-index: 2;
   position: absolute;
+  right: 10px;
   border-radius: 0px;
 }
 
