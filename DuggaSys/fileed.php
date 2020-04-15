@@ -13,10 +13,10 @@ $cid = getOPG('courseid');
 echo("<script>console.log('PHP: " . $cid . "');</script>");
 $query = $pdo->prepare( "SELECT filename, cid FROM fileLink WHERE cid=:cid;");
 $query->bindParam(':cid', $cid);
-$query->execute();      
+$query->execute();
 
 $codeLinkQuery = $pdo->prepare( "SELECT filename, fileid, cid FROM fileLink");
-$codeLinkQuery->execute(); 
+$codeLinkQuery->execute();
 
 ?>
 
@@ -62,24 +62,28 @@ $codeLinkQuery->execute();
         <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
             <div style='display:flex;flex-wrap:wrap;'>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="sortFilesByKind('AllFiles');count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
                     <label for="all-files-sort" name="sortAll" style='white-space:nowrap'>All files</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="sortFilesByKind('Global');count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
                     <label for="global-files-sort" name="sortGlobal" style='white-space:nowrap'>Global</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="sortFilesByKind('CourseLocal');count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
                     <label for="course-local-sort" name="sortCLocal" style='white-space:nowrap'>Course local</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="sortFilesByKind('Local');count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
                     <label for="version-local-sort" name="sortVLocal" style='white-space:nowrap'>Version local</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="sortFilesByKind('Link');count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
                     <label for="links-sort" name="sortLinks" style='white-space:nowrap'>Links</label>
+                </div>
+                 <div style='white-space:nowrap'>
+                    <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="sortFilesByKind('DummyFiles');count=0;searchterm='kind::dummyfile';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label for="dummyEmptyFile-sort" name="sortDummyFile" style='white-space:nowrap'>Dummy files</label>
                 </div>
             </div>
         </div>
@@ -90,6 +94,8 @@ $codeLinkQuery->execute();
     <div id='addFile' class='loginBoxContainer' style='display:none;'>
         <div class='loginBox' style='width:464px; overflow-y: visible'>
             <div class='loginBoxheader' style='cursor:default;'>
+                <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
+
                 <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
                 <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
                 <h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
@@ -97,7 +103,8 @@ $codeLinkQuery->execute();
                 <h3 class="linkPopUp">Add Link</h3>
                 <div class='cursorPointer' onclick='closeAddFile();'>x</div>
             </div>
-            <form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
+           <div class="addNewFile">
+                <form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
                 <div>
                     <input type='hidden' id='courseid' name='courseid' value='Toddler'/>
                     <input type='hidden' id='coursevers' name='coursevers' value='Toddler'/>
@@ -119,8 +126,20 @@ $codeLinkQuery->execute();
                 <div id='uploadbuttonname'>
                     <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);"/>
                 </div>
+
                 <div style='display:none;' id='errormessage'></div>
             </form>
+
+           </div>
+            <div id="createNewEmptyFile" style="display: none;">
+                <form action="#" method="POST">
+                    <label for="newEmptyFile">File name and type e.g greger.txt</label>
+                    <input type="text" id="newEmptyFile" name="newEmptyFile" placeholder="Greger.txt">
+
+                    <input type="submit" name="createBtn" value="Create">
+
+                </form>
+            </div>
 
         </div>
     </div>
@@ -158,29 +177,29 @@ $codeLinkQuery->execute();
                         <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
                         <option value='defaultOption'>Choose file</option>
                         <?php
-                            while($row = $query->FETCH(PDO::FETCH_ASSOC)){  
+                            while($row = $query->FETCH(PDO::FETCH_ASSOC)){
                                 $fileName = $row['filename'];
                                 $cid = $row['cid'];
                                 $fileInfo = $fileName . ',' . $cid;
-                                if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){              
-                                    echo "<option value='$fileInfo'>$fileName</option>"; 
-                                }   
-                            } 
+                                if(preg_match('/(\.jpg|\.png|\.bmp)$/i', $fileName)){
+                                    echo "<option value='$fileInfo'>$fileName</option>";
+                                }
+                            }
                         ?>
                         </select>
 
                         <select name="test" onchange="codeLink(this.options[this.selectedIndex].value);" >
                         <option value='defaultOption'>Choose file</option>
                         <?php
-                            while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){  
+                            while($row = $codeLinkQuery->FETCH(PDO::FETCH_ASSOC)){
                                 $fileName = $row['filename'];
                                 $cid = $row['cid'];
                                 $fileid = $row['fileid'];
                                 $fileOption = $fileid . ',' . $cid . ',' . $fileName;
-                                if(preg_match('/(\.txt|\.html|\.js|\.css)$/i', $fileName)){              
-                                    echo "<option value='$fileOption'>$fileName</option>"; 
-                                }   
-                            } 
+                                if(preg_match('/(\.txt|\.html|\.js|\.css)$/i', $fileName)){
+                                    echo "<option value='$fileOption'>$fileName</option>";
+                                }
+                            }
                         ?>
                         </select>
 
@@ -238,34 +257,35 @@ $codeLinkQuery->execute();
 <!--Fab-button-->
 <div class="fixed-action-button" id="fabButton">
     <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
-    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-	
-        <li>
+    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
+        <li onclick="showFilePopUp('EFILE');">
             <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Dummy Empty File'>
-                    <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/.....">
+                <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/.....">
             </a>
-        </li>		
+        </li>   
         <li onclick="showFilePopUp('GFILE');" >
-			<a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'>
-					<img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
-			</a>
-		</li>
-      	<li  onclick="showFilePopUp('LFILE');" >
-					<a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'>
-							<img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
-					</a>
-				</li>
-      	<li onclick="showFilePopUp('MFILE');" >
-					<a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'>
-							<img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
-					</a>
-				</li>
-      	<li onclick="showLinkPopUp();" >
-					<a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
-							<img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
-					</a>
-       	</li>
+            <a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'>
+                <img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
+            </a>
+        </li>
+        <li  onclick="showFilePopUp('LFILE');" >
+            <a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'>
+                <img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
+            </a>
+        </li>           
+        <li onclick="showFilePopUp('MFILE');" >
+            <a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'>
+                    <img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
+            </a>
+        </li>
+        <li onclick="showLinkPopUp();" >
+            <a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
+                    <img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
+            </a>
+        </li>
+
     </ol>
+
 </div>
 
 <div class="confirmationWindow">
