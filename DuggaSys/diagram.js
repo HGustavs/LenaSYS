@@ -3992,20 +3992,6 @@ function deactivateMovearound() {
 }
 
 //----------------------------------------------------------------------
-// clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
-//----------------------------------------------------------------------
-
-function clickOutsideDialogMenu(ev) {
-    $(document).mousedown(function (ev) {
-        var container = $("#appearance");
-        if (!container.is(ev.target) && container.has(ev.target).length === 0) {
-            globalappearanceMenuOpen = false;
-            toggleApperanceElement();
-        }
-    });
-}
-
-//----------------------------------------------------------------------
 // clickEnterOnDialogMenu: Closes the dialog menu when the enter button is pressed.
 //----------------------------------------------------------------------
 
@@ -4041,7 +4027,6 @@ function toggleApperanceElement(show = false) {
         globalappearanceMenuOpen = false;
         $(".loginBox").draggable('destroy');
         hashFunction();
-        document.removeEventListener("click", clickOutsideDialogMenu);
     }
 }
 
