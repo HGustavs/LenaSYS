@@ -260,11 +260,11 @@ if ($storefile) {
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $userid, $info);
-
+/* Commenting this out because error should be displayed in fileed, so redirect regardless of whether or not the file extension is allowed. Based on how they do in filereceive_dugga
 if (!$error) {
     echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
-}
-
+}*/
+echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "&extension=".$extension."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
 ?>
 <html>
 <head>

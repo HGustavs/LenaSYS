@@ -59,6 +59,11 @@ $codeLinkQuery->execute();
         <div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:center;'>Files</h1>
         </div>
+        <div class="err">
+        <?php 
+        echo "Extension \"" . $_GET['extension'] . "\" not allowed.\n";
+        ?>
+        </div>
         <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
             <div style='display:flex;flex-wrap:wrap;'>
                 <div style='white-space:nowrap'>
