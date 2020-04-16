@@ -486,7 +486,17 @@ const regex = {
 
 //Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
+	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 
+	if(element.value.match(regex[element.name])) {
+
+		return true;
+	} else if(element.value.trim() === "") {
+
+	} else {
+
+	}
+	return false;
 }
 
 //Validates whole form
