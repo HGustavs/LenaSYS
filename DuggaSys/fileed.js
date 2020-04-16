@@ -273,18 +273,19 @@ function renderCell(col, celldata, cellid) {
 function sortFilesByKind(kind){
     $("#fileLink table tbody tr").hide();
     if(kind == "Global"){
-        $( "td:contains('Global')" ).parents("tr").show();
+        $("td:contains('Global')").parents("tr").show();
 
     }if(kind == "CourseLocal"){
-        $( "td:contains('Course local')" ).parents("tr").show();
+        $("td:contains('Course local')").parents("tr").show();
 
     }if(kind == "Local"){
-        $( "td:contains('Local')" ).parents("tr").show();
+        $("td:contains('Local')").parents("tr").show();
 
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
-
+    $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
+    $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
 }
 
 //----------------------------------------------------------------
