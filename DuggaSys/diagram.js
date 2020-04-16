@@ -134,6 +134,7 @@ var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var switchSideA4Holes = "left";     // switching the sides of the A4-holes
 var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
 var singleA4 = false;               // Toggle between single/repeated A4
+var enableShortcuts = true;         // Used to toggle on/off keyboard shortcuts
 var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
@@ -397,116 +398,119 @@ function keyDownHandler(e) {
     if ((key == deleteKey || key == backspaceKey)) {
         eraseSelectedObject(event);
         SaveState();
-    } else if (key == spacebarKey) {
-        // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
-        if (!spacebarKeyPressed) {
-        spacebarKeyPressed = true;
-        } else {
-            spacebarKeyPressed = false;
-        }
-        //Use space for movearound
-        if (e.stopPropagation) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        if (uimode != "MoveAround") {
-            activateMovearound();
-        } else {
-            deactivateMovearound();
-        }
-        updateGraphics();
-    } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) {
-        arrowKeyPressed(key);
-        if (uimode == "MoveAround") {
-            moveCanvasView(key);
-        }
-    } else if(key == ctrlKey || key == windowsKey) {
-        ctrlIsClicked = true;
-    } else if (key == shiftKey) {
-        shiftIsClicked = true;
-    } else if(key == altKey) {
-        altIsClicked = true;
-    } else if(ctrlIsClicked && key == cKey) {
-        //Ctrl + c
-        fillCloneArray();
-    } else if (ctrlIsClicked && key == vKey ) {
-        //Ctrl + v
-        var temp = [];
-        for (var i = 0; i < cloneTempArray.length; i++) {
-            //Display cloned objects except lines
-            if (cloneTempArray[i].symbolkind != symbolKind.line
-                && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
-                const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
-                temp.push(diagram[cloneIndex]);
-            }
-        }
-        cloneTempArray = temp;
-        selected_objects = temp;
-        updateGraphics();
-        SaveState();
-    }
-    else if (key == zKey && ctrlIsClicked) undoDiagram(event);
-    else if (key == yKey && ctrlIsClicked) redoDiagram(event);
-    else if (key == aKey && ctrlIsClicked) {
-        e.preventDefault();
-        for (var i = 0; i < diagram.length; i++) {
-            selected_objects.push(diagram[i]);
-            diagram[i].targeted = true;
-        }
-        updateGraphics();
-    } else if(key == ctrlKey || key == windowsKey) {
-        ctrlIsClicked = true;
-    } else if (key == enterKey) {
-        if (modeSwitchDialogActive) {
-            // if the cancel button is focused then trigger that
-            if (document.activeElement.id == "modeSwitchButtonCancel") {
-                modeSwitchConfirmed(false);
+    }  
+    if(enableShortcuts){ // Only enter if keyboard shortcuts are enabled
+        if (key == spacebarKey) {
+            // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
+            if (!spacebarKeyPressed) {
+            spacebarKeyPressed = true;
             } else {
-               modeSwitchConfirmed(true);
+                spacebarKeyPressed = false;
             }
+            //Use space for movearound
+            if (e.stopPropagation) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            if (uimode != "MoveAround") {
+                activateMovearound();
+            } else {
+                deactivateMovearound();
+            }
+            updateGraphics();
+        } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) {
+            arrowKeyPressed(key);
+            if (uimode == "MoveAround") {
+                moveCanvasView(key);
+            }
+        } else if(key == ctrlKey || key == windowsKey) {
+            ctrlIsClicked = true;
+        } else if (key == shiftKey) {
+            shiftIsClicked = true;
+        } else if(key == altKey) {
+            altIsClicked = true;
+        } else if(ctrlIsClicked && key == cKey) {
+            //Ctrl + c
+            fillCloneArray();
+        } else if (ctrlIsClicked && key == vKey ) {
+            //Ctrl + v
+            var temp = [];
+            for (var i = 0; i < cloneTempArray.length; i++) {
+                //Display cloned objects except lines
+                if (cloneTempArray[i].symbolkind != symbolKind.line
+                    && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
+                    const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
+                    temp.push(diagram[cloneIndex]);
+                }
+            }
+            cloneTempArray = temp;
+            selected_objects = temp;
+            updateGraphics();
+            SaveState();
         }
-    } else if (key == escapeKey) {
-        cancelFreeDraw();
-        deselectObjects();
+        else if (key == zKey && ctrlIsClicked) undoDiagram(event);
+        else if (key == yKey && ctrlIsClicked) redoDiagram(event);
+        else if (key == aKey && ctrlIsClicked) {
+            e.preventDefault();
+            for (var i = 0; i < diagram.length; i++) {
+                selected_objects.push(diagram[i]);
+                diagram[i].targeted = true;
+            }
+            updateGraphics();
+        } else if(key == ctrlKey || key == windowsKey) {
+            ctrlIsClicked = true;
+        } else if (key == enterKey) {
+            if (modeSwitchDialogActive) {
+                // if the cancel button is focused then trigger that
+                if (document.activeElement.id == "modeSwitchButtonCancel") {
+                    modeSwitchConfirmed(false);
+                } else {
+                modeSwitchConfirmed(true);
+                }
+            }
+        } else if (key == escapeKey) {
+            cancelFreeDraw();
+            deselectObjects();
 
 
-        if (modeSwitchDialogActive) modeSwitchConfirmed(false);
-    } else if ((key == key1 || key == num1) && shiftIsClicked){
-        moveToFront(event);
-    } else if ((key == key2 || key == num2) && shiftIsClicked){
-        moveToBack(event);
-    } else if (shiftIsClicked && key == lKey) {
-      document.getElementById("linebutton").click();
-    } else if (shiftIsClicked && key == aKey && targetMode == "ER") {
-      document.getElementById("attributebutton").click();
-    } else if (shiftIsClicked && key == eKey && targetMode == "ER") {
-      document.getElementById("entitybutton").click();
-    } else if (shiftIsClicked && key == rKey && targetMode == "ER") {
-      document.getElementById("relationbutton").click();
-    } else if (shiftIsClicked && key == cKey && targetMode == "UML") {
-      document.getElementById("classbutton").click();
-    } else if (shiftIsClicked && key == tKey) {
-      document.getElementById("drawtextbutton").click();
-    } else if (shiftIsClicked && key == fKey) {
-      document.getElementById("drawfreebutton").click();
-    } else if (shiftIsClicked && key == dKey) {
-      developerMode(event);
-    } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
-            toggleMode();
-    } else if (shiftIsClicked && key == xKey) {
-          lockSelected(event);
-    } else if (shiftIsClicked && key == oKey) {
-          resetViewToOrigin(event);
-    } else if (shiftIsClicked && key == key4) {
-          toggleVirtualA4(event);
-    } else if (shiftIsClicked && key == upArrow) {
-          align(event, 'top');
-    } else if (shiftIsClicked && key == rightArrow) {
-          align(event, 'right');
-    } else if (shiftIsClicked && key == downArrow) {
-          align(event, 'bottom');
-    } else if (shiftIsClicked && key == leftArrow) {
-          align(event, 'left');
+            if (modeSwitchDialogActive) modeSwitchConfirmed(false);
+        } else if ((key == key1 || key == num1) && shiftIsClicked){
+            moveToFront(event);
+        } else if ((key == key2 || key == num2) && shiftIsClicked){
+            moveToBack(event);
+        } else if (shiftIsClicked && key == lKey) {
+        document.getElementById("linebutton").click();
+        } else if (shiftIsClicked && key == aKey && targetMode == "ER") {
+        document.getElementById("attributebutton").click();
+        } else if (shiftIsClicked && key == eKey && targetMode == "ER") {
+        document.getElementById("entitybutton").click();
+        } else if (shiftIsClicked && key == rKey && targetMode == "ER") {
+        document.getElementById("relationbutton").click();
+        } else if (shiftIsClicked && key == cKey && targetMode == "UML") {
+        document.getElementById("classbutton").click();
+        } else if (shiftIsClicked && key == tKey) {
+        document.getElementById("drawtextbutton").click();
+        } else if (shiftIsClicked && key == fKey) {
+        document.getElementById("drawfreebutton").click();
+        } else if (shiftIsClicked && key == dKey) {
+        developerMode(event);
+        } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
+                toggleMode();
+        } else if (shiftIsClicked && key == xKey) {
+            lockSelected(event);
+        } else if (shiftIsClicked && key == oKey) {
+            resetViewToOrigin(event);
+        } else if (shiftIsClicked && key == key4) {
+            toggleVirtualA4(event);
+        } else if (shiftIsClicked && key == upArrow) {
+            align(event, 'top');
+        } else if (shiftIsClicked && key == rightArrow) {
+            align(event, 'right');
+        } else if (shiftIsClicked && key == downArrow) {
+            align(event, 'bottom');
+        } else if (shiftIsClicked && key == leftArrow) {
+            align(event, 'left');
+        }
     }
 }
 
@@ -1773,6 +1777,22 @@ function resetViewToOrigin(event){
     origoOffsetY = 0;
     updateGraphics();
     SaveState();
+}
+
+//---------------------------------------------------------------------------------
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
+//---------------------------------------------------------------------------------
+
+function disableShortcuts(event){
+    event.stopPropagation();
+    if (enableShortcuts) {
+        setCheckbox($(".drop-down-option:contains('Disable keyboard shortcuts')"), enableShortcuts);
+        enableShortcuts = false;
+    } else {
+        setCheckbox($(".drop-down-option:contains('Disable keyboard shortcuts')"), enableShortcuts);
+        enableShortcuts = true;
+    }
+    updateGraphics();
 }
 
 //-------------------------------------------
