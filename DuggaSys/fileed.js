@@ -121,8 +121,8 @@ function returnedFile(data) {
     if (data['debug'] != "NONE!") alert(data['debug']);
 }
 
-function showLinkPopUp() {
-    $("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' value='Upload URL' />");
+function showLinkPopUp(fileKind) {
+    $("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' value='Upload URL' onclick='uploadFile(\"" + fileKind + "\");'/>");
     $("#addFile").css("display", "flex");
     $(".fileHeadline").css("display", "none");
     $(".filePopUp").css("display", "none");

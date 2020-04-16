@@ -260,7 +260,7 @@ $codeLinkQuery->execute();
 							<img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
 					</a>
 				</li>
-      	<li onclick="showLinkPopUp();" >
+      	<li onclick="showLinkPopUp('LINK');" >
 					<a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
 							<img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
 					</a>
