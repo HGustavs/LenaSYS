@@ -105,10 +105,11 @@
 							$array[0]; 
 							$year = "20";
 							$year .= $array[1];
-							if ($array[0] = "H")
-							  $term = 2;
-							else if ($array[0] = "V")
+							if ($array[0] === "H") {
+								$term = 2;
+							} else if ($array[0] === "V") {
 								$term = 1;
+							}
 
 							echo "<td class='coursePage' style='display: inline-block;'>";
 							echo "    <div class='course menuButton'>";
