@@ -40,6 +40,7 @@ function Symbol(kindOfSymbol) {
     this.isLine = false;
     this.isRecursiveLine = false;
     this.pointsAtSamePosition = false;
+    this.UMLCustomResize = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -311,13 +312,16 @@ function Symbol(kindOfSymbol) {
 
             //Finding the longest string
             var longestStr = this.name;
-            for(var i = 0; i < this.operations.length; i++) {
-                if(this.operations[i].text.length > longestStr.length)
-                    longestStr = this.operations[i].text;
-            }
-            for(var i = 0; i < this.attributes.length; i++) {
-                if(this.attributes[i].text.length > longestStr.length)
-                    longestStr = this.attributes[i].text;
+
+            if(!this.UMLCustomResize) {
+                for(var i = 0; i < this.operations.length; i++) {
+                    if(this.operations[i].text.length > longestStr.length)
+                        longestStr = this.operations[i].text;
+                }
+                for(var i = 0; i < this.attributes.length; i++) {
+                    if(this.attributes[i].text.length > longestStr.length)
+                        longestStr = this.attributes[i].text;
+                }
             }
             ctx.font = "14px Arial";
             this.minWidth = ctx.measureText(longestStr).width + 15;
@@ -328,6 +332,7 @@ function Symbol(kindOfSymbol) {
                 if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
                         || points[this.topLeft] === sel.point.y)) { // Checks if topRight is clicked
                     points[this.topLeft].y = points[this.bottomRight].y - this.minHeight;
+                    this.UMLCustomResize = true; //If the user resizes, the symbol is custom
                 }else {
                     points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
                 }
@@ -338,8 +343,9 @@ function Symbol(kindOfSymbol) {
                 if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
                         || points[this.topLeft] === sel.point.x)) { // Checks if topRight is clicked
                     points[this.topLeft].x = points[this.bottomRight].x - this.minWidth;
+                    this.UMLCustomResize = true; //If the user resizes, the symbol is custom
                 }else {
-                    points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+                    points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;                
                 }
             }
             if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y) {
@@ -418,18 +424,6 @@ function Symbol(kindOfSymbol) {
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
         }
-    }
-
-    //--------------------------------------------------------------------
-    // resizeUMLToMinimum: Resizes an UML Symbol to the minimum Width and Height values
-    //--------------------------------------------------------------------
-
-    this.resizeUMLToMinimum = function() {
-
-        //console.log("Resized");
-        points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
-        points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
-
     }
 
     //--------------------------------------------------------------------
