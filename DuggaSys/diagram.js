@@ -4400,7 +4400,7 @@ function submitAppearanceForm() {
 
 function clickOutsideAppearanceForm(e) {
     const bounds = document.querySelector(".loginBox").getBoundingClientRect();
-    if(!isIntersecting(e.clientX, e.clientY, bounds)) {
+    if(!isIntersecting(e.clientX, e.clientY, bounds) && appearanceMenuOpen) {
         toggleApperanceElement();
     }
 }
