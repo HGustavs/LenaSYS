@@ -446,6 +446,9 @@ function returnedCourse(data)
 
 	resetinputs();
 	//resets all inputs
+
+	//After all courses have been created and added to the list the course code can be accessed from each course element and pushed to array
+	setActiveCodes();
 }
 
 /* Used to enable using list entries with ' */
@@ -462,8 +465,18 @@ function htmlFix(text){
 }
 
 
-function setActiveCodes() {
+let activeCodes = [];
 
+//Gets all active course codes in the list by the data-code attribute all items have when created based on database values.
+function setActiveCodes() {
+	activeCodes = [];
+	const items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		const code = item.dataset.code;
+		if(typeof code !== "undefined" && code !== null) {
+			activeCodes.push(code)
+		}
+	});
 }
 
 function elementIsValid(element) {
