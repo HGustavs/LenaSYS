@@ -129,6 +129,10 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$("#cid").val(cid);
 	// Set Code
 	$("#coursecode").val(coursecode);
+
+	//Give data attribute to course code input to check if input value is same as actual code for validation
+	$("#coursecode").attr("data-origincode", coursecode);
+
 	// Set Visibiliy
 	str = "";
 
@@ -497,10 +501,13 @@ function elementIsValid(element) {
 	if(element.value.match(regex[element.name])) {
 		//Seperate validation for coursecodes since it should not be possible to submit form if course code is in use
 		if(element.name === "coursecode") {
-			//Check for duplicate course codes. Change validation error message if code is in use and return false
-			if(activeCodes.includes(element.value)) {
-				messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
-				return false;
+			//Check for duplicate course codes only if value of input is not same as the course code that will be editied
+			//This prevents it from being impossible to save course code without changing it
+			if(element.value !== element.dataset.origincode) {
+				if(activeCodes.includes(element.value)) {
+					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
+					return false;
+				}
 			}
 		}
 
