@@ -121,12 +121,6 @@
 					echo "</td>";
 			}
 
-/*
-<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
-					echo   "<button id='tooltipsearchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
-					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
-					echo   "</button>
-*/
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
 					echo "<td id='select' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
