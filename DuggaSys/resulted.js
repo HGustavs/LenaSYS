@@ -210,9 +210,13 @@ function makeCustomFilter(filtername, labeltext) {
 	if (filterList[filtername] == null) {
 		filterList[filtername] = false;
 	}
-	if (filterList[filtername]) {
+	if (filterList[filtername] || filtername == "showStudents" || filtername == "showTeachers") { //Enables filter and saves it in local storage when opening resulted.php.
 		str += " checked";
 
+		//Enables the showStudents and the showTeachers filters.
+		filterList[filtername] = true;
+		//Saves the checkbox values in localstorage.
+		localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
 	}
 	str += "><label class='headerlabel' for='" + filtername + "'>" + labeltext + "</label></div>";
 	return str;
