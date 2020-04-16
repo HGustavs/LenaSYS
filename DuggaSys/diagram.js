@@ -233,6 +233,17 @@ var altIsClicked = false;
 // This event checks if the user leaves the diagram.php
 window.addEventListener('blur', resetButtonsPressed);
 
+//Functions to call after document body loads
+function init() {
+    initializeCanvas(); 
+    canvasSize(); 
+    loadDiagram(); 
+    setModeOnRefresh(); 
+    initToolbox(); 
+    initAppearanceForm();
+    updateGraphics(); 
+}
+
 //--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
 //--------------------------------------------------------------
@@ -1236,7 +1247,7 @@ function initializeCanvas() {
     }
 
     zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
-    
+
     coordinatesElement.style.display = 'none';
     moveButton.style.visibility = 'hidden';
 
