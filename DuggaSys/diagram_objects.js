@@ -1835,6 +1835,7 @@ function Symbol(kindOfSymbol) {
 
             if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
                 cardinality.parentBox = diagram[i];
+                delete cardinality.parentBox.cardinality[0].parentBox;
                 break;
             }
         }
