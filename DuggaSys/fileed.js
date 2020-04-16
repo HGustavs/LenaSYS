@@ -27,6 +27,8 @@ var fabTimer;
 var filename;
 var filepath;
 var filekind;
+var aceData;
+var editor;
 
 function setup() {
     /*
@@ -508,6 +510,7 @@ function loadFile(fileUrl, fileNamez, fileKind) {
 function returnFile(data) {
    
     document.getElementById("filecont").innerHTML = data;
+    updateAce(data);
     $(".fileName").html(fileName);
     editFile(data);
 }
@@ -689,3 +692,16 @@ $(document).on("touchend", function (e) {
     }
     TouchFABUp(e);
 });
+
+document.addEventListener('DOMContentLoaded', function (){
+    editor = ace.edit("editor");
+    editor.getSession().on('change', function () {
+        editFile(editor.getSession().getValue());
+	    
+      }); 
+	
+ });
+
+ function updateAce(data){
+    editor.getSession().setValue(data);
+}
