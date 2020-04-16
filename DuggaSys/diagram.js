@@ -4014,6 +4014,22 @@ function deactivateMovearound() {
 }
 
 //----------------------------------------------------------------------
+// toggleCameraView: Enter camera view by clicking option in menu.
+//----------------------------------------------------------------------
+
+function toggleCameraView(){
+    event.stopPropagation();
+    if (spacebarKeyPressed) {
+        spacebarKeyPressed = false;
+        
+    } else {
+        spacebarKeyPressed = true;
+    }
+    updateGraphics();
+    activateMovearound();
+}
+
+//----------------------------------------------------------------------
 // clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
 //----------------------------------------------------------------------
 
