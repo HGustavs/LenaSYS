@@ -610,7 +610,7 @@ function returnedDugga(data) {
 
 				/* Page title */
 				content += "<div class='titles' style='padding-top:10px;'>"
-						content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
+						content += "<h1 style='flex:1;text-align:start;'>Dugga Modifications Editor</h1>"
 				content += "</div>"
 
 		}
