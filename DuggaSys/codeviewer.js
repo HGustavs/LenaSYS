@@ -807,11 +807,11 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add resize, reset and edit buttons
-		
+		//onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>Minimize</p></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
-		str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+		str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
 			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
@@ -3873,3 +3873,22 @@ function showBox(id) {
 		}
 	});
 }
+
+function showIframe(boxid,kind){
+	
+		$(".previewWindow").show();
+		$(".previewWindowContainer").css("display", "block");
+		$("#iframeFileed").attr('src', 'http://localhost/LenaSYS/DuggaSys/fileed.php?courseid='+courseid+'&coursevers='+cvers+'');
+		var iframe = document.getElementById("iframeFileed");
+		iframe.addEventListener("load", function() {
+		iframe.contentWindow.postMessage({v1: courseid, v2: cvers,v3: retData['box'][boxid - 1][5], v4: kind}, 'http://localhost/LenaSYS/DuggaSys/fileed.php?courseid='+courseid+'&coursevers='+cvers+'');
+	  });
+	
+}
+function hideIframe(){
+	$(".previewWindow").hide();
+    $(".previewWindowContainer").css("display", "none");
+}
+
+
+//loadFile('../courses/1/'+retData['box'][boxid - 1][5],retData['box'][boxid - 1][5],kind)
