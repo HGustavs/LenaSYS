@@ -332,8 +332,8 @@ function setExpireCookie(){
     if(localStorage.getItem("securityquestion") == "set") {
 				var expireDate = new Date();
 				// a test date so you dont have to actually wait 1 hour and 45 minutes
-				expireDate.setMinutes(expireDate.getMinutes() + 1);
-				//expireDate.setMinutes(expireDate.getMinutes() + 105);
+				//expireDate.setMinutes(expireDate.getMinutes() + 1);
+				expireDate.setMinutes(expireDate.getMinutes() + 105);
         document.cookie = "sessionEndTime=expireC; expires=" + expireDate.toGMTString() + "; path=/";
     }
 }
@@ -346,8 +346,8 @@ function setExpireCookieLogOut() {
     if (localStorage.getItem("securityquestion") == "set") {
 				var expireDate = new Date();
 				// test date
-				expireDate.setMinutes(expireDate.getMinutes() + 2);
-				//expireDate.setMinutes(expireDate.getMinutes() + 120);
+				//expireDate.setMinutes(expireDate.getMinutes() + 2);
+				expireDate.setMinutes(expireDate.getMinutes() + 120);
         document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toGMTString() + "; path=/";
     }
 }
