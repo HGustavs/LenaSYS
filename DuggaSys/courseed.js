@@ -560,6 +560,12 @@ function validateForm(formid) {
 			input.removeAttribute("style");
 		});
 	} else {
-
+		//Go through inputs until empty value found or all is iterated. Return true if any is empty and false if none is empty.
+		const isAnyEmpty = [...inputs].some(input => input.value === null || input.value.trim() === "");
+		if(isAnyEmpty) {
+			alert("Fill in all fields");
+		} else {
+			alert("You have entered incorrect information...");
+		}
 	}
 }
