@@ -137,6 +137,14 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
     document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+    }
+
+  // Default showing of set deadline. Will show if has type "Test" only
+  if (kind != 3) {
+      document.querySelector("#inputwrapper-deadline").style.display = "none";
+      document.querySelector("#dialog8").style.display = "none";
+  } else {
+     document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
@@ -1701,7 +1709,7 @@ function validateDate2(ddate, dialogid) {
     ddate.style.borderWidth = "2px";
     window.bool8 = false;
 
-  }
+    }
 }
 
 /*Validates all forms*/ 
