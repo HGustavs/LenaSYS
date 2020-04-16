@@ -2004,12 +2004,16 @@ div.submit-button:disabled {
   padding: 4px 8px;
   color: #fff;
   position: absolute;
+  margin-top: -25px;
   left: 70px;
-  top: 45px;
   white-space: nowrap;
   z-index: 10;
   border-radius: 5px;
   background: var(--color-primary);
+}
+
+.diagramAction[data]:hover:after{
+  margin-top: -3px;
 }
 
 .buttonStyleDialog {
