@@ -36,39 +36,53 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title><?php echo $title; ?></title>
-        
-		<!--
+        <title><?php echo $title; ?></title>
+		
+		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
+        <!--
         <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
         <link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
         <link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
         <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
-        -->
-		
-		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
-        
-        <!--
-		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
-		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-        -->
-        
-		<script type="text/javascript" src="../Shared/dugga.js"></script>
+
+        <script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+        <script type="text/javascript" src="../Shared/dugga.js"></script>
         <script type="text/javascript" src="../Shared/markdown.js"></script>
-		<script type="text/javascript" src="codeviewer.js"></script>
+        <script type="text/javascript" src="codeviewer.js"></script>
+		-->
+
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/> 
+        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
         
         <?php
+        
             foreach($css as $filename) {
-                $filemtime = filemtime(__DIR__ . '../Shared/css/' . $filename);
+                $filemtime = filemtime('../Shared/css/' . $filename);
                 echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
             }
         
+  
             foreach($js as $filename) {
-                $filemtime = filemtime(__DIR__ . '../Shared/js/' . $filename);
-                echo "<link type='text/javascript' href='../Shared/js/$filename?$filemtime'  />";
+                
+                $filemtime = filemtime('../Shared/js/' . $filename);
+                echo "<script type='text/javascript' src='../Shared/js/$filename?$filemtime'  />";
+                echo "</script>";
             }
+ 
+            $filemtime = filemtime('../Shared/dugga.js');
+            echo "<script type='text/javascript' src='../Shared/dugga.js?$filemtime'>";
+            echo "</script>";
+        
+            $filemtime = filemtime('../Shared/markdown.js');
+            echo "<script type='text/javascript' src='../Shared/markdown.js?$filemtime'>";
+            echo "</script>";
+                    
+            $filemtime = filemtime('codeviewer.js');
+            echo "<script type='text/javascript' src='codeviewer.js?$filemtime'>";
+            echo "</script>";
         ?>
+
 	</head>
 
 <!--
