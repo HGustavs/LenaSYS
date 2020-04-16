@@ -344,11 +344,9 @@
                     <div class="menu-drop-down">
                         <span class="drop-down-label" tabindex="0">Help</span>
                         <div class="drop-down">
-                            <div class="drop-down-text-non-clickable" tabindex="0">
-                                <span class="drop-down-option">Move camera</span>
-                                <div id="hotkey-space" class="hotKeys">
-                                    <i>Blankspace</i>
-                                </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="toggleCameraView(event)">Move camera</span>
+                                <i id="hotkey-space" class="hotKeys">Blankspace</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>

@@ -3992,6 +3992,24 @@ function deactivateMovearound() {
 }
 
 //----------------------------------------------------------------------
+// toggleCameraView: Enter camera view by clicking option in menu.
+//----------------------------------------------------------------------
+
+function toggleCameraView(){
+    event.stopPropagation();
+    if (spacebarKeyPressed) {
+        spacebarKeyPressed = false;
+        setCheckbox($(".drop-down-option:contains('Move camera')"), spacebarKeyPressed);
+        
+    } else {
+        spacebarKeyPressed = true;
+        setCheckbox($(".drop-down-option:contains('Move camera')"), spacebarKeyPressed);
+    }
+    updateGraphics();
+    activateMovearound();
+}
+
+//----------------------------------------------------------------------
 // clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
 //----------------------------------------------------------------------
 
