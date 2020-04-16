@@ -546,8 +546,14 @@ function validateForm(formid) {
 
 	//If all inputs were valid create course or update course depending on id of form
 	if(numberOfValidInputs === inputs.length) {
-
+		if(formid === "newCourse") {
+			createNewCourse();
+			alert("New course added!");
+		} else if(formid === "editCourse") {
+			updateCourse();
+			alert("Course updated!");
+		}
 	} else {
-		
+
 	}
 }
