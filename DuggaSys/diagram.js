@@ -1678,47 +1678,24 @@ function togglesingleA4(event) {
     updateGraphics();
 }
 
-//-----------------------------------------------------------------------------------
-// When an item is selected, enable all options related to having an object selected
-//-----------------------------------------------------------------------------------
-var selectedItems = false;
+//----------------------------------------------------------------------------------------------------------------------------
+// When one or many items are selected/not selected, enable/disable all options related to having one or many objects selected
+//----------------------------------------------------------------------------------------------------------------------------
+
 function enableSelectedItemOptions() {
-      if (selected_objects.length > 0) {
-        $("#change-appearance-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-front-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-back-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#lock-selected-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-      } else {
-        $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-back-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#lock-selected-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
-		}
-      if (selected_objects.length > 1){
-        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
-        } else {
-        $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
-      }
+    const idsOverZero = ["change-appearance-item", "move-selected-front-item", "move-selected-back-item", "lock-selected-item", "delete-object-item", "group-objects-item", "ungroup-objects-item"];
+    const idsOverOne = ["align-top-item", "align-right-item", "align-bottom-item", "align-left-item", "horizontal-c-item", "vertical-c-item", "distribute-horizontal-item", "distribute-vertical-item"];
+    //Jquery can select multiple by example $("#element1, element2, element3") This way prevents repetition.
+    if (selected_objects.length > 0) {
+        $("#" + idsOverZero.join(",#")).removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        $("#" + idsOverZero.join(",#")).addClass("drop-down-item drop-down-item-disabled");
+    }
+    if (selected_objects.length > 1){
+        $("#" + idsOverOne.join(",#")).removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        $("#" + idsOverOne.join(",#")).addClass("drop-down-item drop-down-item-disabled");
+    }
 }
 
 //----------------------------------------------------
