@@ -479,10 +479,17 @@ function setActiveCodes() {
 	});
 }
 
+const regex = {
+	coursename: /^[a-zA-Z_ ]+$/,
+	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/
+};
+
+//Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
 
 }
 
+//Validates whole form
 function validateForm(formid) {
 
 }
