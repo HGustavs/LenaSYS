@@ -206,7 +206,12 @@ function returned(data) {
 			// Highlight important words
 			important = retData.impwords;
 			for (j = 0; j < important.length; j++) {
-				var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(\"" + important[j] + "\", \"unspecified\");' onmouseout='highlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
+				//Prevent important word spans to be created for HTML events.
+				if(htmlEventArray.includes(important[j])){
+					var sstr = important[j];
+				}else{
+					var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(\"" + important[j] + "\", \"unspecified\");' onmouseout='highlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
+				}
 				//Interpret asterisks in important word as literals and not as character with special meaning
 				if (important[j].indexOf('*') != -1) {
 					important[j] = important[j].replace(/\*/g, "&#42;");
@@ -882,6 +887,7 @@ function highlightHtml(otherTag, thisTag) {
 
 //Array containing HTML attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
 htmlAttrArray = new Array('action', 'class', 'disabled', 'href', 'id', 'rel', 'src', 'style', 'title', 'type');
+htmlEventArray = new Array('onclick', 'onmouseout', 'onmouseleave', 'onmouseover', 'onmouseenter','onload', 'onkeydown','onkeyup','onkeypress','oninput');
 
 //----------------------------------------------------------------------------------
 // 	popupDocumentation: Creates a pop-up window containing relevant documentation to a
