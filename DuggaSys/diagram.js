@@ -4133,6 +4133,19 @@ function loadAppearanceForm() {
     const object = selected_objects[selected_objects.length - 1];
     let type = object.symbolkind;
 
+    //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
+    var connectedObjectsArray = object.getConnectedObjects();
+    if(object.symbolkind == 7){
+        document.getElementById('First').innerHTML = connectedObjectsArray[0].name;
+        //Selection to check if relation is to the same entity. If so: both are named from object 0
+        if(typeof connectedObjectsArray[1] == "undefined"){
+            document.getElementById('Second').innerHTML =  connectedObjectsArray[0].name;
+        }
+        else{
+            document.getElementById('Second').innerHTML = connectedObjectsArray[1].name;
+        }
+    }
+
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
 
