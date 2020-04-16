@@ -208,7 +208,7 @@ function returned(data) {
 			for (j = 0; j < important.length; j++) {
 				//Prevent important word spans to be created for HTML events.
 				if(htmlEventArray.includes(important[j])){
-					var sstr ="";
+					var sstr = important[j];
 				}else{
 					var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(\"" + important[j] + "\", \"unspecified\");' onmouseout='highlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
 				}
