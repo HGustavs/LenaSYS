@@ -1679,6 +1679,22 @@ function enableSelectedItemOptions() {
 }
 
 //----------------------------------------------------
+// openShortcutsDialog: Opens the dialog menu for shortcuts editor
+//----------------------------------------------------
+
+function openShortcutsDialog() {
+    $("#edit-shortcuts").css("display", "flex");
+}
+
+//------------------------------------------------------
+// closeShortcutsDialog: Closes the dialog menu for the shortcuts editor
+//------------------------------------------------------
+
+function closeShortcutsDialog() {
+    $("#edit-shortcuts").css("display", "none");
+}
+
+//----------------------------------------------------
 // openImportDialog: Opens the dialog menu for import
 //----------------------------------------------------
 
