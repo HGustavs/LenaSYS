@@ -553,6 +553,12 @@ function validateForm(formid) {
 			updateCourse();
 			alert("Course updated!");
 		}
+
+		//Reset inputs
+		inputs.forEach(input => {
+			input.value = "";
+			input.removeAttribute("style");
+		});
 	} else {
 
 	}
