@@ -1224,19 +1224,27 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
-                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
-                + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + " </p>";
-    document.getElementById("valuesCanvas").style.display = 'none';
-    canvas = document.getElementById("myCanvas");
-    if (canvas.getContext) {
+
+    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    const moveButton = document.getElementById("moveButton");
+    const zoomTextElement = document.getElementById("zoomV");
+    const coordinatesElement = document.getElementById("valuesCanvas");
+
+    canvas = document.getElementById("diagramCanvas");
+    if(canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    document.getElementById("moveButton").addEventListener('click', movemode, false);
-    document.getElementById("moveButton").style.visibility = 'hidden';
-    updateGraphics();
-    boundingRect = canvas.getBoundingClientRect();
+
+    zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
+    
+    coordinatesElement.style.display = 'none';
+    moveButton.style.visibility = 'hidden';
+
+    moveButton.addEventListener('click', movemode, false);
+    diagramContainer.addEventListener("contextmenu", e => e.preventDefault());
+    canvas.addEventListener("mousemove", mousemoveevt, false);
+    canvas.addEventListener("mousedown", mousedownevt, false);
+    canvas.addEventListener("mouseup", mouseupevt, false);
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
@@ -1758,11 +1766,11 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 75);
     heightWindow = (window.innerHeight - 95);
-    canvas.setAttribute("width", widthWindow);
-    canvas.setAttribute("height", heightWindow);
+    canvas.width = widthWindow;
+    canvas.height = heightWindow;
+    boundingRect = canvas.getBoundingClientRect();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     setMoveButtonPosition();
     updateGraphics();
@@ -2159,13 +2167,19 @@ function developerMode(event) {
 
 var refreshedPage = true;
 function setModeOnRefresh() {
-    toolbarState = localStorage.getItem("toolbarState");
+    const tempToolbarState = localStorage.getItem("toolbarState");
+    if(tempToolbarState !== null) {
+        toolbarState = tempToolbarState;
+    } else {
+        toolbarState = currentMode.er;
+    }
+
+    developerModeActive = false;
+
     if(toolbarState == currentMode.er) {
-        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
     } else if(toolbarState == currentMode.uml) {
-        developerModeActive = false;
         switchToolbarUML();
         hideCrosses();
     } else if(toolbarState == currentMode.dev) {
@@ -2175,7 +2189,6 @@ function setModeOnRefresh() {
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
-        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
     }
@@ -2958,13 +2971,10 @@ const toolbarUML = currentMode.uml;
 const toolbarDeveloperMode = currentMode.dev;
 
 function initToolbox() {
-    var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');
-    boundingRect = myCanvas.getBoundingClientRect();
+    const element = document.getElementById('diagram-toolbar');
     element.style.top = (boundingRect.top - 37 + "px");
     element.style.left = (boundingRect.left - 60 + "px");
     element.style.width = (58 + "px");
-    toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     element.style.display = "inline-block";
 }
 
@@ -3179,7 +3189,7 @@ function minSizeCheck(value, object, type) {
 // Is called each time the mouse moves on the canvas
 //---------------------------------------------------
 
-function mousemoveevt(ev, t) {
+function mousemoveevt(ev) {
 
     // Get canvasMouse coordinates for both X & Y.
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;

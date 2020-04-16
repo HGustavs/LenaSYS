@@ -391,7 +391,8 @@
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
-            <div id="canvasDiv" style = "margin-left: 52px" oncontextmenu="return false;">
+            <div id="diagramCanvasContainer">
+               <canvas id="diagramCanvas"></canvas> 
             </div>
             <div id="consoleDiv">
                 <!--

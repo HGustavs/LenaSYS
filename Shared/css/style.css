@@ -4726,6 +4726,14 @@ only screen and (max-device-width: 320px) {
   padding: 2px 0px 2px 10px;
 }
 
+/* Diagram canvas */
+#diagramCanvasContainer {
+  margin-left: 52px;
+}
+
+#diagramCanvas {
+  border: 1px solid #000000;
+}
 
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
