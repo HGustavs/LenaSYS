@@ -22,7 +22,7 @@ session_start();
 
 pdoConnect(); // Connect to database and start session
 
-$cid = getOP('courseid');
+$cid = $_SESSION['courseid'];
 $vers = getOP('coursevers');
 $kind = getOP('kind');
 $link = getOP('link');
@@ -176,7 +176,7 @@ if ($storefile) {
                 if ($kind == "LFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fname;
                 } else if ($kind == "MFILE") {
-                    $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
+                    $movname = $currcvd . "/courses/" . $cid . "/versionIndependence/" . $fname;
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;
                 }
