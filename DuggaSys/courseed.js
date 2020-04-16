@@ -372,7 +372,7 @@ function returnedCourse(data)
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 
-			str += "<div class='bigg item nowrap' style='display: flex; align-items: center;justify-content: center;' id='C" + item['cid'] + "'>";
+			str += `<div class='bigg item nowrap' style='display: flex; align-items: center; justify-content: center;' id='C${item['cid']}' data-code='${item['coursecode']}'>`;
 
 			var textStyle ="";
 			if (parseInt(item['visibility']) == 0) {
