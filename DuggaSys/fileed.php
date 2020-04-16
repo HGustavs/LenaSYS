@@ -57,7 +57,7 @@ $codeLinkQuery->execute();
             </button>
         </div>
         <div class='titles' style='padding-top:10px;'>
-            <h1 style='flex:1;text-align:center;'>Files</h1>
+			<h1 style='flex:1;text-align:center;'>Files</h1>
         </div>
         <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
             <div style='display:flex;flex-wrap:wrap;'>
