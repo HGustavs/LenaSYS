@@ -237,6 +237,12 @@ function showEditVersion() {
   $("#editCourseVersion").css("display", "flex");
 }
 
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    $("#editCourseVersion").css("display", "none");
+  }
+})
+
 function displaymessage() {
   $(".messagebox").css("display", "block");
 }
