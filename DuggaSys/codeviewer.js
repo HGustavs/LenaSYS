@@ -3062,6 +3062,8 @@ function resizeBoxes(parent, templateId) {
 //----------------------------------------------------------------------------------
 
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
+   var box1 = document.querySelector('#box1');
+   var box2 = document.querySelector('#box2');
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
@@ -3078,13 +3080,17 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
 		
 	// makes the element dissapear when certain treshold is met
-	if(basePer < 15) {
+	if(basePer < 15 && box1.className=='box codebox') {
 		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-	}else if (basePer > 85) {
+	}else if (basePer > 85 && box2.className=='box codebox') {
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 	} else {
+      if(box1.className=='box codebox') {
 		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+	 }
+     if(box2.className=='box codebox') {
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+	 }
 	}
 }
 
@@ -3094,6 +3100,9 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 //----------------------------------------------------------------------------------
 
 function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond) {
+    var box1 = document.querySelector('#box1');
+    var box2 = document.querySelector('#box2');
+    var box3 = document.querySelector('#box3');
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
@@ -3110,15 +3119,22 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 
 	// makes the element dissapear when certain treshold is met
-	if(basePer < 15) {
+	if(basePer < 15 && box1.className=='box codebox') {
 		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-	}else if (basePer > 85) {
+	}else if (basePer > 85 && box2.className=='box codebox') {
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-	} else {
+	}else if (basePer > 85 && box3.className=='box codebox') {
+        document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	}else {
+      if(box1.className=='box codebox') {
 		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+	 }
+     if(box2.className=='box codebox') {
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+	 }
+     if(box3.className=='box codebox') {
+        document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+	 }
 	}
 }
 
