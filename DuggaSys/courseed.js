@@ -488,14 +488,34 @@ const regex = {
 function elementIsValid(element) {
 	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 
-	if(element.value.match(regex[element.name])) {
+	//Standard styling for a failed validation that will be changed if element passes validation
+	element.style.borderWidth = "2px";
+	element.style.borderColor = "#E54";
+	messageElement.style.display = "block";
 
+	//Check if value of element matches regex based on name attribute same as key for regex object
+	if(element.value.match(regex[element.name])) {
+		//Seperate validation for coursecodes since it should not be possible to submit form if course code is in use
+		if(element.name === "coursecode") {
+
+		}
+
+		//Setting the style of the element represent being valid and not show
+		element.style.borderColor = "#383";
+		messageElement.style.display = "none";
 		return true;
 	} else if(element.value.trim() === "") {
+		//If empty string or ettempty of only spaces remove styling and spaces and hide validation message
+		element.removeAttribute("style");
+		element.value = "";
+		messageElement.style.display = "none";
+	}
 
-	} else {
+	if(element.name === "coursecode") {
 
 	}
+
+	//Validation falied if getting here without returning
 	return false;
 }
 
