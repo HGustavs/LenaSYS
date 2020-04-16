@@ -497,7 +497,11 @@ function elementIsValid(element) {
 	if(element.value.match(regex[element.name])) {
 		//Seperate validation for coursecodes since it should not be possible to submit form if course code is in use
 		if(element.name === "coursecode") {
-
+			//Check for duplicate course codes. Change validation error message if code is in use and return false
+			if(activeCodes.includes(element.value)) {
+				messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
+				return false;
+			}
 		}
 
 		//Setting the style of the element represent being valid and not show
@@ -511,8 +515,9 @@ function elementIsValid(element) {
 		messageElement.style.display = "none";
 	}
 
+	//Change back to original validation error message if it has been changed when knowing course code is not duplicate
 	if(element.name === "coursecode") {
-
+		messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
 	}
 
 	//Validation falied if getting here without returning
