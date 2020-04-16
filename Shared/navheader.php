@@ -92,7 +92,7 @@
 
 							include_once "../Shared/database.php";
 							pdoConnect();	
-							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']."");
+							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']." AND vers=".$_SESSION['coursevers']."");
 							$fetch = $query->fetch();
 							$result['coursecode'] = $fetch['coursecode'];
 							$result['versname'] = $fetch['versname'];
