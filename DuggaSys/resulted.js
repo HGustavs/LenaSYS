@@ -1136,7 +1136,6 @@ function rowFilter(row) {
         		var nameArray = name.split(" "); //Array with [firstname, lastname]
 				//Checks for the first character in firstname and/or lastname
 				if (nameArray[0].toUpperCase().startsWith(searchterm.toUpperCase()) || nameArray[1].toUpperCase().startsWith(searchterm.toUpperCase())) {
-					console.log(name);
 					return true;
 				}
 				//when more characters than 1 has been entered
