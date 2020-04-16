@@ -4399,17 +4399,10 @@ function submitAppearanceForm() {
 }
 
 function clickOutsideAppearanceForm(e) {
-    const bounds = document.querySelector(".loginBox").getBoundingClientRect();
-    if(!isIntersecting(e.clientX, e.clientY, bounds) && appearanceMenuOpen) {
+    const formContainer = document.querySelector(".loginBox");
+
+    //Close appearance if the clicked element is not a child/grand-child of formContanier
+    if(!formContainer.contains(e.target)) {
         toggleApperanceElement();
     }
 }
-
-function isIntersecting(x, y, bounds) {
-    return (
-        x >= bounds.x && 
-        x <= bounds.x + bounds.width &&
-        y >= bounds.y && 
-        y <= bounds.y + bounds.height
-    );
-} 
