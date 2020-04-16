@@ -21,7 +21,9 @@
 
     $css = array(
         'codeviewer.css',
-        'style.css'
+        'style.css',
+        'markdown.css',
+        'jquery-ui-1.10.4.min.css'
     );
 ?>
 <!DOCTYPE html>
@@ -29,13 +31,14 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title><?php echo $title; ?></title>
-		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-		
+        
 		<!--
+        <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
         <link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
         <link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
+        <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
         -->
-		<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
+		
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -208,13 +211,8 @@ Testing Link:
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 			echo "</div>";
-		
-            echo "<div id='filemtime'>";
-            echo filemtime("../Shared/css/codeviewer.css");
-            echo "<br>";
-            echo "Content last changed: ".date("F d Y H:i:s.", filemtime("../Shared/css/codeviewer.css"));
-            echo "</div>";
         ?>
+            
         </div>
 		<!-- Dropdowns START -->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
