@@ -90,9 +90,15 @@ else{
     		</div>
     		<div style='padding:5px;'>
     			<input type='hidden' id='cid' value='Toddler' />
-    			<div class='inputwrapper'><span>Course Name:</span><input oninput="validateCourseName('ncoursename', 'dialog4')" class='textinput' type='text' id='ncoursename' placeholder='Course Name' /></div>
+    			<div class='inputwrapper'>
+					<span>Course Name:</span>
+					<input oninput="validateCourseName('ncoursename', 'dialog4')" class='textinput' type='text' id='ncoursename' placeholder='Course Name' />
+				</div>
 				<p id="dialog4" class="validationDialog">Only letters</p>
-    			<div class='inputwrapper'><span>Course code:</span><input oninput="validateCourseCode('ncoursecode', 'dialog3')" class='textinput' type='text' id='ncoursecode' placeholder='Course Code' /></div>
+    			<div class='inputwrapper'>
+					<span>Course code:</span>
+					<input oninput="validateCourseCode('ncoursecode', 'dialog3')" class='textinput' type='text' id='ncoursecode' placeholder='Course Code' />
+				</div>
 				<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
     		</div>
     		<div style='padding:5px;'>
@@ -111,10 +117,15 @@ else{
     		</div>
     		<div style='padding:5px;'>
     			<input type='hidden' id='cid' value='Toddler' />
-    			<div class='inputwrapper'><span>Course Name:</span><input oninput="validateCourseName('coursename', 'dialog')"  class='textinput' type='text' id='coursename' placeholder='Course Name' />
+    			<div class='inputwrapper'>
+					<span>Course Name:</span>
+					<input oninput="validateCourseName('coursename', 'dialog')"  class='textinput' type='text' id='coursename' placeholder='Course Name' />
 				</div>
 				<p id="dialog" class="validationDialog">Only</p>
-    			<div class='inputwrapper'><span>Course code:</span><input  oninput="validateCourseCode('coursecode', 'dialog2')" class='textinput' type='text' id='coursecode' placeholder='Course Code' /></div>
+    			<div class='inputwrapper'>
+					<span>Course code:</span>
+					<input  oninput="validateCourseCode('coursecode', 'dialog2')" class='textinput' type='text' id='coursecode' placeholder='Course Code' />
+				</div>
 				<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
     			<div class='inputwrapper'><span>Visibility:</span><select class='selectinput' id='visib'></select></div>
     		</div>
