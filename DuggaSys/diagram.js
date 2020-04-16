@@ -638,20 +638,43 @@ function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
     if (uimode != "MoveAround") {
-        if(key == leftArrow) {
-            xNew = -5;
-        }else if(key == upArrow) {
-            yNew = -5;
-        }else if(key == rightArrow) {
-            xNew = 5;
-        }else if(key == downArrow) {
-            yNew = 5;
-        }
-        for(var i = 0; i < selected_objects.length; i++) {
-            selected_objects[i].move(xNew, yNew);
-        }
-        updateGraphics();
+        //Check if snap to grid is on
+        if(snapToGrid) {
+            if(key == leftArrow) {
+                xNew = -1;
+            }else if(key == upArrow) {
+                yNew = -1;
+            }else if(key == rightArrow) {
+                xNew = 1;
+            }else if(key == downArrow) {
+                yNew = 1;
+            }
+            for(var i = 0; i < selected_objects.length; i++) {
+                // Coordinates for the top left corner of the object
+                var hoveredObjectStartTopLeftX = points[selected_objects[i].topLeft].x;
+                var hoveredObjectStartTopLeftY = points[selected_objects[i].topLeft].y;
+                // Coordinates for the point to snap to
+                var hoveredObjectSnapTopLeftX = Math.round((hoveredObjectStartTopLeftX / gridSize) + xNew) * gridSize;
+                var hoveredObjectSnapTopLeftY = Math.round((hoveredObjectStartTopLeftY / gridSize) + yNew) * gridSize;
+                // Move object in grid
+                selected_objects[i].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+            }
+        } else {
+            if(key == leftArrow) {
+                xNew = -5;
+            }else if(key == upArrow) {
+                yNew = -5;
+            }else if(key == rightArrow) {
+                xNew = 5;
+            }else if(key == downArrow) {
+                yNew = 5;
+            }
+            for(var i = 0; i < selected_objects.length; i++) {
+                selected_objects[i].move(xNew, yNew);
+            }
+        }   
     }
+        updateGraphics();
 }
 
 //-----------------------------------------------------------------------------------
