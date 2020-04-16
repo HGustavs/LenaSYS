@@ -92,10 +92,13 @@
 
 							include_once "../Shared/database.php";
 							pdoConnect();	
-							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']." AND vers=".$_SESSION['coursevers']."");
-							$fetch = $query->fetch();
-							$result['coursecode'] = $fetch['coursecode'];
-							$result['versname'] = $fetch['versname'];
+
+							//Get version name and coursecode from the correct version of the course
+							$query = $pdo->prepare("SELECT versname, coursecode FROM vers WHERE cid=:cid AND vers=:vers");
+							$query->bindParam(":cid", $_SESSION["courseid"]);
+							$query->bindParam(':vers', $_SESSION['coursevers']);
+							$query->execute();
+							$result = $query->fetch(PDO::FETCH_ASSOC);
 
 							// Changes format from 'HT20' to numbers to create the URL
 							$array = explode("T", $result['versname']);
