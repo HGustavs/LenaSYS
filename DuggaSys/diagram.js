@@ -4090,7 +4090,9 @@ function toggleApperanceElement(show = false) {
         classAppearanceOpen = false;
         textAppearanceOpen = false;
         globalappearanceMenuOpen = false;
-        $(".loginBox").draggable('destroy');
+        if($(".loginBox").data("ui-draggable")) {
+            $(".loginBox").draggable("destroy");
+        }
         hashFunction();
     }
 }
