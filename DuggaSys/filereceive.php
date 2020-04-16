@@ -89,8 +89,8 @@ if ($ha) {
             $storefile = true;
         }
         if ($kind == "LFILE") {
-            if (!file_exists($currcvd . "/courses/" . $cid . "/" . $vers)) {
-                $storefile = mkdir($currcvd . "/courses/" . $cid . "/" . $vers,0777,true);
+            if (!file_exists($currcvd . "/courses/" . $cid . "/versionIndependence/" . $vers)) {
+                $storefile = mkdir($currcvd . "/courses/" . $cid . "/versionIndependence/" . $vers,0777,true);
             } else {
                 $storefile = true;
             }
