@@ -82,15 +82,15 @@ if ($ha) {
         }
     } else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
-        if (!file_exists($currcvd . "/courses/" . $cid)) {
+        if (!file_exists($currcvd . "/courses/" . $cid ."/versionIndependence")) {
             echo $currcvd . "/courses/" . $cid;
-            $storefile = mkdir($currcvd . "/courses/" . $cid,0777,true);
+            $storefile = mkdir($currcvd . "/courses/" . $cid. "/versionIndependence",0777,true);
         } else {
             $storefile = true;
         }
         if ($kind == "LFILE") {
-            if (!file_exists($currcvd . "/courses/" . $cid . "/versionIndependence/" . $vers)) {
-                $storefile = mkdir($currcvd . "/courses/" . $cid . "/versionIndependence/" . $vers,0777,true);
+            if (!file_exists($currcvd . "/courses/" . $cid . "/" . $vers)) {
+                $storefile = mkdir($currcvd . "/courses/" . $cid . "/" . $vers,0777,true);
             } else {
                 $storefile = true;
             }
