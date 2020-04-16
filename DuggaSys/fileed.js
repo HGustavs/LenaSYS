@@ -697,11 +697,9 @@ document.addEventListener('DOMContentLoaded', function (){
     editor = ace.edit("editor");
     editor.getSession().on('change', function () {
         editFile(editor.getSession().getValue());
-
+	    
       }); 
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/javascript");
-
+	
  });
 
  function updateAce(data){
