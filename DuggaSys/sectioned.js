@@ -810,7 +810,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
-            str += "<td style='width:32px;'><img src='../Shared/icons/warningTriangle.svg'></td>";
+            str += "<td style='width:32px;'><img title='Important message' src='../Shared/icons/warningTriangle.svg'></td>";
           }
           str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
         }
