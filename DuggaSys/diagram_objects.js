@@ -56,7 +56,8 @@ function Symbol(kindOfSymbol) {
         'textSize': settings.properties.textSize,          // 14 pixels text size is default.
         'sizeOftext': settings.properties.sizeOftext,      // Used to set size of text.
         'textAlign': settings.properties.textAlign,        // Used to change alignment of free text.
-        'key_type': settings.properties.key_type           // Defult key type for a class.
+				'key_type': settings.properties.key_type,          // Defult key type for a class.
+				'isComment': settings.properties.isComment         // Used to se if text are comments and if they should be hidden.
     };
 
     //--------------------------------------------------------------------

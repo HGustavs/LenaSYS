@@ -281,9 +281,7 @@
 														<div class="drop-down-divider">
                             </div>
 														<div class="drop-down-item" tabindex="0">
-                                
-                                    <span class="drop-down-option" onclick='toggleComments(event);'>Show/Hide Comments</span>
-                                
+                             <span class="drop-down-option" onclick='toggleComments(event);'>Show/Hide Comments</span>                       
                             </div>
                         </div>
                     </div>
@@ -549,7 +547,7 @@
                     </div>	
 										<div class="form-group" data-types="6">
 											<label for="commentCheck">Comment</label>
-  										<input type="checkbox" value="yes" id="commentCheck" data-access="commentCheck">
+											<input type="checkbox" value="yes" id="commentCheck" data-access="properties.isComment">
 										</div>
                     <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
                         <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">

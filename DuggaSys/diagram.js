@@ -58,7 +58,8 @@ var settings = {
         textSize: '14',                               // 14 pixels text size is default.
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
-        key_type: 'Normal'                            // Defult key type for a class.
+        key_type: 'Normal',                           // Defult key type for a class.
+        isComment: 'no'                               // Used to se if text are comments and if they should be hidden.
     },
 };
 
@@ -1629,6 +1630,32 @@ function togglesingleA4(event) {
     updateGraphics();
 }
 
+//---------------------------------------------------------------
+// Changes between Showing and hiding the texts marked as comments
+//---------------------------------------------------------------
+
+function toggleComments(event) {
+    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    // Switch between single and repeated
+    if (hideComments) {
+        hideComment();
+        hideComments = false;
+        setCheckbox($(".drop-down-option:contains('Show/Hide Comments')"), hideComments);
+    } else {
+        showComment();
+        hideComments = true;
+        setCheckbox($(".drop-down-option:contains('Show/Hide Comments')"), hideComments);
+    }
+    updateGraphics();
+}
+
+function hideComment(){
+  
+}
+
+function showComment(){
+
+}
 //-----------------------------------------------------------------------------------
 // When an item is selected, enable all options related to having an object selected
 //-----------------------------------------------------------------------------------
@@ -4079,6 +4106,14 @@ function getTextSize() {
     return settings.properties.sizeOftext;
 }
 
+//Returns if the text are a comment(true) or not(false)
+function isComment(){
+  if(settings.properties.isComment == yes){
+    return true;
+  }else{
+    return false;
+  }
+}
 //----------------------------------------------------------------------
 // setSelectedOption: used to select an option in passed select by passed value
 //----------------------------------------------------------------------
