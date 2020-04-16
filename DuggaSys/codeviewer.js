@@ -898,6 +898,9 @@ function popupDocumentation(id, lang) {
 	if(htmlArray.includes(id) && id != "var"){
 		lang = "html";
 	}
+	if(cssArray.includes(id)){
+		lang = "css";
+	}
 	if(lang == "html"){
 		var elementValue = document.getElementById(id).textContent;
 		// Change HTML h1-h6 tags to hn in order to link to correct documentation.
@@ -905,12 +908,14 @@ function popupDocumentation(id, lang) {
 			elementValue = "hn";
 		}
 		url = "https://www.w3schools.com/tags/tag_"+elementValue+".asp";
-	}else if(lang == "php"){
+	}else if(lang == "multi"){
 		if(htmlAttrArray.includes(id)){
 			url = "https://www.w3schools.com/tags/att_"+id+".asp";
 		}else{
 			url = "https://www.php.net/results.php?q="+id+"&l=en&p=all";
 		}
+	}else if(lang == "css"){
+		url = "https://www.w3schools.com/css/";
 	}else{
 		url ="https://www.google.com/search?q="+id;
 	}
@@ -1547,26 +1552,26 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						if(splitString[j].charAt(1) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'") {
 							// If string within a string, print single quotes around the word.
 							cont += "<span class='string'>" + '"' + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + "'" + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
 						}else if (splitString.length == 1) {
 							cont += "<span class='string'>" + '"';
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + '"' + "</span>";
 						}else {
 							cont += "<span class='string'>" + '"';
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
 						}
 						
 					}else if(j == splitString.length - 1) {
 						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 2) == "'"){
 							cont += "<span class='string'>" + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + operator + "'" + '"' + "</span>";
 						}else{
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + operator + '"' + "</span>";
 							cont += "</span>";
 						}
@@ -1574,10 +1579,10 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					else {
 						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
 							cont += "<span class='string'>" + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + operator + "'" + " " + "</span>";
 						}else {
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
 						}
 					}
@@ -1628,7 +1633,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
 			} else if (foundkey == 2) {
 				iwcounter++;
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(\"" + tokenvalue + "\", \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(\"" + tokenvalue + "\", \"multi\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += tokenvalue;
 			}
@@ -1813,7 +1818,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
 			} else if (foundkey == 2) {
 				iwcounter++;
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += tokenvalue;
 			}
