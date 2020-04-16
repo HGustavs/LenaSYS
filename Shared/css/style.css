@@ -5301,9 +5301,17 @@ textarea#mrkdwntxt {
   padding-right: 10px;
 }
 
+/* Shortcuts diagram */
+
+.shortcutsDiagram {
+  height: auto !important;
+  margin-top: 0 !important;
+  display: none;
+}
+
 /* Import diagram */
 
-.importDiagram {
+.importDiagram, .shortcutsDiagram {
   height: auto !important;
   margin-top: 0 !important;
   display: none;
