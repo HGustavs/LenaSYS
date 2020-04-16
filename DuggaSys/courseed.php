@@ -94,7 +94,7 @@ else{
 					<span>Course Name:</span>
 					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
 				</div>
-				<p id="dialog4" class="validationDialog">Only letters</p>
+				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words. Two plus allowed end of word</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
 					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
@@ -121,7 +121,7 @@ else{
 					<span>Course Name:</span>
 					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 				</div>
-				<p id="dialog" class="validationDialog">Only letters</p>
+				<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words. Two plus allowed end of word</p>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
 					<input oninput="elementIsValid(this);" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
