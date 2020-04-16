@@ -575,7 +575,6 @@ function updateAndCloseGroupDropdown(checkboxes){
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
 
 	activeElement.children[0].children[0].innerHTML = readStr;
-	console.log(readStr);
 
 	// close dropdown
 	checkboxes.style.display = "none";
