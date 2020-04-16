@@ -359,6 +359,9 @@
                             </div>
                         </div>
                     </div>
+                    <div id="errorBox">
+                        <span id="errorMSG"></span>
+                    </div>
                 </div>
                 </br>
                 </br>

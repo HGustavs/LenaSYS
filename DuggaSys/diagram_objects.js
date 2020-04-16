@@ -2992,7 +2992,8 @@ function figureFreeDraw() {
 //--------------------------------------------------------------------
 function endFreeDraw(){
     if(numberOfPointsInFigure < 2){
-        // Perhaps make a flash function to flash messaged to the view, for better error handling
+        // Flash function where second argument is success or danger
+        flash("Please draw more lines!", "danger");
         return console.log('Draw more lines');
     }
     // Read and set the values for p1 and p2
@@ -3031,4 +3032,27 @@ function cleanUp() {
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
     p2 = null;
+}
+
+//--------------------------------------------------------------------
+// Flash function for error handeling to the view
+//--------------------------------------------------------------------
+function flash(message, state) {
+    document.getElementById("errorMSG").innerHTML=message;
+    var message = document.getElementById('errorMSG').style;
+    message.opacity = 1;
+    message.display="inline-block";
+    if(state == "danger"){
+        document.getElementById("errorMSG").style.color="darkred";
+        document.getElementById("errorMSG").style.backgroundColor="#ff9999";
+    }
+    else if(state == "success"){
+        document.getElementById("errorMSG").style.color="darkgreen";
+        document.getElementById("errorMSG").style.backgroundColor="#99ff99";
+    }
+    else{
+        document.getElementById("errorMSG").style.color="black";
+    }
+
+    (function fade(){(message.opacity-=.01)<0?message.display="none":setTimeout(fade,40)})();
 }
