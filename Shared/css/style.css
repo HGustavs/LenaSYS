@@ -331,6 +331,13 @@ p {
   padding-right: 8px;
 }
 
+.validationDialog {
+  font-size: 11px; 
+  border: 0px;
+  margin-left: 25px;
+  display:none;
+}
+
 #Sectionlist {
   margin: 0px auto;
   background-color: var(--color-background);
