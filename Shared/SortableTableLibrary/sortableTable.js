@@ -560,6 +560,14 @@ function SortableTable(param) {
 		return sortkind;
 	}
 
+	this.getDelimiter = function () {
+		return DELIMITER;
+	}
+
+	this.updateDropdownValue = function(rowno, colname, celldata) {
+		tbl.tblbody[rowno][colname] = celldata;
+	}
+
 	this.magicHeader = function () {
 		// Assign table and magic headings table(s)
 		if (this.hasMagicHeadings) {

@@ -237,6 +237,11 @@ function resetPw(uid, username) {
 
 function changeOpt(e) {
 	var paramlist = e.target.id.split("_");
+	obj = {
+		uid: paramlist[1],
+	}
+	obj[paramlist[0]] = e.target.value;
+	updateDropdownInTable(e.target.parentElement, obj);
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
@@ -576,9 +581,31 @@ function updateAndCloseGroupDropdown(checkboxes){
 
 	activeElement.children[0].children[0].innerHTML = readStr;
 
+	obj = {
+		// This should really contain uid as well
+		// but since the table should not write this 
+		// to the database, it might not be an issue
+		// uid: <get-UID-For-Row-User>
+		groups: str
+	}
+	updateDropdownInTable(checkboxes.parentElement, obj);
+
 	// close dropdown
 	checkboxes.style.display = "none";
 	activeElement = undefined;
+}
+
+function updateDropdownInTable(element, obj) {
+	// get row and column
+	var cellelement = element.closest("td");
+	var rowelement = element.closest("tr");
+	let regex = new RegExp("^r([0-9]+)" + myTable.getDelimiter() + "([a-zA-Z0-9]+)" + myTable.getDelimiter() + "(.*)")
+	let match = cellelement.id.match(regex);
+	var rowno = match[1];
+	var colname = match[3]
+
+	var celldata = JSON.stringify(obj);
+	myTable.updateDropdownValue(rowno, colname, celldata)
 }
 
 $(document).mouseover(function (e) {
