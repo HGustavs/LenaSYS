@@ -165,6 +165,7 @@ var classTemplate = {
   width: 7 * gridSize,
   height: 7 * gridSize
 };
+var minimumDivisor = 4;                 // Is used when dividing templates for minimum selection before activating dragging mode values
 var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
@@ -3366,8 +3367,8 @@ function mousemoveevt(ev, t) {
                     }
                 }
             } else if (uimode == "CreateEREntity") {
-                if(entityTemplate.width / 2 < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
-                && entityTemplate.height / 2 < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                if(entityTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && entityTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
                 {
                     ctx.setLineDash([3, 3]);
                     ctx.beginPath();
@@ -3385,30 +3386,38 @@ function mousemoveevt(ev, t) {
                     }
                 }
             } else if(uimode == "CreateERRelation") {
-                ctx.setLineDash([3, 3]);
-                var midx = pixelsToCanvas(startMouseCoordinateX).x+((pixelsToCanvas(currentMouseCoordinateX).x-pixelsToCanvas(startMouseCoordinateX).x)/2);
-                var midy = pixelsToCanvas(0, startMouseCoordinateY).y+((pixelsToCanvas(0, currentMouseCoordinateY).y-pixelsToCanvas(0, startMouseCoordinateY).y)/2);
-                ctx.beginPath();
-                ctx.moveTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, midy);
-                ctx.lineTo(midx, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, midy);
-                ctx.lineTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(relationTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && relationTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    var midx = pixelsToCanvas(startMouseCoordinateX).x+((pixelsToCanvas(currentMouseCoordinateX).x-pixelsToCanvas(startMouseCoordinateX).x)/2);
+                    var midy = pixelsToCanvas(0, startMouseCoordinateY).y+((pixelsToCanvas(0, currentMouseCoordinateY).y-pixelsToCanvas(0, startMouseCoordinateY).y)/2);
+                    ctx.beginPath();
+                    ctx.moveTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, midy);
+                    ctx.lineTo(midx, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, midy);
+                    ctx.lineTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateERAttr") {
-                ctx.setLineDash([3, 3]);
-                drawOval(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y, pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(attributeTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && attributeTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    drawOval(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y, pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateLine") {
                 // Path settings for preview line
@@ -3435,19 +3444,23 @@ function mousemoveevt(ev, t) {
                     hideCrosses();
                 }
               } else if(uimode == "CreateClass") {
-                ctx.setLineDash([3, 3]);
-                ctx.beginPath();
-                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(classTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && classTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(figureType != "Text" || uimode == "normal") {
               ctx.setLineDash([3, 3]);
@@ -3749,6 +3762,12 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.UML++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && classTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && classTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
         erAttributeA.name = "Attr " + settings.serialNumbers.Attribute;
@@ -3763,6 +3782,12 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Attribute++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && attributeTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && attributeTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
         erEnityA.name = "Entity " + settings.serialNumbers.Entity;
@@ -3778,6 +3803,13 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Entity++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && entityTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && entityTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y))
+        {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
@@ -3813,6 +3845,13 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Relation++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && relationTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && relationTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y))
+        {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
         // clicking on a lock removes it
