@@ -3,7 +3,6 @@ var activeElement;
 var querystring = parseGet();
 var versions;
 var dataInfo;
-var expanded = false;
 var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
@@ -540,22 +539,22 @@ function keyUpSearch() {
 // onclick for group dropdown
 function showCheckboxes(element) {
 	var activeElementWasNull = false;
+	var lastElement = activeElement;
 	if (typeof(activeElement) === "undefined") { // first open dropdown
 		activeElement = element;
 		activeElementWasNull = true;
 	}
 	
-	var checkboxes = $(activeElement).find(".checkboxes");
-	checkboxes = activeElement.parentElement.lastChild;
+	var checkboxes = activeElement.parentElement.lastChild;
 	
 	// save and close current dropdown
-	if (expanded) updateAndCloseGroupDropdown(checkboxes);
+	if (!activeElementWasNull) updateAndCloseGroupDropdown(checkboxes);
 
-	if (activeElement !== element || activeElementWasNull) { // if clicked on new dropdown -> open new
+	// open if none is open or none was open AND this element was not just closed
+	if ((typeof(activeElement) === "undefined" || activeElementWasNull) && lastElement != element) {
 		activeElement = element;
 		checkboxes = activeElement.parentElement.lastChild;
 		checkboxes.style.display = "block";
-		expanded = true;
 	}
 }
 
@@ -564,19 +563,22 @@ function showCheckboxes(element) {
 //----------------------------------------------------------------------------------
 
 function updateAndCloseGroupDropdown(checkboxes){
-	var str = "";
+	var str = "", readStr = "";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
 			str += checkboxes.childNodes[i].childNodes[0].value + " ";
+			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3) + " ";
 		}
 	}
 	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
 	// if user unpresses all checkboxes it the student will now belong to no group
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
 
+	activeElement.children[0].children[0].innerHTML = readStr;
+
 	// close dropdown
 	checkboxes.style.display = "none";
-	expanded = false;
+	activeElement = undefined;
 }
 
 $(document).mouseover(function (e) {
@@ -634,10 +636,10 @@ function mouseDown(e) {
 
 function mouseUp(e) {
 	// if the target of the click isn't the container nor a descendant of the container
-	if (activeElement) {
+	if (typeof(activeElement) !== "undefined" && typeof(e.target) !== "undefined") {
 		var checkboxes = $(activeElement).find(".checkboxes");
 		checkboxes = activeElement.parentElement.lastChild;
-		if (expanded && !checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
+		if (!checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
 			updateAndCloseGroupDropdown(checkboxes);
 		}
 	}
