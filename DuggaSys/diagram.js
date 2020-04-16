@@ -390,6 +390,8 @@ function keyDownHandler(e) {
     var key = e.keyCode;
     if(key == escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
+    } else if(key == enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
+        submitAppearanceForm();
     }
     if (appearanceMenuOpen) return;
     if ((key == deleteKey || key == backspaceKey)) {
@@ -4005,22 +4007,6 @@ function clickOutsideDialogMenu(ev) {
     });
 }
 
-//----------------------------------------------------------------------
-// clickEnterOnDialogMenu: Closes the dialog menu when the enter button is pressed.
-//----------------------------------------------------------------------
-
-function clickEnterOnDialogMenu(ev) {
-    $(document).keypress(function (ev) {
-        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
-            globalappearanceMenuOpen = false;
-            toggleApperanceElement();
-            // Is called in the separate appearance php-files at the buttons.
-            // Called here since an enter press doesn't relate to any element
-            setObjectProperties();
-        }
-    });
-}
-
 function toggleApperanceElement(show = false) {
     const appearanceElement = document.getElementById("appearance");
     if(show) {
@@ -4313,11 +4299,7 @@ function initAppearanceForm() {
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
                 if(element.type === "submit") {
-                    element.addEventListener("click", () => {
-                        SaveState();
-                        setObjectProperties();
-                        toggleApperanceElement();
-                    });
+                    element.addEventListener("click", submitAppearanceForm);
                 } else {
                     element.addEventListener("input", setObjectProperties);
                 }
@@ -4334,4 +4316,15 @@ function getGroupsByType(type) {
         const types = group.dataset.types.split(",");
         return types.includes(type.toString());
     });
+}
+
+//Shoud simulate button click or enter click in appearance menu to save and close
+function submitAppearanceForm() {
+    if(globalappearanceMenuOpen) {
+        setGlobalProperties();
+    } else {
+        setObjectProperties();
+    }
+    SaveState();
+    toggleApperanceElement();
 }

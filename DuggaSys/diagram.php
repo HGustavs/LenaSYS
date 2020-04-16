@@ -35,8 +35,6 @@
             $(".drop-down-item").click(function() {
                 $(this).closest(".drop-down").hide();
             });
-
-            window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
     </script>
 </head>
