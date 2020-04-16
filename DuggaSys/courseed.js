@@ -533,5 +533,21 @@ function elementIsValid(element) {
 
 //Validates whole form
 function validateForm(formid) {
+	const formContainer = document.getElementById(formid);
+	const inputs = formContainer.querySelectorAll("input.validate");
+	let numberOfValidInputs = 0;
 
+	//Count number of valid inputs
+	inputs.forEach(input => {
+		if(elementIsValid(input)) {
+			numberOfValidInputs++;
+		}
+	});
+
+	//If all inputs were valid create course or update course depending on id of form
+	if(numberOfValidInputs === inputs.length) {
+
+	} else {
+		
+	}
 }
