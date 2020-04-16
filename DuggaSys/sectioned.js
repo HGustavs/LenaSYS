@@ -237,9 +237,11 @@ function showEditVersion() {
   $("#editCourseVersion").css("display", "flex");
 }
 
+// Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     $("#editCourseVersion").css("display", "none");
+    $("#newCourseVersion").css("display", "none");
   }
 })
 
