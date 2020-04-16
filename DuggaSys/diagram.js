@@ -4269,7 +4269,7 @@ function setSelections(object) {
 
 function setObjectProperties() {
     for(const object of selected_objects) {
-        let groups = [];
+        var groups = [];
         if(object.kind === kind.symbol) {
             groups = getGroupsByType(object.symbolkind);
         } else if(object.kind === kind.path) {
@@ -4278,7 +4278,7 @@ function setObjectProperties() {
         groups.forEach(group => {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
-                let access = element.dataset.access.split(".");
+                var access = element.dataset.access.split(".");
                 if(element.nodeName === "TEXTAREA") {
                     object[access[0]] = setTextareaText(element, object[access[0]]);
                 } else if(element.type === "range") {
