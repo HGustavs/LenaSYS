@@ -25,6 +25,12 @@
         'markdown.css',
         'jquery-ui-1.10.4.min.css'
     );
+    
+    $js = array(
+        'jquery-1.11.0.min.js',
+        'jquery-ui-1.10.4.min.js'
+    );
+    
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,8 +46,12 @@
         -->
 		
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
+        
+        <!--
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+        -->
+        
 		<script type="text/javascript" src="../Shared/dugga.js"></script>
         <script type="text/javascript" src="../Shared/markdown.js"></script>
 		<script type="text/javascript" src="codeviewer.js"></script>
@@ -52,6 +62,11 @@
             foreach($css as $filename) {
                 $filemtime = filemtime(__DIR__ . '../Shared/css/' . $filename);
                 echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
+            }
+        
+            foreach($js as $filename) {
+                $filemtime = filemtime(__DIR__ . '../Shared/js/' . $filename);
+                echo "<link type='text/javascript' href='../Shared/js/$filename?$filemtime'  />";
             }
         ?>
 	</head>
