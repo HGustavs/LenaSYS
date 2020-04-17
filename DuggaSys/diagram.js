@@ -381,7 +381,10 @@ function resetToolButtonsPressed() {
     // deselect draw text button
     document.getElementById("drawtextbutton").classList.remove("pressed");
     document.getElementById("drawtextbutton").classList.add("unpressed");
-    uimode = 'normal';
+
+    if(uimode !== "MoveAround") {
+        uimode = 'normal';
+    }
 }
 
 //--------------------------------------------------------------------
