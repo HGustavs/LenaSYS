@@ -99,7 +99,7 @@ if ($ha) {
 }
 
 else {
-    $noaccess=true;
+    $errortype ="noaccess";
 }
 
 if ($storefile) {
@@ -225,6 +225,10 @@ if ($storefile) {
                         if (!$query->execute()) {
                             $error = $query->errorInfo();
                             echo "Error updating file entries" . $error[2];
+                            $errortype ="uploadfile";
+                            $errorvar = $error[2];
+                            print_r($error);
+                            echo $errorvar;
                         }
                     }
                     $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
@@ -243,15 +247,21 @@ if ($storefile) {
                     if (!$query->execute()) {
                         $error = $query->errorInfo();
                         echo "Error updating filesize and uploaddate: " . $error[2];
+                        $errortype ="updatefile";
+                        $errorvar = $error[2];
+                        
                     }
 
                 } else {
+                    $errortype ="movefile";
                     echo "Error moving file " . $movname;
                     $error = true;
                 }
 
             } else {
                 //if the file extension is not allowed
+                $errortype ="extension";
+                $errorvar = $extension;
                 if (!array_key_exists($extension, $allowedExtensions)) echo "Extension \"" . $extension . "\" not allowed.\n";
                 else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
                 $error = true;
@@ -259,6 +269,7 @@ if ($storefile) {
         }
     }
 } else {
+    $errortype ="nofile";
     echo "No file found - check upload_max_filesize and post_max_size in php.ini";
     $error = true;
 }
@@ -268,7 +279,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $use
 if (!$error) {
     echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }*/
-echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "&extension=".$extension."&noaccess=".$noaccess."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
+echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "&errortype=".$errortype."&errorvar=".urlencode($errorvar)."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
 ?>
 <html>
 <head>
