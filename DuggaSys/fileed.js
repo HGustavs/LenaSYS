@@ -284,7 +284,8 @@ function sortFilesByKind(kind){
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
-
+    $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
+    $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
 }
 
 //----------------------------------------------------------------
