@@ -821,6 +821,7 @@ function createboxmenu(contentid, boxid, type) {
 		if (type == "CODE") {
 			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
+		
 
 		str += '</tr></table>';
 		boxmenu.innerHTML = str;
@@ -2249,24 +2250,23 @@ function minimizeBoxes(boxid) {
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
-	document.querySelector('#box'+boxid+'wrapper #copyClipboard').style.display = 'none';
 
 	getLocalStorageProperties(boxValArray);
 
 	//For template 1
 	if (templateid == 1) {
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 1, 2);
 		}
 
 		if (boxid == 2) {
-			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).width("100%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 		}
 	}
 	//for template 2
@@ -2367,7 +2367,7 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 		}
 	}
 
@@ -2668,7 +2668,7 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
-//hide maximizeButton
+//hide minimizeButton
 function hideMinimizeButton() {
 	var templateid = retData['templateid'];
 	if (templateid > 2) {
@@ -3074,28 +3074,42 @@ function resizeBoxes(parent, templateId) {
 
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
 
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
-
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
-		
 	// makes the element dissapear when certain treshold is met
-	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+	if (basePer < 15) {
+		
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		
+	}else {
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3122,14 +3136,26 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3150,14 +3176,26 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3248,16 +3286,32 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3288,16 +3342,32 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer > 85) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer < 15) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3401,18 +3471,38 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box5').className == 'box codebox'){
+			document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box5').className == 'box codebox'){
+			document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
