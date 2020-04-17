@@ -1470,6 +1470,7 @@ function Symbol(kindOfSymbol) {
         }
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+        ctx.lineCap = "square";
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
             ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
