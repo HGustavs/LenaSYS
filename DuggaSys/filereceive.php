@@ -98,6 +98,10 @@ if ($ha) {
     }
 }
 
+else {
+    $noaccess=true;
+}
+
 if ($storefile) {
     //  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
     //				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download", "application/x-dosexec", "application/x-sharedlib", "text/x-php");
@@ -264,7 +268,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $use
 if (!$error) {
     echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }*/
-echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "&extension=".$extension."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
+echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "&extension=".$extension."&noaccess=".$noaccess."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
 ?>
 <html>
 <head>
