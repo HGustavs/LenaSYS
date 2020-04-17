@@ -369,7 +369,8 @@ function SortableTable(param) {
 						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
 						mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
 					} else {
-						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
+						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "' onmouseover='showFullHeaderDrop(this);' onmouseleave='removeFullHeaderDrop(this)'>" + renderSortOptions(colname, -1, col) + "</th>";
+						str += "<div id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl_dropdown' style='display: none; background-color: white; padding: 10px;'>" + col + "</div>"; // Dropdown that shows the name of the column.
 						mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
 					}
 				} else {
@@ -776,6 +777,21 @@ function SortableTable(param) {
 	}
 }
 
+// Shows the tableheads full column name dropdown and positions it below the selected column.
+function showFullHeaderDrop(element) {
+	var dropdown = document.getElementById(element.id + "_dropdown");
+	var header = document.getElementById(element.id);
+	var headerPos = header.getBoundingClientRect();
+	dropdown.style.display = 'block';
+	dropdown.style.position = 'absolute';
+	dropdown.style.top = (headerPos.top + header.offsetHeight) + "px";
+	dropdown.style.left = headerPos.left + "px";
+}
+
+// Removes the tableheads full column name dropdown.
+function removeFullHeaderDrop(element) {
+	document.getElementById(element.id + "_dropdown").style.display = 'none';
+}
 
 // This is not generic should be local function for each module.
 /*
