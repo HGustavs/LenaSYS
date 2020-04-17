@@ -348,9 +348,9 @@ function SortableTable(param) {
 		
 		// Add Column for counter if the sortabletable should have a counter column.
 		if (this.hasCounter) {
-			str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'></th>";
-			mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'></th>";
-			mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'></th>";
+			str += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'></th>";
+			mhstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'></th>";
+			mhfstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'></th>";
 		}
 		for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
 			var colname = columnOrder[columnOrderIdx];
@@ -360,31 +360,31 @@ function SortableTable(param) {
 				if (renderSortOptions !== null) {
 					if (columnOrderIdx < freezePaneIndex) {
 						if (colname == sortcolumn) {
-							mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
+							mhfstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
 						} else {
-							mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
+							mhfstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
 						}
 					}
 					if (colname == sortcolumn) {
-						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
-						mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
+						str += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
+						mhstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
 					} else {
-						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "' onmouseover='showFullHeaderDrop(this);' onmouseleave='removeFullHeaderDrop(this)'>" + renderSortOptions(colname, -1, col) + "</th>";
+						str += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "' onmouseover='showFullHeaderDrop(this);' onmouseleave='removeFullHeaderDrop(this)'>" + renderSortOptions(colname, -1, col) + "</th>";
 						str += "<div id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl_dropdown' style='display: none; background-color: white; padding: 10px;'>" + col + "</div>"; // Dropdown that shows the name of the column.
-						mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
+						mhstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
 					}
 				} else {
 					if (columnOrderIdx < freezePaneIndex) {
 						if (colname == sortcolumn) {
-							mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + col + "</th>";
+							mhfstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + col + "</th>";
 						} else {
-							mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + col + "</th>";
-							mhvstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhv' class='" + this.tableid + "'>" + col + "</th>";
+							mhfstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + col + "</th>";
+							mhvstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhv' class='" + this.tableid + "'>" + col + "</th>";
 						}
 					}
 					if (col != "move") {
-						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + col + "</th>";
-						mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + col + "</th>";
+						str += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + col + "</th>";
+						mhstr += "<th style='max-width:200px;min-width:150px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + col + "</th>";
 					}
 				}
 			}
