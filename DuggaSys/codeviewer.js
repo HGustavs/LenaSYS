@@ -885,7 +885,7 @@ function highlightHtml(otherTag, thisTag) {
 	document.getElementById(thisTag).classList.toggle("html");
 }	
 
-//Array containing HTML attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
+//Arrays containing HTML attributes and event-attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
 htmlAttrArray = new Array('action', 'class', 'disabled', 'href', 'id', 'rel', 'src', 'style', 'title', 'type');
 htmlEventArray = new Array('onclick', 'onmouseout', 'onmouseleave', 'onmouseover', 'onmouseenter','onload', 'onkeydown','onkeyup','onkeypress','oninput');
 
@@ -917,6 +917,8 @@ function popupDocumentation(id, lang) {
 	}else if(lang == "multi"){
 		if(htmlAttrArray.includes(id)){
 			url = "https://www.w3schools.com/tags/att_"+id+".asp";
+		}else if(htmlEventArray.includes(id)){
+			url = "https://www.w3schools.com/tags/ev_"+id+".asp";
 		}else{
 			url = "https://www.php.net/results.php?q="+id+"&l=en&p=all";
 		}
