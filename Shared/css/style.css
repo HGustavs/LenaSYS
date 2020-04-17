@@ -4976,7 +4976,7 @@ only screen and (max-device-width: 320px) {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
-.previewWindowContainer {
+.previewWindowContainer, .fileViewContainer {
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
@@ -4988,7 +4988,7 @@ only screen and (max-device-width: 320px) {
 }
 
 
-.previewWindow {
+.previewWindow, .fileViewWindow {
   height: 89%;
   width: 95%;
   margin: 0px auto;
@@ -5001,6 +5001,17 @@ only screen and (max-device-width: 320px) {
   right: 0;
   top: 5%;
   position: fixed;
+}
+
+.fileView{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.fileView img {
+  max-width: 70vw;
+  max-height: 80vh;
 }
 
 .markdownPart {
