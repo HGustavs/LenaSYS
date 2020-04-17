@@ -345,12 +345,12 @@ function SortableTable(param) {
 		mhfstr += "<thead class='listHeading' id='" + this.tableid + DELIMITER + "tblhead_mhf'><tr>";
 
 		//var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
-
+		
 		// Add Column for counter if the sortabletable should have a counter column.
 		if (this.hasCounter) {
-			str += "<th style='white-space:nowrap;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'></th>";
-			mhstr += "<th style='white-space:nowrap;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'></th>";
-			mhfstr += "<th style='white-space:nowrap;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'></th>";
+			str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'></th>";
+			mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'></th>";
+			mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'></th>";
 		}
 		for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
 			var colname = columnOrder[columnOrderIdx];
@@ -360,30 +360,30 @@ function SortableTable(param) {
 				if (renderSortOptions !== null) {
 					if (columnOrderIdx < freezePaneIndex) {
 						if (colname == sortcolumn) {
-							mhfstr += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
+							mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
 						} else {
-							mhfstr += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
+							mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
 						}
 					}
 					if (colname == sortcolumn) {
-						str += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
-						mhstr += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
+						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
+						mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, sortkind, col) + "</th>";
 					} else {
-						str += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
-						mhstr += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
+						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
+						mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + renderSortOptions(colname, -1, col) + "</th>";
 					}
 				} else {
 					if (columnOrderIdx < freezePaneIndex) {
 						if (colname == sortcolumn) {
-							mhfstr += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + col + "</th>";
+							mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + col + "</th>";
 						} else {
-							mhfstr += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + col + "</th>";
-							mhvstr += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhv' class='" + this.tableid + "'>" + col + "</th>";
+							mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'>" + col + "</th>";
+							mhvstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhv' class='" + this.tableid + "'>" + col + "</th>";
 						}
 					}
 					if (col != "move") {
-						str += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + col + "</th>";
-						mhstr += "<th style='white-space:nowrap;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + col + "</th>";
+						str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'>" + col + "</th>";
+						mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='" + colname + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'>" + col + "</th>";
 					}
 				}
 			}
