@@ -20,14 +20,20 @@ if(isset($_SESSION['uid'])){
 	$userid="1";		
 } 
 
+
 $opt=getOP('opt');
 $courseid=getOP('courseid');
+$coursename=getOP('coursename');
 $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $variant=getOP('lid');
 $moment=getOP('moment');
 
 $debug="NONE!";	
+
+$log_uuid = getOP('log_uuid');
+$info=$opt." ".$courseid." ".$coursename;
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "highscoreservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -98,5 +104,7 @@ $array = array(
 );
 
 echo json_encode($array);
+
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "highscoreservice.php",$userid,$info);
 ?>
  

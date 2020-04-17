@@ -25,15 +25,13 @@
         $firstname = "UNK";
     }
 
-    $cid=$_SESSION['courseid'];
-    
     $opt = getOP('opt');
+    $courseid=getOP('courseid');
     $coursename=getOP('coursename');
-    $visibility=getOP('visib');
-    $versid=getOP('versid');
+   
 
     $log_uuid = getOP('log_uuid');
-    $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
+    $info=$opt." ".$courseid." ".$coursename;
     logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "diagramservice.php",$userid,$info);
 
     $log_db = new PDO('sqlite:../../GHdataD.db');
