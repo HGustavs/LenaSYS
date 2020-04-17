@@ -51,7 +51,10 @@
 		$userid="UNK";
 	}
 
-  if($cid != "UNK") $_SESSION['courseid'] = $cid;
+
+	logDuggaLoadEvent($cid, $vers, $quizid, EventTypes::pageLoad);
+
+if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	$hr=false;
 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 	$query->bindParam(':cid', $cid);
