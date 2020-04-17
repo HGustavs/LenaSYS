@@ -815,7 +815,7 @@ function createboxmenu(contentid, boxid, type) {
 		
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>Minimize</p></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes(" + boxid + ");'><p> Reset </p></div>";
 		str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
@@ -2677,9 +2677,20 @@ function hideMinimizeButton() {
 }
 
 //reset boxes
-function resetBoxes() {
+function resetBoxes(boxid) {
+	var boxid = boxid;
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+
 	resizeBoxes("#div2", retData["templateid"]);
 	showCopyButtons(retData["templateid"]);
+
+	if (templateid == 1) {
+			$(boxValArray['box' + 2]['id']).width("50%");
+			$(boxValArray['box' + 1]['id']).width("50%");
+			alignBoxesWidth(boxValArray, 1, 2);
+	}
 }
 
 //-----------------------------------------------------------------------------
