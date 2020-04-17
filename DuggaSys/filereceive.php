@@ -269,8 +269,10 @@ if ($storefile) {
         }
     }
 } else {
-    $errortype ="nofile";
-    echo "No file found - check upload_max_filesize and post_max_size in php.ini";
+    if($ha){
+        $errortype ="nofile";
+        echo "No file found - check upload_max_filesize and post_max_size in php.ini";
+    }
     $error = true;
 }
 

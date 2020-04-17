@@ -66,10 +66,6 @@ $codeLinkQuery->execute();
             echo'<style>#fileerror0{ display:block; }</style>';
             echo "Extension \"" . $_GET['errorvar'] . "\" not allowed.\n";
         }
-        else if($_GET['errortype'] == "noaccess"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Access denied, you do not have the rights.";
-        }
         else if($_GET['errortype'] == "nofile"){
             echo'<style>#fileerror0{ display:block; }</style>';
             echo "No file found - check upload_max_filesize and post_max_size in php.ini.";
@@ -85,6 +81,10 @@ $codeLinkQuery->execute();
         else if($_GET['errortype'] == "uploadfile"){
             echo'<style>#fileerror0{ display:block; }</style>';
             echo "Error updating file entries \"" . $_GET['errorvar'] . "\"";
+        }
+        else if($_GET['errortype'] == "noaccess"){
+            echo'<style>#fileerror0{ display:block; }</style>';
+            echo "Access denied, you do not have the rights.";
         }
         else {
             echo '<style>#fileerror0{ display:none; }</style>';
