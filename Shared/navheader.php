@@ -5,6 +5,8 @@
 
 			echo "<table class='navheader'><tr>";
 			include_once "../Shared/basic.php";
+
+			$cid = "UNK";
 			
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if(!isset($_SESSION['courseid'])) $_SESSION['courseid']="UNK";
