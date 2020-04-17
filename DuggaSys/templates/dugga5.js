@@ -121,7 +121,8 @@ function returnedDugga(data)
       } 		
       fb += "</tbody></table>";
       document.getElementById('feedbackTable').innerHTML = fb;		
-      document.getElementById('feedbackBox').style.display = "block";
+	  document.getElementById('feedbackBox').style.display = "block";
+	  $("#showFeedbackButton").css("display","block");
   }
   displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }

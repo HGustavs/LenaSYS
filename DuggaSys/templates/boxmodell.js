@@ -140,6 +140,7 @@ function returnedDugga(data)
 		for (var k=feedbackArr.length-1;k>=0;k--){
 			var fb_tmp = feedbackArr[k].split("%%");
 			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			$("#showFeedbackButton").css("display","block");
 		} 		
 		fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		

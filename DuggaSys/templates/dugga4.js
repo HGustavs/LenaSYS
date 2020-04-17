@@ -117,6 +117,7 @@ function returnedDugga(data)
 			fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		
 			document.getElementById('feedbackBox').style.display = "block";
+			$("#showFeedbackButton").css("display","block");
 	}
 	$("#submitButtonTable").appendTo("#content");
 	$("#lockedDuggaInfo").appendTo("#content");
