@@ -2689,13 +2689,11 @@ function resetBoxes(boxid) {
 	if (templateid == 1) {
 		$(boxValArray['box' + 2]['id']).width("50%");
 		$(boxValArray['box' + 1]['id']).width("50%");
-		alignBoxesWidth(boxValArray, 1, 2);
 	}
 	
 	if (templateid == 2) {
 		(boxValArray['box' + 2]['id']).height("50%");
 		$(boxValArray['box' + 1]['id']).height("50%");
-		alignBoxesHeight2boxes(boxValArray, 1, 2);
 	}
 
 	if (templateid == 3) {
@@ -2704,8 +2702,6 @@ function resetBoxes(boxid) {
 		$(boxValArray['box' + 1]['id']).width("50%");
 		$(boxValArray['box' + 2]['id']).height("50%");
 		$(boxValArray['box' + 3]['id']).height("50%");
-		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-		alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 	}
 
 	if (templateid == 4) {
@@ -2715,9 +2711,17 @@ function resetBoxes(boxid) {
 		$(boxValArray['box' + 1]['id']).height("50%");
 		$(boxValArray['box' + 2]['id']).height("50%");
 		$(boxValArray['box' + 3]['id']).height("50%");
-		alignBoxesWidth(boxValArray, 1, 2);
-		alignBoxesHeight2boxes(boxValArray, 1, 3);
-	
+	}
+
+	if (templateid == 5) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+		$(boxValArray['box' + 4]['id']).height("50%");
 	}
 }
 
