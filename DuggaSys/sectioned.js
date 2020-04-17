@@ -848,7 +848,7 @@ function returnedSection(data) {
           // Test / Dugga
           var param = {
             'did': item['link'],
-            'cid': querystring['courseid'],
+            'courseid': querystring['courseid'],
             'coursevers': querystring['coursevers'],
             'moment': item['lid'],
             'segment': momentexists,
