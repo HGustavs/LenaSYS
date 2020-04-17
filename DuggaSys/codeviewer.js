@@ -2691,6 +2691,12 @@ function resetBoxes(boxid) {
 			$(boxValArray['box' + 1]['id']).width("50%");
 			alignBoxesWidth(boxValArray, 1, 2);
 	}
+	
+	if (templateid == 2) {
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		alignBoxesHeight2boxes(boxValArray, 1, 2);
+}
 }
 
 //-----------------------------------------------------------------------------
