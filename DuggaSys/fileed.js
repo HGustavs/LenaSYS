@@ -243,7 +243,10 @@ function renderCell(col, celldata, cellid) {
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
         } else {
-            str += "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + obj.filename + "\")'>" + obj.shortfilename + "</span>";
+            //str += "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + obj.filename + "\")'>" + obj.shortfilename + "</span>";
+            var filename = obj.filename;
+            var extension = filename.split(".");
+            str+="<span class='nowrap-filename' id='openFile' onclick='fileClick(\"" + extension[1] + "\")'>" + obj.shortfilename + "</span>";
         }
     } else if (col == "filesize") {
         if (obj.kind == "Link") {
@@ -265,6 +268,58 @@ function renderCell(col, celldata, cellid) {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     }
     return str;
+}
+
+function fileClick(kind){
+    if(kind === "html"){
+        console.log("detta är html fil")
+    }else if(kind === "png"){
+        console.log("detta är en png fil");
+    }else if(kind === "txt"){
+        console.log("detta är en txt fil");
+    }else if(kind === "md"){
+        console.log("detta är en md fil");
+    }else if(kind === "js" ){
+        console.log("detta är en js fil");
+    }else if(kind === "jpg"){
+        console.log("detta är en jpg fil");
+    }else if(kind === "jpeg"){
+        console.log("detta är en jpeg fil");
+    }else if(kind === "pdf" ){
+        console.log("detta är en pdf fil");
+    }else if(kind === "gif" ){
+        console.log("detta är en gif fil");
+    }else if(kind === "zip" ){
+        console.log("detta är en zip fil");
+    }else if(kind === "java" ){
+        console.log("detta är en java fil");
+    }else if(kind === "xml" ){
+        console.log("detta är en xml fil");
+    }else if(kind === "css" ){
+        console.log("detta är en css fil");
+    }else if(kind === "php" ){
+        console.log("detta är en php fil");
+    }else if(kind === "sr" ){
+        console.log("detta är en sr fil");
+    }else if(kind === "svg" ){
+        console.log("detta är en svg fil");
+    }else if(kind === "sql" ){
+        console.log("detta är en sql fil");
+    }else if(kind === "doc" ){
+        console.log("detta är en doc fil");
+    }else if(kind === "docx" ){
+        console.log("detta är en docx fil");
+    }else if(kind === "odt" ){
+        console.log("detta är en odt fil");
+    }else if(kind === "dtd" ){
+        console.log("detta är en dtd fil");
+    }else if(kind === "py" ){
+        console.log("detta är en py fil");
+    }else if(kind === "bat" ){
+        console.log("detta är en bat fil");
+    }else if(kind === "xsl" ){
+        console.log("detta är en xsl fil");
+    } 
 }
 //---------------------------------------------------------------
 //sortFilesByKind <- Callback function sorts the files by its kind
