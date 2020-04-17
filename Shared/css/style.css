@@ -779,7 +779,13 @@ div .navButt:hover {
 
 
 
+@media only screen and (max-width: 800px) {
+ #div2 {
+ top: 80px;
+
+}   
 }
+
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
