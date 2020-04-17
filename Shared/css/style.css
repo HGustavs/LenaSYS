@@ -4989,8 +4989,8 @@ only screen and (max-device-width: 320px) {
 
 
 .previewWindow, .fileViewWindow {
-  height: 89%;
-  width: 95%;
+  height: 89vh;
+  width: 95vw;
   margin: 0px auto;
   border: solid var(--color-border-4);
   background-color: var(--color-background-4);
@@ -5004,14 +5004,26 @@ only screen and (max-device-width: 320px) {
 }
 
 .fileView{
+  height: 100%;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.fileView iframe{
+  height: 90%;
+} 
+
+.fileView h1 {
+  font-size: 20px;
+}
+
+.fileView > div {
+  text-align: center;
 }
 
 .fileView img {
-  max-width: 70vw;
-  max-height: 80vh;
+  max-height: 90%;
 }
 
 .markdownPart {
