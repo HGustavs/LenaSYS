@@ -908,6 +908,7 @@
     padding-right: 3px;
     text-align: center;
     font-size: 13px;
+    display: table-cell !important;
 }
 
 .minimizebtn {
@@ -916,6 +917,7 @@
     padding-right: 3px;
     text-align: center;
     font-size: 13px;
+    display: table-cell !important;
 }
 
 .resetbtn {
@@ -923,6 +925,7 @@
     width: 50px;
     text-align: center;
     font-size: 13px;
+    display: table-cell !important;
 }
 
 
