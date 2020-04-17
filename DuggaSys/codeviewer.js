@@ -2707,6 +2707,18 @@ function resetBoxes(boxid) {
 		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 		alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 	}
+
+	if (templateid == 4) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("100%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+		alignBoxesWidth(boxValArray, 1, 2);
+		alignBoxesHeight2boxes(boxValArray, 1, 3);
+	
+	}
 }
 
 //-----------------------------------------------------------------------------
