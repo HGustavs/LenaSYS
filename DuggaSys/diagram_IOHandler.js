@@ -361,6 +361,6 @@ $(document).ready(function() {
     }
 
     document.getElementById('picid').addEventListener('click', function() {
-        downloadCanvas(this, 'myCanvas', 'picture.png');
+        downloadCanvas(this, 'diagramCanvas', 'picture.png');
     }, false);
 });
