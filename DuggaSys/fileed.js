@@ -281,6 +281,8 @@ function sortFilesByKind(kind){
     }if(kind == "Local"){
         $( "td:contains('Local')" ).parents("tr").show();
 
+    }if(kind == "Link"){
+        $( "td:contains('Link')" ).parents("tr").show();
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
