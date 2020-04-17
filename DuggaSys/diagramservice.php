@@ -24,6 +24,9 @@
         $lastname = "UNK";
         $firstname = "UNK";
     }
+
+    
+
     $log_db = new PDO('sqlite:../../GHdataD.db');
     $gituser = $loginname;
     $startweek = strtotime('2015-03-29');                                   // First monday in january
