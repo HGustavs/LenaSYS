@@ -46,6 +46,8 @@ function setup() {
 //displays dropdown when hovering search bar
 function hoverSearch() {
 	$('#dropdownSearch').css({display:'block'});
+	$('#dropdowns').css('display', 'none');
+	$('#dropdownc').css('display', 'none');
 }
 
 //stops displaying the dropdown when removing cursor from search bar
@@ -504,6 +506,7 @@ function returnedAccess(data) {
 		tblfoot: {}
 	}
 	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
+	if (typeof myTable === "undefined") { // only create a table if none exists
 	myTable = new SortableTable({
 		data: tabledata,
 		tableElementId: "accessTable",
@@ -522,6 +525,7 @@ function returnedAccess(data) {
 	});
 
 	myTable.renderTable();
+	}
 }
 
 //excuted onclick button for quick searching in table

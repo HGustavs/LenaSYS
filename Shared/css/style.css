@@ -671,7 +671,7 @@ header td {
 }
 
 .navButt {
-  width: 32px;
+  width: 29px;
   vertical-align: middle;
   margin-top: 9px;
 }
@@ -773,7 +773,13 @@ div .navButt:hover {
   left: 0px;
   right: 0px;
   background: var(--color-background);
+    width:100%
+
 }
+
+
+
+
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -861,7 +867,28 @@ div .navButt:hover {
   overflow-y: auto;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
+/* <<<<<<<<<<< Create new empty file >>>>>>>>>>>>>>> */
+#createNewEmptyFile input[type=text]{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+#createNewEmptyFile input[type="submit"] {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
+/* <<<<<<<<<<< End of create new empty file >>>>>>>>>>>>>>> */
 #variantBox {
   max-width: 100%;
   max-height: 100%;
@@ -1145,7 +1172,7 @@ input {
   top: 4px;
   right: 4px;*/
   color: rgb(255, 255, 255);
-  cursor: default;
+  cursor: pointer;
   background-color: rgb(199, 80, 80);
   font-family: arial;
   font-weight: bold;
@@ -1404,6 +1431,14 @@ input {
 .menu-drop-down span.drop-down-label:hover {
   cursor: pointer;
   background-color: var(--color-border-3);
+}
+
+.menu-drop-down:focus-within .drop-down{
+  display: block !important;
+}
+
+.export-drop-down-head:focus-within .export-drop-down {
+  display: block !important;
 }
 
 .document-settings span.label:hover {
@@ -2415,7 +2450,7 @@ span.arrow {
 }
 
 .feedback-list caption {
-  border-left: 2px solid var(--color-border-list);
+  border-bottom: 1px solid var(--color-border-list);
   background: var(--color-primary);
   color: #fff;
   line-height: 28px;
@@ -3146,7 +3181,7 @@ span.arrow {
   position: absolute;
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 #sortOptions {
@@ -3631,7 +3666,7 @@ table.navheader td.menuButton {
 }
 
 table.navheader div.menuButton {
-  margin-right: 10px;
+  margin-right: 8px;
   pointer-events: auto;
   display: inline-block;
   opacity: 1.0;
@@ -4637,6 +4672,18 @@ only screen and (max-device-width: 320px) {
 .form-group {
   margin: 16px 0;
 }
+.form-group input[type=range]::-moz-range-thumb{
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  width: 8px;
+  border-radius: 3px;
+  background-color: white;
+  cursor: pointer;
+}
+.form-group input[type=range]::-moz-range-thumb:active{
+  cursor: grabbing;
+  background-color: #614875;
+}
 
 .form-group label {
   display: block;
@@ -4744,6 +4791,7 @@ only screen and (max-device-width: 320px) {
   display: inline-block;
   width: 24px;
   height: 24px;
+  padding-top: 8px;
 }
 
 /* FAB scaling transition */
@@ -4788,7 +4836,7 @@ only screen and (max-device-width: 320px) {
 
 [data-tooltip]:before {
   visibility: visible;
-  opacity: 0.2;
+  opacity: 0.6;
   transform: scale(1);
   transform-origin: right center 0;
 }
@@ -5282,6 +5330,19 @@ textarea#mrkdwntxt {
   padding: 0 15px;
 }
 
+.importDiagram .import-file-button {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.import-file-button + label {
+  float: left;
+  border-radius: 4px;
+}
 
 .multiselect-group {
   width: 112px;

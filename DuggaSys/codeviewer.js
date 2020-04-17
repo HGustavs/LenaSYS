@@ -1522,43 +1522,94 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "string") {
 
 			var splitString = tokens[i].val.split(" ");
-
-
+			
 			for(j = 0; j < splitString.length; j++){
 				
 				var withoutQuote = splitString[j].replace(/(?:\"|')/g, "");
 				var withQuote = splitString[j].replace(/(?:\"|')/g, "&quot;");
 				var withSingleQuote = splitString[j].replace(/(?:\"|')/g, "\'");
+				var operator = "";
+				var typeOut = withoutQuote;
+				//Removes special characters, such as . , ! and ?
+				if(withoutQuote.charAt(withoutQuote.length - 1) == "." || withoutQuote.charAt(withoutQuote.length - 1) == "," || withoutQuote.charAt(withoutQuote.length - 1) == "!" || withoutQuote.charAt(withoutQuote.length - 1) == "?"){
+					operator = withoutQuote.charAt(withoutQuote.length - 1);
+					withoutQuote = withoutQuote.substring(0, withoutQuote.length - 1);
+				}
 				
-				//Decide if important word is first, last or in the middle of a string
+				// Decide if the word is important or not.
 				if (important.indexOf(withoutQuote) != -1 ||
 					important.indexOf(withQuote) != -1 ||
 					important.indexOf(withSingleQuote) != -1) {
-					if(j == splitString.length - 1) {
-						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
-						cont += tokenvalue[tokenvalue.length-1] + "</span>";
-					}else if(j == 0) {
-						cont += "<span class='string'>" + tokenvalue[0];
-						cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
-						cont += "<span class='string'>" + " ";
-					}else {
-					cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='dehighlightKeyword(\"" + withoutQuote + "\")'>" + withQuote + "</span>";
-					cont += "<span class='string'>" + " ";
+
+					// Decide if important word is first, last or in the middle of the string.
+					if(j == 0) {
+						// Checks if the word is a string within a string.
+						if(splitString[j].charAt(1) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'") {
+							// If string within a string, print single quotes around the word.
+							cont += "<span class='string'>" + '"' + "'";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span class='string'>" + "'" + "</span>";
+							cont += "<span>" + operator + " " + "</span>";
+						}else if (splitString.length == 1) {
+							cont += "<span class='string'>" + '"';
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span>" + operator + '"' + "</span>";
+						}else {
+							cont += "<span class='string'>" + '"';
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span>" + operator + " " + "</span>";
+						}
+						
+					}else if(j == splitString.length - 1) {
+						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 2) == "'"){
+							cont += "<span class='string'>" + "'";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span class='string'>" + operator + "'" + '"' + "</span>";
+						}else{
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span class='string'>" + operator + '"' + "</span>";
+							cont += "</span>";
+						}
+						} 
+					else {
+						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
+							cont += "<span class='string'>" + "'";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span class='string'>" + operator + "'" + " " + "</span>";
+						}else {
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span>" + operator + " " + "</span>";
+						}
 					}
-				//Else if the word is not important, implement it as a normal word in a string (blue text) and decide if it's first last or in the middle
+				// Else if the word is not important, implement it as a normal word in a string.		
 				}else {
-					if(j == splitString.length -1) {
+					// Decide if the word is first, last or in the middle.
+					if(j == 0 && splitString > 1) {
+						// Variable is a substring of a non-important word in a string that is either first or last.
+						// Removes extra double quotes before or after the word if so.
+						var stringWithSingleQuotes = splitString[j].substring(1, splitString[j].length);
+						cont += "<span class='string'>" + '"';
+						cont += "<span class='string'>" + stringWithSingleQuotes + "</span>";
+						cont += "<span>" + " " + "</span>";
+						cont += "</span>";
+					}
+					else if(splitString == 1) {
+						var stringWithSingleQuotes = splitString[j].substring(1, splitString[j].length);
+						cont += "<span class='string'>" + '"';
+						cont += "<span class='string'>" + stringWithSingleQuotes + "</span>";
+						cont += "<span>" + "</span>";
+						cont += "</span>";
+					}
+					else if (j == splitString.length - 1) {
+						var stringWithSingleQuotes = splitString[j].substring(0, splitString[j].length - 1);
+						cont += "<span class='string'>" + stringWithSingleQuotes + "</span>";
+						cont += "<span class='string'>" + '"' + "</span>";
+					}
+					else {
 						cont += "<span class='string'>" + splitString[j] + "</span>";
-					}else if(j == 0) {
-						cont += "<span class='string'>" + splitString[j] + "</span>";
-						cont += "<span class='string'>" + " ";
-					}else {
-						console.log(tokenvalue[0]);
-						cont += "<span class='string'>" + splitString[j] + "</span>";
-						cont += "<span class='string'>" + " ";
+						cont += "<span>" + " ";
 					}
 				}
-
 			}
 
 		} else if (tokens[i].kind == "number") {
@@ -1566,7 +1617,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 		} else if (tokens[i].kind == "name") {
 			var foundkey = 0;
 			//If tokenvalue exists in the array for important words
-			if (important.indexOf(tokenvalue) !=1) {
+			if (important.indexOf(tokenvalue) != -1) {
 				foundkey = 2;
 				//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
 			} else if (keywords[tokenvalue] != null) {
@@ -1611,6 +1662,44 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
+                                coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
+                console.log()
+				switch(coloringcode) {
+					case "<html>":
+					case "</html":
+						fontcolor = "red";
+						break;
+					case "<link ":
+						fontcolor = "blue";
+						break;
+					case "<h1>":
+					case "</h1":
+						fontcolor = "darkorchid";
+						break;
+					case "<title>":
+					case "</title":
+						fontcolor = "green";
+						break;
+					case "<body>":
+					case "</body":
+						fontcolor = "#941535";
+						break;
+					case "<p>":
+					case "</p":
+						fontcolor = "#a3a300";
+						break;
+					case "<script ":
+					case "</script":
+						fontcolor = "#ff8000";
+						break;
+                    case "<header>":
+					case "</header":
+						fontcolor = "#FF1493";
+						break;
+					default: 
+						fontcolor = "#00ff";
+						break;
+				}
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
 					if (htmlArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
@@ -1631,7 +1720,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								htmlTag.push(pid);
 							}
-							cont += "&lt" + "<span id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "&lt" + "<span style='color: "+fontcolor+"' id='" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightHtml(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
 							cont += "</span>";
 							i = i + 1;
 						} else {
@@ -1648,7 +1737,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							htmlTagCount++;
 							pid = "html" + htmlTagCount + boxid;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"'  id='P" + pid + "' class='oper' onclick='popupDocumentation(this.id, \"html\");' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
@@ -1740,6 +1829,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
+
 				tokenvalue = "&lt;";
 				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
 					if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
@@ -1761,7 +1851,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
 								cssTag.push(pid);
 							}
-							cont += "&lt" + "<span id='" + pid + "' class='oper' onmouseover='highlightCss(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightCss(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
+							cont += "&lt" + "<span style='color: "+fontcolor+"'  id='" + pid + "' class='oper' onmouseover='highlightCss(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightCss(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
 							cont += "</span>";
 							i = i + 1;
 						} else {
@@ -1778,7 +1868,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 							cssTagCount++;
 							pid = "css" + cssTagCount + boxid;
 						}
-						cont += "&lt" + tokens[i + 1].val + "<span id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
+						cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
 						i = i + 3;
 					} else {
 						cont += "<span class='oper'>" + tokenvalue + "</span>";
@@ -3041,7 +3131,6 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 
-	//$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
@@ -3050,10 +3139,10 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-	}else if (basePer > 85) {
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+	}else if (basePer > 85) {
+		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 	} else {
 		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
 		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
@@ -3116,20 +3205,6 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
 	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
-
-	// makes the element dissapear when certain treshold is met
-	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
-	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
-	}
 }
 
 //---------------------------------
