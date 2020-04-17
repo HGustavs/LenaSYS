@@ -2408,7 +2408,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2420,7 +2420,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 1, 3);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2443,7 +2443,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 			alignBoxesHeight2boxes(boxValArray, 2, 3);
 		}
 
@@ -2470,46 +2470,48 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-
 			alignBoxesWidth(boxValArray, 1, 2);
-			alignBoxesHeight2boxes(boxValArray, 1, 3);
+			alignBoxesHeight4boxes(boxValArray, 1, 2);
 		}
 
 		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
 			$(boxValArray['box' + 4]['id']).height("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-
 			alignBoxesWidth(boxValArray, 2, 1);
-			alignBoxesHeight2boxes(boxValArray, 2, 3);
+			alignBoxesHeight4boxes(boxValArray, 2, 1);
 		}
 
 		if (boxid == 3) {
+			$(boxValArray['box' + 1]['id']).width("100%");
 			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 4]['id']).height("100%");
 			$(boxValArray['box' + 4]['id']).width("0%");
+			
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-
 			alignBoxesWidth(boxValArray, 3, 4);
-			alignBoxesHeight2boxes(boxValArray, 3, 2);
+			alignBoxesHeight4boxes(boxValArray, 1, 2);
 		}
 
 		if (boxid == 4) {
+			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
 			$(boxValArray['box' + 3]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-
 			alignBoxesWidth(boxValArray, 4, 3);
-			alignBoxesHeight2boxes(boxValArray, 4, 2);
+			alignBoxesHeight4boxes(boxValArray, 1, 2);
 		}
 	}
 
@@ -2849,6 +2851,7 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'auto');
 			}
 		});
+
 	} else if (templateId == 6) {
 
 		getLocalStorageProperties(templateId, boxValArray);
@@ -3089,28 +3092,28 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
 	// makes the element dissapear when certain treshold is met
 	if (basePer < 15) {
-		
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+    
+		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
 		}
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
 		}
 		
 	}else if (basePer > 85) {
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
 		}
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
 		}
 		
 	}else {
-		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
 		}
-		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
 		}
 	}
 }
