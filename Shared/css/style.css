@@ -2863,7 +2863,7 @@ span.arrow {
 #feedbackBox {
   display: none;
   position: absolute;
-  top: 0;
+  top: 50px;
   right: 0;
 }
 
