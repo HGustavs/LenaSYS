@@ -1,5 +1,4 @@
 <!-- Overlay -->
-<link rel="stylesheet" type="text/css" href="css/style.css">
 <div id="overlay" style="display: none;"></div>
 
 <div id='logoutBox' class="logoutBoxContainer" style="display: none;">

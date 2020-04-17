@@ -223,11 +223,9 @@
 			echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
 	    ?>
 </header>
-<body>
-	<?php
-		include '../Shared/logoutBox.php';
-	?>
-</body>
+<?php
+	include '../Shared/logoutBox.php';
+?>
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
 			$("#cookiemsg").css("display", "none");
