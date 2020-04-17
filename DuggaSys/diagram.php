@@ -578,7 +578,7 @@
     </div>
     <!-- The key shortcut menu. Default state is display: none; -->
     <div id="edit-shortcuts" class='loginBoxContainer shortcutsDiagram'>
-        <div class='loginBox'>
+        <div class='shortcuts-box'>
             <div class='loginBoxheader'>
                 <h3>Edit shortcuts</h3>
                 <div class='cursorPointer' onclick='closeShortcutsDialog();'>
@@ -586,17 +586,7 @@
                 </div>
             </div>
             <div class='table-wrap'>
-                <div class="importWrap">
-                    <div>
-                        <input type="file" class="import-file-button" id="importFile" accept=".txt, text/plain" />
-                        <label for="importFile" id="importLabel" class="submit-button custom-file-upload">Choose a file</label>
-                    </div>
-                    <div id="importError" class="importError">
-                        <span>Only .txt-files allowed</span>
-                    </div>
-                    <div id="importButtonWrap" class="importButtonWrap">
-                        <input type="submit" id="file-submit-button" class="submit-button uploadButton" onclick="closeShortcutsDialog();" value="Upload diagram" />
-                    </div>
+                <div id="shortcuts-wrap" class="shortcuts-wrap">
                 </div>
             </div>
         </div>
