@@ -486,8 +486,8 @@
                     <div class="form-group" data-types="7">
                         <label for="lineDirection">Line direction:</label>
                         <select id="lineDirection" data-access="lineDirection">
-                            <option value="First">First object</option>
-                            <option value="Second">Second object</option>
+                            <option value="First" id="First">First object</option>
+                            <option value="Second" id = "Second">Second object</option>
                         </select>
                     </div>
                     <div class="form-group" data-types="4,7">
