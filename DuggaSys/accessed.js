@@ -664,8 +664,7 @@ function mouseDown(e) {
 function mouseUp(e) {
 	// if the target of the click isn't the container nor a descendant of the container
 	if (typeof(activeElement) !== "undefined" && typeof(e.target) !== "undefined") {
-		var checkboxes = $(activeElement).find(".checkboxes");
-		checkboxes = activeElement.parentElement.lastChild;
+		var checkboxes = activeElement.parentElement.lastChild;
 		if (!checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
 			updateAndCloseGroupDropdown(checkboxes);
 		}
