@@ -2723,6 +2723,17 @@ function resetBoxes(boxid) {
 		$(boxValArray['box' + 3]['id']).height("50%");
 		$(boxValArray['box' + 4]['id']).height("50%");
 	}
+
+	if (templateid == 6) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).height("33.3%");
+		$(boxValArray['box' + 3]['id']).height("33.3%");
+		$(boxValArray['box' + 4]['id']).height("33.3%");
+	}
 }
 
 //-----------------------------------------------------------------------------
