@@ -4791,6 +4791,7 @@ only screen and (max-device-width: 320px) {
   display: inline-block;
   width: 24px;
   height: 24px;
+  padding-top: 8px;
 }
 
 /* FAB scaling transition */
