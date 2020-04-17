@@ -425,6 +425,17 @@ function Symbol(kindOfSymbol) {
             points[this.centerPoint].y = y1 + hh;
         }
     }
+    //--------------------------------------------------------------------
+    // resizeUMLToMinimum: Resizes an UML Symbol to the minimum Width and Height values
+    //--------------------------------------------------------------------
+
+    this.resizeUMLToMinimum = function() {
+
+        //console.log("Resized");
+        points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
+        points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+
+    }
 
     //--------------------------------------------------------------------
     // sortConnector: Sorts the connector
