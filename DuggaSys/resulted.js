@@ -1472,3 +1472,165 @@ function hideSSN(ssn){
 	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
 	return hiddenSSN;
 }
+
+
+function compare(firstCell, secoundCell) {
+	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
+	let status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+	let val = 0;
+	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
+	var firstCellTemp;
+	var secoundCellTemp;
+	var sizeTemp = '{"';
+    if(typeof firstCell === 'object' && col.includes("FnameLname")) {
+		// "FnameLname" is comprised of two separately sortable sub-columns,
+		// if one of them is the sort-target, replace col with the subcolumn
+		if(col == "FnameLname"){
+			col = sortableTable.currentTable.getNameColumn();
+		}
+		// now check for matching columns with the potentially replaced name
+		if (col == "Fname") {
+			//Convert to json object
+			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
+				firstCellTemp = firstCell.firstname;
+				secoundCellTemp = secoundCell.firstname;
+			} else {
+				firstCell = JSON.parse(firstCell.firstname);
+				secoundCell = JSON.parse(secoundCell.firstname);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.firstname)[0];
+				secoundCellTemp = Object.values(secoundCell.firstname)[0];
+			}
+		} else if (col == "Lname") {
+			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
+				firstCellTemp = firstCell.lastname;
+				secoundCellTemp = secoundCell.lastname;
+			} else {
+				firstCell = JSON.parse(firstCell.lastname);
+				secoundCell = JSON.parse(secoundCell.lastname);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.lastname)[0];
+				secoundCellTemp = Object.values(secoundCell.lastname)[0];
+			}
+		}
+		firstCellTemp = $('<div/>').html(firstCellTemp).text();
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		if (status == 0 || status == 2 || status == 4) {
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+		} else {
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		}
+		//Check if the cell is a valid cell in the table.
+	} else if (typeof firstCell === 'object' && col.includes("lid")) {
+		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
+			firstCellTemp = firstCell.grade;
+			secoundCellTemp = secoundCell.grade;
+		} else {
+			firstCell = JSON.parse(firstCell.grade);
+			secoundCell = JSON.parse(secoundCell.grade);
+			//Get the first letter from the value.
+			firstCellTemp = Object.values(firstCell.grade)[0];
+			secoundCellTemp = Object.values(secoundCell.grade)[0];
+		}
+		firstCellTemp = $('<div/>').html(firstCellTemp).text();
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		if (status == 0) {
+			//Ascending grade
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		} else if (status == 1) {
+			//descending grades
+			if(secoundCellTemp !== "" && firstCellTemp !== "" && secoundCellTemp !== "0" && firstCellTemp !== "0" ){
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			} else if((secoundCellTemp === "" || secoundCellTemp === "0") && (firstCellTemp !== "" || firstCellTemp !== "0")){
+				val = 1
+			} else if((firstCellTemp === "" || firstCellTemp === "0") && (secoundCellTemp !== "" || secoundCellTemp !== "0")){
+				val = -1
+			}
+		} else if (status == 2) {
+			//pending grades
+			if(secoundCellTemp === "0" && firstCellTemp !== "0"){
+				val = -1;
+			} else if(secoundCellTemp !== "0" && firstCellTemp === "0" || secoundCellTemp === ""){
+				val = 1;			 
+
+			}
+		}
+	} else if (colOrder.includes(col)) {
+		//Check if the cells contains a date object.
+		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
+			firstCellTemp = firstCell;
+			secoundCellTemp = secoundCell;
+		} else {
+			//Check if any cell is null.
+			if (firstCell === null || secoundCell === null) {
+				firstCellTemp = firstCell;
+				secoundCellTemp = secoundCell;
+			} else if (typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp)) && (col.includes("filesize"))) {
+				tempTemp1 = firstCell.replace(/\D/g,'');
+				tempTemp2 = secoundCell.replace(/\D/g,'');
+				firstCellTemp = parseInt(tempTemp1, 10);
+				secoundCellTemp = parseInt(tempTemp2, 10);
+			} else {
+				//Convert to json object
+				if (JSON.stringify(firstCell) || JSON.stringify(secoundCell)) {
+					firstCellTemp = firstCell;
+					secoundCellTemp = secoundCell;
+				} else {
+					firstCell = JSON.parse(firstCell);
+					secoundCell = JSON.parse(secoundCell);
+					//Get the first letter from the value.
+					firstCellTemp = Object.values(firstCell)[0];
+					secoundCellTemp = Object.values(secoundCell)[0];
+				}
+			}
+		}
+
+		if (col === "requestedpasswordchange") {
+			firstCellTemp = JSON.parse(firstCell);
+			secoundCellTemp = JSON.parse(secoundCell);
+			a = firstCellTemp.requested;
+			b = secoundCellTemp.requested;
+			if (status == 0) {
+				a > b ? val = 1 : a < b ? val = -1 : val = 0;
+			} else {
+				a < b ? val = 1 : a > b ? val = -1 : val = 0;
+			}
+			return val;
+		}
+
+		if(!isNaN(firstCellTemp) && !isNaN(secoundCellTemp)) {
+			if ((status % 2) == 0) {
+				val = firstCellTemp < secoundCellTemp;
+				if(val) {
+					val = 1;
+				}else{
+					val = -1;
+				}
+			} else {
+				val = secoundCellTemp < firstCellTemp;
+				if(val){
+					val = 1;
+				}else{
+					val = -1;
+				}
+			}
+		} else if (status == 0) {
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+		} else {
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		}
+	} else {
+		if ((status % 2) == 0) {
+			val = firstCellTemp < secoundCell;
+		} else {
+			val = secoundCell < firstCellTemp;
+		}
+	}
+
+	return val;
+
+}
