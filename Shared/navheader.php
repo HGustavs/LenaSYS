@@ -146,7 +146,7 @@
 			}
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
-					echo "<td id='select' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
+					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
 					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
@@ -204,7 +204,7 @@
   					echo   "</span>";
 						echo "</td>";
 						echo "</td>";
-            echo "<td id='menuHook' class='navSpacer'>";
+            echo "<td id='menuHook' class='navSpacer' >";
 			}
 	
 			if(checklogin()) {

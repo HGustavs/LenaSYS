@@ -3181,7 +3181,7 @@ span.arrow {
   position: absolute;
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 #sortOptions {
