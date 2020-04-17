@@ -39,7 +39,7 @@ function Symbol(kindOfSymbol) {
     this.isRelation = false;
     this.isLine = false;
     this.isRecursiveLine = false;
-    this.pointsAtSamePosition = false;
+		this.pointsAtSamePosition = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -1964,6 +1964,9 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawText = function(x1, y1, x2, y2) {
+			//console.log(document.getElementById("commentCheck").checked)
+			if(hideComment == false || this.properties['isComment'] == 'false'){
+				
         var midx = x1 + ((x2-x1)/2);
         var midy = y1 + ((y2-y1)/2);
         ctx.beginPath();
@@ -1983,7 +1986,8 @@ function Symbol(kindOfSymbol) {
         ctx.textAlign = this.textAlign;
         for (var i = 0; i < this.textLines.length; i++) {
             ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
-        }
+				}
+			}//here you could add an extra statment to make comments look different the regular text
     }
 
     //--------------------------------------------------------------------

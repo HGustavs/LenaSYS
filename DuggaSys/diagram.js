@@ -59,7 +59,7 @@ var settings = {
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
         key_type: 'Normal',                           // Defult key type for a class.
-        isComment: 'no'                               // Used to se if text are comments and if they should be hidden.
+        isComment: "false"                            // Used to se if text are comments and if they should be hidden.
     },
 };
 
@@ -178,7 +178,8 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
-var toolbarState = currentMode.er;                   // Set default toolbar state to ER.
+var toolbarState = currentMode.er;      // Set default toolbar state to ER.
+var hideComment = false;								//Used to se if the comment marked text should be hidden(true) or shown(false)
 
 // Keyboard keys
 const backspaceKey = 8;
@@ -1636,26 +1637,16 @@ function togglesingleA4(event) {
 
 function toggleComments(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    // Switch between single and repeated
-    if (hideComments) {
-        hideComment();
-        hideComments = false;
-        setCheckbox($(".drop-down-option:contains('Show/Hide Comments')"), hideComments);
+    if (hideComment) {
+			hideComment = false;
+      setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     } else {
-        showComment();
-        hideComments = true;
-        setCheckbox($(".drop-down-option:contains('Show/Hide Comments')"), hideComments);
+			hideComment = true;
+      setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     }
     updateGraphics();
 }
 
-function hideComment(){
-  
-}
-
-function showComment(){
-
-}
 //-----------------------------------------------------------------------------------
 // When an item is selected, enable all options related to having an object selected
 //-----------------------------------------------------------------------------------
@@ -4106,14 +4097,7 @@ function getTextSize() {
     return settings.properties.sizeOftext;
 }
 
-//Returns if the text are a comment(true) or not(false)
-function isComment(){
-  if(settings.properties.isComment == yes){
-    return true;
-  }else{
-    return false;
-  }
-}
+
 //----------------------------------------------------------------------
 // setSelectedOption: used to select an option in passed select by passed value
 //----------------------------------------------------------------------
@@ -4304,7 +4288,7 @@ function setSelections(object) {
 
 function setObjectProperties() {
     for(const object of selected_objects) {
-        var groups = [];
+        let groups = [];
         if(object.kind === kind.symbol) {
             groups = getGroupsByType(object.symbolkind);
         } else if(object.kind === kind.path) {
@@ -4313,7 +4297,12 @@ function setObjectProperties() {
         groups.forEach(group => {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
-                var access = element.dataset.access.split(".");
+							console.log(element.id);
+							console.log(element.value);
+							console.log(object)
+								let access = element.dataset.access.split(".");
+								
+								//console.log(access[0]);
                 if(element.nodeName === "TEXTAREA") {
                     object[access[0]] = setTextareaText(element, object[access[0]]);
                 } else if(element.type === "range") {
@@ -4322,9 +4311,16 @@ function setObjectProperties() {
                     if(element.style.display !== "none") {
                         if(element.value === "None") element.value = "";
                         object[access[0]][0][access[1]] = element.value;
-                    }
-                } 
-                else if(access.length === 1) {
+										}
+								}else if(element.id == "commentCheck"){
+									var checkbox = document.getElementById('commentCheck');
+									if(checkbox.checked == true){
+										object[access[0]][access[1]] = element.value;
+									}else if(checkbox.checked == false){
+										object[access[0]][access[1]] = "false";
+									}
+
+								}else if(access.length === 1) {
                     object[access[0]] = element.value;
                 } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
