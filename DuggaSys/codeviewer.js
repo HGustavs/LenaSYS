@@ -2683,20 +2683,30 @@ function resetBoxes(boxid) {
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
 
-	resizeBoxes("#div2", retData["templateid"]);
+	//resizeBoxes("#div2", retData["templateid"]);
 	showCopyButtons(retData["templateid"]);
 
 	if (templateid == 1) {
-			$(boxValArray['box' + 2]['id']).width("50%");
-			$(boxValArray['box' + 1]['id']).width("50%");
-			alignBoxesWidth(boxValArray, 1, 2);
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		alignBoxesWidth(boxValArray, 1, 2);
 	}
 	
 	if (templateid == 2) {
-		$(boxValArray['box' + 2]['id']).height("50%");
+		(boxValArray['box' + 2]['id']).height("50%");
 		$(boxValArray['box' + 1]['id']).height("50%");
 		alignBoxesHeight2boxes(boxValArray, 1, 2);
-}
+	}
+
+	if (templateid == 3) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+		alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+	}
 }
 
 //-----------------------------------------------------------------------------
