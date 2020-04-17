@@ -225,7 +225,7 @@
 </header>
 <body>
 	<?php
-		include 'logoutBox.php';
+		include '../Shared/logoutBox.php';
 	?>
 </body>
 <script type="text/javascript">
