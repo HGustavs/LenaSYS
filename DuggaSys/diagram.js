@@ -1908,12 +1908,10 @@ function eraseSelectedObject(event) {
 //------------------------------------------------------
 
 function setMode(mode) {
+  cancelFreeDraw();
     uimode = mode;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
-      if(figureType == "Free") {
-          cancelFreeDraw();
-      }
       figureType = mode;
     }
 }
