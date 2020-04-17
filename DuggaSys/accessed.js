@@ -694,6 +694,10 @@ document.addEventListener("keyup", function(event)
   if (event.keyCode === 13)
   {
     // If user presses key: Enter (13)
+    // if group dropdown is open, update and close it
+    if (typeof(activeElement) !== "undefined")
+    	updateAndCloseGroupDropdown(activeElement.parentElement.lastChild);
+    // update current cell
     updateCellInternal();
   } else if (event.keyCode === 27) {
     // If user presses key: Escape (27)
