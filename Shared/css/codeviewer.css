@@ -1052,9 +1052,7 @@
         color:black;
         margin-top: 50px;
     }
-    #div2 {
-        top: 80px;
-    }
+
     #burgerMenu {
         position: absolute;
         z-index: 9999;

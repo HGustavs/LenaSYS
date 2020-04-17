@@ -821,6 +821,7 @@ function createboxmenu(contentid, boxid, type) {
 		if (type == "CODE") {
 			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
+		
 
 		str += '</tr></table>';
 		boxmenu.innerHTML = str;
@@ -885,7 +886,7 @@ function highlightHtml(otherTag, thisTag) {
 	document.getElementById(thisTag).classList.toggle("html");
 }	
 
-//Array containing HTML attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
+//Arrays containing HTML attributes and event-attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
 htmlAttrArray = new Array('action', 'class', 'disabled', 'href', 'id', 'rel', 'src', 'style', 'title', 'type');
 htmlEventArray = new Array('onclick', 'onmouseout', 'onmouseleave', 'onmouseover', 'onmouseenter','onload', 'onkeydown','onkeyup','onkeypress','oninput');
 
@@ -917,6 +918,8 @@ function popupDocumentation(id, lang) {
 	}else if(lang == "multi"){
 		if(htmlAttrArray.includes(id)){
 			url = "https://www.w3schools.com/tags/att_"+id+".asp";
+		}else if(htmlEventArray.includes(id)){
+			url = "https://www.w3schools.com/tags/ev_"+id+".asp";
 		}else{
 			url = "https://www.php.net/results.php?q="+id+"&l=en&p=all";
 		}
@@ -2249,24 +2252,23 @@ function minimizeBoxes(boxid) {
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
-	document.querySelector('#box'+boxid+'wrapper #copyClipboard').style.display = 'none';
 
 	getLocalStorageProperties(boxValArray);
 
 	//For template 1
 	if (templateid == 1) {
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 1, 2);
 		}
 
 		if (boxid == 2) {
-			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).width("100%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 		}
 	}
 	//for template 2
@@ -2670,7 +2672,7 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
-//hide maximizeButton
+//hide minimizeButton
 function hideMinimizeButton() {
 	var templateid = retData['templateid'];
 	if (templateid > 2) {
@@ -3090,7 +3092,7 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
 	// makes the element dissapear when certain treshold is met
 	if (basePer < 15) {
-		
+    
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
 		}
@@ -3179,14 +3181,26 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3277,16 +3291,32 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3317,16 +3347,32 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer > 85) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer < 15) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3430,18 +3476,38 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box5').className == 'box codebox'){
+			document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box5').className == 'box codebox'){
+			document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
