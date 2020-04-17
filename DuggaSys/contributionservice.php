@@ -69,9 +69,9 @@ if(strcmp($opt,"get")==0) {
 		$firstname="UNK";
 	}
 
-	$log_uuid = getOP('log_uuid');
-	$info=$opt." ".$courseid." ".$coursename;
-	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "contributionservice.php",$userid,$info);
+	// $log_uuid = getOP('log_uuid');
+	// $info=$opt." ".$courseid." ".$coursename;
+	// logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "contributionservice.php",$userid,$info);
 
 	//$debug=print_r($_SESSION,true);
 
