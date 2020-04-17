@@ -224,7 +224,7 @@
 	    ?>
 </header>
 <?php
-	include '../Shared/logoutBox.php';
+	include '../Shared/logoutbox.php';
 ?>
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
