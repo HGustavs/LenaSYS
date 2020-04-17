@@ -25,7 +25,16 @@
         $firstname = "UNK";
     }
 
+    $cid=$_SESSION['courseid'];
     
+    $opt = getOP('opt');
+    $coursename=getOP('coursename');
+    $visibility=getOP('visib');
+    $versid=getOP('versid');
+
+    $log_uuid = getOP('log_uuid');
+    $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
+    logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "diagramservice.php",$userid,$info);
 
     $log_db = new PDO('sqlite:../../GHdataD.db');
     $gituser = $loginname;
@@ -100,4 +109,6 @@
     } while ($weekno < 11);
     $array = array('debug' => $debug, 'weeks' => $weeks);
     echo json_encode($array);
+
+    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "diagramservice.php",$userid,$info);
 ?>
