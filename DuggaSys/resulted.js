@@ -625,25 +625,18 @@ function returnedResults(data) {
 
 		if (data['dugganame'] !== "") {
 			// Display student submission
-			if(data['duggafeedback']==""){
-				var doc = document.getElementById("teacherFeedbackTable");
-				console.log(doc);
-				var notes = null;
-				for (var i = 0; i < doc.childNodes.length; i++) {
-					console.log("towdy");
-    				if (doc.childNodes[i].className == "list feedback-list") {
-						 notes = doc.childNodes[i];
-						 console.log("howdy");
-						 notes.style.display="none";
-      				break;
-					   }
-				}
-				
-				
-			}
 			$.getScript(data['dugganame'], function () {
 				$("#MarkCont").html(data['duggapage']);
 				showFacit(data['duggaparam'], data['useranswer'], data['duggaanswer'], data['duggastats'], data['files'], data['moment'], data['duggafeedback']);
+				if(data['duggafeedback'] == ""){
+                    var doc = document.getElementById("teacherFeedbackTable");
+                    for (var i = 0; i < doc.childNodes.length; i++) {
+                   		if (doc.childNodes[i].className == "list feedback-list") {
+                			doc.childNodes[i].style.display = "none";
+                   			break;
+						}
+					}
+                }
 			});
 			$("#resultpopover").css("display", "block");
 		} else {
