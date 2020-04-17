@@ -303,10 +303,19 @@ function Symbol(kindOfSymbol) {
             var attrHeight, opHeight;
             if(this.attributes.length > 0) {
                 //Height of text + padding
-                attrHeight = (this.attributes.length*14)+35;
+                attrHeight = (this.attributes.length*this.properties.textSize)+35;
+                if(this.properties['sizeOftext'] == 'Tiny' || this.properties['sizeOftext'] == 'Small'){
+                    attrHeight = (this.attributes.length*this.properties.textSize)+35;
+                }
+                else if (this.properties['sizeOftext'] == 'Medium'){
+                    attrHeight = (this.attributes.length*this.properties.textSize)+50;
+                }
+                else if (this.properties['sizeOftext'] == 'Large'){
+                    attrHeight = (this.attributes.length*this.properties.textSize)+100;
+                } 
             }
             if(this.operations.length > 0) {
-                opHeight = (this.operations.length*14)+15;
+                opHeight = (this.operations.length*this.properties.textSize)+15;
             }
             this.minHeight = attrHeight + opHeight;
 
