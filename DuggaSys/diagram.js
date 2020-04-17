@@ -4080,20 +4080,6 @@ function toggleCameraView(){
     activateMovearound();
 }
 
-//----------------------------------------------------------------------
-// clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
-//----------------------------------------------------------------------
-
-function clickOutsideDialogMenu(ev) {
-    $(document).mousedown(function (ev) {
-        var container = $("#appearance");
-        if (!container.is(ev.target) && container.has(ev.target).length === 0) {
-            globalappearanceMenuOpen = false;
-            toggleApperanceElement();
-        }
-    });
-}
-
 function toggleApperanceElement(show = false) {
     const appearanceElement = document.getElementById("appearance");
     if(show) {
@@ -4112,9 +4098,10 @@ function toggleApperanceElement(show = false) {
         classAppearanceOpen = false;
         textAppearanceOpen = false;
         globalappearanceMenuOpen = false;
-        $(".loginBox").draggable('destroy');
+        if($(".loginBox").data("ui-draggable")) {
+            $(".loginBox").draggable("destroy");
+        }
         hashFunction();
-        document.removeEventListener("click", clickOutsideDialogMenu);
     }
 }
 
@@ -4408,6 +4395,9 @@ function initAppearanceForm() {
             }
         });
     });
+
+    const appearanceContainer = document.getElementById("appearance");
+    appearanceContainer.addEventListener("click", clickOutsideAppearanceForm);
 }
 
 function getGroupsByType(type) {
@@ -4427,4 +4417,13 @@ function submitAppearanceForm() {
     }
     SaveState();
     toggleApperanceElement();
+}
+
+function clickOutsideAppearanceForm(e) {
+    const formContainer = document.querySelector(".loginBox");
+
+    //Close appearance if the clicked element is not a child/grand-child of formContanier
+    if(!formContainer.contains(e.target)) {
+        toggleApperanceElement();
+    }
 }
