@@ -2140,7 +2140,6 @@ function developerMode(event) {
     updateGraphics();
 }
 
-var refreshedPage = true;
 function setModeOnRefresh() {
     const tempToolbarState = localStorage.getItem("toolbarState");
     if(tempToolbarState !== null) {
@@ -2335,53 +2334,21 @@ function decimalPrecision(value, precision) {
 //--------------------------------------------------------------------------------------------
 
 function reWrite() {
+    const coordinatesElement = document.getElementById("valuesCanvas");
+    const zoomTextElement = document.getElementById("zoomV");
+
     if (developerModeActive) {
-        //We are now in developer mode
-        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-        + Math.round((zoomValue * 100)) + "%" + " </p>";
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-        document.getElementById("valuesCanvas").style.display = 'block';
-
-        //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
-        var smallerScreensDev = window.matchMedia("(max-width: 745px)");
-        if (smallerScreensDev.matches) {
-            document.getElementById("selectDiv").style.maxWidth = '30%';
-            document.getElementById("valuesCanvas").style.maxWidth = '30%';
-        } else {
-            document.getElementById("selectDiv").style.minWidth = '10%';
+        let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
+        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+            coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
-
-        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
-            document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-            + Math.round((zoomValue * 100)) + "%" + " </p>";
-            document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-            + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " )";
-            refreshedPage = false;
-        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
-              document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-              + Math.round((zoomValue * 100)) + "%" + " </p>";
-              document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-              + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
-              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
-              + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-          }
+        coordinatesElement.innerHTML = `${coordinatesText}</p>`;
+        coordinatesElement.style.display = "block";
     } else {
-        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-        + Math.round((zoomValue * 100)) + "%" + "   </p>";
-        document.getElementById("valuesCanvas").style.display = 'none';
-
-        //If you're using smaller screens then the zoom-bar will scale.
-        var smallerScreens = window.matchMedia("(max-width: 900px)");
-        if (smallerScreens.matches) {
-            document.getElementById("selectDiv").style.maxWidth = '50%';
-        } else {
-            document.getElementById("selectDiv").style.minWidth = '10%';
-        }
+        coordinatesElement.style.display = "none";
     }
+
+    zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
     enableSelectedItemOptions();
 }
 
