@@ -74,6 +74,7 @@
 
 /* BOXMENU STYLING START */
 .buttomenu2 {
+    background-color: #5A5757;
     position: absolute;
     top: 0px;
     width: calc(100%);
@@ -598,6 +599,7 @@
 }
 
 /* BOXMENU STYLING START */
+/*
 .buttomenu2Style{
 	background-color: #5A5757;
 }
@@ -627,6 +629,7 @@
   background-color: #938C8C;
     cursor: pointer;
 }
+*/
 .butto2:hover{
     background-color: #938C8C;
     cursor: pointer;
@@ -902,15 +905,15 @@
 }
 
 /* style for the maximize and reset button*/
-.maximizebtn {
+.maximizebtn, .minimizebtn, .resetbtn {
     color: #DFF0D8;
-    width: 75px;
+    width: 50px;
     padding-right: 3px;
     text-align: center;
     font-size: 13px;
     display: table-cell !important;
 }
-
+/*
 .minimizebtn {
     color: #DFF0D8;
     width: 75px;
@@ -927,13 +930,7 @@
     font-size: 13px;
     display: table-cell !important;
 }
-
-
-
-
-
-
-
+*/
 
 /* style for the copy button and copy notification*/
 .copybutton {
