@@ -4686,6 +4686,9 @@ function getGroupsByType(type) {
 
 //Shoud simulate button click or enter click in appearance menu to save and close
 function submitAppearanceForm() {
+    if(typeof diagram[lastSelectedObject] !== 'undefined'){
+        diagram[lastSelectedObject].resizeUMLToMinHeight();
+    }
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
     } else {
