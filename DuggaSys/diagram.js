@@ -58,7 +58,8 @@ var settings = {
         textSize: '14',                               // 14 pixels text size is default.
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
-        key_type: 'Normal'                            // Defult key type for a class.
+        key_type: 'Normal',                           // Defult key type for a class.
+        isComment: false	                          // Used to se if text are comments and if they should be hidden.
     },
 };
 
@@ -119,8 +120,6 @@ var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
 var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
-var widthWindow;                    // The width on the users screen is saved is in this var.
-var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
@@ -179,44 +178,272 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
-var toolbarState = currentMode.er;                   // Set default toolbar state to ER.
+var toolbarState = currentMode.er;      // Set default toolbar state to ER.
+var hideComment = false;				//Used to se if the comment marked text should be hidden(true) or shown(false)
+
+// Default keyboard keys
+const defaultBackspaceKey = 8;
+const defaultEnterKey = 13;
+const defaultShiftKey = 16;
+const defaultCtrlKey = 17;
+const defaultAltKey = 18;
+const defaultEscapeKey = 27;
+const defaultSpacebarKey = 32;
+const defaultLeftArrow = 37;
+const defaultUpArrow = 38;
+const defaultRightArrow = 39;
+const defaultDownArrow = 40;
+const defaultDeleteKey = 46;
+const defaultKey0 = 48;
+const defaultKey1 = 49;
+const defaultKey2 = 50;
+const defaultKey4 = 52;
+const defaultAKey = 65;
+const defaultCKey = 67;
+const defaultDKey = 68;
+const defaultEKey = 69;
+const defaultFKey = 70;
+const defaultLKey = 76;
+const defaultMKey = 77;
+const defaultNKey = 78;
+const defaultOKey = 79;
+const defaultRKey = 82;
+const defaultTKey = 84;
+const defaultVKey = 86;
+const defaultZKey = 90;
+const defaultYKey = 89;
+const defaultXKey = 88;
+const defaultWindowsKey = 91;
+const defaultNum1 = 97;
+const defaultNum2 = 98;
+const defaultLessThanKey = 226;
+//Keybinding variables                       
+isBindingKey = false;                        // Is used when binding keys
+keyBeingBound = null;
 
 // Keyboard keys
-const backspaceKey = 8;
-const enterKey = 13;
-const shiftKey = 16;
-const ctrlKey = 17;
-const altKey = 18;
-const escapeKey = 27;
-const spacebarKey = 32;
-const leftArrow = 37;
-const upArrow = 38;
-const rightArrow = 39;
-const downArrow = 40;
-const deleteKey = 46;
-const key0 = 48;
-const key1 = 49;
-const key2 = 50;
-const key4 = 52;
-const aKey = 65;
-const cKey = 67;
-const dKey = 68;
-const eKey = 69;
-const fKey = 70;
-const lKey = 76;
-const mKey = 77;
-const nKey = 78;
-const oKey = 79;
-const rKey = 82;
-const tKey = 84;
-const vKey = 86;
-const zKey = 90;
-const yKey = 89;
-const xKey = 88;
-const windowsKey = 91;
-const num1 = 97;
-const num2 = 98;
-const lessThanKey = 226;
+var keyMap = { //rebindable keys format is (keyName, default-value)
+    backspaceKey : defaultBackspaceKey,
+    enterKey : defaultEnterKey,
+    shiftKey : defaultShiftKey,
+    ctrlKey : defaultCtrlKey,
+    altKey : defaultAltKey,
+    escapeKey : defaultEscapeKey,
+    spacebarKey : defaultSpacebarKey,
+    leftArrow : defaultLeftArrow,
+    upArrow : defaultUpArrow,
+    rightArrow : defaultRightArrow,
+    downArrow : defaultDownArrow,
+    deleteKey : defaultDeleteKey,
+    key0 : defaultKey0,
+    key1 : defaultKey1,
+    key2 : defaultKey2,
+    key4 : defaultKey4,
+    aKey : defaultAKey,
+    cKey : defaultCKey,
+    dKey : defaultDKey,
+    eKey : defaultEKey,
+    fKey : defaultFKey,
+    lKey : defaultLKey,
+    mKey : defaultMKey,
+    nKey : defaultNKey,
+    oKey : defaultOKey,
+    rKey : defaultRKey,
+    tKey : defaultTKey,
+    vKey : defaultVKey,
+    zKey : defaultZKey,
+    yKey : defaultYKey,
+    xKey : defaultXKey,
+    windowsKey : defaultWindowsKey,
+    num1 : defaultNum1,
+    num2 : defaultNum2,
+    lessThanKey : defaultLessThanKey,
+}
+
+// Map keycodes to key names
+const keyCodes = {
+    0: 'That key has no keycode',
+    3: 'break',
+    8: 'backspace / delete',
+    9: 'tab',
+    12: 'clear',
+    13: 'enter',
+    16: 'shift',
+    17: 'ctrl',
+    18: 'alt',
+    19: 'pause/break',
+    20: 'caps lock',
+    21: 'hangul',
+    25: 'hanja',
+    27: 'escape',
+    28: 'conversion',
+    29: 'non-conversion',
+    32: 'spacebar',
+    33: 'page up',
+    34: 'page down',
+    35: 'end',
+    36: 'home',
+    37: 'left arrow',
+    38: 'up arrow',
+    39: 'right arrow',
+    40: 'down arrow',
+    41: 'select',
+    42: 'print',
+    43: 'execute',
+    44: 'Print Screen',
+    45: 'insert',
+    46: 'delete',
+    47: 'help',
+    48: '0',
+    49: '1',
+    50: '2',
+    51: '3',
+    52: '4',
+    53: '5',
+    54: '6',
+    55: '7',
+    56: '8',
+    57: '9',
+    58: ':',
+    59: 'semicolon (firefox), equals',
+    60: '<',
+    61: 'equals (firefox)',
+    63: 'ß',
+    64: '@ (firefox)',
+    65: 'a',
+    66: 'b',
+    67: 'c',
+    68: 'd',
+    69: 'e',
+    70: 'f',
+    71: 'g',
+    72: 'h',
+    73: 'i',
+    74: 'j',
+    75: 'k',
+    76: 'l',
+    77: 'm',
+    78: 'n',
+    79: 'o',
+    80: 'p',
+    81: 'q',
+    82: 'r',
+    83: 's',
+    84: 't',
+    85: 'u',
+    86: 'v',
+    87: 'w',
+    88: 'x',
+    89: 'y',
+    90: 'z',
+    91: 'Windows Key / Left ⌘ / Chromebook Search key',
+    92: 'right window key',
+    93: 'Windows Menu / Right ⌘',
+    95: 'sleep',
+    96: 'numpad 0',
+    97: 'numpad 1',
+    98: 'numpad 2',
+    99: 'numpad 3',
+    100: 'numpad 4',
+    101: 'numpad 5',
+    102: 'numpad 6',
+    103: 'numpad 7',
+    104: 'numpad 8',
+    105: 'numpad 9',
+    106: 'multiply',
+    107: 'add',
+    108: 'numpad period (firefox)',
+    109: 'subtract',
+    110: 'decimal point',
+    111: 'divide',
+    112: 'f1',
+    113: 'f2',
+    114: 'f3',
+    115: 'f4',
+    116: 'f5',
+    117: 'f6',
+    118: 'f7',
+    119: 'f8',
+    120: 'f9',
+    121: 'f10',
+    122: 'f11',
+    123: 'f12',
+    124: 'f13',
+    125: 'f14',
+    126: 'f15',
+    127: 'f16',
+    128: 'f17',
+    129: 'f18',
+    130: 'f19',
+    131: 'f20',
+    132: 'f21',
+    133: 'f22',
+    134: 'f23',
+    135: 'f24',
+    136: 'f25',
+    137: 'f26',
+    138: 'f27',
+    139: 'f28',
+    140: 'f29',
+    141: 'f30',
+    142: 'f31',
+    143: 'f32',
+    144: 'num lock',
+    145: 'scroll lock',
+    151: 'airplane mode',
+    160: '^',
+    161: '!',
+    162: '؛ (arabic semicolon)',
+    163: '#',
+    164: '$',
+    165: 'ù',
+    166: 'page backward',
+    167: 'page forward',
+    168: 'refresh',
+    169: 'closing paren (AZERTY)',
+    170: '*',
+    171: '~ + * key',
+    172: 'home key',
+    173: 'minus (firefox), mute/unmute',
+    174: 'decrease volume level',
+    175: 'increase volume level',
+    176: 'next',
+    177: 'previous',
+    178: 'stop',
+    179: 'play/pause',
+    180: 'e-mail',
+    181: 'mute/unmute (firefox)',
+    182: 'decrease volume level (firefox)',
+    183: 'increase volume level (firefox)',
+    186: 'semi-colon / ñ',
+    187: 'equal sign',
+    188: 'comma',
+    189: 'dash',
+    190: 'period',
+    191: 'forward slash / ç',
+    192: 'grave accent / ñ / æ / ö',
+    193: '?, / or °',
+    194: 'numpad period (chrome)',
+    219: 'open bracket',
+    220: 'back slash',
+    221: 'close bracket / å',
+    222: 'single quote / ø / ä',
+    223: '`',
+    224: 'left or right ⌘ key (firefox)',
+    225: 'altgr',
+    226: 'left back slash',
+    230: 'GNOME Compose Key',
+    231: 'ç',
+    233: 'XF86Forward',
+    234: 'XF86Back',
+    235: 'non-conversion',
+    240: 'alphanumeric',
+    242: 'hiragana/katakana',
+    243: 'half-width/full-width',
+    244: 'kanji',
+    251: 'unlock trackpad (Chrome/Edge)',
+    255: 'toggle touchpad',
+  };
 
 // Mouse clicks
 const leftMouseClick = 0;
@@ -225,6 +452,9 @@ const rightMouseClick = 2;
 
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
+
+// Checking if on mobile browser. 
+const isMobile = /Mobi/.test(window.navigator.userAgent);
 
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
@@ -239,7 +469,6 @@ function init() {
     canvasSize(); 
     loadDiagram(); 
     setModeOnRefresh(); 
-    initToolbox(); 
     initAppearanceForm();
     updateGraphics(); 
 }
@@ -388,21 +617,28 @@ function resetToolButtonsPressed() {
 
 function keyDownHandler(e) {
     var key = e.keyCode;
-    if(key == escapeKey && appearanceMenuOpen) {
+    if(isBindingKey){
+        keyMap[keyBeingBound] = e.which;
+        drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
+        isBindingKey = false;
+        keyBeingBound = null;
+        return;
+    }
+    if(key == keyMap.escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
-    } else if(key == enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
+    } else if(key == keyMap.enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
         submitAppearanceForm();
     }
     if (appearanceMenuOpen) return;
-    if ((key == deleteKey || key == backspaceKey)) {
+    if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
         eraseSelectedObject(event);
         SaveState();
     }  
     if(enableShortcuts){ // Only enter if keyboard shortcuts are enabled
-        if (key == spacebarKey) {
+        if (key == keyMap.spacebarKey) {
             // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
             if (!spacebarKeyPressed) {
-            spacebarKeyPressed = true;
+                spacebarKeyPressed = true;
             } else {
                 spacebarKeyPressed = false;
             }
@@ -417,21 +653,21 @@ function keyDownHandler(e) {
                 deactivateMovearound();
             }
             updateGraphics();
-        } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) {
+        } else if((key == keyMap.upArrow || key == keyMap.downArrow || key == keyMap.leftArrow || key == keyMap.rightArrow) && !shiftIsClicked) {
             arrowKeyPressed(key);
             if (uimode == "MoveAround") {
                 moveCanvasView(key);
             }
-        } else if(key == ctrlKey || key == windowsKey) {
+        } else if(key == keyMap.ctrlKey || key == keyMap.windowsKey) {
             ctrlIsClicked = true;
-        } else if (key == shiftKey) {
+        } else if (key == keyMap.shiftKey) {
             shiftIsClicked = true;
-        } else if(key == altKey) {
+        } else if(key == keyMap.altKey) {
             altIsClicked = true;
-        } else if(ctrlIsClicked && key == cKey) {
+        } else if(ctrlIsClicked && key == keyMap.cKey) {
             //Ctrl + c
             fillCloneArray();
-        } else if (ctrlIsClicked && key == vKey ) {
+        } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
             var temp = [];
             for (var i = 0; i < cloneTempArray.length; i++) {
@@ -447,18 +683,18 @@ function keyDownHandler(e) {
             updateGraphics();
             SaveState();
         }
-        else if (key == zKey && ctrlIsClicked) undoDiagram(event);
-        else if (key == yKey && ctrlIsClicked) redoDiagram(event);
-        else if (key == aKey && ctrlIsClicked) {
+        else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
+        else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
+        else if (key == keyMap.aKey && ctrlIsClicked) {
             e.preventDefault();
             for (var i = 0; i < diagram.length; i++) {
                 selected_objects.push(diagram[i]);
                 diagram[i].targeted = true;
             }
             updateGraphics();
-        } else if(key == ctrlKey || key == windowsKey) {
+        } else if(key == keyMap.ctrlKey || key == keyMap.windowsKey) {
             ctrlIsClicked = true;
-        } else if (key == enterKey) {
+        } else if (key == keyMap.enterKey) {
             if (modeSwitchDialogActive) {
                 // if the cancel button is focused then trigger that
                 if (document.activeElement.id == "modeSwitchButtonCancel") {
@@ -467,47 +703,47 @@ function keyDownHandler(e) {
                 modeSwitchConfirmed(true);
                 }
             }
-        } else if (key == escapeKey) {
+        } else if (key == keyMap.escapeKey) {
             cancelFreeDraw();
             deselectObjects();
 
 
             if (modeSwitchDialogActive) modeSwitchConfirmed(false);
-        } else if ((key == key1 || key == num1) && shiftIsClicked){
+        } else if ((key == keyMap.key1 || key == keyMap.num1) && shiftIsClicked){
             moveToFront(event);
-        } else if ((key == key2 || key == num2) && shiftIsClicked){
+        } else if ((key == keyMap.key2 || key == keyMap.num2) && shiftIsClicked){
             moveToBack(event);
-        } else if (shiftIsClicked && key == lKey) {
+        } else if (shiftIsClicked && key == keyMap.lKey) {
         document.getElementById("linebutton").click();
-        } else if (shiftIsClicked && key == aKey && targetMode == "ER") {
+        } else if (shiftIsClicked && key == keyMap.aKey && targetMode == "ER") {
         document.getElementById("attributebutton").click();
-        } else if (shiftIsClicked && key == eKey && targetMode == "ER") {
+        } else if (shiftIsClicked && key == keyMap.eKey && targetMode == "ER") {
         document.getElementById("entitybutton").click();
-        } else if (shiftIsClicked && key == rKey && targetMode == "ER") {
+        } else if (shiftIsClicked && key == keyMap.rKey && targetMode == "ER") {
         document.getElementById("relationbutton").click();
-        } else if (shiftIsClicked && key == cKey && targetMode == "UML") {
+        } else if (shiftIsClicked && key == keyMap.cKey && targetMode == "UML") {
         document.getElementById("classbutton").click();
-        } else if (shiftIsClicked && key == tKey) {
+        } else if (shiftIsClicked && key == keyMap.tKey) {
         document.getElementById("drawtextbutton").click();
-        } else if (shiftIsClicked && key == fKey) {
+        } else if (shiftIsClicked && key == keyMap.fKey) {
         document.getElementById("drawfreebutton").click();
-        } else if (shiftIsClicked && key == dKey) {
+        } else if (shiftIsClicked && key == keyMap.dKey) {
         developerMode(event);
-        } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
+        } else if (shiftIsClicked && key == keyMap.mKey  && !modeSwitchDialogActive) {
                 toggleMode();
-        } else if (shiftIsClicked && key == xKey) {
+        } else if (shiftIsClicked && key == keyMap.xKey) {
             lockSelected(event);
-        } else if (shiftIsClicked && key == oKey) {
+        } else if (shiftIsClicked && key == keyMap.oKey) {
             resetViewToOrigin(event);
-        } else if (shiftIsClicked && key == key4) {
+        } else if (shiftIsClicked && key == keyMap.key4) {
             toggleVirtualA4(event);
-        } else if (shiftIsClicked && key == upArrow) {
+        } else if (shiftIsClicked && key == keyMap.upArrow) {
             align(event, 'top');
-        } else if (shiftIsClicked && key == rightArrow) {
+        } else if (shiftIsClicked && key == keyMap.rightArrow) {
             align(event, 'right');
-        } else if (shiftIsClicked && key == downArrow) {
+        } else if (shiftIsClicked && key == keyMap.downArrow) {
             align(event, 'bottom');
-        } else if (shiftIsClicked && key == leftArrow) {
+        } else if (shiftIsClicked && key == keyMap.leftArrow) {
             align(event, 'left');
         }
     }
@@ -622,9 +858,9 @@ function fillCloneArray() {
 //--------------------------------------------------------------------
 
 window.onkeyup = function(event) {
-    if(event.which == ctrlKey || event.which == windowsKey) {
+    if(event.which == keyMap.ctrlKey || event.which == keyMap.windowsKey) {
         ctrlIsClicked = false;
-    } else if(event.which == shiftKey || event.which == shiftKey){
+    } else if(event.which == keyMap.shiftKey || event.which == keyMap.shiftKey){
         shiftIsClicked = false;
     }
 }
@@ -636,44 +872,42 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if (uimode != "MoveAround") {
-        //Check if snap to grid is on
-        if(snapToGrid) {
-            if(key == leftArrow) {
-                xNew = -1;
-            }else if(key == upArrow) {
-                yNew = -1;
-            }else if(key == rightArrow) {
-                xNew = 1;
-            }else if(key == downArrow) {
-                yNew = 1;
-            }
-            for(var i = 0; i < selected_objects.length; i++) {
-                // Coordinates for the top left corner of the object
-                var hoveredObjectStartTopLeftX = points[selected_objects[i].topLeft].x;
-                var hoveredObjectStartTopLeftY = points[selected_objects[i].topLeft].y;
-                // Coordinates for the point to snap to
-                var hoveredObjectSnapTopLeftX = Math.round((hoveredObjectStartTopLeftX / gridSize) + xNew) * gridSize;
-                var hoveredObjectSnapTopLeftY = Math.round((hoveredObjectStartTopLeftY / gridSize) + yNew) * gridSize;
-                // Move object in grid
-                selected_objects[i].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
-            }
-        } else {
-            if(key == leftArrow) {
-                xNew = -5;
-            }else if(key == upArrow) {
-                yNew = -5;
-            }else if(key == rightArrow) {
-                xNew = 5;
-            }else if(key == downArrow) {
-                yNew = 5;
-            }
-            for(var i = 0; i < selected_objects.length; i++) {
-                selected_objects[i].move(xNew, yNew);
-            }
-        }   
-    }
-        updateGraphics();
+    //Check if snap to grid is on
+    if(snapToGrid) {
+        if(key == keyMap.leftArrow) {
+            xNew = -1;
+        }else if(key == keyMap.upArrow) {
+            yNew = -1;
+        }else if(key == keyMap.rightArrow) {
+            xNew = 1;
+        }else if(key == keyMap.downArrow) {
+            yNew = 1;
+        }
+        for(var i = 0; i < selected_objects.length; i++) {
+            // Coordinates for the top left corner of the object
+            var hoveredObjectStartTopLeftX = points[selected_objects[i].topLeft].x;
+            var hoveredObjectStartTopLeftY = points[selected_objects[i].topLeft].y;
+            // Coordinates for the point to snap to
+            var hoveredObjectSnapTopLeftX = Math.round((hoveredObjectStartTopLeftX / gridSize) + xNew) * gridSize;
+            var hoveredObjectSnapTopLeftY = Math.round((hoveredObjectStartTopLeftY / gridSize) + yNew) * gridSize;
+            // Move object in grid
+            selected_objects[i].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+        }
+    } else {
+        if(key == keyMap.leftArrow) {
+            xNew = -5;
+        }else if(key == keyMap.upArrow) {
+            yNew = -5;
+        }else if(key == keyMap.rightArrow) {
+            xNew = 5;
+        }else if(key == keyMap.downArrow) {
+            yNew = 5;
+        }
+        for(var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].move(xNew, yNew);
+        }
+    }   
+    updateGraphics();
 }
 
 //-----------------------------------------------------------------------------------
@@ -681,13 +915,13 @@ function arrowKeyPressed(key) {
 //-----------------------------------------------------------------------------------
 function moveCanvasView(key) {
   if(uimode = "MoveAround") {
-    if(key == leftArrow) {
+    if(key == keyMap.leftArrow) {
       origoOffsetX += 10;
-    }else if(key == upArrow) {
+    }else if(key == keyMap.upArrow) {
       origoOffsetY += 10;
-    }else if(key == rightArrow) {
+    }else if(key == keyMap.rightArrow) {
       origoOffsetX += -10;
-    }else if(key == downArrow) {
+    }else if(key == keyMap.downArrow) {
       origoOffsetY += -10;
     }
     updateGraphics();
@@ -1226,7 +1460,8 @@ function initializeCanvas() {
     const diagramContainer = document.getElementById("diagramCanvasContainer");
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
-    const coordinatesElement = document.getElementById("valuesCanvas");
+    const zoomRange = document.getElementById("ZoomSelect");
+
 
     canvas = document.getElementById("diagramCanvas");
     if(canvas.getContext) {
@@ -1234,9 +1469,7 @@ function initializeCanvas() {
     }
 
     zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
-
-    coordinatesElement.style.display = 'none';
-    moveButton.style.visibility = 'hidden';
+    zoomRange.value = zoomValue;
 
     moveButton.addEventListener('click', movemode, false);
     diagramContainer.addEventListener("contextmenu", e => e.preventDefault());
@@ -1248,6 +1481,26 @@ function initializeCanvas() {
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
     canvas.addEventListener('wheel', scrollZoom, false);
+  
+    drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
+
+    var dropDowns = document.getElementsByClassName("drop-down-label");
+    var i;
+    for (i = 0; i < dropDowns.length; i++) {
+        dropDowns[i].addEventListener("mouseover", clearActiveDropdownElement);
+    }
+}
+
+//--------------------------------------------------------------------
+// Clears the active element when hovering dropdown menus
+//--------------------------------------------------------------------
+
+function clearActiveDropdownElement(){
+    if (document.activeElement.className.match("menu-drop-down") || 
+    document.activeElement.className.match("drop-down-item")) {
+        document.activeElement.blur();
+    }
+
 }
 
 //--------------------------------------------------------------------
@@ -1665,9 +1918,27 @@ function togglesingleA4(event) {
     updateGraphics();
 }
 
+
+//---------------------------------------------------------------
+// Changes between Showing and hiding the texts marked as comments
+//---------------------------------------------------------------
+
+function toggleComments(event) {
+    event.stopPropagation();  // This line stops the collapse of the menu when it's clicked
+    if (hideComment) {
+		hideComment = false;
+      	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
+    } else {
+		hideComment = true;
+      	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
+    }
+    updateGraphics();
+}
+
 //----------------------------------------------------------------------------------------------------------------------------
 // When one or many items are selected/not selected, enable/disable all options related to having one or many objects selected
 //----------------------------------------------------------------------------------------------------------------------------
+
 
 function enableSelectedItemOptions() {
     const idsOverZero = ["change-appearance-item", "move-selected-front-item", "move-selected-back-item", "lock-selected-item", "delete-object-item", "group-objects-item", "ungroup-objects-item"];
@@ -1683,6 +1954,47 @@ function enableSelectedItemOptions() {
     } else {
         $("#" + idsOverOne.join(",#")).addClass("drop-down-item drop-down-item-disabled");
     }
+}
+
+//----------------------------------------------------
+// drawKeyList: Draws the list in the target element
+//----------------------------------------------------
+
+function drawKeyMap(map, target) {
+    let html = "";
+    Object.keys(map).forEach(function(key) {
+        html += `
+        <div class="shortcuts-button-wrap">
+            <button for="importFile" id="importLabel" class="custom-file-upload shortcut-keys-name">${key}</button>
+            <div for="importFile" class="submit-button custom-file-upload shortcut-keys" onclick="bindKey('${key}')">${keyCodes[map[key]]}</div>
+        </div>`
+    });
+    target.innerHTML = html;
+}
+
+//----------------------------------------------------
+// openShortcutsDialog: Opens the dialog menu for shortcuts editor
+//----------------------------------------------------
+
+function bindKey(key) {
+    isBindingKey = true;
+    keyBeingBound = key;
+}
+
+//----------------------------------------------------
+// openShortcutsDialog: Opens the dialog menu for shortcuts editor
+//----------------------------------------------------
+
+function openShortcutsDialog() {
+    $("#edit-shortcuts").css("display", "flex");
+}
+
+//------------------------------------------------------
+// closeShortcutsDialog: Closes the dialog menu for the shortcuts editor
+//------------------------------------------------------
+
+function closeShortcutsDialog() {
+    $("#edit-shortcuts").css("display", "none");
 }
 
 //----------------------------------------------------
@@ -1741,13 +2053,10 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    widthWindow = (window.innerWidth - 75);
-    heightWindow = (window.innerHeight - 95);
-    canvas.width = widthWindow;
-    canvas.height = heightWindow;
+    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    canvas.width = diagramContainer.offsetWidth
+    canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setMoveButtonPosition();
     updateGraphics();
 }
 
@@ -1857,7 +2166,7 @@ function eraseObject(object) {
         // lines
         } else {
             diagram.filter(
-                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation)
+                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml)
                     .filter(symbol =>   symbol.hasConnector(object.topLeft)
                                      && symbol.hasConnector(object.bottomRight))
                     .forEach(symbol => {
@@ -1865,7 +2174,7 @@ function eraseObject(object) {
                         symbol.removePointFromConnector(object.bottomRight);
                     });
 
-            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation);
+            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml);
             // Check if the line has a common point with a centerpoint of attributes or relations.
             var removeTopleft = attributesAndRelations
                         .filter(symbol => symbol.centerPoint == object.topLeft
@@ -1908,12 +2217,10 @@ function eraseSelectedObject(event) {
 //------------------------------------------------------
 
 function setMode(mode) {
+    cancelFreeDraw();
     uimode = mode;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
-      if(figureType == "Free") {
-          cancelFreeDraw();
-      }
       figureType = mode;
     }
 }
@@ -2140,7 +2447,6 @@ function developerMode(event) {
     updateGraphics();
 }
 
-var refreshedPage = true;
 function setModeOnRefresh() {
     const tempToolbarState = localStorage.getItem("toolbarState");
     if(tempToolbarState !== null) {
@@ -2335,53 +2641,23 @@ function decimalPrecision(value, precision) {
 //--------------------------------------------------------------------------------------------
 
 function reWrite() {
+    const coordinatesElement = document.getElementById("valuesCanvas");
+    const zoomTextElement = document.getElementById("zoomV");
+
     if (developerModeActive) {
-        //We are now in developer mode
-        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-        + Math.round((zoomValue * 100)) + "%" + " </p>";
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-        document.getElementById("valuesCanvas").style.display = 'block';
-
-        //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
-        var smallerScreensDev = window.matchMedia("(max-width: 745px)");
-        if (smallerScreensDev.matches) {
-            document.getElementById("selectDiv").style.maxWidth = '30%';
-            document.getElementById("valuesCanvas").style.maxWidth = '30%';
-        } else {
-            document.getElementById("selectDiv").style.minWidth = '10%';
+        let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
+        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+            coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
-
-        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
-            document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-            + Math.round((zoomValue * 100)) + "%" + " </p>";
-            document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-            + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " )";
-            refreshedPage = false;
-        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
-              document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-              + Math.round((zoomValue * 100)) + "%" + " </p>";
-              document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-              + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
-              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
-              + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-          }
+        coordinatesElement.innerHTML = `${coordinatesText}</p>`;
+        if (!isMobile){
+            coordinatesElement.style.display = "block";
+        }
     } else {
-        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-        + Math.round((zoomValue * 100)) + "%" + "   </p>";
-        document.getElementById("valuesCanvas").style.display = 'none';
-
-        //If you're using smaller screens then the zoom-bar will scale.
-        var smallerScreens = window.matchMedia("(max-width: 900px)");
-        if (smallerScreens.matches) {
-            document.getElementById("selectDiv").style.maxWidth = '50%';
-        } else {
-            document.getElementById("selectDiv").style.minWidth = '10%';
-        }
+        coordinatesElement.style.display = "none";
     }
+
+    zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
     enableSelectedItemOptions();
 }
 
@@ -2945,14 +3221,6 @@ const toolbarER = currentMode.er;
 const toolbarUML = currentMode.uml;
 const toolbarDeveloperMode = currentMode.dev;
 
-function initToolbox() {
-    const element = document.getElementById('diagram-toolbar');
-    element.style.top = (boundingRect.top - 37 + "px");
-    element.style.left = (boundingRect.left - 60 + "px");
-    element.style.width = (58 + "px");
-    element.style.display = "inline-block";
-}
-
 //----------------------------------------------------------------------
 // switchToolbar: function for switching the toolbar state (All, ER, UML),
 //                not sure what the numbers 0 an 3 mean
@@ -3046,7 +3314,7 @@ function zoomInMode(event) {
 
     let oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
-    localStorage.setItem("zoomValue", document.getElementById("ZoomSelect").value);
+    localStorage.setItem("zoomValue", zoomValue);
     localStorage.setItem("cameraPosX", origoOffsetX);
     localStorage.setItem("cameraPosY", origoOffsetY);
     let zoomDifference = 1 + (zoomValue - oldZoom);
@@ -3631,7 +3899,7 @@ function mouseupevt(ev) {
     delete InitPageX;
     delete InitPageY;
     // Making sure the MoveAround was not initialized by the spacebar.
-    if (uimode == "MoveAround" && !spacebarKeyPressed) {
+    if (uimode == "MoveAround" && !keyMap.spacebarKeyPressed) {
         deactivateMovearound();
         updateGraphics();
     }
@@ -4028,10 +4296,6 @@ function resize() {
     }
 }
 
-function setMoveButtonPosition() {
-    document.getElementById("moveButton").style.marginLeft = widthWindow + 4 + "px";
-}
-
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
@@ -4040,7 +4304,6 @@ function movemode(e, t) {
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
-    setMoveButtonPosition();
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
@@ -4138,6 +4401,7 @@ function getFillColor() {
 function getTextSize() {
     return settings.properties.sizeOftext;
 }
+
 
 //----------------------------------------------------------------------
 // setSelectedOption: used to select an option in passed select by passed value
@@ -4322,23 +4586,32 @@ function setSelections(object) {
     }
 
     groups.forEach(group => {
-        const elements = group.querySelectorAll("select");
+        const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
-            const access = element.dataset.access.split(".");
-            let value = "";
-            if(access[0] === "cardinality") {
-                if(element.style.display !== "none") {
-                    value = object[access[0]][access[1]];
-                }
-            } else if(access.length === 1) {
-                value = object[access[0]];
-            } else if(access.length === 2) {
-                value = object[access[0]][access[1]];
-            }
-            setSelectedOption(element, value);
+
+        	const access = element.dataset.access.split(".");
+			let value = "";
+			if(element.tagName === 'SELECT'){
+				if(access[0] === "cardinality") {
+					if(element.style.display !== "none") {
+						value = object[access[0]][0][access[1]];
+					}
+				} else if(access.length === 1) {
+					value = object[access[0]];
+				} else if(access.length === 2) {
+					value = object[access[0]][access[1]];
+				}
+				setSelectedOption(element, value);
+			}else{
+				if (element.id == "commentCheck"){
+					element.checked = object[access[0]][access[1]];
+				}
+			}
+
         });
     });
 }
+
 
 function setObjectProperties() {
     for(const object of selected_objects) {
@@ -4351,7 +4624,7 @@ function setObjectProperties() {
         groups.forEach(group => {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
-                let access = element.dataset.access.split(".");
+				let access = element.dataset.access.split(".");
                 if(element.nodeName === "TEXTAREA") {
                     object[access[0]] = setTextareaText(element, object[access[0]]);
                 } else if(element.type === "range") {
@@ -4360,9 +4633,11 @@ function setObjectProperties() {
                     if(element.style.display !== "none") {
                         if(element.value === "None") element.value = "";
                         object[access[0]][access[1]] = element.value;
-                    }
-                } 
-                else if(access.length === 1) {
+					}
+				}else if(element.id == "commentCheck"){
+					object[access[0]][access[1]] = element.checked;
+				}else if(access.length === 1) {
+
                     object[access[0]] = element.value;
                 } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
@@ -4408,6 +4683,7 @@ function getGroupsByType(type) {
     });
 }
 
+
 //Shoud simulate button click or enter click in appearance menu to save and close
 function submitAppearanceForm() {
     if(globalappearanceMenuOpen) {
@@ -4427,3 +4703,4 @@ function clickOutsideAppearanceForm(e) {
         toggleApperanceElement();
     }
 }
+

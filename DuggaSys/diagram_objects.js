@@ -40,6 +40,7 @@ function Symbol(kindOfSymbol) {
     this.isRecursiveLine = false;
     this.pointsAtSamePosition = false;
     this.UMLCustomResize = false;
+
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -56,7 +57,8 @@ function Symbol(kindOfSymbol) {
         'textSize': settings.properties.textSize,          // 14 pixels text size is default.
         'sizeOftext': settings.properties.sizeOftext,      // Used to set size of text.
         'textAlign': settings.properties.textAlign,        // Used to change alignment of free text.
-        'key_type': settings.properties.key_type           // Defult key type for a class.
+		'key_type': settings.properties.key_type,          // Defult key type for a class.
+		'isComment': settings.properties.isComment         // Used to se if text are comments and if they should be hidden.
     };
 
     //--------------------------------------------------------------------
@@ -1958,26 +1960,28 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawText = function(x1, y1, x2, y2) {
-        var midx = x1 + ((x2-x1)/2);
-        var midy = y1 + ((y2-y1)/2);
-        ctx.beginPath();
-        //draw text outline
-        if (this.targeted || this.isHovered) {
-            ctx.lineWidth = 2 * diagram.getZoomValue();
-            ctx.strokeColor = "F82";
-            //linedash only when hovered and not targeted
-            if (this.isHovered && !this.targeted) {
-                ctx.setLineDash([5, 4]);
-            }
-            ctx.rect(x1, y1, x2-x1, y2-y1);
-            ctx.stroke();
-        }
+		if(hideComment == false || this.properties['isComment'] == false){
+			var midx = x1 + ((x2-x1)/2);
+			var midy = y1 + ((y2-y1)/2);
+			ctx.beginPath();
+			//draw text outline
+			if (this.targeted || this.isHovered) {
+				ctx.lineWidth = 2 * diagram.getZoomValue();
+				ctx.strokeColor = "F82";
+				//linedash only when hovered and not targeted
+				if (this.isHovered && !this.targeted) {
+					ctx.setLineDash([5, 4]);
+				}
+				ctx.rect(x1, y1, x2-x1, y2-y1);
+				ctx.stroke();
+			}
 
-        ctx.fillStyle = this.properties['fontColor'];
-        ctx.textAlign = this.textAlign;
-        for (var i = 0; i < this.textLines.length; i++) {
-            ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
-        }
+			ctx.fillStyle = this.properties['fontColor'];
+			ctx.textAlign = this.textAlign;
+			for (var i = 0; i < this.textLines.length; i++) {
+				ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
+			}
+		}//here you could add an extra statment to make comments look different the regular text
     }
 
     //--------------------------------------------------------------------
