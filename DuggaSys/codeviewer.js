@@ -3878,7 +3878,7 @@ function showIframe(boxid,kind){
 	
 		$(".previewWindow").show();
 		$(".previewWindowContainer").css("display", "block");
-		$("#iframeFileed").attr('src', 'http://localhost/LenaSYS/DuggaSys/fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename='+retData['box'][boxid - 1][5]+'');
+		$("#iframeFileed").attr('src', 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename='+retData['box'][boxid - 1][5]+'');
 
 }
 function hideIframe(){
