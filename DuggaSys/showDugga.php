@@ -30,7 +30,7 @@
 	// Connect to database and start session
 	pdoConnect();
 
-	$cid=getOPG('cid');
+	$cid=getOPG('courseid');
 	$vers=getOPG('coursevers');
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
