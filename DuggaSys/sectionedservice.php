@@ -46,6 +46,7 @@ $grptype=getOP('grptype');
 $deadline=getOP('deadline');
 $jsondeadline = getOP('jsondeadline');
 $studentTeacher = false;
+$motd=getOP('motd');
 
 $grpmembershp="UNK";
 $unmarked = 0;
@@ -543,7 +544,7 @@ if($gradesys=="UNK") $gradesys=0;
 		$links=array();
 
 		$versions=array();
-		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
+		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -560,7 +561,8 @@ if($gradesys=="UNK") $gradesys=0;
 						'coursename' => $row['coursename'],
 						'coursenamealt' => $row['coursenamealt'],
 						'startdate' => $row['startdate'],
-						'enddate' => $row['enddate']
+						'enddate' => $row['enddate'],
+						'motd' => $row['motd']
 					)
 				);
 			}
@@ -603,7 +605,7 @@ if($gradesys=="UNK") $gradesys=0;
 			}
 
 			$versions=array();
-			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
+			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -620,7 +622,8 @@ if($gradesys=="UNK") $gradesys=0;
 							'coursename' => $row['coursename'],
 							'coursenamealt' => $row['coursenamealt'],
 							'startdate' => $row['startdate'],
-							'enddate' => $row['enddate']
+							'enddate' => $row['enddate'],
+							'motd' => $row['motd']
 						)
 					);
 				}

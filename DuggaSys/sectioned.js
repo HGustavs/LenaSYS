@@ -12,6 +12,7 @@ var xelink;
 var momentexists = 0;
 var resave = false;
 var versnme = "UNKz";
+var motd;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -229,6 +230,7 @@ function changedType(kind) {
 
 function showEditVersion() {
   $("#eversname").val(versnme);
+  $("#eMOTD").val(motd);
   $("#eversid").val(querystring['coursevers']);
   let sdate = retdata['startdate'];
   let edate = retdata['enddate'];
@@ -581,7 +583,7 @@ function returnedSection(data) {
     document.getElementById("course-coursecode").innerHTML = retdata['coursecode'];
     document.getElementById("course-coursename").innerHTML = retdata['coursename'];
     document.getElementById("course-versname").innerHTML = versionname;
-
+    
     var str = "";
 
     if (data['writeaccess']) {
@@ -597,6 +599,7 @@ function returnedSection(data) {
           bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
         if (querystring['coursevers'] == item['vers']) versnme = item['versname'];
+        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
