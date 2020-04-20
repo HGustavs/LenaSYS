@@ -203,6 +203,8 @@ if($gradesys=="UNK") $gradesys=0;
 						$query->bindParam(':groupkind', $grptype);
 					} else {
 						$query->bindValue(':groupkind', null, PDO::PARAM_STR);
+                        logUserEvent($userid,EventTypes::SectionItems,$sectname);
+
 					}
 
 
@@ -220,6 +222,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$query->bindParam(':lid', $armin[1]);
 						$query->bindParam(':pos', $armin[0]);
 						$query->bindParam(':moment', $armin[2]);
+                     
 
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
