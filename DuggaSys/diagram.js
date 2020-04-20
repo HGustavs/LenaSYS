@@ -905,8 +905,7 @@ function arrowKeyPressed(key) {
                 selected_objects[i].move(xNew, yNew);
             }
         }   
-    }
-        updateGraphics();
+    updateGraphics();
 }
 
 //-----------------------------------------------------------------------------------
