@@ -57,7 +57,7 @@ $codeLinkQuery->execute();
             </button>
         </div>
         <div class='titles' style='padding-top:10px;'>
-			<h1 style='flex:1;text-align:center;'>Files</h1>
+			<h1 style='flex:1;text-align:center;'>Files</h1>      
         </div>
         <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
             <div style='display:flex;flex-wrap:wrap;'>
@@ -296,5 +296,16 @@ $codeLinkQuery->execute();
     <p class="confirmationText" id="editedFile" >Hej</p>
     <button class="confirmationButton" onclick="closeConfirmation()">Ok</button>
 </div>
+<?php 
+            if($_GET['kind'] != null && $_GET['filename'] != null){
+                
+                loadFile("../courses/1/HTML_Ex1.html", "HTML_Ex1.html", 3);
+                
+                //loadFile('../courses/1/'+$_GET['filename'],$_GET['filename'],$_GET['kind']);
+            }         
+            else{
+               
+            }
+        ?>
 </body>
 </html>

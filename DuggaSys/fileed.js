@@ -649,25 +649,6 @@ function newUpdateFile(fileUrl, fileName, fileKind){
     
 }
 
-function listenMessage(msg) {
-    if(msg.origin.startsWith('http://localhost')){
-        var v1 = msg.data.v1;
-        var v1 = msg.data.v1;
-        var v3 = msg.data.v3;
-        var kind = msg.data.v4;
-        console.log(v1);
-        console.log(msg);
-        loadFile('../courses/1/'+v3,v3,kind);
-    }
-    
-}
-
-if (window.addEventListener) {
-    window.addEventListener("message", listenMessage, false);
-} else {
-    window.attachEvent("onmessage", listenMessage);
-}
-
 // ---------------------------------------------------
 // Event listeners for fab button
 //----------------------------------------------------
