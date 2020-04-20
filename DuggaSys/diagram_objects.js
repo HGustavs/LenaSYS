@@ -1674,7 +1674,7 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
-
+        checkLineIntersection(x1,y1,x2,y2);
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
 
@@ -2227,7 +2227,7 @@ function Symbol(kindOfSymbol) {
 //checkLineIntersection: checks if any two lines does intersect
 //--------------------------------------------------------------
 function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
-	var	lines	=	diagram.getLineObjects();
+    var	lines	=	diagram.getLineObjects();
 	var results = [];
 	for (var i = 0; i < lines.length; i++) {
 		var	line2StartX = pixelsToCanvas(points[lines[i].topLeft].x).x;

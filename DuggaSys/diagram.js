@@ -1139,6 +1139,11 @@ diagram.getLineObjects = function() {
             lines.push(diagram[i]);
         }
     }
+    for (var i = 0; i < this.length; i++) {
+        if (diagram[i].symbolkind == symbolKind.umlLine) {
+            lines.push(diagram[i]);
+        }
+    }
     return lines;
 }
 
