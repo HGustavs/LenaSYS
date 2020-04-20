@@ -2637,7 +2637,7 @@ span.arrow {
 
 #resultTable td {
   height: 1px;
-  padding: 0px;
+  padding: 0px 5px;
   border: 0px;
 }
 
@@ -2651,7 +2651,7 @@ span.arrow {
 }
 
 #accessTable td {
-  padding: 0px;
+  padding: 0px 5px;
   border-left: 2px solid #dbd0d8;
   border-right: 2px solid #dbd0d8;
 }
