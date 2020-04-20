@@ -453,6 +453,9 @@ const rightMouseClick = 2;
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
+// Checking if on mobile browser. 
+const isMobile = /Mobi/.test(window.navigator.userAgent);
+
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
 var altIsClicked = false;
@@ -2647,7 +2650,9 @@ function reWrite() {
             coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
         coordinatesElement.innerHTML = `${coordinatesText}</p>`;
-        coordinatesElement.style.display = "block";
+        if (!isMobile){
+            coordinatesElement.style.display = "block";
+        }
     } else {
         coordinatesElement.style.display = "none";
     }

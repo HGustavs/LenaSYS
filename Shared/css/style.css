@@ -4636,6 +4636,12 @@ only screen and (max-device-width: 320px) {
   display: none;
 }
 
+@media only screen and (max-width: 600){
+  #valuesCanvas {
+    display: none !important;
+  }
+}
+
 .migration-form {
   width: 100%;
   margin: 0 auto;
