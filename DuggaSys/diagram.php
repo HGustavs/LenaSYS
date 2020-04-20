@@ -224,6 +224,9 @@
                                 <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
                             <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="openShortcutsDialog(event);">Edit keyboard shortcuts</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick='disableShortcuts(event);'>Disable keyboard shortcuts</span>
                             </div>
                         </div>
@@ -561,6 +564,21 @@
                     <div id="importButtonWrap" class="importButtonWrap">
                         <input type="submit" id="file-submit-button" class="submit-button uploadButton" onclick="importFile();" value="Upload diagram" />
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- The key shortcut menu. Default state is display: none; -->
+    <div id="edit-shortcuts" class='loginBoxContainer shortcutsDiagram'>
+        <div class='shortcuts-box'>
+            <div class='loginBoxheader'>
+                <h3>Edit shortcuts</h3>
+                <div class='cursorPointer' onclick='closeShortcutsDialog();'>
+                    x
+                </div>
+            </div>
+            <div class='table-wrap'>
+                <div id="shortcuts-wrap" class="shortcuts-wrap">
                 </div>
             </div>
         </div>
