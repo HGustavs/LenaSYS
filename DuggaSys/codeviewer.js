@@ -2304,11 +2304,11 @@ function hideCopyButtons(templateid, boxid) {
 
 function showCopyButtons(templateid) {
 	var totalBoxes = getTotalBoxes(templateid);
-
+	
 	for (var i = 1; i <= totalBoxes; i++) {
-		var copyBtn = document.querySelector('#box' + i).className == 'box codebox';
-		if (!copyBtn) continue;
-		copyBtn.style.display = "table-cell";
+		if (document.querySelector('#box' + i).className == 'box codebox') {
+		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
+		}
 	}
 }
 
