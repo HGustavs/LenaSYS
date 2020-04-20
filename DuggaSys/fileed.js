@@ -356,13 +356,28 @@ function fileDownload(name, path, extension){
     div.appendChild(a);
     document.querySelector(".fileView").appendChild(div);
 }
+
+// Close the file preview window by 'x' button or ESC key ----
 function filePreviewClose(){
     var fileview = document.querySelector(".fileView");
     $(".fileViewContainer").hide();
+    $(".fileViewWindow").hide();
     while(fileview.firstChild){
         fileview.removeChild(fileview.firstChild);
     }
 }
+
+document.addEventListener('keydown', function (event) {
+    var fileview = document.querySelector(".fileView");
+    if (event.key === 'Escape') {
+      $(".fileViewContainer").hide();
+      $(".fileViewWindow").hide();
+    }
+    while(fileview.firstChild){
+        fileview.removeChild(fileview.firstChild);
+    }
+  })
+  
 //---------------------------------------------------------------
 //sortFilesByKind <- Callback function sorts the files by its kind
 //---------------------------------------------------------------
