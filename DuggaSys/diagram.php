@@ -279,6 +279,11 @@
                                     <span class="drop-down-option" onclick='toggleVirtualA4HolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
                                 </div>
                             </div>
+							<div class="drop-down-divider">
+                            </div>
+							<div class="drop-down-item" tabindex="0">
+                            	<span class="drop-down-option" onclick='toggleComments(event);'>Hide Comments</span>                       
+                            </div>
                         </div>
                     </div>
                     <div class="menu-drop-down" tabindex="0">
@@ -535,10 +540,15 @@
                     <div class="form-group" data-types="-1">
                         <label for="lineThicknessGlobal">Line thickness:</label>
                         <input type="range" id="lineThicknessGlobal" min="1" max="4" value="2" data-access="properties.lineWidth">
-                    </div>
+                    </div>	
+					<div class="form-group" data-types="6">
+						<label for="commentCheck">Comment</label>
+						<input type="checkbox" id="commentCheck" data-access="properties.isComment" />
+					</div>
                     <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
                         <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
                     </div>
+									
                 </div>
             </div>
         </div>

@@ -58,7 +58,8 @@ var settings = {
         textSize: '14',                               // 14 pixels text size is default.
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
-        key_type: 'Normal'                            // Defult key type for a class.
+        key_type: 'Normal',                           // Defult key type for a class.
+        isComment: false	                          // Used to se if text are comments and if they should be hidden.
     },
 };
 
@@ -177,7 +178,8 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
-var toolbarState = currentMode.er;                   // Set default toolbar state to ER.
+var toolbarState = currentMode.er;      // Set default toolbar state to ER.
+var hideComment = false;				//Used to se if the comment marked text should be hidden(true) or shown(false)
 
 // Default keyboard keys
 const defaultBackspaceKey = 8;
@@ -1913,9 +1915,27 @@ function togglesingleA4(event) {
     updateGraphics();
 }
 
+
+//---------------------------------------------------------------
+// Changes between Showing and hiding the texts marked as comments
+//---------------------------------------------------------------
+
+function toggleComments(event) {
+    event.stopPropagation();  // This line stops the collapse of the menu when it's clicked
+    if (hideComment) {
+		hideComment = false;
+      	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
+    } else {
+		hideComment = true;
+      	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
+    }
+    updateGraphics();
+}
+
 //----------------------------------------------------------------------------------------------------------------------------
 // When one or many items are selected/not selected, enable/disable all options related to having one or many objects selected
 //----------------------------------------------------------------------------------------------------------------------------
+
 
 function enableSelectedItemOptions() {
     const idsOverZero = ["change-appearance-item", "move-selected-front-item", "move-selected-back-item", "lock-selected-item", "delete-object-item", "group-objects-item", "ungroup-objects-item"];
@@ -4377,6 +4397,7 @@ function getTextSize() {
     return settings.properties.sizeOftext;
 }
 
+
 //----------------------------------------------------------------------
 // setSelectedOption: used to select an option in passed select by passed value
 //----------------------------------------------------------------------
@@ -4560,23 +4581,30 @@ function setSelections(object) {
     }
 
     groups.forEach(group => {
-        const elements = group.querySelectorAll("select");
+        const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
-            const access = element.dataset.access.split(".");
-            let value = "";
-            if(access[0] === "cardinality") {
-                if(element.style.display !== "none") {
-                    value = object[access[0]][0][access[1]];
-                }
-            } else if(access.length === 1) {
-                value = object[access[0]];
-            } else if(access.length === 2) {
-                value = object[access[0]][access[1]];
-            }
-            setSelectedOption(element, value);
+        	const access = element.dataset.access.split(".");
+			let value = "";
+			if(element.tagName === 'SELECT'){
+				if(access[0] === "cardinality") {
+					if(element.style.display !== "none") {
+						value = object[access[0]][0][access[1]];
+					}
+				} else if(access.length === 1) {
+					value = object[access[0]];
+				} else if(access.length === 2) {
+					value = object[access[0]][access[1]];
+				}
+				setSelectedOption(element, value);
+			}else{
+				if (element.id == "commentCheck"){
+					element.checked = object[access[0]][access[1]];
+				}
+			}
         });
     });
 }
+
 
 function setObjectProperties() {
     for(const object of selected_objects) {
@@ -4589,7 +4617,7 @@ function setObjectProperties() {
         groups.forEach(group => {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
-                let access = element.dataset.access.split(".");
+				let access = element.dataset.access.split(".");
                 if(element.nodeName === "TEXTAREA") {
                     object[access[0]] = setTextareaText(element, object[access[0]]);
                 } else if(element.type === "range") {
@@ -4598,9 +4626,10 @@ function setObjectProperties() {
                     if(element.style.display !== "none") {
                         if(element.value === "None") element.value = "";
                         object[access[0]][0][access[1]] = element.value;
-                    }
-                } 
-                else if(access.length === 1) {
+					}
+				}else if(element.id == "commentCheck"){
+					object[access[0]][access[1]] = element.checked;
+				}else if(access.length === 1) {
                     object[access[0]] = element.value;
                 } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
@@ -4646,6 +4675,7 @@ function getGroupsByType(type) {
     });
 }
 
+
 //Shoud simulate button click or enter click in appearance menu to save and close
 function submitAppearanceForm() {
     if(globalappearanceMenuOpen) {
@@ -4665,3 +4695,4 @@ function clickOutsideAppearanceForm(e) {
         toggleApperanceElement();
     }
 }
+
