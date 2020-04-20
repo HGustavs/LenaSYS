@@ -24,9 +24,8 @@ function Symbol(kindOfSymbol) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.cardinality = [
-      {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null}
-    ];
+    this.cardinality = 
+      {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null};
     this.lineDirection;
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
@@ -1450,24 +1449,24 @@ function Symbol(kindOfSymbol) {
     this.drawLine = function(x1, y1, x2, y2) {
         this.isLine = true;
         //Checks if there is cardinality set on this object
-        if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
+        if(this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].symbolKind == symbolKind.uml) {
+            if(this.cardinality.symbolKind == symbolKind.uml) {
                 var valX = x1 > x2 ? x1-15 : x1+15;
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
                 var valX2 = x2 > x1 ? x2-15 : x2+15;
-                ctx.fillText(this.cardinality[0].value, valX, valY);
-                ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
+                ctx.fillText(this.cardinality.value, valX, valY);
+                ctx.fillText(this.cardinality.valueUML, valX2, valY2);
             }
-            else if(this.cardinality[0].isCorrectSide) {
+            else if(this.cardinality.isCorrectSide) {
                 this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
-                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
             else {
                 this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
-                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
         }
 
@@ -1502,10 +1501,10 @@ function Symbol(kindOfSymbol) {
         this.properties['strokeColor'] = '#000000';
         this.properties['lineWidth'] = 2;
         //Checks if there is cardinality set on this object
-        if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
+        if(this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].symbolKind == symbolKind.uml) {
+            if(this.cardinality.symbolKind == symbolKind.uml) {
                 var valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
                 var valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
                 var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
@@ -1522,16 +1521,16 @@ function Symbol(kindOfSymbol) {
                         valX2 = x2 - 17 * diagram.getZoomValue();
                     }
                 }
-                ctx.fillText(this.cardinality[0].value, valX, valY);
-                ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
+                ctx.fillText(this.cardinality.value, valX, valY);
+                ctx.fillText(this.cardinality.valueUML, valX2, valY2);
             }
-            else if(this.cardinality[0].isCorrectSide) {
+            else if(this.cardinality.isCorrectSide) {
                 this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
-                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
             else {
                 this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
-                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
         }
 
@@ -1814,7 +1813,7 @@ function Symbol(kindOfSymbol) {
         let boxCorners = this.corners();
         let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
 
-        const cardinality = this.cardinality[0];
+        const cardinality = this.cardinality;
 
         // Correct corner e.g. top left, top right, bottom left or bottom right
         let correctCorner = getCorrectCorner(cardinality,
@@ -1832,7 +1831,7 @@ function Symbol(kindOfSymbol) {
 
             if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
                 cardinality.parentBox = diagram[i];
-                delete cardinality.parentBox.cardinality[0].parentBox;
+                delete cardinality.parentBox.cardinality.parentBox;
                 break;
             }
         }
@@ -1864,7 +1863,7 @@ function Symbol(kindOfSymbol) {
 	    }
 	    else if(side == "IncorrectSide") {
 		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[this.cardinality[0].parentBox.topLeft], points[this.cardinality[0].parentBox.bottomRight]);
+		        var correctBox = getCorners(points[this.cardinality.parentBox.topLeft], points[this.cardinality.parentBox.bottomRight]);
 		        // Determine on which side of the box the cardinality should be placed
 		        if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
 		            cardinality.axis = "X";
@@ -2102,10 +2101,10 @@ function Symbol(kindOfSymbol) {
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == symbolKind.line) {
 			// Cardinality
-			if (this.cardinality[0].value != "" && this.cardinality[0].value != null) {
-				svgPos = "x='"+this.cardinality[0].x+"' y='"+this.cardinality[0].y+"' text-anchor='middle' dominant-baseline='central'";
+			if (this.cardinality.value != "" && this.cardinality.value != null) {
+				svgPos = "x='"+this.cardinality.x+"' y='"+this.cardinality.y+"' text-anchor='middle' dominant-baseline='central'";
 				svgStyle = "fill:#000; font:"+font+";";
-				str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.cardinality[0].value+"</text>";
+				str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.cardinality.value+"</text>";
 			}
 			svgPos = "x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"'";
 			if (this.properties['key_type'] == "Forced") {

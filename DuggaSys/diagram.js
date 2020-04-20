@@ -4428,13 +4428,13 @@ function setSelectedOption(select, value) {
 function createCardinality() {
     //Setting cardinality on new line
     if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
+        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": false});
     }
     else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erRelation) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
+        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": true});
     }
     else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[markedObject].symbolkind == symbolKind.uml) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
+        diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
     }
 }
 
@@ -4588,12 +4588,13 @@ function setSelections(object) {
     groups.forEach(group => {
         const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
+
         	const access = element.dataset.access.split(".");
 			let value = "";
 			if(element.tagName === 'SELECT'){
 				if(access[0] === "cardinality") {
 					if(element.style.display !== "none") {
-						value = object[access[0]][0][access[1]];
+						value = object[access[0]][access[1]];
 					}
 				} else if(access.length === 1) {
 					value = object[access[0]];
@@ -4606,6 +4607,7 @@ function setSelections(object) {
 					element.checked = object[access[0]][access[1]];
 				}
 			}
+
         });
     });
 }
@@ -4630,11 +4632,12 @@ function setObjectProperties() {
                 } else if(access[0] === "cardinality") {
                     if(element.style.display !== "none") {
                         if(element.value === "None") element.value = "";
-                        object[access[0]][0][access[1]] = element.value;
+                        object[access[0]][access[1]] = element.value;
 					}
 				}else if(element.id == "commentCheck"){
 					object[access[0]][access[1]] = element.checked;
 				}else if(access.length === 1) {
+
                     object[access[0]] = element.value;
                 } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
