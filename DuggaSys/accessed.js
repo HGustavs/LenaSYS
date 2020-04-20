@@ -664,8 +664,7 @@ function mouseDown(e) {
 function mouseUp(e) {
 	// if the target of the click isn't the container nor a descendant of the container
 	if (typeof(activeElement) !== "undefined" && typeof(e.target) !== "undefined") {
-		var checkboxes = $(activeElement).find(".checkboxes");
-		checkboxes = activeElement.parentElement.lastChild;
+		var checkboxes = activeElement.parentElement.lastChild;
 		if (!checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
 			updateAndCloseGroupDropdown(checkboxes);
 		}
@@ -694,6 +693,10 @@ document.addEventListener("keyup", function(event)
   if (event.keyCode === 13)
   {
     // If user presses key: Enter (13)
+    // if group dropdown is open, update and close it
+    if (typeof(activeElement) !== "undefined")
+    	updateAndCloseGroupDropdown(activeElement.parentElement.lastChild);
+    // update current cell
     updateCellInternal();
   } else if (event.keyCode === 27) {
     // If user presses key: Escape (27)
