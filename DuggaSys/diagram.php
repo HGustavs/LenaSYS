@@ -24,7 +24,6 @@
     <script src="diagram_IOHandler.js"></script>
 
     <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
-    <br/>
     <script>
         $(document).ready(function() {
             $(".menu-drop-down").hover(function() {
@@ -56,13 +55,13 @@
         ';
     ?>
     <!-- content START -->
-    <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
+    <div id="contentDiagram">
         <div id="buttonDiv">
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" onmousedown="">
+                <div id="diagram-toolbar" class="application-toolbar-wrap">
                     <div class='application-toolbar'>
                         <div id="toolbar-switcher">
-                            <div id="toolbarTypeText" style ="text-align: center">Dev</div>
+                            <div id="toolbarTypeText">Dev</div>
                             </div>
                             <div class="toolsContainer">
                                 <div class="labelToolContainer">
@@ -364,8 +363,6 @@
                         <span id="errorMSG"></span>
                     </div>
                 </div>
-                </br>
-                </br>
 
                 <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
                 <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
@@ -384,27 +381,14 @@
                 -->
 
             </div>
-
-            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
-            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
-            <div class="tooltipdialog">
-                <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
-                    <img src="../Shared/icons/diagram_move_arrows.svg">
-                </button>
-            </div>
             <div id="diagramCanvasContainer">
-               <canvas id="diagramCanvas"></canvas> 
-            </div>
-            <div id="consoleDiv">
-                <!--
-                    Can be used for a later date. Not needed now.
-                <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
-                <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
-                <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
-                -->
-                <div id="valuesCanvas" style="position: fixed">
+               <canvas id="diagramCanvas"></canvas>
+               <button id='moveButton' class='unpressed' title="Move Around">
+                    <img src="../Shared/icons/diagram_move_arrows.svg">
+                </button> 
+                <div id="valuesCanvas">
                 </div>
-                <div id="selectDiv" style="position: fixed">
+                <div id="selectDiv">
                     <span class="tooltipDecrease">
                         <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1, event);">-</button>
                         <span class="tooltiptextDec">Zoom Out</span>
@@ -418,6 +402,14 @@
                     </span>
                     <span id="zoomV"></span>
                 </div>
+            </div>
+            <div id="consoleDiv">
+                <!--
+                    Can be used for a later date. Not needed now.
+                <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
+                <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
+                <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
+                -->
             </div>
         </div>
     </div>

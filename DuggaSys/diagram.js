@@ -119,8 +119,6 @@ var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
 var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
-var widthWindow;                    // The width on the users screen is saved is in this var.
-var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
@@ -466,7 +464,6 @@ function init() {
     canvasSize(); 
     loadDiagram(); 
     setModeOnRefresh(); 
-    initToolbox(); 
     initAppearanceForm();
     updateGraphics(); 
 }
@@ -870,41 +867,41 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-        //Check if snap to grid is on
-        if(snapToGrid) {
-            if(key == keyMap.leftArrow) {
-                xNew = -1;
-            }else if(key == keyMap.upArrow) {
-                yNew = -1;
-            }else if(key == keyMap.rightArrow) {
-                xNew = 1;
-            }else if(key == keyMap.downArrow) {
-                yNew = 1;
-            }
-            for(var i = 0; i < selected_objects.length; i++) {
-                // Coordinates for the top left corner of the object
-                var hoveredObjectStartTopLeftX = points[selected_objects[i].topLeft].x;
-                var hoveredObjectStartTopLeftY = points[selected_objects[i].topLeft].y;
-                // Coordinates for the point to snap to
-                var hoveredObjectSnapTopLeftX = Math.round((hoveredObjectStartTopLeftX / gridSize) + xNew) * gridSize;
-                var hoveredObjectSnapTopLeftY = Math.round((hoveredObjectStartTopLeftY / gridSize) + yNew) * gridSize;
-                // Move object in grid
-                selected_objects[i].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
-            }
-        } else {
-            if(key == keyMap.leftArrow) {
-                xNew = -5;
-            }else if(key == keyMap.upArrow) {
-                yNew = -5;
-            }else if(key == keyMap.rightArrow) {
-                xNew = 5;
-            }else if(key == keyMap.downArrow) {
-                yNew = 5;
-            }
-            for(var i = 0; i < selected_objects.length; i++) {
-                selected_objects[i].move(xNew, yNew);
-            }
-        }   
+    //Check if snap to grid is on
+    if(snapToGrid) {
+        if(key == keyMap.leftArrow) {
+            xNew = -1;
+        }else if(key == keyMap.upArrow) {
+            yNew = -1;
+        }else if(key == keyMap.rightArrow) {
+            xNew = 1;
+        }else if(key == keyMap.downArrow) {
+            yNew = 1;
+        }
+        for(var i = 0; i < selected_objects.length; i++) {
+            // Coordinates for the top left corner of the object
+            var hoveredObjectStartTopLeftX = points[selected_objects[i].topLeft].x;
+            var hoveredObjectStartTopLeftY = points[selected_objects[i].topLeft].y;
+            // Coordinates for the point to snap to
+            var hoveredObjectSnapTopLeftX = Math.round((hoveredObjectStartTopLeftX / gridSize) + xNew) * gridSize;
+            var hoveredObjectSnapTopLeftY = Math.round((hoveredObjectStartTopLeftY / gridSize) + yNew) * gridSize;
+            // Move object in grid
+            selected_objects[i].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+        }
+    } else {
+        if(key == keyMap.leftArrow) {
+            xNew = -5;
+        }else if(key == keyMap.upArrow) {
+            yNew = -5;
+        }else if(key == keyMap.rightArrow) {
+            xNew = 5;
+        }else if(key == keyMap.downArrow) {
+            yNew = 5;
+        }
+        for(var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].move(xNew, yNew);
+        }
+    }   
     updateGraphics();
 }
 
@@ -1459,7 +1456,7 @@ function initializeCanvas() {
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
     const zoomRange = document.getElementById("ZoomSelect");
-    const coordinatesElement = document.getElementById("valuesCanvas");
+
 
     canvas = document.getElementById("diagramCanvas");
     if(canvas.getContext) {
@@ -1468,9 +1465,6 @@ function initializeCanvas() {
 
     zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
     zoomRange.value = zoomValue;
-
-    coordinatesElement.style.display = 'none';
-    moveButton.style.visibility = 'hidden';
 
     moveButton.addEventListener('click', movemode, false);
     diagramContainer.addEventListener("contextmenu", e => e.preventDefault());
@@ -2036,13 +2030,10 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    widthWindow = (window.innerWidth - 75);
-    heightWindow = (window.innerHeight - 95);
-    canvas.width = widthWindow;
-    canvas.height = heightWindow;
+    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    canvas.width = diagramContainer.offsetWidth
+    canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setMoveButtonPosition();
     updateGraphics();
 }
 
@@ -2433,7 +2424,6 @@ function developerMode(event) {
     updateGraphics();
 }
 
-var refreshedPage = true;
 function setModeOnRefresh() {
     const tempToolbarState = localStorage.getItem("toolbarState");
     if(tempToolbarState !== null) {
@@ -2628,53 +2618,21 @@ function decimalPrecision(value, precision) {
 //--------------------------------------------------------------------------------------------
 
 function reWrite() {
+    const coordinatesElement = document.getElementById("valuesCanvas");
+    const zoomTextElement = document.getElementById("zoomV");
+
     if (developerModeActive) {
-        //We are now in developer mode
-        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-        + Math.round((zoomValue * 100)) + "%" + " </p>";
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-        document.getElementById("valuesCanvas").style.display = 'block';
-
-        //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
-        var smallerScreensDev = window.matchMedia("(max-width: 745px)");
-        if (smallerScreensDev.matches) {
-            document.getElementById("selectDiv").style.maxWidth = '30%';
-            document.getElementById("valuesCanvas").style.maxWidth = '30%';
-        } else {
-            document.getElementById("selectDiv").style.minWidth = '10%';
+        let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
+        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+            coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
-
-        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
-            document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-            + Math.round((zoomValue * 100)) + "%" + " </p>";
-            document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-            + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " )";
-            refreshedPage = false;
-        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
-              document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-              + Math.round((zoomValue * 100)) + "%" + " </p>";
-              document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-              + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
-              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
-              + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-          }
+        coordinatesElement.innerHTML = `${coordinatesText}</p>`;
+        coordinatesElement.style.display = "block";
     } else {
-        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-        + Math.round((zoomValue * 100)) + "%" + "   </p>";
-        document.getElementById("valuesCanvas").style.display = 'none';
-
-        //If you're using smaller screens then the zoom-bar will scale.
-        var smallerScreens = window.matchMedia("(max-width: 900px)");
-        if (smallerScreens.matches) {
-            document.getElementById("selectDiv").style.maxWidth = '50%';
-        } else {
-            document.getElementById("selectDiv").style.minWidth = '10%';
-        }
+        coordinatesElement.style.display = "none";
     }
+
+    zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
     enableSelectedItemOptions();
 }
 
@@ -3237,14 +3195,6 @@ function setOrientationIcon(element, check) {
 const toolbarER = currentMode.er;
 const toolbarUML = currentMode.uml;
 const toolbarDeveloperMode = currentMode.dev;
-
-function initToolbox() {
-    const element = document.getElementById('diagram-toolbar');
-    element.style.top = (boundingRect.top - 37 + "px");
-    element.style.left = (boundingRect.left - 60 + "px");
-    element.style.width = (58 + "px");
-    element.style.display = "inline-block";
-}
 
 //----------------------------------------------------------------------
 // switchToolbar: function for switching the toolbar state (All, ER, UML),
@@ -4321,10 +4271,6 @@ function resize() {
     }
 }
 
-function setMoveButtonPosition() {
-    document.getElementById("moveButton").style.marginLeft = widthWindow + 4 + "px";
-}
-
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
@@ -4333,7 +4279,6 @@ function movemode(e, t) {
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
-    setMoveButtonPosition();
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';

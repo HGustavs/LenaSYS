@@ -198,9 +198,7 @@ p {
  * --------------================################================-------------- */
 
 #buttonDiv {
-  margin-left: 52px;
-  position: fixed;
-  margin-top: -27px;
+  margin: 58px 0 8px 52px;
   height: 20px;
   background: var(--color-background);
   border-left: 1px solid var(--color-border-4);
@@ -241,7 +239,7 @@ p {
 
 #contentDiagram {
   background: var(--color-background);
-  margin: 65px 10px 15px 10px;
+  margin: 0 10px 10px 10px;
 }
 
 #accessedcontent {
@@ -1326,7 +1324,8 @@ input {
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar {
-  width: 130px;
+  width: 58px;
+  left: 2px;
   height: 100%;
 }
 
@@ -1373,12 +1372,11 @@ input {
 }
 
 #toolbarTypeText {
-  height: 20px;
   font-size: 11px;
   color: #c0c0c0;
-  margin: 0 auto;
   font-weight: bold;
-  padding-top: 15px;
+  margin: 4px 0 16px 0;
+  text-align: center;
 }
 
 #toolbarLeftArrow {
@@ -1422,7 +1420,6 @@ input {
 
 .document-settings {
   font-size: 14px;
-  top: 150px;
 }
 
 .export-drop-down {
@@ -2040,7 +2037,12 @@ div.submit-button:disabled {
 #moveButton {
   z-index: 2;
   position: absolute;
-  border-radius: 0px;
+  top: 4px;
+  right: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  visibility: hidden;
+  border: 1px solid #614875;
 }
 
 #contentDiagram .toolboxButtons {
@@ -4416,7 +4418,7 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   display: flex;
   align-items: center;
-  left: 65px;
+  left: 4px;
   padding-right: 10px;
   padding-left: 10px;
   background-color: var(--color-background);
@@ -4424,7 +4426,7 @@ only screen and (max-device-width: 320px) {
   border: 2px solid #d4d4d4;
   height: 30px;
   position: absolute;
-  bottom: 11px;
+  bottom: 4px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -4620,8 +4622,8 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 11px;
-  right: 14px;
+  bottom: 4px;
+  right: 4px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -4631,6 +4633,7 @@ only screen and (max-device-width: 320px) {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  display: none;
 }
 
 .migration-form {
@@ -4736,6 +4739,8 @@ only screen and (max-device-width: 320px) {
 /* Diagram canvas */
 #diagramCanvasContainer {
   margin-left: 52px;
+  height: calc(100vh - 96px);
+  position: relative;
 }
 
 #diagramCanvas {
