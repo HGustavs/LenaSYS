@@ -296,19 +296,16 @@ $codeLinkQuery->execute();
     <p class="confirmationText" id="editedFile" >Hej</p>
     <button class="confirmationButton" onclick="closeConfirmation()">Ok</button>
 </div>
+
+<!--This if-statements is used when fileedit opens from an iframe in codeviewer. -->
 <?php 
             if($_GET['kind'] != null && $_GET['filename'] != null){
                 echo '<script type="text/javascript">',
-                    'loadFile("../courses/1/HTML_Ex1.html", "HTML_Ex1.html", 3);',
+                'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
                     '</script>'
                 ;
-                
-                
-                //loadFile('../courses/1/'+$_GET['filename'],$_GET['filename'],$_GET['kind']);
             }         
-            else{
-               
-            }
         ?>
+
 </body>
 </html>

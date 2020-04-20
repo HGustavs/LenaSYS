@@ -3879,16 +3879,10 @@ function showIframe(boxid,kind){
 		$(".previewWindow").show();
 		$(".previewWindowContainer").css("display", "block");
 		$("#iframeFileed").attr('src', 'http://localhost/LenaSYS/DuggaSys/fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename='+retData['box'][boxid - 1][5]+'');
-	// 	var iframe = document.getElementById("iframeFileed");
-	// 	iframe.addEventListener("load", function() {
-	// 	iframe.contentWindow.postMessage({v1: courseid, v2: cvers,v3: retData['box'][boxid - 1][5], v4: kind}, 'http://localhost/LenaSYS/DuggaSys/fileed.php?courseid='+courseid+'&coursevers='+cvers+'');
-	//   });
-	
+
 }
 function hideIframe(){
 	$(".previewWindow").hide();
-    $(".previewWindowContainer").css("display", "none");
+	$(".previewWindowContainer").css("display", "none");
+	location.reload();
 }
-
-
-//loadFile('../courses/1/'+retData['box'][boxid - 1][5],retData['box'][boxid - 1][5],kind)
