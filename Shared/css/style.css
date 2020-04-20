@@ -4636,9 +4636,11 @@ only screen and (max-device-width: 320px) {
   display: none;
 }
 
-@media only screen and (max-width: 600){
+@media only screen and (max-width: 600px) {
   #valuesCanvas {
-    display: none !important;
+    right: unset;
+    left: 4px;
+    bottom: 42px;
   }
 }
 
