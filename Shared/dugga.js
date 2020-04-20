@@ -1074,6 +1074,14 @@ function hideReceiptPopup()
 	//$("#overlay").css("display","none");
 }
 
+function hideFeedbackPopup(){
+	$("#feedbackBox").css("display","none");
+}
+
+function showFeedbackPopup(){
+	$("#feedbackBox").css("display","block");
+}
+
 function hideDuggaStatsPopup()
 {
 	$("#duggaStats").css("display", "none");

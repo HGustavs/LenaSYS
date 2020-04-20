@@ -150,7 +150,8 @@ function returnedDugga(data)
             var fb_tmp = feedbackArr[0].split("%%");
             fb="<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"
         }
-				document.getElementById('tomten').innerHTML = fb;					
+				document.getElementById('tomten').innerHTML = fb;
+				$("#showFeedbackButton").css("display","block");					
 		}
 
 
