@@ -1459,6 +1459,7 @@ function initializeCanvas() {
     const diagramContainer = document.getElementById("diagramCanvasContainer");
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
+    const zoomRange = document.getElementById("ZoomSelect");
     const coordinatesElement = document.getElementById("valuesCanvas");
 
     canvas = document.getElementById("diagramCanvas");
@@ -1467,6 +1468,7 @@ function initializeCanvas() {
     }
 
     zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
+    zoomRange.value = zoomValue;
 
     coordinatesElement.style.display = 'none';
     moveButton.style.visibility = 'hidden';
@@ -3322,7 +3324,7 @@ function zoomInMode(event) {
 
     let oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
-    localStorage.setItem("zoomValue", document.getElementById("ZoomSelect").value);
+    localStorage.setItem("zoomValue", zoomValue);
     localStorage.setItem("cameraPosX", origoOffsetX);
     localStorage.setItem("cameraPosY", origoOffsetY);
     let zoomDifference = 1 + (zoomValue - oldZoom);
