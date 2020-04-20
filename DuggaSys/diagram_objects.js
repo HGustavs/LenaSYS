@@ -303,8 +303,12 @@ function Symbol(kindOfSymbol) {
             var attrHeight, opHeight;
             if(this.attributes.length > 0) {
                 //Height of text + padding on attributes textfield
-                if(this.properties['sizeOftext'] == 'Tiny' || this.properties['sizeOftext'] == 'Small'){
+                if(this.properties['sizeOftext'] == 'Tiny'){
                     textHeight = 14;
+                    attrHeight = (this.attributes.length*textHeight) +35;
+                }
+                else if (this.properties['sizeOftext'] == 'Small'){
+                    textHeight = 20;
                     attrHeight = (this.attributes.length*textHeight) +35;
                 }
                 else if (this.properties['sizeOftext'] == 'Medium'){
@@ -320,6 +324,9 @@ function Symbol(kindOfSymbol) {
                 //Height of text + padding on operations textfield
                 if(this.properties['sizeOftext'] == 'Tiny' || this.properties['sizeOftext'] == 'Small'){
                     textHeight = 14;
+                }
+                else if (this.properties['sizeOftext'] == 'Small'){
+                    textHeight = 20;
                 }
                 else if (this.properties['sizeOftext'] == 'Medium'){
                     textHeight = 30;
