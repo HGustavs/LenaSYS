@@ -74,7 +74,8 @@ function returnedError(error) {
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
-function returned(data) {
+function returned(data) 
+{
 	retData = data;
 	
 	if (retData['deleted']) {
@@ -94,36 +95,36 @@ function returned(data) {
 
 	if (retData['before'].length != 0 && retData['after'].length != 0) {
 		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
-			$("#beforebutton").css("opacity", 0.4);
-			$("#beforebutton").css("pointer-events", "none");
+			document.querySelector("#beforebutton").style.opacity = "0.4";
+			document.querySelector("#beforebutton").style.pointerEvents = "none";
 		}
 		if (retData['exampleno'] == retData['after'][0][0] || retData['after'].length == 0) {
-			$("#afterbutton").css("opacity", 0.4);
-			$("#afterbutton").css("pointer-events", "none");
+			document.querySelector("#afterbutton").style.opacity = "0.4";
+			document.querySelector("#afterbutton").style.pointerEvents = "none";
 		}
 	} else if (retData['before'].length == 0 && retData['after'].length == 0) {
-		$("#beforebutton").css("opacity", 0.4);
-		$("#beforebutton").css("pointer-events", "none");
-		$("#afterbutton").css("opacity", 0.4);
-		$("#afterbutton").css("pointer-events", "none");
+		document.querySelector("#beforebutton").style.opacity = "0.4";
+		document.querySelector("#beforebutton").style.pointerEvents = "none";
+		document.querySelector("#afterbutton").style.opacity = "0.4";
+		document.querySelector("#afterbutton").style.pointerEvents = "none";
 	}
 
 	// Disables the play button if there is no playlink
 	if (typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
-		$("#playbutton").css("opacity", 0.4);
-		$("#playbutton").css("pointer-events", "none");
+		document.querySelector("#playbutton").style.opacity = "0.4";
+		document.querySelector("#playbutton").style.pointerEvents = "none";
 	} else {
 		retData['playlink'] = retData['playlink'].replace(/\&\#47\;/g, "/");
 	}
 
 	// Fill Section Name and Example Name
-	var exName = $('#exampleName');
+	var exName = document.querySelector('#exampleName');
 	if (data['examplename'] != null) {
-		exName.html(data['examplename']);
+		exName.innerHTML = data['examplename'];
 	}
-	var exSection = $('#exampleSection');
+	var exSection = document.querySelector('#exampleSection');
 	if (data['sectionname'] != null) {
-		exSection.html(data['sectionname'] + "&nbsp;:&nbsp;");
+		exSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 	}
 	var mobExName = document.querySelector('#mobileExampleName');
 	var mobExSection = document.querySelector('#mobileExampleSection');
@@ -173,8 +174,10 @@ function returned(data) {
 
 		if (boxtype === "CODE") {
 			// Print out code example in a code box
-			$("#" + contentid).removeAttr("contenteditable");
-			$("#" + contentid).removeClass("descbox").addClass("codebox");
+			var boxtypeCodebox = document.getElementById(contentid);
+			boxtypeCodebox.removeAttribute("contenteditable");
+			boxtypeCodebox.classList.remove("descbox");
+			boxtypeCodebox.classList.add("codebox");
 			createboxmenu(contentid, boxid, boxtype);
 
 			// Make room for the menu by setting padding-top equal to height of menubox
@@ -196,7 +199,11 @@ function returned(data) {
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
-			$("#" + contentid).removeClass("codebox").addClass("descbox");
+
+			var boxtypeDescbox = document.getElementById(contentid);
+			boxtypeDescbox.classList.remove("codebox");
+			boxtypeDescbox.classList.add("descbox");
+
 			var desc = boxcontent;
 			desc = replaceAll("&nbsp;", " ", desc);
 			desc = parseMarkdown(desc);
@@ -205,7 +212,7 @@ function returned(data) {
 			desc = desc.replace(/\*/g, "&#42;");
 			// Highlight important words
 			important = retData.impwords;
-			for (j = 0; j < important.length; j++) {
+			for (var j = 0; j < important.length; j++) {
 				//Prevent important word spans to be created for HTML events.
 				if(htmlEventArray.includes(important[j])){
 					var sstr = important[j];
@@ -240,7 +247,10 @@ function returned(data) {
 			$("#" + contentid).css("margin-top", boxmenuheight);
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
-			$("#" + contentid).removeClass("codebox", "descbox").addClass("framebox");
+			
+			var boxtypeframebox = document.getElementById(contentid);
+			boxtypeframebox.classList.remove("codebox", "descbox");
+			boxtypeframebox.classList.add("framebox");
 
 			// If multiple versions exists use the one with highest priority.
 			// cvers BEFORE courseid BEFORE global
