@@ -4164,13 +4164,13 @@ function setSelectedOption(select, value) {
 function createCardinality() {
     //Setting cardinality on new line
     if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
+        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": false});
     }
     else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erRelation) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
+        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": true});
     }
     else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[markedObject].symbolkind == symbolKind.uml) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
+        diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
     }
 }
 
