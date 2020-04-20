@@ -1675,11 +1675,11 @@ function togglesingleA4(event) {
 function toggleComments(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     if (hideComment) {
-			hideComment = false;
-      setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
+		hideComment = false;
+      	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     } else {
-			hideComment = true;
-      setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
+		hideComment = true;
+      	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     }
     updateGraphics();
 }
@@ -4346,25 +4346,25 @@ function setSelections(object) {
         const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
             const access = element.dataset.access.split(".");
-						let value = "";
-						if(element.tagName === 'SELECT'){
-							if(access[0] === "cardinality") {
-									if(element.style.display !== "none") {
-											value = object[access[0]][0][access[1]];
-									}
+			let value = "";
+			if(element.tagName === 'SELECT'){
+				if(access[0] === "cardinality") {
+					if(element.style.display !== "none") {
+							value = object[access[0]][0][access[1]];
+					}
 							
 
-							} else if(access.length === 1) {
-									value = object[access[0]];
-							} else if(access.length === 2) {
-									value = object[access[0]][access[1]];
-							}
-							setSelectedOption(element, value);
-						}else{
-							if (element.id == "commentCheck"){
-								element.checked = object[access[0]][access[1]];
-							}
-						}
+				} else if(access.length === 1) {
+					value = object[access[0]];
+				} else if(access.length === 2) {
+					value = object[access[0]][access[1]];
+				}
+				setSelectedOption(element, value);
+			}else{
+				if (element.id == "commentCheck"){
+					element.checked = object[access[0]][access[1]];
+				}
+			}
         });
     });
 }
