@@ -1483,8 +1483,26 @@ function initializeCanvas() {
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
     canvas.addEventListener('wheel', scrollZoom, false);
-
+  
     drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
+
+    var dropDowns = document.getElementsByClassName("drop-down-label");
+    var i;
+    for (i = 0; i < dropDowns.length; i++) {
+        dropDowns[i].addEventListener("mouseover", clearActiveDropdownElement);
+    }
+}
+
+//--------------------------------------------------------------------
+// Clears the active element when hovering dropdown menus
+//--------------------------------------------------------------------
+
+function clearActiveDropdownElement(){
+    if (document.activeElement.className.match("menu-drop-down") || 
+    document.activeElement.className.match("drop-down-item")) {
+        document.activeElement.blur();
+    }
+
 }
 
 //--------------------------------------------------------------------
