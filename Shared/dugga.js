@@ -330,7 +330,7 @@ function removeYearFromDate(date){
 
 function setExpireCookie(){
     if(localStorage.getItem("securityquestion") == "set") {
-				const expireDate = new Date();
+				var expireDate = new Date();
 				// A test date so you dont have to actually wait 1 hour and 45 minutes.
 				// Don't forget to change the one below (setExpireCookieLogOut()) too.
 				//expireDate.setMinutes(expireDate.getMinutes() + 1);	// For testing
@@ -345,7 +345,7 @@ function setExpireCookie(){
 
 function setExpireCookieLogOut() {
     if (localStorage.getItem("securityquestion") == "set") {
-				const expireDate = new Date();
+				var expireDate = new Date();
 				//expireDate.setMinutes(expireDate.getMinutes() + 2);	// For testing
 				expireDate.setMinutes(expireDate.getMinutes() + 120);	// For actual use
         document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toUTCString() + "; path=/";
