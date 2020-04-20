@@ -22,7 +22,7 @@ session_start();
 
 pdoConnect(); // Connect to database and start session
 
-$cid = getOP('courseid');
+$cid = $_SESSION['courseid'];
 $vers = getOP('coursevers');
 $kind = getOP('kind');
 $link = getOP('link');
@@ -82,9 +82,9 @@ if ($ha) {
         }
     } else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
-        if (!file_exists($currcvd . "/courses/" . $cid)) {
+        if (!file_exists($currcvd . "/courses/" . $cid ."/versionIndependence")) {
             echo $currcvd . "/courses/" . $cid;
-            $storefile = mkdir($currcvd . "/courses/" . $cid,0777,true);
+            $storefile = mkdir($currcvd . "/courses/" . $cid. "/versionIndependence",0777,true);
         } else {
             $storefile = true;
         }
@@ -176,7 +176,7 @@ if ($storefile) {
                 if ($kind == "LFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fname;
                 } else if ($kind == "MFILE") {
-                    $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
+                    $movname = $currcvd . "/courses/" . $cid . "/versionIndependence/" . $fname;
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;
                 }
