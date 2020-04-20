@@ -366,3 +366,8 @@ function togglePreview (){
 function togglePopover (){
 	$("#facit-target-window-img").removeClass("facitPreview").addClass("facitPopover");
 }
+
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
+}

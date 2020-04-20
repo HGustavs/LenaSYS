@@ -648,3 +648,8 @@ function startDuggaHighScore(){
 		ClickCounter.showClicker();
 	}
 }
+
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
+}

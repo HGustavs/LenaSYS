@@ -1,3 +1,9 @@
+<div class='feedback-container' style="display: none;">
+	<div class='feedback-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>	
+		<div class="feedback-content">	
+				<div id="feedbackTable" style="margin-top: -3px;"></div>	
+		</div>
+</div>
 <div id="container" class="clippingContainer" style="display:flex; justify-content:flex-start;">
     <div id='clippingInfoBox'>
       
@@ -77,16 +83,6 @@
                 <tbody id="operationList" ></tbody>
             </table>			
     		</div>
-    </div>
-    <div id="feedback" class="loginBox" style="display:none;flex-grow: 1">
-        <div class='loginBoxheader'>
-            <h3>Feedback Log</h3>
-        </div>
-        <div class="table-wrap" id="feedbackTable">
-            <table>
-                <tr><th>Date</th><th>Feedback</th></tr>
-            </table>
-        </div>
     </div>
     </div>
   </div>

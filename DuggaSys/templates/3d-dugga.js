@@ -879,3 +879,8 @@ function startDuggaHighScore(){
 	}
 }
 
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
+}
+

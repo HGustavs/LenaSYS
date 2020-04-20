@@ -908,3 +908,8 @@ function drawRuler(sx,ex,sy,ws,wl,skip,padding)
 	}
 
 }
+
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
+}

@@ -364,3 +364,8 @@ function processpreview()
 		
 		document.getElementById("code-preview-window").src="preview.php?prev="+content;
 }
+
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
+}

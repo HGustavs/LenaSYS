@@ -653,3 +653,8 @@ function goMofo(txt)
             goMofo(this.innerHTML);
         });
     }
+
+    function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
+}
