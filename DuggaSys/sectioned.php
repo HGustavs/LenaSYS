@@ -77,9 +77,9 @@
 		<div class='motd-area'>
 			<?php	
 				echo "<td style='display: inline-block;'>";
-				echo "  <div class='motd-content'>";
-				echo "		<center><p>MOTD</p></center>"; 
-				echo "		<p id='motd'></p>";			
+				echo "  <div class='motd-content' style='text-align:center'>";
+				echo "		<p>MOTD</p>"; 
+				echo "		<p style='text-align:center' id='motd'></p>";			
 				echo" 	</div>";
 				echo "</td>";
 			?>
