@@ -40,6 +40,7 @@ function Symbol(kindOfSymbol) {
     this.isLine = false;
     this.isRecursiveLine = false;
     this.pointsAtSamePosition = false;
+    this.UMLCustomResize = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -311,13 +312,16 @@ function Symbol(kindOfSymbol) {
 
             //Finding the longest string
             var longestStr = this.name;
-            for(var i = 0; i < this.operations.length; i++) {
-                if(this.operations[i].text.length > longestStr.length)
-                    longestStr = this.operations[i].text;
-            }
-            for(var i = 0; i < this.attributes.length; i++) {
-                if(this.attributes[i].text.length > longestStr.length)
-                    longestStr = this.attributes[i].text;
+
+            if(!this.UMLCustomResize) {
+                for(var i = 0; i < this.operations.length; i++) {
+                    if(this.operations[i].text.length > longestStr.length)
+                        longestStr = this.operations[i].text;
+                }
+                for(var i = 0; i < this.attributes.length; i++) {
+                    if(this.attributes[i].text.length > longestStr.length)
+                        longestStr = this.attributes[i].text;
+                }
             }
             ctx.font = "14px Arial";
             this.minWidth = ctx.measureText(longestStr).width + 15;
@@ -328,6 +332,7 @@ function Symbol(kindOfSymbol) {
                 if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
                         || points[this.topLeft] === sel.point.y)) { // Checks if topRight is clicked
                     points[this.topLeft].y = points[this.bottomRight].y - this.minHeight;
+                    this.UMLCustomResize = true; //If the user resizes, the symbol is custom
                 }else {
                     points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
                 }
@@ -338,8 +343,9 @@ function Symbol(kindOfSymbol) {
                 if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
                         || points[this.topLeft] === sel.point.x)) { // Checks if topRight is clicked
                     points[this.topLeft].x = points[this.bottomRight].x - this.minWidth;
+                    this.UMLCustomResize = true; //If the user resizes, the symbol is custom
                 }else {
-                    points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+                    points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;                
                 }
             }
             if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y) {
@@ -418,18 +424,6 @@ function Symbol(kindOfSymbol) {
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
         }
-    }
-
-    //--------------------------------------------------------------------
-    // resizeUMLToMinimum: Resizes an UML Symbol to the minimum Width and Height values
-    //--------------------------------------------------------------------
-
-    this.resizeUMLToMinimum = function() {
-
-        //console.log("Resized");
-        points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
-        points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
-
     }
 
     //--------------------------------------------------------------------
@@ -1476,6 +1470,7 @@ function Symbol(kindOfSymbol) {
         }
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+        ctx.lineCap = "square";
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
             ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
@@ -2998,7 +2993,8 @@ function figureFreeDraw() {
 //--------------------------------------------------------------------
 function endFreeDraw(){
     if(numberOfPointsInFigure < 2){
-        // Perhaps make a flash function to flash messaged to the view, for better error handling
+        // Flash function where second argument is success or danger
+        flash("Please draw more lines!", "danger");
         return console.log('Draw more lines');
     }
     // Read and set the values for p1 and p2
@@ -3037,4 +3033,27 @@ function cleanUp() {
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
     p2 = null;
+}
+
+//--------------------------------------------------------------------
+// Flash function for error handeling to the view
+//--------------------------------------------------------------------
+function flash(message, state) {
+    document.getElementById("errorMSG").innerHTML=message;
+    var message = document.getElementById('errorMSG').style;
+    message.opacity = 1;
+    message.display="inline-block";
+    if(state == "danger"){
+        document.getElementById("errorMSG").style.color="darkred";
+        document.getElementById("errorMSG").style.backgroundColor="#ff9999";
+    }
+    else if(state == "success"){
+        document.getElementById("errorMSG").style.color="darkgreen";
+        document.getElementById("errorMSG").style.backgroundColor="#99ff99";
+    }
+    else{
+        document.getElementById("errorMSG").style.color="black";
+    }
+
+    (function fade(){(message.opacity-=.01)<0?message.display="none":setTimeout(fade,40)})();
 }

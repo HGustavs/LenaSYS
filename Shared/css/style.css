@@ -331,6 +331,13 @@ p {
   padding-right: 8px;
 }
 
+.validationDialog {
+  font-size: 11px; 
+  border: 0px;
+  margin-left: 25px;
+  display:none;
+}
+
 #Sectionlist {
   margin: 0px auto;
   background-color: var(--color-background);
@@ -619,6 +626,19 @@ p {
   margin: 10px 10px 10px 10px;
   border: 2px solid darkgray;
   background-color: var(--color-sectioned-table-lo);
+}
+
+#errorBox{
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+}
+
+#errorMSG {
+  padding: 4px;
+  border-radius: 5px;
+  margin:0;
 }
 
 /* --------------================################================-------------- *
@@ -1991,12 +2011,16 @@ div.submit-button:disabled {
   padding: 4px 8px;
   color: #fff;
   position: absolute;
+  margin-top: -25px;
   left: 70px;
-  top: 45px;
   white-space: nowrap;
   z-index: 10;
   border-radius: 5px;
   background: var(--color-primary);
+}
+
+.diagramAction[data]:hover:after{
+  margin-top: -3px;
 }
 
 .buttonStyleDialog {
@@ -4709,6 +4733,14 @@ only screen and (max-device-width: 320px) {
   padding: 2px 0px 2px 10px;
 }
 
+/* Diagram canvas */
+#diagramCanvasContainer {
+  margin-left: 52px;
+}
+
+#diagramCanvas {
+  border: 1px solid #000000;
+}
 
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *

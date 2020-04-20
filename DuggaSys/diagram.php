@@ -38,9 +38,7 @@
         });
     </script>
 </head>
-<!-- Reads the content from the js-files -->
-<!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics(); initAppearanceForm();" style="overflow-y: hidden;">
+<body onload="init();" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -348,11 +346,9 @@
                     <div class="menu-drop-down">
                         <span class="drop-down-label" tabindex="0">Help</span>
                         <div class="drop-down">
-                            <div class="drop-down-text-non-clickable" tabindex="0">
-                                <span class="drop-down-option">Move camera</span>
-                                <div id="hotkey-space" class="hotKeys">
-                                    <i>Blankspace</i>
-                                </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="toggleCameraView(event);">Move camera</span>
+                                <i id="hotkey-space" class="hotKeys">Blankspace</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
@@ -363,6 +359,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div id="errorBox">
+                        <span id="errorMSG"></span>
                     </div>
                 </div>
                 </br>
@@ -393,7 +392,8 @@
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
-            <div id="canvasDiv" style = "margin-left: 52px" oncontextmenu="return false;">
+            <div id="diagramCanvasContainer">
+               <canvas id="diagramCanvas"></canvas> 
             </div>
             <div id="consoleDiv">
                 <!--
@@ -489,8 +489,8 @@
                     <div class="form-group" data-types="7">
                         <label for="lineDirection">Line direction:</label>
                         <select id="lineDirection" data-access="lineDirection">
-                            <option value="First">First object</option>
-                            <option value="Second">Second object</option>
+                            <option value="First" id="First">First object</option>
+                            <option value="Second" id = "Second">Second object</option>
                         </select>
                     </div>
                     <div class="form-group" data-types="4,7">

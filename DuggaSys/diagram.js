@@ -166,6 +166,7 @@ var classTemplate = {
   width: 7 * gridSize,
   height: 7 * gridSize
 };
+var minimumDivisor = 4;                 // Is used when dividing templates for minimum selection before activating dragging mode values
 var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
@@ -459,6 +460,17 @@ var altIsClicked = false;
 // This event checks if the user leaves the diagram.php
 window.addEventListener('blur', resetButtonsPressed);
 
+//Functions to call after document body loads
+function init() {
+    initializeCanvas(); 
+    canvasSize(); 
+    loadDiagram(); 
+    setModeOnRefresh(); 
+    initToolbox(); 
+    initAppearanceForm();
+    updateGraphics(); 
+}
+
 //--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
 //--------------------------------------------------------------
@@ -586,28 +598,15 @@ function resetButtonsPressed() {
 //--------------------------------------------------------------------
 
 function resetToolButtonsPressed() {
-    // deselect attribute button
-    document.getElementById("attributebutton").classList.remove("pressed");
-    document.getElementById("attributebutton").classList.add("unpressed");
-    // deselect entity button
-    document.getElementById("entitybutton").classList.remove("pressed");
-    document.getElementById("entitybutton").classList.add("unpressed");
-    // deselect relation button
-    document.getElementById("relationbutton").classList.remove("pressed");
-    document.getElementById("relationbutton").classList.add("unpressed");
-    // deselect class button
-    document.getElementById("classbutton").classList.remove("pressed");
-    document.getElementById("classbutton").classList.add("unpressed");
-    // deselect line button
-    document.getElementById("linebutton").classList.remove("pressed");
-    document.getElementById("linebutton").classList.add("unpressed");
-    // deselect draw free button
-    document.getElementById("drawfreebutton").classList.remove("pressed");
-    document.getElementById("drawfreebutton").classList.add("unpressed");
-    // deselect draw text button
-    document.getElementById("drawtextbutton").classList.remove("pressed");
-    document.getElementById("drawtextbutton").classList.add("unpressed");
-    uimode = 'normal';
+    const elementsToReset = document.querySelectorAll(".pressed:not(#moveButton)");
+    elementsToReset.forEach(element => {
+        element.classList.remove("pressed");
+        element.classList.add("unpressed");
+    });
+
+    if(uimode !== "MoveAround") {
+        uimode = 'normal';
+    }
 }
 
 //--------------------------------------------------------------------
@@ -871,21 +870,43 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if (uimode != "MoveAround") {
-        if(key == keyMap.leftArrow) {
-            xNew = -5;
-        }else if(key == keyMap.upArrow) {
-            yNew = -5;
-        }else if(key == keyMap.rightArrow) {
-            xNew = 5;
-        }else if(key == keyMap.downArrow) {
-            yNew = 5;
-        }
-        for(var i = 0; i < selected_objects.length; i++) {
-            selected_objects[i].move(xNew, yNew);
-        }
-        updateGraphics();
+        //Check if snap to grid is on
+        if(snapToGrid) {
+            if(key == keyMap.leftArrow) {
+                xNew = -1;
+            }else if(key == keyMap.upArrow) {
+                yNew = -1;
+            }else if(key == keyMap.rightArrow) {
+                xNew = 1;
+            }else if(key == keyMap.downArrow) {
+                yNew = 1;
+            }
+            for(var i = 0; i < selected_objects.length; i++) {
+                // Coordinates for the top left corner of the object
+                var hoveredObjectStartTopLeftX = points[selected_objects[i].topLeft].x;
+                var hoveredObjectStartTopLeftY = points[selected_objects[i].topLeft].y;
+                // Coordinates for the point to snap to
+                var hoveredObjectSnapTopLeftX = Math.round((hoveredObjectStartTopLeftX / gridSize) + xNew) * gridSize;
+                var hoveredObjectSnapTopLeftY = Math.round((hoveredObjectStartTopLeftY / gridSize) + yNew) * gridSize;
+                // Move object in grid
+                selected_objects[i].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+            }
+        } else {
+            if(key == keyMap.leftArrow) {
+                xNew = -5;
+            }else if(key == keyMap.upArrow) {
+                yNew = -5;
+            }else if(key == keyMap.rightArrow) {
+                xNew = 5;
+            }else if(key == keyMap.downArrow) {
+                yNew = 5;
+            }
+            for(var i = 0; i < selected_objects.length; i++) {
+                selected_objects[i].move(xNew, yNew);
+            }
+        }   
     }
+        updateGraphics();
 }
 
 //-----------------------------------------------------------------------------------
@@ -1434,19 +1455,27 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
-                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
-                + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + " </p>";
-    document.getElementById("valuesCanvas").style.display = 'none';
-    canvas = document.getElementById("myCanvas");
-    if (canvas.getContext) {
+
+    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    const moveButton = document.getElementById("moveButton");
+    const zoomTextElement = document.getElementById("zoomV");
+    const coordinatesElement = document.getElementById("valuesCanvas");
+
+    canvas = document.getElementById("diagramCanvas");
+    if(canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    document.getElementById("moveButton").addEventListener('click', movemode, false);
-    document.getElementById("moveButton").style.visibility = 'hidden';
-    updateGraphics();
-    boundingRect = canvas.getBoundingClientRect();
+
+    zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
+
+    coordinatesElement.style.display = 'none';
+    moveButton.style.visibility = 'hidden';
+
+    moveButton.addEventListener('click', movemode, false);
+    diagramContainer.addEventListener("contextmenu", e => e.preventDefault());
+    canvas.addEventListener("mousemove", mousemoveevt, false);
+    canvas.addEventListener("mousedown", mousedownevt, false);
+    canvas.addEventListener("mouseup", mouseupevt, false);
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
@@ -1871,47 +1900,24 @@ function togglesingleA4(event) {
     updateGraphics();
 }
 
-//-----------------------------------------------------------------------------------
-// When an item is selected, enable all options related to having an object selected
-//-----------------------------------------------------------------------------------
-var selectedItems = false;
+//----------------------------------------------------------------------------------------------------------------------------
+// When one or many items are selected/not selected, enable/disable all options related to having one or many objects selected
+//----------------------------------------------------------------------------------------------------------------------------
+
 function enableSelectedItemOptions() {
-      if (selected_objects.length > 0) {
-        $("#change-appearance-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-front-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-back-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#lock-selected-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-      } else {
-        $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-back-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#lock-selected-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
-		}
-      if (selected_objects.length > 1){
-        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
-        } else {
-        $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
-      }
+    const idsOverZero = ["change-appearance-item", "move-selected-front-item", "move-selected-back-item", "lock-selected-item", "delete-object-item", "group-objects-item", "ungroup-objects-item"];
+    const idsOverOne = ["align-top-item", "align-right-item", "align-bottom-item", "align-left-item", "horizontal-c-item", "vertical-c-item", "distribute-horizontal-item", "distribute-vertical-item"];
+    //Jquery can select multiple by example $("#element1, element2, element3") This way prevents repetition.
+    if (selected_objects.length > 0) {
+        $("#" + idsOverZero.join(",#")).removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        $("#" + idsOverZero.join(",#")).addClass("drop-down-item drop-down-item-disabled");
+    }
+    if (selected_objects.length > 1){
+        $("#" + idsOverOne.join(",#")).removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        $("#" + idsOverOne.join(",#")).addClass("drop-down-item drop-down-item-disabled");
+    }
 }
 
 //----------------------------------------------------
@@ -2011,11 +2017,11 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    boundingRect = myCanvas.getBoundingClientRect();
     widthWindow = (window.innerWidth - 75);
     heightWindow = (window.innerHeight - 95);
-    canvas.setAttribute("width", widthWindow);
-    canvas.setAttribute("height", heightWindow);
+    canvas.width = widthWindow;
+    canvas.height = heightWindow;
+    boundingRect = canvas.getBoundingClientRect();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     setMoveButtonPosition();
     updateGraphics();
@@ -2412,13 +2418,19 @@ function developerMode(event) {
 
 var refreshedPage = true;
 function setModeOnRefresh() {
-    toolbarState = localStorage.getItem("toolbarState");
+    const tempToolbarState = localStorage.getItem("toolbarState");
+    if(tempToolbarState !== null) {
+        toolbarState = tempToolbarState;
+    } else {
+        toolbarState = currentMode.er;
+    }
+
+    developerModeActive = false;
+
     if(toolbarState == currentMode.er) {
-        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
     } else if(toolbarState == currentMode.uml) {
-        developerModeActive = false;
         switchToolbarUML();
         hideCrosses();
     } else if(toolbarState == currentMode.dev) {
@@ -2428,7 +2440,6 @@ function setModeOnRefresh() {
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
-        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
     }
@@ -3211,13 +3222,10 @@ const toolbarUML = currentMode.uml;
 const toolbarDeveloperMode = currentMode.dev;
 
 function initToolbox() {
-    var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');
-    boundingRect = myCanvas.getBoundingClientRect();
+    const element = document.getElementById('diagram-toolbar');
     element.style.top = (boundingRect.top - 37 + "px");
     element.style.left = (boundingRect.left - 60 + "px");
     element.style.width = (58 + "px");
-    toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     element.style.display = "inline-block";
 }
 
@@ -3432,7 +3440,7 @@ function minSizeCheck(value, object, type) {
 // Is called each time the mouse moves on the canvas
 //---------------------------------------------------
 
-function mousemoveevt(ev, t) {
+function mousemoveevt(ev) {
 
     // Get canvasMouse coordinates for both X & Y.
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
@@ -3665,45 +3673,57 @@ function mousemoveevt(ev, t) {
                     }
                 }
             } else if (uimode == "CreateEREntity") {
-                ctx.setLineDash([3, 3]);
-                ctx.beginPath();
-                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(entityTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && entityTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateERRelation") {
-                ctx.setLineDash([3, 3]);
-                var midx = pixelsToCanvas(startMouseCoordinateX).x+((pixelsToCanvas(currentMouseCoordinateX).x-pixelsToCanvas(startMouseCoordinateX).x)/2);
-                var midy = pixelsToCanvas(0, startMouseCoordinateY).y+((pixelsToCanvas(0, currentMouseCoordinateY).y-pixelsToCanvas(0, startMouseCoordinateY).y)/2);
-                ctx.beginPath();
-                ctx.moveTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, midy);
-                ctx.lineTo(midx, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, midy);
-                ctx.lineTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(relationTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && relationTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    var midx = pixelsToCanvas(startMouseCoordinateX).x+((pixelsToCanvas(currentMouseCoordinateX).x-pixelsToCanvas(startMouseCoordinateX).x)/2);
+                    var midy = pixelsToCanvas(0, startMouseCoordinateY).y+((pixelsToCanvas(0, currentMouseCoordinateY).y-pixelsToCanvas(0, startMouseCoordinateY).y)/2);
+                    ctx.beginPath();
+                    ctx.moveTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, midy);
+                    ctx.lineTo(midx, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, midy);
+                    ctx.lineTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateERAttr") {
-                ctx.setLineDash([3, 3]);
-                drawOval(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y, pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(attributeTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && attributeTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    drawOval(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y, pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateLine") {
                 // Path settings for preview line
@@ -3730,19 +3750,23 @@ function mousemoveevt(ev, t) {
                     hideCrosses();
                 }
               } else if(uimode == "CreateClass") {
-                ctx.setLineDash([3, 3]);
-                ctx.beginPath();
-                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(classTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && classTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(figureType != "Text" || uimode == "normal") {
               ctx.setLineDash([3, 3]);
@@ -4044,6 +4068,12 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.UML++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && classTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && classTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
         erAttributeA.name = "Attr " + settings.serialNumbers.Attribute;
@@ -4058,6 +4088,12 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Attribute++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && attributeTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && attributeTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
         erEnityA.name = "Entity " + settings.serialNumbers.Entity;
@@ -4073,6 +4109,13 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Entity++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && entityTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && entityTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y))
+        {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
@@ -4108,6 +4151,13 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Relation++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && relationTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && relationTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y))
+        {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
         // clicking on a lock removes it
@@ -4291,17 +4341,19 @@ function deactivateMovearound() {
 }
 
 //----------------------------------------------------------------------
-// clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
+// toggleCameraView: Enter camera view by clicking option in menu.
 //----------------------------------------------------------------------
 
-function clickOutsideDialogMenu(ev) {
-    $(document).mousedown(function (ev) {
-        var container = $("#appearance");
-        if (!container.is(ev.target) && container.has(ev.target).length === 0) {
-            globalappearanceMenuOpen = false;
-            toggleApperanceElement();
-        }
-    });
+function toggleCameraView(){
+    event.stopPropagation();
+    if (spacebarKeyPressed) {
+        spacebarKeyPressed = false;
+        
+    } else {
+        spacebarKeyPressed = true;
+    }
+    updateGraphics();
+    activateMovearound();
 }
 
 function toggleApperanceElement(show = false) {
@@ -4322,9 +4374,10 @@ function toggleApperanceElement(show = false) {
         classAppearanceOpen = false;
         textAppearanceOpen = false;
         globalappearanceMenuOpen = false;
-        $(".loginBox").draggable('destroy');
+        if($(".loginBox").data("ui-draggable")) {
+            $(".loginBox").draggable("destroy");
+        }
         hashFunction();
-        document.removeEventListener("click", clickOutsideDialogMenu);
     }
 }
 
@@ -4415,6 +4468,19 @@ function loadAppearanceForm() {
     //Get type of previously selected symbol according to symbolKind object
     const object = selected_objects[selected_objects.length - 1];
     let type = object.symbolkind;
+
+    //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
+    var connectedObjectsArray = object.getConnectedObjects();
+    if(object.symbolkind == 7){
+        document.getElementById('First').innerHTML = connectedObjectsArray[0].name;
+        //Selection to check if relation is to the same entity. If so: both are named from object 0
+        if(typeof connectedObjectsArray[1] == "undefined"){
+            document.getElementById('Second').innerHTML =  connectedObjectsArray[0].name;
+        }
+        else{
+            document.getElementById('Second').innerHTML = connectedObjectsArray[1].name;
+        }
+    }
 
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
@@ -4605,6 +4671,9 @@ function initAppearanceForm() {
             }
         });
     });
+
+    const appearanceContainer = document.getElementById("appearance");
+    appearanceContainer.addEventListener("click", clickOutsideAppearanceForm);
 }
 
 function getGroupsByType(type) {
@@ -4624,4 +4693,13 @@ function submitAppearanceForm() {
     }
     SaveState();
     toggleApperanceElement();
+}
+
+function clickOutsideAppearanceForm(e) {
+    const formContainer = document.querySelector(".loginBox");
+
+    //Close appearance if the clicked element is not a child/grand-child of formContanier
+    if(!formContainer.contains(e.target)) {
+        toggleApperanceElement();
+    }
 }
