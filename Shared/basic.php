@@ -315,9 +315,11 @@ abstract class EventTypes {
 	const ServiceClientEnd = 8;
 	const Logout = 9;
 	const pageLoad = 10;
-  const PageNotFound = 11;
-  const RequestNewPW = 12;
-  const CheckSecQuestion = 13;
+  	const PageNotFound = 11;
+  	const RequestNewPW = 12;
+	const CheckSecQuestion = 13;
+	  
+	const AddFile = 15;
 }
 
 //------------------------------------------------------------------------------------------------
