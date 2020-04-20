@@ -680,6 +680,7 @@ header td {
   margin-left: 10px;
   vertical-align: middle;
   height: 32px;
+  margin:auto 10px auto 0;
 }
 
 .navButt:hover {
