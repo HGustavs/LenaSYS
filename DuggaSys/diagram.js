@@ -4585,24 +4585,24 @@ function setSelections(object) {
     groups.forEach(group => {
         const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
-        	const access = element.dataset.access.split(".");
-			if(element.tagName === 'SELECT') {
+            const access = element.dataset.access.split(".");
+            if(element.tagName === 'SELECT') {
                 let value = "";
-				if(access[0] === "cardinality") {
-					if(element.style.display !== "none") {
-						value = object[access[0]][access[1]];
-					}
-				} else if(access.length === 1) {
+                if(access[0] === "cardinality") {
+                    if(element.style.display !== "none") {
+                        value = object[access[0]][access[1]];
+                    }
+                } else if(access.length === 1) {
 					value = object[access[0]];
-				} else if(access.length === 2) {
-					value = object[access[0]][access[1]];
-				}
+                } else if(access.length === 2) {
+                    value = object[access[0]][access[1]];
+                }
                 setSelectedOption(element, value);
-			} else {
+            } else {
                 if(element.id == "commentCheck") {
                     element.checked = object[access[0]][access[1]];
                 }
-			}
+            }
         });
     });
 }
@@ -4619,7 +4619,7 @@ function setObjectProperties() {
         groups.forEach(group => {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
-				let access = element.dataset.access.split(".");
+                let access = element.dataset.access.split(".");
                 if(element.nodeName === "TEXTAREA") {
                     object[access[0]] = setTextareaText(element, object[access[0]]);
                 } else if(element.type === "range") {
@@ -4628,7 +4628,7 @@ function setObjectProperties() {
                     if(element.style.display !== "none") {
                         if(element.value === "None") element.value = "";
                         object[access[0]][access[1]] = element.value;
-					}
+                    }
                 } else if(element.id == "commentCheck") {
                     object[access[0]][access[1]] = element.checked;
                 } else if(access.length === 1) {
