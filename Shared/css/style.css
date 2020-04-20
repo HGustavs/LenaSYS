@@ -5842,3 +5842,13 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
+.motd-content{
+  background-color: yellow;
+}
+.motd-area{
+  border: 2px;
+  border-radius: 2px;
+  border-style: solid;
+  border-color: darkgoldenrod;
+  background-color: yellow;
+}
