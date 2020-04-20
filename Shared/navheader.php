@@ -5,20 +5,21 @@
 
 			echo "<table class='navheader'><tr>";
 			include_once "../Shared/basic.php";
-
-			$cid = "UNK";
 			
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
-			if(!isset($_SESSION['courseid'])) $_SESSION['courseid']="UNK";
-			if(!isset($_SESSION['coursevers'])) $_SESSION['coursevers']="UNK";
-	
-			if(isset($_GET['courseid'])){
-					$_SESSION['courseid']=$_GET['courseid'];
-			}
-			if(isset($_GET['coursevers'])){
-					$_SESSION['coursevers']=$_GET['coursevers'];
-			}
-			
+			if (isset($_GET['courseid']))
+				$_SESSION['courseid'] = getOPG('courseid');
+			else if ($_GET['cid'])
+				$_SESSION['courseid'] = getOPG('cid');
+			else
+				$_SESSION['courseid'] = "UNK";
+
+			if (isset($_GET['coursevers']))
+				$_SESSION['coursevers'] = getOPG('coursevers');
+			else if ($_GET['cid'])
+				$_SESSION['coursevers'] = getOPG('cvers');
+			else
+				$_SESSION['coursevers'] = "UNK";
 	
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
@@ -36,12 +37,8 @@
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 					// echo "<td>GREGER!</td>";	
 			}else if($noup=='SECTION'){
-					$cid=getOPG('cid');
-					if($cid=="UNK") $cid=getOPG('courseid');
-					$coursevers=getOPG('coursevers');
-					if($coursevers=="UNK") $coursevers=getOPG('cvers');
 					echo "<a href='";
-					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
+					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
@@ -49,7 +46,7 @@
 			// Adding buttons for courses
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {				
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st'))) {				
 							echo "<td style='display: inline-block;' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
@@ -178,7 +175,7 @@
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
 					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play(event);'><img src='../Shared/icons/play_button.svg' /></td>";
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st'))) {
 						echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
 						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/files_icon.svg' /></td>";
