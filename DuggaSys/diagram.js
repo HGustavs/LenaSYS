@@ -226,6 +226,9 @@ const rightMouseClick = 2;
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
+// Checking if on mobile browser. 
+const isMobile = /Mobi/.test(window.navigator.userAgent);
+
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
 var altIsClicked = false;
@@ -2342,8 +2345,9 @@ function reWrite() {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
         + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
         + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-        document.getElementById("valuesCanvas").style.display = 'block';
-
+        if (!isMobile) {
+            document.getElementById("valuesCanvas").style.display = 'block';
+        }
         //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
         var smallerScreensDev = window.matchMedia("(max-width: 745px)");
         if (smallerScreensDev.matches) {
@@ -2351,6 +2355,9 @@ function reWrite() {
             document.getElementById("valuesCanvas").style.maxWidth = '30%';
         } else {
             document.getElementById("selectDiv").style.minWidth = '10%';
+        }
+        if (isMobile){
+            document.getElementById("selectDiv").style.maxWidth = '100%';
         }
 
         if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
@@ -2380,6 +2387,9 @@ function reWrite() {
             document.getElementById("selectDiv").style.maxWidth = '50%';
         } else {
             document.getElementById("selectDiv").style.minWidth = '10%';
+        }
+        if (isMobile){
+            document.getElementById("selectDiv").style.maxWidth = '100%';
         }
     }
     enableSelectedItemOptions();

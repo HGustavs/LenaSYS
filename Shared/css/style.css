@@ -4633,6 +4633,12 @@ only screen and (max-device-width: 320px) {
   user-select: none;
 }
 
+@media only screen and (max-width: 320){
+  #valuesCanvas {
+    display: none;
+  }
+}
+
 .migration-form {
   width: 100%;
   margin: 0 auto;
