@@ -348,9 +348,9 @@ function SortableTable(param) {
 		
 		// Add Column for counter if the sortabletable should have a counter column.
 		if (this.hasCounter) {
-			str += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'></th>";
-			mhstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'></th>";
-			mhfstr += "<th style='max-width:200px;text-overflow: ellipsis;overflow: hidden;' id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'></th>";
+			str += "<th id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl' class='" + this.tableid + "'></th>";
+			mhstr += "<th id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mh' class='" + this.tableid + "'></th>";
+			mhfstr += "<th id='counter" + DELIMITER + this.tableid + DELIMITER + "tbl" + DELIMITER + "mhf' class='" + this.tableid + "'></th>";
 		}
 		for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
 			var colname = columnOrder[columnOrderIdx];
