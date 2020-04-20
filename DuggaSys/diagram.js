@@ -4328,7 +4328,7 @@ function setSelections(object) {
             let value = "";
             if(access[0] === "cardinality") {
                 if(element.style.display !== "none") {
-                    value = object[access[0]][0][access[1]];
+                    value = object[access[0]][access[1]];
                 }
             } else if(access.length === 1) {
                 value = object[access[0]];
@@ -4359,7 +4359,7 @@ function setObjectProperties() {
                 } else if(access[0] === "cardinality") {
                     if(element.style.display !== "none") {
                         if(element.value === "None") element.value = "";
-                        object[access[0]][0][access[1]] = element.value;
+                        object[access[0]][access[1]] = element.value;
                     }
                 } 
                 else if(access.length === 1) {
