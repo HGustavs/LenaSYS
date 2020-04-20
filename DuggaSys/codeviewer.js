@@ -355,8 +355,9 @@ var tabLine = function (text) {
 var addedWords = [];
 var removedWords = [];
 
-function editImpWords(editType) {
-	var word = $("#impword").val();
+function editImpWords(editType) 
+{
+	var word = document.getElementById("impword").value;
 	var left = 0;
 	var right = 0;
 	//Check if the word contains an uneven amount of parenthesis
@@ -383,8 +384,8 @@ function editImpWords(editType) {
 			}
 		});
 		if (exists == false) {
-			$("#impwords").append('<option>' + word + '</option>');
-			$("#impword").val("");
+			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
+			document.getElementById("impword").value = word;
 			addedWords.push(word);
 		}
 	} else if (editType == "-") {
