@@ -1908,7 +1908,7 @@ function eraseSelectedObject(event) {
 //------------------------------------------------------
 
 function setMode(mode) {
-  cancelFreeDraw();
+    cancelFreeDraw();
     uimode = mode;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
