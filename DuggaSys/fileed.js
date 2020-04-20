@@ -284,6 +284,9 @@ function filePreview(name, path, extension){
 function imgPreview(path){
     var img = document.createElement("img");
     img.src = path;
+    img.onerror = function(e) {
+        img.style.display = "none";
+    };
     document.querySelector(".fileView").appendChild(img);
 }
 

@@ -5012,6 +5012,10 @@ only screen and (max-device-width: 320px) {
   align-items: center;
 }
 
+.fileView iframe{
+  height: 90%;
+} 
+
 @media only screen and (max-width: 745px) {
   .fileView img {
     width:100%;
@@ -5020,6 +5024,9 @@ only screen and (max-device-width: 320px) {
   .fileView{
     display: block;
   }
+  .fileView iframe{
+    height: 80%;
+  } 
 }
 
 @media only screen and (max-width: 601px) {
@@ -5033,10 +5040,6 @@ only screen and (max-device-width: 320px) {
     width: 100%;
   }
 }
-
-.fileView iframe{
-  height: 90%;
-} 
 
 .fileView h1 {
   font-size: 20px;
