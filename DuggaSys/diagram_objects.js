@@ -261,6 +261,7 @@ function Symbol(kindOfSymbol) {
         var y2 = points[this.bottomRight].y;
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
+        var textHeight;
         if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erEntity) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 // If the width is less than the minimum, push out the
@@ -301,20 +302,32 @@ function Symbol(kindOfSymbol) {
             points[this.topLeft].y = y1;
             var attrHeight, opHeight;
             if(this.attributes.length > 0) {
-                //Height of text + padding
-                attrHeight = (this.attributes.length*this.properties.textSize)+35;
+                //Height of text + padding on attributes textfield
                 if(this.properties['sizeOftext'] == 'Tiny' || this.properties['sizeOftext'] == 'Small'){
-                    attrHeight = (this.attributes.length*this.properties.textSize / diagram.getZoomValue()) +35;
+                    textHeight = 14;
+                    attrHeight = (this.attributes.length*textHeight) +35;
                 }
                 else if (this.properties['sizeOftext'] == 'Medium'){
-                    attrHeight = (this.attributes.length*this.properties.textSize / diagram.getZoomValue())+50;
+                    textHeight = 30;
+                    attrHeight = (this.attributes.length*textHeight)+50;
                 }
                 else if (this.properties['sizeOftext'] == 'Large'){
-                    attrHeight = (this.attributes.length*this.properties.textSize / diagram.getZoomValue())+100;
+                    textHeight = 50;
+                    attrHeight = (this.attributes.length*textHeight)+100;
                 } 
             }
             if(this.operations.length > 0) {
-                opHeight = (this.operations.length*this.properties.textSize / diagram.getZoomValue())+15;
+                //Height of text + padding on operations textfield
+                if(this.properties['sizeOftext'] == 'Tiny' || this.properties['sizeOftext'] == 'Small'){
+                    textHeight = 14;
+                }
+                else if (this.properties['sizeOftext'] == 'Medium'){
+                    textHeight = 30;
+                }
+                else if (this.properties['sizeOftext'] == 'Large'){
+                    textHeight = 50;
+                }
+                opHeight = (this.operations.length*textHeight) +25; 
             }
             this.minHeight = attrHeight + opHeight;
             
