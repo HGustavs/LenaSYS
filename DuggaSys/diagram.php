@@ -24,7 +24,6 @@
     <script src="diagram_IOHandler.js"></script>
 
     <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
-    <br/>
     <script>
         $(document).ready(function() {
             $(".menu-drop-down").hover(function() {
@@ -56,13 +55,13 @@
         ';
     ?>
     <!-- content START -->
-    <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
+    <div id="contentDiagram">
         <div id="buttonDiv">
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" onmousedown="">
+                <div id="diagram-toolbar" class="application-toolbar-wrap">
                     <div class='application-toolbar'>
                         <div id="toolbar-switcher">
-                            <div id="toolbarTypeText" style ="text-align: center">Dev</div>
+                            <div id="toolbarTypeText">Dev</div>
                             </div>
                             <div class="toolsContainer">
                                 <div class="labelToolContainer">

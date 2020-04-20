@@ -198,9 +198,7 @@ p {
  * --------------================################================-------------- */
 
 #buttonDiv {
-  margin-left: 52px;
-  position: fixed;
-  margin-top: -27px;
+  margin: 58px 0 8px 52px;
   height: 20px;
   background: var(--color-background);
   border-left: 1px solid var(--color-border-4);
@@ -241,7 +239,7 @@ p {
 
 #contentDiagram {
   background: var(--color-background);
-  margin: 65px 10px 15px 10px;
+  margin: 0 10px 10px 10px;
 }
 
 #accessedcontent {
@@ -1319,7 +1317,8 @@ input {
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar {
-  width: 130px;
+  width: 58px;
+  left: 2px;
   height: 100%;
 }
 
@@ -1366,12 +1365,11 @@ input {
 }
 
 #toolbarTypeText {
-  height: 20px;
   font-size: 11px;
   color: #c0c0c0;
-  margin: 0 auto;
   font-weight: bold;
-  padding-top: 15px;
+  margin: 4px 0 16px 0;
+  text-align: center;
 }
 
 #toolbarLeftArrow {
@@ -1415,7 +1413,6 @@ input {
 
 .document-settings {
   font-size: 14px;
-  top: 150px;
 }
 
 .export-drop-down {
@@ -4735,13 +4732,12 @@ only screen and (max-device-width: 320px) {
 /* Diagram canvas */
 #diagramCanvasContainer {
   margin-left: 52px;
-  height: calc(100vh - 95px);
-  border: 1px solid #000000;
+  height: calc(100vh - 96px);
   position: relative;
 }
 
 #diagramCanvas {
-
+  border: 1px solid #000000;
 }
 
 /* --------------================################================-------------- *

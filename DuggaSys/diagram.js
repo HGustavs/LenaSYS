@@ -237,7 +237,6 @@ function init() {
     canvasSize(); 
     loadDiagram(); 
     setModeOnRefresh(); 
-    initToolbox(); 
     initAppearanceForm();
     updateGraphics(); 
 }
@@ -2902,14 +2901,6 @@ function setOrientationIcon(element, check) {
 const toolbarER = currentMode.er;
 const toolbarUML = currentMode.uml;
 const toolbarDeveloperMode = currentMode.dev;
-
-function initToolbox() {
-    const element = document.getElementById('diagram-toolbar');
-    element.style.top = (boundingRect.top - 37 + "px");
-    element.style.left = (boundingRect.left - 60 + "px");
-    element.style.width = (58 + "px");
-    element.style.display = "inline-block";
-}
 
 //----------------------------------------------------------------------
 // switchToolbar: function for switching the toolbar state (All, ER, UML),
