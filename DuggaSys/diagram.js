@@ -4350,7 +4350,7 @@ function setSelections(object) {
 			if(element.tagName === 'SELECT'){
 				if(access[0] === "cardinality") {
 					if(element.style.display !== "none") {
-							value = object[access[0]][0][access[1]];
+						value = object[access[0]][0][access[1]];
 					}
 							
 
