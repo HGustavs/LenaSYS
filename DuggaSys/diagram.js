@@ -119,8 +119,6 @@ var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
 var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
-var widthWindow;                    // The width on the users screen is saved is in this var.
-var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
@@ -1226,7 +1224,6 @@ function initializeCanvas() {
     const diagramContainer = document.getElementById("diagramCanvasContainer");
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
-    const coordinatesElement = document.getElementById("valuesCanvas");
 
     canvas = document.getElementById("diagramCanvas");
     if(canvas.getContext) {
@@ -1234,9 +1231,6 @@ function initializeCanvas() {
     }
 
     zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
-
-    coordinatesElement.style.display = 'none';
-    moveButton.style.visibility = 'hidden';
 
     moveButton.addEventListener('click', movemode, false);
     diagramContainer.addEventListener("contextmenu", e => e.preventDefault());
@@ -1741,13 +1735,10 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    widthWindow = (window.innerWidth - 75);
-    heightWindow = (window.innerHeight - 95);
-    canvas.width = widthWindow;
-    canvas.height = heightWindow;
+    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    canvas.width = diagramContainer.offsetWidth
+    canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setMoveButtonPosition();
     updateGraphics();
 }
 
@@ -3995,10 +3986,6 @@ function resize() {
     }
 }
 
-function setMoveButtonPosition() {
-    document.getElementById("moveButton").style.marginLeft = widthWindow + 4 + "px";
-}
-
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
@@ -4007,7 +3994,6 @@ function movemode(e, t) {
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
-    setMoveButtonPosition();
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';

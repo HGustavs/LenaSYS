@@ -4629,6 +4629,7 @@ only screen and (max-device-width: 320px) {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  display: none;
 }
 
 .migration-form {
@@ -4740,7 +4741,7 @@ only screen and (max-device-width: 320px) {
 }
 
 #diagramCanvas {
-  
+
 }
 
 /* --------------================################================-------------- *
