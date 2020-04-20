@@ -2306,7 +2306,7 @@ function showCopyButtons(templateid) {
 	var totalBoxes = getTotalBoxes(templateid);
 
 	for (var i = 1; i <= totalBoxes; i++) {
-		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
+		var copyBtn = document.querySelector('#box' + i).className == 'box codebox';
 		if (!copyBtn) continue;
 		copyBtn.style.display = "table-cell";
 	}
@@ -2682,7 +2682,7 @@ function resetBoxes() {
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
 
-	showCopyButtons(retData["templateid"]);
+	showCopyButtons(templateid);
 
 	if (templateid == 1) {
 		$(boxValArray['box' + 2]['id']).width("50%");
