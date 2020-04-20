@@ -4459,7 +4459,7 @@ function loadAppearanceForm() {
 
     //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
     var connectedObjectsArray = object.getConnectedObjects();
-    if(object.symbolkind == 7){
+    if(object.symbolkind == symbolKind.umlLine){
         document.getElementById('First').innerHTML = connectedObjectsArray[0].name;
         //Selection to check if relation is to the same entity. If so: both are named from object 0
         if(typeof connectedObjectsArray[1] == "undefined"){
@@ -4563,17 +4563,14 @@ function setGlobalSelections() {
 
 function setGlobalProperties() {
     const groups = getGroupsByType(-1);
-    for(let i = 0; i < diagram.length; i++) {
-        const object = diagram[i];
-        groups.forEach(group => {
-            const element = group.querySelector("select, input:not([type='submit'])");
-            if(element !== null) {
-                const access = element.dataset.access.split(".");
-                object[access[0]][access[1]] = element.value;
-                settings[access[0]][access[1]] = element.value;
-            }
-        });
-    }
+    groups.forEach(group => {
+        const element = group.querySelector("select, input:not([type='submit'])");
+        if(element !== null) {
+            const access = element.dataset.access.split(".");
+            settings[access[0]][access[1]] = element.value;
+            diagram.forEach(object => object[access[0]][access[1]] = element.value);
+        }
+    });
     updateGraphics();
 }
 
@@ -4588,10 +4585,9 @@ function setSelections(object) {
     groups.forEach(group => {
         const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
-
         	const access = element.dataset.access.split(".");
-			let value = "";
-			if(element.tagName === 'SELECT'){
+			if(element.tagName === 'SELECT') {
+                let value = "";
 				if(access[0] === "cardinality") {
 					if(element.style.display !== "none") {
 						value = object[access[0]][access[1]];
@@ -4601,13 +4597,12 @@ function setSelections(object) {
 				} else if(access.length === 2) {
 					value = object[access[0]][access[1]];
 				}
-				setSelectedOption(element, value);
-			}else{
-				if (element.id == "commentCheck"){
-					element.checked = object[access[0]][access[1]];
-				}
+                setSelectedOption(element, value);
+			} else {
+                if(element.id == "commentCheck") {
+                    element.checked = object[access[0]][access[1]];
+                }
 			}
-
         });
     });
 }
@@ -4634,10 +4629,9 @@ function setObjectProperties() {
                         if(element.value === "None") element.value = "";
                         object[access[0]][access[1]] = element.value;
 					}
-				}else if(element.id == "commentCheck"){
-					object[access[0]][access[1]] = element.checked;
-				}else if(access.length === 1) {
-
+                } else if(element.id == "commentCheck") {
+                    object[access[0]][access[1]] = element.checked;
+                } else if(access.length === 1) {
                     object[access[0]] = element.value;
                 } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
