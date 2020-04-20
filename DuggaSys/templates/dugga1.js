@@ -315,3 +315,7 @@ function toggleInstructions()
 {
     $(".instructions-content").slideToggle("slow");
 }
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
+}
