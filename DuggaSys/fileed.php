@@ -62,27 +62,27 @@ $codeLinkQuery->execute();
         <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
             <div style='display:flex;flex-wrap:wrap;'>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="sortFilesByKind('AllFiles');count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="sortFilesByKind('AllFiles');count=0;searchterm='';searchKeyUp(event);"/>
                     <label for="all-files-sort" name="sortAll" style='white-space:nowrap'>All files</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="sortFilesByKind('Global');count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="sortFilesByKind('Global');count=0;searchterm='kind::global';searchKeyUp(event);"/>
                     <label for="global-files-sort" name="sortGlobal" style='white-space:nowrap'>Global</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="sortFilesByKind('CourseLocal');count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="sortFilesByKind('CourseLocal');count=0;searchterm='kind::course';searchKeyUp(event);"/>
                     <label for="course-local-sort" name="sortCLocal" style='white-space:nowrap'>Course local</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="sortFilesByKind('Local');count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="sortFilesByKind('Local');count=0;searchterm='kind::version';searchKeyUp(event);"/>
                     <label for="version-local-sort" name="sortVLocal" style='white-space:nowrap'>Version local</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="sortFilesByKind('Link');count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="sortFilesByKind('Link');count=0;searchterm='kind::link';searchKeyUp(event);"/>
                     <label for="links-sort" name="sortLinks" style='white-space:nowrap'>Links</label>
                 </div>
                  <div style='white-space:nowrap'>
-                    <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="sortFilesByKind('DummyFiles');count=0;searchterm='kind::dummyfile';searchKeyUp(event);fileLink.renderTable();"/>
+                    <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="sortFilesByKind('DummyFiles');count=0;searchterm='kind::dummyfile';searchKeyUp(event);"/>
                     <label for="dummyEmptyFile-sort" name="sortDummyFile" style='white-space:nowrap'>Dummy files</label>
                 </div>
             </div>
@@ -278,7 +278,7 @@ $codeLinkQuery->execute();
                     <img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
             </a>
         </li>
-        <li onclick="showLinkPopUp();" >
+        <li onclick="showLinkPopUp('LINK');" >
             <a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
                     <img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
             </a>
