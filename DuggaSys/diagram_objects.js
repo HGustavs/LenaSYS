@@ -58,8 +58,8 @@ function Symbol(kindOfSymbol) {
         'textSize': settings.properties.textSize,          // 14 pixels text size is default.
         'sizeOftext': settings.properties.sizeOftext,      // Used to set size of text.
         'textAlign': settings.properties.textAlign,        // Used to change alignment of free text.
-				'key_type': settings.properties.key_type,          // Defult key type for a class.
-				'isComment': settings.properties.isComment         // Used to se if text are comments and if they should be hidden.
+		'key_type': settings.properties.key_type,          // Defult key type for a class.
+		'isComment': settings.properties.isComment         // Used to se if text are comments and if they should be hidden.
     };
 
     //--------------------------------------------------------------------
@@ -1962,7 +1962,6 @@ function Symbol(kindOfSymbol) {
 
     this.drawText = function(x1, y1, x2, y2) {
 		if(hideComment == false || this.properties['isComment'] == false){
-				
 			var midx = x1 + ((x2-x1)/2);
 			var midy = y1 + ((y2-y1)/2);
 			ctx.beginPath();

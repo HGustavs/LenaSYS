@@ -59,7 +59,7 @@ var settings = {
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
         key_type: 'Normal',                           // Defult key type for a class.
-        isComment: false	                            // Used to se if text are comments and if they should be hidden.
+        isComment: false	                          // Used to se if text are comments and if they should be hidden.
     },
 };
 
@@ -181,7 +181,7 @@ var symbolEndKind;                      // Is used to store which kind of object
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
 var toolbarState = currentMode.er;      // Set default toolbar state to ER.
-var hideComment = false;								//Used to se if the comment marked text should be hidden(true) or shown(false)
+var hideComment = false;				//Used to se if the comment marked text should be hidden(true) or shown(false)
 
 // Keyboard keys
 const backspaceKey = 8;
@@ -1673,7 +1673,7 @@ function togglesingleA4(event) {
 //---------------------------------------------------------------
 
 function toggleComments(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    event.stopPropagation();  // This line stops the collapse of the menu when it's clicked
     if (hideComment) {
 		hideComment = false;
       	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
@@ -4345,15 +4345,13 @@ function setSelections(object) {
     groups.forEach(group => {
         const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
-            const access = element.dataset.access.split(".");
+        	const access = element.dataset.access.split(".");
 			let value = "";
 			if(element.tagName === 'SELECT'){
 				if(access[0] === "cardinality") {
 					if(element.style.display !== "none") {
 						value = object[access[0]][0][access[1]];
 					}
-							
-
 				} else if(access.length === 1) {
 					value = object[access[0]];
 				} else if(access.length === 2) {
@@ -4380,9 +4378,7 @@ function setObjectProperties() {
         groups.forEach(group => {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
-								let access = element.dataset.access.split(".");
-								
-								//console.log(access[0]);
+				let access = element.dataset.access.split(".");
                 if(element.nodeName === "TEXTAREA") {
                     object[access[0]] = setTextareaText(element, object[access[0]]);
                 } else if(element.type === "range") {
@@ -4391,11 +4387,10 @@ function setObjectProperties() {
                     if(element.style.display !== "none") {
                         if(element.value === "None") element.value = "";
                         object[access[0]][0][access[1]] = element.value;
-										}
-								}else if(element.id == "commentCheck"){
-										object[access[0]][access[1]] = element.checked;
-
-								}else if(access.length === 1) {
+					}
+				}else if(element.id == "commentCheck"){
+					object[access[0]][access[1]] = element.checked;
+				}else if(access.length === 1) {
                     object[access[0]] = element.value;
                 } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;

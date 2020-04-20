@@ -280,7 +280,7 @@
 							<div class="drop-down-divider">
                             </div>
 							<div class="drop-down-item" tabindex="0">
-                             <span class="drop-down-option" onclick='toggleComments(event);'>Hide Comments</span>                       
+                            	<span class="drop-down-option" onclick='toggleComments(event);'>Hide Comments</span>                       
                             </div>
                         </div>
                     </div>
