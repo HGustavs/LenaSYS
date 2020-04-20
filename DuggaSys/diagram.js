@@ -4367,6 +4367,7 @@ function setSelections(object) {
     });
 }
 
+
 function setObjectProperties() {
     for(const object of selected_objects) {
         let groups = [];
