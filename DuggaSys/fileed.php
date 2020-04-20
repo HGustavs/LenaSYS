@@ -301,7 +301,7 @@ $codeLinkQuery->execute();
 <?php 
             if($_GET['kind'] != null && $_GET['filename'] != null){
                 echo '<script type="text/javascript">',
-                'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
+                'loadFile("../courses/'.$_GET['courseid']'/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
                     '</script>'
                 ;
             }         
