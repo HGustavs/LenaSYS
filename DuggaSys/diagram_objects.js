@@ -1965,7 +1965,7 @@ function Symbol(kindOfSymbol) {
 
     this.drawText = function(x1, y1, x2, y2) {
 			//console.log(document.getElementById("commentCheck").checked)
-			if(hideComment == false || this.properties['isComment'] == 'false'){
+			if(hideComment == false || this.properties['isComment'] == false){
 				
         var midx = x1 + ((x2-x1)/2);
         var midy = y1 + ((y2-y1)/2);

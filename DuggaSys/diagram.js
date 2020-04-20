@@ -59,7 +59,7 @@ var settings = {
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
         key_type: 'Normal',                           // Defult key type for a class.
-        isComment: "false"                            // Used to se if text are comments and if they should be hidden.
+        isComment: false	                            // Used to se if text are comments and if they should be hidden.
     },
 };
 
@@ -4268,20 +4268,28 @@ function setSelections(object) {
     }
 
     groups.forEach(group => {
-        const elements = group.querySelectorAll("select");
+        const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
             const access = element.dataset.access.split(".");
-            let value = "";
-            if(access[0] === "cardinality") {
-                if(element.style.display !== "none") {
-                    value = object[access[0]][0][access[1]];
-                }
-            } else if(access.length === 1) {
-                value = object[access[0]];
-            } else if(access.length === 2) {
-                value = object[access[0]][access[1]];
-            }
-            setSelectedOption(element, value);
+						let value = "";
+						if(element.tagName === 'SELECT'){
+							if(access[0] === "cardinality") {
+									if(element.style.display !== "none") {
+											value = object[access[0]][0][access[1]];
+									}
+							
+
+							} else if(access.length === 1) {
+									value = object[access[0]];
+							} else if(access.length === 2) {
+									value = object[access[0]][access[1]];
+							}
+							setSelectedOption(element, value);
+						}else{
+							if (element.id == "commentCheck"){
+								element.checked = object[access[0]][access[1]];
+							}
+						}
         });
     });
 }
@@ -4297,9 +4305,6 @@ function setObjectProperties() {
         groups.forEach(group => {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
-							console.log(element.id);
-							console.log(element.value);
-							console.log(object)
 								let access = element.dataset.access.split(".");
 								
 								//console.log(access[0]);
@@ -4313,12 +4318,7 @@ function setObjectProperties() {
                         object[access[0]][0][access[1]] = element.value;
 										}
 								}else if(element.id == "commentCheck"){
-									var checkbox = document.getElementById('commentCheck');
-									if(checkbox.checked == true){
-										object[access[0]][access[1]] = element.value;
-									}else if(checkbox.checked == false){
-										object[access[0]][access[1]] = "false";
-									}
+										object[access[0]][access[1]] = element.checked;
 
 								}else if(access.length === 1) {
                     object[access[0]] = element.value;
