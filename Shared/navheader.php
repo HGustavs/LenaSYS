@@ -92,33 +92,48 @@
 
 							include_once "../Shared/database.php";
 							pdoConnect();	
-							$query = $pdo->query("SELECT versname, coursecode FROM vers WHERE cid=".$_SESSION['courseid']."");
-							$fetch = $query->fetch();
-							$result['coursecode'] = $fetch['coursecode'];
-							$result['versname'] = $fetch['versname'];
 
-							// Changes format from 'HT20' to numbers to create the URL
-							$array = explode("T", $result['versname']);
-							$array[0]; 
-							$year = "20";
-							$year .= $array[1];
-							if ($array[0] = "H")
-							  $term = 2;
-							else if ($array[0] = "V")
-								$term = 1;
+							//Get version name and coursecode from the correct version of the course
+							$query = $pdo->prepare("SELECT versname, coursecode FROM vers WHERE cid=:cid AND vers=:vers");
+							$query->bindParam(":cid", $_SESSION["courseid"]);
+							$query->bindParam(':vers', $_SESSION['coursevers']);
+							$query->execute();
+							$result = $query->fetch(PDO::FETCH_ASSOC);
 
-							echo "<td class='coursePage' style='display: inline-block;'>";
-							echo "    <div class='course menuButton'>";
-							echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
-              echo "        <img id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
-							echo "		</a>";
-							echo "    </div>";
-							echo "</td>";
+							//Need to check if the course has a version, if it does not the button should not be created
+							if(isset($result['versname'])) {
+								// Changes format from 'HT20' to numbers to create the URL
+								$array = explode("T", $result['versname']);
+								$year = "20";
+								$year .= $array[1];
+								if ($array[0] === "H") {
+									$term = 2;
+								} else if ($array[0] === "V") {
+									$term = 1;
+								}
+	
+								echo "<td class='coursePage' style='display: inline-block;'>";
+								echo "    <div class='course menuButton'>";
+								echo " 		<a href='https://personal.his.se/utbildning/kurs/?semester=".$year.$term."&coursecode=".$result['coursecode']."'>";
+								echo "        <img id='courseIMG' value='Course' class='navButt' title='Course page for ".$result['coursecode']."' src='../Shared/icons/coursepage_button.svg'>";
+								echo "		</a>";
+								echo "    </div>";
+								echo "</td>";
+							}
 						
 							echo "<td class='access menuButton' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
               echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
               echo "        <img class='navButt' src='../Shared/icons/lock_symbol.svg'>";
+							echo "      </a>";
+							echo "    </div>";
+							echo "</td>";
+
+							//Adds the download files button to the toolbar
+							echo "<td class='Downlad all files' style='display: inline-block;'>";
+							echo "    <div class='Downlad all files'>";
+							echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+							echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";

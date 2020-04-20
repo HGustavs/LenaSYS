@@ -35,14 +35,10 @@
             $(".drop-down-item").click(function() {
                 $(this).closest(".drop-down").hide();
             });
-
-            window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
     </script>
 </head>
-<!-- Reads the content from the js-files -->
-<!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics(); initAppearanceForm();" style="overflow-y: hidden;">
+<body onload="init();" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -228,6 +224,9 @@
                                 <span class="drop-down-option" onclick='resetViewToOrigin(event);'>Reset view to origin</span>
                                 <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick='disableShortcuts(event);'>Disable keyboard shortcuts</span>
+                            </div>
                         </div>
                     </div>
                     <div class="menu-drop-down" tabindex="0">
@@ -349,11 +348,9 @@
                     <div class="menu-drop-down">
                         <span class="drop-down-label" tabindex="0">Help</span>
                         <div class="drop-down">
-                            <div class="drop-down-text-non-clickable" tabindex="0">
-                                <span class="drop-down-option">Move camera</span>
-                                <div id="hotkey-space" class="hotKeys">
-                                    <i>Blankspace</i>
-                                </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="toggleCameraView(event);">Move camera</span>
+                                <i id="hotkey-space" class="hotKeys">Blankspace</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
@@ -364,6 +361,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div id="errorBox">
+                        <span id="errorMSG"></span>
                     </div>
                 </div>
                 </br>
@@ -394,7 +394,8 @@
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
-            <div id="canvasDiv" style = "margin-left: 52px" oncontextmenu="return false;">
+            <div id="diagramCanvasContainer">
+               <canvas id="diagramCanvas"></canvas> 
             </div>
             <div id="consoleDiv">
                 <!--
@@ -403,9 +404,9 @@
                 <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
                 <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
                 -->
-                <div id='valuesCanvas'>
+                <div id="valuesCanvas" style="position: fixed">
                 </div>
-                <div id="selectDiv">
+                <div id="selectDiv" style="position: fixed">
                     <span class="tooltipDecrease">
                         <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1, event);">-</button>
                         <span class="tooltiptextDec">Zoom Out</span>
@@ -490,8 +491,8 @@
                     <div class="form-group" data-types="7">
                         <label for="lineDirection">Line direction:</label>
                         <select id="lineDirection" data-access="lineDirection">
-                            <option value="First">First object</option>
-                            <option value="Second">Second object</option>
+                            <option value="First" id="First">First object</option>
+                            <option value="Second" id = "Second">Second object</option>
                         </select>
                     </div>
                     <div class="form-group" data-types="4,7">
