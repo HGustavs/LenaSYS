@@ -299,26 +299,25 @@ function Symbol(kindOfSymbol) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
             points[this.topLeft].y = y1;
-
             var attrHeight, opHeight;
             if(this.attributes.length > 0) {
                 //Height of text + padding
                 attrHeight = (this.attributes.length*this.properties.textSize)+35;
                 if(this.properties['sizeOftext'] == 'Tiny' || this.properties['sizeOftext'] == 'Small'){
-                    attrHeight = (this.attributes.length*this.properties.textSize)+35;
+                    attrHeight = (this.attributes.length*this.properties.textSize / diagram.getZoomValue()) +35;
                 }
                 else if (this.properties['sizeOftext'] == 'Medium'){
-                    attrHeight = (this.attributes.length*this.properties.textSize)+50;
+                    attrHeight = (this.attributes.length*this.properties.textSize / diagram.getZoomValue())+50;
                 }
                 else if (this.properties['sizeOftext'] == 'Large'){
-                    attrHeight = (this.attributes.length*this.properties.textSize)+100;
+                    attrHeight = (this.attributes.length*this.properties.textSize / diagram.getZoomValue())+100;
                 } 
             }
             if(this.operations.length > 0) {
-                opHeight = (this.operations.length*this.properties.textSize)+15;
+                opHeight = (this.operations.length*this.properties.textSize / diagram.getZoomValue())+15;
             }
             this.minHeight = attrHeight + opHeight;
-
+            
             //Finding the longest string
             var longestStr = this.name;
 
@@ -440,9 +439,15 @@ function Symbol(kindOfSymbol) {
 
     this.resizeUMLToMinimum = function() {
 
-        //console.log("Resized");
         points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
         points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+
+    }
+
+
+    this.resizeUMLToMinHeight = function() {
+        
+        points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
 
     }
 
