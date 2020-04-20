@@ -2243,7 +2243,7 @@ div.submit-button:disabled {
 .list th {
   background: var(--color-primary);
   color: var(--color-text-header);
-  line-height: 28px;
+  line-height: 22px;
   font-weight: bold;
   padding: 5px;
 }
@@ -2328,10 +2328,6 @@ div.submit-button:disabled {
 .sortableHeading {
   display: inline !important;
   cursor: pointer;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  padding-left: 16px;
-  padding-right: 16px;
 }
 
 #editpopover {
