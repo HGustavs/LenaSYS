@@ -1054,6 +1054,12 @@ function returnedSection(data) {
   $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
   addClasses();
+  showMOTD();
+  
+}
+
+function showMOTD(){
+  document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
 }
 
 function showHighscore(did, lid) {
