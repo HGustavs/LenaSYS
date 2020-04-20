@@ -924,6 +924,19 @@ $(document).mouseout(function (e) {
 	FABMouseOut(e);
 });
 
+document.addEventListener('keydown', function(e) {
+	var element = document.getElementById('fabButtonAcc');
+	if(e.keyCode === 17){
+		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
+			element.style.opacity = "1";
+			element.style.pointerEvents = "auto";
+		}else{
+			element.style.opacity = "0.3";
+			element.style.pointerEvents = "none";
+		}	
+	}
+});
+
 $(document).mousedown(function (e) {
 	mouseDown(e);
 
