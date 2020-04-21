@@ -2660,18 +2660,18 @@ span.arrow {
 }
 
 #accessTable td {
-  padding: 0px 5px;
+  padding: 0px;
   border-left: 2px solid #dbd0d8;
   border-right: 2px solid #dbd0d8;
+}
+
+#accessTable td span{
+  padding: 0px 5px;
 }
 
 #accessTable select {
   height: 40px;
   width: 100%;
-}
-
-.accessTable-vers select {
-  width: 60% !important;
 }
 
 .accessTableText {
@@ -5354,7 +5354,7 @@ textarea#mrkdwntxt {
 }
 
 .multiselect-group {
-  width: 112px;
+  width: 100%;
 }
 
 .checkboxes {
