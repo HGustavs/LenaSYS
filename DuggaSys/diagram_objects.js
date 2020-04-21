@@ -1529,7 +1529,8 @@ function Symbol(kindOfSymbol) {
             ctx.strokeStyle = "#fff";
         }
         else if (this.properties['key_type'] == "Derived") {
-            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
+            ctx.lineCap = "butt";
+            ctx.lineWidth = this.properties['lineWidth'] * 1.5 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
         checkLineIntersection(x1,y1,x2,y2);
