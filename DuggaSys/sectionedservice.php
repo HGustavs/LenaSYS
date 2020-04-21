@@ -309,11 +309,12 @@ if($gradesys=="UNK") $gradesys=0;
 						$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
 					}
 				}else if(strcmp($opt,"UPDATEVRS")===0) {
-						$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+						$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate,motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':coursecode', $coursecode);
 						$query->bindParam(':vers', $versid);
 						$query->bindParam(':versname', $versname);
+						$query->bindParam(':motd', $motd);
 		        // if start and end dates are null, insert mysql null value into database
 
 						if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);

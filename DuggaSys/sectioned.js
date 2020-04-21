@@ -456,6 +456,7 @@ function updateVersion() {
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
   param.enddate = $("#eenddate").val();
+  param.motd = document.getElementById("eMOTD").value;
 
   AJAXService("UPDATEVRS", param, "SECTION");
 
@@ -1628,9 +1629,15 @@ function validateCourseID(courseid, dialogid) {
     code.style.borderWidth = "2px";
     window.bool = false;
   }
-
-
 }
+
+function validateMOTD(motd){
+  var emotd = document.getElementById('motd'); //incorrect shit. Get the curreny eMOTD some how. 
+  /* add the windows.bool function to check the lenght of the message is under 35(DB settings)
+     Go into validateForm and make it work only for this bool after the save button is pressed. 
+  */
+}
+
 /*Validates that start date comes before end date*/
 function validateDate(startDate, endDate, dialogID) {
   var sdate = document.getElementById(startDate);
