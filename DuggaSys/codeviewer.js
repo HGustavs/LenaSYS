@@ -355,8 +355,9 @@ var tabLine = function (text) {
 var addedWords = [];
 var removedWords = [];
 
-function editImpWords(editType) {
-	var word = $("#impword").val();
+function editImpWords(editType) 
+{
+	var word = document.getElementById("impword").value;
 	var left = 0;
 	var right = 0;
 	//Check if the word contains an uneven amount of parenthesis
@@ -383,8 +384,8 @@ function editImpWords(editType) {
 			}
 		});
 		if (exists == false) {
-			$("#impwords").append('<option>' + word + '</option>');
-			$("#impword").val("");
+			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
+			document.getElementById("impword").value = word;
 			addedWords.push(word);
 		}
 	} else if (editType == "-") {
@@ -2306,11 +2307,11 @@ function hideCopyButtons(templateid, boxid) {
 
 function showCopyButtons(templateid) {
 	var totalBoxes = getTotalBoxes(templateid);
-
+	
 	for (var i = 1; i <= totalBoxes; i++) {
-		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
-		if (!copyBtn) continue;
-		copyBtn.style.display = "table-cell";
+		if (document.querySelector('#box' + i).className == 'box codebox') {
+		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
+		}
 	}
 }
 
@@ -2682,8 +2683,82 @@ function hideMinimizeButton() {
 
 //reset boxes
 function resetBoxes() {
-	resizeBoxes("#div2", retData["templateid"]);
-	showCopyButtons(retData["templateid"]);
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+
+	showCopyButtons(templateid);
+
+	if (templateid == 1) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+	}
+	
+	if (templateid == 2) {
+		(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+	}
+
+	if (templateid == 3) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
+
+	if (templateid == 4) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("100%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
+
+	if (templateid == 5) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+		$(boxValArray['box' + 4]['id']).height("50%");
+	}
+
+	if (templateid == 6) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("40%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).height("30%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).height("30%");
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}
+
+	if (templateid == 7) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("40%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).height("30%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).height("30%");
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}
+
+	if (templateid == 8) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
 }
 
 //-----------------------------------------------------------------------------
