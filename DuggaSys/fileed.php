@@ -38,6 +38,7 @@ $codeLinkQuery->execute();
     <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
     <script src="fileed.js"></script>
     <script src="../Shared/markdown.js"></script>
+    <script src="ace.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body onload="setup();">
     <?php
@@ -239,6 +240,7 @@ $codeLinkQuery->execute();
                 <div class="editFileWindow">
                     <div class="editFileCode">
                         <div class="fileText">
+                            <div id="editor" rows="32" cols="79"></div>
                             <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
                         </div>
                     </div>

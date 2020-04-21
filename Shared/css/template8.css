@@ -9,7 +9,7 @@
 	width: calc(50.0%);
 	height: -webkit-calc(100%);
 	height: -moz-calc(100%);
-	height: calc(100%);
+	height: calc(100%) !important;
 	min-width: 10%;
 	max-width: 90%;
 
