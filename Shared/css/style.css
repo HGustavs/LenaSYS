@@ -832,6 +832,15 @@ div .navButt:hover {
     float: none;
     width: 100%;
   }
+  .logoutBox{
+    width: 300px;
+  }
+  .logoutBox  .logoutboxTr input[type="button"]{
+    width: 110px;
+
+  }.logoutBox  .logoutboxTr input[type="button"]:last-child{
+    margin-left: 10px;
+  }
 }
 .overlay {
   display: block;
@@ -844,7 +853,8 @@ div .navButt:hover {
   z-index: 8000;
 }
 
-.loginBoxContainer {
+.loginBoxContainer,
+.logoutBoxContainer {
   display: block;
   justify-content: center;
   align-items: center;
@@ -860,7 +870,8 @@ div .navButt:hover {
   margin:0 auto;
 }
 
-.loginBox {
+.loginBox,
+.logoutBox{
   padding: 4px;
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
@@ -870,6 +881,17 @@ div .navButt:hover {
   overflow-y: auto;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
+.logoutBox{
+  margin: 0;
+  position: absolute;
+  top: 30%;
+  left:50%;
+  -ms-transform: translateY(-30%);
+  -ms-transform: translateX(-30%);
+  transform: translateY(-30%);
+  transform: translateX(-50%);
+}
+
 /* <<<<<<<<<<< Create new empty file >>>>>>>>>>>>>>> */
 #createNewEmptyFile input[type=text]{
   width: 100%;
@@ -892,6 +914,7 @@ div .navButt:hover {
 }
 
 /* <<<<<<<<<<< End of create new empty file >>>>>>>>>>>>>>> */
+
 #variantBox {
   max-width: 100%;
   max-height: 100%;
@@ -1152,7 +1175,8 @@ input {
   font-size: 14px;
 }
 
-.loginBoxheader {
+.loginBoxheader,
+.logoutBoxheader{
   background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
@@ -1161,7 +1185,8 @@ input {
   justify-content: space-around;
 }
 
-.loginBoxheader h3 {
+.loginBoxheader h3,
+.logoutBoxheader h3 {
   font-size: 14px;
   margin-top: 10px;
   line-height: 0.5em;
@@ -1169,7 +1194,8 @@ input {
   width: 100%;
 }
 
-.loginBoxheader div {
+.loginBoxheader div,
+.logoutBoxheader div {
   padding: 4px 20px;
   /*position: absolute;
   top: 4px;
@@ -1203,15 +1229,17 @@ input {
   overflow: auto;
 }
 
-.loginBox form {
+.loginBox form,
+.logoutBox form {
   padding: 20px;
 }
 
-.loginBox .text {
+.loginBox .text,
+.logoutBox .text {
   font-size: 0.8em;
 }
 
-.loginBox .submit {
+.loginBox .submit{
   width: 80px;
   height: 25px;
   color: #fff;
@@ -1249,8 +1277,11 @@ input {
   margin-left: 4px;
   margin-right: 4px;
 }
-
-.buttonLoginBox {
+.buttonLogoutBox{
+  border-radius: 0;
+}
+.buttonLoginBox,
+.buttonLogoutBox {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: var(--color-primary);
   border: none;
@@ -1266,23 +1297,27 @@ input {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-.buttonLoginBox:hover {
+.buttonLoginBox:hover,
+.buttonLogoutBox:hover,{
   background-color: var(--color-primary-hover);
   border-radius: 2px;
 }
 
-.loginBoxTable {
+.loginBoxTable,
+.logoutBoxTable,{
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
   background-color: transparent;
 }
 
-.loginboxTr {
+.loginboxTr,
+.logoutboxTr{
   background-color: inherit;
 }
 
-#loginBoxTitle {
+#loginBoxTitle,
+#logoutBoxTitle,{
   font-size: 15px;
 }
 

@@ -1051,7 +1051,15 @@ function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
 		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){processLogout();});
+		$("#loginbutton").click(function(){
+			$("#logoutBox").show();
+			$(".buttonLogoutCancelBox").click(function(){
+				$("#logoutBox").hide();
+
+			});
+
+
+		});
 		sessionExpireMessage();
 		sessionExpireLogOut();
 	}
