@@ -385,21 +385,21 @@ function ExportSVG(el) {
 }
 
 //----------------------------------------------------------------------
-// ExportSVGA4: export canvas to SVG file in A4 format
+// ExportSVGPaper: export canvas to SVG file in Paper format
 //----------------------------------------------------------------------
 
-function ExportSVGA4(el) {
+function ExportSVGA4(el) { //There will probably be so only one size paper are to be downloaded?
     const pixelsPerMillimeter = 3.781;
-    a4Width = 210 * pixelsPerMillimeter;
-    a4Height = 297 * pixelsPerMillimeter;
-    if(A4Orientation == "landscape"){
-        temp = a4Width;
-        a4Width = a4Height;
-        a4Height = temp
-        //downloads file with swapped height and width for landscape oriented A4
+    paperWidth = 210 * pixelsPerMillimeter;
+    paperHeight = 297 * pixelsPerMillimeter;
+    if(paperOrientation == "landscape"){
+        temp = paperWidth;
+        paperWidth = paperHeight;
+        paperHeight = temp
+        //downloads file with swapped height and width for landscape oriented Paper
     }
     var svgstr = "";
-    var width = a4Width, height = a4Height;
+    var width = paperWidth, height = paperHeight;
     svgstr += "<svg width='"+width+"' height='"+height+"' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>";
     svgstr += gridToSVG(width, height);
     svgstr += diagramToSVG();

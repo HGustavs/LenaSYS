@@ -143,7 +143,7 @@
                                         <a class="drop-down-option" id="picid" onclick='ExportPicture(this);'>Export Picture</a>
                                     </div>
                                     <div class="export-drop-down-item" tabindex="0">
-                                        <a class="drop-down-option" id="svgidA4" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
+                                        <a class="drop-down-option" id="svgidPaper" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
                                     </div>
                                 </div>
                             </div>
@@ -259,27 +259,53 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
-                                <i id="hotkey-displayA4" class="hotKeys">Shift + 4</i>
+                                <span class="drop-down-option" onclick="toggleVirtualPaper(event)">Display Virtual Paper</span>
+                                <i id="hotkey-displayPaper" class="hotKeys">Shift + 4</i>
+                            </div>
+                            <div class="drop-down-item papersize-drop-down-head" tabindex="0">
+                              <span class="drop-down-option" id="paperid">Paper size...</span>
+                              <div class="papersize-drop-down">
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A0" onclick='setPaperSize(event, 0);'>A0</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A1" onclick='setPaperSize(event, 1);'>A1</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A2" onclick='setPaperSize(event, 2);'>A2</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A3" onclick='setPaperSize(event, 3);'>A3</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A4" onclick='setPaperSize(event, 4);'>A4</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A5" onclick='setPaperSize(event, 5);'>A5</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A6" onclick='setPaperSize(event, 6);'>A6</a>
+                                </div>
+                              </div>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="a4-single-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='togglesingleA4(event);'><img src="../Shared/icons/Arrow_down_right.png">Single A4</span>
+                                <div id="Paper-single-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='togglesinglePaper(event);'><img src="../Shared/icons/Arrow_down_right.png">Single Paper</span>
                                 </div>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="a4-orientation-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleA4Orientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                                <div id="Paper-orientation-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='togglePaperOrientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle Paper Orientation</span>
                                 </div>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="a4-holes-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleVirtualA4Holes(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
+                                <div id="Paper-holes-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='toggleVirtualPaperHoles(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle Paper Holes</span>
                                 </div>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="a4-holes-item-right" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleVirtualA4HolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                                <div id="Paper-holes-item-right" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='toggleVirtualPaperHolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">Paper Holes Right</span>
                                 </div>
                             </div>
 							<div class="drop-down-divider">
