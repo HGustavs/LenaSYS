@@ -84,7 +84,7 @@ if(checklogin()){
 				$debug="Error updating entries\n".$error[2];
 			} 
 
-			logUserEvent($username, EventTypes::DuggaRead, $coursename.",".$coursecode);
+			logUserEvent($username, EventTypes::AddCourse, $coursename.",".$coursecode);
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
 
@@ -451,7 +451,7 @@ if(checklogin()){
 				$visibilityName = "Deleted";
 			}
 			
-			logUserEvent($username, EventTypes::DuggaRead, $coursename.",".$coursecode.",".$visibilityName);
+			logUserEvent($username, EventTypes::EditCourse, $coursename.",".$coursecode.",".$visibilityName);
 		}else if(strcmp($opt,"SETTINGS")===0){
 		$query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
