@@ -48,7 +48,7 @@
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
 					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {				
-							echo "<td style='display: inline-block;'>";
+							echo "<td style='display: inline-block;' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
 							echo "    </div>";
@@ -60,7 +60,7 @@
 							echo "    </div>";
 							echo "</td>";
 							
-							echo "<td class='newVers' style='display: inline-block;margin-right:2px;'>";
+							echo "<td class='newVers' style='display: inline-block;margin-right:16px;'>";
 							echo "    <div class='newVers menuButton'>";
               echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
 							echo "    </div>";
@@ -142,11 +142,18 @@
 					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
 					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
+					echo   "<button id='searchbuttonicon' type='button'>";
+					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
+					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
+					echo 	"</div><div>";
+					echo   "</button>";
+					
 					echo "</td>";
 			}
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
-					echo "<td id='select' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
+					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
 					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
@@ -204,7 +211,7 @@
   					echo   "</span>";
 						echo "</td>";
 						echo "</td>";
-            echo "<td id='menuHook' class='navSpacer'>";
+            echo "<td id='menuHook' class='navSpacer' >";
 			}
 	
 			if(checklogin()) {

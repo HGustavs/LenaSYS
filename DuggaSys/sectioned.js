@@ -137,6 +137,14 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
     document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+    }
+
+  // Default showing of set deadline. Will show if has type "Test" only
+  if (kind != 3) {
+      document.querySelector("#inputwrapper-deadline").style.display = "none";
+      document.querySelector("#dialog8").style.display = "none";
+  } else {
+     document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
@@ -236,6 +244,14 @@ function showEditVersion() {
   if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
   $("#editCourseVersion").css("display", "flex");
 }
+
+// Close the "edit course version" and "new course version" windows by pressing the ESC button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    $("#editCourseVersion").css("display", "none");
+    $("#newCourseVersion").css("display", "none");
+  }
+})
 
 function displaymessage() {
   $(".messagebox").css("display", "block");
@@ -812,7 +828,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 7) { //Message
           if (!(item['link'] == "" || item['link'] == "---===######===---")) {
-            str += "<td style='width:32px;'><img src='../Shared/icons/warningTriangle.svg'></td>";
+            str += "<td style='width:32px;'><img title='Important message' src='../Shared/icons/warningTriangle.svg'></td>";
           }
           str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
         }
@@ -1703,7 +1719,7 @@ function validateDate2(ddate, dialogid) {
     ddate.style.borderWidth = "2px";
     window.bool8 = false;
 
-  }
+    }
 }
 
 /*Validates all forms*/ 
