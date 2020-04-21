@@ -140,7 +140,7 @@
                                         <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
                                     </div>
                                     <div class="export-drop-down-item" tabindex="0">
-                                        <a class="drop-down-option" id="picid">Export Picture</a>
+                                        <a class="drop-down-option" id="picid" onclick='ExportPicture(this);'>Export Picture</a>
                                     </div>
                                     <div class="export-drop-down-item" tabindex="0">
                                         <a class="drop-down-option" id="svgidA4" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>

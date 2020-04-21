@@ -443,3 +443,10 @@ function afterPrint(){
     ctx.scale(1,1);
     updateGraphics();
 }
+function ExportPicture(el) {
+    var canvasId = 'diagramCanvas';
+    var filename = 'picture.png';
+    el.href = document.getElementById(canvasId).toDataURL();
+    el.download = filename;
+
+}
