@@ -5842,10 +5842,10 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
-.motd-content{
+#motdContent{
   background-color: yellow;
 }
-.motd-area{
+#motdArea{
   border: 2px;
   border-radius: 2px;
   border-style: solid;
