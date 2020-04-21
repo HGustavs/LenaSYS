@@ -638,7 +638,12 @@ function keyDownHandler(e) {
     }  
     //Check if enter is pressed when "focused" on an item in the dropdown menu
     if(key == keyMap.enterKey) {
-
+        const allowedClasses = ["drop-down-item", "export-drop-down-item", "papersize-drop-down-item"];
+        const isAllowed = allowedClasses.some(className => document.activeElement.classList.contains(className));
+        if(isAllowed) {
+            const onclickElement = document.activeElement.querySelector("[onclick]");
+            onclickElement.click();
+        }
     }
     if(enableShortcuts){ // Only enter if keyboard shortcuts are enabled
         if (key == keyMap.spacebarKey) {
