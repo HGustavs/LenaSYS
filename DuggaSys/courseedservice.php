@@ -44,6 +44,16 @@ if(isset($_SESSION['uid'])){
 $ha=null;
 $debug="NONE!";
 
+// Gets username based on uid
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php",$userid,$info);
@@ -73,6 +83,8 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries\n".$error[2];
 			} 
+
+			logUserEvent($username, EventTypes::DuggaRead, $coursename.",".$coursecode);
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
 
@@ -425,6 +437,21 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries\n".$error[2];
 			}
+
+			if($visibility==0){
+				$visibilityName = "Hidden";
+			}
+			else if($visibility==1){
+				$visibilityName = "Public";
+			}
+			else if($visibility==2){
+				$visibilityName = "Login";
+			}
+			else if($visibility==3){
+				$visibilityName = "Deleted";
+			}
+			
+			logUserEvent($username, EventTypes::DuggaRead, $coursename.",".$coursecode.",".$visibilityName);
 		}else if(strcmp($opt,"SETTINGS")===0){
 		$query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
 
