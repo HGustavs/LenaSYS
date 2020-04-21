@@ -419,3 +419,22 @@ function ExportPicture(el) {
     el.href = document.getElementById(canvasId).toDataURL();
     el.download = filename;
 }
+
+/*Makes canvas bigger before printing */
+function printDiagram(){
+    heightWindow = (window.innerHeight - 95);
+    canvas.setAttribute("height", heightWindow*2);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(2, 2);
+    updateGraphics();
+    window.print();
+    afterPrint();
+}
+ 
+/*Sets canvas back to normal after printing*/ 
+function afterPrint(){
+    canvas.setAttribute("height", heightWindow);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(1,1);
+    updateGraphics();
+}

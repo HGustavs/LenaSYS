@@ -7,6 +7,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 /* --------------================################================-------------- *
  *                                   Media Queries                                   *
  * --------------================################================-------------- */
+
  /*Meduim screens */
 @media screen and (max-width: 960px) {
     #Nameof {
