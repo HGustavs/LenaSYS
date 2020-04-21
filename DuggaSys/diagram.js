@@ -638,10 +638,7 @@ function keyDownHandler(e) {
     }  
     //Check if enter is pressed when "focused" on an item in the dropdown menu
     if(key == keyMap.enterKey) {
-        const onclickElements = document.activeElement.querySelectorAll("[onclick]");
-        onclickElements.forEach(element => {
-        element.click();
-        });
+
     }
     if(enableShortcuts){ // Only enter if keyboard shortcuts are enabled
         if (key == keyMap.spacebarKey) {
