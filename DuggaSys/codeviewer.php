@@ -18,24 +18,71 @@
 	$exampleName = $row['examplename'];
 	//Title used for the codeviewer page
 	$title = $exampleName;
+
+    $css = array(
+        'codeviewer.css',
+        'style.css',
+        'markdown.css',
+        'jquery-ui-1.10.4.min.css'
+    );
+    
+    $js = array(
+        'jquery-1.11.0.min.js',
+        'jquery-ui-1.10.4.min.js'
+    );
+    
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title><?php echo $title; ?></title>
-		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
+        <title><?php echo $title; ?></title>
+		
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
-		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
-		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-		<script type="text/javascript" src="../Shared/dugga.js"></script>
+        <!--
+        <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+        <link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
+        <link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
+        <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
+
+        <script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+        <script type="text/javascript" src="../Shared/dugga.js"></script>
         <script type="text/javascript" src="../Shared/markdown.js"></script>
-		<script type="text/javascript" src="codeviewer.js"></script>
+        <script type="text/javascript" src="codeviewer.js"></script>
+		-->
+
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/> 
+        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+        
+        <?php
+        
+            foreach($css as $filename) {
+                $filemtime = filemtime('../Shared/css/' . $filename);
+                echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'  />";
+            }
+        
+  
+            foreach($js as $filename) {
+                
+                $filemtime = filemtime('../Shared/js/' . $filename);
+                echo "<script type='text/javascript' src='../Shared/js/$filename?$filemtime'  />";
+                echo "</script>";
+            }
+ 
+            $filemtime = filemtime('../Shared/dugga.js');
+            echo "<script type='text/javascript' src='../Shared/dugga.js?$filemtime'>";
+            echo "</script>";
+        
+            $filemtime = filemtime('../Shared/markdown.js');
+            echo "<script type='text/javascript' src='../Shared/markdown.js?$filemtime'>";
+            echo "</script>";
+                    
+            $filemtime = filemtime('codeviewer.js');
+            echo "<script type='text/javascript' src='codeviewer.js?$filemtime'>";
+            echo "</script>";
+        ?>
+
 	</head>
 
 <!--
@@ -193,7 +240,8 @@ Testing Link:
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 			echo "</div>";
-		?>
+        ?>
+            
         </div>
 		<!-- Dropdowns START -->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>

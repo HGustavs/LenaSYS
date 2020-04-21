@@ -38,6 +38,16 @@ if (isset($_SESSION['uid'])) {
     $userid = "UNK";
 }
 
+// Gets username based on uid
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+    $query->bindParam(':uid', $userid);
+    $query-> execute();
+
+    // This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+        $username = $row['username'];
+}
+
 $log_uuid = getOP('log_uuid');
 
 $filo = print_r($_FILES, true);
@@ -175,10 +185,13 @@ if ($storefile) {
 
                 if ($kind == "LFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fname;
+                    logUserEvent($username, EventTypes::AddFile, "VersionLocal"." , ".$fname);
                 } else if ($kind == "MFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/versionIndependence/" . $fname;
+                    logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;
+                    logUserEvent($username, EventTypes::AddFile, "Global"." , ".$fname);
                 }
 
                 // check if upload is successful

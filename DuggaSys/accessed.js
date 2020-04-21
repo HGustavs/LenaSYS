@@ -46,6 +46,8 @@ function setup() {
 //displays dropdown when hovering search bar
 function hoverSearch() {
 	$('#dropdownSearch').css({display:'block'});
+	$('#dropdowns').css('display', 'none');
+	$('#dropdownc').css('display', 'none');
 }
 
 //stops displaying the dropdown when removing cursor from search bar
