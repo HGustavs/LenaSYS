@@ -238,11 +238,7 @@ function showEditVersion() {
   if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
   $("#editCourseVersion").css("display", "flex");
 }
-function addMessageOfTheDay() {
-  var itm = document.getElementById("eMOTD").lastChild;
-  var cln = itm.cloneNode(true);
-  document.getElementById("motd").appendChild(cln);
-}
+
 // Close the "edit course version" and "new course version" windows by pressing the ESC button
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
@@ -1061,7 +1057,7 @@ function returnedSection(data) {
 
 function showMOTD(){
 
-  if(motd == 'UNK' || motd == 'Test' || motd == null) {
+  if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
     document.getElementById("motdArea").style.display = "none"; 
   }else{
     document.getElementById("motdArea").style.display = "block";
