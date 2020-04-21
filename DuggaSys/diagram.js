@@ -4458,14 +4458,13 @@ function loadAppearanceForm() {
     let type = object.symbolkind;
 
     //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
-    var connectedObjectsArray = object.getConnectedObjects();
     if(object.symbolkind == symbolKind.umlLine){
+        let connectedObjectsArray = object.getConnectedObjects();
         document.getElementById('First').innerHTML = connectedObjectsArray[0].name;
         //Selection to check if relation is to the same entity. If so: both are named from object 0
         if(typeof connectedObjectsArray[1] == "undefined"){
             document.getElementById('Second').innerHTML =  connectedObjectsArray[0].name;
-        }
-        else{
+        } else {
             document.getElementById('Second').innerHTML = connectedObjectsArray[1].name;
         }
     }
@@ -4680,9 +4679,11 @@ function getGroupsByType(type) {
 
 //Shoud simulate button click or enter click in appearance menu to save and close
 function submitAppearanceForm() {
-    if(typeof diagram[lastSelectedObject] !== 'undefined'){
-        diagram[lastSelectedObject].resizeUMLToMinHeight();
-    }
+    selected_objects.forEach(object => {
+        if(object.symbolkind === symbolKind.uml) {
+            object.resizeUMLToMinHeight();
+        }
+    });
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
     } else {
