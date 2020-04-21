@@ -638,7 +638,7 @@ function keyDownHandler(e) {
     if(key == keyMap.enterKey) {
         const onclickElements = document.activeElement.querySelectorAll("[onclick]");
         onclickElements.forEach(element => {
-        element.onclick();
+        element.click();
         });
     }
     if(enableShortcuts){ // Only enter if keyboard shortcuts are enabled
