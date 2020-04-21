@@ -3475,7 +3475,6 @@ function mousemoveevt(ev) {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
-        console.log(origoOffsetX);
         
         startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
