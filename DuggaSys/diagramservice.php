@@ -24,6 +24,16 @@
         $lastname = "UNK";
         $firstname = "UNK";
     }
+
+    $opt = getOP('opt');
+    $courseid=getOP('courseid');
+    $coursename=getOP('coursename');
+   
+
+    $log_uuid = getOP('log_uuid');
+    $info=$opt." ".$courseid." ".$coursename;
+    logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "diagramservice.php",$userid,$info);
+
     $log_db = new PDO('sqlite:../../GHdataD.db');
     $gituser = $loginname;
     $startweek = strtotime('2015-03-29');                                   // First monday in january
@@ -97,4 +107,6 @@
     } while ($weekno < 11);
     $array = array('debug' => $debug, 'weeks' => $weeks);
     echo json_encode($array);
+
+    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "diagramservice.php",$userid,$info);
 ?>

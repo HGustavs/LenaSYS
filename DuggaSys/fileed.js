@@ -123,8 +123,8 @@ function returnedFile(data) {
     if (data['debug'] != "NONE!") alert(data['debug']);
 }
 
-function showLinkPopUp() {
-    $("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' value='Upload URL' />");
+function showLinkPopUp(fileKind) {
+    $("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' value='Upload URL' onclick='uploadFile(\"" + fileKind + "\");'/>");
     $("#addFile").css("display", "flex");
     $(".fileHeadline").css("display", "none");
     $(".filePopUp").css("display", "none");
@@ -202,6 +202,16 @@ function closeEditFile() {
 function closeConfirmation() {
     $(".confirmationWindow").css("display", "none");
     window.location.replace('fileed.php?courseid=' + querystring['courseid'] + '&coursevers=' + querystring['coursevers']);
+}
+
+//displays dropdown when hovering search bar
+function hoverSearch() {
+    $('#dropdownSearch').css({ display: 'block' });
+}
+
+//stops displaying the dropdown when removing cursor from search bar
+function leaveSearch() {
+    $('#dropdownSearch').css({ display: 'none' });
 }
 
 //------------------------------------------------------------------
@@ -283,10 +293,13 @@ function sortFilesByKind(kind){
     }if(kind == "Local"){
         $( "td:contains('Local')" ).parents("tr").show();
 
+    }if(kind == "Link"){
+        $( "td:contains('Link')" ).parents("tr").show();
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
-
+    $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
+    $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
 }
 
 //----------------------------------------------------------------

@@ -52,6 +52,16 @@ $unmarked = 0;
 $groups=array();
 $grplst=array();
 
+// Gets username based on uid
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+        $username = $row['username'];
+}
+
 if($gradesys=="UNK") $gradesys=0;
 
 		$today = date("Y-m-d H:i:s");
@@ -203,6 +213,8 @@ if($gradesys=="UNK") $gradesys=0;
 						$query->bindParam(':groupkind', $grptype);
 					} else {
 						$query->bindValue(':groupkind', null, PDO::PARAM_STR);
+                        logUserEvent($username,EventTypes::SectionItems,$sectname);
+
 					}
 
 
@@ -220,6 +232,7 @@ if($gradesys=="UNK") $gradesys=0;
 						$query->bindParam(':lid', $armin[1]);
 						$query->bindParam(':pos', $armin[0]);
 						$query->bindParam(':moment', $armin[2]);
+                     
 
 						if(!$query->execute()) {
 							$error=$query->errorInfo();

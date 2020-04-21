@@ -780,13 +780,13 @@ function createboxmenu(contentid, boxid, type) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else {
 				str += "<td class='butto2 showdesktop'>";
 				str += "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\"" + boxid + "\",\"" + contentid + "\");removeboxmenu(\"" + contentid + "menu\");'>";
@@ -798,7 +798,7 @@ function createboxmenu(contentid, boxid, type) {
 			}
 			// If reader doesn't have write access, only the boxtitle is shown
 		} else {
-			str += '<td class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
+			str += '<td id = "boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
 		if(retData['box'][boxid - 1][1] == "DOCUMENT"){
@@ -813,13 +813,13 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Add resize, reset and edit buttons
 		
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>Minimize</p></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
-		str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>MAX</p></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>MIN</p></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p>RES</p></div>";
+		// str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
-			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+			str += "<div id='copyClipboard'><td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 		
 
@@ -2306,11 +2306,11 @@ function hideCopyButtons(templateid, boxid) {
 
 function showCopyButtons(templateid) {
 	var totalBoxes = getTotalBoxes(templateid);
-
+	
 	for (var i = 1; i <= totalBoxes; i++) {
-		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
-		if (!copyBtn) continue;
-		copyBtn.style.display = "table-cell";
+		if (document.querySelector('#box' + i).className == 'box codebox') {
+		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
+		}
 	}
 }
 
@@ -2682,8 +2682,82 @@ function hideMinimizeButton() {
 
 //reset boxes
 function resetBoxes() {
-	resizeBoxes("#div2", retData["templateid"]);
-	showCopyButtons(retData["templateid"]);
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+
+	showCopyButtons(templateid);
+
+	if (templateid == 1) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+	}
+	
+	if (templateid == 2) {
+		(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+	}
+
+	if (templateid == 3) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
+
+	if (templateid == 4) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("100%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
+
+	if (templateid == 5) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+		$(boxValArray['box' + 4]['id']).height("50%");
+	}
+
+	if (templateid == 6) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("40%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).height("30%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).height("30%");
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}
+
+	if (templateid == 7) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("40%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).height("30%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).height("30%");
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}
+
+	if (templateid == 8) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -2706,6 +2780,7 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
+				hideDescription();
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3091,28 +3166,34 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
 	// makes the element dissapear when certain treshold is met
-	if (basePer < 15) {
-    
+	if (basePer < 20) {
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
+			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
+			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		
-	}else if (basePer > 85) {
+	}else if (basePer > 80) {
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'none';
 		}
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		
 	}else {
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
 		}
 	}
@@ -3978,4 +4059,8 @@ function showBox(id) {
 			box.style.display = 'none';
 		}
 	});
+}
+
+function hideDescription() {
+	var descText = document.getElementById
 }
