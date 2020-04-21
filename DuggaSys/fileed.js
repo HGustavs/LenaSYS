@@ -275,7 +275,7 @@ function filePreview(name, path, extension){
 
     if(extension === "jpg" || extension === "png" || extension == "gif"){
         imgPreview(path);
-    }else if (extension === "php" || extension === "html"){
+    }else if (extension === "php" || extension === "html" || extension === "md" || extension === "js" || extension === "txt"){
         codeFilePreview(path);
     }
     fileDownload(name, path, extension);
@@ -291,9 +291,12 @@ function imgPreview(path){
 }
 
 function codeFilePreview(path){
-    var frame = document.createElement("iframe");
-    frame.src = path;
-    document.querySelector(".fileView").appendChild(frame);
+    var preview = document.createElement("embed");
+    preview.setAttribute("height", "70%");
+    preview.style.border = "4px solid #614875";
+    preview.style.backgroundColor = "white";
+    preview.src = path;
+    document.querySelector(".fileView").appendChild(preview);
 }
 
 function fileDownload(name, path, extension){
@@ -307,11 +310,11 @@ function fileDownload(name, path, extension){
     div.appendChild(h1);
     div.appendChild(a);
     document.querySelector(".fileView").appendChild(div);
-    window.addEventListener('error', function(e) {
+    /*window.addEventListener('error', function(e) {
         h1.textContent = "File unavailable";
         a.textContent = "Empty link";
-    }, true);
-
+    }, true);*/
+    window.addEventListener('error', function(event) {console.log("hejhej"); }, true);
 }
 
 // Close the file preview window by 'x' button or ESC key ----
