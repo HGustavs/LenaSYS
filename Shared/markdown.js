@@ -200,8 +200,7 @@ function isOrderdList(item) {
 // CHeck if its a table
 function isTable(item) {
     // return true if space followed by a pipe-character and have closing pipe-character
-    //return /^\s*\|\s*(.*)\|/gm.test(item);
-    return false;
+    return /^\s*\|\s*(.*)\|/gm.test(item);
 }
 // The creation and destruction of lists
 function handleLists(currentLine, prevLine, nextLine) {
