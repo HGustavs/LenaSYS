@@ -51,6 +51,15 @@ if(isset($_SESSION['uid'])){
 }else{
 	$userid="UNK";
 }
+// Gets username based on uid
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+    $username = $row['username'];
+}
 
 //  Handle files! One by one  -- if all is ok add file name to database
 //  login for user is successful & has either write access or is superuser
@@ -418,6 +427,7 @@ if($ha){
 								 	else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
 									$error=true;
 								}
+                         logUserEvent($username,EventTypes::Fileupload,$filetype);
 						}
 				}
 
