@@ -807,7 +807,6 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add resize, reset and edit buttons
-		//onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>MAX</p></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>MIN</p></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p>RES</p></div>";
