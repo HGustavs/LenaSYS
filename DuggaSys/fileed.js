@@ -295,6 +295,7 @@ function codeFilePreview(path){
     preview.setAttribute("height", "70%");
     preview.style.border = "4px solid #614875";
     preview.style.backgroundColor = "white";
+    preview.style.margin = "5px";
     preview.src = path;
     document.querySelector(".fileView").appendChild(preview);
 }
