@@ -318,7 +318,7 @@ abstract class EventTypes {
   const PageNotFound = 11;
   const RequestNewPW = 12;
   const CheckSecQuestion = 13;
-    const Fileupload = 17;
+    const DuggaFileupload = 17;
 }
 
 //------------------------------------------------------------------------------------------------

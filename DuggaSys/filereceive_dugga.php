@@ -427,7 +427,7 @@ if($ha){
 								 	else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
 									$error=true;
 								}
-                         logUserEvent($username,EventTypes::Fileupload,$filetype);
+                         logUserEvent($username,EventTypes::DuggaFileupload,$filetype);
 						}
 				}
 
