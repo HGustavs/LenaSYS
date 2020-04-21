@@ -2705,7 +2705,7 @@ function resetBoxes() {
 	}
 	
 	if (templateid == 2) {
-		(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
 		$(boxValArray['box' + 1]['id']).height("50%");
 	}
 
