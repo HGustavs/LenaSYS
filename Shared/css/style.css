@@ -95,7 +95,23 @@
 /* --------------================################================-------------- *
  *                                   Generics                                   *
  * --------------================################================-------------- */
-
+/*Styling for printing*/
+@media print {
+	@page { margin: 0; }
+	body { margin: 1.6cm; }	
+	#buttonDiv,#appearance,.loginBoxContainer importDiagram{
+	visibility: hidden;
+	}
+	
+	#canvasDiv{
+	position: absolute;
+	visibility: visible;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	}
+	}
 html,
 body {
   margin: 0;

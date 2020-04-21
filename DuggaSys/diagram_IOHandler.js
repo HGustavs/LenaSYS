@@ -424,3 +424,21 @@ $(document).ready(function() {
         downloadCanvas(this, 'diagramCanvas', 'picture.png');
     }, false);
 });
+
+/*Makes canvas bigger before printing */
+function printDiagram(){
+    canvas.setAttribute("height", heightWindow*2);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(2, 2);
+    updateGraphics();
+    window.print();
+    afterPrint();
+}
+ 
+/*Sets canvas back to normal after printing*/ 
+function afterPrint(){
+    canvas.setAttribute("height", heightWindow);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(1,1);
+    updateGraphics();
+}

@@ -150,6 +150,9 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="printDiagram();">Print Diagram</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
                                 <i id="hotkey-clear" class="hotKeys">Ctrl + A, Delete</i>
                             </div>
