@@ -3554,9 +3554,12 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 
 	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
-
-	$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
-	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
+	
+	if(boxThreeHeightPer <= 10.2) {
+		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
+	}
+	
 
 
 	//Update array
@@ -3611,6 +3614,7 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 
 		//Check if box three is at or below minimum height.
 	} else if (boxThreeHeightPer <= 10) {
+		console.log("boxThreeHeightPer");
 		boxThreeHeightPer = 10;
 
 		//Set height and top on the boxes when the lower two boxes are at the minimum height.
