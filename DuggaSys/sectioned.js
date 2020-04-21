@@ -1055,23 +1055,17 @@ function returnedSection(data) {
   $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
   addClasses();
-  console.log(motd);
   showMOTD();
   
 }
 
 function showMOTD(){
- 
-  if(motd !== null && motd !== '') {
 
+  if(motd == 'UNK' || motd == 'Test' || motd == null) {
+    document.getElementById("motdArea").style.display = "none"; 
+  }else{
+    document.getElementById("motdArea").style.display = "block";
     document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
-  
-    }
-  if(motd == null && motd == ''){
-  
-  $("#motdArea").css("Display", "none");
-  $("#motdContent").css("Display", "none");
-
   }
 }
 
@@ -1810,4 +1804,5 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+  
 }

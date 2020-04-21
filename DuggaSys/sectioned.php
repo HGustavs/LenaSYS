@@ -76,7 +76,7 @@
 		<!-- MOTD dropdown -->
 		<div id='motdArea'>
 			<?php	
-				echo "<td style='display: inline-block;'>";
+				echo "<td>";
 				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p>MOTD</p>"; 
 				echo "		<p style='text-align:center' id='motd'></p>";			
