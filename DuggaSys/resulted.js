@@ -1585,7 +1585,9 @@ function compare(firstCell, secoundCell) {
 			}
 		}
 
-		if (col === "requestedpasswordchange") {
+		//Not currently relevant to resulted but may be usefull in the future, possibly if used in other modules.
+
+		/*if (col === "requestedpasswordchange") {
 			firstCellTemp = JSON.parse(firstCell);
 			secoundCellTemp = JSON.parse(secoundCell);
 			a = firstCellTemp.requested;
@@ -1596,9 +1598,9 @@ function compare(firstCell, secoundCell) {
 				a < b ? val = 1 : a > b ? val = -1 : val = 0;
 			}
 			return val;
-		}
+		}*/
 
-		if(!isNaN(firstCellTemp) && !isNaN(secoundCellTemp)) {
+		/*if(!isNaN(firstCellTemp) && !isNaN(secoundCellTemp)) {
 			if ((status % 2) == 0) {
 				val = firstCellTemp < secoundCellTemp;
 				if(val) {
@@ -1622,14 +1624,13 @@ function compare(firstCell, secoundCell) {
 			firstCellTemp = $('<div/>').html(firstCellTemp).text();
 			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
-		}
-	} else {
-		if ((status % 2) == 0) {
+		}*/
+	} /*else {
+		if ((status % 2) == 0) {	//
 			val = firstCellTemp < secoundCell;
 		} else {
 			val = secoundCell < firstCellTemp;
-		}
-	}
+		}*/
 
 	return val;
 
