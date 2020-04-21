@@ -110,6 +110,7 @@ var origoOffsetY = cameraPosY          // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = false;            // Canvas left click state
 var canvasRightClick = false;           // Canvas right click state
+var canvasTouchClick = false;       // Canvas touch state
 var lastZoomValue = localStorage.getItem("zoomValue") || 1.00;      //Records last zoomvalue, 1.00 if none has been recorded
 var zoomValue = lastZoomValue;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
@@ -3438,13 +3439,25 @@ function mousemoveevt(ev) {
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
+    if (isMobile && ev.type == "touchmove") {
+        currentMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
+        currentMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
+    }
+
     // deltas are used to determine the range of which the mouse is allowed to move when pressed.
     deltaX = 2;
     deltaY = 2;
+    
     if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
         // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
         diffX = ev.pageX - InitPageX;
         diffY = ev.pageY - InitPageY;
+
+        if (isMobile){
+            diffX = ev.changedTouches[0].pageX - InitPageX;
+            diffY = ev.changedTouches[0].pageY - InitPageY;
+        }
+        
         if (
             (diffX > deltaX) || (diffX < -deltaX)
             ||
@@ -3458,12 +3471,18 @@ function mousemoveevt(ev) {
         }
     }
 
-    if((canvasLeftClick || canvasRightClick) && uimode == "MoveAround") {
+    if((canvasLeftClick || canvasRightClick || canvasTouchClick) && uimode == "MoveAround") {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
+        console.log(origoOffsetX);
+        
         startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
+        if (isMobile){
+            startMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
+            startMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
+        }
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
     }
@@ -3794,10 +3813,20 @@ function mousedownevt(ev) {
             InitPageX = ev.pageX;
             InitPageY = ev.pageY;
         }
+    } else if(ev.type == "touchstart") {
+        canvasTouchClick = true;
+        if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+            InitPageX = ev.changedTouches[0].pageX;
+            InitPageY = ev.changedTouches[0].pageY;            
+        }
     }
 
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
+    if (isMobile && typeof ev.changedTouches !== 'undefined'){
+        currentMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
+        currentMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
+    }
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
@@ -3894,8 +3923,10 @@ function mouseupevt(ev) {
         canvasLeftClick = false;
     } else if (ev.button == rightMouseClick) {
         canvasRightClick = false;
+    } else if (ev.type == "touchend") {
+        canvasTouchClick = false;
     }
-
+    
     delete InitPageX;
     delete InitPageY;
     // Making sure the MoveAround was not initialized by the spacebar.
