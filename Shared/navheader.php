@@ -25,7 +25,7 @@
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
-	
+			
 			if($noup!='NONE') {
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
@@ -43,11 +43,18 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
-	
+			// if the user only have access type W(write) course-dropdown should be shown
+			if(checklogin() && (hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {				
+				echo "<td style='display: inline-block;' title='Choose course version'>";
+				echo "    <div class='course-dropdown-div'>";
+				echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
+				echo "    </div>";
+				echo "</td>";
+			}
 			// Adding buttons for courses
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {				
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st'))) {				
 							echo "<td style='display: inline-block;' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
@@ -176,7 +183,7 @@
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
 					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play(event);'><img src='../Shared/icons/play_button.svg' /></td>";
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $cid, 'st'))) {
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st'))) {
 						echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
 						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/files_icon.svg' /></td>";
@@ -206,7 +213,7 @@
 						echo "</td>";
             echo "<td id='menuHook' class='navSpacer' >";
 			}
-	
+
 			if(checklogin()) {
 				echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
 				echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' src='../Shared/icons/logout_button.svg' title='Logout'/></td>";

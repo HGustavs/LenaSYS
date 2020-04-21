@@ -606,7 +606,7 @@ function returnedSection(data) {
         }
         if (querystring['coursevers'] == item['vers']) versnme = item['versname'];
       }
-
+            
       document.getElementById("courseDropdownTop").innerHTML = bstr;
       document.getElementById("courseDropdownTop-mobile").innerHTML = bstr;
       bstr = "<option value='None'>None</option>" + bstr;
