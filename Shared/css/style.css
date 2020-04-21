@@ -2020,6 +2020,14 @@ div.submit-button:disabled {
   margin-top: -3px;
 }
 
+.diagramAction:focus{
+  outline:0; 
+}
+
+.diagramAction:active{
+  background: #FFA500;
+}
+
 .buttonStyleDialog {
   margin: 5px auto;
   background-color: var(--color-primary);
@@ -4461,6 +4469,14 @@ only screen and (max-device-width: 320px) {
 
 .zoomButtonStyle:hover {
   background-color: #7B5A96;
+}
+
+.zoomButtonStyle:focus {
+  outline: 0;
+}
+
+.zoomButtonStyle:active {
+  background: #FFA500;
 }
 
 .tooltipDecrease button {
