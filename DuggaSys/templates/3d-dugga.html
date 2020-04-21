@@ -5,6 +5,12 @@
               padding: 0 8px 0 8px;
           }
       </style>
+      <div class='feedback-container' style="display: none;">
+        <div class='feedback-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>	
+            <div class="feedback-content">	
+                    <div id="feedbackTable" style="margin-top: -3px;"></div>	
+            </div>
+    </div>
       <div id="container" style="display:flex; justify-content:flex-end;">
       <div id='duggaInfoBox' style="width:300px;">
           <div class='loginBoxheader'>
@@ -102,19 +108,6 @@
               <div id="result"></div>
           </div>
       </div>
-      <div style="max-height:50%;min-height: 50%;overflow: scroll">
-        <div id="feedback" class="loginBox" style="display:none;">
-            <div class='loginBoxheader'>
-                <h3>Feedback Log</h3>
-                <div class='cursorPointer' onclick="hideReceiptPopup()">x</div>
-            </div>
-            <div class="table-wrap" id="feedbackTable">
-                <table>
-                    <tr><th>Date</th><th>Feedback</th></tr>
-                </table>
-            </div>
-        </div>      
-    </div>
     </div>
     </div>
     

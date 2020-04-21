@@ -96,9 +96,8 @@ function returnedDugga(data)
 	  			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
 	  		} 		
 	  		fb += "</tbody></table>";
-				document.getElementById('feedbackTable').innerHTML = fb;		
-				document.getElementById('feedbackBox').style.display = "block";
-				$("#showFeedbackButton").css("display","block");
+				document.getElementById('feedbackTable').innerHTML = fb;
+				$(".feedback-container").css("display","block");
 		}
 		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
@@ -314,4 +313,8 @@ function resetBitstring(){
 function toggleInstructions()
 {
     $(".instructions-content").slideToggle("slow");
+}
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
 }

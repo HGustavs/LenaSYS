@@ -2467,6 +2467,15 @@ span.arrow {
 .feedback-list td {
   line-height: normal;
 }
+#feedbackTable .feedback-list th {
+	background: var(--color-background-3);
+  color:var(--color-text-label);
+  
+}
+#feedbackTable .feedback-list, #feedbackTable .feedback-list td {
+	border-color: var(--color-background-3);
+	
+}
 
 @media print {
   header {
@@ -2855,13 +2864,13 @@ span.arrow {
 #feedbackTable tbody tr:nth-child(odd) {
   background-color: var(--color-background);
 }
-
+/*
 #feedbackBox {
   display: none;
   position: absolute;
   top: 50px;
   right: 0;
-}
+}*/
 
 .facitPreview {
   width: 200px;
