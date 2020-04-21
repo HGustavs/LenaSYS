@@ -1326,7 +1326,7 @@ function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
-			str = cell.ssn + ";";
+			str = cell.ssn + ",";
 
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
@@ -1368,7 +1368,7 @@ function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
-			str = "Personnummer;Namn";
+			str = "Personnummer,Namn";
 		} else {
 			heading = heading.replace(/\&aring\;/g, "å");
 			heading = heading.replace(/\&Aring\;/g, "Å");
