@@ -66,7 +66,7 @@ and (max-device-width : 725px) {
     width: -moz-calc(100.0%)!important;
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;
-    min-height: 10%;
+    min-height: 33%;
 	max-height: 33%;
     min-width: 100%;
 	max-width: 100%;
@@ -86,7 +86,7 @@ and (max-device-width : 725px) {
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
+    min-height: 33%;
 	max-height: 33%;
     min-width: 100%;
 	max-width: 100%;
@@ -104,7 +104,7 @@ and (max-device-width : 725px) {
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
-    min-height: 10%;
+    min-height: 33%;
 	max-height: 33%;
     min-width: 100%;
 	max-width: 100%;

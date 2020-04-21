@@ -671,7 +671,7 @@ header td {
 }
 
 .navButt {
-  width: 32px;
+  width: 29px;
   vertical-align: middle;
   margin-top: 9px;
 }
@@ -680,6 +680,7 @@ header td {
   margin-left: 10px;
   vertical-align: middle;
   height: 32px;
+  margin:auto 10px auto 0;
 }
 
 .navButt:hover {
@@ -777,6 +778,12 @@ div .navButt:hover {
 
 }
 
+@media only screen and (max-width: 800px) {
+ #div2 {
+ top: 80px;
+
+}   
+}
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
@@ -3177,7 +3184,7 @@ span.arrow {
   position: absolute;
   background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 #sortOptions {
@@ -3499,6 +3506,70 @@ rect[class*="activitymarker"]:hover {
 }
 
 /* styling for the search bars in resulted, accessed, duggaed, filed */
+#searchBar input#searchinput,
+.tooltipsearchbar input#tooltipsearchinput{
+  padding: 5px 10px 5px 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  float: left;
+  background: #f1f1f1;
+  border-radius: 0;
+  border: none;
+}
+.tooltipsearchbar input#tooltipsearchinput{
+  width: 250px;
+}
+#searchbar button#searchbutton, 
+#searchbar button#searchbuttonicon{
+  padding: 8px 20px 5px 20px;
+  background:#76578e;
+  border-left: none;
+  cursor: pointer;
+  border-radius: 0;
+  margin: 0;
+  border: none;
+}
+#searchbar button#searchbuttonicon{
+  position: relative;
+  visibility: hidden;
+}
+.tooltipbackground{
+  visibility: hidden;
+  width: 100vh;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  margin-left: -125px;
+  margin-top: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tooltipsearchbar{
+  background-color: #76578e;
+  border-radius: 2px;
+  padding: 15px;
+  width: 400px;
+  position: absolute;
+  z-index: 1;
+  transition: opacity 0.3s;
+}
+#searchbar button#searchbuttonicon .tooltipsearchbar::after {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: 31%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #76578e transparent transparent transparent;
+  transform: scale(2);
+}
+#searchbar button#searchbutton:hover, #searchbar button#searchbuttonicon:hover{
+  background:#694e7e;
+}
+#searchBar img{
+  transform: scale(1.3);
+}
 #searchBar,
 #testSearchContainer {
   padding-left: 20px;
@@ -3662,7 +3733,7 @@ table.navheader td.menuButton {
 }
 
 table.navheader div.menuButton {
-  margin-right: 10px;
+  margin-right: 8px;
   pointer-events: auto;
   display: inline-block;
   opacity: 1.0;
@@ -4251,6 +4322,8 @@ only screen and (max-device-width: 530px) {
     display: none;
   }
 
+  /*
+
   #searchBarMobile,
   #searchbuttonMobile {
     width: 24px;
@@ -4276,6 +4349,8 @@ only screen and (max-device-width: 530px) {
     margin: 0;
   }
 
+  */
+
   #tooltip-mobile {
     border: 1px solid var(--color-border);
     font-size: 17px;
@@ -4284,10 +4359,12 @@ only screen and (max-device-width: 530px) {
     width: 100px;
   }
 
+/*
   .switchContent {
     padding: 3px;
   }
 
+*/
   .tooltip-searchbar-box {
     transform: translate(-10%, 30%);
     box-shadow: 0 0px 17px 0 rgba(0, 0, 0, 0.5);
@@ -4351,6 +4428,31 @@ only screen and (max-device-width: 480px) {
   #statisticsList {
     display: none;
   }
+
+  #searchbar input#searchinput{
+    width: 150px;
+  }
+  #searchbar button#searchbutton{
+    padding: 8px 10px 5px 10px;
+  }
+
+}
+@media only screen and (max-width: 390px),
+only screen and (max-device-width: 390px) {
+
+  #searchbar input#searchinput,
+  #searchbar button#searchbutton{
+    display: none;
+  }
+   #searchbar button#searchbuttonicon{
+    visibility: visible;
+  }
+  #searchbuttonicon:hover .tooltipbackground{
+    visibility: visible;
+    opacity: 1;
+
+  }
+
 }
 
 @media only screen and (max-width: 320px),
@@ -4787,6 +4889,7 @@ only screen and (max-device-width: 320px) {
   display: inline-block;
   width: 24px;
   height: 24px;
+  padding-top: 8px;
 }
 
 /* FAB scaling transition */
@@ -5054,8 +5157,8 @@ only screen and (max-device-width: 320px) {
 
 legend {
   display: block;
-  padding-left: 1.55%;
-  padding-right: 1.55%;
+  padding-left: 0%;
+  padding-right: 0%;
   border: none;
 }
 
@@ -5496,14 +5599,22 @@ textarea#mrkdwntxt {
   width: 100%;
   height: 100%;
   margin-left: -9px;
-  margin-top: 20px;
+  margin-top: 20px
+}
+
+#editor {
+  width: 99%;
+  height: 100%;
+  display: block;
+  padding: 10px
 }
 
 textarea#filecont {
   width: 99%;
   height: 100%;
   display: block;
-  padding: 10px
+  padding: 10px;
+  display:none
 }
 
 @media only screen and (max-width: 900px) {
