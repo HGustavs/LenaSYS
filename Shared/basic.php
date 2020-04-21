@@ -322,7 +322,7 @@ abstract class EventTypes {
 
 
 	const AddCourse = 18;
-	const SaveCourse = 19;
+	const EditCourse = 19;
 }
 
 //------------------------------------------------------------------------------------------------
