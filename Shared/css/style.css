@@ -4471,6 +4471,14 @@ only screen and (max-device-width: 320px) {
   background-color: #7B5A96;
 }
 
+.zoomButtonStyle:focus {
+  outline: 0;
+}
+
+.zoomButtonStyle:active {
+  background: #FFA500;
+}
+
 .tooltipDecrease button {
   display: flex;
   align-items: center;
