@@ -413,8 +413,13 @@ function ExportSVGA4(el) {
 //------------------------------------------------
 // used when exporting the file as a .png image.
 //------------------------------------------------
-
-$(document).ready(function() {
+function ExportPicture(el) {
+    var canvasId = 'diagramCanvas';
+    var filename = 'picture.png';
+    el.href = document.getElementById(canvasId).toDataURL();
+    el.download = filename;
+}
+/*$(document).ready(function() {
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
         link.download = filename;
@@ -423,4 +428,4 @@ $(document).ready(function() {
     document.getElementById('picid').addEventListener('click', function() {
         downloadCanvas(this, 'diagramCanvas', 'picture.png');
     }, false);
-});
+});*/
