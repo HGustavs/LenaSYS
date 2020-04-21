@@ -320,6 +320,8 @@ abstract class EventTypes {
 	const CheckSecQuestion = 13;
   const SectionItems = 14;
 	const AddFile = 15;
+  const AddCourse = 18;
+	const EditCourse = 19;
 }
 
 //------------------------------------------------------------------------------------------------
