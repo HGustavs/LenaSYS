@@ -9,14 +9,14 @@
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if (isset($_GET['courseid']))
 				$_SESSION['courseid'] = getOPG('courseid');
-			else if ($_GET['cid'])
+			else if (isset($_GET['cid']))
 				$_SESSION['courseid'] = getOPG('cid');
 			else
 				$_SESSION['courseid'] = "UNK";
 
 			if (isset($_GET['coursevers']))
 				$_SESSION['coursevers'] = getOPG('coursevers');
-			else if ($_GET['cid'])
+			else if (isset($_GET['cid']))
 				$_SESSION['coursevers'] = getOPG('cvers');
 			else
 				$_SESSION['coursevers'] = "UNK";
