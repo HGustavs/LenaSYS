@@ -310,11 +310,10 @@ function fileDownload(name, path, extension){
     div.appendChild(h1);
     div.appendChild(a);
     document.querySelector(".fileView").appendChild(div);
-    /*window.addEventListener('error', function(e) {
+    window.addEventListener('error', function(e) {
         h1.textContent = "File unavailable";
         a.textContent = "Empty link";
-    }, true);*/
-    window.addEventListener('error', function(event) {console.log("hejhej"); }, true);
+    }, true);
 }
 
 // Close the file preview window by 'x' button or ESC key ----
