@@ -1069,7 +1069,7 @@ function showMOTD(){
   if(motd == null && motd == ''){
   
   $("#motdArea").css("Display", "none");
-  $("#motdCSontent").css("Display", "none");
+  $("#motdContent").css("Display", "none");
 
   }
 }
