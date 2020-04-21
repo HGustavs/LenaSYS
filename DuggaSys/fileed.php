@@ -260,7 +260,7 @@ $codeLinkQuery->execute();
     <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
         <li onclick="showFilePopUp('EFILE');">
             <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Dummy Empty File'>
-                <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/.....">
+                <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/dummy_icon.svg">
             </a>
         </li>   
         <li onclick="showFilePopUp('GFILE');" >
