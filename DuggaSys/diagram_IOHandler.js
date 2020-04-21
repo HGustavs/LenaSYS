@@ -385,7 +385,7 @@ function ExportSVG(el) {
 }
 
 //----------------------------------------------------------------------
-// ExportSVGA4: export canvas to SVG file in A4 format
+// ExportSVGPaper: export canvas to SVG file in Paper format
 //----------------------------------------------------------------------
 
 function ExportSVGA4(el) { //There will probably be so only one size paper are to be downloaded?
@@ -396,7 +396,7 @@ function ExportSVGA4(el) { //There will probably be so only one size paper are t
         temp = paperWidth;
         paperWidth = paperHeight;
         paperHeight = temp
-        //downloads file with swapped height and width for landscape oriented A4
+        //downloads file with swapped height and width for landscape oriented Paper
     }
     var svgstr = "";
     var width = paperWidth, height = paperHeight;

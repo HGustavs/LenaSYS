@@ -128,11 +128,11 @@ var p1 = null;                      // When creating a new figure, these two var
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
 var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
-var togglePaper = false;               // toggle if a4 outline is drawn
-var togglePaperHoles = false;          // toggle if a4 holes are drawn
-var switchSideA4Holes = "left";     // switching the sides of the A4-holes
-var paperOrientation = "portrait";     // If virtual A4 is portrait or landscape
-var singlePaper = false;               // Toggle between single/repeated A4
+var togglePaper = false;               // toggle if Paper outline is drawn
+var togglePaperHoles = false;          // toggle if paper holes are drawn
+var switchSidePaperHoles = "left";     // switching the sides of the paper-holes
+var paperOrientation = "portrait";     // If virtual paper is portrait or landscape
+var singlePaper = false;               // Toggle between single/repeated paper
 var paperSize = 4;					//toggle pappersize for canvas devider.
 var enableShortcuts = true;         // Used to toggle on/off keyboard shortcuts
 var targetMode = "ER";              // Default targetMode
@@ -737,7 +737,7 @@ function keyDownHandler(e) {
         } else if (shiftIsClicked && key == keyMap.oKey) {
             resetViewToOrigin(event);
         } else if (shiftIsClicked && key == keyMap.key4) {
-            toggleVirtualA4(event);
+            toggleVirtualPaper(event);
         } else if (shiftIsClicked && key == keyMap.upArrow) {
             align(event, 'top');
         } else if (shiftIsClicked && key == keyMap.rightArrow) {
@@ -1532,51 +1532,49 @@ function toggleGrid(event) {
 }
 
 //-----------------------------------------------------------------------
-// Toggles the virtual A4 On or Off
+// Toggles the virtual paper On or Off
 //-----------------------------------------------------------------------
 
-function toggleVirtualA4(event) {
+function toggleVirtualPaper(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     if (togglePaper) {
-        // A4 is disabled
+        // Paper is disabled
         togglePaper = false;
 
-        $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
-        $("#a4-single-item").addClass("drop-down-item drop-down-item-disabled");
-        hideA4State();
+        $("#Paper-holes-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-single-item").addClass("drop-down-item drop-down-item-disabled");
+        hidePaperState();
         updateGraphics();
     } else {
         togglePaper = true;
-        $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#a4-single-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-single-item").removeClass("drop-down-item drop-down-item-disabled");
         if (togglePaperHoles) {
-            $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
+            $("#Paper-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         } else {
-            $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+            $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         }
-        showA4State();
+        showPaperState();
         updateGraphics();
     }
 
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), togglePaper);
+    setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
 }
 
 //--------------------------------------------------------------------
-// Draws virtual A4 on canvas
+// Draws virtual Paper on canvas
 //--------------------------------------------------------------------
 
-function drawVirtualA4() {
-	if(!togglePaper) {
-		return;
-		}
+function drawVirtualPaper() {
+	
     // Origo
     let zeroX = pixelsToCanvas().x;
     let zeroY = pixelsToCanvas().y;
 
-    // the correct according to 96dpi size, of a4 milimeters to pixels
+    // the correct according to 96dpi size, of Paper milimeters to pixels
 	const pixelsPerMillimeter = 3.781 * zoomValue;
 	let papersizes = [
 		[841,1189],
@@ -1589,9 +1587,9 @@ function drawVirtualA4() {
 	];
     const paperWidth = papersizes[paperSize][0] * pixelsPerMillimeter;
     const paperHeight = papersizes[paperSize][1] * pixelsPerMillimeter;
-    // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
+    // size of Paper hole, from specification ISO 838 and the swedish "triohålning"
     const leftHoleOffsetX = 12 * pixelsPerMillimeter;
-    const rightHoleOffsetX = 198 * pixelsPerMillimeter;
+    const rightHoleOffsetX = (papersizes[paperSize][0] - 12) * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
     
     // Number of paper sheets to draw out
@@ -1611,44 +1609,65 @@ function drawVirtualA4() {
 		paperColumns = 1;
     }
 
-    ctx.save();
+	ctx.save();
+	if(!togglePaper) {
+		ctx.globalAlpha = 0;
+	}
     ctx.strokeStyle = "black"
     ctx.setLineDash([10 * (pixelsPerMillimeter / 3)]);
-    
-    if(paperOrientation == "portrait") {           // Draw A4 sheets in portrait mode
-        for (var i = 0; i < paperRows; i++) {
-            for (var j = 0; j < paperColumns; j++) {
-								ctx.strokeRect(zeroX + paperWidth * j, zeroY + paperHeight * i, paperWidth, paperHeight);               // Bottom right from origin
-								ctx.fillText("Page " + i + j, zeroX + (paperWidth - 50) + paperWidth * j,zeroY + (paperHeight - 5) +  paperHeight * i);
-                if(!singlePaper){
-										ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY + paperHeight * i, paperWidth, paperHeight);       // Bottom left from origin
-										ctx.fillText("Page " + i + j, zeroX -  50 - paperWidth * j,zeroY + (paperHeight - 5) +  paperHeight * i);
+	
+	var dubbleColumns = 2*paperColumns
+	var bottomOfSet = dubbleColumns*paperRows // calculates the ofset to the bottom half of the pages once 
 
-										ctx.strokeRect(zeroX + paperWidth * j, zeroY - paperHeight * (i+1), paperWidth, paperHeight);       // Top right from origin
-										ctx.fillText("Page " + i + j, zeroX + (paperWidth - 50) + paperWidth * j,zeroY + (paperHeight - 5) -  paperHeight * (i+1));
+	if(paperOrientation == "portrait") {// Draw Paper sheets in portrait mode
+		if(singlePaper){
+			ctx.strokeRect(zeroX, zeroY, paperWidth, paperHeight);
+			ctx.fillText("Page 1",  zeroX + (paperWidth - 50),zeroY + (paperHeight - 5) ); // if only one paper are pressent ther will only be that nr one page
+		}else{
+			for (var i = 0; i < paperRows; i++) {
+				for (var j = 0; j < paperColumns; j++) {
+					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY - paperHeight * (i+1), paperWidth, paperHeight);   // Top left from origin
+					ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 50 - paperWidth *j,zeroY + (paperHeight - 5) -  paperHeight * (i+1));
 
-										ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY - paperHeight * (i+1), paperWidth, paperHeight);   // Top left from origin
-										ctx.fillText("Page " + i + j, zeroX - 50 - paperWidth *j,zeroY + (paperHeight - 5) -  paperHeight * (i+1));
-                }
-            }
-        }
-    } else if(paperOrientation == "landscape") {   // Draw A4 sheets in landscape mode
-        for (var i = 0; i < paperRows; i++) {
-            for (var j = 0; j < paperColumns; j++) {
-                ctx.strokeRect(zeroX + paperHeight * j, zeroY + paperWidth * i, paperHeight, paperWidth);               // Bottom right
-                if(!singlePaper){
-                    ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY + paperWidth * i, paperHeight, paperWidth);       // Bottom left
-                    ctx.strokeRect(zeroX + paperHeight * j, zeroY - paperWidth * (i+1), paperHeight, paperWidth);       // Top right
-                    ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY - paperWidth * (i+1), paperHeight, paperWidth);   // Top left
-                }
-            }
-        }
+					ctx.strokeRect(zeroX + paperWidth * j, zeroY - paperHeight * (i+1), paperWidth, paperHeight);       // Top right from origin
+					ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperWidth - 50) + paperWidth * j,zeroY + (paperHeight - 5) -  paperHeight * (i+1));
+
+					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY + paperHeight * i, paperWidth, paperHeight);       // Bottom left from origin
+					ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  50 - paperWidth * j,zeroY + (paperHeight - 5) +  paperHeight * i);
+
+					ctx.strokeRect(zeroX + paperWidth * j, zeroY + paperHeight * i, paperWidth, paperHeight);               // Bottom right from origin
+					ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperWidth - 50) + paperWidth * j,zeroY + (paperHeight - 5) +  paperHeight * i); 
+				}
+			}
+		}
+	} else if(paperOrientation == "landscape") {   // Draw Paper sheets in landscape mode
+		if(singlePaper){
+			ctx.strokeRect(zeroX, zeroY, paperHeight, paperWidth);               // Bottom right
+			ctx.fillText("Page 1" , zeroX + (paperHeight - 50), zeroY + (paperWidth - 5));
+		}else{
+			for (var i = 0; i < paperRows; i++) {
+				for (var j = 0; j < paperColumns; j++) {
+					ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY - paperWidth * (i+1), paperHeight, paperWidth);   // Top left from origin
+					ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 50 - paperHeight *j,zeroY + (paperWidth - 5) -  paperWidth * (i+1));
+
+					ctx.strokeRect(zeroX + paperHeight * j, zeroY - paperWidth * (i+1), paperHeight, paperWidth);       // Top right from origin
+					ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperHeight - 50) + paperHeight * j,zeroY + (paperWidth - 5) -  paperWidth * (i+1));
+
+					ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY + paperWidth * i, paperHeight, paperWidth);       // Bottom left from origin
+					ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  50 - paperHeight * j,zeroY + (paperWidth - 5) +  paperWidth * i);
+
+					ctx.strokeRect(zeroX + paperHeight * j, zeroY + paperWidth * i, paperHeight, paperWidth);               // Bottom right from origin
+					ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperHeight - 50) + paperHeight * j,zeroY + (paperWidth - 5) +  paperWidth * i);	
+				}
+			}
+		}
+        
     }
 
-    // Draw A4 holes
+    // Draw Paper holes
     if(togglePaperHoles) {
         if(paperOrientation == "portrait") {
-            if (switchSideA4Holes == "left") {
+            if (switchSidePaperHoles == "left") {
                 // The Holes on the left side.
                 for (var i = 0; i < paperRows; i++) {
                     for (var j = 0; j < paperColumns; j++) {
@@ -1707,7 +1726,7 @@ function drawVirtualA4() {
             }
         }
         else if(paperOrientation == "landscape") {
-            if (switchSideA4Holes == "left") {
+            if (switchSidePaperHoles == "left") {
                 // The holes on the upper side.
                 for (var i = 0; i < paperRows; i++) {
                     for (var j = 0; j < paperColumns; j++) {
@@ -1765,7 +1784,8 @@ function drawVirtualA4() {
                 }
             }
         }
-    }
+	}
+	ctx.globalAlpha = 1;
     ctx.restore();
 }
 
@@ -1822,104 +1842,104 @@ function drawCircle(cx, cy, radius) {
 }
 
 //-----------------------------------------------------
-// Enables and shows the children menus for virtual A4
+// Enables and shows the children menus for virtual Paper
 //-----------------------------------------------------
 
-function showA4State() {
-    // Sets icons based on the state of the A4
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), togglePaperHoles=false);
-    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
-    switchSideA4Holes = "left";
-    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+function showPaperState() {
+    // Sets icons based on the state of the Paper
+    setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles=false);
+    setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), true);
+    switchSidePaperHoles = "left";
+    setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
 
-    // Show A4 options
-    $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
-    $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
-    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+    // Show Paper options
+    $("#Paper-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 //-----------------------------------------------------
-// Disables and hides the children menus for virtual A4
+// Disables and hides the children menus for virtual Paper
 //-----------------------------------------------------
 
-function hideA4State() {
-    // Reset the variables after disable the A4
+function hidePaperState() {
+    // Reset the variables after disable the Paper
     togglePaperHoles = false;
-    switchSideA4Holes = "left";
+    switchSidePaperHoles = "left";
 
-    // Hides icons when toggling off the A4
-    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), togglePaperHoles);
-    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), togglePaper);
+    // Hides icons when toggling off the Paper
+    setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), false);
+    setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles);
+    setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
+    setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
 
     // Grey out disabled options
-    $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
-    $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
-    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-holes-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 //---------------------------------
-// Toggles holes on the virtual A4
+// Toggles holes on the virtual Paper
 //---------------------------------
 
-function toggleVirtualA4Holes(event) {
+function toggleVirtualPaperHoles(event) {
     event.stopPropagation();
-    // Toggle a4 holes to the A4-paper.
+    // Toggle Paper holes to the Paper-paper.
     if (togglePaper && togglePaperHoles) {
         togglePaperHoles = false;
-        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), togglePaperHoles);
-        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), togglePaper);
+        setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles);
+        $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
 
-        switchSideA4Holes = "left"; // Disable the 'A4 Holes Right' option
-        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+        switchSidePaperHoles = "left"; // Disable the 'Paper Holes Right' option
+        setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
         updateGraphics();
     } else if (togglePaper) {
         togglePaperHoles = true;
-        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), togglePaperHoles);
-        $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), togglePaper);
+        setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles);
+        $("#Paper-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
         updateGraphics();
     }
 }
 
 //-------------------------------------------------------------
-// Moves the holes on virtual A to the opposite side of the A4
+// Moves the holes on virtual A to the opposite side of the Paper
 //-------------------------------------------------------------
 
-function toggleVirtualA4HolesRight(event) {
+function toggleVirtualPaperHolesRight(event) {
     event.stopPropagation();
-    // Switch a4 holes from left to right of the A4-paper.
-    if (switchSideA4Holes == "right" && togglePaper) {
-        switchSideA4Holes = "left";
-        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+    // Switch Paper holes from left to right of the Paper-paper.
+    if (switchSidePaperHoles == "right" && togglePaper) {
+        switchSidePaperHoles = "left";
+        setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
         updateGraphics();
     } else if (togglePaper && togglePaperHoles) {
-        switchSideA4Holes = "right";
-        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+        switchSidePaperHoles = "right";
+        setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
         updateGraphics();
     }
 }
 
 //---------------------------------------------------------------
-// Changes orientation of the virtual A4 (Landscape or portrait)
+// Changes orientation of the virtual Paper (Landscape or portrait)
 //---------------------------------------------------------------
 
 function togglePaperOrientation(event) {
     event.stopPropagation();
     if (paperOrientation == "portrait" && togglePaper) {
         paperOrientation = "landscape";
-        setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+        setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), true);
     } else if (paperOrientation == "landscape" && togglePaper) {
         paperOrientation = "portrait";
-        setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+        setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), true);
     }
     updateGraphics();
 }
 
 //---------------------------------------------------------------
-// Changes between single and repeated virtual A4 view
+// Changes between single and repeated virtual Paper view
 //---------------------------------------------------------------
 
 function togglesinglePaper(event) {
@@ -1927,10 +1947,10 @@ function togglesinglePaper(event) {
     // Switch between single and repeated
     if (singlePaper) {
         singlePaper = false;
-        setCheckbox($(".drop-down-option:contains('Single A4')"), singlePaper);
+        setCheckbox($(".drop-down-option:contains('Single Paper')"), singlePaper);
     } else {
         singlePaper = true;
-        setCheckbox($(".drop-down-option:contains('Single A4')"), singlePaper);
+        setCheckbox($(".drop-down-option:contains('Single Paper')"), singlePaper);
     }
     updateGraphics();
 }
@@ -1956,7 +1976,23 @@ function toggleComments(event) {
 //--------------------------------------------
 
 function setPaperSize(event, size){
+	
 	event.stopPropagation();
+	let selectedPaper = [
+		false, 
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false
+	]
+	selectedPaper[size] = true;
+	for (i = 0; i < 7; i++){
+		let name = 'A' + i;
+		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
+	}
 	paperSize = size; 
 	updateGraphics();
 }
@@ -2105,7 +2141,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
-    drawVirtualA4();
+    drawVirtualPaper();
 }
 
 //---------------------------------------------------------------------------------
