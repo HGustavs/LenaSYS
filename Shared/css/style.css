@@ -2073,6 +2073,10 @@ div.submit-button:disabled {
   text-align: right;
 }
 
+#submitButtonTable{
+  z-index:500;
+}
+
 #submitButtonTable input.large-button {
   width: 160px !important;
   height: 48px !important;
