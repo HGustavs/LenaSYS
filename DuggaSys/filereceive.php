@@ -98,6 +98,10 @@ if ($ha) {
     }
 }
 
+else {
+    $errortype ="noaccess";
+}
+
 if ($storefile) {
     //  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
     //				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download", "application/x-dosexec", "application/x-sharedlib", "text/x-php");
@@ -221,6 +225,10 @@ if ($storefile) {
                         if (!$query->execute()) {
                             $error = $query->errorInfo();
                             echo "Error updating file entries" . $error[2];
+                            $errortype ="uploadfile";
+                            $errorvar = $error[2];
+                            print_r($error);
+                            echo $errorvar;
                         }
                     }
                     $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
@@ -239,15 +247,21 @@ if ($storefile) {
                     if (!$query->execute()) {
                         $error = $query->errorInfo();
                         echo "Error updating filesize and uploaddate: " . $error[2];
+                        $errortype ="updatefile";
+                        $errorvar = $error[2];
+                        
                     }
 
                 } else {
+                    $errortype ="movefile";
                     echo "Error moving file " . $movname;
                     $error = true;
                 }
 
             } else {
                 //if the file extension is not allowed
+                $errortype ="extension";
+                $errorvar = $extension;
                 if (!array_key_exists($extension, $allowedExtensions)) echo "Extension \"" . $extension . "\" not allowed.\n";
                 else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
                 $error = true;
@@ -255,16 +269,19 @@ if ($storefile) {
         }
     }
 } else {
-    echo "No file found - check upload_max_filesize and post_max_size in php.ini";
+    if($ha){
+        $errortype ="nofile";
+        echo "No file found - check upload_max_filesize and post_max_size in php.ini";
+    }
     $error = true;
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $userid, $info);
-
+/* Commenting this out because error should be displayed in fileed, so redirect regardless of whether or not the file extension is allowed. Based on how they do in filereceive_dugga
 if (!$error) {
     echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
-}
-
+}*/
+echo "<meta http-equiv='refresh' content='0;URL=fileed.php?courseid=" . $cid . "&coursevers=" . $vers . "&errortype=".$errortype."&errorvar=".urlencode($errorvar)."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id;
 ?>
 <html>
 <head>

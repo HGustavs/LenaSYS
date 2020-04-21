@@ -60,6 +60,39 @@ $codeLinkQuery->execute();
         <div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:left;margin-left:15px;'>Edit files</h1>
         </div>
+        <!-- insert here -->
+        <div class="err" id="fileerror0">
+        <?php 
+        if($_GET['errortype'] == "extension") {
+            echo'<style>#fileerror0{ display:block; }</style>';
+            echo "Extension \"" . $_GET['errorvar'] . "\" not allowed.\n";
+        }
+        else if($_GET['errortype'] == "nofile"){
+            echo'<style>#fileerror0{ display:block; }</style>';
+            echo "No file found - check upload_max_filesize and post_max_size in php.ini.";
+        }
+        else if($_GET['errortype'] == "movefile"){
+            echo'<style>#fileerror0{ display:block; }</style>';
+            echo "Error moving file ";
+        }
+        else if($_GET['errortype'] == "updatefile"){
+            echo'<style>#fileerror0{ display:block; }</style>';
+            echo "Error updating filesize and uploaddate: \"" . $_GET['errorvar'] . "\"";
+        }
+        else if($_GET['errortype'] == "uploadfile"){
+            echo'<style>#fileerror0{ display:block; }</style>';
+            echo "Error updating file entries \"" . $_GET['errorvar'] . "\"";
+        }
+        else if($_GET['errortype'] == "noaccess"){
+            echo'<style>#fileerror0{ display:block; }</style>';
+            echo "Access denied, you do not have the rights.";
+        }
+        else {
+            echo '<style>#fileerror0{ display:none; }</style>';
+        }
+     
+        ?>
+        </div>
         <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
             <div style='display:flex;flex-wrap:wrap;'>
                 <div style='white-space:nowrap'>
