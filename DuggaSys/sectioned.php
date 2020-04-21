@@ -74,10 +74,10 @@
 		<!-- FAB END -->
 
 		<!-- MOTD dropdown -->
-		<div class='motd-area'>
+		<div id='motdArea'>
 			<?php	
 				echo "<td style='display: inline-block;'>";
-				echo "  <div class='motd-content' style='text-align:center'>";
+				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p>MOTD</p>"; 
 				echo "		<p style='text-align:center' id='motd'></p>";			
 				echo" 	</div>";

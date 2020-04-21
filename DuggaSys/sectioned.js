@@ -1054,12 +1054,24 @@ function returnedSection(data) {
   $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
   addClasses();
+  console.log(motd);
   showMOTD();
   
 }
 
 function showMOTD(){
-  document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+ 
+  if(motd !== null && motd !== '') {
+
+    document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+  
+    }
+  if(motd == null && motd == ''){
+  
+  $("#motdArea").css("Display", "none");
+  $("#motdCSontent").css("Display", "none");
+
+  }
 }
 
 function showHighscore(did, lid) {
