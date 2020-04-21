@@ -74,11 +74,14 @@
 		<!-- FAB END -->
 
 		<!-- MOTD dropdown -->
-		<div id='motdArea'>
+		<div id='motdArea' style='display: none;'>
 			<?php	
 				echo "<td>";
+				echo "		<div class='motdBoxheader' >";
+				echo "			<h3>Message of the day</h3>";
+				echo "				<div class='cursorPointer' onclick=getElementById('motdArea').style.display='none'>x</div>";
+				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
-				echo "		<p>MOTD</p>"; 
 				echo "		<p style='text-align:center' id='motd'></p>";			
 				echo" 	</div>";
 				echo "</td>";
