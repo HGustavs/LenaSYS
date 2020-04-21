@@ -202,6 +202,16 @@ function closeConfirmation() {
     window.location.replace('fileed.php?courseid=' + querystring['courseid'] + '&coursevers=' + querystring['coursevers']);
 }
 
+//displays dropdown when hovering search bar
+function hoverSearch() {
+    $('#dropdownSearch').css({ display: 'block' });
+}
+
+//stops displaying the dropdown when removing cursor from search bar
+function leaveSearch() {
+    $('#dropdownSearch').css({ display: 'none' });
+}
+
 //------------------------------------------------------------------
 // validateForm <- Validates the file that is going to be uploaded
 //------------------------------------------------------------------
