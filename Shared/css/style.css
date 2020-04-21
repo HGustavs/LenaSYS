@@ -2020,6 +2020,14 @@ div.submit-button:disabled {
   margin-top: -3px;
 }
 
+.diagramAction:focus{
+  outline:0; 
+}
+
+.diagramAction:active{
+  background: #FFA500;
+}
+
 .buttonStyleDialog {
   margin: 5px auto;
   background-color: var(--color-primary);
