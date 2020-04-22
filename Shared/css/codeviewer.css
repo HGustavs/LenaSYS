@@ -963,7 +963,7 @@
 
 .visuallyhidden{
     opacity:0;
-    width:0;
+    font-size:1px;
 }
 
 @media only screen and (max-device-width : 438px) {

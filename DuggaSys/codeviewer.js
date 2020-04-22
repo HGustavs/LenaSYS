@@ -1688,7 +1688,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
                                 coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
-                console.log()
 				switch(coloringcode) {
 					case "<html>":
 					case "</html":
@@ -3177,22 +3176,25 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
 	// makes the element dissapear when certain treshold is met
-	if (basePer < 20) {
+	if (basePer < 15) {
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
-			toggleTitleWrapper(boxNumBase);
+			var thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+			toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
 			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			
 		}
 		
-	}else if (basePer > 80) {
+	}else if (basePer > 85) {
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'none';
+			var thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+			toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		}
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
@@ -3203,6 +3205,7 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
@@ -3235,27 +3238,27 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard #boxtitlewrapper').style.display = 'none';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard #boxtitlewrapper').style.display = 'none';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard #boxtitlewrapper').style.display = 'none';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
 			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 	}
 }
@@ -4108,20 +4111,22 @@ function hideDescription() {
 	var descText = document.getElementById
 }
 
-//Toggles the animation of buttomenu2 items/tds when resizing
+//Toggles the animation of buttomenu2 items/td when resizing
 
-function toggleTitleWrapper(boxNum){
-	var box = document.querySelector('#box' + boxNum + 'wrapper #boxtitlewrapper');
+function toggleTitleWrapper(targetBox, boxNum, boxW){
+	var box = targetBox;
 		
-  	if (box.classList.contains('hidden')) {
+  	if (box.classList.contains('hidden') && boxW > 15) {
 		  console.log("INSIDE IF!");
     	box.classList.remove('hidden');
     	setTimeout(function () {
       		box.classList.remove('visuallyhidden');
-    	}, 20);
-  	}else {
+		}, 20);
+
+  	}else{
 		  console.log("INSIDE ELSE!");
-    	box.classList.add('visuallyhidden');    
+		  console.log(box);
+		box.classList.add('visuallyhidden');
     	box.addEventListener('transitionend', function(e) {
       		box.classList.add('hidden');
     	}, {
