@@ -356,6 +356,9 @@ svg text {
 .previewTable tr:nth-child(even){
   background-color: #dad8db;
 }
+.previewTable a{
+	color: var(--color-text-label);
+}
 @media only screen and (max-width: 500px) {
 	.previewTable {
 		width: auto;
