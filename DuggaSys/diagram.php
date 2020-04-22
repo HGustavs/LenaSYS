@@ -313,6 +313,14 @@
 							<div class="drop-down-item" tabindex="0">
                             	<span class="drop-down-option" onclick='toggleComments(event);'>Hide Comments</span>                       
                             </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <div id="full-screen" class="drop-down-item">
+                                    <span class="drop-down-option" onclick='toggleFullscreen()'>Fullscreen</span>
+                                    <i id="hotkey-fullscreen" class="hotKeys">Shift + F11</i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="menu-drop-down" tabindex="0">
@@ -420,9 +428,9 @@
                <button id='moveButton' class='unpressed' title="Move Around">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button> 
-                <div id="valuesCanvas">
+                <div id="valuesCanvas" style="position: fixed; right: 15px; margin-bottom: 10px">
                 </div>
-                <div id="selectDiv">
+                <div id="selectDiv" style="position: fixed; left: 70px; margin-bottom: 10px">
                     <span class="tooltipDecrease">
                         <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1, event);">-</button>
                         <span class="tooltiptextDec">Zoom Out</span>

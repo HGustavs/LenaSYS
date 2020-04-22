@@ -117,6 +117,11 @@ var md = mouseState.empty;          // Mouse state, Mode to determine action on 
 var hoveredObject = false;
 var markedObject = false;
 var lineStartObj = -1;
+var fullscreen = false;             // Used to toggle fullscreen 
+var old_content_diagram_marginTop;  // Used to revert changes from fullscreen
+var old_content_diagram_marginLeft; // Used to revert changes from fullscreen
+var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
+var old_zoom_left;                  // Used to revert changes from fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -630,6 +635,8 @@ function keyDownHandler(e) {
         toggleApperanceElement();
     } else if(key == keyMap.enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
         submitAppearanceForm();
+    } else if(key == keyMap.escapeKey && fullscreen) {
+        toggleFullscreen();
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
@@ -2125,7 +2132,7 @@ $(document).ready(function(){
 
 function canvasSize() {
     const diagramContainer = document.getElementById("diagramCanvasContainer");
-    canvas.width = diagramContainer.offsetWidth
+    canvas.width = diagramContainer.offsetWidth;
     canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
     updateGraphics();
@@ -3439,6 +3446,59 @@ function scrollZoom(event) {
         changeZoom(0.01, event);
     }
 }
+
+//-----------------------
+// Enter/exit fullscreen
+//-----------------------
+
+function toggleFullscreen(){
+    // Load elements
+    var head = document.querySelector("header");
+    var menu_buttons = document.getElementById("buttonDiv");
+    var content_diagram = document.getElementById("contentDiagram");
+    var canvas_div = document.getElementById("diagramCanvasContainer");
+    var zoom_bar = document.getElementById("selectDiv");
+
+    if(!fullscreen){
+        // Get previous settings
+        old_content_diagram_marginLeft = content_diagram.style.marginLeft;
+        old_content_diagram_marginTop = content_diagram.style.marginTop;
+        old_canvas_div_marginLeft = canvas_div.style.marginLeft;
+        old_zoom_left = zoom_bar.style.left;
+
+        // Hide header, buttons, their leftover space and resize canvas to fit screen
+        head.style.display = "none";
+        menu_buttons.style.display = "none";
+        content_diagram.style.marginTop = 0;
+        content_diagram.style.marginLeft = 0;
+        canvas_div.style.marginLeft = 0;
+        console.log(zoom_bar.style.left);
+        zoom_bar.style.left = 15;
+        console.log(zoom_bar.style.left);
+        canvasSize();
+        canvas.setAttribute("width", window.innerWidth);
+        canvas.setAttribute("height", window.innerHeight);
+        
+        fullscreen = true;
+
+    } else if (fullscreen){
+        // Revert to previous settings
+        content_diagram.style.marginTop = old_content_diagram_marginTop;
+        content_diagram.style.marginLeft = old_content_diagram_marginLeft;
+        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
+        zoom_bar.style.left = old_zoom_left;
+        canvasSize();
+
+        // The cursor is offsetted in Y-axis by 200 px. WHY
+
+        // Show header and buttons
+        head.style.display = "inline-block";
+        menu_buttons.style.display = "block";
+
+        fullscreen = false;
+    }
+}
+
 
 //-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
