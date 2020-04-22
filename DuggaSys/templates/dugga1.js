@@ -96,8 +96,8 @@ function returnedDugga(data)
 	  			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
 	  		} 		
 	  		fb += "</tbody></table>";
-				document.getElementById('feedbackTable').innerHTML = fb;		
-				document.getElementById('feedbackBox').style.display = "block";
+				document.getElementById('feedbackTable').innerHTML = fb;
+				$(".feedback-container").css("display","block");
 		}
 		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
@@ -160,7 +160,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 		$("#duggaStats").css("display","block");
-		$("#duggaStats").draggable({ handle:'.loginBoxheader'});
 	}
 	var p = jQuery.parseJSON(param);
 	var daJSON = jQuery.parseJSON(danswer);
@@ -313,4 +312,8 @@ function resetBitstring(){
 function toggleInstructions()
 {
     $(".instructions-content").slideToggle("slow");
+}
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
 }

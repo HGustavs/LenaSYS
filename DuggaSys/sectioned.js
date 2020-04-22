@@ -139,6 +139,14 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
     document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+    }
+
+  // Default showing of set deadline. Will show if has type "Test" only
+  if (kind != 3) {
+      document.querySelector("#inputwrapper-deadline").style.display = "none";
+      document.querySelector("#dialog8").style.display = "none";
+  } else {
+     document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
@@ -865,13 +873,14 @@ function returnedSection(data) {
           // Test / Dugga
           var param = {
             'did': item['link'],
-            'cid': querystring['courseid'],
+            'courseid': querystring['courseid'],
             'coursevers': querystring['coursevers'],
             'moment': item['lid'],
             'segment': momentexists,
             highscoremode: item['highscoremode'],
             comment: item['comments'],
-            deadline: item['deadline']
+            deadline: item['deadline'],
+            'cid': querystring['courseid']
           };
           str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 5) {
@@ -1806,7 +1815,7 @@ function validateDate2(ddate, dialogid) {
     ddate.style.borderWidth = "2px";
     window.bool8 = false;
 
-  }
+    }
 }
 
 /*Validates all forms*/ 

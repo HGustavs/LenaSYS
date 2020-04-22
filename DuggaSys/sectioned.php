@@ -188,7 +188,7 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection' onmouseover="validateSectionName('sectionname','dialog7'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onmouseover="validateSectionName('sectionname','dialog7');"  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>

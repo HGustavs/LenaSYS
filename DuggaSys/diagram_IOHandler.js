@@ -9,6 +9,10 @@ var c;
 var b;
 var ac = [];
 
+//--------------------------------------------------------------------------------------------------
+// downloadmode: download/load/export canvas (not fully implemented, see row 373-378 in diagram.php)
+//--------------------------------------------------------------------------------------------------
+
 function downloadMode(el) {
     var canvas = document.getElementById("content");
     var selectBox = document.getElementById("download");
@@ -25,6 +29,10 @@ function downloadMode(el) {
     }
 }
 
+//---------------------------------------------
+// saveToServer: saves folders/projects created in IOhandler to server
+//---------------------------------------------
+
 function saveToServer(dia) {
     $.ajax({
         url: 'diagram.php',
@@ -32,6 +40,10 @@ function saveToServer(dia) {
         data: {StringDiagram : dia, Hash: hashFunction()}
     });
 }
+
+//---------------------------------------------
+// redirect: redirects user to newly created project
+//---------------------------------------------
 
 function redirect(doc) {
     var a = doc.value;
@@ -49,13 +61,25 @@ function redirect(doc) {
     location.href="diagram.php?id="+0+"&folder="+a;
 }
 
+//---------------------------------------------
+// redirectas: redirects user to diagram chosen in IOHandler
+//---------------------------------------------
+
 function redirectas(doc,folder) {
         location.href="diagram.php?id="+doc.value+"&folder="+folder;
 }
 
+//---------------------------------------------
+// newProject: toggles the content visible to create a new project/canvas in existing folder
+//---------------------------------------------
+
 function newProject() {
     document.getElementById('newProject').style.display = "block";
 }
+
+//---------------------------------------------
+// loadNew: shows all existing folders and the option to create a new folder for use when creating new project/canvas
+//---------------------------------------------
 
 function loadNew() {
     document.getElementById('showStoredFolders').style.display = "none";
@@ -63,14 +87,26 @@ function loadNew() {
     document.getElementById('showNew').style.display = "block";
 }
 
+//---------------------------------------------
+// loadStored: Shows all stored projects inside folder, used when loading existing canvas
+//---------------------------------------------
+
 function loadStored() {
     document.getElementById('showNew').style.display = "none";
     document.getElementById('showStored').style.display = "block";
 }
 
+//---------------------------------------------
+// loadStored: Shows all stored folders, used when loading existing canvas
+//---------------------------------------------
+
 function loadStoredFolders(f) {
     document.getElementById('showStoredFolders').style.display = "block";
 }
+
+//---------------------------------------------
+// Save: saves objects in canvas to JSON format in localstorage
+//---------------------------------------------
 
 function Save() {
     diagramNumber++;
@@ -89,6 +125,10 @@ function Save() {
     console.log("State is saved");
 }
 
+//---------------------------------------------
+// SaveState: saves the current state of the canvas to localstorage
+//---------------------------------------------
+
 function SaveState() {
     Save();
     localStorage.setItem("diagram" + diagramNumber, a);
@@ -100,6 +140,10 @@ function SaveState() {
     }
 }
 
+//---------------------------------------------
+// SaveFile: used to export diagram as JSON
+//---------------------------------------------
+
 function SaveFile(el) {
     Save();
     var data = "text/json;charset=utf-8," + encodeURIComponent(a);
@@ -108,6 +152,10 @@ function SaveFile(el) {
     el.setAttribute("download", "diagram.txt");
     updateGraphics();
 }
+
+//---------------------------------------------
+// LoadImport: used when importing diagram(JSON) from computer
+//---------------------------------------------
 
 function LoadImport(fileContent) {
     a = fileContent;
@@ -239,6 +287,10 @@ function removeLocalStorage() {
     localStorage.setItem("diagramNumber", 0);
 }
 
+//----------------------------------------------------------------------
+// LoadFile: Loads JSON file into canvas
+//----------------------------------------------------------------------
+
 function LoadFile() {
     var pp = JSON.parse(a);
     b = pp;
@@ -315,6 +367,10 @@ function Load() {
     updateGraphics();
 }
 
+//----------------------------------------------------------------------
+// ExportSVG: export canvas to SVG file
+//----------------------------------------------------------------------
+
 function ExportSVG(el) {
     var svgstr = "";
     var width = window.innerWidth, height = window.innerHeight;
@@ -328,18 +384,22 @@ function ExportSVG(el) {
     el.setAttribute("download", "diagram.svg");
 }
 
-function ExportSVGA4(el) {
+//----------------------------------------------------------------------
+// ExportSVGPaper: export canvas to SVG file in Paper format
+//----------------------------------------------------------------------
+
+function ExportSVGA4(el) { //There will probably be so only one size paper are to be downloaded?
     const pixelsPerMillimeter = 3.781;
-    a4Width = 210 * pixelsPerMillimeter;
-    a4Height = 297 * pixelsPerMillimeter;
-    if(A4Orientation == "landscape"){
-        temp = a4Width;
-        a4Width = a4Height;
-        a4Height = temp
-        //downloads file with swapped height and width for landscape oriented A4
+    paperWidth = 210 * pixelsPerMillimeter;
+    paperHeight = 297 * pixelsPerMillimeter;
+    if(paperOrientation == "landscape"){
+        temp = paperWidth;
+        paperWidth = paperHeight;
+        paperHeight = temp
+        //downloads file with swapped height and width for landscape oriented Paper
     }
     var svgstr = "";
-    var width = a4Width, height = a4Height;
+    var width = paperWidth, height = paperHeight;
     svgstr += "<svg width='"+width+"' height='"+height+"' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>";
     svgstr += gridToSVG(width, height);
     svgstr += diagramToSVG();
@@ -353,14 +413,28 @@ function ExportSVGA4(el) {
 //------------------------------------------------
 // used when exporting the file as a .png image.
 //------------------------------------------------
+function ExportPicture(el) {
+    var canvasId = 'diagramCanvas';
+    var filename = 'picture.png';
+    el.href = document.getElementById(canvasId).toDataURL();
+    el.download = filename;
+}
 
-$(document).ready(function() {
-    function downloadCanvas(link, canvasId, filename) {
-        link.href = document.getElementById(canvasId).toDataURL();
-        link.download = filename;
-    }
-
-    document.getElementById('picid').addEventListener('click', function() {
-        downloadCanvas(this, 'myCanvas', 'picture.png');
-    }, false);
-});
+/*Makes canvas bigger before printing */
+function printDiagram(){
+    heightWindow = (window.innerHeight - 95);
+    canvas.setAttribute("height", heightWindow*2);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(2, 2);
+    updateGraphics();
+    window.print();
+    afterPrint();
+}
+ 
+/*Sets canvas back to normal after printing*/ 
+function afterPrint(){
+    canvas.setAttribute("height", heightWindow);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(1,1);
+    updateGraphics();
+}

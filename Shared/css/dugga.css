@@ -7,6 +7,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 /* --------------================################================-------------- *
  *                                   Media Queries                                   *
  * --------------================################================-------------- */
+
  /*Meduim screens */
 @media screen and (max-width: 960px) {
     #Nameof {
@@ -183,7 +184,7 @@ strong {font-weight: bold;}
  *                        Instructions for dugga 1 and 2                        *
  * --------------================################================-------------- */
 
-.instructions-container{
+.feedback-container,.instructions-container{
 	width:100%;
 	margin-bottom:25px;
 }
@@ -198,12 +199,16 @@ strong {font-weight: bold;}
 	padding:15px;
 	border:1px solid #ccc;
 }
+.feedback-content{
+	padding:1px;
+	border:1px solid #ccc;	
+  }
 
 .instructions-content p:first-child {
 	margin: 0;
 }
 
-.instructions-button {
+.feedback-button,.instructions-button {
 	cursor: pointer;
 	background-color: #ccc;
 	width:100%;
@@ -214,7 +219,7 @@ strong {font-weight: bold;}
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 }
-.instructions-button:after {
+.feedback-button:after,.instructions-button:after {
 	content: '';
 	display: block;
 	position: absolute;
@@ -231,14 +236,14 @@ strong {font-weight: bold;}
 	border-left: 15px solid transparent;
 }
 
-.instructions-button:hover:after {
+.feedback-button:hover:after, .instructions-button:hover:after {
 	border-top: 10px solid #939393;
 	border-right: 15px solid transparent;
 	border-bottom: 0px solid transparent;
 	border-left: 15px solid transparent;
 }
 
-.instructions-button:hover {
+.feedback-button:hover, .instructions-button:hover {
 	background-color:#939393;
 }
 

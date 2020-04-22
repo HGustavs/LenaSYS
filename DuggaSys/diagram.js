@@ -58,7 +58,8 @@ var settings = {
         textSize: '14',                               // 14 pixels text size is default.
         sizeOftext: 'Tiny',                           // Used to set size of text.
         textAlign: 'center',                          // Used to change alignment of free text.
-        key_type: 'Normal'                            // Defult key type for a class.
+        key_type: 'Normal',                           // Defult key type for a class.
+        isComment: false	                          // Used to se if text are comments and if they should be hidden.
     },
 };
 
@@ -109,6 +110,7 @@ var origoOffsetY = cameraPosY          // Canvas y topleft offset from origo
 var boundingRect;                   // Canvas offset in browser
 var canvasLeftClick = false;            // Canvas left click state
 var canvasRightClick = false;           // Canvas right click state
+var canvasTouchClick = false;       // Canvas touch state
 var lastZoomValue = localStorage.getItem("zoomValue") || 1.00;      //Records last zoomvalue, 1.00 if none has been recorded
 var zoomValue = lastZoomValue;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
@@ -119,8 +121,6 @@ var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
 var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
-var widthWindow;                    // The width on the users screen is saved is in this var.
-var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
@@ -129,11 +129,13 @@ var p1 = null;                      // When creating a new figure, these two var
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
 var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
-var toggleA4 = false;               // toggle if a4 outline is drawn
-var toggleA4Holes = false;          // toggle if a4 holes are drawn
-var switchSideA4Holes = "left";     // switching the sides of the A4-holes
-var A4Orientation = "portrait";     // If virtual A4 is portrait or landscape
-var singleA4 = false;               // Toggle between single/repeated A4
+var togglePaper = false;               // toggle if Paper outline is drawn
+var togglePaperHoles = false;          // toggle if paper holes are drawn
+var switchSidePaperHoles = "left";     // switching the sides of the paper-holes
+var paperOrientation = "portrait";     // If virtual paper is portrait or landscape
+var singlePaper = false;               // Toggle between single/repeated paper
+var paperSize = 4;					//toggle pappersize for canvas devider.
+var enableShortcuts = true;         // Used to toggle on/off keyboard shortcuts
 var targetMode = "ER";              // Default targetMode
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
@@ -165,6 +167,7 @@ var classTemplate = {
   width: 7 * gridSize,
   height: 7 * gridSize
 };
+var minimumDivisor = 4;                 // Is used when dividing templates for minimum selection before activating dragging mode values
 var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
 var globalappearanceMenuOpen = false;   // True if global appearance menu is open 
@@ -177,44 +180,272 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 var spacebarKeyPressed = false;         // True when entering MoveAround mode by pressing spacebar.
-var toolbarState = currentMode.er;                   // Set default toolbar state to ER.
+var toolbarState = currentMode.er;      // Set default toolbar state to ER.
+var hideComment = false;				//Used to se if the comment marked text should be hidden(true) or shown(false)
+
+// Default keyboard keys
+const defaultBackspaceKey = 8;
+const defaultEnterKey = 13;
+const defaultShiftKey = 16;
+const defaultCtrlKey = 17;
+const defaultAltKey = 18;
+const defaultEscapeKey = 27;
+const defaultSpacebarKey = 32;
+const defaultLeftArrow = 37;
+const defaultUpArrow = 38;
+const defaultRightArrow = 39;
+const defaultDownArrow = 40;
+const defaultDeleteKey = 46;
+const defaultKey0 = 48;
+const defaultKey1 = 49;
+const defaultKey2 = 50;
+const defaultKey4 = 52;
+const defaultAKey = 65;
+const defaultCKey = 67;
+const defaultDKey = 68;
+const defaultEKey = 69;
+const defaultFKey = 70;
+const defaultLKey = 76;
+const defaultMKey = 77;
+const defaultNKey = 78;
+const defaultOKey = 79;
+const defaultRKey = 82;
+const defaultTKey = 84;
+const defaultVKey = 86;
+const defaultZKey = 90;
+const defaultYKey = 89;
+const defaultXKey = 88;
+const defaultWindowsKey = 91;
+const defaultNum1 = 97;
+const defaultNum2 = 98;
+const defaultLessThanKey = 226;
+//Keybinding variables                       
+isBindingKey = false;                        // Is used when binding keys
+keyBeingBound = null;
 
 // Keyboard keys
-const backspaceKey = 8;
-const enterKey = 13;
-const shiftKey = 16;
-const ctrlKey = 17;
-const altKey = 18;
-const escapeKey = 27;
-const spacebarKey = 32;
-const leftArrow = 37;
-const upArrow = 38;
-const rightArrow = 39;
-const downArrow = 40;
-const deleteKey = 46;
-const key0 = 48;
-const key1 = 49;
-const key2 = 50;
-const key4 = 52;
-const aKey = 65;
-const cKey = 67;
-const dKey = 68;
-const eKey = 69;
-const fKey = 70;
-const lKey = 76;
-const mKey = 77;
-const nKey = 78;
-const oKey = 79;
-const rKey = 82;
-const tKey = 84;
-const vKey = 86;
-const zKey = 90;
-const yKey = 89;
-const xKey = 88;
-const windowsKey = 91;
-const num1 = 97;
-const num2 = 98;
-const lessThanKey = 226;
+var keyMap = { //rebindable keys format is (keyName, default-value)
+    backspaceKey : defaultBackspaceKey,
+    enterKey : defaultEnterKey,
+    shiftKey : defaultShiftKey,
+    ctrlKey : defaultCtrlKey,
+    altKey : defaultAltKey,
+    escapeKey : defaultEscapeKey,
+    spacebarKey : defaultSpacebarKey,
+    leftArrow : defaultLeftArrow,
+    upArrow : defaultUpArrow,
+    rightArrow : defaultRightArrow,
+    downArrow : defaultDownArrow,
+    deleteKey : defaultDeleteKey,
+    key0 : defaultKey0,
+    key1 : defaultKey1,
+    key2 : defaultKey2,
+    key4 : defaultKey4,
+    aKey : defaultAKey,
+    cKey : defaultCKey,
+    dKey : defaultDKey,
+    eKey : defaultEKey,
+    fKey : defaultFKey,
+    lKey : defaultLKey,
+    mKey : defaultMKey,
+    nKey : defaultNKey,
+    oKey : defaultOKey,
+    rKey : defaultRKey,
+    tKey : defaultTKey,
+    vKey : defaultVKey,
+    zKey : defaultZKey,
+    yKey : defaultYKey,
+    xKey : defaultXKey,
+    windowsKey : defaultWindowsKey,
+    num1 : defaultNum1,
+    num2 : defaultNum2,
+    lessThanKey : defaultLessThanKey,
+}
+
+// Map keycodes to key names
+const keyCodes = {
+    0: 'That key has no keycode',
+    3: 'break',
+    8: 'backspace / delete',
+    9: 'tab',
+    12: 'clear',
+    13: 'enter',
+    16: 'shift',
+    17: 'ctrl',
+    18: 'alt',
+    19: 'pause/break',
+    20: 'caps lock',
+    21: 'hangul',
+    25: 'hanja',
+    27: 'escape',
+    28: 'conversion',
+    29: 'non-conversion',
+    32: 'spacebar',
+    33: 'page up',
+    34: 'page down',
+    35: 'end',
+    36: 'home',
+    37: 'left arrow',
+    38: 'up arrow',
+    39: 'right arrow',
+    40: 'down arrow',
+    41: 'select',
+    42: 'print',
+    43: 'execute',
+    44: 'Print Screen',
+    45: 'insert',
+    46: 'delete',
+    47: 'help',
+    48: '0',
+    49: '1',
+    50: '2',
+    51: '3',
+    52: '4',
+    53: '5',
+    54: '6',
+    55: '7',
+    56: '8',
+    57: '9',
+    58: ':',
+    59: 'semicolon (firefox), equals',
+    60: '<',
+    61: 'equals (firefox)',
+    63: 'ß',
+    64: '@ (firefox)',
+    65: 'a',
+    66: 'b',
+    67: 'c',
+    68: 'd',
+    69: 'e',
+    70: 'f',
+    71: 'g',
+    72: 'h',
+    73: 'i',
+    74: 'j',
+    75: 'k',
+    76: 'l',
+    77: 'm',
+    78: 'n',
+    79: 'o',
+    80: 'p',
+    81: 'q',
+    82: 'r',
+    83: 's',
+    84: 't',
+    85: 'u',
+    86: 'v',
+    87: 'w',
+    88: 'x',
+    89: 'y',
+    90: 'z',
+    91: 'Windows Key / Left ⌘ / Chromebook Search key',
+    92: 'right window key',
+    93: 'Windows Menu / Right ⌘',
+    95: 'sleep',
+    96: 'numpad 0',
+    97: 'numpad 1',
+    98: 'numpad 2',
+    99: 'numpad 3',
+    100: 'numpad 4',
+    101: 'numpad 5',
+    102: 'numpad 6',
+    103: 'numpad 7',
+    104: 'numpad 8',
+    105: 'numpad 9',
+    106: 'multiply',
+    107: 'add',
+    108: 'numpad period (firefox)',
+    109: 'subtract',
+    110: 'decimal point',
+    111: 'divide',
+    112: 'f1',
+    113: 'f2',
+    114: 'f3',
+    115: 'f4',
+    116: 'f5',
+    117: 'f6',
+    118: 'f7',
+    119: 'f8',
+    120: 'f9',
+    121: 'f10',
+    122: 'f11',
+    123: 'f12',
+    124: 'f13',
+    125: 'f14',
+    126: 'f15',
+    127: 'f16',
+    128: 'f17',
+    129: 'f18',
+    130: 'f19',
+    131: 'f20',
+    132: 'f21',
+    133: 'f22',
+    134: 'f23',
+    135: 'f24',
+    136: 'f25',
+    137: 'f26',
+    138: 'f27',
+    139: 'f28',
+    140: 'f29',
+    141: 'f30',
+    142: 'f31',
+    143: 'f32',
+    144: 'num lock',
+    145: 'scroll lock',
+    151: 'airplane mode',
+    160: '^',
+    161: '!',
+    162: '؛ (arabic semicolon)',
+    163: '#',
+    164: '$',
+    165: 'ù',
+    166: 'page backward',
+    167: 'page forward',
+    168: 'refresh',
+    169: 'closing paren (AZERTY)',
+    170: '*',
+    171: '~ + * key',
+    172: 'home key',
+    173: 'minus (firefox), mute/unmute',
+    174: 'decrease volume level',
+    175: 'increase volume level',
+    176: 'next',
+    177: 'previous',
+    178: 'stop',
+    179: 'play/pause',
+    180: 'e-mail',
+    181: 'mute/unmute (firefox)',
+    182: 'decrease volume level (firefox)',
+    183: 'increase volume level (firefox)',
+    186: 'semi-colon / ñ',
+    187: 'equal sign',
+    188: 'comma',
+    189: 'dash',
+    190: 'period',
+    191: 'forward slash / ç',
+    192: 'grave accent / ñ / æ / ö',
+    193: '?, / or °',
+    194: 'numpad period (chrome)',
+    219: 'open bracket',
+    220: 'back slash',
+    221: 'close bracket / å',
+    222: 'single quote / ø / ä',
+    223: '`',
+    224: 'left or right ⌘ key (firefox)',
+    225: 'altgr',
+    226: 'left back slash',
+    230: 'GNOME Compose Key',
+    231: 'ç',
+    233: 'XF86Forward',
+    234: 'XF86Back',
+    235: 'non-conversion',
+    240: 'alphanumeric',
+    242: 'hiragana/katakana',
+    243: 'half-width/full-width',
+    244: 'kanji',
+    251: 'unlock trackpad (Chrome/Edge)',
+    255: 'toggle touchpad',
+  };
 
 // Mouse clicks
 const leftMouseClick = 0;
@@ -224,12 +455,25 @@ const rightMouseClick = 2;
 // This block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
+// Checking if on mobile browser. 
+const isMobile = /Mobi/.test(window.navigator.userAgent);
+
 var ctrlIsClicked = false;
 var shiftIsClicked = false;
 var altIsClicked = false;
 
 // This event checks if the user leaves the diagram.php
 window.addEventListener('blur', resetButtonsPressed);
+
+//Functions to call after document body loads
+function init() {
+    initializeCanvas(); 
+    canvasSize(); 
+    loadDiagram(); 
+    setModeOnRefresh(); 
+    initAppearanceForm();
+    updateGraphics(); 
+}
 
 //--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
@@ -358,28 +602,15 @@ function resetButtonsPressed() {
 //--------------------------------------------------------------------
 
 function resetToolButtonsPressed() {
-    // deselect attribute button
-    document.getElementById("attributebutton").classList.remove("pressed");
-    document.getElementById("attributebutton").classList.add("unpressed");
-    // deselect entity button
-    document.getElementById("entitybutton").classList.remove("pressed");
-    document.getElementById("entitybutton").classList.add("unpressed");
-    // deselect relation button
-    document.getElementById("relationbutton").classList.remove("pressed");
-    document.getElementById("relationbutton").classList.add("unpressed");
-    // deselect class button
-    document.getElementById("classbutton").classList.remove("pressed");
-    document.getElementById("classbutton").classList.add("unpressed");
-    // deselect line button
-    document.getElementById("linebutton").classList.remove("pressed");
-    document.getElementById("linebutton").classList.add("unpressed");
-    // deselect draw free button
-    document.getElementById("drawfreebutton").classList.remove("pressed");
-    document.getElementById("drawfreebutton").classList.add("unpressed");
-    // deselect draw text button
-    document.getElementById("drawtextbutton").classList.remove("pressed");
-    document.getElementById("drawtextbutton").classList.add("unpressed");
-    uimode = 'normal';
+    const elementsToReset = document.querySelectorAll(".pressed:not(#moveButton)");
+    elementsToReset.forEach(element => {
+        element.classList.remove("pressed");
+        element.classList.add("unpressed");
+    });
+
+    if(uimode !== "MoveAround") {
+        uimode = 'normal';
+    }
 }
 
 //--------------------------------------------------------------------
@@ -388,123 +619,144 @@ function resetToolButtonsPressed() {
 
 function keyDownHandler(e) {
     var key = e.keyCode;
-    if(key == escapeKey && appearanceMenuOpen) {
+    if(isBindingKey){
+        keyMap[keyBeingBound] = e.which;
+        drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
+        isBindingKey = false;
+        keyBeingBound = null;
+        return;
+    }
+    if(key == keyMap.escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
+    } else if(key == keyMap.enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
+        submitAppearanceForm();
     }
     if (appearanceMenuOpen) return;
-    if ((key == deleteKey || key == backspaceKey)) {
+    if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
         eraseSelectedObject(event);
         SaveState();
-    } else if (key == spacebarKey) {
-        // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
-        if (!spacebarKeyPressed) {
-        spacebarKeyPressed = true;
-        } else {
-            spacebarKeyPressed = false;
+    }  
+    //Check if enter is pressed when "focused" on an item in the dropdown menu
+    if(key == keyMap.enterKey) {
+        const allowedClasses = ["drop-down-item", "export-drop-down-item", "papersize-drop-down-item"];
+        const isAllowed = allowedClasses.some(className => document.activeElement.classList.contains(className));
+        if(isAllowed) {
+            const onclickElement = document.activeElement.querySelector("[onclick]");
+            onclickElement.click();
         }
-        //Use space for movearound
-        if (e.stopPropagation) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        if (uimode != "MoveAround") {
-            activateMovearound();
-        } else {
-            deactivateMovearound();
-        }
-        updateGraphics();
-    } else if((key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) && !shiftIsClicked) {
-        arrowKeyPressed(key);
-        if (uimode == "MoveAround") {
-            moveCanvasView(key);
-        }
-    } else if(key == ctrlKey || key == windowsKey) {
-        ctrlIsClicked = true;
-    } else if (key == shiftKey) {
-        shiftIsClicked = true;
-    } else if(key == altKey) {
-        altIsClicked = true;
-    } else if(ctrlIsClicked && key == cKey) {
-        //Ctrl + c
-        fillCloneArray();
-    } else if (ctrlIsClicked && key == vKey ) {
-        //Ctrl + v
-        var temp = [];
-        for (var i = 0; i < cloneTempArray.length; i++) {
-            //Display cloned objects except lines
-            if (cloneTempArray[i].symbolkind != symbolKind.line
-                && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
-                const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
-                temp.push(diagram[cloneIndex]);
-            }
-        }
-        cloneTempArray = temp;
-        selected_objects = temp;
-        updateGraphics();
-        SaveState();
     }
-    else if (key == zKey && ctrlIsClicked) undoDiagram(event);
-    else if (key == yKey && ctrlIsClicked) redoDiagram(event);
-    else if (key == aKey && ctrlIsClicked) {
-        e.preventDefault();
-        for (var i = 0; i < diagram.length; i++) {
-            selected_objects.push(diagram[i]);
-            diagram[i].targeted = true;
-        }
-        updateGraphics();
-    } else if(key == ctrlKey || key == windowsKey) {
-        ctrlIsClicked = true;
-    } else if (key == enterKey) {
-        if (modeSwitchDialogActive) {
-            // if the cancel button is focused then trigger that
-            if (document.activeElement.id == "modeSwitchButtonCancel") {
-                modeSwitchConfirmed(false);
+    if(enableShortcuts){ // Only enter if keyboard shortcuts are enabled
+        if (key == keyMap.spacebarKey) {
+            // This if-else statement is used to make sure mouse clicks can not exit the MoveAround mode.
+            if (!spacebarKeyPressed) {
+                spacebarKeyPressed = true;
             } else {
-               modeSwitchConfirmed(true);
+                spacebarKeyPressed = false;
             }
+            //Use space for movearound
+            if (e.stopPropagation) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            if (uimode != "MoveAround") {
+                activateMovearound();
+            } else {
+                deactivateMovearound();
+            }
+            updateGraphics();
+        } else if((key == keyMap.upArrow || key == keyMap.downArrow || key == keyMap.leftArrow || key == keyMap.rightArrow) && !shiftIsClicked) {
+            arrowKeyPressed(key);
+            if (uimode == "MoveAround") {
+                moveCanvasView(key);
+            }
+        } else if(key == keyMap.ctrlKey || key == keyMap.windowsKey) {
+            ctrlIsClicked = true;
+        } else if (key == keyMap.shiftKey) {
+            shiftIsClicked = true;
+        } else if(key == keyMap.altKey) {
+            altIsClicked = true;
+        } else if(ctrlIsClicked && key == keyMap.cKey) {
+            //Ctrl + c
+            fillCloneArray();
+        } else if (ctrlIsClicked && key == keyMap.vKey ) {
+            //Ctrl + v
+            var temp = [];
+            for (var i = 0; i < cloneTempArray.length; i++) {
+                //Display cloned objects except lines
+                if (cloneTempArray[i].symbolkind != symbolKind.line
+                    && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
+                    const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
+                    temp.push(diagram[cloneIndex]);
+                }
+            }
+            cloneTempArray = temp;
+            selected_objects = temp;
+            updateGraphics();
+            SaveState();
         }
-    } else if (key == escapeKey) {
-        cancelFreeDraw();
-        deselectObjects();
+        else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
+        else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
+        else if (key == keyMap.aKey && ctrlIsClicked) {
+            e.preventDefault();
+            for (var i = 0; i < diagram.length; i++) {
+                selected_objects.push(diagram[i]);
+                diagram[i].targeted = true;
+            }
+            updateGraphics();
+        } else if(key == keyMap.ctrlKey || key == keyMap.windowsKey) {
+            ctrlIsClicked = true;
+        } else if (key == keyMap.enterKey) {
+            if (modeSwitchDialogActive) {
+                // if the cancel button is focused then trigger that
+                if (document.activeElement.id == "modeSwitchButtonCancel") {
+                    modeSwitchConfirmed(false);
+                } else {
+                modeSwitchConfirmed(true);
+                }
+            }
+        } else if (key == keyMap.escapeKey) {
+            cancelFreeDraw();
+            deselectObjects();
 
 
-        if (modeSwitchDialogActive) modeSwitchConfirmed(false);
-    } else if ((key == key1 || key == num1) && shiftIsClicked){
-        moveToFront(event);
-    } else if ((key == key2 || key == num2) && shiftIsClicked){
-        moveToBack(event);
-    } else if (shiftIsClicked && key == lKey) {
-      document.getElementById("linebutton").click();
-    } else if (shiftIsClicked && key == aKey && targetMode == "ER") {
-      document.getElementById("attributebutton").click();
-    } else if (shiftIsClicked && key == eKey && targetMode == "ER") {
-      document.getElementById("entitybutton").click();
-    } else if (shiftIsClicked && key == rKey && targetMode == "ER") {
-      document.getElementById("relationbutton").click();
-    } else if (shiftIsClicked && key == cKey && targetMode == "UML") {
-      document.getElementById("classbutton").click();
-    } else if (shiftIsClicked && key == tKey) {
-      document.getElementById("drawtextbutton").click();
-    } else if (shiftIsClicked && key == fKey) {
-      document.getElementById("drawfreebutton").click();
-    } else if (shiftIsClicked && key == dKey) {
-      developerMode(event);
-    } else if (shiftIsClicked && key == mKey  && !modeSwitchDialogActive) {
-            toggleMode();
-    } else if (shiftIsClicked && key == xKey) {
-          lockSelected(event);
-    } else if (shiftIsClicked && key == oKey) {
-          resetViewToOrigin(event);
-    } else if (shiftIsClicked && key == key4) {
-          toggleVirtualA4(event);
-    } else if (shiftIsClicked && key == upArrow) {
-          align(event, 'top');
-    } else if (shiftIsClicked && key == rightArrow) {
-          align(event, 'right');
-    } else if (shiftIsClicked && key == downArrow) {
-          align(event, 'bottom');
-    } else if (shiftIsClicked && key == leftArrow) {
-          align(event, 'left');
+            if (modeSwitchDialogActive) modeSwitchConfirmed(false);
+        } else if ((key == keyMap.key1 || key == keyMap.num1) && shiftIsClicked){
+            moveToFront(event);
+        } else if ((key == keyMap.key2 || key == keyMap.num2) && shiftIsClicked){
+            moveToBack(event);
+        } else if (shiftIsClicked && key == keyMap.lKey) {
+        document.getElementById("linebutton").click();
+        } else if (shiftIsClicked && key == keyMap.aKey && targetMode == "ER") {
+        document.getElementById("attributebutton").click();
+        } else if (shiftIsClicked && key == keyMap.eKey && targetMode == "ER") {
+        document.getElementById("entitybutton").click();
+        } else if (shiftIsClicked && key == keyMap.rKey && targetMode == "ER") {
+        document.getElementById("relationbutton").click();
+        } else if (shiftIsClicked && key == keyMap.cKey && targetMode == "UML") {
+        document.getElementById("classbutton").click();
+        } else if (shiftIsClicked && key == keyMap.tKey) {
+        document.getElementById("drawtextbutton").click();
+        } else if (shiftIsClicked && key == keyMap.fKey) {
+        document.getElementById("drawfreebutton").click();
+        } else if (shiftIsClicked && key == keyMap.dKey) {
+        developerMode(event);
+        } else if (shiftIsClicked && key == keyMap.mKey  && !modeSwitchDialogActive) {
+                toggleMode();
+        } else if (shiftIsClicked && key == keyMap.xKey) {
+            lockSelected(event);
+        } else if (shiftIsClicked && key == keyMap.oKey) {
+            resetViewToOrigin(event);
+        } else if (shiftIsClicked && key == keyMap.key4) {
+            toggleVirtualPaper(event);
+        } else if (shiftIsClicked && key == keyMap.upArrow) {
+            align(event, 'top');
+        } else if (shiftIsClicked && key == keyMap.rightArrow) {
+            align(event, 'right');
+        } else if (shiftIsClicked && key == keyMap.downArrow) {
+            align(event, 'bottom');
+        } else if (shiftIsClicked && key == keyMap.leftArrow) {
+            align(event, 'left');
+        }
     }
 }
 
@@ -617,9 +869,9 @@ function fillCloneArray() {
 //--------------------------------------------------------------------
 
 window.onkeyup = function(event) {
-    if(event.which == ctrlKey || event.which == windowsKey) {
+    if(event.which == keyMap.ctrlKey || event.which == keyMap.windowsKey) {
         ctrlIsClicked = false;
-    } else if(event.which == shiftKey || event.which == shiftKey){
+    } else if(event.which == keyMap.shiftKey || event.which == keyMap.shiftKey){
         shiftIsClicked = false;
     }
 }
@@ -631,21 +883,42 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if (uimode != "MoveAround") {
-        if(key == leftArrow) {
+    //Check if snap to grid is on
+    if(snapToGrid) {
+        if(key == keyMap.leftArrow) {
+            xNew = -1;
+        }else if(key == keyMap.upArrow) {
+            yNew = -1;
+        }else if(key == keyMap.rightArrow) {
+            xNew = 1;
+        }else if(key == keyMap.downArrow) {
+            yNew = 1;
+        }
+        for(var i = 0; i < selected_objects.length; i++) {
+            // Coordinates for the top left corner of the object
+            var hoveredObjectStartTopLeftX = points[selected_objects[i].topLeft].x;
+            var hoveredObjectStartTopLeftY = points[selected_objects[i].topLeft].y;
+            // Coordinates for the point to snap to
+            var hoveredObjectSnapTopLeftX = Math.round((hoveredObjectStartTopLeftX / gridSize) + xNew) * gridSize;
+            var hoveredObjectSnapTopLeftY = Math.round((hoveredObjectStartTopLeftY / gridSize) + yNew) * gridSize;
+            // Move object in grid
+            selected_objects[i].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+        }
+    } else {
+        if(key == keyMap.leftArrow) {
             xNew = -5;
-        }else if(key == upArrow) {
+        }else if(key == keyMap.upArrow) {
             yNew = -5;
-        }else if(key == rightArrow) {
+        }else if(key == keyMap.rightArrow) {
             xNew = 5;
-        }else if(key == downArrow) {
+        }else if(key == keyMap.downArrow) {
             yNew = 5;
         }
         for(var i = 0; i < selected_objects.length; i++) {
             selected_objects[i].move(xNew, yNew);
         }
-        updateGraphics();
-    }
+    }   
+    updateGraphics();
 }
 
 //-----------------------------------------------------------------------------------
@@ -653,13 +926,13 @@ function arrowKeyPressed(key) {
 //-----------------------------------------------------------------------------------
 function moveCanvasView(key) {
   if(uimode = "MoveAround") {
-    if(key == leftArrow) {
+    if(key == keyMap.leftArrow) {
       origoOffsetX += 10;
-    }else if(key == upArrow) {
+    }else if(key == keyMap.upArrow) {
       origoOffsetY += 10;
-    }else if(key == rightArrow) {
+    }else if(key == keyMap.rightArrow) {
       origoOffsetX += -10;
-    }else if(key == downArrow) {
+    }else if(key == keyMap.downArrow) {
       origoOffsetY += -10;
     }
     updateGraphics();
@@ -1194,24 +1467,51 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='"
-                + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue)
-                + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + " </p>";
-    document.getElementById("valuesCanvas").style.display = 'none';
-    canvas = document.getElementById("myCanvas");
-    if (canvas.getContext) {
+
+    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    const moveButton = document.getElementById("moveButton");
+    const zoomTextElement = document.getElementById("zoomV");
+    const zoomRange = document.getElementById("ZoomSelect");
+
+
+    canvas = document.getElementById("diagramCanvas");
+    if(canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    document.getElementById("moveButton").addEventListener('click', movemode, false);
-    document.getElementById("moveButton").style.visibility = 'hidden';
-    updateGraphics();
-    boundingRect = canvas.getBoundingClientRect();
+
+    zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
+    zoomRange.value = zoomValue;
+
+    moveButton.addEventListener('click', movemode, false);
+    diagramContainer.addEventListener("contextmenu", e => e.preventDefault());
+    canvas.addEventListener("mousemove", mousemoveevt, false);
+    canvas.addEventListener("mousedown", mousedownevt, false);
+    canvas.addEventListener("mouseup", mouseupevt, false);
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
     canvas.addEventListener('wheel', scrollZoom, false);
+  
+    drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
+
+    var dropDowns = document.getElementsByClassName("drop-down-label");
+    var i;
+    for (i = 0; i < dropDowns.length; i++) {
+        dropDowns[i].addEventListener("mouseover", clearActiveDropdownElement);
+    }
+}
+
+//--------------------------------------------------------------------
+// Clears the active element when hovering dropdown menus
+//--------------------------------------------------------------------
+
+function clearActiveDropdownElement(){
+    if (document.activeElement.className.match("menu-drop-down") || 
+    document.activeElement.className.match("drop-down-item")) {
+        document.activeElement.blur();
+    }
+
 }
 
 //--------------------------------------------------------------------
@@ -1242,227 +1542,263 @@ function toggleGrid(event) {
 }
 
 //-----------------------------------------------------------------------
-// Toggles the virtual A4 On or Off
+// Toggles the virtual paper On or Off
 //-----------------------------------------------------------------------
 
-function toggleVirtualA4(event) {
+function toggleVirtualPaper(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (toggleA4) {
-        // A4 is disabled
-        toggleA4 = false;
+    if (togglePaper) {
+        // Paper is disabled
+        togglePaper = false;
 
-        $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
-        $("#a4-single-item").addClass("drop-down-item drop-down-item-disabled");
-        hideA4State();
+        $("#Paper-holes-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-single-item").addClass("drop-down-item drop-down-item-disabled");
+        hidePaperState();
         updateGraphics();
     } else {
-        toggleA4 = true;
-        $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#a4-single-item").removeClass("drop-down-item drop-down-item-disabled");
-        if (toggleA4Holes) {
-            $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
+        togglePaper = true;
+        $("#Paper-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+        $("#Paper-single-item").removeClass("drop-down-item drop-down-item-disabled");
+        if (togglePaperHoles) {
+            $("#Paper-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         } else {
-            $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+            $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
         }
-        showA4State();
+        showPaperState();
         updateGraphics();
     }
 
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+    setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
 }
 
 //--------------------------------------------------------------------
-// Draws virtual A4 on canvas
+// Draws virtual Paper on canvas
 //--------------------------------------------------------------------
 
-function drawVirtualA4() {
-    if(!toggleA4) {
-        return;
-    }
+function drawVirtualPaper() {
+	
     // Origo
     let zeroX = pixelsToCanvas().x;
     let zeroY = pixelsToCanvas().y;
 
-    // the correct according to 96dpi size, of a4 milimeters to pixels
-    const pixelsPerMillimeter = 3.781 * zoomValue;
-    const a4Width = 210 * pixelsPerMillimeter;
-    const a4Height = 297 * pixelsPerMillimeter;
-    // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
+    // the correct according to 96dpi size, of Paper milimeters to pixels
+	const pixelsPerMillimeter = 3.781 * zoomValue;
+	let papersizes = [
+		[841,1189],
+		[594,841],
+		[420,594],
+		[297,420],
+		[210,297],
+		[148,210],
+		[105,148]
+	];
+    const paperWidth = papersizes[paperSize][0] * pixelsPerMillimeter;
+    const paperHeight = papersizes[paperSize][1] * pixelsPerMillimeter;
+    // size of Paper hole, from specification ISO 838 and the swedish "triohålning"
     const leftHoleOffsetX = 12 * pixelsPerMillimeter;
-    const rightHoleOffsetX = 198 * pixelsPerMillimeter;
+    const rightHoleOffsetX = (papersizes[paperSize][0] - 12) * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
     
-    // Number of A4 sheets to draw out
-    var a4Rows;
-    var a4Columns;
+    // Number of paper sheets to draw out
+    var paperRows;
+    var paperColumns;
 
-    if(!singleA4){
-        if (A4Orientation == "portrait") {
-            a4Rows = 6;
-            a4Columns = 12;
-        } else if(A4Orientation == "landscape") {
-            a4Rows = 10;
-            a4Columns = 8;
+    if(!singlePaper){
+        if (paperOrientation == "portrait") {
+            paperRows = 6;
+            paperColumns = 12;
+        } else if(paperOrientation == "landscape") {
+          paperRows = 10;
+          paperColumns = 8;
         }
     } else {
-        a4Rows = 1;
-        a4Columns = 1;
+      	paperRows = 1;
+		paperColumns = 1;
     }
 
-    ctx.save();
+	ctx.save();
+	if(!togglePaper) {
+		ctx.globalAlpha = 0;
+	}
     ctx.strokeStyle = "black"
     ctx.setLineDash([10 * (pixelsPerMillimeter / 3)]);
-    
-    if(A4Orientation == "portrait") {           // Draw A4 sheets in portrait mode
-        for (var i = 0; i < a4Rows; i++) {
-            for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Width * j, zeroY + a4Height * i, a4Width, a4Height);               // Bottom right
-                if(!singleA4){
-                    ctx.strokeRect(zeroX - a4Width * (j+1), zeroY + a4Height * i, a4Width, a4Height);       // Bottom left
-                    ctx.strokeRect(zeroX + a4Width * j, zeroY - a4Height * (i+1), a4Width, a4Height);       // Top right
-                    ctx.strokeRect(zeroX - a4Width * (j+1), zeroY - a4Height * (i+1), a4Width, a4Height);   // Top left
-                }
-            }
-        }
-    } else if(A4Orientation == "landscape") {   // Draw A4 sheets in landscape mode
-        for (var i = 0; i < a4Rows; i++) {
-            for (var j = 0; j < a4Columns; j++) {
-                ctx.strokeRect(zeroX + a4Height * j, zeroY + a4Width * i, a4Height, a4Width);               // Bottom right
-                if(!singleA4){
-                    ctx.strokeRect(zeroX - a4Height * (j+1), zeroY + a4Width * i, a4Height, a4Width);       // Bottom left
-                    ctx.strokeRect(zeroX + a4Height * j, zeroY - a4Width * (i+1), a4Height, a4Width);       // Top right
-                    ctx.strokeRect(zeroX - a4Height * (j+1), zeroY - a4Width * (i+1), a4Height, a4Width);   // Top left
-                }
-            }
-        }
+	
+	var dubbleColumns = 2*paperColumns
+	var bottomOfSet = dubbleColumns*paperRows // calculates the ofset to the bottom half of the pages once 
+
+	if(paperOrientation == "portrait") {// Draw Paper sheets in portrait mode
+		if(singlePaper){
+			ctx.strokeRect(zeroX, zeroY, paperWidth, paperHeight);
+			ctx.fillText("Page 1",  zeroX + (paperWidth - 50),zeroY + (paperHeight - 5) ); // if only one paper are pressent ther will only be that nr one page
+		}else{
+			for (var i = 0; i < paperRows; i++) {
+				for (var j = 0; j < paperColumns; j++) {
+					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY - paperHeight * (i+1), paperWidth, paperHeight);   // Top left from origin
+					ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 50 - paperWidth *j,zeroY + (paperHeight - 5) -  paperHeight * (i+1));
+
+					ctx.strokeRect(zeroX + paperWidth * j, zeroY - paperHeight * (i+1), paperWidth, paperHeight);       // Top right from origin
+					ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperWidth - 50) + paperWidth * j,zeroY + (paperHeight - 5) -  paperHeight * (i+1));
+
+					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY + paperHeight * i, paperWidth, paperHeight);       // Bottom left from origin
+					ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  50 - paperWidth * j,zeroY + (paperHeight - 5) +  paperHeight * i);
+
+					ctx.strokeRect(zeroX + paperWidth * j, zeroY + paperHeight * i, paperWidth, paperHeight);               // Bottom right from origin
+					ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperWidth - 50) + paperWidth * j,zeroY + (paperHeight - 5) +  paperHeight * i); 
+				}
+			}
+		}
+	} else if(paperOrientation == "landscape") {   // Draw Paper sheets in landscape mode
+		if(singlePaper){
+			ctx.strokeRect(zeroX, zeroY, paperHeight, paperWidth);               // Bottom right
+			ctx.fillText("Page 1" , zeroX + (paperHeight - 50), zeroY + (paperWidth - 5));
+		}else{
+			for (var i = 0; i < paperRows; i++) {
+				for (var j = 0; j < paperColumns; j++) {
+					ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY - paperWidth * (i+1), paperHeight, paperWidth);   // Top left from origin
+					ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 50 - paperHeight *j,zeroY + (paperWidth - 5) -  paperWidth * (i+1));
+
+					ctx.strokeRect(zeroX + paperHeight * j, zeroY - paperWidth * (i+1), paperHeight, paperWidth);       // Top right from origin
+					ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperHeight - 50) + paperHeight * j,zeroY + (paperWidth - 5) -  paperWidth * (i+1));
+
+					ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY + paperWidth * i, paperHeight, paperWidth);       // Bottom left from origin
+					ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  50 - paperHeight * j,zeroY + (paperWidth - 5) +  paperWidth * i);
+
+					ctx.strokeRect(zeroX + paperHeight * j, zeroY + paperWidth * i, paperHeight, paperWidth);               // Bottom right from origin
+					ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperHeight - 50) + paperHeight * j,zeroY + (paperWidth - 5) +  paperWidth * i);	
+				}
+			}
+		}
+        
     }
 
-    // Draw A4 holes
-    if(toggleA4Holes) {
-        if(A4Orientation == "portrait") {
-            if (switchSideA4Holes == "left") {
+    // Draw Paper holes
+    if(togglePaperHoles) {
+        if(paperOrientation == "portrait") {
+            if (switchSidePaperHoles == "left") {
                 // The Holes on the left side.
-                for (var i = 0; i < a4Rows; i++) {
-                    for (var j = 0; j < a4Columns; j++) {
+                for (var i = 0; i < paperRows; i++) {
+                    for (var j = 0; j < paperColumns; j++) {
                         // Bottom right quadrant
-                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        if(!singleA4){
+                        drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                        drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                        if(!singlePaper){
                             // Bottom left quadrant
-                            drawCircle(leftHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
                             // Top left quadrant
-                            drawCircle(leftHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
                             // Top right quadrant
-                            drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
                         }
                     }
                 }
             } else {
                 // The holes on the right side.
-                for (var i = 0; i < a4Rows; i++) {
-                    for (var j = 0; j < a4Columns; j++) {
+                for (var i = 0; i < paperRows; i++) {
+                    for (var j = 0; j < paperColumns; j++) {
                         // Bottom right quadrant
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                        if(!singleA4){
+                        drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                        drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                        drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                        drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                        if(!singlePaper){
                             // Bottom left quadrant
-                            drawCircle(rightHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY + a4Height * i, holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
                             // Top left quadrant
-                            drawCircle(rightHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - a4Width * (j+1), ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
                             // Top right quadrant
-                            drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX + a4Width * j, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY - a4Height * (i+1), holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+                            drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
                         }
                     }
                 }
             }
         }
-        else if(A4Orientation == "landscape") {
-            if (switchSideA4Holes == "left") {
+        else if(paperOrientation == "landscape") {
+            if (switchSidePaperHoles == "left") {
                 // The holes on the upper side.
-                for (var i = 0; i < a4Rows; i++) {
-                    for (var j = 0; j < a4Columns; j++) {
+                for (var i = 0; i < paperRows; i++) {
+                    for (var j = 0; j < paperColumns; j++) {
                         // Bottom right
-                        drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        if(!singleA4){
+                        drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                        drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                        drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                        drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                        if(!singlePaper){
                             // Bottom left
-                            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX - a4Height * (j+1), leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX - a4Height * (j+1), leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX - a4Height * (j+1), leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX - a4Height * (j+1), leftHoleOffsetX + zeroY + a4Width * i, holeRadius);
+                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
                             // Top left
-                            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX - a4Height * (j+1), leftHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX - a4Height * (j+1), leftHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX - a4Height * (j+1), leftHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX - a4Height * (j+1), leftHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
                             // Top right
-                            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, leftHoleOffsetX + zeroY - a4Width * (i+1), holeRadius); 
+                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius); 
                         }                   
                     }
                 }
             }else {
                 // The holes on the bottom side.
-                for (var i = 0; i < a4Rows; i++) {
-                    for (var j = 0; j < a4Columns; j++) {
+                for (var i = 0; i < paperRows; i++) {
+                    for (var j = 0; j < paperColumns; j++) {
                         // Bottom right
-                        drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                        if(!singleA4){
+                        drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                        drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                        drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                        drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                        if(!singlePaper){
                             // Bottom left
-                            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX - a4Height * (j+1), rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX - a4Height * (j+1), rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX - a4Height * (j+1), rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
-                            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX - a4Height * (j+1), rightHoleOffsetX + zeroY + a4Width * i, holeRadius);
+                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
                             // Top left
-                            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX - a4Height * (j+1), rightHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX - a4Height * (j+1), rightHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX - a4Height * (j+1), rightHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX - a4Height * (j+1), rightHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
                             // Top right
-                            drawCircle(((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
-                            drawCircle(((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroX + a4Height * j, rightHoleOffsetX + zeroY - a4Width * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
                         }
                     }
                 }
             }
         }
-    }
+	}
+	ctx.globalAlpha = 1;
     ctx.restore();
 }
+
 
 //------------------------------------------------------------------
 // Draws a crosshair in the middle of canvas while in developer mode
@@ -1516,160 +1852,220 @@ function drawCircle(cx, cy, radius) {
 }
 
 //-----------------------------------------------------
-// Enables and shows the children menus for virtual A4
+// Enables and shows the children menus for virtual Paper
 //-----------------------------------------------------
 
-function showA4State() {
-    // Sets icons based on the state of the A4
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes=false);
-    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
-    switchSideA4Holes = "left";
-    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+function showPaperState() {
+    // Sets icons based on the state of the Paper
+    setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles=false);
+    setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), true);
+    switchSidePaperHoles = "left";
+    setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
 
-    // Show A4 options
-    $("#a4-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
-    $("#a4-holes-item").removeClass("drop-down-item drop-down-item-disabled");
-    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+    // Show Paper options
+    $("#Paper-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-holes-item").removeClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 //-----------------------------------------------------
-// Disables and hides the children menus for virtual A4
+// Disables and hides the children menus for virtual Paper
 //-----------------------------------------------------
 
-function hideA4State() {
-    // Reset the variables after disable the A4
-    toggleA4Holes = false;
-    switchSideA4Holes = "left";
+function hidePaperState() {
+    // Reset the variables after disable the Paper
+    togglePaperHoles = false;
+    switchSidePaperHoles = "left";
 
-    // Hides icons when toggling off the A4
-    setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), false);
-    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-    setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+    // Hides icons when toggling off the Paper
+    setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), false);
+    setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles);
+    setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
+    setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
 
     // Grey out disabled options
-    $("#a4-orientation-item").addClass("drop-down-item drop-down-item-disabled");
-    $("#a4-holes-item").addClass("drop-down-item drop-down-item-disabled");
-    $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-orientation-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-holes-item").addClass("drop-down-item drop-down-item-disabled");
+    $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
 }
 
 //---------------------------------
-// Toggles holes on the virtual A4
+// Toggles holes on the virtual Paper
 //---------------------------------
 
-function toggleVirtualA4Holes(event) {
+function toggleVirtualPaperHoles(event) {
     event.stopPropagation();
-    // Toggle a4 holes to the A4-paper.
-    if (toggleA4 && toggleA4Holes) {
-        toggleA4Holes = false;
-        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-        $("#a4-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+    // Toggle Paper holes to the Paper-paper.
+    if (togglePaper && togglePaperHoles) {
+        togglePaperHoles = false;
+        setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles);
+        $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
 
-        switchSideA4Holes = "left"; // Disable the 'A4 Holes Right' option
-        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+        switchSidePaperHoles = "left"; // Disable the 'Paper Holes Right' option
+        setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
         updateGraphics();
-    } else if (toggleA4) {
-        toggleA4Holes = true;
-        setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-        $("#a4-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
-        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+    } else if (togglePaper) {
+        togglePaperHoles = true;
+        setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles);
+        $("#Paper-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
         updateGraphics();
     }
 }
 
 //-------------------------------------------------------------
-// Moves the holes on virtual A to the opposite side of the A4
+// Moves the holes on virtual A to the opposite side of the Paper
 //-------------------------------------------------------------
 
-function toggleVirtualA4HolesRight(event) {
+function toggleVirtualPaperHolesRight(event) {
     event.stopPropagation();
-    // Switch a4 holes from left to right of the A4-paper.
-    if (switchSideA4Holes == "right" && toggleA4) {
-        switchSideA4Holes = "left";
-        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+    // Switch Paper holes from left to right of the Paper-paper.
+    if (switchSidePaperHoles == "right" && togglePaper) {
+        switchSidePaperHoles = "left";
+        setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
         updateGraphics();
-    } else if (toggleA4 && toggleA4Holes) {
-        switchSideA4Holes = "right";
-        setCheckbox($(".drop-down-option:contains('A4 Holes Right')"), switchSideA4Holes == "right");
+    } else if (togglePaper && togglePaperHoles) {
+        switchSidePaperHoles = "right";
+        setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
         updateGraphics();
     }
 }
 
 //---------------------------------------------------------------
-// Changes orientation of the virtual A4 (Landscape or portrait)
+// Changes orientation of the virtual Paper (Landscape or portrait)
 //---------------------------------------------------------------
 
-function toggleA4Orientation(event) {
+function togglePaperOrientation(event) {
     event.stopPropagation();
-    if (A4Orientation == "portrait" && toggleA4) {
-        A4Orientation = "landscape";
-        setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
-    } else if (A4Orientation == "landscape" && toggleA4) {
-        A4Orientation = "portrait";
-        setOrientationIcon($(".drop-down-option:contains('Toggle A4 Orientation')"), true);
+    if (paperOrientation == "portrait" && togglePaper) {
+        paperOrientation = "landscape";
+        setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), true);
+    } else if (paperOrientation == "landscape" && togglePaper) {
+        paperOrientation = "portrait";
+        setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), true);
     }
     updateGraphics();
 }
 
 //---------------------------------------------------------------
-// Changes between single and repeated virtual A4 view
+// Changes between single and repeated virtual Paper view
 //---------------------------------------------------------------
 
-function togglesingleA4(event) {
+function togglesinglePaper(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     // Switch between single and repeated
-    if (singleA4) {
-        singleA4 = false;
-        setCheckbox($(".drop-down-option:contains('Single A4')"), singleA4);
+    if (singlePaper) {
+        singlePaper = false;
+        setCheckbox($(".drop-down-option:contains('Single Paper')"), singlePaper);
     } else {
-        singleA4 = true;
-        setCheckbox($(".drop-down-option:contains('Single A4')"), singleA4);
+        singlePaper = true;
+        setCheckbox($(".drop-down-option:contains('Single Paper')"), singlePaper);
     }
     updateGraphics();
 }
 
-//-----------------------------------------------------------------------------------
-// When an item is selected, enable all options related to having an object selected
-//-----------------------------------------------------------------------------------
-var selectedItems = false;
+
+//---------------------------------------------------------------
+// Changes between Showing and hiding the texts marked as comments
+//---------------------------------------------------------------
+
+function toggleComments(event) {
+    event.stopPropagation();  // This line stops the collapse of the menu when it's clicked
+    if (hideComment) {
+		hideComment = false;
+      	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
+    } else {
+		hideComment = true;
+      	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
+    }
+	updateGraphics();
+}
+//--------------------------------------------
+//Sets the size of the paper on the canvas
+//--------------------------------------------
+
+function setPaperSize(event, size){
+	
+	event.stopPropagation();
+	let selectedPaper = [
+		false, 
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false
+	]
+	selectedPaper[size] = true;
+	for (i = 0; i < 7; i++){
+		let name = 'A' + i;
+		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
+	}
+	paperSize = size; 
+	updateGraphics();
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+// When one or many items are selected/not selected, enable/disable all options related to having one or many objects selected
+//----------------------------------------------------------------------------------------------------------------------------
+
 function enableSelectedItemOptions() {
-      if (selected_objects.length > 0) {
-        $("#change-appearance-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-front-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-back-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#lock-selected-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#delete-object-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#group-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#ungroup-objects-item").removeClass("drop-down-item drop-down-item-disabled");
-      } else {
-        $("#change-appearance-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-front-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#move-selected-back-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#lock-selected-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#delete-object-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#group-objects-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#ungroup-objects-item").addClass("drop-down-item drop-down-item-disabled");
-		}
-      if (selected_objects.length > 1){
-        $("#align-top-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").removeClass("drop-down-item drop-down-item-disabled");
-        } else {
-        $("#align-top-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-right-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-bottom-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#align-left-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#horizontal-c-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#vertical-c-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-horizontal-item").addClass("drop-down-item drop-down-item-disabled");
-        $("#distribute-vertical-item").addClass("drop-down-item drop-down-item-disabled");
-      }
+    const idsOverZero = ["change-appearance-item", "move-selected-front-item", "move-selected-back-item", "lock-selected-item", "delete-object-item", "group-objects-item", "ungroup-objects-item"];
+    const idsOverOne = ["align-top-item", "align-right-item", "align-bottom-item", "align-left-item", "horizontal-c-item", "vertical-c-item", "distribute-horizontal-item", "distribute-vertical-item"];
+    //Jquery can select multiple by example $("#element1, element2, element3") This way prevents repetition.
+    if (selected_objects.length > 0) {
+        $("#" + idsOverZero.join(",#")).removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        $("#" + idsOverZero.join(",#")).addClass("drop-down-item drop-down-item-disabled");
+    }
+    if (selected_objects.length > 1){
+        $("#" + idsOverOne.join(",#")).removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        $("#" + idsOverOne.join(",#")).addClass("drop-down-item drop-down-item-disabled");
+    }
+}
+
+//----------------------------------------------------
+// drawKeyList: Draws the list in the target element
+//----------------------------------------------------
+
+function drawKeyMap(map, target) {
+    let html = "";
+    Object.keys(map).forEach(function(key) {
+        html += `
+        <div class="shortcuts-button-wrap">
+            <button for="importFile" id="importLabel" class="custom-file-upload shortcut-keys-name">${key}</button>
+            <div for="importFile" class="submit-button custom-file-upload shortcut-keys" onclick="bindKey('${key}')">${keyCodes[map[key]]}</div>
+        </div>`
+    });
+    target.innerHTML = html;
+}
+
+//----------------------------------------------------
+// openShortcutsDialog: Opens the dialog menu for shortcuts editor
+//----------------------------------------------------
+
+function bindKey(key) {
+    isBindingKey = true;
+    keyBeingBound = key;
+}
+
+//----------------------------------------------------
+// openShortcutsDialog: Opens the dialog menu for shortcuts editor
+//----------------------------------------------------
+
+function openShortcutsDialog() {
+    $("#edit-shortcuts").css("display", "flex");
+}
+
+//------------------------------------------------------
+// closeShortcutsDialog: Closes the dialog menu for the shortcuts editor
+//------------------------------------------------------
+
+function closeShortcutsDialog() {
+    $("#edit-shortcuts").css("display", "none");
 }
 
 //----------------------------------------------------
@@ -1728,13 +2124,10 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    boundingRect = myCanvas.getBoundingClientRect();
-    widthWindow = (window.innerWidth - 75);
-    heightWindow = (window.innerHeight - 95);
-    canvas.setAttribute("width", widthWindow);
-    canvas.setAttribute("height", heightWindow);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setMoveButtonPosition();
+    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    canvas.width = diagramContainer.offsetWidth
+    canvas.height = diagramContainer.offsetHeight;
+    boundingRect = canvas.getBoundingClientRect();
     updateGraphics();
 }
 
@@ -1758,7 +2151,7 @@ function updateGraphics() {
     diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
-    drawVirtualA4();
+    drawVirtualPaper();
 }
 
 //---------------------------------------------------------------------------------
@@ -1771,6 +2164,22 @@ function resetViewToOrigin(event){
     origoOffsetY = 0;
     updateGraphics();
     SaveState();
+}
+
+//---------------------------------------------------------------------------------
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
+//---------------------------------------------------------------------------------
+
+function disableShortcuts(event){
+    event.stopPropagation();
+    if (enableShortcuts) {
+        setCheckbox($(".drop-down-option:contains('Disable keyboard shortcuts')"), enableShortcuts);
+        enableShortcuts = false;
+    } else {
+        setCheckbox($(".drop-down-option:contains('Disable keyboard shortcuts')"), enableShortcuts);
+        enableShortcuts = true;
+    }
+    updateGraphics();
 }
 
 //-------------------------------------------
@@ -1828,7 +2237,7 @@ function eraseObject(object) {
         // lines
         } else {
             diagram.filter(
-                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation)
+                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml)
                     .filter(symbol =>   symbol.hasConnector(object.topLeft)
                                      && symbol.hasConnector(object.bottomRight))
                     .forEach(symbol => {
@@ -1836,7 +2245,7 @@ function eraseObject(object) {
                         symbol.removePointFromConnector(object.bottomRight);
                     });
 
-            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation);
+            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml);
             // Check if the line has a common point with a centerpoint of attributes or relations.
             var removeTopleft = attributesAndRelations
                         .filter(symbol => symbol.centerPoint == object.topLeft
@@ -1879,12 +2288,10 @@ function eraseSelectedObject(event) {
 //------------------------------------------------------
 
 function setMode(mode) {
+    cancelFreeDraw();
     uimode = mode;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
-      if(figureType == "Free") {
-          cancelFreeDraw();
-      }
       figureType = mode;
     }
 }
@@ -2111,15 +2518,20 @@ function developerMode(event) {
     updateGraphics();
 }
 
-var refreshedPage = true;
 function setModeOnRefresh() {
-    toolbarState = localStorage.getItem("toolbarState");
+    const tempToolbarState = localStorage.getItem("toolbarState");
+    if(tempToolbarState !== null) {
+        toolbarState = tempToolbarState;
+    } else {
+        toolbarState = currentMode.er;
+    }
+
+    developerModeActive = false;
+
     if(toolbarState == currentMode.er) {
-        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
     } else if(toolbarState == currentMode.uml) {
-        developerModeActive = false;
         switchToolbarUML();
         hideCrosses();
     } else if(toolbarState == currentMode.dev) {
@@ -2129,7 +2541,6 @@ function setModeOnRefresh() {
         setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
     } else {
-        developerModeActive = false;
         switchToolbarER();
         hideCrosses();
     }
@@ -2301,53 +2712,23 @@ function decimalPrecision(value, precision) {
 //--------------------------------------------------------------------------------------------
 
 function reWrite() {
+    const coordinatesElement = document.getElementById("valuesCanvas");
+    const zoomTextElement = document.getElementById("zoomV");
+
     if (developerModeActive) {
-        //We are now in developer mode
-        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-        + Math.round((zoomValue * 100)) + "%" + " </p>";
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-        + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-        + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) </p>";
-        document.getElementById("valuesCanvas").style.display = 'block';
-
-        //If you're using smaller screens in dev-mode then the coord-bar & zoom-bar will scale.
-        var smallerScreensDev = window.matchMedia("(max-width: 745px)");
-        if (smallerScreensDev.matches) {
-            document.getElementById("selectDiv").style.maxWidth = '30%';
-            document.getElementById("valuesCanvas").style.maxWidth = '30%';
-        } else {
-            document.getElementById("selectDiv").style.minWidth = '10%';
+        let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
+        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+            coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
-
-        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free" && refreshedPage == true) {
-            document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-            + Math.round((zoomValue * 100)) + "%" + " </p>";
-            document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-            + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-            + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " )";
-            refreshedPage = false;
-        } else if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
-              document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-              + Math.round((zoomValue * 100)) + "%" + " </p>";
-              document.getElementById("valuesCanvas").innerHTML = "<p><b>Coordinates:</b> "
-              + "X=" + decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)
-              + " & Y=" + decimalPrecision(currentMouseCoordinateY, 0).toFixed(0) + " | Top-left Corner(" + Math.round(origoOffsetX / zoomValue) + ", " + Math.round(origoOffsetY / zoomValue) + " ) "
-              + " | <b>Center coordinates of hovered object:</b> X=" + Math.round(points[hoveredObject.centerPoint].x) + " & Y="
-              + Math.round(points[hoveredObject.centerPoint].y) + "</p>";
-          }
+        coordinatesElement.innerHTML = `${coordinatesText}</p>`;
+        if (!isMobile){
+            coordinatesElement.style.display = "block";
+        }
     } else {
-        document.getElementById("zoomV").innerHTML = "<p><b>Zoom:</b> "
-        + Math.round((zoomValue * 100)) + "%" + "   </p>";
-        document.getElementById("valuesCanvas").style.display = 'none';
-
-        //If you're using smaller screens then the zoom-bar will scale.
-        var smallerScreens = window.matchMedia("(max-width: 900px)");
-        if (smallerScreens.matches) {
-            document.getElementById("selectDiv").style.maxWidth = '50%';
-        } else {
-            document.getElementById("selectDiv").style.minWidth = '10%';
-        }
+        coordinatesElement.style.display = "none";
     }
+
+    zoomTextElement.innerHTML = `<p><b>Zoom:</b> ${Math.round(zoomValue * 100)}%</p>`;
     enableSelectedItemOptions();
 }
 
@@ -2886,11 +3267,11 @@ function setOrientationIcon(element, check) {
     }
 
     // Set icon either to portrait or landscape
-    if(toggleA4){
-        if(A4Orientation == "landscape"){
+    if(togglePaper){
+        if(paperOrientation == "landscape"){
             $(element).children(".material-icons")[0].innerHTML = "crop_16_9";
         }
-        else if(A4Orientation == "portrait"){
+        else if(paperOrientation == "portrait"){
             $(element).children(".material-icons")[0].innerHTML = "crop_portrait";
         }
     }
@@ -2910,17 +3291,6 @@ function setOrientationIcon(element, check) {
 const toolbarER = currentMode.er;
 const toolbarUML = currentMode.uml;
 const toolbarDeveloperMode = currentMode.dev;
-
-function initToolbox() {
-    var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');
-    boundingRect = myCanvas.getBoundingClientRect();
-    element.style.top = (boundingRect.top - 37 + "px");
-    element.style.left = (boundingRect.left - 60 + "px");
-    element.style.width = (58 + "px");
-    toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
-    element.style.display = "inline-block";
-}
 
 //----------------------------------------------------------------------
 // switchToolbar: function for switching the toolbar state (All, ER, UML),
@@ -3015,7 +3385,7 @@ function zoomInMode(event) {
 
     let oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
-    localStorage.setItem("zoomValue", document.getElementById("ZoomSelect").value);
+    localStorage.setItem("zoomValue", zoomValue);
     localStorage.setItem("cameraPosX", origoOffsetX);
     localStorage.setItem("cameraPosY", origoOffsetY);
     let zoomDifference = 1 + (zoomValue - oldZoom);
@@ -3133,19 +3503,31 @@ function minSizeCheck(value, object, type) {
 // Is called each time the mouse moves on the canvas
 //---------------------------------------------------
 
-function mousemoveevt(ev, t) {
+function mousemoveevt(ev) {
 
     // Get canvasMouse coordinates for both X & Y.
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
+    if (isMobile && ev.type == "touchmove") {
+        currentMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
+        currentMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
+    }
+
     // deltas are used to determine the range of which the mouse is allowed to move when pressed.
     deltaX = 2;
     deltaY = 2;
+    
     if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
         // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
         diffX = ev.pageX - InitPageX;
         diffY = ev.pageY - InitPageY;
+
+        if (isMobile){
+            diffX = ev.changedTouches[0].pageX - InitPageX;
+            diffY = ev.changedTouches[0].pageY - InitPageY;
+        }
+        
         if (
             (diffX > deltaX) || (diffX < -deltaX)
             ||
@@ -3159,12 +3541,17 @@ function mousemoveevt(ev, t) {
         }
     }
 
-    if((canvasLeftClick || canvasRightClick) && uimode == "MoveAround") {
+    if((canvasLeftClick || canvasRightClick || canvasTouchClick) && uimode == "MoveAround") {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
+        
         startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
+        if (isMobile){
+            startMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
+            startMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
+        }
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
     }
@@ -3366,45 +3753,57 @@ function mousemoveevt(ev, t) {
                     }
                 }
             } else if (uimode == "CreateEREntity") {
-                ctx.setLineDash([3, 3]);
-                ctx.beginPath();
-                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(entityTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && entityTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateERRelation") {
-                ctx.setLineDash([3, 3]);
-                var midx = pixelsToCanvas(startMouseCoordinateX).x+((pixelsToCanvas(currentMouseCoordinateX).x-pixelsToCanvas(startMouseCoordinateX).x)/2);
-                var midy = pixelsToCanvas(0, startMouseCoordinateY).y+((pixelsToCanvas(0, currentMouseCoordinateY).y-pixelsToCanvas(0, startMouseCoordinateY).y)/2);
-                ctx.beginPath();
-                ctx.moveTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, midy);
-                ctx.lineTo(midx, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, midy);
-                ctx.lineTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(relationTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && relationTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    var midx = pixelsToCanvas(startMouseCoordinateX).x+((pixelsToCanvas(currentMouseCoordinateX).x-pixelsToCanvas(startMouseCoordinateX).x)/2);
+                    var midy = pixelsToCanvas(0, startMouseCoordinateY).y+((pixelsToCanvas(0, currentMouseCoordinateY).y-pixelsToCanvas(0, startMouseCoordinateY).y)/2);
+                    ctx.beginPath();
+                    ctx.moveTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, midy);
+                    ctx.lineTo(midx, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, midy);
+                    ctx.lineTo(midx, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateERAttr") {
-                ctx.setLineDash([3, 3]);
-                drawOval(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y, pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(attributeTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && attributeTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    drawOval(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y, pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(uimode == "CreateLine") {
                 // Path settings for preview line
@@ -3431,19 +3830,23 @@ function mousemoveevt(ev, t) {
                     hideCrosses();
                 }
               } else if(uimode == "CreateClass") {
-                ctx.setLineDash([3, 3]);
-                ctx.beginPath();
-                ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
-                ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
-                ctx.strokeStyle = "#000";
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.closePath();
-                if (!developerModeActive) {
-                    hideCrosses();
+                if(classTemplate.width / minimumDivisor < Math.abs(startMouseCoordinateX - currentMouseCoordinateX) 
+                && classTemplate.height / minimumDivisor < Math.abs(startMouseCoordinateY - currentMouseCoordinateY))
+                {
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+                    ctx.lineTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+                    ctx.strokeStyle = "#000";
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.closePath();
+                    if (!developerModeActive) {
+                        hideCrosses();
+                    }
                 }
             } else if(figureType != "Text" || uimode == "normal") {
               ctx.setLineDash([3, 3]);
@@ -3479,10 +3882,20 @@ function mousedownevt(ev) {
             InitPageX = ev.pageX;
             InitPageY = ev.pageY;
         }
+    } else if(ev.type == "touchstart") {
+        canvasTouchClick = true;
+        if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+            InitPageX = ev.changedTouches[0].pageX;
+            InitPageY = ev.changedTouches[0].pageY;            
+        }
     }
 
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
+    if (isMobile && typeof ev.changedTouches !== 'undefined'){
+        currentMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
+        currentMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
+    }
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
@@ -3579,12 +3992,14 @@ function mouseupevt(ev) {
         canvasLeftClick = false;
     } else if (ev.button == rightMouseClick) {
         canvasRightClick = false;
+    } else if (ev.type == "touchend") {
+        canvasTouchClick = false;
     }
-
+    
     delete InitPageX;
     delete InitPageY;
     // Making sure the MoveAround was not initialized by the spacebar.
-    if (uimode == "MoveAround" && !spacebarKeyPressed) {
+    if (uimode == "MoveAround" && !keyMap.spacebarKeyPressed) {
         deactivateMovearound();
         updateGraphics();
     }
@@ -3745,6 +4160,12 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.UML++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && classTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && classTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
         erAttributeA.name = "Attr " + settings.serialNumbers.Attribute;
@@ -3759,6 +4180,12 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Attribute++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && attributeTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && attributeTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
         erEnityA.name = "Entity " + settings.serialNumbers.Entity;
@@ -3774,6 +4201,13 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Entity++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && entityTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && entityTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y))
+        {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
@@ -3809,6 +4243,13 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
         diagramObject = diagram[lastSelectedObject];
         settings.serialNumbers.Relation++;
+        //only count it as draggin when above a certain threshold
+        if (diagramObject 
+        && relationTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+        && relationTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y))
+        {
+            diagramObject.pointsAtSamePosition = true;
+        }
     } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
         // clicking on a lock removes it
@@ -3848,7 +4289,7 @@ function mouseupevt(ev) {
         // Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
-        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
+        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && figureType != "Free") {
             umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
             umlLineA.name = "Line" + diagram.length;
             umlLineA.topLeft = p1;
@@ -3955,10 +4396,6 @@ function resize() {
     }
 }
 
-function setMoveButtonPosition() {
-    document.getElementById("moveButton").style.marginLeft = widthWindow + 4 + "px";
-}
-
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
@@ -3967,7 +4404,6 @@ function movemode(e, t) {
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
-    setMoveButtonPosition();
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
         buttonStyle.style.visibility = 'visible';
@@ -3992,33 +4428,19 @@ function deactivateMovearound() {
 }
 
 //----------------------------------------------------------------------
-// clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
+// toggleCameraView: Enter camera view by clicking option in menu.
 //----------------------------------------------------------------------
 
-function clickOutsideDialogMenu(ev) {
-    $(document).mousedown(function (ev) {
-        var container = $("#appearance");
-        if (!container.is(ev.target) && container.has(ev.target).length === 0) {
-            globalappearanceMenuOpen = false;
-            toggleApperanceElement();
-        }
-    });
-}
-
-//----------------------------------------------------------------------
-// clickEnterOnDialogMenu: Closes the dialog menu when the enter button is pressed.
-//----------------------------------------------------------------------
-
-function clickEnterOnDialogMenu(ev) {
-    $(document).keypress(function (ev) {
-        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
-            globalappearanceMenuOpen = false;
-            toggleApperanceElement();
-            // Is called in the separate appearance php-files at the buttons.
-            // Called here since an enter press doesn't relate to any element
-            setObjectProperties();
-        }
-    });
+function toggleCameraView(){
+    event.stopPropagation();
+    if (spacebarKeyPressed) {
+        spacebarKeyPressed = false;
+        
+    } else {
+        spacebarKeyPressed = true;
+    }
+    updateGraphics();
+    activateMovearound();
 }
 
 function toggleApperanceElement(show = false) {
@@ -4039,9 +4461,10 @@ function toggleApperanceElement(show = false) {
         classAppearanceOpen = false;
         textAppearanceOpen = false;
         globalappearanceMenuOpen = false;
-        $(".loginBox").draggable('destroy');
+        if($(".loginBox").data("ui-draggable")) {
+            $(".loginBox").draggable("destroy");
+        }
         hashFunction();
-        document.removeEventListener("click", clickOutsideDialogMenu);
     }
 }
 
@@ -4079,6 +4502,7 @@ function getTextSize() {
     return settings.properties.sizeOftext;
 }
 
+
 //----------------------------------------------------------------------
 // setSelectedOption: used to select an option in passed select by passed value
 //----------------------------------------------------------------------
@@ -4104,13 +4528,13 @@ function setSelectedOption(select, value) {
 function createCardinality() {
     //Setting cardinality on new line
     if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
+        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": false});
     }
     else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erRelation) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
+        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": true});
     }
     else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[markedObject].symbolkind == symbolKind.uml) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
+        diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
     }
 }
 
@@ -4132,6 +4556,18 @@ function loadAppearanceForm() {
     //Get type of previously selected symbol according to symbolKind object
     const object = selected_objects[selected_objects.length - 1];
     let type = object.symbolkind;
+
+    //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
+    if(object.symbolkind == symbolKind.umlLine){
+        let connectedObjectsArray = object.getConnectedObjects();
+        document.getElementById('First').innerHTML = connectedObjectsArray[0].name;
+        //Selection to check if relation is to the same entity. If so: both are named from object 0
+        if(typeof connectedObjectsArray[1] == "undefined"){
+            document.getElementById('Second').innerHTML =  connectedObjectsArray[0].name;
+        } else {
+            document.getElementById('Second').innerHTML = connectedObjectsArray[1].name;
+        }
+    }
 
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
@@ -4226,17 +4662,14 @@ function setGlobalSelections() {
 
 function setGlobalProperties() {
     const groups = getGroupsByType(-1);
-    for(let i = 0; i < diagram.length; i++) {
-        const object = diagram[i];
-        groups.forEach(group => {
-            const element = group.querySelector("select, input:not([type='submit'])");
-            if(element !== null) {
-                const access = element.dataset.access.split(".");
-                object[access[0]][access[1]] = element.value;
-                settings[access[0]][access[1]] = element.value;
-            }
-        });
-    }
+    groups.forEach(group => {
+        const element = group.querySelector("select, input:not([type='submit'])");
+        if(element !== null) {
+            const access = element.dataset.access.split(".");
+            settings[access[0]][access[1]] = element.value;
+            diagram.forEach(object => object[access[0]][access[1]] = element.value);
+        }
+    });
     updateGraphics();
 }
 
@@ -4249,23 +4682,30 @@ function setSelections(object) {
     }
 
     groups.forEach(group => {
-        const elements = group.querySelectorAll("select");
+        const elements = group.querySelectorAll("select, input[type='checkbox']");
         elements.forEach(element => {
             const access = element.dataset.access.split(".");
-            let value = "";
-            if(access[0] === "cardinality") {
-                if(element.style.display !== "none") {
-                    value = object[access[0]][0][access[1]];
+            if(element.tagName === 'SELECT') {
+                let value = "";
+                if(access[0] === "cardinality") {
+                    if(element.style.display !== "none") {
+                        value = object[access[0]][access[1]];
+                    }
+                } else if(access.length === 1) {
+					value = object[access[0]];
+                } else if(access.length === 2) {
+                    value = object[access[0]][access[1]];
                 }
-            } else if(access.length === 1) {
-                value = object[access[0]];
-            } else if(access.length === 2) {
-                value = object[access[0]][access[1]];
+                setSelectedOption(element, value);
+            } else {
+                if(element.id == "commentCheck") {
+                    element.checked = object[access[0]][access[1]];
+                }
             }
-            setSelectedOption(element, value);
         });
     });
 }
+
 
 function setObjectProperties() {
     for(const object of selected_objects) {
@@ -4286,10 +4726,11 @@ function setObjectProperties() {
                 } else if(access[0] === "cardinality") {
                     if(element.style.display !== "none") {
                         if(element.value === "None") element.value = "";
-                        object[access[0]][0][access[1]] = element.value;
+                        object[access[0]][access[1]] = element.value;
                     }
-                } 
-                else if(access.length === 1) {
+                } else if(element.id == "commentCheck") {
+                    object[access[0]][access[1]] = element.checked;
+                } else if(access.length === 1) {
                     object[access[0]] = element.value;
                 } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
@@ -4313,11 +4754,7 @@ function initAppearanceForm() {
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
                 if(element.type === "submit") {
-                    element.addEventListener("click", () => {
-                        SaveState();
-                        setObjectProperties();
-                        toggleApperanceElement();
-                    });
+                    element.addEventListener("click", submitAppearanceForm);
                 } else {
                     element.addEventListener("input", setObjectProperties);
                 }
@@ -4326,6 +4763,9 @@ function initAppearanceForm() {
             }
         });
     });
+
+    const appearanceContainer = document.getElementById("appearance");
+    appearanceContainer.addEventListener("click", clickOutsideAppearanceForm);
 }
 
 function getGroupsByType(type) {
@@ -4335,3 +4775,30 @@ function getGroupsByType(type) {
         return types.includes(type.toString());
     });
 }
+
+
+//Shoud simulate button click or enter click in appearance menu to save and close
+function submitAppearanceForm() {
+    selected_objects.forEach(object => {
+        if(object.symbolkind === symbolKind.uml) {
+            object.resizeUMLToMinHeight();
+        }
+    });
+    if(globalappearanceMenuOpen) {
+        setGlobalProperties();
+    } else {
+        setObjectProperties();
+    }
+    SaveState();
+    toggleApperanceElement();
+}
+
+function clickOutsideAppearanceForm(e) {
+    const formContainer = document.querySelector(".loginBox");
+
+    //Close appearance if the clicked element is not a child/grand-child of formContanier
+    if(!formContainer.contains(e.target)) {
+        toggleApperanceElement();
+    }
+}
+

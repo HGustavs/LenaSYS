@@ -74,6 +74,7 @@
 
 /* BOXMENU STYLING START */
 .buttomenu2 {
+    background-color: #5A5757;
     position: absolute;
     top: 0px;
     width: calc(100%);
@@ -598,35 +599,7 @@
 }
 
 /* BOXMENU STYLING START */
-.buttomenu2Style{
-	background-color: #5A5757;
-}
 
-.buttomenu2Style .wordlistselect{
-   color: white;
-   background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
-   background-size:15px 15px;
-   border: 1px solid #ccc;
-}
-
-.buttomenu2Style .boxcontentselect{
-    color: white;
-   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
-   background-size:15px 15px;
-   border: 1px solid #ccc;
-}
-
-.buttomenu2Style .chooseContentSelect{
-    color: white;
-   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
-   background-size:15px 15px;
-   border: 1px solid #ccc;
-}
-
-.buttomenu2Style select:hover{
-  background-color: #938C8C;
-    cursor: pointer;
-}
 .butto2:hover{
     background-color: #938C8C;
     cursor: pointer;
@@ -646,7 +619,7 @@
 
 .editcontentbtn {
     vertical-align: middle;
-    width: 32px;
+    min-width: 32px;
     height: 32px;
     text-align: center;
 }
@@ -902,40 +875,22 @@
 }
 
 /* style for the maximize and reset button*/
-.maximizebtn {
-    color: #DFF0D8;
-    width: 75px;
-    padding-right: 3px;
-    text-align: center;
-    font-size: 13px;
-}
-
-.minimizebtn {
-    color: #DFF0D8;
-    width: 75px;
-    padding-right: 3px;
-    text-align: center;
-    font-size: 13px;
-}
-
-.resetbtn {
+.maximizebtn, .minimizebtn, .resetbtn, .copybutton {
     color: #DFF0D8;
     width: 50px;
+    padding-right: 3px;
     text-align: center;
     font-size: 13px;
+    display: table-cell;
 }
-
-
-
-
-
-
-
 
 /* style for the copy button and copy notification*/
 .copybutton {
-    position: absolute;
     right: 10px;
+}
+
+#copyBtn {
+    float:right;
 }
 
 .copybutton img {
@@ -1050,10 +1005,9 @@
         height: 25px;
         text-align: center;
         color:black;
+        margin-top: 50px;
     }
-    #div2 {
-        top: 100px;
-    }
+
     #burgerMenu {
         position: absolute;
         z-index: 9999;
@@ -1064,8 +1018,20 @@
     .burgerOption {
         padding: 15px 15px 15px 15px;
     }
-} 
-
+    .err{
+    display: none;
+    }
+}
+@media only screen and (max-width: 725px) {
+        .box{
+        margin-top: 30px !important;
+    }
+}
+@media only screen and (max-width: 364px) {
+        #mobileNavHeading {
+            font-size: 13px;
+    }
+}
 .blockBtnSlot {
     min-width: 11px;
     display: inline-block;

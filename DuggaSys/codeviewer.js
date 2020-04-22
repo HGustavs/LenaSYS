@@ -74,7 +74,8 @@ function returnedError(error) {
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
-function returned(data) {
+function returned(data) 
+{
 	retData = data;
 	
 	if (retData['deleted']) {
@@ -94,36 +95,36 @@ function returned(data) {
 
 	if (retData['before'].length != 0 && retData['after'].length != 0) {
 		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
-			$("#beforebutton").css("opacity", 0.4);
-			$("#beforebutton").css("pointer-events", "none");
+			document.querySelector("#beforebutton").style.opacity = "0.4";
+			document.querySelector("#beforebutton").style.pointerEvents = "none";
 		}
 		if (retData['exampleno'] == retData['after'][0][0] || retData['after'].length == 0) {
-			$("#afterbutton").css("opacity", 0.4);
-			$("#afterbutton").css("pointer-events", "none");
+			document.querySelector("#afterbutton").style.opacity = "0.4";
+			document.querySelector("#afterbutton").style.pointerEvents = "none";
 		}
 	} else if (retData['before'].length == 0 && retData['after'].length == 0) {
-		$("#beforebutton").css("opacity", 0.4);
-		$("#beforebutton").css("pointer-events", "none");
-		$("#afterbutton").css("opacity", 0.4);
-		$("#afterbutton").css("pointer-events", "none");
+		document.querySelector("#beforebutton").style.opacity = "0.4";
+		document.querySelector("#beforebutton").style.pointerEvents = "none";
+		document.querySelector("#afterbutton").style.opacity = "0.4";
+		document.querySelector("#afterbutton").style.pointerEvents = "none";
 	}
 
 	// Disables the play button if there is no playlink
 	if (typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
-		$("#playbutton").css("opacity", 0.4);
-		$("#playbutton").css("pointer-events", "none");
+		document.querySelector("#playbutton").style.opacity = "0.4";
+		document.querySelector("#playbutton").style.pointerEvents = "none";
 	} else {
 		retData['playlink'] = retData['playlink'].replace(/\&\#47\;/g, "/");
 	}
 
 	// Fill Section Name and Example Name
-	var exName = $('#exampleName');
+	var exName = document.querySelector('#exampleName');
 	if (data['examplename'] != null) {
-		exName.html(data['examplename']);
+		exName.innerHTML = data['examplename'];
 	}
-	var exSection = $('#exampleSection');
+	var exSection = document.querySelector('#exampleSection');
 	if (data['sectionname'] != null) {
-		exSection.html(data['sectionname'] + "&nbsp;:&nbsp;");
+		exSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 	}
 	var mobExName = document.querySelector('#mobileExampleName');
 	var mobExSection = document.querySelector('#mobileExampleSection');
@@ -173,8 +174,10 @@ function returned(data) {
 
 		if (boxtype === "CODE") {
 			// Print out code example in a code box
-			$("#" + contentid).removeAttr("contenteditable");
-			$("#" + contentid).removeClass("descbox").addClass("codebox");
+			var boxtypeCodebox = document.getElementById(contentid);
+			boxtypeCodebox.removeAttribute("contenteditable");
+			boxtypeCodebox.classList.remove("descbox");
+			boxtypeCodebox.classList.add("codebox");
 			createboxmenu(contentid, boxid, boxtype);
 
 			// Make room for the menu by setting padding-top equal to height of menubox
@@ -196,7 +199,11 @@ function returned(data) {
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
-			$("#" + contentid).removeClass("codebox").addClass("descbox");
+
+			var boxtypeDescbox = document.getElementById(contentid);
+			boxtypeDescbox.classList.remove("codebox");
+			boxtypeDescbox.classList.add("descbox");
+
 			var desc = boxcontent;
 			desc = replaceAll("&nbsp;", " ", desc);
 			desc = parseMarkdown(desc);
@@ -205,8 +212,13 @@ function returned(data) {
 			desc = desc.replace(/\*/g, "&#42;");
 			// Highlight important words
 			important = retData.impwords;
-			for (j = 0; j < important.length; j++) {
-				var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(\"" + important[j] + "\", \"unspecified\");' onmouseout='highlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
+			for (var j = 0; j < important.length; j++) {
+				//Prevent important word spans to be created for HTML events.
+				if(htmlEventArray.includes(important[j])){
+					var sstr = important[j];
+				}else{
+					var sstr = "<span id='IWW' class='impword' onclick='popupDocumentation(\"" + important[j] + "\", \"unspecified\");' onmouseout='highlightKeyword(\"" + important[j] + "\")' onmouseover='highlightKeyword(\"" + important[j] + "\")'>" + important[j] + "</span>";
+				}
 				//Interpret asterisks in important word as literals and not as character with special meaning
 				if (important[j].indexOf('*') != -1) {
 					important[j] = important[j].replace(/\*/g, "&#42;");
@@ -235,7 +247,10 @@ function returned(data) {
 			$("#" + contentid).css("margin-top", boxmenuheight);
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
-			$("#" + contentid).removeClass("codebox", "descbox").addClass("framebox");
+			
+			var boxtypeframebox = document.getElementById(contentid);
+			boxtypeframebox.classList.remove("codebox", "descbox");
+			boxtypeframebox.classList.add("framebox");
 
 			// If multiple versions exists use the one with highest priority.
 			// cvers BEFORE courseid BEFORE global
@@ -350,8 +365,9 @@ var tabLine = function (text) {
 var addedWords = [];
 var removedWords = [];
 
-function editImpWords(editType) {
-	var word = $("#impword").val();
+function editImpWords(editType) 
+{
+	var word = document.getElementById("impword").value;
 	var left = 0;
 	var right = 0;
 	//Check if the word contains an uneven amount of parenthesis
@@ -378,8 +394,8 @@ function editImpWords(editType) {
 			}
 		});
 		if (exists == false) {
-			$("#impwords").append('<option>' + word + '</option>');
-			$("#impword").val("");
+			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
+			document.getElementById("impword").value = word;
 			addedWords.push(word);
 		}
 	} else if (editType == "-") {
@@ -775,13 +791,13 @@ function createboxmenu(contentid, boxid, type) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="updateContent();">' + retData['box'][boxid - 1][4] + '</span></td>';
 			} else {
 				str += "<td class='butto2 showdesktop'>";
 				str += "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\"" + boxid + "\",\"" + contentid + "\");removeboxmenu(\"" + contentid + "menu\");'>";
@@ -793,7 +809,7 @@ function createboxmenu(contentid, boxid, type) {
 			}
 			// If reader doesn't have write access, only the boxtitle is shown
 		} else {
-			str += '<td class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
+			str += '<td id = "boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
 		if(retData['box'][boxid - 1][1] == "DOCUMENT"){
@@ -807,15 +823,16 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add resize, reset and edit buttons
-		
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>Maximize</p></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>Minimize</p></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p> Reset </p></div>";
-		str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
+    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
-			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+			str += "<div id='copyClipboard'><td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
+		
 
 		str += '</tr></table>';
 		boxmenu.innerHTML = str;
@@ -880,8 +897,9 @@ function highlightHtml(otherTag, thisTag) {
 	document.getElementById(thisTag).classList.toggle("html");
 }	
 
-//Array containing HTML attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
+//Arrays containing HTML attributes and event-attributes. Needs to be filled with a complete list of attributes, the array contains only the most common ones for now.
 htmlAttrArray = new Array('action', 'class', 'disabled', 'href', 'id', 'rel', 'src', 'style', 'title', 'type');
+htmlEventArray = new Array('onclick', 'onmouseout', 'onmouseleave', 'onmouseover', 'onmouseenter','onload', 'onkeydown','onkeyup','onkeypress','oninput');
 
 //----------------------------------------------------------------------------------
 // 	popupDocumentation: Creates a pop-up window containing relevant documentation to a
@@ -898,6 +916,9 @@ function popupDocumentation(id, lang) {
 	if(htmlArray.includes(id) && id != "var"){
 		lang = "html";
 	}
+	if(cssArray.includes(id)){
+		lang = "css";
+	}
 	if(lang == "html"){
 		var elementValue = document.getElementById(id).textContent;
 		// Change HTML h1-h6 tags to hn in order to link to correct documentation.
@@ -905,12 +926,16 @@ function popupDocumentation(id, lang) {
 			elementValue = "hn";
 		}
 		url = "https://www.w3schools.com/tags/tag_"+elementValue+".asp";
-	}else if(lang == "php"){
+	}else if(lang == "multi"){
 		if(htmlAttrArray.includes(id)){
 			url = "https://www.w3schools.com/tags/att_"+id+".asp";
+		}else if(htmlEventArray.includes(id)){
+			url = "https://www.w3schools.com/tags/ev_"+id+".asp";
 		}else{
 			url = "https://www.php.net/results.php?q="+id+"&l=en&p=all";
 		}
+	}else if(lang == "css"){
+		url = "https://www.w3schools.com/css/";
 	}else{
 		url ="https://www.google.com/search?q="+id;
 	}
@@ -1547,26 +1572,26 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						if(splitString[j].charAt(1) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'") {
 							// If string within a string, print single quotes around the word.
 							cont += "<span class='string'>" + '"' + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + "'" + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
 						}else if (splitString.length == 1) {
 							cont += "<span class='string'>" + '"';
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + '"' + "</span>";
 						}else {
 							cont += "<span class='string'>" + '"';
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
 						}
 						
 					}else if(j == splitString.length - 1) {
 						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 2) == "'"){
 							cont += "<span class='string'>" + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + operator + "'" + '"' + "</span>";
 						}else{
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + operator + '"' + "</span>";
 							cont += "</span>";
 						}
@@ -1574,10 +1599,10 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 					else {
 						if(splitString[j].charAt(0) == "'" && splitString[j].charAt(splitString[j].length - 1) == "'"){
 							cont += "<span class='string'>" + "'";
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span class='string'>" + operator + "'" + " " + "</span>";
 						}else {
-							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
+							cont += "<span id='IW" + iwcounter + "' class='string impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + withoutQuote + "\")' onmouseout='highlightKeyword(\"" + withoutQuote + "\")'>" + withoutQuote + "</span>";
 							cont += "<span>" + operator + " " + "</span>";
 						}
 					}
@@ -1628,7 +1653,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
 			} else if (foundkey == 2) {
 				iwcounter++;
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(\"" + tokenvalue + "\", \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(\"" + tokenvalue + "\", \"multi\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += tokenvalue;
 			}
@@ -1813,7 +1838,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
 			} else if (foundkey == 2) {
 				iwcounter++;
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"php\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
+				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
 			} else {
 				cont += tokenvalue;
 			}
@@ -2238,24 +2263,23 @@ function minimizeBoxes(boxid) {
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
-	document.querySelector('#box'+boxid+'wrapper #copyClipboard').style.display = 'none';
 
 	getLocalStorageProperties(boxValArray);
 
 	//For template 1
 	if (templateid == 1) {
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 1, 2);
 		}
 
 		if (boxid == 2) {
-			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 1]['id']).width("100%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 		}
 	}
 	//for template 2
@@ -2293,11 +2317,11 @@ function hideCopyButtons(templateid, boxid) {
 
 function showCopyButtons(templateid) {
 	var totalBoxes = getTotalBoxes(templateid);
-
+	
 	for (var i = 1; i <= totalBoxes; i++) {
-		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
-		if (!copyBtn) continue;
-		copyBtn.style.display = "table-cell";
+		if (document.querySelector('#box' + i).className == 'box codebox') {
+		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
+		}
 	}
 }
 
@@ -2356,7 +2380,7 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 		}
 	}
 
@@ -2395,7 +2419,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 
@@ -2407,7 +2431,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 1, 3);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
@@ -2430,7 +2454,7 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 			alignBoxesHeight2boxes(boxValArray, 2, 3);
 		}
 
@@ -2457,46 +2481,48 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-
 			alignBoxesWidth(boxValArray, 1, 2);
-			alignBoxesHeight2boxes(boxValArray, 1, 3);
+			alignBoxesHeight4boxes(boxValArray, 1, 2);
 		}
 
 		if (boxid == 2) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
 			$(boxValArray['box' + 4]['id']).height("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-
 			alignBoxesWidth(boxValArray, 2, 1);
-			alignBoxesHeight2boxes(boxValArray, 2, 3);
+			alignBoxesHeight4boxes(boxValArray, 2, 1);
 		}
 
 		if (boxid == 3) {
+			$(boxValArray['box' + 1]['id']).width("100%");
 			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 4]['id']).height("100%");
 			$(boxValArray['box' + 4]['id']).width("0%");
+			
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-
 			alignBoxesWidth(boxValArray, 3, 4);
-			alignBoxesHeight2boxes(boxValArray, 3, 2);
+			alignBoxesHeight4boxes(boxValArray, 1, 2);
 		}
 
 		if (boxid == 4) {
+			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
 			$(boxValArray['box' + 3]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-
 			alignBoxesWidth(boxValArray, 4, 3);
-			alignBoxesHeight2boxes(boxValArray, 4, 2);
+			alignBoxesHeight4boxes(boxValArray, 1, 2);
 		}
 	}
 
@@ -2657,7 +2683,7 @@ function hideMaximizeAndResetButton() {
 	}
 }
 
-//hide maximizeButton
+//hide minimizeButton
 function hideMinimizeButton() {
 	var templateid = retData['templateid'];
 	if (templateid > 2) {
@@ -2667,8 +2693,82 @@ function hideMinimizeButton() {
 
 //reset boxes
 function resetBoxes() {
-	resizeBoxes("#div2", retData["templateid"]);
-	showCopyButtons(retData["templateid"]);
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+
+	showCopyButtons(templateid);
+
+	if (templateid == 1) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+	}
+	
+	if (templateid == 2) {
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+	}
+
+	if (templateid == 3) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
+
+	if (templateid == 4) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("100%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
+
+	if (templateid == 5) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+		$(boxValArray['box' + 4]['id']).height("50%");
+	}
+
+	if (templateid == 6) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("40%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).height("30%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).height("30%");
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}
+
+	if (templateid == 7) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("40%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).height("30%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).height("30%");
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}
+
+	if (templateid == 8) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -2691,6 +2791,7 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
+				hideDescription();
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -2836,6 +2937,7 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'auto');
 			}
 		});
+
 	} else if (templateId == 6) {
 
 		getLocalStorageProperties(templateId, boxValArray);
@@ -3063,28 +3165,48 @@ function resizeBoxes(parent, templateId) {
 
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
 
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
-
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
-		
 	// makes the element dissapear when certain treshold is met
-	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
-	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+	if (basePer < 20) {
+		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
+			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
+			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
+		}
+		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+		}
+		
+	}else if (basePer > 80) {
+		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'none';
+		}
+		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+		}
+		
+	}else {
+		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+		}
+		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3111,14 +3233,26 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3139,14 +3273,26 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3237,16 +3383,32 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3277,16 +3439,32 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer > 85) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer < 15) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3390,18 +3568,38 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+		}
 	}else if (basePer > 85) {
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
-		document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
+		}
+		if(document.querySelector('#box5').className == 'box codebox'){
+			document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
+		}
 	} else {
-		document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
-		document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+		if(document.querySelector('#box1').className == 'box codebox'){
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box2').className == 'box codebox'){
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box3').className == 'box codebox'){
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box4').className == 'box codebox'){
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+		}
+		if(document.querySelector('#box5').className == 'box codebox'){
+			document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+		}
 	}
 }
 
@@ -3424,10 +3622,11 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	var boxOneHeightPer = 100 - (remainHeightPer + boxFourHeightPer);
 
 	//Set values if the boxes reaches minimum height.
-	if (boxTwoHeightPer <= 10 && boxThreeHeightPer <= 10) {
+	if (boxTwoHeightPer <= 10 && boxThreeHeightPer <= 10 && boxFourHeightPer <= 10) {
 		boxTwoHeightPer = 10;
 		boxThreeHeightPer = 10;
-		remainHeightPer = 20;
+		boxFourHeightPer = 10;
+		remainHeightPer = 30;
 
 	} else if (boxTwoHeightPer <= 10) {
 		boxTwoHeightPer = 10;
@@ -3435,6 +3634,8 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	} else if (boxThreeHeightPer <= 10) {
 		boxThreeHeightPer = 10;
 
+	} else if (boxFourHeightPer <= 10) {
+		boxFourHeightPer = 10;
 	}
 
 	//Set height and top on the boxes
@@ -3445,9 +3646,14 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 
 	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
-
-	$(boxValArray['box' + boxFour]['id']).css("height", (100 - (remainHeightPer + boxOneHeightPer)) + "%");
-	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
+	
+	//Checks if the third box is minimum size.
+	if(boxThreeHeightPer <= 10.2) {
+		//Sets height and top on fourth box.
+		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
+	}
+	
 
 
 	//Update array
@@ -3489,6 +3695,8 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		boxThreeAndFourHeightPer = 20;
 
 		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
 		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
 		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
 
@@ -3503,6 +3711,8 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		boxThreeHeightPer = 10;
 
 		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
 		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
 		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
 
@@ -3515,6 +3725,8 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	} else {
 
 		//Set height and top on the boxes
+		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
 		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
 		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
 
@@ -3873,3 +4085,22 @@ function showBox(id) {
 		}
 	});
 }
+
+
+function showIframe(boxid,kind){
+	
+		$(".previewWindow").show();
+		$(".previewWindowContainer").css("display", "block");
+		$("#iframeFileed").attr('src', 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename='+retData['box'][boxid - 1][5]+'');
+
+}
+function hideIframe(){
+	$(".previewWindow").hide();
+	$(".previewWindowContainer").css("display", "none");
+	location.reload();
+}
+
+function hideDescription() {
+	var descText = document.getElementById
+}
+

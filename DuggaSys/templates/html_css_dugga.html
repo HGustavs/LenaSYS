@@ -1,3 +1,9 @@
+<div class='feedback-container' style="display: none;">
+	<div class='feedback-button' onclick='toggleFeedback()'><h3>Feedback</h3></div>	
+		<div class="feedback-content">	
+				<div id="feedbackTable" style="margin-top: -3px;"></div>	
+		</div>
+</div>
 <div id="container">
     <table id="htmlCssTable" style="width:100%; border-collapse:separate; border-spacing: 10px;">
         <tr>
@@ -34,7 +40,7 @@
 </div>
 
 <div id='duggaInfoBox' class="loginBoxContainer" style="display:none">
-  <div class="loginBox"  style="max-width:400px;">
+  <div class="loginBox"  style="max-width:350px;">
     <div class='loginBoxheader'>
         <h3>Dugga - HTML/CSS</h3>
         <div class='cursorPointer' onclick="hideDuggaInfoPopup()">x</div>
@@ -69,19 +75,6 @@
             <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
             <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
             <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
-        </table>
-    </div>
-  </div>
-</div>
-<div id="feedbackBox" class="loginBoxContainer">
-  <div class="loginBox">
-    <div class='loginBoxheader'>
-        <h3>Feedback Log</h3>
-        <div class='cursorPointer' onclick="hideReceiptPopup()">x</div>
-    </div>
-    <div class="table-wrap" id="feedbackTable">
-        <table>
-            <tr><th>Date</th><th>Feedback</th></tr>
         </table>
     </div>
   </div>
