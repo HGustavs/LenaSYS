@@ -165,15 +165,6 @@ $codeLinkQuery->execute();
             </form>
 
            </div>
-            <div id="createNewEmptyFile" style="display: none;">
-                <form action="#" method="POST">
-                    <label for="newEmptyFile">File name and type e.g greger.txt</label>
-                    <input type="text" id="newEmptyFile" name="newEmptyFile" placeholder="Greger.txt">
-
-                    <input type="submit" name="createBtn" value="Create">
-
-                </form>
-            </div>
 
         </div>
     </div>

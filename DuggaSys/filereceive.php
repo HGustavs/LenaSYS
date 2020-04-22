@@ -52,6 +52,7 @@ $log_uuid = getOP('log_uuid');
 
 $filo = print_r($_FILES, true);
 $info = $cid . " " . $vers . " " . $kind . " " . $link . " " . $selectedfile . " " . $error . " " . $filo;
+echo $info;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve.php", $userid, $info);
 
 //  Handle files! One by one  -- if all is ok add file name to database
@@ -90,7 +91,14 @@ if ($ha) {
         } else {
             $storefile = true;
         }
-    } else if ($kind == "LFILE" || $kind == "MFILE") {
+    } else if ($kind == "EFILE") {
+        //  if it is a global file, check if "/templates" exists, if not create the directory
+        if (!file_exists($currcvd . "/courses/global")) {
+            $storefile = mkdir($currcvd . "/courses/global",0777,true);
+        } else {
+            $storefile = true;
+        }
+    }else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
         if (!file_exists($currcvd . "/courses/" . $cid ."/versionIndependence")) {
             echo $currcvd . "/courses/" . $cid;
@@ -156,7 +164,7 @@ if ($storefile) {
 
     echo "<pre>";
     // Uncomment for debug printing
-    //print_r($swizzled);
+    print_r($swizzled);
     //testcommit
 
     foreach ($swizzled as $key => $filea) {
@@ -164,6 +172,7 @@ if ($storefile) {
         //print_r($filea) . "<br />";
 
         //  if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process.
+        echo $filea["name"];
         if ($filea["name"] != "") {
 
             $temp = explode(".", $filea["name"]);

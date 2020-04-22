@@ -144,7 +144,7 @@ function showFilePopUp(fileKind) {
     $(".linkPopUp").css("display", "none");
     $("#createNewEmptyFile").css("display", "none");
     $(".addNewFile").css("display", "block");
-
+    $('#uploadedfile').attr('type', 'file');
     if (fileKind == "MFILE") {
         $("#mFileHeadline").css("display", "block");
     } else if (fileKind == "LFILE") {
@@ -153,9 +153,9 @@ function showFilePopUp(fileKind) {
         $("#gFileHeadline").css("display", "block");
     }else if(fileKind == "EFILE"){
         $("#eFileHeadline").css("display", "block");
-        $(".addNewFile").css("display", "none");
-        $("#createNewEmptyFile").css("display", "block");
-
+        //$(".addNewFile").css("display", "none");
+        //$("#createNewEmptyFile").css("display", "block");
+        $('#uploadedfile').attr('type', 'text');
     }
 }
 
@@ -168,6 +168,13 @@ function uploadFile(kind) {
         }
         $("#selectedfile").html(str);
     } else if (kind == "GFILE") {
+        var str = "<option>NONE</option>";
+        for (i = 0; i < filez['gfiles'].length; i++) {
+            var item = filez['gfiles'][i];
+            if (item != ".." && item != ".") str += "<option>" + item + "</option>";
+        }
+        $("#selectedfile").html(str);
+    } else if (kind == "EFILE") {
         var str = "<option>NONE</option>";
         for (i = 0; i < filez['gfiles'].length; i++) {
             var item = filez['gfiles'][i];
