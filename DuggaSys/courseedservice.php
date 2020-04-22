@@ -44,16 +44,6 @@ if(isset($_SESSION['uid'])){
 $ha=null;
 $debug="NONE!";
 
-// Gets username based on uid
-$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
-$query->bindParam(':uid', $userid);
-$query-> execute();
-
-// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
-while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-	$username = $row['username'];
-}
-
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php",$userid,$info);
@@ -84,8 +74,9 @@ if(checklogin()){
 				$debug="Error updating entries\n".$error[2];
 			} 
 
-			$description=$coursename." ".$coursecode;
-			logUserEvent($username, EventTypes::AddCourse, $description);
+			// Logging for creating new course
+			$description=$coursename." ".$coursecode." "."Hidden";
+			logUserEvent($userid, EventTypes::AddCourse, $description);
 
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
@@ -440,6 +431,7 @@ if(checklogin()){
 				$debug="Error updating entries\n".$error[2];
 			}
 
+			// Belongs to Logging 
 			if($visibility==0){
 				$visibilityName = "Hidden";
 			}
@@ -453,8 +445,9 @@ if(checklogin()){
 				$visibilityName = "Deleted";
 			}
 			
+			// Logging for editing of course
 			$description=$coursename." ".$coursecode." ".$visibilityName;
-			logUserEvent($username, EventTypes::EditCourse, $description);
+			logUserEvent($userid, EventTypes::EditCourse, $description);
 
 		}else if(strcmp($opt,"SETTINGS")===0){
 		$query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
