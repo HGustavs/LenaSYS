@@ -809,7 +809,7 @@ function createboxmenu(contentid, boxid, type) {
 			}
 			// If reader doesn't have write access, only the boxtitle is shown
 		} else {
-			str += '<td id = "boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
+			str += '<td id="boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
 		if(retData['box'][boxid - 1][1] == "DOCUMENT"){
@@ -823,14 +823,14 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add resize, reset and edit buttons
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
-    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+		str += "<td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' />";
+		str += "<td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' />";
+		str += "<td class='butto2 resetbtn' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' />";
+    	str += "<td class='butto2 editbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'>";
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
-			str += "<div id='copyClipboard'><td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 		
 
@@ -3181,11 +3181,12 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
+			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
+			toggleTitleWrapper(boxNumBase);
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		
 	}else if (basePer > 80) {
@@ -3195,16 +3196,16 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 		}
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		
 	}else {
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
 		}
 	}
@@ -3234,24 +3235,27 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
+			document.querySelector('#box1wrapper #copyClipboard #boxtitlewrapper').style.display = 'none';
 		}
 	}else if (basePer > 85) {
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
+			document.querySelector('#box2wrapper #copyClipboard #boxtitlewrapper').style.display = 'none';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
+			document.querySelector('#box3wrapper #copyClipboard #boxtitlewrapper').style.display = 'none';
 		}
 	} else {
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
 			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 		}
 	}
 }
@@ -4104,3 +4108,27 @@ function hideDescription() {
 	var descText = document.getElementById
 }
 
+//Toggles the animation of buttomenu2 items/tds when resizing
+
+function toggleTitleWrapper(boxNum){
+	var box = document.querySelector('#box' + boxNum + 'wrapper #boxtitlewrapper');
+		
+  	if (box.classList.contains('hidden')) {
+		  console.log("INSIDE IF!");
+    	box.classList.remove('hidden');
+    	setTimeout(function () {
+      		box.classList.remove('visuallyhidden');
+    	}, 20);
+  	}else {
+		  console.log("INSIDE ELSE!");
+    	box.classList.add('visuallyhidden');    
+    	box.addEventListener('transitionend', function(e) {
+      		box.classList.add('hidden');
+    	}, {
+      		capture: false,
+      		once: true,
+      		passive: false
+    	});
+  	}
+
+}

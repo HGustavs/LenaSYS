@@ -625,10 +625,27 @@
 }
 
 .boxtitlewrap {
+    
     font-size: 15px;
     height: 32px;
     vertical-align: middle;
     padding: 0px 5px;
+    transition: all 1s linear;
+    -webkit-transition: all 1s linear;
+    -moz-transition: all 1s linear;
+    -o-transition: all 1s linear;
+  /*
+    color: #DFF0D8;
+    width: 43px;
+    padding-right: 2px;
+    text-align: center;
+    font-size: 12px;
+    display: table-cell;
+    transition: all 1s linear;
+    -webkit-transition: all 1s linear;
+    -moz-transition: all 1s linear;
+    -o-transition: all 1s linear;
+    */
 }
 
 /* BOXMENU STYLING STOP */
@@ -875,13 +892,17 @@
 }
 
 /* style for the maximize and reset button*/
-.maximizebtn, .minimizebtn, .resetbtn, .copybutton {
+.maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn{
     color: #DFF0D8;
-    width: 50px;
-    padding-right: 3px;
+    width: 43px;
+    padding-right: 2px;
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
     display: table-cell;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
 }
 
 /* style for the copy button and copy notification*/
@@ -935,6 +956,15 @@
     display: none;
 }
 
+/* Classes for animating display:none */
+.hidden{
+    display:none;
+}
+
+.visuallyhidden{
+    opacity:0;
+    width:0;
+}
 
 @media only screen and (max-device-width : 438px) {
     .maximizebtn {
