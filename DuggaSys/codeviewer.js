@@ -478,9 +478,10 @@ function updateExample() {
 		var courseid = querystring['courseid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
-		var playlink = $("#playlink").val();
-		var examplename = $("#title").val();
-		var sectionname = $("#secttitle").val();
+		var playlink = document.getElementById("playlink").value;
+		var examplename = document.getElementById("title").value;
+		var sectionname = document.getElementById("secttitle").value;
+
 		var beforeid = $("#before option:selected").val();
 		var afterid = $("#after option:selected").val();
 
@@ -502,7 +503,7 @@ function updateExample() {
 		removedWords = [];
 	}
 
-	$("#editExampleContainer").css("display", "none");
+	document.getElementById("editExampleContainer").style.display = "none"; 
 }
 
 function removeExample() {
@@ -1093,12 +1094,16 @@ function highlightKeyword(kw) {
 	kwDoubleQuotes = '"'+kw+'"';
 	kwSingleQuote = "'"+kw+"'";
 
-	$(".impword").each(function () {
+//	$(".impword").each(function () {
+	var highlightVar = document.querySelectorAll("impword");
+	highlightVar.forEach(function()) {
 		if(this.classList.contains("imphi")){
-			$(this).removeClass("imphi");
+			this.classList.remove("imphi");
+	//		$(this).removeClass("imphi");
 		}
 		else if(this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
-			$(this).addClass("imphi");
+	//		$(this).addClass("imphi");
+			this.classList.add("imphi");
 		}
 	});
 }
