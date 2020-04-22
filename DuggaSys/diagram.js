@@ -4192,8 +4192,7 @@ function mouseupevt(ev) {
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
-        erEnityA.arity = [];
-      //TEST
+        erEnityA.length = [];
         erEnityA.object_type = "";
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
