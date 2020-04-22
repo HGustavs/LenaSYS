@@ -1009,9 +1009,15 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
+			// Checks if the feedback textarea is empty or not.
+			// If it's not empty, then store what's in the textarea in the localStorage.
+			if (document.getElementById("newFeedback").value !== "") {
+				localStorage.setItem("tempFeedbackBackup", document.getElementById("newFeedback").value);
+			}
+			
             localStorage.removeItem("securityquestion");
             localStorage.removeItem("securitynotification");
-			location.reload();
+			location.reload(true); // Forced reload from the server.
 		},
 		error:function() {
 			console.log("error");

@@ -316,6 +316,12 @@ $(function () {
 function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire) {
 	closeWindows();
 
+	//  Checks if there is an item in localStorage named "tempFeedbackBackup".
+	//	If there is one, then remove that item.
+	if (typeof localStorage.getItem("tempFeedbackBackup") != "undefined") {
+		localStorage.removeItem("tempFeedbackBackup");
+	}
+
 	var uidGrab = uid;
 	var momentGrab = moment;
 	var currentTime = new Date();
@@ -464,6 +470,14 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
 	var width = toggleGrade.offsetWidth;
+
+	//	Check if localStorage item "tempFeedbackBackup" exists and if there's anything in it.
+	//	If there is anything in it, then set that text in the textarea for feedback.
+	var tempFeedback = localStorage.getItem("tempFeedbackBackup");
+	if (tempFeedback != "" || tempFeedback != undefined)
+	{
+		document.getElementById('newFeedback').value = tempFeedback;
+	}
 
 	$('#toggleGrade').animate({width: 'toggle'});
 	if(width <= 0){
