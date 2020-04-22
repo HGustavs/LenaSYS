@@ -1095,10 +1095,10 @@ function highlightKeyword(kw) {
 
 	$(".impword").each(function () {
 		if(this.classList.contains("imphi")){
-			$(this).removeClass("imphi");
+			this.classList.remove("imphi");
 		}
 		else if(this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
-			$(this).addClass("imphi");
+			this.classList.add("imphi");
 		}
 	});
 }
