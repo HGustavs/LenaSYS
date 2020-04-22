@@ -1674,7 +1674,7 @@ function Symbol(kindOfSymbol) {
         }
         ctx.lineTo(x2, y2);
         ctx.stroke();
-        checkLineIntersection(x1,y1,x2,y2,breakpointStartX,breakpointStartY,breakpointEndX,breakpointEndY);
+        checkLineIntersection(x1,y1,x2,y2,breakpointStartX,breakpointStartY,breakpointEndX,breakpointEndY,middleBreakPointX,middleBreakPointY,startLineDirection,endLineDirection);
         this.drawUmlRelationLines(x1,y1,x2,y2, startLineDirection, endLineDirection);
     }
 
@@ -2226,7 +2226,7 @@ function Symbol(kindOfSymbol) {
 //--------------------------------------------------------------
 //checkLineIntersection: checks if any two lines does intersect
 //--------------------------------------------------------------
-function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY,breakpointStartX,breakpointStartY,breakpointEndX,breakpointEndY) {
+function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY,breakpointStartX,breakpointStartY,breakpointEndX,breakpointEndY,middleBreakPointX,middleBreakPointY,umlStart,umlEnd) {
     var	lines	=	diagram.getLineObjects();
 	var results = [];
 	for (var i = 0; i < lines.length; i++) {
@@ -2279,20 +2279,22 @@ function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY,br
                 if (denominator == 0) {
                     return result;
                 }
-               // console.log(breakpointStartX,breakpointStartY,breakpointEndX,breakpointEndY)
-               var differs = breakpointStartX - breakpointEndX;
-               var hdiffers = breakpointStartY - breakpointEndY;
-                console.log(breakpointStartY, breakpointEndY)
+               
+                console.log(line1StartX, line1StartY, line1EndX, line1EndY,"start X ",breakpointStartX,"start Y ",breakpointStartY,"end X ",breakpointEndX,"end Y",breakpointEndY,"middleX",middleBreakPointX,"middleBreakPointY",middleBreakPointY,umlStart,umlEnd)
+                console.log(line1StartX, line1StartY, line1EndX, line1EndY);
+                let test = lines[i];
+                console.log(test);
+
                 a = line1StartY - line2StartY;
                 b = line1StartX - line2StartX;
-                numerator1 = ((line2EndX - line2StartX) * a) - ((line2EndY - line2StartY) * b);
-                numerator2 = ((line1EndX - line1StartX) * a) - ((line1EndY - line1StartY) * b);
+                    numerator1 = ((line2EndX - line2StartX) * a) - ((line2EndY - line2StartY) * b);
+                    numerator2 = ((line1EndX - line1StartX) * a) - ((line1EndY - line1StartY) * b);
                 a = numerator1 / denominator;
                 b = numerator2 / denominator;
                 
                 // if we cast these lines infinitely in both directions, they intersect here:
-                result.x = line1StartX + (a * (line1EndX - line1StartX) - (differs /2 -3));
-                result.y = line1StartY + (a * (line1EndY - line1StartY) - hdiffers);
+                result.x = line1StartX + (a * (line1EndX - line1StartX)+30);
+                result.y = line1StartY + (a * (line1EndY - line1StartY)-30);
 
                 // if line1 is a segment and line2 is infinite, they intersect if:
                 if (a > 0 && a < 1) {
