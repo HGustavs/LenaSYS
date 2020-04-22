@@ -3187,7 +3187,8 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
 			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-
+			thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+			toggleTitleWrapper(thisBox, boxNumAlign, basePer);
 		}
 		
 	}else if (basePer > 85) {
@@ -3199,6 +3200,8 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+			toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		}
 		
 	}else {
@@ -4119,7 +4122,8 @@ function hideDescription() {
 function toggleTitleWrapper(targetBox, boxNum, boxW){
 	var box = targetBox;
 		console.log(boxW);
-  	if (boxW > 15 && boxW < 85) {
+		console.log(boxNum);
+  	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 || boxW > 85 && boxNum == 1) {
 		  console.log("INSIDE IF!");
 		  console.log(box);
     	box.classList.remove('hidden');
@@ -4127,7 +4131,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
       		box.classList.remove('visuallyhidden');
 		}, 20);
 
-  	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 || boxW > 85){
+  	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 1){
 		  console.log("INSIDE ELSE IF!");
 		  console.log(box);
 		box.classList.add('visuallyhidden');
@@ -4138,7 +4142,18 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
       		once: true,
       		passive: false
     	});
-  	}else {
+  	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 2){
+		console.log("INSIDE ELSE IF!");
+		console.log(box);
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else {
 		console.log("INSIDE ELSE!");
 	  }
 
