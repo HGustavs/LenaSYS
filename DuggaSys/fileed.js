@@ -344,11 +344,12 @@ document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
       $(".fileViewContainer").hide();
       $(".fileViewWindow").hide();
-    }
-    while(fileview.firstChild){
+      while(fileview.firstChild){
         fileview.removeChild(fileview.firstChild);
+        }
     }
   })
+
 
 //---------------------------------------------------------------
 //sortFilesByKind <- Callback function sorts the files by its kind
