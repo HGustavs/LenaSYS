@@ -1508,7 +1508,8 @@ function initializeCanvas() {
 
 function clearActiveDropdownElement(){
     if (document.activeElement.className.match("menu-drop-down") || 
-    document.activeElement.className.match("drop-down-item")) {
+    document.activeElement.className.match("drop-down-item") ||
+    document.activeElement.className.match("drop-down-label")) {
         document.activeElement.blur();
     }
 
