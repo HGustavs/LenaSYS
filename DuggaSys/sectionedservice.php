@@ -347,6 +347,11 @@ if($gradesys=="UNK") $gradesys=0;
 									$debug="Error updating entries".$error[2];
 								}
 						}
+
+						// Logging for editing course version
+						$description=$courseid." ".$versid;
+						logUserEvent($userid, EventTypes::EditCourseVers, $description);	
+
 				} else if(strcmp($opt,"CHGVERS")===0) {
 					$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 					$query->bindParam(':cid', $courseid);

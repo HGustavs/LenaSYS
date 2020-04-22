@@ -130,6 +130,11 @@ if(checklogin()){
 				$debug="Error inserting entries\n".$error[2];
 			} 
 
+			// Logging for create a fresh course version
+			$description=$cid." ".$versid;
+			logUserEvent($userid, EventTypes::AddCourseVers, $description);
+
+
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 				$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 				$query->bindParam(':cid', $courseid);
@@ -182,6 +187,10 @@ if(checklogin()){
 					$error=$query->errorInfo();
 					$debug="Error updating entries\n".$error[2];
 				}
+
+				// Logging for creating a copy of course version
+				$description=$cid." ".$versid;
+				logUserEvent($userid, EventTypes::AddCourseVers, $description);
 
 				// Duplicate duggas and dugga variants
 				$duggalist=array();
