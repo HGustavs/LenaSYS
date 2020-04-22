@@ -2790,7 +2790,6 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
-				hideDescription();
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3170,6 +3169,7 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
+	var thisBox = null;
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 
@@ -3181,20 +3181,20 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
-			var thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+			thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
 			toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
 			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-			
+
 		}
 		
 	}else if (basePer > 85) {
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
-			var thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
-			toggleTitleWrapper(thisBox, boxNumBase, basePer);
+			thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+			toggleTitleWrapper(thisBox, boxNumAlign, basePer);
 		}
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
@@ -3205,11 +3205,14 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-			
+			thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+			toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
+			thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+			toggleTitleWrapper(thisBox, boxNumAlign, basePer);
 		}
 	}
 }
@@ -4108,23 +4111,24 @@ function hideIframe(){
 }
 
 function hideDescription() {
-	var descText = document.getElementById
+	console.log("hideDescription");
 }
 
 //Toggles the animation of buttomenu2 items/td when resizing
 
 function toggleTitleWrapper(targetBox, boxNum, boxW){
 	var box = targetBox;
-		
-  	if (box.classList.contains('hidden') && boxW > 15) {
+		console.log(boxW);
+  	if (boxW > 15 && boxW < 85) {
 		  console.log("INSIDE IF!");
+		  console.log(box);
     	box.classList.remove('hidden');
     	setTimeout(function () {
       		box.classList.remove('visuallyhidden');
 		}, 20);
 
-  	}else{
-		  console.log("INSIDE ELSE!");
+  	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 || boxW > 85){
+		  console.log("INSIDE ELSE IF!");
 		  console.log(box);
 		box.classList.add('visuallyhidden');
     	box.addEventListener('transitionend', function(e) {
@@ -4134,6 +4138,8 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
       		once: true,
       		passive: false
     	});
-  	}
+  	}else {
+		console.log("INSIDE ELSE!");
+	  }
 
 }
