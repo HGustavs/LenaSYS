@@ -4765,7 +4765,12 @@ function initAppearanceForm() {
     });
 
     const appearanceContainer = document.getElementById("appearance");
-    appearanceContainer.addEventListener("click", clickOutsideAppearanceForm);
+    appearanceContainer.addEventListener("mousedown", e => {
+
+    });
+    appearanceContainer.addEventListener("mouseup", e => {
+
+    });
 }
 
 function getGroupsByType(type) {
@@ -4792,13 +4797,3 @@ function submitAppearanceForm() {
     SaveState();
     toggleApperanceElement();
 }
-
-function clickOutsideAppearanceForm(e) {
-    const formContainer = document.querySelector(".loginBox");
-
-    //Close appearance if the clicked element is not a child/grand-child of formContanier
-    if(!formContainer.contains(e.target)) {
-        toggleApperanceElement();
-    }
-}
-
