@@ -180,6 +180,7 @@ $codeLinkQuery->execute();
 </div>
 <!-- Edit File Dialog END -->
 
+<!-- File View Window START -->
 <div class="fileViewContainer">
     <div class="fileViewWindow">
         <div class="loginBoxheader fileViewHeader">
@@ -190,6 +191,7 @@ $codeLinkQuery->execute();
         </div>
     </div>
 </div>
+<!-- File View Window END -->
 
 <!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer">

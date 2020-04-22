@@ -1332,13 +1332,13 @@ input {
 }
 
 .buttonLoginBox:hover,
-.buttonLogoutBox:hover,{
+.buttonLogoutBox:hover{
   background-color: var(--color-primary-hover);
   border-radius: 2px;
 }
 
 .loginBoxTable,
-.logoutBoxTable,{
+.logoutBoxTable{
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
@@ -1351,7 +1351,7 @@ input {
 }
 
 #loginBoxTitle,
-#logoutBoxTitle,{
+#logoutBoxTitle{
   font-size: 15px;
 }
 
@@ -5264,6 +5264,7 @@ only screen and (max-device-width: 320px) {
 
 
 .previewWindow, .fileViewWindow {
+  text-align: center;
   height: 89vh;
   width: 95vw;
   margin: 0px auto;
