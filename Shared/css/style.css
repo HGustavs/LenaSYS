@@ -2184,6 +2184,10 @@ div.submit-button:disabled {
   text-align: right;
 }
 
+#submitButtonTable{
+  z-index:500;
+}
+
 #submitButtonTable input.large-button {
   width: 160px !important;
   height: 48px !important;
@@ -2354,7 +2358,7 @@ div.submit-button:disabled {
 .list th {
   background: var(--color-primary);
   color: var(--color-text-header);
-  line-height: 28px;
+  line-height: 22px;
   font-weight: bold;
   padding: 5px;
 }
@@ -2439,10 +2443,6 @@ div.submit-button:disabled {
 .sortableHeading {
   display: inline !important;
   cursor: pointer;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  padding-left: 16px;
-  padding-right: 16px;
 }
 
 #editpopover {
@@ -2581,6 +2581,15 @@ span.arrow {
 
 .feedback-list td {
   line-height: normal;
+}
+#feedbackTable .feedback-list th {
+	background: var(--color-background-3);
+  color:var(--color-text-label);
+  
+}
+#feedbackTable .feedback-list, #feedbackTable .feedback-list td {
+	border-color: var(--color-background-3);
+	
 }
 
 @media print {
@@ -2748,7 +2757,7 @@ span.arrow {
 
 #resultTable td {
   height: 1px;
-  padding: 0px;
+  padding: 0px 5px;
   border: 0px;
 }
 
@@ -2767,13 +2776,13 @@ span.arrow {
   border-right: 2px solid #dbd0d8;
 }
 
+#accessTable td span{
+  padding: 0px 5px;
+}
+
 #accessTable select {
   height: 40px;
   width: 100%;
-}
-
-.accessTable-vers select {
-  width: 60% !important;
 }
 
 .accessTableText {
@@ -2970,13 +2979,13 @@ span.arrow {
 #feedbackTable tbody tr:nth-child(odd) {
   background-color: var(--color-background);
 }
-
+/*
 #feedbackBox {
   display: none;
   position: absolute;
-  top: 0;
+  top: 50px;
   right: 0;
-}
+}*/
 
 .facitPreview {
   width: 200px;
@@ -3239,7 +3248,8 @@ span.arrow {
 }
 
 .checknarrow {
-  max-width: 140px !important;
+  width: 280px;
+  max-width: 280px !important;
   min-width: 140px !important;
 }
 
@@ -5626,7 +5636,7 @@ div > div > .shortcut-keys:hover {
 }
 
 .multiselect-group {
-  width: 112px;
+  width: 100%;
 }
 
 .checkboxes {

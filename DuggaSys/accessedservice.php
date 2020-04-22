@@ -82,6 +82,10 @@ if(checklogin() && $hasAccess) {
 		// User_Course Table Updates
 		if($prop=="examiner"){
 				$query = $pdo->prepare("UPDATE user_course SET examiner=:examiner WHERE uid=:uid AND cid=:cid;");
+				//Saves if the user changes examiner to none.
+				if($val == "None"){
+					$val = NULL;
+				}
 				$query->bindParam(':examiner', $val);
 		}else if($prop=="vers"){
 				$query = $pdo->prepare("UPDATE user_course SET vers=:vers WHERE uid=:uid AND cid=:cid;");
