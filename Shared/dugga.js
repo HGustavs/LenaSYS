@@ -353,13 +353,6 @@ function setExpireCookieLogOut() {
 }
 
 //----------------------------------------------------------------------------------
-
-function closeLogout(){
-	document.getElementById('overlay').style.display = "none";
-	document.getElementById('logoutBox').style.display = "none";
-	document.getElementById('logout').style.display = "none";
-}
-
 function closeWindows(){
 	var index_highest = 0;
 	var e;
