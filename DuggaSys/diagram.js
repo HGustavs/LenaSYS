@@ -3455,36 +3455,41 @@ function toggleFullscreen(){
     // Load elements
     var head = document.querySelector("header");
     var menu_buttons = document.getElementById("buttonDiv");
-    var content_diagram = document.getElementById("contentDiagram");
+    //var content_diagram = document.getElementById("contentDiagram");
     var canvas_div = document.getElementById("diagramCanvasContainer");
     var zoom_bar = document.getElementById("selectDiv");
 
     if(!fullscreen){
         // Get previous settings
-        old_content_diagram_marginLeft = content_diagram.style.marginLeft;
-        old_content_diagram_marginTop = content_diagram.style.marginTop;
+        //old_content_diagram_marginLeft = content_diagram.style.marginLeft;
+        //old_content_diagram_marginTop = content_diagram.style.marginTop;
         old_canvas_div_marginLeft = canvas_div.style.marginLeft;
         old_zoom_left = zoom_bar.style.left;
 
         // Hide header, buttons, their leftover space and resize canvas to fit screen
         head.style.display = "none";
         menu_buttons.style.display = "none";
-        content_diagram.style.marginTop = 0;
-        content_diagram.style.marginLeft = 0;
+        //content_diagram.style.marginTop = 0;
+        //content_diagram.style.marginLeft = 0;
+
+        canvas_div.style.position = "absolute";
         canvas_div.style.marginLeft = 0;
-        console.log(zoom_bar.style.left);
-        zoom_bar.style.left = 15;
-        console.log(zoom_bar.style.left);
+        canvas_div.style.top = 0;
+        canvas_div.style.right = 0;
+        canvas_div.style.bottom = 0;
+        canvas_div.style.left = 0;
+
+        canvas_div.style.height = window.innerHeight;
+        canvas_div.style.width = window.innerWidth;
+
         canvasSize();
-        canvas.setAttribute("width", window.innerWidth);
-        canvas.setAttribute("height", window.innerHeight);
         
         fullscreen = true;
 
     } else if (fullscreen){
         // Revert to previous settings
-        content_diagram.style.marginTop = old_content_diagram_marginTop;
-        content_diagram.style.marginLeft = old_content_diagram_marginLeft;
+        //content_diagram.style.marginTop = old_content_diagram_marginTop;
+        //content_diagram.style.marginLeft = old_content_diagram_marginLeft;
         canvas_div.style.marginLeft = old_canvas_div_marginLeft;
         zoom_bar.style.left = old_zoom_left;
         canvasSize();
