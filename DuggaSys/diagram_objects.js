@@ -1874,12 +1874,8 @@ function Symbol(kindOfSymbol) {
             dtly = diagram[i].corners().tl.y;
             dbrx = diagram[i].corners().br.x;
             dbry = diagram[i].corners().br.y;
-
-            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
                 cardinality.parentBox = diagram[i];
                 delete cardinality.parentBox.cardinality.parentBox;
-                break;
-            }
         }
 
 	    // Decide whether x1 and y1 is relevant or x2 and y2
@@ -1908,17 +1904,20 @@ function Symbol(kindOfSymbol) {
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
+            console.log("haj")
 		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[this.cardinality.parentBox.topLeft], points[this.cardinality.parentBox.bottomRight]);
+                var correctBox = getCorners(points[this.cardinality.parentBox.topLeft], points[this.cardinality.parentBox.bottomRight]);
 		        // Determine on which side of the box the cardinality should be placed
 		        if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
 		            cardinality.axis = "X";
 		        }
-		        if(correctBox.tl.y < y2 && correctBox.br.y > y2) {
+		        else if(correctBox.tl.y < y2 && correctBox.br.y > y2) {
 		            cardinality.axis = "Y";
-		        }
+                }
+                else {
+                    cardinality.axis = "X&Y"
+                }
 		    }
-
 		    // Move the value from the line
 		    cardinality.x = x2 > x1 ? x2-15 : x2+15;
 		    cardinality.y = y2 > y1 ? y2-15 : y2+15;
@@ -1929,7 +1928,32 @@ function Symbol(kindOfSymbol) {
 		    }
 		    else if(cardinality.axis == "Y") {
 		        cardinality.y = y2 > y1 ? y2+15 : y2-15;
-		    }
+            }
+            else if (cardinality.axis == "X&Y"){
+                for(var i = 0; i < diagram.length; i++){
+                    if (diagram[i].symbolkind == symbolKind.line){
+                        var getConnectedObjects = diagram[i].getConnectedObjects();
+                        var connectedObject = getConnectedObjects[0];
+                        if(connectedObject.connectorLeft[0] !== undefined){
+                            diagram[i].cardinality.x = x2-15;
+                            diagram[i].cardinality.y = y2 > y1 ? y2+15 : y2-15;
+                        }
+                        else if (connectedObject.connectorBottom[0] !== undefined){
+                            diagram[i].cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                            diagram[i].cardinality.y = y2+15
+                        }
+                        else if (connectedObject.connectorRight[0] !== undefined){
+                            diagram[i].cardinality.x= x2+15;
+                            diagram[i].cardinality.y = y2 > y1 ? y2+15 : y2-15;
+                        }
+                        else if (connectedObject.connectorTop[0] !== undefined){
+                            diagram[i].cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                            diagram[i].cardinality.y = y2-15
+                        }
+                    }
+                }
+
+            }
         }
     }
 
