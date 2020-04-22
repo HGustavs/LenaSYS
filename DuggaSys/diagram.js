@@ -4527,7 +4527,6 @@ function setSelectedOption(select, value) {
 
 function createCardinality() {
     //Setting cardinality on new line
-    console.log(diagram[lineStartObj+1])
     if(diagram[lineStartObj +1].symbolkind == symbolKind.erRelation) {
         hoveredObject.cardinality = ({"value": "", "isCorrectSide": false});
     }
