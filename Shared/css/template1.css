@@ -37,7 +37,21 @@
 
 @media only screen 
 and (max-device-width : 725px) {
+            #div2{
+        top: 0px;
+    }
 
+        .codeborder{
+        position: none;
+        
+    }
+
+    .resetbtn{
+        display:none;
+    }
+    .morebtn{
+        display: block;
+    }
     .morebtn:hover .moreboxes-content {display: block;}
     #box1wrapper{
     position: absolute;
