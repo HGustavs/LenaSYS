@@ -42,6 +42,14 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
+			// if the user only have access type W(write) course-dropdown should be shown
+			if(checklogin() && (hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {				
+				echo "<td style='display: inline-block;' title='Choose course version'>";
+				echo "    <div class='course-dropdown-div'>";
+				echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
+				echo "    </div>";
+				echo "</td>";
+			}
 	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
