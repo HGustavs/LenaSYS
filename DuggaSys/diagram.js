@@ -4572,10 +4572,13 @@ function loadAppearanceForm() {
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
 
-    showFormGroups(type);
-
     const typeElement = document.getElementById("type");
     const nameElement = document.getElementById("name");
+
+    showFormGroups(type);
+    toggleApperanceElement(true);
+
+    nameElement.focus();
 
     switch(type) {
         case symbolKind.erAttribute:
@@ -4608,6 +4611,7 @@ function loadAppearanceForm() {
             document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
         case symbolKind.text:
             document.getElementById("freeText").value = getTextareaText(object.textLines);
+            document.getElementById("freeText").focus();
             textAppearanceOpen = true;
             break;
         case symbolKind.uml:
@@ -4621,7 +4625,6 @@ function loadAppearanceForm() {
             break;
     }
     setSelections(object);
-    toggleApperanceElement(true);
 }
 
 function showFormGroups(type) {
