@@ -140,6 +140,7 @@ function returnedDugga(data)
 		for (var k=feedbackArr.length-1;k>=0;k--){
 			var fb_tmp = feedbackArr[k].split("%%");
 			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			$("#showFeedbackButton").css("display","block");
 		} 		
 		fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		
@@ -203,7 +204,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 		$("#duggaStats").css("display","block");
-		$("#duggaStats").draggable({ handle:'.loginBoxheader'});
 	}
 	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext('2d');
@@ -906,4 +906,9 @@ function drawRuler(sx,ex,sy,ws,wl,skip,padding)
 		}
 	}
 
+}
+
+function toggleFeedback()
+{
+    $(".feedback-content").slideToggle("slow");
 }

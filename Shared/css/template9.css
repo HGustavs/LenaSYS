@@ -23,9 +23,6 @@
     width: -webkit-calc(66.7%);
     width: -moz-calc(66.7%);
     width: calc(66.7%);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: auto;
     z-index: 2;
     max-height: 70%;
     min-height: 10%;
@@ -43,9 +40,6 @@
     width: -webkit-calc(66.7%);
     width: -moz-calc(66.7%); 
     width: calc(66.7%);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: auto;
     z-index: 2;
     max-height: 80%;
     min-height: 10%;
@@ -64,9 +58,6 @@
     width: -webkit-calc(66.7%);
     width: -moz-calc(66.7%);
     width: calc(66.7%);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: auto;
     z-index: 2;
     max-height: 80%;
     min-height: 10%;
@@ -84,9 +75,6 @@
     width: -webkit-calc(66.7%);
     width: -moz-calc(66.7%);
     width: calc(66.7%);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: auto;
     z-index: 2;
     max-height: 80%;
     min-height: 10%;

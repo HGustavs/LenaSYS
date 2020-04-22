@@ -15,11 +15,14 @@ session_start();
 $cid=$_SESSION['courseid'];
 $vers=$_SESSION['coursevers'];
 
+
 $debug="NONE!";
 
 $log_db = new PDO('sqlite:../../GHData/GHdata_2019_10.db');
 
 $opt = getOP('opt');
+$courseid=getOP('courseid');
+$coursename=getOP('coursename');
 
 $allusers=array();
 $allrowranks=array();
@@ -65,6 +68,10 @@ if(strcmp($opt,"get")==0) {
 		$lastname="UNK";
 		$firstname="UNK";
 	}
+
+	// $log_uuid = getOP('log_uuid');
+	// $info=$opt." ".$courseid." ".$coursename;
+	// logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "contributionservice.php",$userid,$info);
 
 	//$debug=print_r($_SESSION,true);
 
@@ -631,4 +638,7 @@ if(strcmp($opt,"get")==0) {
 	);
 	echo json_encode($array);
 }
+
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "contributionservice.php",$userid,$info);
+
 ?>

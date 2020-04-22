@@ -3,7 +3,6 @@ var activeElement;
 var querystring = parseGet();
 var versions;
 var dataInfo;
-var expanded = false;
 var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
@@ -46,6 +45,8 @@ function setup() {
 //displays dropdown when hovering search bar
 function hoverSearch() {
 	$('#dropdownSearch').css({display:'block'});
+	$('#dropdowns').css('display', 'none');
+	$('#dropdownc').css('display', 'none');
 }
 
 //stops displaying the dropdown when removing cursor from search bar
@@ -238,6 +239,11 @@ function resetPw(uid, username) {
 
 function changeOpt(e) {
 	var paramlist = e.target.id.split("_");
+	obj = {
+		uid: paramlist[1],
+	}
+	obj[paramlist[0]] = e.target.value;
+	updateDropdownInTable(e.target.parentElement, obj);
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
 }
 
@@ -399,11 +405,11 @@ function renderColumnFilter(col, status, colname) {
         return str;
     if (status) {
         str = "<div class='checkbox-dugga'>";
-        str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+        str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
         str += "</div>"
     } else {
             str = "<div class='checkbox-dugga'>";
-            str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+            str += "<input id=\"" + colname + "\" type='checkbox' name='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
             str += "</div>"
     }
     return str;
@@ -540,22 +546,22 @@ function keyUpSearch() {
 // onclick for group dropdown
 function showCheckboxes(element) {
 	var activeElementWasNull = false;
+	var lastElement = activeElement;
 	if (typeof(activeElement) === "undefined") { // first open dropdown
 		activeElement = element;
 		activeElementWasNull = true;
 	}
 	
-	var checkboxes = $(activeElement).find(".checkboxes");
-	checkboxes = activeElement.parentElement.lastChild;
+	var checkboxes = activeElement.parentElement.lastChild;
 	
 	// save and close current dropdown
-	if (expanded) updateAndCloseGroupDropdown(checkboxes);
+	if (!activeElementWasNull) updateAndCloseGroupDropdown(checkboxes);
 
-	if (activeElement !== element || activeElementWasNull) { // if clicked on new dropdown -> open new
+	// open if none is open or none was open AND this element was not just closed
+	if ((typeof(activeElement) === "undefined" || activeElementWasNull) && lastElement != element) {
 		activeElement = element;
 		checkboxes = activeElement.parentElement.lastChild;
 		checkboxes.style.display = "block";
-		expanded = true;
 	}
 }
 
@@ -564,19 +570,44 @@ function showCheckboxes(element) {
 //----------------------------------------------------------------------------------
 
 function updateAndCloseGroupDropdown(checkboxes){
-	var str = "";
+	var str = "", readStr = "";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
 			str += checkboxes.childNodes[i].childNodes[0].value + " ";
+			readStr += checkboxes.childNodes[i].childNodes[0].value.substr(3) + " ";
 		}
 	}
 	if (str != "") changeProperty(checkboxes.id.substr(3), "group", str);
 	// if user unpresses all checkboxes it the student will now belong to no group
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
 
+	activeElement.children[0].children[0].innerHTML = readStr;
+
+	obj = {
+		// This should really contain uid as well
+		// but since the table should not write this 
+		// to the database, it might not be an issue
+		// uid: <get-UID-For-Row-User>
+		groups: str
+	}
+	updateDropdownInTable(checkboxes.parentElement, obj);
+
 	// close dropdown
 	checkboxes.style.display = "none";
-	expanded = false;
+	activeElement = undefined;
+}
+
+function updateDropdownInTable(element, obj) {
+	// get row and column
+	var cellelement = element.closest("td");
+	var rowelement = element.closest("tr");
+	let regex = new RegExp("^r([0-9]+)" + myTable.getDelimiter() + "([a-zA-Z0-9]+)" + myTable.getDelimiter() + "(.*)")
+	let match = cellelement.id.match(regex);
+	var rowno = match[1];
+	var colname = match[3]
+
+	var celldata = JSON.stringify(obj);
+	myTable.updateDropdownValue(rowno, colname, celldata)
 }
 
 $(document).mouseover(function (e) {
@@ -634,10 +665,9 @@ function mouseDown(e) {
 
 function mouseUp(e) {
 	// if the target of the click isn't the container nor a descendant of the container
-	if (activeElement) {
-		var checkboxes = $(activeElement).find(".checkboxes");
-		checkboxes = activeElement.parentElement.lastChild;
-		if (expanded && !checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
+	if (typeof(activeElement) !== "undefined" && typeof(e.target) !== "undefined") {
+		var checkboxes = activeElement.parentElement.lastChild;
+		if (!checkboxes.contains(e.target) && e.target.parentElement != activeElement) {
 			updateAndCloseGroupDropdown(checkboxes);
 		}
 	}
@@ -665,6 +695,10 @@ document.addEventListener("keyup", function(event)
   if (event.keyCode === 13)
   {
     // If user presses key: Enter (13)
+    // if group dropdown is open, update and close it
+    if (typeof(activeElement) !== "undefined")
+    	updateAndCloseGroupDropdown(activeElement.parentElement.lastChild);
+    // update current cell
     updateCellInternal();
   } else if (event.keyCode === 27) {
     // If user presses key: Escape (27)

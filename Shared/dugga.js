@@ -324,31 +324,31 @@ function removeYearFromDate(date){
 }
 
 //----------------------------------------------------------------------------------
-// cookie that after 45 minutes will let the user know (through another function)
+// cookie that after 1 hour and 45 minutes will let the user know (through another function)
 // that there is 15 minutes left of session.
 //----------------------------------------------------------------------------------
 
 function setExpireCookie(){
     if(localStorage.getItem("securityquestion") == "set") {
 				var expireDate = new Date();
-				// a test date so you dont have to actually wait 45 minutes
-				// expireDate.setMinutes(expireDate.getMinutes() + 1);
-				expireDate.setMinutes(expireDate.getMinutes() + 45);
-        document.cookie = "sessionEndTime=expireC; expires=" + expireDate.toGMTString() + "; path=/";
+				// A test date so you dont have to actually wait 1 hour and 45 minutes.
+				// Don't forget to change the one below (setExpireCookieLogOut()) too.
+				//expireDate.setMinutes(expireDate.getMinutes() + 1);	// For testing
+				expireDate.setMinutes(expireDate.getMinutes() + 105);	// For actual use
+        document.cookie = "sessionEndTime=expireC; expires=" + expireDate.toUTCString() + "; path=/";
     }
 }
 
 //----------------------------------------------------------------------------------
-// a cookie that will end the session after 1 hour
+// a cookie that will end the session after 2 hours
 //----------------------------------------------------------------------------------
 
 function setExpireCookieLogOut() {
     if (localStorage.getItem("securityquestion") == "set") {
 				var expireDate = new Date();
-				// test date
-				// expireDate.setMinutes(expireDate.getMinutes() + 2);
-				expireDate.setMinutes(expireDate.getMinutes() + 60);
-        document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toGMTString() + "; path=/";
+				//expireDate.setMinutes(expireDate.getMinutes() + 2);	// For testing
+				expireDate.setMinutes(expireDate.getMinutes() + 120);	// For actual use
+        document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toUTCString() + "; path=/";
     }
 }
 
@@ -1051,7 +1051,15 @@ function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
 		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){processLogout();});
+		$("#loginbutton").click(function(){
+			$("#logoutBox").show();
+			$(".buttonLogoutCancelBox").click(function(){
+				$("#logoutBox").hide();
+
+			});
+
+
+		});
 		sessionExpireMessage();
 		sessionExpireLogOut();
 	}
@@ -1072,6 +1080,14 @@ function hideReceiptPopup()
 {
 	$("#receiptBox").css("display","none");
 	//$("#overlay").css("display","none");
+}
+
+function hideFeedbackPopup(){
+	$("#feedbackBox").css("display","none");
+}
+
+function showFeedbackPopup(){
+	$("#feedbackBox").css("display","block");
 }
 
 function hideDuggaStatsPopup()
@@ -1173,7 +1189,6 @@ function sessionExpireMessage() {
 
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
 				$(".expiremessagebox").css("display","block");
-
 				clearInterval(intervalId);
 			}
 
@@ -1195,6 +1210,7 @@ function sessionExpireLogOut() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
+				$(".expiremessagebox").css("display","none");
 				$(".endsessionmessagebox").css("display","block");
 				processLogout();
 				clearInterval(intervalId);
