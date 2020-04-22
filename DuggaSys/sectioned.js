@@ -1684,8 +1684,8 @@ function validateCourseID(courseid, dialogid) {
 
 function validateMOTD(motd, dialogid){
   var emotd = document.getElementById(motd);
-  var Emotd = /^[a-zA-Z0-9_]*$/;
-  var EmotdRange = /^.{0,10}$/;
+  var Emotd = /^[-a-zA-Z0-9_ ]*$/;
+  var EmotdRange = /^.{0,35}$/;
   var x4 = document.getElementById(dialogid);
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
     emotd.style.borderColor = "#383";

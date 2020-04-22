@@ -5843,19 +5843,19 @@ textarea#filecont {
   }
 }
 #motdContent{
-  background-color: yellow;
+  background-color: rgba(254, 204, 86, 1);
 }
 #motdArea{
   border: 2px;
   border-radius: 2px;
   border-style: solid;
-  border-color: darkgoldenrod;
-  background-color: yellow;
+  border-color: rgba(254, 204, 86, 1);
+  background-color: rgba(254, 204, 86, 1);
   justify-content: center;
   align-items: center;
 }
 .motdBoxheader{
-  background-color: yellow;
+  background-color: rgba(254, 204, 86, 1);
   vertical-align: bottom;
   padding-left: 10px;
   cursor: default;

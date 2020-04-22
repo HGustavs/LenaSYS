@@ -546,10 +546,28 @@ if($gradesys=="UNK") $gradesys=0;
 
 		$versions=array();
 		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
-
 		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error reading courses".$error[2];
+			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading courses".$error[2];
+			}else{
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$versions,
+						array(
+							'cid' => $row['cid'],
+							'coursecode' => $row['coursecode'],
+							'vers' => $row['vers'],
+							'versname' => $row['versname'],
+							'coursename' => $row['coursename'],
+							'coursenamealt' => $row['coursenamealt'],
+							'startdate' => $row['startdate'],
+							'enddate' => $row['enddate'],
+						)
+					);
+				}
+			}
 		}else{
 			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 				array_push(
@@ -607,10 +625,28 @@ if($gradesys=="UNK") $gradesys=0;
 
 			$versions=array();
 			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
-
 			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error reading courses".$error[2];
+				$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error reading courses".$error[2];
+				}else{
+					foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+						array_push(
+							$versions,
+							array(
+								'cid' => $row['cid'],
+								'coursecode' => $row['coursecode'],
+								'vers' => $row['vers'],
+								'versname' => $row['versname'],
+								'coursename' => $row['coursename'],
+								'coursenamealt' => $row['coursenamealt'],
+								'startdate' => $row['startdate'],
+								'enddate' => $row['enddate'],
+							)
+						);
+					}
+				}
 			}else{
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 					array_push(
@@ -629,7 +665,6 @@ if($gradesys=="UNK") $gradesys=0;
 					);
 				}
 			}
-
 			$codeexamples=array();
 
 			// New Example
