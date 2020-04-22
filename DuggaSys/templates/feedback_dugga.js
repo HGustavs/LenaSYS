@@ -150,7 +150,8 @@ function returnedDugga(data)
             var fb_tmp = feedbackArr[0].split("%%");
             fb="<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"
         }
-				document.getElementById('tomten').innerHTML = fb;					
+				document.getElementById('tomten').innerHTML = fb;
+				$("#showFeedbackButton").css("display","block");					
 		}
 
 
@@ -201,8 +202,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
       		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
       		document.getElementById('duggaClicks').innerHTML=userStats[2];
       		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];	
-      		$("#duggaStats").css("display","block");
-      		$("#duggaStats").draggable({ handle:'.loginBoxheader'});	      
+      		$("#duggaStats").css("display","block");	      
       }
 	}
 

@@ -31,7 +31,7 @@
 		<div id="headerContent"> <!-- A div to place header content. -->
 			<?php
 				echo "<div class='titles' style='padding-top:10px;'>";
-				echo "<h1 style='flex:1;text-align:center;'>Access</h1>";
+				echo "<h1 style='flex:1;text-align:start;'>Access Database Editor</h1>";
 			?>
 			</div>
 			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>

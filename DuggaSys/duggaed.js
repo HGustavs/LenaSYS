@@ -36,7 +36,7 @@ function setup() {
 
   $("#menuHook").before(filt);
 
-  AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
+  AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 
@@ -158,11 +158,11 @@ function updateDugga() {
 
 	closeWindows();
 
-	AJAXService("SAVDUGGA", { cid: querystring['cid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, jsondeadline: jsondeadline, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("SAVDUGGA", { cid: querystring['courseid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, jsondeadline: jsondeadline, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 function deleteDugga(did) {
-	AJAXService("DELDU", { cid: querystring['cid'], qid: did, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("DELDU", { cid: querystring['courseid'], qid: did, coursevers: querystring['coursevers'] }, "DUGGA");
 	$("#editDugga").css("display", "none");
 }
 
@@ -221,7 +221,7 @@ function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
   var parameter = $("#variantparameterText").val();
-	AJAXService("ADDVARI", { cid: querystring['cid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("ADDVARI", { cid: querystring['courseid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 function selectVariant(vid, el) {
@@ -312,7 +312,7 @@ function updateVariant(status) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   var parameter = $("#variantparameterText").val();
-	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("SAVVARI", { cid: querystring['courseid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 
@@ -329,7 +329,7 @@ function updateVariant(status) {
 }
 
 function deleteVariant(vid) {
-	AJAXService("DELVARI", { cid: querystring['cid'], vid: vid, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("DELVARI", { cid: querystring['courseid'], vid: vid, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 // Update the title of the variant editor to refer to the dugga that "owns" the variants
@@ -566,7 +566,7 @@ function returnedDugga(data) {
 		$('.fixed-action-button').hide();
 		$('#duggaSearch').hide();
 		$('#searchbutton').hide();
-			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
+			changeURL("sectioned.php?courseid=" + querystring['courseid'] + "&coursename=" + data.coursename + "&coursevers="
 				+ querystring['coursevers'] + "");
 	}
   var tabledata = {
@@ -610,14 +610,14 @@ function returnedDugga(data) {
 
 				/* Page title */
 				content += "<div class='titles' style='padding-top:10px;'>"
-						content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
+						content += "<h1 style='flex:1;text-align:start;'>Dugga Modifications Editor</h1>"
 				content += "</div>"
 
 		}
 		else {
 				$("#quiz").html("");
 				alert("You don't have access to this page. You are now being redirected!")
-				changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers=" + querystring['coursevers'] + "");
+				changeURL("sectioned.php?courseid=" + querystring['courseid'] + "&coursename=" + data.coursename + "&coursevers=" + querystring['coursevers'] + "");
 		}
 
 		$("#headerContent").html(content);
@@ -922,6 +922,19 @@ $(document).mouseover(function (e) {
 
 $(document).mouseout(function (e) {
 	FABMouseOut(e);
+});
+
+document.addEventListener('keydown', function(e) {
+	var element = document.getElementById('fabButtonAcc');
+	if(e.keyCode === 17){
+		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
+			element.style.opacity = "1";
+			element.style.pointerEvents = "auto";
+		}else{
+			element.style.opacity = "0.3";
+			element.style.pointerEvents = "none";
+		}	
+	}
 });
 
 $(document).mousedown(function (e) {

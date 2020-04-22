@@ -866,13 +866,14 @@ function returnedSection(data) {
           // Test / Dugga
           var param = {
             'did': item['link'],
-            'cid': querystring['courseid'],
+            'courseid': querystring['courseid'],
             'coursevers': querystring['coursevers'],
             'moment': item['lid'],
             'segment': momentexists,
             highscoremode: item['highscoremode'],
             comment: item['comments'],
-            deadline: item['deadline']
+            deadline: item['deadline'],
+            'cid': querystring['courseid']
           };
           str += "<div class='ellipsis nowrap'><span>" + makeanchor("showDugga.php", hideState, "cursor:pointer;margin-left:8px;", item['entryname'], false, param) + "</span></div>";
         } else if (itemKind == 5) {

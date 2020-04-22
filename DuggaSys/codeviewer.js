@@ -74,7 +74,8 @@ function returnedError(error) {
 // returned: Fetches returned data from all sources
 //-----------------------------------------------------------------
 
-function returned(data) {
+function returned(data) 
+{
 	retData = data;
 	
 	if (retData['deleted']) {
@@ -94,36 +95,36 @@ function returned(data) {
 
 	if (retData['before'].length != 0 && retData['after'].length != 0) {
 		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
-			$("#beforebutton").css("opacity", 0.4);
-			$("#beforebutton").css("pointer-events", "none");
+			document.querySelector("#beforebutton").style.opacity = "0.4";
+			document.querySelector("#beforebutton").style.pointerEvents = "none";
 		}
 		if (retData['exampleno'] == retData['after'][0][0] || retData['after'].length == 0) {
-			$("#afterbutton").css("opacity", 0.4);
-			$("#afterbutton").css("pointer-events", "none");
+			document.querySelector("#afterbutton").style.opacity = "0.4";
+			document.querySelector("#afterbutton").style.pointerEvents = "none";
 		}
 	} else if (retData['before'].length == 0 && retData['after'].length == 0) {
-		$("#beforebutton").css("opacity", 0.4);
-		$("#beforebutton").css("pointer-events", "none");
-		$("#afterbutton").css("opacity", 0.4);
-		$("#afterbutton").css("pointer-events", "none");
+		document.querySelector("#beforebutton").style.opacity = "0.4";
+		document.querySelector("#beforebutton").style.pointerEvents = "none";
+		document.querySelector("#afterbutton").style.opacity = "0.4";
+		document.querySelector("#afterbutton").style.pointerEvents = "none";
 	}
 
 	// Disables the play button if there is no playlink
 	if (typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
-		$("#playbutton").css("opacity", 0.4);
-		$("#playbutton").css("pointer-events", "none");
+		document.querySelector("#playbutton").style.opacity = "0.4";
+		document.querySelector("#playbutton").style.pointerEvents = "none";
 	} else {
 		retData['playlink'] = retData['playlink'].replace(/\&\#47\;/g, "/");
 	}
 
 	// Fill Section Name and Example Name
-	var exName = $('#exampleName');
+	var exName = document.querySelector('#exampleName');
 	if (data['examplename'] != null) {
-		exName.html(data['examplename']);
+		exName.innerHTML = data['examplename'];
 	}
-	var exSection = $('#exampleSection');
+	var exSection = document.querySelector('#exampleSection');
 	if (data['sectionname'] != null) {
-		exSection.html(data['sectionname'] + "&nbsp;:&nbsp;");
+		exSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 	}
 	var mobExName = document.querySelector('#mobileExampleName');
 	var mobExSection = document.querySelector('#mobileExampleSection');
@@ -173,8 +174,10 @@ function returned(data) {
 
 		if (boxtype === "CODE") {
 			// Print out code example in a code box
-			$("#" + contentid).removeAttr("contenteditable");
-			$("#" + contentid).removeClass("descbox").addClass("codebox");
+			var boxtypeCodebox = document.getElementById(contentid);
+			boxtypeCodebox.removeAttribute("contenteditable");
+			boxtypeCodebox.classList.remove("descbox");
+			boxtypeCodebox.classList.add("codebox");
 			createboxmenu(contentid, boxid, boxtype);
 
 			// Make room for the menu by setting padding-top equal to height of menubox
@@ -196,7 +199,11 @@ function returned(data) {
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
-			$("#" + contentid).removeClass("codebox").addClass("descbox");
+
+			var boxtypeDescbox = document.getElementById(contentid);
+			boxtypeDescbox.classList.remove("codebox");
+			boxtypeDescbox.classList.add("descbox");
+
 			var desc = boxcontent;
 			desc = replaceAll("&nbsp;", " ", desc);
 			desc = parseMarkdown(desc);
@@ -205,7 +212,7 @@ function returned(data) {
 			desc = desc.replace(/\*/g, "&#42;");
 			// Highlight important words
 			important = retData.impwords;
-			for (j = 0; j < important.length; j++) {
+			for (var j = 0; j < important.length; j++) {
 				//Prevent important word spans to be created for HTML events.
 				if(htmlEventArray.includes(important[j])){
 					var sstr = important[j];
@@ -240,7 +247,10 @@ function returned(data) {
 			$("#" + contentid).css("margin-top", boxmenuheight);
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
-			$("#" + contentid).removeClass("codebox", "descbox").addClass("framebox");
+			
+			var boxtypeframebox = document.getElementById(contentid);
+			boxtypeframebox.classList.remove("codebox", "descbox");
+			boxtypeframebox.classList.add("framebox");
 
 			// If multiple versions exists use the one with highest priority.
 			// cvers BEFORE courseid BEFORE global
@@ -355,8 +365,9 @@ var tabLine = function (text) {
 var addedWords = [];
 var removedWords = [];
 
-function editImpWords(editType) {
-	var word = $("#impword").val();
+function editImpWords(editType) 
+{
+	var word = document.getElementById("impword").value;
 	var left = 0;
 	var right = 0;
 	//Check if the word contains an uneven amount of parenthesis
@@ -383,8 +394,8 @@ function editImpWords(editType) {
 			}
 		});
 		if (exists == false) {
-			$("#impwords").append('<option>' + word + '</option>');
-			$("#impword").val("");
+			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
+			document.getElementById("impword").value = word;
 			addedWords.push(word);
 		}
 	} else if (editType == "-") {
@@ -812,11 +823,11 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add resize, reset and edit buttons
-		
-		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><p>MAX</p></div>";
-		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><p>MIN</p></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><p>RES</p></div>";
-		// str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
+    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
 			str += "<div id='copyClipboard'><td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
@@ -2306,11 +2317,11 @@ function hideCopyButtons(templateid, boxid) {
 
 function showCopyButtons(templateid) {
 	var totalBoxes = getTotalBoxes(templateid);
-
+	
 	for (var i = 1; i <= totalBoxes; i++) {
-		var copyBtn = document.querySelector('#box'+i+'wrapper #copyClipboard');
-		if (!copyBtn) continue;
-		copyBtn.style.display = "table-cell";
+		if (document.querySelector('#box' + i).className == 'box codebox') {
+		document.querySelector('#box' + i + 'wrapper #copyClipboard').style.display = 'block'
+		}
 	}
 }
 
@@ -2682,8 +2693,82 @@ function hideMinimizeButton() {
 
 //reset boxes
 function resetBoxes() {
-	resizeBoxes("#div2", retData["templateid"]);
-	showCopyButtons(retData["templateid"]);
+	var parentDiv = document.getElementById("div2");
+	var boxValArray = initResizableBoxValues(parentDiv);
+	var templateid = retData['templateid'];
+
+	showCopyButtons(templateid);
+
+	if (templateid == 1) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+	}
+	
+	if (templateid == 2) {
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+	}
+
+	if (templateid == 3) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
+
+	if (templateid == 4) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("100%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
+
+	if (templateid == 5) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("50%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+		$(boxValArray['box' + 4]['id']).height("50%");
+	}
+
+	if (templateid == 6) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("40%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).height("30%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).height("30%");
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}
+
+	if (templateid == 7) {
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 2]['id']).height("40%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).height("30%");
+		$(boxValArray['box' + 4]['id']).width("50%");
+		$(boxValArray['box' + 4]['id']).height("30%");
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}
+
+	if (templateid == 8) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 3]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).height("100%");
+		$(boxValArray['box' + 2]['id']).height("50%");
+		$(boxValArray['box' + 3]['id']).height("50%");
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -3537,10 +3622,11 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	var boxOneHeightPer = 100 - (remainHeightPer + boxFourHeightPer);
 
 	//Set values if the boxes reaches minimum height.
-	if (boxTwoHeightPer <= 10 && boxThreeHeightPer <= 10) {
+	if (boxTwoHeightPer <= 10 && boxThreeHeightPer <= 10 && boxFourHeightPer <= 10) {
 		boxTwoHeightPer = 10;
 		boxThreeHeightPer = 10;
-		remainHeightPer = 20;
+		boxFourHeightPer = 10;
+		remainHeightPer = 30;
 
 	} else if (boxTwoHeightPer <= 10) {
 		boxTwoHeightPer = 10;
@@ -3548,6 +3634,8 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	} else if (boxThreeHeightPer <= 10) {
 		boxThreeHeightPer = 10;
 
+	} else if (boxFourHeightPer <= 10) {
+		boxFourHeightPer = 10;
 	}
 
 	//Set height and top on the boxes
@@ -3558,9 +3646,14 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 
 	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
-
-	$(boxValArray['box' + boxFour]['id']).css("height", (100 - (remainHeightPer + boxOneHeightPer)) + "%");
-	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
+	
+	//Checks if the third box is minimum size.
+	if(boxThreeHeightPer <= 10.2) {
+		//Sets height and top on fourth box.
+		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
+	}
+	
 
 
 	//Update array
@@ -3602,6 +3695,8 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		boxThreeAndFourHeightPer = 20;
 
 		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
 		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
 		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
 
@@ -3616,6 +3711,8 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		boxThreeHeightPer = 10;
 
 		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
 		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
 		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
 
@@ -3628,6 +3725,8 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	} else {
 
 		//Set height and top on the boxes
+		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
 		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
 		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
 
@@ -3987,6 +4086,21 @@ function showBox(id) {
 	});
 }
 
+
+function showIframe(boxid,kind){
+	
+		$(".previewWindow").show();
+		$(".previewWindowContainer").css("display", "block");
+		$("#iframeFileed").attr('src', 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename='+retData['box'][boxid - 1][5]+'');
+
+}
+function hideIframe(){
+	$(".previewWindow").hide();
+	$(".previewWindowContainer").css("display", "none");
+	location.reload();
+}
+
 function hideDescription() {
 	var descText = document.getElementById
 }
+

@@ -129,6 +129,10 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$("#cid").val(cid);
 	// Set Code
 	$("#coursecode").val(coursecode);
+
+	//Give data attribute to course code input to check if input value is same as actual code for validation
+	$("#coursecode").attr("data-origincode", coursecode);
+
 	// Set Visibiliy
 	str = "";
 
@@ -372,7 +376,7 @@ function returnedCourse(data)
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 
-			str += "<div class='bigg item nowrap' style='display: flex; align-items: center;justify-content: center;' id='C" + item['cid'] + "'>";
+			str += `<div class='bigg item nowrap' style='display: flex; align-items: center; justify-content: center;' id='C${item['cid']}' data-code='${item['coursecode']}'>`;
 
 			var textStyle ="";
 			if (parseInt(item['visibility']) == 0) {
@@ -446,6 +450,9 @@ function returnedCourse(data)
 
 	resetinputs();
 	//resets all inputs
+
+	//After all courses have been created and added to the list the course code can be accessed from each course element and pushed to array
+	setActiveCodes();
 }
 
 /* Used to enable using list entries with ' */
@@ -460,130 +467,105 @@ function htmlFix(text){
 
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
-/*Validates all coursenames*/
-function validateCourseName(nameid, dialogid) {
-	//regex for only letters
-	var Name = /^[a-zA-Z_ ]+$/;
-	var name = document.getElementById(nameid);
-	var x = document.getElementById(dialogid);
 
-	//if input contains only letters
-	if (name.value.match(Name)) {
-		name.style.borderColor = "#383";
-		name.style.borderWidth = "2px";
-		x.style.display = "none";
 
-		if (nameid === 'ncoursename') {
-	     	window.bool3 = true;
+let activeCodes = [];
+
+//Gets all active course codes in the list by the data-code attribute all items have when created based on database values.
+function setActiveCodes() {
+	activeCodes = [];
+	const items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		const code = item.dataset.code;
+		if(typeof code !== "undefined" && code !== null) {
+			activeCodes.push(code)
 		}
-
-		if (nameid === 'coursename') {
-			window.bool4 = true;
-		}
-
-	} else {
-		name.style.borderColor = "#E54";
-		x.style.display = "block";
-		name.style.borderWidth = "2px";
-
-		if (nameid === 'ncoursename') {
-			window.bool3 = false;
-		}
-
-		if (nameid === 'coursename') {
-			window.bool4 = false;
-		}
-	}
+	});
 }
 
-/*Validates all coursecodes */
-function validateCourseCode(codeid, dialogid) {
-	//regex for 2 letters, 3 digits, 1 letter
-	var Code = /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/;
-	var code = document.getElementById(codeid);
-	var x2 = document.getElementById(dialogid);
+const regex = {
+	coursename: /^[A-ZÅÄÖa-zåäö]+( (- )?[A-ZÅÄÖa-zåäö]+)*$/,
+	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/
+};
 
-	//if input is 2 letters, 3 digits, 1 letter
-	if (code.value.match(Code)) {
-		code.style.borderColor = "#383";
-		code.style.borderWidth = "2px";
-		x2.style.display = "none";
+//Validates single element against regular expression returning true if valid and false if invalid
+function elementIsValid(element) {
+	const messageElement = element.parentNode.nextElementSibling; //The dialog to show validation messages in
 
-		if (codeid === 'ncoursecode') {
-			window.bool = true;
+	//Standard styling for a failed validation that will be changed if element passes validation
+	element.style.borderWidth = "2px";
+	element.style.borderColor = "#E54";
+	messageElement.style.display = "block";
+
+	//Check if value of element matches regex based on name attribute same as key for regex object
+	if(element.value.match(regex[element.name])) {
+		//Seperate validation for coursecodes since it should not be possible to submit form if course code is in use
+		if(element.name === "coursecode") {
+			//Check for duplicate course codes only if value of input is not same as the course code that will be editied
+			//This prevents it from being impossible to save course code without changing it
+			if(element.value !== element.dataset.origincode) {
+				if(activeCodes.includes(element.value)) {
+					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
+					return false;
+				}
+			}
 		}
 
-		if (codeid === 'coursecode') {
-			window.bool2 = true;
-		}
-
-	} else {
-
-		code.style.borderColor = "#E54";
-		x2.style.display = "block";
-		code.style.borderWidth = "2px";
-		
-		if (codeid === 'ncoursecode') {
-			window.bool = false;
-		}
-		if (codeid === 'coursecode') {
-			window.bool2 = false;
-		}
+		//Setting the style of the element represent being valid and not show
+		element.style.borderColor = "#383";
+		messageElement.style.display = "none";
+		return true;
+	} else if(element.value.trim() === "") {
+		//If empty string or ettempty of only spaces remove styling and spaces and hide validation message
+		element.removeAttribute("style");
+		element.value = "";
+		messageElement.style.display = "none";
 	}
+
+	//Change back to original validation error message if it has been changed when knowing course code is not duplicate
+	if(element.name === "coursecode") {
+		messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
+	}
+
+	//Validation falied if getting here without returning
+	return false;
 }
 
-/*Validates all forms*/
+//Validates whole form
 function validateForm(formid) {
-	
-	if (formid === 'newCourse') {
-		var nName = document.getElementById("ncoursename").value;
-		var nCode = document.getElementById("ncoursecode").value;
-		
-		//if inputs are empty
-		if (nName == null || nName == "", nCode == null || nCode == "") {
-			
-			alert("Fill in all fields");
+	const formContainer = document.getElementById(formid);
+	const inputs = formContainer.querySelectorAll("input.validate");
+	let numberOfValidInputs = 0;
+
+	//Count number of valid inputs
+	inputs.forEach(input => {
+		if(elementIsValid(input)) {
+			numberOfValidInputs++;
 		}
-		
-		//if coursecode and coursenames are correct
-		if (window.bool3 === true && window.bool === true) {
-			
-			alert('The course is now added');
+	});
+
+	//If all inputs were valid create course or update course depending on id of form
+	if(numberOfValidInputs === inputs.length) {
+		if(formid === "newCourse") {
 			createNewCourse();
-			$('#newCourse input').val("");
-		} 
-		else {
-			
-			alert("You have entered incorrect information");
-		}
-	}
-
-	if (formid === 'editCourse') {
-		var Name = document.getElementById("coursename").value;
-		var Code = document.getElementById("coursecode").value;
-
-		//if inputs are empty
-		if (Name == null || Name == "", Code == null || Code == "") {
-			
-			alert("Fill in all fields");
-		}
-		
-        //if coursecode and coursenames are correct
-		if (window.bool4 === true && window.bool2 === true) {
-			
-			alert('The course is now updated');
+			alert("New course added!");
+		} else if(formid === "editCourse") {
 			updateCourse();
+			alert("Course updated!");
+		}
 
+		//Reset inputs
+		inputs.forEach(input => {
+			input.value = "";
+			input.removeAttribute("style");
+		});
+	} else {
+		//Go through inputs until empty value found or all is iterated. Return true if any is empty and false if none is empty.
+		const isAnyEmpty = [...inputs].some(input => input.value === null || input.value.trim() === "");
+		if(isAnyEmpty) {
+			alert("Fill in all fields");
 		} else {
-			
-			alert("You have entered incorrect information");
+			alert("You have entered incorrect information...");
 		}
 	}
 }
-
-
-
-
-
-
-

@@ -24,7 +24,6 @@
     <script src="diagram_IOHandler.js"></script>
 
     <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
-    <br/>
     <script>
         $(document).ready(function() {
             $(".menu-drop-down").hover(function() {
@@ -35,14 +34,10 @@
             $(".drop-down-item").click(function() {
                 $(this).closest(".drop-down").hide();
             });
-
-            window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
     </script>
 </head>
-<!-- Reads the content from the js-files -->
-<!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); setModeOnRefresh(); initToolbox(); updateGraphics(); initAppearanceForm();" style="overflow-y: hidden;">
+<body onload="init();" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -60,13 +55,13 @@
         ';
     ?>
     <!-- content START -->
-    <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
+    <div id="contentDiagram">
         <div id="buttonDiv">
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap" onmousedown="">
+                <div id="diagram-toolbar" class="application-toolbar-wrap">
                     <div class='application-toolbar'>
                         <div id="toolbar-switcher">
-                            <div id="toolbarTypeText" style ="text-align: center">Dev</div>
+                            <div id="toolbarTypeText">Dev</div>
                             </div>
                             <div class="toolsContainer">
                                 <div class="labelToolContainer">
@@ -145,14 +140,17 @@
                                         <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
                                     </div>
                                     <div class="export-drop-down-item" tabindex="0">
-                                        <a class="drop-down-option" id="picid">Export Picture</a>
+                                        <a class="drop-down-option" id="picid" onclick='ExportPicture(this);'>Export Picture</a>
                                     </div>
                                     <div class="export-drop-down-item" tabindex="0">
-                                        <a class="drop-down-option" id="svgidA4" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
+                                        <a class="drop-down-option" id="svgidPaper" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="printDiagram();">Print Diagram</span>
                             </div>
                             <div class="drop-down-item" tabindex="0">
                                 <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
@@ -228,6 +226,12 @@
                                 <span class="drop-down-option" onclick='resetViewToOrigin(event);'>Reset view to origin</span>
                                 <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
                             </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="openShortcutsDialog(event);">Edit keyboard shortcuts</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick='disableShortcuts(event);'>Disable keyboard shortcuts</span>
+                            </div>
                         </div>
                     </div>
                     <div class="menu-drop-down" tabindex="0">
@@ -255,28 +259,59 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="toggleVirtualA4(event)">Display Virtual A4</span>
-                                <i id="hotkey-displayA4" class="hotKeys">Shift + 4</i>
+                                <span class="drop-down-option" onclick="toggleVirtualPaper(event)">Display Virtual Paper</span>
+                                <i id="hotkey-displayPaper" class="hotKeys">Shift + 4</i>
+                            </div>
+                            <div class="drop-down-item papersize-drop-down-head" tabindex="0">
+                              <span class="drop-down-option" id="paperid">Paper size...</span>
+                              <div class="papersize-drop-down">
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A0" onclick='setPaperSize(event, 0);'>A0</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A1" onclick='setPaperSize(event, 1);'>A1</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A2" onclick='setPaperSize(event, 2);'>A2</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A3" onclick='setPaperSize(event, 3);'>A3</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A4" onclick='setPaperSize(event, 4);'>A4</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A5" onclick='setPaperSize(event, 5);'>A5</a>
+                                </div>
+                                <div class="papersize-drop-down-item" tabindex="0">
+                                  <a class="drop-down-option" id="A6" onclick='setPaperSize(event, 6);'>A6</a>
+                                </div>
+                              </div>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="a4-single-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='togglesingleA4(event);'><img src="../Shared/icons/Arrow_down_right.png">Single A4</span>
+                                <div id="Paper-single-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='togglesinglePaper(event);'><img src="../Shared/icons/Arrow_down_right.png">Single Paper</span>
                                 </div>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="a4-orientation-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleA4Orientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Orientation</span>
+                                <div id="Paper-orientation-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='togglePaperOrientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle Paper Orientation</span>
                                 </div>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="a4-holes-item" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleVirtualA4Holes(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
+                                <div id="Paper-holes-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='toggleVirtualPaperHoles(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle Paper Holes</span>
                                 </div>
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="a4-holes-item-right" class="drop-down-item-disabled">
-                                    <span class="drop-down-option" onclick='toggleVirtualA4HolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">A4 Holes Right</span>
+                                <div id="Paper-holes-item-right" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='toggleVirtualPaperHolesRight(event);'><img src="../Shared/icons/Arrow_down_right.png">Paper Holes Right</span>
                                 </div>
+                            </div>
+							<div class="drop-down-divider">
+                            </div>
+							<div class="drop-down-item" tabindex="0">
+                            	<span class="drop-down-option" onclick='toggleComments(event);'>Hide Comments</span>                       
                             </div>
                         </div>
                     </div>
@@ -344,11 +379,9 @@
                     <div class="menu-drop-down">
                         <span class="drop-down-label" tabindex="0">Help</span>
                         <div class="drop-down">
-                            <div class="drop-down-text-non-clickable" tabindex="0">
-                                <span class="drop-down-option">Move camera</span>
-                                <div id="hotkey-space" class="hotKeys">
-                                    <i>Blankspace</i>
-                                </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="toggleCameraView(event);">Move camera</span>
+                                <i id="hotkey-space" class="hotKeys">Blankspace</i>
                             </div>
                             <div class="drop-down-divider">
                             </div>
@@ -360,9 +393,10 @@
                             </div>
                         </div>
                     </div>
+                    <div id="errorBox">
+                        <span id="errorMSG"></span>
+                    </div>
                 </div>
-                </br>
-                </br>
 
                 <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
                 <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
@@ -381,24 +415,12 @@
                 -->
 
             </div>
-
-            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
-            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
-            <div class="tooltipdialog">
-                <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
+            <div id="diagramCanvasContainer">
+               <canvas id="diagramCanvas"></canvas>
+               <button id='moveButton' class='unpressed' title="Move Around">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
-                </button>
-            </div>
-            <div id="canvasDiv" style = "margin-left: 52px" oncontextmenu="return false;">
-            </div>
-            <div id="consoleDiv">
-                <!--
-                    Can be used for a later date. Not needed now.
-                <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
-                <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
-                <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
-                -->
-                <div id='valuesCanvas'>
+                </button> 
+                <div id="valuesCanvas">
                 </div>
                 <div id="selectDiv">
                     <span class="tooltipDecrease">
@@ -414,6 +436,14 @@
                     </span>
                     <span id="zoomV"></span>
                 </div>
+            </div>
+            <div id="consoleDiv">
+                <!--
+                    Can be used for a later date. Not needed now.
+                <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
+                <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
+                <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
+                -->
             </div>
         </div>
     </div>
@@ -485,8 +515,8 @@
                     <div class="form-group" data-types="7">
                         <label for="lineDirection">Line direction:</label>
                         <select id="lineDirection" data-access="lineDirection">
-                            <option value="First">First object</option>
-                            <option value="Second">Second object</option>
+                            <option value="First" id="First">First object</option>
+                            <option value="Second" id = "Second">Second object</option>
                         </select>
                     </div>
                     <div class="form-group" data-types="4,7">
@@ -539,10 +569,15 @@
                     <div class="form-group" data-types="-1">
                         <label for="lineThicknessGlobal">Line thickness:</label>
                         <input type="range" id="lineThicknessGlobal" min="1" max="4" value="2" data-access="properties.lineWidth">
-                    </div>
+                    </div>	
+					<div class="form-group" data-types="6">
+						<label for="commentCheck">Comment</label>
+						<input type="checkbox" id="commentCheck" data-access="properties.isComment" />
+					</div>
                     <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
                         <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
                     </div>
+									
                 </div>
             </div>
         </div>
@@ -568,6 +603,21 @@
                     <div id="importButtonWrap" class="importButtonWrap">
                         <input type="submit" id="file-submit-button" class="submit-button uploadButton" onclick="importFile();" value="Upload diagram" />
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- The key shortcut menu. Default state is display: none; -->
+    <div id="edit-shortcuts" class='loginBoxContainer shortcutsDiagram'>
+        <div class='shortcuts-box'>
+            <div class='loginBoxheader'>
+                <h3>Edit shortcuts</h3>
+                <div class='cursorPointer' onclick='closeShortcutsDialog();'>
+                    x
+                </div>
+            </div>
+            <div class='table-wrap'>
+                <div id="shortcuts-wrap" class="shortcuts-wrap">
                 </div>
             </div>
         </div>
