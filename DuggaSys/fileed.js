@@ -572,7 +572,7 @@ function saveTextToFile() {
     }, "FILE");
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
-    location.reload();
+    
 }
 
 function validatePreviewForm() {

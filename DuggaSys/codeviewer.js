@@ -823,11 +823,11 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add resize, reset and edit buttons
-		
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
-		// str += "<div id='testBoxes'><td class='butto2 resetbtn' onclick='newUpdateFile(\"../courses/1/"+retData['box'][boxid - 1][5]+"\",\""+ retData['box'][boxid - 1][5]+"\",\""+kind+"\")'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
 			str += "<div id='copyClipboard'><td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
@@ -4086,6 +4086,21 @@ function showBox(id) {
 	});
 }
 
+
+function showIframe(boxid,kind){
+	
+		$(".previewWindow").show();
+		$(".previewWindowContainer").css("display", "block");
+		$("#iframeFileed").attr('src', 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename='+retData['box'][boxid - 1][5]+'');
+
+}
+function hideIframe(){
+	$(".previewWindow").hide();
+	$(".previewWindowContainer").css("display", "none");
+	location.reload();
+}
+
 function hideDescription() {
 	var descText = document.getElementById
 }
+

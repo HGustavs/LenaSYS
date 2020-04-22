@@ -210,9 +210,13 @@ function makeCustomFilter(filtername, labeltext) {
 	if (filterList[filtername] == null) {
 		filterList[filtername] = false;
 	}
-	if (filterList[filtername]) {
+	if (filterList[filtername] || filtername == "showStudents" || filtername == "showTeachers") { //Enables filter and saves it in local storage when opening resulted.php.
 		str += " checked";
 
+		//Enables the showStudents and the showTeachers filters.
+		filterList[filtername] = true;
+		//Saves the checkbox values in localstorage.
+		localStorage.setItem("resultTable_filter_" + querystring['courseid'] + "-" + querystring['coursevers'], JSON.stringify(filterList));
 	}
 	str += "><label class='headerlabel' for='" + filtername + "'>" + labeltext + "</label></div>";
 	return str;
@@ -628,6 +632,15 @@ function returnedResults(data) {
 			$.getScript(data['dugganame'], function () {
 				$("#MarkCont").html(data['duggapage']);
 				showFacit(data['duggaparam'], data['useranswer'], data['duggaanswer'], data['duggastats'], data['files'], data['moment'], data['duggafeedback']);
+				if(data['duggafeedback'] == ""){
+                    var doc = document.getElementById("teacherFeedbackTable");
+                    for (var i = 0; i < doc.childNodes.length; i++) {
+                   		if (doc.childNodes[i].className == "list feedback-list") {
+                			doc.childNodes[i].style.display = "none";
+                   			break;
+						}
+					}
+                }
 			});
 			$("#resultpopover").css("display", "block");
 		} else {
@@ -1126,17 +1139,30 @@ function rowFilter(row) {
 		for (colname in row) {
 			if (colname == "FnameLname") {
 				var name = "";
+				if(searchterm.length == 1){ //if only 1 character has been entered in the search field
 				if (row[colname]["firstname"] != null) {
 					name += row[colname]["firstname"] + " ";
 				}
 				if (row[colname]["lastname"] != null) {
 					name += row[colname]["lastname"];
 				}
-        		name = name.replace(' ', '');
-				if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+        		var nameArray = name.split(" "); //Array with [firstname, lastname]
+				//Checks for the first character in firstname and/or lastname
+				if (nameArray[0].toUpperCase().startsWith(searchterm.toUpperCase()) || nameArray[1].toUpperCase().startsWith(searchterm.toUpperCase())) {
 					return true;
 				}
-
+				//when more characters than 1 has been entered
+			} else {
+				if (row[colname]["firstname"] != null) {
+					name += row[colname]["firstname"] + " ";
+				}
+				if (row[colname]["lastname"] != null) {
+					name += row[colname]["lastname"];
+				}
+				name = name.replace(" ", "");
+				if(name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1){
+					return true;
+				}
 				 if (row[colname]["ssn"] != null) {
 				 	if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
 				 		return true;
@@ -1152,7 +1178,8 @@ function rowFilter(row) {
 				if (row[colname]["setTeacher"] != null) {
 					if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
 						return true;
-				}
+				} 
+			}
 			}
 		}
 		return false;
@@ -1254,11 +1281,11 @@ function renderColumnFilter(col, status, colname) {
 		return str;
 	if (status) {
 		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
 		str += "</div>"
 	} else {
 		str = "<div class='checkbox-dugga'>";
-		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel' for='" + colname + "'>" + colname + "</label>";
 		str += "</div>"
 	}
 	return str;
@@ -1299,7 +1326,7 @@ function exportCell(format, cell, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
-			str = cell.ssn + ";";
+			str = cell.ssn + ",";
 
 			str += cell.firstname + " " + cell.lastname;
 			str = str.replace(/\&aring\;/g, "å");
@@ -1341,7 +1368,7 @@ function exportColumnHeading(format, heading, colname) {
 	str = "";
 	if (format === "csv") {
 		if (colname == "FnameLname") {
-			str = "Personnummer;Namn";
+			str = "Personnummer,Namn";
 		} else {
 			heading = heading.replace(/\&aring\;/g, "å");
 			heading = heading.replace(/\&Aring\;/g, "Å");
@@ -1457,4 +1484,167 @@ function hideSSN(ssn){
 	var hiddenSSN;
 	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
 	return hiddenSSN;
+}
+
+
+function compare(firstCell, secoundCell) {
+	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
+	let status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+	let val = 0;
+	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
+	var firstCellTemp;
+	var secoundCellTemp;
+	var sizeTemp = '{"';
+    if(typeof firstCell === 'object' && col.includes("FnameLname")) {
+		// "FnameLname" is comprised of two separately sortable sub-columns,
+		// if one of them is the sort-target, replace col with the subcolumn
+		if(col == "FnameLname"){
+			col = sortableTable.currentTable.getNameColumn();
+		}
+		// now check for matching columns with the potentially replaced name
+		if (col == "Fname") {
+			//Convert to json object
+			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
+				firstCellTemp = firstCell.firstname;
+				secoundCellTemp = secoundCell.firstname;
+			} else {
+				firstCell = JSON.parse(firstCell.firstname);
+				secoundCell = JSON.parse(secoundCell.firstname);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.firstname)[0];
+				secoundCellTemp = Object.values(secoundCell.firstname)[0];
+			}
+		} else if (col == "Lname") {
+			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
+				firstCellTemp = firstCell.lastname;
+				secoundCellTemp = secoundCell.lastname;
+			} else {
+				firstCell = JSON.parse(firstCell.lastname);
+				secoundCell = JSON.parse(secoundCell.lastname);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.lastname)[0];
+				secoundCellTemp = Object.values(secoundCell.lastname)[0];
+			}
+		}
+		firstCellTemp = $('<div/>').html(firstCellTemp).text();
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		if (status == 0 || status == 2 || status == 4) {
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+		} else {
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		}
+		//Check if the cell is a valid cell in the table.
+	} else if (typeof firstCell === 'object' && col.includes("lid")) {
+		if (JSON.stringify(firstCell.grade) || JSON.stringify(secoundCell.grade)) {
+			firstCellTemp = firstCell.grade;
+			secoundCellTemp = secoundCell.grade;
+		} else {
+			firstCell = JSON.parse(firstCell.grade);
+			secoundCell = JSON.parse(secoundCell.grade);
+			//Get the first letter from the value.
+			firstCellTemp = Object.values(firstCell.grade)[0];
+			secoundCellTemp = Object.values(secoundCell.grade)[0];
+		}
+		firstCellTemp = $('<div/>').html(firstCellTemp).text();
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+		if (status == 0) {
+			//Ascending grade
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		} else if (status == 1) {
+			//descending grades
+			if(secoundCellTemp !== "" && firstCellTemp !== "" && secoundCellTemp !== "0" && firstCellTemp !== "0" ){
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			} else if((secoundCellTemp === "" || secoundCellTemp === "0") && (firstCellTemp !== "" || firstCellTemp !== "0")){
+				val = 1
+			} else if((firstCellTemp === "" || firstCellTemp === "0") && (secoundCellTemp !== "" || secoundCellTemp !== "0")){
+				val = -1
+			}
+		} else if (status == 2) {
+			//pending grades
+			if(secoundCellTemp === "0" && firstCellTemp !== "0"){
+				val = -1;
+			} else if(secoundCellTemp !== "0" && firstCellTemp === "0" || secoundCellTemp === ""){
+				val = 1;			 
+
+			}
+		}
+	} else if (colOrder.includes(col)) {
+		//Check if the cells contains a date object.
+		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
+			firstCellTemp = firstCell;
+			secoundCellTemp = secoundCell;
+		} else {
+			//Check if any cell is null.
+			if (firstCell === null || secoundCell === null) {
+				firstCellTemp = firstCell;
+				secoundCellTemp = secoundCell;
+			} else if (typeof(firstCell) != 'number' && (firstCell.includes(sizeTemp) && secoundCell.includes(sizeTemp)) && (col.includes("filesize"))) {
+				tempTemp1 = firstCell.replace(/\D/g,'');
+				tempTemp2 = secoundCell.replace(/\D/g,'');
+				firstCellTemp = parseInt(tempTemp1, 10);
+				secoundCellTemp = parseInt(tempTemp2, 10);
+			} else {
+				//Convert to json object
+				if (JSON.stringify(firstCell) || JSON.stringify(secoundCell)) {
+					firstCellTemp = firstCell;
+					secoundCellTemp = secoundCell;
+				} else {
+					firstCell = JSON.parse(firstCell);
+					secoundCell = JSON.parse(secoundCell);
+					//Get the first letter from the value.
+					firstCellTemp = Object.values(firstCell)[0];
+					secoundCellTemp = Object.values(secoundCell)[0];
+				}
+			}
+		}
+
+		//Not currently relevant to resulted but may be usefull in the future, possibly if used in other modules.
+
+		/*if (col === "requestedpasswordchange") {
+			firstCellTemp = JSON.parse(firstCell);
+			secoundCellTemp = JSON.parse(secoundCell);
+			a = firstCellTemp.requested;
+			b = secoundCellTemp.requested;
+			if (status == 0) {
+				a > b ? val = 1 : a < b ? val = -1 : val = 0;
+			} else {
+				a < b ? val = 1 : a > b ? val = -1 : val = 0;
+			}
+			return val;
+		}*/
+
+		/*if(!isNaN(firstCellTemp) && !isNaN(secoundCellTemp)) {
+			if ((status % 2) == 0) {
+				val = firstCellTemp < secoundCellTemp;
+				if(val) {
+					val = 1;
+				}else{
+					val = -1;
+				}
+			} else {
+				val = secoundCellTemp < firstCellTemp;
+				if(val){
+					val = 1;
+				}else{
+					val = -1;
+				}
+			}
+		} else if (status == 0) {
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+		} else {
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+		}*/
+	} /*else {
+		if ((status % 2) == 0) {	//
+			val = firstCellTemp < secoundCell;
+		} else {
+			val = secoundCell < firstCellTemp;
+		}*/
+
+	return val;
+
 }

@@ -24,9 +24,8 @@ function Symbol(kindOfSymbol) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.cardinality = [
-      {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null}
-    ];
+    this.cardinality = 
+      {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null};
     this.lineDirection;
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
@@ -40,6 +39,8 @@ function Symbol(kindOfSymbol) {
     this.isLine = false;
     this.isRecursiveLine = false;
     this.pointsAtSamePosition = false;
+    this.UMLCustomResize = false;
+
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -56,7 +57,8 @@ function Symbol(kindOfSymbol) {
         'textSize': settings.properties.textSize,          // 14 pixels text size is default.
         'sizeOftext': settings.properties.sizeOftext,      // Used to set size of text.
         'textAlign': settings.properties.textAlign,        // Used to change alignment of free text.
-        'key_type': settings.properties.key_type           // Defult key type for a class.
+		'key_type': settings.properties.key_type,          // Defult key type for a class.
+		'isComment': settings.properties.isComment         // Used to se if text are comments and if they should be hidden.
     };
 
     //--------------------------------------------------------------------
@@ -260,6 +262,7 @@ function Symbol(kindOfSymbol) {
         var y2 = points[this.bottomRight].y;
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
+        var textHeight;
         if (this.symbolkind == symbolKind.erAttribute || this.symbolkind == symbolKind.erEntity) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 // If the width is less than the minimum, push out the
@@ -298,26 +301,56 @@ function Symbol(kindOfSymbol) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
             points[this.topLeft].y = y1;
-
             var attrHeight, opHeight;
             if(this.attributes.length > 0) {
-                //Height of text + padding
-                attrHeight = (this.attributes.length*14)+35;
+                //Height of text + padding on attributes textfield
+                if(this.properties['sizeOftext'] == 'Tiny'){
+                    textHeight = 14;
+                    attrHeight = (this.attributes.length*textHeight) +35;
+                }
+                else if (this.properties['sizeOftext'] == 'Small'){
+                    textHeight = 20;
+                    attrHeight = (this.attributes.length*textHeight) +35;
+                }
+                else if (this.properties['sizeOftext'] == 'Medium'){
+                    textHeight = 30;
+                    attrHeight = (this.attributes.length*textHeight)+50;
+                }
+                else if (this.properties['sizeOftext'] == 'Large'){
+                    textHeight = 50;
+                    attrHeight = (this.attributes.length*textHeight)+100;
+                } 
             }
             if(this.operations.length > 0) {
-                opHeight = (this.operations.length*14)+15;
+                //Height of text + padding on operations textfield
+                if(this.properties['sizeOftext'] == 'Tiny' || this.properties['sizeOftext'] == 'Small'){
+                    textHeight = 14;
+                }
+                else if (this.properties['sizeOftext'] == 'Small'){
+                    textHeight = 20;
+                }
+                else if (this.properties['sizeOftext'] == 'Medium'){
+                    textHeight = 30;
+                }
+                else if (this.properties['sizeOftext'] == 'Large'){
+                    textHeight = 50;
+                }
+                opHeight = (this.operations.length*textHeight) +25; 
             }
             this.minHeight = attrHeight + opHeight;
-
+            
             //Finding the longest string
             var longestStr = this.name;
-            for(var i = 0; i < this.operations.length; i++) {
-                if(this.operations[i].text.length > longestStr.length)
-                    longestStr = this.operations[i].text;
-            }
-            for(var i = 0; i < this.attributes.length; i++) {
-                if(this.attributes[i].text.length > longestStr.length)
-                    longestStr = this.attributes[i].text;
+
+            if(!this.UMLCustomResize) {
+                for(var i = 0; i < this.operations.length; i++) {
+                    if(this.operations[i].text.length > longestStr.length)
+                        longestStr = this.operations[i].text;
+                }
+                for(var i = 0; i < this.attributes.length; i++) {
+                    if(this.attributes[i].text.length > longestStr.length)
+                        longestStr = this.attributes[i].text;
+                }
             }
             ctx.font = "14px Arial";
             this.minWidth = ctx.measureText(longestStr).width + 15;
@@ -328,6 +361,7 @@ function Symbol(kindOfSymbol) {
                 if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
                         || points[this.topLeft] === sel.point.y)) { // Checks if topRight is clicked
                     points[this.topLeft].y = points[this.bottomRight].y - this.minHeight;
+                    this.UMLCustomResize = true; //If the user resizes, the symbol is custom
                 }else {
                     points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
                 }
@@ -338,8 +372,9 @@ function Symbol(kindOfSymbol) {
                 if (sel&&sel.point&&(points[this.topLeft] === sel.point // Checks if topLeft is clicked
                         || points[this.topLeft] === sel.point.x)) { // Checks if topRight is clicked
                     points[this.topLeft].x = points[this.bottomRight].x - this.minWidth;
+                    this.UMLCustomResize = true; //If the user resizes, the symbol is custom
                 }else {
-                    points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+                    points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;                
                 }
             }
             if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y) {
@@ -419,16 +454,21 @@ function Symbol(kindOfSymbol) {
             points[this.centerPoint].y = y1 + hh;
         }
     }
-
     //--------------------------------------------------------------------
     // resizeUMLToMinimum: Resizes an UML Symbol to the minimum Width and Height values
     //--------------------------------------------------------------------
 
     this.resizeUMLToMinimum = function() {
 
-        //console.log("Resized");
         points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
         points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+
+    }
+
+
+    this.resizeUMLToMinHeight = function() {
+        
+        points[this.bottomRight].y = points[this.topLeft].y + this.minHeight;
 
     }
 
@@ -1454,28 +1494,29 @@ function Symbol(kindOfSymbol) {
     this.drawLine = function(x1, y1, x2, y2) {
         this.isLine = true;
         //Checks if there is cardinality set on this object
-        if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
+        if(this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].symbolKind == symbolKind.uml) {
+            if(this.cardinality.symbolKind == symbolKind.uml) {
                 var valX = x1 > x2 ? x1-15 : x1+15;
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
                 var valX2 = x2 > x1 ? x2-15 : x2+15;
-                ctx.fillText(this.cardinality[0].value, valX, valY);
-                ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
+                ctx.fillText(this.cardinality.value, valX, valY);
+                ctx.fillText(this.cardinality.valueUML, valX2, valY2);
             }
-            else if(this.cardinality[0].isCorrectSide) {
+            else if(this.cardinality.isCorrectSide) {
                 this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
-                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
             else {
                 this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
-                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
         }
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+        ctx.lineCap = "square";
         if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
             ctx.lineWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
@@ -1488,7 +1529,8 @@ function Symbol(kindOfSymbol) {
             ctx.strokeStyle = "#fff";
         }
         else if (this.properties['key_type'] == "Derived") {
-            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
+            ctx.lineCap = "butt";
+            ctx.lineWidth = this.properties['lineWidth'] * 1.5 * diagram.getZoomValue();
             ctx.setLineDash([5, 4]);
         }
         checkLineIntersection(x1,y1,x2,y2);
@@ -1505,10 +1547,10 @@ function Symbol(kindOfSymbol) {
         this.properties['strokeColor'] = '#000000';
         this.properties['lineWidth'] = 2;
         //Checks if there is cardinality set on this object
-        if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
+        if(this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].symbolKind == symbolKind.uml) {
+            if(this.cardinality.symbolKind == symbolKind.uml) {
                 var valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
                 var valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
                 var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
@@ -1525,16 +1567,16 @@ function Symbol(kindOfSymbol) {
                         valX2 = x2 - 17 * diagram.getZoomValue();
                     }
                 }
-                ctx.fillText(this.cardinality[0].value, valX, valY);
-                ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
+                ctx.fillText(this.cardinality.value, valX, valY);
+                ctx.fillText(this.cardinality.valueUML, valX2, valY2);
             }
-            else if(this.cardinality[0].isCorrectSide) {
+            else if(this.cardinality.isCorrectSide) {
                 this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
-                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
             else {
                 this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
-                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
         }
 
@@ -1817,7 +1859,7 @@ function Symbol(kindOfSymbol) {
         let boxCorners = this.corners();
         let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
 
-        const cardinality = this.cardinality[0];
+        const cardinality = this.cardinality;
 
         // Correct corner e.g. top left, top right, bottom left or bottom right
         let correctCorner = getCorrectCorner(cardinality,
@@ -1835,6 +1877,7 @@ function Symbol(kindOfSymbol) {
 
             if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
                 cardinality.parentBox = diagram[i];
+                delete cardinality.parentBox.cardinality.parentBox;
                 break;
             }
         }
@@ -1866,7 +1909,7 @@ function Symbol(kindOfSymbol) {
 	    }
 	    else if(side == "IncorrectSide") {
 		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[this.cardinality[0].parentBox.topLeft], points[this.cardinality[0].parentBox.bottomRight]);
+		        var correctBox = getCorners(points[this.cardinality.parentBox.topLeft], points[this.cardinality.parentBox.bottomRight]);
 		        // Determine on which side of the box the cardinality should be placed
 		        if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
 		            cardinality.axis = "X";
@@ -1963,26 +2006,28 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawText = function(x1, y1, x2, y2) {
-        var midx = x1 + ((x2-x1)/2);
-        var midy = y1 + ((y2-y1)/2);
-        ctx.beginPath();
-        //draw text outline
-        if (this.targeted || this.isHovered) {
-            ctx.lineWidth = 2 * diagram.getZoomValue();
-            ctx.strokeColor = "F82";
-            //linedash only when hovered and not targeted
-            if (this.isHovered && !this.targeted) {
-                ctx.setLineDash([5, 4]);
-            }
-            ctx.rect(x1, y1, x2-x1, y2-y1);
-            ctx.stroke();
-        }
+		if(hideComment == false || this.properties['isComment'] == false){
+			var midx = x1 + ((x2-x1)/2);
+			var midy = y1 + ((y2-y1)/2);
+			ctx.beginPath();
+			//draw text outline
+			if (this.targeted || this.isHovered) {
+				ctx.lineWidth = 2 * diagram.getZoomValue();
+				ctx.strokeColor = "F82";
+				//linedash only when hovered and not targeted
+				if (this.isHovered && !this.targeted) {
+					ctx.setLineDash([5, 4]);
+				}
+				ctx.rect(x1, y1, x2-x1, y2-y1);
+				ctx.stroke();
+			}
 
-        ctx.fillStyle = this.properties['fontColor'];
-        ctx.textAlign = this.textAlign;
-        for (var i = 0; i < this.textLines.length; i++) {
-            ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
-        }
+			ctx.fillStyle = this.properties['fontColor'];
+			ctx.textAlign = this.textAlign;
+			for (var i = 0; i < this.textLines.length; i++) {
+				ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
+			}
+		}//here you could add an extra statment to make comments look different the regular text
     }
 
     //--------------------------------------------------------------------
@@ -2102,10 +2147,10 @@ function Symbol(kindOfSymbol) {
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == symbolKind.line) {
 			// Cardinality
-			if (this.cardinality[0].value != "" && this.cardinality[0].value != null) {
-				svgPos = "x='"+this.cardinality[0].x+"' y='"+this.cardinality[0].y+"' text-anchor='middle' dominant-baseline='central'";
+			if (this.cardinality.value != "" && this.cardinality.value != null) {
+				svgPos = "x='"+this.cardinality.x+"' y='"+this.cardinality.y+"' text-anchor='middle' dominant-baseline='central'";
 				svgStyle = "fill:#000; font:"+font+";";
-				str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.cardinality[0].value+"</text>";
+				str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.cardinality.value+"</text>";
 			}
 			svgPos = "x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"'";
 			if (this.properties['key_type'] == "Forced") {
@@ -2997,7 +3042,8 @@ function figureFreeDraw() {
 //--------------------------------------------------------------------
 function endFreeDraw(){
     if(numberOfPointsInFigure < 2){
-        // Perhaps make a flash function to flash messaged to the view, for better error handling
+        // Flash function where second argument is success or danger
+        flash("Please draw more lines!", "danger");
         return console.log('Draw more lines');
     }
     // Read and set the values for p1 and p2
@@ -3036,4 +3082,27 @@ function cleanUp() {
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
     p2 = null;
+}
+
+//--------------------------------------------------------------------
+// Flash function for error handeling to the view
+//--------------------------------------------------------------------
+function flash(message, state) {
+    document.getElementById("errorMSG").innerHTML=message;
+    var message = document.getElementById('errorMSG').style;
+    message.opacity = 1;
+    message.display="inline-block";
+    if(state == "danger"){
+        document.getElementById("errorMSG").style.color="darkred";
+        document.getElementById("errorMSG").style.backgroundColor="#ff9999";
+    }
+    else if(state == "success"){
+        document.getElementById("errorMSG").style.color="darkgreen";
+        document.getElementById("errorMSG").style.backgroundColor="#99ff99";
+    }
+    else{
+        document.getElementById("errorMSG").style.color="black";
+    }
+
+    (function fade(){(message.opacity-=.01)<0?message.display="none":setTimeout(fade,40)})();
 }
