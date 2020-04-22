@@ -79,7 +79,7 @@
 				echo "<td>";
 				echo "		<div class='motdBoxheader' >";
 				echo "			<h3>Message of the day</h3>";
-				echo "				<div class='cursorPointer' onclick=getElementById('motdArea').style.display='none'>x</div>";
+				echo "				<div class='cursorPointer' onclick='closeMOTD()'>x</div>";
 				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p style='text-align:center' id='motd'></p>";			

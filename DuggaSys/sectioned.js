@@ -12,6 +12,7 @@ var xelink;
 var momentexists = 0;
 var resave = false;
 var versnme = "UNKz";
+var versnr;
 var motd;
 
 // Stores everything that relates to collapsable menus and their state.
@@ -599,8 +600,10 @@ function returnedSection(data) {
           }
           bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
+        // save vers, versname and motd from table vers as global variables.
         if (querystring['coursevers'] == item['vers']) versnme = item['versname'];
         if (querystring['coursevers'] == item['vers']) motd = item['motd'];
+        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
@@ -1063,6 +1066,15 @@ function showMOTD(){
     document.getElementById("motdArea").style.display = "block";
     document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
   }
+}
+
+function closeMOTD(){
+  //document.getElementById('motdArea').style.display='none';
+  setMOTDCookie();
+}
+
+function setMOTDCookie(){
+  document.cookie = 'MOTD='+ JSON.stringify({versNr: versnr, versName: versnme});
 }
 
 function showHighscore(did, lid) {
