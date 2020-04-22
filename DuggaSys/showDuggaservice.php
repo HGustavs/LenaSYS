@@ -61,6 +61,16 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$segment." ".$answer;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
 
+// Gets username based on uid
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+    $username = $row['username'];
+}
+
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
@@ -260,6 +270,8 @@ if(checklogin()){
         if(strcmp($opt,"SAVDU")==0){				
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
+            $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
+            logUserEvent($userid,EventTypes::DuggaFileupload,$discription);
 
             //Seperate timeUsed, stepsUsed and score from $answer
             $temp = explode("##!!##", $answer);
