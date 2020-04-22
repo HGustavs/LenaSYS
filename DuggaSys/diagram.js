@@ -4741,11 +4741,8 @@ function setObjectProperties() {
     updateGraphics();
 }
 
-//Stores which element the mouse was pressed down on which element the mouse was released on while in the appearance menu.
-const appearanceMouseElements = {
-    down: null,
-    up: null
-};
+//Stores which element the mouse was pressed down on while in the appearance menu.
+let appearanceMouseDownElement = null;
 
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
@@ -4771,8 +4768,12 @@ function initAppearanceForm() {
     });
 
     const appearanceContainer = document.getElementById("appearance");
-    appearanceContainer.addEventListener("mousedown", e => appearanceMouseElements.down = e.target);
-    appearanceContainer.addEventListener("mouseup", e => appearanceMouseElements.up = e.target);
+    appearanceContainer.addEventListener("mousedown", e => appearanceMouseDownElement = e.target);
+    appearanceContainer.addEventListener("mouseup", e => {
+        if(appearanceMouseDownElement === appearanceContainer && e.target === appearanceContainer) {
+            toggleApperanceElement();
+        }
+    });
 }
 
 function getGroupsByType(type) {
