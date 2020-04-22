@@ -318,9 +318,9 @@ abstract class EventTypes {
     const PageNotFound = 11;
     const RequestNewPW = 12;
 	const CheckSecQuestion = 13;
-    const DuggaFileupload = 15;
     const SectionItems = 14;
 	const AddFile = 15;
+    const DuggaFileupload = 16;
     const AddCourse = 18;
 	const EditCourse = 19;
 }
