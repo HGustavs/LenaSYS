@@ -305,6 +305,7 @@ function imgPreview(path){
 function codeFilePreview(path){
     var preview = document.createElement("embed");
     preview.setAttribute("height", "70%");
+    preview.setAttribute("width", "90%");
     preview.style.border = "4px solid #614875";
     preview.style.backgroundColor = "white";
     preview.style.margin = "5px";
