@@ -4595,6 +4595,7 @@ function loadAppearanceForm() {
             const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
             const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
             typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
+            typeElement.focus();
             if(entities.length > 0 && relations.length > 0) {
                 document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
                 document.getElementById("cardinalityUML").style.display = "none";
@@ -4606,6 +4607,7 @@ function loadAppearanceForm() {
             const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
             const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
             typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
+            typeElement.focus();
             document.getElementById("cardinalityUML").style.display = "block";
             document.getElementById("cardinality").innerHTML = makeoptions("None", cardinalities, cardinalities);
             document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
@@ -4622,6 +4624,7 @@ function loadAppearanceForm() {
             break;
         case 0:
             document.getElementById("figureOpacity").value = object.opacity * 100;
+            document.getElementById("fillColor").focus();
             break;
     }
     setSelections(object);
