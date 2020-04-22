@@ -490,7 +490,7 @@ function deleteFile(fileid, filename, filekind) {
 }
 
 function createQuickItem() {
-    showFilePopUp('MFILE');
+    //showFilePopUp('MFILE');
 }
 
 /*****************************************************************
@@ -697,6 +697,10 @@ $("#fabBtn").on("touchstart", function (e) {
 $("#fab-btn-list").show();
     TouchFABDown(e);
 });
+ $("ol.fab-btn-list li").on('click', function () {
+    $("#addFile").show();
+
+ });
 });
 
 $(document).on("touchend", function (e) {
