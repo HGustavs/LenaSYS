@@ -4741,6 +4741,12 @@ function setObjectProperties() {
     updateGraphics();
 }
 
+//Stores which element the mouse was pressed down on which element the mouse was released on while in the appearance menu.
+const appearanceMouseElements = {
+    down: null,
+    up: null
+};
+
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     formGroups.forEach(group => {
@@ -4765,12 +4771,8 @@ function initAppearanceForm() {
     });
 
     const appearanceContainer = document.getElementById("appearance");
-    appearanceContainer.addEventListener("mousedown", e => {
-
-    });
-    appearanceContainer.addEventListener("mouseup", e => {
-
-    });
+    appearanceContainer.addEventListener("mousedown", e => appearanceMouseElements.down = e.target);
+    appearanceContainer.addEventListener("mouseup", e => appearanceMouseElements.up = e.target);
 }
 
 function getGroupsByType(type) {
