@@ -3208,23 +3208,6 @@ function diagramToSVG() {
     return str;
 }
 
-function diagramToSVG() {
-    var str = "";
-    // Convert figures to SVG first so they appear behind other objects
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.path) str += diagram[i].figureToSVG();
-    }
-    // Convert lines to SVG second so they appear behind other symbols but above figures
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind == symbolKind.line) str += diagram[i].symbolToSVG(i);
-    }
-    // Convert other objects to SVG
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) str += diagram[i].symbolToSVG(i);
-    }
-    return str;
-}
-
 //----------------------------------------------------------------------
 // setCheckbox: Check or uncheck the checkbox contained in 'element'
 //              This function adds a checkbox element if there is none

@@ -47,6 +47,16 @@ function Symbol(kindOfSymbol) {
     this.connectorLeft = [];
     this.connectorRight = [];
 
+    // Variables for UML line breakpoints
+    var breakpointStartX = 0;     // X Coordinate for start breakpoint
+    var breakpointStartY = 0;     // Y Coordinate for start breakpoint
+    var breakpointEndX = 0;       // X Coordinate for end breakpoint
+    var breakpointEndY = 0;       // Y Coordinate for end breakpoint
+    var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
+    var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
+    var startLineDirection = "";  // Which side of the class the line starts from
+    var endLineDirection = "";    // Which side of the class the line ends in
+
     // Properties array that stores different kind of objects. Refer to the properties with "properties['fillColor']"
     this.properties = {
         'fillColor': settings.properties.fillColor,    // Change background colors on entities.
@@ -1588,14 +1598,14 @@ function Symbol(kindOfSymbol) {
         }
 
         // Variables for UML line breakpoints
-        var breakpointStartX = 0;     // X Coordinate for start breakpoint
-        var breakpointStartY = 0;     // Y Coordinate for start breakpoint
-        var breakpointEndX = 0;       // X Coordinate for end breakpoint
-        var breakpointEndY = 0;       // Y Coordinate for end breakpoint
-        var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
-        var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
-        var startLineDirection = "";  // Which side of the class the line starts from
-        var endLineDirection = "";    // Which side of the class the line ends in
+        this.breakpointStartX = 0;
+        this.breakpointStartY = 0;
+        this.breakpointEndX = 0;
+        this.breakpointEndY = 0;
+        this.middleBreakPointX = 0;
+        this.middleBreakPointY = 0;
+        this.startLineDirection = "";
+        this.endLineDirection = "";
 
         // Calculating the mid point between start and end
         if (x2 > x1) {
@@ -2170,7 +2180,83 @@ function Symbol(kindOfSymbol) {
 				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			}
-		} else if (this.symbolkind == symbolKind.erRelation) {
+        } else if (this.symbolkind == symbolKind.umlLine) {
+            // Cardinality
+            if (this.cardinality.value != "" && this.cardinality.value != null) {
+                svgPosUmlLine  = "x='"+this.cardinality.x+"' y='"+this.cardinality.y+"' text-anchor='middle' dominant-baseline='central'";
+                svgStyle = "fill:#000; font:"+font+";";
+                str += "<text "+svgPosUmlLine+" style='"+svgStyle+"'>"+this.cardinality.value+"</text>";
+            }
+            //Draw correct line with breakpoints
+            svgPosUmlLine = "points='"+x1+','+y1+' ';
+            if (startLineDirection == "left") {
+                svgPosUmlLine += breakpointStartX+','+y1+' ';
+            } else if (startLineDirection == "right") {
+                svgPosUmlLine += breakpointStartX+','+y1+' ';
+            } else if (startLineDirection == "up") {
+                svgPosUmlLine += x1+','+breakpointStartY+' ';
+            } else if (startLineDirection == "down") {
+                svgPosUmlLine += x1+','+breakpointEndY+' ';
+            }
+            if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
+                svgPosUmlLine += breakpointStartX+','+breakpointEndY+' ';
+                svgPosUmlLine += x2+','+breakpointEndY+' ';
+                svgPosUmlLine += x2+','+y2+' ';
+            } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
+                svgPosUmlLine += middleBreakPointX+','+breakpointStartY+' ';
+                svgPosUmlLine += middleBreakPointX+','+middleBreakPointY+' ';
+                svgPosUmlLine += middleBreakPointX+','+breakpointEndY+' ';
+            } else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
+                svgPosUmlLine += breakpointStartX+','+breakpointEndY+' ';
+            } else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
+                svgPosUmlLine += breakpointEndX+','+breakpointStartY+' ';
+            }
+
+            if (endLineDirection == "left") {
+                svgPosUmlLine += breakpointEndX+','+y2+' ';
+            } else if (endLineDirection == "right") {
+                svgPosUmlLine += breakpointEndX+','+y2+' ';
+            } else if (endLineDirection == "up") {
+                svgPosUmlLine += x2+','+breakpointEndY+' ';
+            } else if (endLineDirection == "down") {
+                svgPosUmlLine += x2+','+breakpointEndY+' ';
+            }
+            svgPosUmlLine += x2+','+y2+"'";
+
+            //Handling recursive lines
+            if(this.isRecursiveLine == true){
+                if(startLineDirection=="up"){
+                    svgPosUmlLine = "points='"+x1+','+y1+' ';
+                    svgPosUmlLine += x1+','+(y1-40)+' ';
+                    svgPosUmlLine += x2+','+(y1-40)+' ';
+                    svgPosUmlLine += x2+','+y2+"'";
+                }
+                else if(startLineDirection=="down"){
+                    svgPosUmlLine = "points='"+x1+','+y1+' ';
+                    svgPosUmlLine += x1+','+(y1+40)+' ';
+                    svgPosUmlLine += x2+','+(y1+40)+' ';
+                    svgPosUmlLine += x2+','+y2+"'";
+                }
+            }
+
+            if (this.properties['key_type'] == "Forced") {
+                // Thick line that will be divided into two lines using thin line
+                strokeWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
+                svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+                str += "<polyline "+svgPosUmlLine+" fill='none' style='"+svgStyle+"' />";
+                // Thin line used to divide thick line into two lines
+                strokeWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+                svgStyle = "stroke:#fff; stroke-width:"+strokeWidth+";";
+                str += "<polyline "+svgPosUmlLine+" fill='none' style='"+svgStyle+"' />";
+            } else if (this.properties['key_type'] == "Derived") {
+                strokeWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
+                svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+                str += "<polyline "+svgPosUmlLine+" style='"+svgStyle+"' fill='none' stroke-dasharray='"+lineDash+"' />";
+            } else {
+                svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+                str += "<polyline "+svgPosUmlLine+" fill='none' style='"+svgStyle+"' />";
+            }
+        } else if (this.symbolkind == symbolKind.erRelation) {
 			var midx = points[this.centerPoint].x;
 			var midy = points[this.centerPoint].y;
 			// Relation
