@@ -4741,6 +4741,9 @@ function setObjectProperties() {
     updateGraphics();
 }
 
+//Stores which element the mouse was pressed down on while in the appearance menu.
+let appearanceMouseDownElement = null;
+
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     formGroups.forEach(group => {
@@ -4765,7 +4768,12 @@ function initAppearanceForm() {
     });
 
     const appearanceContainer = document.getElementById("appearance");
-    appearanceContainer.addEventListener("click", clickOutsideAppearanceForm);
+    appearanceContainer.addEventListener("mousedown", e => appearanceMouseDownElement = e.target);
+    appearanceContainer.addEventListener("mouseup", e => {
+        if(appearanceMouseDownElement === appearanceContainer && e.target === appearanceContainer) {
+            toggleApperanceElement();
+        }
+    });
 }
 
 function getGroupsByType(type) {
@@ -4792,13 +4800,3 @@ function submitAppearanceForm() {
     SaveState();
     toggleApperanceElement();
 }
-
-function clickOutsideAppearanceForm(e) {
-    const formContainer = document.querySelector(".loginBox");
-
-    //Close appearance if the clicked element is not a child/grand-child of formContanier
-    if(!formContainer.contains(e.target)) {
-        toggleApperanceElement();
-    }
-}
-
