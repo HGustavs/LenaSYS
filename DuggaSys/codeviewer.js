@@ -527,26 +527,26 @@ function removeExample() {
 var openBoxID;
 
 function displayEditContent(boxid) {
-	$("#boxtitle2").removeAttr("contenteditable");
+	document.getElementById("boxtitle2").removeAttribute("contenteditable");
 	// The information stored about the box is fetched
 	var box = retData['box'][boxid - 1];
 
 	// Keeps track of the currently open box. Used when saving the box content.
 	openBoxID = boxid;
 
-	$("#boxtitle").val(box[4]);
-	$("#boxcontent").val(box[1]);
+	document.getElementById("boxtitle").value = box[4];
+	document.getElementById("boxcontent").value = box[1];
 
 	changeDirectory($("#boxcontent"));
 
 	if (box[5] != null) {
 		box[5] = box[5].replace(/&#47;/g, "/");
-		$("#filename").val(box[5]);
+		document.getElementById("filename").value = box[5]; 
 	} else {
-		$("#filename").val("");
+		document.getElementById("filename").value = "";
 	}
 
-	$("#fontsize").val(box[6]);
+	document.getElementById("fontsize").value = box[6];
 
 	var wordl = retData['wordlists'];
 	var str = "";
@@ -562,8 +562,9 @@ function displayEditContent(boxid) {
 			str += "<option>" + retData['improws'][i][1] + " - " + retData['improws'][i][2] + "</option>";
 		}
 	};
-	$("#improws").html(str);
-	$("#editContentContainer").css("display", "flex");
+	document.getElementById("improws").innerHTML = str;
+
+	document.getElementById("editContentContainer").style.display = "flex";
 }
 
 //----------------------------------------------------------------------------------
