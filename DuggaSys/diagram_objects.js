@@ -2021,13 +2021,13 @@ function Symbol(kindOfSymbol) {
 				ctx.rect(x1, y1, x2-x1, y2-y1);
 				ctx.stroke();
 			}
-            //add permanent outline for comments
-            if (this.properties['isComment'] == true){
-                ctx.lineWidth = 1 * diagram.getZoomValue();
-                ctx.setLineDash([5, 4]);
-                ctx.rect(x1, y1, x2-x1, y2-y1);
-                ctx.stroke();
-            }
+			//add permanent outline for comments
+			if (this.properties['isComment'] == true){
+				ctx.lineWidth = 1 * diagram.getZoomValue();
+				ctx.setLineDash([5, 4]);
+				ctx.rect(x1, y1, x2-x1, y2-y1);
+				ctx.stroke();
+			}
 			ctx.fillStyle = this.properties['fontColor'];
 			ctx.textAlign = this.textAlign;
 			for (var i = 0; i < this.textLines.length; i++) {
