@@ -1057,24 +1057,61 @@ function returnedSection(data) {
   showMOTD();
   
 }
-
+// Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
-
-  if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
-    document.getElementById("motdArea").style.display = "none"; 
-  }else{
-    document.getElementById("motdArea").style.display = "block";
-    document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+  if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){ 
+    if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
+      document.getElementById("motdArea").style.display = "none"; 
+    }else{
+      document.getElementById("motdArea").style.display = "block";
+      document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+    }
   }
+}
+// Checks if the MOTD cookie already have the current vers and versname 
+function ignoreMOTD(){
+  var c_string = getCookie('MOTD');
+  c_array = c_string.split(',');
+  for(let i = 0; i<c_array.length;i+=2){
+    if(c_array[i] == versnme && c_array[i+1] == versnr){
+      return false;
+    }
+  }
+  return true;
 }
 
 function closeMOTD(){
-  //document.getElementById('motdArea').style.display='none';
-  setMOTDCookie();
+  console.log(document.cookie.indexOf('MOTD='));
+  if(document.cookie.indexOf('MOTD=') <= -1){
+    document.cookie = 'MOTD=';
+    setMOTDCookie();
+  }else{
+    setMOTDCookie();
+  }
+  document.getElementById('motdArea').style.display='none';
 }
-
+// Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
-  document.cookie = 'MOTD='+ JSON.stringify({versNr: versnr, versName: versnme});
+  var c_string = getCookie('MOTD');
+  c_string += versnme+","+versnr+",";
+  document.cookie = 'MOTD=' + c_string;
+}
+// Returns the value based on the cookies name
+function getCookie(c_name) {
+  var c_value = " " + document.cookie;
+  var c_start = c_value.indexOf(" " + c_name + "=");
+  if (c_start == -1) {
+      c_value = null;
+  }
+  else {
+      c_start = c_value.indexOf("=", c_start) + 1;
+      var c_end = c_value.indexOf(";", c_start);
+      if (c_end == -1) {
+          c_end = c_value.length;
+      }
+      c_value = unescape(c_value.substring(c_start,c_end));
+  }
+  return c_value;
 }
 
 function showHighscore(did, lid) {
@@ -1645,11 +1682,24 @@ function validateCourseID(courseid, dialogid) {
   }
 }
 
-function validateMOTD(motd){
-  var emotd = document.getElementById('motd'); //incorrect shit. Get the curreny eMOTD some how. 
-  /* add the windows.bool function to check the lenght of the message is under 35(DB settings)
-     Go into validateForm and make it work only for this bool after the save button is pressed. 
-  */
+function validateMOTD(motd, dialogid){
+  var emotd = document.getElementById(motd);
+  var Emotd = /^[a-zA-Z0-9_]*$/;
+  var EmotdRange = /^.{0,10}$/;
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+    emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    x4.style.display = "none";
+    window.bool9 = true;
+    console
+  } else {
+    emotd.style.borderColor = "#E54";
+    x4.style.display = "block";
+    emotd.style.borderWidth = "2px";
+    window.bool9 = false;
+  }
+
 }
 
 /*Validates that start date comes before end date*/
@@ -1804,10 +1854,9 @@ function validateForm(formid) {
     }
 
     // if all information is correct
-    if (window.bool4 === true && window.bool6 === true) {
+    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
       alert('Version updated');
       updateVersion();
-
     } else {
       alert("You have entered incorrect information");
     }

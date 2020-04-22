@@ -1017,6 +1017,7 @@ function processLogout() {
 			console.log("error");
 		}
 	});
+	document.cookie = "MOTD=; expires=Thu, 01 Jan 1970 00:00:00 UTC;"; // Clear MOTD cookies
 }
 
 function showLoginPopup()
