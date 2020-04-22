@@ -5262,6 +5262,9 @@ only screen and (max-device-width: 320px) {
   display: none;
 }
 
+.loginBoxheade, .fileViewHeader {
+  text-align:left;
+}
 
 .previewWindow, .fileViewWindow {
   text-align: center;
