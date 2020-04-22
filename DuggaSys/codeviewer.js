@@ -411,19 +411,19 @@ function editImpWords(editType)
 //----------------------------------------------------------------------------------
 
 function displayEditExample(boxid) {
-	$("#title").val($('<textarea />').html(retData['examplename']).text());
-	$("#secttitle").val($('<textarea />').html(retData['sectionname']).text());
-	$("#boxcontent").val(retData['box'][1][1]);
-	changeDirectory($("#boxcontent"));
-	$("#playlink").val(retData['playlink']);
+	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
+	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
+	document.getElementById("boxcontent").value = retData['box'][1][1];
+	changeDirectory(document.getElementById("boxcontent"));
+	document.getElementById("playlink").value = retData['playlink'];
 
 	var iw = retData['impwords'];
 	var str = "";
 	for (var i = 0; i < iw.length; i++) {
 		str += "<option>" + iw[i] + "</option>";
 	}
-	$("#impwords").html(str);
-
+	document.getElementById("impwords").innerHTML = str;
+	
 	// Set beforeid and afterid if set
 	var beforeid = "UNK";
 	if (retData['before'] !== null) {
@@ -453,9 +453,9 @@ function displayEditExample(boxid) {
 			afstr += "<option value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
 		}
 	}
-	$("#before").html(bestr);
-	$("#after").html(afstr);
-	$("#editExampleContainer").css("display", "flex");
+	document.getElementById("before").innerHTML += bestr;
+	document.getElementById("after").innerHTML += afstr;
+	document.getElementById("editExampleContainer").style.display = "flex";
 }
 
 //----------------------------------------------------------------------------------
