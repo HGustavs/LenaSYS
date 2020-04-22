@@ -526,7 +526,8 @@ function removeExample() {
 
 var openBoxID;
 
-function displayEditContent(boxid) {
+function displayEditContent(boxid) 
+{
 	document.getElementById("boxtitle2").removeAttribute("contenteditable");
 	// The information stored about the box is fetched
 	var box = retData['box'][boxid - 1];
