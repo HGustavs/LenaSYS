@@ -200,12 +200,15 @@ if (checklogin() && $hasAccess) {
     $access = True;
 }
 
+$waccess = hasAccess($userid, $cid, 'w');
+
 $array = array(
     'entries' => $entries,
     'debug' => $debug,
     'gfiles' => $gfiles,
     'lfiles' => $lfiles,
     'access' => $access,
+    'waccess' => $waccess,
     'studentteacher' => $studentTeacher
 );
 
