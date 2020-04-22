@@ -410,20 +410,21 @@ function editImpWords(editType)
 //
 //----------------------------------------------------------------------------------
 
-function displayEditExample(boxid) {
-	$("#title").val($('<textarea />').html(retData['examplename']).text());
-	$("#secttitle").val($('<textarea />').html(retData['sectionname']).text());
-	$("#boxcontent").val(retData['box'][1][1]);
-	changeDirectory($("#boxcontent"));
-	$("#playlink").val(retData['playlink']);
+function displayEditExample(boxid) 
+{
+	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
+	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
+	document.getElementById("boxcontent").value = retData['box'][1][1];
+	changeDirectory(document.getElementById("boxcontent"));
+	document.getElementById("playlink").value = retData['playlink'];
 
 	var iw = retData['impwords'];
 	var str = "";
 	for (var i = 0; i < iw.length; i++) {
 		str += "<option>" + iw[i] + "</option>";
 	}
-	$("#impwords").html(str);
-
+	document.getElementById("impwords").innerHTML = str;
+	
 	// Set beforeid and afterid if set
 	var beforeid = "UNK";
 	if (retData['before'] !== null) {
@@ -453,9 +454,9 @@ function displayEditExample(boxid) {
 			afstr += "<option value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
 		}
 	}
-	$("#before").html(bestr);
-	$("#after").html(afstr);
-	$("#editExampleContainer").css("display", "flex");
+	document.getElementById("before").innerHTML += bestr;
+	document.getElementById("after").innerHTML += afstr;
+	document.getElementById("editExampleContainer").style.display = "flex";
 }
 
 //----------------------------------------------------------------------------------
@@ -826,14 +827,13 @@ function createboxmenu(contentid, boxid, type) {
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
-    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
 			str += "<div id='copyClipboard'><td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 		
-
 		str += '</tr></table>';
 		boxmenu.innerHTML = str;
 		$(boxmenu).click(function (event) {
@@ -1095,10 +1095,10 @@ function highlightKeyword(kw) {
 
 	$(".impword").each(function () {
 		if(this.classList.contains("imphi")){
-			$(this).removeClass("imphi");
+			this.classList.remove("imphi");
 		}
 		else if(this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
-			$(this).addClass("imphi");
+			this.classList.add("imphi");
 		}
 	});
 }

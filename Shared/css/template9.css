@@ -81,6 +81,9 @@
 	max-width: 90%;
 	min-width: 10%;
 }
+.box{
+    margin-top: 30px !important;
+}
 @media only screen 
 and (max-device-width : 725px) {
     .resetbtn{
