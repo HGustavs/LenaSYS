@@ -1094,15 +1094,11 @@ function highlightKeyword(kw) {
 	kwDoubleQuotes = '"'+kw+'"';
 	kwSingleQuote = "'"+kw+"'";
 
-//	$(".impword").each(function () {
-	var highlightVar = document.querySelectorAll("impword");
-	highlightVar.forEach(function()) {
+	$(".impword").each(function () {
 		if(this.classList.contains("imphi")){
 			this.classList.remove("imphi");
-	//		$(this).removeClass("imphi");
 		}
 		else if(this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
-	//		$(this).addClass("imphi");
 			this.classList.add("imphi");
 		}
 	});
