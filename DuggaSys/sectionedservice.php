@@ -309,12 +309,23 @@ if($gradesys=="UNK") $gradesys=0;
 						$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
 					}
 				}else if(strcmp($opt,"UPDATEVRS")===0) {
-						$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate,motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+						// After column 'motd' exist on all releases this query can be merged with the original 'UPDATEVERS' below
+						$query = $pdo->prepare("UPDATE vers SET motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':coursecode', $coursecode);
+						$query->bindParam(':vers', $versid);
+						$query->bindParam(':motd', $motd);
+						if(!$query->execute()){
+							$error=$query->errorInfo();
+							$debug="Error updating entries: Missing column 'motd' ".$error[2];
+						}
+
+						$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':coursecode', $coursecode);
 						$query->bindParam(':vers', $versid);
 						$query->bindParam(':versname', $versname);
-						$query->bindParam(':motd', $motd);
+						//$query->bindParam(':motd', $motd);
 		        // if start and end dates are null, insert mysql null value into database
 
 						if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
@@ -546,6 +557,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 		$versions=array();
 		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
+		// After column 'motd' exist on all releases the outer if-statement can be removed.
 		if(!$query->execute()) {
 			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
 			if(!$query->execute()) {
@@ -625,6 +637,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 			$versions=array();
 			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
+			// After column 'motd' exist on all releases the outer if-statement can be removed.
 			if(!$query->execute()) {
 				$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
 				if(!$query->execute()) {

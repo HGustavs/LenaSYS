@@ -1080,6 +1080,18 @@ function ignoreMOTD(){
   return true;
 }
 
+function resetMOTDCookieForCurrentCourse(){
+  var c_string = getCookie('MOTD');
+  c_array = c_string.split(',');
+  for(let i = 0; i<c_array.length;i+=2){
+    if(c_array[i] == versnme && c_array[i+1] == versnr){
+      c_array.splice(i, 2);
+    }
+  }
+  document.cookie = 'MOTD=' + c_array;
+  showMOTD();
+}
+
 function closeMOTD(){
   console.log(document.cookie.indexOf('MOTD='));
   if(document.cookie.indexOf('MOTD=') <= -1){
@@ -1684,7 +1696,7 @@ function validateCourseID(courseid, dialogid) {
 
 function validateMOTD(motd, dialogid){
   var emotd = document.getElementById(motd);
-  var Emotd = /^[-a-zA-Z0-9_ ]*$/;
+  var Emotd = /(^$)|(^[-a-zA-Z0-9_ !,.]*$)/;
   var EmotdRange = /^.{0,35}$/;
   var x4 = document.getElementById(dialogid);
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
@@ -1692,7 +1704,6 @@ function validateMOTD(motd, dialogid){
     emotd.style.borderWidth = "2px";
     x4.style.display = "none";
     window.bool9 = true;
-    console
   } else {
     emotd.style.borderColor = "#E54";
     x4.style.display = "block";
@@ -1857,6 +1868,7 @@ function validateForm(formid) {
     if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
       alert('Version updated');
       updateVersion();
+      resetMOTDCookieForCurrentCourse();
     } else {
       alert("You have entered incorrect information");
     }
