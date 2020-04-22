@@ -19,7 +19,6 @@ function Symbol(kindOfSymbol) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];            // Free text array
-    this.name = "New Class";        // Default name is new class
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
@@ -1453,7 +1452,8 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawEntity = function(x1, y1, x2, y2) {
-        ctx.fillStyle = this.properties['fillColor'];
+		ctx.fillStyle = this.properties['fillColor'];
+		
         if (this.properties['key_type'] == "Weak") {
             this.drawWeakEntity(x1, y1, x2, y2);
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
@@ -1466,8 +1466,12 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, y2);
         ctx.lineTo(x1, y2);
         ctx.lineTo(x1, y1);
-        ctx.closePath();
-        ctx.fill();
+		ctx.closePath();
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = "red";
+		}
+		ctx.fill();
+
         if (this.properties['fontColor'] == this.properties['fillColor']) {
             if (this.properties['fillColor'] == '#000000') {
                 this.properties['fontColor'] = '#ffffff';
@@ -2337,6 +2341,41 @@ function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
 		ctx.closePath();
 		ctx.stroke();
  }
+}
+
+//---------------------------------------------------------------------
+//Check if both corners of an object are inside the same page
+//----------------------------------------------------------------------
+function checkSamePage(x1,y1,x2,y2){
+
+	x1 = canvasToPixels(x1).x;
+    x2 = canvasToPixels(x2).x;
+    y1 = canvasToPixels(0, y1).y;
+	y2 = canvasToPixels(0, y2).y;
+	//If y1 and y2 are diffrent minus plus return false
+	if(x1< 0 && x2 > 0 || x2 < 0 && x1 > 0){
+		return false;
+	}else if (y1< 0 && y2 > 0 || y2 < 0 && y1 > 0){
+		return false;
+	}
+	if(paperOrientation == "portrait"){
+		x1 = ~~((x1/paperWidth)*zoomValue);
+		y1 = ~~((y1/paperHeight)*zoomValue);
+		x2 = ~~((x2/paperWidth)*zoomValue);
+		y2 = ~~((y2/paperHeight)*zoomValue);
+		
+	}else{
+		x1 = ~~((x1/paperHeight)*zoomValue);
+		y1 = ~~((y1/paperWidth)*zoomValue);
+		x2 = ~~((x2/paperHeight)*zoomValue);
+		y2 = ~~((y2/paperWidth)*zoomValue);
+	}
+
+	if(x1==x2 && y1 == y2){
+		return true;
+	}else {
+		return false
+	}
 }
 //----------------------------------------------------------------------
 // drawLock: This function draws out the actual lock for the specified symbol
