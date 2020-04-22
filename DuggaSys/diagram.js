@@ -3667,8 +3667,18 @@ function mousemoveevt(ev) {
                     sel.point.y += change;
                 } else {
                     // normal resize
-                    sel.point.x = currentMouseCoordinateX;
-                    sel.point.y = currentMouseCoordinateY;
+                    //console.log(sel.point.x);
+                    var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
+                    var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
+                    var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
+                    //Don't move points if box is minumum size
+                    if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                        sel.point.x = currentMouseCoordinateX;
+                    }
+                    if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                        sel.point.y = currentMouseCoordinateY;
+                    }
+                    
                 }
                 // If we changed a point of a path object,
                 // we need to recalculate the bounding-box so that it will remain clickable.
@@ -3687,8 +3697,16 @@ function mousemoveevt(ev) {
                 }
             // this is for the other two points that doesn't really exist: bottomLeft and topRight
             } else {
-                sel.point.x.x = currentMouseCoordinateX;
-                sel.point.y.y = currentMouseCoordinateY;
+                var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
+                var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
+                var change = ((currentMouseCoordinateX - sel.point.x.x) + (currentMouseCoordinateY - sel.point.y.y)) / 2;
+                //Don't move points if box is minumum size
+                if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                    sel.point.x.x = currentMouseCoordinateX;
+                }
+                if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                    sel.point.y.y = currentMouseCoordinateY;
+                }
             }
             updateGraphics();
             // If mouse is pressed down and at a point in selected object - move that point
