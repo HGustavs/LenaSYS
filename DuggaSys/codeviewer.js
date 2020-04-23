@@ -3157,7 +3157,7 @@ function resizeBoxes(parent, templateId) {
 };
 
 //----------------------------------------------------------------------------------
-//width adjustment for template 1, 4 and 8 (Two boxes beside eachother.)
+//width adjustment for template 1 and 4 (Two boxes beside eachother.)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
@@ -3175,36 +3175,40 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
-	// makes the element dissapear when certain treshold is met
+
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if (basePer < 15) {
+		//Remove document description text
 		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+		//If the document is of type 'codebox', remove copyclipboard as well
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
-			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
-			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
-
 		}
+
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		
 	}else if (basePer > 85) {
+
 		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
 		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
-
 		}
+
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		
 	}else {
+
 		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
@@ -3240,30 +3244,41 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box3').className == 'box codebox'){
 			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
-			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
-			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
-			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3283,27 +3298,39 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box3').className == 'box codebox'){
 			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3395,10 +3422,18 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 
 	// makes the element dissapear when certain treshold is met
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
@@ -3409,6 +3444,15 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
 		}
@@ -4117,12 +4161,13 @@ function hideDescription() {
 }
 
 //Toggles the animation of buttomenu2 items/td when resizing
+//This function is called by alignBoxesWidth()
 
 function toggleTitleWrapper(targetBox, boxNum, boxW){
 	var box = targetBox;
 		console.log(boxW);
 		console.log(boxNum);
-  	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 || boxW > 85 && boxNum == 1) {
+  	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 || boxW > 85 && boxNum == 1 && (retData['templateid']) != 6 && (retData['templateid']) != 3) {
 		  console.log("INSIDE IF!");
 		  console.log(box);
     	box.classList.remove('hidden');
@@ -4142,7 +4187,62 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
       		passive: false
     	});
   	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 2){
-		console.log("INSIDE ELSE IF!");
+		console.log("INSIDE ELSE IF #2!");
+		console.log(box);
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 3){
+		console.log("INSIDE ELSE IF #3!");
+		console.log(box);
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 3 && (retData['templateid']) != 5){
+		console.log("INSIDE ELSE IF #4!");
+		console.log(box);
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 4){
+		console.log("INSIDE ELSE IF #5!");
+		console.log(box);
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 6){
+		console.log("INSIDE ELSE IF #6!");
+		console.log(box);
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 3){
+		console.log("INSIDE ELSE IF #7!");
 		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {

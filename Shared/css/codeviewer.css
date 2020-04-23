@@ -603,18 +603,19 @@
 .butto2:hover{
     background-color: #938C8C;
     cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 .boxtitleEditable{
 	color: white;
 	cursor:text;
-    	font-family: Arial, Sans-Serif;
-    	font-size: 15px;
+    cursor:pointer;
+    font-family: Arial, Sans-Serif;
+    font-size: 18px;
 }
 .boxtitle{
 	font-family: Arial, Sans-Serif !important;
 	cursor:default !important;
 	color: white !important;
-	  font-size: 15px;
 }
 
 .editcontentbtn {
@@ -634,18 +635,6 @@
     -webkit-transition: all 0.15s linear;
     -moz-transition: all 0.15s linear;
     -o-transition: all 0.15s linear;
-  /*
-    color: #DFF0D8;
-    width: 43px;
-    padding-right: 2px;
-    text-align: center;
-    font-size: 12px;
-    display: table-cell;
-    transition: all 1s linear;
-    -webkit-transition: all 1s linear;
-    -moz-transition: all 1s linear;
-    -o-transition: all 1s linear;
-    */
 }
 
 /* BOXMENU STYLING STOP */
