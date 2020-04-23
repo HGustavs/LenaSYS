@@ -611,29 +611,63 @@ function Symbol(kindOfSymbol) {
         }
     }
 
-    this.getConnectorFromPoint = function(point) {
+    //--------------------------------------------------------------------
+    // Gets the connectors name from given point
+    //--------------------------------------------------------------------
+    this.getConnectorNameFromPoint = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
             if(this.connectorTop[i].from == point) {
-                return this.connectorTop[i];
+                return "connectorTop";
             }
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
             if(this.connectorRight[i].from == point) {
-                return this.connectorRight[i];
+                return "connectorRight";
             }
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
             if(this.connectorBottom[i].from == point) {
-                return this.connectorBottom[i];
+                return "connectorBottom";
             }
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
             if(this.connectorLeft[i].from == point) {
-                return this.connectorLeft[i];
+                return "connectorLeft";
             }
         }
     }
 
+    //--------------------------------------------------------------------
+    // Gets connected lines
+    //--------------------------------------------------------------------
+    this.getConnectedTo = function(){
+        var connected = [];
+        //top
+        if(this.connectorTop.length > 0){
+            for(var j = 0 ; j < this.connectorTop.length ; j++){
+                connected.push(this.connectorTop[j].from);
+            }
+        }
+        //right
+        if(this.connectorRight.length > 0){
+            for(var j = 0 ; j < this.connectorRight.length ; j++){
+                connected.push(this.connectorRight[j].from);
+            }
+        }
+        //bottom
+        if(this.connectorBottom.length > 0){
+            for(var j = 0 ; j < this.connectorBottom.length ; j++){
+                connected.push(this.connectorBottom[j].from);
+            }
+        }
+        //left
+        if(this.connectorLeft.length > 0){
+            for(var j = 0 ; j < this.connectorLeft.length ; j++){
+                connected.push(this.connectorLeft[j].from);
+            }
+        }
+        return connected;
+    }
 
     //--------------------------------------------------------------------
     // isClicked: Returns true if xk,yk is inside the bounding box of the symbol

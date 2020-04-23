@@ -694,16 +694,31 @@ function keyDownHandler(e) {
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
             var temp = [];
-            var lines = [];
+            var connected = [];
+            //Handles copying of lines
+            for (var y = 0; y < cloneTempArray.length; y++) {
+                for (var x = 0; x < cloneTempArray.length; x++) {
+                    if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)){
+                        var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
+                        connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
+                    }
+                    else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)){
+                        var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
+                        connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});
+                        
+                    }
+                }
+            }
             for (var i = 0; i < cloneTempArray.length; i++) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
-                if(diagram[cloneIndex].symbolkind == 4){
-                    lines.push(diagram[cloneIndex]);
-                }
+            }
+            for(var j = 0 ; j < connected.length ; j++){
+                var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
+                var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
+                temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
             }
             cloneTempArray = temp;
-            connectCopiedLine(cloneTempArray, lines);
             selected_objects = temp;
             updateGraphics();
             SaveState();
@@ -773,85 +788,6 @@ function keyDownHandler(e) {
         }
     }
 }
-
-function connectCopiedLine(cloneTempArray, lines) {
-    var alreadyConnectedLines = [];
-    
-    for (var i = 0; i < cloneTempArray.length; i++) {
-        //top
-        if(cloneTempArray[i].connectorTop.length > 0){
-            for(var j = 0 ; j < cloneTempArray[i].connectorTop.length ; j++){
-                for(var k = 0; k < cloneTempArray.length; k++){
-                    if(cloneTempArray[k].hasConnectorFromPoint(cloneTempArray[i].connectorTop[j].to) && k != i  && !alreadyConnectedLines.includes(cloneTempArray[i].connectorTop[j].to)){
-                        var newline = lines.pop();
-                        cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorTop[j].to).to = newline.topLeft;
-                        cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorTop[j].to).from = newline.bottomRight;
-                        cloneTempArray[i].connectorTop[j].to = newline.bottomRight;
-                        cloneTempArray[i].connectorTop[j].from = newline.topLeft;
-                        alreadyConnectedLines.push(cloneTempArray[i].connectorTop[j].to);
-                        alreadyConnectedLines.push(cloneTempArray[i].connectorTop[j].from);
-                        console.log("top");
-                    }
-                }
-            }
-        }
-        //right    
-        if(cloneTempArray[i].connectorRight.length > 0){
-            for(var j = 0 ; j < cloneTempArray[i].connectorRight.length ; j++){
-                for(var k = 0; k < cloneTempArray.length; k++){
-                    if(cloneTempArray[k].hasConnectorFromPoint(cloneTempArray[i].connectorRight[j].to) && k != i  && !alreadyConnectedLines.includes(cloneTempArray[i].connectorRight[j].to)){
-                        console.log(cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorRight[j].to).to);
-                        var newline = lines.pop();
-                        cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorRight[j].to).to = newline.topLeft;
-                        cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorRight[j].to).from = newline.bottomRight;
-                        cloneTempArray[i].connectorRight[j].to = newline.bottomRight;
-                        cloneTempArray[i].connectorRight[j].from = newline.topLeft;
-                        alreadyConnectedLines.push(cloneTempArray[i].connectorRight[j].to);
-                        alreadyConnectedLines.push(cloneTempArray[i].connectorRight[j].from);
-                        console.log("Right" , cloneTempArray[k] , cloneTempArray[i]);
-                        console.log(newline);
-                    }
-                }
-            }
-        }
-        //Bottom    
-        if(cloneTempArray[i].connectorBottom.length > 0){
-            for(var j = 0 ; j < cloneTempArray[i].connectorBottom.length ; j++){
-                for(var k = 0; k < cloneTempArray.length; k++){
-                    if(cloneTempArray[k].hasConnectorFromPoint(cloneTempArray[i].connectorBottom[j].to) && k != i  && !alreadyConnectedLines.includes(cloneTempArray[i].connectorBottom[j].to)){
-                        var newline = lines.pop();
-                        cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorBottom[j].to).to = newline.topLeft;
-                        cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorBottom[j].to).from = newline.bottomRight;
-                        cloneTempArray[i].connectorBottom[j].to = newline.bottomRight;
-                        cloneTempArray[i].connectorBottom[j].from = newline.topLeft;
-                        alreadyConnectedLines.push(cloneTempArray[i].connectorBottom[j].to);
-                        alreadyConnectedLines.push(cloneTempArray[i].connectorBottom[j].from);
-                        console.log("Bottom");
-                    }
-                }
-            }
-        }
-        
-        //Left    
-        if(cloneTempArray[i].connectorLeft.length > 0){
-            for(var j = 0 ; j < cloneTempArray[i].connectorLeft.length ; j++){
-                for(var k = 0; k < cloneTempArray.length; k++){
-                    if(cloneTempArray[k].hasConnectorFromPoint(cloneTempArray[i].connectorLeft[j].to) && k != i  && !alreadyConnectedLines.includes(cloneTempArray[i].connectorLeft[j].to)){
-                        console.log(alreadyConnectedLines , cloneTempArray[i].connectorLeft[j].to);
-                        var newline = lines.pop();
-                        cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorLeft[j].to).to = newline.topLeft;
-                        cloneTempArray[k].getConnectorFromPoint(cloneTempArray[i].connectorLeft[j].to).from = newline.bottomRight;
-                        cloneTempArray[i].connectorLeft[j].to = newline.bottomRight;
-                        cloneTempArray[i].connectorLeft[j].from = newline.topLeft;
-                        alreadyConnectedLines.push(cloneTempArray[i].connectorLeft[j].to);
-                        alreadyConnectedLines.push(cloneTempArray[i].connectorLeft[j].from);
-                        console.log("Left");
-                    }
-                }
-            }
-        }
-    }
-} 
 
 //----------------------------------------------------
 // Map actual coordinates to canvas offset from origo
@@ -1130,49 +1066,7 @@ function copySymbol(symbol) {
 
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
-    console.log(clone);
 
-    var copiedLines = [];
-    for(var x = 0 ; cloneTempArray.length > x ; x++ ){
-        if(cloneTempArray[x].symbolkind == 4){
-            copiedLines.push(cloneTempArray[x].bottomRight);
-            copiedLines.push(cloneTempArray[x].topLeft);
-        }
-    }
-
-    if(symbol.connectorRight != "" && copiedLines.length > 0){
-        for(var x = 0 ; x < symbol.connectorRight.length ; x++){
-            if(copiedLines.includes(symbol.connectorRight[x].to) || copiedLines.includes(symbol.connectorRight[x].from)){
-                var connectorRightClone = jQuery.extend(true, {}, symbol.connectorRight[x]);
-                clone.connectorRight[x] = connectorRightClone;
-            }
-        }  
-    }
-    if(symbol.connectorLeft != "" && copiedLines.length > 0){
-        for(var x = 0 ; x < symbol.connectorLeft.length ; x++){
-            if(copiedLines.includes(symbol.connectorLeft[x].to) || copiedLines.includes(symbol.connectorLeft[x].from)){
-                var connectorLeftClone = jQuery.extend(true, {}, symbol.connectorLeft[x]);  
-                clone.connectorLeft[x] = connectorLeftClone;
-            }
-        }
-    }
-    if(symbol.connectorTop != "" && copiedLines.length > 0){
-        for(var x = 0 ; x < symbol.connectorTop.length ; x++){
-            if(copiedLines.includes(symbol.connectorTop[x].to) || copiedLines.includes(symbol.connectorTop[x].from)){
-                var connectorTopClone = jQuery.extend(true, {}, symbol.connectorTop[x]);  
-                clone.connectorTop[x] = connectorTopClone;
-            }
-        }
-    }
-    if(symbol.connectorBottom != "" && copiedLines.length > 0){
-        for(var x = 0 ; x < symbol.connectorBottom.length ; x++){
-            if(copiedLines.includes(symbol.connectorBottom[x].to) || copiedLines.includes(symbol.connectorBottom[x].from)){
-                var connectorBottomClone = jQuery.extend(true, {}, symbol.connectorBottom[x]);  
-                clone.connectorBottom[x] = connectorBottomClone;
-            }
-        }
-    }
-    
     if(clone.symbolkind != symbolKind.uml) {
         clone.centerPoint = points.push(centerPointClone) - 1;
     }else {
