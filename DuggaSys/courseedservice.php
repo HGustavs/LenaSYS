@@ -88,7 +88,7 @@ if(checklogin()){
 			logUserEvent($username, EventTypes::AddCourse, $description);
 
 		}else if(strcmp($opt,"NEWVRS")===0){
-			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate);");
 
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursecode', $coursecode);
@@ -96,6 +96,11 @@ if(checklogin()){
 			$query->bindParam(':versname', $versname);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':coursenamealt', $coursenamealt);
+			// if start and end dates are null, insert mysql null value into database
+			if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+			else $query->bindParam(':startdate', $startdate);
+			if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
+			else $query->bindParam(':enddate', $enddate);
 
 			/*
 			if(!$query->execute()) {
