@@ -3192,6 +3192,11 @@ function redoDiagram(event) {
 // diagramToSVG: Used when exporting the diagram to svg
 //----------------------------------------------------------------------
 function diagramToSVG() {
+    origoOffsetX = 0;
+    origoOffsetY = 0;
+    zoomValue = 1.00;
+    updateGraphics();
+    SaveState();
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
     for (var i = 0; i < diagram.length; i++) {
