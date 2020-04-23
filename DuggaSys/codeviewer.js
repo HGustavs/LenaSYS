@@ -479,9 +479,10 @@ function updateExample() {
 		var courseid = querystring['courseid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
-		var playlink = $("#playlink").val();
-		var examplename = $("#title").val();
-		var sectionname = $("#secttitle").val();
+		var playlink = document.getElementById("playlink").value;
+		var examplename = document.getElementById("title").value;
+		var sectionname = document.getElementById("secttitle").value;
+
 		var beforeid = $("#before option:selected").val();
 		var afterid = $("#after option:selected").val();
 
@@ -503,7 +504,7 @@ function updateExample() {
 		removedWords = [];
 	}
 
-	$("#editExampleContainer").css("display", "none");
+	document.getElementById("editExampleContainer").style.display = "none"; 
 }
 
 function removeExample() {
