@@ -629,7 +629,8 @@ function changeDirectory(kind) {
 var addedRows = new Array();
 var removedRows = new Array();
 
-function editImpRows(editType) {
+function editImpRows(editType) 
+{
 	var rowFrom = parseInt(document.getElementById("improwfrom").value);
 	var rowTo = parseInt(document.getElementById("improwto").value);
 	var row = document.getElementById("improwfrom").value + " - " + document.getElementById("improwto").value;
