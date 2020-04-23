@@ -630,10 +630,10 @@ var addedRows = new Array();
 var removedRows = new Array();
 
 function editImpRows(editType) {
-	var rowFrom = parseInt($("#improwfrom").val());
-	var rowTo = parseInt($("#improwto").val());
-	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
-
+	var rowFrom = parseInt(document.getElementById("improwfrom").value);
+	var rowTo = parseInt(document.getElementById("improwto").value);
+	var row = document.getElementById("improwfrom").value + " - " + document.getElementById("improwto").value;
+	
 	if (editType == "+" &&
 		rowFrom <= rowTo &&
 		rowFrom > 0 &&
@@ -646,9 +646,9 @@ function editImpRows(editType) {
 		});
 
 		if (exists == false) {
-			$("#improws").append('<option>' + row + '</option>');
-			$("#improwfrom").val("");
-			$("#improwto").val("");
+			document.getElementById("improws").innerHTML += '<option>' + row + '</option>';
+			document.getElementById("improwfrom").value ="";
+			document.getElementById("improwto").value ="";
 			addedRows.push([openBoxID, rowFrom, rowTo]);
 		}
 	} else if (editType == "-") {
