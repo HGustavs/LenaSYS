@@ -3455,7 +3455,7 @@ function scrollZoom(event) {
 //-----------------------
 
 function toggleFullscreen(){
-    // Load elements
+    // Load relevant elements
     var head = document.querySelector("header");
     var menu_buttons = document.getElementById("buttonDiv");
     var canvas_div = document.getElementById("diagramCanvasContainer");
@@ -3480,28 +3480,23 @@ function toggleFullscreen(){
         canvas_div.style.left = 0;
         canvas_div.style.height = window.innerHeight + "px";
         canvas_div.style.width = window.innerWidth + "px";
-
-        canvasSize();
-        
         fullscreen = true;
 
+        // Refit canvas to current container
+        canvasSize();
     } else if (fullscreen){
         // Revert to previous settings
-        // Show header and buttons
         head.style.display = "inline-block";
         menu_buttons.style.display = "block";
-
-        // Resize container
         canvas_div.style.position = old_container_position;
         canvas_div.style.marginLeft = old_canvas_div_marginLeft;
         canvas_div.style.height = old_container_height;
         canvas_div.style.width = old_container_width;
         zoom_bar.style.left = old_zoom_left;
+        fullscreen = false;
 
         // Refit canvas to current container
-        canvasSize();
-
-        fullscreen = false;
+        canvasSize();        
     }
 }
 
