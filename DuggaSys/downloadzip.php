@@ -26,6 +26,10 @@ if(isset($_SESSION['uid'])){
 	$userid="UNK";
 }
 
+// Logging who request to download all content from what course version 
+$description=$cid." ".$vers;
+logUserEvent($userid, EventTypes::DownloadAllCourseVers, $description);
+
 // Create new zip class 
 $zip	=	new	ZipArchive; 
 
@@ -103,10 +107,6 @@ if($zip	->	open($zipcreated,	ZipArchive::CREATE	)	===	TRUE){
 	}
 }
 
-// Logging who request to download all content from what course version 
-$description=$cid." ".$vers;
-logUserEvent($userid, EventTypes::DownloadAllCourseVers,$description);
-	
 
 ?>
 <html>
