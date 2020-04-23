@@ -4642,25 +4642,18 @@ function loadAppearanceForm() {
             break;
         case symbolKind.line:
             const connections = object.getConnectedObjects();
-            const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
-            const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
-            typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
-            typeElement.focus();
-            if(entities.length > 0 && relations.length > 0) {
-                document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
-                document.getElementById("cardinalityUML").style.display = "none";
-            } else {
-                document.getElementById("cardinality").parentNode.style.display = "none";
+            const hasEntity = connections.some(symbol => symbol.symbolkind === symbolKind.erEntity);
+            const hasRelation = connections.some(symbol => symbol.symbolkind === symbolKind.erRelation);
+            if(!hasEntity || !hasRelation) {
+                document.getElementById("cardinalityER").parentNode.style.display = "none";
             }
+            typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
+            document.getElementById("typeLine").focus();
             break;
         case symbolKind.umlLine:
             const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
-            const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
             typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
             typeElement.focus();
-            document.getElementById("cardinalityUML").style.display = "block";
-            document.getElementById("cardinality").innerHTML = makeoptions("None", cardinalities, cardinalities);
-            document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
 
             //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
             const connectedObjectsArray = object.getConnectedObjects();

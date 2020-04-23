@@ -67,6 +67,14 @@
             <option value=\'Impact\'>Impact</option>
             <option value=\'Calibri\'>Calibri</option>
         ';
+
+        $cardinalitiesUML = '
+            <option value=\'None\' selected>None</option>
+            <option value=\'0..1\'>0..1</option>
+            <option value=\'1..1\'>1..1</option>
+            <option value=\'0..*\'>0..*</option>
+            <option value=\'1..*\'>1..*</option>
+        ';
     ?>
     <!-- content START -->
     <div id="contentDiagram">
@@ -532,10 +540,20 @@
                             <option value="Second" id = "Second">Second object</option>
                         </select>
                     </div>
-                    <div class="form-group" data-types="4,7">
-                        <label for="cardinality">Cardinality:</label>
-                        <select id="cardinality" data-access="cardinality.value"></select></br>
-                        <select id="cardinalityUML" data-access="cardinality.valueUML"></select>
+                    <div class="form-group" data-types="4">
+                        <label for="cardinalityER">ER cardinality:</label>
+                        <select id="cardinalityER" data-access="cardinality.value">
+                            <option value="None" selected>None</option>
+                            <option value="1">1</option>
+                            <option value="N">N</option>
+                            <option value="M">M</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="7">
+                        <label for="cardinalityUMLFirst">UML cardinality:</label>
+                        <select id="cardinalityUMLFirst" data-access="cardinality.value"><?=$cardinalitiesUML;?></select>
+                        </br>
+                        <select id="cardinalityUMLSecond" data-access="cardinality.valueUML"><?=$cardinalitiesUML;?></select>
                     </div>
                     <div class="form-group" data-types="1">
                         <label for="umlAttributes">Attributes:</label>
