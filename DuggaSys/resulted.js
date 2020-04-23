@@ -928,6 +928,9 @@ function renderCell(col, celldata, cellid) {
 		if (celldata.kind == 4) {
 			str += "dugga-moment ";
 		}
+		else if (celldata.kind != 4 || celldata.kind != 3 || celldata.kind != 2 || celldata.kind != 1 || celldata.kind != 0 || celldata.kind != 5 || celldata.kind != 6) {
+			str += "dugga-empty ";
+		}
 		if (celldata.grade > 1) {
 			str += "dugga-pass";
 		} else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {

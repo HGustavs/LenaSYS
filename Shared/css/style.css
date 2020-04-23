@@ -3223,6 +3223,10 @@ span.arrow {
   background-image: url('../icons/Stripes2.png');
 }
 
+.dugga-empty {
+  background-color: black;
+}
+
 .dugga-result-subheader {
   border-top: 2px solid white;
 }
