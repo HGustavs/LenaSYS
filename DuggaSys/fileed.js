@@ -279,10 +279,10 @@ function renderCell(col, celldata, cellid) {
     return str;
 }
 //---------------------------------------------------------------
-//sortFilesByKind <- Callback function sorts the files by its kind
+//filterFilesByKind <- Callback function sorts the files by its kind
 //---------------------------------------------------------------
 
-function sortFilesByKind(kind){
+function filterFilesByKind(kind){
     $("#fileLink table tbody tr").hide();
     if(kind == "Global"){
         $( "td:contains('Global')" ).parents("tr").show();

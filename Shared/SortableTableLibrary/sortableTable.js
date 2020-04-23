@@ -664,8 +664,6 @@ function SortableTable(param) {
         }
         $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
         $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
-        console.log("sortFilesByKind where Kind = " + kind);
-        console.log($('input[name="sortKind"]:checked').val());
     }
 
 	this.updateCell = function () {
