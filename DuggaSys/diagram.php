@@ -298,6 +298,11 @@
                                     <span class="drop-down-option" onclick='togglePaperOrientation(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle Paper Orientation</span>
                                 </div>
                             </div>
+							<div class="drop-down-item" tabindex="0">
+                                <div id="Paper-pagenumber-item" class="drop-down-item-disabled">
+                                    <span class="drop-down-option" onclick='togglePagenumbers(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle Pagenumbers</span>
+                                </div>
+                            </div>
                             <div class="drop-down-item" tabindex="0">
                                 <div id="Paper-holes-item" class="drop-down-item-disabled">
                                     <span class="drop-down-option" onclick='toggleVirtualPaperHoles(event);'><img src="../Shared/icons/Arrow_down_right.png">Toggle Paper Holes</span>
