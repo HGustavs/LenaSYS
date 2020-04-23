@@ -3422,7 +3422,7 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
@@ -3495,7 +3495,7 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer > 85) {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
@@ -3641,7 +3641,7 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
 	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxOne, basePer);
@@ -4204,19 +4204,13 @@ function hideDescription() {
 
 function toggleTitleWrapper(targetBox, boxNum, boxW){
 	var box = targetBox;
-		console.log(boxW);
-		console.log(boxNum);
   	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 && (retData['templateid']) == !8 || boxW > 85 && boxNum == 1 && (retData['templateid']) == !6 && !3 && !9) {
-		  console.log("INSIDE IF!");
-		  console.log(box);
     	box.classList.remove('hidden');
     	setTimeout(function () {
       		box.classList.remove('visuallyhidden');
 		}, 20);
 
   	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 1){
-		  console.log("INSIDE ELSE IF!");
-		  console.log(box);
 		box.classList.add('visuallyhidden');
     	box.addEventListener('transitionend', function(e) {
       		box.classList.add('hidden');
@@ -4226,8 +4220,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
       		passive: false
     	});
   	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 2 && boxW < 98){
-		console.log("INSIDE ELSE IF #2!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4237,8 +4229,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == !1 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 3){
-		console.log("INSIDE ELSE IF #3!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4248,8 +4238,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 3 && (retData['templateid']) != 5){
-		console.log("INSIDE ELSE IF #4!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4259,8 +4247,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 4 && boxW < 98){
-		console.log("INSIDE ELSE IF #5!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4270,8 +4256,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 6){
-		console.log("INSIDE ELSE IF #6!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4281,8 +4265,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 3){
-		console.log("INSIDE ELSE IF #7!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4292,8 +4274,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 9){
-		console.log("INSIDE ELSE IF #7!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4303,8 +4283,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 7 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 4 && (retData['templateid']) == 7){
-		console.log("INSIDE ELSE IF #3!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4314,8 +4292,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 8){
-		console.log("INSIDE ELSE IF #3!");
-		console.log(box);
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4325,7 +4301,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else {
-		console.log("INSIDE ELSE!");
+		
 	  }
 
 }
