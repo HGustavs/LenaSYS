@@ -53,6 +53,13 @@
             <option value=\'#ffffff\'>White</option>
             <option value=\'#000000\'>Black</option>
         ';
+
+        $textSizes = '
+            <option value=\'Tiny\'>Tiny</option>
+            <option value=\'Small\'>Small</option>
+            <option value=\'Medium\'>Medium</option>
+            <option value=\'Large\'>Large</option>
+        ';
     ?>
     <!-- content START -->
     <div id="contentDiagram">
@@ -466,6 +473,7 @@
             </div>
             <div class='table-wrap'>
                 <div id="appearanceForm">
+                    <!-- -1->Global, 0->Free draw, 1->UML, 2->Attribute, 3->Entity, 4->Line, 5->Relation, 6->Text, 7-UML-line -->
                     <div class="form-group" data-types="1,2,3,5">
                         <label for="name">Name:</label>
                         <input type="text" id="name" data-access="name">
@@ -501,12 +509,7 @@
                     </div>
                     <div class="form-group" data-types="2,3,5,6">
                         <label for="textSize">Text size:</label>
-                        <select id="textSize" data-access="properties.sizeOftext">
-                            <option value="Tiny">Tiny</option>
-                            <option value="Small">Small</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Large">Large</option>
-                        </select>
+                        <select id="textSize" data-access="properties.sizeOftext"><?=$textSizes;?></select>
                     </div>
                     <div class="form-group" data-types="2,3,5,0">
                         <label for="lineColor">Line color:</label>
@@ -563,12 +566,7 @@
                     </div>
                     <div class="form-group" data-types="-1">
                     <label for="textSizeGlobal">Text size:</label>
-                    <select id="textSizeGlobal" data-access="properties.sizeOftext">
-                        <option value="Tiny">Tiny</option>
-                        <option value="Small">Small</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Large">Large</option>
-                    </select>
+                    <select id="textSizeGlobal" data-access="properties.sizeOftext"><?=$textSizes;?></select>
                     </div>
                     <div class="form-group" data-types="-1">
                         <label for="lineColorGlobal">Line color:</label>
@@ -584,8 +582,7 @@
 					</div>
                     <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
                         <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
-                    </div>
-									
+                    </div>				
                 </div>
             </div>
         </div>
