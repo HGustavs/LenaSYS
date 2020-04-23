@@ -60,6 +60,13 @@
             <option value=\'Medium\'>Medium</option>
             <option value=\'Large\'>Large</option>
         ';
+
+        $fonts = '
+            <option value=\'Arial\'>Arial</option>
+            <option value=\'Courier New\'>Courier New</option>
+            <option value=\'Impact\'>Impact</option>
+            <option value=\'Calibri\'>Calibri</option>
+        ';
     ?>
     <!-- content START -->
     <div id="contentDiagram">
@@ -496,12 +503,7 @@
                     </div>
                     <div class="form-group" data-types="2,3,5,6">
                         <label for="fontFamily">Font family:</label>
-                        <select id="fontFamily" data-access="properties.font">
-                            <option value="Arial">Arial</option>
-                            <option value="Courier New">Courier New</option>
-                            <option value="Impact">Impact</option>
-                            <option value="Calibri">Calibri</option>
-                        </select>
+                        <select id="fontFamily" data-access="properties.font"><?=$fonts?></select>
                     </div>
                     <div class="form-group" data-types="2,3,5,6">
                         <label for="fontColor">Font color:</label>
@@ -553,12 +555,7 @@
                     </div>
                     <div class="form-group" data-types="-1">
                         <label for="fontFamilyGlobal">Font family:</label>
-                        <select id="fontFamilyGlobal" data-access="properties.font">
-                            <option value="Arial">Arial</option>
-                            <option value="Courier New">Courier New</option>
-                            <option value="Impact">Impact</option>
-                            <option value="Calibri">Calibri</option>
-                        </select>
+                        <select id="fontFamilyGlobal" data-access="properties.font"><?=$fonts?></select>
                     </div>
                     <div class="form-group" data-types="-1">
                         <label for="fontColorGlobal">Font color:</label>
