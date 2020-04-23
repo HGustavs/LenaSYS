@@ -324,6 +324,8 @@ abstract class EventTypes {
 	const AddCourseVers = 17;
   	const AddCourse = 18;
 	const EditCourse = 19;
+	const ResetPW = 20;
+	const DownloadAllCourseVers = 21;
 }
 
 //------------------------------------------------------------------------------------------------

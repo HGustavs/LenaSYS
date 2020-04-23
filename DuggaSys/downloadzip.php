@@ -20,6 +20,11 @@ $pathToActiveVersionOfCourse	=	'/courses/' . $cid .	'/'	.	$vers	.	'/';
 $zipcreated	=	"./downloads/courseID-"	.	$cid	.	"_version-"	.	$vers	.	"_All_files.zip";
 $error = false;
 
+if(isset($_SESSION['uid'])){
+	$userid=$_SESSION['uid'];
+}else{
+	$userid="UNK";
+}
 
 // Create new zip class 
 $zip	=	new	ZipArchive; 
@@ -97,6 +102,10 @@ if($zip	->	open($zipcreated,	ZipArchive::CREATE	)	===	TRUE){
 		$error = true;
 	}
 }
+
+// Logging who request to download all content from what course version 
+$description=$cid." ".$vers;
+logUserEvent($userid, EventTypes::DownloadAllCourseVers,$description);
 	
 
 ?>
