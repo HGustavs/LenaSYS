@@ -4527,13 +4527,13 @@ function setSelectedOption(select, value) {
 
 function createCardinality() {
     //Setting cardinality on new line
-    if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": false});
+    if(diagram[lineStartObj +1].symbolkind == symbolKind.erRelation) {
+        hoveredObject.cardinality = ({"value": "", "isCorrectSide": false});
     }
-    else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erRelation) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": true});
+    else if(diagram[lineStartObj+1].symbolkind == symbolKind.erEntity) {
+        hoveredObject.cardinality = ({"value": "", "isCorrectSide": true});
     }
-    else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[markedObject].symbolkind == symbolKind.uml) {
+    else if(diagram[lineStartObj+1].symbolkind == symbolKind.uml) {
         diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
     }
 }
