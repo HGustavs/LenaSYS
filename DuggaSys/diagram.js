@@ -4025,6 +4025,10 @@ function mousedownevt(ev) {
 
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
+            //Select when in CreateLine mode
+            if (uimode == "CreateLine"){
+              handleSelect();
+            }
         }
     } else if (sel.distance < tolerance / zoomValue) {
         md = mouseState.insidePoint;
