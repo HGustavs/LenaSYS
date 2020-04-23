@@ -3177,45 +3177,44 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
 	// makes the element dissapear when certain treshold is met
 	if (basePer < 15) {
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
 			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
-			thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
-			toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
-			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-			thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
-			toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
-			thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
-			toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+
 		}
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
-			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-			thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
-			toggleTitleWrapper(thisBox, boxNumBase, basePer);
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		
 	}else {
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
-			//document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-			thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
-			toggleTitleWrapper(thisBox, boxNumBase, basePer);
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			//document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
-			thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
-			toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
