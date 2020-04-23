@@ -611,6 +611,29 @@ function Symbol(kindOfSymbol) {
         }
     }
 
+    this.getConnectorFromPoint = function(point) {
+        for (var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].from == point) {
+                return this.connectorTop[i];
+            }
+        }
+        for(var i = 0; i < this.connectorRight.length; i++) {
+            if(this.connectorRight[i].from == point) {
+                return this.connectorRight[i];
+            }
+        }
+        for (var i = 0; i < this.connectorBottom.length; i++) {
+            if(this.connectorBottom[i].from == point) {
+                return this.connectorBottom[i];
+            }
+        }
+        for (var i = 0; i < this.connectorLeft.length; i++) {
+            if(this.connectorLeft[i].from == point) {
+                return this.connectorLeft[i];
+            }
+        }
+    }
+
 
     //--------------------------------------------------------------------
     // isClicked: Returns true if xk,yk is inside the bounding box of the symbol
