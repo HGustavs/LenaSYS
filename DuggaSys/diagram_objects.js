@@ -1142,7 +1142,14 @@ function Symbol(kindOfSymbol) {
 
         // Clear Class Box
         ctx.fillStyle = '#ffffff';
-        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+		ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+		
+		// Set border to redish if crossing line
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.strokeStyle = '#DC143C';
+		}else{
+			ctx.strokeStyle = this.properties['strokeColor'];
+		}
 
         // Box
         ctx.beginPath();
@@ -1160,9 +1167,14 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, midy);
         ctx.fill();
         ctx.stroke();
-        ctx.clip();
-        ctx.fillStyle = this.properties['fontColor'];
-        // Write Class Name
+		ctx.clip();
+		
+		// Write Class Name
+        if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = '#DC143C';
+		}else{
+			ctx.fillStyle = this.properties['fontColor'];
+		}
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         if(ctx.measureText(this.name).width >= (x2-x1) - 2) {
@@ -1195,7 +1207,14 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
-        this.isAttribute = true;
+		this.isAttribute = true;
+		//if on two or more pages turn redish
+        if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.strokeStyle = '#DC143C';
+		}else{
+			ctx.strokeStyle = this.properties['strokeColor'];
+		}
+
         ctx.fillStyle = this.properties['fillColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
@@ -1248,8 +1267,14 @@ function Symbol(kindOfSymbol) {
         }
         ctx.fill();
         ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = this.properties['fontColor'];
+		ctx.setLineDash([]);
+		//if not on one page draw in redish
+        if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = '#DC143C';
+		}else{
+			ctx.fillStyle = this.properties['fontColor'];
+		}
+
         if(ctx.measureText(this.name).width > (x2-x1) - 4) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
@@ -1440,15 +1465,8 @@ function Symbol(kindOfSymbol) {
         if (this.properties['strokeColor'] == '#ffffff') {
             this.properties['strokeColor'] = '#000000';
         }
-        // Make sure that the font color is always able to be seen.
-        // Symbol and Font color should therefore not be the same
-        if (this.properties['fontColor'] == this.properties['fillColor']) {
-            if (this.properties['fillColor'] == '#000000') {
-                this.properties['fontColor'] = '#ffffff';
-            } else {
-                this.properties['fontColor'] = '#000000';
-            }
-        }
+        
+        
     }
 
     this.drawEntity = function(x1, y1, x2, y2) {
@@ -1459,29 +1477,40 @@ function Symbol(kindOfSymbol) {
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
         } else {
             removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
-        }
+		}
+
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.strokeStyle = '#DC143C';
+		}else{
+			ctx.strokeStyle = this.properties['strokeColor'];
+		}
+
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y1);
         ctx.lineTo(x2, y2);
         ctx.lineTo(x1, y2);
         ctx.lineTo(x1, y1);
-		ctx.closePath();
-		if(!checkSamePage(x1,y1,x2,y2)){
-			ctx.fillStyle = "red";
-		}
+		ctx.closePath();	
 		ctx.fill();
 
+		// Make sure that the font color is always able to be seen.
+        // Symbol and Font color should therefore not be the same
         if (this.properties['fontColor'] == this.properties['fillColor']) {
             if (this.properties['fillColor'] == '#000000') {
                 this.properties['fontColor'] = '#ffffff';
             } else {
                 this.properties['fontColor'] = '#000000';
             }
-        }
+		}
+
         ctx.clip();
         ctx.stroke();
-        ctx.fillStyle = this.properties['fontColor'];
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = '#DC143C';
+		}else{
+			ctx.fillStyle = this.properties['fontColor'];
+		}
 
         if(ctx.measureText(this.name).width >= (x2-x1) - 5) {
             ctx.textAlign = "start";
@@ -1973,6 +2002,13 @@ function Symbol(kindOfSymbol) {
         this.isRelation = true;
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
+		
+		// Set border to redish if crossing line
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.strokeStyle = '#DC143C';
+		}else{
+			ctx.strokeStyle = this.properties['strokeColor'];
+		}
 
         if (this.properties['key_type'] == 'Weak') {
           this.drawWeakRelation(x1, y1, x2, y2, midx, midy);
@@ -1997,9 +2033,14 @@ function Symbol(kindOfSymbol) {
             }
         }
         ctx.clip();
-        ctx.stroke();
-
-        ctx.fillStyle = this.properties['fontColor'];
+		ctx.stroke();
+		
+		// Set text to redish if crossing line
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = '#DC143C';
+		}else{
+			ctx.fillStyle = this.properties['fontColor'];
+		}
 
         if(ctx.measureText(this.name).width >= (x2-x1) - 12) {
             ctx.textAlign = "start";
@@ -2025,8 +2066,13 @@ function Symbol(kindOfSymbol) {
 				ctx.rect(x1, y1, x2-x1, y2-y1);
 				ctx.stroke();
 			}
-
-			ctx.fillStyle = this.properties['fontColor'];
+			
+			// Set text to redish if crossing line
+			if(!checkSamePage(x1,y1,x2,y2)){
+				ctx.fillStyle = '#DC143C';
+			}else{
+				ctx.fillStyle = this.properties['fontColor'];
+			}
 			ctx.textAlign = this.textAlign;
 			for (var i = 0; i < this.textLines.length; i++) {
 				ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
