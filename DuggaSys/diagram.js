@@ -1488,9 +1488,9 @@ function initializeCanvas() {
     canvas.addEventListener("mousedown", mousedownevt, false);
     canvas.addEventListener("mouseup", mouseupevt, false);
     canvas.addEventListener('dblclick', doubleclick, false);
-    canvas.addEventListener('touchmove', mousemoveevt, false);
-    canvas.addEventListener('touchstart', mousedownevt, false);
-    canvas.addEventListener('touchend', mouseupevt, false);
+    canvas.addEventListener('touchmove', touchMoveEvent, false);
+    canvas.addEventListener('touchstart', touchStartEvent, false);
+    canvas.addEventListener('touchend', touchEndEvent, false);
     canvas.addEventListener('wheel', scrollZoom, false);
   
     drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
@@ -3504,15 +3504,14 @@ function minSizeCheck(value, object, type) {
 //---------------------------------------------------
 
 function mousemoveevt(ev) {
-
+    // Returns out of funtion if on mobile device
+    // This is beacause touch events also trigger mouse events
+    if (isMobile) {
+        return;
+    }
     // Get canvasMouse coordinates for both X & Y.
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
-
-    if (isMobile && ev.type == "touchmove") {
-        currentMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
-        currentMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
-    }
 
     // deltas are used to determine the range of which the mouse is allowed to move when pressed.
     deltaX = 2;
@@ -3522,11 +3521,6 @@ function mousemoveevt(ev) {
         // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
         diffX = ev.pageX - InitPageX;
         diffY = ev.pageY - InitPageY;
-
-        if (isMobile){
-            diffX = ev.changedTouches[0].pageX - InitPageX;
-            diffY = ev.changedTouches[0].pageY - InitPageY;
-        }
         
         if (
             (diffX > deltaX) || (diffX < -deltaX)
@@ -3541,17 +3535,13 @@ function mousemoveevt(ev) {
         }
     }
 
-    if((canvasLeftClick || canvasRightClick || canvasTouchClick) && uimode == "MoveAround") {
+    if((canvasLeftClick || canvasRightClick) && uimode == "MoveAround") {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
         
         startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
-        if (isMobile){
-            startMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
-            startMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
-        }
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
     }
@@ -3873,6 +3863,12 @@ function mousemoveevt(ev) {
 //----------------------------------------------------------
 
 function mousedownevt(ev) {
+    // Returns out of funtion if on mobile device
+    // This is beacause touch events also trigger mouse events
+    if (isMobile){
+        return;
+    }
+    
     mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
     if(ev.button == leftMouseClick){
         canvasLeftClick = true;
@@ -3882,20 +3878,10 @@ function mousedownevt(ev) {
             InitPageX = ev.pageX;
             InitPageY = ev.pageY;
         }
-    } else if(ev.type == "touchstart") {
-        canvasTouchClick = true;
-        if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
-            InitPageX = ev.changedTouches[0].pageX;
-            InitPageY = ev.changedTouches[0].pageY;            
-        }
     }
 
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
-    if (isMobile && typeof ev.changedTouches !== 'undefined'){
-        currentMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
-        currentMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
-    }
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
@@ -3986,6 +3972,11 @@ function handleSelect() {
 }
 
 function mouseupevt(ev) {
+    // Returns out of funtion if on mobile device
+    // This is beacause touch events also trigger mouse events
+    if (isMobile) {
+        return;
+    }
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
     if(ev.button == leftMouseClick){
@@ -4336,6 +4327,247 @@ function mouseupevt(ev) {
     // Clear mouse state
     md = mouseState.empty;
     if(saveState) SaveState();
+}
+
+//---------------------------------------------------
+// Is called each time a touch is started
+//---------------------------------------------------
+
+function touchStartEvent(event) {
+    if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+        InitPageX = event.changedTouches[0].pageX;
+        InitPageY = event.changedTouches[0].pageY;            
+    }
+
+    currentMouseCoordinateX = canvasToPixels(event.changedTouches[0].clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, event.changedTouches[0].clientY - boundingRect.top).y;
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
+
+    // Returns what object was pressed, -1 if none
+    movobj = diagram.itemClicked();
+
+    if (movobj != -1){
+        md = mouseState.insideMovableObject;
+        handleSelect();
+    }else {
+        md = mouseState.boxSelectOrCreateMode;
+        for (var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].targeted = false;
+        }
+        lastSelectedObject = -1;
+        selected_objects = [];
+        startMouseCoordinateX = currentMouseCoordinateX;
+        startMouseCoordinateY = currentMouseCoordinateY;
+    }
+}
+
+//---------------------------------------------------
+// Is called each time a touch is moved (a touchstroke)
+//---------------------------------------------------
+
+function touchMoveEvent(event) {
+    currentMouseCoordinateX = canvasToPixels(event.changedTouches[0].clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, event.changedTouches[0].clientY - boundingRect.top).y
+
+    // Minimum distance required to move
+    deltaX = 2;
+    deltaY = 2;
+
+    if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
+        diffX = event.changedTouches[0].pageX - InitPageX;
+        diffY = event.changedTouches[0].pageY - InitPageY;
+
+        // Activate move around if touch moved far enough
+        if ((diffX > deltaX) || (diffX < -deltaX)
+        || (diffY > deltaY) || (diffY < -deltaY)) {
+            if (uimode != 'MoveAround' && md != mouseState.insideMovableObject) {
+                activateMovearound();
+            }
+            updateGraphics();
+        }
+    }
+
+    // Moves canvas
+    if (uimode == 'MoveAround') {
+        origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
+        origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
+       
+        startMouseCoordinateX = canvasToPixels(event.changedTouches[0].clientX - boundingRect.left).x;
+        startMouseCoordinateY = canvasToPixels(0, event.changedTouches[0].clientY - boundingRect.top).y;
+        
+        localStorage.setItem("cameraPosX", origoOffsetX);
+        localStorage.setItem("cameraPosY", origoOffsetY);
+    }
+    reWrite();
+    updateGraphics();
+
+    // Moves an object
+    if (md == mouseState.insideMovableObject) {
+        if (movobj != -1) {
+            uimode = "Moved";
+            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            for (var i = 0; i < diagram.length; i++) {
+                if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
+                    if(snapToGrid) {
+                        // Set mouse start so it's snaped to grid.
+                        startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
+                        startMouseCoordinateY = Math.round(startMouseCoordinateY / gridSize) * gridSize;
+                        // Coordinates for the top left corner of the object
+                        var hoveredObjectStartTopLeftX = points[hoveredObject.topLeft].x;
+                        var hoveredObjectStartTopLeftY = points[hoveredObject.topLeft].y;
+                        // Coordinates for the point to snap to
+                        var hoveredObjectSnapTopLeftX = Math.round(points[hoveredObject.topLeft].x / gridSize) * gridSize;
+                        var hoveredObjectSnapTopLeftY = Math.round(points[hoveredObject.topLeft].y / gridSize) * gridSize;
+                        // Snap the object that is being moved. Rest of the objects are untouched
+                        diagram[movobj].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+                        // Move the objects dependable on the grid size
+                        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+                        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
+                    }
+
+                    diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
+
+                    // Keep recursive lines together
+                    for (var j = 0; j < diagram.length; j++) {
+                        if (diagram[j].isRecursiveLine) {
+                            points[diagram[j].topLeft].x = points[diagram[j].bottomRight].x;
+                            points[diagram[j].topLeft].y = points[diagram[j].bottomRight].y;
+                        }
+                    }
+                }
+            }
+            startMouseCoordinateX = currentMouseCoordinateX;
+            startMouseCoordinateY = currentMouseCoordinateY;
+        }
+    }
+}
+
+//---------------------------------------------------
+// Is called each time a touch is ended
+//---------------------------------------------------
+
+function touchEndEvent(event) {
+    markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+
+    delete InitPageX;
+    delete InitPageY;  
+
+    if (uimode == "MoveAround"){
+        deactivateMovearound();
+        updateGraphics();
+    }
+
+    var p1BeforeResize;
+    var p2BeforeResize;
+    if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" 
+    || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
+        p1BeforeResize = {x:startMouseCoordinateX, y:startMouseCoordinateY};
+        p2BeforeResize = {x:currentMouseCoordinateX, y:currentMouseCoordinateY};
+        resize();
+        // Add required points
+        p1 = points.addPoint(startMouseCoordinateX, startMouseCoordinateY, false);
+        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+        p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
+    }
+    var saveState = md == mouseState.boxSelectOrCreateMode && uimode != "normal";
+
+    // Creates symbol if uimode is set
+    createSymbol(p1BeforeResize, p2BeforeResize);
+
+    if(uimode == "MoveAround" && md === mouseState.boxSelectOrCreateMode) {
+        saveState = false;
+    }
+
+    hashFunction();
+    updateGraphics();
+    diagram.updateLineRelations();
+    md = mouseState.empty;
+    if(saveState) SaveState();
+}
+
+// Creates a symbol based on current uimode
+function createSymbol(p1BeforeResize, p2BeforeResize){
+    switch(uimode){
+        case "CreateClass":
+            var classB = new Symbol(symbolKind.uml);
+            classB.name = "New " + settings.serialNumbers.UML;
+            classB.operations.push({text:"- makemore()"});
+            classB.attributes.push({text:"+ height:Integer"});
+            classB.topLeft = p1;
+            classB.bottomRight = p2;
+            classB.middleDivider = p3;
+            classB.centerPoint = p3;
+            diagram.push(classB);
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            diagramObject = diagram[lastSelectedObject];
+            settings.serialNumbers.UML++;
+            if (diagramObject && attributeTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+            && attributeTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+                diagramObject.pointsAtSamePosition = true;
+            }
+            break;
+        case "CreateERAttr":
+            erAttributeA = new Symbol(symbolKind.erAttribute);
+            erAttributeA.name = "Attr " + settings.serialNumbers.Attribute;
+            erAttributeA.topLeft = p1;
+            erAttributeA.bottomRight = p2;
+            erAttributeA.centerPoint = p3;
+            erAttributeA.object_type = "";
+            diagram.push(erAttributeA);
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            diagramObject = diagram[lastSelectedObject];
+            settings.serialNumbers.Attribute++;
+            if (diagramObject && attributeTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+            && attributeTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+                diagramObject.pointsAtSamePosition = true;
+            }
+            break;
+        case "CreateEREntity":
+            erEnityA = new Symbol(symbolKind.erEntity);
+            erEnityA.name = "Entity " + settings.serialNumbers.Entity;
+            erEnityA.topLeft = p1;
+            erEnityA.bottomRight = p2;
+            erEnityA.centerPoint = p3;
+            erEnityA.arity = [];
+            erEnityA.object_type = "";
+            diagram.push(erEnityA);
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            diagramObject = diagram[lastSelectedObject];
+            settings.serialNumbers.Entity++;
+            if (diagramObject && entityTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+            && entityTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+                diagramObject.pointsAtSamePosition = true;
+            }
+            break;
+        case "CreateLine":
+            //TODO
+            break;
+        case "CreateERRelation":
+            erRelationA = new Symbol(symbolKind.erRelation);
+            erRelationA.name = "Relation " + settings.serialNumbers.Relation;
+            erRelationA.topLeft = p1;
+            erRelationA.bottomRight = p2;
+            erRelationA.centerPoint = p3;
+            diagram.push(erRelationA);
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            diagramObject = diagram[lastSelectedObject];
+            settings.serialNumbers.Relation++;
+            if (diagramObject && relationTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+            && relationTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+                diagramObject.pointsAtSamePosition = true;
+            }
+            break;
+        default:
+    }
 }
 
 function doubleclick() {
