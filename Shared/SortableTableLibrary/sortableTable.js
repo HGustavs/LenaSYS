@@ -268,7 +268,7 @@ function SortableTable(param) {
 
 	this.renderTable = function () {
         this.reRender();
-        sortFilesByKind();
+        filterFilesByKind();
 	}
 
 	this.getRow = function (rowno) {
@@ -536,7 +536,7 @@ function SortableTable(param) {
 		sortkind = kind;
 
         this.reRender();
-        sortFilesByKind();
+        filterFilesByKind();
 	}
 	this.setNameColumn = function (colnameArr) {
 		nameColumn = colnameArr;
