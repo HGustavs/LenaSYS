@@ -923,8 +923,9 @@ function renderCell(col, celldata, cellid) {
 		return str;
 
 	} else if (filterGrade === "none" || celldata.grade === filterGrade) {
+		var unassignedCheck = false;
 		// color based on pass,fail,pending,assigned,unassigned
-		str = "<div style='padding:10px;' class='resultTableCell ";
+		str = "<div class='resultTableCell ";
 		if (celldata.kind == 4) {
 			str += "dugga-moment ";
 		}
@@ -940,25 +941,34 @@ function renderCell(col, celldata, cellid) {
 			str += "dugga-assigned";
 		} else {
 			str += "dugga-unassigned";
+			unassignedCheck = true;
 		}
-		str += "'>";
+		if(unassignedCheck){
+			str += "' style='height:74px;'>";
+		}else{
+			str += "' style='padding:10px;'>";
+		}
 
 		// Creation of grading buttons
 		if (celldata.ishere === true || celldata.kind == 4) {
-			str += "<div class='gradeContainer resultTableText'>";
-			if (celldata.grade === null) {
-				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
-			} else if (celldata.grade === -1) {
-				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
-			} else {
-				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+			if(!unassignedCheck){
+				str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist";
+				if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
+					str += " grading-hidden";
+				}
+				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+				str += "/>";
+			}else{
+				str += "<div class='text-center resultTableText' style='padding-top: 30px;'>Unassigned</div>"
 			}
-			str += "<img id='korf' class='fist";
-			if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
-				str += " grading-hidden";
-			}
-			str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
-			str += "/>";
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
 			if (celldata.timesGraded !== 0) {
