@@ -2792,6 +2792,14 @@ span.arrow {
   border: 0px;
 }
 
+#resultTable th:first-of-type {
+  min-width: 30px;
+}
+
+#resultTable th {
+  min-width: 150px;
+}
+
 .resultTable_counter {
   text-align: center;
 }
