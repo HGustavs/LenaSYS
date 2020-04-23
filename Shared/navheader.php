@@ -127,15 +127,6 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
-
-							//Adds the download files button to the toolbar
-							echo "<td class='Downlad all files' style='display: inline-block;'>";
-							echo "    <div class='Downlad all files'>";
-							echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
-							echo "      </a>";
-							echo "    </div>";
-							echo "</td>";
 					}
 			}
 	
@@ -147,15 +138,26 @@
 					echo	"<p><b>Keywords:</b> markG, markU, date</p>";
 					echo	"<p><b>Ex:</b> markG:färgdugga</p>";
 					echo	"</div>";
-					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
-					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
-					echo   "</button>";
 					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
 					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo 	"</div><div>";
-					echo   "</button>";
-					
 					echo "</td>";
+					echo "<td class='navButt'>";
+					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
+					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+					echo   "</button>";
+					echo "</td>";
+
+					if ($requestedService == "fileed.php") {
+						//Adds the download files button to the toolbar
+						echo "<td class='navButt'>";
+						echo "    <div>";
+						echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+						echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
+						echo "      </a>";
+						echo "    </div>";
+						echo "</td>";
+					}				
 			}
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
