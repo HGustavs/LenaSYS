@@ -59,7 +59,7 @@ What the installer will do is to help you create a new user in the MySQL databas
 #### CONGRATULATIONS!
 
 ## 10. Handling possible remaining errors
-If LenaSYS is still not functional, possible errors may be found in \apache2\logs. It is very possible that the installer promts you to change upload_max_filesize in ini.php. Make sure that the webserver is restarted after any chagnes to php.ini. Another issue commonly encoutnered is ": PHP Fatal error: Uncaught PDOException:could not find driver...". To solve this, enble the following drivers in the ini.php file by uncommenting them: php_pdo.dll, php_pdo_mysql.dll, php_pdo_odbc.dll and php_pdo_sqlite.dll.
+If LenaSYS is still not functional, possible errors may be found in \apache2\logs. It is very possible that the installer promts you to change upload_max_filesize in ini.php. Make sure that the webserver is restarted after any changes to php.ini. Another issue commonly encountered is ": PHP Fatal error: Uncaught PDOException:could not find driver...". To solve this, enbale the following drivers in the ini.php file by uncommenting them: php_pdo.dll, php_pdo_mysql.dll, php_pdo_odbc.dll and php_pdo_sqlite.dll.
 
 
 # Push notifications installation
