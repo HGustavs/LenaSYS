@@ -85,7 +85,7 @@ function returnedFile(data) {
 
     if (data['studentteacher']) {
         document.getElementById('fabButton').style.display = "none";
-    } else {
+    } else if(data['waccess']) {
         tblheadPre["trashcan"] = "";
         colOrderPre.push("trashcan");
     }
