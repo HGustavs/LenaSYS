@@ -38,6 +38,12 @@ if($zip	->	open($zipcreated,	ZipArchive::CREATE	)	===	TRUE){
 	$pathdir	=	$currcvd.$pathToActiveVersionOfCourse;  
 	
 	// Store the path into the variable 
+	if (file_exists($dir)) {
+		echo "Could not find the file, try to upload a version dependend file to create this directory.";
+		return;
+	}
+
+
 	if($dir = opendir($pathdir)){ 
 		while(false !== $file = readdir($dir)) { 
 			if($file != "." && $file	!=	".."	&&	!is_dir($pathdir."/".$file)) { 
