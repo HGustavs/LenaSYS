@@ -278,6 +278,24 @@ function renderCell(col, celldata, cellid) {
     }
     return str;
 }
+
+//---------------------------------------------------------------------------------------------
+//sortAndFilterTogether <- callback function sort and filter files by its kind and search input
+//---------------------------------------------------------------------------------------------
+function sortAndFilterTogether(){
+  filterFilesByKind(sortFilter.kind);
+
+}
+var sortFilter = {
+    fileKind : "",
+    set kind(kind){
+        this.fileKind = kind;
+    },
+    get kind(){
+        return this.fileKind;
+    }
+};
+
 //---------------------------------------------------------------
 //filterFilesByKind <- Callback function sorts the files by its kind
 //---------------------------------------------------------------
@@ -298,6 +316,7 @@ function filterFilesByKind(kind){
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
+    sortFilter.fileKind=kind;
     $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
     $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
 }
