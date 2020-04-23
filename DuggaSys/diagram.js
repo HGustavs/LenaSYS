@@ -117,6 +117,14 @@ var md = mouseState.empty;          // Mouse state, Mode to determine action on 
 var hoveredObject = false;
 var markedObject = false;
 var lineStartObj = -1;
+var fullscreen = false;             // Used to toggle fullscreen 
+var old_container_marginTop;        // Used to revert changes from fullscreen
+var old_container_marginLeft;       // Used to revert changes from fullscreen
+var old_container_width;            // Used to revert changes from fullscreen
+var old_container_height;           // Used to revert changes from fullscreen
+var old_container_position;         // Used to revert changes from fullscreen
+var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
+var old_zoom_left;                  // Used to revert changes from fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -633,6 +641,8 @@ function keyDownHandler(e) {
         toggleApperanceElement();
     } else if(key == keyMap.enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
         submitAppearanceForm();
+    } else if(key == keyMap.escapeKey && fullscreen) {
+        toggleFullscreen();
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
@@ -1511,7 +1521,8 @@ function initializeCanvas() {
 
 function clearActiveDropdownElement(){
     if (document.activeElement.className.match("menu-drop-down") || 
-    document.activeElement.className.match("drop-down-item")) {
+    document.activeElement.className.match("drop-down-item") ||
+    document.activeElement.className.match("drop-down-label")) {
         document.activeElement.blur();
     }
 
@@ -2170,7 +2181,7 @@ $(document).ready(function(){
 
 function canvasSize() {
     const diagramContainer = document.getElementById("diagramCanvasContainer");
-    canvas.width = diagramContainer.offsetWidth
+    canvas.width = diagramContainer.offsetWidth;
     canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
     updateGraphics();
@@ -3485,6 +3496,57 @@ function scrollZoom(event) {
     }
 }
 
+//-----------------------
+// Enter/exit fullscreen
+//-----------------------
+
+function toggleFullscreen(){
+    // Load relevant elements
+    var head = document.querySelector("header");
+    var menu_buttons = document.getElementById("buttonDiv");
+    var canvas_div = document.getElementById("diagramCanvasContainer");
+    var zoom_bar = document.getElementById("selectDiv");
+
+    if(!fullscreen){
+        // Get previous settings
+        old_canvas_div_marginLeft = canvas_div.style.marginLeft;
+        old_container_height = canvas_div.style.height;
+        old_container_width = canvas_div.style.width;
+        old_container_position = canvas_div.style.position;
+        old_zoom_left = zoom_bar.style.left;
+
+        // Hide header, buttons, their leftover space and resize container to fit entire screen
+        head.style.display = "none";
+        menu_buttons.style.display = "none";
+        canvas_div.style.position = "absolute";
+        canvas_div.style.marginLeft = 0;
+        canvas_div.style.top = 0;
+        canvas_div.style.right = 0;
+        canvas_div.style.bottom = 0;
+        canvas_div.style.left = 0;
+        canvas_div.style.height = window.innerHeight + "px";
+        canvas_div.style.width = window.innerWidth + "px";
+        fullscreen = true;
+
+        // Refit canvas to current container
+        canvasSize();
+    } else if (fullscreen){
+        // Revert to previous settings
+        head.style.display = "inline-block";
+        menu_buttons.style.display = "block";
+        canvas_div.style.position = old_container_position;
+        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
+        canvas_div.style.height = old_container_height;
+        canvas_div.style.width = old_container_width;
+        zoom_bar.style.left = old_zoom_left;
+        fullscreen = false;
+
+        // Refit canvas to current container
+        canvasSize();        
+    }
+}
+
+
 //-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
 //-------------------------------------------------------------------------
@@ -4237,7 +4299,7 @@ function mouseupevt(ev) {
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
-        erEnityA.arity = [];
+        erEnityA.length = [];
         erEnityA.object_type = "";
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
@@ -4572,13 +4634,13 @@ function setSelectedOption(select, value) {
 
 function createCardinality() {
     //Setting cardinality on new line
-    if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": false});
+    if(diagram[lineStartObj +1].symbolkind == symbolKind.erRelation) {
+        hoveredObject.cardinality = ({"value": "", "isCorrectSide": false});
     }
-    else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erRelation) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": true});
+    else if(diagram[lineStartObj+1].symbolkind == symbolKind.erEntity) {
+        hoveredObject.cardinality = ({"value": "", "isCorrectSide": true});
     }
-    else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[markedObject].symbolkind == symbolKind.uml) {
+    else if(diagram[lineStartObj+1].symbolkind == symbolKind.uml) {
         diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
     }
 }
@@ -4602,25 +4664,16 @@ function loadAppearanceForm() {
     const object = selected_objects[selected_objects.length - 1];
     let type = object.symbolkind;
 
-    //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
-    if(object.symbolkind == symbolKind.umlLine){
-        let connectedObjectsArray = object.getConnectedObjects();
-        document.getElementById('First').innerHTML = connectedObjectsArray[0].name;
-        //Selection to check if relation is to the same entity. If so: both are named from object 0
-        if(typeof connectedObjectsArray[1] == "undefined"){
-            document.getElementById('Second').innerHTML =  connectedObjectsArray[0].name;
-        } else {
-            document.getElementById('Second').innerHTML = connectedObjectsArray[1].name;
-        }
-    }
-
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
 
-    showFormGroups(type);
-
     const typeElement = document.getElementById("type");
     const nameElement = document.getElementById("name");
+
+    showFormGroups(type);
+    toggleApperanceElement(true);
+
+    nameElement.focus();
 
     switch(type) {
         case symbolKind.erAttribute:
@@ -4637,6 +4690,7 @@ function loadAppearanceForm() {
             const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
             const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
             typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
+            typeElement.focus();
             if(entities.length > 0 && relations.length > 0) {
                 document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
                 document.getElementById("cardinalityUML").style.display = "none";
@@ -4648,11 +4702,23 @@ function loadAppearanceForm() {
             const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
             const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
             typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
+            typeElement.focus();
             document.getElementById("cardinalityUML").style.display = "block";
             document.getElementById("cardinality").innerHTML = makeoptions("None", cardinalities, cardinalities);
             document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
+
+            //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
+            const connectedObjectsArray = object.getConnectedObjects();
+            document.getElementById("First").innerHTML = connectedObjectsArray[0].name;
+            //Selection to check if relation is to the same entity. If so: both are named from object 0
+            if(typeof connectedObjectsArray[1] == "undefined"){
+                document.getElementById("Second").innerHTML =  connectedObjectsArray[0].name;
+            } else {
+                document.getElementById("Second").innerHTML = connectedObjectsArray[1].name;
+            }
         case symbolKind.text:
             document.getElementById("freeText").value = getTextareaText(object.textLines);
+            document.getElementById("freeText").focus();
             textAppearanceOpen = true;
             break;
         case symbolKind.uml:
@@ -4663,10 +4729,10 @@ function loadAppearanceForm() {
             break;
         case 0:
             document.getElementById("figureOpacity").value = object.opacity * 100;
+            document.getElementById("fillColor").focus();
             break;
     }
     setSelections(object);
-    toggleApperanceElement(true);
 }
 
 function showFormGroups(type) {
@@ -4786,6 +4852,9 @@ function setObjectProperties() {
     updateGraphics();
 }
 
+//Stores which element the mouse was pressed down on while in the appearance menu.
+let appearanceMouseDownElement = null;
+
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     formGroups.forEach(group => {
@@ -4810,7 +4879,12 @@ function initAppearanceForm() {
     });
 
     const appearanceContainer = document.getElementById("appearance");
-    appearanceContainer.addEventListener("click", clickOutsideAppearanceForm);
+    appearanceContainer.addEventListener("mousedown", e => appearanceMouseDownElement = e.target);
+    appearanceContainer.addEventListener("mouseup", e => {
+        if(appearanceMouseDownElement === appearanceContainer && e.target === appearanceContainer) {
+            toggleApperanceElement();
+        }
+    });
 }
 
 function getGroupsByType(type) {
@@ -4837,13 +4911,3 @@ function submitAppearanceForm() {
     SaveState();
     toggleApperanceElement();
 }
-
-function clickOutsideAppearanceForm(e) {
-    const formContainer = document.querySelector(".loginBox");
-
-    //Close appearance if the clicked element is not a child/grand-child of formContanier
-    if(!formContainer.contains(e.target)) {
-        toggleApperanceElement();
-    }
-}
-
