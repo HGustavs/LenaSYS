@@ -117,6 +117,14 @@ var md = mouseState.empty;          // Mouse state, Mode to determine action on 
 var hoveredObject = false;
 var markedObject = false;
 var lineStartObj = -1;
+var fullscreen = false;             // Used to toggle fullscreen 
+var old_container_marginTop;        // Used to revert changes from fullscreen
+var old_container_marginLeft;       // Used to revert changes from fullscreen
+var old_container_width;            // Used to revert changes from fullscreen
+var old_container_height;           // Used to revert changes from fullscreen
+var old_container_position;         // Used to revert changes from fullscreen
+var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
+var old_zoom_left;                  // Used to revert changes from fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -630,6 +638,8 @@ function keyDownHandler(e) {
         toggleApperanceElement();
     } else if(key == keyMap.enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
         submitAppearanceForm();
+    } else if(key == keyMap.escapeKey && fullscreen) {
+        toggleFullscreen();
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
@@ -2126,7 +2136,7 @@ $(document).ready(function(){
 
 function canvasSize() {
     const diagramContainer = document.getElementById("diagramCanvasContainer");
-    canvas.width = diagramContainer.offsetWidth
+    canvas.width = diagramContainer.offsetWidth;
     canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
     updateGraphics();
@@ -3440,6 +3450,57 @@ function scrollZoom(event) {
         changeZoom(0.01, event);
     }
 }
+
+//-----------------------
+// Enter/exit fullscreen
+//-----------------------
+
+function toggleFullscreen(){
+    // Load relevant elements
+    var head = document.querySelector("header");
+    var menu_buttons = document.getElementById("buttonDiv");
+    var canvas_div = document.getElementById("diagramCanvasContainer");
+    var zoom_bar = document.getElementById("selectDiv");
+
+    if(!fullscreen){
+        // Get previous settings
+        old_canvas_div_marginLeft = canvas_div.style.marginLeft;
+        old_container_height = canvas_div.style.height;
+        old_container_width = canvas_div.style.width;
+        old_container_position = canvas_div.style.position;
+        old_zoom_left = zoom_bar.style.left;
+
+        // Hide header, buttons, their leftover space and resize container to fit entire screen
+        head.style.display = "none";
+        menu_buttons.style.display = "none";
+        canvas_div.style.position = "absolute";
+        canvas_div.style.marginLeft = 0;
+        canvas_div.style.top = 0;
+        canvas_div.style.right = 0;
+        canvas_div.style.bottom = 0;
+        canvas_div.style.left = 0;
+        canvas_div.style.height = window.innerHeight + "px";
+        canvas_div.style.width = window.innerWidth + "px";
+        fullscreen = true;
+
+        // Refit canvas to current container
+        canvasSize();
+    } else if (fullscreen){
+        // Revert to previous settings
+        head.style.display = "inline-block";
+        menu_buttons.style.display = "block";
+        canvas_div.style.position = old_container_position;
+        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
+        canvas_div.style.height = old_container_height;
+        canvas_div.style.width = old_container_width;
+        zoom_bar.style.left = old_zoom_left;
+        fullscreen = false;
+
+        // Refit canvas to current container
+        canvasSize();        
+    }
+}
+
 
 //-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
