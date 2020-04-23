@@ -3224,7 +3224,8 @@ span.arrow {
 }
 
 .dugga-empty {
-  background-color: black;
+  background-color: #ddd;
+  height: 50px;
 }
 
 .dugga-result-subheader {
