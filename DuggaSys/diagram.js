@@ -118,8 +118,11 @@ var hoveredObject = false;
 var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
-var old_content_diagram_marginTop;  // Used to revert changes from fullscreen
-var old_content_diagram_marginLeft; // Used to revert changes from fullscreen
+var old_container_marginTop;        // Used to revert changes from fullscreen
+var old_container_marginLeft;       // Used to revert changes from fullscreen
+var old_container_width;            // Used to revert changes from fullscreen
+var old_container_height;           // Used to revert changes from fullscreen
+var old_container_position;         // Used to revert changes from fullscreen
 var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
 var old_zoom_left;                  // Used to revert changes from fullscreen
 var movobj = -1;                    // Moving object ID
@@ -3455,32 +3458,28 @@ function toggleFullscreen(){
     // Load elements
     var head = document.querySelector("header");
     var menu_buttons = document.getElementById("buttonDiv");
-    //var content_diagram = document.getElementById("contentDiagram");
     var canvas_div = document.getElementById("diagramCanvasContainer");
     var zoom_bar = document.getElementById("selectDiv");
 
     if(!fullscreen){
         // Get previous settings
-        //old_content_diagram_marginLeft = content_diagram.style.marginLeft;
-        //old_content_diagram_marginTop = content_diagram.style.marginTop;
         old_canvas_div_marginLeft = canvas_div.style.marginLeft;
+        old_container_height = canvas_div.style.height;
+        old_container_width = canvas_div.style.width;
+        old_container_position = canvas_div.style.position;
         old_zoom_left = zoom_bar.style.left;
 
-        // Hide header, buttons, their leftover space and resize canvas to fit screen
+        // Hide header, buttons, their leftover space and resize container to fit entire screen
         head.style.display = "none";
         menu_buttons.style.display = "none";
-        //content_diagram.style.marginTop = 0;
-        //content_diagram.style.marginLeft = 0;
-
         canvas_div.style.position = "absolute";
         canvas_div.style.marginLeft = 0;
         canvas_div.style.top = 0;
         canvas_div.style.right = 0;
         canvas_div.style.bottom = 0;
         canvas_div.style.left = 0;
-
-        canvas_div.style.height = window.innerHeight;
-        canvas_div.style.width = window.innerWidth;
+        canvas_div.style.height = window.innerHeight + "px";
+        canvas_div.style.width = window.innerWidth + "px";
 
         canvasSize();
         
@@ -3488,17 +3487,19 @@ function toggleFullscreen(){
 
     } else if (fullscreen){
         // Revert to previous settings
-        //content_diagram.style.marginTop = old_content_diagram_marginTop;
-        //content_diagram.style.marginLeft = old_content_diagram_marginLeft;
-        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
-        zoom_bar.style.left = old_zoom_left;
-        canvasSize();
-
-        // The cursor is offsetted in Y-axis by 200 px. WHY
-
         // Show header and buttons
         head.style.display = "inline-block";
         menu_buttons.style.display = "block";
+
+        // Resize container
+        canvas_div.style.position = old_container_position;
+        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
+        canvas_div.style.height = old_container_height;
+        canvas_div.style.width = old_container_width;
+        zoom_bar.style.left = old_zoom_left;
+
+        // Refit canvas to current container
+        canvasSize();
 
         fullscreen = false;
     }
