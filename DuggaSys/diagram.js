@@ -1647,6 +1647,7 @@ function drawVirtualPaper() {
 	var sizePageNr = 3.1737*pixelsPerMillimeter;
 	ctx.fontColor = "black";
 	ctx.font=`${sizePageNr}px Arial`;
+	var pages = 1; 
 	if(paperOrientation == "portrait") {// Draw Paper sheets in portrait mode
 		if(singlePaper){
 			ctx.strokeRect(zeroX, zeroY, paperWidth, paperHeight);
@@ -1660,7 +1661,12 @@ function drawVirtualPaper() {
 					ctx.strokeRect(zeroX + paperWidth * j, zeroY + paperHeight * i, paperWidth, paperHeight);               // Bottom right from origin
 					
 					if(togglePageNumber){
-						ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 30 * pixelsPerMillimeter   - paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (i+1)); //pagenumbers for the top left
+						if(objectInArea
+							)
+						if(objectInArea(zeroX - paperWidth * (j+1), zeroY - paperHeight * (i+1), zeroX - paperWidth * j, zeroY - paperHeight * i)){
+							ctx.fillText("Page " + pages, zeroX - 30 * pixelsPerMillimeter - paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (i+1)); //pagenumbers for the top left
+						}//"Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns)
+						
 						ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperWidth - 30 * pixelsPerMillimeter) + paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (i+1));	//pagenumbers for the top right			
 						ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  30 * pixelsPerMillimeter - paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) +  paperHeight * i); //pagenumbers for the bottom left
 						ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperWidth - 30 * pixelsPerMillimeter) + paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) +  paperHeight * i); //pagenumbers for the bottom right
@@ -1834,7 +1840,18 @@ function drawVirtualPaper() {
 	
     ctx.restore();
 }
-
+//------------------------------------------------------------------
+//Checks if an object are in the specified area
+//------------------------------------------------------------------
+function objectInArea(x1, y1, x2, y2){
+	console.log("x1: " + x1 + " y1: " + y1 + " x2: " + x2 + " y2: " + y2 );
+	for(i = 0; i < diagram.length; i++){
+		let point = pixelsToCanvas(points[diagram[i].centerPoint].x, points[diagram[i].centerPoint].y);
+		if(x1 < points.x && points.x < x2 && y1 < points.y && points.y < y2) return true
+	}
+	console.log("false");
+	return false;
+}	
 
 //------------------------------------------------------------------
 // Draws a crosshair in the middle of canvas while in developer mode
