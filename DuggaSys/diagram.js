@@ -4619,25 +4619,16 @@ function loadAppearanceForm() {
     const object = selected_objects[selected_objects.length - 1];
     let type = object.symbolkind;
 
-    //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
-    if(object.symbolkind == symbolKind.umlLine){
-        let connectedObjectsArray = object.getConnectedObjects();
-        document.getElementById('First').innerHTML = connectedObjectsArray[0].name;
-        //Selection to check if relation is to the same entity. If so: both are named from object 0
-        if(typeof connectedObjectsArray[1] == "undefined"){
-            document.getElementById('Second').innerHTML =  connectedObjectsArray[0].name;
-        } else {
-            document.getElementById('Second').innerHTML = connectedObjectsArray[1].name;
-        }
-    }
-
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
 
-    showFormGroups(type);
-
     const typeElement = document.getElementById("type");
     const nameElement = document.getElementById("name");
+
+    showFormGroups(type);
+    toggleApperanceElement(true);
+
+    nameElement.focus();
 
     switch(type) {
         case symbolKind.erAttribute:
@@ -4654,6 +4645,7 @@ function loadAppearanceForm() {
             const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
             const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
             typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
+            typeElement.focus();
             if(entities.length > 0 && relations.length > 0) {
                 document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
                 document.getElementById("cardinalityUML").style.display = "none";
@@ -4665,11 +4657,23 @@ function loadAppearanceForm() {
             const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
             const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
             typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
+            typeElement.focus();
             document.getElementById("cardinalityUML").style.display = "block";
             document.getElementById("cardinality").innerHTML = makeoptions("None", cardinalities, cardinalities);
             document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
+
+            //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
+            const connectedObjectsArray = object.getConnectedObjects();
+            document.getElementById("First").innerHTML = connectedObjectsArray[0].name;
+            //Selection to check if relation is to the same entity. If so: both are named from object 0
+            if(typeof connectedObjectsArray[1] == "undefined"){
+                document.getElementById("Second").innerHTML =  connectedObjectsArray[0].name;
+            } else {
+                document.getElementById("Second").innerHTML = connectedObjectsArray[1].name;
+            }
         case symbolKind.text:
             document.getElementById("freeText").value = getTextareaText(object.textLines);
+            document.getElementById("freeText").focus();
             textAppearanceOpen = true;
             break;
         case symbolKind.uml:
@@ -4680,10 +4684,10 @@ function loadAppearanceForm() {
             break;
         case 0:
             document.getElementById("figureOpacity").value = object.opacity * 100;
+            document.getElementById("fillColor").focus();
             break;
     }
     setSelections(object);
-    toggleApperanceElement(true);
 }
 
 function showFormGroups(type) {
