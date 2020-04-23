@@ -2675,12 +2675,95 @@ function maximizeBoxes(boxid) {
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
+    	
+    //for template 9
+	if (templateid == 9) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
+			$(boxValArray['box' + 4]['id']).width("0%");
+            $(boxValArray['box' + 5]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			
+            alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		}
+        if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+			$(boxValArray['box' + 5]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 3) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+			$(boxValArray['box' + 5]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 4) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+            $(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+            $(boxValArray['box' + 5]['id']).width("100%");
+			/*$(boxValArray['box' + 5]['id']).css("top", "90%");*/
+         
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 5) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+            $(boxValArray['box' + 4]['id']).height("0%");
+            $(boxValArray['box' + 4]['id']).width("100%");
+            /*$(boxValArray['box' + 5]['id']).css("top", "30%");*/
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+
+	}
 }
 
 //hide maximizeButton
 function hideMaximizeAndResetButton() {
 	var templateid = retData['templateid'];
-	if (templateid > 8) {
+	if (templateid > 9) {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
 	}
@@ -3650,7 +3733,8 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
 	
-	//Checks if the third box is minimum size.
+	
+    //Checks if the third box is minimum size.
 	if(boxThreeHeightPer <= 10.2) {
 		//Sets height and top on fourth box.
 		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
