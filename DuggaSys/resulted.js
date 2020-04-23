@@ -69,7 +69,7 @@ function process() {
 			// var tuid = teacher[j].tuid;
 			var setTeacher = teacher[j].id;
 		}
-		if (setTeacher !== null) {
+		if (setTeacher !== null && typeof(setTeacher) !== "undefined") {
 			// Place spaces in the string when a lowercase is followed by a uppercase
 			setTeacher = setTeacher.replace(/([a-z])([A-Z])/g, '$1 $2');
 		}
