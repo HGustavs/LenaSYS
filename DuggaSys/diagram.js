@@ -4528,10 +4528,10 @@ function setSelectedOption(select, value) {
 function createCardinality() {
     //Setting cardinality on new line
     if(diagram[lineStartObj +1].symbolkind == symbolKind.erRelation) {
-        diagram[0].cardinality = ({"value": "", "isCorrectSide": false});
+        diagram[0].cardinality = ({"value": "", "isCorrectSide": false, "parentBox": hoveredObject});
     }
     else if(diagram[lineStartObj+1].symbolkind == symbolKind.erEntity) {
-        diagram[0].cardinality = ({"value": "", "isCorrectSide": true});
+        diagram[0].cardinality = ({"value": "", "isCorrectSide": true, "parentBox": hoveredObject});
     }
     else if(diagram[lineStartObj+1].symbolkind == symbolKind.uml) {
         diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})

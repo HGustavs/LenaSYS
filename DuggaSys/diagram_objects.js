@@ -1862,23 +1862,8 @@ function Symbol(kindOfSymbol) {
         const cardinality = this.cardinality;
         var connectedObjects = this.getConnectedObjects();
         // Correct corner e.g. top left, top right, bottom left or bottom right
-        let correctCorner = getCorrectCorner(cardinality,
-    										boxCorners.tl.x,
-    										boxCorners.tl.y,
-    										boxCorners.br.x,
-    										boxCorners.br.y);
 
         // Find which box the cardinality number is connected to
-        if(connectedObjects.length > 1) {
-            // Assume that first object in array is parentBox
-            dtlx = connectedObjects[1].corners().tl.x;
-            dlty = connectedObjects[1].corners().tl.y;
-            dbrx = connectedObjects[1].corners().br.x;
-            dbry = connectedObjects[1].corners().br.y;
-            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dlty || correctCorner.y == dbry) {
-                cardinality.parentBox = connectedObjects[1];
-            }
-        }
 
 	    // Decide whether x1 and y1 is relevant or x2 and y2
 	    if(side == "CorrectSide") {
@@ -1906,30 +1891,31 @@ function Symbol(kindOfSymbol) {
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
-            cardinality.axis = null;
-		    if(cardinality.parentBox != null) {
-                var correctBox = getCorners(points[this.cardinality.parentBox.topLeft], points[this.cardinality.parentBox.bottomRight]);
-		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
-		            cardinality.axis = "X";
-		        }
-		        if(correctBox.tl.y < y2 && correctBox.br.y > y2) {
-		            cardinality.axis = "Y";
+            var targetobject = getCorners(points[this.cardinality.parentBox.topLeft],points[this.cardinality.parentBox.bottomRight]);
+            var line = getCorners(points[this.topLeft],points[this.bottomRight])
+            console.log(targetobject,line);
+                if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x){
+                    console.log("this is a left connection")
+                    cardinality.x = x2-15;
+                    cardinality.y = y2 > y1 ? y2+15 : y2-15;
+                }
+                else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y){
+                    console.log("this is a top connection")
+                    cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                    cardinality.y = y2-15;
+                }
+                else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x){
+                    console.log("this is a Right connection")
+                    cardinality.x = x2+15;
+                    cardinality.y = y2 > y1 ? y2+15 : y2-15;
+                }
+                else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y){
+                    console.log("this is a Bottom connection")
+                    cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                    cardinality.y = y2+15;
                 }
 
-            }
-            console.log(cardinality.axis)
-		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-15 : x2+15;
-		    cardinality.y = y2 > y1 ? y2-15 : y2+15;
 
-		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2-15 : x2+15;
-		    }
-		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y2 > y1 ? y2+15 : y2-15;
-            }
         }
     }
 
