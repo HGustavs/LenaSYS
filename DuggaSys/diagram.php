@@ -493,9 +493,42 @@
                         <label for="name">Name:</label>
                         <input type="text" id="name" data-access="name">
                     </div>
-                    <div class="form-group" data-types="2,3,4,5,7">
-                        <label for="type">Type:</label>
-                        <select id="type" data-access="properties.key_type"></select>
+                    <div class="form-group" data-types="2">
+                        <label for="typeAttribute">Attribute type:</label>
+                        <select id="typeAttribute" data-access="properties.key_type">
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Primary key">Primary key</option>
+                            <option value="Partial key">Partial key</option>
+                            <option value="Multivalue">Multivalue</option>
+                            <option value="Derive">Derive</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="3,5">
+                        <label for="typeEntityRelation">Entity/relation type:</label>
+                        <select id="typeEntityRelation" data-access="properties.key_type">
+                            <option value="Normal" selected>Strong</option>
+                            <option value="Weak">Weak</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="4">
+                        <label for="typeLine">ER line type:</label>
+                        <select id="typeLine" data-access="properties.key_type">
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Forced">Forced</option>
+                            <option value="Derived">Derived</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="7">
+                        <label for="typeLineUML">UML line type:</label>
+                        <select id="typeLineUML" data-access="properties.key_type">
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Association">Association</option>
+                            <option value="Inheritance">Inheritance</option>
+                            <option value="Implementation">Implementation</option>
+                            <option value="Dependency">Dependency</option>
+                            <option value="Aggregation">Aggregation</option>
+                            <option value="Composition">Composition</option>
+                        </select>
                     </div>
                     <div class="form-group" data-types="2,3,5">
                         <label for="backgroundColor">Background color:</label>
@@ -534,10 +567,10 @@
                         </select>
                     </div>
                     <div class="form-group" data-types="7">
-                        <label for="lineDirection">Line direction:</label>
+                        <label for="lineDirection">UML line direction:</label>
                         <select id="lineDirection" data-access="lineDirection">
                             <option value="First" id="First">First object</option>
-                            <option value="Second" id = "Second">Second object</option>
+                            <option value="Second" id="Second">Second object</option>
                         </select>
                     </div>
                     <div class="form-group" data-types="4">

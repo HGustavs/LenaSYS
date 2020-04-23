@@ -4622,7 +4622,6 @@ function loadAppearanceForm() {
     //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
     if(typeof type === "undefined") type = 0;
 
-    const typeElement = document.getElementById("type");
     const nameElement = document.getElementById("name");
 
     showFormGroups(type);
@@ -4632,12 +4631,10 @@ function loadAppearanceForm() {
 
     switch(type) {
         case symbolKind.erAttribute:
-            typeElement.innerHTML = makeoptions("Normal", ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"], ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"]);
             nameElement.value = object.name;
             break;
         case symbolKind.erEntity:
         case symbolKind.erRelation:
-            typeElement.innerHTML = makeoptions("Normal", ["Weak", "Strong"], ["Weak", "Normal"]);
             nameElement.value = object.name;
             break;
         case symbolKind.line:
@@ -4647,14 +4644,9 @@ function loadAppearanceForm() {
             if(!hasEntity || !hasRelation) {
                 document.getElementById("cardinalityER").parentNode.style.display = "none";
             }
-            typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
             document.getElementById("typeLine").focus();
             break;
         case symbolKind.umlLine:
-            const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
-            typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
-            typeElement.focus();
-
             //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
             const connectedObjectsArray = object.getConnectedObjects();
             document.getElementById("First").innerHTML = connectedObjectsArray[0].name;
@@ -4664,6 +4656,7 @@ function loadAppearanceForm() {
             } else {
                 document.getElementById("Second").innerHTML = connectedObjectsArray[1].name;
             }
+            document.getElementById("typeLineUML").focus();
         case symbolKind.text:
             document.getElementById("freeText").value = getTextareaText(object.textLines);
             document.getElementById("freeText").focus();
