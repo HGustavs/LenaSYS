@@ -955,7 +955,8 @@ function popupDocumentation(id, lang) {
 
 var dmd;
 
-function Skip(skipkind) {
+function Skip(skipkind) 
+{
 	if (skipkind == "bd") {
 		dmd = 1;
 	} else if (skipkind == "bu") {
@@ -973,8 +974,8 @@ function Skip(skipkind) {
 		dmd = 0;
 	}
 	if (skipkind == "bd" || skipkind == "fd") {
-		$("#forwdrop").css("display", "none");
-		$("#backwdrop").css("display", "none");
+		document.getElementById("forwdrop").style.display = "none";
+		document.getElementById("backwdrop").style.display = "none";
 	}
 
 	setTimeout(function () {
@@ -993,15 +994,15 @@ function execSkip() {
 		for (i = 0; i < retData['before'].length; i++) {
 			str += "<span id='F" + retData['before'][i][1] + "' onclick='navigateExample(\"" + retData['before'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['before'][i][1] + ":" + retData['before'][i][2] + "</span>";
 		}
-		$("#backwdropc").html(str);
-		$("#backwdrop").css("display", "block");
+		document.getElementById("backwdropc").innerHTML = str;
+		document.getElementById("backwdrop").style.display = "block";
 		dmd = 0;
 	} else if (dmd == 2) {
 		for (i = 0; i < retData['after'].length; i++) {
 			str += "<span id='F" + retData['after'][i][1] + "' onclick='navigateExample(\"" + retData['after'][i][0] + "\")' class='dropdownitem dropdownitemStyle'>" + retData['after'][i][1] + ":" + retData['after'][i][2] + "</span>";
 		}
-		$("#forwdropc").html(str);
-		$("#forwdrop").css("display", "block");
+		document.getElementById("forwdropc").innerHTML = str;
+		document.getElementById("forwdrop").style.display = "block";
 		dmd = 0;
 	}
 }
