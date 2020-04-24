@@ -4672,14 +4672,9 @@ function loadAppearanceForm() {
     if(appearanceObjects.length < 1) {
         return;
     }
-
-    const types = appearanceObjects.reduce((result, object) => {
-        const type = object.symbolkind || 0;
-        if(!result.includes(type)) {
-            result.push(type);
-        }
-        return result;
-    }, []);
+    
+    //Get all unique types from the selected objects
+    const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
     
     showFormGroups(types);
     toggleApperanceElement(true);
