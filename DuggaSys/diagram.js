@@ -4781,10 +4781,11 @@ function getTextareaText(array) {
     return text;
 }
 
-function setTextareaText(element, array) {
-    const textLines = element.value.split('\n');
-    array = [];
-    textLines.forEach(text => array.push({"text": text}));
+function getTextareaArray(element, index) {
+    const objectText = element.value.split(",\n");
+    const indexTextLines = objectText[index].split("\n");
+    const array = [];
+    indexTextLines.forEach(text => array.push({"text": text}));
     return array;
 }
 
@@ -4843,13 +4844,15 @@ function setSelections(object) {
 
 function setSelectedObjectsProperties(element) {
     const types = element.parentNode.dataset.types.split(",");
+    let textareaIndex = 0;
 
     //Using global array populated with objects when form is loaded to prevent selected objects that are locked
     appearanceObjects.forEach(object => {
         if((types.includes((object.symbolkind || 0).toString()))) {
             const access = element.dataset.access.split(".");
             if(element.nodeName === "TEXTAREA") {
-                object[access[0]] = setTextareaText(element, object[access[0]]);
+                object[access[0]] = getTextareaArray(element, textareaIndex);
+                textareaIndex++;
             } else if(element.type === "range") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
