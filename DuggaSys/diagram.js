@@ -1886,9 +1886,18 @@ function drawVirtualPaper() {
 //------------------------------------------------------------------
 function objectInArea(x1, y1, x2, y2){
 	for(i = 0; i < diagram.length; i++){
-		let point = pixelsToCanvas(points[diagram[i].centerPoint].x, points[diagram[i].centerPoint].y);
-		if(x1 < point.x && point.x < x2 && y1 < point.y && point.y < y2) return true
-	}
+			let pointcenter = {
+				x: 0,
+				y: 0,
+			}
+			let pointTopLeft = pixelsToCanvas(points[diagram[i].topLeft].x, points[diagram[i].topLeft].y);
+			let pointBottomRigth = pixelsToCanvas(points[diagram[i].bottomRight].x, points[diagram[i].bottomRight].y);
+
+			pointcenter.x = (pointTopLeft.x + pointBottomRigth.x) / 2;
+			pointcenter.y = (pointTopLeft.y + pointBottomRigth.y) / 2;
+			if(x1 < pointcenter.x && pointcenter.x < x2 && y1 < pointcenter.y && pointcenter.y < y2) return true
+		
+	}	
 	return false;
 }	
 
