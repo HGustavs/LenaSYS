@@ -4750,7 +4750,17 @@ function showFormGroups(typesToShow) {
     formGroupsToShow.forEach(group => group.style.display = "block");
 
     const groupsByTypes = formGroupsToShow.reduce((result, group) => {
-        
+        const groupTypes = group.dataset.types.split(",");
+        const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
+        const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
+        if(duplicateTypesIndex === -1) {
+            result.push({
+                groups: [group],
+                types: types
+            });
+        } else {
+            result[duplicateTypesIndex].groups.push(group);
+        }
         return result;
     }, []);
 
