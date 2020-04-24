@@ -4679,62 +4679,53 @@ function loadAppearanceForm() {
     showFormGroups(types);
     toggleApperanceElement(true);
     
-    const nameElement = document.getElementById("name");
-    nameElement.focus();
+    let erCardinalityVisible = false;
 
-    appearanceObjects.forEach((object, i) => {
+    //A comma at the end to seperate objects right now. Should be fixed in seperate issue to only appear on last object in the type
+    appearanceObjects.forEach(object => {
+        if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
+            document.getElementById("name").value += object.name + ", ";
+            document.getElementById("name").focus();
+        }
 
-    });
-
-    //Temporary until solution for multiple
-    const type = types[0];
-    const object = appearanceObjects[0];
-
-    switch(type) {
-        case symbolKind.erAttribute:
-            nameElement.value = object.name;
-            break;
-        case symbolKind.erEntity:
-        case symbolKind.erRelation:
-            nameElement.value = object.name;
-            break;
-        case symbolKind.line:
+        if(object.symbolkind === symbolKind.line) {
             const connections = object.getConnectedObjects();
             const hasEntity = connections.some(symbol => symbol.symbolkind === symbolKind.erEntity);
             const hasRelation = connections.some(symbol => symbol.symbolkind === symbolKind.erRelation);
-            if(!hasEntity || !hasRelation) {
-                document.getElementById("cardinalityER").parentNode.style.display = "none";
+            if(!erCardinalityVisible) {
+                if(hasEntity && hasRelation) {
+                    document.getElementById("cardinalityER").parentNode.style.display = "block";
+                    erCardinalityVisible = true;
+                } else {
+                    document.getElementById("cardinalityER").parentNode.style.display = "none";
+                }
             }
             document.getElementById("typeLine").focus();
-            break;
-        case symbolKind.umlLine:
+        } else if(object.symbolkind === symbolKind.umlLine) {
             //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
             const connectedObjectsArray = object.getConnectedObjects();
-            document.getElementById("First").innerHTML = connectedObjectsArray[0].name;
+            document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
             //Selection to check if relation is to the same entity. If so: both are named from object 0
             if(typeof connectedObjectsArray[1] == "undefined"){
-                document.getElementById("Second").innerHTML =  connectedObjectsArray[0].name;
+                document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
             } else {
-                document.getElementById("Second").innerHTML = connectedObjectsArray[1].name;
+                document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
             }
             document.getElementById("typeLineUML").focus();
-        case symbolKind.text:
-            document.getElementById("freeText").value = getTextareaText(object.textLines);
+        } else if(object.symbolkind === symbolKind.text) {
+            document.getElementById("freeText").value += getTextareaText(object.textLines) + ",\n";
             document.getElementById("freeText").focus();
             textAppearanceOpen = true;
-            break;
-        case symbolKind.uml:
-            nameElement.value = object.name;
-            document.getElementById("umlAttributes").value = getTextareaText(object.attributes);
-            document.getElementById("umlOperations").value = getTextareaText(object.operations);
+        } else if(object.symbolkind === symbolKind.uml) {
+            document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
+            document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
             classAppearanceOpen = true;
-            break;
-        case 0:
+        } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
-            break;
-    }
-    setSelections(object);
+        }
+        setSelections(object);
+    });
 }
 
 function showFormGroups(typesToShow) {
