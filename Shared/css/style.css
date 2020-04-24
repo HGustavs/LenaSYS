@@ -6131,3 +6131,44 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
+#motdContent{
+  background-color: rgba(254, 204, 86, 1);
+}
+#motdArea{
+  border: 2px;
+  border-radius: 2px;
+  border-style: solid;
+  border-color: rgba(254, 204, 86, 1);
+  background-color: rgba(254, 204, 86, 1);
+  justify-content: center;
+  align-items: center;
+}
+.motdBoxheader{
+  background-color: rgba(254, 204, 86, 1);
+  vertical-align: bottom;
+  padding-left: 10px;
+  cursor: default;
+  display: flex;
+  justify-content: space-around;
+}
+.motdBoxheader h3 {
+  font-size: 20px;
+  margin-top: 10px;
+  line-height: 0.5em;
+  color: black;
+  text-align: center;
+  width: 100%;
+}
+.motdBoxheader div {
+  padding: 4px 20px;
+  color: black;
+  cursor: pointer;
+  background-color: rgb(199, 80, 80);
+  font-family: arial;
+  font-weight: bold;
+}
+
+.motdBoxheader div:hover {
+  background-color: #ce3d3d;
+}
+
