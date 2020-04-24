@@ -4625,6 +4625,16 @@ function createCollapsible(formGroups, types, index) {
     }
 
     iconContainer.addEventListener("click", () => collapsibleElement.classList.toggle("closed"));
+
+    //Set collapsible title to the object names the collapsible should represent. Seperate by comma (no comma for last)
+    types.forEach((type, i) => {
+        title.innerText += symbolTypeMap[type];
+        if(i !== types.length - 1) title.innerText += ", ";
+    });
+
+    formGroups.forEach(group => formGroupContainer.appendChild(group));
+
+    document.getElementById("appearanceForm").appendChild(collapsibleElement);
 }
 
 function loadGlobalAppearanceForm() {
