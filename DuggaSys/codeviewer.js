@@ -3119,12 +3119,9 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", " ");
-				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
 			},
 			stop: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", " ");
 				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events', 'auto');
 			}
@@ -3684,11 +3681,6 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 		});
 	} else {
 		$("#box4wrapper").height(atry2 + "%");
-		$("#box3wrapper").css({
-			"top": basePer + "%",
-			"height": remainHeightPer + "%",
-			"left": " "
-		});
 	}
 
 }
