@@ -696,28 +696,7 @@ function keyDownHandler(e) {
             var temp = [];
             var connected = [];
             //Handles copying of lines
-            for (var y = 0; y < cloneTempArray.length; y++) {
-                for (var x = 0; x < cloneTempArray.length; x++) {
-                    if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)){
-                        var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
-                        connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
-                    }
-                    else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)){
-                        var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
-                        connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});
-                        
-                    }
-                }
-            }
-            for (var i = 0; i < cloneTempArray.length; i++) {
-                const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
-                temp.push(diagram[cloneIndex]);
-            }
-            for(var j = 0 ; j < connected.length ; j++){
-                var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
-                var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
-                temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
-            }
+            drawCopyERLines(connected , temp);
             cloneTempArray = temp;
             selected_objects = temp;
             updateGraphics();
@@ -786,6 +765,38 @@ function keyDownHandler(e) {
         } else if (shiftIsClicked && key == keyMap.leftArrow) {
             align(event, 'left');
         }
+    }
+}
+
+function drawCopyERLines(connected , temp){
+    for (var y = 0; y < cloneTempArray.length; y++) {
+        for (var x = 0; x < cloneTempArray.length; x++) {
+            if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)){
+                var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
+                connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
+            }
+            else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)){
+                var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
+                connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});
+                
+            }
+        }
+    }
+    for (var i = 0; i < cloneTempArray.length; i++) {
+        const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
+        temp.push(diagram[cloneIndex]);
+    }
+
+    for(var j = 0 ; j < connected.length ; j++){
+        if(temp[connected[j].from].symbolkind == symbolKind.erAttribute){
+            temp[connected[j].to][connected[j].lineloc] = temp[connected[j].from].centerPoint;
+        }
+    }
+
+    for(var j = 0 ; j < connected.length ; j++){
+        var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
+        var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
+        temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
     }
 }
 
@@ -1050,18 +1061,18 @@ function copySymbol(symbol) {
     }
 
     if(symbol.symbolkind == symbolKind.uml) {
-        clone.name = symbol.name + " copy";
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.erAttribute) {
-        clone.name = symbol.name + " copy";
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.erEntity) {
-        clone.name = symbol.name + " copy";
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.line) {
-        clone.name = symbol.name + " copy";
+        clone.name = symbol.name;
     }else if(symbol.symbolkind == symbolKind.text) {
-        clone.name = symbol.name + " copy";
+        clone.name = symbol.name;
         clone.textLines.push({text:clone.name});
     } else{
-        clone.name = symbol.name + " copy";
+        clone.name = symbol.name;
     }
 
     clone.topLeft = points.push(topLeftClone) - 1;
