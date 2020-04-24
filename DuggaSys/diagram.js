@@ -4600,6 +4600,21 @@ function createCardinality() {
     }
 }
 
+function createCollapsible(formGroups, types, index) {
+    const collapsibleElement = document.createElement("div");
+    const objectTypesElement = document.createElement("div");
+    const iconContainer = document.createElement("div");
+    const icon = document.createElement("div");
+    const title = document.createElement("div");
+    const formGroupContainer = document.createElement("div");
+
+    collapsibleElement.appendChild(objectTypesElement);
+    collapsibleElement.appendChild(formGroupContainer);
+    objectTypesElement.appendChild(iconContainer);
+    objectTypesElement.appendChild(title);
+    iconContainer.appendChild(icon);
+}
+
 function loadGlobalAppearanceForm() {
     showFormGroups(-1);
     globalappearanceMenuOpen = true;
