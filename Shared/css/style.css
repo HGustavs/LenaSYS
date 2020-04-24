@@ -1299,6 +1299,18 @@ input {
   text-decoration: underline;
 }
 
+.newpassword .forgotPw {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.newpassword .forgotPw:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  background:yellow;
+}
+
+
 .loginBox .form-control {
   margin: 3px 0px 3px 0px;
 }
