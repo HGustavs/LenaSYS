@@ -687,7 +687,8 @@ function returnedSection(data) {
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += "<td style='width:32px;'><div class='spacerLeft'></div></td>";
+          if (itemKind === 3) str += "<td id='indTab' style='width:32px;'><div class='spacerLeft'></div></td>";
+         // changeTabs();
           var grady = -1;
           var status = "";
           var marked;
@@ -1063,6 +1064,18 @@ function showHighscore(did, lid) {
     did: did,
     lid: lid
   }, "DUGGAHIGHSCORE");
+}
+
+function changeTabs(val) {
+  var lidID = "lid" + lid.value;
+  var z = document.getElementById(lidID);
+
+  console.log(z);
+  console.log(lid.value);
+  if(val == 1){
+    document.getElementById(lidID).rows[0].cells.item(0).style.width = "63px";
+  }else{
+  }
 }
 
 function getGroups(grp) {
