@@ -628,8 +628,8 @@
 						<label for="commentCheck">Comment</label>
 						<input type="checkbox" id="commentCheck" data-access="properties.isComment" />
 					</div>
-                    <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
-                        <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
+                    <div id="appearanceButtonContainer">
+                        <input type="submit" class="submit-button" value="Ok">
                     </div>				
                 </div>
             </div>

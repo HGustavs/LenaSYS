@@ -4933,6 +4933,16 @@ only screen and (max-device-width: 320px) {
   box-sizing: border-box;
 }
 
+#appearanceButtonContainer {
+  margin: 16px 0;
+  text-align: center;
+}
+
+#appearanceButtonContainer .submit-button {
+  margin: 0;
+  float: none;
+}
+
 .form-group {
   margin: 16px 0;
 }
