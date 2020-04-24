@@ -4600,6 +4600,18 @@ function createCardinality() {
     }
 }
 
+const symbolTypeMap = {
+    "-1": "Global",
+    "0": "Path",
+    "1": "UML",
+    "2": "Attribute",
+    "3": "Entity",
+    "4": "ER line",
+    "5": "Relation",
+    "6": "Text",
+    "7": "UML line"
+}
+
 function createCollapsible(formGroups, types, index) {
     const collapsibleElement = document.createElement("div");
     const objectTypesElement = document.createElement("div");
