@@ -4842,24 +4842,30 @@ function setSelections(object) {
 
 
 function setSelectedObjectsProperties(element) {
+    const types = element.parentNode.dataset.types.split(",");
+
     //Using global array populated with objects when form is loaded to prevent selected objects that are locked
     appearanceObjects.forEach(object => {
-        const access = element.dataset.access.split(".");
-        if(element.nodeName === "TEXTAREA") {
-            object[access[0]] = setTextareaText(element, object[access[0]]);
-        } else if(element.type === "range") {
-            object[access[0]] = element.value / 100;
-        } else if(access[0] === "cardinality") {
-            if(element.style.display !== "none") {
-                if(element.value === "None") element.value = "";
+        if((types.includes((object.symbolkind || 0).toString()))) {
+            const access = element.dataset.access.split(".");
+            if(element.nodeName === "TEXTAREA") {
+                object[access[0]] = setTextareaText(element, object[access[0]]);
+            } else if(element.type === "range") {
+                object[access[0]] = element.value / 100;
+            } else if(access[0] === "cardinality") {
+                if(element.style.display !== "none") {
+                    if(element.value === "None") {
+                        element.value = "";
+                    }
+                    object[access[0]][access[1]] = element.value;
+                }
+            } else if(element.id == "commentCheck") {
+                object[access[0]][access[1]] = element.checked;
+            } else if(access.length === 1) {
+                object[access[0]] = element.value;
+            } else if(access.length === 2) {
                 object[access[0]][access[1]] = element.value;
             }
-        } else if(element.id == "commentCheck") {
-            object[access[0]][access[1]] = element.checked;
-        } else if(access.length === 1) {
-            object[access[0]] = element.value;
-        } else if(access.length === 2) {
-            object[access[0]][access[1]] = element.value;
         }
     });
     updateGraphics();
