@@ -4672,7 +4672,7 @@ function loadAppearanceForm() {
     if(appearanceObjects.length < 1) {
         return;
     }
-    
+
     //Get all unique types from the selected objects
     const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
     
@@ -4681,6 +4681,10 @@ function loadAppearanceForm() {
     
     const nameElement = document.getElementById("name");
     nameElement.focus();
+
+    appearanceObjects.forEach((object, i) => {
+
+    });
 
     //Temporary until solution for multiple
     const type = types[0];
@@ -4843,6 +4847,9 @@ function setObjectProperties() {
 //Stores which element the mouse was pressed down on while in the appearance menu.
 let appearanceMouseDownElement = null;
 
+//Stores a copy of the appearance form HTML-element with its childnodes
+let originalAppearanceForm = null;
+
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     formGroups.forEach(group => {
@@ -4872,6 +4879,8 @@ function initAppearanceForm() {
             toggleApperanceElement();
         }
     });
+
+    originalAppearanceForm = document.getElementById("appearanceForm").cloneNode(true);
 }
 
 function getGroupsByTypes(typesToShow) {
