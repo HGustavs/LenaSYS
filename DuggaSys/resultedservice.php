@@ -42,6 +42,7 @@ $teacher = getOP('teacher');
 $gradeLastExported=getOP('gradeLastExported');
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
+$access = false;
 
 $duggaid = getOP('duggaid');
 
@@ -429,6 +430,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					file_put_contents($movname,$responsetext);
 		}
 	}
+	$access = true;
 }
 
 //------------------------------------------------------------------------------------------------
@@ -761,6 +763,7 @@ $array = array(
 	'results' => $lentries,
 	'teachers' => $teachers,
 	'courseteachers' => $courseteachers,
+	'access' => $access,
 
 	'duggauser' => $duggauser,
 	'duggaentry' => $duggaentry,
