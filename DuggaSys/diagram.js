@@ -4227,6 +4227,9 @@ function mouseupevt(ev) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
+                }else if ((startMouseCoordinateX == currentMouseCoordinateX) && (startMouseCoordinateY == currentMouseCoordinateY)){
+                    createNewPoint = false;
+                    okToMakeLine = false;
                 }else {
                     createNewPoint = true;
                 }
