@@ -585,25 +585,25 @@ function changeDirectory(kind) {
 	}
 
 	if (kindNum) {
-		var chosen = $("#filename_" + kindNum).val();
-		var wordlist = $('#wordlist_' + kindNum);
-		var filenameBox = $("#filename_" + kindNum);
+		var chosen = document.getElementById("filename_" + kindNum).value;
+		var wordlist = document.getElementById('wordlist_' + kindNum);
+		var filenameBox = document.getElementById("filename_" + kindNum);
 	} else {
-		var chosen = $("#filename").val();
-		var wordlist = $('#wordlist');
-		var filenameBox = $("#filename");
+		var chosen = document.getElementById("filename").value;
+		var wordlist = document.getElementById('wordlist');
+		var filenameBox = document.getElementById("filename");
 	}
 
 	if ($(kind).val() == "CODE") {
 		dir = retData['directory'][0];
-		wordlist.prop('disabled', false);
+		wordlist.disabled = false;
 	} else if ($(kind).val() == "IFRAME") {
 		dir = retData['directory'][2];
-		wordlist.prop('disabled', 'disabled');
+		wordlist.disabled = 'disabled';
 	} else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
-		wordlist.val('4');
-		wordlist.prop('disabled', 'disabled');
+		wordlist.value = '4';
+		wordlist.disabled = 'disabled';
 	}
 
 	// Fill the file selection dropdown with files
@@ -619,8 +619,8 @@ function changeDirectory(kind) {
 
 
 
-	filenameBox.html(str);
-	$("#playlink").html(str);
+	filenameBox.innerHTML = str;
+	document.getElementById("playlink").innerHTML = str;
 }
 
 //----------------------------------------------------------------------------------
