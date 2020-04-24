@@ -4738,10 +4738,27 @@ function loadAppearanceForm() {
 }
 
 function showFormGroups(typesToShow) {
+    const form = document.getElementById("appearanceForm");
+
+    //Replace appearance form with original to keep structure after collapsible addition changes it
+    form.parentNode.replaceChild(originalAppearanceForm, form);
+
     const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
     const formGroupsToShow = getGroupsByTypes(typesToShow);
+
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
+
+    const groupsByTypes = formGroupsToShow.reduce((result, group) => {
+        
+        return result;
+    }, []);
+
+    initAppearanceForm();
+    groupsByTypes.forEach((object, i) => createCollapsible(object.groups, object.types, i));
+
+    //Always put submit-button in the end of the form
+    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
 }
 
 function getTextareaText(array) {
