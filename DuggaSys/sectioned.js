@@ -925,8 +925,18 @@ function returnedSection(data) {
           } else {
             str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
             str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
+           
           }
-
+          var old = deadline;
+          console.log(old);
+          
+          if (old != dateSubmitted){
+            
+            str += "<td id='oldDate' style='width:25px;'><img style='width:25px; padding-top:3px' title= '$old' src='../Shared/icons/warningTriangle.svg'/>";
+            
+            str += "</td>";
+            
+          }
           str += "</div></td>";
         }
 
