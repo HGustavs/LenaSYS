@@ -124,7 +124,6 @@ var old_container_width;            // Used to revert changes from fullscreen
 var old_container_height;           // Used to revert changes from fullscreen
 var old_container_position;         // Used to revert changes from fullscreen
 var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
-var old_zoom_left;                  // Used to revert changes from fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -3493,7 +3492,6 @@ function toggleFullscreen(){
     var head = document.querySelector("header");
     var menu_buttons = document.getElementById("buttonDiv");
     var canvas_div = document.getElementById("diagramCanvasContainer");
-    var zoom_bar = document.getElementById("selectDiv");
 
     if(!fullscreen){
         // Get previous settings
@@ -3501,7 +3499,6 @@ function toggleFullscreen(){
         old_container_height = canvas_div.style.height;
         old_container_width = canvas_div.style.width;
         old_container_position = canvas_div.style.position;
-        old_zoom_left = zoom_bar.style.left;
 
         // Hide header, buttons, their leftover space and resize container to fit entire screen
         head.style.display = "none";
@@ -3526,7 +3523,6 @@ function toggleFullscreen(){
         canvas_div.style.marginLeft = old_canvas_div_marginLeft;
         canvas_div.style.height = old_container_height;
         canvas_div.style.width = old_container_width;
-        zoom_bar.style.left = old_zoom_left;
         fullscreen = false;
 
         // Refit canvas to current container
