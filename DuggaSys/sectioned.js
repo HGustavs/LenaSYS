@@ -359,11 +359,11 @@ function prepareItem() {
   param.highscoremode = $("#highscoremode").val();
   param.sectname = $("#sectionname").val();
   param.visibility = $("#visib").val();
+  param.tabs = $("#tabs").val();
   param.moment = $("#moment").val();
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-
   return param;
 }
 
@@ -385,7 +385,7 @@ function deleteItem(item_lid = null) {
 
 function updateItem() {
   AJAXService("UPDATE", prepareItem(), "SECTION");
-
+console.log(prepareItem());
   $("#sectionConfirmBox").css("display", "none");
   $("#editSection").css("display", "none");
 }
@@ -687,8 +687,7 @@ function returnedSection(data) {
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += "<td id='indTab' style='width:32px;'><div class='spacerLeft'></div></td>";
-         // changeTabs();
+          if (itemKind === 3) str += "<td id='indTab'  class='tabs" + item["tabs"] + "'><div class='spacerLeft'></div></td>";
           var grady = -1;
           var status = "";
           var marked;
@@ -1073,8 +1072,15 @@ function changeTabs(val) {
   console.log(z);
   console.log(lid.value);
   if(val == 1){
-    document.getElementById(lidID).rows[0].cells.item(0).style.width = "63px";
+    document.getElementById(lidID).rows[0].cells.item(0).style.width = "64px";
+  }else if(val == 2){
+    document.getElementById(lidID).rows[0].cells.item(0).style.width = "96px";
+  }else if(val == 3){
+    document.getElementById(lidID).rows[0].cells.item(0).style.width = "128px";
+  }else if(val == 4){
+    document.getElementById(lidID).rows[0].cells.item(0).style.width = "170px";
   }else{
+    document.getElementById(lidID).rows[0].cells.item(0).style.width = "33px";
   }
 }
 
