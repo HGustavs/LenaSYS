@@ -340,22 +340,8 @@ $codeLinkQuery->execute();
 			'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
 				'</script>'
 			;
-			echo '<script type="text/javascript">',
-			'console.log(1);',
-				'</script>'
-			;
 		}  
-		if($_GET['kind'] == null){
-			echo '<script type="text/javascript">',
-			'console.log(77);',
-				'</script>'
-			;
-		}
 	}
-	echo '<script type="text/javascript">',
-        'console.log(4);',
-            '</script>'
-        ;
 ?>
 
 </body>
