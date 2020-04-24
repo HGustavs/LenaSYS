@@ -694,14 +694,9 @@ function keyDownHandler(e) {
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
             var temp = [];
-            for (var i = 0; i < cloneTempArray.length; i++) {
-                //Display cloned objects except lines
-                if (cloneTempArray[i].symbolkind != symbolKind.line
-                    && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
-                    const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
-                    temp.push(diagram[cloneIndex]);
-                }
-            }
+            var connected = [];
+            //Handles copying of lines
+            drawCopyERLines(connected , temp);
             cloneTempArray = temp;
             selected_objects = temp;
             updateGraphics();
@@ -770,6 +765,38 @@ function keyDownHandler(e) {
         } else if (shiftIsClicked && key == keyMap.leftArrow) {
             align(event, 'left');
         }
+    }
+}
+
+function drawCopyERLines(connected , temp){
+    for (var y = 0; y < cloneTempArray.length; y++) {
+        for (var x = 0; x < cloneTempArray.length; x++) {
+            if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)){
+                var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
+                connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
+            }
+            else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)){
+                var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
+                connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});
+                
+            }
+        }
+    }
+    for (var i = 0; i < cloneTempArray.length; i++) {
+        const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
+        temp.push(diagram[cloneIndex]);
+    }
+
+    for(var j = 0 ; j < connected.length ; j++){
+        if(temp[connected[j].from].symbolkind == symbolKind.erAttribute){
+            temp[connected[j].to][connected[j].lineloc] = temp[connected[j].from].centerPoint;
+        }
+    }
+
+    for(var j = 0 ; j < connected.length ; j++){
+        var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
+        var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
+        temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
     }
 }
 
@@ -1003,12 +1030,25 @@ function copySymbol(symbol) {
     }
 
     var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
-    topLeftClone.x += 10;
-    topLeftClone.y += 10;
+    if(symbol.symbolkind!=4){
+        topLeftClone.x += 10;
+        topLeftClone.y += 10;
+    }
+    else{
+        topLeftClone.x -= 10;
+        topLeftClone.y -= 10;
+    }
 
     var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
-    bottomRightClone.x += 10;
-    bottomRightClone.y += 10;
+    if(symbol.symbolkind!=4){
+        bottomRightClone.x += 10;
+        bottomRightClone.y += 10;
+    }
+    else{
+        bottomRightClone.x -= 10;
+        bottomRightClone.y -= 10;
+    }
+
 
     var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
