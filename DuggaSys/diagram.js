@@ -4845,6 +4845,7 @@ function setSelections(object) {
 function setSelectedObjectsProperties(element) {
     const types = element.parentNode.dataset.types.split(",");
     let textareaIndex = 0;
+    let nameIndex = 0;
 
     //Using global array populated with objects when form is loaded to prevent selected objects that are locked
     appearanceObjects.forEach(object => {
@@ -4864,6 +4865,9 @@ function setSelectedObjectsProperties(element) {
                 }
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;
+            } else if(element.id === "name") {
+                object[access[0]] = element.value.split(",")[nameIndex].trim();
+                nameIndex++;
             } else if(access.length === 1) {
                 object[access[0]] = element.value;
             } else if(access.length === 2) {
