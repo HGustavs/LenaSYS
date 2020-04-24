@@ -4997,6 +4997,47 @@ only screen and (max-device-width: 320px) {
   border-radius: 0;
 }
 
+/* Collapsible */
+.collapsible {
+
+}
+
+.collapsible .object-types {
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.collapsible .object-types .square {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  background-color: var(--color-primary-light);
+  border: 1px solid var(--color-border-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.collapsible .object-types .square div {
+  width: 80%;
+  height: 80%;
+  content:url("../icons/Minus.svg");
+}
+
+.collapsible.closed .object-types .square div {
+  content:url("../icons/Plus.svg");
+}
+
+.collapsible .form-groups {
+  display: block;
+}
+
+.collapsible.closed .form-groups {
+  display: none;
+}
+
 /* Diagram canvas */
 #diagramCanvasContainer {
   margin-left: 52px;
