@@ -4650,7 +4650,7 @@ function createCollapsible(formGroups, types, index) {
 }
 
 function loadGlobalAppearanceForm() {
-    showFormGroups(-1);
+    showFormGroups([-1]);
     globalappearanceMenuOpen = true;
     toggleApperanceElement(true);
     document.getElementById("lineThicknessGlobal").value = settings.properties.lineWidth;
@@ -4673,7 +4673,7 @@ function loadAppearanceForm() {
 
     const nameElement = document.getElementById("name");
 
-    showFormGroups(type);
+    showFormGroups([type]);
     toggleApperanceElement(true);
 
     nameElement.focus();
@@ -4725,9 +4725,9 @@ function loadAppearanceForm() {
     setSelections(object);
 }
 
-function showFormGroups(type) {
+function showFormGroups(typesToShow) {
     const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
-    const formGroupsToShow = getGroupsByType(type);
+    const formGroupsToShow = getGroupsByTypes(typesToShow);
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
 }
@@ -4751,7 +4751,7 @@ function setTextareaText(element, array) {
 }
 
 function setGlobalSelections() {
-    const groups = getGroupsByType(-1);
+    const groups = getGroupsByTypes([-1]);
     groups.forEach(group => {
         const select = group.querySelector("select");
         if(select !== null) {
@@ -4762,7 +4762,7 @@ function setGlobalSelections() {
 }
 
 function setGlobalProperties() {
-    const groups = getGroupsByType(-1);
+    const groups = getGroupsByTypes([-1]);
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
@@ -4775,12 +4775,7 @@ function setGlobalProperties() {
 }
 
 function setSelections(object) {
-    let groups = [];
-    if(object.kind === kind.symbol) {
-        groups = getGroupsByType(object.symbolkind);
-    } else if(object.kind === kind.path) {
-        groups = getGroupsByType(0);
-    }
+    const groups = getGroupsByTypes([object.symbolkind || 0]);
 
     groups.forEach(group => {
         const elements = group.querySelectorAll("select, input[type='checkbox']");
@@ -4810,12 +4805,7 @@ function setSelections(object) {
 
 function setObjectProperties() {
     for(const object of selected_objects) {
-        let groups = [];
-        if(object.kind === kind.symbol) {
-            groups = getGroupsByType(object.symbolkind);
-        } else if(object.kind === kind.path) {
-            groups = getGroupsByType(0);
-        }
+        const groups = getGroupsByTypes([object.symbolkind || 0]);
         groups.forEach(group => {
             const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
             elements.forEach(element => {
@@ -4877,11 +4867,11 @@ function initAppearanceForm() {
     });
 }
 
-function getGroupsByType(type) {
+function getGroupsByTypes(typesToShow) {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     return [...formGroups].filter(group => {
         const types = group.dataset.types.split(",");
-        return types.includes(type.toString());
+        return typesToShow.some(type => types.includes(type.toString()));
     });
 }
 
