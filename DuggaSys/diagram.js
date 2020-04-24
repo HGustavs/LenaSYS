@@ -4205,7 +4205,8 @@ function mouseupevt(ev) {
             }
         }
     }
-    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+  
+    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && startMouseCoordinateX != currentMouseCoordinateX && startMouseCoordinateY != currentMouseCoordinateY) {
         saveState = false;
         uimode = "CreateUMLLine";
         //Check if you release on canvas or try to draw a line from entity to entity
@@ -4227,9 +4228,6 @@ function mouseupevt(ev) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
-                }else if ((startMouseCoordinateX == currentMouseCoordinateX) && (startMouseCoordinateY == currentMouseCoordinateY)){
-                    createNewPoint = false;
-                    okToMakeLine = false;
                 }else {
                     createNewPoint = true;
                 }
