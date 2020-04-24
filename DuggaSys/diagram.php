@@ -479,7 +479,7 @@
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
     <div id="appearance" class='loginBoxContainer'>
-        <div class='loginBox'>
+        <div id="appearanceFormContainer" class='loginBox'>
             <div class='loginBoxheader'>
                 <h3 id='loginBoxTitle'>Appearance</h3>
                 <div class='cursorPointer' onclick='toggleApperanceElement();'>
