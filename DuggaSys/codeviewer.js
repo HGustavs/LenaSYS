@@ -479,9 +479,10 @@ function updateExample() {
 		var courseid = querystring['courseid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
-		var playlink = $("#playlink").val();
-		var examplename = $("#title").val();
-		var sectionname = $("#secttitle").val();
+		var playlink = document.getElementById("playlink").value;
+		var examplename = document.getElementById("title").value;
+		var sectionname = document.getElementById("secttitle").value;
+
 		var beforeid = $("#before option:selected").val();
 		var afterid = $("#after option:selected").val();
 
@@ -503,7 +504,7 @@ function updateExample() {
 		removedWords = [];
 	}
 
-	$("#editExampleContainer").css("display", "none");
+	document.getElementById("editExampleContainer").style.display = "none"; 
 }
 
 function removeExample() {
@@ -527,27 +528,28 @@ function removeExample() {
 
 var openBoxID;
 
-function displayEditContent(boxid) {
-	$("#boxtitle2").removeAttr("contenteditable");
+function displayEditContent(boxid) 
+{
+	document.getElementById("boxtitle2").removeAttribute("contenteditable");
 	// The information stored about the box is fetched
 	var box = retData['box'][boxid - 1];
 
 	// Keeps track of the currently open box. Used when saving the box content.
 	openBoxID = boxid;
 
-	$("#boxtitle").val(box[4]);
-	$("#boxcontent").val(box[1]);
+	document.getElementById("boxtitle").value = box[4];
+	document.getElementById("boxcontent").value = box[1];
 
 	changeDirectory($("#boxcontent"));
 
 	if (box[5] != null) {
 		box[5] = box[5].replace(/&#47;/g, "/");
-		$("#filename").val(box[5]);
+		document.getElementById("filename").value = box[5]; 
 	} else {
-		$("#filename").val("");
+		document.getElementById("filename").value = "";
 	}
 
-	$("#fontsize").val(box[6]);
+	document.getElementById("fontsize").value = box[6];
 
 	var wordl = retData['wordlists'];
 	var str = "";
@@ -563,8 +565,9 @@ function displayEditContent(boxid) {
 			str += "<option>" + retData['improws'][i][1] + " - " + retData['improws'][i][2] + "</option>";
 		}
 	};
-	$("#improws").html(str);
-	$("#editContentContainer").css("display", "flex");
+	document.getElementById("improws").innerHTML = str;
+
+	document.getElementById("editContentContainer").style.display = "flex";
 }
 
 //----------------------------------------------------------------------------------
@@ -810,7 +813,7 @@ function createboxmenu(contentid, boxid, type) {
 			}
 			// If reader doesn't have write access, only the boxtitle is shown
 		} else {
-			str += '<td id = "boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
+			str += '<td id="boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
 		if(retData['box'][boxid - 1][1] == "DOCUMENT"){
@@ -827,11 +830,11 @@ function createboxmenu(contentid, boxid, type) {
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
 		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
-    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/markdownPen.svg'> </p></div>";
+    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'> </p></div>";
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
-			str += "<div id='copyClipboard'><td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 		
 		str += '</tr></table>';
@@ -1688,7 +1691,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
                                 coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
-                console.log()
 				switch(coloringcode) {
 					case "<html>":
 					case "</html":
@@ -2672,12 +2674,95 @@ function maximizeBoxes(boxid) {
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
+    	
+    //for template 9
+	if (templateid == 9) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
+			$(boxValArray['box' + 4]['id']).width("0%");
+            $(boxValArray['box' + 5]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			
+            alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		}
+        if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+			$(boxValArray['box' + 5]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 3) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+			$(boxValArray['box' + 5]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 4) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+            $(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+            $(boxValArray['box' + 5]['id']).width("100%");
+			/*$(boxValArray['box' + 5]['id']).css("top", "90%");*/
+         
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 5) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+            $(boxValArray['box' + 4]['id']).height("0%");
+            $(boxValArray['box' + 4]['id']).width("100%");
+            /*$(boxValArray['box' + 5]['id']).css("top", "30%");*/
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+
+	}
 }
 
 //hide maximizeButton
 function hideMaximizeAndResetButton() {
 	var templateid = retData['templateid'];
-	if (templateid > 8) {
+	if (templateid > 9) {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
 	}
@@ -2791,7 +2876,6 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
-				hideDescription();
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3159,7 +3243,7 @@ function resizeBoxes(parent, templateId) {
 };
 
 //----------------------------------------------------------------------------------
-//width adjustment for template 1, 4 and 8 (Two boxes beside eachother.)
+//width adjustment for template 1 and 4 (Two boxes beside eachother.)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
@@ -3171,41 +3255,56 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
+	var thisBox = null;
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
-	// makes the element dissapear when certain treshold is met
-	if (basePer < 20) {
+
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
+	if (basePer < 15) {
+		//Remove document description text
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+		//If the document is of type 'codebox', remove copyclipboard as well
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
-			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
 		}
+
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		
-	}else if (basePer > 80) {
+	}else if (basePer > 85) {
+
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'none';
 		}
+
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		
 	}else {
+
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3231,27 +3330,43 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box3').className == 'box codebox'){
 			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3271,27 +3386,39 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box3').className == 'box codebox'){
 			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3381,12 +3508,20 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
@@ -3397,17 +3532,26 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3437,12 +3581,20 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer > 85) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer < 15) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
@@ -3453,17 +3605,26 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3566,12 +3727,22 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
 	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box5wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
@@ -3585,20 +3756,30 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 			document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box5wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box5').className == 'box codebox'){
-			document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box5wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3647,7 +3828,8 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
 	
-	//Checks if the third box is minimum size.
+	
+    //Checks if the third box is minimum size.
 	if(boxThreeHeightPer <= 10.2) {
 		//Sets height and top on fourth box.
 		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
@@ -4101,6 +4283,112 @@ function hideIframe(){
 }
 
 function hideDescription() {
-	var descText = document.getElementById
+	console.log("hideDescription");
 }
 
+//Toggles the animation of buttomenu2 items/td when resizing
+//This function is called by alignBoxesWidth()
+
+function toggleTitleWrapper(targetBox, boxNum, boxW){
+	var box = targetBox;
+  	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 && (retData['templateid']) == !8 || boxW > 85 && boxNum == 1 && (retData['templateid']) == !6 && !3 && !9) {
+    	box.classList.remove('hidden');
+    	setTimeout(function () {
+      		box.classList.remove('visuallyhidden');
+		}, 20);
+
+  	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 1){
+		box.classList.add('visuallyhidden');
+    	box.addEventListener('transitionend', function(e) {
+      		box.classList.add('hidden');
+    	}, {
+      		capture: false,
+      		once: true,
+      		passive: false
+    	});
+  	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 2 && boxW < 98){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == !1 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 3){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 3 && (retData['templateid']) != 5){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 4 && boxW < 98){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 6){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 3){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 9){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 7 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 4 && (retData['templateid']) == 7){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 8){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else {
+		
+	  }
+
+}
