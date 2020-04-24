@@ -433,9 +433,9 @@
                <button id='moveButton' class='unpressed' title="Move Around">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button> 
-                <div id="valuesCanvas" style="position: fixed; right: 15px; margin-bottom: 10px">
+                <div id="valuesCanvas">
                 </div>
-                <div id="selectDiv" style="position: fixed; left: 70px; margin-bottom: 10px">
+                <div id="selectDiv">
                     <span class="tooltipDecrease">
                         <button name="Zoom" id="zoomDecrease" class="zoomButtonStyle" type="button" onclick="changeZoom(-0.1, event);">-</button>
                         <span class="tooltiptextDec">Zoom Out</span>
