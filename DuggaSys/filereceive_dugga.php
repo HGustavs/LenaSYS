@@ -418,6 +418,8 @@ if($ha){
 								 	else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
 									$error=true;
 								}
+                         $discription = $filetype." ".$fname;
+                         logUserEvent($userid,EventTypes::DuggaFileupload,$discription);
 						}
 				}
 

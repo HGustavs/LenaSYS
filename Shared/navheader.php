@@ -16,7 +16,7 @@
 
 			if (isset($_GET['coursevers']))
 				$_SESSION['coursevers'] = getOPG('coursevers');
-			else if (isset($_GET['cid']))
+			else if (isset($_GET['cvers']))
 				$_SESSION['coursevers'] = getOPG('cvers');
 			else
 				$_SESSION['coursevers'] = "UNK";
