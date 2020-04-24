@@ -4761,6 +4761,14 @@ function showFormGroups(typesToShow) {
     document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
 }
 
+function containsAll(array1, array2) {
+    return array1.every(item => array2.includes(item));
+}
+
+function sameMembers(array1, array2) {
+    return containsAll(array1, array2) && containsAll(array2, array1);
+}
+
 function getTextareaText(array) {
     let text = "";
     for (let i = 0; i < array.length; i++) {
