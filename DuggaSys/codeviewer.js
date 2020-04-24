@@ -410,20 +410,21 @@ function editImpWords(editType)
 //
 //----------------------------------------------------------------------------------
 
-function displayEditExample(boxid) {
-	$("#title").val($('<textarea />').html(retData['examplename']).text());
-	$("#secttitle").val($('<textarea />').html(retData['sectionname']).text());
-	$("#boxcontent").val(retData['box'][1][1]);
-	changeDirectory($("#boxcontent"));
-	$("#playlink").val(retData['playlink']);
+function displayEditExample(boxid) 
+{
+	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
+	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
+	document.getElementById("boxcontent").value = retData['box'][1][1];
+	changeDirectory(document.getElementById("boxcontent"));
+	document.getElementById("playlink").value = retData['playlink'];
 
 	var iw = retData['impwords'];
 	var str = "";
 	for (var i = 0; i < iw.length; i++) {
 		str += "<option>" + iw[i] + "</option>";
 	}
-	$("#impwords").html(str);
-
+	document.getElementById("impwords").innerHTML = str;
+	
 	// Set beforeid and afterid if set
 	var beforeid = "UNK";
 	if (retData['before'] !== null) {
@@ -453,9 +454,9 @@ function displayEditExample(boxid) {
 			afstr += "<option value='" + ba[i][0] + "'>" + ba[i][1] + ":" + ba[i][2] + "</option>";
 		}
 	}
-	$("#before").html(bestr);
-	$("#after").html(afstr);
-	$("#editExampleContainer").css("display", "flex");
+	document.getElementById("before").innerHTML += bestr;
+	document.getElementById("after").innerHTML += afstr;
+	document.getElementById("editExampleContainer").style.display = "flex";
 }
 
 //----------------------------------------------------------------------------------
@@ -478,9 +479,10 @@ function updateExample() {
 		var courseid = querystring['courseid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
-		var playlink = $("#playlink").val();
-		var examplename = $("#title").val();
-		var sectionname = $("#secttitle").val();
+		var playlink = document.getElementById("playlink").value;
+		var examplename = document.getElementById("title").value;
+		var sectionname = document.getElementById("secttitle").value;
+
 		var beforeid = $("#before option:selected").val();
 		var afterid = $("#after option:selected").val();
 
@@ -502,7 +504,7 @@ function updateExample() {
 		removedWords = [];
 	}
 
-	$("#editExampleContainer").css("display", "none");
+	document.getElementById("editExampleContainer").style.display = "none"; 
 }
 
 function removeExample() {
@@ -526,27 +528,28 @@ function removeExample() {
 
 var openBoxID;
 
-function displayEditContent(boxid) {
-	$("#boxtitle2").removeAttr("contenteditable");
+function displayEditContent(boxid) 
+{
+	document.getElementById("boxtitle2").removeAttribute("contenteditable");
 	// The information stored about the box is fetched
 	var box = retData['box'][boxid - 1];
 
 	// Keeps track of the currently open box. Used when saving the box content.
 	openBoxID = boxid;
 
-	$("#boxtitle").val(box[4]);
-	$("#boxcontent").val(box[1]);
+	document.getElementById("boxtitle").value = box[4];
+	document.getElementById("boxcontent").value = box[1];
 
 	changeDirectory($("#boxcontent"));
 
 	if (box[5] != null) {
 		box[5] = box[5].replace(/&#47;/g, "/");
-		$("#filename").val(box[5]);
+		document.getElementById("filename").value = box[5]; 
 	} else {
-		$("#filename").val("");
+		document.getElementById("filename").value = "";
 	}
 
-	$("#fontsize").val(box[6]);
+	document.getElementById("fontsize").value = box[6];
 
 	var wordl = retData['wordlists'];
 	var str = "";
@@ -562,8 +565,9 @@ function displayEditContent(boxid) {
 			str += "<option>" + retData['improws'][i][1] + " - " + retData['improws'][i][2] + "</option>";
 		}
 	};
-	$("#improws").html(str);
-	$("#editContentContainer").css("display", "flex");
+	document.getElementById("improws").innerHTML = str;
+
+	document.getElementById("editContentContainer").style.display = "flex";
 }
 
 //----------------------------------------------------------------------------------
@@ -823,17 +827,16 @@ function createboxmenu(contentid, boxid, type) {
 		}
 
 		// Add resize, reset and edit buttons
-		str += "<td class='butto2 maximizebtn' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' />";
-		str += "<td class='butto2 minimizebtn' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' />";
-		str += "<td class='butto2 resetbtn' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' />";
-    	str += "<td class='butto2 editbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg'>";
+		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
+		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
+    str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'> </p></div>";
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
 			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 		
-
 		str += '</tr></table>';
 		boxmenu.innerHTML = str;
 		$(boxmenu).click(function (event) {
@@ -1095,10 +1098,10 @@ function highlightKeyword(kw) {
 
 	$(".impword").each(function () {
 		if(this.classList.contains("imphi")){
-			$(this).removeClass("imphi");
+			this.classList.remove("imphi");
 		}
 		else if(this.innerHTML == kw || this.innerHTML == kwDoubleQuotes || this.innerHTML == kwSingleQuote) {
-			$(this).addClass("imphi");
+			this.classList.add("imphi");
 		}
 	});
 }
@@ -2671,12 +2674,95 @@ function maximizeBoxes(boxid) {
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 		}
 	}
+    	
+    //for template 9
+	if (templateid == 9) {
+		if (boxid == 1) {
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
+			$(boxValArray['box' + 4]['id']).width("0%");
+            $(boxValArray['box' + 5]['id']).width("0%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			
+            alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		}
+        if (boxid == 2) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+			$(boxValArray['box' + 5]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 3) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).height("0%");
+			$(boxValArray['box' + 4]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+			$(boxValArray['box' + 5]['id']).width("100%");
+
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 4) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+            $(boxValArray['box' + 1]['id']).height("100%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+            $(boxValArray['box' + 5]['id']).height("0%");
+            $(boxValArray['box' + 5]['id']).width("100%");
+			/*$(boxValArray['box' + 5]['id']).css("top", "90%");*/
+         
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+        if (boxid == 5) {
+			$(boxValArray['box' + 1]['id']).width("0%");
+			$(boxValArray['box' + 2]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).height("0%");
+			$(boxValArray['box' + 3]['id']).width("100%");
+            $(boxValArray['box' + 4]['id']).height("0%");
+            $(boxValArray['box' + 4]['id']).width("100%");
+            /*$(boxValArray['box' + 5]['id']).css("top", "30%");*/
+			$(boxValArray['box' + boxid]['id']).width("100%");
+			$(boxValArray['box' + boxid]['id']).height("100%");
+
+			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+		
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+
+	}
 }
 
 //hide maximizeButton
 function hideMaximizeAndResetButton() {
 	var templateid = retData['templateid'];
-	if (templateid > 8) {
+	if (templateid > 9) {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
 	}
@@ -3742,7 +3828,8 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
 	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
 	
-	//Checks if the third box is minimum size.
+	
+    //Checks if the third box is minimum size.
 	if(boxThreeHeightPer <= 10.2) {
 		//Sets height and top on fourth box.
 		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");

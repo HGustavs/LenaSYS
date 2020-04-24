@@ -955,40 +955,12 @@
     transform:scale(0.2);
 }
 
-@media only screen and (max-device-width : 438px) {
-    .maximizebtn {
-        display: none;
-    }
-
-
-
-    @media only screen and (max-device-width : 555px) {
-        .minimizebtn {
-            display: none;
-        }
-
-
-    }
-
-
-
-}
-
-@media only screen and (max-device-width : 710px) {
-    .buttomenu2 table td img {
-        display: none;
-
-    }
-
-    .codeheader {
-        font-size: 20px !important;
-    }
 
 
 
 
 
-}
+
 
 @media only screen and (max-device-width : 598px) {
     .codeheader {
@@ -1039,11 +1011,6 @@
     }
     .err{
     display: none;
-    }
-}
-@media only screen and (max-width: 725px) {
-        .box{
-        margin-top: 30px !important;
     }
 }
 @media only screen and (max-width: 364px) {

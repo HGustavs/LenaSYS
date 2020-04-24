@@ -30,16 +30,6 @@
 }
 @media only screen 
 and (max-device-width : 725px) {
-    #div2{
-        top: 0px;
-    }
-    .resetbtn{
-        display:none;
-    }
-    .morebtn{
-        display: block;
-    }
-    .morebtn:hover .moreboxes-content {display: block;}
     #box1wrapper{
     position: absolute;
     left: 0px;
@@ -55,11 +45,6 @@ and (max-device-width : 725px) {
 	max-width: 100%;
     bottom: 50%;
 }
-    .codeborder{
-        position: none;
-        
-    }
-
 
     #box2wrapper {
     position: absolute;
@@ -78,9 +63,7 @@ and (max-device-width : 725px) {
     min-width: 100%;
 	max-width: 100%;
 }
-    #div2{
-        top: 50px !important;
-    }
+
 
 
 
