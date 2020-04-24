@@ -773,8 +773,8 @@ function addTemplatebox(id) {
 	str += "<div id='" + id + "' class='box'></div>";
 	str += "</div>";
 
-	str = str + $("#div2").html();
-	$("#div2").html(str);
+	str = str + document.getElementById("div2").innerHTML;
+	document.getElementById("div2").innerHTML = str;
 }
 
 //----------------------------------------------------------------------------------
