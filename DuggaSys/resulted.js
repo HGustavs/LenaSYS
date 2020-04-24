@@ -470,13 +470,19 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
 	var width = toggleGrade.offsetWidth;
-
-	//	Check if localStorage item "tempFeedbackBackup" exists and if there's anything in it.
-	//	If there is anything in it, then set that text in the textarea for feedback.
-	var tempFeedback = localStorage.getItem("tempFeedbackBackup");
-	if (tempFeedback != "" || tempFeedback != undefined)
-	{
-		document.getElementById('newFeedback').value = tempFeedback;
+	
+	// Check if the toggleGrade popup is visible or not.
+	// If it's visible, then store the value in the "newFeedback" textarea.
+	// If it's not visible, then retrieve what's stored and set the text in the "newFeedback" textarea.
+	if (toggleGrade.style.display == 'block') {
+		var tempFeedback = document.getElementById('newFeedback').value;
+		localStorage.setItem("tempFeedbackBackup", tempFeedback);
+	} else if (toggleGrade.style.display == 'none') {
+		var tempFeedback = localStorage.getItem("tempFeedbackBackup");
+		if (tempFeedback != undefined)
+		{
+			document.getElementById('newFeedback').value = tempFeedback;
+		}
 	}
 
 	$('#toggleGrade').animate({width: 'toggle'});
