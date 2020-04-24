@@ -559,6 +559,9 @@ function saveResponse() {
 //----------------------------------------
 
 function returnedResults(data) {
+	if (!data.access) {
+		window.location.href = 'courseed.php';
+	}
 	if (data['debug'] !== "NONE!")
 		alert(data['debug']);
 	if (data.gradeupdated === true) {
