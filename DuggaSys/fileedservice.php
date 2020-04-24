@@ -38,7 +38,7 @@ if (hasAccess($userid, $cid, 'st')) {
 // Services
 //------------------------------------------------------------------------------------------------
 if (checklogin() && $hasAccess) {
-    if (strcmp($opt, "DELFILE") === 0 && hasAccess($userid, $cid, 'w')) {
+    if (strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
         // Remove file link from database
         $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
         $query = $pdo->prepare($querystring);
@@ -170,6 +170,7 @@ if (checklogin() && $hasAccess) {
             'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind])
         );
 
+        
         array_push($entries, $entry);
     }
 
@@ -200,13 +201,18 @@ if (checklogin() && $hasAccess) {
     $access = True;
 }
 
+$superuser = isSuperUser($userid);
+$waccess = hasAccess($userid, $cid, 'w');
+
 $array = array(
     'entries' => $entries,
     'debug' => $debug,
     'gfiles' => $gfiles,
     'lfiles' => $lfiles,
     'access' => $access,
-    'studentteacher' => $studentTeacher
+    'studentteacher' => $studentTeacher,
+    'superuser' => $superuser,
+    'waccess' => $waccess
 );
 
 echo json_encode($array);
