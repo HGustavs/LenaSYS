@@ -249,8 +249,10 @@ function renderCell(col, celldata, cellid) {
     }
 
     if (col == "trashcan") {
-        str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-        str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+        if (obj.showtrashcan) {
+            str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+            str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+        }
     } else if (col == "filename") {
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";

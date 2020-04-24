@@ -160,6 +160,10 @@ if (checklogin() && $hasAccess) {
             $filekindname = "UNK";
         }
 
+        $showTrashcan = hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w');
+        if ($filekind == 2 && isSuperUser($_SESSION['uid']))
+            $showTrashcan = true; 
+
         $entry = array(
             'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname]),
             'extension' => $extension,
@@ -167,7 +171,7 @@ if (checklogin() && $hasAccess) {
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
             'uploaddate' => $row['uploaddate'],
             'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension]),
-            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind])
+            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind, 'showtrashcan' => $showTrashcan])
         );
 
         array_push($entries, $entry);
