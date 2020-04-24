@@ -4613,6 +4613,18 @@ function createCollapsible(formGroups, types, index) {
     objectTypesElement.appendChild(iconContainer);
     objectTypesElement.appendChild(title);
     iconContainer.appendChild(icon);
+
+    collapsibleElement.classList.add("collapsible");
+    objectTypesElement.classList.add("object-types");
+    iconContainer.classList.add("square");
+    formGroupContainer.classList.add("form-groups");
+
+    //The first collapsible should be opened by default, possible others should be closed
+    if(index !== 0) {
+        collapsibleElement.classList.add("closed");
+    }
+
+    iconContainer.addEventListener("click", () => collapsibleElement.classList.toggle("closed"));
 }
 
 function loadGlobalAppearanceForm() {
