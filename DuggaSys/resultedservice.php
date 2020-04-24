@@ -190,6 +190,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 	}
 
 	if(strcmp($opt,"CHGR")===0){
+		//a few select queries used for finding out if the quiz being graded is a group assignment, if it is, who are the group members?
 			if($quizId != -1){
 				$query = $pdo->prepare("SELECT `group` FROM quiz WHERE id = :quizId");
 				$query->bindParam(':quizId', $quizId);
@@ -215,6 +216,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$query->execute();
 			$users = $query->fetchAll(PDO::FETCH_ASSOC);
 			
+			//if it is a group assignment and the user being graded is NOT in the "None" group, make database insert/updates for all group members
 			if($groupdugga == 1 && !strpos($usergroups, 'None')){
 				foreach($users as $user){
 					$luid = current($user);
@@ -897,6 +899,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
+//changed format of response to allow responses for more than 1 person at a time (for group assignments)
 $myarray = [];
 if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 	foreach($users as $user){

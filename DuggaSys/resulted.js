@@ -559,6 +559,7 @@ function saveResponse() {
 //----------------------------------------
 
 function returnedResults(data) {
+	//loops through all the responses from resultedservice.php to update or create table
 	for(var i = 0; i < data.length; i++){
 		if (data[i]['debug'] !== "NONE!"){
 			alert(data[i]['debug']);
