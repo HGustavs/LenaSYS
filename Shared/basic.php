@@ -326,6 +326,7 @@ abstract class EventTypes {
 	const EditCourse = 19;
     const ResetPW = 20;
     const DuggaFileupload = 21;
+  	const DownloadAllCourseVers = 22;
 }
 
 //------------------------------------------------------------------------------------------------
