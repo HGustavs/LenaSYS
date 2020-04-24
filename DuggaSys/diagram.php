@@ -391,6 +391,14 @@
                                     <i>Ctrl + leftclick</i>
                                 </div>
                             </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="generateERExampleCode();">Generate example ER-diagram</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="generateUMLExampleCode();">Generate example UML-diagram</span>
+                            </div>
                         </div>
                     </div>
                     <div id="errorBox">
