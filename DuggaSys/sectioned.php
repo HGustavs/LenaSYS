@@ -106,15 +106,15 @@
 
 		<div id='Sectionlist'>
 
-		<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>
+		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 				<div style='flex-grow:1'>
 						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;'>UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
 						<span id='course-versname' class='courseVersionField'>UNK</span>
 				</div>
 
-				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createQuickItem();'>
+				<div  id='course-newitem' style='display: flex;'>
+						<input id='addElement' style="display:none; position: fixed; right: 80px; top: 73px;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createQuickItem();'>
 				</div>
 				<!-- test #1 -->
 
