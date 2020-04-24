@@ -1901,78 +1901,49 @@ function Symbol(kindOfSymbol) {
     this.moveCardinality = function(x1, y1, x2, y2, side) {
         let boxCorners = this.corners();
         let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
-
+        
         const cardinality = this.cardinality;
+        var connectedObjects = this.getConnectedObjects();
 
-        // Correct corner e.g. top left, top right, bottom left or bottom right
-        let correctCorner = getCorrectCorner(cardinality,
-    										boxCorners.tl.x,
-    										boxCorners.tl.y,
-    										boxCorners.br.x,
-    										boxCorners.br.y);
-
-        // Find which box the cardinality number is connected to
-        for(var i = 0; i < diagram.length; i++) {
-            dtlx = diagram[i].corners().tl.x;
-            dtly = diagram[i].corners().tl.y;
-            dbrx = diagram[i].corners().br.x;
-            dbry = diagram[i].corners().br.y;
-
-            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
-                cardinality.parentBox = diagram[i];
-                delete cardinality.parentBox.cardinality.parentBox;
-                break;
-            }
-        }
-
-	    // Decide whether x1 and y1 is relevant or x2 and y2
 	    if(side == "CorrectSide") {
-		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[cardinality.parentBox.topLeft], points[cardinality.parentBox.bottomRight]);
-		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x1 && correctBox.br.x > x1) {
-		            cardinality.axis = "X";
-		        }
-		        if(correctBox.tl.y < y1 && correctBox.br.y > y1) {
-		            cardinality.axis = "Y";
-		        }
-		    }
-
-		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-13 : x1+13;
-		    cardinality.y = y1 > y2 ? y1-15 : y1+15;
-
-		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X") {
-		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
-		    }
-		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
-		    }
+            var targetobject = getCorners(points[this.cardinality.parentBox.topLeft],points[this.cardinality.parentBox.bottomRight]);
+            var line = getCorners(points[this.topLeft],points[this.bottomRight])
+            if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x){
+                cardinality.x = x2-15;
+                cardinality.y = y2 > y1 ? y2+15 : y2-15;
+            }
+            else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y){
+                cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                cardinality.y = y2-15;
+            }
+            else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x){
+                cardinality.x = x2+15;
+                cardinality.y = y2 > y1 ? y2+15 : y2-15;
+            }
+            else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y){
+                cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                cardinality.y = y2+15;
+            }
 	    }
 	    else if(side == "IncorrectSide") {
-		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[this.cardinality.parentBox.topLeft], points[this.cardinality.parentBox.bottomRight]);
-		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
-		            cardinality.axis = "X";
-		        }
-		        if(correctBox.tl.y < y2 && correctBox.br.y > y2) {
-		            cardinality.axis = "Y";
-		        }
-		    }
-
-		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-15 : x2+15;
-		    cardinality.y = y2 > y1 ? y2-15 : y2+15;
-
-		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2+15 : x2-15;
-		    }
-		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y2 > y1 ? y2+15 : y2-15;
-		    }
+            var targetobject = getCorners(points[this.cardinality.parentBox.topLeft],points[this.cardinality.parentBox.bottomRight]);
+            var line = getCorners(points[this.topLeft],points[this.bottomRight])
+            if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x){
+                cardinality.x = x2-15;
+                cardinality.y = y2 > y1 ? y2+15 : y2-15;
+            }
+            else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y){
+                cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                cardinality.y = y2-15;
+            }
+            else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x){
+                cardinality.x = x2+15;
+                cardinality.y = y2 > y1 ? y2+15 : y2-15;
+            }
+            else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y){
+                cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                cardinality.y = y2+15;
+            }
         }
     }
 
