@@ -813,7 +813,7 @@ function createboxmenu(contentid, boxid, type) {
 			}
 			// If reader doesn't have write access, only the boxtitle is shown
 		} else {
-			str += '<td id = "boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
+			str += '<td id="boxtitlewrapper" class="boxtitlewrap"><span class="boxtitle">' + retData['box'][boxid - 1][4] + '</span></td>';
 		}
 
 		if(retData['box'][boxid - 1][1] == "DOCUMENT"){
@@ -834,7 +834,7 @@ function createboxmenu(contentid, boxid, type) {
 
 		// Show the copy to clipboard button for code views only
 		if (type == "CODE") {
-			str += "<div id='copyClipboard'><td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
+			str += "<td class='butto2 copybutton' id='copyClipboard' title='Copy to clipboard' onclick='copyCodeToClipboard(" + boxid + ");' ><img id='copyIcon' src='../Shared/icons/Copy.svg' /></td>";
 		}
 		
 		str += '</tr></table>';
@@ -1691,7 +1691,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 			} else if (tokenvalue == "<") {
 				// This statement checks the character after < to make sure it is a valid tag.
                                 coloringcode = tokens[i].val + "" + tokens[i + 1].val+"" + tokens[i + 2].val;
-                console.log()
 				switch(coloringcode) {
 					case "<html>":
 					case "</html":
@@ -2877,7 +2876,6 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
-				hideDescription();
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3245,7 +3243,7 @@ function resizeBoxes(parent, templateId) {
 };
 
 //----------------------------------------------------------------------------------
-//width adjustment for template 1, 4 and 8 (Two boxes beside eachother.)
+//width adjustment for template 1 and 4 (Two boxes beside eachother.)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 
@@ -3257,41 +3255,56 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign) {
 
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
+	var thisBox = null;
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
-	// makes the element dissapear when certain treshold is met
-	if (basePer < 20) {
+
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
+	if (basePer < 15) {
+		//Remove document description text
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+		//If the document is of type 'codebox', remove copyclipboard as well
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
 			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'none';
-			//document.querySelector('#box' + boxNumBase + 'wrapper #copyIcon').style.display = 'none';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'none';
 		}
+
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		
-	}else if (basePer > 80) {
+	}else if (basePer > 85) {
+
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
 			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'none';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'none';
 		}
+
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		
 	}else {
+
+		thisBox = document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumAlign, basePer);
+
 		if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'block';
-			document.querySelector('#box' + boxNumBase + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
+			document.querySelector('#box' + boxNumBase + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box' + boxNumAlign).className == 'box codebox'){
-			document.querySelector('#box' + boxNumAlign + 'wrapper #boxtitlewrapper').style.display = 'table-cell';
-			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box' + boxNumAlign + 'wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3317,27 +3330,43 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box3').className == 'box codebox'){
 			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3357,27 +3386,39 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box3').className == 'box codebox'){
 			document.querySelector('#box3wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3467,12 +3508,20 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
@@ -3483,17 +3532,26 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3523,12 +3581,20 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer > 85) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer < 15) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
@@ -3539,17 +3605,26 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxNumBase, basePer);
+
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -3652,12 +3727,22 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
 	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();
 
-	// makes the element dissapear when certain treshold is met
+	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
 	if(basePer < 15) {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
 			document.querySelector('#box1wrapper #copyClipboard').style.display = 'none';
 		}
 	}else if (basePer > 85) {
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box5wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
 		if(document.querySelector('#box2').className == 'box codebox'){
 			document.querySelector('#box2wrapper #copyClipboard').style.display = 'none';
 		}
@@ -3671,20 +3756,30 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 			document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
 		}
 	} else {
+		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box3wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box4wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
+		thisBox = document.querySelector('#box5wrapper #boxtitlewrapper');
+		toggleTitleWrapper(thisBox, boxOne, basePer);
 		if(document.querySelector('#box1').className == 'box codebox'){
-			document.querySelector('#box1wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box1wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box2').className == 'box codebox'){
-			document.querySelector('#box2wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box2wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box3').className == 'box codebox'){
-			document.querySelector('#box3wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box3wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box4').className == 'box codebox'){
-			document.querySelector('#box4wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box4wrapper #copyClipboard').style.display = 'table-cell';
 		}
 		if(document.querySelector('#box5').className == 'box codebox'){
-			document.querySelector('#box5wrapper #copyClipboard').style.display = 'block';
+			document.querySelector('#box5wrapper #copyClipboard').style.display = 'table-cell';
 		}
 	}
 }
@@ -4188,6 +4283,112 @@ function hideIframe(){
 }
 
 function hideDescription() {
-	var descText = document.getElementById
+	console.log("hideDescription");
 }
 
+//Toggles the animation of buttomenu2 items/td when resizing
+//This function is called by alignBoxesWidth()
+
+function toggleTitleWrapper(targetBox, boxNum, boxW){
+	var box = targetBox;
+  	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 && (retData['templateid']) == !8 || boxW > 85 && boxNum == 1 && (retData['templateid']) == !6 && !3 && !9) {
+    	box.classList.remove('hidden');
+    	setTimeout(function () {
+      		box.classList.remove('visuallyhidden');
+		}, 20);
+
+  	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 1){
+		box.classList.add('visuallyhidden');
+    	box.addEventListener('transitionend', function(e) {
+      		box.classList.add('hidden');
+    	}, {
+      		capture: false,
+      		once: true,
+      		passive: false
+    	});
+  	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 2 && boxW < 98){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == !1 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 3){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 3 && (retData['templateid']) != 5){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 4 && boxW < 98){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 6){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 3){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 9){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 7 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 4 && (retData['templateid']) == 7){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 8){
+	  box.classList.add('visuallyhidden');
+	  box.addEventListener('transitionend', function(e) {
+			box.classList.add('hidden');
+	  }, {
+			capture: false,
+			once: true,
+			passive: false
+	  });
+	}else {
+		
+	  }
+
+}

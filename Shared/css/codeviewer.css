@@ -603,18 +603,19 @@
 .butto2:hover{
     background-color: #938C8C;
     cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 .boxtitleEditable{
 	color: white;
 	cursor:text;
-    	font-family: Arial, Sans-Serif;
-    	font-size: 15px;
+    cursor:pointer;
+    font-family: Arial, Sans-Serif;
+    font-size: 18px;
 }
 .boxtitle{
 	font-family: Arial, Sans-Serif !important;
 	cursor:default !important;
 	color: white !important;
-	  font-size: 15px;
 }
 
 .editcontentbtn {
@@ -625,10 +626,15 @@
 }
 
 .boxtitlewrap {
+    
     font-size: 15px;
     height: 32px;
     vertical-align: middle;
     padding: 0px 5px;
+    transition: all 0.15s linear;
+    -webkit-transition: all 0.15s linear;
+    -moz-transition: all 0.15s linear;
+    -o-transition: all 0.15s linear;
 }
 
 /* BOXMENU STYLING STOP */
@@ -875,13 +881,17 @@
 }
 
 /* style for the maximize and reset button*/
-.maximizebtn, .minimizebtn, .resetbtn, .copybutton {
+.maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn{
     color: #DFF0D8;
-    width: 50px;
-    padding-right: 3px;
+    width: 43px;
+    padding-right: 2px;
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
     display: table-cell;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
 }
 
 /* style for the copy button and copy notification*/
@@ -935,6 +945,15 @@
     display: none;
 }
 
+/* Classes for animating display:none */
+.hidden{
+    display:none;
+}
+
+.visuallyhidden{
+    opacity:0;
+    transform:scale(0.2);
+}
 
 
 
