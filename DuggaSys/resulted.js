@@ -559,17 +559,22 @@ function saveResponse() {
 //----------------------------------------
 
 function returnedResults(data) {
-	if (data['debug'] !== "NONE!")
-		alert(data['debug']);
-	if (data.gradeupdated === true) {
-		// Update the the local array studentInfo when grade is updated.
-		for (var student in studentInfo) {
-			var studentObject = studentInfo[student]["lid:" + data.duggaid];
-			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
-				studentObject.grade = parseInt(data.results);
-				studentObject.timesGraded = parseInt(data.duggatimesgraded);
-				studentObject.gradeExpire = data.duggaexpire;
-				if (data.results > 0) {
+	console.log(data);
+	for(var i = 0; i < data.length; i++){
+		console.log(i);
+		console.log("userid: "+data[i].duggauser);
+		if (data[i]['debug'] !== "NONE!")
+		alert(data[i]['debug']);
+		console.log(data[i].gradeupdated);
+		if (data[i].gradeupdated === true) {
+			// Update the the local array studentInfo when grade is updated.
+			for (var student in studentInfo) {
+			var studentObject = studentInfo[student]["lid:" + data[i].duggaid];
+			if (studentObject != null && studentObject.uid === parseInt(data[i].duggauser) && studentObject.lid === parseInt(data[i].duggaid)) {
+				studentObject.grade = parseInt(data[i].results);
+				studentObject.timesGraded = parseInt(data[i].duggatimesgraded);
+				studentObject.gradeExpire = data[i].duggaexpire;
+				if (data[i].results > 0) {
 					studentObject.needMarking = false;
 				} else {
 					studentObject.needMarking = true;
@@ -577,9 +582,10 @@ function returnedResults(data) {
 				break;
 			}
 		}
+		console.log('rerendering table');
 		myTable.renderTable();
 	} else {
-
+		data = data[0];
 		entries = data.entries;
 		moments = data.moments;
 		versions = data.versions;
@@ -649,6 +655,8 @@ function returnedResults(data) {
 			createSortableTable(data);
 		}
 	}
+	}
+
 }
 //----------------------------------------
 // Success return function for LadExport lastGraded

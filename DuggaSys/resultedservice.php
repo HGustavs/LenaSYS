@@ -59,6 +59,8 @@ $duggatimesgraded="";
 $duggagrade="";
 $gradeupdated=false;
 
+$users = "";
+
 const updateunexported_service_name = "updateunexported";
 const getunexported_service_name = "getunexported";
 
@@ -72,6 +74,18 @@ $snus=array();
 $files= array();
 
 $debug="NONE!";
+
+function println($message) {
+	$file = "../log.txt";
+	// Open the file to get existing content
+	$current = file_get_contents($file);
+	
+	// Append message to the file
+	$current .= $message."\n";
+
+	// Write the contents back to the file
+	file_put_contents($file, $current);
+}
 
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark;
@@ -189,131 +203,299 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 	}
 
 	if(strcmp($opt,"CHGR")===0){
-		if($ukind=="U"){
-			if ($mark == "UNK"){
-				$mark = null;
-				$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
-			} else {
-				$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
-			}
-			$query->bindParam(':mark', $mark);
-			$query->bindParam(':cuser', $userid);
+		println($luid);
+			println('quizId:'.$quizId);
+			$query = $pdo->prepare("SELECT `group` FROM quiz WHERE id = :quizId");
+			$query->bindParam(':quizId', $quizId);
+			$query->execute();
+			$groupdugga = $query->fetchAll(PDO::FETCH_ASSOC);
+			$groupdugga = current(current($groupdugga));
+			println('groupdugga: '.$groupdugga);
 
+			$query = $pdo->prepare("SELECT `groups` FROM user_course WHERE uid = :luid and cid = :cid");
+			$query->bindParam(':luid', $luid);
 			$query->bindParam(':cid', $cid);
-			$query->bindParam(':moment', $listentry);
-			$query->bindParam(':vers', $vers);
-			$query->bindParam(':uid', $luid);
+			$query->execute();
+			$usergroups = $query->fetchAll(PDO::FETCH_ASSOC);
+			$usergroups = current(current($usergroups));
+			
+			$usergroups = rtrim($usergroups);
+			println('all groups: '.$usergroups);
+			//$usergroups = explode(" ", $usergroups);
+			//array_pop($usergroups);
+			//foreach ($usergroups as $group){
+			//	println('group: '.$group);
+			//}
+			
 
-
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries\n".$error[2];
-			} else {
-				$gradeupdated=true;
-				$duggauser=$luid;
-				$duggaid=$listentry;
-				$lentries=$mark;
-			}
-			if ($newDuggaFeedback != "UNK"){
-					$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
-					$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
-					$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
-					$query->bindParam(':cid', $cid);
-					$query->bindParam(':moment', $listentry);
-					$query->bindParam(':vers', $vers);
-					$query->bindParam(':uid', $luid);
-					if(!$query->execute()) {
-						$error=$query->errorInfo();
-						$debug="Error updating dugga feedback\n".$error[2];
-					}
-			}
-		}else if($ukind=="I"){
-			$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW());");
-			$query->bindParam(':mark', $mark);
-			$query->bindParam(':cuser', $userid);
-
+			
+			$query = $pdo->prepare("SELECT user_course.uid FROM user_course WHERE user_course.groups LIKE :group and user_course.cid = :cid");
+			$usergroups = "%{$usergroups}%";
+			$query->bindParam(':group', $usergroups);
 			$query->bindParam(':cid', $cid);
-			$query->bindParam(':moment', $listentry);
-			$query->bindParam(':vers', $vers);
-			$query->bindParam(':uid', $luid);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error inserting userAnswer\n".$error[2];
-			} else {
-				$gradeupdated=true;
-				$duggauser=$luid;
-				$duggaid=$listentry;
-				$lentries=$mark;
+			$query->execute();
+			$users = $query->fetchAll(PDO::FETCH_ASSOC);
+			//$users = current($users);
+			foreach ($users as $user){
+				println("user in this group: ".current($user));
 			}
-		}else if($ukind=="IFeedback"){
-			$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked,quiz,variant) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW(),:quizid,:variant);");
-			$query->bindParam(':mark', $mark);
-			$query->bindParam(':cuser', $userid);
+			println("");
 
-			$query->bindParam(':cid', $cid);
-			$query->bindParam(':moment', $listentry);
-			$query->bindParam(':vers', $vers);
-			$query->bindParam(':uid', $luid);
-      $query->bindParam(':quizid', $quizId);
-      if(!is_int($qvariant)){$qvariant=-1;}
-			$query->bindParam(':variant', $qvariant);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries\n".$error[2];
-			} else {
-				$gradeupdated=true;
-				$duggauser=$luid;
-				$duggaid=$listentry;
-				$lentries=$mark;
-				if ($newDuggaFeedback != "UNK"){
-						$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
-						$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
-						$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
+			if($groupdugga == 1 && !strpos($usergroups, 'None')){
+				foreach($users as $user){
+					$luid = current($user);
+					if($ukind=="U"){
+						if ($mark == "UNK"){
+							$mark = null;
+							$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+						} else {
+							$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+						}
+						$query->bindParam(':mark', $mark);
+						$query->bindParam(':cuser', $userid);
+	
 						$query->bindParam(':cid', $cid);
 						$query->bindParam(':moment', $listentry);
 						$query->bindParam(':vers', $vers);
 						$query->bindParam(':uid', $luid);
+	
+	
+	
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
-							$debug="Error updating dugga feedback\n".$error[2];
+							$debug="Error updating entries\n".$error[2];
+						} else {
+							$gradeupdated=true;
+							$duggauser=$luid;
+							$duggaid=$listentry;
+							$lentries=$mark;
 						}
+						if ($newDuggaFeedback != "UNK"){
+								$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+								$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
+								$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
+								$query->bindParam(':cid', $cid);
+								$query->bindParam(':moment', $listentry);
+								$query->bindParam(':vers', $vers);
+								$query->bindParam(':uid', $luid);
+								if(!$query->execute()) {
+									$error=$query->errorInfo();
+									$debug="Error updating dugga feedback\n".$error[2];
+								}
+						}
+					}else if($ukind=="I"){
+						$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW());");
+						$query->bindParam(':mark', $mark);
+						$query->bindParam(':cuser', $userid);
+	
+						$query->bindParam(':cid', $cid);
+						$query->bindParam(':moment', $listentry);
+						$query->bindParam(':vers', $vers);
+						$query->bindParam(':uid', $luid);
+	
+						if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug="Error inserting userAnswer\n".$error[2];
+						} else {
+							$gradeupdated=true;
+							$duggauser=$luid;
+							$duggaid=$listentry;
+							$lentries=$mark;
+						}
+					}else if($ukind=="IFeedback"){
+						$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked,quiz,variant) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW(),:quizid,:variant);");
+						$query->bindParam(':mark', $mark);
+						$query->bindParam(':cuser', $userid);
+	
+						$query->bindParam(':cid', $cid);
+						$query->bindParam(':moment', $listentry);
+						$query->bindParam(':vers', $vers);
+						$query->bindParam(':uid', $luid);
+						$query->bindParam(':quizid', $quizId);
+						if(!is_int($qvariant)){$qvariant=-1;}
+						$query->bindParam(':variant', $qvariant);
+	
+						if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug="Error updating entries\n".$error[2];
+						} else {
+							$gradeupdated=true;
+							$duggauser=$luid;
+							$duggaid=$listentry;
+							$lentries=$mark;
+							if ($newDuggaFeedback != "UNK"){
+									$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+									$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
+									$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
+									$query->bindParam(':cid', $cid);
+									$query->bindParam(':moment', $listentry);
+									$query->bindParam(':vers', $vers);
+									$query->bindParam(':uid', $luid);
+									if(!$query->execute()) {
+										$error=$query->errorInfo();
+										$debug="Error updating dugga feedback\n".$error[2];
+									}
+							}
+						}
+					}
+	
+					if ($gradeupdated) {
+						include_once "../Shared/pushnotificationshelper.php";
+						$query = $pdo->prepare("SELECT listentries.entryname, course.coursename FROM listentries,course WHERE listentries.lid = :lid and listentries.cid = course.cid");
+						$query->bindParam(':lid', $listentry);
+						if($query->execute()) {
+							if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+								$listname = $row['entryname'];
+								$coursename = $row['coursename'];
+								// $results = sendPushNotification($luid, "$listname for $coursename has been graded");
+								// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
+							}
+						}
+						// Get gradeExpire and timesGraded in order to update the local arrays of resulted.js whenever a grade is updated.
+						$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM userAnswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
+						$query->bindParam(':cid', $cid);
+						$query->bindParam(':vers', $vers);
+						$query->bindParam(':moment', $listentry);
+						$query->bindParam(':luid', $luid);
+						if($query->execute()) {
+							if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+								$duggaexpire = $row['gradeExpire'];
+								$duggatimesgraded = $row['timesGraded'];
+							}
+						}
+					}
 				}
-			}
-		}
+			}else{
+				if($ukind=="U"){
+					if ($mark == "UNK"){
+						$mark = null;
+						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+					} else {
+						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+					}
+					$query->bindParam(':mark', $mark);
+					$query->bindParam(':cuser', $userid);
 
-		if ($gradeupdated) {
-			include_once "../Shared/pushnotificationshelper.php";
-			$query = $pdo->prepare("SELECT listentries.entryname, course.coursename FROM listentries,course WHERE listentries.lid = :lid and listentries.cid = course.cid");
-			$query->bindParam(':lid', $listentry);
-			if($query->execute()) {
-				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-					$listname = $row['entryname'];
-					$coursename = $row['coursename'];
-					// $results = sendPushNotification($luid, "$listname for $coursename has been graded");
-					// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
-				}
-			}
-			// Get gradeExpire and timesGraded in order to update the local arrays of resulted.js whenever a grade is updated.
-			$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM userAnswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
-			$query->bindParam(':cid', $cid);
-			$query->bindParam(':vers', $vers);
-			$query->bindParam(':moment', $listentry);
-			$query->bindParam(':luid', $luid);
-			if($query->execute()) {
-				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-					$duggaexpire = $row['gradeExpire'];
-					$duggatimesgraded = $row['timesGraded'];
-				}
-			}
-		}
+					$query->bindParam(':cid', $cid);
+					$query->bindParam(':moment', $listentry);
+					$query->bindParam(':vers', $vers);
+					$query->bindParam(':uid', $luid);
 
-	}
+
+
+					if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug="Error updating entries\n".$error[2];
+					} else {
+						$gradeupdated=true;
+						$duggauser=$luid;
+						$duggaid=$listentry;
+						$lentries=$mark;
+					}
+					if ($newDuggaFeedback != "UNK"){
+							$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+							$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
+							$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
+							$query->bindParam(':cid', $cid);
+							$query->bindParam(':moment', $listentry);
+							$query->bindParam(':vers', $vers);
+							$query->bindParam(':uid', $luid);
+							if(!$query->execute()) {
+								$error=$query->errorInfo();
+								$debug="Error updating dugga feedback\n".$error[2];
+							}
+					}
+				}else if($ukind=="I"){
+					$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW());");
+					$query->bindParam(':mark', $mark);
+					$query->bindParam(':cuser', $userid);
+
+					$query->bindParam(':cid', $cid);
+					$query->bindParam(':moment', $listentry);
+					$query->bindParam(':vers', $vers);
+					$query->bindParam(':uid', $luid);
+
+					if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug="Error inserting userAnswer\n".$error[2];
+					} else {
+						$gradeupdated=true;
+						$duggauser=$luid;
+						$duggaid=$listentry;
+						$lentries=$mark;
+					}
+				}else if($ukind=="IFeedback"){
+					$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked,quiz,variant) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW(),:quizid,:variant);");
+					$query->bindParam(':mark', $mark);
+					$query->bindParam(':cuser', $userid);
+
+					$query->bindParam(':cid', $cid);
+					$query->bindParam(':moment', $listentry);
+					$query->bindParam(':vers', $vers);
+					$query->bindParam(':uid', $luid);
+					$query->bindParam(':quizid', $quizId);
+					if(!is_int($qvariant)){$qvariant=-1;}
+					$query->bindParam(':variant', $qvariant);
+
+					if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug="Error updating entries\n".$error[2];
+					} else {
+						$gradeupdated=true;
+						$duggauser=$luid;
+						$duggaid=$listentry;
+						$lentries=$mark;
+						if ($newDuggaFeedback != "UNK"){
+								$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+								$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
+								$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
+								$query->bindParam(':cid', $cid);
+								$query->bindParam(':moment', $listentry);
+								$query->bindParam(':vers', $vers);
+								$query->bindParam(':uid', $luid);
+								if(!$query->execute()) {
+									$error=$query->errorInfo();
+									$debug="Error updating dugga feedback\n".$error[2];
+								}
+						}
+					}
+				}
+
+				if ($gradeupdated) {
+					include_once "../Shared/pushnotificationshelper.php";
+					$query = $pdo->prepare("SELECT listentries.entryname, course.coursename FROM listentries,course WHERE listentries.lid = :lid and listentries.cid = course.cid");
+					$query->bindParam(':lid', $listentry);
+					if($query->execute()) {
+						if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+							$listname = $row['entryname'];
+							$coursename = $row['coursename'];
+							// $results = sendPushNotification($luid, "$listname for $coursename has been graded");
+							// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
+						}
+					}
+
+					// Get gradeExpire and timesGraded in order to update the local arrays of resulted.js whenever a grade is updated.
+					$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM userAnswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
+					$query->bindParam(':cid', $cid);
+					$query->bindParam(':vers', $vers);
+					$query->bindParam(':moment', $listentry);
+					$query->bindParam(':luid', $luid);
+					if($query->execute()) {
+						if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+							$duggaexpire = $row['gradeExpire'];
+							$duggatimesgraded = $row['timesGraded'];
+						}
+					}
+				}
+			}
+			
+			
+
+			
+
+		}
 
 	if(strcmp($opt,"DUGGA")==0){
-
 		// in this case moment refers to the listentry and not the parent moment listentry
 		$query = $pdo->prepare("
       SELECT userAnswer.useranswer AS aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer AS facit,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,link,feedback AS duggaFeedback
@@ -498,8 +680,8 @@ if(strcmp($opt,"CHGR")!==0){
 				'examiner' => $row['examiner']
 			);
 			*/
-/*
-//This array seems like and old duplicate and could possibly be removed
+	/*
+	//This array seems like and old duplicate and could possibly be removed
 			$entry = array(
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
@@ -752,35 +934,88 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
-$array = array(
-	//'entriesNoSSN' => $entriesNoSSN,
-	'entries' => $entries,
-	'moments' => $gentries,
-	'versions' => $sentries,
-	'debug' => $debug,
-	'results' => $lentries,
-	'teachers' => $teachers,
-	'courseteachers' => $courseteachers,
 
-	'duggauser' => $duggauser,
-	'duggaentry' => $duggaentry,
-	'duggaid' => $duggaid,
-	'duggapage' => $duggapage,
-	'dugganame' => $dugganame,
-	'duggaparam' => $duggaparam,
-	'duggaanswer' => $duggaanswer,
-	'duggaexpire' => $duggaexpire,
-	'duggatimesgraded' => $duggatimesgraded,
-	'useranswer' => $useranswer,
-	'duggastats' => $duggastats,
-	'duggafeedback' => $duggafeedback,
-	'moment' => $listentry,
-	'files' => $files,
-	'gradeupdated' => $gradeupdated,
-	'benchmark' => $benchmark
-);
+println($duggauser);
+$myarray = [];
+if($users != "" && !strpos($usergroups, 'None')){
+	println('user is in a group');
+	foreach($users as $user){
+		println(current($user));
+		println('returning many times');
+		$duggauser = current($user);
+		$array = array(
+			//'entriesNoSSN' => $entriesNoSSN,
+			'entries' => $entries,
+			'moments' => $gentries,
+			'versions' => $sentries,
+			'debug' => $debug,
+			'results' => $lentries,
+			'teachers' => $teachers,
+			'courseteachers' => $courseteachers,
+	
+			'duggauser' => $duggauser,
+			'duggaentry' => $duggaentry,
+			'duggaid' => $duggaid,
+			'duggapage' => $duggapage,
+			'dugganame' => $dugganame,
+			'duggaparam' => $duggaparam,
+			'duggaanswer' => $duggaanswer,
+			'duggaexpire' => $duggaexpire,
+			'duggatimesgraded' => $duggatimesgraded,
+			'useranswer' => $useranswer,
+			'duggastats' => $duggastats,
+			'duggafeedback' => $duggafeedback,
+			'moment' => $listentry,
+			'files' => $files,
+			'gradeupdated' => $gradeupdated,
+			'benchmark' => $benchmark
+		);
+		
+		
+	
+		$myarray[] = $array;
+	}
+	echo json_encode($myarray);
+}else{
+	println('returning once');
+	$array = array(
+		//'entriesNoSSN' => $entriesNoSSN,
+		'entries' => $entries,
+		'moments' => $gentries,
+		'versions' => $sentries,
+		'debug' => $debug,
+		'results' => $lentries,
+		'teachers' => $teachers,
+		'courseteachers' => $courseteachers,
 
-echo json_encode($array);
+		'duggauser' => $duggauser,
+		'duggaentry' => $duggaentry,
+		'duggaid' => $duggaid,
+		'duggapage' => $duggapage,
+		'dugganame' => $dugganame,
+		'duggaparam' => $duggaparam,
+		'duggaanswer' => $duggaanswer,
+		'duggaexpire' => $duggaexpire,
+		'duggatimesgraded' => $duggatimesgraded,
+		'useranswer' => $useranswer,
+		'duggastats' => $duggastats,
+		'duggafeedback' => $duggafeedback,
+		'moment' => $listentry,
+		'files' => $files,
+		'gradeupdated' => $gradeupdated,
+		'benchmark' => $benchmark
+	);
+
+	$myarray[] = $array;
+	
+
+	
+
+	echo json_encode($myarray);
+}
+
+	
+
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
 }
