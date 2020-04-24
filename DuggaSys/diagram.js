@@ -4847,16 +4847,15 @@ function initAppearanceForm() {
                     element.addEventListener("input", setGlobalProperties);
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-                if(element.type === "submit") {
-                    element.addEventListener("click", submitAppearanceForm);
-                } else {
-                    element.addEventListener("input", setObjectProperties);
-                }
+                element.addEventListener("input", setObjectProperties);
             } else if(element.tagName === "SELECT") {
                 element.addEventListener("change", setObjectProperties);
             }
         });
     });
+
+    const submitButton = document.querySelector("#appearanceButtonContainer .submit-button");
+    submitButton.addEventListener("click", submitAppearanceForm);
 
     const appearanceContainer = document.getElementById("appearance");
     appearanceContainer.addEventListener("mousedown", e => appearanceMouseDownElement = e.target);
