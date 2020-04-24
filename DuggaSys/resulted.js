@@ -89,9 +89,17 @@ function process() {
 		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + entries[i].examiner + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname ,class: entries[i].class, access: entries[i].access, examiner: entries[i].examiner, username: entries[i].username, ssn: entries[i].ssn });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
+			var tmpGrade = null;
 			if (momtmp[j].kind == 4) {
 				momtmp[j].link = -1;
 				momtmp[j].qvariant = -1;
+				for (var l = 1; j+l < momtmp.length; l++) {
+					if(momtmp[j+l].kind == 4){
+						break;
+					}else if(momtmp[j+l].kind == 3 && typeof(restmp[momtmp[j + l].lid]) != 'undefined' && momtmp[j+l].momname == momtmp[j].momname){
+						tmpGrade = 0;
+					}
+				}
 			}
 			// If it is a feedback quiz -- we have special handling.
 			if (momtmp[j].quizfile == "feedback_dugga") {
@@ -142,7 +150,7 @@ function process() {
 						userAnswer: "UNK",
 						marked: new Date(0),
 						submitted: new Date(0),
-						grade: null,
+						grade: tmpGrade,
 						quizId: momtmp[j].link,
 						qvariant: momtmp[j].qvariant,
 						quizfile: momtmp[j].quizfile,
@@ -352,7 +360,6 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					// This variable adds 24h to the current time
 					var newDateObj = new Date(newGradeExpire.getTime() + allowedRegradeTime);
 					var newGradeExpirePlusOneDay = newDateObj.getTime();
-
 					// Compare the gradeExpire value to the current time, if no grade is set, we can always set it no matter the last change
 					if (newGradeExpirePlusOneDay > currentTimeGetTime) {
 						//The user must press the ctrl-key to activate if-statement
@@ -971,7 +978,7 @@ function renderCell(col, celldata, cellid) {
 			}
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
-			if (celldata.timesGraded !== 0) {
+			if (celldata.timesGraded !== 0 && typeof(celldata.timesGraded) != 'undefined') {
 				str += '(' + celldata.timesGraded + ')';
 			}
 			str += "</div>";
@@ -988,7 +995,7 @@ function renderCell(col, celldata, cellid) {
 				}
 			}
 			str += ">";
-			if (celldata.submitted.getTime() !== timeZero.getTime()) {
+			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 			}
 			for (var p = 0; p < moments.length; p++) {
