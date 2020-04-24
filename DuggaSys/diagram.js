@@ -4657,26 +4657,39 @@ function loadGlobalAppearanceForm() {
     setGlobalSelections();
 }
 
+let appearanceObjects = [];
+
 function loadAppearanceForm() {
-    //Should not load a form if no symbol was selected or any selected symbol is locked
-    if(selected_objects.length < 1) return;
-    for(let i = 0; i < selected_objects.length; i++){
-        if(selected_objects[i].isLocked) return;
+    appearanceObjects = [];
+
+    //Should not load form if there are no unlocked objects.
+    //Do not care about locked objects in appearance form.
+    for(const object of selected_objects) {
+        if(!object.isLocked) {
+            appearanceObjects.push(object);
+        }
+    }
+    if(appearanceObjects.length < 1) {
+        return;
     }
 
-    //Get type of previously selected symbol according to symbolKind object
-    const object = selected_objects[selected_objects.length - 1];
-    let type = object.symbolkind;
-
-    //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
-    if(typeof type === "undefined") type = 0;
-
-    const nameElement = document.getElementById("name");
-
-    showFormGroups([type]);
+    const types = appearanceObjects.reduce((result, object) => {
+        const type = object.symbolkind || 0;
+        if(!result.includes(type)) {
+            result.push(type);
+        }
+        return result;
+    }, []);
+    
+    showFormGroups(types);
     toggleApperanceElement(true);
-
+    
+    const nameElement = document.getElementById("name");
     nameElement.focus();
+
+    //Temporary until solution for multiple
+    const type = types[0];
+    const object = appearanceObjects[0];
 
     switch(type) {
         case symbolKind.erAttribute:
