@@ -4841,32 +4841,27 @@ function setSelections(object) {
 }
 
 
-function setObjectProperties() {
-    for(const object of selected_objects) {
-        const groups = getGroupsByTypes([object.symbolkind || 0]);
-        groups.forEach(group => {
-            const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
-            elements.forEach(element => {
-                let access = element.dataset.access.split(".");
-                if(element.nodeName === "TEXTAREA") {
-                    object[access[0]] = setTextareaText(element, object[access[0]]);
-                } else if(element.type === "range") {
-                    object[access[0]] = element.value / 100;
-                } else if(access[0] === "cardinality") {
-                    if(element.style.display !== "none") {
-                        if(element.value === "None") element.value = "";
-                        object[access[0]][access[1]] = element.value;
-                    }
-                } else if(element.id == "commentCheck") {
-                    object[access[0]][access[1]] = element.checked;
-                } else if(access.length === 1) {
-                    object[access[0]] = element.value;
-                } else if(access.length === 2) {
-                    object[access[0]][access[1]] = element.value;
-                }
-            });
-        });        
-    }
+function setSelectedObjectsProperties(element) {
+    //Using global array populated with objects when form is loaded to prevent selected objects that are locked
+    appearanceObjects.forEach(object => {
+        const access = element.dataset.access.split(".");
+        if(element.nodeName === "TEXTAREA") {
+            object[access[0]] = setTextareaText(element, object[access[0]]);
+        } else if(element.type === "range") {
+            object[access[0]] = element.value / 100;
+        } else if(access[0] === "cardinality") {
+            if(element.style.display !== "none") {
+                if(element.value === "None") element.value = "";
+                object[access[0]][access[1]] = element.value;
+            }
+        } else if(element.id == "commentCheck") {
+            object[access[0]][access[1]] = element.checked;
+        } else if(access.length === 1) {
+            object[access[0]] = element.value;
+        } else if(access.length === 2) {
+            object[access[0]][access[1]] = element.value;
+        }
+    });
     updateGraphics();
 }
 
@@ -4888,9 +4883,9 @@ function initAppearanceForm() {
                     element.addEventListener("input", setGlobalProperties);
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-                element.addEventListener("input", setObjectProperties);
+                element.addEventListener("input", () => setSelectedObjectsProperties(element));
             } else if(element.tagName === "SELECT") {
-                element.addEventListener("change", setObjectProperties);
+                element.addEventListener("change", () => setSelectedObjectsProperties(element));
             }
         });
     });
@@ -4927,8 +4922,6 @@ function submitAppearanceForm() {
     });
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
-    } else {
-        setObjectProperties();
     }
     SaveState();
     toggleApperanceElement();
