@@ -180,6 +180,19 @@ $codeLinkQuery->execute();
 </div>
 <!-- Edit File Dialog END -->
 
+<!-- File View Window START -->
+<div class="fileViewContainer">
+    <div class="fileViewWindow">
+        <div class="loginBoxheader fileViewHeader">
+            <h3 class="fileName"></h3>
+            <div style="cursor: pointer" onclick="filePreviewClose()">x</div>
+        </div>
+        <div class="fileView">
+        </div>
+    </div>
+</div>
+<!-- File View Window END -->
+
 <!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer">
     <div class="previewWindow">
