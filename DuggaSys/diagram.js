@@ -1681,32 +1681,56 @@ function drawVirtualPaper() {
 	
     ctx.strokeStyle = "black"
     ctx.setLineDash([10 * (pixelsPerMillimeter / 3)]);
-	
-	var dubbleColumns = 2*paperColumns;
-	var bottomOfSet = dubbleColumns*paperRows; // calculates the ofset to the bottom half of the pages once 
-	var sizePageNr = 3.1737*pixelsPerMillimeter;
+	let sizePageNr = 3.1737*pixelsPerMillimeter; // now about 12 px
 	ctx.fontColor = "black";
 	ctx.font=`${sizePageNr}px Arial`;
+	let pages = 1; 
 	if(paperOrientation == "portrait") {// Draw Paper sheets in portrait mode
 		if(singlePaper){
 			ctx.strokeRect(zeroX, zeroY, paperWidth, paperHeight);
-			ctx.fillText("Page 1",  zeroX + (paperWidth - 30 * pixelsPerMillimeter),zeroY + (paperHeight - 5 * pixelsPerMillimeter) ); // if only one paper are pressent ther will only be that nr one page
+			if(togglePageNumber){
+				ctx.fillText("Page 1",  zeroX + (paperWidth - 30 * pixelsPerMillimeter),zeroY + (paperHeight - 5 * pixelsPerMillimeter) ); // if only one paper are pressent ther will only be that nr one page
+			}
 		}else{
-			for (var i = 0; i < paperRows; i++) {
-				for (var j = 0; j < paperColumns; j++) {
+			for (let i = 0; i < paperRows; i++) {
+				for (let j = 0; j < paperColumns; j++) {
 					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY - paperHeight * (i+1), paperWidth, paperHeight);   // Top left from origin	
 					ctx.strokeRect(zeroX + paperWidth * j, zeroY - paperHeight * (i+1), paperWidth, paperHeight);       // Top right from origin
 					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY + paperHeight * i, paperWidth, paperHeight);       // Bottom left from origin
-					ctx.strokeRect(zeroX + paperWidth * j, zeroY + paperHeight * i, paperWidth, paperHeight);               // Bottom right from origin
-					
-					if(togglePageNumber){
-						ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 30 * pixelsPerMillimeter   - paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (i+1)); //pagenumbers for the top left
-						ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperWidth - 30 * pixelsPerMillimeter) + paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (i+1));	//pagenumbers for the top right			
-						ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  30 * pixelsPerMillimeter - paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) +  paperHeight * i); //pagenumbers for the bottom left
-						ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperWidth - 30 * pixelsPerMillimeter) + paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) +  paperHeight * i); //pagenumbers for the bottom right
-					}
+					ctx.strokeRect(zeroX + paperWidth * j, zeroY + paperHeight * i, paperWidth, paperHeight);               // Bottom right from origin	
 				}	
-			}
+			}	
+			if(togglePageNumber){//This goes row by row from the top to the bottom of the canvas and checks for objects on the pages so the top left most object will be on page 1 and bottom right most object will be on the higest number page.
+				for (var i = 0; i < paperRows; i++) {
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX - paperWidth * (paperColumns - j), zeroY - paperHeight * (paperRows - i), zeroX - paperWidth *(paperColumns - j-1), zeroY - paperHeight *(paperRows - i-1))){
+							ctx.fillText("Page " + pages, zeroX - 30 * pixelsPerMillimeter - paperWidth * (paperColumns - j-1),zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (paperRows - i)); //pagenumbers for the top left
+							pages++;
+						}
+					}
+					for (var j = 0; j < paperColumns; j++) {
+					//"Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns)
+						if(objectInArea(zeroX + paperWidth * j, zeroY - paperHeight * (paperRows - i), zeroX + paperWidth * (j+1), zeroY - paperHeight * (paperRows -i-1))){
+							ctx.fillText("Page " + pages,zeroX + (paperWidth - 30 * pixelsPerMillimeter) + paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (paperRows - i)); //pagenumbers for the top right
+							pages++;
+						}
+					}
+				}
+				for (var i = 0; i < paperRows; i++) {
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX - paperWidth * (paperColumns -j), zeroY + paperHeight * i, zeroX - paperWidth * (paperColumns - j-1), zeroY + paperHeight * (i+1))){
+							ctx.fillText("Page " + pages, zeroX -  30 * pixelsPerMillimeter - paperWidth * (paperColumns -j-1),zeroY + (paperHeight - 5 * pixelsPerMillimeter) +  paperHeight * i); //pagenumbers for the bottom left
+							pages++;
+						}
+					}	
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX + paperWidth * j, zeroY + paperHeight * i, zeroX + paperWidth * (j+1), zeroY + paperHeight * (i+1))){
+							ctx.fillText("Page " + pages,  zeroX + (paperWidth - 30 * pixelsPerMillimeter) + paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) +  paperHeight * i); //pagenumbers for the bottom right
+							pages++;
+						}
+					}
+				}		
+			}	
 		}
 	} else if(paperOrientation == "landscape") {   // Draw Paper sheets in landscape mode
 		if(singlePaper){
@@ -1719,17 +1743,40 @@ function drawVirtualPaper() {
 					ctx.strokeRect(zeroX + paperHeight * j, zeroY - paperWidth * (i+1), paperHeight, paperWidth);       // Top right from origin
 					ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY + paperWidth * i, paperHeight, paperWidth);       // Bottom left from origin
 					ctx.strokeRect(zeroX + paperHeight * j, zeroY + paperWidth * i, paperHeight, paperWidth);               // Bottom right from origin
-
-					if(togglePageNumber){					
-						ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 30 * pixelsPerMillimeter - paperHeight *j,zeroY + (paperWidth - 5 * pixelsPerMillimeter) -  paperWidth * (i+1));//pagenumbers for the top left
-						ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperHeight - 30 * pixelsPerMillimeter) + paperHeight * j,zeroY + (paperWidth - 5 * pixelsPerMillimeter) -  paperWidth * (i+1));//pagenumbers for the top right
-						ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  30 * pixelsPerMillimeter - paperHeight * j,zeroY + (paperWidth - 5 * pixelsPerMillimeter) +  paperWidth * i);//pagenumbers for the bottom left
-						ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperHeight - 30 * pixelsPerMillimeter) + paperHeight * j,zeroY + (paperWidth - 5 * pixelsPerMillimeter) +  paperWidth * i);	//pagenumbers for the bottom right
-					}
 				}
 			}
-		}
-        
+			if(togglePageNumber){//This goes row by row from the top to the bottom of the canvas and checks for objects on the pages so the top left most object will be on page 1 and bottom right most object will be on the higest number page.
+				for (var i = 0; i < paperRows; i++) {
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX - paperHeight * (paperColumns - j), zeroY - paperWidth * (paperRows - i), zeroX - paperHeight *(paperColumns - j-1), zeroY - paperWidth *(paperRows - i-1))){
+							ctx.fillText("Page " + pages, zeroX - 30 * pixelsPerMillimeter - paperHeight * (paperColumns - j-1),zeroY + (paperWidth - 5 * pixelsPerMillimeter) -  paperWidth * (paperRows - i)); //pagenumbers for the top left
+							pages++;
+						}
+					}
+					for (var j = 0; j < paperColumns; j++) {
+					//"Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns)
+						if(objectInArea(zeroX + paperHeight * j, zeroY - paperWidth * (paperRows - i), zeroX + paperHeight * (j+1), zeroY - paperWidth * (paperRows -i-1))){
+							ctx.fillText("Page " + pages,zeroX + (paperHeight - 30 * pixelsPerMillimeter) + paperHeight * j,zeroY + (paperWidth - 5 * pixelsPerMillimeter) -  paperWidth * (paperRows - i)); //pagenumbers for the top right
+							pages++;
+						}
+					}
+				}
+				for (var i = 0; i < paperRows; i++) {
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX - paperHeight * (paperColumns -j), zeroY + paperWidth * i, zeroX - paperHeight * (paperColumns - j-1), zeroY + paperWidth * (i+1))){
+							ctx.fillText("Page " + pages, zeroX -  30 * pixelsPerMillimeter - paperHeight * (paperColumns -j-1),zeroY + (paperWidth - 5 * pixelsPerMillimeter) +  paperWidth * i); //pagenumbers for the bottom left
+							pages++;
+						}
+					}	
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX + paperHeight * j, zeroY + paperWidth * i, zeroX + paperHeight * (j+1), zeroY + paperWidth * (i+1))){
+							ctx.fillText("Page " + pages,  zeroX + (paperHeight - 30 * pixelsPerMillimeter) + paperHeight * j,zeroY + (paperWidth - 5 * pixelsPerMillimeter) +  paperWidth * i); //pagenumbers for the bottom right
+							pages++;
+						}
+					}
+				}		
+			}
+		}  
     }
 
     // Draw Paper holes
@@ -1874,7 +1921,25 @@ function drawVirtualPaper() {
 	
     ctx.restore();
 }
+//------------------------------------------------------------------
+//Checks if an object are in the specified area
+//------------------------------------------------------------------
+function objectInArea(x1, y1, x2, y2){
+	for(i = 0; i < diagram.length; i++){
+			let pointcenter = {
+				x: 0,
+				y: 0,
+			}
+			let pointTopLeft = pixelsToCanvas(points[diagram[i].topLeft].x, points[diagram[i].topLeft].y);
+			let pointBottomRigth = pixelsToCanvas(points[diagram[i].bottomRight].x, points[diagram[i].bottomRight].y);
 
+			pointcenter.x = (pointTopLeft.x + pointBottomRigth.x) / 2;
+			pointcenter.y = (pointTopLeft.y + pointBottomRigth.y) / 2;
+			if(x1 < pointcenter.x && pointcenter.x < x2 && y1 < pointcenter.y && pointcenter.y < y2) return true
+		
+	}	
+	return false;
+}	
 
 //------------------------------------------------------------------
 // Draws a crosshair in the middle of canvas while in developer mode
