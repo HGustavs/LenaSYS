@@ -40,6 +40,26 @@ if (hasAccess($userid, $cid, 'st')) {
 if (checklogin() && $hasAccess) {
     if (strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
         // Remove file link from database
+    if ($kind == 2 && isSuperUser($userid)){
+        $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
+        $query = $pdo->prepare($querystring);
+        $query->bindParam(':fid', $fid);
+        if (!$query->execute()) {
+            $error = $query->errorInfo();
+            $debug = "Error updating file list " . $error[2];
+        }
+
+        chdir("../");
+        $currcwd = getcwd();
+
+        if ($kind == 2) {
+            $currcwd .= "/courses/global/" . $filename;
+
+            if (file_exists($currcwd))
+            unlink($currcwd);
+    }
+    }
+    if($kind != 2){
         $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
         $query = $pdo->prepare($querystring);
         $query->bindParam(':fid', $fid);
@@ -62,7 +82,7 @@ if (checklogin() && $hasAccess) {
         // Unlinks (deletes) a file from the directory given if it exists.
         if (file_exists($currcwd))
             unlink($currcwd);
-
+    }
     } else if (strcmp($opt, "SAVEFILE") === 0) {
         // Change path to file depending on filename and filekind
         chdir("../");
@@ -159,10 +179,14 @@ if (checklogin() && $hasAccess) {
             $filePath = "UNK";
             $filekindname = "UNK";
         }
+        
+        $showTrashcan = false;
 
-        $showTrashcan = hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w');
-        if ($filekind == 2 && isSuperUser($_SESSION['uid']))
-            $showTrashcan = true; 
+        if(isSuperUser($userid)){
+            $showTrashcan = true;
+        } else if(hasAccess($userid, $cid, 'w') && $filekind != 2){
+            $showTrashcan = true;
+        }
 
         $entry = array(
             'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname]),
