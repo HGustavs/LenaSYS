@@ -155,8 +155,7 @@
 					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
 					echo "</td>";
-
-					if ($requestedService == "fileed.php") {
+					if ($requestedService == "fileed.php" && (hasAccess($_SESSION["uid"], $_SESSION["courseid"], "w") || $_SESSION["superuser"] == 1)) {
 						//Adds the download files button to the toolbar
 						echo "<td class='navButt'>";
 						echo "    <div>";
