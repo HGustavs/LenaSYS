@@ -482,6 +482,7 @@ function init() {
     loadDiagram(); 
     setModeOnRefresh(); 
     initAppearanceForm();
+    setPaperSize(event, 4);
     updateGraphics(); 
 }
 
