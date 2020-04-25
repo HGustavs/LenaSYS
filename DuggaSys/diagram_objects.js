@@ -26,7 +26,7 @@ function Symbol(kindOfSymbol) {
     this.centerPoint;               // centerPoint
     this.cardinality = 
       {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null};
-    this.lineDirection;
+    this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
     this.minHeight;
