@@ -4934,7 +4934,7 @@ only screen and (max-device-width: 320px) {
 }
 
 #appearanceFormContainer {
-  min-width: 280px;
+  width: 280px;
 }
 
 #appearanceButtonContainer {
