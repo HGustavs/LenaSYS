@@ -72,6 +72,10 @@ $(function () {
 //----------------------------------------------------------------------------
 
 function returnedFile(data) {
+    if (!data.writeaccess) {
+		window.location.href = 'courseed.php';
+    }
+    
     filez = data;
     var tblheadPre = {
         filename: "File name",
