@@ -3231,6 +3231,16 @@ span.arrow {
   background-image: url('../icons/Stripes2.png');
 }
 
+.dugga-empty {
+  height: 50px;
+  background-color: #aaa;
+  background-image: url('../icons/not_announced_icon.svg');
+  opacity: 0.2;
+  background-repeat: no-repeat;
+  background-size: 20%;
+  background-position: center center;
+}
+
 .dugga-result-subheader {
   border-top: 2px solid white;
 }

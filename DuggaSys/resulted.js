@@ -931,6 +931,12 @@ function renderCell(col, celldata, cellid) {
 		if (celldata.kind == 4) {
 			str += "dugga-moment ";
 		}
+		else if (celldata.grade != null) {
+			// do nothing for the purpose of being able to generate styling for empty cells
+		}
+		else {
+			str += "dugga-empty ";
+		}
 		if (celldata.grade > 1) {
 			str += "dugga-pass";
 		} else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {
