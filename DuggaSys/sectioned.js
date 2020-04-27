@@ -1378,7 +1378,7 @@ function showFabList(e){
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mouseover(function (e) {
-    showFabList(e)  
+    //showFabList(e);
     FABMouseOver(e);
 });
 
