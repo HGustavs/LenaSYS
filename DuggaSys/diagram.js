@@ -1140,6 +1140,17 @@ function copyPath(path) {
         return result
     }, []);
 
+    for(const segment of clone.segments) {
+        for(const pointIndex of pointIndexes) {
+            if(segment.pa === pointIndex.old) {
+                segment.pa = pointIndex.new;
+            }
+            if(segment.pb === pointIndex.old) {
+                segment.pb = pointIndex.new;
+            }
+        }
+    }
+
     diagram.push(clone);
 
     return clone;
