@@ -1128,6 +1128,18 @@ function copyPath(path) {
         return [...new Set(result)];
     }, []);
 
+    const pointIndexes = oldPointIndexes.reduce((result, pointIndex) => {
+        const point = points[pointIndex];
+        const newPointIndex = points.addPoint(point.x + 100, point.y + 100, point.isSelected);
+
+        result.push({
+            old: pointIndex,
+            new: newPointIndex
+        });
+
+        return result
+    }, []);
+
     diagram.push(clone);
 
     return clone;
