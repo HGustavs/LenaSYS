@@ -714,10 +714,15 @@ function keyDownHandler(e) {
             fillCloneArray();
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
-            var temp = [];
-            var connected = [];
-            //Handles copying of lines
-            drawCopyERLines(connected , temp);
+            let temp = [];
+            for(const object of cloneTempArray) {
+                if(object.kind === kind.path) {
+                    copyPath(object);
+                } else {
+                    temp.push(copySymbol(object));
+                }
+            }
+            drawCopyERLines(temp);
             cloneTempArray = temp;
             selected_objects = temp;
             updateGraphics();
@@ -789,7 +794,9 @@ function keyDownHandler(e) {
     }
 }
 
-function drawCopyERLines(connected , temp){
+function drawCopyERLines(temp) {
+    var connected = [];
+
     for (var y = 0; y < cloneTempArray.length; y++) {
         for (var x = 0; x < cloneTempArray.length; x++) {
             if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)){
@@ -802,10 +809,6 @@ function drawCopyERLines(connected , temp){
                 
             }
         }
-    }
-    for (var i = 0; i < cloneTempArray.length; i++) {
-        const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
-        temp.push(diagram[cloneIndex]);
     }
 
     for(var j = 0 ; j < connected.length ; j++){
@@ -1028,7 +1031,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 }
 
 //----------------------------------------------------------------------
-// copySymbol: Clone an object
+// copySymbol: Clone a symbol object
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
@@ -1110,7 +1113,14 @@ function copySymbol(symbol) {
     symbol.targeted = false;
     diagram.push(clone);
 
-    return diagram.length;
+    return clone;
+}
+
+//----------------------------------------------------------------------
+// copySymbol: Clone a path object
+//----------------------------------------------------------------------
+function copyPath(path) {
+
 }
 
 //--------------------------------------------------------------------
