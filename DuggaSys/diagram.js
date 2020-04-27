@@ -1120,7 +1120,7 @@ function copySymbol(symbol) {
 // copySymbol: Clone a path object
 //----------------------------------------------------------------------
 function copyPath(path) {
-    const clone = Object.assign(new Path, path);
+    const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
 
     const oldPointIndexes = clone.segments.reduce((result, segment) => {
         result.push(segment.pa);
