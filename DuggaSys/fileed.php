@@ -347,13 +347,15 @@ $codeLinkQuery->execute();
 
 <!--This if-statements is used when fileedit opens from an iframe in codeviewer. -->
 <?php 
-            if($_GET['kind'] != null && $_GET['filename'] != null){
-                echo '<script type="text/javascript">',
-                'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
-                    '</script>'
-                ;
-            }         
-        ?>
+	if (isset($_GET['kind']) && isset($_GET['filename'])) {
+		if($_GET['kind'] != null && $_GET['filename'] != null){
+			echo '<script type="text/javascript">',
+			'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
+				'</script>'
+			;
+		}  
+	}
+?>
 
 </body>
 </html>
