@@ -1055,6 +1055,9 @@ function returnedSection(data) {
   // Change the scroll position to where the user was last time.
   $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
+  // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
+  replaceDefualtLink();
+
   addClasses();
 }
 
@@ -1528,6 +1531,18 @@ $(window).load(function () {
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
 }
+
+// Replaces the link corresponding wtih the dropdown choices ---===######===--- with a link to errorpage instead
+function replaceDefualtLink(){
+  var links = document.getElementsByTagName('a');
+
+  for(var i = 0; i < links.length; i++){
+    if((links[i].getAttribute('href')) == "showdoc.php?exampleid=---===######===---&courseid=1&coursevers=45656&fname=---===######===---"){
+      links[i].href = "../errorpages/403.php";
+    }
+  }
+}
+
 
 // Adds classes to <a> element depending on if they are external / internal
 function addClasses() {
