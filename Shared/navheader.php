@@ -42,6 +42,14 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
+			// if the user only have access type W(write) course-dropdown should be shown
+			if(checklogin() && (hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {				
+				echo "<td style='display: inline-block;' title='Choose course version'>";
+				echo "    <div class='course-dropdown-div'>";
+				echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
+				echo "    </div>";
+				echo "</td>";
+			}
 	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
@@ -127,35 +135,41 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
-
-							//Adds the download files button to the toolbar
-							echo "<td class='Downlad all files' style='display: inline-block;'>";
-							echo "    <div class='Downlad all files'>";
-							echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
-							echo "      </a>";
-							echo "    </div>";
-							echo "</td>";
 					}
 			}
 	
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
+
 					echo "<td id='searchBar' class='navButt'>";
 					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+
+					echo "<td id='testSearchContainer' class='navButt'>";
+					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
+
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black; margin-top: 40px'>"; //Dropdown menu for when hovering the search bar
 					echo	"<p><b>Keywords:</b> markG, markU, date</p>";
 					echo	"<p><b>Ex:</b> markG:färgdugga</p>";
 					echo	"</div>";
-					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
-					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
-					echo   "</button>";
 					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
 					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo 	"</div><div>";
-					echo   "</button>";
-					
 					echo "</td>";
+					echo "<td class='navButt'>";
+					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
+					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+					echo   "</button>";
+					echo "</td>";
+					if ($requestedService == "fileed.php" && (hasAccess($_SESSION["uid"], $_SESSION["courseid"], "w") || $_SESSION["superuser"] == 1)) {
+						//Adds the download files button to the toolbar
+						echo "<td class='navButt'>";
+						echo "    <div>";
+						echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+						echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
+						echo "      </a>";
+						echo "    </div>";
+						echo "</td>";
+					}				
 			}
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){

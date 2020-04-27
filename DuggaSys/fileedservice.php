@@ -161,7 +161,7 @@ if (checklogin() && $hasAccess) {
         }
 
         $entry = array(
-            'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname]),
+            'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname, 'extension' => $extension, 'filePath' => $filePath]),
             'extension' => $extension,
             'kind' => $filekind,
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
@@ -200,12 +200,15 @@ if (checklogin() && $hasAccess) {
     $access = True;
 }
 
+$waccess = hasAccess($userid, $cid, 'w');
+
 $array = array(
     'entries' => $entries,
     'debug' => $debug,
     'gfiles' => $gfiles,
     'lfiles' => $lfiles,
     'access' => $access,
+    'waccess' => $waccess,
     'studentteacher' => $studentTeacher
 );
 
