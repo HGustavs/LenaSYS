@@ -799,14 +799,14 @@ function drawCopyERLines(temp) {
 
     for (var y = 0; y < cloneTempArray.length; y++) {
         for (var x = 0; x < cloneTempArray.length; x++) {
-            if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)){
-                var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
-                connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
-            }
-            else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)){
-                var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
-                connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});
-                
+            if(cloneTempArray[x].kind !== kind.path) {
+                if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)) {
+                    var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
+                    connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
+                } else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)) {
+                    var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
+                    connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});   
+                }
             }
         }
     }
