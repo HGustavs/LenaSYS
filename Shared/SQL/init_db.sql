@@ -574,6 +574,19 @@ CREATE TABLE timesheet(
 	FOREIGN KEY (moment) REFERENCES listentries(lid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
+/* userDuggaFeedback table used for user feedback on duggor */
+CREATE TABLE userDuggaFeedback(
+	ufid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	uid						INT UNSIGNED,
+	cid						INT UNSIGNED NOT NULL,
+	lid					INT UNSIGNED NOT NULL,
+	score						INT(11) NOT NULL,
+	PRIMARY KEY (ufid),
+	FOREIGN KEY (uid) REFERENCES user(uid),
+	FOREIGN KEY (cid) REFERENCES course(cid),
+	FOREIGN KEY (lid) REFERENCES listentries(lid)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+
 /*
 	This view eases the process of determining how many hp a student with a specific uid
 	in a specific course cid has finished. See the example below.
