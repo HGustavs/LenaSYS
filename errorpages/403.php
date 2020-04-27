@@ -9,8 +9,8 @@ $noup="NONE";
 */
 
 // Get the sites current URL
-$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/";
-$startURL = $actual_link . "DuggaSys/courseed.php";
+$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$startURL = str_replace("errorpages/403.php","", $actual_link) . "DuggaSys/courseed.php";
 ?>
 <!DOCTYPE html>
 <html>
