@@ -103,8 +103,9 @@
                 <div class="inputFirst" id="th1"><h2>New/Existing MySQL user and DB</h2></div>
                 <div class="inputNotFirst" id="th2"><h2>MySQL Root Login</h2></div>
                 <div class="inputNotFirst" id="th3"><h2>Test Data</h2></div>
-                <div class="inputNotFirst" id="th4"><h2>Write over?</h2></div>
-                <div class="inputNotFirst" id="th5"><h2>Submit</h2></div>
+                <div class="inputNotFirst" id="th4"><h2>Additional Test Data</h2></div>
+                <div class="inputNotFirst" id="th5"><h2>Write over?</h2></div>
+                <div class="inputNotFirst" id="th6"><h2>Submit</h2></div>
             </div>
  <?php
     // Prefill existing credentials, exluding password
@@ -121,7 +122,7 @@
       foreach($credentialsArray as $cred) {
         if(stripos(trim($cred), 'DB_') !== FALSE){
           $tArray = explode('"', trim($cred));
-          if(count($tArray) == 5) {
+          if(count($tArray) == 6) {
             if($tArray[1]=="DB_USER"){
               $dbUsername = $tArray[3];
             }else if($tArray[1]=="DB_HOST"){
@@ -194,7 +195,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC">
+                <div class="inputContent" id="td4" bgcolor="#EEEEEE">
+                    <p id="infoText"><b>If you wish to add additional test data, do so below.</b></p><hr>
+                    <div id="DBboxes">
+                        <input id="additional-checkbox" title="Include test data." type="checkbox" name="additionalDB" value="Yes" onchange="additionalDBchange(this)" checked/>
+                        Include additional test data. <br><br>
+                        <div id="additional-testdataBoxes">
+                            <input title="Diagram dugga" type="checkbox" name="diagram" value="Yes" checked/>Diagram dugga<br>
+                            <input title="Access editor" type="checkbox" name="access" value="Yes" checked/>Access editor<br>
+                            <input title="Contribution dugga" type="checkbox" name="contribution" value="Yes" checked/>Contribution dugga<br>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputContent" id="td5" colspan="3" bgcolor="#FFCCCC">
                     <p id="infoText"><b>If you have entered a user and/or database that already exists you must check the checkboxes below to accept overwriting these.
                         <br>If you only entered an existing user but a new database only check the box for user overwrite.
                         <br>If you only entered an existing database for a new user only check the box for database overwrite.
@@ -208,7 +221,7 @@
                     </div>
                         <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
                 </div>
-                <div class="inputContent" id="td5" bgcolor="#EEEEEE">
+                <div class="inputContent" id="td6" bgcolor="#EEEEEE">
                     <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
                         Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
                         If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
@@ -283,7 +296,7 @@
                             /* If no empty field was found - proceed and reset values of text fields and hide warning text */
                             document.getElementById("enterFields" + inputPage).style.display = "none";
                             previousInputPage = inputPage;
-                            if (inputPage < 5) inputPage++;
+                            if (inputPage < 6) inputPage++;
                             for (var i = 0; i < fields.length; i++) {
                                 fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
                             }
@@ -295,7 +308,7 @@
                     } else {
                         /* Only page 1 and 2 has text fields so the rest have no rules */
                         previousInputPage = inputPage;
-                        if (inputPage < 5) inputPage++;
+                        if (inputPage < 6) inputPage++;
                         updateInputPage();
                     }
                 };
@@ -314,7 +327,7 @@
                 document.addEventListener("keydown", function(e) {
                     if(e.keyCode === 13){
                         if (modal.style.display === "none"){
-                            if (inputPage < 5) {
+                            if (inputPage < 6) {
                                 /* Only continue if all fields on current page are filled out */
                                 if (inputPage === 1 || inputPage === 2) {
                                     var fields = document.getElementsByClassName("page" + inputPage + "input");
@@ -349,7 +362,7 @@
                                     inputPage++;
                                     updateInputPage();
                                 }
-                            } else if (inputPage === 5){
+                            } else if (inputPage === 6){
                                 submitButton.click();
                             }
                         }
@@ -368,7 +381,7 @@
                     } else {
                         document.getElementById('leftArrow').style.display = "block";
                     }
-                    if (inputPage === 5) {
+                    if (inputPage === 6) {
                         document.getElementById('rightArrow').style.display = "none";
                     } else {
                         document.getElementById('rightArrow').style.display = "block";
@@ -426,8 +439,22 @@
                 function fillDBchange(checkbox) {
                     if (checkbox.checked === true){
                         $("#testdataBoxes").show("slide", {direction: "left" }, 500);
+                        document.getElementById('additional-checkbox').checked = false;
+                        document.getElementById('additional-checkbox').click();
+                        document.getElementById('additional-checkbox').disabled = false;
                     } else {
                         $("#testdataBoxes").hide("slide", {direction: "left" }, 500);
+                        document.getElementById('additional-checkbox').checked = true;
+                        document.getElementById('additional-checkbox').click();
+                        document.getElementById('additional-checkbox').disabled = true;
+                    }
+                }
+
+                function additionalDBchange(checkbox) {
+                    if (checkbox.checked === true){
+                        $("#additional-testdataBoxes").show("slide", {direction: "left" }, 500);
+                    } else {
+                        $("#additional-testdataBoxes").hide("slide", {direction: "left" }, 500);
                     }
                 }
 
@@ -520,6 +547,15 @@
                       $totalSteps++;
                     }
                   }
+            }
+            if (isset($_POST["additionalDB"]) && $_POST["additionalDB"] == 'Yes') {
+                $totalSteps += 4; //todo
+                  $checkBoxes = array("diagram", "access", "contribution");
+                  foreach ($checkBoxes AS $boxName) { //Loop trough each field
+                    if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
+                      $totalSteps++;
+                    }
+                }
             }
         }
 
@@ -788,6 +824,17 @@
                 copyTestFiles("{$putFileHere}/install/courses/1/", "{$putFileHere}/courses/1/");
             } else {
                 echo "Skipped filling database with test data.<br>";
+            }
+            if (isset($_POST["additionalDB"]) && $_POST["additionalDB"] == 'Yes') {
+                  $checkBoxes = array("diagram", "access", "contribution");
+                  foreach ($checkBoxes AS $boxName) { //Loop trough each field
+                    if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
+                        addTestData("keywords_{$boxName}", $connection);
+                        //todo
+                    }
+                }
+            } else {
+                echo "Skipped filling database with additional data.<br>";
             }
 
         } else {
