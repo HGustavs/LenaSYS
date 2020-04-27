@@ -559,7 +559,7 @@ function saveResponse() {
 //----------------------------------------
 
 function returnedResults(data) {
-  if (!data.access || !data[0].access) {
+  	if (!data[0].access) {
 		window.location.href = 'courseed.php';
 	}
 	//loops through all the responses from resultedservice.php to update or create table
