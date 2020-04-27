@@ -47,7 +47,18 @@ pdoConnect();
   ?>
   <!-- content START -->
 	<div id="content">
-		
+	
+	<div id="resultedlegendContainer">
+		<ul class="legendList">
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
+			
+		</ul>
+	</div>
+
     <div id="resultedFormContainer">
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
