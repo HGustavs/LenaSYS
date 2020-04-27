@@ -2947,6 +2947,10 @@ span.arrow {
   list-style: none;
   background-color: #ddd;
   margin: 0px;
+
+.legendListItem img{
+  width: 24px;
+  height: 24px;
 }
 
 #laddate {
