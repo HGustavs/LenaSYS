@@ -1537,7 +1537,8 @@ function replaceDefualtLink(){
   var links = document.getElementsByTagName('a');
 
   for(var i = 0; i < links.length; i++){
-    if((links[i].getAttribute('href')) == "showdoc.php?exampleid=---===######===---&courseid=1&coursevers=45656&fname=---===######===---"){
+    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" + querystring['courseid'] + "&coursevers=" + 
+    querystring['coursevers'] + "&fname=---===######===---")){
       links[i].href = "../errorpages/403.php";
     }
   }
