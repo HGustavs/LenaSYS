@@ -546,6 +546,10 @@ function returnedQuiz(data) {
 // START OF RENDERING TABELS
 //Table for duggas
 function returnedDugga(data) {
+	//If the user dont have writeaccess, the user gets send to the startpage
+	if (!data.writeaccess) {
+		window.location.href = 'courseed.php';
+	}
 	filez = data;
 	globalData = data;
 
