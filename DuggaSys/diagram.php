@@ -321,7 +321,7 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="toggleFullscreen();">Fullscren</span>
+                                <span class="drop-down-option" onclick="toggleFullscreen();">Fullscreen</span>
                                 <i id="hotkey-fullscreen" class="hotKeys">Shift + F11</i>           
                             </div>
                         </div>
