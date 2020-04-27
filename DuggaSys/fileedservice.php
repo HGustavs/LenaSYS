@@ -26,7 +26,7 @@ $log_uuid = getOP('log_uuid');
 $info = $opt . " " . $cid . " " . $coursevers . " " . $fid . " " . $filename . " " . $kind;
 logServiceEvent($userid, EventTypes::ServiceServerStart, "fileedservice.php", $userid, $info);
 
-if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid)) {
+if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid) || hasAccess($userid,$cid, 'sv')) {
     $hasAccess = true;
 } else {
     $hasAccess = false;
@@ -231,6 +231,7 @@ if (checklogin() && $hasAccess) {
 
 $superuser = isSuperUser($userid);
 $waccess = hasAccess($userid, $cid, 'w');
+$supervisor = hasAccess($userid, $cid , 'sv');
 
 $array = array(
     'entries' => $entries,
@@ -240,7 +241,8 @@ $array = array(
     'access' => $access,
     'studentteacher' => $studentTeacher,
     'superuser' => $superuser,
-    'waccess' => $waccess
+    'waccess' => $waccess,
+    'supervisor' => $supervisor
 );
 
 echo json_encode($array);

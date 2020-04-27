@@ -83,7 +83,7 @@ function returnedFile(data) {
     }
     var colOrderPre = ["filename", "extension", "kind", "filesize", "uploaddate", "editor"];
 
-    if (data['studentteacher']) {
+    if (data['studentteacher'] || data['supervisor']) {
         document.getElementById('fabButton').style.display = "none";
     } else {
         tblheadPre["trashcan"] = "";
