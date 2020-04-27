@@ -521,31 +521,6 @@ function returnedGroups(data) {
     str += "<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:" + grpemail + "'>Email group</a></div>"
     grpemail = "";
   }
-  /*
-  for (var grpKind in groups) {
-      // skip loop if the property is from prototype
-      if (!groups.hasOwnProperty(grpKind)) continue;
-      str+="<table><caption>"+grpKind+"</caption>";
-      var obj = groups[grpKind];
-      console.log(obj);
-      for (var prop in obj) {
-          // skip loop if the property is from prototype
-          if(!obj.hasOwnProperty(prop)) continue;
-          str+="<thead><tr><th>Group "+prop+"</th></tr></thead>";
-          str+="<tbody>";
-          for(let i=0;i<obj[prop].length;i++){
-              str+="<tr>";
-              str+="<td>"+(i+1)+"</td>";
-              for(let j=0;j<obj[prop][i].length;j++){
-                  str+="<td>"+obj[prop][i][j]+"</td>";
-              }
-              str+="</tr>";
-          }
-          str+="</tbody>";
-      }
-      str+="</table><br>";
-  }
-  */
   if (str != "") {
     $("#grptbl").html(str);
     $("#grptblContainer").css("display", "flex");
