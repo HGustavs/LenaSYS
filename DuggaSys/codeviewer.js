@@ -854,12 +854,18 @@ function createboxmenu(contentid, boxid, type) {
 //----------------------------------------------------------------------------------
 
 function toggleClass(id) {
-	var className = $('#' + id).attr('class');
-	$(".boxwrapper").addClass("deactivatedbox").removeClass("activebox");
+	var className = document.getElementById(id).getAttribute('class');
+	var box = document.querySelector(".boxwrapper");
+	box.classList.add("deactivatedbox");
+	box.classList.remove("activebox");
 	if (className.indexOf("activebox") > -1) {
-		$("#" + id).removeClass("activebox").addClass("deactivatedbox");
+		var removeActivebox = document.getElementById(id)
+		removeActivebox.classList.remove("activebox");
+		removeActivebox.classList.add("deactivatedbox");
 	} else {
-		$("#" + id).removeClass("deactivatedbox").addClass("activebox");
+		var addActivebox = document.getElementById(id);
+		addActivebox.classList.remove("deactivatedbox");
+		addActivebox.classList.add("activebox");
 	}
 }
 
