@@ -50,7 +50,7 @@ pdoConnect();
 	
 	<div id="resultedlegendContainer">
 
-		<div id="legendBtn"></div>
+		<div id="legendBtn" onclick="showLegend();"></div>
 			<ul class="legendList">
 				<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade"> Show dugga answers and results</li>
 				<li class="legendListItem"><img src="../Shared/icons/Uh.png" alt="grade"><img src="../Shared/icons/G.png" alt="grade"> Dugga passed</li>

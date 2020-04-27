@@ -2926,9 +2926,8 @@ span.arrow {
 #resultedlegendContainer{
   margin: -10px;
   float: right;
-  height: 400px;
   z-index: 10;
-  
+  transition: transform 0.2s ease;
 }
 
 #legendBtn{
