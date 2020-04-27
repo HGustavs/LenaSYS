@@ -42,6 +42,14 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
+			// if the user only have access type W(write) course-dropdown should be shown
+			if(checklogin() && (hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {				
+				echo "<td style='display: inline-block;' title='Choose course version'>";
+				echo "    <div class='course-dropdown-div'>";
+				echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
+				echo "    </div>";
+				echo "</td>";
+			}
 	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
@@ -132,7 +140,7 @@
 	
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
-					echo "<td id='searchBar' class='navButt'>";
+					echo "<td id='testSearchContainer' class='navButt'>";
 					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black; margin-top: 40px'>"; //Dropdown menu for when hovering the search bar
 					echo	"<p><b>Keywords:</b> markG, markU, date</p>";
@@ -147,8 +155,7 @@
 					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
 					echo "</td>";
-
-					if ($requestedService == "fileed.php") {
+					if ($requestedService == "fileed.php" && (hasAccess($_SESSION["uid"], $_SESSION["courseid"], "w") || $_SESSION["superuser"] == 1)) {
 						//Adds the download files button to the toolbar
 						echo "<td class='navButt'>";
 						echo "    <div>";
@@ -163,7 +170,7 @@
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
 					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
-					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg' style='margin-left:35px;'>";
+					echo     "<img class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";

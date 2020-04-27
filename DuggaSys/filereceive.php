@@ -92,9 +92,9 @@ if ($ha) {
         }
     } else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
-        if (!file_exists($currcvd . "/courses/" . $cid ."/versionIndependence")) {
+        if (!file_exists($currcvd . "/courses/" . $cid)) {
             echo $currcvd . "/courses/" . $cid;
-            $storefile = mkdir($currcvd . "/courses/" . $cid. "/versionIndependence",0777,true);
+            $storefile = mkdir($currcvd . "/courses/" . $cid ,0777,true);
         } else {
             $storefile = true;
         }
@@ -191,7 +191,7 @@ if ($storefile) {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fname;
                     logUserEvent($username, EventTypes::AddFile, "VersionLocal"." , ".$fname);
                 } else if ($kind == "MFILE") {
-                    $movname = $currcvd . "/courses/" . $cid . "/versionIndependence/" . $fname;
+                    $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
                     logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;

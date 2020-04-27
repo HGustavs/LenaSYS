@@ -189,7 +189,7 @@ if (checklogin() && $hasAccess) {
         }
 
         $entry = array(
-            'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname]),
+            'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname, 'extension' => $extension, 'filePath' => $filePath]),
             'extension' => $extension,
             'kind' => $filekind,
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
@@ -230,8 +230,8 @@ if (checklogin() && $hasAccess) {
 }
 
 $superuser = isSuperUser($userid);
-$waccess = hasAccess($userid, $cid, 'w');
 $supervisor = hasAccess($userid, $cid , 'sv');
+$waccess = hasAccess($userid, $cid, 'w');
 
 $array = array(
     'entries' => $entries,
@@ -242,7 +242,7 @@ $array = array(
     'studentteacher' => $studentTeacher,
     'superuser' => $superuser,
     'waccess' => $waccess,
-    'supervisor' => $supervisor
+    'supervisor' => $supervisor,
 );
 
 echo json_encode($array);

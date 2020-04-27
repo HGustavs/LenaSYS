@@ -17,7 +17,6 @@
 			// Cookie for guest username is not present, send a guest cookie to user.
 			$username = "Guest" . $userid . rand(0,50000);  // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
 			setcookie("cookie_guest", $username, time() + 3600, "/");
-			
 		}
 	}
 	else{
@@ -74,6 +73,21 @@
 
 		<!-- FAB END -->
 
+		<!-- MOTD dropdown -->
+		<div id='motdArea' style='display: none;'>
+			<?php	
+				echo "<td>";
+				echo "		<div class='motdBoxheader' >";
+				echo "			<h3>Message of the day</h3>";
+				echo "				<div class='cursorPointer' onclick='closeMOTD()'>x</div>";
+				echo "	</div>";
+				echo "  <div id='motdContent' style='text-align:center'>";
+				echo "		<p style='text-align:center' id='motd'></p>";			
+				echo" 	</div>";
+				echo "</td>";
+			?>
+		</div>
+		<!-- MOTD dropdown END -->
 
 		<!-- Mobile view Start(course-dropdown, editVers, newVers) -->
 		<div class='mobile-view'>
@@ -289,6 +303,7 @@
 				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
+				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog5')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 			</div>

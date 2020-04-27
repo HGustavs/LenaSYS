@@ -180,6 +180,19 @@ $codeLinkQuery->execute();
 </div>
 <!-- Edit File Dialog END -->
 
+<!-- File View Window START -->
+<div class="fileViewContainer">
+    <div class="fileViewWindow">
+        <div class="loginBoxheader fileViewHeader">
+            <h3 class="fileName"></h3>
+            <div style="cursor: pointer" onclick="filePreviewClose()">x</div>
+        </div>
+        <div class="fileView">
+        </div>
+    </div>
+</div>
+<!-- File View Window END -->
+
 <!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer">
     <div class="previewWindow">
@@ -334,13 +347,15 @@ $codeLinkQuery->execute();
 
 <!--This if-statements is used when fileedit opens from an iframe in codeviewer. -->
 <?php 
-            if($_GET['kind'] != null && $_GET['filename'] != null){
-                echo '<script type="text/javascript">',
-                'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
-                    '</script>'
-                ;
-            }         
-        ?>
+	if (isset($_GET['kind']) && isset($_GET['filename'])) {
+		if($_GET['kind'] != null && $_GET['filename'] != null){
+			echo '<script type="text/javascript">',
+			'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
+				'</script>'
+			;
+		}  
+	}
+?>
 
 </body>
 </html>
