@@ -36,6 +36,8 @@ pdoConnect();
 		$noup="SECTION";
 		$resultedkind = true;
 		include '../Shared/navheader.php';
+		include_once "../Shared/basic.php";
+		$cid=getOPG('courseid');
 	?>
 
 	<!-- <div id="content"></div> -->
