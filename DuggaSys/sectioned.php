@@ -79,7 +79,7 @@
 				echo "<td>";
 				echo "		<div class='motdBoxheader' >";
 				echo "			<h3>Message of the day</h3>";
-				echo "				<div class='cursorPointer' onclick='closeMOTD()'>x</div>";
+				echo "				<div class='cursorPointerMOTD' onclick='closeMOTD()'  >x</div>";
 				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p style='text-align:center' id='motd'></p>";			
@@ -88,32 +88,6 @@
 			?>
 		</div>
 		<!-- MOTD dropdown END -->
-
-		<!-- Mobile view Start(course-dropdown, editVers, newVers) -->
-		<div class='mobile-view'>
-					<?php
-
-						echo "<td style='display: inline-block;'>";
-						echo "    <div class='course-dropdown-div'>";
-						echo "      <select id='courseDropdownTop-mobile' class='course-dropdown' onchange='goToVersion(this)' ></select>";
-						echo "    </div>";
-						echo "</td>";
-						
-						echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
-						echo "    <div class='editVers menuButton'>";
-            echo "      <img id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
-						echo "    </div>";
-						echo "</td>";
-						
-						echo "<td class='newVers' style='display: inline-block;margin-right:2px;'>";
-						echo "    <div class='newVers menuButton'>";
-            echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
-						echo "    </div>";
-						echo "</td>";
-					?>
-		</div>
-
-		<!-- Mobile view END -->
 
 		<!-- + button --->
 
