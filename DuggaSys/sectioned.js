@@ -393,8 +393,11 @@ function updateItem() {
   $("#editSection").css("display", "none");
 }
 
-function updateDeadline(){
-  AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+function updateDeadline() {
+    var kind = $("#type").val();
+    if (kind == 3) {
+        AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+    }
 }
 
 //----------------------------------------------------------------------------------
@@ -1768,27 +1771,6 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = false;
     }
-  }
-}
-
-// Validates sectionname
-function validateSectionName(nameid, dialogid) {
-  //Regex for space and uppercase+lowercase letters
-  var Name = /^[a-zA-Z_ ]+$/;
-  var name = document.getElementById(nameid);
-  var x = document.getElementById(dialogid);
-
-  //If sectionname is only letters
-  if (name.value.match(Name)) {
-    name.style.borderColor = "#383";
-    name.style.borderWidth = "2px";
-    x.style.display = "none";
-    window.bool7 = true;
-  } else {
-    name.style.borderColor = "#E54";
-    x.style.display = "block";
-    name.style.borderWidth = "2px";
-    window.bool7 = false;
   }
 }
 
