@@ -3661,11 +3661,11 @@ rect[class*="activitymarker"]:hover {
 }
 
 /* styling for the search bars in resulted, accessed, duggaed, filed */
-#searchBar input#searchinput,
+#searchBar #searchinput,
 .tooltipsearchbar input#tooltipsearchinput{
-  padding: 5px 10px 5px 10px;
+  padding: 5px 5px 5px 5px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 18px;
+  font-size: 1px;
   float: left;
   background: #f1f1f1;
   border-radius: 0;
@@ -3730,13 +3730,13 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-#searchinput,
+/*#searchinput,
 #duggaSearch,
 #searchinputMobile {
   padding: 0 0 0 2px;
   height: 20px;
 }
-
+*/
 #searchBar,
 #searchbutton,
 #searchbuttonMobile {
