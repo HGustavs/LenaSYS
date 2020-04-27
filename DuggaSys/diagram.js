@@ -1154,6 +1154,8 @@ function copyPath(path) {
     clone.targeted = true;
     path.targeted = false;
 
+    clone.calculateBoundingBox();
+
     diagram.push(clone);
 
     return clone;
