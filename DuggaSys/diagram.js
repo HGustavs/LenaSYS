@@ -1122,6 +1122,12 @@ function copySymbol(symbol) {
 function copyPath(path) {
     const clone = Object.assign(new Path, path);
 
+    const oldPointIndexes = clone.segments.reduce((result, segment) => {
+        result.push(segment.pa);
+        result.push(segment.pb);
+        return [...new Set(result)];
+    }, []);
+
     diagram.push(clone);
 
     return clone;
