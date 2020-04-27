@@ -36,10 +36,12 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 #toggleGrade {
 	display: none;
 	background:#bbb;
+	width: 20%;
 	left: 40%; 
 	top:  20%;
 	border: 2px solid var(--color-border);
 }
+
 #gradeBtn {
 	background-color:var(--color-accent);
 	border: none;

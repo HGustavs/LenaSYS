@@ -2600,7 +2600,6 @@ span.arrow {
 
 .feedback-list {
   table-layout: fixed;
-  width: 100%;
   margin-top: 2px !important;
 }
 
@@ -2613,6 +2612,7 @@ span.arrow {
 .feedback-list td {
   line-height: normal;
 }
+
 #feedbackTable .feedback-list th {
 	background: var(--color-background-3);
   color:var(--color-text-label);
@@ -3218,10 +3218,9 @@ span.arrow {
 
 #newFeedback {
   width: 98%;
-  min-width: 300px;
   height: 140px;
-  min-height: 140px;
   padding: 2px;
+  resize: none;
 }
 
 .feedback-info {
