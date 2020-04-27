@@ -660,8 +660,10 @@ function keyDownHandler(e) {
     }
     if(key == keyMap.escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
-    } else if(key == keyMap.enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
-        submitAppearanceForm();
+    } else if(key == keyMap.enterKey && appearanceMenuOpen) {
+        if(document.activeElement.nodeName !== "TEXTAREA") {
+            submitAppearanceForm();
+        }
     } else if(key == keyMap.escapeKey && fullscreen) {
         toggleFullscreen();
     }
