@@ -717,7 +717,7 @@ function keyDownHandler(e) {
             let temp = [];
             for(const object of cloneTempArray) {
                 if(object.kind === kind.path) {
-                    copyPath(object);
+                    temp.push(copyPath(object));
                 } else {
                     temp.push(copySymbol(object));
                 }
@@ -1120,7 +1120,11 @@ function copySymbol(symbol) {
 // copySymbol: Clone a path object
 //----------------------------------------------------------------------
 function copyPath(path) {
+    const clone = Object.assign(new Path, path);
 
+    diagram.push(clone);
+
+    return clone;
 }
 
 //--------------------------------------------------------------------
