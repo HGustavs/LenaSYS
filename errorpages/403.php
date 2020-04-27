@@ -7,6 +7,10 @@ include_once "../Shared/basic.php";
 /*
 $noup="NONE";
 */
+
+// Get the sites current URL
+$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/";
+$startURL = $actual_link . "DuggaSys/courseed.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,6 +31,6 @@ $noup="NONE";
 <body>
     You may not view this page
     <br>
-    <a href="/LenaSYS/DuggaSys/courseed.php">Go to start</a>
+    <a href="<?php echo $startURL; ?>">Go to start</a>
 </body>
 </html>
