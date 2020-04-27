@@ -2228,7 +2228,7 @@ function closeEditExample() {
 //----------------------------------------------------------------------------------
 
 function openTemplateWindow() {
-	$("#chooseTemplateContainer").css("display", "flex");
+	document.getElementById("chooseTemplateContainer").style.display = "flex";
 }
 
 //----------------------------------------------------------------------------------
@@ -2237,7 +2237,7 @@ function openTemplateWindow() {
 //----------------------------------------------------------------------------------
 
 function closeTemplateWindow() {
-	$("#chooseTemplateContainer").css("display", "none");
+	document.getElementById("chooseTemplateContainer").style.display = "none";
 }
 
 //----------------------------------------------------------------------------------
