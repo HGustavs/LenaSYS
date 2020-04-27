@@ -27,6 +27,6 @@ $noup="NONE";
 <body>
     You may not view this page
     <br>
-    <a href="/DuggaSys/courseed.php">Go to start</a>
+    <a href="/LenaSYS/DuggaSys/courseed.php">Go to start</a>
 </body>
 </html>
