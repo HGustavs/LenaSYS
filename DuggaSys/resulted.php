@@ -49,16 +49,17 @@ pdoConnect();
 	<div id="content">
 	
 	<div id="resultedlegendContainer">
+	<div class ="resultedLegend" style="float:right;">
 		<ul class="legendList">
-			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
-			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
-			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
-			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
-			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade"> Show dugga answers and results</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uh.png" alt="grade"><img src="../Shared/icons/G.png" alt="grade"> Dugga passed</li>
+			<li class="legendListItem"><img src="../Shared/icons/U.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Dugga failed</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uc.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Dugga not graded</li>
+			<li class="writeOutTimesGraded"> This is a fist</li>
 			
 		</ul>
 	</div>
-
+	</div>
     <div id="resultedFormContainer">
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>

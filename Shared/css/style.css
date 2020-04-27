@@ -2923,6 +2923,11 @@ span.arrow {
   margin: 10px;
 }
 
+.legendListItem img{
+  width: 24px;
+  height: 24px;
+}
+
 #laddate {
   border: 1px solid var(--color-border);
 }
