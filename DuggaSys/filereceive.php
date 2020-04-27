@@ -83,7 +83,9 @@ if ($ha) {
                 $storefile = true;
             }
         }
-    } else if ($kind == "GFILE") {
+        // Shouldn't need to print an error for this because the fab button for uploading a global file does not exist for non-superusers.
+        // Just double checking so someone doesn't bypass it somehow.
+    } else if ($kind == "GFILE" && isSuperUser($_SESSION['uid'])) {
         //  if it is a global file, check if "/templates" exists, if not create the directory
         if (!file_exists($currcvd . "/courses/global")) {
             $storefile = mkdir($currcvd . "/courses/global",0777,true);

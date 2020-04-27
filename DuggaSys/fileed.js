@@ -86,7 +86,7 @@ function returnedFile(data) {
 
     if (data['studentteacher'] || data['supervisor']) {
         document.getElementById('fabButton').style.display = "none";
-    } else if(data['waccess']) {
+    } else if (data['waccess'] || data['superuser']) {
         tblheadPre["trashcan"] = "";
         colOrderPre.push("trashcan");
     }
