@@ -4782,101 +4782,174 @@ function createCardinality() {
     }
 }
 
+const symbolTypeMap = {
+    "-1": "Global",
+    "0": "Path",
+    "1": "UML",
+    "2": "Attribute",
+    "3": "Entity",
+    "4": "ER line",
+    "5": "Relation",
+    "6": "Text",
+    "7": "UML line"
+}
+
+function createCollapsible(formGroups, types, index) {
+    const collapsibleElement = document.createElement("div");
+    const objectTypesElement = document.createElement("div");
+    const iconContainer = document.createElement("div");
+    const icon = document.createElement("div");
+    const title = document.createElement("div");
+    const formGroupContainer = document.createElement("div");
+
+    collapsibleElement.appendChild(objectTypesElement);
+    collapsibleElement.appendChild(formGroupContainer);
+    objectTypesElement.appendChild(iconContainer);
+    objectTypesElement.appendChild(title);
+    iconContainer.appendChild(icon);
+
+    collapsibleElement.classList.add("collapsible");
+    objectTypesElement.classList.add("object-types");
+    iconContainer.classList.add("square");
+    formGroupContainer.classList.add("form-groups");
+
+    //The first collapsible should be opened by default, possible others should be closed
+    if(index !== 0) {
+        collapsibleElement.classList.add("closed");
+    }
+
+    iconContainer.addEventListener("click", () => collapsibleElement.classList.toggle("closed"));
+
+    //Set collapsible title to the object names the collapsible should represent. Seperate by comma (no comma for last)
+    types.forEach((type, i) => {
+        title.innerText += symbolTypeMap[type];
+        if(i !== types.length - 1) title.innerText += ", ";
+    });
+
+    formGroups.forEach(group => formGroupContainer.appendChild(group));
+
+    document.getElementById("appearanceForm").appendChild(collapsibleElement);
+}
+
 function loadGlobalAppearanceForm() {
-    showFormGroups(-1);
+    showFormGroups([-1]);
     globalappearanceMenuOpen = true;
     toggleApperanceElement(true);
     document.getElementById("lineThicknessGlobal").value = settings.properties.lineWidth;
     setGlobalSelections();
 }
 
+let appearanceObjects = [];
+
 function loadAppearanceForm() {
-    //Should not load a form if no symbol was selected or any selected symbol is locked
-    if(selected_objects.length < 1) return;
-    for(let i = 0; i < selected_objects.length; i++){
-        if(selected_objects[i].isLocked) return;
+    appearanceObjects = [];
+
+    //Should not load form if there are no unlocked objects.
+    //Do not care about locked objects in appearance form.
+    for(const object of selected_objects) {
+        if(!object.isLocked) {
+            appearanceObjects.push(object);
+        }
+    }
+    if(appearanceObjects.length < 1) {
+        return;
     }
 
-    //Get type of previously selected symbol according to symbolKind object
-    const object = selected_objects[selected_objects.length - 1];
-    let type = object.symbolkind;
-
-    //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
-    if(typeof type === "undefined") type = 0;
-
-    const typeElement = document.getElementById("type");
-    const nameElement = document.getElementById("name");
-
-    showFormGroups(type);
+    //Get all unique types from the selected objects
+    const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
+    
+    showFormGroups(types);
     toggleApperanceElement(true);
+    
+    let erCardinalityVisible = false;
 
-    nameElement.focus();
+    //A comma at the end to seperate objects right now. Should be fixed in seperate issue to only appear on last object in the type
+    appearanceObjects.forEach(object => {
+        if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
+            document.getElementById("name").value += object.name + ", ";
+            document.getElementById("name").focus();
+        }
 
-    switch(type) {
-        case symbolKind.erAttribute:
-            typeElement.innerHTML = makeoptions("Normal", ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"], ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"]);
-            nameElement.value = object.name;
-            break;
-        case symbolKind.erEntity:
-        case symbolKind.erRelation:
-            typeElement.innerHTML = makeoptions("Normal", ["Weak", "Strong"], ["Weak", "Normal"]);
-            nameElement.value = object.name;
-            break;
-        case symbolKind.line:
+        if(object.symbolkind === symbolKind.line) {
             const connections = object.getConnectedObjects();
-            const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
-            const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
-            typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
-            typeElement.focus();
-            if(entities.length > 0 && relations.length > 0) {
-                document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
-                document.getElementById("cardinalityUML").style.display = "none";
-            } else {
-                document.getElementById("cardinality").parentNode.style.display = "none";
+            const hasEntity = connections.some(symbol => symbol.symbolkind === symbolKind.erEntity);
+            const hasRelation = connections.some(symbol => symbol.symbolkind === symbolKind.erRelation);
+            if(!erCardinalityVisible) {
+                if(hasEntity && hasRelation) {
+                    document.getElementById("cardinalityER").parentNode.style.display = "block";
+                    erCardinalityVisible = true;
+                } else {
+                    document.getElementById("cardinalityER").parentNode.style.display = "none";
+                }
             }
-            break;
-        case symbolKind.umlLine:
-            const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
-            const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
-            typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
-            typeElement.focus();
-            document.getElementById("cardinalityUML").style.display = "block";
-            document.getElementById("cardinality").innerHTML = makeoptions("None", cardinalities, cardinalities);
-            document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
-
+            document.getElementById("typeLine").focus();
+        } else if(object.symbolkind === symbolKind.umlLine) {
             //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
             const connectedObjectsArray = object.getConnectedObjects();
-            document.getElementById("First").innerHTML = connectedObjectsArray[0].name;
+            document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
             //Selection to check if relation is to the same entity. If so: both are named from object 0
             if(typeof connectedObjectsArray[1] == "undefined"){
-                document.getElementById("Second").innerHTML =  connectedObjectsArray[0].name;
+                document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
             } else {
-                document.getElementById("Second").innerHTML = connectedObjectsArray[1].name;
+                document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
             }
-        case symbolKind.text:
-            document.getElementById("freeText").value = getTextareaText(object.textLines);
+            document.getElementById("typeLineUML").focus();
+        } else if(object.symbolkind === symbolKind.text) {
+            document.getElementById("freeText").value += getTextareaText(object.textLines) + ",\n";
             document.getElementById("freeText").focus();
             textAppearanceOpen = true;
-            break;
-        case symbolKind.uml:
-            nameElement.value = object.name;
-            document.getElementById("umlAttributes").value = getTextareaText(object.attributes);
-            document.getElementById("umlOperations").value = getTextareaText(object.operations);
+        } else if(object.symbolkind === symbolKind.uml) {
+            document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
+            document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
             classAppearanceOpen = true;
-            break;
-        case 0:
+        } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
-            break;
-    }
-    setSelections(object);
+        }
+        setSelections(object);
+    });
 }
 
-function showFormGroups(type) {
+function showFormGroups(typesToShow) {
+    const form = document.getElementById("appearanceForm");
+
+    //Replace appearance form with original to keep structure after collapsible addition changes it
+    form.parentNode.replaceChild(originalAppearanceForm, form);
+
     const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
-    const formGroupsToShow = getGroupsByType(type);
+    const formGroupsToShow = getGroupsByTypes(typesToShow);
+
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
+
+    const groupsByTypes = formGroupsToShow.reduce((result, group) => {
+        const groupTypes = group.dataset.types.split(",");
+        const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
+        const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
+        if(duplicateTypesIndex === -1) {
+            result.push({
+                groups: [group],
+                types: types
+            });
+        } else {
+            result[duplicateTypesIndex].groups.push(group);
+        }
+        return result;
+    }, []);
+
+    initAppearanceForm();
+    groupsByTypes.forEach((object, i) => createCollapsible(object.groups, object.types, i));
+
+    //Always put submit-button in the end of the form
+    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
+}
+
+function containsAll(array1, array2) {
+    return array1.every(item => array2.includes(item));
+}
+
+function sameMembers(array1, array2) {
+    return containsAll(array1, array2) && containsAll(array2, array1);
 }
 
 function getTextareaText(array) {
@@ -4890,15 +4963,16 @@ function getTextareaText(array) {
     return text;
 }
 
-function setTextareaText(element, array) {
-    const textLines = element.value.split('\n');
-    array = [];
-    textLines.forEach(text => array.push({"text": text}));
+function getTextareaArray(element, index) {
+    const objectText = element.value.split(",\n");
+    const indexTextLines = objectText[index].split("\n");
+    const array = [];
+    indexTextLines.forEach(text => array.push({"text": text}));
     return array;
 }
 
 function setGlobalSelections() {
-    const groups = getGroupsByType(-1);
+    const groups = getGroupsByTypes([-1]);
     groups.forEach(group => {
         const select = group.querySelector("select");
         if(select !== null) {
@@ -4909,7 +4983,7 @@ function setGlobalSelections() {
 }
 
 function setGlobalProperties() {
-    const groups = getGroupsByType(-1);
+    const groups = getGroupsByTypes([-1]);
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
@@ -4922,12 +4996,7 @@ function setGlobalProperties() {
 }
 
 function setSelections(object) {
-    let groups = [];
-    if(object.kind === kind.symbol) {
-        groups = getGroupsByType(object.symbolkind);
-    } else if(object.kind === kind.path) {
-        groups = getGroupsByType(0);
-    }
+    const groups = getGroupsByTypes([object.symbolkind || 0]);
 
     groups.forEach(group => {
         const elements = group.querySelectorAll("select, input[type='checkbox']");
@@ -4955,42 +5024,47 @@ function setSelections(object) {
 }
 
 
-function setObjectProperties() {
-    for(const object of selected_objects) {
-        let groups = [];
-        if(object.kind === kind.symbol) {
-            groups = getGroupsByType(object.symbolkind);
-        } else if(object.kind === kind.path) {
-            groups = getGroupsByType(0);
-        }
-        groups.forEach(group => {
-            const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
-            elements.forEach(element => {
-                let access = element.dataset.access.split(".");
-                if(element.nodeName === "TEXTAREA") {
-                    object[access[0]] = setTextareaText(element, object[access[0]]);
-                } else if(element.type === "range") {
-                    object[access[0]] = element.value / 100;
-                } else if(access[0] === "cardinality") {
-                    if(element.style.display !== "none") {
-                        if(element.value === "None") element.value = "";
-                        object[access[0]][access[1]] = element.value;
+function setSelectedObjectsProperties(element) {
+    const types = element.parentNode.dataset.types.split(",");
+    let textareaIndex = 0;
+    let nameIndex = 0;
+
+    //Using global array populated with objects when form is loaded to prevent selected objects that are locked
+    appearanceObjects.forEach(object => {
+        if((types.includes((object.symbolkind || 0).toString()))) {
+            const access = element.dataset.access.split(".");
+            if(element.nodeName === "TEXTAREA") {
+                object[access[0]] = getTextareaArray(element, textareaIndex);
+                textareaIndex++;
+            } else if(element.type === "range") {
+                object[access[0]] = element.value / 100;
+            } else if(access[0] === "cardinality") {
+                if(element.style.display !== "none") {
+                    if(element.value === "None") {
+                        element.value = "";
                     }
-                } else if(element.id == "commentCheck") {
-                    object[access[0]][access[1]] = element.checked;
-                } else if(access.length === 1) {
-                    object[access[0]] = element.value;
-                } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
                 }
-            });
-        });        
-    }
+            } else if(element.id == "commentCheck") {
+                object[access[0]][access[1]] = element.checked;
+            } else if(element.id === "name") {
+                object[access[0]] = element.value.split(",")[nameIndex].trim();
+                nameIndex++;
+            } else if(access.length === 1) {
+                object[access[0]] = element.value;
+            } else if(access.length === 2) {
+                object[access[0]][access[1]] = element.value;
+            }
+        }
+    });
     updateGraphics();
 }
 
 //Stores which element the mouse was pressed down on while in the appearance menu.
 let appearanceMouseDownElement = null;
+
+//Stores a copy of the appearance form HTML-element with its childnodes
+let originalAppearanceForm = null;
 
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
@@ -5004,16 +5078,15 @@ function initAppearanceForm() {
                     element.addEventListener("input", setGlobalProperties);
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-                if(element.type === "submit") {
-                    element.addEventListener("click", submitAppearanceForm);
-                } else {
-                    element.addEventListener("input", setObjectProperties);
-                }
+                element.addEventListener("input", () => setSelectedObjectsProperties(element));
             } else if(element.tagName === "SELECT") {
-                element.addEventListener("change", setObjectProperties);
+                element.addEventListener("change", () => setSelectedObjectsProperties(element));
             }
         });
     });
+
+    const submitButton = document.querySelector("#appearanceButtonContainer .submit-button");
+    submitButton.addEventListener("click", submitAppearanceForm);
 
     const appearanceContainer = document.getElementById("appearance");
     appearanceContainer.addEventListener("mousedown", e => appearanceMouseDownElement = e.target);
@@ -5022,13 +5095,15 @@ function initAppearanceForm() {
             toggleApperanceElement();
         }
     });
+
+    originalAppearanceForm = document.getElementById("appearanceForm").cloneNode(true);
 }
 
-function getGroupsByType(type) {
+function getGroupsByTypes(typesToShow) {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     return [...formGroups].filter(group => {
         const types = group.dataset.types.split(",");
-        return types.includes(type.toString());
+        return typesToShow.some(type => types.includes(type.toString()));
     });
 }
 
@@ -5042,8 +5117,6 @@ function submitAppearanceForm() {
     });
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
-    } else {
-        setObjectProperties();
     }
     SaveState();
     toggleApperanceElement();

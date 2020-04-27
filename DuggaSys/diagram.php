@@ -53,6 +53,28 @@
             <option value=\'#ffffff\'>White</option>
             <option value=\'#000000\'>Black</option>
         ';
+
+        $textSizes = '
+            <option value=\'Tiny\'>Tiny</option>
+            <option value=\'Small\'>Small</option>
+            <option value=\'Medium\'>Medium</option>
+            <option value=\'Large\'>Large</option>
+        ';
+
+        $fonts = '
+            <option value=\'Arial\'>Arial</option>
+            <option value=\'Courier New\'>Courier New</option>
+            <option value=\'Impact\'>Impact</option>
+            <option value=\'Calibri\'>Calibri</option>
+        ';
+
+        $cardinalitiesUML = '
+            <option value=\'None\' selected>None</option>
+            <option value=\'0..1\'>0..1</option>
+            <option value=\'1..1\'>1..1</option>
+            <option value=\'0..*\'>0..*</option>
+            <option value=\'1..*\'>1..*</option>
+        ';
     ?>
     <!-- content START -->
     <div id="contentDiagram">
@@ -470,7 +492,7 @@
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
     <div id="appearance" class='loginBoxContainer'>
-        <div class='loginBox'>
+        <div id="appearanceFormContainer" class='loginBox'>
             <div class='loginBoxheader'>
                 <h3 id='loginBoxTitle'>Appearance</h3>
                 <div class='cursorPointer' onclick='toggleApperanceElement();'>
@@ -479,13 +501,47 @@
             </div>
             <div class='table-wrap'>
                 <div id="appearanceForm">
+                    <!-- -1->Global, 0->Free draw, 1->UML, 2->Attribute, 3->Entity, 4->Line, 5->Relation, 6->Text, 7-UML-line -->
                     <div class="form-group" data-types="1,2,3,5">
                         <label for="name">Name:</label>
                         <input type="text" id="name" data-access="name">
                     </div>
-                    <div class="form-group" data-types="2,3,4,5,7">
-                        <label for="type">Type:</label>
-                        <select id="type" data-access="properties.key_type"></select>
+                    <div class="form-group" data-types="2">
+                        <label for="typeAttribute">Attribute type:</label>
+                        <select id="typeAttribute" data-access="properties.key_type">
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Primary key">Primary key</option>
+                            <option value="Partial key">Partial key</option>
+                            <option value="Multivalue">Multivalue</option>
+                            <option value="Derive">Derive</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="3,5">
+                        <label for="typeEntityRelation">Entity/relation type:</label>
+                        <select id="typeEntityRelation" data-access="properties.key_type">
+                            <option value="Normal" selected>Strong</option>
+                            <option value="Weak">Weak</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="4">
+                        <label for="typeLine">ER line type:</label>
+                        <select id="typeLine" data-access="properties.key_type">
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Forced">Forced</option>
+                            <option value="Derived">Derived</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="7">
+                        <label for="typeLineUML">UML line type:</label>
+                        <select id="typeLineUML" data-access="properties.key_type">
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Association">Association</option>
+                            <option value="Inheritance">Inheritance</option>
+                            <option value="Implementation">Implementation</option>
+                            <option value="Dependency">Dependency</option>
+                            <option value="Aggregation">Aggregation</option>
+                            <option value="Composition">Composition</option>
+                        </select>
                     </div>
                     <div class="form-group" data-types="2,3,5">
                         <label for="backgroundColor">Background color:</label>
@@ -501,12 +557,7 @@
                     </div>
                     <div class="form-group" data-types="2,3,5,6">
                         <label for="fontFamily">Font family:</label>
-                        <select id="fontFamily" data-access="properties.font">
-                            <option value="Arial">Arial</option>
-                            <option value="Courier New">Courier New</option>
-                            <option value="Impact">Impact</option>
-                            <option value="Calibri">Calibri</option>
-                        </select>
+                        <select id="fontFamily" data-access="properties.font"><?=$fonts?></select>
                     </div>
                     <div class="form-group" data-types="2,3,5,6">
                         <label for="fontColor">Font color:</label>
@@ -514,12 +565,7 @@
                     </div>
                     <div class="form-group" data-types="2,3,5,6">
                         <label for="textSize">Text size:</label>
-                        <select id="textSize" data-access="properties.sizeOftext">
-                            <option value="Tiny">Tiny</option>
-                            <option value="Small">Small</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Large">Large</option>
-                        </select>
+                        <select id="textSize" data-access="properties.sizeOftext"><?=$textSizes;?></select>
                     </div>
                     <div class="form-group" data-types="2,3,5,0">
                         <label for="lineColor">Line color:</label>
@@ -534,16 +580,26 @@
                         </select>
                     </div>
                     <div class="form-group" data-types="7">
-                        <label for="lineDirection">Line direction:</label>
+                        <label for="lineDirection">UML line direction:</label>
                         <select id="lineDirection" data-access="lineDirection">
-                            <option value="First" id="First">First object</option>
-                            <option value="Second" id = "Second">Second object</option>
+                            <option value="First" id="First"></option>
+                            <option value="Second" id="Second"></option>
                         </select>
                     </div>
-                    <div class="form-group" data-types="4,7">
-                        <label for="cardinality">Cardinality:</label>
-                        <select id="cardinality" data-access="cardinality.value"></select></br>
-                        <select id="cardinalityUML" data-access="cardinality.valueUML"></select>
+                    <div class="form-group" data-types="4">
+                        <label for="cardinalityER">ER cardinality:</label>
+                        <select id="cardinalityER" data-access="cardinality.value">
+                            <option value="None" selected>None</option>
+                            <option value="1">1</option>
+                            <option value="N">N</option>
+                            <option value="M">M</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-types="7">
+                        <label for="cardinalityUMLFirst">UML cardinality:</label>
+                        <select id="cardinalityUMLFirst" data-access="cardinality.value"><?=$cardinalitiesUML;?></select>
+                        </br>
+                        <select id="cardinalityUMLSecond" data-access="cardinality.valueUML"><?=$cardinalitiesUML;?></select>
                     </div>
                     <div class="form-group" data-types="1">
                         <label for="umlAttributes">Attributes:</label>
@@ -563,12 +619,7 @@
                     </div>
                     <div class="form-group" data-types="-1">
                         <label for="fontFamilyGlobal">Font family:</label>
-                        <select id="fontFamilyGlobal" data-access="properties.font">
-                            <option value="Arial">Arial</option>
-                            <option value="Courier New">Courier New</option>
-                            <option value="Impact">Impact</option>
-                            <option value="Calibri">Calibri</option>
-                        </select>
+                        <select id="fontFamilyGlobal" data-access="properties.font"><?=$fonts?></select>
                     </div>
                     <div class="form-group" data-types="-1">
                         <label for="fontColorGlobal">Font color:</label>
@@ -576,12 +627,7 @@
                     </div>
                     <div class="form-group" data-types="-1">
                     <label for="textSizeGlobal">Text size:</label>
-                    <select id="textSizeGlobal" data-access="properties.sizeOftext">
-                        <option value="Tiny">Tiny</option>
-                        <option value="Small">Small</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Large">Large</option>
-                    </select>
+                    <select id="textSizeGlobal" data-access="properties.sizeOftext"><?=$textSizes;?></select>
                     </div>
                     <div class="form-group" data-types="-1">
                         <label for="lineColorGlobal">Line color:</label>
@@ -595,10 +641,9 @@
 						<label for="commentCheck">Comment</label>
 						<input type="checkbox" id="commentCheck" data-access="properties.isComment" />
 					</div>
-                    <div class="form-group" style="text-align:center;" data-types="-1,0,1,2,3,4,5,6,7">
-                        <input type="submit" class="submit-button" value="Ok" style="margin:0;float:none;">
-                    </div>
-									
+                    <div id="appearanceButtonContainer">
+                        <input type="submit" class="submit-button" value="Ok">
+                    </div>				
                 </div>
             </div>
         </div>
