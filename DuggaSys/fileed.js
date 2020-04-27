@@ -399,7 +399,7 @@ function setBackgroundForOddEvenRows(){
     $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
 }
 //Sort “Kind” in Edit files by alphabetical order
-function sortFiles(){
+function sortFiles(asc){
     var rows, switching, i, x, y, shouldSwitch;
     switching = true;
 
@@ -411,9 +411,16 @@ function sortFiles(){
             x = rows[i].getElementsByTagName("TD")[3];
             y = rows[i + 1].getElementsByTagName("TD")[3];
 
-            if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
-                shouldSwitch = true;
-                break;
+            if (asc == true) {
+                if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
+                    shouldSwitch = true;
+                    break;
+                }
+            }else if(asc == false){
+                if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()){
+                    shouldSwitch = true;
+                    break;
+                }
             }
 
         }
@@ -513,9 +520,9 @@ function renderSortOptions(col, status, colname) {
     if (status == -1) {
         str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
     } else if (status == 0) {
-        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1); sortFiles();'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1); sortFiles(true);'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
     } else {
-        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0); sortFiles(false);'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
     }
     return str;
 }
