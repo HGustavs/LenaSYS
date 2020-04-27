@@ -2788,7 +2788,7 @@ span.arrow {
 
 #resultTable td {
   height: 1px;
-  padding: 0px 5px;
+  padding: 0px;
   border: 0px;
 }
 
@@ -2814,9 +2814,13 @@ span.arrow {
   border-left: 2px solid #dbd0d8;
   border-right: 2px solid #dbd0d8;
 }
+/*Added text-align:center styling to the first column in Resulted, Duggaed, Fileed and Accessed.*/
+#accessTable td:nth-child(1), #quiz td:nth-child(1),#fileLink td:nth-child(1),#resultTable td:nth-child(1){
+  text-align: center;
+}
 
 #accessTable td span{
-  padding: 0px 5px;
+  padding: 0px;
 }
 
 #accessTable select {
