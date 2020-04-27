@@ -143,8 +143,7 @@
 					echo "<td id='searchBar' class='navButt'>";
 					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black; margin-top: 40px'>"; //Dropdown menu for when hovering the search bar
-					echo	"<p><b>Keywords:</b> markG, markU, date</p>";
-					echo	"<p><b>Ex:</b> markG:färgdugga</p>";
+					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
 					echo	"</div>";
 					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
 					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
