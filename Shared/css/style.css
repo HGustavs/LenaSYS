@@ -2916,6 +2916,13 @@ span.arrow {
   margin: 5px;
 }
 
+.resultedLegend{
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  margin: 10px;
+}
+
 #laddate {
   border: 1px solid var(--color-border);
 }
