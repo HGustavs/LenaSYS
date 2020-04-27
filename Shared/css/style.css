@@ -1694,6 +1694,11 @@ input {
   top: 10px;
 }
 
+#hotkey-fullscreen {
+  right: 35px;
+  top: 445px;
+}
+
 #hotkey-displayTools {
   right: 36px;
   top: 45px;

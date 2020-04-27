@@ -228,7 +228,9 @@ const defaultXKey = 88;
 const defaultWindowsKey = 91;
 const defaultNum1 = 97;
 const defaultNum2 = 98;
+const defaultF11Key = 122;
 const defaultLessThanKey = 226;
+
 //Keybinding variables                       
 isBindingKey = false;                        // Is used when binding keys
 keyBeingBound = null;
@@ -270,6 +272,7 @@ var keyMap = { //rebindable keys format is (keyName, default-value)
     num1 : defaultNum1,
     num2 : defaultNum2,
     lessThanKey : defaultLessThanKey,
+    f11Key :  defaultF11Key,
 }
 
 // Map keycodes to key names
@@ -770,14 +773,17 @@ function keyDownHandler(e) {
         } else if (shiftIsClicked && key == keyMap.dKey) {
         developerMode(event);
         } else if (shiftIsClicked && key == keyMap.mKey  && !modeSwitchDialogActive) {
-                toggleMode();
+            toggleMode();
         } else if (shiftIsClicked && key == keyMap.xKey) {
             lockSelected(event);
         } else if (shiftIsClicked && key == keyMap.oKey) {
             resetViewToOrigin(event);
         } else if (shiftIsClicked && key == keyMap.key4) {
             toggleVirtualPaper(event);
-        } else if (shiftIsClicked && key == keyMap.upArrow) {
+        } else if (shiftIsClicked && key == keyMap.f11Key) {
+            toggleFullscreen();
+        }
+        else if (shiftIsClicked && key == keyMap.upArrow) {
             align(event, 'top');
         } else if (shiftIsClicked && key == keyMap.rightArrow) {
             align(event, 'right');
