@@ -321,10 +321,8 @@
                             <div class="drop-down-divider">
                             </div>
                             <div class="drop-down-item" tabindex="0">
-                                <div id="full-screen" class="drop-down-item">
-                                    <span class="drop-down-option" onclick='toggleFullscreen()'>Fullscreen</span>
-                                    <i id="hotkey-fullscreen" class="hotKeys">Shift + F11</i>
-                                </div>
+                                <span class="drop-down-option" onclick="toggleFullscreen();">Fullscren</span>
+                                <i id="hotkey-fullscreen" class="hotKeys">Shift + F11</i>           
                             </div>
                         </div>
                     </div>
@@ -332,7 +330,7 @@
                         <span class="drop-down-label">Align</span>
                         <div class="drop-down">
                             <div class="drop-down-item" tabindex="0">
-                                <span class="drop-down-option" onclick="toggleGrid(event)">Snap to grid</span>
+                                <span class="drop-down-option" onclick="toggleGrid(event);">Snap to grid</span>
                             </div>
                             <div class="drop-down-divider">
                             </div>
