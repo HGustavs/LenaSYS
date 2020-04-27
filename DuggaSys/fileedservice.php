@@ -38,6 +38,8 @@ if (hasAccess($userid, $cid, 'st')) {
 // Services
 //------------------------------------------------------------------------------------------------
 if (checklogin() && $hasAccess) {
+    if ($kind == 2 && isSuperUser($_SESSION['uid'] == false)) return;
+
     if (strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
         // Remove file link from database
     if ($kind == 2 && isSuperUser($userid)){
