@@ -183,6 +183,13 @@ if (checklogin() && $hasAccess) {
         }
         
         $showTrashcan = false;
+        $showEditor = false;
+
+        if(isSuperUser($userid)){
+            $showEditor = true;
+        } else if($hasAccess && $filekind != 2){
+            $showEditor = true;
+        }
 
         if(isSuperUser($userid)){
             $showTrashcan = true;
@@ -196,7 +203,7 @@ if (checklogin() && $hasAccess) {
             'kind' => $filekind,
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
             'uploaddate' => $row['uploaddate'],
-            'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension]),
+            'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension, 'showeditor' => $showEditor]),
             'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind, 'showtrashcan' => $showTrashcan])
         );
 
