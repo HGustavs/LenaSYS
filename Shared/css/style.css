@@ -2926,8 +2926,7 @@ span.arrow {
 #resultedlegendContainer{
   margin: -10px;
   float: right;
-  height: 200px;
-  display: ;
+  height: 400px;
   z-index: 10;
   
 }
@@ -2947,6 +2946,7 @@ span.arrow {
   list-style: none;
   background-color: #ddd;
   margin: 0px;
+}
 
 .legendListItem img{
   width: 24px;
