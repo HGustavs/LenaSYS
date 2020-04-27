@@ -707,6 +707,18 @@
             </div>
         </div>
     </div>
+    <!-- Fullscreen toggle dialog -->
+    <div id="fullscreenDialog" class='loginBoxContainer importDiagram'>
+        <div class='loginBox fullscreenContainer'>
+            <div class='loginBoxheader fullscreenHeader'>
+            </div>
+            <div class='mode-wrap'>
+                <div id="modeSwitchButton1" class="importButtonWrap">
+                    <button id="fullscreenButtonAccept" type="button" class="buttonStyleDialog" onclick="closeFullscreenDialog();">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
