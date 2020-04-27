@@ -2923,6 +2923,32 @@ span.arrow {
   margin: 10px;
 }
 
+#resultedlegendContainer{
+  margin: -10px;
+  float: right;
+  height: 200px;
+  display: ;
+  z-index: 10;
+  
+}
+
+#legendBtn{
+  height: 40px;
+  width: 40px;
+  background-color:#ccc;
+  float: left;
+  padding: 0px;
+  border-radius: 25px 0px 0px 25px;
+}
+
+.legendList{
+  float: right;
+  padding-right: 40px;
+  list-style: none;
+  background-color: #ddd;
+  margin: 0px;
+}
+
 #laddate {
   border: 1px solid var(--color-border);
 }

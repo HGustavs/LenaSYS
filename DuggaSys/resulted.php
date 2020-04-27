@@ -49,6 +49,7 @@ pdoConnect();
 	<div id="content">
 	
 	<div id="resultedlegendContainer">
+		<div id="legendBtn"></div>
 		<ul class="legendList">
 			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
 			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px"> This is a fist</li>
