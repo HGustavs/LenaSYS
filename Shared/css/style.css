@@ -1021,7 +1021,7 @@ div .navButt:hover {
   border: 2px solid var(--color-border);
   width: 350px;
   min-height: 100px;
-  z-index: 9000;
+  z-index: 9050;
   position: fixed;
   top: 30%;
   left: 50%;

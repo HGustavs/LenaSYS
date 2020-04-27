@@ -1014,12 +1014,20 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-			// Store the text that is in the "newFeedback" textarea, even if it's empty.
-			localStorage.setItem("tempFeedbackBackup", document.getElementById("newFeedback").value);
+			// Check if there's text in the "newFeedback" textarea.
+			// If there isn't, then don't store it and delete the localStorage item.
+			// If there is, then store that in the localStorage.
+			if (document.getElementById('newFeedback') != null) {
+				if (document.getElementById('newFeedback').value == '') {
+					localStorage.removeItem("tempFeedbackBackup");
+				} else {
+					localStorage.setItem("tempFeedbackBackup", document.getElementById("newFeedback").value);
+				}
+			}
 			
             localStorage.removeItem("securityquestion");
             localStorage.removeItem("securitynotification");
-			location.reload(true); // Forced reload from the server.
+			location.reload();
 		},
 		error:function() {
 			console.log("error");

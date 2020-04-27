@@ -471,23 +471,26 @@ function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
 	var width = toggleGrade.offsetWidth;
 	
-	// Check if the toggleGrade popup is visible or not.
-	// If it's visible, then store the value in the "newFeedback" textarea.
-	// If it's not visible, then retrieve what's stored and set the text in the "newFeedback" textarea.
+	// Check if there is text in the "newFeedback" textarea.
+	// If there isn't, then remove the localStorage item.
+	// If there is, then store the text in the localstorage.
 	if (toggleGrade.style.display == 'block') {
 		var tempFeedback = document.getElementById('newFeedback').value;
-		localStorage.setItem("tempFeedbackBackup", tempFeedback);
-	} else if (toggleGrade.style.display == 'none') {
-		var tempFeedback = localStorage.getItem("tempFeedbackBackup");
-		if (tempFeedback != undefined)
-		{
-			document.getElementById('newFeedback').value = tempFeedback;
+		if (tempFeedback.value === '') {
+			localStorage.removeItem("tempFeedbackBackup");
+		} else {
+			localStorage.setItem("tempFeedbackBackup", tempFeedback);
 		}
 	}
 
 	$('#toggleGrade').animate({width: 'toggle'});
 	if(width <= 0){
 		toggleGrade.style.position = 'absolute';
+
+		// If the localstorage item exists, then get the text and put it in the "newFeedback" textarea.
+		if (localStorage.getItem("tempFeedbackBackup") != 'undefined') {
+			document.getElementById('newFeedback').value = localStorage.getItem("tempFeedbackBackup");
+		}
 	}
 }
 
