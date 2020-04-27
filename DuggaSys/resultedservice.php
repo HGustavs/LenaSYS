@@ -42,6 +42,7 @@ $teacher = getOP('teacher');
 $gradeLastExported=getOP('gradeLastExported');
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
+$access = false;
 
 $duggaid = getOP('duggaid');
 
@@ -576,6 +577,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					file_put_contents($movname,$responsetext);
 		}
 	}
+	$access = true;
 }
 
 //------------------------------------------------------------------------------------------------
@@ -913,6 +915,8 @@ if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 			'results' => $lentries,
 			'teachers' => $teachers,
 			'courseteachers' => $courseteachers,
+      'access' => $access,
+      
 			'duggauser' => $duggauser,
 			'duggaentry' => $duggaentry,
 			'duggaid' => $duggaid,
@@ -943,6 +947,8 @@ if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 		'results' => $lentries,
 		'teachers' => $teachers,
 		'courseteachers' => $courseteachers,
+    'access' => $access,
+    
 		'duggauser' => $duggauser,
 		'duggaentry' => $duggaentry,
 		'duggaid' => $duggaid,
@@ -963,9 +969,6 @@ if($users != "" && !strpos($usergroups, 'None') && $groupdugga != 0){
 	$myarray[] = $array;
 	echo json_encode($myarray);
 }
-
-	
-
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
 }

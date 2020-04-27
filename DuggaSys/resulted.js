@@ -69,7 +69,7 @@ function process() {
 			// var tuid = teacher[j].tuid;
 			var setTeacher = teacher[j].id;
 		}
-		if (setTeacher !== null) {
+		if (setTeacher !== null && typeof(setTeacher) !== "undefined") {
 			// Place spaces in the string when a lowercase is followed by a uppercase
 			setTeacher = setTeacher.replace(/([a-z])([A-Z])/g, '$1 $2');
 		}
@@ -559,6 +559,9 @@ function saveResponse() {
 //----------------------------------------
 
 function returnedResults(data) {
+  if (!data.access || !data[0].access) {
+		window.location.href = 'courseed.php';
+	}
 	//loops through all the responses from resultedservice.php to update or create table
 	for(var i = 0; i < data.length; i++){
 		if (data[i]['debug'] !== "NONE!"){
@@ -931,6 +934,12 @@ function renderCell(col, celldata, cellid) {
 		str = "<div style='padding:10px;' class='resultTableCell ";
 		if (celldata.kind == 4) {
 			str += "dugga-moment ";
+		}
+		else if (celldata.grade != null) {
+			// do nothing for the purpose of being able to generate styling for empty cells
+		}
+		else {
+			str += "dugga-empty ";
 		}
 		if (celldata.grade > 1) {
 			str += "dugga-pass";
