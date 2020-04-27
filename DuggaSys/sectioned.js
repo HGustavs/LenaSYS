@@ -1065,25 +1065,6 @@ function showHighscore(did, lid) {
   }, "DUGGAHIGHSCORE");
 }
 
-function changeTabs(val) {
-  var lidID = "lid" + lid.value;
-  var z = document.getElementById(lidID);
-
-  console.log(z);
-  console.log(lid.value);
-  if(val == 1){
-    document.getElementById(lidID).rows[0].cells.item(0).style.width = "64px";
-  }else if(val == 2){
-    document.getElementById(lidID).rows[0].cells.item(0).style.width = "96px";
-  }else if(val == 3){
-    document.getElementById(lidID).rows[0].cells.item(0).style.width = "128px";
-  }else if(val == 4){
-    document.getElementById(lidID).rows[0].cells.item(0).style.width = "170px";
-  }else{
-    document.getElementById(lidID).rows[0].cells.item(0).style.width = "33px";
-  }
-}
-
 function getGroups(grp) {
   AJAXService("GRP", {
     showgrp: grp
