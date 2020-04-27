@@ -1151,6 +1151,9 @@ function copyPath(path) {
         }
     }
 
+    clone.targeted = true;
+    path.targeted = false;
+
     diagram.push(clone);
 
     return clone;
