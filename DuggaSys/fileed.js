@@ -280,6 +280,24 @@ function renderCell(col, celldata, cellid) {
     return str;
 }
 
+
+//---------------------------------------------------------------------------------------------
+//sortAndFilterTogether <- callback function sort and filter files by its kind and search input
+//---------------------------------------------------------------------------------------------
+function sortAndFilterTogether(){
+  filterFilesByKind(sortFilter.kind);
+
+}
+var sortFilter = {
+    fileKind : "",
+    set kind(kind){
+        this.fileKind = kind;
+    },
+    get kind(){
+        return this.fileKind;
+    }
+};
+
 function filePreview(name, path, extension){
     document.querySelector(".fileViewContainer").style.display = "block";
     document.querySelector(".fileViewWindow").style.display = "block";
@@ -353,10 +371,10 @@ document.addEventListener('keydown', function (event) {
 
 
 //---------------------------------------------------------------
-//sortFilesByKind <- Callback function sorts the files by its kind
+//filterFilesByKind <- Callback function sorts the files by its kind
 //---------------------------------------------------------------
 
-function sortFilesByKind(kind){
+function filterFilesByKind(kind){
     $("#fileLink table tbody tr").hide();
     if(kind == "Global"){
         $( "td:contains('Global')" ).parents("tr").show();
@@ -372,8 +390,47 @@ function sortFilesByKind(kind){
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
+    sortFilter.fileKind=kind;
+    setBackgroundForOddEvenRows();
+}
+
+function setBackgroundForOddEvenRows(){
     $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
     $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
+}
+//Sort “Kind” in Edit files by alphabetical order
+function sortFiles(asc){
+    var rows, switching, i, x, y, shouldSwitch;
+    switching = true;
+
+    while(switching){
+        switching = false;
+        rows = $("#fileLink table tr");
+        for(i = 1; i < (rows.length - 1); i++){
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[3];
+            y = rows[i + 1].getElementsByTagName("TD")[3];
+
+            if (asc == true) {
+                if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
+                    shouldSwitch = true;
+                    break;
+                }
+            }else if(asc == false){
+                if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()){
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+
+        }
+        if(shouldSwitch){
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            setBackgroundForOddEvenRows();
+
+        }
+    }
 }
 
 //----------------------------------------------------------------
@@ -463,9 +520,9 @@ function renderSortOptions(col, status, colname) {
     if (status == -1) {
         str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
     } else if (status == 0) {
-        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1); sortFiles(true);'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
     } else {
-        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0); sortFiles(false);'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
     }
     return str;
 }
