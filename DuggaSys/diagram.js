@@ -4773,16 +4773,10 @@ function touchEndEvent(event) {
             }
             // Can't be more than one line if not relation to entity
             else {
-                console.log("hurrlurr");
-                
                 if ((symbolStartKind != symbolKind.erRelation && symbolEndKind != symbolKind.erRelation)
                 || symbolStartKind == symbolKind.erAttribute || symbolEndKind == symbolKind.erAttribute) {
-                    console.log("fitta");
-                    
                     if ((diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0)
                     || (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0)) {
-                        console.log("hurr durr");
-                        
                         okToMakeLine = false
                     }
                 }
