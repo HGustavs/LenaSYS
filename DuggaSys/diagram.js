@@ -1055,6 +1055,7 @@ function copySymbol(symbol) {
 
     symbol.targeted = false;
     clone.targeted = true;
+    clone.setID(globalObjectID - 1);
 
     diagram.push(clone);
 
