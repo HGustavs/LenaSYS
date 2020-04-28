@@ -59,6 +59,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve.php", $u
 
 $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 if ($ha) {
+    if ($kind == "GFILE" && isSuperUser($_SESSION['uid'] == false)) return;
+
     $storefile = false;
     chdir('../');
     $currcvd = getcwd();
@@ -83,6 +85,8 @@ if ($ha) {
                 $storefile = true;
             }
         }
+        // Shouldn't need to print an error for this because the fab button for uploading a global file does not exist for non-superusers.
+        // Just double checking so someone doesn't bypass it somehow.
     } else if ($kind == "GFILE") {
         //  if it is a global file, check if "/templates" exists, if not create the directory
         if (!file_exists($currcvd . "/courses/global")) {
@@ -92,9 +96,9 @@ if ($ha) {
         }
     } else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
-        if (!file_exists($currcvd . "/courses/" . $cid ."/versionIndependence")) {
+        if (!file_exists($currcvd . "/courses/" . $cid)) {
             echo $currcvd . "/courses/" . $cid;
-            $storefile = mkdir($currcvd . "/courses/" . $cid. "/versionIndependence",0777,true);
+            $storefile = mkdir($currcvd . "/courses/" . $cid ,0777,true);
         } else {
             $storefile = true;
         }
@@ -191,7 +195,7 @@ if ($storefile) {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fname;
                     logUserEvent($username, EventTypes::AddFile, "VersionLocal"." , ".$fname);
                 } else if ($kind == "MFILE") {
-                    $movname = $currcvd . "/courses/" . $cid . "/versionIndependence/" . $fname;
+                    $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
                     logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;

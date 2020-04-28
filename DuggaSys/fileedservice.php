@@ -26,7 +26,7 @@ $log_uuid = getOP('log_uuid');
 $info = $opt . " " . $cid . " " . $coursevers . " " . $fid . " " . $filename . " " . $kind;
 logServiceEvent($userid, EventTypes::ServiceServerStart, "fileedservice.php", $userid, $info);
 
-if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid)) {
+if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid) || hasAccess($userid,$cid, 'sv')) {
     $hasAccess = true;
 } else {
     $hasAccess = false;
@@ -38,8 +38,30 @@ if (hasAccess($userid, $cid, 'st')) {
 // Services
 //------------------------------------------------------------------------------------------------
 if (checklogin() && $hasAccess) {
-    if (strcmp($opt, "DELFILE") === 0 && hasAccess($userid, $cid, 'w')) {
+    if ($kind == 2 && isSuperUser($_SESSION['uid'] == false)) return;
+
+    if (strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
         // Remove file link from database
+    if ($kind == 2 && isSuperUser($userid)){
+        $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
+        $query = $pdo->prepare($querystring);
+        $query->bindParam(':fid', $fid);
+        if (!$query->execute()) {
+            $error = $query->errorInfo();
+            $debug = "Error updating file list " . $error[2];
+        }
+
+        chdir("../");
+        $currcwd = getcwd();
+
+        if ($kind == 2) {
+            $currcwd .= "/courses/global/" . $filename;
+
+            if (file_exists($currcwd))
+            unlink($currcwd);
+    }
+    }
+    if($kind != 2){
         $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
         $query = $pdo->prepare($querystring);
         $query->bindParam(':fid', $fid);
@@ -62,7 +84,7 @@ if (checklogin() && $hasAccess) {
         // Unlinks (deletes) a file from the directory given if it exists.
         if (file_exists($currcwd))
             unlink($currcwd);
-
+    }
     } else if (strcmp($opt, "SAVEFILE") === 0) {
         // Change path to file depending on filename and filekind
         chdir("../");
@@ -159,6 +181,21 @@ if (checklogin() && $hasAccess) {
             $filePath = "UNK";
             $filekindname = "UNK";
         }
+        
+        $showTrashcan = false;
+        $showEditor = false;
+
+        if(isSuperUser($userid)){
+            $showEditor = true;
+        } else if($hasAccess && $filekind != 2){
+            $showEditor = true;
+        }
+
+        if(isSuperUser($userid)){
+            $showTrashcan = true;
+        } else if(hasAccess($userid, $cid, 'w') && $filekind != 2){
+            $showTrashcan = true;
+        }
 
         $entry = array(
             'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname, 'extension' => $extension, 'filePath' => $filePath]),
@@ -166,10 +203,11 @@ if (checklogin() && $hasAccess) {
             'kind' => $filekind,
             'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
             'uploaddate' => $row['uploaddate'],
-            'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension]),
-            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind])
+            'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension, 'showeditor' => $showEditor]),
+            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename'], 'filekind' => $filekind, 'showtrashcan' => $showTrashcan])
         );
 
+        
         array_push($entries, $entry);
     }
 
@@ -200,6 +238,8 @@ if (checklogin() && $hasAccess) {
     $access = True;
 }
 
+$superuser = isSuperUser($userid);
+$supervisor = hasAccess($userid, $cid , 'sv');
 $waccess = hasAccess($userid, $cid, 'w');
 
 $array = array(
@@ -208,8 +248,10 @@ $array = array(
     'gfiles' => $gfiles,
     'lfiles' => $lfiles,
     'access' => $access,
+    'studentteacher' => $studentTeacher,
+    'superuser' => $superuser,
     'waccess' => $waccess,
-    'studentteacher' => $studentTeacher
+    'supervisor' => $supervisor,
 );
 
 echo json_encode($array);
