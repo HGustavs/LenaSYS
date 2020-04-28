@@ -1280,6 +1280,7 @@ function renderSortOptions(col, status, colname) {
 				str += "</div>"
 			}
 		} else {
+			document.getElementById("dropdowns").querySelector("[title=\"" + colname + "\"]").parentNode.children[0].checked = true;
 			if (status == 0) {
 				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>ASC </span>" + colname + "</span>";
 				document.getElementById("sortdirAsc").checked = true;
