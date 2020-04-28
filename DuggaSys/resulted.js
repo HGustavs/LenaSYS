@@ -36,7 +36,7 @@ function setup() {
     //benchmarkData = performance.timing;
     window.onscroll = function () {
 
-    };
+	};
 
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
@@ -1428,6 +1428,18 @@ function ladexport() {
 	document.getElementById("resultlistheader").innerHTML = "Results for: " + document.getElementById("ladselect").value;
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
+
+	var today = new Date();
+	var dd = addZero(today.getDate());
+	var mm = addZero(today.getMonth() + 1); //January is 0!
+	var yyyy = today.getFullYear();
+	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+
+	today = yyyy + '-' + mm + '-' + dd;
+
+	 var gradeLastExported = today + " " + time;
+	 lastExpDate.innerHTML =  gradeLastExported;
+	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
 
 	AJAXService("getunexported", {}, "GEXPORT");
 }

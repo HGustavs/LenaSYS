@@ -2916,6 +2916,12 @@ span.arrow {
   margin: 5px;
 }
 
+#lastExportedDate {
+  font-size: 10px;
+  color: gray;
+  text-align: center;
+}
+
 #laddate {
   border: 1px solid var(--color-border);
 }
