@@ -549,11 +549,10 @@
                   }
             }
             if (isset($_POST["additionalDB"]) && $_POST["additionalDB"] == 'Yes') {
-                $totalSteps += 4; //todo
+                $totalSteps++;
                   $checkBoxes = array("diagram", "access", "contribution");
                   foreach ($checkBoxes AS $boxName) { //Loop trough each field
                     if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
-                      $totalSteps++;
                     }
                 }
             }
@@ -832,6 +831,7 @@
                         addTestData("{$boxName}", $connection);
                     }
                 }
+                $completedSteps++;
             } else {
                 echo "Skipped filling database with additional data.<br>";
             }
