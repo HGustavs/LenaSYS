@@ -1048,6 +1048,11 @@ function copySymbol(symbol) {
         centerPoint: symbol.centerPoint
     };
 
+    for(const key in oldPointIndexes) {
+        const point = points[oldPointIndexes[key]];
+        clone[key] = points.addPoint(point.x + 10, point.y + 10, point.isSelected);
+    }
+
     symbol.targeted = false;
     clone.targeted = true;
 
