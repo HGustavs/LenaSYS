@@ -423,6 +423,10 @@ p {
   width: 160px;
 }
 
+.tabsnull{
+  width: 32px;
+}
+
 .markdownIcon,
 .trashcanIcon {
   vertical-align: middle;

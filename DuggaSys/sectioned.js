@@ -147,7 +147,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
      document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
 
-  // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
+  // Set GradeSys, Kind, Visibility
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
