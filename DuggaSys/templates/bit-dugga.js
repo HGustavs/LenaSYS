@@ -271,8 +271,8 @@ function hexClick(divid)
 	dpos=$("#"+divid).position();
 	dwid=$("#"+divid).width();
 	dhei=$("#"+divid).height();
-	bw=Math.round(dwid)*2.0;
-	if(bw<128) bw=128;
+	bw=Math.round(dwid)*1.10;
+	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
 	
 	lpos=dpos.left;
 	
