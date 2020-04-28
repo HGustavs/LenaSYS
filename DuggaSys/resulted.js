@@ -1234,24 +1234,37 @@ function renderSortOptions(col, status, colname) {
 		if (col == "FnameLname") {
 			let colnameArr = colname.split("/");
 			if (status == 0 || status == 1) {
+				document.getElementById("sortcol0_0").checked = true;
+
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 0) {
+					document.getElementById("sortdirAsc").checked = true;
+
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
+					document.getElementById("sortdirDes").checked = true;
+
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				}
 				str += "</div>"
 			} else if (status == 2 || status == 3) {
+				document.getElementById("sortcol0_1").checked = true;
+
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 2) {
+					document.getElementById("sortdirAsc").checked = true;
+
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
+					document.getElementById("sortdirDes").checked = true;
+
+
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
@@ -1271,12 +1284,16 @@ function renderSortOptions(col, status, colname) {
 				str += "</div>"
 			}
 		} else {
+			document.getElementById("dropdowns").querySelector("[title=\"" + colname + "\"]").parentNode.children[0].checked = true;
 			if (status == 0) {
 				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>ASC </span>" + colname + "</span>";
+				document.getElementById("sortdirAsc").checked = true;
 			} else if (status == 1) {
 				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>DES </span>" + colname + "</span>";
+				document.getElementById("sortdirDes").checked = true;
 			} else if (status == 2) {
 				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>PEN </span>" + colname + "</span>";
+				document.getElementById("sortdirPen").checked = true;
 			}
 		}
 	}
