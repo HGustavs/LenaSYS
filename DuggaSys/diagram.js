@@ -1070,9 +1070,15 @@ function copySymbol(symbol) {
                 );
             });
 
-
-            const point = points[pointIndexes[key].old];
-            clone[key] = points.addPoint(point.x + 10, point.y + 10, point.isSelected);
+            let newPointIndex = 0;
+            if(typeof keyContainsDuplicateOldPoint === "undefined") {
+                const point = points[pointIndexes[key].old];
+                newPointIndex = points.addPoint(point.x + 10, point.y + 10, point.isSelected);
+            } else {
+                newPointIndex = pointIndexes[keyContainsDuplicateOldPoint].new;
+            }
+            clone[key] = newPointIndex
+            pointIndexes[key].new = newPointIndex;
         }
     }
 
