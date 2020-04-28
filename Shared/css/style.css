@@ -1077,6 +1077,25 @@ div .navButt:hover {
   -moz-box-sizing: border-box;
 }
 
+#feedbackbox{
+  border: 3px solid var(--color-border-primary);
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px 0px;
+  overflow: auto;
+  display:none;
+}
+
+#feedbackbox #ratingbox{
+  display: flex;
+  flex-direction: row;
+}
+
+#feedbackbox #ratingbox label{
+  padding: 8px;
+  text-align: center;
+}
+
 .note {
   font-size: 0.95em;
 }

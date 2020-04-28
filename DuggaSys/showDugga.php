@@ -171,9 +171,52 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 	<!-- LoginBox (receiptbox) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
-      <div class="loginBox" style="max-width:400px;">
-    		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
-    		<div id='receiptInfo'></div>
+	  <div class="loginBox" style="max-width:400px;">
+			<div class='loginBoxheader'><h3>Kvitto och feedback - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
+			<div id='feedbackbox'>
+				<span>Hur skulle du betygsätta duggan?</span>
+					<div id="ratingbox">
+						<label for='r1'>1<br />
+							<input type='radio' id='r1' value='1' name="rating">
+						</label>
+						<label for='r2'>2<br />
+							<input type='radio' id='r2' value='2' name="rating">
+						</label>
+						<label for='r3'>3<br />
+							<input type='radio' id='r3' value='3' name="rating">
+						</label>
+						<label for='r4'>4<br />
+							<input type='radio' id='r4' value='4' name="rating">
+						</label>
+						<label for='r5'>5<br />
+							<input type='radio' id='r5' value='5' name="rating">
+						</label>
+						<label for='r6'>6<br />
+							<input type='radio' id='r6' value='6' name="rating">
+						</label>
+						<label for='r7'>7<br />
+							<input type='radio' id='r7' value='7' name="rating">
+						</label>
+						<label for='r8'>8<br />
+							<input type='radio' id='r8' value='8' name="rating">
+						</label>
+						<label for='r9'>9<br />
+							<input type='radio' id='r9' value='9' name="rating">
+						</label>
+						<label for='r10'>10<br />
+							<input type='radio' id='r10' value='10' name="rating">
+						</label>
+					</div>
+					<div>
+						<label for='contactable'><input type='checkbox' id='contactable' value='true'>Det går bra att kontakta mig	
+						</label>
+					</div>
+					<div>
+						<input type='button' class='submit-button'  onclick="" value='Save feedback'>
+						<span style='color:var(--color-green); text-align: center; line-height: 2.6; Display:none;'>Feedback saved</span>
+					</div>
+			</div>
+			<div id='receiptInfo'></div>
     		<textarea id="receipt" autofocus readonly></textarea>
     		<div class="button-row">
     			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'>
