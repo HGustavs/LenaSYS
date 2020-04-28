@@ -2499,7 +2499,6 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
-			$(boxValArray['box' + 4]['id']).width("100%");
 			$(boxValArray['box' + 4]['id']).height("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
