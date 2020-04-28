@@ -188,7 +188,7 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection' onmouseover="validateSectionName('sectionname','dialog7');"  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
@@ -198,9 +198,8 @@
 				<input type='hidden' id='lid' value='Toddler' />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input oninput="validateSectionName('sectionname','dialog7')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
-				<p id="dialog7" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only letters (not åäö)</p>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
