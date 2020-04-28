@@ -72,9 +72,9 @@ $(function () {
 //----------------------------------------------------------------------------
 
 function returnedFile(data) {
-    //Redirects users without write-access to courseed.php
-    if (!data.writeaccess) {
-		window.location.href = 'courseed.php';
+    //Redirects users without access to courseed.php
+    if (!data.access) {
+        window.location.href = 'courseed.php';S
     }
     filez = data;
     var tblheadPre = {
