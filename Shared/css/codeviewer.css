@@ -955,7 +955,15 @@
     transform:scale(0.2);
 }
 
+@media only screen and (max-device-width : 725px) {
+    .hidden{
+        display:block;
+    }
 
+    .visuallyhidden{
+        opacity:100;
+    }
+}
 
 
 
