@@ -725,7 +725,7 @@ function keyDownHandler(e) {
                     temp.push(copySymbol(object));
                 }
             }
-            drawCopyERLines(temp);
+            setConnectedLines(temp);
             cloneTempArray = temp;
             selected_objects = temp;
             updateGraphics();
@@ -800,7 +800,7 @@ function keyDownHandler(e) {
     }
 }
 
-function drawCopyERLines(temp) {
+function setConnectedLines(temp) {
     var connected = [];
 
     for (var y = 0; y < cloneTempArray.length; y++) {
@@ -1040,83 +1040,56 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 // copySymbol: Clone a symbol object
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
-    var clone = new Symbol(symbol.symbolkind);
-    // copying the symbol attributes
-    clone.properties = jQuery.extend(true, {}, symbol.properties);
-    clone.lineDirection = jQuery.extend(true, {}, symbol.lineDirection);
-    clone.minWidth = jQuery.extend(true, {}, symbol.minWidth);
-    clone.minHeight = jQuery.extend(true, {}, symbol.minHeight);
-    clone.isOval = jQuery.extend(true, {}, symbol.isOval);
-    clone.isAttribute = jQuery.extend(true, {}, symbol.isAttribute);
-    clone.isRelation = jQuery.extend(true, {}, symbol.isRelation);
-    clone.pointsAtSamePosition = jQuery.extend(true, {}, symbol.pointsAtSamePosition);
-    clone.operations = jQuery.extend(true, {}, symbol.operations);
-    clone.attributes = jQuery.extend(true, {}, symbol.operations);
-    clone.cardinality = jQuery.extend(true, {}, symbol.cardinality);
+    const clone = Object.assign(new Symbol(symbol.symbolkind), JSON.parse(JSON.stringify(symbol)));
+    clone.connectorTop = [];
+    clone.connectorRight = [];
+    clone.connectorBottom = [];
+    clone.connectorLeft = [];
 
-    if (symbol.isLocked) {
-        clone.isLocked = jQuery.extend(true, {}, symbol.isLocked);
-        clone.isLockHovered = jQuery.extend(true, {}, symbol.isLockHovered);
+    const pointIndexes = {
+        topLeft: {
+            old: symbol.topLeft,
+        }, 
+        bottomRight: {
+            old: symbol.bottomRight
+        }, 
+        centerPoint: {
+            old: symbol.centerPoint
+        },
+        middleDivider: {
+            old: symbol.middleDivider
+        }
+    };
+
+    for(const key in pointIndexes) {
+        if(typeof pointIndexes[key].old !== "undefined") {
+
+            //Get the key that contains a new point whose old point was the same as the current iterations old point
+            //This is used to prevent new points from being created if multiple properties point to the same point
+            const keyContainsDuplicateOldPoint = Object.keys(pointIndexes).find(key2 => {
+                return (
+                    key !== key2 &&
+                    pointIndexes[key].old === pointIndexes[key2].old &&
+                    typeof pointIndexes[key2].new !== "undefined"
+                );
+            });
+
+            let newPointIndex = 0;
+            if(typeof keyContainsDuplicateOldPoint === "undefined") {
+                const point = points[pointIndexes[key].old];
+                newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+            } else {
+                newPointIndex = pointIndexes[keyContainsDuplicateOldPoint].new;
+            }
+            clone[key] = newPointIndex
+            pointIndexes[key].new = newPointIndex;
+        }
     }
 
-    var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
-    if(symbol.symbolkind!=4){
-        topLeftClone.x += 10;
-        topLeftClone.y += 10;
-    }
-    else{
-        topLeftClone.x -= 10;
-        topLeftClone.y -= 10;
-    }
-
-    var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
-    if(symbol.symbolkind!=4){
-        bottomRightClone.x += 10;
-        bottomRightClone.y += 10;
-    }
-    else{
-        bottomRightClone.x -= 10;
-        bottomRightClone.y -= 10;
-    }
-
-
-    var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
-    centerPointClone.x += 10;
-    centerPointClone.y += 10;
-
-    if (symbol.symbolkind == symbolKind.uml) {
-        var middleDividerClone = jQuery.extend(true, {}, points[symbol.middleDivider]);
-        middleDividerClone.x += 10;
-        middleDividerClone.y += 10;
-    }
-
-    if(symbol.symbolkind == symbolKind.uml) {
-        clone.name = symbol.name;
-    }else if(symbol.symbolkind == symbolKind.erAttribute) {
-        clone.name = symbol.name;
-    }else if(symbol.symbolkind == symbolKind.erEntity) {
-        clone.name = symbol.name;
-    }else if(symbol.symbolkind == symbolKind.line) {
-        clone.name = symbol.name;
-    }else if(symbol.symbolkind == symbolKind.text) {
-        clone.name = symbol.name;
-        clone.textLines.push({text:clone.name});
-    } else{
-        clone.name = symbol.name;
-    }
-
-    clone.topLeft = points.push(topLeftClone) - 1;
-    clone.bottomRight = points.push(bottomRightClone) - 1;
-
-    if(clone.symbolkind != symbolKind.uml) {
-        clone.centerPoint = points.push(centerPointClone) - 1;
-    }else {
-        clone.middleDivider = points.push(middleDividerClone) - 1;
-        clone.centerPoint = clone.middleDivider;
-    }
-
-    clone.targeted = true;
     symbol.targeted = false;
+    clone.targeted = true;
+    clone.setID(globalObjectID - 1);
+
     diagram.push(clone);
 
     return clone;
@@ -1136,7 +1109,7 @@ function copyPath(path) {
 
     const pointIndexes = oldPointIndexes.reduce((result, pointIndex) => {
         const point = points[pointIndex];
-        const newPointIndex = points.addPoint(point.x + 100, point.y + 100, point.isSelected);
+        const newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
 
         result.push({
             old: pointIndex,
