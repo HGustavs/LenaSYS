@@ -2208,8 +2208,9 @@ function updateTemplate() {
 //----------------------------------------------------------------------------------
 
 function closeEditContent() {
-	$("#boxtitle2").attr("contenteditable", true);
-	$("#editContentContainer").css("display", "none");
+	var editBox = document.getElementById("boxtitle2");
+	editBox.setAttribute("contenteditable", true);
+	document.getElementById("editContentContainer").style.display = "none";
 	openBoxID = null;
 }
 
