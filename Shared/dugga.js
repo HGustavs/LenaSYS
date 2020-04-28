@@ -1121,8 +1121,7 @@ function checkScroll(obj) {
 function showEmailPopup()
 {
 	var receiptcemail ="";
-	$("#emailPopup").css("display","flex");
-	//$("#overlay").css("display","block");
+	document.getElementById("emailPopup").style.display = "block";
 	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
 	document.getElementById('email').value = receiptcemail;
 }
@@ -1377,6 +1376,16 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].content.substring(0,8)+"&#8230;</span>";
 								} else {
 									tab+=filez[i].content+"</span>";
+								}
+							}else if(ctype == "zip" || ctype == "rar"){
+								tab+="<span style='cursor: pointer;text-decoration:underline;'>";
+								tab += "<a href="+filez[i].filepath+filez[i].filename+filez[i].seq+'.'+filez[i].extension+">";
+								if (mediumMediaQuery.matches) {
+									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</a></span>";
+								} else if (mobileMediaQuery.matches) {
+									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</a></span>";
+								} else {
+									tab+=filez[i].filename+"."+filez[i].extension+"</a></span>";
 								}
 							} else {
 								tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";
