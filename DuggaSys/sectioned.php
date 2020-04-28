@@ -74,8 +74,8 @@
 		</div>
 		<!-- Small FAB Button in top in the header of sectioned -->
 		<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
-		<input id='addElement'  type='button' value='+' style="position:relative; top:-493px" class='submit-button-newitem' title='New Item' onclick='createQuickItem();'>
-		<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fab2'>
+		<input id='addElement'  type='button' value='+' style="position:relative; top:-493px" class='submit-button-newitem' title='New Item' onclick='createTopItem();'>
+		<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fabBtnList2'>
 					 	<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
@@ -199,6 +199,7 @@
 			</div>
 			<div style='padding:5px;'>
 				<input type='hidden' id='lid' value='Toddler' />
+				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
 					<input oninput="validateSectionName('sectionname','dialog7')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>

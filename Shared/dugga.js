@@ -621,7 +621,7 @@ function AJAXService(opt,apara,kind)
       tex += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 	apara.log_uuid = tex;
-
+	
   var para="";
 	for (var key in apara) {
 		var old = apara[key];

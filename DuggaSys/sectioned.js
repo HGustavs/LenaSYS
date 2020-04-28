@@ -200,7 +200,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
   // Set Lid
   $("#lid").val(lid);
-
+  
   // Display Dialog
   $("#editSection").css("display", "flex");
 
@@ -309,6 +309,11 @@ function showCreateVersion() {
 
 }
 
+function createTopItem() {
+  selectItem("0", "New Code", "2", "", "", "0", "", "", "TOP", "", "");
+  newItem();
+}
+
 function createQuickItem() {
   selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
   newItem();
@@ -363,7 +368,13 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-
+  if(param.comments == "TOP"){
+    param.pos = "-1";
+  }
+  else{
+    param.pos = "100";
+  }
+  
   return param;
 }
 
@@ -1357,24 +1368,6 @@ function drawSwimlanes() {
 
 }
 
-function showFabList(e){
-  if (e.target.id === "fabBtn") {
-    console.log("hej");
-  var str = "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem('0','New Heading');'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>";
-  str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='createFABItem('1','New Section');'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>";
-  str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem('4','New Moment');'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>";
-  str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='createFABItem('3','New Test');'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>";
-  str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem('5','New Link');'><i class='material-icons'>link</i></a></li>";
-  str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='createFABItem('2','New Code');'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>";
-  str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem('6','New Group');'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>";
-  str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem('7','New Quote');'><i class='material-icons'>format_quote</i></a></li>";
-
-  if(e.target.id === "fabBtn"){
-      document.getElementById('fabBtnList').innerHTML=str;
-  }
-  
-  }
-}
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mouseover(function (e) {
