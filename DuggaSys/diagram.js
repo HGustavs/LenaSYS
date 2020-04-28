@@ -184,8 +184,6 @@ var globalappearanceMenuOpen = false;   // True if global appearance menu is ope
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
-var classAppearanceOpen = false;        // True if appearance menu is open for type class
-var textAppearanceOpen = false;         // True if appearance menu is open for type text
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
@@ -663,8 +661,10 @@ function keyDownHandler(e) {
     }
     if(key == keyMap.escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
-    } else if(key == keyMap.enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
-        submitAppearanceForm();
+    } else if(key == keyMap.enterKey && appearanceMenuOpen) {
+        if(document.activeElement.nodeName !== "TEXTAREA") {
+            submitAppearanceForm();
+        }
     } else if(key == keyMap.escapeKey && fullscreen) {
         toggleFullscreen();
     }
@@ -4971,8 +4971,6 @@ function toggleApperanceElement(show = false) {
         }
 
         appearanceMenuOpen = false;
-        classAppearanceOpen = false;
-        textAppearanceOpen = false;
         globalappearanceMenuOpen = false;
         if($(".loginBox").data("ui-draggable")) {
             $(".loginBox").draggable("destroy");
@@ -5166,11 +5164,9 @@ function loadAppearanceForm() {
         } else if(object.symbolkind === symbolKind.text) {
             document.getElementById("freeText").value += getTextareaText(object.textLines) + ",\n";
             document.getElementById("freeText").focus();
-            textAppearanceOpen = true;
         } else if(object.symbolkind === symbolKind.uml) {
             document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
             document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
-            classAppearanceOpen = true;
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
