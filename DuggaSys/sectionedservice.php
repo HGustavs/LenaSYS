@@ -546,7 +546,8 @@ if($gradesys=="UNK") $gradesys=0;
 								'qrelease' => $row['qrelease'],
 								'comments' => $row['comments'],
 								'qstart' => $row['qstart'],
-								'grptype' => $row['groupKind']
+								'grptype' => $row['groupKind'],
+								'tabs' => $row['tabs']
 							)
 						);
 				}
