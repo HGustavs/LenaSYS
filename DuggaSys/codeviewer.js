@@ -4281,17 +4281,16 @@ function showBox(id) {
 	});
 }
 
-
-function showIframe(boxid,kind){
-	
-		$(".previewWindow").show();
-		$(".previewWindowContainer").css("display", "block");
+function showIframe(boxid,kind)
+{
+		document.querySelector(".previewWindow").style.display = "block";
+		document.querySelector(".previewWindowContainer").style.display = "block";
 		$("#iframeFileed").attr('src', 'fileed.php?courseid='+courseid+'&coursevers='+cvers+'&kind='+kind+'&filename='+retData['box'][boxid - 1][5]+'');
-
 }
-function hideIframe(){
-	$(".previewWindow").hide();
-	$(".previewWindowContainer").css("display", "none");
+function hideIframe()
+{
+	document.querySelector(".previewWindow").style.display = "none";
+	document.querySelector(".previewWindowContainer").style.display = "none";
 	location.reload();
 }
 
