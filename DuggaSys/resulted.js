@@ -30,7 +30,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
-var legendIsHidden = false;
+var legendIsHidden = true;
 
 function setup() {
     //Benchmarking function

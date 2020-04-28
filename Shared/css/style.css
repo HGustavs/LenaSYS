@@ -2928,6 +2928,10 @@ span.arrow {
   float: right;
   z-index: 10;
   transition: transform 0.2s ease;
+  transform: translateX(350px);
+  position: fixed;
+  top: 114px;
+  right: 10px;
 }
 
 #legendBtn{
@@ -2945,6 +2949,11 @@ span.arrow {
   list-style: none;
   background-color: #ddd;
   margin: 0px;
+  border-radius: 0px 0px 0px 5px;
+}
+
+.legendListItem{
+  padding-bottom: 8px;
 }
 
 .legendListItem img{
