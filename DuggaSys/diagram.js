@@ -717,10 +717,15 @@ function keyDownHandler(e) {
             fillCloneArray();
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
-            var temp = [];
-            var connected = [];
-            //Handles copying of lines
-            drawCopyERLines(connected , temp);
+            let temp = [];
+            for(const object of cloneTempArray) {
+                if(object.kind === kind.path) {
+                    temp.push(copyPath(object));
+                } else {
+                    temp.push(copySymbol(object));
+                }
+            }
+            drawCopyERLines(temp);
             cloneTempArray = temp;
             selected_objects = temp;
             updateGraphics();
@@ -795,23 +800,21 @@ function keyDownHandler(e) {
     }
 }
 
-function drawCopyERLines(connected , temp){
+function drawCopyERLines(temp) {
+    var connected = [];
+
     for (var y = 0; y < cloneTempArray.length; y++) {
         for (var x = 0; x < cloneTempArray.length; x++) {
-            if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)){
-                var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
-                connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
-            }
-            else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)){
-                var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
-                connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});
-                
+            if(cloneTempArray[x].kind !== kind.path && cloneTempArray[y].kind !== kind.path) {
+                if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)) {
+                    var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
+                    connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
+                } else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)) {
+                    var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
+                    connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});   
+                }
             }
         }
-    }
-    for (var i = 0; i < cloneTempArray.length; i++) {
-        const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
-        temp.push(diagram[cloneIndex]);
     }
 
     for(var j = 0 ; j < connected.length ; j++){
@@ -1034,7 +1037,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 }
 
 //----------------------------------------------------------------------
-// copySymbol: Clone an object
+// copySymbol: Clone a symbol object
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     var clone = new Symbol(symbol.symbolkind);
@@ -1116,7 +1119,52 @@ function copySymbol(symbol) {
     symbol.targeted = false;
     diagram.push(clone);
 
-    return diagram.length;
+    return clone;
+}
+
+//----------------------------------------------------------------------
+// copySymbol: Clone a path object
+//----------------------------------------------------------------------
+function copyPath(path) {
+    const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
+
+    const oldPointIndexes = clone.segments.reduce((result, segment) => {
+        result.push(segment.pa);
+        result.push(segment.pb);
+        return [...new Set(result)];
+    }, []);
+
+    const pointIndexes = oldPointIndexes.reduce((result, pointIndex) => {
+        const point = points[pointIndex];
+        const newPointIndex = points.addPoint(point.x + 100, point.y + 100, point.isSelected);
+
+        result.push({
+            old: pointIndex,
+            new: newPointIndex
+        });
+
+        return result
+    }, []);
+
+    for(const segment of clone.segments) {
+        for(const pointIndex of pointIndexes) {
+            if(segment.pa === pointIndex.old) {
+                segment.pa = pointIndex.new;
+            }
+            if(segment.pb === pointIndex.old) {
+                segment.pb = pointIndex.new;
+            }
+        }
+    }
+
+    clone.targeted = true;
+    path.targeted = false;
+
+    clone.calculateBoundingBox();
+
+    diagram.push(clone);
+
+    return clone;
 }
 
 //--------------------------------------------------------------------
