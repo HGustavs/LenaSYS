@@ -181,6 +181,12 @@ strong {font-weight: bold;}
 	background: #fff;
 }
 
+#emailPopup #email {
+	margin-left: 10px;
+	width: 280px;
+	float: none;
+}
+
 /* --------------================################================-------------- *
  *                        Instructions for dugga 1 and 2                        *
  * --------------================################================-------------- */

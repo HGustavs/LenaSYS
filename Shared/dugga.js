@@ -1105,8 +1105,7 @@ function checkScroll(obj) {
 function showEmailPopup()
 {
 	var receiptcemail ="";
-	$("#emailPopup").css("display","flex");
-	//$("#overlay").css("display","block");
+	document.getElementById("emailPopup").style.display = "block";
 	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
 	document.getElementById('email').value = receiptcemail;
 }
