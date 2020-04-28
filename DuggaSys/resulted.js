@@ -37,6 +37,10 @@ function setup() {
     window.onscroll = function () {
 
 	};
+	
+	if (typeof localStorage.getItem("lastExpDate") != undefined) {
+		document.getElementById('lastExportedDate').innerHTML = localStorage.getItem("lastExpDate");
+	}
 
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
@@ -1440,6 +1444,8 @@ function ladexport() {
 	 var gradeLastExported = today + " " + time;
 	 lastExpDate.innerHTML =  gradeLastExported;
 	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
+
+	 localStorage.setItem('lastExpDate', gradeLastExported);
 
 	AJAXService("getunexported", {}, "GEXPORT");
 }

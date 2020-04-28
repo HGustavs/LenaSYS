@@ -2912,7 +2912,7 @@ span.arrow {
 .resultedFormsFlex {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   margin: 5px;
 }
 
