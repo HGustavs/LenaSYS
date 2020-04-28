@@ -1041,7 +1041,13 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     const clone = Object.assign(new Symbol(symbol.symbolkind), JSON.parse(JSON.stringify(symbol)));
-    
+
+    symbol.targeted = false;
+    clone.targeted = true;
+
+    diagram.push(clone);
+
+    return clone;
 }
 
 //----------------------------------------------------------------------
