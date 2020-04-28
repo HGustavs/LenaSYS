@@ -1040,6 +1040,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 // copySymbol: Clone a symbol object
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
+    const clone = Object.assign(new Symbol(symbol.symbolkind), JSON.parse(JSON.stringify(symbol)));
     
 }
 
