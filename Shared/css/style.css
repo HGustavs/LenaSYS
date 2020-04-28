@@ -2600,7 +2600,6 @@ span.arrow {
 
 .feedback-list {
   table-layout: fixed;
-  width: 100%;
   margin-top: 2px !important;
 }
 
@@ -2613,6 +2612,7 @@ span.arrow {
 .feedback-list td {
   line-height: normal;
 }
+
 #feedbackTable .feedback-list th {
 	background: var(--color-background-3);
   color:var(--color-text-label);
@@ -2789,7 +2789,8 @@ span.arrow {
 #resultTable td {
   height: 1px;
   padding: 0px;
-  border: 0px;
+  border-left: 2px solid #dbd0d8;
+  border-right: 2px solid #dbd0d8;
 }
 
 #resultTable th:first-of-type {
@@ -3224,6 +3225,7 @@ span.arrow {
   width: 98%;
   height: 140px;
   padding: 2px;
+  resize: none;
 }
 
 .feedback-info {
