@@ -1106,8 +1106,6 @@ function showEmailPopup()
 {
 	var receiptcemail ="";
 	document.getElementById("emailPopup").style.display = "block";
-	//$("#emailPopup").css("display","flex");
-	//$("#overlay").css("display","block");
 	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
 	document.getElementById('email').value = receiptcemail;
 }
