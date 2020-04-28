@@ -2935,12 +2935,15 @@ span.arrow {
 }
 
 #legendBtn{
-  height: 40px;
-  width: 40px;
+  height: 31px;
+  width: 36px;
   background-color:#ccc;
   float: left;
-  padding: 0px;
-  border-radius: 25px 0px 0px 25px;
+  padding-top: 7px;
+  padding-right: 4px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 17px 0px 0px 17px;
 }
 
 .legendList{
