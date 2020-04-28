@@ -1059,6 +1059,18 @@ function copySymbol(symbol) {
 
     for(const key in pointIndexes) {
         if(typeof pointIndexes[key].old !== "undefined") {
+
+            //Get the key that contains a new point whose old point was the same as the current iterations old point
+            //This is used to prevent new points from being created if multiple properties point to the same point
+            const keyContainsDuplicateOldPoint = Object.keys(pointIndexes).find(key2 => {
+                return (
+                    key !== key2 &&
+                    pointIndexes[key].old === pointIndexes[key2].old &&
+                    typeof pointIndexes[key2].new !== "undefined"
+                );
+            });
+
+
             const point = points[pointIndexes[key].old];
             clone[key] = points.addPoint(point.x + 10, point.y + 10, point.isSelected);
         }
