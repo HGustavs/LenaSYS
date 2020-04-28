@@ -1311,8 +1311,9 @@ input {
   margin-left: 4px;
   margin-right: 4px;
 }
-.buttonLogoutBox{
-  border-radius: 0;
+
+.logoutBox p{
+  text-align: center;
 }
 .buttonLoginBox,
 .buttonLogoutBox {
@@ -1331,14 +1332,19 @@ input {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
+.buttonLogoutBox{
+  margin: 12px;
+  width: 120px;
+}
+
 .buttonLoginBox:hover,
-.buttonLogoutBox:hover,{
+.buttonLogoutBox:hover{
   background-color: var(--color-primary-hover);
   border-radius: 2px;
 }
 
 .loginBoxTable,
-.logoutBoxTable,{
+.logoutBoxTable{
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
@@ -1351,7 +1357,7 @@ input {
 }
 
 #loginBoxTitle,
-#logoutBoxTitle,{
+#logoutBoxTitle{
   font-size: 15px;
 }
 
@@ -3655,11 +3661,11 @@ rect[class*="activitymarker"]:hover {
 }
 
 /* styling for the search bars in resulted, accessed, duggaed, filed */
-#searchBar input#searchinput,
+#searchBar #searchinput,
 .tooltipsearchbar input#tooltipsearchinput{
-  padding: 5px 10px 5px 10px;
+  padding: 5px 5px 5px 5px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 18px;
+  font-size: 1px;
   float: left;
   background: #f1f1f1;
   border-radius: 0;
@@ -3724,13 +3730,13 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-#searchinput,
+/*#searchinput,
 #duggaSearch,
 #searchinputMobile {
   padding: 0 0 0 2px;
   height: 20px;
 }
-
+*/
 #searchBar,
 #searchbutton,
 #searchbuttonMobile {
@@ -5251,7 +5257,7 @@ only screen and (max-device-width: 320px) {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
-.previewWindowContainer {
+.previewWindowContainer, .fileViewContainer {
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
@@ -5262,10 +5268,14 @@ only screen and (max-device-width: 320px) {
   display: none;
 }
 
+.loginBoxheade, .fileViewHeader {
+  text-align:left;
+}
 
-.previewWindow {
-  height: 89%;
-  width: 95%;
+.previewWindow, .fileViewWindow {
+  text-align: center;
+  height: 89vh;
+  width: 95vw;
   margin: 0px auto;
   border: solid var(--color-border-4);
   background-color: var(--color-background-4);
@@ -5276,6 +5286,58 @@ only screen and (max-device-width: 320px) {
   right: 0;
   top: 5%;
   position: fixed;
+}
+
+.fileView{
+  height: 100%;
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.fileView iframe{
+  height: 90%;
+} 
+
+@media only screen and (max-width: 745px) {
+  .fileView img {
+    width:100%;
+    margin-top:10%;
+  }
+  .fileView{
+    display: block;
+  }
+  .fileView iframe{
+    height: 80%;
+  } 
+}
+
+@media only screen and (max-width: 601px) {
+  .fileView{
+    width: 75%;
+  }
+}
+
+@media only screen and (max-width: 441px) {
+  .fileView{
+    width: 100%;
+  }
+}
+
+.fileView h1 {
+  font-size: 20px;
+}
+
+.fileView > div {
+  text-align: center;
+  position:relative;
+  margin: 15px;
+}
+
+.fileView img {
+  max-height: 90%;
 }
 
 .markdownPart {
@@ -6131,3 +6193,44 @@ textarea#filecont {
     margin-right: 0px;
   }
 }
+#motdContent{
+  background-color: rgba(254, 204, 86, 1);
+}
+#motdArea{
+  border: 2px;
+  border-radius: 2px;
+  border-style: solid;
+  border-color: rgba(254, 204, 86, 1);
+  background-color: rgba(254, 204, 86, 1);
+  justify-content: center;
+  align-items: center;
+}
+.motdBoxheader{
+  background-color: rgba(254, 204, 86, 1);
+  vertical-align: bottom;
+  padding-left: 10px;
+  cursor: default;
+  display: flex;
+  justify-content: space-around;
+}
+.motdBoxheader h3 {
+  font-size: 20px;
+  margin-top: 10px;
+  line-height: 0.5em;
+  color: black;
+  text-align: center;
+  width: 100%;
+}
+.motdBoxheader div {
+  padding: 4px 20px;
+  color: black;
+  cursor: pointer;
+  background-color: rgb(199, 80, 80);
+  font-family: arial;
+  font-weight: bold;
+}
+
+.motdBoxheader div:hover {
+  background-color: #ce3d3d;
+}
+

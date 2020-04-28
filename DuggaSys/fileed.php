@@ -180,6 +180,19 @@ $codeLinkQuery->execute();
 </div>
 <!-- Edit File Dialog END -->
 
+<!-- File View Window START -->
+<div class="fileViewContainer">
+    <div class="fileViewWindow">
+        <div class="loginBoxheader fileViewHeader">
+            <h3 class="fileName"></h3>
+            <div style="cursor: pointer" onclick="filePreviewClose()">x</div>
+        </div>
+        <div class="fileView">
+        </div>
+    </div>
+</div>
+<!-- File View Window END -->
+
 <!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer">
     <div class="previewWindow">
@@ -293,34 +306,47 @@ $codeLinkQuery->execute();
 <div class="fixed-action-button" id="fabButton">
     <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
     <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
-        <li onclick="showFilePopUp('EFILE');">
-            <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Dummy Empty File'>
+    <?php
+        if (isSuperUser($_SESSION['uid'] || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {
+            echo '
+            <li onclick="showFilePopUp(\'EFILE\');">
+            <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip="Add Dummy Empty File">
                 <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/dummy_icon.svg">
             </a>
-        </li>   
-        <li onclick="showFilePopUp('GFILE');" >
-            <a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'>
+            </li>
+            '; 
+
+            // Checking again to make sure it's a super user becasue they don't necessarily need to have write access.
+            if (isSuperUser($_SESSION['uid'])) {
+            echo '
+            <li onclick="showFilePopUp(\'GFILE\');" >
+            <a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip="Add Global File">
                 <img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
             </a>
-        </li>
-        <li  onclick="showFilePopUp('LFILE');" >
-            <a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'>
-                <img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
-            </a>
-        </li>           
-        <li onclick="showFilePopUp('MFILE');" >
-            <a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'>
-                    <img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
-            </a>
-        </li>
-        <li onclick="showLinkPopUp('LINK');" >
-            <a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
-                    <img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
-            </a>
-        </li>
-
+            </li>
+            ';
+            }
+            
+            echo '
+            <li  onclick="showFilePopUp(\'LFILE\');" >
+                <a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip="Add Version Local File">
+                    <img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
+                </a>
+            </li>           
+            <li onclick="showFilePopUp(\'MFILE\');" >
+                <a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip="Add Course Local File">
+                        <img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
+                </a>
+            </li>
+            <li onclick="showLinkPopUp(\'LINK\');" >
+                <a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
+                        <img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
+                </a>
+            </li>
+            ';
+        }
+        ?>
     </ol>
-
 </div>
 
 <div class="confirmationWindow">
@@ -334,13 +360,15 @@ $codeLinkQuery->execute();
 
 <!--This if-statements is used when fileedit opens from an iframe in codeviewer. -->
 <?php 
-            if($_GET['kind'] != null && $_GET['filename'] != null){
-                echo '<script type="text/javascript">',
-                'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
-                    '</script>'
-                ;
-            }         
-        ?>
+	if (isset($_GET['kind']) && isset($_GET['filename'])) {
+		if($_GET['kind'] != null && $_GET['filename'] != null){
+			echo '<script type="text/javascript">',
+			'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
+				'</script>'
+			;
+		}  
+	}
+?>
 
 </body>
 </html>
