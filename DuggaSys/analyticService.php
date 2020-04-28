@@ -77,8 +77,8 @@ function serviceAvgDuration() {
 				SELECT AVG(duration) FROM (
 					SELECT s1.service AS subService, (s2.timestamp - s1.timestamp) AS duration
 					FROM serviceLogEntries s1
-					JOIN serviceLogEntries s2 ON s1.uuid=s2.uuid AND s2.eventType='.EventTypes::ServiceClientEnd.'
-					WHERE s1.eventType='.EventTypes::ServiceClientStart.'
+					JOIN serviceLogEntries s2 ON s1.uuid=s2.uuid AND s2.eventType='.EventTypes::ServiceServerEnd.'
+					WHERE s1.eventType='.EventTypes::ServiceServerStart.'
 				)
 				WHERE service=subService
 			) AS avgDuration
