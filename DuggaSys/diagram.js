@@ -725,7 +725,7 @@ function keyDownHandler(e) {
                     temp.push(copySymbol(object));
                 }
             }
-            drawCopyERLines(temp);
+            setConnectedLines(temp);
             cloneTempArray = temp;
             selected_objects = temp;
             updateGraphics();
@@ -800,7 +800,7 @@ function keyDownHandler(e) {
     }
 }
 
-function drawCopyERLines(temp) {
+function setConnectedLines(temp) {
     var connected = [];
 
     for (var y = 0; y < cloneTempArray.length; y++) {
