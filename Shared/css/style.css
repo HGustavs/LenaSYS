@@ -407,7 +407,7 @@ p {
   cursor: pointer;
 }
 
-.tabs0{
+.tabs0, .tabsnull{
   width: 32px;
 }
 .tabs1{
@@ -423,9 +423,6 @@ p {
   width: 160px;
 }
 
-.tabsnull{
-  width: 32px;
-}
 
 .markdownIcon,
 .trashcanIcon {
