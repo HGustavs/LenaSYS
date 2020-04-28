@@ -4597,10 +4597,16 @@ function touchStartEvent(event) {
     // Returns what object was pressed, -1 if none
     movobj = diagram.itemClicked();
 
-    if (movobj != -1){
+    if (movobj != -1 && uimode != "CreateLine") {
         md = mouseState.insideMovableObject;
         handleSelect();
-    }else {
+    } 
+    // If create line tool is selected
+    else if(movobj != -1 && uimode == "CreateLine") {
+        md = mouseState.boxSelectOrCreateMode;
+        lineStartObj = movobj;
+        symbolStartKind = diagram[lineStartObj].symbolkind;
+    } else {
         md = mouseState.boxSelectOrCreateMode;
         for (var i = 0; i < selected_objects.length; i++) {
             selected_objects[i].targeted = false;
@@ -4631,7 +4637,8 @@ function touchMoveEvent(event) {
         // Activate move around if touch moved far enough
         if ((diffX > deltaX) || (diffX < -deltaX)
         || (diffY > deltaY) || (diffY < -deltaY)) {
-            if (uimode != 'MoveAround' && md != mouseState.insideMovableObject) {
+            if (uimode != 'MoveAround' && md != mouseState.insideMovableObject 
+            && uimode != "CreateLine") {
                 activateMovearound();
             }
             updateGraphics();
@@ -4691,6 +4698,17 @@ function touchMoveEvent(event) {
             startMouseCoordinateY = currentMouseCoordinateY;
         }
     }
+    // Draw preview line
+    if (uimode == "CreateLine" && movobj != -1) {
+        // Path settings for preview line
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+        ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+        ctx.strokeStyle = "#000";
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
 }
 
 //---------------------------------------------------
@@ -4719,14 +4737,76 @@ function touchEndEvent(event) {
         p1 = points.addPoint(startMouseCoordinateX, startMouseCoordinateY, false);
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
+        // Creates symbol if uimode is set
+        createSymbol(p1BeforeResize, p2BeforeResize);
     }
     var saveState = md == mouseState.boxSelectOrCreateMode && uimode != "normal";
 
-    // Creates symbol if uimode is set
-    createSymbol(p1BeforeResize, p2BeforeResize);
-
     if(uimode == "MoveAround" && md === mouseState.boxSelectOrCreateMode) {
         saveState = false;
+    }
+    // Create lines between er objects
+    if (symbolStartKind != symbolKind.uml && uimode == "CreateLine") {
+        saveState = false;
+        if (markedObject != -1 && !(symbolStartKind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity)
+        && !(symbolStartKind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erRelation)
+        && symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line 
+        && symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            var okToMakeLine = true;
+            symbolEndKind = diagram[markedObject].symbolkind;
+
+            // Can't be more than two lines between an entity and a relation
+            if ((symbolStartKind == symbolKind.erEntity && symbolEndKind == symbolKind.erRelation)
+            || (symbolStartKind == symbolKind.erRelation && symbolEndKind == symbolKind.erEntity)) {
+                if ((diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 1)
+                || (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 1)) {
+                    okToMakeLine = false;
+                }
+            }
+            // Must be two different objects
+            else if (diagram[markedObject] == diagram[lineStartObj]) {
+                okToMakeLine = false;
+            }
+            // Can't be from er to uml
+            else if (symbolEndKind == symbolKind.uml) {
+                okToMakeLine = false;
+            }
+            // Can't be more than one line if not relation to entity
+            else {
+                console.log("hurrlurr");
+                
+                if ((symbolStartKind != symbolKind.erRelation && symbolEndKind != symbolKind.erRelation)
+                || symbolStartKind == symbolKind.erAttribute || symbolEndKind == symbolKind.erAttribute) {
+                    console.log("fitta");
+                    
+                    if ((diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0)
+                    || (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0)) {
+                        console.log("hurr durr");
+                        
+                        okToMakeLine = false
+                    }
+                }
+            }
+            if (okToMakeLine) {
+                addLine(diagram[lineStartObj], diagram[markedObject]);
+                createSymbol();
+                saveState = true;
+            }
+        }
+    }
+    else if (symbolStartKind == symbolKind.uml && uimode == "CreateLine") {
+        saveState = false;
+        uimode = "CreateUMLLine";
+
+        if (markedObject != -1 && diagram[markedObject].symbolkind == symbolKind.uml) {
+            symbolEndKind = diagram[markedObject].symbolkind;
+            addLine(diagram[lineStartObj], diagram[markedObject]);
+            createSymbol();
+            saveState = true;
+        }
+        else {
+            uimode = "CreateLine";
+        }
     }
 
     hashFunction();
@@ -4734,6 +4814,26 @@ function touchEndEvent(event) {
     diagram.updateLineRelations();
     md = mouseState.empty;
     if(saveState) SaveState();
+}
+
+function addLine(startObject, endObject) {
+    
+    // If er attribute add it's centerpoint
+    if (startObject.symbolkind == symbolKind.erAttribute) {
+        p1 = startObject.centerPoint;
+    }
+    else {
+        p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+    }
+    // If er attribute add it's centerpoint
+    if (endObject.symbolkind == symbolKind.erAttribute) {
+        p2 = endObject.centerPoint;
+    }
+    else {
+        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+    }
+    startObject.connectorTop.push({from:p1, to:p2});
+    endObject.connectorTop.push({from:p2, to:p1});
 }
 
 // Creates a symbol based on current uimode
@@ -4797,7 +4897,37 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
             }
             break;
         case "CreateLine":
-            //TODO
+            if (lineStartObj != -1 && markedObject != -1) {
+                erLineA = new Symbol(symbolKind.line);
+                erLineA.name = "Line" + diagram.length;
+                erLineA.topLeft = p1;
+                erLineA.object_type = "";
+                erLineA.bottomRight = p2;
+                erLineA.centerPoint = p3;
+                diagram.unshift(erLineA);
+                lastSelectedObject = diagram.length -1;
+                diagram[lastSelectedObject].targeted = true;
+                selected_objects.push(diagram[lastSelectedObject]);
+                updateGraphics();
+            }
+            break;
+        case "CreateUMLLine":
+            umlLineA = new Symbol(symbolKind.umlLine);
+            umlLineA.name = "Line" + diagram.length;
+            umlLineA.topLeft = p1;
+            umlLineA.object_type = "";
+            umlLineA.bottomRight = p2;
+            umlLineA.centerPoint = p3;
+            umlLineA.isRecursiveLine = lineStartObj == markedObject;
+            if (umlLineA.isRecursiveLine) {
+                points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
+                points[umlLineA.topLeft].y = points[umlLineA.bottomRight].y;
+            }
+            diagram.push(umlLineA);
+            lastSelectedObject = diagram.length - 1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            updateGraphics();
             break;
         case "CreateERRelation":
             erRelationA = new Symbol(symbolKind.erRelation);
