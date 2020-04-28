@@ -224,7 +224,7 @@ function hexClick(divid)
 	if(hh<160) hh=160;
 	hh+="px";
 	
-	$("#pop").css({top: (dpos.top+dhei+10), left:lpos, width:bw,height:hh,display:"block"})
+	$("#pop").css({top: (dpos.dhei+10), left:lpos, width:bw,height:hh,display:"block"})
 	$("#pop").removeClass("arrow-topr");
 	$("#pop").removeClass("arrow-top");
 	$("#pop").addClass(popclass);
