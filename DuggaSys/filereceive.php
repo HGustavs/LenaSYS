@@ -59,6 +59,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve.php", $u
 
 $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 if ($ha) {
+    if ($kind == "GFILE" && isSuperUser($_SESSION['uid'] == false)) return;
+
     $storefile = false;
     chdir('../');
     $currcvd = getcwd();
@@ -83,6 +85,8 @@ if ($ha) {
                 $storefile = true;
             }
         }
+        // Shouldn't need to print an error for this because the fab button for uploading a global file does not exist for non-superusers.
+        // Just double checking so someone doesn't bypass it somehow.
     } else if ($kind == "GFILE") {
         //  if it is a global file, check if "/templates" exists, if not create the directory
         if (!file_exists($currcvd . "/courses/global")) {

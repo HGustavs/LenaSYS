@@ -84,9 +84,9 @@ function returnedFile(data) {
     }
     var colOrderPre = ["filename", "extension", "kind", "filesize", "uploaddate", "editor"];
 
-    if (data['studentteacher']) {
+    if (data['studentteacher'] || data['supervisor']) {
         document.getElementById('fabButton').style.display = "none";
-    } else if(data['waccess']) {
+    } else if (data['waccess'] || data['superuser']) {
         tblheadPre["trashcan"] = "";
         colOrderPre.push("trashcan");
     }
@@ -250,8 +250,10 @@ function renderCell(col, celldata, cellid) {
     }
 
     if (col == "trashcan") {
-        str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-        str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+        if (obj.showtrashcan) {
+            str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+            str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+        }
     } else if (col == "filename") {
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
@@ -267,6 +269,7 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "extension" || col == "uploaddate") {
         str += "<span>" + celldata + "</span>";
     } else if (col == "editor") {
+        if(obj.showeditor){
         if (obj.extension == "md" || obj.extension == "txt") {
             str = "<span class='iconBox'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
@@ -274,6 +277,7 @@ function renderCell(col, celldata, cellid) {
             str = "<span class='iconBox'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
+    }
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     }
