@@ -88,7 +88,7 @@ if(checklogin()){
 			logUserEvent($username, EventTypes::AddCourse, $description);
 
 		}else if(strcmp($opt,"NEWVRS")===0){
-			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:motd);");
 
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursecode', $coursecode);
@@ -96,6 +96,7 @@ if(checklogin()){
 			$query->bindParam(':versname', $versname);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':coursenamealt', $coursenamealt);
+			$query->bindParam(':motd', $motd);
 
 			/*
 			if(!$query->execute()) {
