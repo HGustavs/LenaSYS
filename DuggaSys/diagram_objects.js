@@ -2110,7 +2110,7 @@ function Symbol(kindOfSymbol) {
 				ctx.strokeStyle = '#DC143C';
 			}else{
 				ctx.fillStyle = this.properties['fontColor'];
-        		ctx.strokeStyle = this.properties['strokeColor'];
+				ctx.strokeStyle = this.properties['strokeColor'];
 			}
 
 			//add permanent outline for comments
