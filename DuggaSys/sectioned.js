@@ -421,6 +421,7 @@ function createVersion() {
   param.cid = querystring['courseid'];
   param.versid = document.getElementById("versid").value;
   param.versname = document.getElementById("versname").value;
+  param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = document.getElementById("course-coursecode").innerHTML;
   param.coursename = document.getElementById("course-coursename").innerHTML;
@@ -616,7 +617,6 @@ function returnedSection(data) {
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
-      document.getElementById("courseDropdownTop-mobile").innerHTML = bstr;
       bstr = "<option value='None'>None</option>" + bstr;
       document.getElementById("copyvers").innerHTML = bstr;
 
@@ -1103,7 +1103,6 @@ function resetMOTDCookieForCurrentCourse(){
 }
 
 function closeMOTD(){
-  console.log(document.cookie.indexOf('MOTD='));
   if(document.cookie.indexOf('MOTD=') <= -1){
     document.cookie = 'MOTD=';
     setMOTDCookie();
@@ -1707,7 +1706,7 @@ function validateCourseID(courseid, dialogid) {
 function validateMOTD(motd, dialogid){
   var emotd = document.getElementById(motd);
   var Emotd = /(^$)|(^[-a-zA-Z0-9_ !,.]*$)/;
-  var EmotdRange = /^.{0,35}$/;
+  var EmotdRange = /^.{0,50}$/;
   var x4 = document.getElementById(dialogid);
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
     emotd.style.borderColor = "#383";

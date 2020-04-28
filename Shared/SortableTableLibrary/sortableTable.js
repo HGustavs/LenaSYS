@@ -267,7 +267,8 @@ function SortableTable(param) {
 	sortableTable.sortableTables.push(this);
 
 	this.renderTable = function () {
-		this.reRender();
+        this.reRender();
+        filterFilesByKind();
 	}
 
 	this.getRow = function (rowno) {
@@ -534,7 +535,8 @@ function SortableTable(param) {
 		sortcolumn = col;
 		sortkind = kind;
 
-		this.reRender();
+        this.reRender();
+        filterFilesByKind();
 	}
 	this.setNameColumn = function (colnameArr) {
 		nameColumn = colnameArr;
@@ -644,7 +646,27 @@ function SortableTable(param) {
 				}
 			}
 		}
-	}
+    }
+
+    function filterFilesByKind() {
+        $("#fileLink table tbody tr").hide();
+        if ($('#global-files-sort').is(':checked')) {
+            $("td:contains('Global')").parents("tr").show();
+
+        } if ($('#course-local-sort').is(':checked')) {
+            $("td:contains('Course local')").parents("tr").show();
+
+        } if ($('#version-local-sort').is(':checked')) {
+            $("td:contains('Local')").parents("tr").show();
+
+        } if ($('#links-sort').is(':checked')) {
+            $("td:contains('Link')").parents("tr").show();
+        } else if ($('#all-files-sort').is(':checked')) {
+            $("#fileLink table tr").show();
+        }
+        $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
+        $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
+    }
 
 	this.updateCell = function () {
 		var celldata = updateCellCallback(sortableTable.edit_rowno, null, sortableTable.edit_columnname, sortableTable.edit_tableid, null, sortableTable.edit_rowid);

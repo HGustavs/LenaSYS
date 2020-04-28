@@ -76,44 +76,18 @@
 		<!-- MOTD dropdown -->
 		<div id='motdArea' style='display: none;'>
 			<?php	
-				echo "<td>";
+				echo "<tr>";
 				echo "		<div class='motdBoxheader' >";
 				echo "			<h3>Message of the day</h3>";
-				echo "				<div class='cursorPointer' onclick='closeMOTD()'>x</div>";
+				echo "				<div class='cursorPointerMOTD' onclick='closeMOTD()'  >x</div>";
 				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p style='text-align:center' id='motd'></p>";			
 				echo" 	</div>";
-				echo "</td>";
+				echo "</tr>";
 			?>
 		</div>
 		<!-- MOTD dropdown END -->
-
-		<!-- Mobile view Start(course-dropdown, editVers, newVers) -->
-		<div class='mobile-view'>
-					<?php
-
-						echo "<td style='display: inline-block;'>";
-						echo "    <div class='course-dropdown-div'>";
-						echo "      <select id='courseDropdownTop-mobile' class='course-dropdown' onchange='goToVersion(this)' ></select>";
-						echo "    </div>";
-						echo "</td>";
-						
-						echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
-						echo "    <div class='editVers menuButton'>";
-            echo "      <img id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
-						echo "    </div>";
-						echo "</td>";
-						
-						echo "<td class='newVers' style='display: inline-block;margin-right:2px;'>";
-						echo "    <div class='newVers menuButton'>";
-            echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
-						echo "    </div>";
-						echo "</td>";
-					?>
-		</div>
-
-		<!-- Mobile view END -->
 
 		<!-- + button --->
 
@@ -278,6 +252,8 @@
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
+				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters</p>
+				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
@@ -303,7 +279,8 @@
 				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
-				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog5')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
+				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters</p>
+				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 			</div>
