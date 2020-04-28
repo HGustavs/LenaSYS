@@ -829,8 +829,7 @@
                   $checkBoxes = array("diagram", "access", "contribution");
                   foreach ($checkBoxes AS $boxName) { //Loop trough each field
                     if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
-                        addTestData("keywords_{$boxName}", $connection);
-                        //todo
+                        addTestData("{$boxName}", $connection);
                     }
                 }
             } else {
