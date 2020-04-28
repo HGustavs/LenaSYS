@@ -5655,6 +5655,10 @@ textarea#mrkdwntxt {
   padding-right: 10px;
 }
 
+.fullscreen-wrap {
+  text-align: center;
+}
+
 /* Shortcuts diagram */
 
 .shortcutsDiagram {

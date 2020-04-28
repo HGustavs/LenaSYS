@@ -3662,6 +3662,14 @@ function toggleFullscreen(){
     }
 }
 
+//-----------------------
+// Close popup when entering fullscreen
+//-----------------------
+
+function closeFullscreenDialog(){
+    $("#fullscreenDialog").hide();
+}
+
 
 //-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
