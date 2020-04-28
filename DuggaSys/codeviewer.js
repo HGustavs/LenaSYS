@@ -2270,6 +2270,7 @@ function Play(event) {
 }
 
 function minimizeBoxes(boxid) {
+	const isMobile = /Mobi/.test(window.navigator.userAgent);
 	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
@@ -2277,8 +2278,34 @@ function minimizeBoxes(boxid) {
 
 	getLocalStorageProperties(boxValArray);
 
+	if(isMobile){
+		if(templateid == 1){
+			if(boxid == 1) {
+				$(boxValArray['box' + 1]['id']).height("10%");
+				$(boxValArray['box' + 2]['id']).height("90%");
+			}	 
+			if(boxid == 2) {
+				$(boxValArray['box' + 1]['id']).height("90%");
+				$(boxValArray['box' + 2]['id']).height("10%");
+			}
+		}
+	}
+
+	if(isMobile){
+		if(templateid == 2){
+			if(boxid == 1) {
+				$(boxValArray['box' + 1]['id']).height("10%");
+				$(boxValArray['box' + 2]['id']).height("90%");
+			}	 
+			if(boxid == 2) {
+				$(boxValArray['box' + 1]['id']).height("90%");
+				$(boxValArray['box' + 2]['id']).height("10%");
+			}
+		}
+	}
+	
 	//For template 1
-	if (templateid == 1) {
+	if (templateid == 1 && isMobile == false) {
 		if (boxid == 1) {
 			$(boxValArray['box' + 2]['id']).width("100%");
 
@@ -2294,18 +2321,18 @@ function minimizeBoxes(boxid) {
 		}
 	}
 	//for template 2
-	if (templateid == 2) {
+	if (templateid == 2 && isMobile == false) {
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).height("0%");
+			$(boxValArray['box' + 2]['id']).height("100%");
 
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			$(boxValArray['box' + boxid]['id']).height("10%");
 			alignBoxesHeight2boxes(boxValArray, 1, 2);
 		}
 
 		if (boxid == 2) {
-			$(boxValArray['box' + 1]['id']).height("0%");
+			$(boxValArray['box' + 1]['id']).height("100%");
 
-			$(boxValArray['box' + boxid]['id']).height("0%");
+			$(boxValArray['box' + boxid]['id']).height("10%");
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
