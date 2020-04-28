@@ -825,3 +825,7 @@ INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,m
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','1','3','2010',NULL,'225',NULL,'2015-01-15 09:12:51',NULL,'97732',NULL,NULL,0);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','1','3','2011',NULL,'225','2 97732 2011 .T1.T 257 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,0,0);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score,timesGraded) VALUES ('2','1','3','2012',NULL,'225','2 97732 2012 .D2.T 151 1366 768 1349 662','2015-01-15 09:12:51',NULL,'97732',NULL,1,0);
+
+/*Test course*/
+INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (7653,"ABC123","Exempelkurs",NOW(),1,0,4000,7.5);
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (7653,'ABC123','Exempelkurs','UNK','4000','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00','Software Engineering - HT15');
