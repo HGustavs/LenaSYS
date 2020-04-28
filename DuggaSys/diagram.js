@@ -1042,6 +1042,12 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 function copySymbol(symbol) {
     const clone = Object.assign(new Symbol(symbol.symbolkind), JSON.parse(JSON.stringify(symbol)));
 
+    const oldPointIndexes = {
+        topLeft: symbol.topLeft, 
+        bottomRight: symbol.bottomRight, 
+        centerPoint: symbol.centerPoint
+    };
+
     symbol.targeted = false;
     clone.targeted = true;
 
