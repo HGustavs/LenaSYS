@@ -1373,9 +1373,7 @@ $(document).mousedown(function (e) {
 $(document).mouseup(function (e) {
   mouseUp(e);
 
-  if (e.button == 0) {
-    FABUp(e);
-  }
+  
 });
 
 $(document).ready(function(){
