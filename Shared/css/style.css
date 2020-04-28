@@ -6194,6 +6194,7 @@ textarea#filecont {
 }
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
+  width: 100%;
 }
 #motdArea{
   border: 1px;
@@ -6206,8 +6207,12 @@ textarea#filecont {
   background-color: var(--color-accent);
   z-index: 1000;
   
- 
   
+  position: relative;
+  
+  margin-top: -16px;
+  margin-bottom: 7px;
+  max-width: auto;
 }
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
@@ -6217,6 +6222,7 @@ textarea#filecont {
   display: flex;
   justify-content: space-around;
   position: relative;
+  
 }
 .motdBoxheader h3 {
   font-size: 20px;

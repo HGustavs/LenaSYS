@@ -76,7 +76,7 @@
 		<!-- MOTD dropdown -->
 		<div id='motdArea' style='display: none;'>
 			<?php	
-				echo "<td>";
+				echo "<tr>";
 				echo "		<div class='motdBoxheader' >";
 				echo "			<h3>Message of the day</h3>";
 				echo "				<div class='cursorPointerMOTD' onclick='closeMOTD()'  >x</div>";
@@ -84,7 +84,7 @@
 				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p style='text-align:center' id='motd'></p>";			
 				echo" 	</div>";
-				echo "</td>";
+				echo "</tr>";
 			?>
 		</div>
 		<!-- MOTD dropdown END -->
