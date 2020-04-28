@@ -467,14 +467,14 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
 }
-
+//Toggles the visibility of the grading box. if the box is hidden it will change the display to block, if its visible it'll change the display to none
 function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
-	var width = toggleGrade.offsetWidth;
-
-	$('#toggleGrade').animate({width: 'toggle'});
-	if(width <= 0){
+	if(toggleGrade.style.display=='none' || toggleGrade.style.display=='' ){
+		toggleGrade.style.display = 'block';
 		toggleGrade.style.position = 'absolute';
+	} else{
+		toggleGrade.style.display = 'none';
 	}
 }
 
