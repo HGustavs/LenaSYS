@@ -566,97 +566,101 @@ function saveResponse() {
 //----------------------------------------
 
 function returnedResults(data) {
-	if (!data.access) {
+  	if (!data[0].access) {
 		window.location.href = 'courseed.php';
 	}
-	if (data['debug'] !== "NONE!")
-		alert(data['debug']);
-	if (data.gradeupdated === true) {
-		// Update the the local array studentInfo when grade is updated.
-		for (var student in studentInfo) {
-			var studentObject = studentInfo[student]["lid:" + data.duggaid];
-			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
-				studentObject.grade = parseInt(data.results);
-				studentObject.timesGraded = parseInt(data.duggatimesgraded);
-				studentObject.gradeExpire = data.duggaexpire;
-				if (data.results > 0) {
-					studentObject.needMarking = false;
-				} else {
-					studentObject.needMarking = true;
-				}
-				break;
-			}
+	//loops through all the responses from resultedservice.php to update or create table
+	for(var i = 0; i < data.length; i++){
+		if (data[i]['debug'] !== "NONE!"){
+			alert(data[i]['debug']);
 		}
-		myTable.renderTable();
-	} else {
-
-		entries = data.entries;
-		moments = data.moments;
-		versions = data.versions;
-		results = data.results;
-		teacher = data.teachers;
-		courseteachers = data.courseteachers;
-
-		let ladmoments = "";
-		for (let i = 0; i < moments.length; i++) {
-			let dugga = moments[i];
-			if (dugga.kind === 4) {
-				ladmoments += "<option value='" + dugga.entryname + "'>" + dugga.entryname + "</option>";
-			}
-		}
-		var teacherList;
-		teacherList += "<option value='none'>none</option>";
-		for(var i = 0; i < teacher.length; i++){
-			if(!teacherList.includes(teacher[i].id)){
-				if(teacher[i].id == localStorage.getItem('examinatorFilter')){
-					teacherList += "<option value='"+ teacher[i].id +"' selected>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
-				} else {
-					teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+		if (data[i].gradeupdated === true) {
+			// Update the the local array studentInfo when grade is updated.
+			for (var student in studentInfo) {
+				var studentObject = studentInfo[student]["lid:" + data[i].duggaid];
+				if (studentObject != null && studentObject.uid === parseInt(data[i].duggauser) && studentObject.lid === parseInt(data[i].duggaid)) {
+					studentObject.grade = parseInt(data[i].results);
+					studentObject.timesGraded = parseInt(data[i].duggatimesgraded);
+					studentObject.gradeExpire = data[i].duggaexpire;
+					if (data[i].results > 0) {
+						studentObject.needMarking = false;
+					} else {
+						studentObject.needMarking = true;
+					}
+					break;
 				}
 			}
-		}
-		var uniqueTeacherList = [...new Set(teacherList)]
-		document.getElementById("teacherDropdown").innerHTML = teacherList;
-		document.getElementById("ladselect").innerHTML = ladmoments;
-		document.getElementById("laddate").valueAsDate = new Date();
+			myTable.renderTable();
+		} else {
+			data = data[0];
+			entries = data.entries;
+			moments = data.moments;
+			versions = data.versions;
+			results = data.results;
+			teacher = data.teachers;
+			courseteachers = data.courseteachers;
 
-		//tim=performance.now();
+			let ladmoments = "";
+			for (let i = 0; i < moments.length; i++) {
+				let dugga = moments[i];
+				if (dugga.kind === 4) {
+					ladmoments += "<option value='" + dugga.entryname + "'>" + dugga.entryname + "</option>";
+				}
+			}
+			var teacherList;
+			teacherList += "<option value='none'>none</option>";
+			for(var i = 0; i < teacher.length; i++){
+				if(!teacherList.includes(teacher[i].id)){
+					if(teacher[i].id == localStorage.getItem('examinatorFilter')){
+						teacherList += "<option value='"+ teacher[i].id +"' selected>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+					} else {
+						teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+					}
+				}
+			}
+			var uniqueTeacherList = [...new Set(teacherList)]
+			document.getElementById("teacherDropdown").innerHTML = teacherList;
+			document.getElementById("ladselect").innerHTML = ladmoments;
+			document.getElementById("laddate").valueAsDate = new Date();
 
-		subheading = 0;
+			//tim=performance.now();
 
-		$(document).ready(function () {
-			$("#dropdownc").mouseleave(function () {
-				leavec();
+			subheading = 0;
+
+			$(document).ready(function () {
+				$("#dropdownc").mouseleave(function () {
+					leavec();
+				});
 			});
-		});
-		$(document).ready(function () {
-			$("#dropdowns").mouseleave(function () {
-				leaves();
+			$(document).ready(function () {
+				$("#dropdowns").mouseleave(function () {
+					leaves();
+				});
 			});
-		});
 
-		allData = data; // used by dugga.js
+			allData = data; // used by dugga.js
 
-		if (data['dugganame'] !== "") {
-			// Display student submission
-			$.getScript(data['dugganame'], function () {
-				$("#MarkCont").html(data['duggapage']);
-				showFacit(data['duggaparam'], data['useranswer'], data['duggaanswer'], data['duggastats'], data['files'], data['moment'], data['duggafeedback']);
-				if(data['duggafeedback'] == ""){
-                    var doc = document.getElementById("teacherFeedbackTable");
-                    for (var i = 0; i < doc.childNodes.length; i++) {
-                   		if (doc.childNodes[i].className == "list feedback-list") {
-                			doc.childNodes[i].style.display = "none";
-                   			break;
+			if (data['dugganame'] !== "") {
+				// Display student submission
+				$.getScript(data['dugganame'], function () {
+					$("#MarkCont").html(data['duggapage']);
+					showFacit(data['duggaparam'], data['useranswer'], data['duggaanswer'], data['duggastats'], data['files'], data['moment'], data['duggafeedback']);
+					if(data['duggafeedback'] == ""){
+						var doc = document.getElementById("teacherFeedbackTable");
+						for (var i = 0; i < doc.childNodes.length; i++) {
+							if (doc.childNodes[i].className == "list feedback-list") {
+									doc.childNodes[i].style.display = "none";
+									break;
+							}
 						}
 					}
-                }
-			});
-			$("#resultpopover").css("display", "block");
-		} else {
-			// Process and render filtered data
-			process();
-			createSortableTable(data);
+				});
+				$("#resultpopover").css("display", "block");
+			} else {
+					// Process and render filtered data
+					process();
+					createSortableTable(data);
+			}
 		}
 	}
 }
