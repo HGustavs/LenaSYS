@@ -1041,6 +1041,10 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
     const clone = Object.assign(new Symbol(symbol.symbolkind), JSON.parse(JSON.stringify(symbol)));
+    clone.connectorTop = [];
+    clone.connectorRight = [];
+    clone.connectorBottom = [];
+    clone.connectorLeft = [];
 
     const pointIndexes = {
         topLeft: {
