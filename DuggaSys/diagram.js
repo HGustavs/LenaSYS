@@ -1077,7 +1077,7 @@ function copySymbol(symbol) {
             let newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
                 const point = points[pointIndexes[key].old];
-                newPointIndex = points.addPoint(point.x + 10, point.y + 10, point.isSelected);
+                newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
             } else {
                 newPointIndex = pointIndexes[keyContainsDuplicateOldPoint].new;
             }
@@ -1109,7 +1109,7 @@ function copyPath(path) {
 
     const pointIndexes = oldPointIndexes.reduce((result, pointIndex) => {
         const point = points[pointIndex];
-        const newPointIndex = points.addPoint(point.x + 100, point.y + 100, point.isSelected);
+        const newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
 
         result.push({
             old: pointIndex,
