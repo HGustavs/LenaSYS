@@ -1014,12 +1014,13 @@ function processLogout() {
 		success:function(data) {
             localStorage.removeItem("securityquestion");
             localStorage.removeItem("securitynotification");
-			location.reload();
+            location.replace("../DuggaSys/courseed.php");
 		},
 		error:function() {
 			console.log("error");
 		}
 	});
+	document.cookie = "MOTD=; expires=Thu, 01 Jan 1970 00:00:00 UTC;"; // Clear MOTD cookies
 }
 
 function showLoginPopup()

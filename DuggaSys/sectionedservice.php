@@ -46,6 +46,7 @@ $grptype=getOP('grptype');
 $deadline=getOP('deadline');
 $jsondeadline = getOP('jsondeadline');
 $studentTeacher = false;
+$motd=getOP('motd');
 
 $grpmembershp="UNK";
 $unmarked = 0;
@@ -314,11 +315,23 @@ if($gradesys=="UNK") $gradesys=0;
 						$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
 					}
 				}else if(strcmp($opt,"UPDATEVRS")===0) {
+						// After column 'motd' exist on all releases this query can be merged with the original 'UPDATEVERS' below
+						$query = $pdo->prepare("UPDATE vers SET motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':coursecode', $coursecode);
+						$query->bindParam(':vers', $versid);
+						$query->bindParam(':motd', $motd);
+						if(!$query->execute()){
+							$error=$query->errorInfo();
+							$debug="Error updating entries: Missing column 'motd' ".$error[2];
+						}
+
 						$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':coursecode', $coursecode);
 						$query->bindParam(':vers', $versid);
 						$query->bindParam(':versname', $versname);
+						//$query->bindParam(':motd', $motd);
 		        // if start and end dates are null, insert mysql null value into database
 
 						if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
@@ -554,11 +567,30 @@ if($gradesys=="UNK") $gradesys=0;
 		$links=array();
 
 		$versions=array();
-		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-
+		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
+		// After column 'motd' exist on all releases the outer if-statement can be removed.
 		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error reading courses".$error[2];
+			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading courses".$error[2];
+			}else{
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$versions,
+						array(
+							'cid' => $row['cid'],
+							'coursecode' => $row['coursecode'],
+							'vers' => $row['vers'],
+							'versname' => $row['versname'],
+							'coursename' => $row['coursename'],
+							'coursenamealt' => $row['coursenamealt'],
+							'startdate' => $row['startdate'],
+							'enddate' => $row['enddate'],
+						)
+					);
+				}
+			}
 		}else{
 			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 				array_push(
@@ -571,7 +603,8 @@ if($gradesys=="UNK") $gradesys=0;
 						'coursename' => $row['coursename'],
 						'coursenamealt' => $row['coursenamealt'],
 						'startdate' => $row['startdate'],
-						'enddate' => $row['enddate']
+						'enddate' => $row['enddate'],
+						'motd' => $row['motd']
 					)
 				);
 			}
@@ -614,11 +647,30 @@ if($gradesys=="UNK") $gradesys=0;
 			}
 
 			$versions=array();
-			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-
+			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
+			// After column 'motd' exist on all releases the outer if-statement can be removed.
 			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error reading courses".$error[2];
+				$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error reading courses".$error[2];
+				}else{
+					foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+						array_push(
+							$versions,
+							array(
+								'cid' => $row['cid'],
+								'coursecode' => $row['coursecode'],
+								'vers' => $row['vers'],
+								'versname' => $row['versname'],
+								'coursename' => $row['coursename'],
+								'coursenamealt' => $row['coursenamealt'],
+								'startdate' => $row['startdate'],
+								'enddate' => $row['enddate'],
+							)
+						);
+					}
+				}
 			}else{
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 					array_push(
@@ -631,12 +683,12 @@ if($gradesys=="UNK") $gradesys=0;
 							'coursename' => $row['coursename'],
 							'coursenamealt' => $row['coursenamealt'],
 							'startdate' => $row['startdate'],
-							'enddate' => $row['enddate']
+							'enddate' => $row['enddate'],
+							'motd' => $row['motd']
 						)
 					);
 				}
 			}
-
 			$codeexamples=array();
 
 			// New Example

@@ -1,21 +1,22 @@
 <?php
 /***********************DOCUMENTATION**************************
- * This file should make downloading of all material          *
- * of a singel course doable given we know the courseid       *
+ * This file should make downloading of all material of the   *
+ * current course version given we know the courseid          *
  * every file sould be put in one zip file and then downloaded*
  **************************************************************/
 // Used tutorial https://learncodeweb.com/php/select-and-download-multi-files-in-zip-format-with-php/
 include_once	"../Shared/basic.php";
 include_once	"../Shared/sessions.php";
-session_start();
 
+
+session_start();
+if(hasAccess($_SESSION["uid"], $_SESSION["courseid"], "w") || $_SESSION["superuser"] == 1){
 pdoConnect(); // Connect to database and start session
 
 
 // Get real path for our folder
 $cid	= $_SESSION['courseid'];
 $vers	= $_SESSION['coursevers'];
-$pathToVersionIndependence	=	'/courses/'	.	$cid	.	'/versionIndependence/';
 $pathToActiveVersionOfCourse	=	'/courses/' . $cid .	'/'	.	$vers	.	'/';
 $zipcreated	=	"./downloads/courseID-"	.	$cid	.	"_version-"	.	$vers	.	"_All_files.zip";
 $error = false;
@@ -41,30 +42,17 @@ if($zip	->	open($zipcreated,	ZipArchive::CREATE	)	===	TRUE){
 	
 	chdir('..');
 	$currcvd	=	getcwd();
-	
-	
-	// Enter the name of directory 
-	$pathdir	=	$currcvd.$pathToVersionIndependence;  
 
-
-	// Store the path into the variable 
-	if($dir	=	opendir($pathdir)){ 
-		while(false	!==	$file	=	readdir($dir)){ 
-			if($file	!=	"."	&&	$file	!=	".."	&&	!is_dir($pathdir."/".$file)){ 
-				echo "adding file: " . $pathdir.$file . "\n";
-				$zip	->	addFile($pathdir.$file,	$file); 
-			} 
-		}
-		closedir($dir);
-	}else{
-		echo "Could not find: ". $pathdir . "\nTry to upload a version independend file to create this directory.";
-		$error = true;
-	}
-
-	// Enter the name of directory 2
+	// Enter the name of directory
 	$pathdir	=	$currcvd.$pathToActiveVersionOfCourse;  
 	
 	// Store the path into the variable 
+	if (!file_exists($pathdir)) {
+		echo "Could not find the file, try to upload a version dependend file to create this directory.";
+		return;
+	}
+
+
 	if($dir = opendir($pathdir)){ 
 		while(false !== $file = readdir($dir)) { 
 			if($file != "." && $file	!=	".."	&&	!is_dir($pathdir."/".$file)) { 
@@ -107,6 +95,7 @@ if($zip	->	open($zipcreated,	ZipArchive::CREATE	)	===	TRUE){
 	}
 }
 
+}
 
 ?>
 <html>

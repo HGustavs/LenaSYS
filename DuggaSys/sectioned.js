@@ -12,6 +12,8 @@ var xelink;
 var momentexists = 0;
 var resave = false;
 var versnme = "UNKz";
+var versnr;
+var motd;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -237,6 +239,7 @@ function changedType(kind) {
 
 function showEditVersion() {
   $("#eversname").val(versnme);
+  $("#eMOTD").val(motd);
   $("#eversid").val(querystring['coursevers']);
   let sdate = retdata['startdate'];
   let edate = retdata['enddate'];
@@ -309,10 +312,6 @@ function showCreateVersion() {
 
 }
 
-function createQuickItem() {
-  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
-  newItem();
-}
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle) {
@@ -390,8 +389,11 @@ function updateItem() {
   $("#editSection").css("display", "none");
 }
 
-function updateDeadline(){
-  AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+function updateDeadline() {
+    var kind = $("#type").val();
+    if (kind == 3) {
+        AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+    }
 }
 
 //----------------------------------------------------------------------------------
@@ -417,6 +419,7 @@ function createVersion() {
   param.cid = querystring['courseid'];
   param.versid = document.getElementById("versid").value;
   param.versname = document.getElementById("versname").value;
+  param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = document.getElementById("course-coursecode").innerHTML;
   param.coursename = document.getElementById("course-coursename").innerHTML;
@@ -458,6 +461,7 @@ function updateVersion() {
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
   param.enddate = $("#eenddate").val();
+  param.motd = document.getElementById("eMOTD").value;
 
   AJAXService("UPDATEVRS", param, "SECTION");
 
@@ -589,7 +593,7 @@ function returnedSection(data) {
     document.getElementById("course-coursecode").innerHTML = retdata['coursecode'];
     document.getElementById("course-coursename").innerHTML = retdata['coursename'];
     document.getElementById("course-versname").innerHTML = versionname;
-
+    
     var str = "";
 
     if (data['writeaccess']) {
@@ -604,7 +608,10 @@ function returnedSection(data) {
           }
           bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
+        // save vers, versname and motd from table vers as global variables.
         if (querystring['coursevers'] == item['vers']) versnme = item['versname'];
+        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
+        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
@@ -1059,6 +1066,75 @@ function returnedSection(data) {
   replaceDefualtLink();
 
   addClasses();
+  showMOTD();
+  
+}
+// Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
+function showMOTD(){
+  if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){ 
+    if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
+      document.getElementById("motdArea").style.display = "none"; 
+    }else{
+      document.getElementById("motdArea").style.display = "block";
+      document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+    }
+  }
+}
+// Checks if the MOTD cookie already have the current vers and versname 
+function ignoreMOTD(){
+  var c_string = getCookie('MOTD');
+  c_array = c_string.split(',');
+  for(let i = 0; i<c_array.length;i+=2){
+    if(c_array[i] == versnme && c_array[i+1] == versnr){
+      return false;
+    }
+  }
+  return true;
+}
+
+function resetMOTDCookieForCurrentCourse(){
+  var c_string = getCookie('MOTD');
+  c_array = c_string.split(',');
+  for(let i = 0; i<c_array.length;i+=2){
+    if(c_array[i] == versnme && c_array[i+1] == versnr){
+      c_array.splice(i, 2);
+    }
+  }
+  document.cookie = 'MOTD=' + c_array;
+  showMOTD();
+}
+
+function closeMOTD(){
+  if(document.cookie.indexOf('MOTD=') <= -1){
+    document.cookie = 'MOTD=';
+    setMOTDCookie();
+  }else{
+    setMOTDCookie();
+  }
+  document.getElementById('motdArea').style.display='none';
+}
+// Adds the current versname and vers to the MOTD cookie
+function setMOTDCookie(){
+  var c_string = getCookie('MOTD');
+  c_string += versnme+","+versnr+",";
+  document.cookie = 'MOTD=' + c_string;
+}
+// Returns the value based on the cookies name
+function getCookie(c_name) {
+  var c_value = " " + document.cookie;
+  var c_start = c_value.indexOf(" " + c_name + "=");
+  if (c_start == -1) {
+      c_value = null;
+  }
+  else {
+      c_start = c_value.indexOf("=", c_start) + 1;
+      var c_end = c_value.indexOf(";", c_start);
+      if (c_end == -1) {
+          c_end = c_value.length;
+      }
+      c_value = unescape(c_value.substring(c_start,c_end));
+  }
+  return c_value;
 }
 
 function showHighscore(did, lid) {
@@ -1380,9 +1456,7 @@ $(document).mousedown(function (e) {
 $(document).mouseup(function (e) {
   mouseUp(e);
 
-  if (e.button == 0) {
-    FABUp(e);
-  }
+  
 });
 
 $(document).ready(function(){
@@ -1640,9 +1714,27 @@ function validateCourseID(courseid, dialogid) {
     code.style.borderWidth = "2px";
     window.bool = false;
   }
+}
 
+function validateMOTD(motd, dialogid){
+  var emotd = document.getElementById(motd);
+  var Emotd = /(^$)|(^[-a-zA-Z0-9_ !,.]*$)/;
+  var EmotdRange = /^.{0,50}$/;
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+    emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    x4.style.display = "none";
+    window.bool9 = true;
+  } else {
+    emotd.style.borderColor = "#E54";
+    x4.style.display = "block";
+    emotd.style.borderWidth = "2px";
+    window.bool9 = false;
+  }
 
 }
+
 /*Validates that start date comes before end date*/
 function validateDate(startDate, endDate, dialogID) {
   var sdate = document.getElementById(startDate);
@@ -1689,27 +1781,6 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = false;
     }
-  }
-}
-
-// Validates sectionname
-function validateSectionName(nameid, dialogid) {
-  //Regex for space and uppercase+lowercase letters
-  var Name = /^[a-zA-Z_ ]+$/;
-  var name = document.getElementById(nameid);
-  var x = document.getElementById(dialogid);
-
-  //If sectionname is only letters
-  if (name.value.match(Name)) {
-    name.style.borderColor = "#383";
-    name.style.borderWidth = "2px";
-    x.style.display = "none";
-    window.bool7 = true;
-  } else {
-    name.style.borderColor = "#E54";
-    x.style.display = "block";
-    name.style.borderWidth = "2px";
-    window.bool7 = false;
   }
 }
 
@@ -1795,12 +1866,13 @@ function validateForm(formid) {
     }
 
     // if all information is correct
-    if (window.bool4 === true && window.bool6 === true) {
+    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
       alert('Version updated');
       updateVersion();
-
+      resetMOTDCookieForCurrentCourse();
     } else {
       alert("You have entered incorrect information");
     }
   }
+  
 }
