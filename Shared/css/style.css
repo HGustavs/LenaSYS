@@ -5006,7 +5006,7 @@ only screen and (max-device-width: 320px) {
 
 .fixed-action-button2 {
   position: fixed;
-  top: 590px;
+  top: 565px;
   right: 24px;
   z-index: 1;
   touch-action: none;

@@ -58,6 +58,7 @@
 	<div id="content">
 
 		<!-- FAB Start -->
+		<!-- Big FAB Button in the bottom of the page -->
 		<div class='fixed-action-button sectioned' id="FABStatic" style="display:none">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
 				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed id='fabBtnList'>
@@ -71,10 +72,10 @@
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote");'><i class='material-icons'>format_quote</i></a></li> 
 				</ol>
 		</div>
-		<div class='fixed-action-button2 sectioned2' id="FABStatic" style="display:block">
-		<input id='addElement' style="display:none; position: fixed; right: 80px; top: 73px;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createQuickItem();'>
-		<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  id='fab2'>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote");'><i class='material-icons'>format_quote</i></a></li> 
+		<!-- Small FAB Button in top in the header of sectioned -->
+		<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
+		<input id='addElement'  type='button' value='+' style="position:relative; top:-493px" class='submit-button-newitem' title='New Item' onclick='createQuickItem();'>
+		<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fab2'>
 					 	<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
@@ -82,9 +83,9 @@
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link");'><i class='material-icons'>link</i></a></li>
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote");'><i class='material-icons'>format_quote</i></a></li> 
 				</ol>
-</div>
+		</div>
 
 		<!-- FAB END -->
 

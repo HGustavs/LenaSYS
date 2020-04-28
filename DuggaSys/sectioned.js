@@ -614,13 +614,13 @@ function returnedSection(data) {
 
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
-
+      document.getElementById("FABStatic2").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
-
+      document.getElementById("FABStatic2").style.display = "None";
     }
 
     if (data['studentteacher']) {
