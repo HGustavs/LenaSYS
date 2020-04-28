@@ -1284,7 +1284,6 @@ function renderSortOptions(col, status, colname) {
 				str += "</div>"
 			}
 		} else {
-			//document.getElementById("dropdowns").querySelector("[title=\"" + colname + "\"]").parentNode.children[0].checked = true;
 			var labels = document.getElementsByClassName('headerlabel');
 			for (var i=0; i < labels.length; i++) {
 				if (labels[i].getAttribute("title") === colname)
