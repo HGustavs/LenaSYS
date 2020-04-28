@@ -5646,6 +5646,24 @@ textarea#mrkdwntxt {
   padding-right: 10px;
 }
 
+/* Fullscreen dialog */
+.fullscreenDialog {
+  display: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.fullscreenContainer {
+  min-height: 80px;
+}
+
+.fullscreenHeader h3 {
+  padding-right: 10px;
+}
+
+.fullscreen-wrap {
+  text-align: center;
+}
+
 /* Shortcuts diagram */
 
 .shortcutsDiagram {

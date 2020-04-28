@@ -3669,6 +3669,8 @@ function toggleFullscreen(){
         canvas_border.style.border = 0 + "px";
         fullscreen = true;
 
+        $("#fullscreenDialog").css("display", "flex");
+
         // Refit canvas to current container
         canvasSize();
     } else if (fullscreen){
@@ -3685,6 +3687,14 @@ function toggleFullscreen(){
         // Refit canvas to current container
         canvasSize();        
     }
+}
+
+//-----------------------
+// Close popup when entering fullscreen
+//-----------------------
+
+function closeFullscreenDialog(){
+    $("#fullscreenDialog").hide();
 }
 
 

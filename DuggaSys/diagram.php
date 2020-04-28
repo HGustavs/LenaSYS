@@ -705,6 +705,27 @@
             </div>
         </div>
     </div>
+    <!-- Fullscreen toggle dialog -->
+    <div id="fullscreenDialog" class='loginBoxContainer importDiagram'>
+        <div class='loginBox fullscreenContainer'>
+            <div class='loginBoxheader fullscreenHeader'>
+                <h3 id="fullscreenHeaderText">Fullscreen mode enabled</h3>
+            </div>
+            <div class='fullscreen-wrap'>
+                To exit, press 'Escape' or 'Shift + F11'.
+                <!-- <br>To show/hide toolbar, press... 
+                <div class="fullscreenCheckbox">
+                    <label>
+                        <input type="checkbox"> Don't show this again!
+                    </label>
+                </div>
+                *This will be implemented later*-->
+                <div id="fullscreenOkButton">
+                    <button id="fullscreenButtonAccept" type="button" class="buttonStyleDialog" onclick="closeFullscreenDialog();">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
