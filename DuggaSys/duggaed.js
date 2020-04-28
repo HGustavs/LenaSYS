@@ -979,9 +979,6 @@ function mouseUp(e){
 
 }
 
-function createQuickItem(){
-		selectDugga("UNK");
-		//createDugga();
-}
+
 
 // End of functions handling the FAB-button functionality
