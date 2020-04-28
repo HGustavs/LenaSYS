@@ -357,10 +357,10 @@ document.addEventListener('keydown', function (event) {
 
 
 //---------------------------------------------------------------
-//sortFilesByKind <- Callback function sorts the files by its kind
+//filterFilesByKind <- Callback function sorts the files by its kind
 //---------------------------------------------------------------
 
-function sortFilesByKind(kind){
+function filterFilesByKind(kind){
     $("#fileLink table tbody tr").hide();
     if(kind == "Global"){
         $( "td:contains('Global')" ).parents("tr").show();
