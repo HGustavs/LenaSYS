@@ -1011,7 +1011,7 @@ function processLogout() {
 		success:function(data) {
             localStorage.removeItem("securityquestion");
             localStorage.removeItem("securitynotification");
-			location.reload();
+            location.replace("../DuggaSys/courseed.php");
 		},
 		error:function() {
 			console.log("error");
