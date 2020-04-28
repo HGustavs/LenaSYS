@@ -79,7 +79,7 @@ if($opt=="REFRESH"){
 			// As login has failed we log the attempt
 
 			// Logging for failed login
-			logUserEvent($userid,EventTypes::LoginFail,"");
+			logUserEvent($username,EventTypes::LoginFail,"");
 		}
     }else{
 		$res = array("login" => "limit");
