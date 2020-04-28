@@ -364,6 +364,14 @@ function prepareItem() {
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
 
+  if ($('#fdbck').prop('checked')){
+    param.feedback = 1;
+    console.log('1');
+  } else{
+    param.feedback = 0;
+    console.log('0');
+  }
+
   return param;
 }
 
@@ -384,6 +392,7 @@ function deleteItem(item_lid = null) {
 //----------------------------------------------------------------------------------
 
 function updateItem() {
+  console.log($("#fdbck").prop('checked'));
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
   $("#sectionConfirmBox").css("display", "none");
