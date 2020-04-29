@@ -668,7 +668,8 @@ function editImpRows(editType)
 // updateContent: Updates the box if changes has been made
 //----------------------------------------------------------------------------------
 
-function updateContent() {
+function updateContent() 
+{
 	var box = retData['box'][openBoxID - 1];
 	var useBoxContent = true;
 
@@ -681,28 +682,17 @@ function updateContent() {
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
 	if (useBoxContent) {
-		if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
+		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 			try {
-				var boxtitle = $("#boxtitle").val();
+				var boxtitle = document.querySelector("#boxtitle").value;
 				var boxcontent = $("#boxcontent option:selected").val();
-				var wordlist = $("#wordlist").val();
+				var wordlist = document.querySelector("#wordlist").value;
 				var filename = $("#filename option:selected").val();
 				var fontsize = $("#fontsize option:selected").val();
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
 
-				AJAXService("EDITCONTENT", {
-					courseid: querystring['courseid'],
-					exampleid: exampleid,
-					boxid: boxid,
-					boxtitle: boxtitle,
-					boxcontent: boxcontent,
-					wordlist: wordlist,
-					filename: filename,
-					fontsize: fontsize,
-					addedRows: addedRows,
-					removedRows: removedRows
-				}, "BOXCONTENT");
+				AJAXService("EDITCONTENT", {courseid: querystring['courseid'], exampleid: exampleid, boxid: boxid, boxtitle: boxtitle, boxcontent: boxcontent, wordlist: wordlist, filename: filename, fontsize: fontsize, removedRows: removedRows}, "BOXCONTENT");				
 
 				addedRows = [];
 				removedRows = [];
@@ -712,14 +702,9 @@ function updateContent() {
 			setTimeout("location.reload()", 500);
 		}
 	} else {
-		if (box[4] != $("#boxtitle2").text()) {
+		if (box[4] != document.querySelector("#boxtitle2").textContent) {
 			try {
-				AJAXService("EDITTITLE", {
-					exampleid: querystring['exampleid'],
-					courseid: querystring['courseid'],
-					boxid: box[0],
-					boxtitle: $("#boxtitle2").text()
-				}, "BOXTITLE");
+				AJAXService("EDITTITLE", {exampleid: querystring['exampleid'], courseid: querystring['courseid'], boxid: box[0], boxtitle: document.querySelector("#boxtitle").textContent}, "BOXTITLE");
 			} catch (e) {
 				alert("Error when updating content: " + e.message);
 			}
