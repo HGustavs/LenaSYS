@@ -3727,6 +3727,17 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 			"top": basePer + "%",
 			"height": remainHeightPer + "%"
 		});
+	}else if(atry2 >= 75) {
+		$("#box2wrapper").css({
+			"height": remainHeightPer + "%"
+		});
+		$("#box3wrapper").css({
+			"height": remainHeightPer + "%",
+			"top": remainHeightPer + "%"
+		});
+		$("#boxwrapper4").css({
+			"height": atry2 + "%",
+		});
 	} else {
 		$("#box4wrapper").height(atry2 + "%");
 	}
