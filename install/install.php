@@ -58,6 +58,7 @@
                     </div>";
 ?>
 
+<!-- Script for popup prompting for permission-settings -->
 <script>
         var modalRead = false; // Have the user read info?
         var modal = document.getElementById('warning'); // Get the modal
@@ -453,407 +454,407 @@
       -- Flush and ob_flush is used after every output in progress to dynamically show output when something was done.
       -->
 <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
-        $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
-        ob_end_clean(); // Remove form and start installation.
+    $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
+    ob_end_clean(); // Remove form and start installation.
 
-        /* Pop-up window when installation is done. Hidden from start. */
-        echo "
-                    <div id='warning' class='modal'>
+    /* Pop-up window when installation is done. Hidden from start. */
+    echo "
+                <div id='warning' class='modal'>
 
-                        <!-- Modal content -->
-                        <div class='modal-content'>
-                            <span title='Close pop-up' class='close''>&times;</span>
-                                <span id='dialogText'></span>
-                        </div>
+                    <!-- Modal content -->
+                    <div class='modal-content'>
+                        <span title='Close pop-up' class='close''>&times;</span>
+                            <span id='dialogText'></span>
+                    </div>
 
-                    </div>";
+                </div>";
 
-        /* Javascripts for warning pop-up */
-        echo "
-            <script>
-                var modalRead = false; // Have the user read info?
-                var modal = document.getElementById('warning'); // Get the modal
-                var btn = document.getElementById('showModalBtn'); // Get the button that opens the modal
-                var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
-                var filePath = '{$putFileHere}';
+    /* Javascripts for warning pop-up */
+    echo "
+        <script>
+            var modalRead = false; // Have the user read info?
+            var modal = document.getElementById('warning'); // Get the modal
+            var btn = document.getElementById('showModalBtn'); // Get the button that opens the modal
+            var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
+            var filePath = '{$putFileHere}';
 
-                document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
-                    '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
-                    '<p>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
-                    'responsibility for your failing system.</p>';
+            document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
+                '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
+                '<p>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
+                'responsibility for your failing system.</p>';
 
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
                     modal.style.display = 'none';
                 }
+            }
+        </script>
+    ";
+    flush();
+    ob_flush();
 
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = 'none';
-                    }
-                }
-            </script>
-        ";
-        flush();
-        ob_flush();
+    /***** START of installation progress ******/
+    $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
+    $totalSteps = 1; // Variable to hold the total steps to complete.
+    $completedSteps = 0; // Variable to hold the current completed steps.
 
-        /***** START of installation progress ******/
-        $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
-        $totalSteps = 1; // Variable to hold the total steps to complete.
-        $completedSteps = 0; // Variable to hold the current completed steps.
-
-        /* The following if-block will decide how many steps there are to complete installation. */
-        if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
+    /* The following if-block will decide how many steps there are to complete installation. */
+    if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
+        $totalSteps += 4;
+        if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
+            $totalSteps++;
+        }
+        if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
+            $totalSteps++;
+        }
+        if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
             $totalSteps += 4;
-            if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
+            if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
                 $totalSteps++;
             }
-            if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
-                $totalSteps++;
-            }
-            if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
-                $totalSteps += 4;
-                if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
-                    $totalSteps++;
-                }
-                  $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
-                  foreach ($checkBoxes AS $boxName) { //Loop trough each field
-                    if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
-                      $totalSteps++;
-                    }
-                  }
-            }
-        }
-
-        /* Header.
-         * Will contain title and progress bar.
-         */
-        echo "<div id='header'>
-                <h1>Installation</h1>
-                <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
-                    <rect id='progressRect' width='0' height='20px' />
-                </svg>
-                <span id='percentageText'></span>
-                <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
-            </div>";
-
-        /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
-        echo "
-            <script>
-            /* Function to remove decimals from percentage text */
-            truncateDecimals = function (number) {
-                return Math[number < 0 ? 'ceil' : 'floor'](number);
-            };
-
-            var totalSteps = {$totalSteps};
-            var completedStepsLatest = 0; // This variable is used on window resize.
-
-            function updateProgressBar(completedSteps){
-                var totalWidth = document.getElementById(\"progressBar\").clientWidth;
-                var stepWidth = totalWidth / totalSteps;
-                var completedWidth;
-
-                /* if window was resized (completedsteps = -1) take latest copleted steps.
-                 * Else update to new completed step.
-                 */
-                if (completedSteps === -1) {
-                    completedWidth = stepWidth * completedStepsLatest;
-                } else {
-                    completedStepsLatest = completedSteps;
-                    completedWidth = stepWidth * completedSteps;
-                }
-
-                /* Calculate length */
-                document.getElementById(\"progressRect\").setAttribute(\"width\", \"\" + completedWidth + \"\");
-
-                /* Update percentage text */
-                document.getElementById(\"percentageText\").innerHTML = \"\" +
-                truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) +
-                \"%\";
-
-                /* Decide color depending on how far progress has gone */
-                if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
-                    document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(197,81,83)\");
-                } else if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.66){
-                    document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(253,203,96)\");
-                } else {
-                    document.getElementById(\"progressRect\").setAttribute(\"fill\", \"green\");
-                }
-            }
-        </script>";
-        flush();
-        ob_flush();
-
-        echo "<div id='installationProgressWrap'>";
-        # Test permissions on directory before starting installation.
-        if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
-            $errors++;
-            exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-        } else {
-            if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
-                $errors++;
-                exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-            } else {
-                echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
-            }
-        }
-        $completedSteps++;
-        echo "<script>updateProgressBar({$completedSteps});</script>";
-
-        # Check if all fields are filled.
-        $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
-        foreach ($fields AS $fieldname) { //Loop trough each field
-            if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
-                $errors++;
-                exit ("<span id='failText' />Please fill all fields.</span><br>
-                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-            }
-        }
-
-        # Only create DB if box is ticked.
-        if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
-
-            $username = $_POST["newUser"];
-            $password = $_POST["password"];
-            $databaseName = $_POST["DBName"];
-            $serverName = $_POST["hostname"];
-
-            $rootUser = $_POST["mysqlRoot"];
-            $rootPwd = $_POST["rootPwd"];
-
-            # Connect to database with root access.
-            try {
-                $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
-                // set the PDO error mode to exception
-                $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
-            } catch (PDOException $e) {
-                $errors++;
-                exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
-                        You may have entered a invalid password or an invalid user.<br>
-                        <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-            }
-            $completedSteps++;
-            echo "<script>updateProgressBar({$completedSteps});</script>";
-            flush();
-            ob_flush();
-
-            # If checked, write over existing database and user
-            if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
-                # User
-                try {
-                $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
-                echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
-                } catch (PDOException $e) {
-                $errors++;
-                echo "<span id='failText' />User with name {$username}
-                            does not already exist. Will only make a new one (not write over).</span><br>";
-                }
-                $completedSteps++;
-                echo "<script>updateProgressBar({$completedSteps});</script>";
-                flush();
-                ob_flush();
-            }
-            if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
-                # Database
-                try {
-                    $connection->query("DROP DATABASE {$databaseName}");
-                    echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
-                } catch (PDOException $e) {
-                    $errors++;
-                    echo "<span id='failText' />Database with name {$databaseName}
-                            does not already exist. Will only make a new one (not write over).</span><br>";
-                }
-                $completedSteps++;
-                echo "<script>updateProgressBar({$completedSteps});</script>";
-                flush();
-                ob_flush();
-            }
-
-            # Create new database
-            try {
-                $connection->query("CREATE DATABASE {$databaseName}");
-                echo "<span id='successText' />Database with name {$databaseName} created successfully.</span><br>";
-            } catch (PDOException $e) {
-                $errors++;
-                echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
-            }
-            $completedSteps++;
-            echo "<script>updateProgressBar({$completedSteps});</script>";
-            flush();
-            ob_flush();
-
-            # Create new user and grant privileges to created database.
-            try {
-                $connection->query("FLUSH PRIVILEGES");
-                $connection->query("CREATE USER '{$username}'@'{$serverName}' IDENTIFIED BY '{$password}'");
-                $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}'@'{$serverName}'");
-                $connection->query("FLUSH PRIVILEGES");
-                echo "<span id='successText' />Successfully created user {$username}.</span><br>";
-            } catch (PDOException $e) {
-                $errors++;
-                echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
-            }
-            $completedSteps++;
-            echo "<script>updateProgressBar({$completedSteps});</script>";
-            flush();
-            ob_flush();
-
-            /**************************** Init database. *************************************/
-            $initQuery = file_get_contents("../Shared/SQL/init_db.sql");
-
-            # This loop will find comments in the sql file and remove these.
-            # Comments are removed because some comments included semi-colons which wont work.
-            while(true) {
-                $startPos = strpos($initQuery, "/*");
-                $endPos = strpos($initQuery, "*/");
-                if ($startPos === false || $endPos === false) {
-                    break;
-                }
-                $removeThisText = substr($initQuery, $startPos, ($endPos + 2) - $startPos);
-                $initQuery = str_replace($removeThisText, '', $initQuery);
-            }
-
-            # Split the sql file at semi-colons to send each query separated.
-            $initQueryArray = explode(";", $initQuery);
-            $initSuccess = false;
-            try {
-                $connection->query("SET NAMES utf8");
-                $connection->query("USE {$databaseName}");
-                # Use this var if several statements should be called at once (functions).
-                $queryBlock = '';
-                $blockStarted = false;
-                foreach ($initQueryArray AS $query) {
-                    $completeQuery = $query . ";";
-
-                    # This commented code in this block could work if delimiters are fixed/removed in sql files.
-                    # TODO: Fix handling of delimiters. Now this part only removes code between them.
-                    if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")) {
-                        $blockStarted = true;
-                        #$queryBlock = $completeQuery;
-                    } else if ($blockStarted && strpos(strtolower($completeQuery), "delimiter ;")) {
-                        $blockStarted = false;
-                        #$queryBlock = $queryBlock . $completeQuery;
-                        #$connection->query($queryBlock);
-                    } else if ($blockStarted) {
-                        #$queryBlock = $queryBlock . $completeQuery;
-                    } else {
-                        if (trim($query) != '') { // do not send if empty query.
-                            $connection->query($completeQuery);
-                        }
-                    }
-                }
-                $initSuccess = true;
-                echo "<span id='successText' />Initialization of database complete. </span><br>";
-            } catch (PDOException $e) {
-                $errors++;
-                echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
-                echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
-            }
-            $completedSteps++;
-            echo "<script>updateProgressBar({$completedSteps});</script>";
-            flush();
-            ob_flush();
-
-            /*************** Fill database with test data if this was checked. ****************/
-            if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
-                addTestData("testdata", $connection);
-
-                # Copy md files to the right place.
-                if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
-                    copyTestFiles("{$putFileHere}/install/md/", "{$putFileHere}/DuggaSys/templates/");
-                } else {
-                    echo "Skipped adding markdown files<br>";
-                }
-
-                # Check which languages to add from checkboxes.
                 $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
                 foreach ($checkBoxes AS $boxName) { //Loop trough each field
-                    if (!isset($_POST[$boxName]) || empty($_POST[$boxName])) {
-                        echo "Skipped keywords for {$boxName}. <br>";
-                    } else {
-                        if ($_POST[$boxName] == 'Yes') {
-                            addTestData("keywords_{$boxName}", $connection);
-                        }
-                    }
+                if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
+                    $totalSteps++;
                 }
+                }
+        }
+    }
 
-                /************* Copy test code files to the right place *****************/
-                if(@!mkdir("{$putFileHere}/courses", 0770, true)){
-                    echo "Did not create courses directory, it already exists.<br>";
-                } else {
-                    echo "<span id='successText' />Created the directory '{$putFileHere}/courses'.</span><br>";
-                }
-                copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/global/");
-                copyTestFiles("{$putFileHere}/install/courses/1/", "{$putFileHere}/courses/1/");
+    /* Header.
+        * Will contain title and progress bar.
+        */
+    echo "<div id='header'>
+            <h1>Installation</h1>
+            <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
+                <rect id='progressRect' width='0' height='20px' />
+            </svg>
+            <span id='percentageText'></span>
+            <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
+        </div>";
+
+    /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
+    echo "
+        <script>
+        /* Function to remove decimals from percentage text */
+        truncateDecimals = function (number) {
+            return Math[number < 0 ? 'ceil' : 'floor'](number);
+        };
+
+        var totalSteps = {$totalSteps};
+        var completedStepsLatest = 0; // This variable is used on window resize.
+
+        function updateProgressBar(completedSteps){
+            var totalWidth = document.getElementById(\"progressBar\").clientWidth;
+            var stepWidth = totalWidth / totalSteps;
+            var completedWidth;
+
+            /* if window was resized (completedsteps = -1) take latest copleted steps.
+                * Else update to new completed step.
+                */
+            if (completedSteps === -1) {
+                completedWidth = stepWidth * completedStepsLatest;
             } else {
-                echo "Skipped filling database with test data.<br>";
+                completedStepsLatest = completedSteps;
+                completedWidth = stepWidth * completedSteps;
             }
 
+            /* Calculate length */
+            document.getElementById(\"progressRect\").setAttribute(\"width\", \"\" + completedWidth + \"\");
+
+            /* Update percentage text */
+            document.getElementById(\"percentageText\").innerHTML = \"\" +
+            truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) +
+            \"%\";
+
+            /* Decide color depending on how far progress has gone */
+            if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
+                document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(197,81,83)\");
+            } else if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.66){
+                document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(253,203,96)\");
+            } else {
+                document.getElementById(\"progressRect\").setAttribute(\"fill\", \"green\");
+            }
+        }
+    </script>";
+    flush();
+    ob_flush();
+
+    echo "<div id='installationProgressWrap'>";
+    # Test permissions on directory before starting installation.
+    if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
+        $errors++;
+        exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
+                <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+    } else {
+        if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
+            $errors++;
+            exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
+                <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
         } else {
-            echo "Skipped creating database.<br>";
+            echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
+        }
+    }
+    $completedSteps++;
+    echo "<script>updateProgressBar({$completedSteps});</script>";
+
+    # Check if all fields are filled.
+    $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
+    foreach ($fields AS $fieldname) { //Loop trough each field
+        if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
+            $errors++;
+            exit ("<span id='failText' />Please fill all fields.</span><br>
+                <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+        }
+    }
+
+    # Only create DB if box is ticked.
+    if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
+
+        $username = $_POST["newUser"];
+        $password = $_POST["password"];
+        $databaseName = $_POST["DBName"];
+        $serverName = $_POST["hostname"];
+
+        $rootUser = $_POST["mysqlRoot"];
+        $rootPwd = $_POST["rootPwd"];
+
+        # Connect to database with root access.
+        try {
+            $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
+            // set the PDO error mode to exception
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
+        } catch (PDOException $e) {
+            $errors++;
+            exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
+                    You may have entered a invalid password or an invalid user.<br>
+                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
         }
         $completedSteps++;
         echo "<script>updateProgressBar({$completedSteps});</script>";
-
-        echo "<b>Installation finished.</b><br>";
         flush();
         ob_flush();
-        // resetting timeout to what it was prior to installation
-        set_time_limit($timeOutSeconds);
-        echo "</div>";
-        echo "<div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
-                <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
 
-        # Collapse progress only if there are no errors.
-        if ($errors == 0) {
-            echo "<script>$('#installationProgressWrap').toggle(500);</script>";
+        # If checked, write over existing database and user
+        if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
+            # User
+            try {
+            $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
+            echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
+            } catch (PDOException $e) {
+            $errors++;
+            echo "<span id='failText' />User with name {$username}
+                        does not already exist. Will only make a new one (not write over).</span><br>";
+            }
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
+            flush();
+            ob_flush();
+        }
+        if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
+            # Database
+            try {
+                $connection->query("DROP DATABASE {$databaseName}");
+                echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
+            } catch (PDOException $e) {
+                $errors++;
+                echo "<span id='failText' />Database with name {$databaseName}
+                        does not already exist. Will only make a new one (not write over).</span><br>";
+            }
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
+            flush();
+            ob_flush();
         }
 
-        # All this code prints further instructions to complete installation.
-        $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
-        echo "<div id='doThisWrapper'>";
-        echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
-        // Trying to put content and/or create coursesyspw.php.
-        // If there already is a file it will be filled with the entered
-        // credentials in case they don't match what was originally in the file
-        // and if no file exists create one with credentials, if it fails
-        // give instructions on how to create the file.
+        # Create new database
         try {
-          // Start of Content to put in coursesyspw.
-        $filePutContent = "<?php
-        define(\"DB_USER\",\"".$username."\");
-        define(\"DB_PASSWORD\",\"".$password."\");
-        define(\"DB_HOST\",\"".$serverName."\");
-        define(\"DB_NAME\",\"".$databaseName."\");
-        ?>";
-          // end of coursesyspw content
-          file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
-        } catch (\Exception $e) {
-          echo "<br><b>To make installation work please make a
-          file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
-          echo "<b>We tried to create one for you but an error occured: see below how to do it yourself! </b></br>";
-          echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
-          echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
-          echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
-          echo 'define(\"DB_USER\",\"' . $username . '\");\n';
-          echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
-          echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
-          echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
-          echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
-          echo "</code></div>";
-          echo '<div id="copied1">Copied to clipboard!<br></div>';
+            $connection->query("CREATE DATABASE {$databaseName}");
+            echo "<span id='successText' />Database with name {$databaseName} created successfully.</span><br>";
+        } catch (PDOException $e) {
+            $errors++;
+            echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
+        }
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
+        flush();
+        ob_flush();
+
+        # Create new user and grant privileges to created database.
+        try {
+            $connection->query("FLUSH PRIVILEGES");
+            $connection->query("CREATE USER '{$username}'@'{$serverName}' IDENTIFIED BY '{$password}'");
+            $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}'@'{$serverName}'");
+            $connection->query("FLUSH PRIVILEGES");
+            echo "<span id='successText' />Successfully created user {$username}.</span><br>";
+        } catch (PDOException $e) {
+            $errors++;
+            echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
+        }
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
+        flush();
+        ob_flush();
+
+        /**************************** Init database. *************************************/
+        $initQuery = file_get_contents("../Shared/SQL/init_db.sql");
+
+        # This loop will find comments in the sql file and remove these.
+        # Comments are removed because some comments included semi-colons which wont work.
+        while(true) {
+            $startPos = strpos($initQuery, "/*");
+            $endPos = strpos($initQuery, "*/");
+            if ($startPos === false || $endPos === false) {
+                break;
+            }
+            $removeThisText = substr($initQuery, $startPos, ($endPos + 2) - $startPos);
+            $initQuery = str_replace($removeThisText, '', $initQuery);
         }
 
-		//Check upload_max_filesize parameter
-		if(ini_get('upload_max_filesize')!='128M'){
-			echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
-		}
+        # Split the sql file at semi-colons to send each query separated.
+        $initQueryArray = explode(";", $initQuery);
+        $initSuccess = false;
+        try {
+            $connection->query("SET NAMES utf8");
+            $connection->query("USE {$databaseName}");
+            # Use this var if several statements should be called at once (functions).
+            $queryBlock = '';
+            $blockStarted = false;
+            foreach ($initQueryArray AS $query) {
+                $completeQuery = $query . ";";
 
-        if(!connectLogDB()){
+                # This commented code in this block could work if delimiters are fixed/removed in sql files.
+                # TODO: Fix handling of delimiters. Now this part only removes code between them.
+                if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")) {
+                    $blockStarted = true;
+                    #$queryBlock = $completeQuery;
+                } else if ($blockStarted && strpos(strtolower($completeQuery), "delimiter ;")) {
+                    $blockStarted = false;
+                    #$queryBlock = $queryBlock . $completeQuery;
+                    #$connection->query($queryBlock);
+                } else if ($blockStarted) {
+                    #$queryBlock = $queryBlock . $completeQuery;
+                } else {
+                    if (trim($query) != '') { // do not send if empty query.
+                        $connection->query($completeQuery);
+                    }
+                }
+            }
+            $initSuccess = true;
+            echo "<span id='successText' />Initialization of database complete. </span><br>";
+        } catch (PDOException $e) {
+            $errors++;
+            echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
+            echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+        }
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
+        flush();
+        ob_flush();
+
+        /*************** Fill database with test data if this was checked. ****************/
+        if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
+            addTestData("testdata", $connection);
+
+            # Copy md files to the right place.
+            if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
+                copyTestFiles("{$putFileHere}/install/md/", "{$putFileHere}/DuggaSys/templates/");
+            } else {
+                echo "Skipped adding markdown files<br>";
+            }
+
+            # Check which languages to add from checkboxes.
+            $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
+            foreach ($checkBoxes AS $boxName) { //Loop trough each field
+                if (!isset($_POST[$boxName]) || empty($_POST[$boxName])) {
+                    echo "Skipped keywords for {$boxName}. <br>";
+                } else {
+                    if ($_POST[$boxName] == 'Yes') {
+                        addTestData("keywords_{$boxName}", $connection);
+                    }
+                }
+            }
+
+            /************* Copy test code files to the right place *****************/
+            if(@!mkdir("{$putFileHere}/courses", 0770, true)){
+                echo "Did not create courses directory, it already exists.<br>";
+            } else {
+                echo "<span id='successText' />Created the directory '{$putFileHere}/courses'.</span><br>";
+            }
+            copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/global/");
+            copyTestFiles("{$putFileHere}/install/courses/1/", "{$putFileHere}/courses/1/");
+        } else {
+            echo "Skipped filling database with test data.<br>";
+        }
+
+    } else {
+        echo "Skipped creating database.<br>";
+    }
+    $completedSteps++;
+    echo "<script>updateProgressBar({$completedSteps});</script>";
+
+    echo "<b>Installation finished.</b><br>";
+    flush();
+    ob_flush();
+    // resetting timeout to what it was prior to installation
+    set_time_limit($timeOutSeconds);
+    echo "</div>";
+    echo "<div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
+            <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
+
+    # Collapse progress only if there are no errors.
+    if ($errors == 0) {
+        echo "<script>$('#installationProgressWrap').toggle(500);</script>";
+    }
+
+    # All this code prints further instructions to complete installation.
+    $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
+    echo "<div id='doThisWrapper'>";
+    echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
+    // Trying to put content and/or create coursesyspw.php.
+    // If there already is a file it will be filled with the entered
+    // credentials in case they don't match what was originally in the file
+    // and if no file exists create one with credentials, if it fails
+    // give instructions on how to create the file.
+    try {
+        // Start of Content to put in coursesyspw.
+    $filePutContent = "<?php
+    define(\"DB_USER\",\"".$username."\");
+    define(\"DB_PASSWORD\",\"".$password."\");
+    define(\"DB_HOST\",\"".$serverName."\");
+    define(\"DB_NAME\",\"".$databaseName."\");
+    ?>";
+        // end of coursesyspw content
+        file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
+    } catch (\Exception $e) {
+        echo "<br><b>To make installation work please make a
+        file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
+        echo "<b>We tried to create one for you but an error occured: see below how to do it yourself! </b></br>";
+        echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
+        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
+        echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
+        echo 'define(\"DB_USER\",\"' . $username . '\");\n';
+        echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
+        echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
+        echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
+        echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
+        echo "</code></div>";
+        echo '<div id="copied1">Copied to clipboard!<br></div>';
+    }
+
+    //Check upload_max_filesize parameter
+    if(ini_get('upload_max_filesize')!='128M'){
+        echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
+    }
+
+    if(!connectLogDB()){
             echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
             with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
             (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
@@ -927,6 +928,7 @@
         flush();
         ob_flush();
     }
+    
     function connectLogDB() {
         if(!file_exists ('../../log')) {
             if(!mkdir('../../log')){
@@ -1009,60 +1011,60 @@
     }
 ?>
 
-    <script>
-        /* Show modal */
-        modal.style.display = "block";
-        var showHideButton = document.getElementById('showHideInstallation');
+<script>
+    /* Show modal */
+    modal.style.display = "block";
+    var showHideButton = document.getElementById('showHideInstallation');
 
-        if (showHideButton !== null){
-            showHideButton.onclick = function(){
-                toggleInstallationProgress();
-            }
+    if (showHideButton !== null){
+        showHideButton.onclick = function(){
+            toggleInstallationProgress();
+        }
+    }
+
+    /* Show/Hide installation progress. */
+    function toggleInstallationProgress(){
+        $('#installationProgressWrap').toggle(500);
+    }
+
+    /* Function to select and copy text inside code boxes at end of installation. */
+    function selectText(containerid) {
+        /* Get selection inside div. */
+        var text = document.getElementById(containerid);
+        if (document.body.createTextRange) {
+            var range = document.body.createTextRange();
+            range.moveToElementText(text);
+            range.select();
+        } else {
+            var selection = window.getSelection();
+            var range = document.createRange();
+            range.selectNodeContents(text);
+            selection.removeAllRanges();
+            selection.addRange(range);
         }
 
-        /* Show/Hide installation progress. */
-        function toggleInstallationProgress(){
-            $('#installationProgressWrap').toggle(500);
+        /* Copy selection. */
+        document.execCommand("copy");
+
+        /* Remove selection. */
+        window.getSelection().removeAllRanges();
+
+        /* Show the 'copied' text to let user know that text was copied to clipboard.
+            * After show animation is done it will call hide function to hide text again.
+            */
+        if (containerid === "codeBox1") {
+            $("#copied1").show("slide", {direction: "left" }, 1000);
+            window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
+        } else if (containerid === "codeBox2") {
+            $("#copied2").show("slide", {direction: "left" }, 1000);
+            window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
         }
+    }
 
-        /* Function to select and copy text inside code boxes at end of installation. */
-        function selectText(containerid) {
-            /* Get selection inside div. */
-            var text = document.getElementById(containerid);
-            if (document.body.createTextRange) {
-                var range = document.body.createTextRange();
-                range.moveToElementText(text);
-                range.select();
-            } else {
-                var selection = window.getSelection();
-                var range = document.createRange();
-                range.selectNodeContents(text);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-
-            /* Copy selection. */
-            document.execCommand("copy");
-
-            /* Remove selection. */
-            window.getSelection().removeAllRanges();
-
-            /* Show the 'copied' text to let user know that text was copied to clipboard.
-             * After show animation is done it will call hide function to hide text again.
-             */
-            if (containerid === "codeBox1") {
-                $("#copied1").show("slide", {direction: "left" }, 1000);
-                window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
-            } else if (containerid === "codeBox2") {
-                $("#copied2").show("slide", {direction: "left" }, 1000);
-                window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
-            }
-        }
-
-        /* Hide 'copied' text */
-        function hideCopiedAgain(text) {
-            $(text).hide("slide", {direction: "right"}, 1000)
-        }
-    </script>
+    /* Hide 'copied' text */
+    function hideCopiedAgain(text) {
+        $(text).hide("slide", {direction: "right"}, 1000)
+    }
+</script>
 
 </body>
