@@ -245,7 +245,11 @@ function setval(sval)
 	$("#pop").css({display:"none"})
 }
 
-//functionality for opening and closing hexcode input boxes
+
+//----------------------------------------------------------------------------------
+// //functionality for opening and closing hexcode input boxes
+//----------------------------------------------------------------------------------
+
 document.addEventListener('click', function(e){
 	var pop = document.getElementById('pop');
 	if(e.target.classList.contains("hexo")){ 
