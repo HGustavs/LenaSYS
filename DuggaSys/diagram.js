@@ -5259,13 +5259,18 @@ function loadAppearanceForm() {
         indexes[key].max += value;
     });
 
-    indexes.name = {
-        current: 0,
-        max: 0
-    };
-
     //Get all unique types from the selected objects
     const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
+
+    indexes.name = {
+        current: 0,
+        max: types.reduce((result, type) => {
+            if(type === symbolKind.uml || type === symbolKind.erAttribute || type === symbolKind.erEntity || type === symbolKind.erRelation) {
+                result += indexes[type].max;
+            }
+            return result;
+        }, 0)
+    };
     
     showFormGroups(types);
     toggleApperanceElement(true);
