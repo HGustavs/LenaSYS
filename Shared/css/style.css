@@ -6365,5 +6365,6 @@ textarea#filecont {
 .analytic-buttons{
     display:flex;
     justify-content: center;
+    flex-flow:wrap;
 }
 
