@@ -4627,8 +4627,15 @@ function touchStartEvent(event) {
 
     // Returns what object was pressed, -1 if none
     movobj = diagram.itemClicked();
+    sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
-    if (movobj != -1 && uimode != "CreateLine") {
+    
+    // If a point was clicked 
+    if (sel.distance < tolerance / zoomValue) {
+        md = mouseState.insidePoint;
+    }
+    // If an object is clicked
+    else if (movobj != -1 && uimode != "CreateLine") {
         md = mouseState.insideMovableObject;
         handleSelect();
     } 
@@ -4669,7 +4676,7 @@ function touchMoveEvent(event) {
         if ((diffX > deltaX) || (diffX < -deltaX)
         || (diffY > deltaY) || (diffY < -deltaY)) {
             if (uimode != 'MoveAround' && md != mouseState.insideMovableObject 
-            && uimode != "CreateLine") {
+            && md != mouseState.insidePoint && uimode != "CreateLine") {
                 activateMovearound();
             }
             updateGraphics();
@@ -4727,6 +4734,39 @@ function touchMoveEvent(event) {
             }
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
+        }
+    }
+    // Resizes an object
+    if (md == mouseState.insidePoint) {
+        console.log("hiya");
+        
+        // Needs to have a symbol selected to resize, and it cant be locked
+        if (!sel.attachedSymbol.targeted || sel.attachedSymbol.isLocked) {
+            return;
+        }
+        if (!sel.point.fake) {
+            var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
+            var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
+            var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
+            //Don't move points if box is minumum size
+            if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                sel.point.x = currentMouseCoordinateX;
+            }
+            if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                sel.point.y = currentMouseCoordinateY;
+            }
+        }
+        else {
+            var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
+            var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
+            var change = ((currentMouseCoordinateX - sel.point.x.x) - (currentMouseCoordinateY - sel.point.y.y)) / 2;
+            //Don't move points if box is minumum size
+            if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                sel.point.x.x = currentMouseCoordinateX;
+            }
+            if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                sel.point.y.y = currentMouseCoordinateY;
+            }
         }
     }
     // Draw preview line
