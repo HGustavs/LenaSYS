@@ -11,21 +11,7 @@ var ClickCounter = {
 		this.score = 0;
 		this.animateClicks();	
 	},
-	
-	// Called whenever a dugga should count a mouse click, e.g., when a user presses a button
-	onClick: function() {
-		// Increments the click counter by one
-		this.score++;
-		
-		// Calls animate clicks to directly update the click counter user interface 
-		this.animateClicks();
-	},
-	
-	//show clicker
-	showClicker: function(){
-		this.animateClicks();
-	},
-	
+
 	// Updates the click counter user interface in a dugga, uses the same 
 	animateClicks: function() {
 		var cc = document.getElementById('scoreElement');
