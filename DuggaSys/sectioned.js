@@ -326,22 +326,34 @@ function createFABItem(kind, itemtitle) {
 function openCodeDialog() {
   $('#codeItemDialog').css('display', 'block');
   let selectParent = $('#fileSelectParent');
+  addSelectOptions(selectParent);
+}
 
+function onSelectFileChanged(selected) {
+  console.log(selected.value + " - " + selected.options[selected.selectedIndex].text);
+
+  createSelect();
+}
+
+function createSelect() {
+  let select = $('<select style="display: block;" onchange="onSelectFileChanged(this);"></select>');
+
+  $('#selectHolder').append(select);
+  addSelectOptions(select);
+}
+
+function addSelectOptions(selectElement) {
   fileKindIndex = 0;
   fileKindOrder = ["-= Global Files =-", "-= Local Files =-", "-= Course Local Files =-"];
 
   for (let i = 0; i < retdata.links.length; i++)  {
     if (retdata.links[i].fileid !== -1) {
-      selectParent.append(`<option value="${retdata.links[i].fileid}">${retdata.links[i].filename}</option>`);
+      selectElement.append(`<option value="${retdata.links[i].fileid}">${retdata.links[i].filename}</option>`);
     } else {
-      selectParent.append(`<option value="${retdata.links[i].fileid}">${fileKindOrder[fileKindIndex]}</option>`);
+      selectElement.append(`<option value="${retdata.links[i].fileid}">${fileKindOrder[fileKindIndex]}</option>`);
       fileKindIndex++;
     }
   }
-}
-
-function onSelectFileChanged(selected) {
-  console.log(selected.value + " - " + selected.options[selected.selectedIndex].text);
 }
 
 function closeDialog(id) {
