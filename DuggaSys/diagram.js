@@ -4192,7 +4192,7 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
-        if(ev.button == rightMouseClick && uimode == "CreateFigure"){
+        if(ev.button == rightMouseClick && figureType == "Free"){
             endFreeDraw();
         }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
