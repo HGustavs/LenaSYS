@@ -5246,11 +5246,18 @@ function loadAppearanceForm() {
 
     const indexes = {};
 
-    const typeToAmountMap = appearanceObjects.reduce((result, object) => {
+    appearanceObjects.reduce((result, object) => {
         result.set(object.symbolkind || 0, (result.get(object.symbolkind || 0) || 0) + 1);
         return result;
-    }, new Map());
-    
+    }, new Map()).forEach((value, key) => {
+        if(typeof indexes[key] === "undefined") {
+            indexes[key] = {
+                current: 0,
+                max: 0
+            };
+        }
+    });
+
     //Get all unique types from the selected objects
     const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
     
