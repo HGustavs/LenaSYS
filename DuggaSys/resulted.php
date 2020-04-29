@@ -49,6 +49,18 @@ pdoConnect();
   <!-- content START -->
 	<div id="content">
 		
+	<div id="resultedlegendContainer">
+		<div id="legendBtn" onclick="showLegend();"> ? </div>
+		<ul class="legendList">
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade"> Show dugga answers and results</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uh.png" alt="grade"><img src="../Shared/icons/G.png" alt="grade"> Dugga passed</li>
+			<li class="legendListItem"><img src="../Shared/icons/U.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Dugga failed</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uc.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Dugga not graded</li>
+			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png" alt="grade"> Submitted past deadline</li>
+			<li class="legendListItem"><div> (9) </div> <div>Grading changes</div></li>	
+		</ul>
+	</div>
+	
     <div id="resultedFormContainer">
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>

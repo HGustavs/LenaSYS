@@ -30,6 +30,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
+var legendIsHidden = true;
 
 function setup() {
     //Benchmarking function
@@ -1538,6 +1539,19 @@ function hideSSN(ssn){
 	return hiddenSSN;
 }
 
+function showLegend(){
+	if (legendIsHidden == false){
+		$('#resultedlegendContainer').css("transform","translate(360px,0)");
+		legendIsHidden = true;
+	}
+	else if (legendIsHidden == true){
+		$('#resultedlegendContainer').css("transform","translate(0px,0)");
+		legendIsHidden = false;
+	}
+	else{
+		//alert(legendIsHidden);
+	}
+}
 
 function compare(firstCell, secoundCell) {
 	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
