@@ -5318,8 +5318,13 @@ function loadAppearanceForm() {
             }
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
-            document.getElementById("freeText").value += getTextareaText(object.textLines) + ",\n";
-            document.getElementById("freeText").focus();
+            const textarea = document.getElementById("freeText");
+            indexes[symbolKind.text].current++;
+            textarea.value += getTextareaText(object.textLines);
+            if(indexes[symbolKind.text].max > indexes[symbolKind.text].current) {
+                textarea.value += ",\n";
+            }
+            textarea.focus();
         } else if(object.symbolkind === symbolKind.uml) {
             document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
             document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
