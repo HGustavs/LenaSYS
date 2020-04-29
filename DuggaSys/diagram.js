@@ -1087,8 +1087,10 @@ function copySymbol(symbol) {
                     }
                 }
 
-                const point = points[pointIndexes[key].old];
-                newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+                if(newPointIndex !== null) {
+                    const point = points[pointIndexes[key].old];
+                    newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+                }
             } else {
                 newPointIndex = pointIndexes[keyContainsDuplicateOldPoint].new;
             }
