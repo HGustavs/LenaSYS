@@ -954,39 +954,42 @@ function processLogin() {
         password: password,
         opt: "LOGIN"
       },
-      success:function(data) {  
-		  
-		document.cookie = "cookie_guest=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //Removes guest cookie at login
- 		
+      success:function(data) {  		  
 		var result = JSON.parse(data);
         if(result['login'] == "success") {
-					hideLoginPopup();
-          // was commented out before which resulted in the session to never end
-					if(result['securityquestion'] != null) {
-							localStorage.setItem("securityquestion", "set");
-						} else {
-							setSecurityNotifaction("on");
-					}
+			document.cookie = "cookie_guest=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //Removes guest cookie at login
 
-          setExpireCookie();
-          setExpireCookieLogOut();
+			hideLoginPopup();
 
-          reloadPage();
-        }else if(result['login'] == "limit"){
-          displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
-        }else{
-          if(typeof result.reason != "undefined") {
-            displayAlertText("#login #message", result.reason);
-          } else {
-            displayAlertText("#login #message", "Wrong username or password");
-					}
+          	// was commented out before which resulted in the session to never end
+			if(result['securityquestion'] != null) {
+				localStorage.setItem("securityquestion", "set");
+			} else {
+				setSecurityNotifaction("on");
+			}
 
-					$("input#username").addClass("loginFail");
-					$("input#password").addClass("loginFail");
-					setTimeout(function(){
-						$("input#username").removeClass("loginFail");
-						$("input#password").removeClass("loginFail");
-						displayAlertText("#login #message", "Try again");
+           	setExpireCookie();
+          	setExpireCookieLogOut();
+
+          	reloadPage();
+		}
+		else if(result['login'] == "limit"){
+        	displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
+		}
+		else{
+        	if(typeof result.reason != "undefined") {
+            	displayAlertText("#login #message", result.reason);
+		  	} 
+			else {
+        		displayAlertText("#login #message", "Wrong username or password");
+			}
+
+			$("input#username").addClass("loginFail");
+			$("input#password").addClass("loginFail");
+			setTimeout(function(){
+			$("input#username").removeClass("loginFail");
+			$("input#password").removeClass("loginFail");
+			displayAlertText("#login #message", "Try again");
 					}, 2000);
           //closeWindows();
 		}
@@ -1011,12 +1014,13 @@ function processLogout() {
 		success:function(data) {
             localStorage.removeItem("securityquestion");
             localStorage.removeItem("securitynotification");
-			location.reload();
+            location.replace("../DuggaSys/courseed.php");
 		},
 		error:function() {
 			console.log("error");
 		}
 	});
+	document.cookie = "MOTD=; expires=Thu, 01 Jan 1970 00:00:00 UTC;"; // Clear MOTD cookies
 }
 
 function showLoginPopup()
@@ -1105,8 +1109,7 @@ function checkScroll(obj) {
 function showEmailPopup()
 {
 	var receiptcemail ="";
-	$("#emailPopup").css("display","flex");
-	//$("#overlay").css("display","block");
+	document.getElementById("emailPopup").style.display = "block";
 	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
 	document.getElementById('email').value = receiptcemail;
 }
@@ -1361,6 +1364,16 @@ function findfilevers(filez,cfield,ctype,displaystate,group)
 									tab+=filez[i].content.substring(0,8)+"&#8230;</span>";
 								} else {
 									tab+=filez[i].content+"</span>";
+								}
+							}else if(ctype == "zip" || ctype == "rar"){
+								tab+="<span style='cursor: pointer;text-decoration:underline;'>";
+								tab += "<a href="+filez[i].filepath+filez[i].filename+filez[i].seq+'.'+filez[i].extension+">";
+								if (mediumMediaQuery.matches) {
+									tab+=filez[i].filename.substring(0,32)+"&#8230;"+filez[i].extension+"</a></span>";
+								} else if (mobileMediaQuery.matches) {
+									tab+=filez[i].filename.substring(0,8)+"&#8230;"+filez[i].extension+"</a></span>";
+								} else {
+									tab+=filez[i].filename+"."+filez[i].extension+"</a></span>";
 								}
 							} else {
 								tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>";

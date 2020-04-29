@@ -546,6 +546,10 @@ function returnedQuiz(data) {
 // START OF RENDERING TABELS
 //Table for duggas
 function returnedDugga(data) {
+	//If the user dont have writeaccess, the user gets send to the startpage
+	if (!data.writeaccess) {
+		window.location.href = 'courseed.php';
+	}
 	filez = data;
 	globalData = data;
 
@@ -610,7 +614,7 @@ function returnedDugga(data) {
 
 				/* Page title */
 				content += "<div class='titles' style='padding-top:10px;'>"
-						content += "<h1 style='flex:1;text-align:start;'>Dugga Modifications Editor</h1>"
+						content += "<h1 style='flex:1;text-align:start;'>Edit dugga</h1>"
 				content += "</div>"
 
 		}
@@ -979,9 +983,6 @@ function mouseUp(e){
 
 }
 
-function createQuickItem(){
-		selectDugga("UNK");
-		//createDugga();
-}
+
 
 // End of functions handling the FAB-button functionality

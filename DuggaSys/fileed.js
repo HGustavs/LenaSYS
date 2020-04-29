@@ -29,6 +29,7 @@ var filepath;
 var filekind;
 var aceData;
 var editor;
+var filedata;
 
 function setup() {
     /*
@@ -72,6 +73,10 @@ $(function () {
 //----------------------------------------------------------------------------
 
 function returnedFile(data) {
+    //Redirects users without access to courseed.php
+    if (!data.access) {
+        window.location.href = 'courseed.php';S
+    }
     filez = data;
     var tblheadPre = {
         filename: "File name",
@@ -83,9 +88,9 @@ function returnedFile(data) {
     }
     var colOrderPre = ["filename", "extension", "kind", "filesize", "uploaddate", "editor"];
 
-    if (data['studentteacher']) {
+    if (data['studentteacher'] || data['supervisor']) {
         document.getElementById('fabButton').style.display = "none";
-    } else {
+    } else if (data['waccess'] || data['superuser']) {
         tblheadPre["trashcan"] = "";
         colOrderPre.push("trashcan");
     }
@@ -249,13 +254,15 @@ function renderCell(col, celldata, cellid) {
     }
 
     if (col == "trashcan") {
-        str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-        str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+        if (obj.showtrashcan) {
+            str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+            str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+        }
     } else if (col == "filename") {
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
         } else {
-            str += "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + obj.filename + "\")'>" + obj.shortfilename + "</span>";
+            str+="<span class='nowrap-filename' id='openFile' onclick='filePreview(\"" + obj.shortfilename + "\",\"" + obj.filePath + "\", \"" + obj.extension + "\")'>" + obj.shortfilename + "</span>";
         }
     } else if (col == "filesize") {
         if (obj.kind == "Link") {
@@ -266,6 +273,7 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "extension" || col == "uploaddate") {
         str += "<span>" + celldata + "</span>";
     } else if (col == "editor") {
+        if(obj.showeditor){
         if (obj.extension == "md" || obj.extension == "txt") {
             str = "<span class='iconBox'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
@@ -273,16 +281,90 @@ function renderCell(col, celldata, cellid) {
             str = "<span class='iconBox'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
+    }
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     }
     return str;
 }
+
+function filePreview(name, path, extension){
+    document.querySelector(".fileViewContainer").style.display = "block";
+    document.querySelector(".fileViewWindow").style.display = "block";
+    document.querySelector(".fileName").textContent = name;
+
+    if(extension === "jpg" || extension === "png" || extension == "gif"){
+        imgPreview(path);
+    }else if (extension === "php" || extension === "html" || extension === "md" || extension === "js" || extension === "txt"){
+        codeFilePreview(path);
+    }
+    fileDownload(name, path, extension);
+}
+
+function imgPreview(path){
+    var img = document.createElement("img");
+    img.src = path;
+    img.onerror = function(e) {
+        img.style.display = "none";
+    };
+    document.querySelector(".fileView").appendChild(img);
+}
+
+function codeFilePreview(path){
+    var preview = document.createElement("embed");
+    preview.setAttribute("height", "70%");
+    preview.setAttribute("width", "90%");
+    preview.style.border = "4px solid #614875";
+    preview.style.backgroundColor = "white";
+    preview.style.margin = "5px";
+    preview.src = path;
+    document.querySelector(".fileView").appendChild(preview);
+}
+
+function fileDownload(name, path, extension){
+    var a = document.createElement("a");
+    var h1 = document.createElement("h1");
+    var div = document.createElement("div");
+    h1.textContent = "Download file";
+    a.href = path;
+    a.textContent = name + "." + extension;
+    a.download = name;
+    div.appendChild(h1);
+    div.appendChild(a);
+    document.querySelector(".fileView").appendChild(div);
+    window.addEventListener('error', function(e) {
+        h1.textContent = "File unavailable";
+        a.textContent = "Empty link";
+    }, true);
+}
+
+// Close the file preview window by 'x' button or ESC key ----
+function filePreviewClose(){
+    var fileview = document.querySelector(".fileView");
+    $(".fileViewContainer").hide();
+    $(".fileViewWindow").hide();
+    while(fileview.firstChild){
+        fileview.removeChild(fileview.firstChild);
+    }
+}
+
+document.addEventListener('keydown', function (event) {
+    var fileview = document.querySelector(".fileView");
+    if (event.key === 'Escape') {
+      $(".fileViewContainer").hide();
+      $(".fileViewWindow").hide();
+      while(fileview.firstChild){
+        fileview.removeChild(fileview.firstChild);
+        }
+    }
+  })
+
+
 //---------------------------------------------------------------
-//sortFilesByKind <- Callback function sorts the files by its kind
+//filterFilesByKind <- Callback function sorts the files by its kind
 //---------------------------------------------------------------
 
-function sortFilesByKind(kind){
+function filterFilesByKind(kind){
     $("#fileLink table tbody tr").hide();
     if(kind == "Global"){
         $( "td:contains('Global')" ).parents("tr").show();
@@ -490,7 +572,7 @@ function deleteFile(fileid, filename, filekind) {
 }
 
 function createQuickItem() {
-    showFilePopUp('MFILE');
+    //showFilePopUp('MFILE');
 }
 
 /*****************************************************************
@@ -697,6 +779,10 @@ $("#fabBtn").on("touchstart", function (e) {
 $("#fab-btn-list").show();
     TouchFABDown(e);
 });
+ $("ol.fab-btn-list li").on('click', function () {
+    $("#addFile").show();
+
+ });
 });
 
 $(document).on("touchend", function (e) {
@@ -718,3 +804,20 @@ document.addEventListener('DOMContentLoaded', function (){
  function updateAce(data){
     editor.getSession().setValue(data);
 }
+
+// ---------------------------------------------------
+// Toggle to hide fab-button to click through it with CTRL
+//----------------------------------------------------
+
+document.addEventListener('keydown', function(e) {
+	var element = document.getElementById('fabButton');
+	if(e.keyCode === 17){
+		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
+			element.style.opacity = "1";
+			element.style.pointerEvents = "auto";
+		}else{
+            element.style.opacity = "0.3";
+			element.style.pointerEvents = "none";
+		}	
+	}
+});

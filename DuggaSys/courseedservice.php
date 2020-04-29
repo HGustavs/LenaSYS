@@ -44,16 +44,6 @@ if(isset($_SESSION['uid'])){
 $ha=null;
 $debug="NONE!";
 
-// Gets username based on uid
-$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
-$query->bindParam(':uid', $userid);
-$query-> execute();
-
-// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
-while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-	$username = $row['username'];
-}
-
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php",$userid,$info);
@@ -84,11 +74,12 @@ if(checklogin()){
 				$debug="Error updating entries\n".$error[2];
 			} 
 
-			$description=$coursename." ".$coursecode;
-			logUserEvent($username, EventTypes::AddCourse, $description);
+			// Logging for creating new course
+			$description=$coursename." ".$coursecode." "."Hidden";
+			logUserEvent($userid, EventTypes::AddCourse, $description);
 
 		}else if(strcmp($opt,"NEWVRS")===0){
-			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
 
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursecode', $coursecode);
@@ -96,7 +87,14 @@ if(checklogin()){
 			$query->bindParam(':versname', $versname);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':coursenamealt', $coursenamealt);
+      $query->bindParam(':motd', $motd);
 
+			// if start and end dates are null, insert mysql null value into database
+			if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+			else $query->bindParam(':startdate', $startdate);
+			if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
+			else $query->bindParam(':enddate', $enddate);
+			
 			/*
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -129,6 +127,11 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error inserting entries\n".$error[2];
 			} 
+
+			// Logging for create a fresh course version
+			$description=$cid." ".$versid;
+			logUserEvent($userid, EventTypes::AddCourseVers, $description);
+
 
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 				$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
@@ -182,6 +185,10 @@ if(checklogin()){
 					$error=$query->errorInfo();
 					$debug="Error updating entries\n".$error[2];
 				}
+
+				// Logging for creating a copy of course version
+				$description=$cid." ".$versid;
+				logUserEvent($userid, EventTypes::AddCourseVers, $description);
 
 				// Duplicate duggas and dugga variants
 				$duggalist=array();
@@ -440,6 +447,7 @@ if(checklogin()){
 				$debug="Error updating entries\n".$error[2];
 			}
 
+			// Belongs to Logging 
 			if($visibility==0){
 				$visibilityName = "Hidden";
 			}
@@ -453,8 +461,9 @@ if(checklogin()){
 				$visibilityName = "Deleted";
 			}
 			
+			// Logging for editing of course
 			$description=$coursename." ".$coursecode." ".$visibilityName;
-			logUserEvent($username, EventTypes::EditCourse, $description);
+			logUserEvent($userid, EventTypes::EditCourse, $description);
 
 		}else if(strcmp($opt,"SETTINGS")===0){
 		$query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");

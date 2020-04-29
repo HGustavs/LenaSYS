@@ -73,6 +73,7 @@
             } else {
                 echo getenv(fileowner($putFileHere))['name'];
             }
+            +
             "<br><br>" +
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
@@ -153,9 +154,9 @@
     echo 'Enter hostname (e.g localhost). <br>';
     echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
     echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
-    
+
     if($dbUsername || $dbHostname || $dbName || $dbPassword){
-        echo "<br><b>Values from existing coursesyspw.php were used </b><br>"; 
+        echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
     }
 
     echo '</div>';
@@ -844,7 +845,7 @@ define(\"DB_NAME\",\"".$databaseName."\");
           echo "</code></div>";
           echo '<div id="copied1">Copied to clipboard!<br></div>';
         }
-		
+
 		//Check upload_max_filesize parameter
 		if(ini_get('upload_max_filesize')!='128M'){
 			echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";

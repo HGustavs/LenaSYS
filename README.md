@@ -9,7 +9,7 @@ Make sure you have a working install of apache2 and other needed packages. Look 
 
 To install a fresh copy of LenaSYS on your system an installes has been created called 'install.php'.
 This installer is located in the LenaSYS directory.
-What the installer will do is to help you create a new user in the MySQL database and a new database and fill it with some test data (if desired) to help you get started. It will also guide you through the steps necessary to link LenaSYS to this newly created database and get it running. 
+What the installer will do is to help you create a new user in the MySQL database and a new database and fill it with some test data (if desired) to help you get started. It will also guide you through the steps necessary to link LenaSYS to this newly created database and get it running.
 
 **1. To start the installation, put the LenaSYS directory at the place you want the system located.**
 
@@ -32,7 +32,7 @@ What the installer will do is to help you create a new user in the MySQL databas
 ## 5. Database creation
 <img src="Shared/Documentation/Install/Install_3.png" width="512">
 
-* The last step is to fill the three boxes. The upper box should be checked if a new database with the provided name should be created (this will only initialize a new database for the site and create empty tables to hold information). 
+* The last step is to fill the three boxes. The upper box should be checked if a new database with the provided name should be created (this will only initialize a new database for the site and create empty tables to hold information).
 * If the created database should be filled with some test data (this includes some courses, users, etc.). This can be used to easily test the new installation of the system.
 
 ## 6. Database overwrite
@@ -55,16 +55,26 @@ What the installer will do is to help you create a new user in the MySQL databas
 <img src="Shared/Documentation/Install/Install_6.png" width="512">
 
 
+
 **The installation should now be completed and the website should be linked to the database.**
 #### CONGRATULATIONS!
 
 ## 10. Handling possible remaining errors
 If LenaSYS is still not functional, possible errors may be found in \apache2\logs. It is very possible that the installer promts you to change upload_max_filesize in ini.php. Make sure that the webserver is restarted after any changes to php.ini. Another issue commonly encountered is ": PHP Fatal error: Uncaught PDOException:could not find driver...". To solve this, enbale the following drivers in the ini.php file by uncommenting them: php_pdo.dll, php_pdo_mysql.dll, php_pdo_odbc.dll and php_pdo_sqlite.dll.
 
+## To get ZIP-ARCHIVE to work(used in download zip function)
+* If the zip function to work your server needs to have to zip plugin installed and activated.
+  on linux you need to do:
+  sudo apt-get install php7.2-zip (if the server is running a different php install the right version or ZIP-ARCHIVE)
+  sudo /etc/init.d/apache2 restart
+
+* for windows: should be built in to php. please google ZIP-ARCHIVE if it still don't work.
+
+* The you need to give the LenaSYS directory enough permissions to read and write for this you can do "chmod -R 777 *folder*" 
 
 # Push notifications installation
 
-**Note:** For the push notification system to work the server needs to use https, so make sure that is set up and valid. 
+**Note:** For the push notification system to work the server needs to use https, so make sure that is set up and valid.
 
 To set up https, look at the guide on this wiki page: [Getting a free ssl certificate and installing it when not having access to port 80](https://github.com/HGustavs/LenaSYS/wiki/Getting-a-free-ssl-certificate-and-installing-it-when-not-having-access-to-port-80)
 
