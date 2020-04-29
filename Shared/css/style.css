@@ -6323,15 +6323,25 @@ textarea#filecont {
 }
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
+  width: 100%;
 }
 #motdArea{
-  border: 2px;
+  border: 1px;
   border-radius: 2px;
   border-style: solid;
-  border-color: rgba(254, 204, 86, 1);
-  background-color: rgba(254, 204, 86, 1);
+  border-color: #614875;
+  background-color: #FECC56;
   justify-content: center;
   align-items: center;
+  background-color: var(--color-accent);
+  z-index: 1000;
+  
+  
+  position: relative;
+  
+  margin-top: -16px;
+  margin-bottom: 7px;
+  max-width: auto;
 }
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
@@ -6340,25 +6350,36 @@ textarea#filecont {
   cursor: default;
   display: flex;
   justify-content: space-around;
+  position: relative;
+  
 }
 .motdBoxheader h3 {
   font-size: 20px;
+  color: #614875;
   margin-top: 10px;
   line-height: 0.5em;
-  color: black;
   text-align: center;
   width: 100%;
 }
-.motdBoxheader div {
+
+#motd {
+  color: #614875;
+}
+.cursorPointerMOTD{
   padding: 4px 20px;
-  color: black;
+  color: white;
   cursor: pointer;
-  background-color: rgb(199, 80, 80);
+  background-color:#614875;
   font-family: arial;
   font-weight: bold;
+  position: absolute;
+  right:0%;
 }
 
 .motdBoxheader div:hover {
-  background-color: #ce3d3d;
+  background-color: #694e7e;
+  border: 2px;
+  border-style: solid;
+  border-color: white;
 }
 
