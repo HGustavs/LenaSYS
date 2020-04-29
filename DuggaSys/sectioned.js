@@ -420,7 +420,7 @@ function newItem() {
   AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
-  setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
+  //setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
 
 //----------------------------------------------------------------------------------
@@ -685,7 +685,7 @@ function returnedSection(data) {
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
-        if(item['pos'] == "-1"){
+        if(item['pos'] == "-1" || item['pos'] == "100"){
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
         }
         else{
