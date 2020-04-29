@@ -1497,9 +1497,8 @@ function hideSSN(ssn){
 }
 
 function showLegend(){
-
 	if (legendIsHidden == false){
-		$('#resultedlegendContainer').css("transform","translate(350px,0)");
+		$('#resultedlegendContainer').css("transform","translate(360px,0)");
 		legendIsHidden = true;
 	}
 	else if (legendIsHidden == true){
@@ -1507,10 +1506,8 @@ function showLegend(){
 		legendIsHidden = false;
 	}
 	else{
-		alert(legendIsHidden);
+		//alert(legendIsHidden);
 	}
-	
-
 }
 
 function compare(firstCell, secoundCell) {

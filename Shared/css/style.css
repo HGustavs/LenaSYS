@@ -2928,9 +2928,9 @@ span.arrow {
   float: right;
   z-index: 10;
   transition: transform 0.2s ease;
-  transform: translateX(350px);
+  transform: translateX(360px);
   position: fixed;
-  top: 114px;
+  top: 113px;
   right: 10px;
 }
 
@@ -2944,19 +2944,39 @@ span.arrow {
   font-size: 20px;
   text-align: center;
   border-radius: 17px 0px 0px 17px;
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -webkit-user-select: none;     
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .legendList{
+  width: 270px;
   float: right;
+  padding-top: 10px;
   padding-right: 40px;
   list-style: none;
   background-color: #ddd;
   margin: 0px;
   border-radius: 0px 0px 0px 5px;
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .legendListItem{
   padding-bottom: 8px;
+}
+
+.legendList div{
+  display: inline-block;
+}
+
+.legendList div:first-of-type{
+  font-weight: bold;
 }
 
 .legendListItem img{
