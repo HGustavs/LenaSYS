@@ -286,6 +286,37 @@ function loadServiceCrashes() {
 			$('#analytic-info').append(str);
 		});
 	});
+
+}
+
+
+function loadFileInformation() {
+	loadAnalytics("fileInformation", function(data) {
+		$('#analytic-info').append("<p>File information for created and edited files.</p>");
+
+		var tableData = [["Username", "Action", "Version", "File", "Timestamp"]];
+		for (var i = 0; i < data.length; i++) {
+			var description = data[i].description.split(" ");
+			var version = description[0];
+			var file =  description[1];
+
+			if(data[i].eventType == 15){
+				var action = "Created"
+			}
+			else{
+				var action = "Edited"
+			}
+
+			tableData.push([
+				data[i].userName,
+				action,
+				version,
+				file,
+				data[i].timestamp
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+	});
 }
 
 //------------------------------------------------------------------------------------------------

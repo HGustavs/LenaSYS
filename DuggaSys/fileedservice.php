@@ -92,10 +92,22 @@ if (checklogin() && $hasAccess) {
 
         if ($kind == 2) {
             $currcwd .= "/courses/global/" . $filename;
+
+            // Logging for global files
+            $description="Global"." ".$filename;
+            logUserEvent($userid, EventTypes::EditFile, $description);
         } else if ($kind == 3) {
             $currcwd .= "/courses/" . $cid . "/" . $filename;
+
+            // Logging for course local files
+            $description="CourseLocal"." ".$filename;
+            logUserEvent($userid, EventTypes::EditFile, $description);
         } else if ($kind == 4) {
             $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
+            
+            // Logging for version local files
+            $description="VersionLocal"." ".$filename;
+            logUserEvent($userid, EventTypes::EditFile, $description);
         }
 
         // Only edit the file if it already exisiting
