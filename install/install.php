@@ -86,6 +86,7 @@
         }
 </script>
 
+<!-- START Section for button showing popup, NOT WORKING ATM -->
 <script>
         var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
         // Open modal on button click
@@ -98,6 +99,7 @@
     <h1>LenaSYS Installer</h1>
     <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
 </div>
+<!-- END Section for button showing popup, NOT WORKING ATM -->
 
 <!-- START OF INPUT FORM SECTION -->
 <form action="install.php?mode=install" method="post">
