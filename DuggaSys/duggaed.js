@@ -979,6 +979,11 @@ function mouseDown(e){
 // mouseUp: make sure mousedown is only handled in one single place regardless if touch or mouse
 //----------------------------------------------------------------------------------
 
+function createQuickItem(){
+ 		selectDugga("UNK");
+ 		//createDugga();
+}
+
 function mouseUp(e){
 
 }
