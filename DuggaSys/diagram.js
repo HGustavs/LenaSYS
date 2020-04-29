@@ -5244,8 +5244,12 @@ function loadAppearanceForm() {
     }
     if(appearanceObjects.length < 1) return;
 
+    //Stores current index and maximum index for each type of selected object
+    //Current index will be used for comma separation, to only create comma when max is more than current
     const indexes = {};
 
+    //Reduce the selected objects array to a Map with key symbolKind and value the number of times that symbolKind occurs
+    //Iterate through the map and put the correct values in the indexes object
     appearanceObjects.reduce((result, object) => {
         result.set(object.symbolkind || 0, (result.get(object.symbolkind || 0) || 0) + 1);
         return result;
@@ -5262,6 +5266,7 @@ function loadAppearanceForm() {
     //Get all unique types of selected objects
     const types = Object.keys(indexes).map(Number);
 
+    //The max index for the name input should be based on all object types that have the name input
     indexes.name = {
         current: 0,
         max: types.reduce((result, type) => {
