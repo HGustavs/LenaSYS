@@ -418,6 +418,8 @@ if($ha){
 								 	else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
 									$error=true;
 								}
+                         $discription = $filetype." ".$fname;
+                         logUserEvent($userid,EventTypes::DuggaFileupload,$discription);
 						}
 				}
 
@@ -425,7 +427,7 @@ if($ha){
 
 }
 
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive_dugga.php", $userid,$info);
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filereceive_dugga.php", $userid,$info);
 /* Commenting this out because error should be displayed in showDugga, so redirect regardless of whether or not the file extension is allowed.
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id

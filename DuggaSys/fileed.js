@@ -73,6 +73,10 @@ $(function () {
 //----------------------------------------------------------------------------
 
 function returnedFile(data) {
+    //Redirects users without access to courseed.php
+    if (!data.access) {
+        window.location.href = 'courseed.php';S
+    }
     filez = data;
     var tblheadPre = {
         filename: "File name",
@@ -857,3 +861,20 @@ document.addEventListener('DOMContentLoaded', function (){
  function updateAce(data){
     editor.getSession().setValue(data);
 }
+
+// ---------------------------------------------------
+// Toggle to hide fab-button to click through it with CTRL
+//----------------------------------------------------
+
+document.addEventListener('keydown', function(e) {
+	var element = document.getElementById('fabButton');
+	if(e.keyCode === 17){
+		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
+			element.style.opacity = "1";
+			element.style.pointerEvents = "auto";
+		}else{
+            element.style.opacity = "0.3";
+			element.style.pointerEvents = "none";
+		}	
+	}
+});

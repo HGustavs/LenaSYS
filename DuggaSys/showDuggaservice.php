@@ -260,6 +260,8 @@ if(checklogin()){
         if(strcmp($opt,"SAVDU")==0){				
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
+            $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
+            logUserEvent($userid,EventTypes::DuggaFileupload,$discription);
 
             //Seperate timeUsed, stepsUsed and score from $answer
             $temp = explode("##!!##", $answer);

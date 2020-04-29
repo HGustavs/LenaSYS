@@ -12,7 +12,6 @@
 	max-height: 90%;
 }
 
-
 #box2wrapper {
     position: absolute;
     top:auto !important;
@@ -28,63 +27,40 @@
     min-height: 10%;
 	max-height: 90%;
 }
+
 @media only screen 
 and (max-device-width : 725px) {
-    #div2{
-        top: 0px;
-    }
-    .resetbtn{
-        display:none;
-    }
-    .morebtn{
-        display: block;
-    }
-    .morebtn:hover .moreboxes-content {display: block;}
     #box1wrapper{
-    position: absolute;
-    left: 0px;
-    height: -moz-calc(35.0%);
-    height: -webkit-calc(35.0%);
-    height: calc(35.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
-    min-height: 10%;
-	max-height: 50%;
-    min-width: 100%;
-	max-width: 100%;
-    bottom: 50%;
-}
-    .codeborder{
-        position: none;
-        
+        position: absolute;
+        left: 0px;
+        height: -moz-calc(35.0%);
+        height: -webkit-calc(35.0%);
+        height: calc(35.0%);
+        width: -moz-calc(100.0%)!important;
+        width: -webkit-calc(100.0%)!important;
+        width: calc(100.0%)!important;
+        min-height: 10%;
+	    max-height: 90%;
+        min-width: 100%;
+	    max-width: 100%;
     }
-
 
     #box2wrapper {
-    position: absolute;
-    top:auto !important;
-    bottom: 0px;
-    left: 0px;
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
-    font-family: Arial,Sans-Serif;
-    min-height: 10%;
-	max-height: 50%;
-    min-width: 100%;
-	max-width: 100%;
-}
-    #div2{
-        top: 50px !important;
+        position: absolute;
+        top:auto !important;
+        bottom: 0px;
+        left: 0px;
+        height: -moz-calc(65.0%);
+        height: -webkit-calc(65.0%);
+        height: calc(65.0%);
+        width: -moz-calc(100.0%)!important;
+        width: -webkit-calc(100.0%)!important;
+        width: calc(100.0%)!important;
+        font-family: Arial,Sans-Serif;
+        min-height: 10%;
+	    max-height: 90%;
+        min-width: 100%;
+	    max-width: 100%;
     }
-
-
-
-
-
 }
 

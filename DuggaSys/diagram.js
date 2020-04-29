@@ -117,6 +117,13 @@ var md = mouseState.empty;          // Mouse state, Mode to determine action on 
 var hoveredObject = false;
 var markedObject = false;
 var lineStartObj = -1;
+var fullscreen = false;             // Used to toggle fullscreen 
+var old_container_marginTop;        // Used to revert changes from fullscreen
+var old_container_marginLeft;       // Used to revert changes from fullscreen
+var old_container_width;            // Used to revert changes from fullscreen
+var old_container_height;           // Used to revert changes from fullscreen
+var old_container_position;         // Used to revert changes from fullscreen
+var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -133,7 +140,10 @@ var togglePaper = false;               // toggle if Paper outline is drawn
 var togglePaperHoles = false;          // toggle if paper holes are drawn
 var switchSidePaperHoles = "left";     // switching the sides of the paper-holes
 var paperOrientation = "portrait";     // If virtual paper is portrait or landscape
+var paperWidth;
+var paperHeight;
 var singlePaper = false;               // Toggle between single/repeated paper
+var togglePageNumber = false;			//Toggle to show the pagenumbers
 var paperSize = 4;					//toggle pappersize for canvas devider.
 var enableShortcuts = true;         // Used to toggle on/off keyboard shortcuts
 var targetMode = "ER";              // Default targetMode
@@ -174,8 +184,6 @@ var globalappearanceMenuOpen = false;   // True if global appearance menu is ope
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
-var classAppearanceOpen = false;        // True if appearance menu is open for type class
-var textAppearanceOpen = false;         // True if appearance menu is open for type text
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
@@ -218,7 +226,9 @@ const defaultXKey = 88;
 const defaultWindowsKey = 91;
 const defaultNum1 = 97;
 const defaultNum2 = 98;
+const defaultF11Key = 122;
 const defaultLessThanKey = 226;
+
 //Keybinding variables                       
 isBindingKey = false;                        // Is used when binding keys
 keyBeingBound = null;
@@ -260,6 +270,7 @@ var keyMap = { //rebindable keys format is (keyName, default-value)
     num1 : defaultNum1,
     num2 : defaultNum2,
     lessThanKey : defaultLessThanKey,
+    f11Key :  defaultF11Key,
 }
 
 // Map keycodes to key names
@@ -472,118 +483,140 @@ function init() {
     loadDiagram(); 
     setModeOnRefresh(); 
     initAppearanceForm();
+    setPaperSize(event, 4);
     updateGraphics(); 
 }
 
 //--------------------------------------------------------------
-// DIAGRAM EXAMPLE DATA SECTION
+// Generates an example of a ER-diagram
 //--------------------------------------------------------------
 
-var erEntityA;
-
-function generateExampleCode() {
-    // Declare three paths
-    var pathA = new Path;
-    var pathB = new Path;
-    var pathC = new Path;
-    // Add segments to paths
-    pathA.addsegment(1, 0, 1);
-    pathA.addsegment(1, 1, 3);
-    pathA.addsegment(1, 3, 2);
-    pathA.addsegment(1, 2, 0);
-    pathA.addsegment(1, 6, 7);
-    pathA.addsegment(1, 7, 8);
-    pathA.addsegment(1, 8, 9);
-    pathA.addsegment(1, 9, 6);
-    pathB.addsegment(1, 18, 17);
-    pathB.addsegment(1, 17, 4);
-    pathB.addsegment(1, 4, 5);
-    pathB.addsegment(1, 5, 18);
-    pathC.addsegment(1, 10, 11);
-    pathC.addsegment(1, 11, 13);
-    pathC.addsegment(1, 13, 12);
-    pathC.addsegment(1, 12, 10);
-
-    // Create a UML Class and add three attributes, two operations and a name
-    classA = new Symbol(1);
-    classA.name = "Person";
-    classA.attributes.push({text:"+ height:Integer"});
-    classA.attributes.push({text:"# at:Large"});
-    classA.attributes.push({text:"- megalomania:Real"});
-    classA.operations.push({text:"+ hold(name:String)"});
-    classA.operations.push({text:"- makemore()"});
-    classA.topLeft = 14;
-    classA.bottomRight = 15;
-    classA.middleDivider = 16;
-    erAttributeA = new Symbol(2);
+function generateERExampleCode() {
+    //Create some entities and attributes
+    var erAttributeA = new Symbol(2);
     erAttributeA.name = "SSN";
-    erAttributeA.topLeft = 19;
-    erAttributeA.bottomRight = 20;
-    erAttributeA.centerPoint = 21;
-    erAttributeB = new Symbol(2);
+    erAttributeA.topLeft = points.addPoint(770, 270, false);
+    erAttributeA.bottomRight = points.addPoint(880, 330, false);
+    erAttributeA.centerPoint = points.addPoint((770 + 880) * 0.5, (270 + 330) * 0.5, false);
+    var erAttributeB = new Symbol(2);
     erAttributeB.name = "Name";
-    erAttributeB.topLeft = 22;
-    erAttributeB.bottomRight = 23;
-    erAttributeB.centerPoint = 24;
-    erAttributeC = new Symbol(2);
+    erAttributeB.topLeft = points.addPoint(770, 370, false);
+    erAttributeB.bottomRight = points.addPoint(880, 430, false);
+    erAttributeB.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
+    var erAttributeC = new Symbol(2);
     erAttributeC.name = "Smell";
-    erAttributeC.topLeft = 30;
-    erAttributeC.bottomRight = 31;
-    erAttributeC.centerPoint = 32;
-    erAttributeD = new Symbol(2);
+    erAttributeC.topLeft = points.addPoint(120, 370, false);
+    erAttributeC.bottomRight = points.addPoint(230, 430, false);
+    erAttributeC.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
+    var erAttributeD = new Symbol(2);
     erAttributeD.name = "Stink";
-    erAttributeD.topLeft = 33;
-    erAttributeD.bottomRight = 34;
-    erAttributeD.centerPoint = 35;
-    erAttributeE = new Symbol(2);
+    erAttributeD.topLeft = points.addPoint(120, 270, false);
+    erAttributeD.bottomRight = points.addPoint(230, 330, false);
+    erAttributeD.centerPoint = points.addPoint((120 + 230) * 0.5, (270 + 330) * 0.5, false);
+    var erAttributeE = new Symbol(2);
     erAttributeE.name = "Verisimilitude";
-    erAttributeE.topLeft = 36;
-    erAttributeE.bottomRight = 37;
-    erAttributeE.centerPoint = 38;
-    erEntityA = new Symbol(3);
+    erAttributeE.topLeft = points.addPoint(450, 60, false);
+    erAttributeE.bottomRight = points.addPoint(560, 120, false);
+    erAttributeE.centerPoint = points.addPoint((450 + 560) * 0.5, (60 + 120) * 0.5, false);
+    var erEntityA = new Symbol(3);
     erEntityA.name = "Person";
-    erEntityA.topLeft = 25;
-    erEntityA.bottomRight = 26;
-    erEntityA.centerPoint = 27;
-    erattributeRelA = new Symbol(4);
-    erattributeRelA.topLeft = 28;
-    erattributeRelA.bottomRight = 24;
-    erattributeRelB = new Symbol(4);
-    erattributeRelB.topLeft = 29;
-    erattributeRelB.bottomRight = 21;
+    erEntityA.topLeft = points.addPoint(450, 300, false);
+    erEntityA.bottomRight = points.addPoint(560, 360, false);
+    erEntityA.centerPoint = points.addPoint((450 + 560) * 0.5, (300 + 360) * 0.5, false);
+    var erEntityB = new Symbol(3);
+    erEntityB.name = "Pet";
+    erEntityB.topLeft = points.addPoint(450, 550, false);
+    erEntityB.bottomRight = points.addPoint(560, 610, false);
+    erEntityB.centerPoint = points.addPoint((450 + 560) * 0.5, (600 + 660) * 0.5, false);
+    var erRelationA = new Symbol(5);
+    erRelationA.name = "Has";
+    erRelationA.topLeft = points.addPoint(450, 430, false);
+    erRelationA.bottomRight = points.addPoint(560, 490, false);
+    erRelationA.centerPoint = points.addPoint((450 + 560) * 0.5, (400 + 460) * 0.5, false);
 
-    // We connect the connector point to the middle point of the attribute in this case
-    erattributeRelC = new Symbol(4);
-    erattributeRelC.topLeft = 39;
-    erattributeRelC.bottomRight = 32;
-    erattributeRelD = new Symbol(4);
-    erattributeRelD.topLeft = 40;
-    erattributeRelD.bottomRight = 35;
-    erattributeRelE = new Symbol(4);
-    erattributeRelE.topLeft = 41;
-    erattributeRelE.bottomRight = 38;
-    erEntityA.connectorRight.push({from:28, to:24});
-    erEntityA.connectorRight.push({from:29, to:21});
-    erEntityA.connectorLeft.push({from:40, to:35});
-    erEntityA.connectorLeft.push({from:39, to:32});
-    erEntityA.connectorTop.push({from:41, to:38});
+    // Create connectors
+    var erattributeRelA = new Symbol(4);
+    erattributeRelA.topLeft = points.addPoint(560, 350, false);
+    erattributeRelA.bottomRight = points.addPoint(770, 400, false);
+    erattributeRelA.centerPoint = points.addPoint((560 + 770) * 0.5, (350 + 400) * 0.5, false);
+    var erattributeRelB = new Symbol(4);
+    erattributeRelB.topLeft = points.addPoint(560, 310, false);
+    erattributeRelB.bottomRight = points.addPoint(770, 300, false);
+    erattributeRelB.centerPoint = points.addPoint((560 + 770) * 0.5, (320 + 300) * 0.5, false);
+    var erattributeRelC = new Symbol(4);
+    erattributeRelC.topLeft = points.addPoint(230, 400, false);
+    erattributeRelC.bottomRight = points.addPoint(450, 350, false);
+    erattributeRelC.centerPoint = points.addPoint((230 + 450) * 0.5, (400 + 350) * 0.5, false);
+    var erattributeRelD = new Symbol(4);
+    erattributeRelD.topLeft = points.addPoint(230, 300, false);
+    erattributeRelD.bottomRight = points.addPoint(450, 310, false);
+    erattributeRelD.centerPoint = points.addPoint((230 + 450) * 0.5, (300 + 310) * 0.5, false);
+    var erattributeRelE = new Symbol(4);
+    erattributeRelE.topLeft = points.addPoint(505, 120, false);
+    erattributeRelE.bottomRight = points.addPoint(505, 300, false);
+    erattributeRelE.centerPoint = points.addPoint((505 + 505) * 0.5, (120 + 300) * 0.5, false);
+    var erRelationRelA = new Symbol(4);
+    erRelationRelA.topLeft = points.addPoint(505, 360, false);
+    erRelationRelA.bottomRight = points.addPoint(505, 550, false);
+    erRelationRelA.centerPoint = points.addPoint((505 + 505) * 0.5, (360 + 550) * 0.5, false);
 
     // Add all elements to diagram
     diagram.push(erattributeRelA);
     diagram.push(erattributeRelB);
     diagram.push(erattributeRelC);
-    diagram.push(pathA);
-    diagram.push(pathB);
-    diagram.push(pathC);
-    diagram.push(classA);
+    diagram.push(erattributeRelD);
+    diagram.push(erattributeRelE);
+    diagram.push(erRelationRelA);
     diagram.push(erAttributeA);
     diagram.push(erAttributeB);
     diagram.push(erAttributeC);
     diagram.push(erAttributeD);
     diagram.push(erAttributeE);
     diagram.push(erEntityA);
-    diagram.push(erattributeRelD);
-    diagram.push(erattributeRelE);
+    diagram.push(erEntityB);
+    diagram.push(erRelationA);
+}
+
+//--------------------------------------------------------------------
+// Generates an example of a UML-diagram
+//--------------------------------------------------------------------
+
+function generateUMLExampleCode() {
+    // Create a UML Class and add three attributes, two operations and a name
+    var classA = new Symbol(symbolKind.uml);
+    classA.name = "Person";
+    classA.attributes.push({text:"+ height:Integer"});
+    classA.attributes.push({text:"# at:Large"});
+    classA.attributes.push({text:"- megalomania:Real"});
+    classA.operations.push({text:"+ hold(name:String)"});
+    classA.operations.push({text:"- makemore()"});
+    classA.topLeft = points.addPoint(450, 300, false);
+    classA.bottomRight = points.addPoint(590, 430, false);
+    classA.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
+    classA.centerPoint = points.addPoint((450 + 590) * 0.5, (300 + 430) * 0.5, false);
+    
+    //Create a second UML class
+    var classB = new Symbol(symbolKind.uml);
+    classB.name = "Pet";
+    classB.attributes.push({text:"+ color:String"});
+    classB.attributes.push({text:"- megalomania:Real"});
+    classB.operations.push({text:"- beCute()"});
+    classB.topLeft = points.addPoint(700, 300, false);
+    classB.bottomRight = points.addPoint(840, 430, false);
+    classB.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
+    classB.centerPoint = points.addPoint((700 + 840) * 0.5, (300 + 430) * 0.5, false);
+
+    //Add some relations
+    var umlRelationA = new Symbol(symbolKind.umlLine);
+    umlRelationA.topLeft = points.addPoint(590, 365, false);
+    umlRelationA.bottomRight = points.addPoint(706, 365, false);
+    umlRelationA.centerPoint = points.addPoint((590 + 706) * 0.5, (365 + 365) * 0.5, false);
+    umlRelationA.cardinality = {"value": 1};
+
+    //Push to diagram
+    diagram.push(classA);
+    diagram.push(classB);
+    diagram.push(umlRelationA);
 }
 
 //--------------------------------------------------------------------
@@ -628,8 +661,12 @@ function keyDownHandler(e) {
     }
     if(key == keyMap.escapeKey && appearanceMenuOpen) {
         toggleApperanceElement();
-    } else if(key == keyMap.enterKey && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
-        submitAppearanceForm();
+    } else if(key == keyMap.enterKey && appearanceMenuOpen) {
+        if(document.activeElement.nodeName !== "TEXTAREA") {
+            submitAppearanceForm();
+        }
+    } else if(key == keyMap.escapeKey && fullscreen) {
+        toggleFullscreen();
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
@@ -680,15 +717,15 @@ function keyDownHandler(e) {
             fillCloneArray();
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
-            var temp = [];
-            for (var i = 0; i < cloneTempArray.length; i++) {
-                //Display cloned objects except lines
-                if (cloneTempArray[i].symbolkind != symbolKind.line
-                    && cloneTempArray[i].symbolkind != symbolKind.umlLine) {
-                    const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
-                    temp.push(diagram[cloneIndex]);
+            let temp = [];
+            for(const object of cloneTempArray) {
+                if(object.kind === kind.path) {
+                    temp.push(copyPath(object));
+                } else {
+                    temp.push(copySymbol(object));
                 }
             }
+            setConnectedLines(temp);
             cloneTempArray = temp;
             selected_objects = temp;
             updateGraphics();
@@ -741,14 +778,17 @@ function keyDownHandler(e) {
         } else if (shiftIsClicked && key == keyMap.dKey) {
         developerMode(event);
         } else if (shiftIsClicked && key == keyMap.mKey  && !modeSwitchDialogActive) {
-                toggleMode();
+            toggleMode();
         } else if (shiftIsClicked && key == keyMap.xKey) {
             lockSelected(event);
         } else if (shiftIsClicked && key == keyMap.oKey) {
             resetViewToOrigin(event);
         } else if (shiftIsClicked && key == keyMap.key4) {
             toggleVirtualPaper(event);
-        } else if (shiftIsClicked && key == keyMap.upArrow) {
+        } else if (shiftIsClicked && key == keyMap.f11Key) {
+            toggleFullscreen();
+        }
+        else if (shiftIsClicked && key == keyMap.upArrow) {
             align(event, 'top');
         } else if (shiftIsClicked && key == keyMap.rightArrow) {
             align(event, 'right');
@@ -757,6 +797,36 @@ function keyDownHandler(e) {
         } else if (shiftIsClicked && key == keyMap.leftArrow) {
             align(event, 'left');
         }
+    }
+}
+
+function setConnectedLines(temp) {
+    var connected = [];
+
+    for (var y = 0; y < cloneTempArray.length; y++) {
+        for (var x = 0; x < cloneTempArray.length; x++) {
+            if(cloneTempArray[x].kind !== kind.path && cloneTempArray[y].kind !== kind.path) {
+                if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)) {
+                    var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
+                    connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
+                } else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)) {
+                    var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
+                    connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});   
+                }
+            }
+        }
+    }
+
+    for(var j = 0 ; j < connected.length ; j++){
+        if(temp[connected[j].from].symbolkind == symbolKind.erAttribute){
+            temp[connected[j].to][connected[j].lineloc] = temp[connected[j].from].centerPoint;
+        }
+    }
+
+    for(var j = 0 ; j < connected.length ; j++){
+        var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
+        var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
+        temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
     }
 }
 
@@ -967,76 +1037,107 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 }
 
 //----------------------------------------------------------------------
-// copySymbol: Clone an object
+// copySymbol: Clone a symbol object
 //----------------------------------------------------------------------
 function copySymbol(symbol) {
-    var clone = new Symbol(symbol.symbolkind);
-    // copying the symbol attributes
-    clone.properties = jQuery.extend(true, {}, symbol.properties);
-    clone.lineDirection = jQuery.extend(true, {}, symbol.lineDirection);
-    clone.minWidth = jQuery.extend(true, {}, symbol.minWidth);
-    clone.minHeight = jQuery.extend(true, {}, symbol.minHeight);
-    clone.isOval = jQuery.extend(true, {}, symbol.isOval);
-    clone.isAttribute = jQuery.extend(true, {}, symbol.isAttribute);
-    clone.isRelation = jQuery.extend(true, {}, symbol.isRelation);
-    clone.pointsAtSamePosition = jQuery.extend(true, {}, symbol.pointsAtSamePosition);
-    clone.operations = jQuery.extend(true, {}, symbol.operations);
-    clone.attributes = jQuery.extend(true, {}, symbol.operations);
-    clone.cardinality = jQuery.extend(true, {}, symbol.cardinality);
+    const clone = Object.assign(new Symbol(symbol.symbolkind), JSON.parse(JSON.stringify(symbol)));
+    clone.connectorTop = [];
+    clone.connectorRight = [];
+    clone.connectorBottom = [];
+    clone.connectorLeft = [];
 
-    if (symbol.isLocked) {
-        clone.isLocked = jQuery.extend(true, {}, symbol.isLocked);
-        clone.isLockHovered = jQuery.extend(true, {}, symbol.isLockHovered);
+    const pointIndexes = {
+        topLeft: {
+            old: symbol.topLeft,
+        }, 
+        bottomRight: {
+            old: symbol.bottomRight
+        }, 
+        centerPoint: {
+            old: symbol.centerPoint
+        },
+        middleDivider: {
+            old: symbol.middleDivider
+        }
+    };
+
+    for(const key in pointIndexes) {
+        if(typeof pointIndexes[key].old !== "undefined") {
+
+            //Get the key that contains a new point whose old point was the same as the current iterations old point
+            //This is used to prevent new points from being created if multiple properties point to the same point
+            const keyContainsDuplicateOldPoint = Object.keys(pointIndexes).find(key2 => {
+                return (
+                    key !== key2 &&
+                    pointIndexes[key].old === pointIndexes[key2].old &&
+                    typeof pointIndexes[key2].new !== "undefined"
+                );
+            });
+
+            let newPointIndex = 0;
+            if(typeof keyContainsDuplicateOldPoint === "undefined") {
+                const point = points[pointIndexes[key].old];
+                newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+            } else {
+                newPointIndex = pointIndexes[keyContainsDuplicateOldPoint].new;
+            }
+            clone[key] = newPointIndex
+            pointIndexes[key].new = newPointIndex;
+        }
     }
 
-    var topLeftClone = jQuery.extend(true, {}, points[symbol.topLeft]);
-    topLeftClone.x += 10;
-    topLeftClone.y += 10;
+    symbol.targeted = false;
+    clone.targeted = true;
+    clone.setID(globalObjectID - 1);
 
-    var bottomRightClone = jQuery.extend(true, {}, points[symbol.bottomRight]);
-    bottomRightClone.x += 10;
-    bottomRightClone.y += 10;
+    diagram.push(clone);
 
-    var centerPointClone = jQuery.extend(true, {}, points[symbol.centerPoint]);
-    centerPointClone.x += 10;
-    centerPointClone.y += 10;
+    return clone;
+}
 
-    if (symbol.symbolkind == symbolKind.uml) {
-        var middleDividerClone = jQuery.extend(true, {}, points[symbol.middleDivider]);
-        middleDividerClone.x += 10;
-        middleDividerClone.y += 10;
-    }
+//----------------------------------------------------------------------
+// copySymbol: Clone a path object
+//----------------------------------------------------------------------
+function copyPath(path) {
+    const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
 
-    if(symbol.symbolkind == symbolKind.uml) {
-        clone.name = symbol.name;
-    }else if(symbol.symbolkind == symbolKind.erAttribute) {
-        clone.name = symbol.name;
-    }else if(symbol.symbolkind == symbolKind.erEntity) {
-        clone.name = symbol.name;
-    }else if(symbol.symbolkind == symbolKind.line) {
-        clone.name = symbol.name;
-    }else if(symbol.symbolkind == symbolKind.text) {
-        clone.name = symbol.name;
-        clone.textLines.push({text:clone.name});
-    } else{
-        clone.name = symbol.name;
-    }
+    const oldPointIndexes = clone.segments.reduce((result, segment) => {
+        result.push(segment.pa);
+        result.push(segment.pb);
+        return [...new Set(result)];
+    }, []);
 
-    clone.topLeft = points.push(topLeftClone) - 1;
-    clone.bottomRight = points.push(bottomRightClone) - 1;
+    const pointIndexes = oldPointIndexes.reduce((result, pointIndex) => {
+        const point = points[pointIndex];
+        const newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
 
-    if(clone.symbolkind != symbolKind.uml) {
-        clone.centerPoint = points.push(centerPointClone) - 1;
-    }else {
-        clone.middleDivider = points.push(middleDividerClone) - 1;
-        clone.centerPoint = clone.middleDivider;
+        result.push({
+            old: pointIndex,
+            new: newPointIndex
+        });
+
+        return result
+    }, []);
+
+    for(const segment of clone.segments) {
+        for(const pointIndex of pointIndexes) {
+            if(segment.pa === pointIndex.old) {
+                segment.pa = pointIndex.new;
+            }
+            if(segment.pb === pointIndex.old) {
+                segment.pb = pointIndex.new;
+            }
+        }
     }
 
     clone.targeted = true;
-    symbol.targeted = false;
+    path.targeted = false;
+
+    clone.calculateBoundingBox();
+
     diagram.push(clone);
 
-    return diagram.length;
+    return clone;
 }
 
 //--------------------------------------------------------------------
@@ -1488,9 +1589,9 @@ function initializeCanvas() {
     canvas.addEventListener("mousedown", mousedownevt, false);
     canvas.addEventListener("mouseup", mouseupevt, false);
     canvas.addEventListener('dblclick', doubleclick, false);
-    canvas.addEventListener('touchmove', mousemoveevt, false);
-    canvas.addEventListener('touchstart', mousedownevt, false);
-    canvas.addEventListener('touchend', mouseupevt, false);
+    canvas.addEventListener('touchmove', touchMoveEvent, false);
+    canvas.addEventListener('touchstart', touchStartEvent, false);
+    canvas.addEventListener('touchend', touchEndEvent, false);
     canvas.addEventListener('wheel', scrollZoom, false);
   
     drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
@@ -1508,7 +1609,8 @@ function initializeCanvas() {
 
 function clearActiveDropdownElement(){
     if (document.activeElement.className.match("menu-drop-down") || 
-    document.activeElement.className.match("drop-down-item")) {
+    document.activeElement.className.match("drop-down-item") ||
+    document.activeElement.className.match("drop-down-label")) {
         document.activeElement.blur();
     }
 
@@ -1554,14 +1656,16 @@ function toggleVirtualPaper(event) {
         $("#Paper-holes-item").addClass("drop-down-item drop-down-item-disabled");
         $("#Paper-orientation-item").addClass("drop-down-item drop-down-item-disabled");
         $("#Paper-holes-item-right").addClass("drop-down-item drop-down-item-disabled");
-        $("#Paper-single-item").addClass("drop-down-item drop-down-item-disabled");
+		$("#Paper-single-item").addClass("drop-down-item drop-down-item-disabled");
+		$("#Paper-pagenumber-item").addClass("drop-down-item drop-down-item-disabled");
         hidePaperState();
         updateGraphics();
     } else {
         togglePaper = true;
         $("#Paper-holes-item").removeClass("drop-down-item drop-down-item-disabled");
         $("#Paper-orientation-item").removeClass("drop-down-item drop-down-item-disabled");
-        $("#Paper-single-item").removeClass("drop-down-item drop-down-item-disabled");
+		$("#Paper-single-item").removeClass("drop-down-item drop-down-item-disabled");
+		$("#Paper-pagenumber-item").removeClass("drop-down-item drop-down-item-disabled");
         if (togglePaperHoles) {
             $("#Paper-holes-item-right").removeClass("drop-down-item drop-down-item-disabled");
         } else {
@@ -1595,8 +1699,8 @@ function drawVirtualPaper() {
 		[148,210],
 		[105,148]
 	];
-    const paperWidth = papersizes[paperSize][0] * pixelsPerMillimeter;
-    const paperHeight = papersizes[paperSize][1] * pixelsPerMillimeter;
+    paperWidth = papersizes[paperSize][0] * pixelsPerMillimeter;
+    paperHeight = papersizes[paperSize][1] * pixelsPerMillimeter;
     // size of Paper hole, from specification ISO 838 and the swedish "triohålning"
     const leftHoleOffsetX = 12 * pixelsPerMillimeter;
     const rightHoleOffsetX = (papersizes[paperSize][0] - 12) * pixelsPerMillimeter;
@@ -1605,7 +1709,9 @@ function drawVirtualPaper() {
     // Number of paper sheets to draw out
     var paperRows;
     var paperColumns;
-
+	if(!togglePaper) {
+		return
+	}
     if(!singlePaper){
         if (paperOrientation == "portrait") {
             paperRows = 6;
@@ -1620,185 +1726,268 @@ function drawVirtualPaper() {
     }
 
 	ctx.save();
-	if(!togglePaper) {
-		ctx.globalAlpha = 0;
-	}
+	
     ctx.strokeStyle = "black"
     ctx.setLineDash([10 * (pixelsPerMillimeter / 3)]);
-	
-	var dubbleColumns = 2*paperColumns
-	var bottomOfSet = dubbleColumns*paperRows // calculates the ofset to the bottom half of the pages once 
-
+	let sizePageNr = 3.1737*pixelsPerMillimeter; // now about 12 px
+	ctx.fontColor = "black";
+	ctx.font=`${sizePageNr}px Arial`;
+	let pages = 1; 
 	if(paperOrientation == "portrait") {// Draw Paper sheets in portrait mode
 		if(singlePaper){
 			ctx.strokeRect(zeroX, zeroY, paperWidth, paperHeight);
-			ctx.fillText("Page 1",  zeroX + (paperWidth - 50),zeroY + (paperHeight - 5) ); // if only one paper are pressent ther will only be that nr one page
-		}else{
-			for (var i = 0; i < paperRows; i++) {
-				for (var j = 0; j < paperColumns; j++) {
-					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY - paperHeight * (i+1), paperWidth, paperHeight);   // Top left from origin
-					ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 50 - paperWidth *j,zeroY + (paperHeight - 5) -  paperHeight * (i+1));
-
-					ctx.strokeRect(zeroX + paperWidth * j, zeroY - paperHeight * (i+1), paperWidth, paperHeight);       // Top right from origin
-					ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperWidth - 50) + paperWidth * j,zeroY + (paperHeight - 5) -  paperHeight * (i+1));
-
-					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY + paperHeight * i, paperWidth, paperHeight);       // Bottom left from origin
-					ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  50 - paperWidth * j,zeroY + (paperHeight - 5) +  paperHeight * i);
-
-					ctx.strokeRect(zeroX + paperWidth * j, zeroY + paperHeight * i, paperWidth, paperHeight);               // Bottom right from origin
-					ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperWidth - 50) + paperWidth * j,zeroY + (paperHeight - 5) +  paperHeight * i); 
-				}
+			if(togglePageNumber){
+				ctx.fillText("Page 1",  zeroX + (paperWidth - 30 * pixelsPerMillimeter),zeroY + (paperHeight - 5 * pixelsPerMillimeter) ); // if only one paper are pressent ther will only be that nr one page
 			}
+		}else{
+			for (let i = 0; i < paperRows; i++) {
+				for (let j = 0; j < paperColumns; j++) {
+					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY - paperHeight * (i+1), paperWidth, paperHeight);   // Top left from origin	
+					ctx.strokeRect(zeroX + paperWidth * j, zeroY - paperHeight * (i+1), paperWidth, paperHeight);       // Top right from origin
+					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY + paperHeight * i, paperWidth, paperHeight);       // Bottom left from origin
+					ctx.strokeRect(zeroX + paperWidth * j, zeroY + paperHeight * i, paperWidth, paperHeight);               // Bottom right from origin	
+				}	
+			}	
+			if(togglePageNumber){//This goes row by row from the top to the bottom of the canvas and checks for objects on the pages so the top left most object will be on page 1 and bottom right most object will be on the higest number page.
+				for (var i = 0; i < paperRows; i++) {
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX - paperWidth * (paperColumns - j), zeroY - paperHeight * (paperRows - i), zeroX - paperWidth *(paperColumns - j-1), zeroY - paperHeight *(paperRows - i-1))){
+							ctx.fillText("Page " + pages, zeroX - 30 * pixelsPerMillimeter - paperWidth * (paperColumns - j-1),zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (paperRows - i)); //pagenumbers for the top left
+							pages++;
+						}
+					}
+					for (var j = 0; j < paperColumns; j++) {
+					//"Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns)
+						if(objectInArea(zeroX + paperWidth * j, zeroY - paperHeight * (paperRows - i), zeroX + paperWidth * (j+1), zeroY - paperHeight * (paperRows -i-1))){
+							ctx.fillText("Page " + pages,zeroX + (paperWidth - 30 * pixelsPerMillimeter) + paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) -  paperHeight * (paperRows - i)); //pagenumbers for the top right
+							pages++;
+						}
+					}
+				}
+				for (var i = 0; i < paperRows; i++) {
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX - paperWidth * (paperColumns -j), zeroY + paperHeight * i, zeroX - paperWidth * (paperColumns - j-1), zeroY + paperHeight * (i+1))){
+							ctx.fillText("Page " + pages, zeroX -  30 * pixelsPerMillimeter - paperWidth * (paperColumns -j-1),zeroY + (paperHeight - 5 * pixelsPerMillimeter) +  paperHeight * i); //pagenumbers for the bottom left
+							pages++;
+						}
+					}	
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX + paperWidth * j, zeroY + paperHeight * i, zeroX + paperWidth * (j+1), zeroY + paperHeight * (i+1))){
+							ctx.fillText("Page " + pages,  zeroX + (paperWidth - 30 * pixelsPerMillimeter) + paperWidth * j,zeroY + (paperHeight - 5 * pixelsPerMillimeter) +  paperHeight * i); //pagenumbers for the bottom right
+							pages++;
+						}
+					}
+				}		
+			}	
 		}
 	} else if(paperOrientation == "landscape") {   // Draw Paper sheets in landscape mode
 		if(singlePaper){
 			ctx.strokeRect(zeroX, zeroY, paperHeight, paperWidth);               // Bottom right
-			ctx.fillText("Page 1" , zeroX + (paperHeight - 50), zeroY + (paperWidth - 5));
+			ctx.fillText("Page 1" , zeroX + (paperHeight - 30 * pixelsPerMillimeter), zeroY + (paperWidth - 5 * pixelsPerMillimeter));
 		}else{
 			for (var i = 0; i < paperRows; i++) {
 				for (var j = 0; j < paperColumns; j++) {
 					ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY - paperWidth * (i+1), paperHeight, paperWidth);   // Top left from origin
-					ctx.fillText("Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns), zeroX - 50 - paperHeight *j,zeroY + (paperWidth - 5) -  paperWidth * (i+1));
-
 					ctx.strokeRect(zeroX + paperHeight * j, zeroY - paperWidth * (i+1), paperHeight, paperWidth);       // Top right from origin
-					ctx.fillText("Page " +( (j+paperColumns + 1)  + (paperRows - i-1)*dubbleColumns), zeroX + (paperHeight - 50) + paperHeight * j,zeroY + (paperWidth - 5) -  paperWidth * (i+1));
-
 					ctx.strokeRect(zeroX - paperHeight * (j+1), zeroY + paperWidth * i, paperHeight, paperWidth);       // Bottom left from origin
-					ctx.fillText("Page " +( (paperColumns - j) + i*dubbleColumns + bottomOfSet), zeroX -  50 - paperHeight * j,zeroY + (paperWidth - 5) +  paperWidth * i);
-
 					ctx.strokeRect(zeroX + paperHeight * j, zeroY + paperWidth * i, paperHeight, paperWidth);               // Bottom right from origin
-					ctx.fillText("Page " + ((j+paperColumns + 1)  +  i*dubbleColumns + bottomOfSet) , zeroX + (paperHeight - 50) + paperHeight * j,zeroY + (paperWidth - 5) +  paperWidth * i);	
 				}
 			}
-		}
-        
+			if(togglePageNumber){//This goes row by row from the top to the bottom of the canvas and checks for objects on the pages so the top left most object will be on page 1 and bottom right most object will be on the higest number page.
+				for (var i = 0; i < paperRows; i++) {
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX - paperHeight * (paperColumns - j), zeroY - paperWidth * (paperRows - i), zeroX - paperHeight *(paperColumns - j-1), zeroY - paperWidth *(paperRows - i-1))){
+							ctx.fillText("Page " + pages, zeroX - 30 * pixelsPerMillimeter - paperHeight * (paperColumns - j-1),zeroY + (paperWidth - 5 * pixelsPerMillimeter) -  paperWidth * (paperRows - i)); //pagenumbers for the top left
+							pages++;
+						}
+					}
+					for (var j = 0; j < paperColumns; j++) {
+					//"Page " +( (paperColumns - j ) + (paperRows - i -1)*dubbleColumns)
+						if(objectInArea(zeroX + paperHeight * j, zeroY - paperWidth * (paperRows - i), zeroX + paperHeight * (j+1), zeroY - paperWidth * (paperRows -i-1))){
+							ctx.fillText("Page " + pages,zeroX + (paperHeight - 30 * pixelsPerMillimeter) + paperHeight * j,zeroY + (paperWidth - 5 * pixelsPerMillimeter) -  paperWidth * (paperRows - i)); //pagenumbers for the top right
+							pages++;
+						}
+					}
+				}
+				for (var i = 0; i < paperRows; i++) {
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX - paperHeight * (paperColumns -j), zeroY + paperWidth * i, zeroX - paperHeight * (paperColumns - j-1), zeroY + paperWidth * (i+1))){
+							ctx.fillText("Page " + pages, zeroX -  30 * pixelsPerMillimeter - paperHeight * (paperColumns -j-1),zeroY + (paperWidth - 5 * pixelsPerMillimeter) +  paperWidth * i); //pagenumbers for the bottom left
+							pages++;
+						}
+					}	
+					for (var j = 0; j < paperColumns; j++) {
+						if(objectInArea(zeroX + paperHeight * j, zeroY + paperWidth * i, zeroX + paperHeight * (j+1), zeroY + paperWidth * (i+1))){
+							ctx.fillText("Page " + pages,  zeroX + (paperHeight - 30 * pixelsPerMillimeter) + paperHeight * j,zeroY + (paperWidth - 5 * pixelsPerMillimeter) +  paperWidth * i); //pagenumbers for the bottom right
+							pages++;
+						}
+					}
+				}		
+			}
+		}  
     }
 
     // Draw Paper holes
     if(togglePaperHoles) {
         if(paperOrientation == "portrait") {
-            if (switchSidePaperHoles == "left") {
-                // The Holes on the left side.
-                for (var i = 0; i < paperRows; i++) {
-                    for (var j = 0; j < paperColumns; j++) {
-                        // Bottom right quadrant
-                        drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                        drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                        drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                        drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                        if(!singlePaper){
-                            // Bottom left quadrant
-                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                            // Top left quadrant
-                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            // Top right quadrant
-                            drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                        }
-                    }
-                }
-            } else {
-                // The holes on the right side.
-                for (var i = 0; i < paperRows; i++) {
-                    for (var j = 0; j < paperColumns; j++) {
-                        // Bottom right quadrant
-                        drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                        drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                        if(!singlePaper){
-                            // Bottom left quadrant
-                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
-                            // Top left quadrant
-                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            // Top right quadrant
-                            drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                            drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
-                        }
-                    }
-                }
+            if (switchSidePaperHoles == "left") {// The Holes on the left side.
+				if(singlePaper){
+					drawCircle(leftHoleOffsetX + zeroX, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+					drawCircle(leftHoleOffsetX + zeroX, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+					drawCircle(leftHoleOffsetX + zeroX, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+					drawCircle(leftHoleOffsetX + zeroX, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+				}else{
+					for (var i = 0; i < paperRows; i++) {
+						for (var j = 0; j < paperColumns; j++) {
+							// Bottom right quadrant
+							drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							// Bottom left quadrant
+							drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							// Top left quadrant
+							drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							// Top right quadrant
+							drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(leftHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							
+						}
+					}
+				}
+            } else {// The holes on the right side.
+				if(singlePaper){
+					drawCircle(rightHoleOffsetX + zeroX, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+					drawCircle(rightHoleOffsetX + zeroX, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+					drawCircle(rightHoleOffsetX + zeroX, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+					drawCircle(rightHoleOffsetX + zeroX, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
+				}else{
+					for (var i = 0; i < paperRows; i++) {
+						for (var j = 0; j < paperColumns; j++) {
+							// Bottom right quadrant
+							drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							// Bottom left quadrant
+							drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY + paperHeight * i, holeRadius);
+							// Top left quadrant
+							drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX - paperWidth * (j+1), ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							// Top right quadrant
+							drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+							drawCircle(rightHoleOffsetX + zeroX + paperWidth * j, ((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroY - paperHeight * (i+1), holeRadius);
+						}
+					}
+				}
             }
-        }
-        else if(paperOrientation == "landscape") {
-            if (switchSidePaperHoles == "left") {
-                // The holes on the upper side.
-                for (var i = 0; i < paperRows; i++) {
-                    for (var j = 0; j < paperColumns; j++) {
-                        // Bottom right
-                        drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                        drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                        drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                        drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                        if(!singlePaper){
-                            // Bottom left
-                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                            // Top left
-                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            // Top right
-                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius); 
-                        }                   
-                    }
+        } else if(paperOrientation == "landscape") {
+            if (switchSidePaperHoles == "left") {// The holes on the upper side.
+                if(singlePaper){
+					drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+					drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+					drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+					drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX, leftHoleOffsetX + zeroY, holeRadius);
+				}else{
+					for (var i = 0; i < paperRows; i++) {
+						for (var j = 0; j < paperColumns; j++) {
+							// Bottom right
+							drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							// Bottom left
+							drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							// Top left
+							drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							// Top right
+							drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, leftHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius); 				
+						}
+					}
                 }
-            }else {
-                // The holes on the bottom side.
-                for (var i = 0; i < paperRows; i++) {
-                    for (var j = 0; j < paperColumns; j++) {
-                        // Bottom right
-                        drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                        drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                        drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                        drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                        if(!singlePaper){
-                            // Bottom left
-                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
-                            // Top left
-                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            // Top right
-                            drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                            drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
-                        }
-                    }
-                }
+            }else { // The holes on the bottom side.
+                if(singlePaper){
+					drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+					drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+					drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+					drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX, rightHoleOffsetX + zeroY, holeRadius);
+				} else {
+					for (var i = 0; i < paperRows; i++) {
+						for (var j = 0; j < paperColumns; j++) {
+							// Bottom right
+							drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+						
+							// Bottom left
+							drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY + paperWidth * i, holeRadius);
+							// Top left
+							drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX - paperHeight * (j+1), rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							// Top right
+							drawCircle(((paperHeight / 2) - (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) - 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) + (34+21) * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							drawCircle(((paperHeight / 2) + 34 * pixelsPerMillimeter) + zeroX + paperHeight * j, rightHoleOffsetX + zeroY - paperWidth * (i+1), holeRadius);
+							
+						}
+					}
+				}
             }
         }
 	}
-	ctx.globalAlpha = 1;
+	
     ctx.restore();
 }
+//------------------------------------------------------------------
+//Checks if an object are in the specified area
+//------------------------------------------------------------------
+function objectInArea(x1, y1, x2, y2){
+	for(i = 0; i < diagram.length; i++){
+			let pointcenter = {
+				x: 0,
+				y: 0,
+			}
+			let pointTopLeft = pixelsToCanvas(points[diagram[i].topLeft].x, points[diagram[i].topLeft].y);
+			let pointBottomRigth = pixelsToCanvas(points[diagram[i].bottomRight].x, points[diagram[i].bottomRight].y);
 
+			pointcenter.x = (pointTopLeft.x + pointBottomRigth.x) / 2;
+			pointcenter.y = (pointTopLeft.y + pointBottomRigth.y) / 2;
+			if(x1 < pointcenter.x && pointcenter.x < x2 && y1 < pointcenter.y && pointcenter.y < y2) return true
+		
+	}	
+	return false;
+}	
 
 //------------------------------------------------------------------
 // Draws a crosshair in the middle of canvas while in developer mode
@@ -1875,13 +2064,15 @@ function showPaperState() {
 function hidePaperState() {
     // Reset the variables after disable the Paper
     togglePaperHoles = false;
-    switchSidePaperHoles = "left";
+	switchSidePaperHoles = "left";
+	togglePageNumber = false;
 
     // Hides icons when toggling off the Paper
     setOrientationIcon($(".drop-down-option:contains('Toggle Paper Orientation')"), false);
     setCheckbox($(".drop-down-option:contains('Toggle Paper Holes')"), togglePaperHoles);
     setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
-    setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
+	setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
+	setCheckbox($(".drop-down-option:contains('Toggle Pagenumbers')"), togglePageNumber);
 
     // Grey out disabled options
     $("#Paper-orientation-item").addClass("drop-down-item drop-down-item-disabled");
@@ -1928,6 +2119,24 @@ function toggleVirtualPaperHolesRight(event) {
     } else if (togglePaper && togglePaperHoles) {
         switchSidePaperHoles = "right";
         setCheckbox($(".drop-down-option:contains('Paper Holes Right')"), switchSidePaperHoles == "right");
+        updateGraphics();
+    }
+}
+
+//-------------------------------------------------------------
+// Toggle if pagenumber are visable or not 
+//-------------------------------------------------------------
+
+function togglePagenumbers(event) {
+    event.stopPropagation();
+    
+    if (togglePageNumber && togglePaper) {
+        togglePageNumber = false;
+        setCheckbox($(".drop-down-option:contains('Toggle Pagenumbers')"), togglePageNumber);
+        updateGraphics();
+    } else if (togglePageNumber === false && togglePaper) {
+        togglePageNumber = true;
+        setCheckbox($(".drop-down-option:contains('Toggle Pagenumbers')"), togglePageNumber);
         updateGraphics();
     }
 }
@@ -2125,7 +2334,7 @@ $(document).ready(function(){
 
 function canvasSize() {
     const diagramContainer = document.getElementById("diagramCanvasContainer");
-    canvas.width = diagramContainer.offsetWidth
+    canvas.width = diagramContainer.offsetWidth;
     canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
     updateGraphics();
@@ -3192,23 +3401,11 @@ function redoDiagram(event) {
 // diagramToSVG: Used when exporting the diagram to svg
 //----------------------------------------------------------------------
 function diagramToSVG() {
-    var str = "";
-    // Convert figures to SVG first so they appear behind other objects
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.path) str += diagram[i].figureToSVG();
-    }
-    // Convert lines to SVG second so they appear behind other symbols but above figures
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind == symbolKind.line) str += diagram[i].symbolToSVG(i);
-    }
-    // Convert other objects to SVG
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) str += diagram[i].symbolToSVG(i);
-    }
-    return str;
-}
-
-function diagramToSVG() {
+    origoOffsetX = 0;
+    origoOffsetY = 0;
+    zoomValue = 1.00;
+    updateGraphics();
+    SaveState();
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
     for (var i = 0; i < diagram.length; i++) {
@@ -3440,6 +3637,67 @@ function scrollZoom(event) {
     }
 }
 
+//-----------------------
+// Enter/exit fullscreen
+//-----------------------
+
+function toggleFullscreen(){
+    // Load relevant elements
+    var head = document.querySelector("header");
+    var menu_buttons = document.getElementById("buttonDiv");
+    var canvas_div = document.getElementById("diagramCanvasContainer");
+    var canvas_border = document.getElementById("diagramCanvas");
+
+    if(!fullscreen){
+        // Get previous settings
+        old_canvas_div_marginLeft = canvas_div.style.marginLeft;
+        old_container_height = canvas_div.style.height;
+        old_container_width = canvas_div.style.width;
+        old_container_position = canvas_div.style.position;
+
+        // Hide header, buttons, their leftover space, border and resize container to fit entire screen
+        head.style.display = "none";
+        menu_buttons.style.display = "none";
+        canvas_div.style.position = "absolute";
+        canvas_div.style.marginLeft = 0;
+        canvas_div.style.top = 0;
+        canvas_div.style.right = 0;
+        canvas_div.style.bottom = 0;
+        canvas_div.style.left = 0;
+        canvas_div.style.height = window.innerHeight + "px";
+        canvas_div.style.width = window.innerWidth + "px";
+        canvas_border.style.border = 0 + "px";
+        fullscreen = true;
+
+        $("#fullscreenDialog").css("display", "flex");
+
+        // Refit canvas to current container
+        canvasSize();
+    } else if (fullscreen){
+        // Revert to previous settings
+        head.style.display = "inline-block";
+        menu_buttons.style.display = "block";
+        canvas_div.style.position = old_container_position;
+        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
+        canvas_div.style.height = old_container_height;
+        canvas_div.style.width = old_container_width;
+        canvas_border.style.border = 1 + "px solid #000000";
+        fullscreen = false;
+
+        // Refit canvas to current container
+        canvasSize();        
+    }
+}
+
+//-----------------------
+// Close popup when entering fullscreen
+//-----------------------
+
+function closeFullscreenDialog(){
+    $("#fullscreenDialog").hide();
+}
+
+
 //-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
 //-------------------------------------------------------------------------
@@ -3504,15 +3762,14 @@ function minSizeCheck(value, object, type) {
 //---------------------------------------------------
 
 function mousemoveevt(ev) {
-
+    // Returns out of funtion if on mobile device
+    // This is beacause touch events also trigger mouse events
+    if (isMobile) {
+        return;
+    }
     // Get canvasMouse coordinates for both X & Y.
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
-
-    if (isMobile && ev.type == "touchmove") {
-        currentMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
-        currentMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
-    }
 
     // deltas are used to determine the range of which the mouse is allowed to move when pressed.
     deltaX = 2;
@@ -3522,11 +3779,6 @@ function mousemoveevt(ev) {
         // The movement needs to be larger than the deltas in order to enter the MoveAround mode.
         diffX = ev.pageX - InitPageX;
         diffY = ev.pageY - InitPageY;
-
-        if (isMobile){
-            diffX = ev.changedTouches[0].pageX - InitPageX;
-            diffY = ev.changedTouches[0].pageY - InitPageY;
-        }
         
         if (
             (diffX > deltaX) || (diffX < -deltaX)
@@ -3541,17 +3793,13 @@ function mousemoveevt(ev) {
         }
     }
 
-    if((canvasLeftClick || canvasRightClick || canvasTouchClick) && uimode == "MoveAround") {
+    if((canvasLeftClick || canvasRightClick) && uimode == "MoveAround") {
         // Drag canvas
         origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
         origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
         
         startMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
-        if (isMobile){
-            startMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
-            startMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
-        }
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
     }
@@ -3667,8 +3915,18 @@ function mousemoveevt(ev) {
                     sel.point.y += change;
                 } else {
                     // normal resize
-                    sel.point.x = currentMouseCoordinateX;
-                    sel.point.y = currentMouseCoordinateY;
+                    //console.log(sel.point.x);
+                    var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
+                    var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
+                    var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
+                    //Don't move points if box is minumum size
+                    if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                        sel.point.x = currentMouseCoordinateX;
+                    }
+                    if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                        sel.point.y = currentMouseCoordinateY;
+                    }
+                    
                 }
                 // If we changed a point of a path object,
                 // we need to recalculate the bounding-box so that it will remain clickable.
@@ -3687,8 +3945,16 @@ function mousemoveevt(ev) {
                 }
             // this is for the other two points that doesn't really exist: bottomLeft and topRight
             } else {
-                sel.point.x.x = currentMouseCoordinateX;
-                sel.point.y.y = currentMouseCoordinateY;
+                var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
+                var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
+                var change = ((currentMouseCoordinateX - sel.point.x.x) - (currentMouseCoordinateY - sel.point.y.y)) / 2;
+                //Don't move points if box is minumum size
+                if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+                    sel.point.x.x = currentMouseCoordinateX;
+                }
+                if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+                    sel.point.y.y = currentMouseCoordinateY;
+                }
             }
             updateGraphics();
             // If mouse is pressed down and at a point in selected object - move that point
@@ -3873,6 +4139,12 @@ function mousemoveevt(ev) {
 //----------------------------------------------------------
 
 function mousedownevt(ev) {
+    // Returns out of funtion if on mobile device
+    // This is beacause touch events also trigger mouse events
+    if (isMobile){
+        return;
+    }
+    
     mousemoveevt(event);    // Trigger the move event function to update mouse coordinates and avoid creating objects in objects
     if(ev.button == leftMouseClick){
         canvasLeftClick = true;
@@ -3882,20 +4154,10 @@ function mousedownevt(ev) {
             InitPageX = ev.pageX;
             InitPageY = ev.pageY;
         }
-    } else if(ev.type == "touchstart") {
-        canvasTouchClick = true;
-        if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
-            InitPageX = ev.changedTouches[0].pageX;
-            InitPageY = ev.changedTouches[0].pageY;            
-        }
     }
 
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
-    if (isMobile && typeof ev.changedTouches !== 'undefined'){
-        currentMouseCoordinateX = canvasToPixels(ev.changedTouches[0].clientX - boundingRect.left).x;
-        currentMouseCoordinateY = canvasToPixels(0, ev.changedTouches[0].clientY - boundingRect.top).y;
-    }
     startMouseCoordinateX = currentMouseCoordinateX;
     startMouseCoordinateY = currentMouseCoordinateY;
 
@@ -3918,6 +4180,10 @@ function mousedownevt(ev) {
 
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
+            //Select when in CreateLine mode
+            if (uimode == "CreateLine"){
+              handleSelect();
+            }
         }
     } else if (sel.distance < tolerance / zoomValue) {
         md = mouseState.insidePoint;
@@ -3986,6 +4252,11 @@ function handleSelect() {
 }
 
 function mouseupevt(ev) {
+    // Returns out of funtion if on mobile device
+    // This is beacause touch events also trigger mouse events
+    if (isMobile) {
+        return;
+    }
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
     if(ev.button == leftMouseClick){
@@ -4094,7 +4365,8 @@ function mouseupevt(ev) {
             }
         }
     }
-    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+  
+    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && startMouseCoordinateX != currentMouseCoordinateX && startMouseCoordinateY != currentMouseCoordinateY) {
         saveState = false;
         uimode = "CreateUMLLine";
         //Check if you release on canvas or try to draw a line from entity to entity
@@ -4192,7 +4464,7 @@ function mouseupevt(ev) {
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
-        erEnityA.arity = [];
+        erEnityA.length = [];
         erEnityA.object_type = "";
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
@@ -4208,11 +4480,11 @@ function mouseupevt(ev) {
         {
             diagramObject.pointsAtSamePosition = true;
         }
-    } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+    } else if (uimode == "CreateLine") {
         //Code for making a line, if start and end object are different, except attributes and if no object is text
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line)
-        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine) {
+        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine  && md == mouseState.boxSelectOrCreateMode) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length;
             erLineA.topLeft = p1;
@@ -4338,6 +4610,371 @@ function mouseupevt(ev) {
     if(saveState) SaveState();
 }
 
+//---------------------------------------------------
+// Is called each time a touch is started
+//---------------------------------------------------
+
+function touchStartEvent(event) {
+    if (typeof InitPageX == 'undefined' && typeof InitPageY == 'undefined') {
+        InitPageX = event.changedTouches[0].pageX;
+        InitPageY = event.changedTouches[0].pageY;            
+    }
+
+    currentMouseCoordinateX = canvasToPixels(event.changedTouches[0].clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, event.changedTouches[0].clientY - boundingRect.top).y;
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
+
+    // Returns what object was pressed, -1 if none
+    movobj = diagram.itemClicked();
+
+    if (movobj != -1 && uimode != "CreateLine") {
+        md = mouseState.insideMovableObject;
+        handleSelect();
+    } 
+    // If create line tool is selected
+    else if(movobj != -1 && uimode == "CreateLine") {
+        md = mouseState.boxSelectOrCreateMode;
+        lineStartObj = movobj;
+        symbolStartKind = diagram[lineStartObj].symbolkind;
+    } else {
+        md = mouseState.boxSelectOrCreateMode;
+        for (var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].targeted = false;
+        }
+        lastSelectedObject = -1;
+        selected_objects = [];
+        startMouseCoordinateX = currentMouseCoordinateX;
+        startMouseCoordinateY = currentMouseCoordinateY;
+    }
+}
+
+//---------------------------------------------------
+// Is called each time a touch is moved (a touchstroke)
+//---------------------------------------------------
+
+function touchMoveEvent(event) {
+    currentMouseCoordinateX = canvasToPixels(event.changedTouches[0].clientX - boundingRect.left).x;
+    currentMouseCoordinateY = canvasToPixels(0, event.changedTouches[0].clientY - boundingRect.top).y
+
+    // Minimum distance required to move
+    deltaX = 2;
+    deltaY = 2;
+
+    if (typeof InitPageX !== 'undefined' && typeof InitPageY !== 'undefined') {
+        diffX = event.changedTouches[0].pageX - InitPageX;
+        diffY = event.changedTouches[0].pageY - InitPageY;
+
+        // Activate move around if touch moved far enough
+        if ((diffX > deltaX) || (diffX < -deltaX)
+        || (diffY > deltaY) || (diffY < -deltaY)) {
+            if (uimode != 'MoveAround' && md != mouseState.insideMovableObject 
+            && uimode != "CreateLine") {
+                activateMovearound();
+            }
+            updateGraphics();
+        }
+    }
+
+    // Moves canvas
+    if (uimode == 'MoveAround') {
+        origoOffsetX += (currentMouseCoordinateX - startMouseCoordinateX) * zoomValue;
+        origoOffsetY += (currentMouseCoordinateY - startMouseCoordinateY) * zoomValue;
+       
+        startMouseCoordinateX = canvasToPixels(event.changedTouches[0].clientX - boundingRect.left).x;
+        startMouseCoordinateY = canvasToPixels(0, event.changedTouches[0].clientY - boundingRect.top).y;
+        
+        localStorage.setItem("cameraPosX", origoOffsetX);
+        localStorage.setItem("cameraPosY", origoOffsetY);
+    }
+    reWrite();
+    updateGraphics();
+
+    // Moves an object
+    if (md == mouseState.insideMovableObject) {
+        if (movobj != -1) {
+            uimode = "Moved";
+            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            for (var i = 0; i < diagram.length; i++) {
+                if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
+                    if(snapToGrid) {
+                        // Set mouse start so it's snaped to grid.
+                        startMouseCoordinateX = Math.round(startMouseCoordinateX / gridSize) * gridSize;
+                        startMouseCoordinateY = Math.round(startMouseCoordinateY / gridSize) * gridSize;
+                        // Coordinates for the top left corner of the object
+                        var hoveredObjectStartTopLeftX = points[hoveredObject.topLeft].x;
+                        var hoveredObjectStartTopLeftY = points[hoveredObject.topLeft].y;
+                        // Coordinates for the point to snap to
+                        var hoveredObjectSnapTopLeftX = Math.round(points[hoveredObject.topLeft].x / gridSize) * gridSize;
+                        var hoveredObjectSnapTopLeftY = Math.round(points[hoveredObject.topLeft].y / gridSize) * gridSize;
+                        // Snap the object that is being moved. Rest of the objects are untouched
+                        diagram[movobj].move(hoveredObjectSnapTopLeftX - hoveredObjectStartTopLeftX, hoveredObjectSnapTopLeftY - hoveredObjectStartTopLeftY);
+                        // Move the objects dependable on the grid size
+                        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+                        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
+                    }
+
+                    diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
+
+                    // Keep recursive lines together
+                    for (var j = 0; j < diagram.length; j++) {
+                        if (diagram[j].isRecursiveLine) {
+                            points[diagram[j].topLeft].x = points[diagram[j].bottomRight].x;
+                            points[diagram[j].topLeft].y = points[diagram[j].bottomRight].y;
+                        }
+                    }
+                }
+            }
+            startMouseCoordinateX = currentMouseCoordinateX;
+            startMouseCoordinateY = currentMouseCoordinateY;
+        }
+    }
+    // Draw preview line
+    if (uimode == "CreateLine" && movobj != -1) {
+        // Path settings for preview line
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(pixelsToCanvas(startMouseCoordinateX).x, pixelsToCanvas(0, startMouseCoordinateY).y);
+        ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x, pixelsToCanvas(0, currentMouseCoordinateY).y);
+        ctx.strokeStyle = "#000";
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+}
+
+//---------------------------------------------------
+// Is called each time a touch is ended
+//---------------------------------------------------
+
+function touchEndEvent(event) {
+    markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+
+    delete InitPageX;
+    delete InitPageY;  
+
+    if (uimode == "MoveAround"){
+        deactivateMovearound();
+        updateGraphics();
+    }
+
+    var p1BeforeResize;
+    var p2BeforeResize;
+    if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" 
+    || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
+        p1BeforeResize = {x:startMouseCoordinateX, y:startMouseCoordinateY};
+        p2BeforeResize = {x:currentMouseCoordinateX, y:currentMouseCoordinateY};
+        resize();
+        // Add required points
+        p1 = points.addPoint(startMouseCoordinateX, startMouseCoordinateY, false);
+        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+        p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
+        // Creates symbol if uimode is set
+        createSymbol(p1BeforeResize, p2BeforeResize);
+    }
+    var saveState = md == mouseState.boxSelectOrCreateMode && uimode != "normal";
+
+    if(uimode == "MoveAround" && md === mouseState.boxSelectOrCreateMode) {
+        saveState = false;
+    }
+    // Create lines between er objects
+    if (symbolStartKind != symbolKind.uml && uimode == "CreateLine") {
+        saveState = false;
+        if (markedObject != -1 && !(symbolStartKind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity)
+        && !(symbolStartKind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erRelation)
+        && symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line 
+        && symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            var okToMakeLine = true;
+            symbolEndKind = diagram[markedObject].symbolkind;
+
+            // Can't be more than two lines between an entity and a relation
+            if ((symbolStartKind == symbolKind.erEntity && symbolEndKind == symbolKind.erRelation)
+            || (symbolStartKind == symbolKind.erRelation && symbolEndKind == symbolKind.erEntity)) {
+                if ((diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 1)
+                || (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 1)) {
+                    okToMakeLine = false;
+                }
+            }
+            // Must be two different objects
+            else if (diagram[markedObject] == diagram[lineStartObj]) {
+                okToMakeLine = false;
+            }
+            // Can't be from er to uml
+            else if (symbolEndKind == symbolKind.uml) {
+                okToMakeLine = false;
+            }
+            // Can't be more than one line if not relation to entity
+            else {
+                if ((symbolStartKind != symbolKind.erRelation && symbolEndKind != symbolKind.erRelation)
+                || symbolStartKind == symbolKind.erAttribute || symbolEndKind == symbolKind.erAttribute) {
+                    if ((diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0)
+                    || (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0)) {
+                        okToMakeLine = false
+                    }
+                }
+            }
+            if (okToMakeLine) {
+                addLine(diagram[lineStartObj], diagram[markedObject]);
+                createSymbol();
+                saveState = true;
+            }
+        }
+    }
+    else if (symbolStartKind == symbolKind.uml && uimode == "CreateLine") {
+        saveState = false;
+        uimode = "CreateUMLLine";
+
+        if (markedObject != -1 && diagram[markedObject].symbolkind == symbolKind.uml) {
+            symbolEndKind = diagram[markedObject].symbolkind;
+            addLine(diagram[lineStartObj], diagram[markedObject]);
+            createSymbol();
+            saveState = true;
+        }
+        else {
+            uimode = "CreateLine";
+        }
+    }
+
+    hashFunction();
+    updateGraphics();
+    diagram.updateLineRelations();
+    md = mouseState.empty;
+    if(saveState) SaveState();
+}
+
+function addLine(startObject, endObject) {
+    
+    // If er attribute add it's centerpoint
+    if (startObject.symbolkind == symbolKind.erAttribute) {
+        p1 = startObject.centerPoint;
+    }
+    else {
+        p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+    }
+    // If er attribute add it's centerpoint
+    if (endObject.symbolkind == symbolKind.erAttribute) {
+        p2 = endObject.centerPoint;
+    }
+    else {
+        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+    }
+    startObject.connectorTop.push({from:p1, to:p2});
+    endObject.connectorTop.push({from:p2, to:p1});
+}
+
+// Creates a symbol based on current uimode
+function createSymbol(p1BeforeResize, p2BeforeResize){
+    switch(uimode){
+        case "CreateClass":
+            var classB = new Symbol(symbolKind.uml);
+            classB.name = "New " + settings.serialNumbers.UML;
+            classB.operations.push({text:"- makemore()"});
+            classB.attributes.push({text:"+ height:Integer"});
+            classB.topLeft = p1;
+            classB.bottomRight = p2;
+            classB.middleDivider = p3;
+            classB.centerPoint = p3;
+            diagram.push(classB);
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            diagramObject = diagram[lastSelectedObject];
+            settings.serialNumbers.UML++;
+            if (diagramObject && attributeTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+            && attributeTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+                diagramObject.pointsAtSamePosition = true;
+            }
+            break;
+        case "CreateERAttr":
+            erAttributeA = new Symbol(symbolKind.erAttribute);
+            erAttributeA.name = "Attr " + settings.serialNumbers.Attribute;
+            erAttributeA.topLeft = p1;
+            erAttributeA.bottomRight = p2;
+            erAttributeA.centerPoint = p3;
+            erAttributeA.object_type = "";
+            diagram.push(erAttributeA);
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            diagramObject = diagram[lastSelectedObject];
+            settings.serialNumbers.Attribute++;
+            if (diagramObject && attributeTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+            && attributeTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+                diagramObject.pointsAtSamePosition = true;
+            }
+            break;
+        case "CreateEREntity":
+            erEnityA = new Symbol(symbolKind.erEntity);
+            erEnityA.name = "Entity " + settings.serialNumbers.Entity;
+            erEnityA.topLeft = p1;
+            erEnityA.bottomRight = p2;
+            erEnityA.centerPoint = p3;
+            erEnityA.arity = [];
+            erEnityA.object_type = "";
+            diagram.push(erEnityA);
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            diagramObject = diagram[lastSelectedObject];
+            settings.serialNumbers.Entity++;
+            if (diagramObject && entityTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+            && entityTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+                diagramObject.pointsAtSamePosition = true;
+            }
+            break;
+        case "CreateLine":
+            if (lineStartObj != -1 && markedObject != -1) {
+                erLineA = new Symbol(symbolKind.line);
+                erLineA.name = "Line" + diagram.length;
+                erLineA.topLeft = p1;
+                erLineA.object_type = "";
+                erLineA.bottomRight = p2;
+                erLineA.centerPoint = p3;
+                diagram.unshift(erLineA);
+                lastSelectedObject = diagram.length -1;
+                diagram[lastSelectedObject].targeted = true;
+                selected_objects.push(diagram[lastSelectedObject]);
+                updateGraphics();
+            }
+            break;
+        case "CreateUMLLine":
+            umlLineA = new Symbol(symbolKind.umlLine);
+            umlLineA.name = "Line" + diagram.length;
+            umlLineA.topLeft = p1;
+            umlLineA.object_type = "";
+            umlLineA.bottomRight = p2;
+            umlLineA.centerPoint = p3;
+            umlLineA.isRecursiveLine = lineStartObj == markedObject;
+            if (umlLineA.isRecursiveLine) {
+                points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
+                points[umlLineA.topLeft].y = points[umlLineA.bottomRight].y;
+            }
+            diagram.push(umlLineA);
+            lastSelectedObject = diagram.length - 1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            updateGraphics();
+            break;
+        case "CreateERRelation":
+            erRelationA = new Symbol(symbolKind.erRelation);
+            erRelationA.name = "Relation " + settings.serialNumbers.Relation;
+            erRelationA.topLeft = p1;
+            erRelationA.bottomRight = p2;
+            erRelationA.centerPoint = p3;
+            diagram.push(erRelationA);
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            diagramObject = diagram[lastSelectedObject];
+            settings.serialNumbers.Relation++;
+            if (diagramObject && relationTemplate.width / minimumDivisor > Math.abs(p1BeforeResize.x - p2BeforeResize.x) 
+            && relationTemplate.height / minimumDivisor > Math.abs(p1BeforeResize.y - p2BeforeResize.y)) {
+                diagramObject.pointsAtSamePosition = true;
+            }
+            break;
+        default:
+    }
+}
+
 function doubleclick() {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         loadAppearanceForm();
@@ -4458,8 +5095,6 @@ function toggleApperanceElement(show = false) {
         }
 
         appearanceMenuOpen = false;
-        classAppearanceOpen = false;
-        textAppearanceOpen = false;
         globalappearanceMenuOpen = false;
         if($(".loginBox").data("ui-draggable")) {
             $(".loginBox").draggable("destroy");
@@ -4527,108 +5162,183 @@ function setSelectedOption(select, value) {
 
 function createCardinality() {
     //Setting cardinality on new line
-    if(diagram[lineStartObj].symbolkind == symbolKind.erRelation && diagram[markedObject].symbolkind == symbolKind.erEntity) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": false});
+    if(diagram[lineStartObj +1].symbolkind == symbolKind.erRelation) {
+        diagram[0].cardinality = ({"value": "", "isCorrectSide": false, "parentBox": hoveredObject});
     }
-    else if(diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erRelation) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "isCorrectSide": true});
+    else if(diagram[lineStartObj+1].symbolkind == symbolKind.erEntity) {
+        diagram[0].cardinality = ({"value": "", "isCorrectSide": true, "parentBox": hoveredObject});
     }
-    else if(diagram[lineStartObj].symbolkind == symbolKind.uml && diagram[markedObject].symbolkind == symbolKind.uml) {
+    else if(diagram[lineStartObj+1].symbolkind == symbolKind.uml) {
         diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
     }
 }
 
+const symbolTypeMap = {
+    "-1": "Global",
+    "0": "Path",
+    "1": "UML",
+    "2": "Attribute",
+    "3": "Entity",
+    "4": "ER line",
+    "5": "Relation",
+    "6": "Text",
+    "7": "UML line"
+}
+
+function createCollapsible(formGroups, types, index) {
+    const collapsibleElement = document.createElement("div");
+    const objectTypesElement = document.createElement("div");
+    const iconContainer = document.createElement("div");
+    const icon = document.createElement("div");
+    const title = document.createElement("div");
+    const formGroupContainer = document.createElement("div");
+
+    collapsibleElement.appendChild(objectTypesElement);
+    collapsibleElement.appendChild(formGroupContainer);
+    objectTypesElement.appendChild(iconContainer);
+    objectTypesElement.appendChild(title);
+    iconContainer.appendChild(icon);
+
+    collapsibleElement.classList.add("collapsible");
+    objectTypesElement.classList.add("object-types");
+    iconContainer.classList.add("square");
+    formGroupContainer.classList.add("form-groups");
+
+    //The first collapsible should be opened by default, possible others should be closed
+    if(index !== 0) {
+        collapsibleElement.classList.add("closed");
+    }
+
+    iconContainer.addEventListener("click", () => collapsibleElement.classList.toggle("closed"));
+
+    //Set collapsible title to the object names the collapsible should represent. Seperate by comma (no comma for last)
+    types.forEach((type, i) => {
+        title.innerText += symbolTypeMap[type];
+        if(i !== types.length - 1) title.innerText += ", ";
+    });
+
+    formGroups.forEach(group => formGroupContainer.appendChild(group));
+
+    document.getElementById("appearanceForm").appendChild(collapsibleElement);
+}
+
 function loadGlobalAppearanceForm() {
-    showFormGroups(-1);
+    showFormGroups([-1]);
     globalappearanceMenuOpen = true;
     toggleApperanceElement(true);
     document.getElementById("lineThicknessGlobal").value = settings.properties.lineWidth;
     setGlobalSelections();
 }
 
+let appearanceObjects = [];
+
 function loadAppearanceForm() {
-    //Should not load a form if no symbol was selected or any selected symbol is locked
-    if(selected_objects.length < 1) return;
-    for(let i = 0; i < selected_objects.length; i++){
-        if(selected_objects[i].isLocked) return;
-    }
+    appearanceObjects = [];
 
-    //Get type of previously selected symbol according to symbolKind object
-    const object = selected_objects[selected_objects.length - 1];
-    let type = object.symbolkind;
-
-    //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
-    if(object.symbolkind == symbolKind.umlLine){
-        let connectedObjectsArray = object.getConnectedObjects();
-        document.getElementById('First').innerHTML = connectedObjectsArray[0].name;
-        //Selection to check if relation is to the same entity. If so: both are named from object 0
-        if(typeof connectedObjectsArray[1] == "undefined"){
-            document.getElementById('Second').innerHTML =  connectedObjectsArray[0].name;
-        } else {
-            document.getElementById('Second').innerHTML = connectedObjectsArray[1].name;
+    //Should not load form if there are no unlocked objects.
+    //Do not care about locked objects in appearance form.
+    for(const object of selected_objects) {
+        if(!object.isLocked) {
+            appearanceObjects.push(object);
         }
     }
-
-    //Undefined would mean the symbol is actually a path not having symbolKind, 0 is used as default for paths
-    if(typeof type === "undefined") type = 0;
-
-    showFormGroups(type);
-
-    const typeElement = document.getElementById("type");
-    const nameElement = document.getElementById("name");
-
-    switch(type) {
-        case symbolKind.erAttribute:
-            typeElement.innerHTML = makeoptions("Normal", ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"], ["Primary key", "Partial key", "Normal", "Multivalue", "Derive"]);
-            nameElement.value = object.name;
-            break;
-        case symbolKind.erEntity:
-        case symbolKind.erRelation:
-            typeElement.innerHTML = makeoptions("Normal", ["Weak", "Strong"], ["Weak", "Normal"]);
-            nameElement.value = object.name;
-            break;
-        case symbolKind.line:
-            const connections = object.getConnectedObjects();
-            const entities = connections.filter(symbol => symbol.symbolkind === symbolKind.erEntity);
-            const relations = connections.filter(symbol => symbol.symbolkind === symbolKind.erRelation);
-            typeElement.innerHTML = makeoptions("Normal", ["Normal", "Forced", "Derived"], ["Normal", "Forced", "Derived"]);
-            if(entities.length > 0 && relations.length > 0) {
-                document.getElementById("cardinality").innerHTML = makeoptions("", ["None", "1", "N", "M"], ["None", "1", "N", "M"]);
-                document.getElementById("cardinalityUML").style.display = "none";
-            } else {
-                document.getElementById("cardinality").parentNode.style.display = "none";
-            }
-            break;
-        case symbolKind.umlLine:
-            const lineTypes = ["Normal", "Association", "Inheritance", "Implementation", "Dependency", "Aggregation", "Composition"];
-            const cardinalities = ["None", "0..1", "1..1", "0..*", "1..*"];
-            typeElement.innerHTML = makeoptions("Normal", lineTypes, lineTypes);
-            document.getElementById("cardinalityUML").style.display = "block";
-            document.getElementById("cardinality").innerHTML = makeoptions("None", cardinalities, cardinalities);
-            document.getElementById("cardinalityUML").innerHTML = makeoptions("None", cardinalities, cardinalities);
-        case symbolKind.text:
-            document.getElementById("freeText").value = getTextareaText(object.textLines);
-            textAppearanceOpen = true;
-            break;
-        case symbolKind.uml:
-            nameElement.value = object.name;
-            document.getElementById("umlAttributes").value = getTextareaText(object.attributes);
-            document.getElementById("umlOperations").value = getTextareaText(object.operations);
-            classAppearanceOpen = true;
-            break;
-        case 0:
-            document.getElementById("figureOpacity").value = object.opacity * 100;
-            break;
+    if(appearanceObjects.length < 1) {
+        return;
     }
-    setSelections(object);
+
+    //Get all unique types from the selected objects
+    const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
+    
+    showFormGroups(types);
     toggleApperanceElement(true);
+    
+    let erCardinalityVisible = false;
+
+    //A comma at the end to seperate objects right now. Should be fixed in seperate issue to only appear on last object in the type
+    appearanceObjects.forEach(object => {
+        if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
+            document.getElementById("name").value += object.name + ", ";
+            document.getElementById("name").focus();
+        }
+
+        if(object.symbolkind === symbolKind.line) {
+            const connections = object.getConnectedObjects();
+            const hasEntity = connections.some(symbol => symbol.symbolkind === symbolKind.erEntity);
+            const hasRelation = connections.some(symbol => symbol.symbolkind === symbolKind.erRelation);
+            if(!erCardinalityVisible) {
+                if(hasEntity && hasRelation) {
+                    document.getElementById("cardinalityER").parentNode.style.display = "block";
+                    erCardinalityVisible = true;
+                } else {
+                    document.getElementById("cardinalityER").parentNode.style.display = "none";
+                }
+            }
+            document.getElementById("typeLine").focus();
+        } else if(object.symbolkind === symbolKind.umlLine) {
+            //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
+            const connectedObjectsArray = object.getConnectedObjects();
+            document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
+            //Selection to check if relation is to the same entity. If so: both are named from object 0
+            if(typeof connectedObjectsArray[1] == "undefined"){
+                document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
+            } else {
+                document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
+            }
+            document.getElementById("typeLineUML").focus();
+        } else if(object.symbolkind === symbolKind.text) {
+            document.getElementById("freeText").value += getTextareaText(object.textLines) + ",\n";
+            document.getElementById("freeText").focus();
+        } else if(object.symbolkind === symbolKind.uml) {
+            document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
+            document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
+        } else if(object.kind === kind.path) {
+            document.getElementById("figureOpacity").value = object.opacity * 100;
+            document.getElementById("fillColor").focus();
+        }
+        setSelections(object);
+    });
 }
 
-function showFormGroups(type) {
+function showFormGroups(typesToShow) {
+    const form = document.getElementById("appearanceForm");
+
+    //Replace appearance form with original to keep structure after collapsible addition changes it
+    form.parentNode.replaceChild(originalAppearanceForm, form);
+
     const allformGroups = document.querySelectorAll("#appearanceForm .form-group");
-    const formGroupsToShow = getGroupsByType(type);
+    const formGroupsToShow = getGroupsByTypes(typesToShow);
+
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
+
+    const groupsByTypes = formGroupsToShow.reduce((result, group) => {
+        const groupTypes = group.dataset.types.split(",");
+        const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
+        const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
+        if(duplicateTypesIndex === -1) {
+            result.push({
+                groups: [group],
+                types: types
+            });
+        } else {
+            result[duplicateTypesIndex].groups.push(group);
+        }
+        return result;
+    }, []);
+
+    initAppearanceForm();
+    groupsByTypes.forEach((object, i) => createCollapsible(object.groups, object.types, i));
+
+    //Always put submit-button in the end of the form
+    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
+}
+
+function containsAll(array1, array2) {
+    return array1.every(item => array2.includes(item));
+}
+
+function sameMembers(array1, array2) {
+    return containsAll(array1, array2) && containsAll(array2, array1);
 }
 
 function getTextareaText(array) {
@@ -4642,15 +5352,16 @@ function getTextareaText(array) {
     return text;
 }
 
-function setTextareaText(element, array) {
-    const textLines = element.value.split('\n');
-    array = [];
-    textLines.forEach(text => array.push({"text": text}));
+function getTextareaArray(element, index) {
+    const objectText = element.value.split(",\n");
+    const indexTextLines = objectText[index].split("\n");
+    const array = [];
+    indexTextLines.forEach(text => array.push({"text": text}));
     return array;
 }
 
 function setGlobalSelections() {
-    const groups = getGroupsByType(-1);
+    const groups = getGroupsByTypes([-1]);
     groups.forEach(group => {
         const select = group.querySelector("select");
         if(select !== null) {
@@ -4661,7 +5372,7 @@ function setGlobalSelections() {
 }
 
 function setGlobalProperties() {
-    const groups = getGroupsByType(-1);
+    const groups = getGroupsByTypes([-1]);
     groups.forEach(group => {
         const element = group.querySelector("select, input:not([type='submit'])");
         if(element !== null) {
@@ -4674,12 +5385,7 @@ function setGlobalProperties() {
 }
 
 function setSelections(object) {
-    let groups = [];
-    if(object.kind === kind.symbol) {
-        groups = getGroupsByType(object.symbolkind);
-    } else if(object.kind === kind.path) {
-        groups = getGroupsByType(0);
-    }
+    const groups = getGroupsByTypes([object.symbolkind || 0]);
 
     groups.forEach(group => {
         const elements = group.querySelectorAll("select, input[type='checkbox']");
@@ -4707,39 +5413,47 @@ function setSelections(object) {
 }
 
 
-function setObjectProperties() {
-    for(const object of selected_objects) {
-        let groups = [];
-        if(object.kind === kind.symbol) {
-            groups = getGroupsByType(object.symbolkind);
-        } else if(object.kind === kind.path) {
-            groups = getGroupsByType(0);
-        }
-        groups.forEach(group => {
-            const elements = group.querySelectorAll("input:not([type='submit']), select, textarea");
-            elements.forEach(element => {
-                let access = element.dataset.access.split(".");
-                if(element.nodeName === "TEXTAREA") {
-                    object[access[0]] = setTextareaText(element, object[access[0]]);
-                } else if(element.type === "range") {
-                    object[access[0]] = element.value / 100;
-                } else if(access[0] === "cardinality") {
-                    if(element.style.display !== "none") {
-                        if(element.value === "None") element.value = "";
-                        object[access[0]][access[1]] = element.value;
+function setSelectedObjectsProperties(element) {
+    const types = element.parentNode.dataset.types.split(",");
+    let textareaIndex = 0;
+    let nameIndex = 0;
+
+    //Using global array populated with objects when form is loaded to prevent selected objects that are locked
+    appearanceObjects.forEach(object => {
+        if((types.includes((object.symbolkind || 0).toString()))) {
+            const access = element.dataset.access.split(".");
+            if(element.nodeName === "TEXTAREA") {
+                object[access[0]] = getTextareaArray(element, textareaIndex);
+                textareaIndex++;
+            } else if(element.type === "range") {
+                object[access[0]] = element.value / 100;
+            } else if(access[0] === "cardinality") {
+                if(element.style.display !== "none") {
+                    if(element.value === "None") {
+                        element.value = "";
                     }
-                } else if(element.id == "commentCheck") {
-                    object[access[0]][access[1]] = element.checked;
-                } else if(access.length === 1) {
-                    object[access[0]] = element.value;
-                } else if(access.length === 2) {
                     object[access[0]][access[1]] = element.value;
                 }
-            });
-        });        
-    }
+            } else if(element.id == "commentCheck") {
+                object[access[0]][access[1]] = element.checked;
+            } else if(element.id === "name") {
+                object[access[0]] = element.value.split(",")[nameIndex].trim();
+                nameIndex++;
+            } else if(access.length === 1) {
+                object[access[0]] = element.value;
+            } else if(access.length === 2) {
+                object[access[0]][access[1]] = element.value;
+            }
+        }
+    });
     updateGraphics();
 }
+
+//Stores which element the mouse was pressed down on while in the appearance menu.
+let appearanceMouseDownElement = null;
+
+//Stores a copy of the appearance form HTML-element with its childnodes
+let originalAppearanceForm = null;
 
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
@@ -4753,26 +5467,32 @@ function initAppearanceForm() {
                     element.addEventListener("input", setGlobalProperties);
                 }
             } else if(element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-                if(element.type === "submit") {
-                    element.addEventListener("click", submitAppearanceForm);
-                } else {
-                    element.addEventListener("input", setObjectProperties);
-                }
+                element.addEventListener("input", () => setSelectedObjectsProperties(element));
             } else if(element.tagName === "SELECT") {
-                element.addEventListener("change", setObjectProperties);
+                element.addEventListener("change", () => setSelectedObjectsProperties(element));
             }
         });
     });
 
+    const submitButton = document.querySelector("#appearanceButtonContainer .submit-button");
+    submitButton.addEventListener("click", submitAppearanceForm);
+
     const appearanceContainer = document.getElementById("appearance");
-    appearanceContainer.addEventListener("click", clickOutsideAppearanceForm);
+    appearanceContainer.addEventListener("mousedown", e => appearanceMouseDownElement = e.target);
+    appearanceContainer.addEventListener("mouseup", e => {
+        if(appearanceMouseDownElement === appearanceContainer && e.target === appearanceContainer) {
+            toggleApperanceElement();
+        }
+    });
+
+    originalAppearanceForm = document.getElementById("appearanceForm").cloneNode(true);
 }
 
-function getGroupsByType(type) {
+function getGroupsByTypes(typesToShow) {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     return [...formGroups].filter(group => {
         const types = group.dataset.types.split(",");
-        return types.includes(type.toString());
+        return typesToShow.some(type => types.includes(type.toString()));
     });
 }
 
@@ -4786,19 +5506,7 @@ function submitAppearanceForm() {
     });
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
-    } else {
-        setObjectProperties();
     }
     SaveState();
     toggleApperanceElement();
 }
-
-function clickOutsideAppearanceForm(e) {
-    const formContainer = document.querySelector(".loginBox");
-
-    //Close appearance if the clicked element is not a child/grand-child of formContanier
-    if(!formContainer.contains(e.target)) {
-        toggleApperanceElement();
-    }
-}
-

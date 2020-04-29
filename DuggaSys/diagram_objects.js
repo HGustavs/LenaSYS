@@ -19,14 +19,13 @@ function Symbol(kindOfSymbol) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];            // Free text array
-    this.name = "New Class";        // Default name is new class
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
     this.cardinality = 
       {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null};
-    this.lineDirection;
+    this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
     this.minHeight;
@@ -46,6 +45,16 @@ function Symbol(kindOfSymbol) {
     this.connectorBottom = [];
     this.connectorLeft = [];
     this.connectorRight = [];
+
+    // Variables for UML line breakpoints
+    var breakpointStartX = 0;     // X Coordinate for start breakpoint
+    var breakpointStartY = 0;     // Y Coordinate for start breakpoint
+    var breakpointEndX = 0;       // X Coordinate for end breakpoint
+    var breakpointEndY = 0;       // Y Coordinate for end breakpoint
+    var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
+    var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
+    var startLineDirection = "";  // Which side of the class the line starts from
+    var endLineDirection = "";    // Which side of the class the line ends in
 
     // Properties array that stores different kind of objects. Refer to the properties with "properties['fillColor']"
     this.properties = {
@@ -612,6 +621,63 @@ function Symbol(kindOfSymbol) {
         }
     }
 
+    //--------------------------------------------------------------------
+    // Gets the connectors name from given point
+    //--------------------------------------------------------------------
+    this.getConnectorNameFromPoint = function(point) {
+        for (var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].from == point) {
+                return "connectorTop";
+            }
+        }
+        for(var i = 0; i < this.connectorRight.length; i++) {
+            if(this.connectorRight[i].from == point) {
+                return "connectorRight";
+            }
+        }
+        for (var i = 0; i < this.connectorBottom.length; i++) {
+            if(this.connectorBottom[i].from == point) {
+                return "connectorBottom";
+            }
+        }
+        for (var i = 0; i < this.connectorLeft.length; i++) {
+            if(this.connectorLeft[i].from == point) {
+                return "connectorLeft";
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------
+    // Gets connected lines
+    //--------------------------------------------------------------------
+    this.getConnectedTo = function(){
+        var connected = [];
+        //top
+        if(this.connectorTop.length > 0){
+            for(var j = 0 ; j < this.connectorTop.length ; j++){
+                connected.push(this.connectorTop[j].from);
+            }
+        }
+        //right
+        if(this.connectorRight.length > 0){
+            for(var j = 0 ; j < this.connectorRight.length ; j++){
+                connected.push(this.connectorRight[j].from);
+            }
+        }
+        //bottom
+        if(this.connectorBottom.length > 0){
+            for(var j = 0 ; j < this.connectorBottom.length ; j++){
+                connected.push(this.connectorBottom[j].from);
+            }
+        }
+        //left
+        if(this.connectorLeft.length > 0){
+            for(var j = 0 ; j < this.connectorLeft.length ; j++){
+                connected.push(this.connectorLeft[j].from);
+            }
+        }
+        return connected;
+    }
 
     //--------------------------------------------------------------------
     // isClicked: Returns true if xk,yk is inside the bounding box of the symbol
@@ -1143,7 +1209,14 @@ function Symbol(kindOfSymbol) {
 
         // Clear Class Box
         ctx.fillStyle = '#ffffff';
-        ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+		ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+		
+		// Set border to redish if crossing line
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.strokeStyle = '#DC143C';
+		}else{
+			ctx.strokeStyle = this.properties['strokeColor'];
+		}
 
         // Box
         ctx.beginPath();
@@ -1161,9 +1234,14 @@ function Symbol(kindOfSymbol) {
         ctx.lineTo(x2, midy);
         ctx.fill();
         ctx.stroke();
-        ctx.clip();
-        ctx.fillStyle = this.properties['fontColor'];
-        // Write Class Name
+		ctx.clip();
+		
+		// Write Class Name
+        if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = '#DC143C';
+		}else{
+			ctx.fillStyle = this.properties['fontColor'];
+		}
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         if(ctx.measureText(this.name).width >= (x2-x1) - 2) {
@@ -1196,7 +1274,14 @@ function Symbol(kindOfSymbol) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
-        this.isAttribute = true;
+		this.isAttribute = true;
+		//if on two or more pages turn redish
+        if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.strokeStyle = '#DC143C';
+		}else{
+			ctx.strokeStyle = this.properties['strokeColor'];
+		}
+
         ctx.fillStyle = this.properties['fillColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
@@ -1249,8 +1334,14 @@ function Symbol(kindOfSymbol) {
         }
         ctx.fill();
         ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = this.properties['fontColor'];
+		ctx.setLineDash([]);
+		//if not on one page draw in redish
+        if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = '#DC143C';
+		}else{
+			ctx.fillStyle = this.properties['fontColor'];
+		}
+
         if(ctx.measureText(this.name).width > (x2-x1) - 4) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
@@ -1441,7 +1532,36 @@ function Symbol(kindOfSymbol) {
         if (this.properties['strokeColor'] == '#ffffff') {
             this.properties['strokeColor'] = '#000000';
         }
-        // Make sure that the font color is always able to be seen.
+        
+        
+    }
+
+    this.drawEntity = function(x1, y1, x2, y2) {
+		ctx.fillStyle = this.properties['fillColor'];
+		
+        if (this.properties['key_type'] == "Weak") {
+            this.drawWeakEntity(x1, y1, x2, y2);
+            setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
+        } else {
+            removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
+		}
+
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.strokeStyle = '#DC143C';
+		}else{
+			ctx.strokeStyle = this.properties['strokeColor'];
+		}
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x1, y2);
+        ctx.lineTo(x1, y1);
+		ctx.closePath();	
+		ctx.fill();
+
+		// Make sure that the font color is always able to be seen.
         // Symbol and Font color should therefore not be the same
         if (this.properties['fontColor'] == this.properties['fillColor']) {
             if (this.properties['fillColor'] == '#000000') {
@@ -1449,35 +1569,15 @@ function Symbol(kindOfSymbol) {
             } else {
                 this.properties['fontColor'] = '#000000';
             }
-        }
-    }
+		}
 
-    this.drawEntity = function(x1, y1, x2, y2) {
-        ctx.fillStyle = this.properties['fillColor'];
-        if (this.properties['key_type'] == "Weak") {
-            this.drawWeakEntity(x1, y1, x2, y2);
-            setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
-        } else {
-            removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
-        }
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x1, y2);
-        ctx.lineTo(x1, y1);
-        ctx.closePath();
-        ctx.fill();
-        if (this.properties['fontColor'] == this.properties['fillColor']) {
-            if (this.properties['fillColor'] == '#000000') {
-                this.properties['fontColor'] = '#ffffff';
-            } else {
-                this.properties['fontColor'] = '#000000';
-            }
-        }
         ctx.clip();
         ctx.stroke();
-        ctx.fillStyle = this.properties['fontColor'];
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = '#DC143C';
+		}else{
+			ctx.fillStyle = this.properties['fontColor'];
+		}
 
         if(ctx.measureText(this.name).width >= (x2-x1) - 5) {
             ctx.textAlign = "start";
@@ -1588,14 +1688,14 @@ function Symbol(kindOfSymbol) {
         }
 
         // Variables for UML line breakpoints
-        var breakpointStartX = 0;     // X Coordinate for start breakpoint
-        var breakpointStartY = 0;     // Y Coordinate for start breakpoint
-        var breakpointEndX = 0;       // X Coordinate for end breakpoint
-        var breakpointEndY = 0;       // Y Coordinate for end breakpoint
-        var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
-        var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
-        var startLineDirection = "";  // Which side of the class the line starts from
-        var endLineDirection = "";    // Which side of the class the line ends in
+        this.breakpointStartX = 0;
+        this.breakpointStartY = 0;
+        this.breakpointEndX = 0;
+        this.breakpointEndY = 0;
+        this.middleBreakPointX = 0;
+        this.middleBreakPointY = 0;
+        this.startLineDirection = "";
+        this.endLineDirection = "";
 
         // Calculating the mid point between start and end
         if (x2 > x1) {
@@ -1858,78 +1958,49 @@ function Symbol(kindOfSymbol) {
     this.moveCardinality = function(x1, y1, x2, y2, side) {
         let boxCorners = this.corners();
         let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
-
+        
         const cardinality = this.cardinality;
+        var connectedObjects = this.getConnectedObjects();
 
-        // Correct corner e.g. top left, top right, bottom left or bottom right
-        let correctCorner = getCorrectCorner(cardinality,
-    										boxCorners.tl.x,
-    										boxCorners.tl.y,
-    										boxCorners.br.x,
-    										boxCorners.br.y);
-
-        // Find which box the cardinality number is connected to
-        for(var i = 0; i < diagram.length; i++) {
-            dtlx = diagram[i].corners().tl.x;
-            dtly = diagram[i].corners().tl.y;
-            dbrx = diagram[i].corners().br.x;
-            dbry = diagram[i].corners().br.y;
-
-            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
-                cardinality.parentBox = diagram[i];
-                delete cardinality.parentBox.cardinality.parentBox;
-                break;
-            }
-        }
-
-	    // Decide whether x1 and y1 is relevant or x2 and y2
 	    if(side == "CorrectSide") {
-		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[cardinality.parentBox.topLeft], points[cardinality.parentBox.bottomRight]);
-		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x1 && correctBox.br.x > x1) {
-		            cardinality.axis = "X";
-		        }
-		        if(correctBox.tl.y < y1 && correctBox.br.y > y1) {
-		            cardinality.axis = "Y";
-		        }
-		    }
-
-		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-13 : x1+13;
-		    cardinality.y = y1 > y2 ? y1-15 : y1+15;
-
-		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X") {
-		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
-		    }
-		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
-		    }
+            var targetobject = getCorners(points[this.cardinality.parentBox.topLeft],points[this.cardinality.parentBox.bottomRight]);
+            var line = getCorners(points[this.topLeft],points[this.bottomRight])
+            if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x){
+                cardinality.x = x2-15;
+                cardinality.y = y2 > y1 ? y2+15 : y2-15;
+            }
+            else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y){
+                cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                cardinality.y = y2-15;
+            }
+            else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x){
+                cardinality.x = x2+15;
+                cardinality.y = y2 > y1 ? y2+15 : y2-15;
+            }
+            else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y){
+                cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                cardinality.y = y2+15;
+            }
 	    }
 	    else if(side == "IncorrectSide") {
-		    if(cardinality.parentBox != null) {
-		        var correctBox = getCorners(points[this.cardinality.parentBox.topLeft], points[this.cardinality.parentBox.bottomRight]);
-		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
-		            cardinality.axis = "X";
-		        }
-		        if(correctBox.tl.y < y2 && correctBox.br.y > y2) {
-		            cardinality.axis = "Y";
-		        }
-		    }
-
-		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-15 : x2+15;
-		    cardinality.y = y2 > y1 ? y2-15 : y2+15;
-
-		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2+15 : x2-15;
-		    }
-		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y2 > y1 ? y2+15 : y2-15;
-		    }
+            var targetobject = getCorners(points[this.cardinality.parentBox.topLeft],points[this.cardinality.parentBox.bottomRight]);
+            var line = getCorners(points[this.topLeft],points[this.bottomRight])
+            if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x){
+                cardinality.x = x2-15;
+                cardinality.y = y2 > y1 ? y2+15 : y2-15;
+            }
+            else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y){
+                cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                cardinality.y = y2-15;
+            }
+            else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x){
+                cardinality.x = x2+15;
+                cardinality.y = y2 > y1 ? y2+15 : y2-15;
+            }
+            else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y){
+                cardinality.x = x2 > x1 ? x2+15 : x2-15;
+                cardinality.y = y2+15;
+            }
         }
     }
 
@@ -1969,6 +2040,13 @@ function Symbol(kindOfSymbol) {
         this.isRelation = true;
         var midx = pixelsToCanvas(points[this.centerPoint].x).x;
         var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
+		
+		// Set border to redish if crossing line
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.strokeStyle = '#DC143C';
+		}else{
+			ctx.strokeStyle = this.properties['strokeColor'];
+		}
 
         if (this.properties['key_type'] == 'Weak') {
           this.drawWeakRelation(x1, y1, x2, y2, midx, midy);
@@ -1993,9 +2071,14 @@ function Symbol(kindOfSymbol) {
             }
         }
         ctx.clip();
-        ctx.stroke();
-
-        ctx.fillStyle = this.properties['fontColor'];
+		ctx.stroke();
+		
+		// Set text to redish if crossing line
+		if(!checkSamePage(x1,y1,x2,y2)){
+			ctx.fillStyle = '#DC143C';
+		}else{
+			ctx.fillStyle = this.properties['fontColor'];
+		}
 
         if(ctx.measureText(this.name).width >= (x2-x1) - 12) {
             ctx.textAlign = "start";
@@ -2021,13 +2104,29 @@ function Symbol(kindOfSymbol) {
 				ctx.rect(x1, y1, x2-x1, y2-y1);
 				ctx.stroke();
 			}
+			// Set text to redish if crossing line
+			if(!checkSamePage(x1,y1,x2,y2)){
+				ctx.fillStyle = '#DC143C';
+				ctx.strokeStyle = '#DC143C';
+			}else{
+				ctx.fillStyle = this.properties['fontColor'];
+				ctx.strokeStyle = this.properties['strokeColor'];
+			}
 
-			ctx.fillStyle = this.properties['fontColor'];
+			//add permanent outline for comments
+			if (this.properties['isComment'] == true && !this.isHovered && !this.targeted){
+				ctx.lineWidth = 1 * diagram.getZoomValue();
+				ctx.setLineDash([5, 4]);
+				ctx.rect(x1, y1, x2-x1, y2-y1);
+				ctx.stroke();
+			}
+			
+
 			ctx.textAlign = this.textAlign;
 			for (var i = 0; i < this.textLines.length; i++) {
-				ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
+				ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.99) / 2 + (this.properties['textSize'] * i));
 			}
-		}//here you could add an extra statment to make comments look different the regular text
+		}
     }
 
     //--------------------------------------------------------------------
@@ -2170,7 +2269,83 @@ function Symbol(kindOfSymbol) {
 				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			}
-		} else if (this.symbolkind == symbolKind.erRelation) {
+        } else if (this.symbolkind == symbolKind.umlLine) {
+            // Cardinality
+            if (this.cardinality.value != "" && this.cardinality.value != null) {
+                svgPosUmlLine  = "x='"+this.cardinality.x+"' y='"+this.cardinality.y+"' text-anchor='middle' dominant-baseline='central'";
+                svgStyle = "fill:#000; font:"+font+";";
+                str += "<text "+svgPosUmlLine+" style='"+svgStyle+"'>"+this.cardinality.value+"</text>";
+            }
+            //Draw correct line with breakpoints
+            svgPosUmlLine = "points='"+x1+','+y1+' ';
+            if (startLineDirection == "left") {
+                svgPosUmlLine += breakpointStartX+','+y1+' ';
+            } else if (startLineDirection == "right") {
+                svgPosUmlLine += breakpointStartX+','+y1+' ';
+            } else if (startLineDirection == "up") {
+                svgPosUmlLine += x1+','+breakpointStartY+' ';
+            } else if (startLineDirection == "down") {
+                svgPosUmlLine += x1+','+breakpointEndY+' ';
+            }
+            if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "up" || endLineDirection === "down")) {
+                svgPosUmlLine += breakpointStartX+','+breakpointEndY+' ';
+                svgPosUmlLine += x2+','+breakpointEndY+' ';
+                svgPosUmlLine += x2+','+y2+' ';
+            } else if((startLineDirection === "left" || startLineDirection === "right") && (endLineDirection === "left" || endLineDirection === "right")) {
+                svgPosUmlLine += middleBreakPointX+','+breakpointStartY+' ';
+                svgPosUmlLine += middleBreakPointX+','+middleBreakPointY+' ';
+                svgPosUmlLine += middleBreakPointX+','+breakpointEndY+' ';
+            } else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
+                svgPosUmlLine += breakpointStartX+','+breakpointEndY+' ';
+            } else if((startLineDirection === "right" || startLineDirection === "left") && (endLineDirection === "up" || endLineDirection === "down")) {
+                svgPosUmlLine += breakpointEndX+','+breakpointStartY+' ';
+            }
+
+            if (endLineDirection == "left") {
+                svgPosUmlLine += breakpointEndX+','+y2+' ';
+            } else if (endLineDirection == "right") {
+                svgPosUmlLine += breakpointEndX+','+y2+' ';
+            } else if (endLineDirection == "up") {
+                svgPosUmlLine += x2+','+breakpointEndY+' ';
+            } else if (endLineDirection == "down") {
+                svgPosUmlLine += x2+','+breakpointEndY+' ';
+            }
+            svgPosUmlLine += x2+','+y2+"'";
+
+            //Handling recursive lines
+            if(this.isRecursiveLine == true){
+                if(startLineDirection=="up"){
+                    svgPosUmlLine = "points='"+x1+','+y1+' ';
+                    svgPosUmlLine += x1+','+(y1-40)+' ';
+                    svgPosUmlLine += x2+','+(y1-40)+' ';
+                    svgPosUmlLine += x2+','+y2+"'";
+                }
+                else if(startLineDirection=="down"){
+                    svgPosUmlLine = "points='"+x1+','+y1+' ';
+                    svgPosUmlLine += x1+','+(y1+40)+' ';
+                    svgPosUmlLine += x2+','+(y1+40)+' ';
+                    svgPosUmlLine += x2+','+y2+"'";
+                }
+            }
+
+            if (this.properties['key_type'] == "Forced") {
+                // Thick line that will be divided into two lines using thin line
+                strokeWidth = this.properties['lineWidth'] * 3 * diagram.getZoomValue();
+                svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+                str += "<polyline "+svgPosUmlLine+" fill='none' style='"+svgStyle+"' />";
+                // Thin line used to divide thick line into two lines
+                strokeWidth = this.properties['lineWidth'] * diagram.getZoomValue();
+                svgStyle = "stroke:#fff; stroke-width:"+strokeWidth+";";
+                str += "<polyline "+svgPosUmlLine+" fill='none' style='"+svgStyle+"' />";
+            } else if (this.properties['key_type'] == "Derived") {
+                strokeWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
+                svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+                str += "<polyline "+svgPosUmlLine+" style='"+svgStyle+"' fill='none' stroke-dasharray='"+lineDash+"' />";
+            } else {
+                svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
+                str += "<polyline "+svgPosUmlLine+" fill='none' style='"+svgStyle+"' />";
+            }
+        } else if (this.symbolkind == symbolKind.erRelation) {
 			var midx = points[this.centerPoint].x;
 			var midy = points[this.centerPoint].y;
 			// Relation
@@ -2337,6 +2512,41 @@ function drawLineJump(positionX, positionY, mOfLine1, mOfLine2){
 		ctx.closePath();
 		ctx.stroke();
  }
+}
+
+//---------------------------------------------------------------------
+//Check if both corners of an object are inside the same page
+//----------------------------------------------------------------------
+function checkSamePage(x1,y1,x2,y2){
+
+	x1 = canvasToPixels(x1).x;
+    x2 = canvasToPixels(x2).x;
+    y1 = canvasToPixels(0, y1).y;
+	y2 = canvasToPixels(0, y2).y;
+	//If y1 and y2 are diffrent minus plus return false
+	if(x1< 0 && x2 > 0 || x2 < 0 && x1 > 0){
+		return false;
+	}else if (y1< 0 && y2 > 0 || y2 < 0 && y1 > 0){
+		return false;
+	}
+	if(paperOrientation == "portrait"){
+		x1 = ~~((x1/paperWidth)*zoomValue);
+		y1 = ~~((y1/paperHeight)*zoomValue);
+		x2 = ~~((x2/paperWidth)*zoomValue);
+		y2 = ~~((y2/paperHeight)*zoomValue);
+		
+	}else{
+		x1 = ~~((x1/paperHeight)*zoomValue);
+		y1 = ~~((y1/paperWidth)*zoomValue);
+		x2 = ~~((x2/paperHeight)*zoomValue);
+		y2 = ~~((y2/paperWidth)*zoomValue);
+	}
+
+	if(x1==x2 && y1 == y2){
+		return true;
+	}else {
+		return false
+	}
 }
 //----------------------------------------------------------------------
 // drawLock: This function draws out the actual lock for the specified symbol

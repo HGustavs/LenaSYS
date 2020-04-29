@@ -60,13 +60,25 @@ if($opt=="REFRESH"){
 				$res["securityquestion"] = "set";
 			}
 
+			//LOGGING STARTS HERE ->
+			// Gets uid based on username
+			$query = $pdo->prepare( "SELECT uid FROM user WHERE username = :username");
+			$query->bindParam(':username', $username);
+			$query-> execute();
+
+			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+				$userid = $row['uid'];
+			}
+
 			// Log USERID for Dugga Access
-			logUserEvent($username,EventTypes::LoginSuccess,"");
+			logUserEvent($userid,EventTypes::LoginSuccess,"");
 
 		  }else{
 			addlogintry(); // If to many attempts has been commited, it will jump to this
 			// As login has failed we log the attempt
 
+			// Logging for failed login
 			logUserEvent($username,EventTypes::LoginFail,"");
 		}
     }else{
@@ -77,7 +89,7 @@ if($opt=="REFRESH"){
 	echo json_encode($res);
 }else{
 	//Adds a row to the logging table for the userlogout.
-	logUserEvent($_SESSION['loginname'],EventTypes::Logout,"");
+	logUserEvent($_SESSION['uid'],EventTypes::Logout,"");
 
 	// Parts of Logout copied from http://stackoverflow.com/a/3948312 and slightly modified, licensed under cc by-sa
 	// unset all of the session variables.

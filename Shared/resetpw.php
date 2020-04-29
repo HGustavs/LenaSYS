@@ -9,7 +9,7 @@ $opt=getOP('opt');
 
 if($opt=="GETQUESTION"){
 	$username=getOP('username');
-	$securityquestion=getOP('securityquestion');
+  $securityquestion=getOP('securityquestion');
   
   // Request barrier
   $maxRequestTries = 5;
@@ -32,7 +32,18 @@ if($opt=="GETQUESTION"){
     $queryResult = $result['COUNT(*)'];
   }
 
-	pdoConnect(); // Makes sure it actually connects to a database
+  pdoConnect(); // Makes sure it actually connects to a database
+  
+  // Retriving uid from database is used for logging 
+			// Gets uid based on username
+			$query = $pdo->prepare( "SELECT uid FROM user WHERE username = :username");
+			$query->bindParam(':username', $username);
+			$query-> execute();
+
+			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+				$userid = $row['uid'];
+  }
 
 	// Default values
 	$res = array("getname" => "failed");
@@ -44,7 +55,7 @@ if($opt=="GETQUESTION"){
 		$res["securityquestion"] = $_SESSION["securityquestion"];
     }else{
       $res["getname"] = $_SESSION["getname"];
-      logUserEvent($username,EventTypes::RequestNewPW,"");
+      logUserEvent($userid,EventTypes::RequestNewPW,"");
     }
   }else{
     $res["getname"] = "limit";
@@ -94,7 +105,7 @@ if($opt=="GETQUESTION"){
       }
     }else{
       $res["requestchange"] = "wrong";
-      logUserEvent($username,EventTypes::CheckSecQuestion,"");
+      logUserEvent($userid,EventTypes::CheckSecQuestion,"");
     }
   }else{
     $res["requestchange"] = "limit";

@@ -149,6 +149,8 @@ if(checklogin() && $hasAccess) {
 			$error=$query->errorInfo();
 			$debug="Error updating user\n".$error[2];
 		}
+    //log for reset password.
+    logUserEvent($userid,EventTypes::ResetPW,$uid);
 	} else if(strcmp($opt,"ADDUSR")==0){
         $newUserData = json_decode(htmlspecialchars_decode($newusers));
         foreach ($newUserData as $user) {
