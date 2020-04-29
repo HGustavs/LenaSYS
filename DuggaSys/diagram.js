@@ -827,6 +827,10 @@ function setConnectedLines(temp) {
         var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
         var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
         temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
+        //Fixes recursive UML-lines
+        if(temp[connected[j].to].isRecursiveLine == true){
+            temp[connected[j].from][connected[j].loc].push({from: lineEnd2, to: lineEnd1});
+        }
     }
 }
 
