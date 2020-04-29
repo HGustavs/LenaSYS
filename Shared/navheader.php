@@ -35,7 +35,6 @@
 			if($noup=='COURSE'){
 					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-					// echo "<td>GREGER!</td>";	
 			}else if($noup=='SECTION'){
 					echo "<a href='";
 					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
@@ -257,7 +256,6 @@
 	function cookieMessage(){
 		hideCookieMessage();
 		localStorage.setItem("cookieMessage", "off");
-		//$("#cookiemsg").css("display", "none");
 	}
 	function hoverBack(){
 		$(".dropdown-list-container").css("display", "none");
