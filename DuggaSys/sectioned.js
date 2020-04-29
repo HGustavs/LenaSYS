@@ -1602,10 +1602,18 @@ $(window).load(function () {
   $("#sectionList_arrowStatisticsOpen").click(function () {
     $("#sectionList_arrowStatisticsOpen").hide();
     $("#sectionList_arrowStatisticsClosed").show();
+    $("#statisticsList").show();
+    $("#statistics").hide();
+    $("#courseList").css({
+      'display':'flex',
+      'flex-direction': 'column'
+    });
+    
   });
   $("#sectionList_arrowStatisticsClosed").click(function () {
     $("#sectionList_arrowStatisticsOpen").show();
     $("#sectionList_arrowStatisticsClosed").hide();
+     $("#statisticsList").hide();
   });
 });
 
