@@ -2106,13 +2106,14 @@ function createCodeborder(lineno, improws) {
 //                Is called at line 223-229 in EditorV50.php
 //----------------------------------------------------------------------------------
 
-function changetemplate(templateno) {
+function changetemplate(templateno) 
+{
 	$(".tmpl").each(function (index) {
 		$(this).css("background", "#ccc");
 	});
 
-	$("#templat" + templateno).css("background", "#fc4");
-	$("#templateno").val(templateno);
+	document.getElementById("templat" + templateno).style.backgroundColor = "#fc4";
+	document.getElementById("templateno").value = templateno;
 
 	var templateOptions = document.getElementById('templateOptions');
 	var boxes;
