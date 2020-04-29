@@ -407,6 +407,22 @@ p {
   cursor: pointer;
 }
 
+.tabs0, .tabsnull{
+  width: 32px;
+}
+.tabs1{
+  width: 64px;
+}
+.tabs2{
+  width: 96px;
+}
+.tabs3{
+  width: 128px;
+}
+.tans4{
+  width: 160px;
+}
+
 .markdownIcon,
 .trashcanIcon {
   vertical-align: middle;
