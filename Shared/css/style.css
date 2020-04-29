@@ -473,6 +473,11 @@ p {
   background-color: var(--color-primary);
 }
 
+#sectionList_arrowStatisticsOpen,
+#sectionList_arrowStatisticsClosed{
+  display: none;
+  cursor: pointer;
+}
 .item a {
   text-decoration: none;
   color: var(--color-text-primary);
@@ -4403,6 +4408,9 @@ only screen and (max-device-width: 860px) {
 
   #statisticsList {
     display: none;
+  }
+  #sectionList_arrowStatisticsOpen{
+    display: inline;
   }
 }
 

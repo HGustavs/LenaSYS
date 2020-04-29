@@ -1599,6 +1599,14 @@ $(window).load(function () {
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
+  $("#sectionList_arrowStatisticsOpen").click(function () {
+    $("#sectionList_arrowStatisticsOpen").hide();
+    $("#sectionList_arrowStatisticsClosed").show();
+  });
+  $("#sectionList_arrowStatisticsClosed").click(function () {
+    $("#sectionList_arrowStatisticsOpen").show();
+    $("#sectionList_arrowStatisticsClosed").hide();
+  });
 });
 
 // Checks if <a> link is external

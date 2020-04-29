@@ -121,6 +121,10 @@
 		<div id='Sectionlist'>
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>
+				<div style="margin:10px;">
+						<img src="../Shared/icons/right_complement.svg" id="sectionList_arrowStatisticsOpen">
+						<img src="../Shared/icons/desc_complement.svg" id="sectionList_arrowStatisticsClosed">
+				</div>
 				<div style='flex-grow:1'>
 						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;'>UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
