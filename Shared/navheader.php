@@ -150,7 +150,7 @@
 					echo 	"</div><div>";
 					echo "</td>";
 					echo "<td class='navButt'>";
-					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
+					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender(); sortAndFilterTogether();' type='button'>";
 					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
 					echo "</td>";
