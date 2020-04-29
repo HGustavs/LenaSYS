@@ -57,7 +57,8 @@ pdoConnect();
 			<li class="legendListItem"><img src="../Shared/icons/U.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Dugga failed</li>
 			<li class="legendListItem"><img src="../Shared/icons/Uc.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Dugga not graded</li>
 			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png" alt="grade"> Submitted past deadline</li>
-			<li class="legendListItem"><div> (9) </div> <div>Grading changes</div></li>	
+			<li class="legendListItem"><div> (9) </div> <div>Grading changes</div></li>
+			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg" alt="grade"> Not announced</li>
 		</ul>
 	</div>
 	
