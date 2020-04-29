@@ -106,7 +106,7 @@
                 <div class="inputNotFirst" id="th4"><h2>Write over?</h2></div>
                 <div class="inputNotFirst" id="th5"><h2>Submit</h2></div>
             </div>
- <?php
+    <?php
     // Prefill existing credentials, exluding password
     $dbUsername = "";
     $dbHostname = "";
@@ -159,7 +159,7 @@
     }
 
     echo '</div>';
-?>
+    ?>
                 <div class="inputContent" id="td2" valign=top>
                     <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
                         Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
@@ -821,11 +821,11 @@
         // give instructions on how to create the file.
         try {
           // Start of Content to put in coursesyspw.
-          $filePutContent = "<?php
-                define(\"DB_USER\",\"".$username."\");
-                define(\"DB_PASSWORD\",\"".$password."\");
-                define(\"DB_HOST\",\"".$serverName."\");
-                define(\"DB_NAME\",\"".$databaseName."\");
+        $filePutContent = "<?php
+        define(\"DB_USER\",\"".$username."\");
+        define(\"DB_PASSWORD\",\"".$password."\");
+        define(\"DB_HOST\",\"".$serverName."\");
+        define(\"DB_NAME\",\"".$databaseName."\");
         ?>";
           // end of coursesyspw content
           file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
