@@ -5259,6 +5259,11 @@ function loadAppearanceForm() {
         indexes[key].max += value;
     });
 
+    indexes.name = {
+        current: 0,
+        max: 0
+    };
+
     //Get all unique types from the selected objects
     const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
     
