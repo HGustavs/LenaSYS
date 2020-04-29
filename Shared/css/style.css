@@ -2623,7 +2623,6 @@ span.arrow {
 
 .feedback-list {
   table-layout: fixed;
-  width: 100%;
   margin-top: 2px !important;
 }
 
@@ -2636,6 +2635,7 @@ span.arrow {
 .feedback-list td {
   line-height: normal;
 }
+
 #feedbackTable .feedback-list th {
 	background: var(--color-background-3);
   color:var(--color-text-label);
@@ -2811,8 +2811,17 @@ span.arrow {
 
 #resultTable td {
   height: 1px;
-  padding: 0px 5px;
-  border: 0px;
+  padding: 0px;
+  border-left: 2px solid #dbd0d8;
+  border-right: 2px solid #dbd0d8;
+}
+
+#resultTable th:first-of-type {
+  min-width: 30px;
+}
+
+#resultTable th {
+  min-width: 150px;
 }
 
 .resultTable_counter {
@@ -2829,9 +2838,13 @@ span.arrow {
   border-left: 2px solid #dbd0d8;
   border-right: 2px solid #dbd0d8;
 }
+/*Added text-align:center styling to the first column in Resulted, Duggaed, Fileed and Accessed.*/
+#accessTable td:nth-child(1), #quiz td:nth-child(1),#fileLink td:nth-child(1),#resultTable td:nth-child(1){
+  text-align: center;
+}
 
 #accessTable td span{
-  padding: 0px 5px;
+  padding: 0px;
 }
 
 #accessTable select {
@@ -3235,6 +3248,7 @@ span.arrow {
   width: 98%;
   height: 140px;
   padding: 2px;
+  resize: none;
 }
 
 .feedback-info {
@@ -3244,6 +3258,16 @@ span.arrow {
 
 .dugga-moment {
   background-image: url('../icons/Stripes2.png');
+}
+
+.dugga-empty {
+  height: 50px;
+  background-color: #aaa;
+  background-image: url('../icons/not_announced_icon.svg');
+  opacity: 0.2;
+  background-repeat: no-repeat;
+  background-size: 20%;
+  background-position: center center;
 }
 
 .dugga-result-subheader {
