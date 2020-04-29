@@ -478,6 +478,11 @@ p {
   display: none;
   cursor: pointer;
 }
+.statisticsContentBottom{
+  min-height: 30px;
+  background-color: var(--color-text-primary);
+
+}
 .item a {
   text-decoration: none;
   color: var(--color-text-primary);
