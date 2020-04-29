@@ -439,7 +439,7 @@
                         <div class="drop-down">
                             <div id="layerPlaceholder">
                                 <div class="drop-down-item" tabindex="0">
-                                    <span class="drop-down-option" id="layers">Layer One</span>
+                                    <span class="notActive drop-down-option" onclick="toggleBackgroundLayer(this),setlayer()" id="layers_1">Layer One</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">

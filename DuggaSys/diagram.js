@@ -93,7 +93,6 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
-
 var gridSize = 16;                  // Distance between lines in grid
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                            // Canvas context
@@ -479,7 +478,6 @@ window.addEventListener('blur', resetButtonsPressed);
 //Functions to call after document body loads
 function init() {
     if(localStorage.getItem('layerItems') != null){
-        console.log("Hej")
         loadLayer(localStorage.getItem('layerItems'));
     }
     initializeCanvas(); 
@@ -5532,11 +5530,11 @@ function createLayer(){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "drop-down-option");
-        newSpan.setAttribute("id", "layer"+id);
+        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("id", "layer_"+id);
+        newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
         newDiv.appendChild(newSpan);
-        console.log(layerArray)
     }
     localStorage.setItem('layerItems', id);
 }
@@ -5555,11 +5553,39 @@ function loadLayer(localStorageID){
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
         newSpan.setAttribute("class", "drop-down-option");
-        newSpan.setAttribute("id", "layer"+id);
+        newSpan.setAttribute("id", "layer_"+id+1);
         newSpan.innerHTML = valueArray[id+1];
         newDiv.appendChild(newSpan);
-    }
-    if(id <= 10){
-        console.log(layerArray)
+        console.log(JSON.parse(localStorage.getItem("activeLayers")))
     }
 }
+function toggleBackgroundLayer (object){
+    activeLocalStorage(object)
+    if(object.classList.contains("notActive")){
+        object.classList.remove("notActive");
+        object.classList.add("isActive");
+        activeLocalStorage()
+    }
+    else {
+        object.classList.remove("isActive");
+        object.classList.add("notActive");
+    }
+}
+function activeLocalStorage(){
+    let storageArrayID = [];
+    let parentNode = document.getElementById("layerPlaceholder");
+    let spans = parentNode.getElementsByTagName('span');
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            storageArrayID.push(spans[i].id);
+        }
+    }
+
+    let sendingToStorage = JSON.stringify(storageArrayID);
+    localStorage.setItem('activeLayers', sendingToStorage);
+    
+}
+//function deleteLayer(){
+ //   document.getElementById("layerPlaceholder").innerHTML = "<div class='drop-down-item' tabindex='0'> <span class='drop-down-option id='layer_1'>Layer One</span></div>'";
+ //   document.getElementById("layerPlaceholder").style.margin = "0px";
+//}
