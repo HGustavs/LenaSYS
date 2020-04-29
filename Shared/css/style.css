@@ -1880,7 +1880,7 @@ input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
-  width: 110px;
+  width: auto;
   height: 30px;
   color: #fff;
   cursor: pointer;
@@ -6360,5 +6360,10 @@ textarea#filecont {
 
 .motdBoxheader div:hover {
   background-color: #ce3d3d;
+}
+
+.analytic-buttons{
+    display:flex;
+    justify-content: center;
 }
 
