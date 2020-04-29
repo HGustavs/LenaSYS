@@ -159,7 +159,7 @@
     }
 
     echo '</div>';
-?>
+    ?>
                 <div class="inputContent" id="td2" valign=top>
                     <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
                         Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
