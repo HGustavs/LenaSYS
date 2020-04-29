@@ -48,7 +48,6 @@ pdoConnect();
   ?>
   <!-- content START -->
 	<div id="content">
-		
 	<div id="resultedlegendContainer">
 		<div id="legendBtn" onclick="showLegend();"> ? </div>
 		<ul class="legendList">
@@ -61,7 +60,6 @@ pdoConnect();
 			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg" alt="grade"> Not announced</li>
 		</ul>
 	</div>
-	
     <div id="resultedFormContainer">
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
