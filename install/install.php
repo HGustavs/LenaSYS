@@ -5,7 +5,7 @@
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 </head>
 <body>
-    <?php
+<?php
     // Saving away old execution time setting and setting new to 120 (default is 30).
     // this is done in order to avoid a php timeout, especially on windows where Database
     // query time also affects php executiion time. This will not work when php is running
@@ -56,9 +56,9 @@
                         </div>
 
                     </div>";
-    ?>
+?>
 
-    <script>
+<script>
         var modalRead = false; // Have the user read info?
         var modal = document.getElementById('warning'); // Get the modal
         var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
@@ -83,20 +83,23 @@
         function haveRead(isTrue) {
             modalRead = isTrue;
         }
-    </script>
+</script>
 
-    <div id="header">
-        <h1>LenaSYS Installer</h1>
-        <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
-    </div>
-    <script>
+<script>
         var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
         // Open modal on button click
         btn.onclick = function () {
         modal.style.display = "block";
         }
-    </script>
-    <form action="install.php?mode=install" method="post">
+</script>
+
+<div id="header">
+    <h1>LenaSYS Installer</h1>
+    <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
+</div>
+
+<!-- START OF INPUT FORM SECTION -->
+<form action="install.php?mode=install" method="post">
         <div id="inputWrapper">
             <!-- Headings for input -->
             <div class="inputHeading" valign=top>
@@ -443,13 +446,13 @@
             <!-- Empty footer to show a nice border at bottom -->
             <div id="inputFooter"></div>
         </div>
-    </form>
-    <!-- END OF INPUT FORM SECTION -->
+</form>
+<!-- END OF INPUT FORM SECTION -->
 
-    <!-- START of install section. When form is submitted mode will be changed to install and this will run
+<!-- START of install section. When form is submitted mode will be changed to install and this will run
       -- Flush and ob_flush is used after every output in progress to dynamically show output when something was done.
       -->
-    <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
+<?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         ob_end_clean(); // Remove form and start installation.
 
@@ -1004,7 +1007,7 @@
         $log_db->exec($sql);
         return true;
     }
-    ?>
+?>
 
     <script>
         /* Show modal */
