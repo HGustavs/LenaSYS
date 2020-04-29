@@ -73,6 +73,10 @@ $(function () {
 //----------------------------------------------------------------------------
 
 function returnedFile(data) {
+    //Redirects users without access to courseed.php
+    if (!data.access) {
+        window.location.href = 'courseed.php';S
+    }
     filez = data;
     var tblheadPre = {
         filename: "File name",
@@ -84,9 +88,9 @@ function returnedFile(data) {
     }
     var colOrderPre = ["filename", "extension", "kind", "filesize", "uploaddate", "editor"];
 
-    if (data['studentteacher']) {
+    if (data['studentteacher'] || data['supervisor']) {
         document.getElementById('fabButton').style.display = "none";
-    } else if(data['waccess']) {
+    } else if (data['waccess'] || data['superuser']) {
         tblheadPre["trashcan"] = "";
         colOrderPre.push("trashcan");
     }
@@ -250,8 +254,10 @@ function renderCell(col, celldata, cellid) {
     }
 
     if (col == "trashcan") {
-        str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-        str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+        if (obj.showtrashcan) {
+            str = "<span class='iconBox'><img id='dorf' title='Delete file' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+            str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
+        }
     } else if (col == "filename") {
         if (obj.kind == "Link") {
             str += "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
@@ -267,6 +273,7 @@ function renderCell(col, celldata, cellid) {
     } else if (col == "extension" || col == "uploaddate") {
         str += "<span>" + celldata + "</span>";
     } else if (col == "editor") {
+        if(obj.showeditor){
         if (obj.extension == "md" || obj.extension == "txt") {
             str = "<span class='iconBox'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
@@ -274,6 +281,7 @@ function renderCell(col, celldata, cellid) {
             str = "<span class='iconBox'><img id='dorf'  title='Edit file'  class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
+    }
     } else if (col == "kind") {
         str += "<span>" + convertFileKind(celldata) + "</span>";
     }
@@ -353,10 +361,10 @@ document.addEventListener('keydown', function (event) {
 
 
 //---------------------------------------------------------------
-//sortFilesByKind <- Callback function sorts the files by its kind
+//filterFilesByKind <- Callback function sorts the files by its kind
 //---------------------------------------------------------------
 
-function sortFilesByKind(kind){
+function filterFilesByKind(kind){
     $("#fileLink table tbody tr").hide();
     if(kind == "Global"){
         $( "td:contains('Global')" ).parents("tr").show();
@@ -796,3 +804,20 @@ document.addEventListener('DOMContentLoaded', function (){
  function updateAce(data){
     editor.getSession().setValue(data);
 }
+
+// ---------------------------------------------------
+// Toggle to hide fab-button to click through it with CTRL
+//----------------------------------------------------
+
+document.addEventListener('keydown', function(e) {
+	var element = document.getElementById('fabButton');
+	if(e.keyCode === 17){
+		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
+			element.style.opacity = "1";
+			element.style.pointerEvents = "auto";
+		}else{
+            element.style.opacity = "0.3";
+			element.style.pointerEvents = "none";
+		}	
+	}
+});

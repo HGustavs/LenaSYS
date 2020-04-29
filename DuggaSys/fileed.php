@@ -96,27 +96,27 @@ $codeLinkQuery->execute();
         <div style='display:flex;justify-content:space-between;align-items:flex-end;'>
             <div style='display:flex;flex-wrap:wrap;'>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="sortFilesByKind('AllFiles');count=0;searchterm='';searchKeyUp(event);"/>
+                    <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="filterFilesByKind('AllFiles');count=0;"/>
                     <label for="all-files-sort" name="sortAll" style='white-space:nowrap'>All files</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="sortFilesByKind('Global');count=0;searchterm='kind::global';searchKeyUp(event);"/>
+                    <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="filterFilesByKind('Global');count=0;"/>
                     <label for="global-files-sort" name="sortGlobal" style='white-space:nowrap'>Global</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="sortFilesByKind('CourseLocal');count=0;searchterm='kind::course';searchKeyUp(event);"/>
+                    <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="filterFilesByKind('CourseLocal');count=0;"/>
                     <label for="course-local-sort" name="sortCLocal" style='white-space:nowrap'>Course local</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="sortFilesByKind('Local');count=0;searchterm='kind::version';searchKeyUp(event);"/>
+                    <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="filterFilesByKind('Local');count=0;"/>
                     <label for="version-local-sort" name="sortVLocal" style='white-space:nowrap'>Version local</label>
                 </div>
                 <div style='white-space:nowrap'>
-                    <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="sortFilesByKind('Link');count=0;searchterm='kind::link';searchKeyUp(event);"/>
+                    <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="filterFilesByKind('Link');count=0;"/>
                     <label for="links-sort" name="sortLinks" style='white-space:nowrap'>Links</label>
                 </div>
                  <div style='white-space:nowrap'>
-                    <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="sortFilesByKind('DummyFiles');count=0;searchterm='kind::dummyfile';searchKeyUp(event);"/>
+                    <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="filterFilesByKind('DummyFiles');count=0;"/>
                     <label for="dummyEmptyFile-sort" name="sortDummyFile" style='white-space:nowrap'>Dummy files</label>
                 </div>
             </div>
@@ -306,34 +306,47 @@ $codeLinkQuery->execute();
 <div class="fixed-action-button" id="fabButton">
     <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
     <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
-        <li onclick="showFilePopUp('EFILE');">
-            <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Dummy Empty File'>
+    <?php
+        if (isSuperUser($_SESSION['uid'] || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {
+            echo '
+            <li onclick="showFilePopUp(\'EFILE\');">
+            <a id="emptyFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip="Add Dummy Empty File">
                 <img id="emptyFabBtnImg" class="fab-icon" src="../Shared/icons/dummy_icon.svg">
             </a>
-        </li>   
-        <li onclick="showFilePopUp('GFILE');" >
-            <a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'>
+            </li>
+            '; 
+
+            // Checking again to make sure it's a super user becasue they don't necessarily need to have write access.
+            if (isSuperUser($_SESSION['uid'])) {
+            echo '
+            <li onclick="showFilePopUp(\'GFILE\');" >
+            <a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip="Add Global File">
                 <img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
             </a>
-        </li>
-        <li  onclick="showFilePopUp('LFILE');" >
-            <a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'>
-                <img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
-            </a>
-        </li>           
-        <li onclick="showFilePopUp('MFILE');" >
-            <a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'>
-                    <img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
-            </a>
-        </li>
-        <li onclick="showLinkPopUp('LINK');" >
-            <a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
-                    <img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
-            </a>
-        </li>
-
+            </li>
+            ';
+            }
+            
+            echo '
+            <li  onclick="showFilePopUp(\'LFILE\');" >
+                <a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip="Add Version Local File">
+                    <img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
+                </a>
+            </li>           
+            <li onclick="showFilePopUp(\'MFILE\');" >
+                <a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip="Add Course Local File">
+                        <img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg">
+                </a>
+            </li>
+            <li onclick="showLinkPopUp(\'LINK\');" >
+                <a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link">
+                        <img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg">
+                </a>
+            </li>
+            ';
+        }
+        ?>
     </ol>
-
 </div>
 
 <div class="confirmationWindow">
@@ -347,13 +360,15 @@ $codeLinkQuery->execute();
 
 <!--This if-statements is used when fileedit opens from an iframe in codeviewer. -->
 <?php 
-            if($_GET['kind'] != null && $_GET['filename'] != null){
-                echo '<script type="text/javascript">',
-                'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
-                    '</script>'
-                ;
-            }         
-        ?>
+	if (isset($_GET['kind']) && isset($_GET['filename'])) {
+		if($_GET['kind'] != null && $_GET['filename'] != null){
+			echo '<script type="text/javascript">',
+			'loadFile("../courses/1/'.$_GET['filename'].'", "'.$_GET['filename'].'", '.$_GET['kind'].');',
+				'</script>'
+			;
+		}  
+	}
+?>
 
 </body>
 </html>

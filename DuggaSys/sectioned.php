@@ -17,7 +17,6 @@
 			// Cookie for guest username is not present, send a guest cookie to user.
 			$username = "Guest" . $userid . rand(0,50000);  // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
 			setcookie("cookie_guest", $username, time() + 3600, "/");
-			
 		}
 	}
 	else{
@@ -89,6 +88,21 @@
 
 		<!-- FAB END -->
 
+		<!-- MOTD dropdown -->
+		<div id='motdArea' style='display: none;'>
+			<?php	
+				echo "<td>";
+				echo "		<div class='motdBoxheader' >";
+				echo "			<h3>Message of the day</h3>";
+				echo "				<div class='cursorPointer' onclick='closeMOTD()'>x</div>";
+				echo "	</div>";
+				echo "  <div id='motdContent' style='text-align:center'>";
+				echo "		<p style='text-align:center' id='motd'></p>";			
+				echo" 	</div>";
+				echo "</td>";
+			?>
+		</div>
+		<!-- MOTD dropdown END -->
 
 		<!-- Mobile view Start(course-dropdown, editVers, newVers) -->
 		<div class='mobile-view'>
@@ -191,7 +205,7 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection' onmouseover="validateSectionName('sectionname','dialog7');"  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
@@ -202,9 +216,8 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input oninput="validateSectionName('sectionname','dialog7')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
-				<p id="dialog7" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only letters (not åäö)</p>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
@@ -282,6 +295,8 @@
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
+				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters</p>
+				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
@@ -307,6 +322,8 @@
 				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
+				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters</p>
+				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 			</div>
