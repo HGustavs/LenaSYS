@@ -99,7 +99,7 @@
     <h1>LenaSYS Installer</h1>
     <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
 </div>
-<!-- END Section for button showing popup, NOT WORKING ATM -->
+<!-- ENDSection for button showing popup, NOT WORKING ATM -->
 
 <!-- START OF INPUT FORM SECTION -->
 <form action="install.php?mode=install" method="post">
@@ -113,58 +113,58 @@
                 <div class="inputNotFirst" id="th5"><h2>Submit</h2></div>
             </div>
     <?php
-    // Prefill existing credentials, exluding password
-    $dbUsername = "";
-    $dbHostname = "";
-    $dbName = "";
-    $dbPassword = "";
+        // Prefill existing credentials, exluding password
+        $dbUsername = "";
+        $dbHostname = "";
+        $dbName = "";
+        $dbPassword = "";
 
-    $credentialsFile = "../../coursesyspw.php";
-    if(file_exists($credentialsFile)) {
-      $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+        $credentialsFile = "../../coursesyspw.php";
+        if(file_exists($credentialsFile)) {
+        $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
 
-      // check if the credentials exists in the file, store them if they do
-      foreach($credentialsArray as $cred) {
-        if(stripos(trim($cred), 'DB_') !== FALSE){
-          $tArray = explode('"', trim($cred));
-          if(count($tArray) == 5) {
-            if($tArray[1]=="DB_USER"){
-              $dbUsername = $tArray[3];
-            }else if($tArray[1]=="DB_HOST"){
-              $dbHostname = $tArray[3];
-            }else if($tArray[1]=="DB_NAME"){
-              $dbName = $tArray[3];
-            }else if($tArray[1]=="DB_PASSWORD"){
-              $dbPassword = $tArray[3];
+        // check if the credentials exists in the file, store them if they do
+        foreach($credentialsArray as $cred) {
+            if(stripos(trim($cred), 'DB_') !== FALSE){
+            $tArray = explode('"', trim($cred));
+            if(count($tArray) == 5) {
+                if($tArray[1]=="DB_USER"){
+                $dbUsername = $tArray[3];
+                }else if($tArray[1]=="DB_HOST"){
+                $dbHostname = $tArray[3];
+                }else if($tArray[1]=="DB_NAME"){
+                $dbName = $tArray[3];
+                }else if($tArray[1]=="DB_PASSWORD"){
+                $dbPassword = $tArray[3];
+                }
             }
-          }
+            }
         }
-      }
-    }
-    echo '<div id="contentWrapper">';
-    /* All the different content for input
-     * td1 will be shown at start, the others (td2 - 5) will be shown by clicking arrows.
-     */
-    echo '<div class="inputContent" id="td1">';
-    echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
-            Next enter a password for this user (new or existing).<br>
-            After this enter a database to use. This could also be either an existing or a new database.<br>
-            Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
-    echo 'Enter new MySQL user. <br>';
-    echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
-    echo 'Enter password for MySQL user. <br>';
-    echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
-    echo 'Enter new database name. <br>';
-    echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
-    echo 'Enter hostname (e.g localhost). <br>';
-    echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
-    echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
+        }
+        echo '<div id="contentWrapper">';
+        /* All the different content for input
+        * td1 will be shown at start, the others (td2 - 5) will be shown by clicking arrows.
+        */
+        echo '<div class="inputContent" id="td1">';
+        echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
+                Next enter a password for this user (new or existing).<br>
+                After this enter a database to use. This could also be either an existing or a new database.<br>
+                Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
+        echo 'Enter new MySQL user. <br>';
+        echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
+        echo 'Enter password for MySQL user. <br>';
+        echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
+        echo 'Enter new database name. <br>';
+        echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
+        echo 'Enter hostname (e.g localhost). <br>';
+        echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+        echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
 
-    if($dbUsername || $dbHostname || $dbName || $dbPassword){
-        echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
-    }
+        if($dbUsername || $dbHostname || $dbName || $dbPassword){
+            echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
+        }
 
-    echo '</div>';
+        echo '</div>';
     ?>
                 <div class="inputContent" id="td2" valign=top>
                     <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
