@@ -29,7 +29,7 @@
 
 <!DOCTYPE html>
 <html>
-
+	
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
@@ -52,6 +52,19 @@
 		$noup="COURSE";
 		include '../Shared/navheader.php';
 	?>
+
+	<!-- Create Code Dialog -->
+	<section>
+		<div id='codeItemDialog' class="loginBoxContainer" style="display:none;">
+        	<div class='loginBox' style='width:650px;'>
+                <div class='loginBoxheader'>
+                    <h3>Create new code example</h3>
+                    <div class='cursorPointer' onclick='closeDialog("codeItemDialog");'>x</div>
+				</div>
+				
+        	</div>
+    	</div>
+	</section>
 
 	<!-- content START -->
 	<div id="content">

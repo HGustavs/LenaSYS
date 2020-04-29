@@ -315,10 +315,21 @@ function showCreateVersion() {
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle) {
-  if (kind >= 0 && kind <= 7) {
+  if (kind == 2) {
+    openCodeDialog();
+  } else if (kind >= 0 && kind <= 7) {
     selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined");
     newItem();
   }
+}
+
+function openCodeDialog() {
+  document.getElementById('codeItemDialog').style.display = "block";
+  console.log("howdy");
+}
+
+function closeDialog(id) {
+  document.getElementById('codeItemDialog').style.display = "none";
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
