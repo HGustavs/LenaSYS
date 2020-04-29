@@ -5256,6 +5256,7 @@ function loadAppearanceForm() {
                 max: 0
             };
         }
+        indexes[key].max += value;
     });
 
     //Get all unique types from the selected objects
