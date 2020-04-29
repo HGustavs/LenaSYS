@@ -167,9 +167,9 @@ function browserPercentage(){
 	$result = $GLOBALS['log_db']->query('
 		SELECT
 			browser,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceClientStart.') AS percentage
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
 		FROM serviceLogEntries
-		WHERE eventType = '.EventTypes::ServiceClientStart.'
+		WHERE eventType = '.EventTypes::ServiceServerStart.'
 		GROUP BY browser
 		ORDER BY percentage DESC
 	')->fetchAll(PDO::FETCH_ASSOC);
