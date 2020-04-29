@@ -991,3 +991,31 @@ function mouseUp(e){
 
 
 // End of functions handling the FAB-button functionality
+
+//--------------------------------------------------------------------------
+//  compare function used for sorting in Dugga Editor
+//--------------------------------------------------------------------------
+
+function compare(a, b) {
+	var status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+
+	if(status==1){
+		var tempA = a;
+		var tempB = b;
+	}else{
+		var tempA = b;
+		var tempB = a;
+	}
+
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else if (a === null) {
+		return -1;
+	}	else if (b === null) {
+		return 1;
+	} else {
+		return 0;
+	}	
+}
