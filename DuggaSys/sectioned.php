@@ -61,7 +61,7 @@
                     <h3>Create new code example</h3>
                     <div class='cursorPointer' onclick='closeDialog("codeItemDialog");'>x</div>
 				</div>
-				
+				<select id="fileSelectParent"></select>
         	</div>
     	</div>
 	</section>

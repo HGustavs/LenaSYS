@@ -324,8 +324,20 @@ function createFABItem(kind, itemtitle) {
 }
 
 function openCodeDialog() {
-  document.getElementById('codeItemDialog').style.display = "block";
-  console.log("howdy");
+  $('#codeItemDialog').css('display', 'block');
+  let selectParent = $('#fileSelectParent');
+
+  fileKindIndex = 0;
+  fileKindOrder = ["-= Global Files =-", "-= Local Files =-", "-= Course Local Files =-"];
+
+  for (let i = 0; i < retdata.links.length; i++)  {
+    if (retdata.links[i].fileid !== -1) {
+      selectParent.append(`<option value="${retdata.links[i].fileid}">${retdata.links[i].filename}</option>`);
+    } else {
+      selectParent.append(`<option value="${retdata.links[i].fileid}">${fileKindOrder[fileKindIndex]}</option>`);
+      fileKindIndex++;
+    }
+  }
 }
 
 function closeDialog(id) {
@@ -571,6 +583,8 @@ function returnedGroups(data) {
 function returnedSection(data) {
   retdata = data;
   if (data['debug'] != "NONE!") alert(data['debug']);
+
+  console.log(data);
 
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
