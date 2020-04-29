@@ -4738,36 +4738,7 @@ function touchMoveEvent(event) {
     }
     // Resizes an object
     if (md == mouseState.insidePoint) {
-        console.log("hiya");
-        
-        // Needs to have a symbol selected to resize, and it cant be locked
-        if (!sel.attachedSymbol.targeted || sel.attachedSymbol.isLocked) {
-            return;
-        }
-        if (!sel.point.fake) {
-            var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
-            var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
-            var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
-            //Don't move points if box is minumum size
-            if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
-                sel.point.x = currentMouseCoordinateX;
-            }
-            if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
-                sel.point.y = currentMouseCoordinateY;
-            }
-        }
-        else {
-            var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
-            var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
-            var change = ((currentMouseCoordinateX - sel.point.x.x) - (currentMouseCoordinateY - sel.point.y.y)) / 2;
-            //Don't move points if box is minumum size
-            if(minSizeCheck(xDiff, sel.attachedSymbol, "x") == false || (change < 5 && change >-5)){
-                sel.point.x.x = currentMouseCoordinateX;
-            }
-            if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
-                sel.point.y.y = currentMouseCoordinateY;
-            }
-        }
+        resizeElement(sel);
     }
     // Draw preview line
     if (uimode == "CreateLine" && movobj != -1) {
@@ -4779,6 +4750,40 @@ function touchMoveEvent(event) {
         ctx.strokeStyle = "#000";
         ctx.stroke();
         ctx.setLineDash([]);
+    }
+}
+
+// Takes the closest selected point and resizes the object
+function resizeElement(selected) { 
+    // Needs to have a symbol selected to resize, and it cant be locked
+    if (!selected.attachedSymbol.targeted || selected.attachedSymbol.isLocked) {
+        return;
+    }
+    // For top left and 
+    if (!selected.point.fake) {
+        var yDiff = points[selected.attachedSymbol.bottomRight].y - points[selected.attachedSymbol.topLeft].y;
+        var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
+        var change = ((currentMouseCoordinateX - selected.point.x) + (currentMouseCoordinateY - selected.point.y)) / 2;
+        // Can't resize below minimum threshold
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+            selected.point.x = currentMouseCoordinateX;
+        }
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+            selected.point.y = currentMouseCoordinateY;
+        }
+    }
+    // For top right and bottom left 
+    else {
+        var yDiff = points[selected.attachedSymbol.bottomRight].y - points[selected.attachedSymbol.topLeft].y;
+        var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
+        var change = ((currentMouseCoordinateX - selected.point.x.x) - (currentMouseCoordinateY - selected.point.y.y)) / 2;
+        // Can't resize below minimum threshold
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+            selected.point.x.x = currentMouseCoordinateX;
+        }
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+            selected.point.y.y = currentMouseCoordinateY;
+        }
     }
 }
 
