@@ -133,7 +133,7 @@ function serviceUsage($start, $end, $interval){
 			COUNT(*) AS hits
 		FROM serviceLogEntries
 		WHERE
-			eventType = '.EventTypes::ServiceClientStart.'
+			eventType = '.EventTypes::ServiceServerStart.'
 			AND datetime(timeStamp/1000, \'unixepoch\') BETWEEN ? AND ?
 		GROUP BY service, dateTime;
 	');
