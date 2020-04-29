@@ -300,8 +300,6 @@ function loadFileInformation() {
 			var version = description[0];
 			var file =  description[1];
 
-			console.log(data[i].eventType);
-
 			if(data[i].eventType == 15){
 				var action = "Created"
 			}
