@@ -5242,9 +5242,9 @@ function loadAppearanceForm() {
             appearanceObjects.push(object);
         }
     }
-    if(appearanceObjects.length < 1) {
-        return;
-    }
+    if(appearanceObjects.length < 1) return;
+
+    const indexes = {};
 
     //Get all unique types from the selected objects
     const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
