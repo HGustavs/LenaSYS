@@ -184,7 +184,7 @@ function serviceCrashes(){
 	$result = $GLOBALS['log_db']->query('
 		SELECT * 
 		FROM serviceLogEntries
-		WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceClientEnd.');
+		WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerEnd.');
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
