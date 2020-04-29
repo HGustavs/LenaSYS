@@ -4694,8 +4694,6 @@ function touchMoveEvent(event) {
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
     }
-    reWrite();
-    updateGraphics();
 
     // Moves an object
     if (md == mouseState.insideMovableObject) {
@@ -4751,6 +4749,9 @@ function touchMoveEvent(event) {
         ctx.stroke();
         ctx.setLineDash([]);
     }
+    reWrite();
+    updateGraphics();
+
 }
 
 // Takes the closest selected point and resizes the object
@@ -4765,10 +4766,10 @@ function resizeElement(selected) {
         var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
         var change = ((currentMouseCoordinateX - selected.point.x) + (currentMouseCoordinateY - selected.point.y)) / 2;
         // Can't resize below minimum threshold
-        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change < 5){
             selected.point.x = currentMouseCoordinateX;
         }
-        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change < 5){
             selected.point.y = currentMouseCoordinateY;
         }
     }
@@ -4778,13 +4779,14 @@ function resizeElement(selected) {
         var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
         var change = ((currentMouseCoordinateX - selected.point.x.x) - (currentMouseCoordinateY - selected.point.y.y)) / 2;
         // Can't resize below minimum threshold
-        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || (change < 5 && change >-5)){
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change < 5){
             selected.point.x.x = currentMouseCoordinateX;
         }
-        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || (change < 5 && change >-5)){
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change < 5){
             selected.point.y.y = currentMouseCoordinateY;
         }
     }
+    diagram.draw();
 }
 
 //---------------------------------------------------
@@ -4878,7 +4880,9 @@ function touchEndEvent(event) {
             uimode = "CreateLine";
         }
     }
-
+    if (md == mouseState.insidePoint){
+        saveState = true;
+    }
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
