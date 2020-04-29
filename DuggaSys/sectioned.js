@@ -340,6 +340,10 @@ function openCodeDialog() {
   }
 }
 
+function onSelectFileChanged(selected) {
+  console.log(selected.value + " - " + selected.options[selected.selectedIndex].text);
+}
+
 function closeDialog(id) {
   document.getElementById('codeItemDialog').style.display = "none";
 }
