@@ -312,10 +312,6 @@ function showCreateVersion() {
 
 }
 
-function createQuickItem() {
-  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
-  newItem();
-}
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle) {
@@ -393,8 +389,11 @@ function updateItem() {
   $("#editSection").css("display", "none");
 }
 
-function updateDeadline(){
-  AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+function updateDeadline() {
+    var kind = $("#type").val();
+    if (kind == 3) {
+        AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+    }
 }
 
 //----------------------------------------------------------------------------------
@@ -420,6 +419,7 @@ function createVersion() {
   param.cid = querystring['courseid'];
   param.versid = document.getElementById("versid").value;
   param.versname = document.getElementById("versname").value;
+  param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = document.getElementById("course-coursecode").innerHTML;
   param.coursename = document.getElementById("course-coursename").innerHTML;
@@ -1062,6 +1062,9 @@ function returnedSection(data) {
   // Change the scroll position to where the user was last time.
   $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
+  // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
+  replaceDefualtLink();
+
   addClasses();
   showMOTD();
   
@@ -1102,7 +1105,6 @@ function resetMOTDCookieForCurrentCourse(){
 }
 
 function closeMOTD(){
-  console.log(document.cookie.indexOf('MOTD='));
   if(document.cookie.indexOf('MOTD=') <= -1){
     document.cookie = 'MOTD=';
     setMOTDCookie();
@@ -1454,9 +1456,7 @@ $(document).mousedown(function (e) {
 $(document).mouseup(function (e) {
   mouseUp(e);
 
-  if (e.button == 0) {
-    FABUp(e);
-  }
+  
 });
 
 $(document).ready(function(){
@@ -1606,6 +1606,19 @@ function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
 }
 
+// Replaces the link corresponding wtih the dropdown choices ---===######===--- with a link to errorpage instead
+function replaceDefualtLink(){
+  var links = document.getElementsByTagName('a');
+
+  for(var i = 0; i < links.length; i++){
+    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" + querystring['courseid'] + "&coursevers=" + 
+    querystring['coursevers'] + "&fname=---===######===---")){
+      links[i].href = "../errorpages/403.php";
+    }
+  }
+}
+
+
 // Adds classes to <a> element depending on if they are external / internal
 function addClasses() {
   var links = document.getElementsByTagName('a');
@@ -1706,7 +1719,7 @@ function validateCourseID(courseid, dialogid) {
 function validateMOTD(motd, dialogid){
   var emotd = document.getElementById(motd);
   var Emotd = /(^$)|(^[-a-zA-Z0-9_ !,.]*$)/;
-  var EmotdRange = /^.{0,35}$/;
+  var EmotdRange = /^.{0,50}$/;
   var x4 = document.getElementById(dialogid);
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
     emotd.style.borderColor = "#383";
@@ -1768,27 +1781,6 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = false;
     }
-  }
-}
-
-// Validates sectionname
-function validateSectionName(nameid, dialogid) {
-  //Regex for space and uppercase+lowercase letters
-  var Name = /^[a-zA-Z_ ]+$/;
-  var name = document.getElementById(nameid);
-  var x = document.getElementById(dialogid);
-
-  //If sectionname is only letters
-  if (name.value.match(Name)) {
-    name.style.borderColor = "#383";
-    name.style.borderWidth = "2px";
-    x.style.display = "none";
-    window.bool7 = true;
-  } else {
-    name.style.borderColor = "#E54";
-    x.style.display = "block";
-    name.style.borderWidth = "2px";
-    window.bool7 = false;
   }
 }
 

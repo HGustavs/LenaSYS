@@ -954,39 +954,42 @@ function processLogin() {
         password: password,
         opt: "LOGIN"
       },
-      success:function(data) {  
-		  
-		document.cookie = "cookie_guest=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //Removes guest cookie at login
- 		
+      success:function(data) {  		  
 		var result = JSON.parse(data);
         if(result['login'] == "success") {
-					hideLoginPopup();
-          // was commented out before which resulted in the session to never end
-					if(result['securityquestion'] != null) {
-							localStorage.setItem("securityquestion", "set");
-						} else {
-							setSecurityNotifaction("on");
-					}
+			document.cookie = "cookie_guest=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; //Removes guest cookie at login
 
-          setExpireCookie();
-          setExpireCookieLogOut();
+			hideLoginPopup();
 
-          reloadPage();
-        }else if(result['login'] == "limit"){
-          displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
-        }else{
-          if(typeof result.reason != "undefined") {
-            displayAlertText("#login #message", result.reason);
-          } else {
-            displayAlertText("#login #message", "Wrong username or password");
-					}
+          	// was commented out before which resulted in the session to never end
+			if(result['securityquestion'] != null) {
+				localStorage.setItem("securityquestion", "set");
+			} else {
+				setSecurityNotifaction("on");
+			}
 
-					$("input#username").addClass("loginFail");
-					$("input#password").addClass("loginFail");
-					setTimeout(function(){
-						$("input#username").removeClass("loginFail");
-						$("input#password").removeClass("loginFail");
-						displayAlertText("#login #message", "Try again");
+           	setExpireCookie();
+          	setExpireCookieLogOut();
+
+          	reloadPage();
+		}
+		else if(result['login'] == "limit"){
+        	displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
+		}
+		else{
+        	if(typeof result.reason != "undefined") {
+            	displayAlertText("#login #message", result.reason);
+		  	} 
+			else {
+        		displayAlertText("#login #message", "Wrong username or password");
+			}
+
+			$("input#username").addClass("loginFail");
+			$("input#password").addClass("loginFail");
+			setTimeout(function(){
+			$("input#username").removeClass("loginFail");
+			$("input#password").removeClass("loginFail");
+			displayAlertText("#login #message", "Try again");
 					}, 2000);
           //closeWindows();
 		}
@@ -1011,7 +1014,7 @@ function processLogout() {
 		success:function(data) {
             localStorage.removeItem("securityquestion");
             localStorage.removeItem("securitynotification");
-			location.reload();
+            location.replace("../DuggaSys/courseed.php");
 		},
 		error:function() {
 			console.log("error");

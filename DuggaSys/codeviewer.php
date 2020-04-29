@@ -190,10 +190,12 @@ Testing Link:
 
 			// Logs users who view example, along with the example they have viewed
 			if ($userid == "00") {
-				logUserEvent($username, EventTypes::DuggaRead, $exampleid." ".$courseID." ".$cvers);
+				$description=$exampleid." ".$courseID." ".$cvers;
+				logUserEvent($_COOKIE["cookie_guest"], EventTypes::DuggaRead, $description);
 			}
 			else{
-				logUserEvent($_COOKIE["cookie_guest"], EventTypes::DuggaRead, $exampleid." ".$courseID." ".$cvers);
+				$description=$exampleid." ".$courseID." ".$cvers;
+				logUserEvent($userid, EventTypes::DuggaRead, $description);
 			}
 
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
