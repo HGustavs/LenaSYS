@@ -42,6 +42,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'serviceCrashes':
 				serviceCrashes();
 				break;
+			case 'fileInformation':
+				fileInformation();
+			break;
 		}
 	} else {
 		echo 'N/A';
@@ -139,6 +142,25 @@ function serviceUsage($start, $end, $interval){
 	');
 	$query->execute(array($dateGroupFormat, $start, $end));
 	$result = $query->fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}
+
+
+//------------------------------------------------------------------------------------------------
+// Retrieves file information		
+//------------------------------------------------------------------------------------------------
+
+function fileInformation(){
+	$result = $GLOBALS['log_db']->query('
+		SELECT
+			uid AS userName,
+			timestamp AS timestamp,
+			eventType AS eventType,
+			description AS description
+		FROM userLogEntries
+		WHERE eventType = '.EventTypes::AddFile.' OR eventType = '.EventTypes::EditFile.'
+		ORDER BY timestamp;
+	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
 

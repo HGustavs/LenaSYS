@@ -45,6 +45,7 @@ pdoConnect();
 			<input class="submit-button" style="float:left" type="button" value="Service usage" onclick="loadServiceUsage()">
 			<input class="submit-button" style="float:left" type="button" value="Service speed" onclick="loadServiceAvgDuration()">
 			<input class="submit-button" style="float:left" type="button" value="Service crashes" onclick="loadServiceCrashes()">
+			<input class="submit-button" style="float:left" type="button" value="File information" onclick="loadFileInformation()">
 		</div>
 		<div id="analytic-info" style="clear: both; padding: 15px;"></div>
 		<div style="height: 300px">
