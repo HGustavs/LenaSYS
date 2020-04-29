@@ -1081,6 +1081,9 @@ function copySymbol(symbol) {
                     const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
                     if(typeof connectedAttribute !== "undefined") {
                         const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
+                        if(isAttributeSelected) {
+                            newPointIndex = null;
+                        }
                     }
                 }
 
