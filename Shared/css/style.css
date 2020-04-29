@@ -481,6 +481,7 @@ p {
 .statisticsContentBottom{
   min-height: 30px;
   background-color: var(--color-text-primary);
+  display: none;
 
 }
 .item a {

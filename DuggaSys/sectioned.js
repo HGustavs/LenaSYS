@@ -1608,6 +1608,7 @@ $(window).load(function () {
       'display':'flex',
       'flex-direction': 'column'
     });
+    $(".statisticsContentBottom").show();
     
   });
   $("#sectionList_arrowStatisticsClosed").click(function () {
