@@ -482,8 +482,9 @@ function init() {
     canvasSize(); 
     loadDiagram(); 
     setModeOnRefresh(); 
+    setPaperSizeOnRefresh();
     initAppearanceForm();
-    setPaperSize(event, 4);
+    setPaperSize(event, paperSize);
     updateGraphics(); 
 }
 
@@ -2213,6 +2214,7 @@ function setPaperSize(event, size){
 		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
 	}
 	paperSize = size; 
+	localStorage.setItem("paperSize", paperSize);
 	updateGraphics();
 }
 
@@ -2753,6 +2755,13 @@ function setModeOnRefresh() {
         switchToolbarER();
         hideCrosses();
     }
+}
+
+function setPaperSizeOnRefresh() {
+	const tempPaperSize = localStorage.getItem("paperSize");
+	if(tempPaperSize != null){
+		paperSize = tempPaperSize;
+	}
 }
 
 //--------------------------------------
