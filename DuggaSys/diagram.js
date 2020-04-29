@@ -1076,6 +1076,11 @@ function copySymbol(symbol) {
 
             let newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
+
+                if(symbol.symbolkind === symbolKind.line && key === "bottomRight") {
+                    
+                }
+
                 const point = points[pointIndexes[key].old];
                 newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
             } else {
@@ -1096,7 +1101,7 @@ function copySymbol(symbol) {
 }
 
 //----------------------------------------------------------------------
-// copySymbol: Clone a path object
+// copyPath: Clone a path object
 //----------------------------------------------------------------------
 function copyPath(path) {
     const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
