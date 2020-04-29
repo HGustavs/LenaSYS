@@ -197,7 +197,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(':link', $link);
 					$query->bindParam(':kind', $kind);
 					$query->bindParam(':gradesys', $gradesys);
-					$query->bindParam(':comment', $comment);
+					$query->bindParam(':comment', $comments);
 					$query->bindParam(':visible', $visibility);
 					$query->bindParam(':highscoremode', $highscoremode);
 					$query->bindParam(':pos', $pos);	

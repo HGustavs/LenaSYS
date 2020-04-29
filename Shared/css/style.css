@@ -472,7 +472,15 @@ p {
   font-size: 24px;
   background-color: var(--color-primary);
 }
+.glow {
+  animation: glow 2s ease-out;
+}
 
+@keyframes glow {
+  to {
+      text-shadow: 0 0 10px red;
+  }
+}
 .item a {
   text-decoration: none;
   color: var(--color-text-primary);
