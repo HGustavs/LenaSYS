@@ -5282,11 +5282,15 @@ function loadAppearanceForm() {
     
     let erCardinalityVisible = false;
 
-    //A comma at the end to seperate objects right now. Should be fixed in seperate issue to only appear on last object in the type
     appearanceObjects.forEach(object => {
         if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
-            document.getElementById("name").value += object.name + ", ";
-            document.getElementById("name").focus();
+            const nameElement = document.getElementById("name");
+            indexes.name.current++;
+            nameElement.value += object.name;
+            if(indexes.name.max > indexes.name.current) {
+                nameElement.value += ", ";
+            }
+            nameElement.focus();
         }
 
         if(object.symbolkind === symbolKind.line) {
