@@ -822,11 +822,11 @@
         try {
           // Start of Content to put in coursesyspw.
           $filePutContent = "<?php
-define(\"DB_USER\",\"".$username."\");
-define(\"DB_PASSWORD\",\"".$password."\");
-define(\"DB_HOST\",\"".$serverName."\");
-define(\"DB_NAME\",\"".$databaseName."\");
-?>";
+                define(\"DB_USER\",\"".$username."\");
+                define(\"DB_PASSWORD\",\"".$password."\");
+                define(\"DB_HOST\",\"".$serverName."\");
+                define(\"DB_NAME\",\"".$databaseName."\");
+        ?>";
           // end of coursesyspw content
           file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
         } catch (\Exception $e) {
