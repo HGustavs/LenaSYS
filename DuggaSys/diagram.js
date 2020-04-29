@@ -4490,7 +4490,6 @@ function mouseupevt(ev) {
             erLineA.topLeft = p1;
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
-            erLineA.centerPoint = p3;
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
@@ -4567,7 +4566,6 @@ function mouseupevt(ev) {
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
-            umlLineA.centerPoint = p3;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
@@ -4928,7 +4926,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
                 erLineA.topLeft = p1;
                 erLineA.object_type = "";
                 erLineA.bottomRight = p2;
-                erLineA.centerPoint = p3;
                 diagram.unshift(erLineA);
                 lastSelectedObject = diagram.length -1;
                 diagram[lastSelectedObject].targeted = true;
@@ -4942,7 +4939,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
-            umlLineA.centerPoint = p3;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
