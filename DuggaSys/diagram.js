@@ -5326,8 +5326,13 @@ function loadAppearanceForm() {
             }
             textarea.focus();
         } else if(object.symbolkind === symbolKind.uml) {
-            document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
-            document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
+            indexes[symbolKind.uml].current++;
+            document.getElementById("umlOperations").value += getTextareaText(object.operations);
+            document.getElementById("umlAttributes").value += getTextareaText(object.attributes);
+            if(indexes[symbolKind.uml].max > indexes[symbolKind.uml].current) {
+                document.getElementById("umlOperations").value += ",\n";
+                document.getElementById("umlAttributes").value += ",\n";
+            }
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
