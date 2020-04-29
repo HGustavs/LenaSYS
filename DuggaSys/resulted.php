@@ -138,7 +138,7 @@ pdoConnect();
 										<table width="100%" height="100%">
 											<tr height="24px">
 													<td>
-															<button onclick='addCanned();'>Add</button>
+															<button onclick='addCanned();'>Add phrase</button>
 															<select id="cannedResponse">
 																	<option>&laquo; NONE &raquo;</option>
 																	<option>(Y) </option>
@@ -155,6 +155,8 @@ pdoConnect();
 											<tr height="24px">
 													<td>
 															<button onclick='saveResponse();'>Save</button>
+															<!-- Clear text in textarea id="responseArea" -->
+															<button onclick='clearResponseArea()'>Clear</button>
 													</td>
 											</tr>
 										</table>
