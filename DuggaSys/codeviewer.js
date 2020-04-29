@@ -2622,8 +2622,8 @@ function maximizeBoxes(boxid) {
 	//For template 7
 	if (templateid == 7) {
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).width("100%");
-			$(boxValArray['box' + 3]['id']).width("100%");
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
 			$(boxValArray['box' + 4]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
