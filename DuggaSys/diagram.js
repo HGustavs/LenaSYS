@@ -5242,23 +5242,55 @@ function loadAppearanceForm() {
             appearanceObjects.push(object);
         }
     }
-    if(appearanceObjects.length < 1) {
-        return;
-    }
+    if(appearanceObjects.length < 1) return;
 
-    //Get all unique types from the selected objects
-    const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
+    //Stores current index and maximum index for each type of selected object
+    //Current index will be used for comma separation, to only create comma when max is more than current
+    const indexes = {};
+
+    //Reduce the selected objects array to a Map with key symbolKind and value the number of times that symbolKind occurs
+    //Iterate through the map and put the correct values in the indexes object
+    appearanceObjects.reduce((result, object) => {
+        result.set(object.symbolkind || 0, (result.get(object.symbolkind || 0) || 0) + 1);
+        return result;
+    }, new Map()).forEach((value, key) => {
+        if(typeof indexes[key] === "undefined") {
+            indexes[key] = {
+                current: 0,
+                max: 0
+            };
+        }
+        indexes[key].max += value;
+    });
+
+    //Get all unique types of selected objects
+    const types = Object.keys(indexes).map(Number);
+
+    //The max index for the name input should be based on all object types that have the name input
+    indexes.name = {
+        current: 0,
+        max: types.reduce((result, type) => {
+            if(type === symbolKind.uml || type === symbolKind.erAttribute || type === symbolKind.erEntity || type === symbolKind.erRelation) {
+                result += indexes[type].max;
+            }
+            return result;
+        }, 0)
+    };
     
     showFormGroups(types);
     toggleApperanceElement(true);
     
     let erCardinalityVisible = false;
 
-    //A comma at the end to seperate objects right now. Should be fixed in seperate issue to only appear on last object in the type
     appearanceObjects.forEach(object => {
         if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
-            document.getElementById("name").value += object.name + ", ";
-            document.getElementById("name").focus();
+            const nameElement = document.getElementById("name");
+            indexes.name.current++;
+            nameElement.value += object.name;
+            if(indexes.name.max > indexes.name.current) {
+                nameElement.value += ", ";
+            }
+            nameElement.focus();
         }
 
         if(object.symbolkind === symbolKind.line) {
@@ -5286,11 +5318,21 @@ function loadAppearanceForm() {
             }
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
-            document.getElementById("freeText").value += getTextareaText(object.textLines) + ",\n";
-            document.getElementById("freeText").focus();
+            const textarea = document.getElementById("freeText");
+            indexes[symbolKind.text].current++;
+            textarea.value += getTextareaText(object.textLines);
+            if(indexes[symbolKind.text].max > indexes[symbolKind.text].current) {
+                textarea.value += ",\n";
+            }
+            textarea.focus();
         } else if(object.symbolkind === symbolKind.uml) {
-            document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
-            document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
+            indexes[symbolKind.uml].current++;
+            document.getElementById("umlOperations").value += getTextareaText(object.operations);
+            document.getElementById("umlAttributes").value += getTextareaText(object.attributes);
+            if(indexes[symbolKind.uml].max > indexes[symbolKind.uml].current) {
+                document.getElementById("umlOperations").value += ",\n";
+                document.getElementById("umlAttributes").value += ",\n";
+            }
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
