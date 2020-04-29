@@ -1078,7 +1078,7 @@ function copySymbol(symbol) {
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
 
                 if(symbol.symbolkind === symbolKind.line && key === "bottomRight") {
-                    
+                    const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
                 }
 
                 const point = points[pointIndexes[key].old];
