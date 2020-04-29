@@ -434,6 +434,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="menu-drop-down">
+                        <span class="drop-down-label" tabindex="0">Layers</span>
+                        <div class="drop-down">
+                            <div id="layerPlaceholder">
+                                <div class="drop-down-item" tabindex="0">
+                                    <span class="drop-down-option" id="layers">Layer One</span>
+                                </div>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="createLayer()">Create Layer</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="deleteLayer()">Delete selected layers</span>
+                            </div>
+                        </div>
+                    </div>
                     <div id="errorBox">
                         <span id="errorMSG"></span>
                     </div>

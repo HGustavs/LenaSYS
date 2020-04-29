@@ -478,6 +478,10 @@ window.addEventListener('blur', resetButtonsPressed);
 
 //Functions to call after document body loads
 function init() {
+    if(localStorage.getItem('layerItems') != null){
+        console.log("Hej")
+        loadLayer(localStorage.getItem('layerItems'));
+    }
     initializeCanvas(); 
     canvasSize(); 
     loadDiagram(); 
@@ -5509,4 +5513,53 @@ function submitAppearanceForm() {
     }
     SaveState();
     toggleApperanceElement();
+}
+//Layer intergration functions
+function createLayer(){
+    let parentNode = document.getElementById("layerPlaceholder");
+    let id =0;
+    let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
+    let spans = parentNode.getElementsByTagName('span')
+    let layerArray = []
+    for(let i = 0; i < spans.length; i++){
+        layerArray.push(spans[i]);
+        id++
+    }
+    id++
+    if(id <= 10){
+        let newDiv = document.createElement("div");
+        newDiv.setAttribute("class", "drop-down-item");
+        newDiv.setAttribute("tabindex", "0");
+        parentNode.appendChild(newDiv);
+        let newSpan = document.createElement("span");
+        newSpan.setAttribute("class", "drop-down-option");
+        newSpan.setAttribute("id", "layer"+id);
+        newSpan.innerHTML = valueArray[id];
+        newDiv.appendChild(newSpan);
+        console.log(layerArray)
+    }
+    localStorage.setItem('layerItems', id);
+}
+function loadLayer(localStorageID){
+    let parentNode = document.getElementById("layerPlaceholder");
+    let id =0;
+    let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
+    let spans = parentNode.getElementsByTagName('span')
+    let layerArray = []
+    for(let i = 0; i < localStorageID -1; i++){
+        layerArray.push(spans[i]);
+        id++
+        let newDiv = document.createElement("div");
+        newDiv.setAttribute("class", "drop-down-item");
+        newDiv.setAttribute("tabindex", "0");
+        parentNode.appendChild(newDiv);
+        let newSpan = document.createElement("span");
+        newSpan.setAttribute("class", "drop-down-option");
+        newSpan.setAttribute("id", "layer"+id);
+        newSpan.innerHTML = valueArray[id+1];
+        newDiv.appendChild(newSpan);
+    }
+    if(id <= 10){
+        console.log(layerArray)
+    }
 }
