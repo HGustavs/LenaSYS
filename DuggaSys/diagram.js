@@ -3704,11 +3704,8 @@ function toggleFullscreen(){
             menu_buttons[i].style.display = "block";
         }
         tool_bar.style.visibility = "visible";
-        if(!toolbarDisplayed){
-            inside_toolbar.style.visibility = "visible";  
-        } else {
-            inside_toolbar.style.border = "none";
-        }
+        inside_toolbar.style.visibility = "visible";
+        inside_toolbar.style.border = "none";
         canvas_div.style.position = old_container_position;
         canvas_div.style.marginLeft = old_canvas_div_marginLeft;
         canvas_div.style.height = old_container_height;
@@ -3735,14 +3732,17 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    //var tool_bar = document.getElementsByClassName("application-toolbar")[0];
+    // Get element
     var tool_bar = document.getElementById("inside-toolbar");
+
     if(!toolbarDisplayed){
+        // Show inner toolbar, add border and set background color
         tool_bar.style.visibility = "visible";
         tool_bar.style.backgroundColor = "#ffffff";
         tool_bar.style.border = 1 + "px solid #000000";
         toolbarDisplayed = true;
     } else {
+        // Hide
         tool_bar.style.visibility = "hidden";
         tool_bar.style.background = "none";
         tool_bar.style.border = 0 + "px";
