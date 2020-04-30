@@ -732,9 +732,9 @@ function Symbol(kindOfSymbol) {
     //--------------------------------------------------------------------
     this.UMLLineHover = function (mx, my){
 
-        //console.log("========================================");
         var c = this.corners();
 
+        //X and Y coordinates for both vectors used for the Lines
         var x1 = Math.trunc(points[this.topLeft].x);
         var y1 = Math.trunc(points[this.topLeft].y);
         
@@ -742,11 +742,7 @@ function Symbol(kindOfSymbol) {
         var y2 = Math.trunc(points[this.bottomRight].y);
 
 
-       // Variables for UML line breakpoints
-       var breakpointStartX = 0;     // X Coordinate for start breakpoint
-       var breakpointStartY = 0;     // Y Coordinate for start breakpoint
-       var breakpointEndX = 0;       // X Coordinate for end breakpoint
-       var breakpointEndY = 0;       // Y Coordinate for end breakpoint
+       // Variables for UML line breakpoints 
        var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
        var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
        var startLineDirection = "";  // Which side of the class the line starts from
@@ -775,20 +771,6 @@ function Symbol(kindOfSymbol) {
 
                 var currentSymbol = diagram[i].corners();
 
-                //console.log(currentSymbol);
-
-                //console.log(x1 + ", " + y1);
-                /*
-                console.log("x= " + (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) + ": " + x1 + " : " + (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1));
-                console.log("y= " + Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) + " : " + y1 + " : " + Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y));
-                
-                console.log("xxxxxxxx");
-                //console.log(x2 + ", " + y2);
-                
-                console.log("x= " + x2 + " : " + Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x));
-                console.log("y= " + Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) + " : " + y2 + " : " + Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y));
-                
-                console.log("---------------------");*/
                 // Check if line's start point matches any class diagram
                 if (x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) &&
                     x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1) &&
@@ -859,6 +841,7 @@ function Symbol(kindOfSymbol) {
         //Tolerance
         var tol = 5;
 
+        //Check if the mouse is hovering the line to its corresponding case
         if( startLineDirection == "right" && endLineDirection == "left") {
             if(y1 < y2) {
                 if( x1 < mx && mx < x2 && y1 - tol < my && my < y2 + tol) {
@@ -957,6 +940,7 @@ function Symbol(kindOfSymbol) {
             }
         }
 
+        //If nothing applies, return false
         return false;
     }
 
