@@ -5531,7 +5531,7 @@ function createLayer(){
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
         newSpan.setAttribute("class", "notActive drop-down-option");
-        newSpan.setAttribute("id", "layer_"+id);
+        newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
         newDiv.appendChild(newSpan);
@@ -5540,11 +5540,13 @@ function createLayer(){
 }
 function loadLayer(localStorageID){
     let parentNode = document.getElementById("layerPlaceholder");
-    let id =0;
+    let id =1;
     let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
     let spans = parentNode.getElementsByTagName('span')
     let layerArray = []
+    console.log("outside loop ",id)
     for(let i = 0; i < localStorageID -1; i++){
+        console.log("inside loop ",id)
         layerArray.push(spans[i]);
         id++
         let newDiv = document.createElement("div");
@@ -5553,14 +5555,18 @@ function loadLayer(localStorageID){
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
         newSpan.setAttribute("class", "drop-down-option");
-        newSpan.setAttribute("id", "layer_"+id+1);
+        newSpan.setAttribute("id", "Layer_"+id);
         newSpan.innerHTML = valueArray[id+1];
         newDiv.appendChild(newSpan);
-        console.log(JSON.parse(localStorage.getItem("activeLayers")))
+        test = JSON.parse(localStorage.getItem("activeLayers"));
+        console.log(newSpan.id);
+        if(test.indexOf(newSpan.id) !== -1){
+            newSpan.classList.add("isActive");
+        }
+        console.log("after loop", id);
     }
 }
 function toggleBackgroundLayer (object){
-    activeLocalStorage(object)
     if(object.classList.contains("notActive")){
         object.classList.remove("notActive");
         object.classList.add("isActive");
@@ -5569,6 +5575,7 @@ function toggleBackgroundLayer (object){
     else {
         object.classList.remove("isActive");
         object.classList.add("notActive");
+        activeLocalStorage();
     }
 }
 function activeLocalStorage(){
@@ -5580,10 +5587,11 @@ function activeLocalStorage(){
             storageArrayID.push(spans[i].id);
         }
     }
-
     let sendingToStorage = JSON.stringify(storageArrayID);
-    localStorage.setItem('activeLayers', sendingToStorage);
-    
+    localStorage.setItem("activeLayers", sendingToStorage);
+}
+function setlayer(){
+
 }
 //function deleteLayer(){
  //   document.getElementById("layerPlaceholder").innerHTML = "<div class='drop-down-item' tabindex='0'> <span class='drop-down-option id='layer_1'>Layer One</span></div>'";
