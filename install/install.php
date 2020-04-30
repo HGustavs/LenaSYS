@@ -99,355 +99,356 @@
 </script>
 <!-- End permission-modal code -->
 
-    <form action="install.php?mode=install" method="post">
-        <div id="inputWrapper">
-            <!-- Headings for input -->
-            <div class="inputHeading" valign=top>
-                <div class="inputFirst" id="th1"><h2>New/Existing MySQL user and DB</h2></div>
-                <div class="inputNotFirst" id="th2"><h2>MySQL Root Login</h2></div>
-                <div class="inputNotFirst" id="th3"><h2>Test Data</h2></div>
-                <div class="inputNotFirst" id="th4"><h2>Write over?</h2></div>
-                <div class="inputNotFirst" id="th5"><h2>Submit</h2></div>
+<!-- START OF INPUT FORM SECTION -->
+<form action="install.php?mode=install" method="post">
+    <div id="inputWrapper">
+        <!-- Headings for each input-slide -->
+        <div class="inputHeading" valign=top>
+            <div class="inputFirst" id="th1"><h2>New/Existing MySQL user and DB</h2></div>
+            <div class="inputNotFirst" id="th2"><h2>MySQL Root Login</h2></div>
+            <div class="inputNotFirst" id="th3"><h2>Test Data</h2></div>
+            <div class="inputNotFirst" id="th4"><h2>Write over?</h2></div>
+            <div class="inputNotFirst" id="th5"><h2>Submit</h2></div>
+        </div>
+<?php
+// Prefill existing credentials, exluding password
+$dbUsername = "";
+$dbHostname = "";
+$dbName = "";
+$dbPassword = "";
+
+    $credentialsFile = "../../coursesyspw.php";
+    if(file_exists($credentialsFile)) {
+    $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+
+    // check if the credentials exists in the file, store them if they do
+    foreach($credentialsArray as $cred) {
+        if(stripos(trim($cred), 'DB_') !== FALSE){
+        $tArray = explode('"', trim($cred));
+        if(count($tArray) == 5) {
+            if($tArray[1]=="DB_USER"){
+            $dbUsername = $tArray[3];
+            }else if($tArray[1]=="DB_HOST"){
+            $dbHostname = $tArray[3];
+            }else if($tArray[1]=="DB_NAME"){
+            $dbName = $tArray[3];
+            }else if($tArray[1]=="DB_PASSWORD"){
+            $dbPassword = $tArray[3];
+            }
+        }
+        }
+    }
+    }
+    echo '<div id="contentWrapper">';
+    /* All the different content for input
+    * td1 will be shown at start, the others (td2 - 5) will be shown by clicking arrows.
+    */
+    echo '<div class="inputContent" id="td1">';
+    echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
+            Next enter a password for this user (new or existing).<br>
+            After this enter a database to use. This could also be either an existing or a new database.<br>
+            Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
+    echo 'Enter new MySQL user. <br>';
+    echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
+    echo 'Enter password for MySQL user. <br>';
+    echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
+    echo 'Enter new database name. <br>';
+    echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
+    echo 'Enter hostname (e.g localhost). <br>';
+    echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+    echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
+
+    if($dbUsername || $dbHostname || $dbName || $dbPassword){
+        echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
+    }
+
+    echo '</div>';
+?>
+            <div class="inputContent" id="td2" valign=top>
+                <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
+                    Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
+                Enter MySQL root user. <br>
+                <input title="Enter MySQL root user." class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
+                Enter password for MySQL root user. <br>
+                <input title="Enter password for MySQL root user." class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
+                <span class="enterAllFields" id="enterFields2">Please fill all fields before continuing.</span>
             </div>
- <?php
-    // Prefill existing credentials, exluding password
-    $dbUsername = "";
-    $dbHostname = "";
-    $dbName = "";
-    $dbPassword = "";
-
-        $credentialsFile = "../../coursesyspw.php";
-        if(file_exists($credentialsFile)) {
-        $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
-
-        // check if the credentials exists in the file, store them if they do
-        foreach($credentialsArray as $cred) {
-            if(stripos(trim($cred), 'DB_') !== FALSE){
-            $tArray = explode('"', trim($cred));
-            if(count($tArray) == 5) {
-                if($tArray[1]=="DB_USER"){
-                $dbUsername = $tArray[3];
-                }else if($tArray[1]=="DB_HOST"){
-                $dbHostname = $tArray[3];
-                }else if($tArray[1]=="DB_NAME"){
-                $dbName = $tArray[3];
-                }else if($tArray[1]=="DB_PASSWORD"){
-                $dbPassword = $tArray[3];
-                }
-            }
-            }
-        }
-        }
-        echo '<div id="contentWrapper">';
-        /* All the different content for input
-        * td1 will be shown at start, the others (td2 - 5) will be shown by clicking arrows.
-        */
-        echo '<div class="inputContent" id="td1">';
-        echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
-                Next enter a password for this user (new or existing).<br>
-                After this enter a database to use. This could also be either an existing or a new database.<br>
-                Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
-        echo 'Enter new MySQL user. <br>';
-        echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
-        echo 'Enter password for MySQL user. <br>';
-        echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
-        echo 'Enter new database name. <br>';
-        echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
-        echo 'Enter hostname (e.g localhost). <br>';
-        echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
-        echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
-
-        if($dbUsername || $dbHostname || $dbName || $dbPassword){
-            echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
-        }
-
-        echo '</div>';
-    ?>
-                <div class="inputContent" id="td2" valign=top>
-                    <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
-                        Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
-                    Enter MySQL root user. <br>
-                    <input title="Enter MySQL root user." class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
-                    Enter password for MySQL root user. <br>
-                    <input title="Enter password for MySQL root user." class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
-                    <span class="enterAllFields" id="enterFields2">Please fill all fields before continuing.</span>
-                </div>
-                <div class="inputContent" id="td3" valign=top>
-                    <p id="infoText"><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
-                        database with testdata (located in install/SQL/testdata.sql) you should check the box for this too. If you
-                        are using an existing database and wishes to re-write it you will be able to make this choice on the next page.</b></p><hr>
-                    <input title="Create new database." type="checkbox" name="createDB" value="Yes" onchange="createDBchange(this)" checked/>
-                    Create new database. <br><hr>
-                    <div id="DBboxes">
-                        <input title="Include test data." type="checkbox" name="fillDB" value="Yes" onchange="fillDBchange(this)" checked/>
-                        Include test data. <br><br>
-                        <div id="testdataBoxes">
-                            <input title="Include markdown." type="checkbox" name="mdSupport" value="Yes" checked/>
-                            Include markdown. (Files located in /Install/md) <br><br>
-                            <b>Language keyword highlighting support.<br></b>
-                            <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
-                            <div id="checkboxContainer">
-                                <input title="HTML" type="checkbox" name="html" value="Yes" checked/> HTML <br>
-                                <input title="Java" type="checkbox" name="java" value="Yes" checked/> Java <br>
-                                <input title="PHP" type="checkbox" name="php" value="Yes" checked/> PHP <br>
-                                <input title="Plain Text" type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
-                                <input title="SQL" type="checkbox" name="sql" value="Yes" checked/> SQL <br>
-                                <input title="SR" type="checkbox" name="sr" value="Yes" checked/> SR <br>
-                            </div>
+            <div class="inputContent" id="td3" valign=top>
+                <p id="infoText"><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
+                    database with testdata (located in install/SQL/testdata.sql) you should check the box for this too. If you
+                    are using an existing database and wishes to re-write it you will be able to make this choice on the next page.</b></p><hr>
+                <input title="Create new database." type="checkbox" name="createDB" value="Yes" onchange="createDBchange(this)" checked/>
+                Create new database. <br><hr>
+                <div id="DBboxes">
+                    <input title="Include test data." type="checkbox" name="fillDB" value="Yes" onchange="fillDBchange(this)" checked/>
+                    Include test data. <br><br>
+                    <div id="testdataBoxes">
+                        <input title="Include markdown." type="checkbox" name="mdSupport" value="Yes" checked/>
+                        Include markdown. (Files located in /Install/md) <br><br>
+                        <b>Language keyword highlighting support.<br></b>
+                        <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
+                        <div id="checkboxContainer">
+                            <input title="HTML" type="checkbox" name="html" value="Yes" checked/> HTML <br>
+                            <input title="Java" type="checkbox" name="java" value="Yes" checked/> Java <br>
+                            <input title="PHP" type="checkbox" name="php" value="Yes" checked/> PHP <br>
+                            <input title="Plain Text" type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
+                            <input title="SQL" type="checkbox" name="sql" value="Yes" checked/> SQL <br>
+                            <input title="SR" type="checkbox" name="sr" value="Yes" checked/> SR <br>
                         </div>
                     </div>
                 </div>
-                <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC">
-                    <p id="infoText"><b>If you have entered a user and/or database that already exists you must check the checkboxes below to accept overwriting these.
-                        <br>If you only entered an existing user but a new database only check the box for user overwrite.
-                        <br>If you only entered an existing database for a new user only check the box for database overwrite.
-                        <br>If both are existing both boxes should be checked.
-                        <br>If it's a completely new database and user no box has to be checked.</b></p><hr>
-                    <div id="checkboxContainer2">
-                        <input title="Write over existing database." id="writeOver1" type="checkbox" name="writeOverDB" value="Yes" />
-                        Yes I want to write over an existing database.<br>
-                        <input title="Write over existing user." id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
-                        Yes I want to write over an existing user.<br>
-                    </div>
-                        <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
+            </div>
+            <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC">
+                <p id="infoText"><b>If you have entered a user and/or database that already exists you must check the checkboxes below to accept overwriting these.
+                    <br>If you only entered an existing user but a new database only check the box for user overwrite.
+                    <br>If you only entered an existing database for a new user only check the box for database overwrite.
+                    <br>If both are existing both boxes should be checked.
+                    <br>If it's a completely new database and user no box has to be checked.</b></p><hr>
+                <div id="checkboxContainer2">
+                    <input title="Write over existing database." id="writeOver1" type="checkbox" name="writeOverDB" value="Yes" />
+                    Yes I want to write over an existing database.<br>
+                    <input title="Write over existing user." id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
+                    Yes I want to write over an existing user.<br>
                 </div>
-                <div class="inputContent" id="td5" bgcolor="#EEEEEE">
-                    <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
-                        Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
-                        If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
-                    <input title="Install LenaSYS!" id="submitInput" class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
-                </div>
+                    <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
             </div>
+            <div class="inputContent" id="td5" bgcolor="#EEEEEE">
+                <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
+                    Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
+                    If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
+                <input title="Install LenaSYS!" id="submitInput" class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
+            </div>
+        </div>
 
-            <!-- Arrows for navigation between input pages -->
-            <div title="Go back" class="arrow" id="leftArrow">
-                <svg height="150" width="150">
-                    <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
-                    <polygon points="100,30 20,75 100,120" />
-                </svg>
-            </div>
-            <div title="Continue installation" class="arrow" id="rightArrow">
-                <svg height="150" width="150">
-                    <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
-                    <polygon points="50,30 130,75 50,120" />
-                </svg>
-            </div>
-            <!-- Javascript functions for arrow functionality-->
-            <script>
-                var leftArrow = document.getElementById('leftArrow');
-                var rightArrow = document.getElementById('rightArrow');
-                var submitButton = document.getElementById('submitInput');
-                var inputPage = 1;
-                var previousInputPage = 0;
+        <!-- Arrows for navigation between input pages -->
+        <div title="Go back" class="arrow" id="leftArrow">
+            <svg height="150" width="150">
+                <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
+                <polygon points="100,30 20,75 100,120" />
+            </svg>
+        </div>
+        <div title="Continue installation" class="arrow" id="rightArrow">
+            <svg height="150" width="150">
+                <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
+                <polygon points="50,30 130,75 50,120" />
+            </svg>
+        </div>
+        <!-- Javascript functions for arrow functionality-->
+        <script>
+            var leftArrow = document.getElementById('leftArrow');
+            var rightArrow = document.getElementById('rightArrow');
+            var submitButton = document.getElementById('submitInput');
+            var inputPage = 1;
+            var previousInputPage = 0;
 
-                /* Function to focus the right box on the page */
-                function focusTheRightBox() {
-                    if (inputPage === 1 || inputPage === 2) {
-                        var fields = document.getElementsByClassName("page" + inputPage + "input");
-                        for (var i = 0; i < fields.length; i++) {
-                            if (fields[i].value === ''){
-                                fields[i].focus();
-                                break;
-                            }
-                        }
-                    } else if (inputPage === 4) {
-                        if (document.getElementById("writeOver1").checked) {
-                            document.getElementById("writeOver2").focus();
-                        } else {
-                            document.getElementById("writeOver1").focus();
+            /* Function to focus the right box on the page */
+            function focusTheRightBox() {
+                if (inputPage === 1 || inputPage === 2) {
+                    var fields = document.getElementsByClassName("page" + inputPage + "input");
+                    for (var i = 0; i < fields.length; i++) {
+                        if (fields[i].value === ''){
+                            fields[i].focus();
+                            break;
                         }
                     }
-                }
-
-                leftArrow.onclick = function() {
-                    previousInputPage = inputPage;
-                    if(inputPage > 1) inputPage--;
-                    updateInputPage();
-                    focusTheRightBox();
-                };
-
-                rightArrow.onclick = function() {
-                    /* Only continue if all fields on current page are filled out */
-                    if (inputPage === 1 || inputPage === 2) {
-                        var fields = document.getElementsByClassName("page" + inputPage + "input");
-                        var found = false; /* Is an empty field found? */
-                        for (var i = 0; i < fields.length; i++) {
-                            if (fields[i].value === ''){
-                                if (inputPage === 2 && fields[1]) {
-                                    found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
-                                }else {
-                                    found = true;  /* Empty field found */
-                                }
-                                /* Set background of text field to light red */
-                                fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
-                            }
-                        }
-                        if (!found){
-                            /* If no empty field was found - proceed and reset values of text fields and hide warning text */
-                            document.getElementById("enterFields" + inputPage).style.display = "none";
-                            previousInputPage = inputPage;
-                            if (inputPage < 5) inputPage++;
-                            for (var i = 0; i < fields.length; i++) {
-                                fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
-                            }
-                            updateInputPage();
-                        } else {
-                            /* Show the warning text if empty field was found */
-                            document.getElementById("enterFields" + inputPage).style.display = "inline-block";
-                        }
+                } else if (inputPage === 4) {
+                    if (document.getElementById("writeOver1").checked) {
+                        document.getElementById("writeOver2").focus();
                     } else {
-                        /* Only page 1 and 2 has text fields so the rest have no rules */
+                        document.getElementById("writeOver1").focus();
+                    }
+                }
+            }
+
+            leftArrow.onclick = function() {
+                previousInputPage = inputPage;
+                if(inputPage > 1) inputPage--;
+                updateInputPage();
+                focusTheRightBox();
+            };
+
+            rightArrow.onclick = function() {
+                /* Only continue if all fields on current page are filled out */
+                if (inputPage === 1 || inputPage === 2) {
+                    var fields = document.getElementsByClassName("page" + inputPage + "input");
+                    var found = false; /* Is an empty field found? */
+                    for (var i = 0; i < fields.length; i++) {
+                        if (fields[i].value === ''){
+                            if (inputPage === 2 && fields[1]) {
+                                found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
+                            }else {
+                                found = true;  /* Empty field found */
+                            }
+                            /* Set background of text field to light red */
+                            fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
+                        }
+                    }
+                    if (!found){
+                        /* If no empty field was found - proceed and reset values of text fields and hide warning text */
+                        document.getElementById("enterFields" + inputPage).style.display = "none";
                         previousInputPage = inputPage;
                         if (inputPage < 5) inputPage++;
-                        updateInputPage();
-                    }
-                };
-
-                /* Remove default behaviour (click submit button) when pressing enter */
-                $(document).ready(function() {
-                    $(window).keydown(function(event){
-                        if(event.keyCode === 13) {
-                            event.preventDefault();
-                            return false;
+                        for (var i = 0; i < fields.length; i++) {
+                            fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
                         }
-                    });
-                });
+                        updateInputPage();
+                    } else {
+                        /* Show the warning text if empty field was found */
+                        document.getElementById("enterFields" + inputPage).style.display = "inline-block";
+                    }
+                } else {
+                    /* Only page 1 and 2 has text fields so the rest have no rules */
+                    previousInputPage = inputPage;
+                    if (inputPage < 5) inputPage++;
+                    updateInputPage();
+                }
+            };
 
-                /* You want to be able to press enter to continue, this function fixes this. */
-                document.addEventListener("keydown", function(e) {
-                    if(e.keyCode === 13){
-                        if (modal.style.display === "none"){
-                            if (inputPage < 5) {
-                                /* Only continue if all fields on current page are filled out */
-                                if (inputPage === 1 || inputPage === 2) {
-                                    var fields = document.getElementsByClassName("page" + inputPage + "input");
-                                    var found = false; /* Is an empty field found? */
-                                    for (var i = 0; i < fields.length; i++) {
-                                        if (fields[i].value === ''){
-                                            if (inputPage === 2 && fields[1]) {
-                                                found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
-                                            }else {
-                                                found = true;  /* Empty field found */
-                                            }
-                                            /* Set background of text field to light red */
-                                            fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
+            /* Remove default behaviour (click submit button) when pressing enter */
+            $(document).ready(function() {
+                $(window).keydown(function(event){
+                    if(event.keyCode === 13) {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+            });
+
+            /* You want to be able to press enter to continue, this function fixes this. */
+            document.addEventListener("keydown", function(e) {
+                if(e.keyCode === 13){
+                    if (modal.style.display === "none"){
+                        if (inputPage < 5) {
+                            /* Only continue if all fields on current page are filled out */
+                            if (inputPage === 1 || inputPage === 2) {
+                                var fields = document.getElementsByClassName("page" + inputPage + "input");
+                                var found = false; /* Is an empty field found? */
+                                for (var i = 0; i < fields.length; i++) {
+                                    if (fields[i].value === ''){
+                                        if (inputPage === 2 && fields[1]) {
+                                            found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
+                                        }else {
+                                            found = true;  /* Empty field found */
                                         }
+                                        /* Set background of text field to light red */
+                                        fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
                                     }
-                                    if (!found){
-                                        /* If no empty field was found - proceed and reset values of text fields and hide warning text */
-                                        document.getElementById("enterFields" + inputPage).style.display = "none";
-                                        previousInputPage = inputPage;
-                                        inputPage++;
-                                        for (var i = 0; i < fields.length; i++) {
-                                            fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
-                                        }
-                                        updateInputPage();
-                                    } else {
-                                        /* Show the warning text if empty field was found */
-                                        document.getElementById("enterFields" + inputPage).style.display = "inline-block";
-                                    }
-                                } else {
-                                    /* Only page 1 and 2 has text fields so the rest have no rules */
+                                }
+                                if (!found){
+                                    /* If no empty field was found - proceed and reset values of text fields and hide warning text */
+                                    document.getElementById("enterFields" + inputPage).style.display = "none";
                                     previousInputPage = inputPage;
                                     inputPage++;
+                                    for (var i = 0; i < fields.length; i++) {
+                                        fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
+                                    }
                                     updateInputPage();
+                                } else {
+                                    /* Show the warning text if empty field was found */
+                                    document.getElementById("enterFields" + inputPage).style.display = "inline-block";
                                 }
-                            } else if (inputPage === 5){
-                                submitButton.click();
+                            } else {
+                                /* Only page 1 and 2 has text fields so the rest have no rules */
+                                previousInputPage = inputPage;
+                                inputPage++;
+                                updateInputPage();
                             }
+                        } else if (inputPage === 5){
+                            submitButton.click();
                         }
                     }
-                });
-
-                function updateInputPage(){
-                    /* Hide current input page */
-                    hideInputPage();
-                    /* Show the new input page when animation is done */
-                    window.setTimeout(showInputPage,500);
-
-                    /* Dont show left arrow on first page and dont show right arrow on last page */
-                    if (inputPage === 1) {
-                        document.getElementById('leftArrow').style.display = "none";
-                    } else {
-                        document.getElementById('leftArrow').style.display = "block";
-                    }
-                    if (inputPage === 5) {
-                        document.getElementById('rightArrow').style.display = "none";
-                    } else {
-                        document.getElementById('rightArrow').style.display = "block";
-                    }
                 }
+            });
 
-                function hideInputPage(){
-                    /* Slide away the old page from the right direction depending on new page */
-                    if (inputPage > previousInputPage) {
-                        $('#th' + previousInputPage).hide("slide", {direction: "left" }, 500);
-                        $('#td' + previousInputPage).hide("slide", {direction: "left" }, 500);
-                    } else {
-                        $('#th' + previousInputPage).hide("slide", {direction: "right" }, 500);
-                        $('#td' + previousInputPage).hide("slide", {direction: "right" }, 500);
-                    }
+            function updateInputPage(){
+                /* Hide current input page */
+                hideInputPage();
+                /* Show the new input page when animation is done */
+                window.setTimeout(showInputPage,500);
+
+                /* Dont show left arrow on first page and dont show right arrow on last page */
+                if (inputPage === 1) {
+                    document.getElementById('leftArrow').style.display = "none";
+                } else {
+                    document.getElementById('leftArrow').style.display = "block";
                 }
-
-                function showInputPage(){
-                    /* Slide the new page from the right direction depending on previous page */
-                    if (inputPage > previousInputPage) {
-                        $('#th' + inputPage).show("slide", {direction: "right" }, 500);
-                        $('#td' + inputPage).show("slide", {direction: "right" }, 500);
-                    } else {
-                        $('#th' + inputPage).show("slide", {direction: "left" }, 500);
-                        $('#td' + inputPage).show("slide", {direction: "left" }, 500);
-                    }
-                    window.setTimeout(focusTheRightBox,500);
+                if (inputPage === 5) {
+                    document.getElementById('rightArrow').style.display = "none";
+                } else {
+                    document.getElementById('rightArrow').style.display = "block";
                 }
-            </script>
+            }
 
-            <!-- Javascript to focus the right input box after modal is closed and hide boxes -->
-            <script>
-                /* When the user clicks on <span> (x), close the modal */
-                span.onclick = function() {
-                    if (modalRead) {
-                        modal.style.display = "none";
-                        focusTheRightBox();
-                    }
+            function hideInputPage(){
+                /* Slide away the old page from the right direction depending on new page */
+                if (inputPage > previousInputPage) {
+                    $('#th' + previousInputPage).hide("slide", {direction: "left" }, 500);
+                    $('#td' + previousInputPage).hide("slide", {direction: "left" }, 500);
+                } else {
+                    $('#th' + previousInputPage).hide("slide", {direction: "right" }, 500);
+                    $('#td' + previousInputPage).hide("slide", {direction: "right" }, 500);
                 }
+            }
 
-                /* When the user clicks anywhere outside of the modal, close it */
-                window.onclick = function(event) {
-                    if (event.target == modal && modalRead) {
-                        modal.style.display = "none";
-                        focusTheRightBox();
-                    }
+            function showInputPage(){
+                /* Slide the new page from the right direction depending on previous page */
+                if (inputPage > previousInputPage) {
+                    $('#th' + inputPage).show("slide", {direction: "right" }, 500);
+                    $('#td' + inputPage).show("slide", {direction: "right" }, 500);
+                } else {
+                    $('#th' + inputPage).show("slide", {direction: "left" }, 500);
+                    $('#td' + inputPage).show("slide", {direction: "left" }, 500);
                 }
+                window.setTimeout(focusTheRightBox,500);
+            }
+        </script>
 
-                var writeOver1 = document.getElementById('writeOver1');
-                writeOver1.onclick = function() {
+        <!-- Javascript to focus the right input box after modal is closed and hide boxes -->
+        <script>
+            /* When the user clicks on <span> (x), close the modal */
+            span.onclick = function() {
+                if (modalRead) {
+                    modal.style.display = "none";
                     focusTheRightBox();
                 }
+            }
 
-                /* Hide testdata boxes when testdata is un-checked */
-                function fillDBchange(checkbox) {
-                    if (checkbox.checked === true){
-                        $("#testdataBoxes").show("slide", {direction: "left" }, 500);
-                    } else {
-                        $("#testdataBoxes").hide("slide", {direction: "left" }, 500);
-                    }
+            /* When the user clicks anywhere outside of the modal, close it */
+            window.onclick = function(event) {
+                if (event.target == modal && modalRead) {
+                    modal.style.display = "none";
+                    focusTheRightBox();
                 }
+            }
 
-                function createDBchange(checkbox) {
-                    if (checkbox.checked === true){
-                        $("#DBboxes").show("slide", {direction: "left" }, 500);
-                    } else {
-                        $("#DBboxes").hide("slide", {direction: "left" }, 500);
-                    }
+            var writeOver1 = document.getElementById('writeOver1');
+            writeOver1.onclick = function() {
+                focusTheRightBox();
+            }
+
+            /* Hide testdata boxes when testdata is un-checked */
+            function fillDBchange(checkbox) {
+                if (checkbox.checked === true){
+                    $("#testdataBoxes").show("slide", {direction: "left" }, 500);
+                } else {
+                    $("#testdataBoxes").hide("slide", {direction: "left" }, 500);
                 }
-            </script>
+            }
 
-            <!-- Empty footer to show a nice border at bottom -->
-            <div id="inputFooter"></div>
-        </div>
-    </form>
-    <!-- END OF INPUT FORM SECTION -->
+            function createDBchange(checkbox) {
+                if (checkbox.checked === true){
+                    $("#DBboxes").show("slide", {direction: "left" }, 500);
+                } else {
+                    $("#DBboxes").hide("slide", {direction: "left" }, 500);
+                }
+            }
+        </script>
+
+        <!-- Empty footer to show a nice border at bottom -->
+        <div id="inputFooter"></div>
+    </div>
+</form>
+<!-- END OF INPUT FORM SECTION -->
 
     <!-- START of install section. When form is submitted mode will be changed to install and this will run
       -- Flush and ob_flush is used after every output in progress to dynamically show output when something was done.
