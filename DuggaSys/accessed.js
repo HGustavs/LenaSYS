@@ -243,12 +243,14 @@ function changeOptDiv(e) {
 	console.log(e.target.parentElement.parentElement.id);
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	changeProperty(paramlist[1], paramlist[0], e.target.innerHTML);
+	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
 }
 function changeOptDivStudent(e,value){
 	console.log(e.target.parentElement.parentElement.id);
 	console.log(value);
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	changeProperty(paramlist[1], paramlist[0], value);
+	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
 }
 
 function changeOpt(e) {
@@ -309,7 +311,7 @@ function renderCell(col, celldata, cellid) {
 		if(examinerName == null){
 			examinerName = "None";
 		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
 		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+filez['courses'][0].versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
@@ -541,26 +543,27 @@ function returnedAccess(data) {
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
+	//myTable = undefined;
 	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
-	myTable = new SortableTable({
-		data: tabledata,
-		tableElementId: "accessTable",
-		filterElementId: "filterOptions",
-		renderCellCallback: renderCell,
-		renderSortOptionsCallback: renderSortOptions,
-		renderColumnFilterCallback: renderColumnFilter,
-		rowFilterCallback: rowFilter,
-		displayCellEditCallback: displayCellEdit,
-		updateCellCallback: updateCellCallback,
-		columnOrder: colOrder,
-		freezePaneIndex: 4,
-		hasRowHighlight: true,
-		hasMagicHeadings: false,
-		hasCounterColumn: true
-	});
+		myTable = new SortableTable({
+			data: tabledata,
+			tableElementId: "accessTable",
+			filterElementId: "filterOptions",
+			renderCellCallback: renderCell,
+			renderSortOptionsCallback: renderSortOptions,
+			renderColumnFilterCallback: renderColumnFilter,
+			rowFilterCallback: rowFilter,
+			displayCellEditCallback: displayCellEdit,
+			updateCellCallback: updateCellCallback,
+			columnOrder: colOrder,
+			freezePaneIndex: 4,
+			hasRowHighlight: true,
+			hasMagicHeadings: false,
+			hasCounterColumn: true
+		});
 
-	myTable.renderTable();
+		myTable.renderTable();
 	}
 }
 
