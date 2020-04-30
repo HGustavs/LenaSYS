@@ -33,11 +33,11 @@
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
-					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
+					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 					// echo "<td>GREGER!</td>";	
 			}else if($noup=='SECTION'){
-					echo "<a href='";
+					echo "<a  id='upIcon' href='";
 					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
@@ -277,6 +277,26 @@ function mouseOutHome() {
    }
 }
 
+document.getElementById("upIcon").addEventListener("mouseover", mouseOverUp);
+document.getElementById("upIcon").addEventListener("mouseout", mouseOutUp);
+
+function mouseOverUp() {
+	var obj = document.getElementById("upIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/UpShadow.svg';
+   }
+}
+
+function mouseOutUp() {
+	var obj = document.getElementById("upIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/Up.svg';
+   }
+}
 
 
 
