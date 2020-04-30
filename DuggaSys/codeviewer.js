@@ -2911,7 +2911,6 @@ function resetBoxes() {
 
 function resizeBoxes(parent, templateId) {
 	var boxValArray = initResizableBoxValues(parent);
-	var remainWidth;
 
 	if (templateId == 1) {
 		getLocalStorageProperties(templateId, boxValArray);
@@ -3073,8 +3072,6 @@ function resizeBoxes(parent, templateId) {
 	} else if (templateId == 6) {
 
 		getLocalStorageProperties(templateId, boxValArray);
-		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
-
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -3084,7 +3081,6 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
-				$(boxValArray['box1']['id']).height(100 + "%");
 
 			},
 			stop: function (e, ui) {
@@ -3117,15 +3113,15 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", " ");
+				$(boxValArray['box3']['id']).css("left", " ");
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", " ");
 				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events', 'auto');
 			}
 		});
+
 	} else if (templateId == 7) {
 		getLocalStorageProperties(templateId, boxValArray);
 		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
@@ -3532,17 +3528,11 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird) {
 
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-
-
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
 
-
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-
 
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
@@ -3688,8 +3678,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 	var atry2 = (atry / boxValArray['parent']['height']) * 100;
 
-	if (remainHeightPer <= 10) {
-
+	if (remainHeightPer <= 10) { // When Box3 is at minimum size.
 		atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 		atry2 = (atry / boxValArray['parent']['height']) * 100;
 
@@ -3698,7 +3687,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-	} else {
+	} else { // When Box3 is greater than minimum size.
 		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
@@ -3722,24 +3711,16 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 	var atry2 = (atry / boxValArray['parent']['height']) * 100;
 
-	if (atry2 <= 10) {
-		$("#box3wrapper").css({
-			"top": basePer + "%",
-			"height": remainHeightPer + "%"
-		});
-	}else if(atry2 >= 75) {
-		$("#box2wrapper").css({
-			"height": remainHeightPer + "%"
-		});
-		$("#box3wrapper").css({
-			"height": remainHeightPer + "%",
-			"top": remainHeightPer + "%"
-		});
-		$("#boxwrapper4").css({
-			"height": atry2 + "%",
-		});
-	} else {
-		$("#box4wrapper").height(atry2 + "%");
+	if (atry2 <= 10) { // When Box4 is at minimum size.
+		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+	}else if(atry2 >= 80) { // When Box4 is at maximum size.
+		$(boxValArray['box' + boxNumBase]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).css("top", remainHeightPer + "%");
+		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%",);
+	} else { // When Box4 is between minimum and maximum size.
+		$(boxValArray['box' + boxNumAlignSecond]['id']).height(atry2 + "%");
 	}
 
 }
