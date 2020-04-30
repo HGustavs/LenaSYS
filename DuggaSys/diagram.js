@@ -717,21 +717,23 @@ function keyDownHandler(e) {
             fillCloneArray();
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
-            let temp = [];
-            SaveState();
-            for(const object of cloneTempArray) {
-                if(object.kind === kind.path) {
-                    temp.push(copyPath(object));
-                } else {
-                    temp.push(copySymbol(object));
-                }
-            }
-            setConnectedLines(temp);
-            cloneTempArray = temp;
-            if(temp.length !== 0) {
-                selected_objects = temp;
-                updateGraphics();
+            if(cloneTempArray.length !== 0) {
                 SaveState();
+                let temp = [];
+                for(const object of cloneTempArray) {
+                    if(object.kind === kind.path) {
+                        temp.push(copyPath(object));
+                    } else {
+                        temp.push(copySymbol(object));
+                    }
+                }
+                setConnectedLines(temp);
+                cloneTempArray = temp;
+                if(temp.length !== 0) {
+                    selected_objects = temp;
+                    updateGraphics();
+                    SaveState();
+                }
             }
         }
         else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
