@@ -5,7 +5,7 @@
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 </head>
 <body>
-    <?php
+<?php
     // Saving away old execution time setting and setting new to 120 (default is 30).
     // this is done in order to avoid a php timeout, especially on windows where Database
     // query time also affects php executiion time. This will not work when php is running
@@ -15,31 +15,31 @@
     $errors = 0;
     // Create a version of dirname for <PHP7 compability
     function cdirname($path, $level) {
-      $prefix = '';
-      // Check if $path starts with a windows style 'C:\' prefix
-      if (preg_match("/^.:\\\\/", $path)) {
+    $prefix = '';
+    // Check if $path starts with a windows style 'C:\' prefix
+    if (preg_match("/^.:\\\\/", $path)) {
         // Cut off the drive letter and store it in $prefix
         $prefix = substr($path, 0, 2);
         $path = substr($path, 2);
         // Replace all windows '\' with unix '/' in the path string
         $path = str_replace("\\", "/", $path);
-      }
+    }
 
-      $paths = explode("/", $path);
-      $r = '';
-      if(count($paths) <= $level) {
+    $paths = explode("/", $path);
+    $r = '';
+    if(count($paths) <= $level) {
         $r = '/';
-      } else {
+    } else {
         $r = '/';
         for($i = 0; $i < count($paths) - $level; $i++) {
-          if($i > 1) {
+        if($i > 1) {
             $r .= '/';
-          }
-          $r .= $paths[$i];
         }
-      }
-      // Re-add the drive letter if there was one ('C:' + '/.../')
-      return $prefix . $r;
+        $r .= $paths[$i];
+        }
+    }
+    // Re-add the drive letter if there was one ('C:' + '/.../')
+    return $prefix . $r;
     };
 
     ob_start();
@@ -56,46 +56,49 @@
                         </div>
 
                     </div>";
-    ?>
+?>
 
-    <script>
-        var modalRead = false; // Have the user read info?
-        var modal = document.getElementById('warning'); // Get the modal
-        var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
-        var filePath = "<?php echo $putFileHere; ?>";
 
-        document.getElementById('dialogText').innerHTML="<div><h1>" +
-            "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
-            "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
-            "current owner: " +
-            "<?php if(function_exists('posix_getpwuid')) {
-                echo posix_getpwuid(filegroup($putFileHere))['name'];
-            } else {
-                echo getenv(filegroup($putFileHere))['name'];
-            }?>" +
-            "<br><br>" +
-            "To do this run the command:<br>" +
-            "sudo chgrp -R www-data " + filePath + "</h2><br>" +
-            "<br>" +
-            "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
-            "<i>I promise i have done this and will not complain that it's not working</i></div>";
+<!-- Start permission-modal code -->
+<script>
+    var modalRead = false; // Have the user read info?
+    var modal = document.getElementById('warning'); // Get the modal
+    var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
+    var filePath = "<?php echo $putFileHere; ?>";
 
-        function haveRead(isTrue) {
-            modalRead = isTrue;
-        }
-    </script>
+    document.getElementById('dialogText').innerHTML="<div><h1>" +
+        "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
+        "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
+        "current owner: " +
+        "<?php if(function_exists('posix_getpwuid')) {
+            echo posix_getpwuid(filegroup($putFileHere))['name'];
+        } else {
+            echo getenv(filegroup($putFileHere))['name'];
+        }?>" +
+        "<br><br>" +
+        "To do this run the command:<br>" +
+        "sudo chgrp -R www-data " + filePath + "</h2><br>" +
+        "<br>" +
+        "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
+        "<i>I promise i have done this and will not complain that it's not working</i></div>";
 
-    <div id="header">
-        <h1>LenaSYS Installer</h1>
-        <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
-    </div>
-    <script>
-        var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
-        // Open modal on button click
-        btn.onclick = function () {
-        modal.style.display = "block";
-        }
-    </script>
+    function haveRead(isTrue) {
+        modalRead = isTrue;
+    }
+</script>
+<div id="header">
+    <h1>LenaSYS Installer</h1>
+    <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
+</div>
+<script>
+    var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
+    // Open modal on button click
+    btn.onclick = function () {
+    modal.style.display = "block";
+    }
+</script>
+<!-- End permission-modal code -->
+
     <form action="install.php?mode=install" method="post">
         <div id="inputWrapper">
             <!-- Headings for input -->
@@ -113,53 +116,53 @@
     $dbName = "";
     $dbPassword = "";
 
-    $credentialsFile = "../../coursesyspw.php";
-    if(file_exists($credentialsFile)) {
-      $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+        $credentialsFile = "../../coursesyspw.php";
+        if(file_exists($credentialsFile)) {
+        $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
 
-      // check if the credentials exists in the file, store them if they do
-      foreach($credentialsArray as $cred) {
-        if(stripos(trim($cred), 'DB_') !== FALSE){
-          $tArray = explode('"', trim($cred));
-          if(count($tArray) == 5) {
-            if($tArray[1]=="DB_USER"){
-              $dbUsername = $tArray[3];
-            }else if($tArray[1]=="DB_HOST"){
-              $dbHostname = $tArray[3];
-            }else if($tArray[1]=="DB_NAME"){
-              $dbName = $tArray[3];
-            }else if($tArray[1]=="DB_PASSWORD"){
-              $dbPassword = $tArray[3];
+        // check if the credentials exists in the file, store them if they do
+        foreach($credentialsArray as $cred) {
+            if(stripos(trim($cred), 'DB_') !== FALSE){
+            $tArray = explode('"', trim($cred));
+            if(count($tArray) == 5) {
+                if($tArray[1]=="DB_USER"){
+                $dbUsername = $tArray[3];
+                }else if($tArray[1]=="DB_HOST"){
+                $dbHostname = $tArray[3];
+                }else if($tArray[1]=="DB_NAME"){
+                $dbName = $tArray[3];
+                }else if($tArray[1]=="DB_PASSWORD"){
+                $dbPassword = $tArray[3];
+                }
             }
-          }
+            }
         }
-      }
-    }
-    echo '<div id="contentWrapper">';
-    /* All the different content for input
-     * td1 will be shown at start, the others (td2 - 5) will be shown by clicking arrows.
-     */
-    echo '<div class="inputContent" id="td1">';
-    echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
-            Next enter a password for this user (new or existing).<br>
-            After this enter a database to use. This could also be either an existing or a new database.<br>
-            Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
-    echo 'Enter new MySQL user. <br>';
-    echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
-    echo 'Enter password for MySQL user. <br>';
-    echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
-    echo 'Enter new database name. <br>';
-    echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
-    echo 'Enter hostname (e.g localhost). <br>';
-    echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
-    echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
+        }
+        echo '<div id="contentWrapper">';
+        /* All the different content for input
+        * td1 will be shown at start, the others (td2 - 5) will be shown by clicking arrows.
+        */
+        echo '<div class="inputContent" id="td1">';
+        echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
+                Next enter a password for this user (new or existing).<br>
+                After this enter a database to use. This could also be either an existing or a new database.<br>
+                Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
+        echo 'Enter new MySQL user. <br>';
+        echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
+        echo 'Enter password for MySQL user. <br>';
+        echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password" value="'.$dbPassword.'"/> <br>';
+        echo 'Enter new database name. <br>';
+        echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
+        echo 'Enter hostname (e.g localhost). <br>';
+        echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+        echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
 
-    if($dbUsername || $dbHostname || $dbName || $dbPassword){
-        echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
-    }
+        if($dbUsername || $dbHostname || $dbName || $dbPassword){
+            echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
+        }
 
-    echo '</div>';
-?>
+        echo '</div>';
+    ?>
                 <div class="inputContent" id="td2" valign=top>
                     <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
                         Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
