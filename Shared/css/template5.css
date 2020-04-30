@@ -66,13 +66,7 @@
 
 @media only screen 
 and (max-device-width : 725px) {
-    .resetbtn{
-        display:none;
-    }
-    .morebtn{
-        display: block;
-    }
-    .morebtn:hover .moreboxes-content {display: block;}
+   
     #box1wrapper{
     position: absolute;
     left: 0px;

@@ -16,7 +16,7 @@
 
 			if (isset($_GET['coursevers']))
 				$_SESSION['coursevers'] = getOPG('coursevers');
-			else if (isset($_GET['cid']))
+			else if (isset($_GET['cvers']))
 				$_SESSION['coursevers'] = getOPG('cvers');
 			else
 				$_SESSION['coursevers'] = "UNK";
@@ -42,11 +42,19 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
+			// if the user only have access type W(write) course-dropdown should be shown
+			if(checklogin() && (hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {				
+				echo "<td style='display: inline-block;' title='Choose course version'>";
+				echo "    <div class='course-dropdown-div'>";
+				echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
+				echo "    </div>";
+				echo "</td>";
+			}
 	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st'))) {				
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {				
 							echo "<td style='display: inline-block;' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
@@ -127,41 +135,41 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
-
-							//Adds the download files button to the toolbar
-							echo "<td class='Downlad all files' style='display: inline-block;'>";
-							echo "    <div class='Downlad all files'>";
-							echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
-							echo "      </a>";
-							echo "    </div>";
-							echo "</td>";
 					}
 			}
 	
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
-					echo "<td id='searchBar' class='navButt'>";
+					echo "<td id='testSearchContainer' class='navButt'>";
 					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black; margin-top: 40px'>"; //Dropdown menu for when hovering the search bar
-					echo	"<p><b>Keywords:</b> markG, markU, date</p>";
-					echo	"<p><b>Ex:</b> markG:färgdugga</p>";
+					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
 					echo	"</div>";
-					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
-					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
-					echo   "</button>";
 					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
 					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo 	"</div><div>";
-					echo   "</button>";
-					
 					echo "</td>";
+					echo "<td class='navButt'>";
+					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
+					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+					echo   "</button>";
+					echo "</td>";
+					if ($requestedService == "fileed.php" && (hasAccess($_SESSION["uid"], $_SESSION["courseid"], "w") || $_SESSION["superuser"] == 1)) {
+						//Adds the download files button to the toolbar
+						echo "<td class='navButt'>";
+						echo "    <div>";
+						echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+						echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
+						echo "      </a>";
+						echo "    </div>";
+						echo "</td>";
+					}				
 			}
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
 					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
-					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg' style='margin-left:35px;'>";
+					echo     "<img class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";
@@ -189,7 +197,7 @@
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
 					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play(event);'><img src='../Shared/icons/play_button.svg' /></td>";
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st'))) {
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {
 						echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
 						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/files_icon.svg' /></td>";

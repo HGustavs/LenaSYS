@@ -1299,6 +1299,18 @@ input {
   text-decoration: underline;
 }
 
+.newpassword .forgotPw {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.newpassword .forgotPw:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  background:yellow;
+}
+
+
 .loginBox .form-control {
   margin: 3px 0px 3px 0px;
 }
@@ -1311,8 +1323,9 @@ input {
   margin-left: 4px;
   margin-right: 4px;
 }
-.buttonLogoutBox{
-  border-radius: 0;
+
+.logoutBox p{
+  text-align: center;
 }
 .buttonLoginBox,
 .buttonLogoutBox {
@@ -1331,14 +1344,19 @@ input {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
+.buttonLogoutBox{
+  margin: 12px;
+  width: 120px;
+}
+
 .buttonLoginBox:hover,
-.buttonLogoutBox:hover,{
+.buttonLogoutBox:hover{
   background-color: var(--color-primary-hover);
   border-radius: 2px;
 }
 
 .loginBoxTable,
-.logoutBoxTable,{
+.logoutBoxTable{
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
@@ -1351,7 +1369,7 @@ input {
 }
 
 #loginBoxTitle,
-#logoutBoxTitle,{
+#logoutBoxTitle{
   font-size: 15px;
 }
 
@@ -1692,6 +1710,11 @@ input {
 #hotkey-developerMode {
   right: 35px;
   top: 10px;
+}
+
+#hotkey-fullscreen {
+  right: 35px;
+  top: 445px;
 }
 
 #hotkey-displayTools {
@@ -2600,7 +2623,6 @@ span.arrow {
 
 .feedback-list {
   table-layout: fixed;
-  width: 100%;
   margin-top: 2px !important;
 }
 
@@ -2613,6 +2635,7 @@ span.arrow {
 .feedback-list td {
   line-height: normal;
 }
+
 #feedbackTable .feedback-list th {
 	background: var(--color-background-3);
   color:var(--color-text-label);
@@ -2788,8 +2811,17 @@ span.arrow {
 
 #resultTable td {
   height: 1px;
-  padding: 0px 5px;
-  border: 0px;
+  padding: 0px;
+  border-left: 2px solid #dbd0d8;
+  border-right: 2px solid #dbd0d8;
+}
+
+#resultTable th:first-of-type {
+  min-width: 30px;
+}
+
+#resultTable th {
+  min-width: 150px;
 }
 
 .resultTable_counter {
@@ -2806,9 +2838,13 @@ span.arrow {
   border-left: 2px solid #dbd0d8;
   border-right: 2px solid #dbd0d8;
 }
+/*Added text-align:center styling to the first column in Resulted, Duggaed, Fileed and Accessed.*/
+#accessTable td:nth-child(1), #quiz td:nth-child(1),#fileLink td:nth-child(1),#resultTable td:nth-child(1){
+  text-align: center;
+}
 
 #accessTable td span{
-  padding: 0px 5px;
+  padding: 0px;
 }
 
 #accessTable select {
@@ -3212,6 +3248,7 @@ span.arrow {
   width: 98%;
   height: 140px;
   padding: 2px;
+  resize: none;
 }
 
 .feedback-info {
@@ -3221,6 +3258,16 @@ span.arrow {
 
 .dugga-moment {
   background-image: url('../icons/Stripes2.png');
+}
+
+.dugga-empty {
+  height: 50px;
+  background-color: #aaa;
+  background-image: url('../icons/not_announced_icon.svg');
+  opacity: 0.2;
+  background-repeat: no-repeat;
+  background-size: 20%;
+  background-position: center center;
 }
 
 .dugga-result-subheader {
@@ -3655,11 +3702,11 @@ rect[class*="activitymarker"]:hover {
 }
 
 /* styling for the search bars in resulted, accessed, duggaed, filed */
-#searchBar input#searchinput,
+#searchBar #searchinput,
 .tooltipsearchbar input#tooltipsearchinput{
-  padding: 5px 10px 5px 10px;
+  padding: 5px 5px 5px 5px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 18px;
+  font-size: 1px;
   float: left;
   background: #f1f1f1;
   border-radius: 0;
@@ -3724,13 +3771,13 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-#searchinput,
+/*#searchinput,
 #duggaSearch,
 #searchinputMobile {
   padding: 0 0 0 2px;
   height: 20px;
 }
-
+*/
 #searchBar,
 #searchbutton,
 #searchbuttonMobile {
@@ -4933,9 +4980,28 @@ only screen and (max-device-width: 320px) {
   box-sizing: border-box;
 }
 
+#appearanceFormContainer {
+  width: 280px;
+}
+
+#appearanceButtonContainer {
+  margin: 16px 0;
+  text-align: center;
+}
+
+#appearanceButtonContainer .submit-button {
+  margin: 0;
+  float: none;
+}
+
 .form-group {
   margin: 16px 0;
 }
+
+.form-group select {
+  width: 100%;
+}
+
 .form-group input[type=range]::-moz-range-thumb{
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
   border: 1px solid #000000;
@@ -4960,13 +5026,63 @@ only screen and (max-device-width: 320px) {
 }
 
 #appearanceForm textarea {
-  height: 100px;
+  height: 124px;
+  width: 100%;
   resize: none;
 }
 
 
 #name {
-  padding: 2px 0px 2px 10px;
+  width: 100%;
+  color: #6f6f6f;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border-2);
+  padding: 5px;
+  font-size: 14px;
+  line-height: 18px;
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+/* Collapsible */
+.collapsible {
+
+}
+
+.collapsible .object-types {
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.collapsible .object-types .square {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  background-color: var(--color-primary-light);
+  border: 1px solid var(--color-border-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.collapsible .object-types .square div {
+  width: 80%;
+  height: 80%;
+  content:url("../icons/Minus.svg");
+}
+
+.collapsible.closed .object-types .square div {
+  content:url("../icons/Plus.svg");
+}
+
+.collapsible .form-groups {
+  display: block;
+}
+
+.collapsible.closed .form-groups {
+  display: none;
 }
 
 /* Diagram canvas */
@@ -5251,7 +5367,7 @@ only screen and (max-device-width: 320px) {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
-.previewWindowContainer {
+.previewWindowContainer, .fileViewContainer {
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
@@ -5262,10 +5378,14 @@ only screen and (max-device-width: 320px) {
   display: none;
 }
 
+.loginBoxheade, .fileViewHeader {
+  text-align:left;
+}
 
-.previewWindow {
-  height: 89%;
-  width: 95%;
+.previewWindow, .fileViewWindow {
+  text-align: center;
+  height: 89vh;
+  width: 95vw;
   margin: 0px auto;
   border: solid var(--color-border-4);
   background-color: var(--color-background-4);
@@ -5276,6 +5396,58 @@ only screen and (max-device-width: 320px) {
   right: 0;
   top: 5%;
   position: fixed;
+}
+
+.fileView{
+  height: 100%;
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.fileView iframe{
+  height: 90%;
+} 
+
+@media only screen and (max-width: 745px) {
+  .fileView img {
+    width:100%;
+    margin-top:10%;
+  }
+  .fileView{
+    display: block;
+  }
+  .fileView iframe{
+    height: 80%;
+  } 
+}
+
+@media only screen and (max-width: 601px) {
+  .fileView{
+    width: 75%;
+  }
+}
+
+@media only screen and (max-width: 441px) {
+  .fileView{
+    width: 100%;
+  }
+}
+
+.fileView h1 {
+  font-size: 20px;
+}
+
+.fileView > div {
+  text-align: center;
+  position:relative;
+  margin: 15px;
+}
+
+.fileView img {
+  max-height: 90%;
 }
 
 .markdownPart {
@@ -5570,6 +5742,24 @@ textarea#mrkdwntxt {
 
 .modeSwitchHeader h3 {
   padding-right: 10px;
+}
+
+/* Fullscreen dialog */
+.fullscreenDialog {
+  display: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.fullscreenContainer {
+  min-height: 80px;
+}
+
+.fullscreenHeader h3 {
+  padding-right: 10px;
+}
+
+.fullscreen-wrap {
+  text-align: center;
 }
 
 /* Shortcuts diagram */

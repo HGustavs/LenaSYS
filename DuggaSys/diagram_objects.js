@@ -25,7 +25,7 @@ function Symbol(kindOfSymbol) {
     this.centerPoint;               // centerPoint
     this.cardinality = 
       {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null};
-    this.lineDirection;
+    this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
     this.minHeight;
@@ -2107,14 +2107,14 @@ function Symbol(kindOfSymbol) {
 			// Set text to redish if crossing line
 			if(!checkSamePage(x1,y1,x2,y2)){
 				ctx.fillStyle = '#DC143C';
-        ctx.strokeStyle = '#DC143C';
+				ctx.strokeStyle = '#DC143C';
 			}else{
 				ctx.fillStyle = this.properties['fontColor'];
-        ctx.strokeStyle = this.properties['strokeColor'];
+				ctx.strokeStyle = this.properties['strokeColor'];
 			}
 
 			//add permanent outline for comments
-			if (this.properties['isComment'] == true){
+			if (this.properties['isComment'] == true && !this.isHovered && !this.targeted){
 				ctx.lineWidth = 1 * diagram.getZoomValue();
 				ctx.setLineDash([5, 4]);
 				ctx.rect(x1, y1, x2-x1, y2-y1);
@@ -2124,9 +2124,9 @@ function Symbol(kindOfSymbol) {
 
 			ctx.textAlign = this.textAlign;
 			for (var i = 0; i < this.textLines.length; i++) {
-				ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
+				ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.99) / 2 + (this.properties['textSize'] * i));
 			}
-		}//here you could add an extra statment to make comments look different the regular text
+		}
     }
 
     //--------------------------------------------------------------------
