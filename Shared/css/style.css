@@ -3015,6 +3015,11 @@ span.arrow {
   height: 24px;
 }
 
+.legendListItem div :first-child{
+  width: 24px;
+  height: 24px;
+}
+
 #laddate {
   border: 1px solid var(--color-border);
 }
