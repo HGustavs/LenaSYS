@@ -2333,10 +2333,22 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
-    canvas.width = diagramContainer.offsetWidth;
-    canvas.height = diagramContainer.offsetHeight;
-    boundingRect = canvas.getBoundingClientRect();
+    var diagramContainer = document.getElementById("diagramCanvasContainer");
+    if(fullscreen){
+        // Resize container
+        diagramContainer.style.height = window.innerHeight + "px";
+        diagramContainer.style.width = window.innerWidth + "px";
+        // Remove "px" and set canvas size
+        var width_converted = diagramContainer.style.width.replace("px", "");
+        var height_converted = diagramContainer.style.height.replace("px", "");
+        canvas.width = width_converted;
+        canvas.height = height_converted;
+    } else {
+        // Resize canvas
+        canvas.width = diagramContainer.offsetWidth;
+        canvas.height = diagramContainer.offsetHeight;
+    }
+    boundingRect = canvas.getBoundingClientRect();    
     updateGraphics();
 }
 
