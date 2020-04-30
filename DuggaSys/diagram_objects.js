@@ -695,6 +695,11 @@ function Symbol(kindOfSymbol) {
             return this.linehover(mx, my);
         } else if(this.symbolkind == symbolKind.erEntity) {
             return this.entityhover(mx, my);
+        } else if (this.symbolkind == symbolKind.umlLine) {
+            
+            return this.UMLLineHover(mx,my);
+            //console.log(points[this.topLeft]);
+            //return false;
         } else {
             return this.entityhover(mx, my);
         }
@@ -720,6 +725,239 @@ function Symbol(kindOfSymbol) {
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
+    }
+
+    //--------------------------------------------------------------------
+    // UMLLinehover: returns if this UML line is hovered
+    //--------------------------------------------------------------------
+    this.UMLLineHover = function (mx, my){
+
+        //console.log("========================================");
+        var c = this.corners();
+
+        var x1 = Math.trunc(points[this.topLeft].x);
+        var y1 = Math.trunc(points[this.topLeft].y);
+        
+        var x2 = Math.trunc(points[this.bottomRight].x);
+        var y2 = Math.trunc(points[this.bottomRight].y);
+
+
+       // Variables for UML line breakpoints
+       var breakpointStartX = 0;     // X Coordinate for start breakpoint
+       var breakpointStartY = 0;     // Y Coordinate for start breakpoint
+       var breakpointEndX = 0;       // X Coordinate for end breakpoint
+       var breakpointEndY = 0;       // Y Coordinate for end breakpoint
+       var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
+       var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
+       var startLineDirection = "";  // Which side of the class the line starts from
+       var endLineDirection = "";    // Which side of the class the line ends in
+        
+        // Calculating the mid point between start and end
+        if (x2 > x1) {
+            middleBreakPointX = x1 + Math.abs(x2 - x1) / 2;
+        } else if (x1 > x2) {
+            middleBreakPointX = x2 + Math.abs(x1 - x2) / 2;
+        } else {
+            middleBreakPointX = x1;
+        }
+
+        if (y2 > y1) {
+            middleBreakPointY = y1 + Math.abs(y2 - y1) / 2;
+        } else if (y1 > y2) {
+            middleBreakPointY = y2 + Math.abs(y1 - y2) / 2;
+        } else {
+            middleBreakPointY = y1;
+        }
+
+        // Check all symbols in diagram and see if anyone matches current line's points coordinate
+        for (var i = 0; i < diagram.length; i++) {            
+            if (diagram[i].symbolkind == symbolKind.uml) { // filter UML class
+
+                var currentSymbol = diagram[i].corners();
+
+                //console.log(currentSymbol);
+
+                //console.log(x1 + ", " + y1);
+                /*
+                console.log("x= " + (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) + ": " + x1 + " : " + (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1));
+                console.log("y= " + Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) + " : " + y1 + " : " + Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y));
+                
+                console.log("xxxxxxxx");
+                //console.log(x2 + ", " + y2);
+                
+                console.log("x= " + x2 + " : " + Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x));
+                console.log("y= " + Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) + " : " + y2 + " : " + Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y));
+                
+                console.log("---------------------");*/
+                // Check if line's start point matches any class diagram
+                if (x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) &&
+                    x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1) &&
+                    y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) &&
+                    y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y)) {
+
+                    startLineDirection = "left";
+
+                } else if ( x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)-1) &&
+                            x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)+1) &&
+                            y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) &&
+                            y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)) {
+
+                    startLineDirection = "right";
+
+                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)-1) &&
+                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)+1) &&
+                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) &&
+                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)) {
+
+                    startLineDirection = "up";
+
+                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)-1) &&
+                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)+1) &&
+                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x) &&
+                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x)) {
+
+                    startLineDirection = "down";
+
+                }
+
+
+                
+                // Check if line's end point matches any class diagram
+                if (x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) &&
+                    x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1) &&
+                    y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) &&
+                    y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y)) {
+
+                    endLineDirection = "left";
+
+                } else if ( x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)-1) &&
+                            x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)+1) &&
+                            y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) &&
+                            y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)) {
+
+                    endLineDirection = "right";
+
+                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)-1) &&
+                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)+1) &&
+                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) &&
+                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)) {
+
+                    endLineDirection = "up";
+
+                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)-1) &&
+                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)+1) &&
+                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x) &&
+                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x)) {
+
+                    endLineDirection = "down";
+
+                }
+
+            }
+        }
+
+        //Tolerance
+        var tol = 5;
+
+        if( startLineDirection == "right" && endLineDirection == "left") {
+            if(y1 < y2) {
+                if( x1 < mx && mx < x2 && y1 - tol < my && my < y2 + tol) {
+                    if( y1 + tol < my && my < y2 + tol && x1 < mx && mx < middleBreakPointX - tol) { } else {
+                        if(y1 - tol < my && my < y2 - tol && middleBreakPointX + tol < mx && mx < x2 ) { } else {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                if( x1 < mx && mx < x2 && y1 + tol > my && my > y2 - tol) {
+                    if(y1 - tol > my && my > y2 - tol && x1 < mx && mx < middleBreakPointX - tol) { } else {
+                        if(y2 + tol < my && my < y1 + tol && middleBreakPointX + tol < mx && mx < x2) { } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } else if (startLineDirection == "left" && endLineDirection == "right") {
+            if(y2 < y1) {
+                if( x2 < mx && mx < x1 && y2 - tol < my && my < y1 + tol) {
+                    if( y2 + tol < my && my < y1 + tol && x2 < mx && mx < middleBreakPointX - tol) { } else {
+                        if(y2 - tol < my && my < y1 - tol && middleBreakPointX + tol < mx && mx < x1 ) { } else {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                if( x2 < mx && mx < x1 && y2 + tol > my && my > y1 - tol) {
+                    if(y2 - tol > my && my > y1 - tol && x2 < mx && mx < middleBreakPointX - tol) { } else {
+                        if(y1 + tol < my && my < y2 + tol && middleBreakPointX + tol < mx && mx < x1) { } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } else if (startLineDirection == "down" && endLineDirection == "up") {
+            if(x1 < x2) {
+                if(x1 - tol < mx && mx < x2 + tol && y1 < my && my < y2) {
+                    if(x1 + tol < mx && mx < x2 + tol && y1 < my && my < middleBreakPointY - tol) { } else {
+                        if(x1 - tol < mx && mx < x2 - tol && middleBreakPointY + tol < my && my < y2) { } else {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                if(x1 + tol > mx && mx > x2 - tol && y1 < my && my < y2) {
+                    if(x1 - tol > mx && mx > x2 - tol && y1 < my && my < middleBreakPointY - tol) { } else {
+                        if(x1 + tol > mx && mx > x2 + tol && middleBreakPointY + tol < my && my < y2) { } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } else if (startLineDirection == "up" && endLineDirection == "down") {
+            if(x1 < x2) {
+                if(x1 - tol < mx && mx < x2 + tol && y2 < my && my < y1) {
+                    if(x1 - tol < mx && mx < x2 - tol && y2 < my && my < middleBreakPointY - tol) { } else {
+                        if(x1 + tol < mx && mx < x2 + tol && middleBreakPointY + tol < my && my < y1) { } else {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                if(x2 - tol < mx && mx < x1 + tol && y2 < my && my < y1) {
+                    if(x2 + tol < mx && mx < x1 + tol && y2 < my && my < middleBreakPointY - tol) { } else {
+                        if(x2 - tol < mx && mx < x1 - tol && middleBreakPointY + tol < my && my < y1) { } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } else if (startLineDirection == "up" && endLineDirection == "left") {
+            if( x1 - tol < mx && mx < x2 && y2 - tol < my && my < y1) {
+                if( x1 + tol < mx && mx < x2 && y2 + tol < my && my < y1) { } else {
+                    return true;
+                }
+            }
+        } else if (startLineDirection == "up" && endLineDirection == "right") {
+            if( x2 < mx && mx < x1 + tol && y2 - tol < my && my < y1) {
+                if( x2 < mx && mx < x1 - tol && y2 + tol < my && my < y1) { } else {
+                    return true;
+                }
+            }
+        } else if (startLineDirection == "left" && endLineDirection == "up") {
+            if( x2 - tol < mx && mx < x1 && y1 - tol < my && my < y2) {
+                if( x2 + tol < mx && mx < x1 && y1 + tol < my && my < y2) { } else {
+                    return true;
+                }
+            }
+        } else if (startLineDirection == "right" && endLineDirection == "up") {
+            if( x1 < mx && mx < x2 + tol && y1 - tol < my && my < y2) {
+                if( x1 < mx && mx < x2 - tol && y1 + tol < my && my < y2) { } else {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     //--------------------------------------------------------------------
