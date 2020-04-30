@@ -833,7 +833,7 @@ function createboxmenu(contentid, boxid, type) {
 		// Add resize, reset and edit buttons
 		str += "<div id='maximizeBoxes'><td class='butto2 maximizebtn' title='Maximize box' onclick='maximizeBoxes(" + boxid + ");'><img src='../Shared/icons/MaxButton.svg' /></div>";
 		str += "<div id='minimizeBoxes'><td class='butto2 minimizebtn' title='Minimize box' onclick='minimizeBoxes(" + boxid + ");'><img src='../Shared/icons/MinButton.svg' /></div>";
-		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes(" + boxid + ");'><img src='../Shared/icons/ResetButton.svg' /></div>";
+		str += "<div id='resetBoxes'><td class='butto2 resetbtn' title='Reset' onclick='resetBoxes();'><img src='../Shared/icons/ResetButton.svg' /></div>";
     str += "<div id='iframeBoxes'><td class='butto2 resetbtn' onclick='showIframe(\""+boxid+"\",\""+kind +"\");'><p> <img id='dorf' title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'> </p></div>";
 
 		// Show the copy to clipboard button for code views only
@@ -3158,34 +3158,18 @@ function hideMinimizeButton() {
 }
 
 //reset boxes
-function resetBoxes(boxid) {
-    var boxid = boxid;
+function resetBoxes() {
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
 
 	showCopyButtons(templateid);
 
-	if (templateid == 1 ) {
-         if (boxid == 1 || boxid == 2 ){
-            thisBox = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
-            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
-             
-            $(boxValArray['box' + 2]['id']).width("50%");
-            $(boxValArray['box' + 1]['id']).width("50%");
-             thisBox.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox.classList.remove('visuallyhidden');
-            }, 20);
-            thisBox2.classList.remove('hidden');
-            setTimeout(function () {
-                thisBox2.classList.remove('visuallyhidden');
-            }, 20);
-             
-         }
-
+	if (templateid == 1) {
+		$(boxValArray['box' + 2]['id']).width("50%");
+		$(boxValArray['box' + 1]['id']).width("50%");
 	}
-	/*
+	
 	if (templateid == 2) {
 		$(boxValArray['box' + 2]['id']).height("50%");
 		$(boxValArray['box' + 1]['id']).height("50%");
@@ -3264,7 +3248,6 @@ function resetBoxes(boxid) {
 		$(boxValArray['box' + 5]['id']).height("25%");
 		alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
 	}
-    */
 }
 
 //-----------------------------------------------------------------------------
