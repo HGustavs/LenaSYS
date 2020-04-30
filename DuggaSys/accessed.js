@@ -239,16 +239,45 @@ function resetPw(uid, username) {
 	}, "ACCESS");
 }
 
+function getColname(e){
+	var element = e.target.parentElement.parentElement;
+	var cellelement = element.closest("td");
+	let regex = new RegExp("^r([0-9]+)" + myTable.getDelimiter() + "([a-zA-Z0-9]+)" + myTable.getDelimiter() + "(.*)")
+	let match = cellelement.id.match(regex);
+	var colname = match[3];
+	return colname.toString();
+}
+
 function changeOptDiv(e) {
-	console.log(e.target.parentElement.parentElement.id);
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
-	changeProperty(paramlist[1], paramlist[0], e.target.innerHTML);
+	key = getColname(e);
+
+	keyvalue = e.target.getAttribute('data-value');
+	console.log(e.target.parentElement.parentElement.id);
+	console.log(keyvalue);
+	
+	obj = {
+		[key]: keyvalue
+	}
+	console.log(obj);
+	console.log(paramlist[1], paramlist[0], keyvalue);
+	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
+	changeProperty(paramlist[1], paramlist[0], keyvalue);
 	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
 }
 function changeOptDivStudent(e,value){
-	console.log(e.target.parentElement.parentElement.id);
-	console.log(value);
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
+	key = getColname(e);
+
+	keyvalue = e.target.getAttribute('data-value');
+	
+	console.log(e.target.parentElement.parentElement.id);
+	console.log(keyvalue);
+	
+	obj = {
+		[key]: keyvalue
+	}
+	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
 	changeProperty(paramlist[1], paramlist[0], value);
 	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
 }

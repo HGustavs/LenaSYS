@@ -228,7 +228,7 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 		var str="";
 		str +="<div class='access-dropdown-content'>"
 			for(var i=0;i<optionlist.length;i++){
-				str+="<div onclick='changeOptDiv(event)'> ";
+				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDiv(event)'> ";
 				str+=""+optionlist[i][optionstring]+"</div>";
 			}
 		str +="</div>"
@@ -240,7 +240,7 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 		var str="";
 		str +="<div class='access-dropdown-content'>"
 			for(var i=0;i<optionlist.length;i++){
-				str+="<div onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'> ";
+				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'> ";
 				str+=""+optionlist[i][optionstring]+"</div>";
 			}
 		str +="</div>"
@@ -253,7 +253,7 @@ function makeDivItemStudent(option,optionlist,valuelist)
 		var stringArray = ["W","R","ST"];
 		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
-			str+="<div onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
+			str+="<div data-value='"+stringArray[i]+"' onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
 			if(valuelist==null){
 				str+=">"+optionlist[i]+"</div>";
 			}else{
