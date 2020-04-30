@@ -666,6 +666,20 @@ function SortableTable(param) {
         }
         $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
         $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
+        //ADD THIS TO FILED-PHP ALSO!!!!!!!!!!
+
+        //Recalculate the values in the first column that is simply a counter
+        //1. Get all elements that have the class fileLink___counter
+        var counterElements = $(".fileLink___counter").filter(":visible");
+        counterElements.children("span").text("test");
+
+        //DEBUGGING
+        var all = counterElements.map(function () {
+            return this.innerHTML;
+        }).get();
+        console.log(all.join());
+
+        //2. Change the <span> in those elements
     }
 
 	this.updateCell = function () {
