@@ -48,7 +48,7 @@ pdoConnect();
   ?>
   <!-- content START -->
 	<div id="content">
-	<div id="resultedlegendContainer">
+	<div id="resultedLegendContainer">
 		<div id="legendBtn" onclick="showLegend();"> ? </div>
 		<ul class="legendList">
 			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade"> Show dugga answers and results</li>

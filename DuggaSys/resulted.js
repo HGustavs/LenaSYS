@@ -1526,10 +1526,13 @@ $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
 	var ladExportWidth = document.getElementById("resultedFormContainer").offsetWidth;
 	var scrolled = $(this).scrollLeft();
+	var legendBox = $('#resultedLegendContainer');
 	if((scrolled + ladExportWidth) < resultTableWidth){
 		$('#resultedFormContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
+			
 		});
+		legendBox.css("top", "113px");
 	}
 });
 
@@ -1540,12 +1543,18 @@ function hideSSN(ssn){
 }
 
 function showLegend(){
+	//var legendBox = document.getElementById("resultedLegendContainer");
+	var legendBox = $('#resultedLegendContainer');
 	if (legendIsHidden == false){
-		$('#resultedlegendContainer').css("transform","translate(360px,0)");
+		//$('#resultedlegendContainer').css("transform","translate(0px)");
+		//legendBox.style.right = "-343px";
+		legendBox.css("right", "-343px");
 		legendIsHidden = true;
 	}
 	else if (legendIsHidden == true){
-		$('#resultedlegendContainer').css("transform","translate(0px,0)");
+		//$('#resultedlegendContainer').css("transform","translateX(-350px)");
+		//legendBox.style.right = "0px";
+		legendBox.css("right", "0px");
 		legendIsHidden = false;
 	}
 	else{
