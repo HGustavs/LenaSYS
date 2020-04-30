@@ -685,6 +685,7 @@ function returnedSection(data) {
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
+        // New items added get the class glow to show they are new
         if(item['pos'] == "-1" || item['pos'] == "100"){
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
         }
