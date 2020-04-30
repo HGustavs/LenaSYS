@@ -251,29 +251,21 @@ function getColname(e){
 function changeOptDiv(e) {
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	key = getColname(e);
-
 	keyvalue = e.target.getAttribute('data-value');
-	console.log(e.target.parentElement.parentElement.id);
-	console.log(keyvalue);
 	
 	obj = {
 		uid: paramlist[1],
 		[key]: keyvalue
 	}
-	console.log(obj);
-	console.log(paramlist[1], paramlist[0], keyvalue);
 	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
 	changeProperty(paramlist[1], paramlist[0], keyvalue);
 	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
 }
+
 function changeOptDivStudent(e,value){
 	var paramlist = e.target.parentElement.parentElement.id.split("_");
 	key = getColname(e);
-
 	keyvalue = e.target.getAttribute('data-value');
-	
-	console.log(e.target.parentElement.parentElement.id);
-	console.log(keyvalue);
 	
 	obj = {
 		[key]: keyvalue
