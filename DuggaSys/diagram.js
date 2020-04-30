@@ -4783,10 +4783,10 @@ function resizeElement(selected) {
         var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
         var change = ((currentMouseCoordinateX - selected.point.x) + (currentMouseCoordinateY - selected.point.y)) / 2;
         // Can't resize below minimum threshold
-        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change < 5){
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change > -5){
             selected.point.x = currentMouseCoordinateX;
         }
-        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change < 5){
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change > -5){
             selected.point.y = currentMouseCoordinateY;
         }
     }
@@ -4796,10 +4796,10 @@ function resizeElement(selected) {
         var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
         var change = ((currentMouseCoordinateX - selected.point.x.x) - (currentMouseCoordinateY - selected.point.y.y)) / 2;
         // Can't resize below minimum threshold
-        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change < 5){
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change > -5){
             selected.point.x.x = currentMouseCoordinateX;
         }
-        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change < 5){
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change > -5){
             selected.point.y.y = currentMouseCoordinateY;
         }
     }
