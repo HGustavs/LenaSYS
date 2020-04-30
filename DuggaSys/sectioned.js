@@ -669,7 +669,6 @@ function returnedSection(data) {
 
       for (i = 0; i < data['entries'].length; i++) {
         var item = data['entries'][i];
-        console.log(item);
         var deadline = item['deadline'];
         var released = item['release'];
 
