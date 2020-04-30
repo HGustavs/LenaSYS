@@ -835,6 +835,9 @@ function renderCell(col, celldata, cellid) {
 				if (celldata.timesGraded !== 0) {
 					str += '(' + celldata.timesGraded + ')';
 				}
+				else {
+					str += 'No deadline given';
+				}
 				str += "</div>";
 				str += "</div>";
 
