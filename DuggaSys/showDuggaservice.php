@@ -515,6 +515,15 @@ if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$duggafeedback="UNK";
 }
 
+if(strcmp($opt,"CHECKFDBCK")==0){	
+	$query = $pdo->prepare("SELECT feedbackenabled FROM listentries WHERE lid=:moment AND cid=:cid;");
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':moment', $moment);
+	$query->execute();
+	$result = $query->fetch();
+	$userfeedback = $result['feedbackenabled'];	
+}
+
 $array = array(
 		"debug" => $debug,
 		"param" => $param,
@@ -527,7 +536,8 @@ $array = array(
 		"marked" => $marked,
 		"deadline" => $duggainfo['deadline'],
 		"release" => $duggainfo['qrelease'],
-		"files" => $files
+		"files" => $files,
+		"userfeedback" => $userfeedback
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

@@ -507,6 +507,7 @@ function saveDuggaResult(citstr)
  			}
 
 		}
+		duggaFeedbackCheck();
 		showReceiptPopup();
 }
 
@@ -828,7 +829,15 @@ function AJAXService(opt,apara,kind)
 			data: "opt="+opt+para,
 			dataType: "json",
 			success: returnedQuiz
-		})
+		});
+	} else if(kind=="DUGGAFEEDBACK") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedFeed
+		});
 	}
 }
 
@@ -1641,4 +1650,22 @@ function hideCookieMessage() {
 		$("#cookiemsg").css("display", "none");
 		$("#cookiemsg").css("opacity", "1");
 	}, 200);
+}
+
+//----------------------------------------------------------------------------------
+// hideServerMessage/hideCookieMessage : Hide MOTD/cookie messages
+//
+// Functions for animating and hiding MOTD and cookie messages
+//----------------------------------------------------------------------------------
+
+function duggaFeedbackCheck(){
+	var citstr=querystring['moment'];
+	citstr=querystring['cid']+" "+citstr;
+	AJAXService("CHECKFDBCK",{answer:citstr},"DUGGAFEEDBACK");
+}
+
+function returnedFeed(data) {
+	if (data['userfeedback']== 1 ){
+		$("#feedbackbox").css("display","inline-block");
+	} 
 }
