@@ -114,7 +114,7 @@ var canvasTouchClick = false;       // Canvas touch state
 var lastZoomValue = localStorage.getItem("zoomValue") || 1.00;      //Records last zoomvalue, 1.00 if none has been recorded
 var zoomValue = lastZoomValue;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
-var hoveredObject = false;
+var hoveredObject;
 var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
@@ -2943,7 +2943,7 @@ function reWrite() {
 
     if (developerModeActive) {
         let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
-        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+        if (typeof hoveredObject !== "undefined" && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
             coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
         coordinatesElement.innerHTML = `${coordinatesText}</p>`;
@@ -3399,6 +3399,7 @@ function undoDiagram(event) {
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = selected_objects;
+    hoveredObject = undefined;
 }
 
 //----------------------------------------------------------------------
@@ -3418,6 +3419,7 @@ function redoDiagram(event) {
 
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = selected_objects;
+    hoveredObject = undefined;
 }
 
 //----------------------------------------------------------------------
