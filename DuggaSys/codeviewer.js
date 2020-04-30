@@ -40,6 +40,7 @@ var querystring = parseGet();
 var courseid;
 var exampleid;
 var cvers;
+var teamplate7box2 = false;
 
 /********************************************************************************
 
@@ -2762,19 +2763,41 @@ function maximizeBoxes(boxid) {
 
 	//For template 7
 	if (templateid == 7) {
+        teamplate7box2 = true;
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).width("100%");
-			$(boxValArray['box' + 3]['id']).width("100%");
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+            thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+			$(boxValArray['box' + 2]['id']).width("0%");
+			$(boxValArray['box' + 3]['id']).width("0%");
 			$(boxValArray['box' + 4]['id']).width("0%");
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
-			alignBoxesWidth(boxValArray, 1, 4);
+            
+            alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.add('hidden');
+                thisBox2.classList.add('visuallyhidden');
+                thisBox3.classList.add('hidden');
+                thisBox3.classList.add('visuallyhidden');
+                thisBox4.classList.add('hidden');
+                thisBox4.classList.add('visuallyhidden');
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            
 		}
 
 		if (boxid == 2) {
+            
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
+            $(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).width("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
 			$(boxValArray['box' + 4]['id']).height("0%");
@@ -2783,11 +2806,28 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
-			alignBoxesWidth(boxValArray, 2, 1);
-			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+            alignBoxesWidth(boxValArray, 1, 2);
+            
+            alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox3.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox3.classList.remove('visuallyhidden');
+            }, 20);
+  
 		}
 
 		if (boxid == 3) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -2798,10 +2838,26 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
-			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+            alignBoxesWidth(boxValArray, 1, 2);
+            alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+           thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox3.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox3.classList.remove('visuallyhidden');
+            }, 20);
 		}
 
 		if (boxid == 4) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -2812,8 +2868,22 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
-			alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+            alignBoxesWidth(boxValArray, 1, 2);
+            alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox3.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox3.classList.remove('visuallyhidden');
+            }, 20);
 		}
+        teamplate7box2 = false;
 	}
 
 	//for template 8
@@ -4549,7 +4619,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 7 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 4 && (retData['templateid']) == 7){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 7 && teamplate7box2 == false || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 4 && (retData['templateid']) == 7 && teamplate7box2 == false ){
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
