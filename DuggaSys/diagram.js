@@ -4820,6 +4820,13 @@ function touchEndEvent(event) {
         deactivateMovearound();
         updateGraphics();
     }
+    if (uimode == "CreateFigure" && md == mouseState.boxSelectOrCreateMode) {
+        if (figureType == "Free") {
+            figureFreeDraw();
+            updateGraphics();
+            return;
+        }
+    }
 
     var p1BeforeResize;
     var p2BeforeResize;
