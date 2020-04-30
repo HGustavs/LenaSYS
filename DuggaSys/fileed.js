@@ -445,6 +445,12 @@ function sortFiles(asc){
 
         }
     }
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
 }
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
