@@ -696,10 +696,7 @@ function Symbol(kindOfSymbol) {
         } else if(this.symbolkind == symbolKind.erEntity) {
             return this.entityhover(mx, my);
         } else if (this.symbolkind == symbolKind.umlLine) {
-            
             return this.UMLLineHover(mx,my);
-            //console.log(points[this.topLeft]);
-            //return false;
         } else {
             return this.entityhover(mx, my);
         }
@@ -728,7 +725,7 @@ function Symbol(kindOfSymbol) {
     }
 
     //--------------------------------------------------------------------
-    // UMLLinehover: returns if this UML line is hovered
+    // UMLLinehover: returns true if this UML line is hovered
     //--------------------------------------------------------------------
     this.UMLLineHover = function (mx, my){
 
