@@ -202,9 +202,9 @@ function process() {
 
 		dstr += "<div class='checkbox-dugga checknarrow ";
 		if (moments[j].visible == 0) {
-			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
+			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='myTable.setNameColumn(\"" + name + "\");sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		} else {
-			dstr += "'><input name='sortcol' type='radio' class='sortradio' id='sortcol" + (j + 1) + "' onclick='sorttype(-1)' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
+			dstr += "'><input name='sortcol' type='radio' class='sortradio' id='sortcol" + (j + 1) + "' onclick='myTable.setNameColumn(\"" + name + "\");sorttype(-1)' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		}
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
@@ -304,7 +304,12 @@ function sorttype(t) {
 	$("input[name='sortdir']:checked").each(function () {
 		dir = this.value;
 	});
-	if (myTable.getNameColumn() === 'Lname') {
+	if (dir == 2 && (myTable.getNameColumn() === 'Fname' || myTable.getNameColumn() === 'Lname')) { // if "pending" and name column
+		document.getElementById("sortdirAsc").checked = true;
+		sorttype(-1);
+		return;
+	}
+	if (myTable.getNameColumn() === 'Lname') { // if Lname, dir == (2 || 3)
 		dir = parseInt(dir) + 2;
 	}
 	typechanged = true;
