@@ -707,7 +707,9 @@ function renderCell(col, celldata, cellid) {
 		case "qrelease":	// DUGGA-TABLE - Result date
 			if(!celldata) {	// if null - return string "N/A"
 				retString = "N/A";
-			} else {		// else - return date withough seconds
+			} else {		// else - return date without seconds (i.e. last three charachters)
+				var secCutoff = celldata.length - 3;
+				retString = celldata.slice(0, secCutoff);
 			}
 			break;
 
