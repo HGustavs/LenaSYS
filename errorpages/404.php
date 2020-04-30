@@ -45,6 +45,6 @@ logServiceEvent($log_uuid, EventTypes::PageNotFound ,$service ,$userid,$info);
 </head>
 <body>
 <h1>404 - File not found</h1>
-	<a href="/DuggaSys/courseed.php">Go to start</a>
+	<a href="/LenaSYS/DuggaSys/courseed.php">Go to start</a>
 </body>
 </html>

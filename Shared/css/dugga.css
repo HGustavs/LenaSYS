@@ -41,6 +41,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 	top:  20%;
 	border: 2px solid var(--color-border);
 }
+
 #gradeBtn {
 	background-color:var(--color-accent);
 	border: none;
@@ -178,6 +179,12 @@ strong {font-weight: bold;}
 	border-bottom: 0;
 	border-right: 0;
 	background: #fff;
+}
+
+#emailPopup #email {
+	margin-left: 10px;
+	width: 280px;
+	float: none;
 }
 
 /* --------------================################================-------------- *
@@ -355,6 +362,9 @@ svg text {
 }
 .previewTable tr:nth-child(even){
   background-color: #dad8db;
+}
+.previewTable a{
+	color: var(--color-text-label);
 }
 @media only screen and (max-width: 500px) {
 	.previewTable {
