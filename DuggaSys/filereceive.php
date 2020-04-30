@@ -159,18 +159,68 @@ if ($storefile) {
     if($kind == "EFILE"){
         $fileText = $_POST["uploadedfile"][0];
         $storefile = ini_get('upload_tmp_dir')."/";
+        $filefull = $storefile.$fileText;
+        $ourFileHandle= fopen($filefull, 'w') or die('Permission error'); 
+
         
+        echo $filesize;
         $extension = substr($fileText, strrpos($fileText, '.') + 1);
         if (array_key_exists($extension, $allowedExtensions)) {
             echo"godkänd";
-            $path_to_file = $storefile; 
-            $yourFileName = $fileText;
-            $filefull = $path_to_file.$yourFileName;
-            $ourFileHandle= fopen($filefull, 'w') or die('Permission error'); 
+            $fileText = preg_replace('/[[:^print:]]/', '', $fileText);
+            $fileText = preg_replace('/\s+/', '', $fileText);
+            $movname = $currcvd . "/courses/global/" . $fileText;
+                    // Logging for global files
+                    $description="Global"." ".$fileText;
+                    //logUserEvent($userid, EventTypes::AddFile, $description);
+                    $yourFileHandle= fopen($movname, 'w') or die('Permission error'); 
+                    $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;"); // 1=Link 2=Global 3=Course Local 4=Local
+                    $query->bindParam(':filename', $fileText);
+                    $query->bindParam(':cid', $cid);
+                    $query->execute();
+                    $norows = $query->fetchColumn();
+                    $filesize = filesize($movname);
+                    $kindid = -1;
+                    if ($norows == 0) {
+                        $kindid = 2;
+                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
+                            $query->bindParam(':cid', $cid);
+                        $query->bindParam(':filename', $fileText);
+                        $query->bindParam(':filesize', $filesize);
+                        $query->bindParam(':kindid', $kindid);
+
+                        if (!$query->execute()) {
+                            $error = $query->errorInfo();
+                            echo "Error updating file entries" . $error[2];
+                            $errortype ="uploadfile";
+                            $errorvar = $error[2];
+                            print_r($error);
+                            echo $errorvar;
+                        }
+                    }
+                    $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
+                    $query->bindParam(':filename', $fileText);
+                    $query->bindParam(':cid', $cid);
+                    $query->bindParam(':filesize', $filesize);
+                    
+                        $kindid = 2;
+                    
+                    $query->bindParam(':kindid', $kindid);
+
+                    if (!$query->execute()) {
+                        $error = $query->errorInfo();
+                        echo "Error updating filesize and uploaddate: " . $error[2];
+                        $errortype ="updatefile";
+                        $errorvar = $error[2];
+                        
+                    }        
         }
         else{
             echo"extension wrong";
         }
+        fclose($ourFileHandle);
+        fclose($yourFileHandle);
+        unlink($filefull);
     }
     echo "<pre>";
     // Uncomment for debug printing
