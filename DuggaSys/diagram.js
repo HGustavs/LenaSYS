@@ -827,6 +827,10 @@ function setConnectedLines(temp) {
         var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
         var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
         temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
+        //Fixes recursive UML-lines
+        if(temp[connected[j].to].isRecursiveLine == true){
+            temp[connected[j].from][connected[j].loc].push({from: lineEnd2, to: lineEnd1});
+        }
     }
 }
 
@@ -2511,6 +2515,7 @@ function eraseSelectedObject(event) {
 function setMode(mode) {
     cancelFreeDraw();
     uimode = mode;
+    figureType = null;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
       figureType = mode;
@@ -4639,8 +4644,15 @@ function touchStartEvent(event) {
 
     // Returns what object was pressed, -1 if none
     movobj = diagram.itemClicked();
+    sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
-    if (movobj != -1 && uimode != "CreateLine") {
+    
+    // If a point was clicked 
+    if (sel.distance < tolerance / zoomValue) {
+        md = mouseState.insidePoint;
+    }
+    // If an object is clicked
+    else if (movobj != -1 && uimode != "CreateLine") {
         md = mouseState.insideMovableObject;
         handleSelect();
     } 
@@ -4681,7 +4693,7 @@ function touchMoveEvent(event) {
         if ((diffX > deltaX) || (diffX < -deltaX)
         || (diffY > deltaY) || (diffY < -deltaY)) {
             if (uimode != 'MoveAround' && md != mouseState.insideMovableObject 
-            && uimode != "CreateLine") {
+            && md != mouseState.insidePoint && uimode != "CreateLine") {
                 activateMovearound();
             }
             updateGraphics();
@@ -4699,8 +4711,6 @@ function touchMoveEvent(event) {
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
     }
-    reWrite();
-    updateGraphics();
 
     // Moves an object
     if (md == mouseState.insideMovableObject) {
@@ -4741,6 +4751,10 @@ function touchMoveEvent(event) {
             startMouseCoordinateY = currentMouseCoordinateY;
         }
     }
+    // Resizes an object
+    if (md == mouseState.insidePoint) {
+        resizeElement(sel);
+    }
     // Draw preview line
     if (uimode == "CreateLine" && movobj != -1) {
         // Path settings for preview line
@@ -4752,6 +4766,44 @@ function touchMoveEvent(event) {
         ctx.stroke();
         ctx.setLineDash([]);
     }
+    reWrite();
+    updateGraphics();
+
+}
+
+// Takes the closest selected point and resizes the object
+function resizeElement(selected) { 
+    // Needs to have a symbol selected to resize, and it cant be locked
+    if (!selected.attachedSymbol.targeted || selected.attachedSymbol.isLocked) {
+        return;
+    }
+    // For top left and 
+    if (!selected.point.fake) {
+        var yDiff = points[selected.attachedSymbol.bottomRight].y - points[selected.attachedSymbol.topLeft].y;
+        var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
+        var change = ((currentMouseCoordinateX - selected.point.x) + (currentMouseCoordinateY - selected.point.y)) / 2;
+        // Can't resize below minimum threshold
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change < 5){
+            selected.point.x = currentMouseCoordinateX;
+        }
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change < 5){
+            selected.point.y = currentMouseCoordinateY;
+        }
+    }
+    // For top right and bottom left 
+    else {
+        var yDiff = points[selected.attachedSymbol.bottomRight].y - points[selected.attachedSymbol.topLeft].y;
+        var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
+        var change = ((currentMouseCoordinateX - selected.point.x.x) - (currentMouseCoordinateY - selected.point.y.y)) / 2;
+        // Can't resize below minimum threshold
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change < 5){
+            selected.point.x.x = currentMouseCoordinateX;
+        }
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change < 5){
+            selected.point.y.y = currentMouseCoordinateY;
+        }
+    }
+    diagram.draw();
 }
 
 //---------------------------------------------------
@@ -4845,7 +4897,9 @@ function touchEndEvent(event) {
             uimode = "CreateLine";
         }
     }
-
+    if (md == mouseState.insidePoint){
+        saveState = true;
+    }
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
