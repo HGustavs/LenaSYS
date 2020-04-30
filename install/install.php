@@ -18,25 +18,25 @@
     $prefix = '';
     // Check if $path starts with a windows style 'C:\' prefix
     if (preg_match("/^.:\\\\/", $path)) {
-        // Cut off the drive letter and store it in $prefix
-        $prefix = substr($path, 0, 2);
-        $path = substr($path, 2);
-        // Replace all windows '\' with unix '/' in the path string
-        $path = str_replace("\\", "/", $path);
+      // Cut off the drive letter and store it in $prefix
+      $prefix = substr($path, 0, 2);
+      $path = substr($path, 2);
+      // Replace all windows '\' with unix '/' in the path string
+      $path = str_replace("\\", "/", $path);
     }
 
     $paths = explode("/", $path);
     $r = '';
     if(count($paths) <= $level) {
-        $r = '/';
+      $r = '/';
     } else {
-        $r = '/';
-        for($i = 0; $i < count($paths) - $level; $i++) {
-        if($i > 1) {
-            $r .= '/';
-        }
-        $r .= $paths[$i];
-        }
+      $r = '/';
+      for($i = 0; $i < count($paths) - $level; $i++) {
+      if($i > 1) {
+        $r .= '/';
+      }
+      $r .= $paths[$i];
+      }
     }
     // Re-add the drive letter if there was one ('C:' + '/.../')
     return $prefix . $r;
@@ -50,8 +50,8 @@
     <div id='warning' class='modal'>
       <!-- Modal content -->
       <div class='modal-content'>
-          <span title='Close pop-up' class='close''>&times;</span>
-              <span id='dialogText'></span>
+        <span title='Close pop-up' class='close''>&times;</span>
+          <span id='dialogText'></span>
       </div>
     </div>
   ";
@@ -937,13 +937,14 @@
     flush();
     ob_flush();
   }
+  
   # Function to connect to log-db
   function connectLogDB() {
     if(!file_exists ('../../log')) {
-        if(!mkdir('../../log')){
-            echo "Error creating folder: log";
-            return false;
-        }
+      if(!mkdir('../../log')){
+        echo "Error creating folder: log";
+        return false;
+      }
     }
     try {
       $log_db = new PDO('sqlite:../../log/loglena4.db');
@@ -1022,59 +1023,59 @@
 <!-- END OF INSTALL SECTION -->
 
 <script>
-    /* Show modal */
-    modal.style.display = "block";
-    var showHideButton = document.getElementById('showHideInstallation');
+  /* Show modal */
+  modal.style.display = "block";
+  var showHideButton = document.getElementById('showHideInstallation');
 
-    if (showHideButton !== null){
-        showHideButton.onclick = function(){
-            toggleInstallationProgress();
-        }
+  if (showHideButton !== null){
+    showHideButton.onclick = function(){
+      toggleInstallationProgress();
+    }
+  }
+
+  /* Show/Hide installation progress. */
+  function toggleInstallationProgress(){
+    $('#installationProgressWrap').toggle(500);
+  }
+
+  /* Function to select and copy text inside code boxes at end of installation. */
+  function selectText(containerid) {
+    /* Get selection inside div. */
+    var text = document.getElementById(containerid);
+    if (document.body.createTextRange) {
+      var range = document.body.createTextRange();
+      range.moveToElementText(text);
+      range.select();
+    } else {
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
     }
 
-    /* Show/Hide installation progress. */
-    function toggleInstallationProgress(){
-        $('#installationProgressWrap').toggle(500);
+    /* Copy selection. */
+    document.execCommand("copy");
+
+    /* Remove selection. */
+    window.getSelection().removeAllRanges();
+
+    /* Show the 'copied' text to let user know that text was copied to clipboard.
+    * After show animation is done it will call hide function to hide text again.
+    */
+    if (containerid === "codeBox1") {
+      $("#copied1").show("slide", {direction: "left" }, 1000);
+      window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
+    } else if (containerid === "codeBox2") {
+      $("#copied2").show("slide", {direction: "left" }, 1000);
+      window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
     }
+  }
 
-    /* Function to select and copy text inside code boxes at end of installation. */
-    function selectText(containerid) {
-        /* Get selection inside div. */
-        var text = document.getElementById(containerid);
-        if (document.body.createTextRange) {
-            var range = document.body.createTextRange();
-            range.moveToElementText(text);
-            range.select();
-        } else {
-            var selection = window.getSelection();
-            var range = document.createRange();
-            range.selectNodeContents(text);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
-
-        /* Copy selection. */
-        document.execCommand("copy");
-
-        /* Remove selection. */
-        window.getSelection().removeAllRanges();
-
-        /* Show the 'copied' text to let user know that text was copied to clipboard.
-        * After show animation is done it will call hide function to hide text again.
-        */
-        if (containerid === "codeBox1") {
-            $("#copied1").show("slide", {direction: "left" }, 1000);
-            window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
-        } else if (containerid === "codeBox2") {
-            $("#copied2").show("slide", {direction: "left" }, 1000);
-            window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
-        }
-    }
-
-    /* Hide 'copied' text */
-    function hideCopiedAgain(text) {
-        $(text).hide("slide", {direction: "right"}, 1000)
-    }
+  /* Hide 'copied' text */
+  function hideCopiedAgain(text) {
+    $(text).hide("slide", {direction: "right"}, 1000)
+  }
 </script>
 
 </body>
