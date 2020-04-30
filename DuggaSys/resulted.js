@@ -276,9 +276,9 @@ function leaves() {
 }
 
 function sorttype(t) {
-  if(t == 0){
+  if (t==0 || document.getElementById("sortcol0_0").isChecked){
     myTable.setNameColumn('Fname');
-  }else{
+  }else if (t==1 || document.getElementById("sortcol0_1").isChecked) {
     myTable.setNameColumn('Lname');
   }
 
@@ -304,6 +304,9 @@ function sorttype(t) {
 	$("input[name='sortdir']:checked").each(function () {
 		dir = this.value;
 	});
+	if (myTable.getNameColumn() === 'Lname') {
+		dir = parseInt(dir) + 2;
+	}
 	typechanged = true;
 	if(col !== undefined && dir !== undefined){
 		typechanged = false;
@@ -1217,7 +1220,6 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
