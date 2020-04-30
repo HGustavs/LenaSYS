@@ -2309,18 +2309,29 @@ function minimizeBoxes(boxid) {
 	
 	//For template 1
 	if (templateid == 1 && isMobile == false) {
+        
 		if (boxid == 1) {
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 2]['id']).width("100%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 1, 2);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
 		}
 
 		if (boxid == 2) {
+            thisBox2 = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("100%");
 
 			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 1, 2);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
 		}
 	}
 	//for template 2
