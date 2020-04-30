@@ -135,7 +135,7 @@
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
 					echo "<td id='testSearchContainer' class='navButt'>";
 					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
-					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black; margin-top: 40px'>"; //Dropdown menu for when hovering the search bar
+					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
 					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
 					echo	"</div>";
 					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
