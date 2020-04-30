@@ -838,6 +838,14 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedFeed
 		});
+	} else if(kind=="SENDDUGGAFEEDBACK") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedSubmitFeedback
+		});
 	}
 }
 
@@ -1668,4 +1676,26 @@ function returnedFeed(data) {
 	if (data['userfeedback']== 1 ){
 		$("#feedbackbox").css("display","inline-block");
 	} 
+}
+
+function sendFeedback(){
+	if ($("input[name='rating']:checked").val()) {
+		$('#submitstatus').css("display", "none");
+		var param = {};
+  		param.courseid = querystring['courseid'];
+  		param.moment = querystring['moment'];
+  		param.score = $("input[name='rating']:checked").val();
+		if($("#contactable:checked").val()){
+			param.contactable = 1;
+		}else{
+			param.contactable = 0;
+		}
+		AJAXService("SENDFDBCK",param,"SENDDUGGAFEEDBACK");
+	}else {
+		$('#submitstatus').css({'color':'var(--color-red)',"display": "inline-block"}).text("Select a rating before saving it.");
+	}
+}
+
+function returnedSubmitFeedback(){
+	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
 }

@@ -34,6 +34,8 @@ $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
 $setanswer=gettheOP('setanswer');
 $showall=getOP('showall');
+$contactable=getOP('contactable');
+$rating=getOP('score');
 $showall="true";
 
 $param = "UNK";
@@ -522,6 +524,23 @@ if(strcmp($opt,"CHECKFDBCK")==0){
 	$query->execute();
 	$result = $query->fetch();
 	$userfeedback = $result['feedbackenabled'];	
+}
+
+if(strcmp($opt,"SENDFDBCK")==0){
+	if($contactable == 1){
+		$query = $pdo->prepare("INSERT INTO userduggafeedback(uid,cid,lid,score) VALUES (:uid,:cid,:lid,:score);");
+		$query->bindParam(':uid', $userid);
+		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':lid', $moment);
+		$query->bindParam(':score', $rating);
+		$query->execute();
+	}else{
+		$query = $pdo->prepare("INSERT INTO userduggafeedback(cid,lid,score) VALUES (:cid,:lid,:score);");
+		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':lid', $moment);
+		$query->bindParam(':score', $rating);
+		$query->execute();
+	}	
 }
 
 $array = array(
