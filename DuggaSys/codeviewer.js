@@ -2454,35 +2454,70 @@ function maximizeBoxes(boxid) {
 	//For template 3
 	if (templateid == 3) {
 		if (boxid == 1) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+            
+ 
 			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("0%");
-
 			$(boxValArray['box' + boxid]['id']).width("100%");
-			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+            
+			alignBoxesHeight3boxes(boxValArray, 2,1,3);
+            
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.add('hidden');
+                thisBox2.classList.add('visuallyhidden');
+                thisBox3.classList.add('hidden');
+                thisBox3.classList.add('visuallyhidden');
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            
 		}
 
 		if (boxid == 2) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).width("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
-
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 			alignBoxesWidth(boxValArray, 1, 2);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+            
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
 		}
 
-		if (boxid == 3) {
+		if (boxid == 3) {  
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
 			$(boxValArray['box' + 2]['id']).height("0%");
-
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 1, 3);
+			alignBoxesWidth(boxValArray, 1, 2);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+            
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
 		}
 	}
 
