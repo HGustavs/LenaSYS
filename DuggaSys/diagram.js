@@ -1080,8 +1080,25 @@ function copySymbol(symbol) {
 
             let newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
-                const point = points[pointIndexes[key].old];
-                newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+
+                //Special case for ER lines connected to attributes
+                //The second point of an er line connected to an attribute is the attribute's centerPoint
+                //This code finds connected attributes that will be copied and prevents the second point from being duplicated if the attribute will also be copied
+                //If the attribute will not be copied the point should be created
+                if(symbol.symbolkind === symbolKind.line && key === "bottomRight") {
+                    const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
+                    if(typeof connectedAttribute !== "undefined") {
+                        const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
+                        if(isAttributeSelected) {
+                            newPointIndex = null;
+                        }
+                    }
+                }
+
+                if(newPointIndex !== null) {
+                    const point = points[pointIndexes[key].old];
+                    newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+                }
             } else {
                 newPointIndex = pointIndexes[keyContainsDuplicateOldPoint].new;
             }
@@ -1100,7 +1117,7 @@ function copySymbol(symbol) {
 }
 
 //----------------------------------------------------------------------
-// copySymbol: Clone a path object
+// copyPath: Clone a path object
 //----------------------------------------------------------------------
 function copyPath(path) {
     const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
@@ -4507,7 +4524,6 @@ function mouseupevt(ev) {
             erLineA.topLeft = p1;
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
-            erLineA.centerPoint = p3;
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
@@ -4584,7 +4600,6 @@ function mouseupevt(ev) {
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
-            umlLineA.centerPoint = p3;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
@@ -4994,7 +5009,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
                 erLineA.topLeft = p1;
                 erLineA.object_type = "";
                 erLineA.bottomRight = p2;
-                erLineA.centerPoint = p3;
                 diagram.unshift(erLineA);
                 lastSelectedObject = diagram.length -1;
                 diagram[lastSelectedObject].targeted = true;
@@ -5008,7 +5022,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
-            umlLineA.centerPoint = p3;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
