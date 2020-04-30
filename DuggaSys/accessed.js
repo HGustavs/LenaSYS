@@ -393,7 +393,7 @@ function renderCell(col, celldata, cellid) {
             optstr = "";
         }
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
-		str += "<div><div class='access-dropdown'>" + optstr + "<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+		str += "<div><div class='access-dropdown'><span>" + optstr + "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
@@ -642,7 +642,7 @@ function showCheckboxes(element) {
 //----------------------------------------------------------------------------------
 
 function updateAndCloseGroupDropdown(checkboxes){
-	var str = "", readStr = "";
+	var str = "", readStr = "<span>";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
 			str += checkboxes.childNodes[i].childNodes[0].value + " ";
@@ -653,6 +653,7 @@ function updateAndCloseGroupDropdown(checkboxes){
 	// if user unpresses all checkboxes it the student will now belong to no group
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
 
+	readStr += "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'>";
 	activeElement.children[0].children[0].innerHTML = readStr;
 
 	obj = {
