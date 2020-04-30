@@ -51,6 +51,7 @@ $query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
 $log_uuid = getOP('log_uuid');
 
 $filo = print_r($_FILES, true);
+
 $info = $cid . " " . $vers . " " . $kind . " " . $link . " " . $selectedfile . " " . $error . " " . $filo;
 echo $info;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve.php", $userid, $info);
@@ -63,6 +64,7 @@ if ($ha) {
     $storefile = false;
     chdir('../');
     $currcvd = getcwd();
+
     if ($kind == "LINK" && $link != "UNK") {
         //  if link isn't in database (e.g no rows are returned), add it to database
         $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
@@ -91,11 +93,11 @@ if ($ha) {
         } else {
             $storefile = true;
         }
-    } else if ($kind == "EFILE") {
-        //  if it is a global file, check if "/templates" exists, if not create the directory
+    } else if($kind == "EFILE"){
         if (!file_exists($currcvd . "/courses/global")) {
             $storefile = mkdir($currcvd . "/courses/global",0777,true);
-        } else {
+        }
+        else{
             $storefile = true;
         }
     }else if ($kind == "LFILE" || $kind == "MFILE") {
@@ -159,15 +161,31 @@ if ($storefile) {
         //	"psd"		=> [
         //	"rar"		=> [
     ];
-
+    
     $swizzled = swizzleArray($_FILES['uploadedfile']);
-
+    if($kind == "EFILE"){
+        $fileText = $_POST["uploadedfile"][0];
+        $storefile = ini_get('upload_tmp_dir')."/";
+        
+        $extension = substr($fileText, strrpos($fileText, '.') + 1);
+        if (array_key_exists($extension, $allowedExtensions)) {
+            echo"godkänd";
+            $path_to_file = $storefile; 
+            $yourFileName = $fileText;
+            $filefull = $path_to_file.$yourFileName;
+            $ourFileHandle= fopen($filefull, 'w') or die('Permission error'); 
+        }
+        else{
+            echo"extension wrong";
+        }
+    }
     echo "<pre>";
     // Uncomment for debug printing
-    print_r($swizzled);
+    //print_r($swizzled);
     //testcommit
 
     foreach ($swizzled as $key => $filea) {
+        
         // Uncomment for debug printing
         //print_r($filea) . "<br />";
 
