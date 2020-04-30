@@ -1006,6 +1006,13 @@ function compare(a, b) {
 		var tempA = b;
 		var tempB = a;
 	}
+	
+	if(tempA != null){
+		tempA = tempA.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+	}
+	if(tempB != null){
+		tempB = tempB.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+	}
 
 	if (tempA > tempB) {
 		return 1;
