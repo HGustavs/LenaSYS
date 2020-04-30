@@ -727,9 +727,11 @@ function keyDownHandler(e) {
             }
             setConnectedLines(temp);
             cloneTempArray = temp;
-            selected_objects = temp;
-            updateGraphics();
-            SaveState();
+            if(temp.length !== 0) {
+                selected_objects = temp;
+                updateGraphics();
+                SaveState();
+            }
         }
         else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
         else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
