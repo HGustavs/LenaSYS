@@ -124,6 +124,7 @@ var old_container_width;            // Used to revert changes from fullscreen
 var old_container_height;           // Used to revert changes from fullscreen
 var old_container_position;         // Used to revert changes from fullscreen
 var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
+var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -771,6 +772,8 @@ function keyDownHandler(e) {
         document.getElementById("relationbutton").click();
         } else if (shiftIsClicked && key == keyMap.cKey && targetMode == "UML") {
         document.getElementById("classbutton").click();
+        } else if (!shiftIsClicked && key == keymap.tKey){
+            toggleToolbar();
         } else if (shiftIsClicked && key == keyMap.tKey) {
         document.getElementById("drawtextbutton").click();
         } else if (shiftIsClicked && key == keyMap.fKey) {
@@ -2333,10 +2336,22 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
-    canvas.width = diagramContainer.offsetWidth;
-    canvas.height = diagramContainer.offsetHeight;
-    boundingRect = canvas.getBoundingClientRect();
+    var diagramContainer = document.getElementById("diagramCanvasContainer");
+    if(fullscreen){
+        // Resize container
+        diagramContainer.style.height = window.innerHeight + "px";
+        diagramContainer.style.width = window.innerWidth + "px";
+        // Remove "px" and set canvas size
+        var width_converted = diagramContainer.style.width.replace("px", "");
+        var height_converted = diagramContainer.style.height.replace("px", "");
+        canvas.width = width_converted;
+        canvas.height = height_converted;
+    } else {
+        // Resize canvas
+        canvas.width = diagramContainer.offsetWidth;
+        canvas.height = diagramContainer.offsetHeight;
+    }
+    boundingRect = canvas.getBoundingClientRect();    
     updateGraphics();
 }
 
@@ -3697,6 +3712,20 @@ function closeFullscreenDialog(){
     $("#fullscreenDialog").hide();
 }
 
+//-----------------------
+// Toggle Toolbar for fullscreen
+//-----------------------
+
+function toggleToolbar(){
+    var tool_bar = document.getElementById("tooltipDialog");
+    if(!toolbarDisplayed){
+        tool_bar.style.display = "block";
+        toolbarDisplayed = true;
+    } else {
+        tool_bar.style.display = "none";
+        toolbarDisplayed = false;
+    }
+}
 
 //-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
@@ -5242,55 +5271,23 @@ function loadAppearanceForm() {
             appearanceObjects.push(object);
         }
     }
-    if(appearanceObjects.length < 1) return;
+    if(appearanceObjects.length < 1) {
+        return;
+    }
 
-    //Stores current index and maximum index for each type of selected object
-    //Current index will be used for comma separation, to only create comma when max is more than current
-    const indexes = {};
-
-    //Reduce the selected objects array to a Map with key symbolKind and value the number of times that symbolKind occurs
-    //Iterate through the map and put the correct values in the indexes object
-    appearanceObjects.reduce((result, object) => {
-        result.set(object.symbolkind || 0, (result.get(object.symbolkind || 0) || 0) + 1);
-        return result;
-    }, new Map()).forEach((value, key) => {
-        if(typeof indexes[key] === "undefined") {
-            indexes[key] = {
-                current: 0,
-                max: 0
-            };
-        }
-        indexes[key].max += value;
-    });
-
-    //Get all unique types of selected objects
-    const types = Object.keys(indexes).map(Number);
-
-    //The max index for the name input should be based on all object types that have the name input
-    indexes.name = {
-        current: 0,
-        max: types.reduce((result, type) => {
-            if(type === symbolKind.uml || type === symbolKind.erAttribute || type === symbolKind.erEntity || type === symbolKind.erRelation) {
-                result += indexes[type].max;
-            }
-            return result;
-        }, 0)
-    };
+    //Get all unique types from the selected objects
+    const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
     
     showFormGroups(types);
     toggleApperanceElement(true);
     
     let erCardinalityVisible = false;
 
+    //A comma at the end to seperate objects right now. Should be fixed in seperate issue to only appear on last object in the type
     appearanceObjects.forEach(object => {
         if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
-            const nameElement = document.getElementById("name");
-            indexes.name.current++;
-            nameElement.value += object.name;
-            if(indexes.name.max > indexes.name.current) {
-                nameElement.value += ", ";
-            }
-            nameElement.focus();
+            document.getElementById("name").value += object.name + ", ";
+            document.getElementById("name").focus();
         }
 
         if(object.symbolkind === symbolKind.line) {
@@ -5318,21 +5315,11 @@ function loadAppearanceForm() {
             }
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
-            const textarea = document.getElementById("freeText");
-            indexes[symbolKind.text].current++;
-            textarea.value += getTextareaText(object.textLines);
-            if(indexes[symbolKind.text].max > indexes[symbolKind.text].current) {
-                textarea.value += ",\n";
-            }
-            textarea.focus();
+            document.getElementById("freeText").value += getTextareaText(object.textLines) + ",\n";
+            document.getElementById("freeText").focus();
         } else if(object.symbolkind === symbolKind.uml) {
-            indexes[symbolKind.uml].current++;
-            document.getElementById("umlOperations").value += getTextareaText(object.operations);
-            document.getElementById("umlAttributes").value += getTextareaText(object.attributes);
-            if(indexes[symbolKind.uml].max > indexes[symbolKind.uml].current) {
-                document.getElementById("umlOperations").value += ",\n";
-                document.getElementById("umlAttributes").value += ",\n";
-            }
+            document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
+            document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
