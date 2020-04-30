@@ -2408,17 +2408,29 @@ function maximizeBoxes(boxid) {
 	//For template 1
 	if (templateid == 1) {
 		if (boxid == 1) {
-			$(boxValArray['box' + 2]['id']).width("0%");
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            $(boxValArray['box' + 2]['id']).width("0%");
+            $(boxValArray['box' + boxid]['id']).width("100%");
+            alignBoxesWidth(boxValArray, 1, 2);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
 
-			$(boxValArray['box' + boxid]['id']).width("100%");
-			alignBoxesWidth(boxValArray, 1, 2);
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+
+           
 		}
-
 		if (boxid == 2) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
-
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			alignBoxesWidth(boxValArray, 1, 2);
+           thisBox.classList.remove('hidden');
+    	setTimeout(function () {
+      		thisBox.classList.remove('visuallyhidden');
+		}, 20);
+            
+          
 		}
 	}
 
