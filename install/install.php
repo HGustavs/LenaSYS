@@ -459,6 +459,7 @@
   -- Flush and ob_flush is used after every output in progress to dynamically show output when something was done.
   -->
 <?php 
+  # Installer
   if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
     $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
     ob_end_clean(); // Remove form and start installation.
@@ -865,28 +866,28 @@
       echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
     }
 
-      if(!connectLogDB()){
-        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
-        with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
-        (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
-        echo "mkdir " . $putFileHere . "/log && ";
-        echo "chmod 777 " . $putFileHere . "/log && ";
-        echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
-        echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
-        echo "</code></div>";
-        echo '<div id="copied2">Copied to clipboard!<br></div>';
-      }
-      $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
-      if(substr($lenaInstall, 0 , 2) == '/') {
-        $lenaInstall = substr($lenaInstall, 1);
-      }
+    if(!connectLogDB()){
+      echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
+      with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
+      (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
+      echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
+      echo "mkdir " . $putFileHere . "/log && ";
+      echo "chmod 777 " . $putFileHere . "/log && ";
+      echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
+      echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
+      echo "</code></div>";
+      echo '<div id="copied2">Copied to clipboard!<br></div>';
+    }
+    $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
+    if(substr($lenaInstall, 0 , 2) == '/') {
+      $lenaInstall = substr($lenaInstall, 1);
+    }
 
-      echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
-      echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
-      echo "</form>";
-      echo "</div>";
-  }
+    echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
+    echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
+    echo "</form>";
+    echo "</div>";
+  } 
 
   # Function to add testdata from specified file. Parameter file = sql file name without .sql.
   function addTestData($file, $connection){
@@ -1018,6 +1019,7 @@
     return true;
   }
 ?>
+<!-- END OF INSTALL SECTION -->
 
 <script>
     /* Show modal */
