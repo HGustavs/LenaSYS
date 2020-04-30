@@ -3398,6 +3398,7 @@ function undoDiagram(event) {
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 
     selected_objects = diagram.filter(object => object.targeted);
+    cloneTempArray = selected_objects;
 }
 
 //----------------------------------------------------------------------
@@ -3416,6 +3417,7 @@ function redoDiagram(event) {
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 
     selected_objects = diagram.filter(object => object.targeted);
+    cloneTempArray = selected_objects;
 }
 
 //----------------------------------------------------------------------
