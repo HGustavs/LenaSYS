@@ -291,32 +291,80 @@ function loadServiceCrashes() {
 
 
 function loadFileInformation() {
-	loadAnalytics("fileInformation", function(data) {
-		$('#analytic-info').append("<p>File information for created and edited files.</p>");
-
-		var tableData = [["Username", "Action", "Version", "File", "Timestamp"]];
-		for (var i = 0; i < data.length; i++) {
-			var description = data[i].description.split(" ");
-			var version = description[0];
-			var file =  description[1];
-
-			if(data[i].eventType == 15){
-				var action = "Created"
-			}
-			else{
-				var action = "Edited"
-			}
-
-			tableData.push([
-				data[i].userName,
-				action,
-				version,
-				file,
-				data[i].timestamp
-			]);
-		}
-		$('#analytic-info').append(renderTable(tableData));
-	});
+    $('#analytic-info').empty();
+	$('#analytic-info').append("<p>File information for created and edited files.</p>");
+	
+	/* SAVE FOR LATER: DATE PICKING
+    var inputDateFrom = $('<input type="text"></input>')
+        .datepicker({
+            dateFormat: "yy-mm-dd"
+        })
+        .datepicker("setDate", "-1m")
+        .appendTo($('#analytic-info'));
+ 
+    var inputDateTo = $('<input type="text"></input>')
+        .datepicker({
+            dateFormat: "yy-mm-dd"
+        })
+        .datepicker("setDate", "+1d")
+        .appendTo($('#analytic-info'));
+	*/
+ 
+    function updateFileInformation() {
+        $.ajax({
+            url: "analyticService.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+				query: "fileInformation",
+            },
+            success: function(data) {
+                var files = {};
+                $.each(data, function(i, row) {
+                    var description = row.description.split(" ");
+                    var version = description[0];
+                    var file =  description[1];
+ 
+                    if(row.eventType == 15){
+                        var action = "Created"
+                    }
+                    else{
+                        var action = "Edited"
+                    }
+ 
+                    if (!files.hasOwnProperty(file)) {
+                        files[file] = [["Username", "Action", "Version", "File", "Timestamp"]];
+                    }
+                    files[file].push([
+                        row.userName,
+                        action,
+                        version,
+                        file,
+                        row.timestamp
+                    ]);
+                });
+ 
+                $('#analytic-info > select.file-select').remove();
+                var fileSelect = $('<select class="file-select"></select>');
+                for (var file in files) {
+                    if (files.hasOwnProperty(file)) {
+                        fileSelect.append('<option value="' + file + '">' + file + '</option>')
+                    }
+                }
+                fileSelect.change(function() {
+                    $('#analytic-info').append(renderTable(files[$(this).val()]));
+                });
+                $('#analytic-info').append(fileSelect);
+                fileSelect.change();
+            }
+        });
+    }
+   
+	// SAVE FOR LATER: DATE PICKING
+    //inputDateFrom.change(updateFileInformation);
+    //inputDateTo.change(updateFileInformation);
+ 
+    updateFileInformation();
 }
 
 //------------------------------------------------------------------------------------------------
