@@ -22,7 +22,7 @@
 				$_SESSION['coursevers'] = "UNK";
 	
 			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -255,6 +255,31 @@
 	function hoverBack(){
 		$(".dropdown-list-container").css("display", "none");
 	}
+
+document.getElementById("homeIcon").addEventListener("mouseover", mouseOverHome);
+document.getElementById("homeIcon").addEventListener("mouseout", mouseOutHome);
+
+function mouseOverHome() {
+	var obj = document.getElementById("homeIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/HomeShadow.svg';
+   }
+}
+
+function mouseOutHome() {
+	var obj = document.getElementById("homeIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/Home.svg';
+   }
+}
+
+
+
+
 </script>
 <script type="text/javascript">
 	(function(proxied) {
