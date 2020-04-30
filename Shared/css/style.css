@@ -5044,6 +5044,10 @@ only screen and (max-device-width: 320px) {
   border-radius: 0;
 }
 
+#editDugga #name {
+  width: 195px;
+}
+
 /* Collapsible */
 .collapsible {
 
