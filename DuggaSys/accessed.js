@@ -257,6 +257,7 @@ function changeOptDiv(e) {
 	console.log(keyvalue);
 	
 	obj = {
+		uid: paramlist[1],
 		[key]: keyvalue
 	}
 	console.log(obj);
@@ -342,7 +343,14 @@ function renderCell(col, celldata, cellid) {
 		}
 		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+filez['courses'][0].versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
+		var versname = "null"
+		for (var i = 0; i < filez['courses'].length; i++) {
+			if (obj.vers == filez['courses'][i]['vers']) {
+				versname = filez['courses'][i]['versname'];
+			}
+		}
+
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
