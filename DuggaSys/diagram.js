@@ -772,7 +772,7 @@ function keyDownHandler(e) {
         document.getElementById("relationbutton").click();
         } else if (shiftIsClicked && key == keyMap.cKey && targetMode == "UML") {
         document.getElementById("classbutton").click();
-        } else if (!shiftIsClicked && key == keyMap.tKey){
+        } else if (!shiftIsClicked && key == keyMap.tKey && fullscreen){
             toggleToolbar();
         } else if (shiftIsClicked && key == keyMap.tKey) {
         document.getElementById("drawtextbutton").click();
@@ -3663,6 +3663,7 @@ function toggleFullscreen(){
     var canvas_div = document.getElementById("diagramCanvasContainer");
     var canvas_border = document.getElementById("diagramCanvas");
     var tool_bar = document.getElementById("diagram-toolbar");
+    var inside_toolbar = document.getElementById("inside-toolbar");
     var menu_buttons = document.getElementsByClassName("menu-drop-down");
 
     if(!fullscreen){
@@ -3677,7 +3678,8 @@ function toggleFullscreen(){
         for(var i = 0; i < menu_buttons.length; i++){
             menu_buttons[i].style.display = "none";
         }
-        tool_bar.style.display = "none";
+        tool_bar.style.visibility = "hidden";
+        inside_toolbar.style.visibility = "hidden"
         canvas_div.style.position = "absolute";
         canvas_div.style.marginLeft = 0;
         canvas_div.style.top = 0;
@@ -3700,14 +3702,19 @@ function toggleFullscreen(){
         head.style.display = "inline-block";
         for(var i = 0; i < menu_buttons.length; i++){
             menu_buttons[i].style.display = "block";
-        }  
+        }
+        tool_bar.style.visibility = "visible";
+        if(!toolbarDisplayed){
+            inside_toolbar.style.visibility = "visible";  
+        } else {
+            inside_toolbar.style.border = "none";
+        }
         canvas_div.style.position = old_container_position;
         canvas_div.style.marginLeft = old_canvas_div_marginLeft;
         canvas_div.style.height = old_container_height;
         canvas_div.style.width = old_container_width;
         canvas_border.style.border = 1 + "px solid #000000";
         menu_border.style.borderLeft = 1 + "px solid #c0c0c0";
-        tool_bar.style.display = "inline-block";
         fullscreen = false;
 
         // Refit canvas to current container
@@ -3728,14 +3735,17 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    //var tool_bar2 = document.getElementById("diagram-toolbar");
-    var menu_bar = new Array(document.getElementsByClassName("menu-drop-down"));
+    //var tool_bar = document.getElementsByClassName("application-toolbar")[0];
+    var tool_bar = document.getElementById("inside-toolbar");
     if(!toolbarDisplayed){
-        console.log(menu_bar[0]);
-        menu_bar[0].style.display = "block";
+        tool_bar.style.visibility = "visible";
+        tool_bar.style.backgroundColor = "#ffffff";
+        tool_bar.style.border = 1 + "px solid #000000";
         toolbarDisplayed = true;
     } else {
-        menu_bar.style.display = "none";
+        tool_bar.style.visibility = "hidden";
+        tool_bar.style.background = "none";
+        tool_bar.style.border = 0 + "px";
         toolbarDisplayed = false;
     }
 }
