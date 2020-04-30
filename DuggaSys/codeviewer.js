@@ -40,7 +40,8 @@ var querystring = parseGet();
 var courseid;
 var exampleid;
 var cvers;
-var teamplate7box2 = false;
+var template7maximizebuttonpressed = false;
+var template8maximizebuttonpressed = false;
 
 /********************************************************************************
 
@@ -2763,7 +2764,7 @@ function maximizeBoxes(boxid) {
 
 	//For template 7
 	if (templateid == 7) {
-        teamplate7box2 = true;
+        template7maximizebuttonpressed = true;
 		if (boxid == 1) {
             thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
             thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
@@ -2883,20 +2884,34 @@ function maximizeBoxes(boxid) {
                 thisBox3.classList.remove('visuallyhidden');
             }, 20);
 		}
-        teamplate7box2 = false;
+        template7maximizebuttonpressed = false;
 	}
 
 	//for template 8
-	if (templateid == 8) {
+    if (templateid == 8) {
+        template7maximizebuttonpressed = true;
 		if (boxid == 1) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("0%");
-
 			$(boxValArray['box' + boxid]['id']).width("100%");
-			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+            
+			alignBoxesHeight3boxes(boxValArray, 2,1,3);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.add('hidden');
+                thisBox2.classList.add('visuallyhidden');
+                thisBox3.classList.add('hidden');
+                thisBox3.classList.add('visuallyhidden');
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
 		}
 
 		if (boxid == 2) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 3]['id']).width("100%");
@@ -2904,11 +2919,21 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 2, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
 		}
 
 		if (boxid == 3) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -2916,10 +2941,20 @@ function maximizeBoxes(boxid) {
 
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
-			alignBoxesWidth(boxValArray, 3, 1);
+			alignBoxesWidth(boxValArray, 1, 2);
 			alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
 		}
+         template7maximizebuttonpressed = true;
 	}
+    
     	
     //for template 9
 	if (templateid == 9) {
@@ -4542,12 +4577,14 @@ function hideDescription() {
 function toggleTitleWrapper(targetBox, boxNum, boxW){
 	var box = targetBox;
   	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 && (retData['templateid']) == !8 || boxW > 85 && boxNum == 1 && (retData['templateid']) == !6 && !3 && !9) {
+        console.log("1");
     	box.classList.remove('hidden');
     	setTimeout(function () {
       		box.classList.remove('visuallyhidden');
 		}, 20);
 
   	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 1){
+         console.log("2");
 		box.classList.add('visuallyhidden');
     	box.addEventListener('transitionend', function(e) {
       		box.classList.add('hidden');
@@ -4557,6 +4594,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
       		passive: false
     	});
   	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 2 && boxW < 98){
+         console.log("3");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4566,6 +4604,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == !1 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 3){
+         console.log("4");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4575,6 +4614,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 3 && (retData['templateid']) != 5){
+         console.log("5");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4584,6 +4624,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 4 && boxW < 98){
+         console.log("6");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4593,6 +4634,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 6){
+         console.log("7");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4602,6 +4644,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 3){
+         console.log("8");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4611,6 +4654,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 9){
+         console.log("9");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4619,7 +4663,8 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 7 && teamplate7box2 == false || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 4 && (retData['templateid']) == 7 && teamplate7box2 == false ){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 7 && template7maximizebuttonpressed == false || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 4 && (retData['templateid']) == 7 && template7maximizebuttonpressed == false ){
+         console.log("10");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4628,7 +4673,8 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			once: true,
 			passive: false
 	  });
-	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 8){
+	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 8 && template7maximizebuttonpressed == false ){
+         console.log("11");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4638,6 +4684,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else {
+         console.log("12");
 		
 	  }
 
