@@ -43,6 +43,7 @@ var cvers;
 var template7maximizebuttonpressed = false;
 var template8maximizebuttonpressed = false;
 
+
 /********************************************************************************
 
    SETUP
@@ -2958,7 +2959,13 @@ function maximizeBoxes(boxid) {
     	
     //for template 9
 	if (templateid == 9) {
+        
 		if (boxid == 1) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+            thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+            thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 2]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("0%");
 			$(boxValArray['box' + 4]['id']).width("0%");
@@ -2968,9 +2975,25 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
 			
-            alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+            alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.add('hidden');
+                thisBox2.classList.add('visuallyhidden');
+                thisBox3.classList.add('hidden');
+                thisBox3.classList.add('visuallyhidden');
+                thisBox4.classList.add('hidden');
+                thisBox4.classList.add('visuallyhidden');
+                thisBox5.classList.add('hidden');
+                thisBox5.classList.add('visuallyhidden');
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
 		}
         if (boxid == 2) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+            thisBox4 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 3]['id']).width("100%");
 			$(boxValArray['box' + 3]['id']).height("0%");
@@ -2982,11 +3005,31 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
-			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+			alignBoxesWidth(boxValArray, 1, 2);
 		
             alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox3.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox3.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox4.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox4.classList.remove('visuallyhidden');
+            }, 20);
 		}
         if (boxid == 3) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+            thisBox4 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 2]['id']).width("100%");
 			$(boxValArray['box' + 2]['id']).height("0%");
@@ -2998,11 +3041,31 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
-			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+			alignBoxesWidth(boxValArray, 1, 2);
 		
             alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox3.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox3.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox4.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox4.classList.remove('visuallyhidden');
+            }, 20);
 		}
         if (boxid == 4) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+            thisBox4 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
             $(boxValArray['box' + 1]['id']).height("100%");
 			$(boxValArray['box' + 2]['id']).width("100%");
@@ -3016,11 +3079,31 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
-			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+			alignBoxesWidth(boxValArray, 1, 2);
 		
             alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox3.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox3.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox4.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox4.classList.remove('visuallyhidden');
+            }, 20);
 		}
         if (boxid == 5) {
+            thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+            thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+            thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("0%");
 			$(boxValArray['box' + 2]['id']).width("100%");
 			$(boxValArray['box' + 2]['id']).height("0%");
@@ -3032,10 +3115,27 @@ function maximizeBoxes(boxid) {
 			$(boxValArray['box' + boxid]['id']).width("100%");
 			$(boxValArray['box' + boxid]['id']).height("100%");
 
-			alignTemplate9Width(boxValArray, 1, 2 ,3 ,4 , 5 );
+			alignBoxesWidth(boxValArray, 1, 2);
 		
             alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+            thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox2.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox2.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox3.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox3.classList.remove('visuallyhidden');
+            }, 20);
+            thisBox4.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox4.classList.remove('visuallyhidden');
+            }, 20);
 		}
+        
 
 	}
 }
