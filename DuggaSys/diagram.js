@@ -3398,7 +3398,7 @@ function undoDiagram(event) {
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 
     selected_objects = diagram.filter(object => object.targeted);
-    cloneTempArray = selected_objects;
+    cloneTempArray = [];
     hoveredObject = undefined;
 }
 
@@ -3418,7 +3418,7 @@ function redoDiagram(event) {
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 
     selected_objects = diagram.filter(object => object.targeted);
-    cloneTempArray = selected_objects;
+    cloneTempArray = [];
     hoveredObject = undefined;
 }
 
