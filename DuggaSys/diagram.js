@@ -718,6 +718,7 @@ function keyDownHandler(e) {
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
             let temp = [];
+            SaveState();
             for(const object of cloneTempArray) {
                 if(object.kind === kind.path) {
                     temp.push(copyPath(object));
