@@ -3396,6 +3396,8 @@ function undoDiagram(event) {
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
     localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
+
+    selected_objects = diagram.filter(object => object.targeted);
 }
 
 //----------------------------------------------------------------------
@@ -3412,6 +3414,8 @@ function redoDiagram(event) {
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
     localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
+
+    selected_objects = diagram.filter(object => object.targeted);
 }
 
 //----------------------------------------------------------------------
