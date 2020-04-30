@@ -701,6 +701,15 @@ function renderCell(col, celldata, cellid) {
 				default: retString = "Undefined";
 			}
 			break;
+		
+		case "qstart":		// DUGGA-TABLE - Startdate
+		case "deadline":	// DUGGA-TABLE - Deadline
+		case "qrelease":	// DUGGA-TABLE - Result date
+			if(!celldata) {	// if null - return string "N/A"
+				retString = "N/A";
+			} else {		// else - return date withough seconds
+			}
+			break;
 
 		case "arrow":		// DUGGA-TABLE - Arrow icon
 			clickedElement = JSON.parse(cellid.match(/\d+/));
