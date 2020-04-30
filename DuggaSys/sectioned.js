@@ -114,7 +114,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, feedbackenabled) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
@@ -203,7 +203,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
   // Display Dialog
   $("#editSection").css("display", "flex");
-
+  if(feedbackenabled == 1){
+    $( "#fdbck" ).prop( "checked", true );
+  }else{
+    $( "#fdbck" ).prop( "checked", false );
+  }
 }
 
 //----------------------------------------------------------------------------------
@@ -310,14 +314,14 @@ function showCreateVersion() {
 }
 
 function createQuickItem() {
-  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
+  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "", 0);
   newItem();
 }
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined");
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined", 0);
     newItem();
   }
 }
@@ -959,7 +963,7 @@ function returnedSection(data) {
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
           str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline']]) + ");' />";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['feedbackenabled']]) + ");' />";
           str += "</td>";
         }
 
