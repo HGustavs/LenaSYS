@@ -735,6 +735,7 @@ function keyDownHandler(e) {
         else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
         else if (key == keyMap.aKey && ctrlIsClicked) {
             e.preventDefault();
+            selected_objects = [];
             for (var i = 0; i < diagram.length; i++) {
                 selected_objects.push(diagram[i]);
                 diagram[i].targeted = true;
