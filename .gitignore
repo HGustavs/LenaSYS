@@ -5,7 +5,7 @@ sftp-config.json
 .idea
 vendor/
 *.iml
-~/
+*~/
 
 
 # Visual Studio 2015/2017 cache/options directory
