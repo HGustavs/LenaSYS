@@ -1034,10 +1034,8 @@ function returnedSection(data) {
     str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML = str;
-
-    if (data['writeaccess']) {
-      showCreateVersion();
-    }
+    showCreateVersion();
+   
 
   }
 
