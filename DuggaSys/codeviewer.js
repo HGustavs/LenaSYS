@@ -2909,10 +2909,11 @@ function resetBoxes() {
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
 
-function resizeBoxes(parent, templateId) {
+function resizeBoxes(parent, templateId) 
+{
 	var boxValArray = initResizableBoxValues(parent);
 	var remainWidth;
-
+	alert(templateId);
 	if (templateId == 1) {
 		getLocalStorageProperties(templateId, boxValArray);
 
@@ -2920,14 +2921,14 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByClassName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth(boxValArray, 1, 2);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByClassName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 2) {
