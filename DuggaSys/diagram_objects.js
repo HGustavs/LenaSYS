@@ -28,6 +28,7 @@ function Symbol(kindOfSymbol) {
     this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
+    this.UMLabsoluteMinWidth = 112.685546875; // The absolute smallest width a UML object can have
     this.minHeight;
     this.group = 0;                 // What group this symbol belongs to
     this.isLocked = false;          // If the symbol is locked
@@ -362,8 +363,11 @@ function Symbol(kindOfSymbol) {
                 }
             }
             ctx.font = "14px Arial";
-            this.minWidth = ctx.measureText(longestStr).width + 15;
-
+            //Check if the new min width is smaller than the absolute min, if it isn't, change min
+            newWidth = ctx.measureText(longestStr).width + 15;
+            if(newWidth >= this.UMLabsoluteMinWidth){
+                this.minWidth = newWidth;
+            }
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging

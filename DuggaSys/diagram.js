@@ -3916,6 +3916,11 @@ function mousemoveevt(ev) {
                 } else {
                     // normal resize
                     //console.log(sel.point.x);
+                    for (var i = 0; i < diagram.length; i++) {
+                        if (points[diagram[i].bottomRight] == sel.point || points[diagram[i].topLeft] == sel.point || points[diagram[i].topRight] == sel.point || points[diagram[i].bottomLeft] == sel.point) {
+                            object = diagram[i];
+                        }
+                    }
                     var yDiff = points[sel.attachedSymbol.bottomRight].y - points[sel.attachedSymbol.topLeft].y;
                     var xDiff = points[sel.attachedSymbol.bottomRight].x - points[sel.attachedSymbol.topLeft].x;
                     var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
