@@ -772,7 +772,7 @@ function keyDownHandler(e) {
         document.getElementById("relationbutton").click();
         } else if (shiftIsClicked && key == keyMap.cKey && targetMode == "UML") {
         document.getElementById("classbutton").click();
-        } else if (!shiftIsClicked && key == keymap.tKey){
+        } else if (!shiftIsClicked && key == keyMap.tKey){
             toggleToolbar();
         } else if (shiftIsClicked && key == keyMap.tKey) {
         document.getElementById("drawtextbutton").click();
@@ -3659,9 +3659,11 @@ function scrollZoom(event) {
 function toggleFullscreen(){
     // Load relevant elements
     var head = document.querySelector("header");
-    var menu_buttons = document.getElementById("buttonDiv");
+    var menu_border = document.getElementById("buttonDiv");
     var canvas_div = document.getElementById("diagramCanvasContainer");
     var canvas_border = document.getElementById("diagramCanvas");
+    var tool_bar = document.getElementById("diagram-toolbar");
+    var menu_buttons = document.getElementsByClassName("menu-drop-down");
 
     if(!fullscreen){
         // Get previous settings
@@ -3672,7 +3674,10 @@ function toggleFullscreen(){
 
         // Hide header, buttons, their leftover space, border and resize container to fit entire screen
         head.style.display = "none";
-        menu_buttons.style.display = "none";
+        for(var i = 0; i < menu_buttons.length; i++){
+            menu_buttons[i].style.display = "none";
+        }
+        tool_bar.style.display = "none";
         canvas_div.style.position = "absolute";
         canvas_div.style.marginLeft = 0;
         canvas_div.style.top = 0;
@@ -3682,8 +3687,10 @@ function toggleFullscreen(){
         canvas_div.style.height = window.innerHeight + "px";
         canvas_div.style.width = window.innerWidth + "px";
         canvas_border.style.border = 0 + "px";
+        menu_border.style.border = 0 + "px";
         fullscreen = true;
 
+        // Display popup message
         $("#fullscreenDialog").css("display", "flex");
 
         // Refit canvas to current container
@@ -3691,12 +3698,16 @@ function toggleFullscreen(){
     } else if (fullscreen){
         // Revert to previous settings
         head.style.display = "inline-block";
-        menu_buttons.style.display = "block";
+        for(var i = 0; i < menu_buttons.length; i++){
+            menu_buttons[i].style.display = "block";
+        }  
         canvas_div.style.position = old_container_position;
         canvas_div.style.marginLeft = old_canvas_div_marginLeft;
         canvas_div.style.height = old_container_height;
         canvas_div.style.width = old_container_width;
         canvas_border.style.border = 1 + "px solid #000000";
+        menu_border.style.borderLeft = 1 + "px solid #c0c0c0";
+        tool_bar.style.display = "inline-block";
         fullscreen = false;
 
         // Refit canvas to current container
@@ -3717,12 +3728,14 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    var tool_bar = document.getElementById("tooltipDialog");
+    //var tool_bar2 = document.getElementById("diagram-toolbar");
+    var menu_bar = new Array(document.getElementsByClassName("menu-drop-down"));
     if(!toolbarDisplayed){
-        tool_bar.style.display = "block";
+        console.log(menu_bar[0]);
+        menu_bar[0].style.display = "block";
         toolbarDisplayed = true;
     } else {
-        tool_bar.style.display = "none";
+        menu_bar.style.display = "none";
         toolbarDisplayed = false;
     }
 }
