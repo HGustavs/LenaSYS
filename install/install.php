@@ -772,6 +772,7 @@
         /*************** Fill database with test data if this was checked. ****************/
         if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
           addTestData("testdata", $connection);
+          addTestData("demoCourseData", $connection);
 
           # Copy md files to the right place.
           if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
