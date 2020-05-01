@@ -74,6 +74,11 @@
           } else {
               echo getenv(filegroup($putFileHere))['name'];
       }?>" +
+            "<br><br>" +
+      "current os: " +
+      "<?php
+      echo PHP_OS_FAMILY;
+      }?>" +
       "<br><br>" +
       "To do this run the command:<br>" +
       "sudo chgrp -R www-data " + filePath + "</h2><br>" +
