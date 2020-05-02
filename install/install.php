@@ -59,13 +59,15 @@
 
 <!-- Start permission-modal code -->
 <script>
-    var modalRead = false; // Have the user read info?
-    var modal = document.getElementById('warning'); // Get the modal
-    var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
-    var filePath = "<?php echo $putFileHere; ?>";
     var os = "<?php echo PHP_OS_FAMILY ?>";
 
-    document.getElementById('dialogText').innerHTML="<div><h1>" +
+    if(os != Windows){
+      var modalRead = false; // Have the user read info?
+      var modal = document.getElementById('warning'); // Get the modal
+      var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
+      var filePath = "<?php echo $putFileHere; ?>";
+
+      document.getElementById('dialogText').innerHTML="<div><h1>" +
       "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
       "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'." +
       "<br><br>" +
@@ -84,6 +86,7 @@
       "<br>" +
       "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
       "<i>I promise I have done this.</i></div>";
+    }
 
     function haveRead(isTrue) {
         modalRead = isTrue;
