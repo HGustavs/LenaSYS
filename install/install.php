@@ -68,10 +68,16 @@
     var modal = document.getElementById('warning'); // Get the modal
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = "<?php echo $putFileHere; ?>";
-    var operatingSystem = "<?php echo PHP_OS_FAMILY ?>";
+    var os = "<?php echo PHP_OS_FAMILY ?>";
+
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
     "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
+    switch(os){
+      case Linux:
+        "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.";
+        break;
+    }
     "<br><br>" +
     "current owner: " +
     "<?php 
@@ -81,7 +87,7 @@
             echo getenv(filegroup($putFileHere))['name'];
     }?>" +
     "<br>" +
-    "current os: " + operatingSystem +
+    "current os: " + os +
     "<br><br>" +
     "To do this run the command:<br>" +
     "sudo chgrp -R www-data " + filePath + "</h2><br>" +
