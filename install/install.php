@@ -49,6 +49,7 @@
   $operatingSystem = PHP_OS_FAMILY;
 
   /************* MODAL ONLY RELEVANT FOR SYSTEMS NOT WINDOWS  ****************/
+  /************* SO WE ONLY SHOW IT FOR NON-WINDOWS SYSTEMS   ****************/
   if($operatingSystem != 'Windows'){
     echo "
     <div id='warning' class='modal'>
@@ -59,7 +60,7 @@
       </div>
     </div> 
   ";
-  } // maybe here put script when in seperate file.
+  } 
 ?>
 
 <!-- Start permission-modal code -->
@@ -68,7 +69,7 @@
     var modal = document.getElementById('warning'); // Get the modal
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = "<?php echo $putFileHere; ?>";
-    var os = "<?php echo PHP_OS_FAMILY ?>";
+    var os = "<?php echo PHP_OS_FAMILY ?>"; // Get O/S of the system running the installer
     var firstText = setFirstText(os); // Set first text depending on O/S
     var secondText = setSecondText(os); // Set second text depending on O/S
 
@@ -96,7 +97,10 @@
     function haveRead(isTrue) {
         modalRead = isTrue;
     }
-
+    
+    /*************           Function to set the first text           ****************/
+    /*************      Takes O/S of installing system as input       ****************/
+    /************* Easy to extend to new supported operating systems. ****************/
     function setFirstText(os){
       var firstText;
       switch(os){
