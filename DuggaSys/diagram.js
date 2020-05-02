@@ -5248,7 +5248,7 @@ function createCardinality() {
         diagram[0].cardinality = ({"value": "", "isCorrectSide": true, "parentBox": hoveredObject});
     }
     else if(diagram[lineStartObj+1].symbolkind == symbolKind.uml) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
+        diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1, "valueUML": ""});
     }
 }
 
