@@ -69,8 +69,8 @@
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = "<?php echo $putFileHere; ?>";
     var os = "<?php echo PHP_OS_FAMILY ?>";
-    var firstText = setFirstText(os);
-    var secondText = setSecondText(os);
+    var firstText = setFirstText(os); // Set first text depending on O/S
+    var secondText = setSecondText(os); // Set second text depending on O/S
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
     "-!- READ THIS BEFORE YOU START -!-</h1><br>" +
