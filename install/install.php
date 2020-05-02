@@ -72,14 +72,6 @@
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
     "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
-    switch(operatingSystem){
-      case Linux:
-        "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'." +
-      case Darwin
-        "<h2>Make sure you set ownership of LenaSYS directory to 'www'." +
-    }
-    
-
     "<br><br>" +
     "current owner: " +
     "<?php 
@@ -92,14 +84,7 @@
     "current os: " + operatingSystem +
     "<br><br>" +
     "To do this run the command:<br>" +
-    
-    switch(operatingSystem){	
-	    case Linux:
-		    "sudo chgrp -R www-data " + filePath + "</h2><br>" +
-	    case Darwin
-		    "sudo chgrp -R www " + filePath + "</h2><br>" +
-    }
-
+    "sudo chgrp -R www-data " + filePath + "</h2><br>" +
     "<br>" +
     "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
     "<i>I promise I have done this.</i></div>";
