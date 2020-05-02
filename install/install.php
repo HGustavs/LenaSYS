@@ -69,13 +69,12 @@
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = "<?php echo $putFileHere; ?>";
     var os = "<?php echo PHP_OS_FAMILY ?>";
-    var ownerText = setOwnerText();
-    var settingText = setSettingsText();
-
+    var firstText = setFirstText();
+    var secondText = setSecondText();
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
-    "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
-    ownerText +
+    "-!- READ THIS BEFORE YOU START -!-</h1><br>" +
+    firstText +
     "<br><br>" +
     "current owner: " +
       "<?php 
@@ -98,12 +97,26 @@
         modalRead = isTrue;
     }
 
-    function setOwnerText(){
-      return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
+    function setFirstText(){
+      var returnText;
+      switch(os){
+        case Linux:
+          returnText = "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
+        case Darwin
+          returnText = "<h2>Make sure you set ownership of LenaSYS directory to 'www'";
+      }
+      return returnText;
     }
 
-    function setSettingsText(){
-      
+    function setSecondText(){
+      var returnText;
+      switch(os){
+        case Linux:
+          returnText = "sudo chgrp -R www-data " + filePath + "</h2><br>";
+        case Darwin
+          returnText = "sudo chgrp -R www " + filePath + "</h2><br>";
+      }
+      return returnText;
     }
 </script>
 
