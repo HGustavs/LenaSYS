@@ -48,7 +48,7 @@
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
   $operatingSystem = PHP_OS_FAMILY;
 
-  if($operatingSystem == Windows){
+  if($operatingSystem == 'Windows'){
     echo "
     <div id='warning' class='modal'>
       <!-- Modal content -->
