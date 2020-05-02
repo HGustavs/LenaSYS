@@ -59,12 +59,13 @@
 
 <!-- Start permission-modal code -->
 <script>
-  var modalRead = false; // Have the user read info?
-  var modal = document.getElementById('warning'); // Get the modal
-  var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
-  var filePath = "<?php echo $putFileHere; ?>";
+  if(<?php echo PHP_OS_FAMILY ?> != Windows){
+    var modalRead = false; // Have the user read info?
+    var modal = document.getElementById('warning'); // Get the modal
+    var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
+    var filePath = "<?php echo $putFileHere; ?>";
 
-  document.getElementById('dialogText').innerHTML="<div><h1>" +
+    document.getElementById('dialogText').innerHTML="<div><h1>" +
       "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
       "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
       "current owner: " +
@@ -74,22 +75,20 @@
           } else {
               echo getenv(filegroup($putFileHere))['name'];
       }?>" +
-            "<br><br>" +
-      "current os: " +
-      "<?php
-      echo PHP_OS_FAMILY;
-      ?>" +
       "<br><br>" +
+      "current os: " + "<?php echo PHP_OS_FAMILY ?>" + 
       "To do this run the command:<br>" +
       "sudo chgrp -R www-data " + filePath + "</h2><br>" +
       "<br>" +
       "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
       "<i>I promise i have done this and will not complain that it's not working</i></div>";
 
-  function haveRead(isTrue) {
-      modalRead = isTrue;
+    function haveRead(isTrue) {
+        modalRead = isTrue;
+    }
   }
 </script>
+
 <div id="header">
   <h1>LenaSYS Installer</h1>
   <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
