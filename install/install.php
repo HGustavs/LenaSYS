@@ -48,7 +48,8 @@
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
   $operatingSystem = PHP_OS_FAMILY;
 
-  if($operatingSystem == 'Windows'){
+  /************* MODAL ONLY RELEVANT FOR SYSTEMS NOT WINDOWS  ****************/
+  if($operatingSystem != 'Windows'){
     echo "
     <div id='warning' class='modal'>
       <!-- Modal content -->
@@ -56,9 +57,9 @@
         <span title='Close pop-up' class='close''>&times;</span>
           <span id='dialogText'></span>
       </div>
-    </div>
+    </div> 
   ";
-  }
+  } // maybe here put script when in seperate file.
 ?>
 
 <!-- Start permission-modal code -->
@@ -67,11 +68,18 @@
     var modal = document.getElementById('warning'); // Get the modal
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = "<?php echo $putFileHere; ?>";
-    var os = "<?php echo PHP_OS_FAMILY ?>";
+    var operatingSystem = "<?php echo PHP_OS_FAMILY ?>";
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
     "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
-    "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'." +
+    switch(operatingSystem){
+      case Linux:
+        "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'." +
+      case Darwin
+        "<h2>Make sure you set ownership of LenaSYS directory to 'www'." +
+    }
+    
+
     "<br><br>" +
     "current owner: " +
     "<?php 
@@ -81,10 +89,17 @@
             echo getenv(filegroup($putFileHere))['name'];
     }?>" +
     "<br>" +
-    "current os: " + os +
+    "current os: " + operatingSystem +
     "<br><br>" +
     "To do this run the command:<br>" +
-    "sudo chgrp -R www-data " + filePath + "</h2><br>" +
+    
+    switch(operatingSystem){	
+	    case Linux:
+		    "sudo chgrp -R www-data " + filePath + "</h2><br>" +
+	    case Darwin
+		    "sudo chgrp -R www " + filePath + "</h2><br>" +
+    }
+
     "<br>" +
     "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
     "<i>I promise I have done this.</i></div>";
