@@ -69,21 +69,24 @@
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = "<?php echo $putFileHere; ?>";
     var os = "<?php echo PHP_OS_FAMILY ?>";
+    var ownerText = setOwnerText();
+    var settingText = setSettingsText();
 
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
     "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
-    "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'." +
+    ownerText +
     "<br><br>" +
     "current owner: " +
-    "<?php 
-        if(function_exists('posix_getpwuid')) {
-            echo posix_getpwuid(filegroup($putFileHere))['name'];
-        } else {
-            echo getenv(filegroup($putFileHere))['name'];
-    }?>" +
+      "<?php 
+          if(function_exists('posix_getpwuid')) {
+              echo posix_getpwuid(filegroup($putFileHere))['name'];
+          } else {
+              echo getenv(filegroup($putFileHere))['name'];
+      }?>" +
     "<br>" +
-    "current os: " + os +
+    "current os: " + 
+      os +
     "<br><br>" +
     "To do this run the command:<br>" +
     "sudo chgrp -R www-data " + filePath + "</h2><br>" +
@@ -93,6 +96,14 @@
 
     function haveRead(isTrue) {
         modalRead = isTrue;
+    }
+
+    function setOwnerText(){
+      return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.";
+    }
+
+    function setSettingsText(){
+      
     }
 </script>
 
