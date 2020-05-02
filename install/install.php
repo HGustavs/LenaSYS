@@ -98,17 +98,29 @@
     }
 
     function setFirstText(os){
-      var test;
+      var firstText;
       switch(os){
         case "Linux":
-          test = "test";
+          firstText = "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.";
+          break;
+        case "Darwin":
+          firstText = "<h2>Make sure you set ownership of LenaSYS directory to 'www'";
           break;
       }
-      return test;
+      return firstText;
     }
 
     function setSecondText(os){
-      return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
+      var secondText;
+      switch(os){
+        case "Linux":
+          secondText = "sudo chgrp -R www-data " + filePath + "</h2><br>";
+          break;
+        case "Darwin":
+          secondText = "sudo chgrp -R www " + filePath + "</h2><br>";
+          break;
+      }
+      return secondText;
     }
 </script>
 
