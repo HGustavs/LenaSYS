@@ -99,7 +99,7 @@
     }
 
     function setOwnerText(){
-      return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.";
+      return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
     }
 
     function setSettingsText(){
