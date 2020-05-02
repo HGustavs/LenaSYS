@@ -98,25 +98,11 @@
     }
 
     function setFirstText(){
-      var returnText;
-      switch(os){
-        case Linux:
-          returnText = "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
-        case Darwin
-          returnText = "<h2>Make sure you set ownership of LenaSYS directory to 'www'";
-      }
-      return returnText;
+      return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
     }
 
     function setSecondText(){
-      var returnText;
-      switch(os){
-        case Linux:
-          returnText = "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
-        case Darwin
-          returnText = "<h2>Make sure you set ownership of LenaSYS directory to 'www'";
-      }
-      return returnText;
+      return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
     }
 </script>
 
