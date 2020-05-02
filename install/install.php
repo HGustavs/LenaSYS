@@ -69,8 +69,8 @@
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = "<?php echo $putFileHere; ?>";
     var os = "<?php echo PHP_OS_FAMILY ?>";
-    var firstText = setFirstText();
-    var secondText = setSecondText();
+    var firstText = setFirstText(os);
+    var secondText = setSecondText(os);
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
     "-!- READ THIS BEFORE YOU START -!-</h1><br>" +
@@ -97,11 +97,17 @@
         modalRead = isTrue;
     }
 
-    function setFirstText(){
-      return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
+    function setFirstText(os){
+      var test;
+      switch(os){
+        case "Linux":
+          test = "test";
+          break;
+      }
+      return test;
     }
 
-    function setSecondText(){
+    function setSecondText(os){
       return "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
     }
 </script>
