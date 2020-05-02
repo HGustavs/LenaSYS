@@ -59,7 +59,6 @@
 
 <!-- Start permission-modal code -->
 <script>
-  if(<?php echo PHP_OS_FAMILY ?> != Windows){
     var modalRead = false; // Have the user read info?
     var modal = document.getElementById('warning'); // Get the modal
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
@@ -86,7 +85,6 @@
     function haveRead(isTrue) {
         modalRead = isTrue;
     }
-  }
 </script>
 
 <div id="header">
