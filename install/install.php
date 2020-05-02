@@ -118,10 +118,10 @@
       var secondText;
       switch(os){
         case "Linux":
-          secondText = "sudo chgrp -R www-data " + filePath + "</h2><br>";
+          secondText = "sudo chgrp -R www-data " + filePath + "<br>" + "sudo chown -R www-data " + filePath + "</h2><br>";
           break;
         case "Darwin":
-          secondText = "sudo chgrp -R www " + filePath + "</h2><br>";
+          secondText = "sudo chgrp -R www " + filePath + "<br>" + "sudo chown -R www " + filePath + "</h2><br>";
           break;
       }
       return secondText;
