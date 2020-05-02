@@ -73,11 +73,7 @@
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
     "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
-    switch(os){
-      case Linux:
-        "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.";
-        break;
-    }
+    "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'." +
     "<br><br>" +
     "current owner: " +
     "<?php 
