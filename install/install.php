@@ -63,10 +63,12 @@
     var modal = document.getElementById('warning'); // Get the modal
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = "<?php echo $putFileHere; ?>";
+    var os = "<?php echo PHP_OS_FAMILY ?>";
 
     document.getElementById('dialogText').innerHTML="<div><h1>" +
       "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
-      "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
+      "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'." +
+      "<br><br>" +
       "current owner: " +
       "<?php 
           if(function_exists('posix_getpwuid')) {
@@ -74,13 +76,14 @@
           } else {
               echo getenv(filegroup($putFileHere))['name'];
       }?>" +
+      "<br>" +
+      "current os: " + os +
       "<br><br>" +
-      "current os: " + "<?php echo PHP_OS_FAMILY ?>" + 
       "To do this run the command:<br>" +
       "sudo chgrp -R www-data " + filePath + "</h2><br>" +
       "<br>" +
       "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
-      "<i>I promise i have done this and will not complain that it's not working</i></div>";
+      "<i>I promise I have done this.</i></div>";
 
     function haveRead(isTrue) {
         modalRead = isTrue;
@@ -489,7 +492,7 @@
 
             document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
                 '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
-                '<p>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
+                '<p>If you don\'t follow these instructions nothing will work. G4-2020 will not take any ' +
                 'responsibility for your failing system.</p>';
 
             // When the user clicks on <span> (x), close the modal
