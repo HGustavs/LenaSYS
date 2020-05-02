@@ -88,7 +88,7 @@
       os +
     "<br><br>" +
     "To do this run the command:<br>" +
-    "sudo chgrp -R www-data " + filePath + "</h2><br>" +
+    secondText +
     "<br>" +
     "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
     "<i>I promise I have done this.</i></div>";
@@ -112,9 +112,9 @@
       var returnText;
       switch(os){
         case Linux:
-          returnText = "sudo chgrp -R www-data " + filePath + "</h2><br>";
+          returnText = "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'. WON";
         case Darwin
-          returnText = "sudo chgrp -R www " + filePath + "</h2><br>";
+          returnText = "<h2>Make sure you set ownership of LenaSYS directory to 'www'";
       }
       return returnText;
     }
