@@ -4522,15 +4522,24 @@ function mouseupevt(ev) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length;
             erLineA.object_type = "";
-            erLineA.isCardinalityPossible = !([diagram[lineStartObj], hoveredObject].some(symbol => symbol.symbolkind === symbolKind.erAttribute));
+            erLineA.isCardinalityPossible = !([diagram[lineStartObj], hoveredObject].some(symbol => symbol.symbolkind === symbolKind.erAttribute)); //No connected objects are attributes
             erLineA.topLeft = p1;
             erLineA.bottomRight = p2;
+
             if(erLineA.isCardinalityPossible) {
                 erLineA.cardinality.value = "";
                 erLineA.cardinality.parentPointIndexes = {
                     topLeft: hoveredObject.topLeft,
                     bottomRight: hoveredObject.bottomRight
                 };
+
+                //Reverse points when the hoveredObject is a relation object to have consistent cardinality on entity side
+                if(hoveredObject.symbolkind === symbolKind.erRelation) {
+                    erLineA.topLeft = p2;
+                    erLineA.bottomRight = p1;
+                    erLineA.cardinality.parentPointIndexes.topLeft = diagram[lineStartObj].topLeft;
+                    erLineA.cardinality.parentPointIndexes.bottomRight = diagram[lineStartObj].bottomRight;
+                }
             }
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
