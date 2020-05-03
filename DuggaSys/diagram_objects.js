@@ -1850,16 +1850,16 @@ function Symbol(kindOfSymbol) {
     this.drawUMLLine = function(x1, y1, x2, y2) {
         this.properties['strokeColor'] = '#000000';
         this.properties['lineWidth'] = 2;
-        //Checks if there is cardinality set on this object
-        if(this.cardinality.value != "" && this.cardinality.value != null) {
-            //Updates x and y position
+
+        //Checks if there is cardinality set on either first or second side of line
+        if((this.cardinality.value != "" && this.cardinality.value != null) || (this.cardinality.valueUML != "" && this.cardinality.valueUML != null)) {
             ctx.fillStyle = '#000';
-            var valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
-            var valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
-            var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
-            var valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
+            let valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
+            let valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
+            let valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
+            let valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
             if (this.isRecursiveLine) {
-                let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent) * diagram.getZoomValue();
+                const dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent) * diagram.getZoomValue();
                 if (x1 == x2) {
                     valX = valX2 = x1 + 20 * dir;
                     valY = y1 - 13 * diagram.getZoomValue();
@@ -1870,8 +1870,13 @@ function Symbol(kindOfSymbol) {
                     valX2 = x2 - 17 * diagram.getZoomValue();
                 }
             }
-            ctx.fillText(this.cardinality.value, valX, valY);
-            ctx.fillText(this.cardinality.valueUML, valX2, valY2);
+            //Only draw the text for the set cardinality side
+            if(this.cardinality.value != "" && this.cardinality.value != null) {
+                ctx.fillText(this.cardinality.value, valX, valY);
+            }
+            if(this.cardinality.valueUML != "" && this.cardinality.valueUML != null) {
+                ctx.fillText(this.cardinality.valueUML, valX2, valY2);
+            }
         }
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
