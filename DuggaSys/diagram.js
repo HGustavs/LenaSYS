@@ -4524,15 +4524,15 @@ function mouseupevt(ev) {
             erLineA.topLeft = p1;
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
+            erLineA.cardinality = ({"value": "", "isCorrectSide": true, "parentBox": hoveredObject});
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
             diagram[lastSelectedObject].targeted = false;
             lastSelectedObject = 0;
-            diagram[lastSelectedObject].targeted = true;
-            selected_objects.push(diagram[lastSelectedObject]);
+            erLineA.targeted = true;
+            selected_objects.push(erLineA);
 
-            createCardinality();
             updateGraphics();
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
@@ -4600,18 +4600,18 @@ function mouseupevt(ev) {
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
+            umlLineA.cardinality = ({"value": "", "symbolKind": 1, "valueUML": ""});
+            umlLineA.targeted = true;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
                 points[umlLineA.topLeft].y = points[umlLineA.bottomRight].y;
             }
             diagram.push(umlLineA);
-            //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length - 1;
-            diagram[lastSelectedObject].targeted = true;
-            selected_objects.push(diagram[lastSelectedObject]);
+            selected_objects.push(umlLineA);
             uimode = "CreateLine";
-            createCardinality();
+
             updateGraphics();
         }
     }
