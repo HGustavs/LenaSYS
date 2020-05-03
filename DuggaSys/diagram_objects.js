@@ -23,7 +23,14 @@ function Symbol(kindOfSymbol) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.cardinality = {"value": "", "valueUML": "", "x": null, "y": null, "parentBox": null};
+    this.cardinality = {
+        "value": "", 
+        "valueUML": "", 
+        "parentPointIndexes": {
+            topLeft: null,
+            bottomRight: null
+        }
+    };
     this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
@@ -1815,8 +1822,8 @@ function Symbol(kindOfSymbol) {
         if(this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            this.moveCardinality(x1, y1, x2, y2);
-            ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
+            const coordinates = this.moveCardinality(x1, y1, x2, y2);
+            ctx.fillText(this.cardinality.value, coordinates.x, coordinates.y);
         }
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
@@ -2149,32 +2156,26 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------------
     // moveCardinality: Moves the value of the cardinality to avoid overlap with line
     //---------------------------------------------------------------
-    this.moveCardinality = function(x1, y1, x2, y2) {
-        let boxCorners = this.corners();
-        let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
-        
-        const cardinality = this.cardinality;
-        var connectedObjects = this.getConnectedObjects();
+    this.moveCardinality = function(x1, y1, x2, y2) {       
+        const targetobject = getCorners(points[this.cardinality.parentPointIndexes.topLeft], points[this.cardinality.parentPointIndexes.bottomRight]);
+        const line = getCorners(points[this.topLeft], points[this.bottomRight]);
+        const coordinates = {x: x2, y: y2};
 
-        var targetobject = getCorners(points[this.cardinality.parentBox.topLeft],points[this.cardinality.parentBox.bottomRight]);
-        var line = getCorners(points[this.topLeft],points[this.bottomRight])
+        if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x) {
+            coordinates.x = x2-15;
+            coordinates.y = y2 > y1 ? y2+15 : y2-15;
+        } else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y) {
+            coordinates.x = x2 > x1 ? x2+15 : x2-15;
+            coordinates.y = y2-15;
+        } else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x) {
+            coordinates.x = x2+15;
+            coordinates.y = y2 > y1 ? y2+15 : y2-15;
+        } else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y) {
+            coordinates.x = x2 > x1 ? x2+15 : x2-15;
+            coordinates.y = y2+15;
+        }
         
-        if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x){
-            cardinality.x = x2-15;
-            cardinality.y = y2 > y1 ? y2+15 : y2-15;
-        }
-        else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y){
-            cardinality.x = x2 > x1 ? x2+15 : x2-15;
-            cardinality.y = y2-15;
-        }
-        else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x){
-            cardinality.x = x2+15;
-            cardinality.y = y2 > y1 ? y2+15 : y2-15;
-        }
-        else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y){
-            cardinality.x = x2 > x1 ? x2+15 : x2-15;
-            cardinality.y = y2+15;
-        }
+        return coordinates;
     }
 
     //---------------------------------------------------------------

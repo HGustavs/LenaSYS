@@ -4524,7 +4524,8 @@ function mouseupevt(ev) {
             erLineA.topLeft = p1;
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
-            erLineA.cardinality.parentBox = hoveredObject;
+            erLineA.cardinality.parentPointIndexes.topLeft = hoveredObject.topLeft;
+            erLineA.cardinality.parentPointIndexes.bottomRight = hoveredObject.bottomRight;
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
