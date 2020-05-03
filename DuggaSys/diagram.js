@@ -5514,11 +5514,7 @@ function setSelections(object) {
             const access = element.dataset.access.split(".");
             if(element.tagName === 'SELECT') {
                 let value = "";
-                if(access[0] === "cardinality") {
-                    if(element.style.display !== "none") {
-                        value = object[access[0]][access[1]];
-                    }
-                } else if(access.length === 1) {
+                if(access.length === 1) {
 					value = object[access[0]];
                 } else if(access.length === 2) {
                     value = object[access[0]][access[1]];
@@ -5549,11 +5545,9 @@ function setSelectedObjectsProperties(element) {
             } else if(element.type === "range") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
-                if(element.style.display !== "none") {
-                    if(element.value === "None") {
-                        element.value = "";
-                    }
-                    object[access[0]][access[1]] = element.value;
+                object[access[0]][access[1]] = element.value;
+                if(element.value === "None") {
+                    object[access[0]][access[1]] = "";
                 }
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;
