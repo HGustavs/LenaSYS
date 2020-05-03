@@ -2162,17 +2162,17 @@ function Symbol(kindOfSymbol) {
         const coordinates = {x: x2, y: y2};
 
         if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x) {
-            coordinates.x = x2-15;
-            coordinates.y = y2 > y1 ? y2+15 : y2-15;
+            coordinates.x = x2-15 * diagram.getZoomValue();
+            coordinates.y = y2 > y1 ? y2+15 * diagram.getZoomValue() : y2-15 * diagram.getZoomValue();
         } else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y) {
-            coordinates.x = x2 > x1 ? x2+15 : x2-15;
-            coordinates.y = y2-15;
+            coordinates.x = x2 > x1 ? x2+15 * diagram.getZoomValue() : x2-15 * diagram.getZoomValue();
+            coordinates.y = y2-15 * diagram.getZoomValue();
         } else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x) {
-            coordinates.x = x2+15;
-            coordinates.y = y2 > y1 ? y2+15 : y2-15;
+            coordinates.x = x2+15 * diagram.getZoomValue();
+            coordinates.y = y2 > y1 ? y2+15 * diagram.getZoomValue() : y2-15 * diagram.getZoomValue();
         } else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y) {
-            coordinates.x = x2 > x1 ? x2+15 : x2-15;
-            coordinates.y = y2+15;
+            coordinates.x = x2 > x1 ? x2+15 * diagram.getZoomValue() : x2-15 * diagram.getZoomValue();
+            coordinates.y = y2+15 * diagram.getZoomValue();
         }
         
         return coordinates;
