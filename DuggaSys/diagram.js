@@ -4521,13 +4521,17 @@ function mouseupevt(ev) {
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine  && md == mouseState.boxSelectOrCreateMode) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length;
-            erLineA.topLeft = p1;
             erLineA.object_type = "";
+            erLineA.isCardinalityPossible = !([diagram[lineStartObj], hoveredObject].some(symbol => symbol.symbolkind === symbolKind.erAttribute));
+            erLineA.topLeft = p1;
             erLineA.bottomRight = p2;
-            erLineA.cardinality.parentPointIndexes = {
-                topLeft: hoveredObject.topLeft,
-                bottomRight: hoveredObject.bottomRight
-            };
+            if(erLineA.isCardinalityPossible) {
+                erLineA.cardinality.value = "";
+                erLineA.cardinality.parentPointIndexes = {
+                    topLeft: hoveredObject.topLeft,
+                    bottomRight: hoveredObject.bottomRight
+                };
+            }
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
@@ -4604,6 +4608,7 @@ function mouseupevt(ev) {
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
             umlLineA.targeted = true;
+            umlLineA.cardinality.value = "";
             umlLineA.cardinality.valueUML = "";
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {

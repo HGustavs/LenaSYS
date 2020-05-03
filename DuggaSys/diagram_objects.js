@@ -23,7 +23,7 @@ function Symbol(kindOfSymbol) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.cardinality = {"value": ""}; //Also stores valueUML for UML lines and parentPointIndexes for ER lines
+    this.cardinality = {};          //Stores value for UML and ER lines, valueUML for UML lines and parentPointIndexes for ER lines
     this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
@@ -1812,7 +1812,7 @@ function Symbol(kindOfSymbol) {
     this.drawLine = function(x1, y1, x2, y2) {
         this.isLine = true;
         //Checks if there is cardinality set on this object
-        if(this.cardinality.value != "" && this.cardinality.value != null) {
+        if(this.isCardinalityPossible || (this.cardinality.value != "" && this.cardinality.value != null)) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             const coordinates = this.moveCardinality(x1, y1, x2, y2);
