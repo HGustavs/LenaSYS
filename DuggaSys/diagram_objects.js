@@ -1812,7 +1812,7 @@ function Symbol(kindOfSymbol) {
     this.drawLine = function(x1, y1, x2, y2) {
         this.isLine = true;
         //Checks if there is cardinality set on this object
-        if(this.isCardinalityPossible || (this.cardinality.value != "" && this.cardinality.value != null)) {
+        if(this.isCardinalityPossible && this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             const coordinates = this.moveCardinality(x1, y1, x2, y2);
