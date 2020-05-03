@@ -23,14 +23,7 @@ function Symbol(kindOfSymbol) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.cardinality = {
-        "value": "", 
-        "valueUML": "", 
-        "parentPointIndexes": {
-            topLeft: null,
-            bottomRight: null
-        }
-    };
+    this.cardinality = {"value": ""}; //Also stores valueUML for UML lines and parentPointIndexes for ER lines
     this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
