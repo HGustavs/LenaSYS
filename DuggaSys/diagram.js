@@ -5433,6 +5433,8 @@ function loadAppearanceForm() {
                 umlOperationsElement.value += ",\n";
                 umlAttributesElement.value += ",\n";
             }
+            umlOperationsElement.dataset.originalvalue = umlOperationsElement.value;
+            umlAttributesElement.dataset.originalvalue = umlAttributesElement.value;
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
