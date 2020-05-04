@@ -3608,9 +3608,6 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
-	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-	//$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
-
 	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
