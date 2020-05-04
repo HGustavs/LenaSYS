@@ -5563,6 +5563,8 @@ function setSelectedObjectsProperties(element) {
         if((types.includes((object.symbolkind || 0).toString()))) {
             const access = element.dataset.access.split(".");
             if(element.nodeName === "TEXTAREA") {
+                const numberOfSeparators = (element.value.match(/,\n/g) || []).length;
+                const originalNumberOfSeparators = (element.dataset.originalvalue.match(/,\n/g) || []).length;
                 object[access[0]] = getTextareaArray(element, textareaIndex);
                 textareaIndex++;
             } else if(element.type === "range") {
