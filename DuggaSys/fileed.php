@@ -169,9 +169,24 @@ $codeLinkQuery->execute();
                 <form action="#" method="POST">
                     <label for="newEmptyFile">File name and type e.g greger.txt</label>
                     <input type="text" id="newEmptyFile" name="newEmptyFile" placeholder="Greger.txt">
-
+                    <?php
+                    if(isSuperUser($_SESSION['uid'])){
+                        echo '
+                            <input type="radio" id="global" name="efilekind" value="GFILE">
+                            <label for="global">Global File</label><br>
+                        ';
+                    }
+                    if(isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w')){
+                    echo '
+                        <input type="radio" id="clocal" name="efilekind" value="MFILE">
+                        <label for="clocal">Course Local File</label><br>
+                    
+                        <input type="radio" id="local" name="efilekind" value="LFILE" checked>
+                        <label for="local">Local File</label><br>
+                    ';
+                    }
+                    ?>
                     <input type="submit" name="createBtn" value="Create">
-
                 </form>
             </div>
 
