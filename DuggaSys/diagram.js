@@ -5389,6 +5389,7 @@ function loadAppearanceForm() {
             if(indexes.name.max > indexes.name.current) {
                 nameElement.value += ", ";
             }
+            nameElement.dataset.originalvalue = nameElement.value;
             nameElement.focus();
         }
 
