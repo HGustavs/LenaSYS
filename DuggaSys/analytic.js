@@ -352,6 +352,7 @@ function loadFileInformation() {
                     }
                 }
                 fileSelect.change(function() {
+					deleteTable();
                     $('#analytic-info').append(renderTable(files[$(this).val()]));
                 });
                 $('#analytic-info').append(fileSelect);
@@ -389,6 +390,16 @@ function clearCanvas(canvas) {
 	var ctx = canvas.getContext("2d");
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+//------------------------------------------------------------------------------------------------
+// Deletes tables with the class name "rows" 
+//------------------------------------------------------------------------------------------------
+function deleteTable() {
+	var table = document.getElementsByClassName("rows");
+    while(table.length > 0){
+        table[0].parentNode.removeChild(table[0]);
+    }
 }
 
 //------------------------------------------------------------------------------------------------
@@ -505,7 +516,7 @@ function drawPieChart(data) {
 function renderTable(data) {
 	if (!$.isArray(data)) return;
 
-	var str = '<table class="list">';
+	var str = '<table class="list rows">';
 	if (data.length > 0) {
 		// Render headings
 		str += "<thead><tr>";
