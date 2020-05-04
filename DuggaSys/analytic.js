@@ -261,7 +261,7 @@ function loadServiceCrashes() {
 			return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
 		}
 
-		/*function formatDate(date) {
+		function formatDate(date) {
 			var year = date.getFullYear();
 			var month = date.getMonth();
 			var day = date.getDate();
@@ -270,7 +270,7 @@ function loadServiceCrashes() {
 			var seconds = date.getSeconds();
 			var millis = date.getMilliseconds();
 			return year + "-" + pad(month, 2) + "-" + pad(day, 2) + " " + pad(hour, 2) + ":" + pad(minute, 2) + ":" + pad(seconds, 2) + "." + pad(millis, 3);
-		}*/
+		}
 
 		$.each(crashes, function(i, crash) {
 			var str = "<div>";
@@ -278,10 +278,8 @@ function loadServiceCrashes() {
 			str += "<br>User agent: " + crash.userAgent;
 			str += "<br>OS: " + crash.operatingSystem;
 			str += "<br>Browser: " + crash.browser;
-			/*str += "<br><br>Client start: " + formatDate(crash.steps[5]);
 			str += "<br>Server start: " + (crash.steps[6] === undefined ? 'missing' : formatDate(crash.steps[6]));
 			str += "<br>Server end: " + (crash.steps[7] === undefined ? 'missing' : formatDate(crash.steps[7]));
-			str += "<br>Client end (fourth round trip): " + (crash.steps[8] === undefined ? 'missing' : formatDate(crash.steps[8]));*/
 			str += "<br><hr></div>";
 			$('#analytic-info').append(str);
 		});
