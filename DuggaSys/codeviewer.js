@@ -2973,15 +2973,15 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
-				$(boxValArray['box2']['id']).css("left", " ");
+				document.getElementById(boxValArray['box2']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 4) {
