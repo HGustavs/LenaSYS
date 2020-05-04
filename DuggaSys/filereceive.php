@@ -158,22 +158,17 @@ if ($storefile) {
     $swizzled = swizzleArray($_FILES['uploadedfile']);
     if($kind == "EFILE"){
         $fileText = $_POST["uploadedfile"][0];
-        $storefile = ini_get('upload_tmp_dir')."/";
-        $filefull = $storefile.$fileText;
-        $ourFileHandle= fopen($filefull, 'w') or die('Permission error'); 
-
-        
-        echo $filesize;
         $extension = substr($fileText, strrpos($fileText, '.') + 1);
         if (array_key_exists($extension, $allowedExtensions)) {
-            echo"godkänd";
             $fileText = preg_replace('/[[:^print:]]/', '', $fileText);
             $fileText = preg_replace('/\s+/', '', $fileText);
             $movname = $currcvd . "/courses/global/" . $fileText;
                     // Logging for global files
                     $description="Global"." ".$fileText;
-                    //logUserEvent($userid, EventTypes::AddFile, $description);
-                    $yourFileHandle= fopen($movname, 'w') or die('Permission error'); 
+                    logUserEvent($userid, EventTypes::AddFile, $description);
+                    
+                    $ourFileHandle= fopen($movname, 'w') or die('Permission error'); 
+
                     $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;"); // 1=Link 2=Global 3=Course Local 4=Local
                     $query->bindParam(':filename', $fileText);
                     $query->bindParam(':cid', $cid);
@@ -219,7 +214,6 @@ if ($storefile) {
             echo"extension wrong";
         }
         fclose($ourFileHandle);
-        fclose($yourFileHandle);
         unlink($filefull);
     }
     echo "<pre>";
