@@ -825,8 +825,11 @@ function renderCell(col, celldata, cellid) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div style='padding:10px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
-				str += "dugga-pending";
+				str += "dugga-pending ";
+			} else {
+				str += "dugga-empty";
 			}
+			
 			str += "'>";
 			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
