@@ -51,7 +51,7 @@
 
   /************* MODAL ONLY RELEVANT FOR SYSTEMS NOT WINDOWS  ****************/
   /************* SO WE ONLY SHOW IT FOR NON-WINDOWS SYSTEMS   ****************/
-  if($operatingSystem == 'Windows'){
+  if($operatingSystem != 'Windows'){
     echo "
       <div id='warning' class='modal'>
         <!-- Modal content -->
