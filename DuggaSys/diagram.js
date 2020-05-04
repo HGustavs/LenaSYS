@@ -5423,6 +5423,7 @@ function loadAppearanceForm() {
             if(indexes[symbolKind.text].max > indexes[symbolKind.text].current) {
                 freeTextElement.value += ",\n";
             }
+            freeTextElement.dataset.originalvalue = freeTextElement.value;
             freeTextElement.focus();
         } else if(object.symbolkind === symbolKind.uml) {
             indexes[symbolKind.uml].current++;
