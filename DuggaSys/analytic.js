@@ -97,7 +97,7 @@ function loadOsPercentage() {
 		for (var i = 0; i < data.length; i++) {
 			tableData.push([
 				data[i].operatingSystem,
-				data[i].percentage
+				(+data[i].percentage).toFixed(2)
 			]);
 		}
 		$('#analytic-info').append(renderTable(tableData));
