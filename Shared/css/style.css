@@ -2809,6 +2809,12 @@ span.arrow {
   display: flex;
 }
 
+.resultTableMiniLeft {
+  height: 45px;
+  align-items: center;
+  display: flex;
+}
+
 #resultTable td {
   height: 1px;
   padding: 0px;
