@@ -5566,10 +5566,10 @@ function setSelectedObjectsProperties(element) {
                 if(numberOfSeparators === originalNumberOfSeparators) {
                     element.dataset.originalvalue = element.value;
                     object[access[0]] = getTextareaArray(element, textareaIndex);
-                    textareaIndex++;
                 } else {
                     element.value = element.dataset.originalvalue;
                 }
+                textareaIndex++;
             } else if(element.type === "range") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
@@ -5585,10 +5585,10 @@ function setSelectedObjectsProperties(element) {
                 if(numberOfSeparators === originalNumberOfSeparators) {
                     element.dataset.originalvalue = element.value;
                     object[access[0]] = element.value.split(",")[nameIndex].trim();
-                    nameIndex++;
                 } else {
                     element.value = element.dataset.originalvalue;
                 }
+                nameIndex++;
             } else if(access.length === 1) {
                 object[access[0]] = element.value;
             } else if(access.length === 2) {
