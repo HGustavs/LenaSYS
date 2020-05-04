@@ -594,9 +594,11 @@
                         </select>
                     </div>
                     <div class="form-group" data-types="7">
-                        <label for="cardinalityUMLFirst">UML cardinality:</label>
+                        <label for="cardinalityUMLFirst">UML cardinality first:</label>
                         <select id="cardinalityUMLFirst" data-access="cardinality.value"><?=$cardinalitiesUML;?></select>
-                        </br>
+                    </div>
+                    <div class="form-group" data-types="7">
+                        <label for="cardinalityUMLSecond">UML cardinality second:</label>
                         <select id="cardinalityUMLSecond" data-access="cardinality.valueUML"><?=$cardinalitiesUML;?></select>
                     </div>
                     <div class="form-group" data-types="1">

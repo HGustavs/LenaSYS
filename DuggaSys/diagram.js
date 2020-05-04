@@ -827,6 +827,10 @@ function setConnectedLines(temp) {
         var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
         var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
         temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
+        //Fixes recursive UML-lines
+        if(temp[connected[j].to].isRecursiveLine == true){
+            temp[connected[j].from][connected[j].loc].push({from: lineEnd2, to: lineEnd1});
+        }
     }
 }
 
@@ -1076,8 +1080,25 @@ function copySymbol(symbol) {
 
             let newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
-                const point = points[pointIndexes[key].old];
-                newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+
+                //Special case for ER lines connected to attributes
+                //The second point of an er line connected to an attribute is the attribute's centerPoint
+                //This code finds connected attributes that will be copied and prevents the second point from being duplicated if the attribute will also be copied
+                //If the attribute will not be copied the point should be created
+                if(symbol.symbolkind === symbolKind.line && key === "bottomRight") {
+                    const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
+                    if(typeof connectedAttribute !== "undefined") {
+                        const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
+                        if(isAttributeSelected) {
+                            newPointIndex = null;
+                        }
+                    }
+                }
+
+                if(newPointIndex !== null) {
+                    const point = points[pointIndexes[key].old];
+                    newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+                }
             } else {
                 newPointIndex = pointIndexes[keyContainsDuplicateOldPoint].new;
             }
@@ -1096,7 +1117,7 @@ function copySymbol(symbol) {
 }
 
 //----------------------------------------------------------------------
-// copySymbol: Clone a path object
+// copyPath: Clone a path object
 //----------------------------------------------------------------------
 function copyPath(path) {
     const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
@@ -2333,10 +2354,22 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
-    canvas.width = diagramContainer.offsetWidth;
-    canvas.height = diagramContainer.offsetHeight;
-    boundingRect = canvas.getBoundingClientRect();
+    var diagramContainer = document.getElementById("diagramCanvasContainer");
+    if(fullscreen){
+        // Resize container
+        diagramContainer.style.height = window.innerHeight + "px";
+        diagramContainer.style.width = window.innerWidth + "px";
+        // Remove "px" and set canvas size
+        var width_converted = diagramContainer.style.width.replace("px", "");
+        var height_converted = diagramContainer.style.height.replace("px", "");
+        canvas.width = width_converted;
+        canvas.height = height_converted;
+    } else {
+        // Resize canvas
+        canvas.width = diagramContainer.offsetWidth;
+        canvas.height = diagramContainer.offsetHeight;
+    }
+    boundingRect = canvas.getBoundingClientRect();    
     updateGraphics();
 }
 
@@ -2499,6 +2532,7 @@ function eraseSelectedObject(event) {
 function setMode(mode) {
     cancelFreeDraw();
     uimode = mode;
+    figureType = null;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
       figureType = mode;
@@ -4487,19 +4521,34 @@ function mouseupevt(ev) {
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine  && md == mouseState.boxSelectOrCreateMode) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length;
-            erLineA.topLeft = p1;
             erLineA.object_type = "";
+            erLineA.isCardinalityPossible = !([diagram[lineStartObj], hoveredObject].some(symbol => symbol.symbolkind === symbolKind.erAttribute)); //No connected objects are attributes
+            erLineA.topLeft = p1;
             erLineA.bottomRight = p2;
-            erLineA.centerPoint = p3;
+
+            if(erLineA.isCardinalityPossible) {
+                erLineA.cardinality.value = "";
+                erLineA.cardinality.parentPointIndexes = {
+                    topLeft: hoveredObject.topLeft,
+                    bottomRight: hoveredObject.bottomRight
+                };
+
+                //Reverse points when the hoveredObject is a relation object to have consistent cardinality on entity side
+                if(hoveredObject.symbolkind === symbolKind.erRelation) {
+                    erLineA.topLeft = p2;
+                    erLineA.bottomRight = p1;
+                    erLineA.cardinality.parentPointIndexes.topLeft = diagram[lineStartObj].topLeft;
+                    erLineA.cardinality.parentPointIndexes.bottomRight = diagram[lineStartObj].bottomRight;
+                }
+            }
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
             diagram[lastSelectedObject].targeted = false;
             lastSelectedObject = 0;
-            diagram[lastSelectedObject].targeted = true;
-            selected_objects.push(diagram[lastSelectedObject]);
+            erLineA.targeted = true;
+            selected_objects.push(erLineA);
 
-            createCardinality();
             updateGraphics();
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
@@ -4566,18 +4615,17 @@ function mouseupevt(ev) {
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
-            umlLineA.centerPoint = p3;
+            umlLineA.targeted = true;
+            umlLineA.cardinality.value = "";
+            umlLineA.cardinality.valueUML = "";
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
                 points[umlLineA.topLeft].y = points[umlLineA.bottomRight].y;
             }
             diagram.push(umlLineA);
-            //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length - 1;
-            diagram[lastSelectedObject].targeted = true;
-            selected_objects.push(diagram[lastSelectedObject]);
-            createCardinality();
+            selected_objects.push(umlLineA);
             updateGraphics();
         }
         uimode = "CreateLine";
@@ -4626,8 +4674,15 @@ function touchStartEvent(event) {
 
     // Returns what object was pressed, -1 if none
     movobj = diagram.itemClicked();
+    sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
-    if (movobj != -1 && uimode != "CreateLine") {
+    
+    // If a point was clicked 
+    if (sel.distance < tolerance / zoomValue) {
+        md = mouseState.insidePoint;
+    }
+    // If an object is clicked
+    else if (movobj != -1 && uimode != "CreateLine") {
         md = mouseState.insideMovableObject;
         handleSelect();
     } 
@@ -4668,7 +4723,7 @@ function touchMoveEvent(event) {
         if ((diffX > deltaX) || (diffX < -deltaX)
         || (diffY > deltaY) || (diffY < -deltaY)) {
             if (uimode != 'MoveAround' && md != mouseState.insideMovableObject 
-            && uimode != "CreateLine") {
+            && md != mouseState.insidePoint && uimode != "CreateLine") {
                 activateMovearound();
             }
             updateGraphics();
@@ -4686,8 +4741,6 @@ function touchMoveEvent(event) {
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
     }
-    reWrite();
-    updateGraphics();
 
     // Moves an object
     if (md == mouseState.insideMovableObject) {
@@ -4728,6 +4781,10 @@ function touchMoveEvent(event) {
             startMouseCoordinateY = currentMouseCoordinateY;
         }
     }
+    // Resizes an object
+    if (md == mouseState.insidePoint) {
+        resizeElement(sel);
+    }
     // Draw preview line
     if (uimode == "CreateLine" && movobj != -1) {
         // Path settings for preview line
@@ -4739,6 +4796,44 @@ function touchMoveEvent(event) {
         ctx.stroke();
         ctx.setLineDash([]);
     }
+    reWrite();
+    updateGraphics();
+
+}
+
+// Takes the closest selected point and resizes the object
+function resizeElement(selected) { 
+    // Needs to have a symbol selected to resize, and it cant be locked
+    if (!selected.attachedSymbol.targeted || selected.attachedSymbol.isLocked) {
+        return;
+    }
+    // For top left and 
+    if (!selected.point.fake) {
+        var yDiff = points[selected.attachedSymbol.bottomRight].y - points[selected.attachedSymbol.topLeft].y;
+        var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
+        var change = ((currentMouseCoordinateX - selected.point.x) + (currentMouseCoordinateY - selected.point.y)) / 2;
+        // Can't resize below minimum threshold
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change > -5){
+            selected.point.x = currentMouseCoordinateX;
+        }
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change > -5){
+            selected.point.y = currentMouseCoordinateY;
+        }
+    }
+    // For top right and bottom left 
+    else {
+        var yDiff = points[selected.attachedSymbol.bottomRight].y - points[selected.attachedSymbol.topLeft].y;
+        var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
+        var change = ((currentMouseCoordinateX - selected.point.x.x) - (currentMouseCoordinateY - selected.point.y.y)) / 2;
+        // Can't resize below minimum threshold
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change > -5){
+            selected.point.x.x = currentMouseCoordinateX;
+        }
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change > -5){
+            selected.point.y.y = currentMouseCoordinateY;
+        }
+    }
+    diagram.draw();
 }
 
 //---------------------------------------------------
@@ -4754,6 +4849,13 @@ function touchEndEvent(event) {
     if (uimode == "MoveAround"){
         deactivateMovearound();
         updateGraphics();
+    }
+    if (uimode == "CreateFigure" && md == mouseState.boxSelectOrCreateMode) {
+        if (figureType == "Free") {
+            figureFreeDraw();
+            updateGraphics();
+            return;
+        }
     }
 
     var p1BeforeResize;
@@ -4832,7 +4934,9 @@ function touchEndEvent(event) {
             uimode = "CreateLine";
         }
     }
-
+    if (md == mouseState.insidePoint){
+        saveState = true;
+    }
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
@@ -4927,7 +5031,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
                 erLineA.topLeft = p1;
                 erLineA.object_type = "";
                 erLineA.bottomRight = p2;
-                erLineA.centerPoint = p3;
                 diagram.unshift(erLineA);
                 lastSelectedObject = diagram.length -1;
                 diagram[lastSelectedObject].targeted = true;
@@ -4941,7 +5044,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
-            umlLineA.centerPoint = p3;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
@@ -5152,23 +5254,6 @@ function setSelectedOption(select, value) {
                 option.selected = false;
             }
         }
-    }
-}
-
-//---------------------------------
-// Creates cardinality at the line
-//---------------------------------
-
-function createCardinality() {
-    //Setting cardinality on new line
-    if(diagram[lineStartObj +1].symbolkind == symbolKind.erRelation) {
-        diagram[0].cardinality = ({"value": "", "isCorrectSide": false, "parentBox": hoveredObject});
-    }
-    else if(diagram[lineStartObj+1].symbolkind == symbolKind.erEntity) {
-        diagram[0].cardinality = ({"value": "", "isCorrectSide": true, "parentBox": hoveredObject});
-    }
-    else if(diagram[lineStartObj+1].symbolkind == symbolKind.uml) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
     }
 }
 
@@ -5434,11 +5519,7 @@ function setSelections(object) {
             const access = element.dataset.access.split(".");
             if(element.tagName === 'SELECT') {
                 let value = "";
-                if(access[0] === "cardinality") {
-                    if(element.style.display !== "none") {
-                        value = object[access[0]][access[1]];
-                    }
-                } else if(access.length === 1) {
+                if(access.length === 1) {
 					value = object[access[0]];
                 } else if(access.length === 2) {
                     value = object[access[0]][access[1]];
@@ -5469,11 +5550,9 @@ function setSelectedObjectsProperties(element) {
             } else if(element.type === "range") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
-                if(element.style.display !== "none") {
-                    if(element.value === "None") {
-                        element.value = "";
-                    }
-                    object[access[0]][access[1]] = element.value;
+                object[access[0]][access[1]] = element.value;
+                if(element.value === "None") {
+                    object[access[0]][access[1]] = "";
                 }
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;
