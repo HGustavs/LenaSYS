@@ -1142,6 +1142,7 @@ input {
   border: 2px solid var(--color-border-2);
   border-radius: 4px;
   font-size: 16px;
+  padding-left: 5px;
 }
 
 .loginBox .inputwrapper {
