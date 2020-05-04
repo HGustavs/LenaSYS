@@ -3148,6 +3148,7 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
+				$(boxValArray['box1']['id']).css("left", " ");
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 				alignWidthTemplate7(boxValArray, 3, 2, 4, 1);
 			},
@@ -3156,6 +3157,7 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'auto');
 			}
 		});
+		
 		$(boxValArray['box4']['id']).resizable({
 			containment: parent,
 			handles: "e",
@@ -3163,6 +3165,7 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
+				$(boxValArray['box4']['id']).css("top", "");
 				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
 			},
 			stop: function (e, ui) {
@@ -3606,7 +3609,7 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-	$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
+	//$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
 
 	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
 
@@ -3679,6 +3682,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	var atry2 = (atry / boxValArray['parent']['height']) * 100;
 
 	if (remainHeightPer <= 10) { // When Box3 is at minimum size.
+		
 		atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 		atry2 = (atry / boxValArray['parent']['height']) * 100;
 
@@ -3710,19 +3714,23 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 	var basePer = 100 - (remainHeightPer + alignSecondPer);
 	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 	var atry2 = (atry / boxValArray['parent']['height']) * 100;
-
+	
 	if (atry2 <= 10) { // When Box4 is at minimum size.
-		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-	}else if(atry2 >= 80) { // When Box4 is at maximum size.
+	// Note: it is set to >= 79.5 instead of 80 because when maximizing, atry2 never reaches 80% but anything bewteen 79.5 and 79.99.
+	}else if(atry2 >= 79.5) { // When Box4 is at maximum size. 
 		$(boxValArray['box' + boxNumBase]['id']).css("height", remainHeightPer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", remainHeightPer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%",);
 	} else { // When Box4 is between minimum and maximum size.
-		$(boxValArray['box' + boxNumAlignSecond]['id']).height(atry2 + "%");
+		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
 	}
 
+	//Update array
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
+	boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
 }
 
 //----------------------------------
