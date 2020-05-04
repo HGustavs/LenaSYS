@@ -2909,7 +2909,8 @@ function resetBoxes() {
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
 
-function resizeBoxes(parent, templateId) {
+function resizeBoxes(parent, templateId) 
+{
 	var boxValArray = initResizableBoxValues(parent);
 	var remainWidth;
 
@@ -3216,14 +3217,14 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3231,18 +3232,18 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
-				$(boxValArray['box2']['id']).css("left", " ");
-				$(boxValArray['box3']['id']).css("left", " ");
-				$(boxValArray['box4']['id']).css("left", " ");
-				$(boxValArray['box5']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
+				document.querySelector(boxValArray['box3']['id']).style.left = " ";
+				document.querySelector(boxValArray['box4']['id']).style.left = " ";
+				document.querySelector(boxValArray['box5']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3250,36 +3251,36 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
-				$(boxValArray['box2']['id']).css("left", " ");
-				$(boxValArray['box3']['id']).css("left", " ");
-				$(boxValArray['box4']['id']).css("left", " ");
-				$(boxValArray['box5']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
+				document.querySelector(boxValArray['box3']['id']).style.left = " ";
+				document.querySelector(boxValArray['box4']['id']).style.left = " ";
+				document.querySelector(boxValArray['box5']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 		$(boxValArray['box4']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
-				$(boxValArray['box2']['id']).css("left", " ");
-				$(boxValArray['box3']['id']).css("left", " ");
-				$(boxValArray['box4']['id']).css("left", " ");
-				$(boxValArray['box5']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
+				document.querySelector(boxValArray['box3']['id']).style.left = " ";
+				document.querySelector(boxValArray['box4']['id']).style.left = " ";
+				document.querySelector(boxValArray['box5']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
