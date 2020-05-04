@@ -4829,14 +4829,12 @@ function hideDescription() {
 function toggleTitleWrapper(targetBox, boxNum, boxW){
 	var box = targetBox;
   	if (boxW > 15 && boxW < 85 || boxW < 15 && boxNum == 2 && (retData['templateid']) == !8 || boxW > 85 && boxNum == 1 && (retData['templateid']) == !6 && !3 && !9) {
-        console.log("1");
     	box.classList.remove('hidden');
     	setTimeout(function () {
       		box.classList.remove('visuallyhidden');
 		}, 20);
 
   	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 1){
-         console.log("2");
 		box.classList.add('visuallyhidden');
     	box.addEventListener('transitionend', function(e) {
       		box.classList.add('hidden');
@@ -4846,7 +4844,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
       		passive: false
     	});
   	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 2 && boxW < 98){
-         console.log("3");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4856,7 +4853,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == !1 || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 3){
-         console.log("4");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4866,7 +4862,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 3 && (retData['templateid']) != 5){
-         console.log("5");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4876,7 +4871,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 4 && boxW < 98){
-         console.log("6");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4886,7 +4880,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 6){
-         console.log("7");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4896,7 +4889,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 3){
-         console.log("8");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4906,7 +4898,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW > 85 && boxNum == 1 && (retData['templateid']) == 9){
-         console.log("9");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4916,7 +4907,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 7 && template7maximizebuttonpressed == false || box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 4 && (retData['templateid']) == 7 && template7maximizebuttonpressed == false ){
-         console.log("10");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4926,7 +4916,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else if(box.classList.contains('visuallyhidden') == false && boxW < 15 && boxNum == 2 && (retData['templateid']) == 8 && template7maximizebuttonpressed == false ){
-         console.log("11");
 	  box.classList.add('visuallyhidden');
 	  box.addEventListener('transitionend', function(e) {
 			box.classList.add('hidden');
@@ -4936,7 +4925,6 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 			passive: false
 	  });
 	}else {
-         console.log("12");
 		
 	  }
 
