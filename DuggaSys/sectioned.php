@@ -114,6 +114,14 @@
 		</div>
 
 		<!-- Mobile view END -->
+		<!-- Announcement box -->
+		<div id="announcementBox">
+			<h3>To Do</h3>
+			<ul>
+				<li>This a announcement</li>
+			</ul>
+
+		</div>
 
 		<!-- + button --->
 

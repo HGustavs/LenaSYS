@@ -1601,6 +1601,10 @@ $(window).load(function () {
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
+  $("#announcement").click(function(){
+    $("#announcementBox").toggle();
+
+  });
 });
 
 // Checks if <a> link is external
