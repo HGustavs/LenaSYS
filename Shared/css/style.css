@@ -3005,6 +3005,7 @@ span.arrow {
   color: #fff;
   cursor: pointer;
   margin: 8px 2px 4px 2px;
+  padding: 0px;
   font-size: 14px;
   transition: 0.1s background-color;
   float: right;
