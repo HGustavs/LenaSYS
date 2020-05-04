@@ -4608,9 +4608,8 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         // Code for making a line, if start and end object are different, except attributes and if no object is text
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
-        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
-        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && figureType != "Free") {
+        if((symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
+        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text)) {
             umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
             umlLineA.name = "Line" + diagram.length;
             umlLineA.topLeft = p1;
@@ -4627,10 +4626,9 @@ function mouseupevt(ev) {
             diagram.push(umlLineA);
             lastSelectedObject = diagram.length - 1;
             selected_objects.push(umlLineA);
-            uimode = "CreateLine";
-
             updateGraphics();
         }
+        uimode = "CreateLine";
     }
 
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
