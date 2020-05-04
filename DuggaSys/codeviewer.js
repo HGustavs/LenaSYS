@@ -2942,6 +2942,7 @@ function resizeBoxes(parent, templateId) {
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
 				$(boxValArray['box1']['id']).width("100%");
+				document.getElementById(boxValArray['box1']['id']).style.width = "100%";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -2955,16 +2956,16 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-				$("#box2wrapper").css("left", "");
-				$("#box1wrapper").css("height", "100%");
+				document.getElementById("box2wrapper").style.left = "";
+				document.getElementById("box1weapper").style.height = "100%"
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
