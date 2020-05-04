@@ -1,20 +1,23 @@
-
 <?php
     // Include basic application services!
     include_once "../Shared/sessions.php";
+    include_once "../Shared/basic.php";
 
     // Connect to database and start session
     pdoConnect();
     session_start();
 
-    $courseid = 2;
-    $coursevers = 97732;
-    $query = $pdo->prepare("SELECT lid, entryname, visible, deadline, qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link = quiz.id WHERE deadline IS NOT NULL and visible = 1 and listentries.cid = :cid and listentries.vers = :coursevers ORDER BY pos");
+	$courseid = getOPG('courseid');
+	$coursevers = getOPG('coursevers');
+
+    $query = $pdo->prepare("SELECT lid, entryname, visible, deadline, qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link = quiz.id WHERE deadline IS NOT NULL AND kind = 3 AND visible = 1 AND listentries.cid = :cid AND listentries.vers = :coursevers ORDER BY pos");
     $query->bindParam(':cid', $courseid);
     $query->bindParam(':coursevers', $coursevers);
-    
-    if(!$query->execute() || $query->rowCount() < 1) {
+	
+    if(!$query->execute()) {
         echo "There was an error trying to gernerate a calendar for you. Please try again.";
+    } else if($query->rowCount() < 1) {
+		echo "The course you want to generate a calendar for does not have any duggas with deadlines.";
     } else {
         $icalBody = "";
         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -37,18 +40,17 @@
             $event .= "END:VEVENT";
         
             $icalBody = $icalBody . PHP_EOL . $event;
-        
         }
 
         $icalHeader = "BEGIN:VCALENDAR".PHP_EOL;
         $icalHeader .= "VERSION:2.0".PHP_EOL;
         $icalHeader .= "PRODID:-//LenaSYS///NONSGML v1.0//EN";     
-        $icalEnd = PHP_EOL."END:VCALENDAR";
+		$icalEnd = PHP_EOL."END:VCALENDAR";
         
         // Set the correct content-type-header for the file to be downloaded successfully
-        header('Content-type: text/calendar; charset=utf-8');
-        header('Content-Disposition: inline; filename=lenasys-'.$courseid.'-'.$coursevers.'-calendar.ics');
-        
+		header('Content-type: text/calendar; charset=utf-8');
+		header('Content-Disposition: inline; filename=lenasys-'.$courseid.'-'.$coursevers.'-calendar.ics');
+		
         // Print the ical contents
         echo $icalHeader.$icalBody.$icalEnd;
     }
