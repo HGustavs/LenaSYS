@@ -3127,13 +3127,13 @@ function resizeBoxes(parent, templateId) {
 		});
 	} else if (templateId == 7) {
 		getLocalStorageProperties(templateId, boxValArray);
-		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
+		document.getElementById("box3wrapper").style.top = localStorage.getItem("template7box2heightPercent") + "%";
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s,e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
@@ -3141,14 +3141,14 @@ function resizeBoxes(parent, templateId) {
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "s,e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
@@ -3156,21 +3156,21 @@ function resizeBoxes(parent, templateId) {
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 		$(boxValArray['box4']['id']).resizable({
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 8) {
