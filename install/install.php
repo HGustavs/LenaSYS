@@ -3,6 +3,7 @@
   <link rel="stylesheet" type="text/css" href="CSS/install_style.css">
   <script src="../Shared/js/jquery-1.11.0.min.js"></script>
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+  <script src="install.js"></script>
 </head>
 <body>
 <?php
@@ -60,7 +61,6 @@
       </div>
 </div> 
   
-
 <!-- Start permission-modal code -->
 <script>
     var modalRead = false; // Have the user read info?
@@ -130,13 +130,7 @@
   <h1>LenaSYS Installer</h1>
   <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
 </div>
-<script>
-  var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
-  // Open modal on button click
-  btn.onclick = function () {
-  modal.style.display = "block";
-  }
-</script>
+
 <!-- End permission-modal code -->
 
 <!-- START OF INPUT FORM SECTION -->
