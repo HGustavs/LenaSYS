@@ -254,37 +254,52 @@ function validateDummyFile() {
         "\\"
     ];
 
+    var errors = [];
     var name = document.getElementById("newEmptyFile").value;
 
     // Trim name
-    console.log("Name: " + name);
     name = name.trim();
-    console.log("Name trimmed: " + name);
 
     // Get filename
     var filename = name.substring(0, name.indexOf("."));
-    console.log(filename);
+    if (filename.length == 0)
+        errors.push("Invalid filename");
 
     // Get extension
     var extension = name.substring(name.lastIndexOf(".") + 1);
-    console.log(name);
+
+    // Check if extension is valid
+    if (!allowedExtensions.includes(extension))
+        errors.push("Invalid extension: ." + extension)
 
     // Check for invalid characters
     for (var i = 0; i < name.length; i++) {
-        if (filterSymbols.includes(name[i])) {
-            console.log("That character is not allowed: " + name[i]);
-            break;
+        if (filterSymbols.includes(name[i])) 
+            errors.push("Invalid character at position " + (i + 1) + ": " + name[i]);
+    }
+
+    var list = document.getElementById("dummyFileErrorList");
+
+    if (errors.length > 0) {
+        list.innerHTML = "";
+        list.style.display = "block";
+
+        // Add error message title
+        var liTop = document.createElement('li');
+        liTop.innerHTML = "Errors found:".bold();
+        liTop.style.color = "rgb(199, 80, 80)";
+        list.append(liTop)
+
+        for (var i = 0; i < errors.length; i++) {
+            var li = document.createElement('li');
+            li.innerHTML = errors[i];
+            list.append(li);
         }
+
+        return false;
     }
 
-    // Check if extension is valid
-    if (allowedExtensions.includes(extension)) {
-        console.log("yay");
-    } else {
-        console.log("nay");
-    }
-
-    return false;
+    return true;
 }
 
 //------------------------------------------------------------------
