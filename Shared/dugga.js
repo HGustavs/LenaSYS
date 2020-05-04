@@ -1057,9 +1057,9 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){
 			$("#logoutBox").show();
+			$("#logoutBox").css('display', 'block');
 			$(".buttonLogoutCancelBox").click(function(){
 				$("#logoutBox").hide();
-
 			});
 
 

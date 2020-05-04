@@ -22,7 +22,7 @@
 				$_SESSION['coursevers'] = "UNK";
 	
 			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -33,23 +33,15 @@
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
-					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
+					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-					// echo "<td>GREGER!</td>";	
 			}else if($noup=='SECTION'){
-					echo "<a href='";
+					echo "<a  id='upIcon' href='";
 					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
-			// if the user only have access type W(write) course-dropdown should be shown
-			if(checklogin() && (hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {				
-				echo "<td style='display: inline-block;' title='Choose course version'>";
-				echo "    <div class='course-dropdown-div'>";
-				echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
-				echo "    </div>";
-				echo "</td>";
-			}
+
 	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
@@ -141,8 +133,8 @@
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
 					echo "<td id='testSearchContainer' class='navButt'>";
-					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
-					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black; margin-top: 40px'>"; //Dropdown menu for when hovering the search bar
+					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
 					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
 					echo	"</div>";
 					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
@@ -150,7 +142,7 @@
 					echo 	"</div><div>";
 					echo "</td>";
 					echo "<td class='navButt'>";
-					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
+					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender(); sortAndFilterTogether();' type='button'>";
 					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
 					echo "</td>";
@@ -257,11 +249,55 @@
 	function cookieMessage(){
 		hideCookieMessage();
 		localStorage.setItem("cookieMessage", "off");
-		//$("#cookiemsg").css("display", "none");
 	}
 	function hoverBack(){
 		$(".dropdown-list-container").css("display", "none");
 	}
+
+document.getElementById("homeIcon").addEventListener("mouseover", mouseOverHome);
+document.getElementById("homeIcon").addEventListener("mouseout", mouseOutHome);
+
+function mouseOverHome() {
+	var obj = document.getElementById("homeIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/HomeShadow.svg';
+   }
+}
+
+function mouseOutHome() {
+	var obj = document.getElementById("homeIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/Home.svg';
+   }
+}
+
+document.getElementById("upIcon").addEventListener("mouseover", mouseOverUp);
+document.getElementById("upIcon").addEventListener("mouseout", mouseOutUp);
+
+function mouseOverUp() {
+	var obj = document.getElementById("upIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/UpShadow.svg';
+   }
+}
+
+function mouseOutUp() {
+	var obj = document.getElementById("upIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/Up.svg';
+   }
+}
+
+
+
 </script>
 <script type="text/javascript">
 	(function(proxied) {
