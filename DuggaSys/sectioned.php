@@ -277,7 +277,7 @@
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
-				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters and may only contain letters A - Z</p>
+				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 symbols and non-nordic letters</p>
 				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
@@ -304,7 +304,7 @@
 				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
-				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters and may only contain letters A - Z</p>
+				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 symbols and non-nordic letters</p>
 				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
