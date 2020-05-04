@@ -162,10 +162,6 @@
 								<table id="deadlineList" style="table-layout: fixed;width:300px;">
 								</table>
 						</div>
-						<div id='calSubscribeBox' class='statisticsInnerBox' style='padding: 10px;'>
-								<h3 id='calSubscribeBoxTitle'>Export Deadlines to calendar</h3>
-								<p>You can add the upcomming deadlines to your personal calendar by clicking <a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>">here</a>.</p>
-						</div>
 						<div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
 								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
@@ -185,6 +181,9 @@
 
 		</div>
 	</div>
+	<div class="course">
+	<span style="text-align: center;"><a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>" style="color:#fff">Subscribe for deadlines in your personal calendar</a></span>
+		</div>
 	<!-- content END -->
 
 	<?php
