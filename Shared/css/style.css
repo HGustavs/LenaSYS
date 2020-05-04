@@ -3787,6 +3787,7 @@ rect[class*="activitymarker"]:hover {
   width: 26px;
   height: 25px;
   margin: 0;
+  padding: 4px;
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
