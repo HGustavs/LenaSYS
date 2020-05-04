@@ -114,7 +114,7 @@ var canvasTouchClick = false;       // Canvas touch state
 var lastZoomValue = localStorage.getItem("zoomValue") || 1.00;      //Records last zoomvalue, 1.00 if none has been recorded
 var zoomValue = lastZoomValue;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
-var hoveredObject = false;
+var hoveredObject;
 var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
@@ -717,24 +717,28 @@ function keyDownHandler(e) {
             fillCloneArray();
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
-            let temp = [];
-            for(const object of cloneTempArray) {
-                if(object.kind === kind.path) {
-                    temp.push(copyPath(object));
-                } else {
-                    temp.push(copySymbol(object));
+            if(cloneTempArray.length !== 0) {
+                SaveState();
+                let temp = [];
+                for(const object of cloneTempArray) {
+                    if(object.kind === kind.path) {
+                        temp.push(copyPath(object));
+                    } else {
+                        temp.push(copySymbol(object));
+                    }
                 }
+                setConnectedLines(temp);
+                cloneTempArray = temp;
+                selected_objects = temp;
+                updateGraphics();
+                SaveState();
             }
-            setConnectedLines(temp);
-            cloneTempArray = temp;
-            selected_objects = temp;
-            updateGraphics();
-            SaveState();
         }
         else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
         else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
         else if (key == keyMap.aKey && ctrlIsClicked) {
             e.preventDefault();
+            selected_objects = [];
             for (var i = 0; i < diagram.length; i++) {
                 selected_objects.push(diagram[i]);
                 diagram[i].targeted = true;
@@ -2960,7 +2964,7 @@ function reWrite() {
 
     if (developerModeActive) {
         let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
-        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+        if (typeof hoveredObject !== "undefined" && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
             coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
         coordinatesElement.innerHTML = `${coordinatesText}</p>`;
@@ -3413,6 +3417,10 @@ function undoDiagram(event) {
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
     localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
+
+    selected_objects = diagram.filter(object => object.targeted);
+    cloneTempArray = [];
+    hoveredObject = undefined;
 }
 
 //----------------------------------------------------------------------
@@ -3429,6 +3437,10 @@ function redoDiagram(event) {
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
     localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
+
+    selected_objects = diagram.filter(object => object.targeted);
+    cloneTempArray = [];
+    hoveredObject = undefined;
 }
 
 //----------------------------------------------------------------------
