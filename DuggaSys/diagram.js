@@ -162,7 +162,7 @@ var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last dat
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
 var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
 var moved = false;                  //used to check if object has moved
-var connectLooseLineObj = {
+var connectLooseLineObj = {         //Contains values for use when connecting loose lines to objects
     lineIsSelected: false,
     selectedLine: null,
     looseLineP1: null,
@@ -4020,6 +4020,7 @@ function mousemoveevt(ev) {
                     if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
                         sel.point.y = currentMouseCoordinateY;
                     }
+                    //Handles loose lines
                     if(sel.attachedSymbol.symbolkind == symbolKind.line){
                         connectLooseLineObj.lineIsSelected = true;
                         connectLooseLineObj.selectedLine = sel.attachedSymbol;
@@ -4725,7 +4726,7 @@ function mouseupevt(ev) {
     if(uimode == "MoveAround" && md === mouseState.boxSelectOrCreateMode) {
         saveState = false;
     }
-    
+    //Connects loose line to object when released while insidee a compatible object
     if(connectLooseLineObj.lineIsSelected){
         markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
         if(markedObject != null){
@@ -5772,6 +5773,7 @@ function submitAppearanceForm() {
     toggleApperanceElement();
 }
 
+//A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;
     if (!(startObj.symbolkind == symbolKind.erEntity && endObj.symbolkind == symbolKind.erEntity)
@@ -5803,7 +5805,6 @@ function canConnectLine(startObj, endObj){
                     if ((endObj.connectorCountFromSymbol(startObj) > 0)
                     || (startObj.connectorCountFromSymbol(endObj) > 0)) {
                         okToMakeLine = false
-
                     }
                 }
             }
