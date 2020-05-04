@@ -5565,8 +5565,13 @@ function setSelectedObjectsProperties(element) {
             if(element.nodeName === "TEXTAREA") {
                 const numberOfSeparators = (element.value.match(/,\n/g) || []).length;
                 const originalNumberOfSeparators = (element.dataset.originalvalue.match(/,\n/g) || []).length;
-                object[access[0]] = getTextareaArray(element, textareaIndex);
-                textareaIndex++;
+                if(numberOfSeparators === originalNumberOfSeparators) {
+                    element.dataset.originalvalue = element.value;
+                    object[access[0]] = getTextareaArray(element, textareaIndex);
+                    textareaIndex++;
+                } else {
+                    element.value = element.dataset.originalvalue;
+                }
             } else if(element.type === "range") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
