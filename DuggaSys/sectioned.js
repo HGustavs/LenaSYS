@@ -1605,6 +1605,10 @@ $(window).load(function () {
     $("#announcementBox").toggle();
 
   });
+  $("#newAnnouncement").click(function(){
+    $("#modal").toggle();
+
+  });
 });
 
 // Checks if <a> link is external

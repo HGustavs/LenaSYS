@@ -1,6 +1,6 @@
-<div id="modal" class="modal">
+<div id="modal" class="modal" style="display: none;">
   
-  <form class="modal-content animate" action="/action_page.php" method="post">
+  <form class="modal-content animate" action="" method="post">
    	<div class="containerHeader">
    		<h3>Create an announcement</h3>
    		<hr>

@@ -115,7 +115,7 @@
 
 		<!-- Mobile view END -->
 		<!-- Announcement box -->
-		<div id="announcementBox">
+		<div id="announcementBox" style="display: none;">
 			<h3>To Do</h3>
 			<hr>
 			<button id="newAnnouncement">Create a new announcement</button>
