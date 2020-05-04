@@ -874,6 +874,7 @@ function returnedSection(data) {
           var param = {
             'did': item['link'],
             'courseid': querystring['courseid'],
+            'coursename': querystring['coursename'],
             'coursevers': querystring['coursevers'],
             'moment': item['lid'],
             'segment': momentexists,
