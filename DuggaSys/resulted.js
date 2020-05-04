@@ -829,7 +829,7 @@ function renderCell(col, celldata, cellid) {
 			} else {
 				str += "dugga-empty";
 			}
-			
+
 			str += "'>";
 			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
@@ -888,7 +888,10 @@ function renderCell(col, celldata, cellid) {
 				str = "<div style='padding:10px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
+				} else {
+					str += "dugga-empty";
 				}
+				
 				str += "'>";
 				// Creation of grading buttons
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
