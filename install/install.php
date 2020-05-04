@@ -642,7 +642,7 @@
     echo "<div id='installationProgressWrap'>";
     
     # Test permissions on directory before starting installation.
-    if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
+    if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0060)) {
       $errors++;
       exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
         <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
@@ -911,13 +911,13 @@
 
     if(!connectLogDB()){
       echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
-      with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
+      with a sqlite database inside at " . $putFileHere . " with permissions 060<br>
       (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
       echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
       echo "mkdir " . $putFileHere . "/log && ";
-      echo "chmod 777 " . $putFileHere . "/log && ";
+      echo "chmod 060 " . $putFileHere . "/log && ";
       echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
-      echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
+      echo "chmod 060 " . $putFileHere . "/log/loglena4.db";
       echo "</code></div>";
       echo '<div id="copied2">Copied to clipboard!<br></div>';
     }
