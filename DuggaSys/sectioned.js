@@ -313,11 +313,6 @@ function showCreateVersion() {
 }
 
 
-function createQuickItem() {
-  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
-  newItem();
-}
-
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
@@ -1094,6 +1089,7 @@ function showMOTD(){
     }else{
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+      document.getElementById("FABStatic2").style.top = "623px";
     }
   }
 }
@@ -1129,6 +1125,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
+  document.getElementById("FABStatic2").style.top = "565px";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
