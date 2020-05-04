@@ -123,7 +123,8 @@ var old_container_marginLeft;       // Used to revert changes from fullscreen
 var old_container_width;            // Used to revert changes from fullscreen
 var old_container_height;           // Used to revert changes from fullscreen
 var old_container_position;         // Used to revert changes from fullscreen
-var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
+var old_canvas_div_marginLeft;      // Used to revert changes from 
+var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -773,6 +774,8 @@ function keyDownHandler(e) {
         document.getElementById("classbutton").click();
         } else if (shiftIsClicked && key == keyMap.tKey) {
         document.getElementById("drawtextbutton").click();
+        } else if (!shiftIsClicked && key == keyMap.tKey && fullscreen){
+            toggleToolbar();
         } else if (shiftIsClicked && key == keyMap.fKey) {
         document.getElementById("drawfreebutton").click();
         } else if (shiftIsClicked && key == keyMap.dKey) {
@@ -3678,9 +3681,12 @@ function scrollZoom(event) {
 function toggleFullscreen(){
     // Load relevant elements
     var head = document.querySelector("header");
-    var menu_buttons = document.getElementById("buttonDiv");
+    var menu_border = document.getElementById("buttonDiv");
     var canvas_div = document.getElementById("diagramCanvasContainer");
     var canvas_border = document.getElementById("diagramCanvas");
+    var tool_bar = document.getElementById("diagram-toolbar");
+    var inside_toolbar = document.getElementById("inside-toolbar");
+    var menu_buttons = document.getElementsByClassName("menu-drop-down");
 
     if(!fullscreen){
         // Get previous settings
@@ -3691,7 +3697,11 @@ function toggleFullscreen(){
 
         // Hide header, buttons, their leftover space, border and resize container to fit entire screen
         head.style.display = "none";
-        menu_buttons.style.display = "none";
+        for(var i = 0; i < menu_buttons.length; i++){
+            menu_buttons[i].style.display = "none";
+        }
+        tool_bar.style.visibility = "hidden";
+        inside_toolbar.style.visibility = "hidden"
         canvas_div.style.position = "absolute";
         canvas_div.style.marginLeft = 0;
         canvas_div.style.top = 0;
@@ -3701,8 +3711,10 @@ function toggleFullscreen(){
         canvas_div.style.height = window.innerHeight + "px";
         canvas_div.style.width = window.innerWidth + "px";
         canvas_border.style.border = 0 + "px";
+        menu_border.style.border = 0 + "px";
         fullscreen = true;
 
+        // Display popup message
         $("#fullscreenDialog").css("display", "flex");
 
         // Refit canvas to current container
@@ -3710,12 +3722,18 @@ function toggleFullscreen(){
     } else if (fullscreen){
         // Revert to previous settings
         head.style.display = "inline-block";
-        menu_buttons.style.display = "block";
+        for(var i = 0; i < menu_buttons.length; i++){
+            menu_buttons[i].style.display = "block";
+        }
+        tool_bar.style.visibility = "visible";
+        inside_toolbar.style.visibility = "visible";
+        inside_toolbar.style.border = "none";
         canvas_div.style.position = old_container_position;
         canvas_div.style.marginLeft = old_canvas_div_marginLeft;
         canvas_div.style.height = old_container_height;
         canvas_div.style.width = old_container_width;
         canvas_border.style.border = 1 + "px solid #000000";
+        menu_border.style.borderLeft = 1 + "px solid #c0c0c0";
         fullscreen = false;
 
         // Refit canvas to current container
@@ -3731,6 +3749,28 @@ function closeFullscreenDialog(){
     $("#fullscreenDialog").hide();
 }
 
+//-----------------------
+// Toggle Toolbar for fullscreen
+//-----------------------
+
+function toggleToolbar(){
+    // Get element
+    var tool_bar = document.getElementById("inside-toolbar");
+
+    if(!toolbarDisplayed){
+        // Show inner toolbar, add border and set background color
+        tool_bar.style.visibility = "visible";
+        tool_bar.style.backgroundColor = "#ffffff";
+        tool_bar.style.border = 1 + "px solid #000000";
+        toolbarDisplayed = true;
+    } else {
+        // Hide
+        tool_bar.style.visibility = "hidden";
+        tool_bar.style.background = "none";
+        tool_bar.style.border = 0 + "px";
+        toolbarDisplayed = false;
+    }
+}
 
 //-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
