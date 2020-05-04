@@ -93,6 +93,7 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
+var writeToLayer
 var gridSize = 16;                  // Distance between lines in grid
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                            // Canvas context
@@ -5514,7 +5515,7 @@ function submitAppearanceForm() {
 }
 //Layer intergration functions
 function createLayer(){
-    let parentNode = document.getElementById("layerPlaceholder");
+    let parentNode = document.getElementById("viewLayer");
     let id =0;
     let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
     let spans = parentNode.getElementsByTagName('span')
@@ -5537,16 +5538,19 @@ function createLayer(){
         newDiv.appendChild(newSpan);
     }
     localStorage.setItem('layerItems', id);
+    let activeDropdown = parentNode.cloneNode(true)
+    document.getElementById("layerActive").innerHTML ="";
+    document.getElementById("layerActive").appendChild(activeDropdown);
+    fixWriteToLayer();
 }
 function loadLayer(localStorageID){
-    let parentNode = document.getElementById("layerPlaceholder");
+    let parentNode = document.getElementById("viewLayer");
+    addLayersToApperence(localStorageID)
     let id =1;
     let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
     let spans = parentNode.getElementsByTagName('span')
     let layerArray = []
-    console.log("outside loop ",id)
     for(let i = 0; i < localStorageID -1; i++){
-        console.log("inside loop ",id)
         layerArray.push(spans[i]);
         id++
         let newDiv = document.createElement("div");
@@ -5554,18 +5558,25 @@ function loadLayer(localStorageID){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "drop-down-option");
+        newSpan.setAttribute("class", "notActive drop-down-option");
         newSpan.setAttribute("id", "Layer_"+id);
-        newSpan.innerHTML = valueArray[id+1];
+        newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
+        newSpan.innerHTML = valueArray[id];
         newDiv.appendChild(newSpan);
-        test = JSON.parse(localStorage.getItem("activeLayers"));
-        console.log(newSpan.id);
-        if(test.indexOf(newSpan.id) !== -1){
-            newSpan.classList.add("isActive");
+        getActiveViewlayers = JSON.parse(localStorage.getItem("activeLayers") || 0);
+        if (getActiveViewlayers != 0){
+            if(getActiveViewlayers.indexOf(newSpan.id) !== -1){
+                newSpan.classList.add("isActive");
+                newSpan.classList.remove("notActive");
+            } 
         }
-        console.log("after loop", id);
     }
+    let activeDropdown = parentNode.cloneNode(true)
+    document.getElementById("layerActive").innerHTML ="";
+    document.getElementById("layerActive").appendChild(activeDropdown);
+    fixWriteToLayer();
 }
+
 function toggleBackgroundLayer (object){
     if(object.classList.contains("notActive")){
         object.classList.remove("notActive");
@@ -5578,9 +5589,10 @@ function toggleBackgroundLayer (object){
         activeLocalStorage();
     }
 }
+
 function activeLocalStorage(){
     let storageArrayID = [];
-    let parentNode = document.getElementById("layerPlaceholder");
+    let parentNode = document.getElementById("viewLayer");
     let spans = parentNode.getElementsByTagName('span');
     for(let i = 0; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
@@ -5589,9 +5601,82 @@ function activeLocalStorage(){
     }
     let sendingToStorage = JSON.stringify(storageArrayID);
     localStorage.setItem("activeLayers", sendingToStorage);
-}
-function setlayer(){
 
+    storageArrayID = [];
+    parentNode = document.getElementById("layerActive");
+    spans = parentNode.getElementsByTagName('span');
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            storageArrayID.push(spans[i].id);
+        }
+    }
+    sendingToStorage = JSON.stringify(storageArrayID);
+}
+
+function fixWriteToLayer(){
+    let update = document.getElementById("layerActive");
+    let spans = update.getElementsByTagName('span')
+    let active = localStorage.getItem("writeToActiveLayers");
+    for(let i = 0; i < spans.length; i++){
+        spans[i].id = spans[i].id+"_Active";
+        spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this),setlayer()");
+        console.log(spans[i].id, active)
+        if (spans[i].id == active) {
+            spans[i].setAttribute("class", "isActive drop-down-option");
+        }
+        else {
+            spans[i].setAttribute("class", "notActive drop-down-option");
+        }
+    }
+}
+
+function toggleActiveBackgroundLayer(object) {
+    let checkActive = document.getElementById("layerActive");
+    let spans = checkActive.getElementsByTagName('span')
+    let isActive = false;
+    for (let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            
+            isActive = true;
+            i = spans.length;
+        }
+    }
+    if(isActive == false){
+        object.classList.remove("notActive");
+        object.classList.add("isActive");
+        localStorage.setItem("writeToActiveLayers", object.id)
+    }
+    else {
+        object.classList.remove("isActive");
+        object.classList.add("notActive");
+        let checkLocalStorage = localStorage.getItem("writeToActiveLayers");
+    }
+    active = false;
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            active = true;
+            i = spans.length;
+        }
+    }
+    if (active == false){
+        localStorage.setItem("writeToActiveLayers", null);
+    }
+}
+
+function setlayer(object){
+}
+
+function addLayersToApperence(localStorageID){
+    id = 0;
+    let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
+    let parentNode = document.getElementById("objectLayer");
+    for(let i = 0; i < localStorageID; i++){
+        id++
+        let newOption = document.createElement("option");
+        newOption.setAttribute("Value", "Layer_"+id);
+        newOption.innerHTML = valueArray[id];
+        parentNode.appendChild(newOption);
+    }
 }
 //function deleteLayer(){
  //   document.getElementById("layerPlaceholder").innerHTML = "<div class='drop-down-item' tabindex='0'> <span class='drop-down-option id='layer_1'>Layer One</span></div>'";

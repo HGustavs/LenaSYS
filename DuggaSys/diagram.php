@@ -41,7 +41,6 @@
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
-
         $colors = '
             <option value=\'#64B5F6\'>Blue</option>
             <option value=\'#81C784\'>Green</option>
@@ -435,11 +434,29 @@
                         </div>
                     </div>
                     <div class="menu-drop-down">
-                        <span class="drop-down-label" tabindex="0">Layers</span>
+                        <span class="drop-down-label" tabindex="0">View layer</span>
                         <div class="drop-down">
-                            <div id="layerPlaceholder">
+                            <div id="viewLayer">
                                 <div class="drop-down-item" tabindex="0">
                                     <span class="notActive drop-down-option" onclick="toggleBackgroundLayer(this),setlayer()" id="layers_1">Layer One</span>
+                                </div>
+                            </div>
+                            <div class="drop-down-divider">
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="createLayer()">Create Layer</span>
+                            </div>
+                            <div class="drop-down-item" tabindex="0">
+                                <span class="drop-down-option" onclick="deleteLayer()">Delete selected layers</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-drop-down">
+                        <span class="drop-down-label" tabindex="0">Write to layer</span>
+                        <div class="drop-down">
+                            <div id="layerActive">
+                                <div class="drop-down-item" tabindex="0">
+                                    <span class="notActive drop-down-option" onclick="toggleBackgroundLayer(this)" id="layers_1">Layer One</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
@@ -586,6 +603,10 @@
                     <div class="form-group" data-types="2,3,5,0">
                         <label for="lineColor">Line color:</label>
                         <select id="lineColor" data-access="properties.strokeColor"><?=$colors;?></select>
+                    </div>
+                    <div class="form-group" data-types="2,3,5,0">
+                        <label for="objectLayer">Write to layer:</label>
+                        <select id="objectLayer" data-access="properties.setlayer"><?=$layers;?></select>
                     </div>
                     <div class="form-group" data-types="6">
                         <label for="textAlignment">Text alignment:</label>
