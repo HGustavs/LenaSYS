@@ -43,6 +43,9 @@ $log_uuid = getOP('log_uuid');
 $filo = print_r($_FILES, true);
 $info = $cid . " " . $vers . " " . $kind . " " . $link . " " . $selectedfile . " " . $error . " " . $filo;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive.php", $userid, $info);
+$swizzled = swizzleArray($_FILES['uploadedfile']);
+$blob_data = file_get_contents($swizzled[0]['tmp_name']);
+
 
 //  Handle files! One by one  -- if all is ok add file name to database
 //  login for user is successful & has either write access or is superuser					
@@ -53,6 +56,7 @@ if ($ha) {
 
     $storefile = false;
     chdir('../');
+
     $currcvd = getcwd();
     if ($kind == "LINK" && $link != "UNK") {
         //  if link isn't in database (e.g no rows are returned), add it to database
@@ -67,6 +71,7 @@ if ($ha) {
             $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'1',:cid);");
             $query->bindParam(':cid', $cid);
             $query->bindParam(':linkval', $link);
+        
 
             if (!$query->execute()) {
                 $error = $query->errorInfo();
@@ -146,11 +151,12 @@ if ($storefile) {
         //	"rar"		=> [
     ];
 
-    $swizzled = swizzleArray($_FILES['uploadedfile']);
+    
 
     echo "<pre>";
     // Uncomment for debug printing
-    //print_r($swizzled);
+    print_r($swizzled);
+    print_r($blob_data);
     //testcommit
 
     foreach ($swizzled as $key => $filea) {
@@ -214,6 +220,7 @@ if ($storefile) {
                     $query->bindParam(':filename', $fname);
                     $query->bindParam(':cid', $cid);
                     $query->execute();
+                    
                     $norows = $query->fetchColumn();
                     $filesize = filesize($movname);
                     $kindid = -1;
@@ -229,13 +236,14 @@ if ($storefile) {
                             $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
                         } else if ($kind == "GFILE") {
                             $kindid = 2;
-                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
+                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize,blob_data) VALUES(:filename,:kindid,:cid,'1',:filesize,:blob_data);");
                         }
 
                         $query->bindParam(':cid', $cid);
                         $query->bindParam(':filename', $fname);
                         $query->bindParam(':filesize', $filesize);
                         $query->bindParam(':kindid', $kindid);
+                        $query->bindParam(':blob_data', $blob_data);
 
                         if (!$query->execute()) {
                             $error = $query->errorInfo();
