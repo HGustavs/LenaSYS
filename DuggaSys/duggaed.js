@@ -520,6 +520,10 @@ function confirmBox(operation, item, type) {
 	}
 }
 
+function showUserFeedBack(item) {
+	$("#userFeedbackDialog").css("display", "flex");
+}
+
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
 /*
@@ -582,12 +586,13 @@ function returnedDugga(data) {
 			modified: "Last Modified",
 			arrow: "",
 			cogwheel: "",
-			trashcan: ""
+			trashcan: "",
+			userfeedback: ""
 		},
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-		var colOrder=["did","qname","autograde","gradesystem","quizFile","qstart","deadline","qrelease","modified","arrow","cogwheel","trashcan"];
+		var colOrder=["did","qname","autograde","gradesystem","quizFile","qstart","deadline","qrelease","modified","arrow","cogwheel","trashcan", "userfeedback"];
 		duggaTable = new SortableTable({
 				data:tabledata,
 				tableElementId:"quiz",
@@ -731,6 +736,12 @@ function renderCell(col, celldata, cellid) {
 		str += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"dugga\");' >";
 		return str;
 	}
+	else if (col == "userfeedback") {
+		object = JSON.parse(celldata);
+		str = "<img id='dorf' src='../Shared/icons/FistV.svg' title='feedback'";
+		str += " onclick='showUserFeedBack(\"" + object  + "\");' >";
+		return str;
+	}
 	// DUGGA-TABLE cellend
 
 	// VARIANT-TABLE cellstart
@@ -809,7 +820,7 @@ function renderSortOptionsDugga(col,status,colname) {
 			}
 		}
 		*/
-		if (col != "arrow" && col != "cogwheel" && col != "trashcan") {			//Disable sorting for pen, cog and trashcan icons
+		if (col != "arrow" && col != "cogwheel" && col != "trashcan" && col != "userfeedback" ) {			//Disable sorting for pen, cog and trashcan icons
 			if (status ==- 1) {
 				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
 			} else if (status == 0) {
