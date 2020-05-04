@@ -823,7 +823,7 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div style='padding:10px;' class='resultTableCell ";
+			str = "<div style='padding:12px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 				str += "dugga-pending ";
 			} else {
@@ -885,7 +885,7 @@ function renderCell(col, celldata, cellid) {
 				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
-				str = "<div style='padding:10px;' class='resultTableCell ";
+				str = "<div style='padding:12px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
 				} else {
@@ -986,7 +986,7 @@ function renderCell(col, celldata, cellid) {
 		if(unassignedCheck){
 			str += "' style='height:74px;'>";
 		}else{
-			str += "' style='padding:10px;'>";
+			str += "' style='padding:12px;'>";
 		}
 
 		// Creation of grading buttons
