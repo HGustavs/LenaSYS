@@ -5499,9 +5499,7 @@ function getTextareaText(array) {
 function getTextareaArray(element, index) {
     const objectText = element.value.split(",\n");
     const indexTextLines = objectText[index].split("\n");
-    const array = [];
-    indexTextLines.forEach(text => array.push({"text": text}));
-    return array;
+    return indexTextLines.map(text => ({"text": text}));
 }
 
 function setGlobalSelections() {
