@@ -351,7 +351,26 @@ p {
   margin-left: 25px;
   display:none;
 }
+/*Announcement box*/
+#announcementBox{
+  background-color:  #f2f2f2;
+  border: 2px solid #bdbdbd;
+  padding: 15px;
+  margin-bottom: 15px;
 
+}
+#announcementBox button{
+  background-color: #fff; /* Green */
+  border: 1px solid #bdbdbd;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
 #Sectionlist {
   margin: 0px auto;
   background-color: var(--color-background);

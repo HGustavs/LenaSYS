@@ -117,6 +117,8 @@
 		<!-- Announcement box -->
 		<div id="announcementBox">
 			<h3>To Do</h3>
+			<hr>
+			<button id="newAnnouncement">Create a new announcement</button>
 			<ul>
 				<li>This a announcement</li>
 			</ul>
