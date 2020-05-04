@@ -14,6 +14,7 @@ var resave = false;
 var versnme = "UNKz";
 var versnr;
 var motd;
+var versIdArray = [];
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -1067,7 +1068,10 @@ function returnedSection(data) {
 
   addClasses();
   showMOTD();
-  
+
+  for(var i = 0; i < data["versions"].length; i++){
+    versIdArray.push(data["versions"][i].vers);
+  }
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
@@ -1701,6 +1705,7 @@ function validateCourseID(courseid, dialogid) {
   var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
+  var val = document.getElementById("versid").value;
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -1710,10 +1715,20 @@ function validateCourseID(courseid, dialogid) {
   } else {
 
     code.style.borderColor = "#E54";
+    x2.innerHTML = "Only numbers(between 3-6 numbers)";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
   }
+
+  if(versIdArray.indexOf(val)!== -1){
+    console.log("popop");
+    code.style.borderColor = "#E54";
+    x2.innerHTML = "Version ID already exists, try another";
+    x2.style.display = "block";
+    code.style.borderWidth = "2px";
+    window.bool = false;
+  } 
 }
 
 function validateMOTD(motd, dialogid){
@@ -1838,6 +1853,7 @@ function validateForm(formid) {
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
     var versId = document.getElementById("versid").value;
+    console.log(versId);
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
