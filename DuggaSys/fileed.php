@@ -168,6 +168,12 @@ $codeLinkQuery->execute();
             <div id="createNewEmptyFile" style="display: none;">
                 <form action="#" method="POST" onsubmit="event.preventDefault(); validateDummyFile();">
                     <label for="newEmptyFile">File name and type e.g greger.txt</label>
+                    <!-- .svg| -->
+                    <ul style="list-style-type: none;">
+                        <li>Invalid filename</li>
+                        <li>Invalid character: |</li>
+                        <li>Invalid extension: .svg</li>
+                    </ul>
                     <input type="text" id="newEmptyFile" name="newEmptyFile" placeholder="Greger.txt">
                     <?php
                     if(isSuperUser($_SESSION['uid'])){
