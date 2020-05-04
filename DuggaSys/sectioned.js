@@ -468,6 +468,7 @@ function updateVersion() {
   $("#editCourseVersion").css("display", "none");
 }
 
+//queryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
