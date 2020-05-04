@@ -1607,6 +1607,10 @@ $(window).load(function () {
   });
   $("#newAnnouncement").click(function(){
     $("#modal").toggle();
+    $("#modal").click(function(){
+      $("#modal").hide();
+    });
+
 
   });
 });
