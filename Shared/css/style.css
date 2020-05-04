@@ -1241,7 +1241,7 @@ input {
   font-weight: bold;
 }
 
-.loginBoxheader div:hover {
+.loginBoxheader div:hover, .logoutBoxheader div:hover {
   background-color: #ce3d3d;
 }
 
