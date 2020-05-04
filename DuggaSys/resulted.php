@@ -51,15 +51,19 @@ pdoConnect();
 	<div id="resultedLegendContainer">
 		<div id="legendBtn" onclick="showLegend();"> ? </div>
 		<ul class="legendList">
-			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade"> Show dugga answers and results</li>
-			<li class="legendListItem"><img src="../Shared/icons/Uh.png" alt="grade"><img src="../Shared/icons/G.png" alt="grade"> Dugga passed</li>
-			<li class="legendListItem"><img src="../Shared/icons/U.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Dugga failed</li>
-			<li class="legendListItem"><img src="../Shared/icons/Uc.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Dugga not graded</li>
-			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png" alt="grade"> Submitted past deadline</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade"> Show dugga stats</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uh.png" alt="grade"><img src="../Shared/icons/G.png" alt="grade"> Pass</li>
+			<li class="legendListItem"><img src="../Shared/icons/U.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Fail</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uc.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Pending/not graded</li>
+			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png" alt="grade"> Submission past deadline</li>
 			<li class="legendListItem"><div> (9) </div> <div>Grading changes</div></li>
 			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg" alt="grade"> Not announced</li>
-			<li class="legendListItem"><div class="dugga-moment"> Unassigned </div> Dugga passed </li>
-
+			<li class="legendListItem"><div class="dugga-moment"></div> Dugga moment</li>
+			<li class="legendListItem"><div class="dugga-pending-late-submission"></div> Dugga pending: Late submission</li>
+			<li class="legendListItem"><div class="dugga-pending"></div> Dugga pending: Submission in time</li>
+			<li class="legendListItem"><div class="dugga-moment"><div class="dugga-pass"></div></div> Moment passed</li>
+			<li class="legendListItem"><div class="dugga-moment"><div class="dugga-fail"></div></div> Moment failed</li>
+			<li class="legendListItem"><div class="dugga-moment"><div class="dugga-assigned"></div></div> Moment assigned</li>
 		</ul>
 	</div>
     <div id="resultedFormContainer">
