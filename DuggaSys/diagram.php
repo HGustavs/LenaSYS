@@ -606,7 +606,7 @@
                     </div>
                     <div class="form-group" data-types="2,3,5,0">
                         <label for="objectLayer">Write to layer:</label>
-                        <select id="objectLayer" data-access="properties.setlayer"><?=$layers;?></select>
+                        <select id="objectLayer" data-access="properties.setLayer"></select>
                     </div>
                     <div class="form-group" data-types="6">
                         <label for="textAlignment">Text alignment:</label>

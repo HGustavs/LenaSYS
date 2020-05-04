@@ -93,7 +93,7 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
-var writeToLayer
+var writeToLayer = "Layer_1";
 var gridSize = 16;                  // Distance between lines in grid
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                            // Canvas context
@@ -5664,6 +5664,7 @@ function toggleActiveBackgroundLayer(object) {
 }
 
 function setlayer(object){
+    writeToLayer = "Layer_4";
 }
 
 function addLayersToApperence(localStorageID){
