@@ -125,6 +125,10 @@
 
 		</div>
 
+		<?php 
+			include '../Shared/announcementBox.php';
+		?>
+
 		<!-- + button --->
 
 
