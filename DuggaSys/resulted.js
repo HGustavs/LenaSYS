@@ -1527,12 +1527,16 @@ $(window).scroll(function() {
 	var ladExportWidth = document.getElementById("resultedFormContainer").offsetWidth;
 	var scrolled = $(this).scrollLeft();
 	var legendBox = $('#resultedLegendContainer');
+	var $win = $(window);
 	if((scrolled + ladExportWidth) < resultTableWidth){
 		$('#resultedFormContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
 			
 		});
 		legendBox.css("top", "113px");
+	}
+	if ($(window).scrollTop() == 0){
+		legendBox.css("top", "80px");
 	}
 });
 
@@ -1543,17 +1547,13 @@ function hideSSN(ssn){
 }
 
 function showLegend(){
-	//var legendBox = document.getElementById("resultedLegendContainer");
 	var legendBox = $('#resultedLegendContainer');
 	if (legendIsHidden == false){
-		//$('#resultedlegendContainer').css("transform","translate(0px)");
-		//legendBox.style.right = "-343px";
-		legendBox.css("right", "-343px");
+		
+		legendBox.css("right", "-353px");
 		legendIsHidden = true;
 	}
 	else if (legendIsHidden == true){
-		//$('#resultedlegendContainer').css("transform","translateX(-350px)");
-		//legendBox.style.right = "0px";
 		legendBox.css("right", "0px");
 		legendIsHidden = false;
 	}
