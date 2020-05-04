@@ -3073,14 +3073,13 @@ function resizeBoxes(parent, templateId) {
 	} else if (templateId == 6) {
 
 		getLocalStorageProperties(templateId, boxValArray);
-		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
-
+		document.getElementById("box3wrapper").style.top = localStorage.getItem("template6box2heightPercent") + "%";
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
@@ -3089,7 +3088,7 @@ function resizeBoxes(parent, templateId) {
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3097,16 +3096,16 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-				$(boxValArray['box3']['id']).css("left", " ");
-				$(boxValArray['box2']['id']).css("left", " ");
+				document.querySelector(boxValArray['box3']['id']).style.left = " ";
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 
@@ -3114,16 +3113,16 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", " ");
+				document.querySelector(boxValArray['box4']['id']).style.top = " ";
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", " ");
+				document.querySelector(boxValArray['box4']['id']).style.top = " ";
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 7) {
