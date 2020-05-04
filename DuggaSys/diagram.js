@@ -5376,11 +5376,14 @@ function loadAppearanceForm() {
     showFormGroups(types);
     toggleApperanceElement(true);
     
+    const nameElement = document.getElementById("name");
+    const freeTextElement = document.getElementById("freeText");
+    const umlOperationsElement = document.getElementById("umlOperations");
+    const umlAttributesElement = document.getElementById("umlAttributes");
     let erCardinalityVisible = false;
 
     appearanceObjects.forEach(object => {
         if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
-            const nameElement = document.getElementById("name");
             indexes.name.current++;
             nameElement.value += object.name;
             if(indexes.name.max > indexes.name.current) {
@@ -5414,20 +5417,19 @@ function loadAppearanceForm() {
             }
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
-            const textarea = document.getElementById("freeText");
             indexes[symbolKind.text].current++;
-            textarea.value += getTextareaText(object.textLines);
+            freeTextElement.value += getTextareaText(object.textLines);
             if(indexes[symbolKind.text].max > indexes[symbolKind.text].current) {
-                textarea.value += ",\n";
+                freeTextElement.value += ",\n";
             }
-            textarea.focus();
+            freeTextElement.focus();
         } else if(object.symbolkind === symbolKind.uml) {
             indexes[symbolKind.uml].current++;
-            document.getElementById("umlOperations").value += getTextareaText(object.operations);
-            document.getElementById("umlAttributes").value += getTextareaText(object.attributes);
+            umlOperationsElement.value += getTextareaText(object.operations);
+            umlAttributesElement.value += getTextareaText(object.attributes);
             if(indexes[symbolKind.uml].max > indexes[symbolKind.uml].current) {
-                document.getElementById("umlOperations").value += ",\n";
-                document.getElementById("umlAttributes").value += ",\n";
+                umlOperationsElement.value += ",\n";
+                umlAttributesElement.value += ",\n";
             }
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
