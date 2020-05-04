@@ -782,7 +782,7 @@ function renderCell(col, celldata, cellid) {
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLname") {
-			str = "<div class='resultTableCell resultTableMini'>";
+			str = "<div class='resultTableCell resultTableMiniLeft'>";
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
 			str += "</div>";
