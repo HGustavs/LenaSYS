@@ -482,6 +482,7 @@ function init() {
     canvasSize(); 
     loadDiagram(); 
     setModeOnRefresh(); 
+    refreshVirtualPaper();
     setPaperSizeOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
@@ -1675,8 +1676,22 @@ function toggleVirtualPaper(event) {
         showPaperState();
         updateGraphics();
     }
-
+    localStorage.setItem("virtualPaper", togglePaper);
     setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
+}
+
+function refreshVirtualPaper() {
+    var tempPaperState = localStorage.getItem("virtualPaper");
+    if (tempPaperState != null) {
+        togglePaper = tempPaperState;
+        if (togglePaper == 'true') {
+            togglePaper = false;
+            toggleVirtualPaper(event);
+        } else {
+            togglePaper = true;
+            toggleVirtualPaper(event);
+        }
+    }
 }
 
 //--------------------------------------------------------------------
