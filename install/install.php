@@ -3,6 +3,7 @@
   <link rel="stylesheet" type="text/css" href="CSS/install_style.css">
   <script src="../Shared/js/jquery-1.11.0.min.js"></script>
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+  <script src="install.js" defer></script>
 </head>
 <body>
 <?php
@@ -50,96 +51,23 @@
 
   /************* MODAL ONLY RELEVANT FOR SYSTEMS NOT WINDOWS  ****************/
   /************* SO WE ONLY SHOW IT FOR NON-WINDOWS SYSTEMS   ****************/
-  if($operatingSystem != 'Windows'){
+  if($operatingSystem == 'Windows'){
     echo "
-    <div id='warning' class='modal'>
-      <!-- Modal content -->
-      <div class='modal-content'>
-        <span title='Close pop-up' class='close''>&times;</span>
-          <span id='dialogText'></span>
-      </div>
-    </div> 
-  ";
+      <div id='warning' class='modal'>
+        <!-- Modal content -->
+        <div class='modal-content'>
+          <span title='Close pop-up' class='close''>&times;</span>
+            <span id='dialogText'></span>
+        </div>
+      </div> 
+    ";
   } 
 ?>
-
-<!-- Start permission-modal code -->
-<script>
-    var modalRead = false; // Have the user read info?
-    var modal = document.getElementById('warning'); // Get the modal
-    var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
-    var filePath = "<?php echo $putFileHere; ?>";
-    var os = "<?php echo PHP_OS_FAMILY ?>"; // Get O/S of the system running the installer
-    var firstText = setFirstText(os); // Set first text depending on O/S
-    var secondText = setSecondText(os); // Set second text depending on O/S
-
-    document.getElementById('dialogText').innerHTML="<div><h1>" +
-    "-!- READ THIS BEFORE YOU START -!-</h1><br>" +
-    firstText +
-    "<br><br>" +
-    "current owner: " +
-      "<?php 
-          if(function_exists('posix_getpwuid')) {
-              echo posix_getpwuid(filegroup($putFileHere))['name'];
-          } else {
-              echo getenv(filegroup($putFileHere))['name'];
-      }?>" +
-    "<br>" +
-    "current os: " + 
-      os +
-    "<br><br>" +
-    "To do this run the command:<br>" +
-    secondText +
-    "<br>" +
-    "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
-    "<i>I promise I have done this.</i></div>";
-
-    function haveRead(isTrue) {
-        modalRead = isTrue;
-    }
-    
-    /*************           Function to set the first text           ****************/
-    /*************      Takes O/S of installing system as input       ****************/
-    /************* Easy to extend to new supported operating systems. ****************/
-    function setFirstText(os){
-      var firstText;
-      switch(os){
-        case "Linux":
-          firstText = "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.";
-          break;
-        case "Darwin":
-          firstText = "<h2>Make sure you set ownership of LenaSYS directory to 'www'";
-          break;
-      }
-      return firstText;
-    }
-
-    function setSecondText(os){
-      var secondText;
-      switch(os){
-        case "Linux":
-          secondText = "sudo chgrp -R www-data " + filePath + "<br>" + "sudo chown -R www-data " + filePath + "</h2><br>";
-          break;
-        case "Darwin":
-          secondText = "sudo chgrp -R www " + filePath + "<br>" + "sudo chown -R www " + filePath + "</h2><br>";
-          break;
-      }
-      return secondText;
-    }
-</script>
 
 <div id="header">
   <h1>LenaSYS Installer</h1>
   <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
 </div>
-<script>
-  var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
-  // Open modal on button click
-  btn.onclick = function () {
-  modal.style.display = "block";
-  }
-</script>
-<!-- End permission-modal code -->
 
 <!-- START OF INPUT FORM SECTION -->
 <form action="install.php?mode=install" method="post">
