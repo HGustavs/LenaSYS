@@ -3773,13 +3773,6 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-/*#searchinput,
-#duggaSearch,
-#searchinputMobile {
-  padding: 0 0 0 2px;
-  height: 20px;
-}
-*/
 #searchBar,
 #searchbutton,
 #searchbuttonMobile {
@@ -3800,13 +3793,6 @@ rect[class*="activitymarker"]:hover {
 #testSearchContainer img {
   margin: 0px;
 }
-
-/* .searchField{
-  height: 25px;
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
-  border-right: 0px;
-} */
 
 #lookingGlassSVG {
   top: 3px;
