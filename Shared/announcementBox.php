@@ -1,8 +1,3 @@
-<!-- Overlay -->
-<head>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-
-</head>
 <div id="modal" class="modal">
   
   <form class="modal-content animate" action="/action_page.php" method="post">
