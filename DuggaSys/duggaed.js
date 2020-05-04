@@ -21,22 +21,21 @@ var searchterm = "";
 
 function setup() {
 
-  var filt = "";
-
+	var filt = "";
 
 	filt += `<td id='testSearchContainer' class='navButt'>`
 	filt += `<input id='duggaSearch' type='text' name='search' placeholder='Search..'`;
 	filt += `onkeyup='searchterm=document.getElementById("duggaSearch").value;searchKeyUp(event);duggaTable.renderTable();'onsearch='searchterm=document.getElementById("duggaSearch").value; searchKeyUp(event); duggaTable.renderTable();document.getElementById("searchinputMobile").value=document.getElementById("duggaSearch").value;'/>`;
-  filt += `<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>`
-  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>`
-  filt += `</button>`
+	filt += `<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>`
+	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>`
+	filt += `</button>`
 	filt += `</td>`
-  filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
+	filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
 	filt += `</button></td>`;
 
-  $("#menuHook").before(filt);
+	$("#menuHook").before(filt);
 
-  AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("GET", { cid: querystring['courseid'], coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 
@@ -676,125 +675,98 @@ function renderVariant(clickedElement) {
 
 }
 
-// Rendring specific cells
+// Rendring specific cells inside the dugga and variant tables
 function renderCell(col, celldata, cellid) {
+	var retString = "";		// The string that will be returned at the end of this function
 
-	// DUGGA-TABLE cellstarts
-	// Numbering the table.
-	if (col == "did") {
-		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
-	}
+	switch(col) {
+		case "did":			// DUGGA-TABLE - Enumeration column
+		case "vid":			// VARIANT-TABLE - Enumeration column
+			retString = celldata;
+			break;
+		
+		case "autograde":	// DUGGA-TABLE - Translates integers to show autograde as yes/no instead
+			switch(celldata) {
+				case "0": retString = "No"; break;
+				case "1": retString = "Yes"; break;
+				default: retString = "Undefined";
+			}
+			break;
 
-	// Translating autograding from integers to show the data like yes/no.
-	else if (col == "autograde") {
-		if (celldata == "0") {
-			celldata = "No";
-		} else if (celldata == "1") {
-			celldata = "Yes";
-		}
-		else {
-			celldata = "Undefined";
-		}
-	}
+		case "gradesystem":	// DUGGA-TABLE - Translates gradesystem integers to corresponding strings
+			switch(celldata) {
+				case "1": retString = "U-G-VG"; break;
+				case "2": retString = "U-G"; break;
+				case "3": retString = "U-3-4-5"; break;
+				default: retString = "Undefined";
+			}
+			break;
+		
+		case "qstart":		// DUGGA-TABLE - Startdate
+		case "deadline":	// DUGGA-TABLE - Deadline
+		case "qrelease":	// DUGGA-TABLE - Result date
+			if(!celldata) {	// if null - return string "N/A"
+				retString = "N/A";
+			} else {		// else - return date without seconds (i.e. last three charachters)
+				var secCutoff = celldata.length - 3;
+				retString = celldata.slice(0, secCutoff);
+			}
+			break;
 
-	// Translating gradsystem from integers so that it shows the possible grades.
-	else if (col == "gradesystem") {
-		if (celldata == "1") {
-			celldata = "U-G-VG";
-		} else if (celldata == "2") {
-			celldata = "U-G"
-		} else if (celldata == "3") {
-			celldata = "U-3-4-5"
-		}
-		else {
-			celldata = "Undefined";
-		}
-	}
+		case "arrow":		// DUGGA-TABLE - Arrow icon
+			clickedElement = JSON.parse(cellid.match(/\d+/));
+			retString = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
+			retString += " onclick='renderVariant(\"" + clickedElement + "\"); showVariantEditor();'>";
+			break;
 
-	// Placing a clickable icon in its designated column that opens a window for acess to variants.
-	else if (col == "arrow") {
-		clickedElement = JSON.parse(cellid.match(/\d+/));
-		str = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' title='Edit Variants'";
-		str += " onclick='renderVariant(\"" + clickedElement + "\"); showVariantEditor();'>";
-		return str;
-	}
+		case "cogwheel":	// DUGGA-TABLE - Cogwheel icon
+			object = JSON.parse(celldata);
+			retString = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
+			retString += " onclick='selectDugga(\"" + object + "\");' >";
+			break;
 
-	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
-	else if (col == "cogwheel") {
+		case "trashcan":	// DUGGA-TABLE - Trashcan icon
+			object = JSON.parse(celldata);
+			retString = "<img id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
+			retString += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"dugga\");' >";
+			break;
+
+		case "param":		// DUGGA-TABLE - Parameter column
+			retString = "<span class='variants-param-col'>" + celldata + "</span>";
+			break;
+
+		case "disabled":	// VARIANT-TABLE - Translades disabled status from integers
+			switch(celldata) {
+				case "0": retString = "<span style='color:black;'>Enabled</span>"; break;
+				case "1": retString = "<span style='color:red;'>Disabled</span>"; break;
+				default: retString = "<span style='color:black; opacity:0.5;'>Undefined</span>";
+			}
+			break;
+
+		case "arrowVariant":	// VARIANT-TABLE - Arrow icon
+			object = JSON.parse(celldata);
+			retString = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
+			retString += " onclick='getVariantPreview( " + object + ", " + clickedElement + ");'>";
+			break;
+
+		case "cogwheelVariant":	// VARIANT-TABLE - Cogwheel icon
 		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' title='Edit Dugga'";
-		str += " onclick='selectDugga(\"" + object + "\");' >";
+			retString = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+			retString += " onclick='selectVariant(" + object + ",this);' >";
+			break;
 
-		return str;
+		case "trashcanVariant":	// VARIANT-TABLE - Trashcan icon
+			object = JSON.parse(celldata);
+			retString = "<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+			retString += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"variant\");' >";
+			break;
+
+		default:			// DUGGA- & VARIANT-TABLES - Return celldata for "regular" cells
+			retString = celldata;
 	}
-
-	// Placing a clickable trash can in its designated column and implementing the code behind it.
-	else if (col == "trashcan") {
-		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/Trashcan.svg' title='Delete'";
-		str += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"dugga\");' >";
-		return str;
-	}
-	// DUGGA-TABLE cellend
-
-	// VARIANT-TABLE cellstart
-	// Numbering the variant table.
-	else if (col == "vid") {
-		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
-	}
-
-	else if (col == "param") {
-		var str = "<span class='variants-param-col'>" + celldata + "</span>";
-		return str;
-	}
-
-	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
-	else if (col == "disabled") {
-		if (celldata == "0") {
-			celldata = "Enabled";
-			str = "<span style='color:black;'>" + celldata + "</span>";
-		} else if (celldata == "1") {
-			celldata = "Disabled";
-			// $("#"+tempRow).css('opacity', '0.5' );
-			str = "<span style='color:red;'>" + celldata + "</span>";
-		}
-		else {
-			celldata = "Undefined";
-			str = "<span style='color:black; opacity:0.5;'>" + celldata + "</span>";
-		}
-		return str;
-	}
-
-	// Placing a clickable arrow in its designated column for previewing the variant.
-	else if (col == "arrowVariant") {
-		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
-		str += " onclick='getVariantPreview( " + object + ", " + clickedElement + ");'>";
-		return str;
-	}
-
-	// Placing a clickable cogwheel in its designated column that select a variant to be edited.
-	else if (col == "cogwheelVariant") {
-		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str += " onclick='selectVariant(" + object + ",this);' >";
-		return str;
-	}
-
-	// Placing a clickable trashcan can in its designated column and implementing the code behind it.
-	else if (col == "trashcanVariant") {
-		object = JSON.parse(celldata);
-		str = "<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
-		str += " onclick='confirmBox(\"openConfirmBox\",\"" + object + "\",\"variant\");' >";
-		return str;
-	}
-	// VARIANT-TABLE cellend
-
-	return celldata;
-}
-// END OF rendering cells
-// END OF rendering tables
-
+	
+	return retString;	// Returns the string/icon to be shown inside the cell
+}	// End of renderCell
 
 //Making dugga headers clickable for sorting.
 function renderSortOptionsDugga(col,status,colname) {
