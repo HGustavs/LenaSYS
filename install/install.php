@@ -50,7 +50,17 @@
 
   /************* MODAL ONLY RELEVANT FOR SYSTEMS NOT WINDOWS  ****************/
   /************* SO WE ONLY SHOW IT FOR NON-WINDOWS SYSTEMS   ****************/
-
+  if($operatingSystem == 'Windows'){
+    echo "
+    <div id='warning' class='modal'>
+      <!-- Modal content -->
+      <div class='modal-content'>
+        <span title='Close pop-up' class='close''>&times;</span>
+          <span id='dialogText'></span>
+      </div>
+    </div> 
+  ";
+  } 
 ?>
 
 <!-- Start permission-modal code -->
@@ -133,14 +143,6 @@
 
 <!-- START OF INPUT FORM SECTION -->
 <form action="install.php?mode=install" method="post">
-  <div id='warning' class='modal'>
-      <!-- Modal content -->
-      <div class='modal-content'>
-        <span title='Close pop-up' class='close''>&times;</span>
-          <span id='dialogText'></span>
-      </div>
-  </div> 
-
   <!-- Input-wrapper holding headings and slides (pages) -->
   <div id="inputWrapper">
     <!-- Headings for each input-slide -->
