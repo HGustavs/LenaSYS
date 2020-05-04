@@ -568,6 +568,12 @@ function saveResponse() {
 	document.getElementById("responseArea").innerHTML = "";
 	$("#previewpopover").css("display", "none");
 }
+//----------------------------------------
+// Clear response textbox on Preview Popover.
+//----------------------------------------
+function clearResponseArea(){
+	document.getElementById("responseArea").innerHTML = "";
+}
 
 //----------------------------------------
 // Renderer
