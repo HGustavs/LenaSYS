@@ -2775,7 +2775,7 @@ function setModeOnRefresh() {
 function setPaperSizeOnRefresh() {
 	const tempPaperSize = localStorage.getItem("paperSize");
 	if(tempPaperSize != null){
-		paperSize = tempPaperSize;
+        paperSize = tempPaperSize;
 	}
 }
 
