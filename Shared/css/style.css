@@ -2239,6 +2239,7 @@ div.submit-button:disabled {
 }
 
 #submitButtonTable{
+  position: relative;
   z-index:500;
 }
 
