@@ -128,7 +128,7 @@
 				</div>
 
 				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item'>
+						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' onclick='createQuickItem();' title='New Item'>
 				</div>
 				<!-- test #1 -->
 
