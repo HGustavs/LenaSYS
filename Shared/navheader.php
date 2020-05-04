@@ -13,6 +13,13 @@
 				$_SESSION['courseid'] = getOPG('cid');
 			else
 				$_SESSION['courseid'] = "UNK";
+				//get course name
+			if (isset($_GET['coursename']))
+				$_SESSION['coursename'] = getOPG('coursename');
+			else if (isset($_GET['coursename']))
+				$_SESSION['coursename'] = getOPG('coursename');
+			else
+				$_SESSION['coursename'] = "UNK";
 
 			if (isset($_GET['coursevers']))
 				$_SESSION['coursevers'] = getOPG('coursevers');
@@ -38,7 +45,7 @@
 					// echo "<td>GREGER!</td>";	
 			}else if($noup=='SECTION'){
 					echo "<a href='";
-					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
