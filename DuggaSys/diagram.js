@@ -5582,8 +5582,15 @@ function setSelectedObjectsProperties(element) {
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;
             } else if(element.id === "name") {
-                object[access[0]] = element.value.split(",")[nameIndex].trim();
-                nameIndex++;
+                const numberOfSeparators = (element.value.match(/,/g) || []).length;
+                const originalNumberOfSeparators = (element.dataset.originalvalue.match(/,/g) || []).length;
+                if(numberOfSeparators === originalNumberOfSeparators) {
+                    element.dataset.originalvalue = element.value;
+                    object[access[0]] = element.value.split(",")[nameIndex].trim();
+                    nameIndex++;
+                } else {
+                    element.value = element.dataset.originalvalue;
+                }
             } else if(access.length === 1) {
                 object[access[0]] = element.value;
             } else if(access.length === 2) {
