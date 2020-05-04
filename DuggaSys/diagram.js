@@ -4908,6 +4908,9 @@ function touchEndEvent(event) {
             updateGraphics();
             return;
         }
+        else if (figureType == "Text") {
+            createText(currentMouseCoordinateX, currentMouseCoordinateY);
+        }
     }
 
     var p1BeforeResize;
