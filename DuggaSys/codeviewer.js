@@ -3180,32 +3180,32 @@ function resizeBoxes(parent, templateId) {
 			containment: parent,
 			handles: "e, s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
-				$(boxValArray['box2']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e, s",
 			start: function (event, ui) {
-				$('iframe').css('pointer-events', 'none');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
-				$(boxValArray['box2']['id']).css("left", " ");
+				document.querySelector(boxValArray['box2']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
-				$('iframe').css('pointer-events', 'auto');
+				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
 		});
 	} else if (templateId == 9) {
