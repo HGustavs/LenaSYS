@@ -4521,18 +4521,34 @@ function mouseupevt(ev) {
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine  && md == mouseState.boxSelectOrCreateMode) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length;
-            erLineA.topLeft = p1;
             erLineA.object_type = "";
+            erLineA.isCardinalityPossible = !([diagram[lineStartObj], hoveredObject].some(symbol => symbol.symbolkind === symbolKind.erAttribute)); //No connected objects are attributes
+            erLineA.topLeft = p1;
             erLineA.bottomRight = p2;
+
+            if(erLineA.isCardinalityPossible) {
+                erLineA.cardinality.value = "";
+                erLineA.cardinality.parentPointIndexes = {
+                    topLeft: hoveredObject.topLeft,
+                    bottomRight: hoveredObject.bottomRight
+                };
+
+                //Reverse points when the hoveredObject is a relation object to have consistent cardinality on entity side
+                if(hoveredObject.symbolkind === symbolKind.erRelation) {
+                    erLineA.topLeft = p2;
+                    erLineA.bottomRight = p1;
+                    erLineA.cardinality.parentPointIndexes.topLeft = diagram[lineStartObj].topLeft;
+                    erLineA.cardinality.parentPointIndexes.bottomRight = diagram[lineStartObj].bottomRight;
+                }
+            }
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
             diagram[lastSelectedObject].targeted = false;
             lastSelectedObject = 0;
-            diagram[lastSelectedObject].targeted = true;
-            selected_objects.push(diagram[lastSelectedObject]);
+            erLineA.targeted = true;
+            selected_objects.push(erLineA);
 
-            createCardinality();
             updateGraphics();
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
@@ -4600,18 +4616,19 @@ function mouseupevt(ev) {
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
+            umlLineA.targeted = true;
+            umlLineA.cardinality.value = "";
+            umlLineA.cardinality.valueUML = "";
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
                 points[umlLineA.topLeft].y = points[umlLineA.bottomRight].y;
             }
             diagram.push(umlLineA);
-            //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length - 1;
-            diagram[lastSelectedObject].targeted = true;
-            selected_objects.push(diagram[lastSelectedObject]);
+            selected_objects.push(umlLineA);
             uimode = "CreateLine";
-            createCardinality();
+
             updateGraphics();
         }
     }
@@ -5235,23 +5252,6 @@ function setSelectedOption(select, value) {
     }
 }
 
-//---------------------------------
-// Creates cardinality at the line
-//---------------------------------
-
-function createCardinality() {
-    //Setting cardinality on new line
-    if(diagram[lineStartObj +1].symbolkind == symbolKind.erRelation) {
-        diagram[0].cardinality = ({"value": "", "isCorrectSide": false, "parentBox": hoveredObject});
-    }
-    else if(diagram[lineStartObj+1].symbolkind == symbolKind.erEntity) {
-        diagram[0].cardinality = ({"value": "", "isCorrectSide": true, "parentBox": hoveredObject});
-    }
-    else if(diagram[lineStartObj+1].symbolkind == symbolKind.uml) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
-    }
-}
-
 const symbolTypeMap = {
     "-1": "Global",
     "0": "Path",
@@ -5514,11 +5514,7 @@ function setSelections(object) {
             const access = element.dataset.access.split(".");
             if(element.tagName === 'SELECT') {
                 let value = "";
-                if(access[0] === "cardinality") {
-                    if(element.style.display !== "none") {
-                        value = object[access[0]][access[1]];
-                    }
-                } else if(access.length === 1) {
+                if(access.length === 1) {
 					value = object[access[0]];
                 } else if(access.length === 2) {
                     value = object[access[0]][access[1]];
@@ -5549,11 +5545,9 @@ function setSelectedObjectsProperties(element) {
             } else if(element.type === "range") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
-                if(element.style.display !== "none") {
-                    if(element.value === "None") {
-                        element.value = "";
-                    }
-                    object[access[0]][access[1]] = element.value;
+                object[access[0]][access[1]] = element.value;
+                if(element.value === "None") {
+                    object[access[0]][access[1]] = "";
                 }
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;

@@ -23,8 +23,7 @@ function Symbol(kindOfSymbol) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.cardinality = 
-      {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null};
+    this.cardinality = {};          //Stores value for UML and ER lines, valueUML for UML lines and parentPointIndexes for ER lines
     this.lineDirection = "First";
     this.recursiveLineExtent = 40;  // Distance out from the entity that recursive lines go
     this.minWidth;
@@ -1813,25 +1812,11 @@ function Symbol(kindOfSymbol) {
     this.drawLine = function(x1, y1, x2, y2) {
         this.isLine = true;
         //Checks if there is cardinality set on this object
-        if(this.cardinality.value != "" && this.cardinality.value != null) {
+        if(this.isCardinalityPossible && this.cardinality.value != "" && this.cardinality.value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality.symbolKind == symbolKind.uml) {
-                var valX = x1 > x2 ? x1-15 : x1+15;
-                var valY = y1 > y2 ? y1-15 : y1+15;
-                var valY2 = y2 > y1 ? y2-15 : y2+15;
-                var valX2 = x2 > x1 ? x2-15 : x2+15;
-                ctx.fillText(this.cardinality.value, valX, valY);
-                ctx.fillText(this.cardinality.valueUML, valX2, valY2);
-            }
-            else if(this.cardinality.isCorrectSide) {
-                this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
-                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
-            }
-            else {
-                this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
-                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
-            }
+            const coordinates = this.moveCardinality(x1, y1, x2, y2);
+            ctx.fillText(this.cardinality.value, coordinates.x, coordinates.y);
         }
 
         ctx.lineWidth = this.properties['lineWidth'] * diagram.getZoomValue();
@@ -1865,37 +1850,32 @@ function Symbol(kindOfSymbol) {
     this.drawUMLLine = function(x1, y1, x2, y2) {
         this.properties['strokeColor'] = '#000000';
         this.properties['lineWidth'] = 2;
-        //Checks if there is cardinality set on this object
-        if(this.cardinality.value != "" && this.cardinality.value != null) {
-            //Updates x and y position
+
+        //Checks if there is cardinality set on either first or second side of line
+        if((this.cardinality.value != "" && this.cardinality.value != null) || (this.cardinality.valueUML != "" && this.cardinality.valueUML != null)) {
             ctx.fillStyle = '#000';
-            if(this.cardinality.symbolKind == symbolKind.uml) {
-                var valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
-                var valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
-                var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
-                var valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
-                if (this.isRecursiveLine) {
-                    let dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent) * diagram.getZoomValue();
-                    if (x1 == x2) {
-                        valX = valX2 = x1 + 20 * dir;
-                        valY = y1 - 13 * diagram.getZoomValue();
-                        valY2 = y2 - 13 * diagram.getZoomValue();
-                    }else {
-                        valY = valY2 = y1 + 20 * dir;
-                        valX = x1 - 17 * diagram.getZoomValue();
-                        valX2 = x2 - 17 * diagram.getZoomValue();
-                    }
+            let valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
+            let valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
+            let valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
+            let valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
+            if (this.isRecursiveLine) {
+                const dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent) * diagram.getZoomValue();
+                if (x1 == x2) {
+                    valX = valX2 = x1 + 20 * dir;
+                    valY = y1 - 13 * diagram.getZoomValue();
+                    valY2 = y2 - 13 * diagram.getZoomValue();
+                }else {
+                    valY = valY2 = y1 + 20 * dir;
+                    valX = x1 - 17 * diagram.getZoomValue();
+                    valX2 = x2 - 17 * diagram.getZoomValue();
                 }
+            }
+            //Only draw the text for the set cardinality side
+            if(this.cardinality.value != "" && this.cardinality.value != null) {
                 ctx.fillText(this.cardinality.value, valX, valY);
+            }
+            if(this.cardinality.valueUML != "" && this.cardinality.valueUML != null) {
                 ctx.fillText(this.cardinality.valueUML, valX2, valY2);
-            }
-            else if(this.cardinality.isCorrectSide) {
-                this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
-                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
-            }
-            else {
-                this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
-                ctx.fillText(this.cardinality.value, this.cardinality.x, this.cardinality.y);
             }
         }
 
@@ -2174,53 +2154,26 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------------
     // moveCardinality: Moves the value of the cardinality to avoid overlap with line
     //---------------------------------------------------------------
-    this.moveCardinality = function(x1, y1, x2, y2, side) {
-        let boxCorners = this.corners();
-        let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
-        
-        const cardinality = this.cardinality;
-        var connectedObjects = this.getConnectedObjects();
+    this.moveCardinality = function(x1, y1, x2, y2) {       
+        const targetobject = getCorners(points[this.cardinality.parentPointIndexes.topLeft], points[this.cardinality.parentPointIndexes.bottomRight]);
+        const line = getCorners(points[this.topLeft], points[this.bottomRight]);
+        const coordinates = {x: x2, y: y2};
 
-	    if(side == "CorrectSide") {
-            var targetobject = getCorners(points[this.cardinality.parentBox.topLeft],points[this.cardinality.parentBox.bottomRight]);
-            var line = getCorners(points[this.topLeft],points[this.bottomRight])
-            if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x){
-                cardinality.x = x2-15;
-                cardinality.y = y2 > y1 ? y2+15 : y2-15;
-            }
-            else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y){
-                cardinality.x = x2 > x1 ? x2+15 : x2-15;
-                cardinality.y = y2-15;
-            }
-            else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x){
-                cardinality.x = x2+15;
-                cardinality.y = y2 > y1 ? y2+15 : y2-15;
-            }
-            else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y){
-                cardinality.x = x2 > x1 ? x2+15 : x2-15;
-                cardinality.y = y2+15;
-            }
-	    }
-	    else if(side == "IncorrectSide") {
-            var targetobject = getCorners(points[this.cardinality.parentBox.topLeft],points[this.cardinality.parentBox.bottomRight]);
-            var line = getCorners(points[this.topLeft],points[this.bottomRight])
-            if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x){
-                cardinality.x = x2-15;
-                cardinality.y = y2 > y1 ? y2+15 : y2-15;
-            }
-            else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y){
-                cardinality.x = x2 > x1 ? x2+15 : x2-15;
-                cardinality.y = y2-15;
-            }
-            else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x){
-                cardinality.x = x2+15;
-                cardinality.y = y2 > y1 ? y2+15 : y2-15;
-            }
-            else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y){
-                cardinality.x = x2 > x1 ? x2+15 : x2-15;
-                cardinality.y = y2+15;
-            }
+        if(targetobject.bl.x == line.br.x && targetobject.tl.x == line.tr.x) {
+            coordinates.x = x2-15 * diagram.getZoomValue();
+            coordinates.y = y2 > y1 ? y2+15 * diagram.getZoomValue() : y2-15 * diagram.getZoomValue();
+        } else if(targetobject.tl.y == line.br.y && targetobject.tr.y == line.bl.y) {
+            coordinates.x = x2 > x1 ? x2+15 * diagram.getZoomValue() : x2-15 * diagram.getZoomValue();
+            coordinates.y = y2-15 * diagram.getZoomValue();
+        } else if(targetobject.br.x == line.bl.x && targetobject.tr.x == line.tl.x) {
+            coordinates.x = x2+15 * diagram.getZoomValue();
+            coordinates.y = y2 > y1 ? y2+15 * diagram.getZoomValue() : y2-15 * diagram.getZoomValue();
+        } else if(targetobject.bl.y == line.tr.y && targetobject.br.y == line.tl.y) {
+            coordinates.x = x2 > x1 ? x2+15 * diagram.getZoomValue() : x2-15 * diagram.getZoomValue();
+            coordinates.y = y2+15 * diagram.getZoomValue();
         }
+        
+        return coordinates;
     }
 
     //---------------------------------------------------------------
