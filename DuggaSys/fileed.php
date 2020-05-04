@@ -166,7 +166,7 @@ $codeLinkQuery->execute();
 
            </div>
             <div id="createNewEmptyFile" style="display: none;">
-                <form action="#" method="POST">
+                <form action="#" method="POST" onsubmit="event.preventDefault(); validateDummyFile();">
                     <label for="newEmptyFile">File name and type e.g greger.txt</label>
                     <input type="text" id="newEmptyFile" name="newEmptyFile" placeholder="Greger.txt">
                     <?php

@@ -220,6 +220,74 @@ function leaveSearch() {
 }
 
 //------------------------------------------------------------------
+// validateDummyFile <- Validates the name and extension of the file
+//------------------------------------------------------------------
+function validateDummyFile() {
+    var allowedExtensions = [
+        "txt",
+        "html",
+        "java",
+        "xml",
+        "js",
+        "css",
+        "php",
+        "sr",
+        "md",
+        "sql",
+        "md",
+        "py",
+        "bat",
+        "xsl"
+    ];
+
+    var filterSymbols = [
+        "<",
+        ">",
+        ":",
+        ",",
+        "|",
+        "*",
+        "?",
+        "=",
+        "\"",
+        "/",
+        "\\"
+    ];
+
+    var name = document.getElementById("newEmptyFile").value;
+
+    // Trim name
+    console.log("Name: " + name);
+    name = name.trim();
+    console.log("Name trimmed: " + name);
+
+    // Get filename
+    var filename = name.substring(0, name.indexOf("."));
+    console.log(filename);
+
+    // Get extension
+    var extension = name.substring(name.lastIndexOf(".") + 1);
+    console.log(name);
+
+    // Check for invalid characters
+    for (var i = 0; i < name.length; i++) {
+        if (filterSymbols.includes(name[i])) {
+            console.log("That character is not allowed: " + name[i]);
+            break;
+        }
+    }
+
+    // Check if extension is valid
+    if (allowedExtensions.includes(extension)) {
+        console.log("yay");
+    } else {
+        console.log("nay");
+    }
+
+    return false;
+}
+
+//------------------------------------------------------------------
 // validateForm <- Validates the file that is going to be uploaded
 //------------------------------------------------------------------
 function validateForm() {
