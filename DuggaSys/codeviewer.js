@@ -2209,7 +2209,8 @@ function closeEditContent() {
 //----------------------------------------------------------------------------------
 
 function closeEditExample() {
-	$("#editExampleContainer").css("display", "none");
+	var closeEditExample = document.getElementById("editExampleContainer");
+	closeEditExample.style.display = "none";
 }
 
 //----------------------------------------------------------------------------------
