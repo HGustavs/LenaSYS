@@ -2941,7 +2941,6 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
-				$(boxValArray['box1']['id']).width("100%");
 				document.getElementById(boxValArray['box1']['id']).style.width = "100%";
 			},
 			stop: function (e, ui) {
