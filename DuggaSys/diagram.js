@@ -5575,6 +5575,10 @@ function setErCardinalityElementDisplayStatus(object) {
     }
 }
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// showFormGroups: Resets the form to the state before previous creation to remove old collapsibles. Shows all form groups having the type in the passed array and groups them into new collapsibles.
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function showFormGroups(typesToShow) {
     const form = document.getElementById("appearanceForm");
 
@@ -5617,13 +5621,25 @@ function getCollapsibleStructure(formGroups, typesToShow) {
     }, []);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------
+// containsAll: Checks if array2 contains every single item in array1. Returns true if this is the case, otherwise false.
+//-----------------------------------------------------------------------------------------------------------------------
+
 function containsAll(array1, array2) {
     return array1.every(item => array2.includes(item));
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+// sameMembers: Checks if array1 and array2 has the exact same members (not necessarily same position of items). Returns true if this is the case, otherwise false.
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function sameMembers(array1, array2) {
     return containsAll(array1, array2) && containsAll(array2, array1);
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getTextareaText: Parsing an array of objects where each object contains a text property, adding a new line after each text object excpet the last row and returns textarea content in plain text.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function getTextareaText(array) {
     let text = "";
@@ -5635,6 +5651,10 @@ function getTextareaText(array) {
     }
     return text;
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getTextareaArray: Converts passed textarea plain text into an array of objects each with a text property. The plain text is splitted by possible separators and the correct part is selected by passed index.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function getTextareaArray(element, index) {
     const objectText = element.value.split(separators.textarea);
