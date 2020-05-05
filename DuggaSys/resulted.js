@@ -1024,6 +1024,7 @@ function renderCell(col, celldata, cellid) {
 				}
 			}
 			str += ">";
+			console.log(celldata.submitted);
 			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 			} else if (celldata.submitted != null && celldata.submitted.getTime === timeZero.getTime()) {
