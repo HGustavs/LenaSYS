@@ -128,8 +128,9 @@
 				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid LIKE "%'.$courseid.'%" AND courseversion LIKE "%'.$coursevers.'%" ORDER BY announceTime DESC') AS $headline){
 	             $headlines = $headline['title'];
 	             $message = $headline['message'];
+	             $announcementid = $headline['id'];
 	             $announceTime = $headline['announceTime'];
-	             echo "<tr><th><a href='#'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA'><a href='#'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
+	             echo "<tr><th><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
 
 	            }    
 
@@ -141,6 +142,8 @@
 
 		<?php 
 			include '../Shared/announcementBox.php';
+			include '../Shared/fullAnnouncement.php';
+
 		?>
 
 		<!-- + button --->

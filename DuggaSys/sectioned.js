@@ -1603,6 +1603,7 @@ $(window).load(function () {
   });
   $("#announcement").click(function(){
     $("#announcementBox").toggle();
+    $('#fullAnnouncement').hide();
 
   });
   $("#newAnnouncement").click(function(){
@@ -1617,6 +1618,10 @@ $(window).load(function () {
   });
 });
 
+//show the full announcement
+function showAnnouncement(){
+  document.getElementById('fullAnnouncement').style.display="block";
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);

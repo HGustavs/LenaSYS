@@ -352,7 +352,8 @@ p {
   display:none;
 }
 /*Announcement box*/
-#announcementBox{
+#announcementBox,
+#fullAnnouncement{
   background-color:  #f2f2f2;
   border: 2px solid #bdbdbd;
   padding: 15px;
