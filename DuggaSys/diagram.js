@@ -5662,6 +5662,10 @@ function getTextareaArray(element, index) {
     return indexTextLines.map(text => ({"text": text}));
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------------
+// setGlobalSelections: Used when the global appearance menu is opened to select the correct options in selects based on stored global properties.
+//------------------------------------------------------------------------------------------------------------------------------------------------
+
 function setGlobalSelections() {
     const groups = getGroupsByTypes([-1]);
     groups.forEach(group => {
@@ -5672,6 +5676,10 @@ function setGlobalSelections() {
         }
     });
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setGlobalProperties: Used when the global appearance menu is submitted to set the global properties to the newly selected properties. Also updates each existing object in the diagram to the new properties.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalProperties() {
     const groups = getGroupsByTypes([-1]);
@@ -5685,6 +5693,10 @@ function setGlobalProperties() {
     });
     updateGraphics();
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setSelections: Used for each selected object when the normal appearance menu is opened to select the correct options in selects based on the properties in the passed object.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setSelections(object) {
     const groups = getGroupsByTypes([object.symbolkind || 0]);
@@ -5710,6 +5722,10 @@ function setSelections(object) {
     });
 }
 
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setSelectedObjectsProperties: Used when a input/select/textarea is changed in the normal appearance form, to update all selected objects according to the new properties.
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setSelectedObjectsProperties(element) {
     const types = element.parentNode.dataset.types.split(",");
