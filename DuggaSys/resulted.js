@@ -922,10 +922,10 @@ function renderCell(col, celldata, cellid) {
 						}
 					}
 					str += ">";
-					if (celldata.submitted.getTime() !== timeZero.getTime()) {
-						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
-					} else {
+					if (celldata.submitted.getTime() === timeZero.getTime()) {
 						str += "Not submitted";
+					} else {
+						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 					}
 					
 					for (var p = 0; p < moments.length; p++) {
