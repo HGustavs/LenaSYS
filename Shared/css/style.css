@@ -579,6 +579,23 @@ p {
   color: #612;
 }
 
+#dugga4Container{
+  display:flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1050px){
+  #dugga4Container{
+    flex-direction: column;
+    justify-content: initial;
+    align-items: center;
+  }
+
+  #dugga4Container #toolbox{
+    margin: 15px 0;
+  }
+}
+
 /* Instruction and submission of dugga */
 
 #leftDivDialog,
