@@ -856,6 +856,8 @@ function renderCell(col, celldata, cellid) {
 				str += "<div class='text-center resultTableText'>";
 				if (celldata.submitted.getTime() !== timeZero.getTime()) {
 					str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+				} else {
+					str += "Not Submitted";
 				}
 				for (var p = 0; p < moments.length; p++) {
 					if (moments[p].link == celldata.quizId) {
@@ -922,10 +924,9 @@ function renderCell(col, celldata, cellid) {
 						}
 					}
 					str += ">";
-					if (celldata.submitted.getTime() === timeZero.getTime()) {
-						str += "<p>Not submitted</p>";
-					} else {
-						str += celldata.submitted.toLocaleDateString() + " random shit " + celldata.submitted.toLocaleTimeString();
+					
+					if (celldata.submitted.getTime() !== timeZero.getTime()) {
+						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 					}
 					
 					for (var p = 0; p < moments.length; p++) {
