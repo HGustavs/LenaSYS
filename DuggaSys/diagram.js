@@ -1170,6 +1170,16 @@ function copyPath(path) {
     return clone;
 }
 
+function drawDot(){
+    let crossSize = 4 * zoomValue;
+    ctx.beginPath();
+    ctx.moveTo(pixelsToCanvas(currentMouseCoordinateX).x - crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y - crossSize);
+    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x + crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y + crossSize);
+    ctx.moveTo(pixelsToCanvas(currentMouseCoordinateX).x + crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y - crossSize);
+    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x - crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y + crossSize);
+    ctx.stroke();
+}
+
 //--------------------------------------------------------------------
 // drawCross: Draws a cross at point position
 //--------------------------------------------------------------------
@@ -2412,6 +2422,10 @@ function updateGraphics() {
     if(developerModeActive) {
         drawOrigo();
         drawCrosshair();
+    }
+    // Mark the last freedraw point on mobiles
+    if (uimode == "CreateFigure" && figureType == "Free" && isMobile) {
+        drawDot(); 
     }
     diagram.sortConnectors();
     diagram.updateQuadrants();
