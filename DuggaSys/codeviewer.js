@@ -306,9 +306,6 @@ function returned(data)
 	//hides maximize button if not supported
 	hideMaximizeAndResetButton();
 
-	//hides minimize button if not supported
-	hideMinimizeButton()
-
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
 
@@ -1040,49 +1037,6 @@ function changeboxcontent(boxcontent, boxid) {
    HTML freeform editing code
 
 *********************************************************************************/
-
-//----------------------------------------------------------------------------------
-// Switches Dropdown List to Visible
-//			Used by switchDrop
-//----------------------------------------------------------------------------------
-
-function hideDrop(dname) {
-	var dropd = $("#" + dname);
-	if (dropd != null) dropd.style.display = "none";
-}
-
-//----------------------------------------------------------------------------------
-// Switches Dropdown List to Visible
-//				Is never used, code is kept for future use
-//----------------------------------------------------------------------------------
-
-function switchDrop(dname) {
-	var dropd = $("#" + dname);
-	if (dropd.style.display == "block") {
-		$(dropd).slideUp("fast");
-	} else {
-		hideDrop("forwdrop");
-		hideDrop("backwdrop");
-		$('#hotdogdrop').hide();
-		$(dropd).slideDown("fast");
-		dropd.style.display = "block";
-	}
-}
-
-//----------------------------------------------------------------------------------
-// Reads value from Dropdown List
-//				Is never used, code is kept for future use
-//----------------------------------------------------------------------------------
-
-function issetDrop(dname) {
-	var dropd = $("#" + dname);
-	if (dropd.style.display == "block") {
-		return true;
-	} else {
-		return false;
-	}
-}
-
 //----------------------------------------------------------
 // highlightKeyword: Highlights and Dehighlights an important word from the important word list
 //                Is called by [this function] in codeviewer.js
@@ -2337,6 +2291,7 @@ function minimizeBoxes(boxid) {
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
+}
 
 function hideCopyButtons(templateid, boxid) {
 	var totalBoxes = getTotalBoxes(templateid);
@@ -3137,7 +3092,7 @@ function maximizeBoxes(boxid) {
 	}
 }
 
-//hide maximizeButton, resetButton and minimizeButton
+//hide maximizeButton
 function hideMaximizeAndResetButton() {
 	var templateid = retData['templateid'];
 	if (templateid > 9) {
@@ -3388,6 +3343,7 @@ function resetBoxes() {
 
 function resizeBoxes(parent, templateId) {
 	var boxValArray = initResizableBoxValues(parent);
+	var remainWidth;
 
 	if (templateId == 1) {
 		getLocalStorageProperties(templateId, boxValArray);
@@ -3549,6 +3505,8 @@ function resizeBoxes(parent, templateId) {
 	} else if (templateId == 6) {
 
 		getLocalStorageProperties(templateId, boxValArray);
+		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
+
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -3558,6 +3516,7 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+				$(boxValArray['box1']['id']).height(100 + "%");
 
 			},
 			stop: function (e, ui) {
@@ -3590,15 +3549,15 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box3']['id']).css("left", " ");
+				$(boxValArray['box4']['id']).css("top", " ");
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
+				$(boxValArray['box4']['id']).css("top", " ");
 				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events', 'auto');
 			}
 		});
-
 	} else if (templateId == 7) {
 		getLocalStorageProperties(templateId, boxValArray);
 		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
@@ -3625,7 +3584,6 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box1']['id']).css("left", " ");
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 				alignWidthTemplate7(boxValArray, 3, 2, 4, 1);
 			},
@@ -3634,7 +3592,6 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'auto');
 			}
 		});
-		
 		$(boxValArray['box4']['id']).resizable({
 			containment: parent,
 			handles: "e",
@@ -3642,7 +3599,6 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", "");
 				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
 			},
 			stop: function (e, ui) {
@@ -4008,11 +3964,17 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird) {
 
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+
+
 	var remainWidthPer = (remainWidth / boxValArray['parent']['width']) * 100;
 	var basePer = 100 - remainWidthPer;
 
+
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
 	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+
 
 	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
@@ -4085,6 +4047,9 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
+
 	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
@@ -4155,8 +4120,8 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 	var atry2 = (atry / boxValArray['parent']['height']) * 100;
 
-	if (remainHeightPer <= 10) { // When Box3 is at minimum size.
-		
+	if (remainHeightPer <= 10) {
+
 		atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 		atry2 = (atry / boxValArray['parent']['height']) * 100;
 
@@ -4165,7 +4130,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-	} else { // When Box3 is greater than minimum size.
+	} else {
 		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
@@ -4188,23 +4153,16 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 	var basePer = 100 - (remainHeightPer + alignSecondPer);
 	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 	var atry2 = (atry / boxValArray['parent']['height']) * 100;
-	
-	if (atry2 <= 10) { // When Box4 is at minimum size.
-		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-	// Note: it is set to >= 79.5 instead of 80 because when maximizing, atry2 never reaches 80% but anything bewteen 79.5 and 79.99.
-	}else if(atry2 >= 79.5) { // When Box4 is at maximum size. 
-		$(boxValArray['box' + boxNumBase]['id']).css("height", remainHeightPer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).css("top", remainHeightPer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%",);
-	} else { // When Box4 is between minimum and maximum size.
-		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
+
+	if (atry2 <= 10) {
+		$("#box3wrapper").css({
+			"top": basePer + "%",
+			"height": remainHeightPer + "%"
+		});
+	} else {
+		$("#box4wrapper").height(atry2 + "%");
 	}
 
-	//Update array
-	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-	boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
-	boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
 }
 
 //----------------------------------
