@@ -5395,6 +5395,11 @@ function loadGlobalAppearanceForm() {
     setGlobalSelections();
 }
 
+const separators = {
+    input: "~",
+    textarea: "~\n"
+};
+
 let appearanceObjects = [];
 
 function loadAppearanceForm() {
@@ -5445,16 +5450,20 @@ function loadAppearanceForm() {
     showFormGroups(types);
     toggleApperanceElement(true);
     
+    const nameElement = document.getElementById("name");
+    const freeTextElement = document.getElementById("freeText");
+    const umlOperationsElement = document.getElementById("umlOperations");
+    const umlAttributesElement = document.getElementById("umlAttributes");
     let erCardinalityVisible = false;
 
     appearanceObjects.forEach(object => {
         if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
-            const nameElement = document.getElementById("name");
             indexes.name.current++;
             nameElement.value += object.name;
             if(indexes.name.max > indexes.name.current) {
-                nameElement.value += ", ";
+                nameElement.value += `${separators.input} `;
             }
+            nameElement.dataset.originalvalue = nameElement.value;
             nameElement.focus();
         }
 
@@ -5483,21 +5492,23 @@ function loadAppearanceForm() {
             }
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
-            const textarea = document.getElementById("freeText");
             indexes[symbolKind.text].current++;
-            textarea.value += getTextareaText(object.textLines);
+            freeTextElement.value += getTextareaText(object.textLines);
             if(indexes[symbolKind.text].max > indexes[symbolKind.text].current) {
-                textarea.value += ",\n";
+                freeTextElement.value += separators.textarea;
             }
-            textarea.focus();
+            freeTextElement.dataset.originalvalue = freeTextElement.value;
+            freeTextElement.focus();
         } else if(object.symbolkind === symbolKind.uml) {
             indexes[symbolKind.uml].current++;
-            document.getElementById("umlOperations").value += getTextareaText(object.operations);
-            document.getElementById("umlAttributes").value += getTextareaText(object.attributes);
+            umlOperationsElement.value += getTextareaText(object.operations);
+            umlAttributesElement.value += getTextareaText(object.attributes);
             if(indexes[symbolKind.uml].max > indexes[symbolKind.uml].current) {
-                document.getElementById("umlOperations").value += ",\n";
-                document.getElementById("umlAttributes").value += ",\n";
+                umlOperationsElement.value += separators.textarea;
+                umlAttributesElement.value += separators.textarea;
             }
+            umlOperationsElement.dataset.originalvalue = umlOperationsElement.value;
+            umlAttributesElement.dataset.originalvalue = umlAttributesElement.value;
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
@@ -5553,18 +5564,16 @@ function getTextareaText(array) {
     for (let i = 0; i < array.length; i++) {
         text += array[i].text;
         if (i < array.length - 1) {
-            text += "\n";
+            text += separators.textarea;
         }
     }
     return text;
 }
 
 function getTextareaArray(element, index) {
-    const objectText = element.value.split(",\n");
+    const objectText = element.value.split(separators.textarea);
     const indexTextLines = objectText[index].split("\n");
-    const array = [];
-    indexTextLines.forEach(text => array.push({"text": text}));
-    return array;
+    return indexTextLines.map(text => ({"text": text}));
 }
 
 function setGlobalSelections() {
@@ -5626,7 +5635,15 @@ function setSelectedObjectsProperties(element) {
         if((types.includes((object.symbolkind || 0).toString()))) {
             const access = element.dataset.access.split(".");
             if(element.nodeName === "TEXTAREA") {
-                object[access[0]] = getTextareaArray(element, textareaIndex);
+                const numberOfSeparators = (element.value.match(new RegExp(separators.textarea, "g")) || []).length;
+                const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separators.textarea, "g")) || []).length;
+                console.log(numberOfSeparators, originalNumberOfSeparators);
+                if(numberOfSeparators === originalNumberOfSeparators) {
+                    element.dataset.originalvalue = element.value;
+                    object[access[0]] = getTextareaArray(element, textareaIndex);
+                } else {
+                    element.value = element.dataset.originalvalue;
+                }
                 textareaIndex++;
             } else if(element.type === "range") {
                 object[access[0]] = element.value / 100;
@@ -5638,7 +5655,14 @@ function setSelectedObjectsProperties(element) {
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;
             } else if(element.id === "name") {
-                object[access[0]] = element.value.split(",")[nameIndex].trim();
+                const numberOfSeparators = (element.value.match(new RegExp(separators.input, "g")) || []).length;
+                const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separators.input, "g")) || []).length;
+                if(numberOfSeparators === originalNumberOfSeparators) {
+                    element.dataset.originalvalue = element.value;
+                    object[access[0]] = element.value.split(separators.input)[nameIndex].trim();
+                } else {
+                    element.value = element.dataset.originalvalue;
+                }
                 nameIndex++;
             } else if(access.length === 1) {
                 object[access[0]] = element.value;
