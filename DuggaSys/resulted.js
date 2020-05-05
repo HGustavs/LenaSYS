@@ -1533,7 +1533,7 @@ $(window).scroll(function() {
 			'transform': 'translateX(' + scrolled +'px'+ ')'
 			
 		});
-		legendBox.css("top", "113px");
+		legendBox.css("top", "103px");
 	}
 	if ($(window).scrollTop() == 0){
 		legendBox.css("top", "80px");
@@ -1550,7 +1550,7 @@ function showLegend(){
 	var legendBox = $('#resultedLegendContainer');
 	if (legendIsHidden == false){
 		
-		legendBox.css("right", "-353px");
+		legendBox.css("right", "-323px");
 		legendIsHidden = true;
 	}
 	else if (legendIsHidden == true){
