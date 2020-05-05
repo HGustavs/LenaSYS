@@ -1671,7 +1671,7 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
-	const $containerHeight = $("#servermsgcontainer");
+	var $containerHeight = $("#servermsgcontainer");
 	$containerHeight.animate({ 
 		opacity: 0, 
 		top: -$containerHeight.outerHeight() 
