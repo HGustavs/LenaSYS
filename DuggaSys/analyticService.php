@@ -66,7 +66,30 @@ function generalStats() {
 		WHERE
 			eventType = '.EventTypes::LoginFail.';
 	')->fetchAll(PDO::FETCH_ASSOC);
-	echo json_encode($result[0]);
+
+
+	$generalStats = [];
+	$generalStats['stats']['loginFails'] = $result[0];
+
+	// Disk space calculation
+	$total = disk_total_space(".");
+	$current = disk_free_space(".");
+	$totalFreePercentage = ($current - 0) * 100 / ($total - $current);
+	$totalInUsePercentage = ($totalFreePercentage-100) * -1;
+	$generalStats['disk']['free'] = convertBytesToHumanreadable(disk_free_space("."));
+	$generalStats['disk']['freePercent'] = $totalFreePercentage;
+	$generalStats['disk']['total'] = convertBytesToHumanreadable(disk_total_space("."));
+	$generalStats['disk']['totalPercent'] = $totalInUsePercentage;
+	
+	echo json_encode($generalStats);
+}
+
+// Convert bytes to mb, gb and so on in a human readable format
+function convertBytesToHumanreadable($bytes) {
+    $si_prefix = array( 'B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB' );
+    $base = 1024;
+    $class = min((int)log($bytes , $base) , count($si_prefix) - 1);
+	return sprintf('%1.2f' , $bytes / pow($base,$class)) . ' ' . $si_prefix[$class];
 }
 
 //------------------------------------------------------------------------------------------------
