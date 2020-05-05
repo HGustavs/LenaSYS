@@ -5787,6 +5787,10 @@ let appearanceMouseDownElement = null;
 //Stores a copy of the appearance form HTML-element with its childnodes
 let originalAppearanceForm = null;
 
+//-------------------------------------------------------------------------------
+// initAppearanceForm: Sets correct eventlisteners to the existing form elements.
+//-------------------------------------------------------------------------------
+
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     formGroups.forEach(group => {
@@ -5820,6 +5824,10 @@ function initAppearanceForm() {
     originalAppearanceForm = document.getElementById("appearanceForm").cloneNode(true);
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+// getGroupsByTypes: Returns all form-groups that has a type included in the passed array in its data-attribute for types.
+//------------------------------------------------------------------------------------------------------------------------
+
 function getGroupsByTypes(typesToShow) {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     return [...formGroups].filter(group => {
@@ -5828,8 +5836,10 @@ function getGroupsByTypes(typesToShow) {
     });
 }
 
+//----------------------------------------------------------------------------------------
+// submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
+//----------------------------------------------------------------------------------------
 
-//Shoud simulate button click or enter click in appearance menu to save and close
 function submitAppearanceForm() {
     selected_objects.forEach(object => {
         if(object.symbolkind === symbolKind.uml) {
