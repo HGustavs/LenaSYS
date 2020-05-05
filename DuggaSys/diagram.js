@@ -2392,15 +2392,13 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
+   if(developerModeActive) drawOrigo();
     diagram.sortConnectors();
     diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
     drawVirtualPaper();
-    if(developerModeActive) {
-        drawOrigo();
-        drawCrosshair();
-    }
+    if(developerModeActive) drawCrosshair();
 }
 
 //---------------------------------------------------------------------------------
