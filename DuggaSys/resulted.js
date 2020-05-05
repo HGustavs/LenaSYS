@@ -854,13 +854,9 @@ function renderCell(col, celldata, cellid) {
 
 				// Print submitted time and change color to red if passed deadline
 				str += "<div class='text-center resultTableText'>";
-				console.log(celldate.submitted.getTime());
-				console.log("testing");
-				//if (celldata.submitted.getTime() !== timeZero.getTime()) {
-				//	str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
-				//} else {
-				//	str += "Not Submitted";
-				//}
+				if (celldata.submitted.getTime() !== timeZero.getTime()) {
+					str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+				}
 				for (var p = 0; p < moments.length; p++) {
 					if (moments[p].link == celldata.quizId) {
 						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
@@ -1030,6 +1026,8 @@ function renderCell(col, celldata, cellid) {
 			str += ">";
 			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+			} else {
+				str += "Not submitted"
 			}
 			for (var p = 0; p < moments.length; p++) {
 				if (moments[p].link == celldata.quizId) {
