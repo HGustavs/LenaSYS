@@ -4,7 +4,7 @@
   <script src="../Shared/js/jquery-1.11.0.min.js"></script>
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
   <script src="install_entry.js"></script>
-  <script src="install.js" defer></script>
+  <script src="install_defer.js" defer></script>
 </head>
 <body>
 <?php

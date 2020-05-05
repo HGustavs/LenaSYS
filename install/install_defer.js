@@ -1,3 +1,7 @@
+//------------------------------------------------------------------------------------------------------
+// JavaScript defer file. Stuff that needs to be loaded defer (after php-file have been run) goes here.
+//------------------------------------------------------------------------------------------------------
+
 var btn = document.getElementById("showModalBtn");
 var modalRead = false; // Have the user read info?
 var leftArrow = document.getElementById('leftArrow');
@@ -227,3 +231,4 @@ function createDBchange(checkbox) {
       $("#DBboxes").hide("slide", {direction: "left" }, 500);
   }
 }
+
