@@ -1051,11 +1051,11 @@ function returnedSection(data) {
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
     
   // Sets a title on the course heading name
-  if(versionname!=null || versionname!=""){
+  if(versionname!=null || versionname!="" && data.coursename!=null || data.coursenamne!="" && data.coursecode!=null || data.coursecode!=""){
   document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
   }
   else{
-    document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " ;
+    document.getElementById("course-coursename").title =  " UNKNOWN" ;
   }
 
   drawPieChart(); // Create the pie chart used in the statistics section.
