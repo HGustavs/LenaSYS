@@ -264,7 +264,7 @@
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
-				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters</p>
+				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 non-nordic symbols</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
@@ -291,7 +291,7 @@
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
 				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
-				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters</p>
+				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 non-nordic symbols</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 			</div>
 			<div style='padding:5px;'>
