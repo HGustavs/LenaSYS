@@ -275,8 +275,11 @@ function mouseOutHome() {
    }
 }
 
-document.getElementById("upIcon").addEventListener("mouseover", mouseOverUp);
-document.getElementById("upIcon").addEventListener("mouseout", mouseOutUp);
+var backButton = document.getElementById("upIcon");
+if(backButton){
+	backButton.addEventListener("mouseover", mouseOverUp);
+	backButton.addEventListener("mouseout", mouseOutUp);
+}
 
 function mouseOverUp() {
 	var obj = document.getElementById("upIcon");
