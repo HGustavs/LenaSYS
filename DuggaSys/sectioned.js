@@ -1607,8 +1607,10 @@ $(window).load(function () {
   });
   $("#newAnnouncement").click(function(){
     $("#modal").toggle();
-    $("#modal").click(function(){
-      $("#modal").hide();
+    $(window).click(function(e) {
+      if(e.target.id == "modal"){
+        $("#modal").hide(); 
+      }
     });
 
 
