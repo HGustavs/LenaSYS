@@ -68,12 +68,11 @@
             "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
             "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
             "current owner: " +
-            if(function_exists('posix_getpwuid')) {
-                echo posix_getpwuid(fileowner($putFileHere))['name'];
+            "<?php if(function_exists('posix_getpwuid')) {
+                echo posix_getpwuid(filegroup($putFileHere))['name'];
             } else {
-                echo getenv(fileowner($putFileHere))['name'];
-            }
-            +
+                echo getenv(filegroup($putFileHere))['name'];
+            }?>" +
             "<br><br>" +
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
