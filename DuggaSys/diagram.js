@@ -5260,6 +5260,10 @@ function toggleCameraView(){
     activateMovearound();
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// toggleApperanceElement: Sets display status of appearance menu by the passed boolean value. If global appearance menu was closed, recent diagram is loaded from localStorage to revert changes if not submitted and only closed (by 'X' or click outside of form).
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function toggleApperanceElement(show = false) {
     const appearanceElement = document.getElementById("appearance");
     if(show) {
@@ -5348,6 +5352,10 @@ const symbolTypeMap = {
     "7": "UML line"
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// createCollapsible: Creates a collapsible element containing the form-groups passed. Types is an array used to concatenate the title from. Index is used to to open the first created collapsible.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function createCollapsible(formGroups, types, index) {
     const collapsibleElement = document.createElement("div");
     const objectTypesElement = document.createElement("div");
@@ -5385,6 +5393,10 @@ function createCollapsible(formGroups, types, index) {
     document.getElementById("appearanceForm").appendChild(collapsibleElement);
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// loadGlobalAppearanceForm: Shows the appearance menu and shows all form groups having type -1 (global). Sets selected values for all inputs/selects.
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 function loadGlobalAppearanceForm() {
     showFormGroups([-1]);
     globalappearanceMenuOpen = true;
@@ -5399,6 +5411,10 @@ const separators = {
 };
 
 let appearanceObjects = [];
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+// loadAppearanceForm: Shows the appearance menu and shows all form groups related to the selected objects. Sets values for all input elements/selects/textareas.
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function loadAppearanceForm() {
     appearanceObjects = [];
