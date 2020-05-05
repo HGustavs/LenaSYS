@@ -1024,11 +1024,12 @@ function renderCell(col, celldata, cellid) {
 				}
 			}
 			str += ">";
-			console.log(celldata);
+
 			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 			} else if (!unassignedCheck && celldata.submitted.getTime() === timeZero.getTime()) {
 				str += "Not submitted";
+				//Checks if the cells does exist, are assigned but not yet submitted for grading.
 			}
 			for (var p = 0; p < moments.length; p++) {
 				if (moments[p].link == celldata.quizId) {
