@@ -777,7 +777,9 @@ document.addEventListener('click', function(e){
 			}
 		}
 	}else{
-		activeDropdown.style.display = "none";
+		if(activeDropdown){
+			activeDropdown.style.display = "none";
+		}
 		activeDropdown = undefined;
 	}
 });
