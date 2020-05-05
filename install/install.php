@@ -92,10 +92,6 @@
 
   setPermissionModalText(owner, filePath, operatingSystem);
 
-  if(operatingSystem != Windows){
-    modal.style.display = "block";
-  }
-
   //---------------------------------------------------------------------------------------------------
   // setPermissionModalText, function to set the text of the permission-modal, getPermission is in install_entry
   //---------------------------------------------------------------------------------------------------
@@ -826,8 +822,11 @@
 <!-- END OF INSTALL SECTION -->
 
 <script>
-  /* Show modal */
-  
+  var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
+  if (operatingSystem != "Windows"){
+    modal.style.display = "block";
+  }
+
   var showHideButton = document.getElementById('showHideInstallation');
 
   if (showHideButton !== null){
