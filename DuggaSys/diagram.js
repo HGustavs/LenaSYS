@@ -5444,15 +5444,7 @@ function loadAppearanceForm() {
             }
             document.getElementById("typeLine").focus();
         } else if(object.symbolkind === symbolKind.umlLine) {
-            //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
-            const connectedObjectsArray = object.getConnectedObjects();
-            document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
-            //Selection to check if relation is to the same entity. If so: both are named from object 0
-            if(typeof connectedObjectsArray[1] == "undefined"){
-                document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
-            } else {
-                document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
-            }
+            setLineDirectionElementUML(object);
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
             indexes[symbolKind.text].current++;
@@ -5524,9 +5516,9 @@ function setNameIndexes(indexes, types) {
     };
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// setNameElement: Sets the value of the name input element based on passed objects and uses passed index create a separator between object names if not last object
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setNameElement: Sets the value of the name input element based on passed objects and uses passed index create a separator between object names if not last object.
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setNameElement(object, index) {
     const nameElement = document.getElementById("name");
@@ -5538,6 +5530,22 @@ function setNameElement(object, index) {
         }
         nameElement.dataset.originalvalue = nameElement.value;
         nameElement.focus();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setLineDirectionElementUML: Runs for UML line objects. Appends the name of connected object names to correct option in the lineDirection select. Takes recursive lines into consideration.
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setLineDirectionElementUML(object) {
+    const connectedObjectsArray = object.getConnectedObjects();
+    document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
+
+    //Check if relation is to the same entity. If so: both are named from object 0.
+    if(typeof connectedObjectsArray[1] == "undefined"){
+        document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
+    } else {
+        document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
     }
 }
 
