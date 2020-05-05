@@ -26,14 +26,14 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 // adapted from https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
 //----------------------------------------------------------------------------------
 function getAllIndexes(haystack, needle) {
-    let indexes = [];
-    if(haystack===null||needle===null||needle==="") return indexes;
-    let i = haystack.indexOf(needle);
-    while (i !== -1) {
-        indexes.push(i);
-        i = haystack.indexOf(needle, ++i);
-    }
-    return indexes;
+	var indexes = [];
+	if(haystack===null||needle===null||needle==="") return indexes;
+	var i = haystack.indexOf(needle);
+	while (i !== -1) {
+		indexes.push(i);
+		i = haystack.indexOf(needle, ++i);
+	}
+	return indexes;
 }
 
 //Set the localstorage item securitynotifaction to on or off
