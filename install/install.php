@@ -45,12 +45,21 @@
 
   ob_start();
 
-  /************* MODAL TO SHOW STEPS BEFORE AND AFTER ****************/
+  function getUsername($currentPath) {
+    $username = null;
+
+    if(function_exists('posix_getpwuid')) {
+      $username = posix_getpwuid(filegroup($currentPath))['name'];
+    } else {
+      $username = getenv(filegroup($currentPath))['name'];
+    }
+
+    return $username;
+  }
+
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
   $operatingSystem = PHP_OS_FAMILY;
-
-  /************* MODAL ONLY RELEVANT FOR SYSTEMS NOT WINDOWS  ****************/
-  /************* SO WE ONLY SHOW IT FOR NON-WINDOWS SYSTEMS   ****************/
+  $username = getUsername($putFileHere)
 ?>
 
 <div id='warning' class='modal'>
@@ -61,10 +70,12 @@
       </div>
 </div> 
 
+<!-- Script to set the local variables of the running system !-->
 <script>
   var setFilePath = <?php echo json_encode($putFileHere); ?>;
   var setOperatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
-</script>'
+  var setOwner = <?php echo json_encode($username); ?>;
+</script>
   
 <!-- Start permission-modal code -->
 <script>
@@ -72,6 +83,7 @@
     var modal = document.getElementById('warning'); // Get the modal
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
     var filePath = setFilePath;
+    var owner = setOwner;
     var os = setOperatingSystem; // Get O/S of the system running the installer
     var firstText = setFirstText(os); // Set first text depending on O/S
     var secondText = setSecondText(os); // Set second text depending on O/S
@@ -80,13 +92,7 @@
     "-!- READ THIS BEFORE YOU START -!-</h1><br>" +
     firstText +
     "<br><br>" +
-    "current owner: " +
-      "<?php 
-          if(function_exists('posix_getpwuid')) {
-              echo posix_getpwuid(filegroup($putFileHere))['name'];
-          } else {
-              echo getenv(filegroup($putFileHere))['name'];
-      }?>" +
+    "current owner: " + owner +
     "<br>" +
     "current os: " + 
       os +
