@@ -4731,6 +4731,7 @@ function mouseupevt(ev) {
         markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
         if(markedObject != null){
             var connectedObj = connectLooseLineObj.selectedLine.getConnectedObjects();
+            //Used if line if loose on both sides
             if(connectedObj.length == 0){
                 saveState = true;
                 var p1 = connectLooseLineObj.looseLineP1;
@@ -4749,6 +4750,7 @@ function mouseupevt(ev) {
                 }
                 diagram[markedObject].connectorTop.push({from:p2, to:p1});
             }
+            //Used if line is only loose on one side
             else if(connectedObj.length == 1){
                 if(canConnectLine(connectedObj[0], diagram[markedObject])){
                     saveState = true;
