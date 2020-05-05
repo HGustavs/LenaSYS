@@ -84,10 +84,10 @@ function generalStats() {
 	//If Linux or Windows, Mac OSX does not have any functions that can properly return this data.
 	if (!stristr(PHP_OS, "Darwin")) {
 		$memUsage = getServerMemoryUsage(false);
-		$generalStats['ram']['free'] = convertBytesToHumanreadable($memUsage["total"] - $memUsage["free"]);
+		$generalStats['ram']['free'] = convertBytesToHumanreadable($memUsage["free"]);
 		$generalStats['ram']['total'] = convertBytesToHumanreadable($memUsage["total"]);
 		$generalStats['ram']['freePercent'] = getServerMemoryUsage(true);
-		$generalStats['ram']['totalPercent'] = (getServerMemoryUsage(true))-100*-1;
+		$generalStats['ram']['totalPercent'] = 100 - getServerMemoryUsage(true);
 	}
 	
 	echo json_encode($generalStats);
