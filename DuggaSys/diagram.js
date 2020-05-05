@@ -5422,22 +5422,13 @@ function loadAppearanceForm() {
     showFormGroups(types);
     toggleApperanceElement(true);
     
-    const nameElement = document.getElementById("name");
     const freeTextElement = document.getElementById("freeText");
     const umlOperationsElement = document.getElementById("umlOperations");
     const umlAttributesElement = document.getElementById("umlAttributes");
     let erCardinalityVisible = false;
 
     appearanceObjects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
-            indexes.name.current++;
-            nameElement.value += object.name;
-            if(indexes.name.max > indexes.name.current) {
-                nameElement.value += `${separators.input} `;
-            }
-            nameElement.dataset.originalvalue = nameElement.value;
-            nameElement.focus();
-        }
+        setNameElement(object, indexes.name);
 
         if(object.symbolkind === symbolKind.line) {
             const connections = object.getConnectedObjects();
@@ -5531,6 +5522,23 @@ function setNameIndexes(indexes, types) {
             return result;
         }, 0)
     };
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setNameElement: Sets the value of the name input element based on passed objects and uses passed index create a separator between object names if not last object
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setNameElement(object, index) {
+    const nameElement = document.getElementById("name");
+    if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
+        index.current++;
+        nameElement.value += object.name;
+        if(index.max > index.current) {
+            nameElement.value += `${separators.input} `;
+        }
+        nameElement.dataset.originalvalue = nameElement.value;
+        nameElement.focus();
+    }
 }
 
 function showFormGroups(typesToShow) {
