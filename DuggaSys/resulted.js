@@ -924,10 +924,10 @@ function renderCell(col, celldata, cellid) {
 					str += ">";
 					if (celldata.submitted.getTime() !== timeZero.getTime()) {
 						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
-					}
-					else{
+					} else {
 						str += "Not submitted";
 					}
+					
 					for (var p = 0; p < moments.length; p++) {
 						if (moments[p].link == celldata.quizId) {
 							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
