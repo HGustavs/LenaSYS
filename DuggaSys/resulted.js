@@ -1546,6 +1546,7 @@ function hideSSN(ssn){
 	return hiddenSSN;
 }
 
+//Shows and hides element describing the icons and colours
 function showLegend(){
 	var legendBox = $('#resultedLegendContainer');
 	if (legendIsHidden == false){
