@@ -928,9 +928,11 @@ function renderCell(col, celldata, cellid) {
 						}
 					}
 					str += ">";
+
 					if (celldata.submitted.getTime() !== timeZero.getTime()) {
 						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 					}
+					
 					for (var p = 0; p < moments.length; p++) {
 						if (moments[p].link == celldata.quizId) {
 							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
@@ -1028,8 +1030,12 @@ function renderCell(col, celldata, cellid) {
 				}
 			}
 			str += ">";
+
 			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+			} else if (!unassignedCheck && celldata.submitted.getTime() === timeZero.getTime()) {
+				str += "Not submitted";
+				//Checks if the cells does exist, are assigned but not yet submitted for grading.
 			}
 			for (var p = 0; p < moments.length; p++) {
 				if (moments[p].link == celldata.quizId) {
