@@ -1604,6 +1604,7 @@ $(window).load(function () {
     $("#sectionList_arrowStatisticsClosed").show();
     $("#statisticsList").show();
     $("#statistics").hide();
+    $(".statisticsContent").show();
     $("#courseList").css({
       'display':'flex',
       'flex-direction': 'column'
