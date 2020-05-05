@@ -119,9 +119,20 @@
 			<h3>To Do</h3>
 			<hr>
 			<button id="newAnnouncement">Create a new announcement</button>
-			<ul>
-				<li>This a announcement</li>
-			</ul>
+			<?php
+
+				$courseid = $_GET['courseid'];
+				$coursevers = $_GET['coursevers'];
+
+				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid LIKE "%'.$courseid.'%" AND courseversion LIKE "%'.$coursevers.'%"') AS $headline){
+	             $headlines = $headline['title'];
+	             echo "<div><a href='#'>".$headlines."</a></div>";
+
+
+	            }    
+
+
+			?>
 
 		</div>
 
