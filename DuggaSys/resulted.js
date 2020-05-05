@@ -855,6 +855,7 @@ function renderCell(col, celldata, cellid) {
 				// Print submitted time and change color to red if passed deadline
 				str += "<div class='text-center resultTableText'>";
 				console.log(celldate.submitted.getTime());
+				console.log("testing");
 				if (celldata.submitted.getTime() !== timeZero.getTime()) {
 					str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 				} else {
