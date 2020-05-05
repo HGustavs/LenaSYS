@@ -5412,24 +5412,7 @@ function loadAppearanceForm() {
     }
     if(appearanceObjects.length < 1) return;
 
-    //Stores current index and maximum index for each type of selected object
-    //Current index will be used for comma separation, to only create comma when max is more than current
-    const indexes = {};
-
-    //Reduce the selected objects array to a Map with key symbolKind and value the number of times that symbolKind occurs
-    //Iterate through the map and put the correct values in the indexes object
-    appearanceObjects.reduce((result, object) => {
-        result.set(object.symbolkind || 0, (result.get(object.symbolkind || 0) || 0) + 1);
-        return result;
-    }, new Map()).forEach((value, key) => {
-        if(typeof indexes[key] === "undefined") {
-            indexes[key] = {
-                current: 0,
-                max: 0
-            };
-        }
-        indexes[key].max += value;
-    });
+    const indexes = getSelectedObjectsMaxIndexes(appearanceObjects);
 
     //Get all unique types of selected objects
     const types = Object.keys(indexes).map(Number);
@@ -5513,6 +5496,33 @@ function loadAppearanceForm() {
         }
         setSelections(object);
     });
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+// getSelectedObjectsMaxIndexes: Creates an object containing maximum and current index for each type of object passed as an array to the function.
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
+function getSelectedObjectsMaxIndexes(objects) {
+    //Stores current index and maximum index for each type of selected object
+    //Current index will be used for separation, to only create comma when max is more than current
+    const indexes = {};
+
+    //Reduce the selected objects array to a Map with key symbolKind and value the number of times that symbolKind occurs
+    //Iterate through the map and put the correct values in the indexes object
+    objects.reduce((result, object) => {
+        result.set(object.symbolkind || 0, (result.get(object.symbolkind || 0) || 0) + 1);
+        return result;
+    }, new Map()).forEach((value, key) => {
+        if(typeof indexes[key] === "undefined") {
+            indexes[key] = {
+                current: 0,
+                max: 0
+            };
+        }
+        indexes[key].max += value;
+    });
+
+    return indexes;
 }
 
 function showFormGroups(typesToShow) {
