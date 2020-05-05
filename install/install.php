@@ -74,7 +74,7 @@
 <!-- Modal used for the permission-popup -->
 <div id='warning' class='modal'>
       <div class='modal-content'>
-        <span title='Close pop-up' class='close''>&times;</span>
+        <span title='Close pop-up' class='close'>&times;</span>
           <span id='dialogText'></span>
       </div>
 </div> 
@@ -87,15 +87,13 @@
 </script>
 
 <script>
-var modalRead = false; // Have the user read info?
+
 var modal = document.getElementById('warning'); // Get the modal
 var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
-var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
-var filePath = setFilePath; // Set variable to value from PHP-file.
+var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal (used much later in)
 var owner = setOwner; // Set variable to value from PHP-file.
+var filePath = setFilePath; // Set variable to value from PHP-file.
 var operatingSystem = setOperatingSystem; // Set variable to value from PHP-file.
-var firstText = setFirstPermissionText(operatingSystem); // Set first text depending on O/S
-var secondText = setSecondPermissionText(operatingSystem); // Set second text depending on O/S
 
 setPermissionModalText();
 
@@ -110,35 +108,28 @@ function setPermissionModalText(){
 }
 
 //---------------------------------------------------------------------------------------------------
-// getPermissionModalText, 
+// getPermissionModalText, f for functionVariable
 //---------------------------------------------------------------------------------------------------
-function getPermissionModalText(owner, filePath, operatingSystem){
+function getPermissionModalText(fOwner, fFilePath, fOperatingSystem){
   permissionModalText = null;
   
   permissionModalText = `<h1>--- READ THIS BEFORE YOU START ---</h1><br>
-  ${firstText}<br><br>
-  Current Owner: ${owner}<br>
-  Current OperatingSystem: ${operatingSystem}<br><br>
-  To do this run the command: ${secondText}\<br><br>
+  ${setFirstPermissionText(fOperatingSystem)}<br><br>
+  Current Owner: ${fOwner}<br>
+  Current OperatingSystem: ${fOperatingSystem}<br><br>
+  To do this run the command: ${setSecondPermissionText(fOperatingSystem, fFilePath)}\<br><br>
   <input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
   <i>I promise I have done this.</i>`
 
   return permissionModalText;
 }
 
-//---------------------------------------------------------------------------------------------------
-// haveRead: Used for the permission-modal, called by getPermissionModalText()
-//---------------------------------------------------------------------------------------------------    
-function haveRead(isTrue) {
-    modalRead = isTrue;
-}
-
 //-----------------------------------------------------------------------------------------------------------
-// setFirstPermissionText: Sets the the first text for permission-modal, called by getPermissionModalText()
+// setFirstPermissionText: Sets the the first text for permission-modal, called by getPermissionModalText() (using fp not own, os)
 //-----------------------------------------------------------------------------------------------------------
-function setFirstPermissionText(operatingSystem){
+function setFirstPermissionText(fOperatingSystem){
   var firstText;
-  switch(operatingSystem){
+  switch(fOperatingSystem){
     case "Linux":
       firstText = "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.";
       break;
@@ -150,16 +141,16 @@ function setFirstPermissionText(operatingSystem){
 }
 
 //-----------------------------------------------------------------------------------------------------------
-// setSecondPermissionText: Sets the the second text for permission-modal, called by getPermissionModalText()
+// setSecondPermissionText: Sets the the second text for permission-modal, called by getPermissionModalText() (using fp os not own)
 //-----------------------------------------------------------------------------------------------------------
-function setSecondPermissionText(operatingSystem){
+function setSecondPermissionText(fOperatingSystem, fFilePath){
   var secondText;
-  switch(operatingSystem){
+  switch(fOperatingSystem){
     case "Linux":
-      secondText = "sudo chgrp -R www-data " + filePath + "<br>" + "sudo chown -R www-data " + filePath + "</h2><br>";
+      secondText = "sudo chgrp -R www-data " + fFilePath + "<br>" + "sudo chown -R www-data " + fFilePath + "</h2><br>";
       break;
     case "Darwin":
-      secondText = "sudo chgrp -R www " + filePath + "<br>" + "sudo chown -R www " + filePath + "</h2><br>";
+      secondText = "sudo chgrp -R www " + fFilePath + "<br>" + "sudo chown -R www " + fFilePath + "</h2><br>";
       break;
   }
   return secondText;
