@@ -80,6 +80,15 @@ function generalStats() {
 	$generalStats['disk']['freePercent'] = $totalFreePercentage;
 	$generalStats['disk']['total'] = convertBytesToHumanreadable(disk_total_space("."));
 	$generalStats['disk']['totalPercent'] = $totalInUsePercentage;
+
+	//If Linux or Windows, Mac OSX does not have any functions that can properly return this data.
+	if (!stristr(PHP_OS, "Darwin")) {
+		$memUsage = getServerMemoryUsage(false);
+		$generalStats['ram']['free'] = convertBytesToHumanreadable($memUsage["total"] - $memUsage["free"]);
+		$generalStats['ram']['total'] = convertBytesToHumanreadable($memUsage["total"]);
+		$generalStats['ram']['freePercent'] = getServerMemoryUsage(true);
+		$generalStats['ram']['totalPercent'] = (getServerMemoryUsage(true))-100*-1;
+	}
 	
 	echo json_encode($generalStats);
 }
@@ -90,6 +99,74 @@ function convertBytesToHumanreadable($bytes) {
     $base = 1024;
     $class = min((int)log($bytes , $base) , count($si_prefix) - 1);
 	return sprintf('%1.2f' , $bytes / pow($base,$class)) . ' ' . $si_prefix[$class];
+}
+
+// Return memory usage
+function getServerMemoryUsage($getPercentage=true) {
+	$memoryTotal = null;
+	$memoryFree = null;
+
+	if (stristr(PHP_OS, "win")) {
+		$cmd = "wmic ComputerSystem get TotalPhysicalMemory";
+		@exec($cmd, $outputTotalPhysicalMemory);
+
+		$cmd = "wmic OS get FreePhysicalMemory";
+		@exec($cmd, $outputFreePhysicalMemory);
+
+		if ($outputTotalPhysicalMemory && $outputFreePhysicalMemory) {
+			foreach ($outputTotalPhysicalMemory as $line) {
+				if ($line && preg_match("/^[0-9]+\$/", $line)) {
+					$memoryTotal = $line;
+					break;
+				}
+			}
+			foreach ($outputFreePhysicalMemory as $line) {
+				if ($line && preg_match("/^[0-9]+\$/", $line)) {
+					$memoryFree = $line;
+					$memoryFree *= 1024; 
+					break;
+				}
+			}
+		}
+	} else {
+		if (is_readable("/proc/meminfo")) {
+			$stats = @file_get_contents("/proc/meminfo");
+			if ($stats !== false) {
+				$stats = str_replace(array("\r\n", "\n\r", "\r"), "\n", $stats);
+				$stats = explode("\n", $stats);
+				foreach ($stats as $statLine) {
+					$statLineData = explode(":", trim($statLine));
+
+					if (count($statLineData) == 2 && trim($statLineData[0]) == "MemTotal") {
+						$memoryTotal = trim($statLineData[1]);
+						$memoryTotal = explode(" ", $memoryTotal);
+						$memoryTotal = $memoryTotal[0];
+						$memoryTotal *= 1024; 
+					}
+					
+					if (count($statLineData) == 2 && trim($statLineData[0]) == "MemFree") {
+						$memoryFree = trim($statLineData[1]);
+						$memoryFree = explode(" ", $memoryFree);
+						$memoryFree = $memoryFree[0];
+						$memoryFree *= 1024;
+					}
+				}
+			}
+		}
+	}
+
+	if (is_null($memoryTotal) || is_null($memoryFree)) {
+		return null;
+	} else {
+		if ($getPercentage) {
+			return (100 - ($memoryFree * 100 / $memoryTotal));
+		} else {
+			return array(
+				"total" => $memoryTotal,
+				"free" => $memoryFree,
+			);
+		}
+	}
 }
 
 //------------------------------------------------------------------------------------------------

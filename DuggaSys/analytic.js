@@ -83,6 +83,23 @@ function loadGeneralStats() {
 			value: data.disk.freePercent
 		});
 		drawPieChart(chartData);
+
+
+		if(data.ram != undefined){
+			var chartData = [];
+			chartData.push({
+				label: 'Total RAM ('+data.ram.total+')',
+				value: data.ram.totalPercent
+			});
+	
+			chartData.push({
+				label: 'Free RAM ('+data.ram.free+')',
+				value: data.ram.freePercent
+			});
+			drawPieChart2(chartData);
+		}
+
+		
 		
 
 		$('#analytic-info').append(renderTable(tableData));
@@ -501,6 +518,42 @@ function drawPieChart(data) {
 	analytics.chartData = data;
 
 	var canvas = $("#analytic-chart")[0];
+	var ctx = canvas.getContext("2d");
+
+	fitCanvasToContainer(canvas);
+	clearCanvas(canvas);
+
+	var total = 0;
+	for (var i = 0; i < data.length; i++) {
+		total += (isNaN(data[i].value)) ? 0 : Number(data[i].value);
+	}
+
+	var fontSize = 14;
+	var textAreaHeight = fontSize * 2.2;
+	var radius = canvas.height / 2;
+	var last = 0;
+	for (var i = 0; i < data.length; i++) {
+		ctx.fillStyle = getRandomColor();
+		ctx.beginPath();
+		ctx.moveTo(radius, radius);
+		ctx.arc(radius, radius, radius, last, last + (Math.PI*2*(data[i].value/total)), false);
+		ctx.lineTo(radius, radius);
+		ctx.fill();
+		last += (Math.PI*2*(data[i].value/total));
+
+		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 20, 12, 12);
+		ctx.fillStyle = "black";
+		ctx.font = fontSize + "px Arial";
+		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight);
+	}
+}
+function drawPieChart2(data) {
+	if (!$.isArray(data)) return;
+
+	analytics.chartType = "pie";
+	analytics.chartData = data;
+
+	var canvas = $("#analytic-chart2")[0];
 	var ctx = canvas.getContext("2d");
 
 	fitCanvasToContainer(canvas);

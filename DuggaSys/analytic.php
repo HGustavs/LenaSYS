@@ -51,6 +51,9 @@ pdoConnect();
 		<div style="height: 300px">
 			<canvas id="analytic-chart"></canvas>
 		</div>
+		<div style="height: 300px">
+			<canvas id="analytic-chart2"></canvas>
+		</div>
 	</div>
 	<!-- content END -->
 	
