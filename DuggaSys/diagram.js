@@ -2426,10 +2426,8 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
-    if(developerModeActive) {
-        drawOrigo();
-        drawCrosshair();
-    }
+    if(developerModeActive) drawOrigo();
+
     // Mark the last freedraw point on mobiles
     if (uimode == "CreateFigure" && figureType == "Free" && isMobile) {
         markLastMouseCoordinates(); 
@@ -2439,6 +2437,7 @@ function updateGraphics() {
     diagram.draw();
     points.drawPoints();
     drawVirtualPaper();
+    if(developerModeActive) drawCrosshair();
 }
 
 //---------------------------------------------------------------------------------
