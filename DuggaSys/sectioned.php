@@ -140,6 +140,11 @@
 			?>
 
 			</table>
+			<button class="showAllAnnouncement">
+				<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
+				</a>
+			</button>
+
 		</div>
 
 		<?php 
