@@ -41,6 +41,7 @@
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -118,7 +119,7 @@
 		<div id="announcementBox" style="display: none;">
 			<h3>To Do</h3>
 			<hr>
-			<button id="newAnnouncement">Create a new announcement</button>
+			<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>
 			<table>				
 			<?php
 
@@ -130,7 +131,8 @@
 	             $message = $headline['message'];
 	             $announcementid = $headline['id'];
 	             $announceTime = $headline['announceTime'];
-	             echo "<tr><th><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
+	             $author = $headline['author'];
+	             echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
 
 	            }    
 

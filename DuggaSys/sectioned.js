@@ -1622,6 +1622,11 @@ $(window).load(function () {
 function showAnnouncement(){
   document.getElementById('fullAnnouncement').style.display="block";
 }
+//sets author for announcement
+function setAnnouncementAuthor(){
+  $("#author").val($("#userName").html());
+  
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
