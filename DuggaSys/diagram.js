@@ -1170,14 +1170,21 @@ function copyPath(path) {
     return clone;
 }
 
-function drawDot(){
+//--------------------------------------------------------------------
+// markLastMouseCoordinates: Draws a cross at last mousecoordinates
+//--------------------------------------------------------------------
+function markLastMouseCoordinates() {
     let crossSize = 4 * zoomValue;
+    ctx.save();
+    ctx.strokeStyle = "#f64";
+    ctx.lineWidth = 2 * zoomValue;
     ctx.beginPath();
     ctx.moveTo(pixelsToCanvas(currentMouseCoordinateX).x - crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y - crossSize);
     ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x + crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y + crossSize);
     ctx.moveTo(pixelsToCanvas(currentMouseCoordinateX).x + crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y - crossSize);
     ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x - crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y + crossSize);
     ctx.stroke();
+    ctx.restore();
 }
 
 //--------------------------------------------------------------------
@@ -2425,7 +2432,7 @@ function updateGraphics() {
     }
     // Mark the last freedraw point on mobiles
     if (uimode == "CreateFigure" && figureType == "Free" && isMobile) {
-        drawDot(); 
+        markLastMouseCoordinates(); 
     }
     diagram.sortConnectors();
     diagram.updateQuadrants();
