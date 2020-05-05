@@ -60,15 +60,33 @@ function loadGeneralStats() {
 		$('#analytic-info').append("<p>General statistics about the system.</p>");
 
 		var tableData = [["Stat", "Value"]];
-		for (var stat in data) {
-			if (data.hasOwnProperty(stat)) {
+
+		// Login fails
+		var loginFails = data['stats']['loginFails'];
+		for (var stat in loginFails) {
+			if (loginFails.hasOwnProperty(stat)) {
 				tableData.push([
 					stat,
-					data[stat]
+					loginFails[stat]
 				]);
 			}
 		}
+
+		var chartData = [];
+		chartData.push({
+			label: 'Total Memory ('+data.disk.total+')',
+			value: data.disk.totalPercent
+		});
+
+		chartData.push({
+			label: 'Free Memory ('+data.disk.free+')',
+			value: data.disk.freePercent
+		});
+		drawPieChart(chartData);
+		
+
 		$('#analytic-info').append(renderTable(tableData));
+		$('#analytic-info').append("<h3 style='margin-top: 5%'>Disk Usage on the server</h3>");
 	});
 }
 
