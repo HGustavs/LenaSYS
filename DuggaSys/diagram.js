@@ -483,8 +483,10 @@ function init() {
     canvasSize(); 
     loadDiagram(); 
     setModeOnRefresh(); 
+    refreshVirtualPaper();
+    setPaperSizeOnRefresh();
     initAppearanceForm();
-    setPaperSize(event, 4);
+    setPaperSize(event, paperSize);
     updateGraphics(); 
 }
 
@@ -1702,8 +1704,22 @@ function toggleVirtualPaper(event) {
         showPaperState();
         updateGraphics();
     }
-
+    localStorage.setItem("virtualPaper", togglePaper);
     setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
+}
+
+function refreshVirtualPaper() {
+    var tempPaperState = localStorage.getItem("virtualPaper");
+    if (tempPaperState != null) {
+        togglePaper = tempPaperState;
+        if (togglePaper == 'true') {
+            togglePaper = false;
+            toggleVirtualPaper(event);
+        } else {
+            togglePaper = true;
+            toggleVirtualPaper(event);
+        }
+    }
 }
 
 //--------------------------------------------------------------------
@@ -2241,6 +2257,7 @@ function setPaperSize(event, size){
 		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
 	}
 	paperSize = size; 
+	localStorage.setItem("paperSize", paperSize);
 	updateGraphics();
 }
 
@@ -2794,6 +2811,13 @@ function setModeOnRefresh() {
         switchToolbarER();
         hideCrosses();
     }
+}
+
+function setPaperSizeOnRefresh() {
+	const tempPaperSize = localStorage.getItem("paperSize");
+	if(tempPaperSize != null){
+        paperSize = tempPaperSize;
+	}
 }
 
 //--------------------------------------
