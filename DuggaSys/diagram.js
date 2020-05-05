@@ -5685,13 +5685,8 @@ function setSelectedObjectsProperties(element) {
         if((types.includes((object.symbolkind || 0).toString()))) {
             const access = element.dataset.access.split(".");
             if(element.nodeName === "TEXTAREA") {
-                const numberOfSeparators = (element.value.match(new RegExp(separators.textarea, "g")) || []).length;
-                const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separators.textarea, "g")) || []).length;
-                if(numberOfSeparators === originalNumberOfSeparators) {
-                    element.dataset.originalvalue = element.value;
+                if(isNumberOfSeparatorsEqual(element, separators.textarea)) {
                     object[access[0]] = getTextareaArray(element, textareaIndex);
-                } else {
-                    element.value = element.dataset.originalvalue;
                 }
                 textareaIndex++;
             } else if(element.type === "range") {
@@ -5704,13 +5699,8 @@ function setSelectedObjectsProperties(element) {
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;
             } else if(element.id === "name") {
-                const numberOfSeparators = (element.value.match(new RegExp(separators.input, "g")) || []).length;
-                const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separators.input, "g")) || []).length;
-                if(numberOfSeparators === originalNumberOfSeparators) {
-                    element.dataset.originalvalue = element.value;
+                if(isNumberOfSeparatorsEqual(element, separators.input)) {
                     object[access[0]] = element.value.split(separators.input)[nameIndex].trim();
-                } else {
-                    element.value = element.dataset.originalvalue;
                 }
                 nameIndex++;
             } else if(access.length === 1) {
@@ -5721,6 +5711,22 @@ function setSelectedObjectsProperties(element) {
         }
     });
     updateGraphics();
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// isNumberOfSeparatorsEqual: Takes the passed element's current value and compares it to the element's original value based on separator occurances. Sets original value to the current value if number of separators are equal (return true), otherwise sets current value to original value (return false).
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function isNumberOfSeparatorsEqual(element, separator) {
+    const numberOfSeparators = (element.value.match(new RegExp(separator, "g")) || []).length;
+    const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separator, "g")) || []).length;
+    if(numberOfSeparators === originalNumberOfSeparators) {
+        element.dataset.originalvalue = element.value;
+        return true;
+    } else {
+        element.value = element.dataset.originalvalue;
+        return false;
+    }
 }
 
 //Stores which element the mouse was pressed down on while in the appearance menu.
