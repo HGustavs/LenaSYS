@@ -1024,10 +1024,10 @@ function renderCell(col, celldata, cellid) {
 				}
 			}
 			str += ">";
+			console.log(celldata);
 			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 			} else if (celldata.submitted != null && celldata.submitted.getTime === timeZero.getTime()) {
-				console.log(celldata.submitted);
 				str += "Not submitted";
 			}
 			for (var p = 0; p < moments.length; p++) {
