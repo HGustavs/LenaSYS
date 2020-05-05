@@ -5417,16 +5417,7 @@ function loadAppearanceForm() {
     //Get all unique types of selected objects
     const types = Object.keys(indexes).map(Number);
 
-    //The max index for the name input should be based on all object types that have the name input
-    indexes.name = {
-        current: 0,
-        max: types.reduce((result, type) => {
-            if(type === symbolKind.uml || type === symbolKind.erAttribute || type === symbolKind.erEntity || type === symbolKind.erRelation) {
-                result += indexes[type].max;
-            }
-            return result;
-        }, 0)
-    };
+    setNameIndexes(indexes, types);
     
     showFormGroups(types);
     toggleApperanceElement(true);
@@ -5523,6 +5514,23 @@ function getSelectedObjectsMaxIndexes(objects) {
     });
 
     return indexes;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setNameIndexes: Adds the name property into the passed indexes object. Max index for name is calculated based on all types max indexes that should have the name input.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setNameIndexes(indexes, types) {
+    //The max index for the name input should be based on all object types that have the name input
+    indexes.name = {
+        current: 0,
+        max: types.reduce((result, type) => {
+            if(type === symbolKind.uml || type === symbolKind.erAttribute || type === symbolKind.erEntity || type === symbolKind.erRelation) {
+                result += indexes[type].max;
+            }
+            return result;
+        }, 0)
+    };
 }
 
 function showFormGroups(typesToShow) {
