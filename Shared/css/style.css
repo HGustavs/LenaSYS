@@ -3003,8 +3003,14 @@ padding: 10px;
 .resultedFormsFlex {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   margin: 5px;
+}
+
+#lastExportedDate {
+  font-size: 10px;
+  color: gray;
+  text-align: center;
 }
 
 #laddate {

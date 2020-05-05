@@ -71,7 +71,10 @@ pdoConnect();
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
+		<div class="resultedFormsFlex">
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
+	  <span id="lastExportedDate"></span>
+	  </div>
 			</div>
 			<div style="display: flex;">
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
