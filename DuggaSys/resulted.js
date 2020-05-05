@@ -1553,10 +1553,10 @@ function hideSSN(ssn){
 
 
 function compare(firstCell, secoundCell) {
-	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
-	let status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+	let col = myTable.getSortcolumn(); // Get column name
+	let status = myTable.getSortkind(); // Get if the sort arrow is up or down.
 	let val = 0;
-	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
+	let colOrder = myTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
 	var sizeTemp = '{"';
@@ -1564,7 +1564,15 @@ function compare(firstCell, secoundCell) {
 		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
 		if(col == "FnameLname"){
-			col = sortableTable.currentTable.getNameColumn();
+			col = myTable.getNameColumn();
+			if (typeof(col) === "undefined") {
+				if (status == 0 || status == 1) {
+					col = "Fname";
+				} else {
+					col = "Lname";
+				}
+			}
+			myTable.setNameColumn(col);
 		}
 		// now check for matching columns with the potentially replaced name
 		if (col == "Fname") {
