@@ -145,11 +145,19 @@ $codeLinkQuery->execute();
                     <input type='hidden' id='kind' name='kind' value='Toddler'/>
                     <div class='inputwrapper filePopUp'>
                         <span>Upload File:</span>
-                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple"/>
+                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" placeholder="hej.text"/>
+                        
                         <div class="fileUploadInfo">
                             <h1>Allowed Files</h1>
                             <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
                         </div>
+                    </div>
+                    <div class='testselect'>
+                    <select id="selectdir">
+                            <option value="volvo">Global</option>
+                            <option value="saab">Course</option>
+                            <option value="opel">Course Local</option>
+                         </select>
                     </div>
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
@@ -160,7 +168,6 @@ $codeLinkQuery->execute();
                 <div id='uploadbuttonname'>
                     <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);"/>
                 </div>
-
                 <div style='display:none;' id='errormessage'></div>
             </form>
 
