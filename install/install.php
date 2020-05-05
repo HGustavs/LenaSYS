@@ -60,14 +60,19 @@
           <span id='dialogText'></span>
       </div>
 </div> 
+
+<script>
+  var setFilePath = <?php echo json_encode($putFileHere); ?>;
+  var setOperatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
+</script>'
   
 <!-- Start permission-modal code -->
 <script>
     var modalRead = false; // Have the user read info?
     var modal = document.getElementById('warning'); // Get the modal
     var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
-    var filePath = "<?php echo $putFileHere; ?>";
-    var os = "<?php echo PHP_OS_FAMILY ?>"; // Get O/S of the system running the installer
+    var filePath = setFilePath;
+    var os = setOperatingSystem; // Get O/S of the system running the installer
     var firstText = setFirstText(os); // Set first text depending on O/S
     var secondText = setSecondText(os); // Set second text depending on O/S
 
