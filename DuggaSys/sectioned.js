@@ -312,6 +312,10 @@ function showCreateVersion() {
 
 }
 
+function createQuickItem() {
+  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
+  newItem();
+}
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle) {

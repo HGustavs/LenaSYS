@@ -398,6 +398,13 @@ function filterFilesByKind(kind){
     }
     sortFilter.fileKind=kind;
     setBackgroundForOddEvenRows();
+
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
 }
 function setBackgroundForOddEvenRows(){
 	$("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
@@ -438,6 +445,12 @@ function sortFiles(asc){
 
         }
     }
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
 }
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table

@@ -1241,7 +1241,7 @@ input {
   font-weight: bold;
 }
 
-.loginBoxheader div:hover {
+.loginBoxheader div:hover, .logoutBoxheader div:hover {
   background-color: #ce3d3d;
 }
 
@@ -6371,15 +6371,17 @@ textarea#filecont {
   cursor: pointer;
   background-color:#614875;
   font-family: arial;
-  font-weight: bold;
+  margin: 5px;
+  border-radius:4px;
+  border-collapse:collapse;
   position: absolute;
   right:0%;
 }
 
 .motdBoxheader div:hover {
-  background-color: #694e7e;
-  border: 2px;
-  border-style: solid;
-  border-color: white;
+  background-color: #815e9d;
+  -webkit-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
 }
 
