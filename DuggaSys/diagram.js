@@ -5571,7 +5571,21 @@ function showFormGroups(typesToShow) {
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
 
-    const groupsByTypes = formGroupsToShow.reduce((result, group) => {
+    const collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
+
+    initAppearanceForm();
+    collapsibleStructure.forEach((object, i) => createCollapsible(object.groups, object.types, i));
+
+    //Always put submit-button in the end of the form
+    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getCollapsibleStructure: Generates an array of objects where each object represents a collapsible. Each object have information about which form-groups should be in the collapsible and which object types will be affected by the collapsible's content.
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function getCollapsibleStructure(formGroups, typesToShow) {
+    return formGroups.reduce((result, group) => {
         const groupTypes = group.dataset.types.split(",");
         const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
         const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
@@ -5585,12 +5599,6 @@ function showFormGroups(typesToShow) {
         }
         return result;
     }, []);
-
-    initAppearanceForm();
-    groupsByTypes.forEach((object, i) => createCollapsible(object.groups, object.types, i));
-
-    //Always put submit-button in the end of the form
-    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
 }
 
 function containsAll(array1, array2) {
@@ -5679,7 +5687,6 @@ function setSelectedObjectsProperties(element) {
             if(element.nodeName === "TEXTAREA") {
                 const numberOfSeparators = (element.value.match(new RegExp(separators.textarea, "g")) || []).length;
                 const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separators.textarea, "g")) || []).length;
-                console.log(numberOfSeparators, originalNumberOfSeparators);
                 if(numberOfSeparators === originalNumberOfSeparators) {
                     element.dataset.originalvalue = element.value;
                     object[access[0]] = getTextareaArray(element, textareaIndex);
