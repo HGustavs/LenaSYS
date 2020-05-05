@@ -294,7 +294,7 @@ function loadFileInformation() {
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>File information for created and edited files.</p>");
 	
-	// SAVE FOR LATER: DATE PICKING
+
     var inputDateFrom = $('<input type="text"></input>')
         .datepicker({
             dateFormat: "yy-mm-dd"
@@ -343,10 +343,8 @@ function loadFileInformation() {
                         version,
                         file,
                         row.timestamp
-                    ]);
-                        
+                    ]);     
                     }
-  
                 });
  
                 $('#analytic-info > select.file-select').remove();
@@ -366,7 +364,7 @@ function loadFileInformation() {
         });
     }
    
-	// SAVE FOR LATER: DATE PICKING
+	
     inputDateFrom.change(updateFileInformation);
     inputDateTo.change(updateFileInformation);
  
