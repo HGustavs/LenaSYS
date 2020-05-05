@@ -291,7 +291,7 @@
 	<!-- New Verison Dialog END -->
 
 <!-- Edit Version Dialog START -->
-<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6');" class='loginBoxContainer' style='display:none;'>
+<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9');" class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Course Version</h3>
