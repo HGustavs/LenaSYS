@@ -1151,19 +1151,18 @@ function checkScroll(obj) {
 	}
 }
 
-function showEmailPopup()
-{
-	var receiptcemail ="";
-	document.getElementById("emailPopup").style.display = "block";
-	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
-	document.getElementById('email').value = receiptcemail;
-}
+//function showEmailPopup()
+//{
+//	var receiptcemail ="";
+//	document.getElementById("emailPopup").style.display = "block";
+//	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
+//	document.getElementById('email').value = receiptcemail;
+//}
 
-function hideEmailPopup()
-{
-	$("#emailPopup").css("display","none");
-	//$("#overlay").css("display","none");
-}
+//function hideEmailPopup()
+//{
+//	$("#emailPopup").css("display","none");
+//}
 
 //----------------------------------------------------------------------------------
 // Send dugga receipt to users email, save email in localstorage.
