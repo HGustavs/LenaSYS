@@ -2919,9 +2919,6 @@ span.arrow {
 
 padding: 10px;
 }
-.access-dropdown:hover .access-dropdown-content {
-  display: block;
-}
 
 #reset-pw{
   width:70%; 
