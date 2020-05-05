@@ -787,6 +787,7 @@
                 }
                 copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/global/");
                 copyTestFiles("{$putFileHere}/install/courses/1/", "{$putFileHere}/courses/1/");
+                copyTestFiles("{$putFileHere}/install/courses/2/", "{$putFileHere}/courses/2/");
             } else {
                 echo "Skipped filling database with test data.<br>";
             }
