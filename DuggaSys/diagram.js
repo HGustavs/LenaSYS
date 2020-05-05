@@ -5431,15 +5431,9 @@ function loadAppearanceForm() {
         setNameElement(object, indexes.name);
 
         if(object.symbolkind === symbolKind.line) {
-            const connections = object.getConnectedObjects();
-            const hasEntity = connections.some(symbol => symbol.symbolkind === symbolKind.erEntity);
-            const hasRelation = connections.some(symbol => symbol.symbolkind === symbolKind.erRelation);
             if(!erCardinalityVisible) {
-                if(hasEntity && hasRelation) {
-                    document.getElementById("cardinalityER").parentNode.style.display = "block";
+                if(setErCardinalityElementDisplayStatus(object, erCardinalityVisible)) {
                     erCardinalityVisible = true;
-                } else {
-                    document.getElementById("cardinalityER").parentNode.style.display = "none";
                 }
             }
             document.getElementById("typeLine").focus();
@@ -5549,6 +5543,20 @@ function setTextareaElement(element, property, index) {
         element.value += separators.textarea;
     }
     element.dataset.originalvalue = element.value;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setErCardinalityElementDisplayStatus: Checks if passed er line object can have cardinality.Displays the cardinality element and returns true if possible and hides it and returns false if not.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setErCardinalityElementDisplayStatus(object) {
+    if(object.isCardinalityPossible) {
+        document.getElementById("cardinalityER").parentNode.style.display = "block";
+        return true;
+    } else {
+        document.getElementById("cardinalityER").parentNode.style.display = "none";
+        return false;
+    }
 }
 
 function showFormGroups(typesToShow) {
