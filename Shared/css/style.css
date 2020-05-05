@@ -5134,14 +5134,11 @@ only screen and (max-device-width: 320px) {
   right: 120px;
 }
 /* Fix mobile-view for top FAB-button and Sectionlist heading */
-@media screen and (max-width: 700px) {
-  .fixed-action-button2.sectioned2 {
-    right: 30px;
-    top: 560px;
+@media screen and (max-width: 650px) {
+  .fixed-action-button2{
+    display:none !important;
   }
-  #course-coursename{
-    margin-left:10px !important;
-  }
+  
 }
 
 #Courselist div.fixed-action-button a:hover {
