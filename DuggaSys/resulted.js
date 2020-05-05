@@ -782,7 +782,7 @@ function renderCell(col, celldata, cellid) {
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLname") {
-			str = "<div class='resultTableCell resultTableMini'>";
+			str = "<div class='resultTableCell resultTableMiniLeft'>";
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
 			str += "</div>";
@@ -823,10 +823,13 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div style='padding:10px;' class='resultTableCell ";
+			str = "<div style='padding:12px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
-				str += "dugga-pending";
+				str += "dugga-pending ";
+			} else {
+				str += "dugga-empty";
 			}
+
 			str += "'>";
 			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
@@ -882,10 +885,13 @@ function renderCell(col, celldata, cellid) {
 				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
-				str = "<div style='padding:10px;' class='resultTableCell ";
+				str = "<div style='padding:12px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
+				} else {
+					str += "dugga-empty";
 				}
+				
 				str += "'>";
 				// Creation of grading buttons
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
@@ -980,7 +986,7 @@ function renderCell(col, celldata, cellid) {
 		if(unassignedCheck){
 			str += "' style='height:74px;'>";
 		}else{
-			str += "' style='padding:10px;'>";
+			str += "' style='padding:12px;'>";
 		}
 
 		// Creation of grading buttons
