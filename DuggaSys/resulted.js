@@ -923,7 +923,7 @@ function renderCell(col, celldata, cellid) {
 					}
 					str += ">";
 					if (celldata.submitted.getTime() === timeZero.getTime()) {
-						str += "Not submitted";
+						str += "<p>Not submitted</p>";
 					} else {
 						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 					}
