@@ -291,6 +291,7 @@ function loadServiceCrashes() {
 
 
 function loadFileInformation() {
+    resetAnalyticsChart();
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>File information for created and edited files.</p>");
 	
