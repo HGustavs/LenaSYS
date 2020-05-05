@@ -612,7 +612,7 @@ function generateUMLExampleCode() {
     umlRelationA.topLeft = points.addPoint(590, 365, false);
     umlRelationA.bottomRight = points.addPoint(706, 365, false);
     umlRelationA.centerPoint = points.addPoint((590 + 706) * 0.5, (365 + 365) * 0.5, false);
-    umlRelationA.cardinality = {"value": 1};
+    umlRelationA.cardinality = {"value": "1", "valueUML": "0..*", "symbolKind": 1, "parentBox": classB};
 
     //Push to diagram
     diagram.push(classA);
