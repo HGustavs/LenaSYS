@@ -1041,6 +1041,48 @@ function changeboxcontent(boxcontent, boxid) {
 
 *********************************************************************************/
 
+//----------------------------------------------------------------------------------
+// Switches Dropdown List to Visible
+//			Used by switchDrop
+//----------------------------------------------------------------------------------
+
+function hideDrop(dname) {
+	var dropd = $("#" + dname);
+	if (dropd != null) dropd.style.display = "none";
+}
+
+//----------------------------------------------------------------------------------
+// Switches Dropdown List to Visible
+//				Is never used, code is kept for future use
+//----------------------------------------------------------------------------------
+
+function switchDrop(dname) {
+	var dropd = $("#" + dname);
+	if (dropd.style.display == "block") {
+		$(dropd).slideUp("fast");
+	} else {
+		hideDrop("forwdrop");
+		hideDrop("backwdrop");
+		$('#hotdogdrop').hide();
+		$(dropd).slideDown("fast");
+		dropd.style.display = "block";
+	}
+}
+
+//----------------------------------------------------------------------------------
+// Reads value from Dropdown List
+//				Is never used, code is kept for future use
+//----------------------------------------------------------------------------------
+
+function issetDrop(dname) {
+	var dropd = $("#" + dname);
+	if (dropd.style.display == "block") {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 //----------------------------------------------------------
 // highlightKeyword: Highlights and Dehighlights an important word from the important word list
 //                Is called by [this function] in codeviewer.js
