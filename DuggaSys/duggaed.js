@@ -63,52 +63,52 @@ $(document).mouseup(function (e) {
 });
 
 function selectDugga(qid) {
-  var tarro=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
-  var tarrv=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
-  var marro=["00","05","10","15","20","25","30","35","40","45","50","55"];
-  var marrv=[0,5,10,15,20,25,30,35,40,45,50,55];
-  if(qid=="UNK"){
-      quiz={"arrow":"UNK","qname":"New Dugga","autograde":0,"gradesystem":1,"quizFile":0,"qstart":"UNK","deadline":"UNK","jsondeadline":"","qrelease":"UNK"};
-  }else{
-      globalData['entries'].forEach(function (element) {
-          if (element['did'] == qid) {
-              quiz = element;
-          }
-      });
-  }
+	var tarro=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+	var tarrv=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+	var marro=["00","05","10","15","20","25","30","35","40","45","50","55"];
+	var marrv=[0,5,10,15,20,25,30,35,40,45,50,55];
+	if(qid=="UNK"){
+		quiz={"arrow":"UNK","qname":"New Dugga","autograde":0,"gradesystem":1,"quizFile":0,"qstart":"UNK","deadline":"UNK","jsondeadline":"","qrelease":"UNK"};
+	} else {
+		globalData['entries'].forEach(function (element) {
+			if (element['did'] == qid) {
+				quiz = element;
+			}
+		});
+	}
 
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").html(makeoptions(quiz['autograde'],["Hidden","Yes"],[0,1]));
 	$("#gradesys").html(makeoptions(quiz['gradesystem'],["U-G-VG","U-G"],[1,2,3]));
 	$("#template").html(makeoptions(quiz['quizFile'],globalData["files"],globalData["files"]));
-  if(quiz['qstart']===null)quiz['qstart']="";
-  $("#qstart").val(quiz['qstart'].substr(0,10));
+	if(quiz['qstart']===null) quiz['qstart']="";
+	$("#qstart").val(quiz['qstart'].substr(0,10));
 	$("#qstartt").html(makeoptions(quiz['qstart'].substr(11,2),tarro,tarrv));
-  $("#qstartm").html(makeoptions(quiz['qstart'].substr(14,2),marro,marrv));
+	$("#qstartm").html(makeoptions(quiz['qstart'].substr(14,2),marro,marrv));
 
-  if(quiz['jsondeadline'].indexOf("'")>=0)quiz['jsondeadline']=quiz['jsondeadline'].replace(/'/g, "\"");
-  if(quiz['jsondeadline']===null||quiz['jsondeadline']=="")quiz['jsondeadline']='{"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""}';
-  let dls=JSON.parse(quiz['jsondeadline']);
-  if(quiz['deadline']===null)quiz['deadline']="";
-  $("#deadline").val(quiz['deadline'].substr(0,10));
-  $("#deadlinecomments1").val(dls.comment1);
+	if(quiz['jsondeadline'].indexOf("'")>=0) quiz['jsondeadline']=quiz['jsondeadline'].replace(/'/g, "\"");
+	if(quiz['jsondeadline']===null||quiz['jsondeadline']=="") quiz['jsondeadline']='{"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""}';
+	var dls=JSON.parse(quiz['jsondeadline']);
+	if(quiz['deadline']===null) quiz['deadline']="";
+	$("#deadline").val(quiz['deadline'].substr(0,10));
+	$("#deadlinecomments1").val(dls.comment1);
 	$("#deadlinet").html(makeoptions(quiz['deadline'].substr(11,2),tarro,tarrv));
-  $("#deadlinem").html(makeoptions(quiz['deadline'].substr(14,2),marro,marrv));
-  $("#deadline2").val(dls.deadline2.substr(0,10));
-  $("#deadlinecomments2").val(dls.comment2);
+	$("#deadlinem").html(makeoptions(quiz['deadline'].substr(14,2),marro,marrv));
+	$("#deadline2").val(dls.deadline2.substr(0,10));
+	$("#deadlinecomments2").val(dls.comment2);
 	$("#deadlinet2").html(makeoptions(dls.deadline2.substr(11,2),tarro,tarrv));
-  $("#deadlinem2").html(makeoptions(dls.deadline2.substr(14,2),marro,marrv));
-  $("#deadline3").val(dls.deadline3.substr(0,10));
-  $("#deadlinecomments3").val(dls.comment3);
+	$("#deadlinem2").html(makeoptions(dls.deadline2.substr(14,2),marro,marrv));
+	$("#deadline3").val(dls.deadline3.substr(0,10));
+	$("#deadlinecomments3").val(dls.comment3);
 	$("#deadlinet3").html(makeoptions(dls.deadline3.substr(11,2),tarro,tarrv));
-  $("#deadlinem3").html(makeoptions(dls.deadline3.substr(14,2),marro,marrv));
-  if(quiz['qrelease']===null)quiz['qrelease']="";
-  $("#release").val(quiz['qrelease'].substr(0,10));
+	$("#deadlinem3").html(makeoptions(dls.deadline3.substr(14,2),marro,marrv));
+	if(quiz['qrelease']===null) quiz['qrelease']="";
+	$("#release").val(quiz['qrelease'].substr(0,10));
 	$("#releaset").html(makeoptions(quiz['qrelease'].substr(11,2),tarro,tarrv));
-  $("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
+	$("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
 
-  $("#editDugga").css("display", "flex");
+	$("#editDugga").css("display", "flex");
 }
 
 
@@ -225,7 +225,7 @@ function createVariant() {
 
 function selectVariant(vid, el) {
 	var target_variant;
-	let isSelected = markSelectedVariant(el);
+	var isSelected = markSelectedVariant(el);
 	globalData['entries'].forEach(element => {
 		var tempVariant = element['variants'];
 		tempVariant.forEach(variant => {
@@ -479,7 +479,7 @@ function createJSONFormData(){
 	background color of the table row.
 */
 function markSelectedVariant(el) {
-	let row = el.closest("tr");
+	var row = el.closest("tr");
 
     $('.active-variant').not(row).each(function() {
         $(this).removeClass('active-variant');
