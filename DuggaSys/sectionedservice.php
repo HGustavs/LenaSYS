@@ -713,6 +713,31 @@ if($gradesys=="UNK") $gradesys=0;
 		  }
 		}
 
+		$userfeedback=array();
+
+		if(strcmp($opt,"GETUF")==0){
+			$query = $pdo->prepare("SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':lid', $moment);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading courses".$error[2];
+			}else{
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$userfeedback,
+						array(
+							'ufid' => $row['ufid'],
+							'username' => $row['username'],
+							'cid' => $row['cid'],
+							'lid' => $row['lid'],
+							'score' => $row['score']
+						)
+					);
+				}
+			}
+		}
+
 		$array = array(
 			"entries" => $entries,
 			"debug" => $debug,
@@ -733,7 +758,8 @@ if($gradesys=="UNK") $gradesys=0;
 			"enddate" => $enddate,
 			"groups" => $groups,
 		  "grpmembershp" => $grpmembershp,
-		  "grplst" => $grplst
+		  "grplst" => $grplst,
+		  "userfeedback" => $userfeedback
 		);
 
 		echo json_encode($array);

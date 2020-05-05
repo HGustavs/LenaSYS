@@ -954,6 +954,13 @@ function returnedSection(data) {
           }
         }
 
+        // Userfeedback
+        if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
+          str += "<td style='width:32px;'>";
+          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\");'>";
+          str += "</td>";
+        }
+
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
           str += "<td style='width:32px;' ";
@@ -1797,4 +1804,43 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+}
+
+function showUserFeedBack(lid) {
+	AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
+  $("#userFeedbackDialog").css("display", "flex");
+  $("#feedbacktablecontainer").html("");
+}
+
+function returnedUserFeedback(data){
+  if(data.userfeedback.length == 0){
+    $("#feedbacktablecontainer").html( "<p>No feedback available</p>" );
+  }else{
+    $("#feedbacktablecontainer").html(createUserFeedbackTable(data));
+  }
+  
+}
+
+function createUserFeedbackTable(data){
+  var str = "<table id='feedbacktable'  style='border-collapse: collapse' class='list'>";
+  str += "<thead><tr><th>Feedback ID</th>";
+  str += "<th>Username</th>";
+  str += "<th>Course ID</th>";
+  str += "<th>Dugga ID</th>";
+  str += "<th>Rating</th>";
+  str += "<th>Contact student</th></tr></thead><tbody style='background-color: var(--color-background)'>";
+
+  for(var i = 0; i < data.userfeedback.length; i++){
+    str +="<tr>";
+    str += "<td>"+data.userfeedback[i].ufid+"</td>";
+    str += "<td>"+data.userfeedback[i].username+"</td>";
+    str += "<td>"+data.userfeedback[i].cid+"</td>";
+    str += "<td>"+data.userfeedback[i].lid+"</td>";
+    str += "<td>"+data.userfeedback[i].score+"</td>";
+    str += "<td><input class='submit-button' type='button' value='Contact student' onclick=''></td>";
+    str += "</tr>";
+  }
+
+  str += "</tbody></table>";
+  return str;
 }

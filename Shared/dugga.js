@@ -846,6 +846,14 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedSubmitFeedback
 		});
+	} else if(kind=="USERFB") {
+		$.ajax({
+			url: "sectionedservice.php",
+			type:"POST",
+			data:"courseid="+querystring['cid']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedUserFeedback
+		});
 	}
 }
 

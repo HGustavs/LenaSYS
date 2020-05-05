@@ -528,8 +528,8 @@ if(strcmp($opt,"CHECKFDBCK")==0){
 
 if(strcmp($opt,"SENDFDBCK")==0){
 	if($contactable == 1){
-		$query = $pdo->prepare("INSERT INTO userduggafeedback(uid,cid,lid,score) VALUES (:uid,:cid,:lid,:score);");
-		$query->bindParam(':uid', $userid);
+		$query = $pdo->prepare("INSERT INTO userduggafeedback(username,cid,lid,score) VALUES (:username,:cid,:lid,:score);");
+		$query->bindParam(':username', $loginname);
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':lid', $moment);
 		$query->bindParam(':score', $rating);

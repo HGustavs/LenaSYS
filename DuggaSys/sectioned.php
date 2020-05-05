@@ -328,6 +328,20 @@
 		</div>
 	</div>
 	<!-- HighscoreBox END -->
+
+	<!-- User Feedback Dialog START -->
+    <div id='userFeedbackDialog' class='loginBoxContainer' style='display:none;'>
+      <div class='loginBox' id='variantBox'>
+        <div class='loginBoxheader'>
+          <h3 id="userFeedbackTitle">User Feedback</h3>
+          <div class='cursorPointer' onclick='closeWindows();'>x</div>
+        </div>
+		<div id="feedbacktablecontainer">
+		</div>
+      </div>
+    </div>
+    <!-- User Feedback Dialog END -->
+
 </body>
 
 </html>

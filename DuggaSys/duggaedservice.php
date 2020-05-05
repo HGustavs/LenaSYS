@@ -217,8 +217,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'arrow' => $row['id'],
 			'cogwheel' => $row['id'],
 			'jsondeadline' => html_entity_decode($row['jsondeadline']),
-			'trashcan' => $row['id'],
-			'userfeedback' => $row['id']
+			'trashcan' => $row['id']
 			);
 
 		array_push($entries, $entry);

@@ -578,12 +578,12 @@ CREATE TABLE timesheet(
 /* userDuggaFeedback table used for user feedback on duggor */
 CREATE TABLE userDuggaFeedback(
 	ufid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	uid						INT UNSIGNED,
+	username						VARCHAR(80) DEFAULT null,
 	cid						INT UNSIGNED NOT NULL,
 	lid					INT UNSIGNED NOT NULL,
 	score						INT(11) NOT NULL,
 	PRIMARY KEY (ufid),
-	FOREIGN KEY (uid) REFERENCES user(uid),
+	FOREIGN KEY (username) REFERENCES user(username),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (lid) REFERENCES listentries(lid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
