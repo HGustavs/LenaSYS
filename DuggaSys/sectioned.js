@@ -1079,7 +1079,7 @@ function returnedSection(data) {
 
   addClasses();
   showMOTD();
-  
+
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
@@ -1716,6 +1716,7 @@ function validateCourseID(courseid, dialogid) {
   var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
+  var val = document.getElementById("versid").value;
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -1725,10 +1726,21 @@ function validateCourseID(courseid, dialogid) {
   } else {
 
     code.style.borderColor = "#E54";
+    x2.innerHTML = "Only numbers(between 3-6 numbers)";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
   }
+
+  const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
+  if(versionIsValid) {
+    code.style.borderColor = "#E54";
+    x2.innerHTML = "Version ID already exists, try another";
+    x2.style.display = "block";
+    code.style.borderWidth = "2px";
+    window.bool = false;
+  }
+
 }
 
 function validateMOTD(motd, dialogid){
