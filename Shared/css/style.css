@@ -711,10 +711,12 @@ header td {
 }
 
 .navButt img {
-  margin-left: 10px;
+  margin-left: 20px;
   vertical-align: middle;
   height: 32px;
   margin:auto 10px auto 0;
+  padding:0px 10px 0px 15px;
+  
 }
 
 .navButt:hover {
@@ -3808,6 +3810,9 @@ rect[class*="activitymarker"]:hover {
 #lookingGlassSVG {
   top: 3px;
   left: 3px;
+  padding-bottom: 35px;
+  padding-left:0;
+  margin-right:0;
 }
 
 #searchBarMobile {
