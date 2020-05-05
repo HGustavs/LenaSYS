@@ -564,7 +564,7 @@ function returnedSection(data) {
           var vversz = itemz['vers'];
           var vnamez = itemz['versname'];
           if (retdata['coursevers'] == vversz) {
-            versionname = vnamez;
+              versionname = vnamez;
           }
         }
       }
@@ -590,7 +590,7 @@ function returnedSection(data) {
           bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
         // save vers, versname and motd from table vers as global variables.
-        if (querystring['coursevers'] == item['vers']) versnme = item['versname'];
+        versnme = versionname;
         if (querystring['coursevers'] == item['vers']) motd = item['motd'];
         if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
       }
