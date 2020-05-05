@@ -1702,7 +1702,6 @@ function validateCourseID(courseid, dialogid) {
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
   var val = document.getElementById("versid").value;
-  console.log(retdata["courseid"]);
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -1720,7 +1719,6 @@ function validateCourseID(courseid, dialogid) {
 
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
   if(versionIsValid) {
-    console.log("popop");
     code.style.borderColor = "#E54";
     x2.innerHTML = "Version ID already exists, try another";
     x2.style.display = "block";
@@ -1852,7 +1850,6 @@ function validateForm(formid) {
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
     var versId = document.getElementById("versid").value;
-    console.log(versId);
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
