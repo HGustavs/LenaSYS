@@ -5614,7 +5614,7 @@ function getTextareaText(array) {
     for (let i = 0; i < array.length; i++) {
         text += array[i].text;
         if (i < array.length - 1) {
-            text += separators.textarea;
+            text += "\n";
         }
     }
     return text;
