@@ -385,6 +385,80 @@ function loadFileInformation() {
     updateFileInformation();
 }
 
+function loadPageInformation() {
+    resetAnalyticsChart();
+    $('#analytic-info').empty();
+    $('#analytic-info').append("<p>Page information.</p>");
+ 
+    var selectPage = $("<select></select>")
+        .append('<option value="showDugga" selected>showDugga</option>')
+        .append('<option value="codeviewer">codeviewer</option>')
+        .appendTo($('#analytic-info'));
+   
+       
+   
+    function updatePageHitInformation(page){
+        loadAnalytics(page + "Information", function(data) {
+            console.log(page);
+            var tableData = [["Page", "Hits"]];
+            for (var i = 0; i < data.length; i++) {
+                tableData.push([
+                    page,
+                    data[i].pageLoads
+                ]);
+            }
+           
+            $('#analytic-info').append("<p>Page information.</p>");
+            $('#analytic-info').append(selectPage);
+            $('#analytic-info').append(renderTable(tableData));
+            updatePieChartInformation(page, tableData);
+        });
+    }
+ 
+    function updatePieChartInformation(page, tableData){
+        console.log(page + "Percentage");
+        loadAnalytics(page + "Percentage", function(data) {
+ 
+            var tablePercentage = [["Courseid", "Percentage"]];
+            for (var i = 0; i < data.length; i++) {
+                tablePercentage.push([
+                    data[i].courseid,
+                    data[i].percentage
+                ]);
+            }
+ 
+            var chartData = [];
+            for (var i = 0; i < data.length; i++) {
+                chartData.push({
+                    label: "courseid:" + " " + data[i].courseid,
+                    value: data[i].percentage
+                });
+            }
+            $('#analytic-info').append("<p>Page information.</p>");
+            $('#analytic-info').append(selectPage);
+            $('#analytic-info').append(renderTable(tableData));
+            $('#analytic-info').append(renderTable(tablePercentage));
+            $('#analytic-info').append(drawPieChart(chartData));
+            updateState();
+        });
+    }
+ 
+    function updateState(){
+        selectPage.change(function(){
+            switch(selectPage.val()){
+                case "showDugga":
+                    updatePageHitInformation("dugga");
+                    break;
+                case "codeviewer":
+                    updatePageHitInformation("codeviewer");
+                    break;
+            }
+        });
+    }
+ 
+    updateState();
+}
+
 //------------------------------------------------------------------------------------------------
 // Analytic loaders END	
 //------------------------------------------------------------------------------------------------

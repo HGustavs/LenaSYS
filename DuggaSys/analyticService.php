@@ -44,7 +44,19 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 				break;
 			case 'fileInformation':
 				fileInformation();
-			break;
+				break;
+			case 'duggaInformation':
+                duggaInformation();
+                break;
+            case 'codeviewerInformation':
+                codeviewerInformation();
+                break;
+            case 'duggaPercentage':
+                duggaPercentage();
+                break;
+            case 'codeviewerPercentage':
+                codeviewerPercentage();
+                break;
 		}
 	} else {
 		echo 'N/A';
@@ -232,4 +244,65 @@ function serviceCrashes(){
 		WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerEnd.');
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves dugga information         
+//------------------------------------------------------------------------------------------------
+function duggaInformation(){
+    $result = $GLOBALS['log_db']->query('
+        SELECT
+            COUNT(*) AS pageLoads,
+            timestamp AS timestamp
+        FROM duggaLoadLogEntries
+        ORDER BY timestamp;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves codeviewer information        
+//------------------------------------------------------------------------------------------------
+ 
+function codeviewerInformation(){
+    $result = $GLOBALS['log_db']->query('
+        SELECT
+            COUNT(*) AS pageLoads,
+            timestamp AS timestamp
+        FROM exampleLoadLogEntries
+        ORDER BY timestamp;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves dugga percentage          
+//------------------------------------------------------------------------------------------------
+ 
+function duggaPercentage(){
+    $result = $GLOBALS['log_db']->query('
+        SELECT
+            cid AS courseid,
+            COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+        FROM duggaLoadLogEntries
+        GROUP BY courseid
+        ORDER BY percentage DESC;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves example percentage        
+//------------------------------------------------------------------------------------------------
+ 
+function codeviewerPercentage(){
+    $result = $GLOBALS['log_db']->query('
+        SELECT
+            courseid,
+            COUNT(*) * 100.0 / (SELECT COUNT(*) FROM exampleLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+        FROM exampleLoadLogEntries
+        GROUP BY courseid
+        ORDER BY percentage DESC;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
 }
