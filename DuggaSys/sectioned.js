@@ -202,7 +202,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
   // Set Lid
   $("#lid").val(lid);
-
+  
   // Display Dialog
   $("#editSection").css("display", "flex");
 
@@ -312,15 +312,11 @@ function showCreateVersion() {
 
 }
 
-function createQuickItem() {
-  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "");
-  newItem();
-}
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
-function createFABItem(kind, itemtitle) {
+function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined");
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment);
     newItem();
   }
 }
@@ -366,7 +362,13 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
-
+  if(param.comments == "TOP"){
+    param.pos = "-1";
+  }
+  else{
+    param.pos = "100";
+  }
+  
   return param;
 }
 
@@ -409,7 +411,7 @@ function newItem() {
   AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
-  setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
+  //setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
 
 //----------------------------------------------------------------------------------
@@ -625,13 +627,13 @@ function returnedSection(data) {
 
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
-
+      document.getElementById("FABStatic2").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
-
+      document.getElementById("FABStatic2").style.display = "None";
     }
 
     if (data['studentteacher']) {
@@ -673,8 +675,14 @@ function returnedSection(data) {
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
-        str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
-
+        // New items added get the class glow to show they are new
+        if(item['pos'] == "-1" || item['pos'] == "100"){
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
+        }
+        else{
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
+        }
+        
         menuState.idCounter++;
         // All are visible according to database
 
@@ -1081,6 +1089,7 @@ function showMOTD(){
     }else{
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+      document.getElementById("FABStatic2").style.top = "623px";
     }
   }
 }
@@ -1116,6 +1125,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
+  document.getElementById("FABStatic2").style.top = "565px";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
@@ -1442,6 +1452,7 @@ function drawSwimlanes() {
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mouseover(function (e) {
+    //showFabList(e);
     FABMouseOver(e);
 });
 
@@ -1626,7 +1637,7 @@ function replaceDefualtLink(){
 // Adds classes to <a> element depending on if they are external / internal
 function addClasses() {
   var links = document.getElementsByTagName('a');
-
+  
   for (var i = 0; i < links.length; i++) {
     if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
       links[i].classList.add("example-link");

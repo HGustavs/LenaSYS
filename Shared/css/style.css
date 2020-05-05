@@ -472,7 +472,15 @@ p {
   font-size: 24px;
   background-color: var(--color-primary);
 }
+.glow {
+  animation: glow 2s ease-out;
+}
 
+@keyframes glow {
+  to {
+      text-shadow: 0 0 10px red;
+  }
+}
 .item a {
   text-decoration: none;
   color: var(--color-text-primary);
@@ -5114,6 +5122,25 @@ only screen and (max-device-width: 320px) {
   right: 75px;
 }
 
+.fixed-action-button2 {
+  position: absolute;
+  top: 565px;
+  right: 24px;
+  z-index: 1;
+  touch-action: none;
+}
+
+.fixed-action-button2.sectioned2 {
+  right: 120px;
+}
+/* Fix mobile-view for top FAB-button and Sectionlist heading */
+@media screen and (max-width: 680px) {
+  .fixed-action-button2{
+    display:none !important;
+  }
+  
+}
+
 #Courselist div.fixed-action-button a:hover {
   text-decoration: none;
 }
@@ -5139,11 +5166,13 @@ only screen and (max-device-width: 320px) {
 
 /* Small FAB button */
 
-.fab-btn-sm {
+.fab-btn-sm, .fab-btn-sm2 {
   width: 40px;
   height: 40px;
   line-height: 53px;
 }
+
+
 
 /* Large FAB button */
 
@@ -5163,7 +5192,7 @@ only screen and (max-device-width: 320px) {
 
 /* FAB bubble list container */
 
-.fab-btn-list {
+.fab-btn-list, .fab-btn-list2 {
   position: absolute;
   left: auto;
   width: 100%;
@@ -5172,10 +5201,12 @@ only screen and (max-device-width: 320px) {
   bottom: 55px;
 }
 
-.fab-btn-list li {
+
+.fab-btn-list li, .fab-btn-list2 li  {
   display: inline-block;
   margin-bottom: 15px;
 }
+
 
 .fab-icon {
   display: inline-block;
@@ -5246,120 +5277,120 @@ only screen and (max-device-width: 320px) {
 
 /* First item */
 
-.fab-btn-list :nth-last-child(1) a {
+.fab-btn-list :nth-last-child(1) a, .fab-btn-list2 :nth-last-child(1) a {
   background-color: #6ead2a;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(1) a:hover {
+.fab-btn-list :nth-last-child(1) a:hover, .fab-btn-list2 :nth-last-child(1) a:hover {
   background-color: #83ae55;
   color: white;
 }
 
 /* Second item */
 
-.fab-btn-list :nth-last-child(2) a {
+.fab-btn-list :nth-last-child(2) a, .fab-btn-list2 :nth-last-child(2) a {
   background-color: #adc726;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(2) a:hover {
+.fab-btn-list :nth-last-child(2) a:hover, .fab-btn-list2 :nth-last-child(1) a:hover {
   background-color: #b8cd4e;
   color: white;
 }
 
 /* Third item */
 
-.fab-btn-list :nth-last-child(3) a {
+.fab-btn-list :nth-last-child(3) a, .fab-btn-list2 :nth-last-child(3) a {
   background-color: #e9a901;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(4) a:hover {
+.fab-btn-list :nth-last-child(3) a:hover, .fab-btn-list2 :nth-last-child(3) a:hover {
   background-color: #ddae37;
   color: white;
 }
 
 /* Fourth item */
 
-.fab-btn-list :nth-last-child(4) a {
+.fab-btn-list :nth-last-child(4) a, .fab-btn-list2 :nth-last-child(4) a {
   background-color: #dc7e34;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(4) a:hover {
+.fab-btn-list :nth-last-child(4) a:hover, .fab-btn-list2 :nth-last-child(4) a:hover {
   background-color: #d78b50;
   color: white;
 }
 
 /* Fifth item */
 
-.fab-btn-list :nth-last-child(5) a {
+.fab-btn-list :nth-last-child(5) a, .fab-btn-list2 :nth-last-child(5) a {
   background-color: #d14d58;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(5) a:hover {
+.fab-btn-list :nth-last-child(5) a:hover, .fab-btn-list2 :nth-last-child(5) a:hover {
   background-color: #d16a72;
   color: white;
 }
 
 /* Sixth item */
 
-.fab-btn-list :nth-last-child(6) a {
+.fab-btn-list :nth-last-child(6) a, .fab-btn-list2 :nth-last-child(6) a {
   background-color: #cb438d;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(6) a:hover {
+.fab-btn-list :nth-last-child(6) a:hover, .fab-btn-list2 :nth-last-child(6) a:hover {
   background-color: #d0599a;
   color: white;
 }
 
 /* Seventh item */
 
-.fab-btn-list :nth-last-child(7) a {
+.fab-btn-list :nth-last-child(7) a, .fab-btn-list2 :nth-last-child(7) a {
   background-color: #a844cc;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(7) a:hover {
+.fab-btn-list :nth-last-child(7) a:hover, .fab-btn-list2 :nth-last-child(7) a:hover {
   background-color: #b560d3;
   color: white;
 }
 
 /* Eighth item */
 
-.fab-btn-list :nth-last-child(8) a {
+.fab-btn-list :nth-last-child(8) a, .fab-btn-list2 :nth-last-child(8) a {
   background-color: #6f34dc;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(8) a:hover {
+.fab-btn-list :nth-last-child(8) a:hover, .fab-btn-list2 :nth-last-child(8) a:hover {
   background-color: #7e4ed7;
   color: white;
 }
 
 /* Ninth item */
 
-.fab-btn-list :nth-last-child(9) a {
+.fab-btn-list :nth-last-child(9) a, .fab-btn-list2 :nth-last-child(9) a {
   background-color: #1f65cd;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(9) a:hover {
+.fab-btn-list :nth-last-child(9) a:hover, .fab-btn-list2 :nth-last-child(9) a:hover {
   background-color: #487fd1;
   color: white;
 }
 
 /* Tenth item */
 
-.fab-btn-list :nth-last-child(10) a {
+.fab-btn-list :nth-last-child(10) a, .fab-btn-list2 :nth-last-child(10) a {
   background-color: blue;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(10) a:hover {
+.fab-btn-list :nth-last-child(10) a:hover, .fab-btn-list2 :nth-last-child(10) a:hover {
   background-color: pink;
   color: white;
 }
