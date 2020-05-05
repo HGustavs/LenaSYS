@@ -925,7 +925,7 @@ function renderCell(col, celldata, cellid) {
 					if (celldata.submitted.getTime() === timeZero.getTime()) {
 						str += "<p>Not submitted</p>";
 					} else {
-						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+						str += celldata.submitted.toLocaleDateString() + " random shit " + celldata.submitted.toLocaleTimeString();
 					}
 					
 					for (var p = 0; p < moments.length; p++) {
