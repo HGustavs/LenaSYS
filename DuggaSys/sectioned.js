@@ -1069,9 +1069,9 @@ function returnedSection(data) {
   addClasses();
   showMOTD();
 
-  for(var i = 0; i < data["versions"].length; i++){
+  /*for(var i = 0; i < data["versions"].length; i++){
     versIdArray.push(data["versions"][i].vers);
-  }
+  }*/
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
@@ -1706,6 +1706,7 @@ function validateCourseID(courseid, dialogid) {
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
   var val = document.getElementById("versid").value;
+  console.log(retdata["courseid"]);
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -1721,14 +1722,24 @@ function validateCourseID(courseid, dialogid) {
     window.bool = false;
   }
 
-  if(versIdArray.indexOf(val)!== -1){
+  const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
+  if(versionIsValid) {
     console.log("popop");
     code.style.borderColor = "#E54";
     x2.innerHTML = "Version ID already exists, try another";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
-  } 
+  }
+
+  /*if(versIdArray.indexOf(val)!== -1){
+    console.log("popop");
+    code.style.borderColor = "#E54";
+    x2.innerHTML = "Version ID already exists, try another";
+    x2.style.display = "block";
+    code.style.borderWidth = "2px";
+    window.bool = false;
+  }*/ 
 }
 
 function validateMOTD(motd, dialogid){
