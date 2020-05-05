@@ -158,26 +158,34 @@ if ($storefile) {
     $swizzled = swizzleArray($_FILES['uploadedfile']);
     if($kind == "EFILE"){
         $fileText = $_POST["uploadedfile"][0];
+        $fileLocation = $_POST["uploadtype"][0];
         $extension = substr($fileText, strrpos($fileText, '.') + 1);
         if (array_key_exists($extension, $allowedExtensions)) {
             $fileText = preg_replace('/[[:^print:]]/', '', $fileText);
             $fileText = preg_replace('/\s+/', '', $fileText);
-            $movname = $currcvd . "/courses/global/" . $fileText;
-                    // Logging for global files
-                    $description="Global"." ".$fileText;
-                    logUserEvent($userid, EventTypes::AddFile, $description);
-                    
+            if($fileLocation == "courselocal"){
+                $movname = $currcvd . "/courses/" . $cid . "/" . $fileText;
+                $description="CourseLocal"." ".$fname;
+                logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
+                $kindid = 3;
+            }
+            else if($fileLocation == "global"){
+                $movname = $currcvd . "/courses/global/" . $fileText;
+                $description="Global"." ".$fileText;
+                logUserEvent($userid, EventTypes::AddFile, $description);
+                $kindid = 2;
+            }
                     $ourFileHandle= fopen($movname, 'w') or die('Permission error'); 
 
-                    $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;"); // 1=Link 2=Global 3=Course Local 4=Local
+                    $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=:kindid;"); // 1=Link 2=Global 3=Course Local 4=Local
                     $query->bindParam(':filename', $fileText);
                     $query->bindParam(':cid', $cid);
                     $query->execute();
                     $norows = $query->fetchColumn();
                     $filesize = filesize($movname);
-                    $kindid = -1;
+                    //$kindid = -1;
                     if ($norows == 0) {
-                        $kindid = 2;
+                        
                             $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
                             $query->bindParam(':cid', $cid);
                         $query->bindParam(':filename', $fileText);
@@ -198,7 +206,7 @@ if ($storefile) {
                     $query->bindParam(':cid', $cid);
                     $query->bindParam(':filesize', $filesize);
                     
-                        $kindid = 2;
+                        
                     
                     $query->bindParam(':kindid', $kindid);
 

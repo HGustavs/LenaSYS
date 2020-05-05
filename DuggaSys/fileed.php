@@ -153,10 +153,10 @@ $codeLinkQuery->execute();
                         </div>
                     </div>
                     <div class='testselect'>
-                    <select id="selectdir">
-                            <option value="volvo">Global</option>
-                            <option value="saab">Course</option>
-                            <option value="opel">Course Local</option>
+                    <select name ="uploadtype[]" id="selectdir">
+                            <option value="global">Global</option>
+                            <option value="courselocal">Course</option>
+                            <option value="courselocal">Course Local</option>
                          </select>
                     </div>
                     <div class='inputwrapper linkPopUp'>
