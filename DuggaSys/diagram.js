@@ -4437,6 +4437,8 @@ function mouseupevt(ev) {
                 }
                 if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
 
+                if(diagram[lineStartObj].kind == 1 || diagram[markedObject].kind == 1) okToMakeLine = false;
+
                 if (okToMakeLine) {
                     saveState = true;
                     if (createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
