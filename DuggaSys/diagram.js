@@ -93,7 +93,7 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
-var writeToLayer = "Layer_1";
+var writeToLayer = "Layer_1_Acitve";
 var gridSize = 16;                  // Distance between lines in grid
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                            // Canvas context
@@ -5542,6 +5542,7 @@ function createLayer(){
     document.getElementById("layerActive").innerHTML ="";
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
+    addLayersToApperence(id);
 }
 function loadLayer(localStorageID){
     let parentNode = document.getElementById("viewLayer");
@@ -5619,8 +5620,7 @@ function fixWriteToLayer(){
     let active = localStorage.getItem("writeToActiveLayers");
     for(let i = 0; i < spans.length; i++){
         spans[i].id = spans[i].id+"_Active";
-        spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this),setlayer()");
-        console.log(spans[i].id, active)
+        spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
         if (spans[i].id == active) {
             spans[i].setAttribute("class", "isActive drop-down-option");
         }
@@ -5644,7 +5644,8 @@ function toggleActiveBackgroundLayer(object) {
     if(isActive == false){
         object.classList.remove("notActive");
         object.classList.add("isActive");
-        localStorage.setItem("writeToActiveLayers", object.id)
+        localStorage.setItem("writeToActiveLayers", object.id);
+        setlayer(object);
     }
     else {
         object.classList.remove("isActive");
@@ -5664,20 +5665,22 @@ function toggleActiveBackgroundLayer(object) {
 }
 
 function setlayer(object){
-    writeToLayer = "Layer_4";
+    let remove = object.id.replace('_Active','');
+    console.log(remove);
+    writeToLayer = remove;
 }
 
 function addLayersToApperence(localStorageID){
-    id = 0;
-    let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
-    let parentNode = document.getElementById("objectLayer");
-    for(let i = 0; i < localStorageID; i++){
-        id++
-        let newOption = document.createElement("option");
-        newOption.setAttribute("Value", "Layer_"+id);
-        newOption.innerHTML = valueArray[id];
-        parentNode.appendChild(newOption);
+    const select = document.getElementById("objectLayer");
+    select.innerHTML = "";
+
+    for(let i = 1; i <= localStorageID; i++) {
+        const option = document.createElement("option");
+        option.text = `Layer ${i}`;
+        option.value = `Layer_${i}`;
+        select.add(option);
     }
+    initAppearanceForm()
 }
 //function deleteLayer(){
  //   document.getElementById("layerPlaceholder").innerHTML = "<div class='drop-down-item' tabindex='0'> <span class='drop-down-option id='layer_1'>Layer One</span></div>'";

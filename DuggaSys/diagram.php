@@ -456,7 +456,7 @@
                         <div class="drop-down">
                             <div id="layerActive">
                                 <div class="drop-down-item" tabindex="0">
-                                    <span class="notActive drop-down-option" onclick="toggleBackgroundLayer(this)" id="layers_1">Layer One</span>
+                                    <span class="notActive drop-down-option" onclick="toggleBackgroundLayer(this)" id="layers_1_Active">Layer One</span>
                                 </div>
                             </div>
                             <div class="drop-down-divider">
@@ -604,7 +604,7 @@
                         <label for="lineColor">Line color:</label>
                         <select id="lineColor" data-access="properties.strokeColor"><?=$colors;?></select>
                     </div>
-                    <div class="form-group" data-types="2,3,5,0">
+                    <div class="form-group" data-types="1,3,0">
                         <label for="objectLayer">Write to layer:</label>
                         <select id="objectLayer" data-access="properties.setLayer"></select>
                     </div>
