@@ -3,6 +3,17 @@ session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
+
+$css = array(
+	'style.css',
+	'jquery-ui-1.10.4.min.css'
+);
+
+$js = array(
+	'jquery-1.11.0.min.js',
+	'jquery-ui-1.10.4.min.js'
+);
+
 ?>
 
 <!DOCTYPE html>
@@ -13,15 +24,23 @@ pdoConnect();
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Analytic Tool</title>
-
-	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">
-	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+	<?php
+		foreach($css as $filename) {
+			$filemtime = filemtime('../Shared/css/' . $filename);
+			echo "<link rel='stylesheet' type='text/css' href='../Shared/css/$filename?$filemtime'/>";
+		}
 	
-	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
-	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-	<script src="../Shared/dugga.js"></script>
-	<script src="analytic.js"></script>
+		foreach($js as $filename) {
+			$filemtime = filemtime('../Shared/js/' . $filename);
+			echo "<script type='text/javascript' src='../Shared/js/$filename?$filemtime'/></script>";
+		}
+
+		$filemtime = filemtime('../Shared/dugga.js');
+		echo "<script type='text/javascript' src='../Shared/dugga.js?$filemtime'></script>";
+				
+		$filemtime = filemtime('analytic.js');
+		echo "<script type='text/javascript' src='analytic.js?$filemtime'></script>";
+	?>
 </head>
 <body>
 
