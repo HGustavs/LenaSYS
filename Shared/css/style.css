@@ -1159,6 +1159,7 @@ input {
   border: 2px solid var(--color-border-2);
   border-radius: 4px;
   font-size: 16px;
+  padding-left: 5px;
 }
 
 .loginBox .inputwrapper {
@@ -3066,6 +3067,7 @@ padding: 10px;
   color: #fff;
   cursor: pointer;
   margin: 8px 2px 4px 2px;
+  padding: 0px;
   font-size: 14px;
   transition: 0.1s background-color;
   float: right;
@@ -3833,13 +3835,6 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-/*#searchinput,
-#duggaSearch,
-#searchinputMobile {
-  padding: 0 0 0 2px;
-  height: 20px;
-}
-*/
 #searchBar,
 #searchbutton,
 #searchbuttonMobile {
@@ -3847,6 +3842,7 @@ rect[class*="activitymarker"]:hover {
   width: 26px;
   height: 25px;
   margin: 0;
+  padding: 4px;
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
@@ -3859,13 +3855,6 @@ rect[class*="activitymarker"]:hover {
 #testSearchContainer img {
   margin: 0px;
 }
-
-/* .searchField{
-  height: 25px;
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
-  border-right: 0px;
-} */
 
 #lookingGlassSVG {
   top: 3px;
@@ -6127,6 +6116,7 @@ textarea#filecont {
 
 /* Number column */
 .variant-vid {
+  text-align: center;
   width: 20px;
 }
 
