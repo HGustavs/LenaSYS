@@ -367,11 +367,60 @@ p {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
+  margin: 10px 0 20px 0;
   cursor: pointer;
   border-radius: 4px;
 }
+#announcementBox table{
+  width: 100%;
 
+}
+#announcementBox table tr{
+  border-left: 5px solid var(--color-logo-background);
+
+}
+#announcementBox table tr th{
+  color: var(--color-text-primary);
+  text-align: left;
+
+}
+#announcementBox table th,
+#announcementBox table td{
+  padding: 0 0 0 10px;
+
+}
+#announcementBox table tr:nth-child(2n):not(:last-child){
+  border-bottom: 1px solid var(--color-text-primary);
+}
+#announcementBox table tr td {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#announcementBox table tr td.columnA {
+    width: 70%;
+}
+#announcementBox table tr th{
+  padding-top: 15px;
+}
+#announcementBox table tr td.columnB {
+    width: 30%;
+    padding-bottom: 15px;
+}
+
+#announcementBox table a{
+  text-decoration: none;
+  color: #000;
+
+}
+#announcementBox table a:hover{
+  text-decoration: underline;
+
+}
+#announcementBox .headlines tr:last-child{
+  border-bottom: none;
+}
 .modal input[type=text], 
 .modal textarea {
   width: 100%;

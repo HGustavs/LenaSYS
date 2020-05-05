@@ -119,21 +119,24 @@
 			<h3>To Do</h3>
 			<hr>
 			<button id="newAnnouncement">Create a new announcement</button>
+			<table>				
 			<?php
 
 				$courseid = $_GET['courseid'];
 				$coursevers = $_GET['coursevers'];
 
-				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid LIKE "%'.$courseid.'%" AND courseversion LIKE "%'.$coursevers.'%"') AS $headline){
+				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid LIKE "%'.$courseid.'%" AND courseversion LIKE "%'.$coursevers.'%" ORDER BY announceTime DESC') AS $headline){
 	             $headlines = $headline['title'];
-	             echo "<div><a href='#'>".$headlines."</a></div>";
-
+	             $message = $headline['message'];
+	             $announceTime = $headline['announceTime'];
+	             echo "<tr><th><a href='#'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA'><a href='#'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
 
 	            }    
 
 
 			?>
 
+			</table>
 		</div>
 
 		<?php 
