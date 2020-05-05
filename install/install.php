@@ -3,7 +3,7 @@
   <link rel="stylesheet" type="text/css" href="CSS/install_style.css">
   <script src="../Shared/js/jquery-1.11.0.min.js"></script>
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-  <script src="install_entry.js"></script> 
+  <script src="install_entry.js"></script>
   <script src="install.js" defer></script>
 </head>
 <body>
@@ -80,32 +80,27 @@
       </div>
 </div> 
 
-<!-- Script for setting js systemVariables -->
+<!-- Script for setting js systemVariables and creating permission-modal -->
 <script>
-  var setFilePath = <?php echo json_encode($putFileHere); ?>;
-  var setOperatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
-  var setOwner = <?php echo json_encode($username); ?>;
-</script>
+  var owner = <?php echo json_encode($username); ?>;
+  var filePath = <?php echo json_encode($putFileHere); ?>;
+  var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
+  
+  var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal (used much later in)
+  var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
+  var modal = document.getElementById('warning'); // Get the modal
 
-<script>
-var modal = document.getElementById('warning'); // Get the modal
-var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
-var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal (used much later in)
-var filePath = setFilePath; // Set variable to value from PHP-file.
-var operatingSystem = setOperatingSystem; // Set variable to value from PHP-file.
-var owner = setOwner; // Set variable to value from PHP-file.
+  setPermissionModalText(owner, filePath, operatingSystem);
 
-setPermissionModalText();
-
-//---------------------------------------------------------------------------------------------------
-// setPermissionModalText, function to set the text of the permission-modal
-//---------------------------------------------------------------------------------------------------
-function setPermissionModalText(){
-  modalDialogText.innerHTML=	
-  `<div>
-    ${getPermissionModalText(owner, filePath, operatingSystem)}
-  </div>`;
-}
+  //---------------------------------------------------------------------------------------------------
+  // setPermissionModalText, function to set the text of the permission-modal, getPermission is in install_entry
+  //---------------------------------------------------------------------------------------------------
+  function setPermissionModalText(fOwner, fFilePath, fOperatingSystem){
+    modalDialogText.innerHTML=	
+    `<div>
+      ${getPermissionModalText(fOwner, fFilePath, fOperatingSystem)}
+    </div>`;
+  }
 </script>
 
 <div id="header">
