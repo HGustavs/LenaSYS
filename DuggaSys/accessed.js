@@ -10,6 +10,7 @@ var myTable;
 var accessFilter = "WRST";
 var trueTeacher;
 var examinerName;
+var activeDropdown;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -742,6 +743,44 @@ function mouseUp(e) {
  		clearUpdateCellInternal();
  	}
 }
+
+//----------------------------------------------------------------------------------
+// Eventlistener for handling dropdowns
+//----------------------------------------------------------------------------------
+
+document.addEventListener('click', function(e){
+	if(e.target.classList.contains('access-dropdown') || e.target.parentElement.classList.contains('access-dropdown')){
+		var dropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
+		if(activeDropdown === undefined){
+			if(window.getComputedStyle(dropdown, null).getPropertyValue("display") === "none"){
+				dropdown.style.display = "block";
+				activeDropdown = dropdown;
+			}else{
+				dropdown.style.display = "none";
+				activeDropdown = undefined;
+			}
+		}else{
+			if(e.target != activeDropdown){
+				if(activeDropdown.style.display === "none"){
+					activeDropdown.style.display = "block";
+					activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
+				}else{
+					if(activeDropdown != dropdown){
+						activeDropdown.style.display = "none";
+						e.target.closest('.access-dropdown').querySelector('.access-dropdown-content').style.display = "block";
+						activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content')
+					}else{
+						activeDropdown.style.display = "none";
+						activeDropdown = undefined;
+					}
+				}
+			}
+		}
+	}else{
+		activeDropdown.style.display = "none";
+		activeDropdown = undefined;
+	}
+});
 
 //----------------------------------------------------------------------------------
 // createQuickItem: Handle "fast" click on FAB button
