@@ -5448,22 +5448,12 @@ function loadAppearanceForm() {
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
             indexes[symbolKind.text].current++;
-            freeTextElement.value += getTextareaText(object.textLines);
-            if(indexes[symbolKind.text].max > indexes[symbolKind.text].current) {
-                freeTextElement.value += separators.textarea;
-            }
-            freeTextElement.dataset.originalvalue = freeTextElement.value;
+            setTextareaElement(freeTextElement, object.textLines, indexes[symbolKind.text]);
             freeTextElement.focus();
         } else if(object.symbolkind === symbolKind.uml) {
             indexes[symbolKind.uml].current++;
-            umlOperationsElement.value += getTextareaText(object.operations);
-            umlAttributesElement.value += getTextareaText(object.attributes);
-            if(indexes[symbolKind.uml].max > indexes[symbolKind.uml].current) {
-                umlOperationsElement.value += separators.textarea;
-                umlAttributesElement.value += separators.textarea;
-            }
-            umlOperationsElement.dataset.originalvalue = umlOperationsElement.value;
-            umlAttributesElement.dataset.originalvalue = umlAttributesElement.value;
+            setTextareaElement(umlOperationsElement, object.operations, indexes[symbolKind.uml]);
+            setTextareaElement(umlAttributesElement, object.attributes, indexes[symbolKind.uml]);
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
@@ -5516,9 +5506,9 @@ function setNameIndexes(indexes, types) {
     };
 }
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// setNameElement: Sets the value of the name input element based on passed objects and uses passed index create a separator between object names if not last object.
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setNameElement: Sets the value of the name input element based on passed objects and uses passed index to create a separator between object names if not last object.
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setNameElement(object, index) {
     const nameElement = document.getElementById("name");
@@ -5547,6 +5537,18 @@ function setLineDirectionElementUML(object) {
     } else {
         document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
     }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setTextareaElement: Sets the value of a textarea element based on property array and uses passed index to create a separator between different object text if not last object.
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setTextareaElement(element, property, index) {
+    element.value += getTextareaText(property);
+    if(index.max > index.current) {
+        element.value += separators.textarea;
+    }
+    element.dataset.originalvalue = element.value;
 }
 
 function showFormGroups(typesToShow) {
