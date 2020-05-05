@@ -14,7 +14,6 @@ var resave = false;
 var versnme = "UNKz";
 var versnr;
 var motd;
-var versIdArray = [];
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -1069,9 +1068,6 @@ function returnedSection(data) {
   addClasses();
   showMOTD();
 
-  /*for(var i = 0; i < data["versions"].length; i++){
-    versIdArray.push(data["versions"][i].vers);
-  }*/
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
@@ -1732,14 +1728,6 @@ function validateCourseID(courseid, dialogid) {
     window.bool = false;
   }
 
-  /*if(versIdArray.indexOf(val)!== -1){
-    console.log("popop");
-    code.style.borderColor = "#E54";
-    x2.innerHTML = "Version ID already exists, try another";
-    x2.style.display = "block";
-    code.style.borderWidth = "2px";
-    window.bool = false;
-  }*/ 
 }
 
 function validateMOTD(motd, dialogid){
