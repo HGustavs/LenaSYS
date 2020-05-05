@@ -14,7 +14,10 @@
   $timeOutSeconds = ini_get('max_execution_time');
   set_time_limit(300);
   $errors = 0;
-  // Create a version of dirname for <PHP7 compability
+
+  //---------------------------------------------------------------------------------------------------
+  // cdirname: Returns dirname for <PHP7 compability, called to set variable putFileHere (used as dirname)
+  //---------------------------------------------------------------------------------------------------
   function cdirname($path, $level) {
     $prefix = '';
     // Check if $path starts with a windows style 'C:\' prefix
@@ -45,6 +48,9 @@
 
   ob_start();
 
+  //---------------------------------------------------------------------------------------------------
+  // getUsername: Returns username based on value from cdirname(), called to set variable username
+  //---------------------------------------------------------------------------------------------------
   function getUsername($currentPath) {
     $username = null;
 
@@ -57,20 +63,23 @@
     return $username;
   }
 
+  //---------------------------------------------------------------------------------------------------
+  // systemVariables: Sets the system variables, path, operatingSystem and username
+  //---------------------------------------------------------------------------------------------------
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
   $operatingSystem = PHP_OS_FAMILY;
   $username = getUsername($putFileHere)
 ?>
 
+<!-- Modal used for the permission-popup -->
 <div id='warning' class='modal'>
-      <!-- Modal content -->
       <div class='modal-content'>
         <span title='Close pop-up' class='close''>&times;</span>
           <span id='dialogText'></span>
       </div>
 </div> 
 
-<!-- Script to set the local variables of the running system !-->
+<!-- Script for setting js systemVariables -->
 <script>
   var setFilePath = <?php echo json_encode($putFileHere); ?>;
   var setOperatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
@@ -87,21 +96,17 @@
     var os = setOperatingSystem; // Get O/S of the system running the installer
     var firstText = setFirstText(os); // Set first text depending on O/S
     var secondText = setSecondText(os); // Set second text depending on O/S
-
-    document.getElementById('dialogText').innerHTML="<div><h1>" +
-    "-!- READ THIS BEFORE YOU START -!-</h1><br>" +
-    firstText +
-    "<br><br>" +
-    "current owner: " + owner +
-    "<br>" +
-    "current os: " + 
-      os +
-    "<br><br>" +
-    "To do this run the command:<br>" +
-    secondText +
-    "<br>" +
-    "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
-    "<i>I promise I have done this.</i></div>";
+    
+    document.getElementById('dialogText').innerHTML=	
+    `<div>
+	    <h1>--- READ THIS BEFORE YOU START ---</h1><br>
+	    ${firstText}<br><br>
+	    Current Owner: ${owner}<br>
+	    Current OS: ${os}<br><br>
+	    To do this run the command: ${secondText}\<br><br>
+	    <input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
+      <i>I promise I have done this.</i>
+	  </div>`;
 
     function haveRead(isTrue) {
         modalRead = isTrue;
