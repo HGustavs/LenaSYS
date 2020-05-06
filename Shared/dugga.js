@@ -26,14 +26,14 @@ $(function () {  // Used to set the position of the FAB above the cookie message
 // adapted from https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
 //----------------------------------------------------------------------------------
 function getAllIndexes(haystack, needle) {
-    let indexes = [];
-    if(haystack===null||needle===null||needle==="") return indexes;
-    let i = haystack.indexOf(needle);
-    while (i !== -1) {
-        indexes.push(i);
-        i = haystack.indexOf(needle, ++i);
-    }
-    return indexes;
+	var indexes = [];
+	if(haystack===null||needle===null||needle==="") return indexes;
+	var i = haystack.indexOf(needle);
+	while (i !== -1) {
+		indexes.push(i);
+		i = haystack.indexOf(needle, ++i);
+	}
+	return indexes;
 }
 
 //Set the localstorage item securitynotifaction to on or off
@@ -208,14 +208,59 @@ function makeoptions(option,optionlist,valuelist)
 
 function makeoptionsItem(option,optionlist,optionstring,valuestring)
 {
-		var str="";
-		for(var i=0;i<optionlist.length;i++){
-				str+="<option ";
-				if(optionlist[i][valuestring]==option){
-						str+="selected='selected' ";
-				}
-				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
+	var str="";
+	for(var i=0;i<optionlist.length;i++){
+		str+="<option ";
+		if(optionlist[i][valuestring]==option){
+			str+="selected='selected' ";
 		}
+		str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
+	}
+	return str;
+}
+
+//----------------------------------------------------------------------------------
+// makedivItem: Prepares a dropdown list specifically for items such as code examples / dugga etc
+//----------------------------------------------------------------------------------
+
+function makedivItem(option,optionlist,optionstring,valuestring)
+{
+		var str="";
+		str +="<div class='access-dropdown-content'>"
+			for(var i=0;i<optionlist.length;i++){
+				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDiv(event)'> ";
+				str+=""+optionlist[i][optionstring]+"</div>";
+			}
+		str +="</div>"
+		return str;
+}
+
+function makedivItemWithValue(option,optionlist,optionstring,valuestring)
+{
+		var str="";
+		str +="<div class='access-dropdown-content'>"
+			for(var i=0;i<optionlist.length;i++){
+				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'> ";
+				str+=""+optionlist[i][optionstring]+"</div>";
+			}
+		str +="</div>"
+		return str;
+}
+
+function makeDivItemStudent(option,optionlist,valuelist)
+{
+		var str="";
+		var stringArray = ["W","R","ST"];
+		str +="<div class='access-dropdown-content'>"
+		for(var i=0;i<optionlist.length;i++){
+			str+="<div data-value='"+stringArray[i]+"' onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
+			if(valuelist==null){
+				str+=">"+optionlist[i]+"</div>";
+			}else{
+				str+=">"+optionlist[i]+"</div>";
+			}
+		}
+		str +="</div>"
 		return str;
 }
 
@@ -621,7 +666,7 @@ function AJAXService(opt,apara,kind)
       tex += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 	apara.log_uuid = tex;
-
+	
   var para="";
 	for (var key in apara) {
 		var old = apara[key];
@@ -1057,9 +1102,9 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){
 			$("#logoutBox").show();
+			$("#logoutBox").css('display', 'block');
 			$(".buttonLogoutCancelBox").click(function(){
 				$("#logoutBox").hide();
-
 			});
 
 
@@ -1106,19 +1151,18 @@ function checkScroll(obj) {
 	}
 }
 
-function showEmailPopup()
-{
-	var receiptcemail ="";
-	document.getElementById("emailPopup").style.display = "block";
-	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
-	document.getElementById('email').value = receiptcemail;
-}
+//function showEmailPopup()
+//{
+//	var receiptcemail ="";
+//	document.getElementById("emailPopup").style.display = "block";
+//	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
+//	document.getElementById('email').value = receiptcemail;
+//}
 
-function hideEmailPopup()
-{
-	$("#emailPopup").css("display","none");
-	//$("#overlay").css("display","none");
-}
+//function hideEmailPopup()
+//{
+//	$("#emailPopup").css("display","none");
+//}
 
 //----------------------------------------------------------------------------------
 // Send dugga receipt to users email, save email in localstorage.
@@ -1534,6 +1578,12 @@ function FABMouseOver(e) {
 			$('.fab-btn-sm').toggleClass('scale-out');
 		}
 	}
+	else if (e.target.id === "addElement") {
+		if ($('.fab-btn-sm2').hasClass('scale-out')) {
+			$('.fab-btn-list2').fadeIn(0);
+			$('.fab-btn-sm2').toggleClass('scale-out');
+		}
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -1543,6 +1593,10 @@ function FABMouseOut(e) {
 	if (!$('.fab-btn-sm').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button")) {
 		$('.fab-btn-sm').toggleClass('scale-out');
 		$('.fab-btn-list').delay(100).fadeOut(0);
+	}
+	else if (!$('.fab-btn-sm2').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button2").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button2")) {
+		$('.fab-btn-sm2').toggleClass('scale-out');
+		$('.fab-btn-list2').delay(100).fadeOut(0);
 	}
 }
 
@@ -1627,13 +1681,12 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
-	const $containerHeight = $("#servermsgcontainer");
+	var $containerHeight = $("#servermsgcontainer");
 	$containerHeight.animate({ 
 		opacity: 0, 
 		top: -$containerHeight.outerHeight() 
 	}, 200, "easeInOutSine", () => {
-		//After animation is done.
-		$containerHeight.css("opacity", "1");
+		$containerHeight.css(opacity, 1);
 	});
 }
 

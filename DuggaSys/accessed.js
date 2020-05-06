@@ -8,6 +8,9 @@ var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 var myTable;
 var accessFilter = "WRST";
+var trueTeacher;
+var examinerName;
+var activeDropdown;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -237,6 +240,42 @@ function resetPw(uid, username) {
 	}, "ACCESS");
 }
 
+function getColname(e){
+	var element = e.target.parentElement.parentElement;
+	var cellelement = element.closest("td");
+	let regex = new RegExp("^r([0-9]+)" + myTable.getDelimiter() + "([a-zA-Z0-9]+)" + myTable.getDelimiter() + "(.*)")
+	let match = cellelement.id.match(regex);
+	var colname = match[3];
+	return colname.toString();
+}
+
+function changeOptDiv(e) {
+	var paramlist = e.target.parentElement.parentElement.id.split("_");
+	key = getColname(e);
+	keyvalue = e.target.getAttribute('data-value');
+	
+	obj = {
+		uid: paramlist[1],
+		[key]: keyvalue
+	}
+	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
+	changeProperty(paramlist[1], paramlist[0], keyvalue);
+	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
+}
+
+function changeOptDivStudent(e,value){
+	var paramlist = e.target.parentElement.parentElement.id.split("_");
+	key = getColname(e);
+	keyvalue = e.target.getAttribute('data-value');
+	
+	obj = {
+		[key]: keyvalue
+	}
+	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
+	changeProperty(paramlist[1], paramlist[0], value);
+	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
+}
+
 function changeOpt(e) {
 	var paramlist = e.target.id.split("_");
 	obj = {
@@ -285,11 +324,26 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.class, filez['classes'], "class", "class") + "</select>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'><option value='None'>None</option>" + makeoptionsItem(obj.examiner, filez['teachers'], "name", "uid") + "</select>";
+		for(i = 0; i < filez['teachers'].length; i++){
+			if(obj.examiner == filez['teachers'][i].uid){
+				examinerName = filez['teachers'][i].name;
+			}
+		}
+		if(examinerName == null){
+			examinerName = "None";
+		}
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
-        str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptionsItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
+		var versname = "null"
+		for (var i = 0; i < filez['courses'].length; i++) {
+			if (obj.vers == filez['courses'][i]['vers']) {
+				versname = filez['courses'][i]['versname'];
+			}
+		}
+
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
@@ -297,16 +351,26 @@ function renderCell(col, celldata, cellid) {
             }
         };
 	} else if (col == "access") {
-		str = "<select onchange='changeOpt(event)' id='" + col + "_" + obj.uid + "'>" + makeoptions(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
+		if(obj.access == "W"){
+			trueTeacher = "Teacher";
+		}
+		else if (obj.access == "R"){
+			trueTeacher = "Student";
+		}
+		else {
+			trueTeacher = "Student teacher";
+		}
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+trueTeacher+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"]) + "</select>";
 	} else if (col == "requestedpasswordchange") {
 		
 		if (parseFloat(obj.recent) < 1440) {
-			str = "<input class='submit-button new-user' type='button' value='Reset PW' style='display:block;margin:auto;float:none;'";
+			str = "<div class='submit-button' style='display:block;margin:auto;float:none;'";
 		} else {
-			str = "<input class='submit-button resetpw-button' type='button' value='Reset PW'";
+			str = "<div class='submit-button' id='reset-pw' style='display:block;margin:auto;float:none;'";
 		}
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 		str += "resetPw(\"" + obj.uid + "\",\"" + obj.username + "\"); return false;'>";
+		str += "Reset PW";
 	} else if (col == "groups") {
 		if (obj.groups == null) {
 			tgroups = [];
@@ -322,7 +386,7 @@ function renderCell(col, celldata, cellid) {
             optstr = "";
         }
 		str = "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
-		str += "<select><option>" + optstr + "</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
+		str += "<div><div class='access-dropdown'><span>" + optstr + "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/></div></div><div class='overSelect'></div></div><div class='checkboxes' id='grp" + obj.uid + "' >";
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
@@ -509,26 +573,27 @@ function returnedAccess(data) {
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
+	//myTable = undefined;
 	var colOrder = ["username",/* "ssn",*/ "firstname", "lastname", "class", "modified", "examiner", "vers", "access", "groups", "requestedpasswordchange"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
-	myTable = new SortableTable({
-		data: tabledata,
-		tableElementId: "accessTable",
-		filterElementId: "filterOptions",
-		renderCellCallback: renderCell,
-		renderSortOptionsCallback: renderSortOptions,
-		renderColumnFilterCallback: renderColumnFilter,
-		rowFilterCallback: rowFilter,
-		displayCellEditCallback: displayCellEdit,
-		updateCellCallback: updateCellCallback,
-		columnOrder: colOrder,
-		freezePaneIndex: 4,
-		hasRowHighlight: true,
-		hasMagicHeadings: false,
-		hasCounterColumn: true
-	});
+		myTable = new SortableTable({
+			data: tabledata,
+			tableElementId: "accessTable",
+			filterElementId: "filterOptions",
+			renderCellCallback: renderCell,
+			renderSortOptionsCallback: renderSortOptions,
+			renderColumnFilterCallback: renderColumnFilter,
+			rowFilterCallback: rowFilter,
+			displayCellEditCallback: displayCellEdit,
+			updateCellCallback: updateCellCallback,
+			columnOrder: colOrder,
+			freezePaneIndex: 4,
+			hasRowHighlight: true,
+			hasMagicHeadings: false,
+			hasCounterColumn: true
+		});
 
-	myTable.renderTable();
+		myTable.renderTable();
 	}
 }
 
@@ -570,7 +635,7 @@ function showCheckboxes(element) {
 //----------------------------------------------------------------------------------
 
 function updateAndCloseGroupDropdown(checkboxes){
-	var str = "", readStr = "";
+	var str = "", readStr = "<span>";
 	for (i = 0; i < checkboxes.childNodes.length; i++) {
 		if (checkboxes.childNodes[i].childNodes[0].checked) {
 			str += checkboxes.childNodes[i].childNodes[0].value + " ";
@@ -581,6 +646,7 @@ function updateAndCloseGroupDropdown(checkboxes){
 	// if user unpresses all checkboxes it the student will now belong to no group
 	else changeProperty(checkboxes.id.substr(3), "group", "None");
 
+	readStr += "</span><img class='sortingArrow' src='../Shared/icons/desc_black.svg'>";
 	activeElement.children[0].children[0].innerHTML = readStr;
 
 	obj = {
@@ -677,6 +743,46 @@ function mouseUp(e) {
  		clearUpdateCellInternal();
  	}
 }
+
+//----------------------------------------------------------------------------------
+// Eventlistener for handling dropdowns
+//----------------------------------------------------------------------------------
+
+document.addEventListener('click', function(e){
+	if(e.target.classList.contains('access-dropdown') || e.target.parentElement.classList.contains('access-dropdown')){
+		var dropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
+		if(activeDropdown === undefined){
+			if(window.getComputedStyle(dropdown, null).getPropertyValue("display") === "none"){
+				dropdown.style.display = "block";
+				activeDropdown = dropdown;
+			}else{
+				dropdown.style.display = "none";
+				activeDropdown = undefined;
+			}
+		}else{
+			if(e.target != activeDropdown){
+				if(activeDropdown.style.display === "none"){
+					activeDropdown.style.display = "block";
+					activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content');
+				}else{
+					if(activeDropdown != dropdown){
+						activeDropdown.style.display = "none";
+						e.target.closest('.access-dropdown').querySelector('.access-dropdown-content').style.display = "block";
+						activeDropdown = e.target.closest('.access-dropdown').querySelector('.access-dropdown-content')
+					}else{
+						activeDropdown.style.display = "none";
+						activeDropdown = undefined;
+					}
+				}
+			}
+		}
+	}else{
+		if(activeDropdown){
+			activeDropdown.style.display = "none";
+		}
+		activeDropdown = undefined;
+	}
+});
 
 //----------------------------------------------------------------------------------
 // createQuickItem: Handle "fast" click on FAB button

@@ -1,6 +1,6 @@
 <!-- Overlay -->
 <div id="overlay" style="display: none;"></div>
-<div id='logoutBox' class="logoutBoxContainer" style="display: none;">
+<div id='logoutBox' class="logoutBoxContainer" style="display: none">
 	<div id='logout' class="logoutBox">
 		<div class='logoutBoxheader'>
 			<h3>Sign out</h3>
