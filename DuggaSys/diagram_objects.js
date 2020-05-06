@@ -66,7 +66,8 @@ function Symbol(kindOfSymbol) {
         'sizeOftext': settings.properties.sizeOftext,      // Used to set size of text.
         'textAlign': settings.properties.textAlign,        // Used to change alignment of free text.
 		'key_type': settings.properties.key_type,          // Defult key type for a class.
-		'isComment': settings.properties.isComment         // Used to se if text are comments and if they should be hidden.
+        'isComment': settings.properties.isComment,        // Used to se if text are comments and if they should be hidden.
+        'setLayer': settings.properties.isLayer = writeToLayer            // Used to place Element in a layer
     };
 
     //--------------------------------------------------------------------
@@ -1328,87 +1329,91 @@ function Symbol(kindOfSymbol) {
     //       ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
-        ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
-        this.properties['textSize'] = this.getFontsize();
-        ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
+        if(showLayer.indexOf(this.properties.setLayer) !== -1){
+            this.isLocked = false;
+            ctx.lineWidth = this.properties['lineWidth'] * 2 * diagram.getZoomValue();
+            this.properties['textSize'] = this.getFontsize();
+            ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
-        var x1 = pixelsToCanvas(points[this.topLeft].x).x;
-        var y1 = pixelsToCanvas(0, points[this.topLeft].y).y;
-        var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
-        var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
+            var x1 = pixelsToCanvas(points[this.topLeft].x).x;
+            var y1 = pixelsToCanvas(0, points[this.topLeft].y).y;
+            var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
+            var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
 
-        if (this.isLocked) {
-            drawLock(this);
-            if (this.isHovered || this.isLockHovered) {
-                drawLockedTooltip(this);
+            if (this.isLocked) {
+                drawLock(this);
+                if (this.isHovered || this.isLockHovered) {
+                    drawLockedTooltip(this);
+                }
             }
-        }
-        if (this.group != 0){
-            drawGroup(this);
-        }
+            if (this.group != 0){
+                drawGroup(this);
+            }
 
-        ctx.save();
+            ctx.save();
 
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
 
-        if (this.symbolkind == symbolKind.uml) {
-            this.drawUML(x1, y1, x2, y2);
-        }
+            if (this.symbolkind == symbolKind.uml) {
+                this.drawUML(x1, y1, x2, y2);
+            }
 
-        else if (this.symbolkind == symbolKind.erAttribute) {
-            this.drawERAttribute(x1, y1, x2, y2);
-        }
+            else if (this.symbolkind == symbolKind.erAttribute) {
+                this.drawERAttribute(x1, y1, x2, y2);
+            }
 
-        else if (this.symbolkind == symbolKind.erEntity) {
-            this.drawEntity(x1, y1, x2, y2);
-        }
+            else if (this.symbolkind == symbolKind.erEntity) {
+                this.drawEntity(x1, y1, x2, y2);
+            }
 
-        else if (this.symbolkind == symbolKind.line) {
-            this.drawLine(x1, y1, x2, y2);
-        }
+            else if (this.symbolkind == symbolKind.line) {
+                this.drawLine(x1, y1, x2, y2);
+            }
 
-        else if (this.symbolkind == symbolKind.erRelation) {
-            this.drawRelation(x1, y1, x2, y2);
-        }
+            else if (this.symbolkind == symbolKind.erRelation) {
+                this.drawRelation(x1, y1, x2, y2);
+            }
 
-        else if (this.symbolkind == symbolKind.text) {
-            this.drawText(x1, y1, x2, y2);
-        }
+            else if (this.symbolkind == symbolKind.text) {
+                this.drawText(x1, y1, x2, y2);
+            }
 
-        else if (this.symbolkind == symbolKind.umlLine) {
-            this.drawUMLLine(x1, y1, x2, y2);
-        }
+            else if (this.symbolkind == symbolKind.umlLine) {
+                this.drawUMLLine(x1, y1, x2, y2);
+            }
 
-        ctx.restore();
-        ctx.setLineDash([]);
+            ctx.restore();
+            ctx.setLineDash([]);
 
-        //Highlighting points when targeted, makes it easier to resize
-        if (this.targeted && this.symbolkind != symbolKind.text) {
-            ctx.beginPath();
-            ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-            ctx.fillStyle = '#F82';
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
-            ctx.fillStyle = '#F82';
-            ctx.fill();
-            if (this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
+            //Highlighting points when targeted, makes it easier to resize
+            if (this.targeted && this.symbolkind != symbolKind.text) {
                 ctx.beginPath();
-                ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                ctx.arc(x1,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
                 ctx.fill();
 
                 ctx.beginPath();
-                ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                ctx.arc(x2,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
                 ctx.fill();
+                if (this.symbolkind != symbolKind.line && this.symbolkind != symbolKind.umlLine) {
+                    ctx.beginPath();
+                    ctx.arc(x1,y2,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(x2,y1,5 * diagram.getZoomValue(),0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+                }
             }
         }
-
-
+        else{
+            this.isLocked = true;
+        }
     }
 
     //---------------------------------------------------------

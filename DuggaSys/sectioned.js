@@ -307,10 +307,7 @@ function defaultNewItem() {
   $('#tooltipTxt').hide(); // Resets tooltip text to its default form
 }
 
-function showCreateVersion() {
-  $("#newCourseVersion").css("display", "flex");
 
-}
 
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
@@ -1031,13 +1028,14 @@ function returnedSection(data) {
       }
     }
   } else {
-    str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> This version does not seem to exist!</div>";
+    
+    str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
-    document.getElementById('Sectionlist').innerHTML = str;
+    document.getElementById('Sectionlist').innerHTML+= str;
+    $("#newCourseVersion").css("display", "block");
 
-    if (data['writeaccess']) {
-      showCreateVersion();
-    }
+    
+   
 
   }
 
@@ -1053,7 +1051,13 @@ function returnedSection(data) {
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
     
   // Sets a title on the course heading name
-  document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
+  
+ 
+  if(versionname){
+    document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
+  
+  
+ 
 
   drawPieChart(); // Create the pie chart used in the statistics section.
   fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
@@ -1067,7 +1071,8 @@ function returnedSection(data) {
 
   addClasses();
   showMOTD();
-  
+  } 
+ 
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
