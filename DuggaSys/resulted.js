@@ -998,6 +998,7 @@ function renderCell(col, celldata, cellid) {
 		// Creation of grading buttons
 		if (celldata.ishere === true || celldata.kind == 4) {
 			if(!unassignedCheck){
+				console.log(celldata.submitted);
 				if(celldata.submitted != null){
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
