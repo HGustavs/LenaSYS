@@ -180,7 +180,7 @@
 	
 	    if($requestedService=="resulted.php" ){
 					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
-					echo   "<span>";
+					echo   "<span id='sortButton'>";
 					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 					echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
 					echo     "</div>";
@@ -261,7 +261,7 @@
 		$(".dropdown-list-container").css("display", "none");
 	}
 
-/*Shadow hover effect for home button START*/
+/*Shadow hover effect for home button START -------------*/
 document.getElementById("homeIcon").addEventListener("mouseover", mouseOverHome);
 document.getElementById("homeIcon").addEventListener("mouseout", mouseOutHome);
 
@@ -282,10 +282,10 @@ function mouseOutHome() {
       images[0].src = '../Shared/icons/Home.svg';
    }
 }
-/*Shadow hover effect for home button END*/
+/*Shadow hover effect for home button END -------------*/
 
 
-/*Shadow hover effect for back button START*/
+/*Shadow hover effect for back button START -------------*/
 var backButton = document.getElementById("upIcon");
 if(backButton){
 	backButton.addEventListener("mouseover", mouseOverUp);
@@ -310,10 +310,10 @@ function mouseOutUp() {
    }
 }
 
-/*Shadow hover effect for back button END*/
+/*Shadow hover effect for back button END -------------*/
 
 
-/*Shadow hover effect for back button START*/
+/*Shadow hover effect for filter button START -------------*/
 var filterButton = document.getElementById("filterButton");
 if(filterButton){
 	filterButton.addEventListener("mouseover", mouseOverFilter);
@@ -337,7 +337,33 @@ function mouseOutFilter() {
       images[0].src = '../Shared/icons/filter_icon.svg';
    }
 }
-/*Shadow hover effect for back button END*/
+/*Shadow hover effect for filter button END -------------*/
+
+/*Shadow hover effect for sort button START -------------*/
+var sortButton = document.getElementById("sortButton");
+if(sortButton){
+	sortButton.addEventListener("mouseover", mouseOverSort);
+	sortButton.addEventListener("mouseout", mouseOutSort);
+}
+
+function mouseOverSort() {
+	var obj = document.getElementById("sortButton");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/sort_whiteShadow.svg';
+   }
+}
+
+function mouseOutSort() {
+	var obj = document.getElementById("sortButton");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/sort_white.svg';
+   }
+}
+/*Shadow hover effect for sort button END -------------*/
 
 </script>
 <script type="text/javascript">
