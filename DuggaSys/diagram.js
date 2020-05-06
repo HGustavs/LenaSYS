@@ -4465,6 +4465,12 @@ function mouseupevt(ev) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
+            if(diagram[lineStartObj] == diagram[markedObject]){
+                flash("Can not draw line between the same object", "danger");
+            }
+            else if(markedObject != -1 && diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity){
+                flash("Can not draw line between two ER-entities", "danger");
+            }
             md = mouseState.empty;
         }else {
             //Get which kind of symbol mouseupevt execute on
@@ -4487,27 +4493,49 @@ function mouseupevt(ev) {
                 if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                     if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
+                        flash("Can not draw multiple lines between these objects", "danger");
                     }
                 }else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                     if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
                         okToMakeLine= false;
+                        flash("Can not draw multiple lines between these objects", "danger");
                     }
                 }else if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2){
+                        okToMakeLine = false;
+                        flash("A max of two lines can be drawn between these objects", "danger");
+                    }
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2){
+                        okToMakeLine = false;
+                        flash("A max of two lines can be drawn between these objects", "danger");
+                    } 
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erAttribute) {
-                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) okToMakeLine = false;
+                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
+                        okToMakeLine = false;
+                        flash("Can not draw multiple lines between these objects", "danger");
+                    }
                 }else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erRelation) {
-                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) okToMakeLine = false;
+                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0){
+                        okToMakeLine = false;
+                        flash("Can not draw multiple lines between these objects", "danger");
+                    }
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
+                    flash("Can not draw line between two ER-relations", "danger");
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
+                    flash("Can not draw line between ER- and UML-objects", "danger");
                 }
-                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
+                if(diagram[lineStartObj] == diagram[markedObject]){
+                    okToMakeLine = false;
+                    flash("Can not draw line between the same object", "danger");
+                }
 
-                if(diagram[lineStartObj].kind == 1 || diagram[markedObject].kind == 1) okToMakeLine = false;
+                if(diagram[lineStartObj].kind == 1 || diagram[markedObject].kind == 1){
+                    okToMakeLine = false;
+                    flash("Can not draw line to/from a freedraw object", "danger");
+                }
 
                 if (okToMakeLine) {
                     saveState = true;
@@ -4552,6 +4580,7 @@ function mouseupevt(ev) {
 
                 if (symbolEndKind != symbolKind.uml) {
                     okToMakeLine = false;
+                    flash("Can not draw line between UML- and ER-objects", "danger");
                 }
                 if (okToMakeLine) {
                     saveState = true;
