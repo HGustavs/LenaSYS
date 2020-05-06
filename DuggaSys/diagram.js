@@ -5868,6 +5868,11 @@ function setSelectedObjectsProperties(element) {
     if(umlLineExists) {
         const lineDirectionElement = document.getElementById("lineDirection");
         [...lineDirectionElement.options].forEach(option => option.text = "");
+        appearanceObjects.forEach(object => {
+            if(object.symbolkind === symbolKind.umlLine) {
+                setLineDirectionElementUML(object, indexes[symbolKind.umlLine]);
+            }
+        });
     }
 
     updateGraphics();
