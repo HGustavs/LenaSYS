@@ -580,8 +580,8 @@
                     <div class="form-group" data-types="7">
                         <label for="lineDirection">UML line direction:</label>
                         <select id="lineDirection" data-access="lineDirection">
-                            <option value="First" id="First"></option>
-                            <option value="Second" id="Second"></option>
+                            <option value="First"></option>
+                            <option value="Second"></option>
                         </select>
                     </div>
                     <div class="form-group" data-types="4">
