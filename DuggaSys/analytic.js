@@ -227,6 +227,7 @@ function loadServiceUsage() {
 					}
 				}
 				serviceSelect.change(function() {
+					$( "#canvas-area" ).empty();
 					drawLineChart(services[$(this).val()]);
 				});
 				$('#analytic-info').append(serviceSelect);
@@ -238,7 +239,6 @@ function loadServiceUsage() {
 	inputDateFrom.change(updateServiceUsage);
 	inputDateTo.change(updateServiceUsage);
 	selectInterval.change(updateServiceUsage);
-
 	updateServiceUsage();
 }
 
