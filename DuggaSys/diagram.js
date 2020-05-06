@@ -5864,15 +5864,19 @@ function setSelectedObjectsProperties(element) {
         }
     });
 
-    const umlLineExists = appearanceObjects.some(object => object.symbolkind === symbolKind.umlLine);
-    if(umlLineExists) {
-        const lineDirectionElement = document.getElementById("lineDirection");
-        [...lineDirectionElement.options].forEach(option => option.text = "");
-        appearanceObjects.forEach(object => {
-            if(object.symbolkind === symbolKind.umlLine) {
-                setLineDirectionElementUML(object, indexes[symbolKind.umlLine]);
-            }
-        });
+    //Special case after change of name element to change UML line direction according to names in name element
+    if(element.id === "name") {
+        const umlLineExists = appearanceObjects.some(object => object.symbolkind === symbolKind.umlLine);
+        if(umlLineExists) {
+            const indexes = getSelectedObjectsMaxIndexes(appearanceObjects);
+            const lineDirectionElement = document.getElementById("lineDirection");
+            [...lineDirectionElement.options].forEach(option => option.text = "");
+            appearanceObjects.forEach(object => {
+                if(object.symbolkind === symbolKind.umlLine) {
+                    setLineDirectionElementUML(object, indexes[symbolKind.umlLine]);
+                }
+            });
+        }
     }
 
     updateGraphics();
