@@ -1031,6 +1031,7 @@ function returnedSection(data) {
       }
     }
   } else {
+    showCreateVersion();
     str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML = str;
@@ -1052,7 +1053,7 @@ function returnedSection(data) {
     
   // Sets a title on the course heading name
   
-  showCreateVersion();
+ 
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
   
