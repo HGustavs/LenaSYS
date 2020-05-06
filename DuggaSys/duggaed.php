@@ -193,7 +193,7 @@ pdoConnect();
                 <fieldset style="width:90%">
                   <legend>Search in the Table</legend>
                   <div style="width:100%; height: 25px; display:flex; flex-wrap:wrap; flex-direction:row;">
-                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; padding: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
+                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
                     onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
                                         <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
                       <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
