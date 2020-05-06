@@ -999,15 +999,15 @@ function renderCell(col, celldata, cellid) {
 		if (celldata.ishere === true || celldata.kind == 4) {
 			if(!unassignedCheck){
 				str += "<div class='gradeContainer resultTableText'>";
-				//if(celldata.submitted.getTime() !== timeZero.getTime()){
+				if(celldata.submitted.getTime() !== timeZero.getTime()){
 					if (celldata.grade === null) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
-					} 	/* else if (celldata.grade === -1) {
+					} 	 else if (celldata.grade === -1) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
-					} */	 else {
+					} 	 else {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
 					} 
-				//}
+				}
 				str += "<img id='korf' class='fist";
 				if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
 					str += " grading-hidden";
