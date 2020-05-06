@@ -1055,7 +1055,7 @@ function returnedSection(data) {
 
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
-  }
+  
   
  
 
@@ -1071,7 +1071,7 @@ function returnedSection(data) {
 
   addClasses();
   showMOTD();
-  
+  }  
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
