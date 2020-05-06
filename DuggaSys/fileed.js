@@ -694,7 +694,7 @@ function cancelEditFile() {
 }
 
 function saveMarkdown() {
-    let content = document.getElementById("mrkdwntxt").value;
+    var content = document.getElementById("mrkdwntxt").value;
     content = content.replace(/\+/g, '%2B');
     AJAXService("SAVEFILE", {
         cid: querystring['courseid'],
@@ -710,7 +710,7 @@ function saveMarkdown() {
 
 function saveTextToFile() {
     
-    let content = document.getElementById("filecont").value;
+    var content = document.getElementById("filecont").value;
     
     content = content.replace(/\+/g, '%2B');
     AJAXService("SAVEFILE", {

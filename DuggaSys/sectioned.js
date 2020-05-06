@@ -241,8 +241,8 @@ function showEditVersion() {
   $("#eversname").val(versnme);
   $("#eMOTD").val(motd);
   $("#eversid").val(querystring['coursevers']);
-  let sdate = retdata['startdate'];
-  let edate = retdata['enddate'];
+  var sdate = retdata['startdate'];
+  var edate = retdata['enddate'];
   if (sdate !== null) $("#estartdate").val(sdate.substr(0, 10));
   if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
   $("#editCourseVersion").css("display", "flex");
@@ -501,12 +501,12 @@ function returnedGroups(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   var grpmembers = data['grplst'];
   var str = "";
-  let grp = "";
-  let grpemail = "";
-  let j = 1;
-  for (let i = 0; i < grpmembers.length; i++) {
-    let member = grpmembers[i];
-    let cgrp = member[0];
+  var grp = "";
+  var grpemail = "";
+  var j = 1;
+  for (var i = 0; i < grpmembers.length; i++) {
+    var member = grpmembers[i];
+    var cgrp = member[0];
 
     if (cgrp != grp) {
       j = 1;
@@ -799,13 +799,13 @@ function returnedSection(data) {
 
         } else if (itemKind === 6) { //Group
           // Alt 1
-          let grpmembershp = data['grpmembershp'].split(" ");
+          var grpmembershp = data['grpmembershp'].split(" ");
           var grptype = item['grptype'] + "_";
           var grp = grptype + "UNK";
 
           if (document.getElementById("userName").innerHTML != "Guest") {
-            for (let i = 0; i < grpmembershp.length; i++) {
-              let g = grpmembershp[i].replace(grptype, "");
+            for (var i = 0; i < grpmembershp.length; i++) {
+              var g = grpmembershp[i].replace(grptype, "");
               if (g.length < grpmembershp[i].length) {
                 if (grp !== grptype + "UNK") {
                   grp += ",";
@@ -887,7 +887,7 @@ function returnedSection(data) {
         } else if (itemKind == 6) {
           // Group
           str += "<a class='ellipsis nowrap' onclick='getGroups(\"" + grp + "\");' style='cursor:pointer;'>" + item['entryname'];
-          let re = new RegExp(grptype, "g");
+          var re = new RegExp(grptype, "g");
           grp = grp.replace(re, "");
           if (document.getElementById("userName").innerHTML == "Guest") {
             str += "  &laquo;Not logged in&raquo</span></div>";
@@ -1073,7 +1073,7 @@ function showMOTD(){
 function ignoreMOTD(){
   var c_string = getCookie('MOTD');
   c_array = c_string.split(',');
-  for(let i = 0; i<c_array.length;i+=2){
+  for(var i = 0; i<c_array.length;i+=2){
     if(c_array[i] == versnme && c_array[i+1] == versnr){
       return false;
     }
@@ -1084,7 +1084,7 @@ function ignoreMOTD(){
 function resetMOTDCookieForCurrentCourse(){
   var c_string = getCookie('MOTD');
   c_array = c_string.split(',');
-  for(let i = 0; i<c_array.length;i+=2){
+  for(var i = 0; i<c_array.length;i+=2){
     if(c_array[i] == versnme && c_array[i+1] == versnr){
       c_array.splice(i, 2);
     }
@@ -1267,8 +1267,8 @@ function fixDeadlineInfoBoxesText() {
     if (retdata['entries'][i].kind == 3) {
       var deadline = new Date(retdata['entries'][i].deadline);
       var start = new Date(retdata['entries'][i].qstart);
-      //let deadlineDistance=datediff(deadline,current);
-      let deadlineDistance = (deadline - current) / (24 * 60 * 60 * 1000);
+      //var deadlineDistance=datediff(deadline,current);
+      var deadlineDistance = (deadline - current) / (24 * 60 * 60 * 1000);
       if (deadlineDistance > -7 && deadlineDistance < 14) {
         deadlineEntries.push({
           'deadline': deadline,
@@ -1419,7 +1419,7 @@ function drawSwimlanes() {
 
   }
   str += "<line opacity='0.7' x1='" + ((daywidth * daySinceStart) - daywidth) + "' y1='" + (15 + weekheight) + "' x2='" + ((daywidth * daySinceStart) - daywidth) + "' y2='" + (((1 + deadlineEntries.length) * weekheight) + 15) + "' stroke-width='4' stroke='red' />";
-  let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
+  var svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
 
