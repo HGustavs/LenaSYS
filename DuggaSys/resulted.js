@@ -1000,7 +1000,7 @@ function renderCell(col, celldata, cellid) {
 			if(!unassignedCheck){
 				str += "<div class='gradeContainer resultTableText'>";
 				//if(celldata.submitted.getTime() !== timeZero.getTime()){
-					if (celldata.grade === null && celldata.submitted.getTime() !== timeZero.getTime()) {
+					if (celldata.grade === null || celldata.submitted.getTime() !== timeZero.getTime()) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
 					} 	else if (celldata.grade === -1) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
