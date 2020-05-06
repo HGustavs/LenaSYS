@@ -306,9 +306,6 @@ function returned(data)
 	//hides maximize button if not supported
 	hideMaximizeAndResetButton();
 
-	//hides minimize button if not supported
-	hideMinimizeButton()
-
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
 
@@ -3096,19 +3093,12 @@ function maximizeBoxes(boxid) {
 	}
 }
 
-//hide maximizeButton
+//hide maximizeButton, resetButton and minimizeButton
 function hideMaximizeAndResetButton() {
 	var templateid = retData['templateid'];
 	if (templateid > 9) {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
-	}
-}
-
-//hide minimizeButton
-function hideMinimizeButton() {
-	var templateid = retData['templateid'];
-	if (templateid > 2) {
 		$('.minimizebtn').hide();
 	}
 }
