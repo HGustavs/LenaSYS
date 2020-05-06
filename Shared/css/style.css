@@ -1637,12 +1637,16 @@ input {
 
 .drop-down-option {
   color: rgb(0, 0, 0);
+  background-color:white;
   text-decoration: none;
   display: inline-block;
   width: 252px;
   height: 16px;
   line-height: 16px;
   padding: 8px 0px 8px 8px;
+}
+.drop-down-option:hover {
+  background-color: #e0e0e0;
 }
 
 .drop-down-item:hover,
@@ -6414,5 +6418,11 @@ textarea#filecont {
   -webkit-transition: background-color 100ms linear;
     -ms-transition: background-color 100ms linear;
     transition: background-color 100ms linear;
+}
+.notActive {
+  background-color:white;
+}
+.isActive {
+  background-color: #775886;
 }
 
