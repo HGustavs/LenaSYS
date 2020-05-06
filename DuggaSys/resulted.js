@@ -999,6 +999,7 @@ function renderCell(col, celldata, cellid) {
 		if (celldata.ishere === true || celldata.kind == 4) {
 			if(!unassignedCheck){
 				str += "<div class='gradeContainer resultTableText'>";
+				// Below checks if an assignment has a deadline set, then creates buttons.
 				if(celldata.submitted.getTime() !== timeZero.getTime()){
 					if (celldata.grade === null) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
@@ -1041,7 +1042,7 @@ function renderCell(col, celldata, cellid) {
 			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 			} else if (!unassignedCheck && celldata.submitted.getTime() === timeZero.getTime()) {
-				str += "Not submitted";
+				str += "Faulty assignment; Missing deadline";
 				//Checks if the cells does exist, are assigned but not yet submitted for grading.
 			}
 			for (var p = 0; p < moments.length; p++) {
