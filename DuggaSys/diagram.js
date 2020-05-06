@@ -6104,6 +6104,7 @@ function toggleBackgroundLayer (object){
         const index = showLayer.indexOf(object.id);
         showLayer.splice(index, 1);
     }
+    updateGraphics();
 }
 
 function activeLocalStorage(){
