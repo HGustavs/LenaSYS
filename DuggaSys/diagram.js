@@ -93,7 +93,9 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
-
+var valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
+var writeToLayer = getcorrectlayer();
+var showLayer = ["Layer_1"];
 var gridSize = 16;                  // Distance between lines in grid
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                            // Canvas context
@@ -1618,6 +1620,10 @@ diagram.getZoomValue = function(){
 //--------------------------------------------------------------------
 
 function initializeCanvas() {
+    // check localStorage for active layers
+    if(localStorage.getItem('layerItems') != null){
+        loadLayer(localStorage.getItem('layerItems'));
+    }
     //hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
     setInterval(refreshFunction, refreshTimer);
     setInterval(hashCurrent, hashUpdateTimer);
@@ -5982,7 +5988,6 @@ function getGroupsByTypes(typesToShow) {
 //----------------------------------------------------------------------------------------
 // submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
 //----------------------------------------------------------------------------------------
-
 function submitAppearanceForm() {
     selected_objects.forEach(object => {
         if(object.symbolkind === symbolKind.uml) {
@@ -5994,6 +5999,185 @@ function submitAppearanceForm() {
     }
     SaveState();
     toggleApperanceElement();
+}
+
+//Layer intergration functions
+function createLayer(){
+    let parentNode = document.getElementById("viewLayer");
+    let id =0;
+    let spans = parentNode.getElementsByTagName('span')
+    let layerArray = []
+    for(let i = 0; i < spans.length; i++){
+        layerArray.push(spans[i]);
+        id++
+    }
+    id++
+    if(id <= 10){
+        let newDiv = document.createElement("div");
+        newDiv.setAttribute("class", "drop-down-item");
+        newDiv.setAttribute("tabindex", "0");
+        parentNode.appendChild(newDiv);
+        let newSpan = document.createElement("span");
+        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("id", "Layer_"+id);
+        newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
+        newSpan.innerHTML = valueArray[id];
+        newDiv.appendChild(newSpan);
+    }
+    localStorage.setItem('layerItems', id);
+    let activeDropdown = parentNode.cloneNode(true)
+    document.getElementById("layerActive").innerHTML ="";
+    document.getElementById("layerActive").appendChild(activeDropdown);
+    fixWriteToLayer();
+    addLayersToApperence(id);
+}
+function loadLayer(localStorageID){
+    let parentNode = document.getElementById("viewLayer");
+    addLayersToApperence(localStorageID)
+    let id =1;
+    let spans = parentNode.getElementsByTagName('span')
+    let layerArray = []
+    for(let i = 0; i < localStorageID -1; i++){
+        layerArray.push(spans[i]);
+        id++
+        let newDiv = document.createElement("div");
+        newDiv.setAttribute("class", "drop-down-item");
+        newDiv.setAttribute("tabindex", "0");
+        parentNode.appendChild(newDiv);
+        let newSpan = document.createElement("span");
+        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("id", "Layer_"+id);
+        newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
+        newSpan.innerHTML = valueArray[id];
+        newDiv.appendChild(newSpan);
+        getActiveViewlayers = JSON.parse(localStorage.getItem("activeLayers") || 0);
+        if (getActiveViewlayers != 0){
+            if(getActiveViewlayers.indexOf(newSpan.id) !== -1){
+                newSpan.classList.add("isActive");
+                newSpan.classList.remove("notActive");
+                showLayer.push(newSpan.id);
+            } 
+        }
+    }
+    let activeDropdown = parentNode.cloneNode(true)
+    document.getElementById("layerActive").innerHTML ="";
+    document.getElementById("layerActive").appendChild(activeDropdown);
+    fixWriteToLayer();
+}
+
+function toggleBackgroundLayer (object){
+    if(object.classList.contains("notActive")){
+        object.classList.remove("notActive");
+        object.classList.add("isActive");
+        activeLocalStorage()
+        showLayer.push(object.id);
+    }
+    else {
+        object.classList.remove("isActive");
+        object.classList.add("notActive");
+        activeLocalStorage();
+        const index = showLayer.indexOf(object.id);
+        showLayer.splice(index, 1);
+    }
+}
+
+function activeLocalStorage(){
+    let storageArrayID = [];
+    let parentNode = document.getElementById("viewLayer");
+    let spans = parentNode.getElementsByTagName('span');
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            storageArrayID.push(spans[i].id);
+        }
+    }
+    let sendingToStorage = JSON.stringify(storageArrayID);
+    localStorage.setItem("activeLayers", sendingToStorage);
+
+    storageArrayID = [];
+    parentNode = document.getElementById("layerActive");
+    spans = parentNode.getElementsByTagName('span');
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            storageArrayID.push(spans[i].id);
+        }
+    }
+    sendingToStorage = JSON.stringify(storageArrayID);
+}
+
+function fixWriteToLayer(){
+    let update = document.getElementById("layerActive");
+    let spans = update.getElementsByTagName('span')
+    let active = localStorage.getItem("writeToActiveLayers");
+    for(let i = 0; i < spans.length; i++){
+        spans[i].id = spans[i].id+"_Active";
+        spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
+        if (spans[i].id == active) {
+            spans[i].setAttribute("class", "isActive drop-down-option");
+        }
+        else {
+            spans[i].setAttribute("class", "notActive drop-down-option");
+        }
+    }
+}
+
+function toggleActiveBackgroundLayer(object) {
+    let checkActive = document.getElementById("layerActive");
+    let spans = checkActive.getElementsByTagName('span')
+    let isActive = false;
+    for (let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            isActive = true;
+            i = spans.length;
+        }
+    }
+    if(isActive == false){
+        object.classList.remove("notActive");
+        object.classList.add("isActive");
+        localStorage.setItem("writeToActiveLayers", object.id);
+        setlayer(object);
+    }
+    else {
+        object.classList.remove("isActive");
+        object.classList.add("notActive");
+        let checkLocalStorage = localStorage.getItem("writeToActiveLayers");
+    }
+    active = false;
+    for(let i = 0; i < spans.length; i++){
+        if(spans[i].classList.contains("isActive")){
+            active = true;
+            i = spans.length;
+        }
+    }
+    if (active == false){
+        localStorage.setItem("writeToActiveLayers", null);
+    }
+}
+
+function setlayer(object){
+    let fixID = object.id.replace('_Active','');
+    toggleBackgroundLayer(document.getElementById(fixID))
+    writeToLayer = fixID;
+}
+
+function addLayersToApperence(localStorageID){
+    const select = document.getElementById("objectLayer");
+    select.innerHTML = "";
+
+    for(let i = 1; i <= localStorageID; i++) {
+        const option = document.createElement("option");
+        option.text = `Layer ${i}`;
+        option.value = `Layer_${i}`;
+        select.add(option);
+    }
+    initAppearanceForm()
+}
+function getcorrectlayer(){
+    if(localStorage.getItem('writeToActiveLayers') != null){
+        let getLayer = localStorage.getItem("writeToActiveLayers")
+        let fixID = getLayer.replace('_Active','');
+        return fixID
+    }
+        return "Layer_1"
 }
 
 //A check if line should connect to a object when loose line is released inside a object
