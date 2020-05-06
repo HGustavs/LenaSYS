@@ -1051,9 +1051,11 @@ function returnedSection(data) {
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
     
   // Sets a title on the course heading name
-  if( document.getElementById("course-coursename").title!=null){
+  
+  if( document.getElementById("course-coursename").title){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
   }
+  
  
 
   drawPieChart(); // Create the pie chart used in the statistics section.
