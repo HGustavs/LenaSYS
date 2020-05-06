@@ -243,8 +243,8 @@ function resetPw(uid, username) {
 function getColname(e){
 	var element = e.target.parentElement.parentElement;
 	var cellelement = element.closest("td");
-	let regex = new RegExp("^r([0-9]+)" + myTable.getDelimiter() + "([a-zA-Z0-9]+)" + myTable.getDelimiter() + "(.*)")
-	let match = cellelement.id.match(regex);
+	var regex = new RegExp("^r([0-9]+)" + myTable.getDelimiter() + "([a-zA-Z0-9]+)" + myTable.getDelimiter() + "(.*)")
+	var match = cellelement.id.match(regex);
 	var colname = match[3];
 	return colname.toString();
 }
@@ -453,7 +453,7 @@ function parseSortOptions(el) {
 //  Callback function for showing a cell editing interface
 //--------------------------------------------------------------------------
 function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno, rowdata, coldata, tableid) {
-	let str = false;
+	var str = false;
 	if (column == "firstname" || column == "lastname" || column == "username") {
 		celldata = JSON.parse(celldata);
 		str = "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
@@ -667,8 +667,8 @@ function updateDropdownInTable(element, obj) {
 	// get row and column
 	var cellelement = element.closest("td");
 	var rowelement = element.closest("tr");
-	let regex = new RegExp("^r([0-9]+)" + myTable.getDelimiter() + "([a-zA-Z0-9]+)" + myTable.getDelimiter() + "(.*)")
-	let match = cellelement.id.match(regex);
+	var regex = new RegExp("^r([0-9]+)" + myTable.getDelimiter() + "([a-zA-Z0-9]+)" + myTable.getDelimiter() + "(.*)")
+	var match = cellelement.id.match(regex);
 	var rowno = match[1];
 	var colname = match[3]
 
