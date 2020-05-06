@@ -731,7 +731,8 @@ if($gradesys=="UNK") $gradesys=0;
 							'username' => $row['username'],
 							'cid' => $row['cid'],
 							'lid' => $row['lid'],
-							'score' => $row['score']
+							'score' => $row['score'],
+							'entryname' => $row['entryname']
 						)
 					);
 				}

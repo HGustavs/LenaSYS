@@ -1837,10 +1837,15 @@ function createUserFeedbackTable(data){
     str += "<td>"+data.userfeedback[i].cid+"</td>";
     str += "<td>"+data.userfeedback[i].lid+"</td>";
     str += "<td>"+data.userfeedback[i].score+"</td>";
-    str += "<td><input class='submit-button' type='button' value='Contact student' onclick=''></td>";
+    str += "<td><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"" + data.userfeedback[i].entryname + "\",\"" + data.userfeedback[i].username + "\")'></td>";
     str += "</tr>";
   }
 
   str += "</tbody></table>";
   return str;
+}
+
+function contactStudent(entryname,username){
+  
+  window.location = "mailto:" + username + "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
 }

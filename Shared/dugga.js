@@ -1686,13 +1686,15 @@ function returnedFeed(data) {
 	} 
 }
 
-function sendFeedback(){
+function sendFeedback(entryname){
+	console.log(entryname);
 	if ($("input[name='rating']:checked").val()) {
 		$('#submitstatus').css("display", "none");
 		var param = {};
   		param.courseid = querystring['courseid'];
   		param.moment = querystring['moment'];
-  		param.score = $("input[name='rating']:checked").val();
+		param.score = $("input[name='rating']:checked").val();
+		param.entryname = entryname;  
 		if($("#contactable:checked").val()){
 			param.contactable = 1;
 		}else{

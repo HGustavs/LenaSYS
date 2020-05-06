@@ -36,6 +36,7 @@ $setanswer=gettheOP('setanswer');
 $showall=getOP('showall');
 $contactable=getOP('contactable');
 $rating=getOP('score');
+$entryname=getOP('entryname');
 $showall="true";
 
 $param = "UNK";
@@ -528,17 +529,19 @@ if(strcmp($opt,"CHECKFDBCK")==0){
 
 if(strcmp($opt,"SENDFDBCK")==0){
 	if($contactable == 1){
-		$query = $pdo->prepare("INSERT INTO userduggafeedback(username,cid,lid,score) VALUES (:username,:cid,:lid,:score);");
+		$query = $pdo->prepare("INSERT INTO userduggafeedback(username,cid,lid,score,entryname) VALUES (:username,:cid,:lid,:score,:entryname);");
 		$query->bindParam(':username', $loginname);
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':lid', $moment);
 		$query->bindParam(':score', $rating);
+		$query->bindParam(':entryname', $entryname);
 		$query->execute();
 	}else{
-		$query = $pdo->prepare("INSERT INTO userduggafeedback(cid,lid,score) VALUES (:cid,:lid,:score);");
+		$query = $pdo->prepare("INSERT INTO userduggafeedback(cid,lid,score,entryname) VALUES (:cid,:lid,:score,:entryname);");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':lid', $moment);
 		$query->bindParam(':score', $rating);
+		$query->bindParam(':entryname', $entryname);
 		$query->execute();
 	}	
 }

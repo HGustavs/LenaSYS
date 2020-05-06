@@ -582,6 +582,7 @@ CREATE TABLE userDuggaFeedback(
 	cid						INT UNSIGNED NOT NULL,
 	lid					INT UNSIGNED NOT NULL,
 	score						INT(11) NOT NULL,
+	entryname					varchar(68),
 	PRIMARY KEY (ufid),
 	FOREIGN KEY (username) REFERENCES user(username),
 	FOREIGN KEY (cid) REFERENCES course(cid),
