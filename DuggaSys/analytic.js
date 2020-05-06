@@ -223,12 +223,19 @@ function loadServiceUsage() {
 				var serviceSelect = $('<select class="service-select"></select>');
 				for (var service in services) {
 					if (services.hasOwnProperty(service)) {
-						serviceSelect.append('<option value="' + service + '">' + service + '</option>')
+						if(localStorage.getItem('analyticsLastService') == service) {
+							serviceSelect.append('<option value="' + service + '" selected>' + service + '</option>')
+						} else {
+							serviceSelect.append('<option value="' + service + '">' + service + '</option>')
+						}
 					}
 				}
 				serviceSelect.change(function() {
 					$( "#canvas-area" ).empty();
 					drawLineChart(services[$(this).val()]);
+					try {
+						localStorage.setItem('analyticsLastService', $(this).val());
+					} catch(err) { }
 				});
 				$('#analytic-info').append(serviceSelect);
 				serviceSelect.change();
