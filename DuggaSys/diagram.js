@@ -732,7 +732,7 @@ function keyDownHandler(e) {
             //Ctrl + v
             if(cloneTempArray.length !== 0) {
                 SaveState();
-                let temp = [];
+                var temp = [];
                 for(const object of cloneTempArray) {
                     if(object.kind === kind.path) {
                         temp.push(copyPath(object));
@@ -881,10 +881,10 @@ function canvasToPixels(pixelX = 0, pixelY = 0) {
 
 function moveToFront(event) {
     event.stopPropagation();
-    let front = [];
-    let back = [];
-    let diagramLength = diagram.length;
-    for(let i = 0; i < diagramLength; i++){
+    var front = [];
+    var back = [];
+    var diagramLength = diagram.length;
+    for(var i = 0; i < diagramLength; i++){
         if(selected_objects.indexOf(diagram[0]) !== -1){
             front.push(diagram[0]);
         }
@@ -893,10 +893,10 @@ function moveToFront(event) {
         }
         diagram.splice(0, 1);
     }
-    for(let i = 0; i < back.length; i++){
+    for(var i = 0; i < back.length; i++){
         diagram.push(back[i]);
     }
-    for(let i = 0; i < front.length; i++){
+    for(var i = 0; i < front.length; i++){
         diagram.push(front[i]);
     }
     updateGraphics();
@@ -908,10 +908,10 @@ function moveToFront(event) {
 
 function moveToBack(event) {
     event.stopPropagation();
-    let front = [];
-    let back = [];
-    let diagramLength = diagram.length;
-    for(let i = 0; i < diagramLength; i++) {
+    var front = [];
+    var back = [];
+    var diagramLength = diagram.length;
+    for(var i = 0; i < diagramLength; i++) {
         if(selected_objects.indexOf(diagram[0]) !== -1) {
             back.push(diagram[0]);
         } else {
@@ -919,10 +919,10 @@ function moveToBack(event) {
         }
         diagram.splice(0, 1);
     }
-    for(let i = 0; i < back.length; i++){
+    for(var i = 0; i < back.length; i++){
         diagram.push(back[i]);
     }
-    for(let i = 0; i < front.length; i++){
+    for(var i = 0; i < front.length; i++){
         diagram.push(front[i]);
     }
     updateGraphics();
@@ -1097,7 +1097,7 @@ function copySymbol(symbol) {
                 );
             });
 
-            let newPointIndex = 0;
+            var newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
 
                 //Special case for ER lines connected to attributes
@@ -1184,7 +1184,7 @@ function copyPath(path) {
 // markLastMouseCoordinates: Draws a cross at last mousecoordinates
 //--------------------------------------------------------------------
 function markLastMouseCoordinates() {
-    let crossSize = 4 * zoomValue;
+    var crossSize = 4 * zoomValue;
     ctx.save();
     ctx.strokeStyle = "#f64";
     ctx.lineWidth = 2 * zoomValue;
@@ -1201,7 +1201,7 @@ function markLastMouseCoordinates() {
 // drawCross: Draws a cross at point position
 //--------------------------------------------------------------------
 function drawCross(point) {
-    let crossSize = 4 * zoomValue;
+    var crossSize = 4 * zoomValue;
     ctx.beginPath();
     ctx.moveTo(pixelsToCanvas(point.x).x - crossSize, pixelsToCanvas(0, point.y).y - crossSize);
     ctx.lineTo(pixelsToCanvas(point.x).x + crossSize, pixelsToCanvas(0, point.y).y + crossSize);
@@ -1214,7 +1214,7 @@ function drawCross(point) {
 // drawPoints: Draws each of the points as a cross
 //--------------------------------------------------------------------
 points.drawPoints = function() {
-    let crossSize = 4 * zoomValue;
+    var crossSize = 4 * zoomValue;
     ctx.strokeStyle = crossStrokeStyle1;
     ctx.lineWidth = 2 * zoomValue;
     for (var i = 0; i < this.length; i++) {
@@ -1266,7 +1266,7 @@ points.clearAllSelects = function() {
 diagram.closestPoint = function(mx, my) {
     var distance = 50000000;
     var point;
-    let attachedSymbol;
+    var attachedSymbol;
     this.filter(symbol => symbol.kind != kind.path && symbol.symbolkind != symbolKind.text).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
@@ -1682,7 +1682,7 @@ function clearActiveDropdownElement(){
 //--------------------------------------------------------------------
 
 function deselectObjects() {
-    for(let i = 0; i < diagram.length; i++) {
+    for(var i = 0; i < diagram.length; i++) {
         diagram[i].targeted = false;
         diagram[i].isHovered = false;
     }
@@ -1760,12 +1760,12 @@ function refreshVirtualPaper() {
 function drawVirtualPaper() {
 	
     // Origo
-    let zeroX = pixelsToCanvas().x;
-    let zeroY = pixelsToCanvas().y;
+    var zeroX = pixelsToCanvas().x;
+    var zeroY = pixelsToCanvas().y;
 
     // the correct according to 96dpi size, of Paper milimeters to pixels
 	const pixelsPerMillimeter = 3.781 * zoomValue;
-	let papersizes = [
+	var papersizes = [
 		[841,1189],
 		[594,841],
 		[420,594],
@@ -1804,10 +1804,10 @@ function drawVirtualPaper() {
 	
     ctx.strokeStyle = "black"
     ctx.setLineDash([10 * (pixelsPerMillimeter / 3)]);
-	let sizePageNr = 3.1737*pixelsPerMillimeter; // now about 12 px
+	var sizePageNr = 3.1737*pixelsPerMillimeter; // now about 12 px
 	ctx.fontColor = "black";
 	ctx.font=`${sizePageNr}px Arial`;
-	let pages = 1; 
+	var pages = 1; 
 	if(paperOrientation == "portrait") {// Draw Paper sheets in portrait mode
 		if(singlePaper){
 			ctx.strokeRect(zeroX, zeroY, paperWidth, paperHeight);
@@ -1815,8 +1815,8 @@ function drawVirtualPaper() {
 				ctx.fillText("Page 1",  zeroX + (paperWidth - 30 * pixelsPerMillimeter),zeroY + (paperHeight - 5 * pixelsPerMillimeter) ); // if only one paper are pressent ther will only be that nr one page
 			}
 		}else{
-			for (let i = 0; i < paperRows; i++) {
-				for (let j = 0; j < paperColumns; j++) {
+			for (var i = 0; i < paperRows; i++) {
+				for (var j = 0; j < paperColumns; j++) {
 					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY - paperHeight * (i+1), paperWidth, paperHeight);   // Top left from origin	
 					ctx.strokeRect(zeroX + paperWidth * j, zeroY - paperHeight * (i+1), paperWidth, paperHeight);       // Top right from origin
 					ctx.strokeRect(zeroX - paperWidth * (j+1), zeroY + paperHeight * i, paperWidth, paperHeight);       // Bottom left from origin
@@ -2049,12 +2049,12 @@ function drawVirtualPaper() {
 //------------------------------------------------------------------
 function objectInArea(x1, y1, x2, y2){
 	for(i = 0; i < diagram.length; i++){
-			let pointcenter = {
+			var pointcenter = {
 				x: 0,
 				y: 0,
 			}
-			let pointTopLeft = pixelsToCanvas(points[diagram[i].topLeft].x, points[diagram[i].topLeft].y);
-			let pointBottomRigth = pixelsToCanvas(points[diagram[i].bottomRight].x, points[diagram[i].bottomRight].y);
+			var pointTopLeft = pixelsToCanvas(points[diagram[i].topLeft].x, points[diagram[i].topLeft].y);
+			var pointBottomRigth = pixelsToCanvas(points[diagram[i].bottomRight].x, points[diagram[i].bottomRight].y);
 
 			pointcenter.x = (pointTopLeft.x + pointBottomRigth.x) / 2;
 			pointcenter.y = (pointTopLeft.y + pointBottomRigth.y) / 2;
@@ -2069,9 +2069,9 @@ function objectInArea(x1, y1, x2, y2){
 //------------------------------------------------------------------
 
 function drawCrosshair(){
-    let crosshairLength = 12;
-    let centerX = canvas.width / 2;
-    let centerY = canvas.height / 2;
+    var crosshairLength = 12;
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
 
     ctx.save();
     ctx.lineWidth = 1;
@@ -2272,7 +2272,7 @@ function toggleComments(event) {
 function setPaperSize(event, size){
 	
 	event.stopPropagation();
-	let selectedPaper = [
+	var selectedPaper = [
 		false, 
 		false,
 		false,
@@ -2284,7 +2284,7 @@ function setPaperSize(event, size){
 	]
 	selectedPaper[size] = true;
 	for (i = 0; i < 7; i++){
-		let name = 'A' + i;
+		var name = 'A' + i;
 		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
 	}
 	paperSize = size; 
@@ -2317,7 +2317,7 @@ function enableSelectedItemOptions() {
 //----------------------------------------------------
 
 function drawKeyMap(map, target) {
-    let html = "";
+    var html = "";
     Object.keys(map).forEach(function(key) {
         html += `
         <div class="shortcuts-button-wrap">
@@ -2686,10 +2686,10 @@ function drawOrigo() {
     ctx.lineWidth = 1 * zoomValue;
     ctx.strokeStyle = "#0fbcf9";
 
-    for(let i=0;i<4;i++) {
+    for(var i=0;i<4;i++) {
         // Draw 1/4 of the circle then change color
-        let startAngle=i*Math.PI/2;
-        let endAngle=startAngle+Math.PI/2;
+        var startAngle=i*Math.PI/2;
+        var endAngle=startAngle+Math.PI/2;
         ctx.beginPath();
         ctx.moveTo(pixelsToCanvas().x, pixelsToCanvas().y);
         ctx.arc(pixelsToCanvas().x, pixelsToCanvas().y, radius,startAngle,endAngle);
@@ -3024,7 +3024,7 @@ function reWrite() {
     const zoomTextElement = document.getElementById("zoomV");
 
     if (developerModeActive) {
-        let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
+        var coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
         if (typeof hoveredObject !== "undefined" && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
             coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
@@ -3373,8 +3373,8 @@ function alignHorizontalCenter(selected_objects) {
 // -------------------------------------------------------------------------------------
 
 function removeDuplicatesInList(selected_objects) {
-    let temporary_objects = [];
-    for(let i = 0; i < selected_objects.length; i++) {
+    var temporary_objects = [];
+    for(var i = 0; i < selected_objects.length; i++) {
         if(temporary_objects.indexOf(selected_objects[i]) == -1) {
             temporary_objects.push(selected_objects[i]);
         }
@@ -3383,8 +3383,8 @@ function removeDuplicatesInList(selected_objects) {
 }
 
 function removeLineObjectsFromList(selected_objects) {
-    let temporary_objects = [];
-    for(let i = 0; i < selected_objects.length; i++) {
+    var temporary_objects = [];
+    for(var i = 0; i < selected_objects.length; i++) {
         if(selected_objects[i].symbolkind != symbolKind.line) {
             temporary_objects.push(selected_objects[i]);
         }
@@ -3425,7 +3425,7 @@ function sortObjects(selected_objects, mode) {
 //----------------------------------------------------------------------
 
 function distribute(event, axis) {
-    let spacing = 30;
+    var spacing = 30;
     moved = false;
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
 
@@ -3681,18 +3681,18 @@ function switchToolbar(mode) {
 
 function zoomInMode(event) {
     // Save coordinates before changing zoom value
-    let currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
-    let currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
+    var currentMouseX = pixelsToCanvas(currentMouseCoordinateX).x;
+    var currentMouseY = pixelsToCanvas(0, currentMouseCoordinateY).y;
 
-    let centerX = (canvas.width / 2 - origoOffsetX) / zoomValue;
-    let centerY = (canvas.height / 2 - origoOffsetY) / zoomValue;
+    var centerX = (canvas.width / 2 - origoOffsetX) / zoomValue;
+    var centerY = (canvas.height / 2 - origoOffsetY) / zoomValue;
 
-    let oldZoom = zoomValue;
+    var oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
     localStorage.setItem("zoomValue", zoomValue);
     localStorage.setItem("cameraPosX", origoOffsetX);
     localStorage.setItem("cameraPosY", origoOffsetY);
-    let zoomDifference = 1 + (zoomValue - oldZoom);
+    var zoomDifference = 1 + (zoomValue - oldZoom);
 
     // Move to mouse
     if(event.type == "wheel"){
@@ -5560,7 +5560,7 @@ const separators = {
     textarea: "~\n"
 };
 
-let appearanceObjects = [];
+var appearanceObjects = [];
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 // loadAppearanceForm: Shows the appearance menu and shows all form groups related to the selected objects. Sets values for all input elements/selects/textareas.
@@ -5591,7 +5591,7 @@ function loadAppearanceForm() {
     const freeTextElement = document.getElementById("freeText");
     const umlOperationsElement = document.getElementById("umlOperations");
     const umlAttributesElement = document.getElementById("umlAttributes");
-    let erCardinalityVisible = false;
+    var erCardinalityVisible = false;
 
     appearanceObjects.forEach(object => {
         setNameElement(object, indexes.name);
@@ -5800,8 +5800,8 @@ function sameMembers(array1, array2) {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function getTextareaText(array) {
-    let text = "";
-    for (let i = 0; i < array.length; i++) {
+    var text = "";
+    for (var i = 0; i < array.length; i++) {
         text += array[i].text;
         if (i < array.length - 1) {
             text += "\n";
@@ -5864,7 +5864,7 @@ function setSelections(object) {
         elements.forEach(element => {
             const access = element.dataset.access.split(".");
             if(element.tagName === 'SELECT') {
-                let value = "";
+                var value = "";
                 if(access.length === 1) {
 					value = object[access[0]];
                 } else if(access.length === 2) {
@@ -5887,8 +5887,8 @@ function setSelections(object) {
 
 function setSelectedObjectsProperties(element) {
     const types = element.parentNode.dataset.types.split(",");
-    let textareaIndex = 0;
-    let nameIndex = 0;
+    var textareaIndex = 0;
+    var nameIndex = 0;
 
     //Using global array populated with objects when form is loaded to prevent selected objects that are locked
     appearanceObjects.forEach(object => {
@@ -5956,10 +5956,10 @@ function isNumberOfSeparatorsEqual(element, separator) {
 }
 
 //Stores which element the mouse was pressed down on while in the appearance menu.
-let appearanceMouseDownElement = null;
+var appearanceMouseDownElement = null;
 
 //Stores a copy of the appearance form HTML-element with its childnodes
-let originalAppearanceForm = null;
+var originalAppearanceForm = null;
 
 //-------------------------------------------------------------------------------
 // initAppearanceForm: Sets correct eventlisteners to the existing form elements.
@@ -6028,21 +6028,21 @@ function submitAppearanceForm() {
 
 //Layer intergration functions
 function createLayer(){
-    let parentNode = document.getElementById("viewLayer");
-    let id =0;
-    let spans = parentNode.getElementsByTagName('span')
-    let layerArray = []
-    for(let i = 0; i < spans.length; i++){
+    var parentNode = document.getElementById("viewLayer");
+    var id =0;
+    var spans = parentNode.getElementsByTagName('span')
+    var layerArray = []
+    for(var i = 0; i < spans.length; i++){
         layerArray.push(spans[i]);
         id++
     }
     id++
     if(id <= 10){
-        let newDiv = document.createElement("div");
+        var newDiv = document.createElement("div");
         newDiv.setAttribute("class", "drop-down-item");
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
-        let newSpan = document.createElement("span");
+        var newSpan = document.createElement("span");
         newSpan.setAttribute("class", "notActive drop-down-option");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
@@ -6050,26 +6050,26 @@ function createLayer(){
         newDiv.appendChild(newSpan);
     }
     localStorage.setItem('layerItems', id);
-    let activeDropdown = parentNode.cloneNode(true)
+    var activeDropdown = parentNode.cloneNode(true)
     document.getElementById("layerActive").innerHTML ="";
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
     addLayersToApperence(id);
 }
 function loadLayer(localStorageID){
-    let parentNode = document.getElementById("viewLayer");
+    var parentNode = document.getElementById("viewLayer");
     addLayersToApperence(localStorageID)
-    let id =1;
-    let spans = parentNode.getElementsByTagName('span')
-    let layerArray = []
-    for(let i = 0; i < localStorageID -1; i++){
+    var id =1;
+    var spans = parentNode.getElementsByTagName('span')
+    var layerArray = []
+    for(var i = 0; i < localStorageID -1; i++){
         layerArray.push(spans[i]);
         id++
-        let newDiv = document.createElement("div");
+        var newDiv = document.createElement("div");
         newDiv.setAttribute("class", "drop-down-item");
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
-        let newSpan = document.createElement("span");
+        var newSpan = document.createElement("span");
         newSpan.setAttribute("class", "notActive drop-down-option");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
@@ -6084,7 +6084,7 @@ function loadLayer(localStorageID){
             } 
         }
     }
-    let activeDropdown = parentNode.cloneNode(true)
+    var activeDropdown = parentNode.cloneNode(true)
     document.getElementById("layerActive").innerHTML ="";
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
@@ -6107,21 +6107,21 @@ function toggleBackgroundLayer (object){
 }
 
 function activeLocalStorage(){
-    let storageArrayID = [];
-    let parentNode = document.getElementById("viewLayer");
-    let spans = parentNode.getElementsByTagName('span');
-    for(let i = 0; i < spans.length; i++){
+    var storageArrayID = [];
+    var parentNode = document.getElementById("viewLayer");
+    var spans = parentNode.getElementsByTagName('span');
+    for(var i = 0; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
             storageArrayID.push(spans[i].id);
         }
     }
-    let sendingToStorage = JSON.stringify(storageArrayID);
+    var sendingToStorage = JSON.stringify(storageArrayID);
     localStorage.setItem("activeLayers", sendingToStorage);
 
     storageArrayID = [];
     parentNode = document.getElementById("layerActive");
     spans = parentNode.getElementsByTagName('span');
-    for(let i = 0; i < spans.length; i++){
+    for(var i = 0; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
             storageArrayID.push(spans[i].id);
         }
@@ -6130,10 +6130,10 @@ function activeLocalStorage(){
 }
 
 function fixWriteToLayer(){
-    let update = document.getElementById("layerActive");
-    let spans = update.getElementsByTagName('span')
-    let active = localStorage.getItem("writeToActiveLayers");
-    for(let i = 0; i < spans.length; i++){
+    var update = document.getElementById("layerActive");
+    var spans = update.getElementsByTagName('span')
+    var active = localStorage.getItem("writeToActiveLayers");
+    for(var i = 0; i < spans.length; i++){
         spans[i].id = spans[i].id+"_Active";
         spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
         if (spans[i].id == active) {
@@ -6146,10 +6146,10 @@ function fixWriteToLayer(){
 }
 
 function toggleActiveBackgroundLayer(object) {
-    let checkActive = document.getElementById("layerActive");
-    let spans = checkActive.getElementsByTagName('span')
-    let isActive = false;
-    for (let i = 0; i < spans.length; i++){
+    var checkActive = document.getElementById("layerActive");
+    var spans = checkActive.getElementsByTagName('span')
+    var isActive = false;
+    for (var i = 0; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
             isActive = true;
             i = spans.length;
@@ -6164,10 +6164,10 @@ function toggleActiveBackgroundLayer(object) {
     else {
         object.classList.remove("isActive");
         object.classList.add("notActive");
-        let checkLocalStorage = localStorage.getItem("writeToActiveLayers");
+        var checkLocalStorage = localStorage.getItem("writeToActiveLayers");
     }
     active = false;
-    for(let i = 0; i < spans.length; i++){
+    for(var i = 0; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
             active = true;
             i = spans.length;
@@ -6179,7 +6179,7 @@ function toggleActiveBackgroundLayer(object) {
 }
 
 function setlayer(object){
-    let fixID = object.id.replace('_Active','');
+    var fixID = object.id.replace('_Active','');
     toggleBackgroundLayer(document.getElementById(fixID))
     writeToLayer = fixID;
 }
@@ -6188,7 +6188,7 @@ function addLayersToApperence(localStorageID){
     const select = document.getElementById("objectLayer");
     select.innerHTML = "";
 
-    for(let i = 1; i <= localStorageID; i++) {
+    for(var i = 1; i <= localStorageID; i++) {
         const option = document.createElement("option");
         option.text = `Layer ${i}`;
         option.value = `Layer_${i}`;
@@ -6198,8 +6198,8 @@ function addLayersToApperence(localStorageID){
 }
 function getcorrectlayer(){
     if(localStorage.getItem('writeToActiveLayers') != null){
-        let getLayer = localStorage.getItem("writeToActiveLayers")
-        let fixID = getLayer.replace('_Active','');
+        var getLayer = localStorage.getItem("writeToActiveLayers")
+        var fixID = getLayer.replace('_Active','');
         return fixID
     }
         return "Layer_1"
