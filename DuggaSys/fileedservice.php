@@ -24,7 +24,7 @@ $studentTeacher = false;
 
 $log_uuid = getOP('log_uuid');
 $info = $opt . " " . $cid . " " . $coursevers . " " . $fid . " " . $filename . " " . $kind;
-logServiceEvent($userid, EventTypes::ServiceServerStart, "fileedservice.php", $userid, $info);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "fileedservice.php", $userid, $info);
 
 if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid) || hasAccess($userid,$cid, 'sv')) {
     $hasAccess = true;
@@ -92,10 +92,22 @@ if (checklogin() && $hasAccess) {
 
         if ($kind == 2) {
             $currcwd .= "/courses/global/" . $filename;
+
+            // Logging for global files
+            $description="Global"." ".$filename;
+            logUserEvent($userid, EventTypes::EditFile, $description);
         } else if ($kind == 3) {
             $currcwd .= "/courses/" . $cid . "/" . $filename;
+
+            // Logging for course local files
+            $description="CourseLocal"." ".$filename;
+            logUserEvent($userid, EventTypes::EditFile, $description);
         } else if ($kind == 4) {
             $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
+            
+            // Logging for version local files
+            $description="VersionLocal"." ".$filename;
+            logUserEvent($userid, EventTypes::EditFile, $description);
         }
 
         // Only edit the file if it already exisiting
@@ -256,3 +268,4 @@ $array = array(
 
 echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "fileedservice.php", $userid, $info);
+?>
