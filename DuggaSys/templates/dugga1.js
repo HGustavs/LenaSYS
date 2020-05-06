@@ -20,6 +20,7 @@ Example seed
 var retdata=null;
 var hc=null;
 var score = -1;
+var activehex;
 //----------------------------------------------------------------------------------
 // Setup
 //----------------------------------------------------------------------------------
@@ -283,7 +284,7 @@ function hexClick(divid)
 	if(hh<160) hh=160;
 	hh+="px";
 	
-	$("#pop").css({top: (dpos.dhei+10), left:lpos, width:bw,height:hh,display:"block"})
+	$("#pop").css({top: (dpos.dhei+10), left:lpos, width:bw,height:hh})
 	$("#pop").removeClass("arrow-topr");
 	$("#pop").removeClass("arrow-top");
 	$("#pop").addClass(popclass);
@@ -298,6 +299,22 @@ function setval(sval)
 		}
 		$("#pop").css({display:"none"})
 }
+
+//functionality for opening and closing hexcode input boxes
+document.addEventListener('click', function(e){
+	var pop = document.getElementById('pop');
+	if(e.target.classList.contains("hexo")){ 
+		if(pop.style.display === "block" && e.target === activehex){
+			pop.style.display = "none";
+		}else{
+			pop.style.display = "block";
+		}
+		activehex = e.target;
+	}else{
+		activehex = undefined;
+		pop.style.display = "none";
+	}
+});
 
 function resetBitstring(){
 	for (var i=0;i<8;i++){
