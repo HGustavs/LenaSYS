@@ -1616,8 +1616,12 @@ $(window).load(function () {
 
 
   });
-  if ($('#announcementBox table tr').length > 8) {
+  var rowCount = $('#announcementBox table tr').length;
+  if (rowCount > 9) {
     $('#announcementBox table tr:gt(8)').hide();
+    $('.showAllAnnouncement').show();
+  }else if(rowCount == 0){
+    $('#announcementBox').append("<p style='color:#775886;'>No announcements created yet</p>");
   }
 
   $('.showAllAnnouncement').on('click', function() {
@@ -1626,6 +1630,7 @@ $(window).load(function () {
     //change text of show more element just for demonstration purposes to this demo
     $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
   });
+
 
 });
 

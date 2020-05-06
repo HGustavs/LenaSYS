@@ -372,6 +372,9 @@ p {
   cursor: pointer;
   border-radius: 4px;
 }
+#announcementBox button.showAllAnnouncement{
+  display: none;
+}
 #announcementBox table{
   width: 100%;
 
