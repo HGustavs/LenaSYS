@@ -68,9 +68,9 @@ $js = array(
 			<input class="submit-button" style="float:left" type="button" value="Page information" onclick="loadPageInformation()">
 		</div>
 		<div id="analytic-info" style="clear: both; padding: 15px;"></div>
-		<div style="height: 300px">
-			<canvas id="analytic-chart"></canvas>
+		<div id="canvas-area" style="height: 300px;">
 		</div>
+		
 	</div>
 	<!-- content END -->
 	
