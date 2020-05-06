@@ -152,6 +152,7 @@ $codeLinkQuery->execute();
                             <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
                         </div>
                     </div>
+                    <span id="spankind">Kind:</span>
                     <div class='testselect'>
                     <select name ="uploadtype[]" id="selectdir">
                             <option value="global">Global</option>
