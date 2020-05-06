@@ -578,11 +578,17 @@ function drawBarChart(data) {
 //------------------------------------------------------------------------------------------------
 // Generates a random pastel color in hex format and returns it
 //------------------------------------------------------------------------------------------------
-function getRandomColor() {
-	var r = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
-	var g = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
-	var b = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
-	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+function getRandomColor(i) {
+	var colors = ["#775886", "#cccccc", '#927b9e', '#93A561', 'ffd369', '#50a750', '#75050'];
+
+	if(i > colors.length-1) {
+		var r = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+		var g = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+		var b = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+		return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+	} else {
+		return colors[i];
+	}
 }
 
 //------------------------------------------------------------------------------------------------
@@ -629,7 +635,7 @@ function drawPieChart(data, title = null, multirow = false) {
 	}
 
 	for (var i = 0; i < data.length; i++) {
-		ctx.fillStyle = getRandomColor();
+		ctx.fillStyle = getRandomColor(i);
 		ctx.beginPath();
 		ctx.moveTo(radius, radius);
 		ctx.arc(radius, radius, radius, last, last + (Math.PI*2*(data[i].value/total)), false);
