@@ -14,6 +14,11 @@ $js = array(
 	'jquery-ui-1.10.4.min.js'
 );
 
+// refreshes session cookies, thereby extending the time before users sees the alert or get logged out
+// refreshes takes place when navigating to codeviewer.php, courseed.php, and sectioned.php
+setcookie("sessionEndTime", "expireC", time() + 2700, "/"); // Alerts user in 45min
+setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends session in 60min, user gets logged out
+
 ?>
 
 <!DOCTYPE html>
