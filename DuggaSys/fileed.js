@@ -397,10 +397,61 @@ function filterFilesByKind(kind){
         $("#fileLink table tr").show();
     }
     sortFilter.fileKind=kind;
-    $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
+    setBackgroundForOddEvenRows();
+
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
+}
+function setBackgroundForOddEvenRows(){
+	$("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
     $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
 }
+//Sort files by alphabetical order after sorting by kind
+function sortFiles(asc){
+    var rows, switching, i, x, y, shouldSwitch;
+    switching = true;
 
+    while(switching){
+        switching = false;
+        rows = $("#fileLink table tr");
+        for(i = 1; i < (rows.length - 1); i++){
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[3];
+            y = rows[i + 1].getElementsByTagName("TD")[3];
+
+           if(asc == true){
+           	 if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
+                shouldSwitch = true;
+                break;
+             }
+
+           }else if(asc == false){
+           	  if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()){
+                shouldSwitch = true;
+                break;
+            }
+
+           }
+
+        }
+        if(shouldSwitch){
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            setBackgroundForOddEvenRows();
+
+        }
+    }
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
+}
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
@@ -488,9 +539,9 @@ function renderSortOptions(col, status, colname) {
     if (status == -1) {
         str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
     } else if (status == 0) {
-        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1); sortFiles(true);'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
     } else {
-        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0); sortFiles(false);'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
     }
     return str;
 }

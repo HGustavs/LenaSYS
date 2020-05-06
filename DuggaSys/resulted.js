@@ -36,7 +36,11 @@ function setup() {
     //benchmarkData = performance.timing;
     window.onscroll = function () {
 
-    };
+	};
+	
+	if (typeof localStorage.getItem("lastExpDate") != undefined) {
+		document.getElementById('lastExportedDate').innerHTML = localStorage.getItem("lastExpDate");
+	}
 
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
@@ -202,9 +206,9 @@ function process() {
 
 		dstr += "<div class='checkbox-dugga checknarrow ";
 		if (moments[j].visible == 0) {
-			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
+			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='myTable.setNameColumn(\"" + name + "\");sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		} else {
-			dstr += "'><input name='sortcol' type='radio' class='sortradio' id='sortcol" + (j + 1) + "' onclick='sorttype(-1)' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
+			dstr += "'><input name='sortcol' type='radio' class='sortradio' id='sortcol" + (j + 1) + "' onclick='myTable.setNameColumn(\"" + name + "\");sorttype(-1)' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		}
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
@@ -276,9 +280,9 @@ function leaves() {
 }
 
 function sorttype(t) {
-  if(t == 0){
+  if (t==0 || document.getElementById("sortcol0_0").isChecked){
     myTable.setNameColumn('Fname');
-  }else{
+  }else if (t==1 || document.getElementById("sortcol0_1").isChecked) {
     myTable.setNameColumn('Lname');
   }
 
@@ -304,6 +308,14 @@ function sorttype(t) {
 	$("input[name='sortdir']:checked").each(function () {
 		dir = this.value;
 	});
+	if (dir == 2 && (myTable.getNameColumn() === 'Fname' || myTable.getNameColumn() === 'Lname')) { // if "pending" and name column
+		document.getElementById("sortdirAsc").checked = true;
+		sorttype(-1);
+		return;
+	}
+	if (myTable.getNameColumn() === 'Lname') { // if Lname, dir == (2 || 3)
+		dir = parseInt(dir) + 2;
+	}
 	typechanged = true;
 	if(col !== undefined && dir !== undefined){
 		typechanged = false;
@@ -560,6 +572,12 @@ function saveResponse() {
 	document.getElementById("responseArea").innerHTML = "";
 	$("#previewpopover").css("display", "none");
 }
+//----------------------------------------
+// Clear response textbox on Preview Popover.
+//----------------------------------------
+function clearResponseArea(){
+	document.getElementById("responseArea").innerHTML = "";
+}
 
 //----------------------------------------
 // Renderer
@@ -768,7 +786,7 @@ function renderCell(col, celldata, cellid) {
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLname") {
-			str = "<div class='resultTableCell resultTableMini'>";
+			str = "<div class='resultTableCell resultTableMiniLeft'>";
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
 			str += "</div>";
@@ -809,10 +827,13 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div style='padding:10px;' class='resultTableCell ";
+			str = "<div style='padding:12px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
-				str += "dugga-pending";
+				str += "dugga-pending ";
+			} else {
+				str += "dugga-empty";
 			}
+
 			str += "'>";
 			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
@@ -868,10 +889,13 @@ function renderCell(col, celldata, cellid) {
 				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
-				str = "<div style='padding:10px;' class='resultTableCell ";
+				str = "<div style='padding:12px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
+				} else {
+					str += "dugga-empty";
 				}
+				
 				str += "'>";
 				// Creation of grading buttons
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
@@ -908,9 +932,11 @@ function renderCell(col, celldata, cellid) {
 						}
 					}
 					str += ">";
+
 					if (celldata.submitted.getTime() !== timeZero.getTime()) {
 						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 					}
+					
 					for (var p = 0; p < moments.length; p++) {
 						if (moments[p].link == celldata.quizId) {
 							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
@@ -966,7 +992,7 @@ function renderCell(col, celldata, cellid) {
 		if(unassignedCheck){
 			str += "' style='height:74px;'>";
 		}else{
-			str += "' style='padding:10px;'>";
+			str += "' style='padding:12px;'>";
 		}
 
 		// Creation of grading buttons
@@ -1008,8 +1034,12 @@ function renderCell(col, celldata, cellid) {
 				}
 			}
 			str += ">";
+
 			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+			} else if (!unassignedCheck && celldata.submitted.getTime() === timeZero.getTime()) {
+				str += "Not submitted";
+				//Checks if the cells does exist, are assigned but not yet submitted for grading.
 			}
 			for (var p = 0; p < moments.length; p++) {
 				if (moments[p].link == celldata.quizId) {
@@ -1217,7 +1247,6 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
@@ -1455,6 +1484,20 @@ function ladexport() {
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
+	var today = new Date();
+	var dd = addZero(today.getDate());
+	var mm = addZero(today.getMonth() + 1); //January is 0!
+	var yyyy = today.getFullYear();
+	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+
+	today = yyyy + '-' + mm + '-' + dd;
+
+	 var gradeLastExported = today + " " + time;
+	 lastExpDate.innerHTML =  gradeLastExported;
+	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
+
+	 localStorage.setItem('lastExpDate', gradeLastExported);
+
 	AJAXService("getunexported", {}, "GEXPORT");
 }
 
@@ -1540,10 +1583,10 @@ function hideSSN(ssn){
 
 
 function compare(firstCell, secoundCell) {
-	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
-	let status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+	let col = myTable.getSortcolumn(); // Get column name
+	let status = myTable.getSortkind(); // Get if the sort arrow is up or down.
 	let val = 0;
-	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
+	let colOrder = myTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
 	var sizeTemp = '{"';
@@ -1551,7 +1594,15 @@ function compare(firstCell, secoundCell) {
 		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
 		if(col == "FnameLname"){
-			col = sortableTable.currentTable.getNameColumn();
+			col = myTable.getNameColumn();
+			if (typeof(col) === "undefined") {
+				if (status == 0 || status == 1) {
+					col = "Fname";
+				} else {
+					col = "Lname";
+				}
+			}
+			myTable.setNameColumn(col);
 		}
 		// now check for matching columns with the potentially replaced name
 		if (col == "Fname") {
