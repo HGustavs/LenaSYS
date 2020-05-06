@@ -231,6 +231,89 @@ function leaveSearch() {
 }
 
 //------------------------------------------------------------------
+// validateDummyFile <- Validates the name and extension of the file
+//------------------------------------------------------------------
+function validateDummyFile() {
+    var allowedExtensions = [
+        "txt",
+        "html",
+        "java",
+        "xml",
+        "js",
+        "css",
+        "php",
+        "sr",
+        "md",
+        "sql",
+        "md",
+        "py",
+        "bat",
+        "xsl"
+    ];
+
+    var filterSymbols = [
+        "<",
+        ">",
+        ":",
+        ",",
+        "|",
+        "*",
+        "?",
+        "=",
+        "\"",
+        "/",
+        "\\"
+    ];
+
+    var errors = [];
+    var name = document.getElementById("newEmptyFile").value;
+
+    // Trim name
+    name = name.trim();
+
+    // Get filename
+    var filename = name.substring(0, name.indexOf("."));
+    if (filename.length == 0)
+        errors.push("Invalid filename");
+
+    // Get extension
+    var extension = name.substring(name.lastIndexOf(".") + 1);
+
+    // Check if extension is valid
+    if (!allowedExtensions.includes(extension))
+        errors.push("Invalid extension: ." + extension)
+
+    // Check for invalid characters
+    for (var i = 0; i < name.length; i++) {
+        if (filterSymbols.includes(name[i])) 
+            errors.push("Invalid character at position " + (i + 1) + ": " + name[i]);
+    }
+
+    var list = document.getElementById("dummyFileErrorList");
+
+    if (errors.length > 0) {
+        list.innerHTML = "";
+        list.style.display = "block";
+
+        // Add error message title
+        var liTop = document.createElement('li');
+        liTop.innerHTML = "Errors found:".bold();
+        liTop.style.color = "rgb(199, 80, 80)";
+        list.append(liTop)
+
+        for (var i = 0; i < errors.length; i++) {
+            var li = document.createElement('li');
+            li.innerHTML = errors[i];
+            list.append(li);
+        }
+
+        return false;
+    }
+
+    return true;
+}
+
+//------------------------------------------------------------------
 // validateForm <- Validates the file that is going to be uploaded
 //------------------------------------------------------------------
 function validateForm() {
@@ -409,6 +492,13 @@ function filterFilesByKind(kind){
     }
     sortFilter.fileKind=kind;
     setBackgroundForOddEvenRows();
+
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
 }
 function setBackgroundForOddEvenRows(){
 	$("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
@@ -449,6 +539,12 @@ function sortFiles(asc){
 
         }
     }
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
 }
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
