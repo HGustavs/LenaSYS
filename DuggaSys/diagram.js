@@ -5556,6 +5556,7 @@ function loadGlobalAppearanceForm() {
 
 const separators = {
     input: "~",
+    option: "~",
     textarea: "~\n"
 };
 
@@ -5603,7 +5604,7 @@ function loadAppearanceForm() {
             }
             document.getElementById("typeLine").focus();
         } else if(object.symbolkind === symbolKind.umlLine) {
-            setLineDirectionElementUML(object);
+            setLineDirectionElementUML(object, indexes[symbolKind.umlLine]);
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
             indexes[symbolKind.text].current++;
@@ -5686,15 +5687,23 @@ function setNameElement(object, index) {
 // setLineDirectionElementUML: Runs for UML line objects. Appends the name of connected object names to correct option in the lineDirection select. Takes recursive lines into consideration.
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function setLineDirectionElementUML(object) {
+function setLineDirectionElementUML(object, index) {
+    //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
     const connectedObjectsArray = object.getConnectedObjects();
-    document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
+    const options = document.getElementById("lineDirection").options;
 
-    //Check if relation is to the same entity. If so: both are named from object 0.
+    index.current++;
+    options[0].innerHTML += connectedObjectsArray[0].name;
+
+    //Selection to check if relation is to the same entity. If so: both are named from object 0
     if(typeof connectedObjectsArray[1] == "undefined"){
-        document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
+        options[1].innerHTML +=  connectedObjectsArray[0].name;
     } else {
-        document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
+        options[1].innerHTML += connectedObjectsArray[1].name;
+    }
+    if(index.max > index.current) {
+        options[0].innerHTML += `${separators.option} `;
+        options[1].innerHTML += `${separators.option} `;
     }
 }
 
@@ -5911,6 +5920,22 @@ function setSelectedObjectsProperties(element) {
             }
         }
     });
+
+    //Special case after change of name element to change UML line direction according to names in name element
+    if(element.id === "name") {
+        const umlLineExists = appearanceObjects.some(object => object.symbolkind === symbolKind.umlLine);
+        if(umlLineExists) {
+            const indexes = getSelectedObjectsMaxIndexes(appearanceObjects);
+            const lineDirectionElement = document.getElementById("lineDirection");
+            [...lineDirectionElement.options].forEach(option => option.text = "");
+            appearanceObjects.forEach(object => {
+                if(object.symbolkind === symbolKind.umlLine) {
+                    setLineDirectionElementUML(object, indexes[symbolKind.umlLine]);
+                }
+            });
+        }
+    }
+
     updateGraphics();
 }
 
