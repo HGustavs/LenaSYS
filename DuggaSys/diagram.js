@@ -116,7 +116,7 @@ var canvasTouchClick = false;       // Canvas touch state
 var lastZoomValue = localStorage.getItem("zoomValue") || 1.00;      //Records last zoomvalue, 1.00 if none has been recorded
 var zoomValue = lastZoomValue;
 var md = mouseState.empty;          // Mouse state, Mode to determine action on canvas
-var hoveredObject = false;
+var hoveredObject;
 var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
@@ -125,7 +125,8 @@ var old_container_marginLeft;       // Used to revert changes from fullscreen
 var old_container_width;            // Used to revert changes from fullscreen
 var old_container_height;           // Used to revert changes from fullscreen
 var old_container_position;         // Used to revert changes from fullscreen
-var old_canvas_div_marginLeft;      // Used to revert changes from fullscreen
+var old_canvas_div_marginLeft;      // Used to revert changes from 
+var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -163,6 +164,14 @@ var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last dat
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
 var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
 var moved = false;                  //used to check if object has moved
+var connectLooseLineObj = {         //Contains values for use when connecting loose lines to objects
+    lineIsSelected: false,
+    selectedLine: null,
+    looseLineP1: null,
+    looseLineP2: null
+};
+
+
 var attributeTemplate = {           // Defines entity/attribute/relations predefined sizes
   width: 7 * gridSize,
   height: 4 * gridSize
@@ -484,8 +493,10 @@ function init() {
     canvasSize(); 
     loadDiagram(); 
     setModeOnRefresh(); 
+    refreshVirtualPaper();
+    setPaperSizeOnRefresh();
     initAppearanceForm();
-    setPaperSize(event, 4);
+    setPaperSize(event, paperSize);
     updateGraphics(); 
 }
 
@@ -613,7 +624,7 @@ function generateUMLExampleCode() {
     umlRelationA.topLeft = points.addPoint(590, 365, false);
     umlRelationA.bottomRight = points.addPoint(706, 365, false);
     umlRelationA.centerPoint = points.addPoint((590 + 706) * 0.5, (365 + 365) * 0.5, false);
-    umlRelationA.cardinality = {"value": 1};
+    umlRelationA.cardinality = {"value": "1", "valueUML": "0..*", "symbolKind": 1, "parentBox": classB};
 
     //Push to diagram
     diagram.push(classA);
@@ -719,24 +730,28 @@ function keyDownHandler(e) {
             fillCloneArray();
         } else if (ctrlIsClicked && key == keyMap.vKey ) {
             //Ctrl + v
-            let temp = [];
-            for(const object of cloneTempArray) {
-                if(object.kind === kind.path) {
-                    temp.push(copyPath(object));
-                } else {
-                    temp.push(copySymbol(object));
+            if(cloneTempArray.length !== 0) {
+                SaveState();
+                let temp = [];
+                for(const object of cloneTempArray) {
+                    if(object.kind === kind.path) {
+                        temp.push(copyPath(object));
+                    } else {
+                        temp.push(copySymbol(object));
+                    }
                 }
+                setConnectedLines(temp);
+                cloneTempArray = temp;
+                selected_objects = temp;
+                updateGraphics();
+                SaveState();
             }
-            setConnectedLines(temp);
-            cloneTempArray = temp;
-            selected_objects = temp;
-            updateGraphics();
-            SaveState();
         }
         else if (key == keyMap.zKey && ctrlIsClicked) undoDiagram(event);
         else if (key == keyMap.yKey && ctrlIsClicked) redoDiagram(event);
         else if (key == keyMap.aKey && ctrlIsClicked) {
             e.preventDefault();
+            selected_objects = [];
             for (var i = 0; i < diagram.length; i++) {
                 selected_objects.push(diagram[i]);
                 diagram[i].targeted = true;
@@ -775,6 +790,8 @@ function keyDownHandler(e) {
         document.getElementById("classbutton").click();
         } else if (shiftIsClicked && key == keyMap.tKey) {
         document.getElementById("drawtextbutton").click();
+        } else if (!shiftIsClicked && key == keyMap.tKey && fullscreen){
+            toggleToolbar();
         } else if (shiftIsClicked && key == keyMap.fKey) {
         document.getElementById("drawfreebutton").click();
         } else if (shiftIsClicked && key == keyMap.dKey) {
@@ -829,6 +846,10 @@ function setConnectedLines(temp) {
         var lineEnd1 =  temp[connected[j].to][connected[j].lineloc];
         var lineEnd2 = temp[connected[j].to][connected[j].lineloc2];
         temp[connected[j].from][connected[j].loc].push({from: lineEnd1, to: lineEnd2});
+        //Fixes recursive UML-lines
+        if(temp[connected[j].to].isRecursiveLine == true){
+            temp[connected[j].from][connected[j].loc].push({from: lineEnd2, to: lineEnd1});
+        }
     }
 }
 
@@ -1078,8 +1099,25 @@ function copySymbol(symbol) {
 
             let newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
-                const point = points[pointIndexes[key].old];
-                newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+
+                //Special case for ER lines connected to attributes
+                //The second point of an er line connected to an attribute is the attribute's centerPoint
+                //This code finds connected attributes that will be copied and prevents the second point from being duplicated if the attribute will also be copied
+                //If the attribute will not be copied the point should be created
+                if(symbol.symbolkind === symbolKind.line && key === "bottomRight") {
+                    const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
+                    if(typeof connectedAttribute !== "undefined") {
+                        const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
+                        if(isAttributeSelected) {
+                            newPointIndex = null;
+                        }
+                    }
+                }
+
+                if(newPointIndex !== null) {
+                    const point = points[pointIndexes[key].old];
+                    newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
+                }
             } else {
                 newPointIndex = pointIndexes[keyContainsDuplicateOldPoint].new;
             }
@@ -1098,7 +1136,7 @@ function copySymbol(symbol) {
 }
 
 //----------------------------------------------------------------------
-// copySymbol: Clone a path object
+// copyPath: Clone a path object
 //----------------------------------------------------------------------
 function copyPath(path) {
     const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
@@ -1140,6 +1178,23 @@ function copyPath(path) {
     diagram.push(clone);
 
     return clone;
+}
+
+//--------------------------------------------------------------------
+// markLastMouseCoordinates: Draws a cross at last mousecoordinates
+//--------------------------------------------------------------------
+function markLastMouseCoordinates() {
+    let crossSize = 4 * zoomValue;
+    ctx.save();
+    ctx.strokeStyle = "#f64";
+    ctx.lineWidth = 2 * zoomValue;
+    ctx.beginPath();
+    ctx.moveTo(pixelsToCanvas(currentMouseCoordinateX).x - crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y - crossSize);
+    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x + crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y + crossSize);
+    ctx.moveTo(pixelsToCanvas(currentMouseCoordinateX).x + crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y - crossSize);
+    ctx.lineTo(pixelsToCanvas(currentMouseCoordinateX).x - crossSize, pixelsToCanvas(0,currentMouseCoordinateY).y + crossSize);
+    ctx.stroke();
+    ctx.restore();
 }
 
 //--------------------------------------------------------------------
@@ -1680,8 +1735,22 @@ function toggleVirtualPaper(event) {
         showPaperState();
         updateGraphics();
     }
-
+    localStorage.setItem("virtualPaper", togglePaper);
     setCheckbox($(".drop-down-option:contains('Display Virtual Paper')"), togglePaper);
+}
+
+function refreshVirtualPaper() {
+    var tempPaperState = localStorage.getItem("virtualPaper");
+    if (tempPaperState != null) {
+        togglePaper = tempPaperState;
+        if (togglePaper == 'true') {
+            togglePaper = false;
+            toggleVirtualPaper(event);
+        } else {
+            togglePaper = true;
+            toggleVirtualPaper(event);
+        }
+    }
 }
 
 //--------------------------------------------------------------------
@@ -2219,6 +2288,7 @@ function setPaperSize(event, size){
 		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
 	}
 	paperSize = size; 
+	localStorage.setItem("paperSize", paperSize);
 	updateGraphics();
 }
 
@@ -2339,10 +2409,22 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
-    canvas.width = diagramContainer.offsetWidth;
-    canvas.height = diagramContainer.offsetHeight;
-    boundingRect = canvas.getBoundingClientRect();
+    var diagramContainer = document.getElementById("diagramCanvasContainer");
+    if(fullscreen){
+        // Resize container
+        diagramContainer.style.height = window.innerHeight + "px";
+        diagramContainer.style.width = window.innerWidth + "px";
+        // Remove "px" and set canvas size
+        var width_converted = diagramContainer.style.width.replace("px", "");
+        var height_converted = diagramContainer.style.height.replace("px", "");
+        canvas.width = width_converted;
+        canvas.height = height_converted;
+    } else {
+        // Resize canvas
+        canvas.width = diagramContainer.offsetWidth;
+        canvas.height = diagramContainer.offsetHeight;
+    }
+    boundingRect = canvas.getBoundingClientRect();    
     updateGraphics();
 }
 
@@ -2358,15 +2440,18 @@ function updateGraphics() {
     diagram.updateQuadrants();
     drawGrid();
     drawOrigoLine();
-    if(developerModeActive) {
-        drawOrigo();
-        drawCrosshair();
+    if(developerModeActive) drawOrigo();
+
+    // Mark the last freedraw point on mobiles
+    if (uimode == "CreateFigure" && figureType == "Free" && isMobile) {
+        markLastMouseCoordinates(); 
     }
     diagram.sortConnectors();
     diagram.updateQuadrants();
     diagram.draw();
     points.drawPoints();
     drawVirtualPaper();
+    if(developerModeActive) drawCrosshair();
 }
 
 //---------------------------------------------------------------------------------
@@ -2505,6 +2590,7 @@ function eraseSelectedObject(event) {
 function setMode(mode) {
     cancelFreeDraw();
     uimode = mode;
+    figureType = null;
     if(mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
       figureType = mode;
@@ -2761,6 +2847,13 @@ function setModeOnRefresh() {
     }
 }
 
+function setPaperSizeOnRefresh() {
+	const tempPaperSize = localStorage.getItem("paperSize");
+	if(tempPaperSize != null){
+        paperSize = tempPaperSize;
+	}
+}
+
 //--------------------------------------
 // Shows crosses when in developer mode
 //--------------------------------------
@@ -2932,7 +3025,7 @@ function reWrite() {
 
     if (developerModeActive) {
         let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
-        if (hoveredObject && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
+        if (typeof hoveredObject !== "undefined" && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
             coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
         coordinatesElement.innerHTML = `${coordinatesText}</p>`;
@@ -3385,6 +3478,10 @@ function undoDiagram(event) {
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
     localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
+
+    selected_objects = diagram.filter(object => object.targeted);
+    cloneTempArray = [];
+    hoveredObject = undefined;
 }
 
 //----------------------------------------------------------------------
@@ -3401,6 +3498,10 @@ function redoDiagram(event) {
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
     localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
+
+    selected_objects = diagram.filter(object => object.targeted);
+    cloneTempArray = [];
+    hoveredObject = undefined;
 }
 
 //----------------------------------------------------------------------
@@ -3650,9 +3751,12 @@ function scrollZoom(event) {
 function toggleFullscreen(){
     // Load relevant elements
     var head = document.querySelector("header");
-    var menu_buttons = document.getElementById("buttonDiv");
+    var menu_border = document.getElementById("buttonDiv");
     var canvas_div = document.getElementById("diagramCanvasContainer");
     var canvas_border = document.getElementById("diagramCanvas");
+    var tool_bar = document.getElementById("diagram-toolbar");
+    var inside_toolbar = document.getElementById("inside-toolbar");
+    var menu_buttons = document.getElementsByClassName("menu-drop-down");
 
     if(!fullscreen){
         // Get previous settings
@@ -3663,7 +3767,11 @@ function toggleFullscreen(){
 
         // Hide header, buttons, their leftover space, border and resize container to fit entire screen
         head.style.display = "none";
-        menu_buttons.style.display = "none";
+        for(var i = 0; i < menu_buttons.length; i++){
+            menu_buttons[i].style.display = "none";
+        }
+        tool_bar.style.visibility = "hidden";
+        inside_toolbar.style.visibility = "hidden"
         canvas_div.style.position = "absolute";
         canvas_div.style.marginLeft = 0;
         canvas_div.style.top = 0;
@@ -3673,8 +3781,10 @@ function toggleFullscreen(){
         canvas_div.style.height = window.innerHeight + "px";
         canvas_div.style.width = window.innerWidth + "px";
         canvas_border.style.border = 0 + "px";
+        menu_border.style.border = 0 + "px";
         fullscreen = true;
 
+        // Display popup message
         $("#fullscreenDialog").css("display", "flex");
 
         // Refit canvas to current container
@@ -3682,12 +3792,18 @@ function toggleFullscreen(){
     } else if (fullscreen){
         // Revert to previous settings
         head.style.display = "inline-block";
-        menu_buttons.style.display = "block";
+        for(var i = 0; i < menu_buttons.length; i++){
+            menu_buttons[i].style.display = "block";
+        }
+        tool_bar.style.visibility = "visible";
+        inside_toolbar.style.visibility = "visible";
+        inside_toolbar.style.border = "none";
         canvas_div.style.position = old_container_position;
         canvas_div.style.marginLeft = old_canvas_div_marginLeft;
         canvas_div.style.height = old_container_height;
         canvas_div.style.width = old_container_width;
         canvas_border.style.border = 1 + "px solid #000000";
+        menu_border.style.borderLeft = 1 + "px solid #c0c0c0";
         fullscreen = false;
 
         // Refit canvas to current container
@@ -3703,6 +3819,28 @@ function closeFullscreenDialog(){
     $("#fullscreenDialog").hide();
 }
 
+//-----------------------
+// Toggle Toolbar for fullscreen
+//-----------------------
+
+function toggleToolbar(){
+    // Get element
+    var tool_bar = document.getElementById("inside-toolbar");
+
+    if(!toolbarDisplayed){
+        // Show inner toolbar, add border and set background color
+        tool_bar.style.visibility = "visible";
+        tool_bar.style.backgroundColor = "#ffffff";
+        tool_bar.style.border = 1 + "px solid #000000";
+        toolbarDisplayed = true;
+    } else {
+        // Hide
+        tool_bar.style.visibility = "hidden";
+        tool_bar.style.background = "none";
+        tool_bar.style.border = 0 + "px";
+        toolbarDisplayed = false;
+    }
+}
 
 //-------------------------------------------------------------------------
 // findPos: Recursive Pos of div in document - should work in most browsers
@@ -3932,7 +4070,25 @@ function mousemoveevt(ev) {
                     if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
                         sel.point.y = currentMouseCoordinateY;
                     }
-                    
+                    //Handles loose lines
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line){
+                        connectLooseLineObj.lineIsSelected = true;
+                        connectLooseLineObj.selectedLine = sel.attachedSymbol;
+                        if(sel.point.y == points[sel.attachedSymbol.bottomRight].y && sel.point.x == points[sel.attachedSymbol.bottomRight].x){
+                            connectLooseLineObj.looseLineP1 = sel.attachedSymbol.topLeft;
+                            connectLooseLineObj.looseLineP2 = sel.attachedSymbol.bottomRight;
+                        }
+                        else if(sel.point.y == points[sel.attachedSymbol.topLeft].y && sel.point.x == points[sel.attachedSymbol.topLeft].x){
+                            connectLooseLineObj.looseLineP1 = sel.attachedSymbol.bottomRight;
+                            connectLooseLineObj.looseLineP2 = sel.attachedSymbol.topLeft;
+                        }
+                        else{
+                            connectLooseLineObj.lineIsSelected = false;
+                            connectLooseLineObj.selectedLine = null;
+                            connectLooseLineObj.looseLineP1 = null;
+                            connectLooseLineObj.looseLineP2 = null;
+                        }
+                    }
                 }
                 // If we changed a point of a path object,
                 // we need to recalculate the bounding-box so that it will remain clickable.
@@ -4198,7 +4354,7 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
-        if(ev.button == rightMouseClick && uimode == "CreateFigure"){
+        if(ev.button == rightMouseClick && figureType == "Free"){
             endFreeDraw();
         }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
@@ -4216,7 +4372,7 @@ function mousedownevt(ev) {
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
-
+    
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
@@ -4315,6 +4471,12 @@ function mouseupevt(ev) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
+            if(diagram[lineStartObj] == diagram[markedObject]){
+                flash("Can not draw line between the same object", "danger");
+            }
+            else if(markedObject != -1 && diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity){
+                flash("Can not draw line between two ER-entities", "danger");
+            }
             md = mouseState.empty;
         }else {
             //Get which kind of symbol mouseupevt execute on
@@ -4337,25 +4499,49 @@ function mouseupevt(ev) {
                 if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erAttribute) {
                     if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
+                        flash("Can not draw multiple lines between these objects", "danger");
                     }
                 }else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erEntity) {
                     if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) {
                         okToMakeLine= false;
+                        flash("Can not draw multiple lines between these objects", "danger");
                     }
                 }else if (symbolEndKind == symbolKind.erEntity && symbolStartKind == symbolKind.erRelation) {
-                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) >= 2){
+                        okToMakeLine = false;
+                        flash("A max of two lines can be drawn between these objects", "danger");
+                    }
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erEntity) {
-                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2) okToMakeLine = false;
+                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) >= 2){
+                        okToMakeLine = false;
+                        flash("A max of two lines can be drawn between these objects", "danger");
+                    } 
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erAttribute) {
-                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) okToMakeLine = false;
+                    if (diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
+                        okToMakeLine = false;
+                        flash("Can not draw multiple lines between these objects", "danger");
+                    }
                 }else if (symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erRelation) {
-                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0) okToMakeLine = false;
+                    if (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0){
+                        okToMakeLine = false;
+                        flash("Can not draw multiple lines between these objects", "danger");
+                    }
                 }else if (symbolEndKind == symbolKind.erRelation && symbolStartKind == symbolKind.erRelation) {
                     okToMakeLine = false;
+                    flash("Can not draw line between two ER-relations", "danger");
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
+                    flash("Can not draw line between ER- and UML-objects", "danger");
                 }
-                if(diagram[lineStartObj] == diagram[markedObject]) okToMakeLine = false;
+                if(diagram[lineStartObj] == diagram[markedObject]){
+                    okToMakeLine = false;
+                    flash("Can not draw line between the same object", "danger");
+                }
+
+                if(diagram[lineStartObj].kind == 1 || diagram[markedObject].kind == 1){
+                    okToMakeLine = false;
+                    flash("Can not draw line to/from a freedraw object", "danger");
+                }
 
                 if (okToMakeLine) {
                     saveState = true;
@@ -4400,6 +4586,7 @@ function mouseupevt(ev) {
 
                 if (symbolEndKind != symbolKind.uml) {
                     okToMakeLine = false;
+                    flash("Can not draw line between UML- and ER-objects", "danger");
                 }
                 if (okToMakeLine) {
                     saveState = true;
@@ -4493,19 +4680,34 @@ function mouseupevt(ev) {
         && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && okToMakeLine  && md == mouseState.boxSelectOrCreateMode) {
             erLineA = new Symbol(symbolKind.line); // Lines
             erLineA.name = "Line" + diagram.length;
-            erLineA.topLeft = p1;
             erLineA.object_type = "";
+            erLineA.isCardinalityPossible = !([diagram[lineStartObj], hoveredObject].some(symbol => symbol.symbolkind === symbolKind.erAttribute)); //No connected objects are attributes
+            erLineA.topLeft = p1;
             erLineA.bottomRight = p2;
-            erLineA.centerPoint = p3;
+
+            if(erLineA.isCardinalityPossible) {
+                erLineA.cardinality.value = "";
+                erLineA.cardinality.parentPointIndexes = {
+                    topLeft: hoveredObject.topLeft,
+                    bottomRight: hoveredObject.bottomRight
+                };
+
+                //Reverse points when the hoveredObject is a relation object to have consistent cardinality on entity side
+                if(hoveredObject.symbolkind === symbolKind.erRelation) {
+                    erLineA.topLeft = p2;
+                    erLineA.bottomRight = p1;
+                    erLineA.cardinality.parentPointIndexes.topLeft = diagram[lineStartObj].topLeft;
+                    erLineA.cardinality.parentPointIndexes.bottomRight = diagram[lineStartObj].bottomRight;
+                }
+            }
             //always put lines at the bottom since they always render at the bottom, that seems to be the most logical thing to do
             diagram.unshift(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
             diagram[lastSelectedObject].targeted = false;
             lastSelectedObject = 0;
-            diagram[lastSelectedObject].targeted = true;
-            selected_objects.push(diagram[lastSelectedObject]);
+            erLineA.targeted = true;
+            selected_objects.push(erLineA);
 
-            createCardinality();
             updateGraphics();
         }
     } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
@@ -4565,29 +4767,27 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         // Code for making a line, if start and end object are different, except attributes and if no object is text
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
-        || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
-        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) && figureType != "Free") {
+        if((symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine)
+        && (symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text)) {
             umlLineA = new Symbol(symbolKind.umlLine); //UML Lines
             umlLineA.name = "Line" + diagram.length;
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
-            umlLineA.centerPoint = p3;
+            umlLineA.targeted = true;
+            umlLineA.cardinality.value = "";
+            umlLineA.cardinality.valueUML = "";
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
                 points[umlLineA.topLeft].y = points[umlLineA.bottomRight].y;
             }
             diagram.push(umlLineA);
-            //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length - 1;
-            diagram[lastSelectedObject].targeted = true;
-            selected_objects.push(diagram[lastSelectedObject]);
-            uimode = "CreateLine";
-            createCardinality();
+            selected_objects.push(umlLineA);
             updateGraphics();
         }
+        uimode = "CreateLine";
     }
 
     //when symbol is er relation then don't assign variables since it's already done earlier when creating points
@@ -4607,7 +4807,73 @@ function mouseupevt(ev) {
     if(uimode == "MoveAround" && md === mouseState.boxSelectOrCreateMode) {
         saveState = false;
     }
-
+    //Connects loose line to object when released while insidee a compatible object
+    if(connectLooseLineObj.lineIsSelected){
+        markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+        if(markedObject != null){
+            var connectedObj = connectLooseLineObj.selectedLine.getConnectedObjects();
+            //Used if line if loose on both sides
+            if(connectedObj.length == 0){
+                saveState = true;
+                var p1 = connectLooseLineObj.looseLineP1;
+                var p2 = connectLooseLineObj.looseLineP2;
+                //handles attributes centerpoint
+                if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                    p2 = diagram[markedObject].centerPoint;
+                    if(sel.point.y == points[sel.attachedSymbol.bottomRight].y && sel.point.x == points[sel.attachedSymbol.bottomRight].x){
+                        points[sel.attachedSymbol.bottomRight] = p2;
+                        connectLooseLineObj.selectedLine.bottomRight = p2;
+                    }
+                    else if(sel.point.y == points[sel.attachedSymbol.topLeft].y && sel.point.x == points[sel.attachedSymbol.topLeft].x){
+                        points[sel.attachedSymbol.topLeft] = p2;
+                        connectLooseLineObj.selectedLine.topLeft = p2;
+                    }
+                }
+                diagram[markedObject].connectorTop.push({from:p2, to:p1});
+            }
+            //Used if line is only loose on one side
+            else if(connectedObj.length == 1){
+                if(canConnectLine(connectedObj[0], diagram[markedObject])){
+                    saveState = true;
+                    var p1 = connectLooseLineObj.looseLineP1;
+                    var p2 = connectLooseLineObj.looseLineP2;
+                    
+                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                        p2 = diagram[markedObject].centerPoint;
+                        if(sel.point.y == points[sel.attachedSymbol.bottomRight].y && sel.point.x == points[sel.attachedSymbol.bottomRight].x){
+                            points[sel.attachedSymbol.bottomRight] = p2;
+                            connectLooseLineObj.selectedLine.bottomRight = p2;
+                            var connectorName = connectedObj[0].getConnectorNameFromPoint(p1);
+                            for(var i = 0 ; i < connectedObj[0][connectorName].length ; i++){
+                                if(connectedObj[0][connectorName][i].from == p1){
+                                    connectedObj[0][connectorName][i].to = p2;
+                                    break;
+                                }
+                            }
+                        }
+                        else if(sel.point.y == points[sel.attachedSymbol.topLeft].y && sel.point.x == points[sel.attachedSymbol.topLeft].x){
+                            points[sel.attachedSymbol.topLeft] = p2;
+                            connectLooseLineObj.selectedLine.topLeft = p2;
+                            var connectorName = connectedObj[0].getConnectorNameFromPoint(p1);
+                            for(var i = 0 ; i < connectedObj[0][connectorName].length ; i++){
+                                if(connectedObj[0][connectorName][i].from == p1){
+                                    connectedObj[0][connectorName][i].to = p2;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    diagram[markedObject].connectorTop.push({from:p2, to:p1});
+                }
+            }
+        
+        }
+        connectLooseLineObj.lineIsSelected = false;
+        connectLooseLineObj.looseLineP1 = null;
+        connectLooseLineObj.looseLineP2 = null;
+        connectLooseLineObj.selectedLine = null;
+    }
+    
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
@@ -4633,8 +4899,15 @@ function touchStartEvent(event) {
 
     // Returns what object was pressed, -1 if none
     movobj = diagram.itemClicked();
+    sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
-    if (movobj != -1 && uimode != "CreateLine") {
+    
+    // If a point was clicked 
+    if (sel.distance < tolerance / zoomValue) {
+        md = mouseState.insidePoint;
+    }
+    // If an object is clicked
+    else if (movobj != -1 && uimode != "CreateLine") {
         md = mouseState.insideMovableObject;
         handleSelect();
     } 
@@ -4675,7 +4948,7 @@ function touchMoveEvent(event) {
         if ((diffX > deltaX) || (diffX < -deltaX)
         || (diffY > deltaY) || (diffY < -deltaY)) {
             if (uimode != 'MoveAround' && md != mouseState.insideMovableObject 
-            && uimode != "CreateLine") {
+            && md != mouseState.insidePoint && uimode != "CreateLine") {
                 activateMovearound();
             }
             updateGraphics();
@@ -4693,8 +4966,6 @@ function touchMoveEvent(event) {
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
     }
-    reWrite();
-    updateGraphics();
 
     // Moves an object
     if (md == mouseState.insideMovableObject) {
@@ -4735,6 +5006,10 @@ function touchMoveEvent(event) {
             startMouseCoordinateY = currentMouseCoordinateY;
         }
     }
+    // Resizes an object
+    if (md == mouseState.insidePoint) {
+        resizeElement(sel);
+    }
     // Draw preview line
     if (uimode == "CreateLine" && movobj != -1) {
         // Path settings for preview line
@@ -4746,6 +5021,44 @@ function touchMoveEvent(event) {
         ctx.stroke();
         ctx.setLineDash([]);
     }
+    reWrite();
+    updateGraphics();
+
+}
+
+// Takes the closest selected point and resizes the object
+function resizeElement(selected) { 
+    // Needs to have a symbol selected to resize, and it cant be locked
+    if (!selected.attachedSymbol.targeted || selected.attachedSymbol.isLocked) {
+        return;
+    }
+    // For top left and 
+    if (!selected.point.fake) {
+        var yDiff = points[selected.attachedSymbol.bottomRight].y - points[selected.attachedSymbol.topLeft].y;
+        var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
+        var change = ((currentMouseCoordinateX - selected.point.x) + (currentMouseCoordinateY - selected.point.y)) / 2;
+        // Can't resize below minimum threshold
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change > -5){
+            selected.point.x = currentMouseCoordinateX;
+        }
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change > -5){
+            selected.point.y = currentMouseCoordinateY;
+        }
+    }
+    // For top right and bottom left 
+    else {
+        var yDiff = points[selected.attachedSymbol.bottomRight].y - points[selected.attachedSymbol.topLeft].y;
+        var xDiff = points[selected.attachedSymbol.bottomRight].x - points[selected.attachedSymbol.topLeft].x;
+        var change = ((currentMouseCoordinateX - selected.point.x.x) - (currentMouseCoordinateY - selected.point.y.y)) / 2;
+        // Can't resize below minimum threshold
+        if(minSizeCheck(xDiff, selected.attachedSymbol, "x") == false || 5 > change > -5){
+            selected.point.x.x = currentMouseCoordinateX;
+        }
+        if(minSizeCheck(yDiff, selected.attachedSymbol, "y") == false || 5 > change > -5){
+            selected.point.y.y = currentMouseCoordinateY;
+        }
+    }
+    diagram.draw();
 }
 
 //---------------------------------------------------
@@ -4761,6 +5074,16 @@ function touchEndEvent(event) {
     if (uimode == "MoveAround"){
         deactivateMovearound();
         updateGraphics();
+    }
+    if (uimode == "CreateFigure" && md == mouseState.boxSelectOrCreateMode) {
+        if (figureType == "Free") {
+            figureFreeDraw();
+            updateGraphics();
+            return;
+        }
+        else if (figureType == "Text") {
+            createText(currentMouseCoordinateX, currentMouseCoordinateY);
+        }
     }
 
     var p1BeforeResize;
@@ -4839,7 +5162,9 @@ function touchEndEvent(event) {
             uimode = "CreateLine";
         }
     }
-
+    if (md == mouseState.insidePoint){
+        saveState = true;
+    }
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
@@ -4934,7 +5259,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
                 erLineA.topLeft = p1;
                 erLineA.object_type = "";
                 erLineA.bottomRight = p2;
-                erLineA.centerPoint = p3;
                 diagram.unshift(erLineA);
                 lastSelectedObject = diagram.length -1;
                 diagram[lastSelectedObject].targeted = true;
@@ -4948,7 +5272,6 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
             umlLineA.topLeft = p1;
             umlLineA.object_type = "";
             umlLineA.bottomRight = p2;
-            umlLineA.centerPoint = p3;
             umlLineA.isRecursiveLine = lineStartObj == markedObject;
             if (umlLineA.isRecursiveLine) {
                 points[umlLineA.topLeft].x = points[umlLineA.bottomRight].x;
@@ -5086,6 +5409,10 @@ function toggleCameraView(){
     activateMovearound();
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// toggleApperanceElement: Sets display status of appearance menu by the passed boolean value. If global appearance menu was closed, recent diagram is loaded from localStorage to revert changes if not submitted and only closed (by 'X' or click outside of form).
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function toggleApperanceElement(show = false) {
     const appearanceElement = document.getElementById("appearance");
     if(show) {
@@ -5162,23 +5489,6 @@ function setSelectedOption(select, value) {
     }
 }
 
-//---------------------------------
-// Creates cardinality at the line
-//---------------------------------
-
-function createCardinality() {
-    //Setting cardinality on new line
-    if(diagram[lineStartObj +1].symbolkind == symbolKind.erRelation) {
-        diagram[0].cardinality = ({"value": "", "isCorrectSide": false, "parentBox": hoveredObject});
-    }
-    else if(diagram[lineStartObj+1].symbolkind == symbolKind.erEntity) {
-        diagram[0].cardinality = ({"value": "", "isCorrectSide": true, "parentBox": hoveredObject});
-    }
-    else if(diagram[lineStartObj+1].symbolkind == symbolKind.uml) {
-        diagram[diagram.length-1].cardinality = ({"value": "", "symbolKind": 1})
-    }
-}
-
 const symbolTypeMap = {
     "-1": "Global",
     "0": "Path",
@@ -5190,6 +5500,10 @@ const symbolTypeMap = {
     "6": "Text",
     "7": "UML line"
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// createCollapsible: Creates a collapsible element containing the form-groups passed. Types is an array used to concatenate the title from. Index is used to to open the first created collapsible.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function createCollapsible(formGroups, types, index) {
     const collapsibleElement = document.createElement("div");
@@ -5228,6 +5542,10 @@ function createCollapsible(formGroups, types, index) {
     document.getElementById("appearanceForm").appendChild(collapsibleElement);
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// loadGlobalAppearanceForm: Shows the appearance menu and shows all form groups having type -1 (global). Sets selected values for all inputs/selects.
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 function loadGlobalAppearanceForm() {
     showFormGroups([-1]);
     globalappearanceMenuOpen = true;
@@ -5236,7 +5554,16 @@ function loadGlobalAppearanceForm() {
     setGlobalSelections();
 }
 
+const separators = {
+    input: "~",
+    textarea: "~\n"
+};
+
 let appearanceObjects = [];
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+// loadAppearanceForm: Shows the appearance menu and shows all form groups related to the selected objects. Sets values for all input elements/selects/textareas.
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function loadAppearanceForm() {
     appearanceObjects = [];
@@ -5248,55 +5575,44 @@ function loadAppearanceForm() {
             appearanceObjects.push(object);
         }
     }
-    if(appearanceObjects.length < 1) {
-        return;
-    }
+    if(appearanceObjects.length < 1) return;
 
-    //Get all unique types from the selected objects
-    const types = [...new Set(appearanceObjects.map(object => object.symbolkind || 0))];
+    const indexes = getSelectedObjectsMaxIndexes(appearanceObjects);
+
+    //Get all unique types of selected objects
+    const types = Object.keys(indexes).map(Number);
+
+    setNameIndexes(indexes, types);
     
     showFormGroups(types);
     toggleApperanceElement(true);
     
+    const freeTextElement = document.getElementById("freeText");
+    const umlOperationsElement = document.getElementById("umlOperations");
+    const umlAttributesElement = document.getElementById("umlAttributes");
     let erCardinalityVisible = false;
 
-    //A comma at the end to seperate objects right now. Should be fixed in seperate issue to only appear on last object in the type
     appearanceObjects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
-            document.getElementById("name").value += object.name + ", ";
-            document.getElementById("name").focus();
-        }
+        setNameElement(object, indexes.name);
 
         if(object.symbolkind === symbolKind.line) {
-            const connections = object.getConnectedObjects();
-            const hasEntity = connections.some(symbol => symbol.symbolkind === symbolKind.erEntity);
-            const hasRelation = connections.some(symbol => symbol.symbolkind === symbolKind.erRelation);
             if(!erCardinalityVisible) {
-                if(hasEntity && hasRelation) {
-                    document.getElementById("cardinalityER").parentNode.style.display = "block";
+                if(setErCardinalityElementDisplayStatus(object, erCardinalityVisible)) {
                     erCardinalityVisible = true;
-                } else {
-                    document.getElementById("cardinalityER").parentNode.style.display = "none";
                 }
             }
             document.getElementById("typeLine").focus();
         } else if(object.symbolkind === symbolKind.umlLine) {
-            //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
-            const connectedObjectsArray = object.getConnectedObjects();
-            document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
-            //Selection to check if relation is to the same entity. If so: both are named from object 0
-            if(typeof connectedObjectsArray[1] == "undefined"){
-                document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
-            } else {
-                document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
-            }
+            setLineDirectionElementUML(object);
             document.getElementById("typeLineUML").focus();
         } else if(object.symbolkind === symbolKind.text) {
-            document.getElementById("freeText").value += getTextareaText(object.textLines) + ",\n";
-            document.getElementById("freeText").focus();
+            indexes[symbolKind.text].current++;
+            setTextareaElement(freeTextElement, object.textLines, indexes[symbolKind.text]);
+            freeTextElement.focus();
         } else if(object.symbolkind === symbolKind.uml) {
-            document.getElementById("umlOperations").value += getTextareaText(object.operations) + ",\n";
-            document.getElementById("umlAttributes").value += getTextareaText(object.attributes) + ",\n";
+            indexes[symbolKind.uml].current++;
+            setTextareaElement(umlOperationsElement, object.operations, indexes[symbolKind.uml]);
+            setTextareaElement(umlAttributesElement, object.attributes, indexes[symbolKind.uml]);
         } else if(object.kind === kind.path) {
             document.getElementById("figureOpacity").value = object.opacity * 100;
             document.getElementById("fillColor").focus();
@@ -5304,6 +5620,113 @@ function loadAppearanceForm() {
         setSelections(object);
     });
 }
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+// getSelectedObjectsMaxIndexes: Creates an object containing maximum and current index for each type of object passed as an array to the function.
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
+function getSelectedObjectsMaxIndexes(objects) {
+    //Stores current index and maximum index for each type of selected object
+    //Current index will be used for separation, to only create comma when max is more than current
+    const indexes = {};
+
+    //Reduce the selected objects array to a Map with key symbolKind and value the number of times that symbolKind occurs
+    //Iterate through the map and put the correct values in the indexes object
+    objects.reduce((result, object) => {
+        result.set(object.symbolkind || 0, (result.get(object.symbolkind || 0) || 0) + 1);
+        return result;
+    }, new Map()).forEach((value, key) => {
+        if(typeof indexes[key] === "undefined") {
+            indexes[key] = {
+                current: 0,
+                max: 0
+            };
+        }
+        indexes[key].max += value;
+    });
+
+    return indexes;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setNameIndexes: Adds the name property into the passed indexes object. Max index for name is calculated based on all types max indexes that should have the name input.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setNameIndexes(indexes, types) {
+    //The max index for the name input should be based on all object types that have the name input
+    indexes.name = {
+        current: 0,
+        max: types.reduce((result, type) => {
+            if(type === symbolKind.uml || type === symbolKind.erAttribute || type === symbolKind.erEntity || type === symbolKind.erRelation) {
+                result += indexes[type].max;
+            }
+            return result;
+        }, 0)
+    };
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setNameElement: Sets the value of the name input element based on passed objects and uses passed index to create a separator between object names if not last object.
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setNameElement(object, index) {
+    const nameElement = document.getElementById("name");
+    if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
+        index.current++;
+        nameElement.value += object.name;
+        if(index.max > index.current) {
+            nameElement.value += `${separators.input} `;
+        }
+        nameElement.dataset.originalvalue = nameElement.value;
+        nameElement.focus();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setLineDirectionElementUML: Runs for UML line objects. Appends the name of connected object names to correct option in the lineDirection select. Takes recursive lines into consideration.
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setLineDirectionElementUML(object) {
+    const connectedObjectsArray = object.getConnectedObjects();
+    document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
+
+    //Check if relation is to the same entity. If so: both are named from object 0.
+    if(typeof connectedObjectsArray[1] == "undefined"){
+        document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
+    } else {
+        document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setTextareaElement: Sets the value of a textarea element based on property array and uses passed index to create a separator between different object text if not last object.
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setTextareaElement(element, property, index) {
+    element.value += getTextareaText(property);
+    if(index.max > index.current) {
+        element.value += separators.textarea;
+    }
+    element.dataset.originalvalue = element.value;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setErCardinalityElementDisplayStatus: Checks if passed er line object can have cardinality.Displays the cardinality element and returns true if possible and hides it and returns false if not.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setErCardinalityElementDisplayStatus(object) {
+    if(object.isCardinalityPossible) {
+        document.getElementById("cardinalityER").parentNode.style.display = "block";
+        return true;
+    } else {
+        document.getElementById("cardinalityER").parentNode.style.display = "none";
+        return false;
+    }
+}
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// showFormGroups: Resets the form to the state before previous creation to remove old collapsibles. Shows all form groups having the type in the passed array and groups them into new collapsibles.
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function showFormGroups(typesToShow) {
     const form = document.getElementById("appearanceForm");
@@ -5317,7 +5740,21 @@ function showFormGroups(typesToShow) {
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
 
-    const groupsByTypes = formGroupsToShow.reduce((result, group) => {
+    const collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
+
+    initAppearanceForm();
+    collapsibleStructure.forEach((object, i) => createCollapsible(object.groups, object.types, i));
+
+    //Always put submit-button in the end of the form
+    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getCollapsibleStructure: Generates an array of objects where each object represents a collapsible. Each object have information about which form-groups should be in the collapsible and which object types will be affected by the collapsible's content.
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function getCollapsibleStructure(formGroups, typesToShow) {
+    return formGroups.reduce((result, group) => {
         const groupTypes = group.dataset.types.split(",");
         const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
         const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
@@ -5331,21 +5768,27 @@ function showFormGroups(typesToShow) {
         }
         return result;
     }, []);
-
-    initAppearanceForm();
-    groupsByTypes.forEach((object, i) => createCollapsible(object.groups, object.types, i));
-
-    //Always put submit-button in the end of the form
-    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
 }
+
+//-----------------------------------------------------------------------------------------------------------------------
+// containsAll: Checks if array2 contains every single item in array1. Returns true if this is the case, otherwise false.
+//-----------------------------------------------------------------------------------------------------------------------
 
 function containsAll(array1, array2) {
     return array1.every(item => array2.includes(item));
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+// sameMembers: Checks if array1 and array2 has the exact same members (not necessarily same position of items). Returns true if this is the case, otherwise false.
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function sameMembers(array1, array2) {
     return containsAll(array1, array2) && containsAll(array2, array1);
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getTextareaText: Parsing an array of objects where each object contains a text property, adding a new line after each text object excpet the last row and returns textarea content in plain text.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function getTextareaText(array) {
     let text = "";
@@ -5358,13 +5801,19 @@ function getTextareaText(array) {
     return text;
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getTextareaArray: Converts passed textarea plain text into an array of objects each with a text property. The plain text is splitted by possible separators and the correct part is selected by passed index.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function getTextareaArray(element, index) {
-    const objectText = element.value.split(",\n");
+    const objectText = element.value.split(separators.textarea);
     const indexTextLines = objectText[index].split("\n");
-    const array = [];
-    indexTextLines.forEach(text => array.push({"text": text}));
-    return array;
+    return indexTextLines.map(text => ({"text": text}));
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------------
+// setGlobalSelections: Used when the global appearance menu is opened to select the correct options in selects based on stored global properties.
+//------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalSelections() {
     const groups = getGroupsByTypes([-1]);
@@ -5376,6 +5825,10 @@ function setGlobalSelections() {
         }
     });
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setGlobalProperties: Used when the global appearance menu is submitted to set the global properties to the newly selected properties. Also updates each existing object in the diagram to the new properties.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalProperties() {
     const groups = getGroupsByTypes([-1]);
@@ -5390,6 +5843,10 @@ function setGlobalProperties() {
     updateGraphics();
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setSelections: Used for each selected object when the normal appearance menu is opened to select the correct options in selects based on the properties in the passed object.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function setSelections(object) {
     const groups = getGroupsByTypes([object.symbolkind || 0]);
 
@@ -5399,11 +5856,7 @@ function setSelections(object) {
             const access = element.dataset.access.split(".");
             if(element.tagName === 'SELECT') {
                 let value = "";
-                if(access[0] === "cardinality") {
-                    if(element.style.display !== "none") {
-                        value = object[access[0]][access[1]];
-                    }
-                } else if(access.length === 1) {
+                if(access.length === 1) {
 					value = object[access[0]];
                 } else if(access.length === 2) {
                     value = object[access[0]][access[1]];
@@ -5419,6 +5872,10 @@ function setSelections(object) {
 }
 
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setSelectedObjectsProperties: Used when a input/select/textarea is changed in the normal appearance form, to update all selected objects according to the new properties.
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function setSelectedObjectsProperties(element) {
     const types = element.parentNode.dataset.types.split(",");
     let textareaIndex = 0;
@@ -5429,21 +5886,23 @@ function setSelectedObjectsProperties(element) {
         if((types.includes((object.symbolkind || 0).toString()))) {
             const access = element.dataset.access.split(".");
             if(element.nodeName === "TEXTAREA") {
-                object[access[0]] = getTextareaArray(element, textareaIndex);
+                if(isNumberOfSeparatorsEqual(element, separators.textarea)) {
+                    object[access[0]] = getTextareaArray(element, textareaIndex);
+                }
                 textareaIndex++;
             } else if(element.type === "range") {
                 object[access[0]] = element.value / 100;
             } else if(access[0] === "cardinality") {
-                if(element.style.display !== "none") {
-                    if(element.value === "None") {
-                        element.value = "";
-                    }
-                    object[access[0]][access[1]] = element.value;
+                object[access[0]][access[1]] = element.value;
+                if(element.value === "None") {
+                    object[access[0]][access[1]] = "";
                 }
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;
             } else if(element.id === "name") {
-                object[access[0]] = element.value.split(",")[nameIndex].trim();
+                if(isNumberOfSeparatorsEqual(element, separators.input)) {
+                    object[access[0]] = element.value.split(separators.input)[nameIndex].trim();
+                }
                 nameIndex++;
             } else if(access.length === 1) {
                 object[access[0]] = element.value;
@@ -5455,11 +5914,31 @@ function setSelectedObjectsProperties(element) {
     updateGraphics();
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// isNumberOfSeparatorsEqual: Takes the passed element's current value and compares it to the element's original value based on separator occurances. Sets original value to the current value if number of separators are equal (return true), otherwise sets current value to original value (return false).
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function isNumberOfSeparatorsEqual(element, separator) {
+    const numberOfSeparators = (element.value.match(new RegExp(separator, "g")) || []).length;
+    const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separator, "g")) || []).length;
+    if(numberOfSeparators === originalNumberOfSeparators) {
+        element.dataset.originalvalue = element.value;
+        return true;
+    } else {
+        element.value = element.dataset.originalvalue;
+        return false;
+    }
+}
+
 //Stores which element the mouse was pressed down on while in the appearance menu.
 let appearanceMouseDownElement = null;
 
 //Stores a copy of the appearance form HTML-element with its childnodes
 let originalAppearanceForm = null;
+
+//-------------------------------------------------------------------------------
+// initAppearanceForm: Sets correct eventlisteners to the existing form elements.
+//-------------------------------------------------------------------------------
 
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
@@ -5494,6 +5973,10 @@ function initAppearanceForm() {
     originalAppearanceForm = document.getElementById("appearanceForm").cloneNode(true);
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+// getGroupsByTypes: Returns all form-groups that has a type included in the passed array in its data-attribute for types.
+//------------------------------------------------------------------------------------------------------------------------
+
 function getGroupsByTypes(typesToShow) {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     return [...formGroups].filter(group => {
@@ -5502,7 +5985,9 @@ function getGroupsByTypes(typesToShow) {
     });
 }
 
-//Shoud simulate button click or enter click in appearance menu to save and close
+//----------------------------------------------------------------------------------------
+// submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
+//----------------------------------------------------------------------------------------
 function submitAppearanceForm() {
     selected_objects.forEach(object => {
         if(object.symbolkind === symbolKind.uml) {
@@ -5694,10 +6179,6 @@ function getcorrectlayer(){
     }
         return "Layer_1"
 }
-//function deleteLayer(){
- //   document.getElementById("layerPlaceholder").innerHTML = "<div class='drop-down-item' tabindex='0'> <span class='drop-down-option id='layer_1'>Layer One</span></div>'";
- //   document.getElementById("layerPlaceholder").style.margin = "0px";
-//}
 
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){

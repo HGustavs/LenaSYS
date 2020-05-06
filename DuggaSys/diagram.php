@@ -80,7 +80,7 @@
         <div id="buttonDiv">
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
-                    <div class='application-toolbar'>
+                    <div id="inside-toolbar" class='application-toolbar'>
                         <div id="toolbar-switcher">
                             <div id="toolbarTypeText">Dev</div>
                             </div>
@@ -633,9 +633,11 @@
                         </select>
                     </div>
                     <div class="form-group" data-types="7">
-                        <label for="cardinalityUMLFirst">UML cardinality:</label>
+                        <label for="cardinalityUMLFirst">UML cardinality first:</label>
                         <select id="cardinalityUMLFirst" data-access="cardinality.value"><?=$cardinalitiesUML;?></select>
-                        </br>
+                    </div>
+                    <div class="form-group" data-types="7">
+                        <label for="cardinalityUMLSecond">UML cardinality second:</label>
                         <select id="cardinalityUMLSecond" data-access="cardinality.valueUML"><?=$cardinalitiesUML;?></select>
                     </div>
                     <div class="form-group" data-types="1">
@@ -748,10 +750,11 @@
     <div id="fullscreenDialog" class='loginBoxContainer importDiagram'>
         <div class='loginBox fullscreenContainer'>
             <div class='loginBoxheader fullscreenHeader'>
-                <h3 id="fullscreenHeaderText">Fullscreen mode enabled</h3>
+                <h3 id="fullscreenHeaderText">Fullscreen enabled</h3>
             </div>
             <div class='fullscreen-wrap'>
-                To exit, press 'Escape' or 'Shift + F11'.
+                To exit, press <b>Escape</b> or <b>Shift + F11</b>.
+                <br>Hide/show toolbar by pressing <b>T</b>.
                 <!-- <br>To show/hide toolbar, press... 
                 <div class="fullscreenCheckbox">
                     <label>
