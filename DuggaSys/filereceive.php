@@ -87,12 +87,31 @@ if ($ha) {
             $storefile = true;
         }
     } else if($kind == "EFILE"){
-        if (!file_exists($currcvd . "/courses/global")) {
-            $storefile = mkdir($currcvd . "/courses/global",0777,true);
+        $fileLocation = $_POST["uploadtype"][0];
+        if($fileLocation == "courselocal"){
+            if (!file_exists($currcvd . "/courses/" . $cid)) {
+                $storefile = mkdir($currcvd . "/courses/" . $cid ,0777,true);
+            } else {
+                $storefile = true;
+            }
+            $movname = $currcvd . "/courses/" . $cid . "/" . $fileText;
+            $description="CourseLocal"." ".$fname;
+            logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
+            $kindid = 3;
         }
-        else{
-            $storefile = true;
+        else if($fileLocation == "global"){
+            if (!file_exists($currcvd . "/courses/global")) {
+                $storefile = mkdir($currcvd . "/courses/global",0777,true);
+            }
+            else{
+                $storefile = true;
+            }
+            $movname = $currcvd . "/courses/global/" . $fileText;
+            $description="Global"." ".$fileText;
+            logUserEvent($userid, EventTypes::AddFile, $description);
+            $kindid = 2;
         }
+        
     }else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
         if (!file_exists($currcvd . "/courses/" . $cid)) {
@@ -154,15 +173,16 @@ if ($storefile) {
         //	"psd"		=> [
         //	"rar"		=> [
     ];
-    
-    $swizzled = swizzleArray($_FILES['uploadedfile']);
-    if($kind == "EFILE"){
-        $fileText = $_POST["uploadedfile"][0];
-        $fileLocation = $_POST["uploadtype"][0];
+    // If file is dummy-file
+    if($kind == "EFILE"){ 
+        $fileText = $_POST["uploadedfile"][0]; //Name of the file
+        $fileLocation = $_POST["uploadtype"][0]; // global or corselocal
         $extension = substr($fileText, strrpos($fileText, '.') + 1);
+
         if (array_key_exists($extension, $allowedExtensions)) {
             $fileText = preg_replace('/[[:^print:]]/', '', $fileText);
             $fileText = preg_replace('/\s+/', '', $fileText);
+            
             if($fileLocation == "courselocal"){
                 $movname = $currcvd . "/courses/" . $cid . "/" . $fileText;
                 $description="CourseLocal"." ".$fname;
@@ -175,19 +195,19 @@ if ($storefile) {
                 logUserEvent($userid, EventTypes::AddFile, $description);
                 $kindid = 2;
             }
-                    $ourFileHandle= fopen($movname, 'w') or die('Permission error'); 
-
+            else{
+                echo"Unknown type";
+            }
+                    $ourFileHandle= fopen($movname, 'w') or die('Permission error');  // Creating the file
                     $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=:kindid;"); // 1=Link 2=Global 3=Course Local 4=Local
                     $query->bindParam(':filename', $fileText);
                     $query->bindParam(':cid', $cid);
                     $query->execute();
                     $norows = $query->fetchColumn();
                     $filesize = filesize($movname);
-                    //$kindid = -1;
                     if ($norows == 0) {
-                        
-                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
-                            $query->bindParam(':cid', $cid);
+                        $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
+                        $query->bindParam(':cid', $cid);
                         $query->bindParam(':filename', $fileText);
                         $query->bindParam(':filesize', $filesize);
                         $query->bindParam(':kindid', $kindid);
@@ -205,25 +225,23 @@ if ($storefile) {
                     $query->bindParam(':filename', $fileText);
                     $query->bindParam(':cid', $cid);
                     $query->bindParam(':filesize', $filesize);
-                    
-                        
-                    
                     $query->bindParam(':kindid', $kindid);
 
                     if (!$query->execute()) {
                         $error = $query->errorInfo();
                         echo "Error updating filesize and uploaddate: " . $error[2];
                         $errortype ="updatefile";
-                        $errorvar = $error[2];
-                        
+                        $errorvar = $error[2]; 
                     }        
         }
-        else{
-            echo"extension wrong";
+        else{ // Not allowed extension
+            $errortype ="extension";
+            $errorvar = $extension;
         }
         fclose($ourFileHandle);
-        unlink($filefull);
     }
+
+    $swizzled = swizzleArray($_FILES['uploadedfile']);
     echo "<pre>";
     // Uncomment for debug printing
     //print_r($swizzled);
