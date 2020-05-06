@@ -119,7 +119,6 @@
 		<div id="announcementBox" style="display: none;">
 			<h3>To Do</h3>
 			<hr>
-			<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>
 			<table>				
 			<?php
 

@@ -1606,16 +1606,6 @@ $(window).load(function () {
     $('#fullAnnouncement').hide();
 
   });
-  $("#newAnnouncement").click(function(){
-    $("#modal").toggle();
-    $(window).click(function(e) {
-      if(e.target.id == "modal"){
-        $("#modal").hide(); 
-      }
-    });
-
-
-  });
   var rowCount = $('#announcementBox table tr').length;
   if (rowCount > 9) {
     $('#announcementBox table tr:gt(8)').hide();
@@ -1629,6 +1619,10 @@ $(window).load(function () {
     $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
   });
 
+  var adminLoggedin = $("#adminLoggedin").val();  
+  if(adminLoggedin == 'yes'){
+    $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>');
+  }
 
 });
 
@@ -1639,6 +1633,14 @@ function showAnnouncement(){
 //sets author for announcement
 function setAnnouncementAuthor(){
   $("#author").val($("#userName").html());
+  $("#modal").toggle();
+  $(window).click(function(e) {
+    if(e.target.id == "modal"){
+      $("#modal").hide(); 
+    }
+  });
+
+  console.log("Checking if onclick function is working");
   
 }
 // Checks if <a> link is external
