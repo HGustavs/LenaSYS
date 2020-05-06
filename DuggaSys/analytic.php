@@ -48,7 +48,7 @@ pdoConnect();
 			<input class="submit-button" style="float:left" type="button" value="File information" onclick="loadFileInformation()">
 		</div>
 		<div id="analytic-info" style="clear: both; padding: 15px;"></div>
-		<div id="canvas-area" style="height: 300px">
+		<div id="canvas-area" style="height: 300px;">
 		</div>
 		
 	</div>

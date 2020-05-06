@@ -83,7 +83,19 @@ function loadGeneralStats() {
 			label: 'Free Memory ('+data.disk.free+')',
 			value: data.disk.freePercent
 		});
-		drawPieChart(chartData, 'Disk Usage on the server');
+		drawPieChart(chartData, 'Disk Usage on the server', true);
+		// Disk usage
+		var chartData = [];
+		chartData.push({
+			label: 'Total Memory ('+data.disk.total+')',
+			value: data.disk.totalPercent
+		});
+
+		chartData.push({
+			label: 'Free Memory ('+data.disk.free+')',
+			value: data.disk.freePercent
+		});
+		drawPieChart(chartData, 'Disk Usage on the server', true);
 
 		// Ram Usage
 		if(data.ram != undefined){
@@ -97,7 +109,7 @@ function loadGeneralStats() {
 				label: 'Free RAM ('+data.ram.free+')',
 				value: data.ram.freePercent
 			});
-			drawPieChart(chartData, 'RAM Usage on the Server');
+			drawPieChart(chartData, 'RAM Usage on the Server', true);
 		}
 
 		$('#analytic-info').append(renderTable(tableData));
@@ -409,9 +421,9 @@ function loadFileInformation() {
 //------------------------------------------------------------------------------------------------
 // Fits a canvas to its container	
 //------------------------------------------------------------------------------------------------
-function fitCanvasToContainer(canvas){
-	canvas.style.width="100%";
-	canvas.style.height="100%";
+function fitCanvasToContainer(canvas, width = 100, height = 100) {
+	canvas.style.width = width + "%";
+	canvas.style.height = height + "%";
 	canvas.width  = canvas.offsetWidth;
 	canvas.height = canvas.offsetHeight;
 }
@@ -515,7 +527,7 @@ function getRandomColor() {
 // Draws a pie chart with the data given
 //------------------------------------------------------------------------------------------------
 
-function drawPieChart(data, title = null) {
+function drawPieChart(data, title = null, multirow = false) {
 	if (!$.isArray(data)) return;
 
 	analytics.chartType = "pie";
@@ -527,16 +539,15 @@ function drawPieChart(data, title = null) {
 		id: elementID
 	}).appendTo('#canvas-area');
 
-	// Add the title to the chart
-	if(title != null) {
-		$('#'+elementID).before("<h3 style='margin-top: 5%'>" + title + "</h3>");
-	}
-
-
 	var canvas = document.getElementById(elementID);
 	var ctx = canvas.getContext("2d");
 
-	fitCanvasToContainer(canvas);
+	if(multirow) {
+		fitCanvasToContainer(canvas, 48.5, 75);
+	} else {
+		fitCanvasToContainer(canvas);
+	}
+	
 	clearCanvas(canvas);
 
 	var total = 0;
@@ -548,6 +559,13 @@ function drawPieChart(data, title = null) {
 	var textAreaHeight = fontSize * 2.2;
 	var radius = canvas.height / 2;
 	var last = 0;
+
+	// Add the title to the chart
+	if(title != null) {
+		ctx.font = "20px Arial";
+		ctx.fillText(title, radius * 2 + 30, 25);
+	}
+
 	for (var i = 0; i < data.length; i++) {
 		
 		
@@ -559,10 +577,10 @@ function drawPieChart(data, title = null) {
 		ctx.fill();
 		last += (Math.PI*2*(data[i].value/total));
 
-		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 20, 12, 12);
+		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 40, 12, 12);
 		ctx.fillStyle = "black";
 		ctx.font = fontSize + "px Arial";
-		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight);
+		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
 		// ctx.translate(70, 70);
 	}
 }
