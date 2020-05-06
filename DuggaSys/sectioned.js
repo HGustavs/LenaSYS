@@ -1621,9 +1621,7 @@ $(window).load(function () {
   }
 
   $('.showAllAnnouncement').on('click', function() {
-    //toggle elements with class .ty-compact-list that their index is bigger than 2
     $('#announcementBox table tr:gt(8)').toggle();
-    //change text of show more element just for demonstration purposes to this demo
     $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
   });
 
