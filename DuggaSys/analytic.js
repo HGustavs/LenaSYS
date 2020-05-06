@@ -30,7 +30,7 @@ $(function() {
 function resetAnalyticsChart() {
 	analytics.chartType = null;
 	analytics.chartData = null;
-	clearCanvas($("#analytic-chart")[0]);
+	$( "#canvas-area" ).empty();
 }
 
 //------------------------------------------------------------------------------------------------
@@ -72,6 +72,7 @@ function loadGeneralStats() {
 			}
 		}
 
+		// Disk usage
 		var chartData = [];
 		chartData.push({
 			label: 'Total Memory ('+data.disk.total+')',
@@ -82,9 +83,9 @@ function loadGeneralStats() {
 			label: 'Free Memory ('+data.disk.free+')',
 			value: data.disk.freePercent
 		});
-		drawPieChart(chartData);
+		drawPieChart(chartData, 'Disk Usage on the server');
 
-
+		// Ram Usage
 		if(data.ram != undefined){
 			var chartData = [];
 			chartData.push({
@@ -96,14 +97,11 @@ function loadGeneralStats() {
 				label: 'Free RAM ('+data.ram.free+')',
 				value: data.ram.freePercent
 			});
-			drawPieChart2(chartData);
+			drawPieChart(chartData, 'RAM Usage on the Server');
 		}
 
-		
-		
-
 		$('#analytic-info').append(renderTable(tableData));
-		$('#analytic-info').append("<h3 style='margin-top: 5%'>Disk Usage on the server</h3>");
+		
 	});
 }
 
@@ -468,7 +466,12 @@ function drawBarChart(data) {
 	analytics.chartType = "bar";
 	analytics.chartData = data;
 
-	var canvas = $("#analytic-chart")[0];
+	var elementID = 'canvas' + $('canvas').length;
+	$('<canvas>').attr({
+		id: elementID
+	}).appendTo('#canvas-area');
+
+	var canvas = document.getElementById(elementID);
 	var ctx = canvas.getContext("2d");
 
 	fitCanvasToContainer(canvas);
@@ -511,13 +514,26 @@ function getRandomColor() {
 //------------------------------------------------------------------------------------------------
 // Draws a pie chart with the data given
 //------------------------------------------------------------------------------------------------
-function drawPieChart(data) {
+
+function drawPieChart(data, title = null) {
 	if (!$.isArray(data)) return;
 
 	analytics.chartType = "pie";
 	analytics.chartData = data;
 
-	var canvas = $("#analytic-chart")[0];
+	// Dynamically generate the canvas elem
+	var elementID = 'canvas' + $('canvas').length;
+	$('<canvas>').attr({
+		id: elementID
+	}).appendTo('#canvas-area');
+
+	// Add the title to the chart
+	if(title != null) {
+		$('#'+elementID).before("<h3 style='margin-top: 5%'>" + title + "</h3>");
+	}
+
+
+	var canvas = document.getElementById(elementID);
 	var ctx = canvas.getContext("2d");
 
 	fitCanvasToContainer(canvas);
@@ -533,6 +549,8 @@ function drawPieChart(data) {
 	var radius = canvas.height / 2;
 	var last = 0;
 	for (var i = 0; i < data.length; i++) {
+		
+		
 		ctx.fillStyle = getRandomColor();
 		ctx.beginPath();
 		ctx.moveTo(radius, radius);
@@ -545,42 +563,7 @@ function drawPieChart(data) {
 		ctx.fillStyle = "black";
 		ctx.font = fontSize + "px Arial";
 		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight);
-	}
-}
-function drawPieChart2(data) {
-	if (!$.isArray(data)) return;
-
-	analytics.chartType = "pie";
-	analytics.chartData = data;
-
-	var canvas = $("#analytic-chart2")[0];
-	var ctx = canvas.getContext("2d");
-
-	fitCanvasToContainer(canvas);
-	clearCanvas(canvas);
-
-	var total = 0;
-	for (var i = 0; i < data.length; i++) {
-		total += (isNaN(data[i].value)) ? 0 : Number(data[i].value);
-	}
-
-	var fontSize = 14;
-	var textAreaHeight = fontSize * 2.2;
-	var radius = canvas.height / 2;
-	var last = 0;
-	for (var i = 0; i < data.length; i++) {
-		ctx.fillStyle = getRandomColor();
-		ctx.beginPath();
-		ctx.moveTo(radius, radius);
-		ctx.arc(radius, radius, radius, last, last + (Math.PI*2*(data[i].value/total)), false);
-		ctx.lineTo(radius, radius);
-		ctx.fill();
-		last += (Math.PI*2*(data[i].value/total));
-
-		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 20, 12, 12);
-		ctx.fillStyle = "black";
-		ctx.font = fontSize + "px Arial";
-		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight);
+		// ctx.translate(70, 70);
 	}
 }
 
@@ -616,7 +599,12 @@ function drawLineChart(data) {
 	analytics.chartType = "line";
 	analytics.chartData = data;
 
-	var canvas = $("#analytic-chart")[0];
+	var elementID = 'canvas' + $('canvas').length;
+	$('<canvas>').attr({
+		id: elementID
+	}).appendTo('#canvas-area');
+
+	var canvas = document.getElementById(elementID);
 	var ctx = canvas.getContext("2d");
 
 	fitCanvasToContainer(canvas);

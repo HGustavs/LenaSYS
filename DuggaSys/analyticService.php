@@ -101,7 +101,7 @@ function convertBytesToHumanreadable($bytes) {
 	return sprintf('%1.2f' , $bytes / pow($base,$class)) . ' ' . $si_prefix[$class];
 }
 
-// Return memory usage
+// Return memory usage for Linux and Windows
 function getServerMemoryUsage($getPercentage=true) {
 	$memoryTotal = null;
 	$memoryFree = null;
