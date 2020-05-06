@@ -999,7 +999,7 @@ function renderCell(col, celldata, cellid) {
 		if (celldata.ishere === true || celldata.kind == 4) {
 			if(!unassignedCheck){
 				str += "<div class='gradeContainer resultTableText'>";
-				if (celldata.grade === null) {
+				if (celldata.grade === null && celldata.submitted == null) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
 				} else if (celldata.grade === -1) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
