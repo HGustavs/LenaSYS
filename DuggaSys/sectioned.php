@@ -7,11 +7,11 @@
 
 
 	if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];	
+		$userid=$_SESSION['uid'];
 	}else{
-		$userid="00";		
+		$userid="00";
 	}
-	
+
 	if($userid == "00"){
 		if (!isset($_COOKIE["cookie_guest"])) {
 			// Cookie for guest username is not present, send a guest cookie to user.
@@ -58,17 +58,32 @@
 	<div id="content">
 
 		<!-- FAB Start -->
+		<!-- Big FAB Button in the bottom of the page -->
 		<div class='fixed-action-button sectioned' id="FABStatic" style="display:none">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
 				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed id='fabBtnList'>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link");'><i class='material-icons'>link</i></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote");'><i class='material-icons'>format_quote</i></a></li>
+					 <li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","undefined");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","undefined");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","undefined");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i class='material-icons'>link</i></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i class='material-icons'>format_quote</i></a></li>
+				</ol>
+		</div>
+		<!-- Small FAB Button in top in the header of sectioned -->
+		<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
+		<input id='addElement'  type='button' value='+' style="position:relative; top:-493px" class='submit-button-newitem' title='New Item' >
+		<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fabBtnList2'>
+					 	<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i class='material-icons'>link</i></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
 
@@ -76,14 +91,14 @@
 
 		<!-- MOTD dropdown -->
 		<div id='motdArea' style='display: none;'>
-			<?php	
+			<?php
 				echo "<tr>";
 				echo "		<div class='motdBoxheader' >";
 				echo "			<h3>Message of the day</h3>";
 				echo "				<div class='cursorPointerMOTD' onclick='closeMOTD()'  >x</div>";
 				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
-				echo "		<p style='text-align:center' id='motd'></p>";			
+				echo "		<p style='text-align:center' id='motd'></p>";
 				echo" 	</div>";
 				echo "</tr>";
 			?>
@@ -99,13 +114,13 @@
 						echo "      <select id='courseDropdownTop-mobile' class='course-dropdown' onchange='goToVersion(this)' ></select>";
 						echo "    </div>";
 						echo "</td>";
-						
+
 						echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
 						echo "    <div class='editVers menuButton'>";
             echo "      <img id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 						echo "    </div>";
 						echo "</td>";
-						
+
 						echo "<td class='newVers' style='display: inline-block;margin-right:2px;'>";
 						echo "    <div class='newVers menuButton'>";
             echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
@@ -120,7 +135,7 @@
 			<h3>To Do</h3>
 			<hr>
 			<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>
-			<table>				
+			<table>
 			<?php
 
 				$courseid = $_GET['courseid'];
@@ -134,7 +149,7 @@
 	             $author = $headline['author'];
 	             echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
 
-	            }    
+	            }
 
 
 			?>
@@ -142,7 +157,7 @@
 			</table>
 		</div>
 
-		<?php 
+		<?php
 			include '../Shared/announcementBox.php';
 			include '../Shared/fullAnnouncement.php';
 
@@ -153,16 +168,18 @@
 
 		<div id='Sectionlist'>
 
-		<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>
+		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 				<div style='flex-grow:1'>
 						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;'>UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
 						<span id='course-versname' class='courseVersionField'>UNK</span>
 				</div>
 
+
 				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item'>
+
 				</div>
+
 				<!-- test #1 -->
 
 				<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
@@ -198,13 +215,6 @@
 						<div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
 								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
-						<!--<div style='display:flex;'>
-							<canvas id='swimlanesMoments' style='padding:10px;'></canvas>
-						</div>
-						<div style='width: 350px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>
-							<canvas id='swimlanesWeeks'></canvas>
-						</div>
-            -->
 				</div>
 		</div>
 		<!-- Statistics List END-->
@@ -213,6 +223,11 @@
 		<div id='Sectionlisti'>
 
 		</div>
+	</div>
+	<div class="course">
+		<span style="text-align: center;">
+			<a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>" style="color:#fff">Subscribe for deadlines in your personal calendar</a>
+		</span>
 	</div>
 	<!-- content END -->
 
@@ -229,6 +244,7 @@
 			</div>
 			<div style='padding:5px;'>
 				<input type='hidden' id='lid' value='Toddler' />
+				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
 					<input type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
@@ -304,15 +320,15 @@
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
 				<div class='inputwrapper'><span>Version ID:</span><input oninput="validateCourseID('versid', 'dialog2')" class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
+				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
+				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
-				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters</p>
-				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
+				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
+				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 non-nordic symbols</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
@@ -324,7 +340,7 @@
 	<!-- New Verison Dialog END -->
 
 <!-- Edit Version Dialog START -->
-<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6');" class='loginBoxContainer' style='display:none;'>
+<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9');" class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Course Version</h3>
@@ -337,9 +353,9 @@
 				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
-				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain 50 letters</p>
-				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
+				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
+				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 non-nordic symbols</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 			</div>
 			<div style='padding:5px;'>
