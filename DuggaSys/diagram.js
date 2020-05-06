@@ -5352,6 +5352,10 @@ function toggleCameraView(){
     activateMovearound();
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// toggleApperanceElement: Sets display status of appearance menu by the passed boolean value. If global appearance menu was closed, recent diagram is loaded from localStorage to revert changes if not submitted and only closed (by 'X' or click outside of form).
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function toggleApperanceElement(show = false) {
     const appearanceElement = document.getElementById("appearance");
     if(show) {
@@ -5440,6 +5444,10 @@ const symbolTypeMap = {
     "7": "UML line"
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// createCollapsible: Creates a collapsible element containing the form-groups passed. Types is an array used to concatenate the title from. Index is used to to open the first created collapsible.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function createCollapsible(formGroups, types, index) {
     const collapsibleElement = document.createElement("div");
     const objectTypesElement = document.createElement("div");
@@ -5477,6 +5485,10 @@ function createCollapsible(formGroups, types, index) {
     document.getElementById("appearanceForm").appendChild(collapsibleElement);
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// loadGlobalAppearanceForm: Shows the appearance menu and shows all form groups having type -1 (global). Sets selected values for all inputs/selects.
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 function loadGlobalAppearanceForm() {
     showFormGroups([-1]);
     globalappearanceMenuOpen = true;
@@ -5492,6 +5504,10 @@ const separators = {
 
 let appearanceObjects = [];
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+// loadAppearanceForm: Shows the appearance menu and shows all form groups related to the selected objects. Sets values for all input elements/selects/textareas.
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function loadAppearanceForm() {
     appearanceObjects = [];
 
@@ -5504,13 +5520,62 @@ function loadAppearanceForm() {
     }
     if(appearanceObjects.length < 1) return;
 
+    const indexes = getSelectedObjectsMaxIndexes(appearanceObjects);
+
+    //Get all unique types of selected objects
+    const types = Object.keys(indexes).map(Number);
+
+    setNameIndexes(indexes, types);
+    
+    showFormGroups(types);
+    toggleApperanceElement(true);
+    
+    const freeTextElement = document.getElementById("freeText");
+    const umlOperationsElement = document.getElementById("umlOperations");
+    const umlAttributesElement = document.getElementById("umlAttributes");
+    let erCardinalityVisible = false;
+
+    appearanceObjects.forEach(object => {
+        setNameElement(object, indexes.name);
+
+        if(object.symbolkind === symbolKind.line) {
+            if(!erCardinalityVisible) {
+                if(setErCardinalityElementDisplayStatus(object, erCardinalityVisible)) {
+                    erCardinalityVisible = true;
+                }
+            }
+            document.getElementById("typeLine").focus();
+        } else if(object.symbolkind === symbolKind.umlLine) {
+            setLineDirectionElementUML(object);
+            document.getElementById("typeLineUML").focus();
+        } else if(object.symbolkind === symbolKind.text) {
+            indexes[symbolKind.text].current++;
+            setTextareaElement(freeTextElement, object.textLines, indexes[symbolKind.text]);
+            freeTextElement.focus();
+        } else if(object.symbolkind === symbolKind.uml) {
+            indexes[symbolKind.uml].current++;
+            setTextareaElement(umlOperationsElement, object.operations, indexes[symbolKind.uml]);
+            setTextareaElement(umlAttributesElement, object.attributes, indexes[symbolKind.uml]);
+        } else if(object.kind === kind.path) {
+            document.getElementById("figureOpacity").value = object.opacity * 100;
+            document.getElementById("fillColor").focus();
+        }
+        setSelections(object);
+    });
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+// getSelectedObjectsMaxIndexes: Creates an object containing maximum and current index for each type of object passed as an array to the function.
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
+function getSelectedObjectsMaxIndexes(objects) {
     //Stores current index and maximum index for each type of selected object
-    //Current index will be used for comma separation, to only create comma when max is more than current
+    //Current index will be used for separation, to only create comma when max is more than current
     const indexes = {};
 
     //Reduce the selected objects array to a Map with key symbolKind and value the number of times that symbolKind occurs
     //Iterate through the map and put the correct values in the indexes object
-    appearanceObjects.reduce((result, object) => {
+    objects.reduce((result, object) => {
         result.set(object.symbolkind || 0, (result.get(object.symbolkind || 0) || 0) + 1);
         return result;
     }, new Map()).forEach((value, key) => {
@@ -5523,9 +5588,14 @@ function loadAppearanceForm() {
         indexes[key].max += value;
     });
 
-    //Get all unique types of selected objects
-    const types = Object.keys(indexes).map(Number);
+    return indexes;
+}
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setNameIndexes: Adds the name property into the passed indexes object. Max index for name is calculated based on all types max indexes that should have the name input.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setNameIndexes(indexes, types) {
     //The max index for the name input should be based on all object types that have the name input
     indexes.name = {
         current: 0,
@@ -5536,76 +5606,70 @@ function loadAppearanceForm() {
             return result;
         }, 0)
     };
-    
-    showFormGroups(types);
-    toggleApperanceElement(true);
-    
-    const nameElement = document.getElementById("name");
-    const freeTextElement = document.getElementById("freeText");
-    const umlOperationsElement = document.getElementById("umlOperations");
-    const umlAttributesElement = document.getElementById("umlAttributes");
-    let erCardinalityVisible = false;
-
-    appearanceObjects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
-            indexes.name.current++;
-            nameElement.value += object.name;
-            if(indexes.name.max > indexes.name.current) {
-                nameElement.value += `${separators.input} `;
-            }
-            nameElement.dataset.originalvalue = nameElement.value;
-            nameElement.focus();
-        }
-
-        if(object.symbolkind === symbolKind.line) {
-            const connections = object.getConnectedObjects();
-            const hasEntity = connections.some(symbol => symbol.symbolkind === symbolKind.erEntity);
-            const hasRelation = connections.some(symbol => symbol.symbolkind === symbolKind.erRelation);
-            if(!erCardinalityVisible) {
-                if(hasEntity && hasRelation) {
-                    document.getElementById("cardinalityER").parentNode.style.display = "block";
-                    erCardinalityVisible = true;
-                } else {
-                    document.getElementById("cardinalityER").parentNode.style.display = "none";
-                }
-            }
-            document.getElementById("typeLine").focus();
-        } else if(object.symbolkind === symbolKind.umlLine) {
-            //Get objects connected to uml-line and sets name in appearance menu(used for Line direction)
-            const connectedObjectsArray = object.getConnectedObjects();
-            document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
-            //Selection to check if relation is to the same entity. If so: both are named from object 0
-            if(typeof connectedObjectsArray[1] == "undefined"){
-                document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
-            } else {
-                document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
-            }
-            document.getElementById("typeLineUML").focus();
-        } else if(object.symbolkind === symbolKind.text) {
-            indexes[symbolKind.text].current++;
-            freeTextElement.value += getTextareaText(object.textLines);
-            if(indexes[symbolKind.text].max > indexes[symbolKind.text].current) {
-                freeTextElement.value += separators.textarea;
-            }
-            freeTextElement.dataset.originalvalue = freeTextElement.value;
-            freeTextElement.focus();
-        } else if(object.symbolkind === symbolKind.uml) {
-            indexes[symbolKind.uml].current++;
-            umlOperationsElement.value += getTextareaText(object.operations);
-            umlAttributesElement.value += getTextareaText(object.attributes);
-            if(indexes[symbolKind.uml].max > indexes[symbolKind.uml].current) {
-                umlOperationsElement.value += separators.textarea;
-                umlAttributesElement.value += separators.textarea;
-            }
-            umlOperationsElement.dataset.originalvalue = umlOperationsElement.value;
-            umlAttributesElement.dataset.originalvalue = umlAttributesElement.value;
-        } else if(object.kind === kind.path) {
-            document.getElementById("figureOpacity").value = object.opacity * 100;
-            document.getElementById("fillColor").focus();
-        }
-        setSelections(object);
-    });
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setNameElement: Sets the value of the name input element based on passed objects and uses passed index to create a separator between object names if not last object.
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setNameElement(object, index) {
+    const nameElement = document.getElementById("name");
+    if(object.symbolkind === symbolKind.uml || object.symbolkind === symbolKind.erAttribute || object.symbolkind === symbolKind.erEntity || object.symbolkind === symbolKind.erRelation) {
+        index.current++;
+        nameElement.value += object.name;
+        if(index.max > index.current) {
+            nameElement.value += `${separators.input} `;
+        }
+        nameElement.dataset.originalvalue = nameElement.value;
+        nameElement.focus();
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setLineDirectionElementUML: Runs for UML line objects. Appends the name of connected object names to correct option in the lineDirection select. Takes recursive lines into consideration.
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setLineDirectionElementUML(object) {
+    const connectedObjectsArray = object.getConnectedObjects();
+    document.getElementById("First").innerHTML += connectedObjectsArray[0].name + ", ";
+
+    //Check if relation is to the same entity. If so: both are named from object 0.
+    if(typeof connectedObjectsArray[1] == "undefined"){
+        document.getElementById("Second").innerHTML +=  connectedObjectsArray[0].name + ", ";
+    } else {
+        document.getElementById("Second").innerHTML += connectedObjectsArray[1].name + ", ";
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setTextareaElement: Sets the value of a textarea element based on property array and uses passed index to create a separator between different object text if not last object.
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setTextareaElement(element, property, index) {
+    element.value += getTextareaText(property);
+    if(index.max > index.current) {
+        element.value += separators.textarea;
+    }
+    element.dataset.originalvalue = element.value;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setErCardinalityElementDisplayStatus: Checks if passed er line object can have cardinality.Displays the cardinality element and returns true if possible and hides it and returns false if not.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function setErCardinalityElementDisplayStatus(object) {
+    if(object.isCardinalityPossible) {
+        document.getElementById("cardinalityER").parentNode.style.display = "block";
+        return true;
+    } else {
+        document.getElementById("cardinalityER").parentNode.style.display = "none";
+        return false;
+    }
+}
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// showFormGroups: Resets the form to the state before previous creation to remove old collapsibles. Shows all form groups having the type in the passed array and groups them into new collapsibles.
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function showFormGroups(typesToShow) {
     const form = document.getElementById("appearanceForm");
@@ -5619,7 +5683,21 @@ function showFormGroups(typesToShow) {
     allformGroups.forEach(group => group.style.display = "none");
     formGroupsToShow.forEach(group => group.style.display = "block");
 
-    const groupsByTypes = formGroupsToShow.reduce((result, group) => {
+    const collapsibleStructure = getCollapsibleStructure(formGroupsToShow, typesToShow);
+
+    initAppearanceForm();
+    collapsibleStructure.forEach((object, i) => createCollapsible(object.groups, object.types, i));
+
+    //Always put submit-button in the end of the form
+    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getCollapsibleStructure: Generates an array of objects where each object represents a collapsible. Each object have information about which form-groups should be in the collapsible and which object types will be affected by the collapsible's content.
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function getCollapsibleStructure(formGroups, typesToShow) {
+    return formGroups.reduce((result, group) => {
         const groupTypes = group.dataset.types.split(",");
         const types = groupTypes.filter(type => typesToShow.includes(parseInt(type)));
         const duplicateTypesIndex = result.findIndex(item => sameMembers(item.types, types));
@@ -5633,38 +5711,52 @@ function showFormGroups(typesToShow) {
         }
         return result;
     }, []);
-
-    initAppearanceForm();
-    groupsByTypes.forEach((object, i) => createCollapsible(object.groups, object.types, i));
-
-    //Always put submit-button in the end of the form
-    document.getElementById("appearanceForm").appendChild(document.getElementById("appearanceButtonContainer"));
 }
+
+//-----------------------------------------------------------------------------------------------------------------------
+// containsAll: Checks if array2 contains every single item in array1. Returns true if this is the case, otherwise false.
+//-----------------------------------------------------------------------------------------------------------------------
 
 function containsAll(array1, array2) {
     return array1.every(item => array2.includes(item));
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+// sameMembers: Checks if array1 and array2 has the exact same members (not necessarily same position of items). Returns true if this is the case, otherwise false.
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function sameMembers(array1, array2) {
     return containsAll(array1, array2) && containsAll(array2, array1);
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getTextareaText: Parsing an array of objects where each object contains a text property, adding a new line after each text object excpet the last row and returns textarea content in plain text.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function getTextareaText(array) {
     let text = "";
     for (let i = 0; i < array.length; i++) {
         text += array[i].text;
         if (i < array.length - 1) {
-            text += separators.textarea;
+            text += "\n";
         }
     }
     return text;
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// getTextareaArray: Converts passed textarea plain text into an array of objects each with a text property. The plain text is splitted by possible separators and the correct part is selected by passed index.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function getTextareaArray(element, index) {
     const objectText = element.value.split(separators.textarea);
     const indexTextLines = objectText[index].split("\n");
     return indexTextLines.map(text => ({"text": text}));
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------------
+// setGlobalSelections: Used when the global appearance menu is opened to select the correct options in selects based on stored global properties.
+//------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalSelections() {
     const groups = getGroupsByTypes([-1]);
@@ -5676,6 +5768,10 @@ function setGlobalSelections() {
         }
     });
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setGlobalProperties: Used when the global appearance menu is submitted to set the global properties to the newly selected properties. Also updates each existing object in the diagram to the new properties.
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setGlobalProperties() {
     const groups = getGroupsByTypes([-1]);
@@ -5689,6 +5785,10 @@ function setGlobalProperties() {
     });
     updateGraphics();
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setSelections: Used for each selected object when the normal appearance menu is opened to select the correct options in selects based on the properties in the passed object.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function setSelections(object) {
     const groups = getGroupsByTypes([object.symbolkind || 0]);
@@ -5715,6 +5815,10 @@ function setSelections(object) {
 }
 
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// setSelectedObjectsProperties: Used when a input/select/textarea is changed in the normal appearance form, to update all selected objects according to the new properties.
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function setSelectedObjectsProperties(element) {
     const types = element.parentNode.dataset.types.split(",");
     let textareaIndex = 0;
@@ -5725,14 +5829,8 @@ function setSelectedObjectsProperties(element) {
         if((types.includes((object.symbolkind || 0).toString()))) {
             const access = element.dataset.access.split(".");
             if(element.nodeName === "TEXTAREA") {
-                const numberOfSeparators = (element.value.match(new RegExp(separators.textarea, "g")) || []).length;
-                const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separators.textarea, "g")) || []).length;
-                console.log(numberOfSeparators, originalNumberOfSeparators);
-                if(numberOfSeparators === originalNumberOfSeparators) {
-                    element.dataset.originalvalue = element.value;
+                if(isNumberOfSeparatorsEqual(element, separators.textarea)) {
                     object[access[0]] = getTextareaArray(element, textareaIndex);
-                } else {
-                    element.value = element.dataset.originalvalue;
                 }
                 textareaIndex++;
             } else if(element.type === "range") {
@@ -5745,13 +5843,8 @@ function setSelectedObjectsProperties(element) {
             } else if(element.id == "commentCheck") {
                 object[access[0]][access[1]] = element.checked;
             } else if(element.id === "name") {
-                const numberOfSeparators = (element.value.match(new RegExp(separators.input, "g")) || []).length;
-                const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separators.input, "g")) || []).length;
-                if(numberOfSeparators === originalNumberOfSeparators) {
-                    element.dataset.originalvalue = element.value;
+                if(isNumberOfSeparatorsEqual(element, separators.input)) {
                     object[access[0]] = element.value.split(separators.input)[nameIndex].trim();
-                } else {
-                    element.value = element.dataset.originalvalue;
                 }
                 nameIndex++;
             } else if(access.length === 1) {
@@ -5764,11 +5857,31 @@ function setSelectedObjectsProperties(element) {
     updateGraphics();
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// isNumberOfSeparatorsEqual: Takes the passed element's current value and compares it to the element's original value based on separator occurances. Sets original value to the current value if number of separators are equal (return true), otherwise sets current value to original value (return false).
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function isNumberOfSeparatorsEqual(element, separator) {
+    const numberOfSeparators = (element.value.match(new RegExp(separator, "g")) || []).length;
+    const originalNumberOfSeparators = (element.dataset.originalvalue.match(new RegExp(separator, "g")) || []).length;
+    if(numberOfSeparators === originalNumberOfSeparators) {
+        element.dataset.originalvalue = element.value;
+        return true;
+    } else {
+        element.value = element.dataset.originalvalue;
+        return false;
+    }
+}
+
 //Stores which element the mouse was pressed down on while in the appearance menu.
 let appearanceMouseDownElement = null;
 
 //Stores a copy of the appearance form HTML-element with its childnodes
 let originalAppearanceForm = null;
+
+//-------------------------------------------------------------------------------
+// initAppearanceForm: Sets correct eventlisteners to the existing form elements.
+//-------------------------------------------------------------------------------
 
 function initAppearanceForm() {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
@@ -5803,6 +5916,10 @@ function initAppearanceForm() {
     originalAppearanceForm = document.getElementById("appearanceForm").cloneNode(true);
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+// getGroupsByTypes: Returns all form-groups that has a type included in the passed array in its data-attribute for types.
+//------------------------------------------------------------------------------------------------------------------------
+
 function getGroupsByTypes(typesToShow) {
     const formGroups = document.querySelectorAll("#appearanceForm .form-group");
     return [...formGroups].filter(group => {
@@ -5811,8 +5928,10 @@ function getGroupsByTypes(typesToShow) {
     });
 }
 
+//----------------------------------------------------------------------------------------
+// submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
+//----------------------------------------------------------------------------------------
 
-//Shoud simulate button click or enter click in appearance menu to save and close
 function submitAppearanceForm() {
     selected_objects.forEach(object => {
         if(object.symbolkind === symbolKind.uml) {
