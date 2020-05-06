@@ -6043,7 +6043,7 @@ function createLayer(){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
@@ -6070,7 +6070,7 @@ function loadLayer(localStorageID){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
@@ -6089,10 +6089,10 @@ function loadLayer(localStorageID){
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
 }
-
 function toggleBackgroundLayer (object){
     if(object.classList.contains("notActive")){
         object.classList.remove("notActive");
+        object.classList.remove("drop-down-option-hover");
         object.classList.add("isActive");
         activeLocalStorage()
         showLayer.push(object.id);
@@ -6100,6 +6100,7 @@ function toggleBackgroundLayer (object){
     else {
         object.classList.remove("isActive");
         object.classList.add("notActive");
+        object.classList.add("drop-down-option-hover");
         activeLocalStorage();
         const index = showLayer.indexOf(object.id);
         showLayer.splice(index, 1);
@@ -6138,10 +6139,10 @@ function fixWriteToLayer(){
         spans[i].id = spans[i].id+"_Active";
         spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
         if (spans[i].id == active) {
-            spans[i].setAttribute("class", "isActive drop-down-option");
+            spans[i].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
         }
         else {
-            spans[i].setAttribute("class", "notActive drop-down-option");
+            spans[i].setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         }
     }
 }

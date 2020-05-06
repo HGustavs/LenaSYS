@@ -1655,7 +1655,6 @@ input {
 
 .drop-down-option {
   color: rgb(0, 0, 0);
-  background-color:white;
   text-decoration: none;
   display: inline-block;
   width: 252px;
@@ -1663,7 +1662,10 @@ input {
   line-height: 16px;
   padding: 8px 0px 8px 8px;
 }
-.drop-down-option:hover {
+.drop-down-option-hover{
+  background-color:white;
+}
+.drop-down-option-hover:hover {
   background-color: #e0e0e0;
 }
 
