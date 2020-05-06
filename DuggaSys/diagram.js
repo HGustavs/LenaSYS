@@ -162,6 +162,14 @@ var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last dat
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
 var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
 var moved = false;                  //used to check if object has moved
+var connectLooseLineObj = {         //Contains values for use when connecting loose lines to objects
+    lineIsSelected: false,
+    selectedLine: null,
+    looseLineP1: null,
+    looseLineP2: null
+};
+
+
 var attributeTemplate = {           // Defines entity/attribute/relations predefined sizes
   width: 7 * gridSize,
   height: 4 * gridSize
@@ -4034,7 +4042,25 @@ function mousemoveevt(ev) {
                     if(minSizeCheck(yDiff, sel.attachedSymbol, "y") == false || (change < 5 && change >-5)){
                         sel.point.y = currentMouseCoordinateY;
                     }
-                    
+                    //Handles loose lines
+                    if(sel.attachedSymbol.symbolkind == symbolKind.line){
+                        connectLooseLineObj.lineIsSelected = true;
+                        connectLooseLineObj.selectedLine = sel.attachedSymbol;
+                        if(sel.point.y == points[sel.attachedSymbol.bottomRight].y && sel.point.x == points[sel.attachedSymbol.bottomRight].x){
+                            connectLooseLineObj.looseLineP1 = sel.attachedSymbol.topLeft;
+                            connectLooseLineObj.looseLineP2 = sel.attachedSymbol.bottomRight;
+                        }
+                        else if(sel.point.y == points[sel.attachedSymbol.topLeft].y && sel.point.x == points[sel.attachedSymbol.topLeft].x){
+                            connectLooseLineObj.looseLineP1 = sel.attachedSymbol.bottomRight;
+                            connectLooseLineObj.looseLineP2 = sel.attachedSymbol.topLeft;
+                        }
+                        else{
+                            connectLooseLineObj.lineIsSelected = false;
+                            connectLooseLineObj.selectedLine = null;
+                            connectLooseLineObj.looseLineP1 = null;
+                            connectLooseLineObj.looseLineP2 = null;
+                        }
+                    }
                 }
                 // If we changed a point of a path object,
                 // we need to recalculate the bounding-box so that it will remain clickable.
@@ -4318,7 +4344,7 @@ function mousedownevt(ev) {
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
-
+    
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
@@ -4724,7 +4750,73 @@ function mouseupevt(ev) {
     if(uimode == "MoveAround" && md === mouseState.boxSelectOrCreateMode) {
         saveState = false;
     }
-
+    //Connects loose line to object when released while insidee a compatible object
+    if(connectLooseLineObj.lineIsSelected){
+        markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
+        if(markedObject != null){
+            var connectedObj = connectLooseLineObj.selectedLine.getConnectedObjects();
+            //Used if line if loose on both sides
+            if(connectedObj.length == 0){
+                saveState = true;
+                var p1 = connectLooseLineObj.looseLineP1;
+                var p2 = connectLooseLineObj.looseLineP2;
+                //handles attributes centerpoint
+                if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                    p2 = diagram[markedObject].centerPoint;
+                    if(sel.point.y == points[sel.attachedSymbol.bottomRight].y && sel.point.x == points[sel.attachedSymbol.bottomRight].x){
+                        points[sel.attachedSymbol.bottomRight] = p2;
+                        connectLooseLineObj.selectedLine.bottomRight = p2;
+                    }
+                    else if(sel.point.y == points[sel.attachedSymbol.topLeft].y && sel.point.x == points[sel.attachedSymbol.topLeft].x){
+                        points[sel.attachedSymbol.topLeft] = p2;
+                        connectLooseLineObj.selectedLine.topLeft = p2;
+                    }
+                }
+                diagram[markedObject].connectorTop.push({from:p2, to:p1});
+            }
+            //Used if line is only loose on one side
+            else if(connectedObj.length == 1){
+                if(canConnectLine(connectedObj[0], diagram[markedObject])){
+                    saveState = true;
+                    var p1 = connectLooseLineObj.looseLineP1;
+                    var p2 = connectLooseLineObj.looseLineP2;
+                    
+                    if (diagram[markedObject].symbolkind == symbolKind.erAttribute) {
+                        p2 = diagram[markedObject].centerPoint;
+                        if(sel.point.y == points[sel.attachedSymbol.bottomRight].y && sel.point.x == points[sel.attachedSymbol.bottomRight].x){
+                            points[sel.attachedSymbol.bottomRight] = p2;
+                            connectLooseLineObj.selectedLine.bottomRight = p2;
+                            var connectorName = connectedObj[0].getConnectorNameFromPoint(p1);
+                            for(var i = 0 ; i < connectedObj[0][connectorName].length ; i++){
+                                if(connectedObj[0][connectorName][i].from == p1){
+                                    connectedObj[0][connectorName][i].to = p2;
+                                    break;
+                                }
+                            }
+                        }
+                        else if(sel.point.y == points[sel.attachedSymbol.topLeft].y && sel.point.x == points[sel.attachedSymbol.topLeft].x){
+                            points[sel.attachedSymbol.topLeft] = p2;
+                            connectLooseLineObj.selectedLine.topLeft = p2;
+                            var connectorName = connectedObj[0].getConnectorNameFromPoint(p1);
+                            for(var i = 0 ; i < connectedObj[0][connectorName].length ; i++){
+                                if(connectedObj[0][connectorName][i].from == p1){
+                                    connectedObj[0][connectorName][i].to = p2;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    diagram[markedObject].connectorTop.push({from:p2, to:p1});
+                }
+            }
+        
+        }
+        connectLooseLineObj.lineIsSelected = false;
+        connectLooseLineObj.looseLineP1 = null;
+        connectLooseLineObj.looseLineP2 = null;
+        connectLooseLineObj.selectedLine = null;
+    }
+    
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
@@ -5732,4 +5824,43 @@ function submitAppearanceForm() {
     }
     SaveState();
     toggleApperanceElement();
+}
+
+//A check if line should connect to a object when loose line is released inside a object
+function canConnectLine(startObj, endObj){
+    var okToMakeLine = false;
+    if (!(startObj.symbolkind == symbolKind.erEntity && endObj.symbolkind == symbolKind.erEntity)
+        && !(startObj.symbolkind == symbolKind.erRelation && endObj.symbolkind == symbolKind.erRelation)
+        && startObj.symbolkind != symbolKind.line && symbolEndKind != symbolKind.line 
+        && startObj.symbolkind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            symbolEndKind = endObj.symbolkind;
+            okToMakeLine = true;
+            // Can't be more than two lines between an entity and a relation
+            if ((startObj.symbolkind == symbolKind.erEntity && symbolEndKind == symbolKind.erRelation)
+            || (startObj.symbolkind == symbolKind.erRelation && symbolEndKind == symbolKind.erEntity)) {
+                if ((endObj.connectorCountFromSymbol(startObj) > 1)
+                || (startObj.connectorCountFromSymbol(endObj) > 1)) {
+                    okToMakeLine = false;
+                }
+            }
+            // Must be two different objects
+            else if (endObj == startObj) {
+                okToMakeLine = false;
+            }
+            // Can't be from er to uml
+            else if (symbolEndKind == symbolKind.uml) {
+                okToMakeLine = false;
+            }
+            // Can't be more than one line if not relation to entity
+            else {
+                if ((startObj.symbolkind != symbolKind.erRelation && symbolEndKind != symbolKind.erRelation)
+                || startObj.symbolkind == symbolKind.erAttribute || symbolEndKind == symbolKind.erAttribute) {
+                    if ((endObj.connectorCountFromSymbol(startObj) > 0)
+                    || (startObj.connectorCountFromSymbol(endObj) > 0)) {
+                        okToMakeLine = false
+                    }
+                }
+            }
+        }
+    return okToMakeLine;
 }
