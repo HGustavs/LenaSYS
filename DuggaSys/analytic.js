@@ -82,18 +82,6 @@ function loadGeneralStats() {
 			value: data.disk.freePercent
 		});
 		drawPieChart(chartData, 'Disk Usage on the server', true);
-		// Disk usage
-		var chartData = [];
-		chartData.push({
-			label: 'Total Memory ('+data.disk.total+')',
-			value: data.disk.totalPercent
-		});
-
-		chartData.push({
-			label: 'Free Memory ('+data.disk.free+')',
-			value: data.disk.freePercent
-		});
-		drawPieChart(chartData, 'Disk Usage on the server', true);
 
 		// Ram Usage
 		if(data.ram != undefined){
@@ -565,8 +553,6 @@ function drawPieChart(data, title = null, multirow = false) {
 	}
 
 	for (var i = 0; i < data.length; i++) {
-		
-		
 		ctx.fillStyle = getRandomColor();
 		ctx.beginPath();
 		ctx.moveTo(radius, radius);
@@ -579,7 +565,6 @@ function drawPieChart(data, title = null, multirow = false) {
 		ctx.fillStyle = "black";
 		ctx.font = fontSize + "px Arial";
 		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
-		// ctx.translate(70, 70);
 	}
 }
 
