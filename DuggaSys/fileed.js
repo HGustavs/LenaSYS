@@ -161,10 +161,12 @@ function showFilePopUp(fileKind) {
         $(".testselect").css("display", "none");
     }else if(fileKind == "EFILE"){
         $("#eFileHeadline").css("display", "block");
-        $(".testselect").css("display", "block");
+        $("#createNewEmptyFile").css("display", "block");
+        $(".addNewFile").css("display", "none");
+        //$(".testselect").css("display", "block");
         //$(".addNewFile").css("display", "none");
         //$("#createNewEmptyFile").css("display", "block");
-        $('#uploadedfile').attr('type', 'text');
+        //$('#uploadedfile').attr('type', 'text');
     }
 }
 
