@@ -998,7 +998,7 @@ function renderCell(col, celldata, cellid) {
 		// Creation of grading buttons
 		if (celldata.ishere === true || celldata.kind == 4) {
 			if(!unassignedCheck){
-				if(celldata.submitted){
+				if(celldata.submitted != null){
 				str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
