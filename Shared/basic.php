@@ -168,7 +168,6 @@ $sql = '
 		id INTEGER PRIMARY KEY,
 		type INTEGER,
 		courseid INTEGER,
-		uid INTEGER(10),
 		exampleid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
@@ -176,7 +175,6 @@ $sql = '
 		id INTEGER PRIMARY KEY,
 		type INTEGER,
 		cid INTEGER,
-		uid INTEGER(10),
 		vers INTEGER,
 		quizid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -281,10 +279,9 @@ function logMousemoveEvent($page, $mouseX, $mouseY) {
 // Log page load for examples. - Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
 //------------------------------------------------------------------------------------------------
 
-function logExampleLoadEvent($courseid, $uid, $exampleid, $type) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, uid, exampleid, type) VALUES (:courseid, :uid, :exampleid, :type)');
+function logExampleLoadEvent($courseid, $exampleid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, exampleid, type) VALUES (:courseid, :exampleid, :type)');
 	$query->bindParam(':courseid', $courseid);
-	$query->bindParam(':uid', $uid);
 	$query->bindParam(':exampleid', $exampleid);
 	$query->bindParam(':type', $type);
 	$query->execute();
@@ -294,10 +291,9 @@ function logExampleLoadEvent($courseid, $uid, $exampleid, $type) {
 // Log page load for examples. - Creates a new entry to the duggaLoadLogEntries when a user opens a new dugga.
 //------------------------------------------------------------------------------------------------
 
-function logDuggaLoadEvent($cid, $uid, $vers, $quizid, $type) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, uid, vers, quizid, type) VALUES (:cid, :uid, :vers, :quizid, :type)');
+function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, vers, quizid, type) VALUES (:cid, :vers, :quizid, :type)');
 	$query->bindParam(':cid', $cid);
-	$query->bindParam(':uid', $uid);
 	$query->bindParam(':vers', $vers);
 	$query->bindParam(':quizid', $quizid);
 	$query->bindParam(':type', $type);

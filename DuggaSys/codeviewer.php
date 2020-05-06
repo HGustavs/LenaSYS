@@ -374,7 +374,7 @@ Testing Link:
 		<!-- Template Choosing Box -->
 		<?php
 			// Adding page logging
-			logExampleLoadEvent($courseID, $userid, $exampleid, EventTypes::pageLoad);
+			logExampleLoadEvent($courseID, $exampleid, EventTypes::pageLoad);
 
 			include '../Shared/loginbox.php';
 		?>
