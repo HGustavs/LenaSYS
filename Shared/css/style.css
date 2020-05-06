@@ -472,7 +472,15 @@ p {
   font-size: 24px;
   background-color: var(--color-primary);
 }
+.glow {
+  animation: glow 2s ease-out;
+}
 
+@keyframes glow {
+  to {
+      text-shadow: 0 0 10px red;
+  }
+}
 .item a {
   text-decoration: none;
   color: var(--color-text-primary);
@@ -577,6 +585,23 @@ p {
 
 #Sectionlist .loginsectionl {
   color: #612;
+}
+
+#dugga4Container{
+  display:flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1050px){
+  #dugga4Container{
+    flex-direction: column;
+    justify-content: initial;
+    align-items: center;
+  }
+
+  #dugga4Container #toolbox{
+    margin: 15px 0;
+  }
 }
 
 /* Instruction and submission of dugga */
@@ -1071,7 +1096,7 @@ div .navButt:hover {
 .loginBox textarea,
 #receipt {
   width: 100%;
-  height: 60px;
+  height: 72px;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1142,6 +1167,7 @@ input {
   border: 2px solid var(--color-border-2);
   border-radius: 4px;
   font-size: 16px;
+  padding-left: 5px;
 }
 
 .loginBox .inputwrapper {
@@ -1241,7 +1267,7 @@ input {
   font-weight: bold;
 }
 
-.loginBoxheader div:hover {
+.loginBoxheader div:hover, .logoutBoxheader div:hover {
   background-color: #ce3d3d;
 }
 
@@ -1629,12 +1655,16 @@ input {
 
 .drop-down-option {
   color: rgb(0, 0, 0);
+  background-color:white;
   text-decoration: none;
   display: inline-block;
   width: 252px;
   height: 16px;
   line-height: 16px;
   padding: 8px 0px 8px 8px;
+}
+.drop-down-option:hover {
+  background-color: #e0e0e0;
 }
 
 .drop-down-item:hover,
@@ -1880,7 +1910,6 @@ input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
-  width: 110px;
   height: 30px;
   color: #fff;
   cursor: pointer;
@@ -2239,6 +2268,7 @@ div.submit-button:disabled {
 }
 
 #submitButtonTable{
+  position: relative;
   z-index:500;
 }
 
@@ -2798,13 +2828,19 @@ span.arrow {
 }
 
 .resultTableNormal {
-  height: 70px;
+  height: 80px;
   align-items: center;
   display: flex;
 }
 
 .resultTableMini {
   height: 25px;
+  align-items: center;
+  display: flex;
+}
+
+.resultTableMiniLeft {
+  height: 45px;
   align-items: center;
   display: flex;
 }
@@ -2867,6 +2903,44 @@ span.arrow {
 
 .accessTable_counter span {
   margin-left: 5px;
+}
+
+.access-dropdown-content{
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.access-dropdown-content div {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+.access-dropdown-content div:hover {
+  background-color: rgb(228, 227, 226);
+}
+.access-dropdown{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+padding: 10px;
+}
+
+#reset-pw{
+  width:70%; 
+  margin-left:20px;
+  background-color: rgb(254, 204, 86); color: #614875;
+
+}
+
+.show{
+  display:block;
 }
 
 .oldSubmissionIcon {
@@ -2940,8 +3014,14 @@ span.arrow {
 .resultedFormsFlex {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   margin: 5px;
+}
+
+#lastExportedDate {
+  font-size: 10px;
+  color: gray;
+  text-align: center;
 }
 
 #laddate {
@@ -3771,13 +3851,6 @@ rect[class*="activitymarker"]:hover {
   padding-left: 20px;
 }
 
-/*#searchinput,
-#duggaSearch,
-#searchinputMobile {
-  padding: 0 0 0 2px;
-  height: 20px;
-}
-*/
 #searchBar,
 #searchbutton,
 #searchbuttonMobile {
@@ -3785,6 +3858,7 @@ rect[class*="activitymarker"]:hover {
   width: 26px;
   height: 25px;
   margin: 0;
+  padding: 4px;
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
@@ -3797,13 +3871,6 @@ rect[class*="activitymarker"]:hover {
 #testSearchContainer img {
   margin: 0px;
 }
-
-/* .searchField{
-  height: 25px;
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
-  border-right: 0px;
-} */
 
 #lookingGlassSVG {
   top: 3px;
@@ -5044,6 +5111,10 @@ only screen and (max-device-width: 320px) {
   border-radius: 0;
 }
 
+#editDugga #name {
+  width: 195px;
+}
+
 /* Collapsible */
 .collapsible {
 
@@ -5114,6 +5185,25 @@ only screen and (max-device-width: 320px) {
   right: 75px;
 }
 
+.fixed-action-button2 {
+  position: absolute;
+  top: 565px;
+  right: 24px;
+  z-index: 1;
+  touch-action: none;
+}
+
+.fixed-action-button2.sectioned2 {
+  right: 120px;
+}
+/* Fix mobile-view for top FAB-button and Sectionlist heading */
+@media screen and (max-width: 680px) {
+  .fixed-action-button2{
+    display:none !important;
+  }
+  
+}
+
 #Courselist div.fixed-action-button a:hover {
   text-decoration: none;
 }
@@ -5139,11 +5229,13 @@ only screen and (max-device-width: 320px) {
 
 /* Small FAB button */
 
-.fab-btn-sm {
+.fab-btn-sm, .fab-btn-sm2 {
   width: 40px;
   height: 40px;
   line-height: 53px;
 }
+
+
 
 /* Large FAB button */
 
@@ -5163,7 +5255,7 @@ only screen and (max-device-width: 320px) {
 
 /* FAB bubble list container */
 
-.fab-btn-list {
+.fab-btn-list, .fab-btn-list2 {
   position: absolute;
   left: auto;
   width: 100%;
@@ -5172,10 +5264,12 @@ only screen and (max-device-width: 320px) {
   bottom: 55px;
 }
 
-.fab-btn-list li {
+
+.fab-btn-list li, .fab-btn-list2 li  {
   display: inline-block;
   margin-bottom: 15px;
 }
+
 
 .fab-icon {
   display: inline-block;
@@ -5246,120 +5340,120 @@ only screen and (max-device-width: 320px) {
 
 /* First item */
 
-.fab-btn-list :nth-last-child(1) a {
+.fab-btn-list :nth-last-child(1) a, .fab-btn-list2 :nth-last-child(1) a {
   background-color: #6ead2a;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(1) a:hover {
+.fab-btn-list :nth-last-child(1) a:hover, .fab-btn-list2 :nth-last-child(1) a:hover {
   background-color: #83ae55;
   color: white;
 }
 
 /* Second item */
 
-.fab-btn-list :nth-last-child(2) a {
+.fab-btn-list :nth-last-child(2) a, .fab-btn-list2 :nth-last-child(2) a {
   background-color: #adc726;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(2) a:hover {
+.fab-btn-list :nth-last-child(2) a:hover, .fab-btn-list2 :nth-last-child(1) a:hover {
   background-color: #b8cd4e;
   color: white;
 }
 
 /* Third item */
 
-.fab-btn-list :nth-last-child(3) a {
+.fab-btn-list :nth-last-child(3) a, .fab-btn-list2 :nth-last-child(3) a {
   background-color: #e9a901;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(4) a:hover {
+.fab-btn-list :nth-last-child(3) a:hover, .fab-btn-list2 :nth-last-child(3) a:hover {
   background-color: #ddae37;
   color: white;
 }
 
 /* Fourth item */
 
-.fab-btn-list :nth-last-child(4) a {
+.fab-btn-list :nth-last-child(4) a, .fab-btn-list2 :nth-last-child(4) a {
   background-color: #dc7e34;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(4) a:hover {
+.fab-btn-list :nth-last-child(4) a:hover, .fab-btn-list2 :nth-last-child(4) a:hover {
   background-color: #d78b50;
   color: white;
 }
 
 /* Fifth item */
 
-.fab-btn-list :nth-last-child(5) a {
+.fab-btn-list :nth-last-child(5) a, .fab-btn-list2 :nth-last-child(5) a {
   background-color: #d14d58;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(5) a:hover {
+.fab-btn-list :nth-last-child(5) a:hover, .fab-btn-list2 :nth-last-child(5) a:hover {
   background-color: #d16a72;
   color: white;
 }
 
 /* Sixth item */
 
-.fab-btn-list :nth-last-child(6) a {
+.fab-btn-list :nth-last-child(6) a, .fab-btn-list2 :nth-last-child(6) a {
   background-color: #cb438d;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(6) a:hover {
+.fab-btn-list :nth-last-child(6) a:hover, .fab-btn-list2 :nth-last-child(6) a:hover {
   background-color: #d0599a;
   color: white;
 }
 
 /* Seventh item */
 
-.fab-btn-list :nth-last-child(7) a {
+.fab-btn-list :nth-last-child(7) a, .fab-btn-list2 :nth-last-child(7) a {
   background-color: #a844cc;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(7) a:hover {
+.fab-btn-list :nth-last-child(7) a:hover, .fab-btn-list2 :nth-last-child(7) a:hover {
   background-color: #b560d3;
   color: white;
 }
 
 /* Eighth item */
 
-.fab-btn-list :nth-last-child(8) a {
+.fab-btn-list :nth-last-child(8) a, .fab-btn-list2 :nth-last-child(8) a {
   background-color: #6f34dc;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(8) a:hover {
+.fab-btn-list :nth-last-child(8) a:hover, .fab-btn-list2 :nth-last-child(8) a:hover {
   background-color: #7e4ed7;
   color: white;
 }
 
 /* Ninth item */
 
-.fab-btn-list :nth-last-child(9) a {
+.fab-btn-list :nth-last-child(9) a, .fab-btn-list2 :nth-last-child(9) a {
   background-color: #1f65cd;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(9) a:hover {
+.fab-btn-list :nth-last-child(9) a:hover, .fab-btn-list2 :nth-last-child(9) a:hover {
   background-color: #487fd1;
   color: white;
 }
 
 /* Tenth item */
 
-.fab-btn-list :nth-last-child(10) a {
+.fab-btn-list :nth-last-child(10) a, .fab-btn-list2 :nth-last-child(10) a {
   background-color: blue;
   color: white;
 }
 
-.fab-btn-list :nth-last-child(10) a:hover {
+.fab-btn-list :nth-last-child(10) a:hover, .fab-btn-list2 :nth-last-child(10) a:hover {
   background-color: pink;
   color: white;
 }
@@ -5493,7 +5587,8 @@ only screen and (max-device-width: 320px) {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: auto;
+  margin-top: 20px;
+  margin-bottom: 2px;
   margin-right: 3%;
   font-size: 14px;
   transition: 1s background-color;
@@ -6064,6 +6159,7 @@ textarea#filecont {
 
 /* Number column */
 .variant-vid {
+  text-align: center;
   width: 20px;
 }
 
@@ -6323,15 +6419,25 @@ textarea#filecont {
 }
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
+  width: 100%;
 }
 #motdArea{
-  border: 2px;
+  border: 1px;
   border-radius: 2px;
   border-style: solid;
-  border-color: rgba(254, 204, 86, 1);
-  background-color: rgba(254, 204, 86, 1);
+  border-color: #614875;
+  background-color: #FECC56;
   justify-content: center;
   align-items: center;
+  background-color: var(--color-accent);
+  z-index: 1000;
+  
+  
+  position: relative;
+  
+  margin-top: -16px;
+  margin-bottom: 7px;
+  max-width: auto;
 }
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
@@ -6340,25 +6446,54 @@ textarea#filecont {
   cursor: default;
   display: flex;
   justify-content: space-around;
+  position: relative;
+  
 }
 .motdBoxheader h3 {
   font-size: 20px;
+  color: #614875;
   margin-top: 10px;
   line-height: 0.5em;
-  color: black;
   text-align: center;
   width: 100%;
 }
-.motdBoxheader div {
+
+#motd {
+  color: #614875;
+}
+.cursorPointerMOTD{
   padding: 4px 20px;
-  color: black;
+  color: white;
   cursor: pointer;
-  background-color: rgb(199, 80, 80);
+  background-color:#614875;
   font-family: arial;
   font-weight: bold;
+  margin: 5px;
+  border-radius:4px;
+  border-collapse:collapse;
+  position: absolute;
+  right:0%;
 }
 
 .motdBoxheader div:hover {
-  background-color: #ce3d3d;
+  border: 2px;
+  border-style: solid;
+  border-color: white;
+  background-color: #815e9d;
+  -webkit-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
+}
+.notActive {
+  background-color:white;
+}
+.isActive {
+  background-color: #775886;
+}
+
+.analytic-buttons{
+    display:flex;
+    justify-content: center;
+    flex-flow:wrap;
 }
 
