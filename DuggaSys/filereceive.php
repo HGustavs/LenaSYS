@@ -189,6 +189,7 @@ if ($storefile) {
                     logUserEvent($userid, EventTypes::AddFile, $description);
                 } else if ($kind == "MFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
+                    
                     // Logging for course local files
                     $description="CourseLocal"." ".$fname;
                     logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fname);

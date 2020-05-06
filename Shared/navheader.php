@@ -13,6 +13,13 @@
 				$_SESSION['courseid'] = getOPG('cid');
 			else
 				$_SESSION['courseid'] = "UNK";
+				//get course name
+			if (isset($_GET['coursename']))
+				$_SESSION['coursename'] = getOPG('coursename');
+			else if (isset($_GET['coursename']))
+				$_SESSION['coursename'] = getOPG('coursename');
+			else
+				$_SESSION['coursename'] = "UNK";
 
 			if (isset($_GET['coursevers']))
 				$_SESSION['coursevers'] = getOPG('coursevers');
@@ -22,7 +29,7 @@
 				$_SESSION['coursevers'] = "UNK";
 	
 			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -33,11 +40,11 @@
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
-					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
+					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}else if($noup=='SECTION'){
 					echo "<a href='";
-					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
@@ -253,6 +260,54 @@
 	function hoverBack(){
 		$(".dropdown-list-container").css("display", "none");
 	}
+
+document.getElementById("homeIcon").addEventListener("mouseover", mouseOverHome);
+document.getElementById("homeIcon").addEventListener("mouseout", mouseOutHome);
+
+function mouseOverHome() {
+	var obj = document.getElementById("homeIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/HomeShadow.svg';
+   }
+}
+
+function mouseOutHome() {
+	var obj = document.getElementById("homeIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/Home.svg';
+   }
+}
+
+var backButton = document.getElementById("upIcon");
+if(backButton){
+	backButton.addEventListener("mouseover", mouseOverUp);
+	backButton.addEventListener("mouseout", mouseOutUp);
+}
+
+function mouseOverUp() {
+	var obj = document.getElementById("upIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/UpShadow.svg';
+   }
+}
+
+function mouseOutUp() {
+	var obj = document.getElementById("upIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/Up.svg';
+   }
+}
+
+
+
 </script>
 <script type="text/javascript">
 	(function(proxied) {
