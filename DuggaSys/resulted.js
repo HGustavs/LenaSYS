@@ -998,8 +998,9 @@ function renderCell(col, celldata, cellid) {
 		// Creation of grading buttons
 		if (celldata.ishere === true || celldata.kind == 4) {
 			if(!unassignedCheck){
+				if(celldata.submitted){
 				str += "<div class='gradeContainer resultTableText'>";
-				if (celldata.grade === null && celldata.submitted == null) {
+				if (celldata.grade === null) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
 				} else if (celldata.grade === -1) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
@@ -1012,6 +1013,7 @@ function renderCell(col, celldata, cellid) {
 				}
 				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
 				str += "/>";
+			}
 			}else{
 				str += "<div class='text-center resultTableText' style='padding-top: 30px;'>Unassigned</div>"
 			}
