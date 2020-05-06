@@ -5866,7 +5866,8 @@ function setSelectedObjectsProperties(element) {
 
     const umlLineExists = appearanceObjects.some(object => object.symbolkind === symbolKind.umlLine);
     if(umlLineExists) {
-        
+        const lineDirectionElement = document.getElementById("lineDirection");
+        [...lineDirectionElement.options].forEach(option => option.text = "");
     }
 
     updateGraphics();
