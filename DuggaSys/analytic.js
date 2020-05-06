@@ -8,19 +8,17 @@ var analytics = {
 // Document ready callback		
 //------------------------------------------------------------------------------------------------
 $(function() {
-	$(window).resize(function() {
-		switch (analytics.chartType) {
-			case "bar":
-				drawBarChart(analytics.chartData);
-				break;
-			case "pie":
-				drawPieChart(analytics.chartData);
-				break;
-			case "line":
-				drawLineChart(analytics.chartData);
-				break;
-		}
-	});
+	switch (analytics.chartType) {
+		case "bar":
+			drawBarChart(analytics.chartData);
+			break;
+		case "pie":
+			drawPieChart(analytics.chartData);
+			break;
+		case "line":
+			drawLineChart(analytics.chartData);
+			break;
+	}
 	loadGeneralStats();
 });
 
