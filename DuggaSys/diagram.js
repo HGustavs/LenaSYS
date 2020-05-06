@@ -5502,20 +5502,6 @@ function getGroupsByTypes(typesToShow) {
     });
 }
 
-
-//Shoud simulate button click or enter click in appearance menu to save and close
-function submitAppearanceForm() {
-    selected_objects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml) {
-            object.resizeUMLToMinHeight();
-        }
-    });
-    if(globalappearanceMenuOpen) {
-        setGlobalProperties();
-    }
-    SaveState();
-    toggleApperanceElement();
-}
 //Layer intergration functions
 function createLayer(){
     let parentNode = document.getElementById("viewLayer");
@@ -5698,3 +5684,18 @@ function getcorrectlayer(){
  //   document.getElementById("layerPlaceholder").innerHTML = "<div class='drop-down-item' tabindex='0'> <span class='drop-down-option id='layer_1'>Layer One</span></div>'";
  //   document.getElementById("layerPlaceholder").style.margin = "0px";
 //}
+
+
+//Shoud simulate button click or enter click in appearance menu to save and close
+function submitAppearanceForm() {
+    selected_objects.forEach(object => {
+        if(object.symbolkind === symbolKind.uml) {
+            object.resizeUMLToMinHeight();
+        }
+    });
+    if(globalappearanceMenuOpen) {
+        setGlobalProperties();
+    }
+    SaveState();
+    toggleApperanceElement();
+}
