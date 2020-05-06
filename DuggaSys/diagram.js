@@ -4532,7 +4532,13 @@ function mouseupevt(ev) {
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                     flash("Can not draw line between ER- and UML-objects", "danger");
-                }
+                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erAttribute){
+                    if ((diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) || (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0)){
+                        okToMakeLine = false;
+                        flash("Can not draw multiple lines between these objects", "danger");
+                    }
+                } 
+
                 if(diagram[lineStartObj] == diagram[markedObject]){
                     okToMakeLine = false;
                     flash("Can not draw line between the same object", "danger");
@@ -4866,7 +4872,6 @@ function mouseupevt(ev) {
                     diagram[markedObject].connectorTop.push({from:p2, to:p1});
                 }
             }
-        
         }
         connectLooseLineObj.lineIsSelected = false;
         connectLooseLineObj.looseLineP1 = null;
@@ -6208,10 +6213,7 @@ function getcorrectlayer(){
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;
-    if (!(startObj.symbolkind == symbolKind.erEntity && endObj.symbolkind == symbolKind.erEntity)
-        && !(startObj.symbolkind == symbolKind.erRelation && endObj.symbolkind == symbolKind.erRelation)
-        && startObj.symbolkind != symbolKind.line && symbolEndKind != symbolKind.line 
-        && startObj.symbolkind != symbolKind.text && symbolEndKind != symbolKind.text) {
+    if (startObj.symbolkind != symbolKind.line && symbolEndKind != symbolKind.line && startObj.symbolkind != symbolKind.text && symbolEndKind != symbolKind.text) {
             symbolEndKind = endObj.symbolkind;
             okToMakeLine = true;
             // Can't be more than two lines between an entity and a relation
@@ -6220,16 +6222,25 @@ function canConnectLine(startObj, endObj){
                 if ((endObj.connectorCountFromSymbol(startObj) > 1)
                 || (startObj.connectorCountFromSymbol(endObj) > 1)) {
                     okToMakeLine = false;
+                    flash("A max of two lines can be drawn between these objects", "danger");
                 }
             }
-            // Must be two different objects
-            else if (endObj == startObj) {
+            //Can't draw line between two entities
+            if(startObj.symbolkind == symbolKind.erEntity && endObj.symbolkind == symbolKind.erEntity){
                 okToMakeLine = false;
+                flash("Can not draw line between two ER-entities", "danger");
             }
-            // Can't be from er to uml
-            else if (symbolEndKind == symbolKind.uml) {
+            //Can't draw line between two relationships
+            if(startObj.symbolkind == symbolKind.erRelation && endObj.symbolkind == symbolKind.erRelation){
                 okToMakeLine = false;
+                flash("Can not draw line between two ER-relations", "danger");
             }
+
+            if(endObj.symbolkind == symbolKind.uml){
+                okToMakeLine = false;
+                flash("Can not draw ER-line to UML-objects", "danger");
+            }
+       
             // Can't be more than one line if not relation to entity
             else {
                 if ((startObj.symbolkind != symbolKind.erRelation && symbolEndKind != symbolKind.erRelation)
@@ -6237,9 +6248,15 @@ function canConnectLine(startObj, endObj){
                     if ((endObj.connectorCountFromSymbol(startObj) > 0)
                     || (startObj.connectorCountFromSymbol(endObj) > 0)) {
                         okToMakeLine = false
+                        flash("Can not draw multiple lines between these objects", "danger");
                     }
                 }
             }
         }
+        else if(endObj == startObj){
+            okToMakeLine = false;
+            flash("Can not draw line between the same object", "danger");
+        }
+
     return okToMakeLine;
 }
