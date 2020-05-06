@@ -1052,7 +1052,7 @@ function returnedSection(data) {
     
   // Sets a title on the course heading name
   
-
+  showCreateVersion();
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
   
@@ -1072,7 +1072,7 @@ function returnedSection(data) {
   addClasses();
   showMOTD();
   } 
-  else{showCreateVersion();} 
+ 
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
