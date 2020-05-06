@@ -307,7 +307,9 @@ function defaultNewItem() {
   $('#tooltipTxt').hide(); // Resets tooltip text to its default form
 }
 
-
+function showCreateVersion() {
+    $("#newCourseVersion").css("display", "flex");
+}
 
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
