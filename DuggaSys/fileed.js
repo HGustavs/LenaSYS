@@ -191,7 +191,10 @@ function uploadFile(kind) {
             var item = filez['gfiles'][i];
             if (item != ".." && item != ".") str += "<option>" + item + "</option>";
         }
-        $("#selectedfile").html(str);
+        $("#ekind").val(kind);
+        $("#ecourseid").val(querystring['courseid']);
+        $("#ecoursevers").val(querystring['coursevers']);
+        $("#selectedfile").html(str); 
     } else if (kind == "LFILE" || kind == "LINK") {
         $("#selecty").css("display", "none");
     }

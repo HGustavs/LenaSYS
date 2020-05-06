@@ -87,8 +87,8 @@ if ($ha) {
             $storefile = true;
         }
     } else if($kind == "EFILE"){
-        $fileLocation = $_POST["uploadtype"][0];
-        if($fileLocation == "courselocal"){
+        $fileLocation = $_POST["efilekind"][0];
+        if($fileLocation == "MFILE"){
             if (!file_exists($currcvd . "/courses/" . $cid)) {
                 $storefile = mkdir($currcvd . "/courses/" . $cid ,0777,true);
             } else {
@@ -99,7 +99,7 @@ if ($ha) {
             logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
             $kindid = 3;
         }
-        else if($fileLocation == "global"){
+        else if($fileLocation == "GFILE"){
             if (!file_exists($currcvd . "/courses/global")) {
                 $storefile = mkdir($currcvd . "/courses/global",0777,true);
             }
@@ -175,21 +175,21 @@ if ($storefile) {
     ];
     // If file is dummy-file
     if($kind == "EFILE"){ 
-        $fileText = $_POST["uploadedfile"][0]; //Name of the file
-        $fileLocation = $_POST["uploadtype"][0]; // global or corselocal
+        $fileText = $_POST["newEmptyFile"][0]; //Name of the file
+        $fileLocation = $_POST["efilekind"][0]; // global or corselocal
         $extension = substr($fileText, strrpos($fileText, '.') + 1);
 
         if (array_key_exists($extension, $allowedExtensions)) {
             $fileText = preg_replace('/[[:^print:]]/', '', $fileText);
             $fileText = preg_replace('/\s+/', '', $fileText);
             
-            if($fileLocation == "courselocal"){
+            if($fileLocation == "MFILE"){
                 $movname = $currcvd . "/courses/" . $cid . "/" . $fileText;
                 $description="CourseLocal"." ".$fname;
                 logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
                 $kindid = 3;
             }
-            else if($fileLocation == "global"){
+            else if($fileLocation == "GFILE"){
                 $movname = $currcvd . "/courses/global/" . $fileText;
                 $description="Global"." ".$fileText;
                 logUserEvent($userid, EventTypes::AddFile, $description);
