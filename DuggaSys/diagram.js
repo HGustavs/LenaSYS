@@ -5863,6 +5863,12 @@ function setSelectedObjectsProperties(element) {
             }
         }
     });
+
+    const umlLineExists = appearanceObjects.some(object => object.symbolkind === symbolKind.umlLine);
+    if(umlLineExists) {
+        
+    }
+
     updateGraphics();
 }
 
