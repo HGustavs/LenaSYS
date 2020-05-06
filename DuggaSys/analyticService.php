@@ -86,8 +86,8 @@ function generalStats() {
 		$memUsage = getServerMemoryUsage(false);
 		$generalStats['ram']['free'] = convertBytesToHumanreadable($memUsage["free"]);
 		$generalStats['ram']['total'] = convertBytesToHumanreadable($memUsage["total"]);
-		$generalStats['ram']['freePercent'] = getServerMemoryUsage(true);
-		$generalStats['ram']['totalPercent'] = 100 - getServerMemoryUsage(true);
+		$generalStats['ram']['freePercent'] = 100 - getServerMemoryUsage(true);
+		$generalStats['ram']['totalPercent'] = getServerMemoryUsage(true);
 	}
 	
 	echo json_encode($generalStats);
