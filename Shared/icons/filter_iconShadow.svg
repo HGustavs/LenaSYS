@@ -5,12 +5,17 @@
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 13.9 12.6"
 	 style="enable-background:new 0 0 13.9 12.6;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FFFFFF;}
+	.st0{opacity:0.22;}
+	.st1{fill:#FFFFFF;}
 </style>
 <sodipodi:namedview  bordercolor="#666666" borderopacity="1" fit-margin-bottom="0" fit-margin-left="0" fit-margin-right="0" fit-margin-top="0" gridtolerance="10" guidetolerance="10" id="namedview3744" inkscape:current-layer="svg3742" inkscape:cx="21.89238" inkscape:cy="-0.92326974" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-height="1017" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="1912" inkscape:window-y="-8" inkscape:zoom="6.9532167" objecttolerance="10" pagecolor="#ffffff" showgrid="false" showguides="false">
 	</sodipodi:namedview>
 <title  id="title3734">Foundation / Icon / 24 / Control / Filter / Default</title>
-<path id="path3873-6" inkscape:connector-curvature="0" class="st0" d="M3.1,0.1c-0.7,0-1.4,0.5-1.6,1.3H0.4v1.1h1.2
+<path id="path3873-6_1_" inkscape:connector-curvature="0" class="st0" d="M3.5,1C2.8,1,2.1,1.6,1.9,2.4H0.9v1.1H2
+	c0.2,0.7,0.8,1.1,1.5,1.1S4.8,4.2,5,3.5h8.7V2.4H5.2C5,1.6,4.3,1,3.5,1z M9.1,5.4C8.3,5.4,7.7,6,7.5,6.8H1v1.1h6.6
+	C7.8,8.6,8.4,9,9.2,9c0.6,0,1.3-0.4,1.6-1.1h3.2V6.8h-3C10.4,6,9.8,5.4,9.1,5.4z M5.9,9.8c-0.6,0-1.3,0.6-1.5,1.2H1v1.1h3.5
+	c0.2,0.7,0.8,1.2,1.5,1.2c0.7,0,1.4-0.6,1.6-1.2h6.2V11H7.5C7.3,10.4,6.6,9.8,5.9,9.8z"/>
+<path id="path3873-6" inkscape:connector-curvature="0" class="st1" d="M3.1,0.1c-0.7,0-1.4,0.5-1.6,1.3H0.4v1.1h1.2
 	C1.8,3,2.4,3.5,3.1,3.5S4.3,3,4.5,2.4h8.7V1.4H4.7C4.5,0.6,3.9,0.1,3.1,0.1z M8.6,4.2c-0.7,0-1.4,0.5-1.6,1.3H0.5v1.1h6.6
 	C7.4,7.1,8,7.6,8.7,7.6c0.6,0,1.3-0.4,1.6-1.1h3.2V5.5h-3C10,4.7,9.4,4.2,8.6,4.2z M5.5,8.3C4.8,8.3,4.2,8.8,4,9.4H0.5v1.1H4
 	c0.2,0.6,0.8,1.2,1.5,1.2c0.7,0,1.4-0.5,1.6-1.2h6.2V9.4H7.1C6.8,8.8,6.2,8.3,5.5,8.3z"/>

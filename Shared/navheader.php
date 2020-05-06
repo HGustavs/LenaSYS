@@ -167,7 +167,7 @@
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
 					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
-					echo   "<span>";
+					echo   "<span id='filterButton'>";
 					echo     "<img class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";
@@ -261,6 +261,7 @@
 		$(".dropdown-list-container").css("display", "none");
 	}
 
+/*Shadow hover effect for home button START*/
 document.getElementById("homeIcon").addEventListener("mouseover", mouseOverHome);
 document.getElementById("homeIcon").addEventListener("mouseout", mouseOutHome);
 
@@ -281,7 +282,10 @@ function mouseOutHome() {
       images[0].src = '../Shared/icons/Home.svg';
    }
 }
+/*Shadow hover effect for home button END*/
 
+
+/*Shadow hover effect for back button START*/
 var backButton = document.getElementById("upIcon");
 if(backButton){
 	backButton.addEventListener("mouseover", mouseOverUp);
@@ -306,7 +310,34 @@ function mouseOutUp() {
    }
 }
 
+/*Shadow hover effect for back button END*/
 
+
+/*Shadow hover effect for back button START*/
+var filterButton = document.getElementById("filterButton");
+if(filterButton){
+	filterButton.addEventListener("mouseover", mouseOverFilter);
+	filterButton.addEventListener("mouseout", mouseOutFilter);
+}
+
+function mouseOverFilter() {
+	var obj = document.getElementById("filterButton");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/filter_iconShadow.svg';
+   }
+}
+
+function mouseOutFilter() {
+	var obj = document.getElementById("filterButton");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/filter_icon.svg';
+   }
+}
+/*Shadow hover effect for back button END*/
 
 </script>
 <script type="text/javascript">
