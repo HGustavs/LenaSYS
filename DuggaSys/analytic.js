@@ -381,11 +381,18 @@ function loadFileInformation() {
                 var fileSelect = $('<select class="file-select"></select>');
                 for (var file in files) {
                     if (files.hasOwnProperty(file)) {
-                        fileSelect.append('<option value="' + file + '">' + file + '</option>')
+						if(localStorage.getItem('analyticsLastFile') == file) {
+							fileSelect.append('<option value="' + file + '" selected>' + file + '</option>');
+						} else {
+							fileSelect.append('<option value="' + file + '">' + file + '</option>')
+						}
                     }
                 }
                 fileSelect.change(function() {
 					deleteTable();
+					try {
+						localStorage.setItem('analyticsLastFile', files[$(this).val()][1][3]);
+					} catch(err) { }
                     $('#analytic-info').append(renderTable(files[$(this).val()]));
                 });
                 $('#analytic-info').append(fileSelect);
