@@ -1584,7 +1584,7 @@ function Symbol(kindOfSymbol) {
         y2 = canvasToPixels(0, y2).y;
 
         // Need to find the connected entities in order to change lines between relations and entities to normal.
-        for(let i = 0; i < diagram.length; i++) {
+        for(var i = 0; i < diagram.length; i++) {
             if (diagram[i] != this && diagram[i].kind == kind.symbol) {
                 // Getting each (top) coordinate of the object
                 dtlx = diagram[i].corners().tl.x;
@@ -1607,7 +1607,7 @@ function Symbol(kindOfSymbol) {
                 if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
 
                     // Looping through the midpoints for relation entities.
-                    for (let j = 0; j < relationMidPoints.length; j++) {
+                    for (var j = 0; j < relationMidPoints.length; j++) {
                         // checking if the line is connected to any of the midpoints.
                         if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
                             // Making sure that only the correct lines are set to normal
@@ -1641,7 +1641,7 @@ function Symbol(kindOfSymbol) {
         y2 = canvasToPixels(0, y2).y;
 
         // Need to find the connected entities in order to change lines between relations and entities to forced.
-        for(let i = 0; i < diagram.length; i++) {
+        for(var i = 0; i < diagram.length; i++) {
             if (diagram[i] != this && diagram[i].kind == kind.symbol) {
                 // Getting each (top) coordinate of the object
                 dtlx = diagram[i].corners().tl.x;
@@ -1673,16 +1673,16 @@ function Symbol(kindOfSymbol) {
                 // Setting the line types to forced if they are normal and the connected entity is weak.
                 if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
                     // Looping through the midpoints (top and bot) for relations.
-                    for (let j = 0; j < relationMidXPoints.length; j++) {
-                        for (let c = 0; c < relationMidXPoints.length; c++) {
+                    for (var j = 0; j < relationMidXPoints.length; j++) {
+                        for (var c = 0; c < relationMidXPoints.length; c++) {
                             // Checking if the line X coordinate is the same as the relations middle X coordinate
                             if (dtlx == relationMidXPoints[j] || dtrx == relationMidXPoints[j]) {
                                 // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
                                 if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
                                     // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
 
-                                    for (let y = 0; y <= attributeMidPoint.length; y++) {
-                                        for (let k = 0; k <= attributeMidPoint.length; k++) {
+                                    for (var y = 0; y <= attributeMidPoint.length; y++) {
+                                        for (var k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
                                             if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
                                                 diagram[i].properties['key_type'] = 'Normal';
@@ -1705,14 +1705,14 @@ function Symbol(kindOfSymbol) {
                         }
                     }
                     // Looping through the midpoints (left and right) for relations.
-                    for (let j = 0; j < relationMidYPoints.length; j++) {
-                        for (let c = 0; c < relationMidYPoints.length; c++) {
+                    for (var j = 0; j < relationMidYPoints.length; j++) {
+                        for (var c = 0; c < relationMidYPoints.length; c++) {
                             // checking if the line Y coordinate is the same as the relations middle Y coordinate.
                             if (dtly == relationMidYPoints[j] || dbly == relationMidYPoints[j]) {
                                 if (dtlx == relationMidYPoints[c] || dtrx == relationMidYPoints[c]) {
                                     // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
-                                    for (let y = 0; y <= attributeMidPoint.length; y++) {
-                                        for (let k = 0; k <= attributeMidPoint.length; k++) {
+                                    for (var y = 0; y <= attributeMidPoint.length; y++) {
+                                        for (var k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
                                             if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
                                                 diagram[i].properties['key_type'] = 'Normal';
@@ -1859,10 +1859,10 @@ function Symbol(kindOfSymbol) {
         //Checks if there is cardinality set on either first or second side of line
         if((this.cardinality.value != "" && this.cardinality.value != null) || (this.cardinality.valueUML != "" && this.cardinality.valueUML != null)) {
             ctx.fillStyle = '#000';
-            let valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
-            let valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
-            let valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
-            let valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
+            var valX = x1 > x2 ? x1-20 * diagram.getZoomValue() : x1+20 * diagram.getZoomValue();
+            var valY = y1 > y2 ? y1-15 * diagram.getZoomValue() : y1+15 * diagram.getZoomValue();
+            var valY2 = y2 > y1 ? y2-15 * diagram.getZoomValue() : y2+15 * diagram.getZoomValue();
+            var valX2 = x2 > x1 ? x2-20 * diagram.getZoomValue() : x2+20 * diagram.getZoomValue();
             if (this.isRecursiveLine) {
                 const dir = this.recursiveLineExtent / Math.abs(this.recursiveLineExtent) * diagram.getZoomValue();
                 if (x1 == x2) {
@@ -1986,7 +1986,7 @@ function Symbol(kindOfSymbol) {
         }
 
         // Check if this is a recursive line (connects to a single object twice)
-        let connObjects = this.getConnectedObjects();
+        var connObjects = this.getConnectedObjects();
         if (connObjects.length == 1) {
             if (x1 == x2) { // Make sure the line is drawn "out" of the symbol
                 if (startLineDirection === "right") this.recursiveLineExtent = Math.abs(this.recursiveLineExtent);
@@ -2845,7 +2845,7 @@ function pointToLineDistance(P1, P2, x, y) {
 // getCorrectCorner: Helper function for getting correct corner of a line with cardinality
 //----------------------------------------------------------------------
 function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry) {
-		let cornerX, cornerY;
+		var cornerX, cornerY;
 
 		// Top left corner
         if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - ltly) == 20) {
