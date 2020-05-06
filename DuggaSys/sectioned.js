@@ -1051,8 +1051,7 @@ function returnedSection(data) {
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
     
   // Sets a title on the course heading name
-  var title= document.getElementById("course-coursename").title;
-  title="Unknown";
+  
 
   if(versionname){
     document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
