@@ -1522,7 +1522,7 @@ function copyLadexport() {
 	today = yyyy + '-' + mm + '-' + dd;
 
 	 var gradeLastExported = today + " " + time;
-	 lastExpDate.innerHTML =  gradeLastExported;
+	 lastExpDate.innerHTML = gradeLastExported;
 	 lastExpDate.style.color = 'green';
 
 	 setInterval(function(){
