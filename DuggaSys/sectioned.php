@@ -165,6 +165,11 @@
 
 		</div>
 	</div>
+	<div class="course">
+		<span style="text-align: center;">
+			<a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>" style="color:#fff">Subscribe for deadlines in your personal calendar</a>
+		</span>
+	</div>
 	<!-- content END -->
 
 	<?php

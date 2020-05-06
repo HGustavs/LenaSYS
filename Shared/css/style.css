@@ -1892,7 +1892,7 @@ input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
-  width: 110px;
+  width: auto;
   height: 30px;
   color: #fff;
   cursor: pointer;
@@ -6424,5 +6424,11 @@ textarea#filecont {
 }
 .isActive {
   background-color: #775886;
+}
+
+.analytic-buttons{
+    display:flex;
+    justify-content: center;
+    flex-flow:wrap;
 }
 
