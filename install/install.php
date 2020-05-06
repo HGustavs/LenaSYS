@@ -3,6 +3,8 @@
   <link rel="stylesheet" type="text/css" href="CSS/install_style.css">
   <script src="../Shared/js/jquery-1.11.0.min.js"></script>
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+  <script src="install_entry.js"></script>
+  <script src="install_defer.js" defer></script>
 </head>
 <body>
 <?php
@@ -13,7 +15,10 @@
   $timeOutSeconds = ini_get('max_execution_time');
   set_time_limit(300);
   $errors = 0;
-  // Create a version of dirname for <PHP7 compability
+
+  //---------------------------------------------------------------------------------------------------
+  // cdirname: Returns dirname for <PHP7 compability, called to set variable putFileHere (used as dirname)
+  //---------------------------------------------------------------------------------------------------
   function cdirname($path, $level) {
     $prefix = '';
     // Check if $path starts with a windows style 'C:\' prefix
@@ -44,102 +49,66 @@
 
   ob_start();
 
-  /************* MODAL TO SHOW STEPS BEFORE AND AFTER ****************/
+  //---------------------------------------------------------------------------------------------------
+  // getUsername: Returns username based on value from cdirname(), called to set variable username
+  //---------------------------------------------------------------------------------------------------
+  function getUsername($currentPath) {
+    $username = null;
+
+    if(function_exists('posix_getpwuid')) {
+      $username = posix_getpwuid(filegroup($currentPath))['name'];
+    } else {
+      $username = getenv(filegroup($currentPath))['name'];
+    }
+
+    return $username;
+  }
+
+  //---------------------------------------------------------------------------------------------------
+  // systemVariables: Sets the system variables, path, operatingSystem and username (these are used all over the code right now)
+  //---------------------------------------------------------------------------------------------------
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
   $operatingSystem = PHP_OS_FAMILY;
-
-  /************* MODAL ONLY RELEVANT FOR SYSTEMS NOT WINDOWS  ****************/
-  /************* SO WE ONLY SHOW IT FOR NON-WINDOWS SYSTEMS   ****************/
-  if($operatingSystem != 'Windows'){
-    echo "
-    <div id='warning' class='modal'>
-      <!-- Modal content -->
-      <div class='modal-content'>
-        <span title='Close pop-up' class='close''>&times;</span>
-          <span id='dialogText'></span>
-      </div>
-    </div> 
-  ";
-  } 
+  $username = getUsername($putFileHere)
 ?>
 
-<!-- Start permission-modal code -->
+<!-- Modal used for the permission-popup -->
+<div id='warning' class='modal'>
+      <div class='modal-content'>
+        <span title='Close pop-up' class='close'>&times;</span>
+          <span id='dialogText'></span>
+      </div>
+</div> 
+
+<!-- Script for setting the permission-modal -->
 <script>
-    var modalRead = false; // Have the user read info?
-    var modal = document.getElementById('warning'); // Get the modal
-    var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
-    var filePath = "<?php echo $putFileHere; ?>";
-    var os = "<?php echo PHP_OS_FAMILY ?>"; // Get O/S of the system running the installer
-    var firstText = setFirstText(os); // Set first text depending on O/S
-    var secondText = setSecondText(os); // Set second text depending on O/S
+  var owner = <?php echo json_encode($username); ?>;
+  var filePath = <?php echo json_encode($putFileHere); ?>;
+  var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
+  var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
+  var modal = document.getElementById('warning'); // Get the modal
 
-    document.getElementById('dialogText').innerHTML="<div><h1>" +
-    "-!- READ THIS BEFORE YOU START -!-</h1><br>" +
-    firstText +
-    "<br><br>" +
-    "current owner: " +
-      "<?php 
-          if(function_exists('posix_getpwuid')) {
-              echo posix_getpwuid(filegroup($putFileHere))['name'];
-          } else {
-              echo getenv(filegroup($putFileHere))['name'];
-      }?>" +
-    "<br>" +
-    "current os: " + 
-      os +
-    "<br><br>" +
-    "To do this run the command:<br>" +
-    secondText +
-    "<br>" +
-    "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
-    "<i>I promise I have done this.</i></div>";
+  setPermissionModalText(owner, filePath, operatingSystem);
 
-    function haveRead(isTrue) {
-        modalRead = isTrue;
-    }
-    
-    /*************           Function to set the first text           ****************/
-    /*************      Takes O/S of installing system as input       ****************/
-    /************* Easy to extend to new supported operating systems. ****************/
-    function setFirstText(os){
-      var firstText;
-      switch(os){
-        case "Linux":
-          firstText = "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.";
-          break;
-        case "Darwin":
-          firstText = "<h2>Make sure you set ownership of LenaSYS directory to 'www'";
-          break;
-      }
-      return firstText;
-    }
+  //---------------------------------------------------------------------------------------------------
+  // setPermissionModalText, function to set the text of the permission-modal, getPermission is in install_entry
+  //---------------------------------------------------------------------------------------------------
+  function setPermissionModalText(fOwner, fFilePath, fOperatingSystem){
+    modalDialogText.innerHTML=	
+    `<div>
+      ${getPermissionModalText(fOwner, fFilePath, fOperatingSystem)}
+    </div>`;
+  }
 
-    function setSecondText(os){
-      var secondText;
-      switch(os){
-        case "Linux":
-          secondText = "sudo chgrp -R www-data " + filePath + "<br>" + "sudo chown -R www-data " + filePath + "</h2><br>";
-          break;
-        case "Darwin":
-          secondText = "sudo chgrp -R www " + filePath + "<br>" + "sudo chown -R www " + filePath + "</h2><br>";
-          break;
-      }
-      return secondText;
-    }
+  if (operatingSystem != "Windows"){
+    modal.style.display = "block";
+  }
 </script>
 
 <div id="header">
   <h1>LenaSYS Installer</h1>
   <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
 </div>
-<script>
-  var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
-  // Open modal on button click
-  btn.onclick = function () {
-  modal.style.display = "block";
-  }
-</script>
-<!-- End permission-modal code -->
 
 <!-- START OF INPUT FORM SECTION -->
 <form action="install.php?mode=install" method="post">
@@ -281,220 +250,8 @@
     </svg>
   </div>
 
-  <!-- Javascript functions for arrow functionality-->
-  <script>
-    var leftArrow = document.getElementById('leftArrow');
-    var rightArrow = document.getElementById('rightArrow');
-    var submitButton = document.getElementById('submitInput');
-    var inputPage = 1;
-    var previousInputPage = 0;
-
-    /* Function to focus the right box on the page */
-    function focusTheRightBox() {
-      if (inputPage === 1 || inputPage === 2) {
-        var fields = document.getElementsByClassName("page" + inputPage + "input");
-        for (var i = 0; i < fields.length; i++) {
-          if (fields[i].value === ''){
-            fields[i].focus();
-            break;
-          }
-        }
-      } 
-      else if (inputPage === 4) {
-        if (document.getElementById("writeOver1").checked) {
-          document.getElementById("writeOver2").focus();
-        } else {
-          document.getElementById("writeOver1").focus();
-        }
-      }
-    }
-
-    leftArrow.onclick = function() {
-      previousInputPage = inputPage;
-      if(inputPage > 1) inputPage--;
-      updateInputPage();
-      focusTheRightBox();
-    };
-
-    rightArrow.onclick = function() {
-      /* Only continue if all fields on current page are filled out */
-      if (inputPage === 1 || inputPage === 2) {
-        var fields = document.getElementsByClassName("page" + inputPage + "input");
-        var found = false; /* Is an empty field found? */
-        for (var i = 0; i < fields.length; i++) {
-          if (fields[i].value === ''){
-            if (inputPage === 2 && fields[1]) {
-              found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
-            }else {
-              found = true;  /* Empty field found */
-            }
-            /* Set background of text field to light red */
-            fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
-          }
-        }
-        if (!found){
-          /* If no empty field was found - proceed and reset values of text fields and hide warning text */
-          document.getElementById("enterFields" + inputPage).style.display = "none";
-          previousInputPage = inputPage;
-          if (inputPage < 5) inputPage++;
-          for (var i = 0; i < fields.length; i++) {
-            fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
-          }
-          updateInputPage();
-        } else {
-          /* Show the warning text if empty field was found */
-          document.getElementById("enterFields" + inputPage).style.display = "inline-block";
-        }
-      } else {
-        /* Only page 1 and 2 has text fields so the rest have no rules */
-        previousInputPage = inputPage;
-        if (inputPage < 5) inputPage++;
-        updateInputPage();
-      }
-    };
-
-    /* Remove default behaviour (click submit button) when pressing enter */
-    $(document).ready(function() {
-      $(window).keydown(function(event){
-        if(event.keyCode === 13) {
-          event.preventDefault();
-          return false;
-        }
-      });
-    });
-
-    /* You want to be able to press enter to continue, this function fixes this. */
-    document.addEventListener("keydown", function(e) {
-      if(e.keyCode === 13){
-        if (modal.style.display === "none"){
-          if (inputPage < 5) {
-            /* Only continue if all fields on current page are filled out */
-            if (inputPage === 1 || inputPage === 2) {
-              var fields = document.getElementsByClassName("page" + inputPage + "input");
-              var found = false; /* Is an empty field found? */
-              for (var i = 0; i < fields.length; i++) {
-                if (fields[i].value === ''){
-                  if (inputPage === 2 && fields[1]) {
-                    found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
-                  }else {
-                    found = true;  /* Empty field found */
-                  }
-                  /* Set background of text field to light red */
-                  fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
-                }
-              }
-              if (!found){
-                /* If no empty field was found - proceed and reset values of text fields and hide warning text */
-                document.getElementById("enterFields" + inputPage).style.display = "none";
-                previousInputPage = inputPage;
-                inputPage++;
-                for (var i = 0; i < fields.length; i++) {
-                  fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
-                }
-                updateInputPage();
-              } else {
-                /* Show the warning text if empty field was found */
-                document.getElementById("enterFields" + inputPage).style.display = "inline-block";
-              }
-            } else {
-              /* Only page 1 and 2 has text fields so the rest have no rules */
-              previousInputPage = inputPage;
-              inputPage++;
-              updateInputPage();
-            }
-          } else if (inputPage === 5){
-            submitButton.click();
-          }
-        }
-      }
-    });
-
-    function updateInputPage(){
-      /* Hide current input page */
-      hideInputPage();
-      /* Show the new input page when animation is done */
-      window.setTimeout(showInputPage,500);
-
-      /* Dont show left arrow on first page and dont show right arrow on last page */
-      if (inputPage === 1) {
-        document.getElementById('leftArrow').style.display = "none";
-      } else {
-        document.getElementById('leftArrow').style.display = "block";
-      }
-      if (inputPage === 5) {
-        document.getElementById('rightArrow').style.display = "none";
-      } else {
-        document.getElementById('rightArrow').style.display = "block";
-      }
-    }
-
-    function hideInputPage(){
-      /* Slide away the old page from the right direction depending on new page */
-      if (inputPage > previousInputPage) {
-        $('#th' + previousInputPage).hide("slide", {direction: "left" }, 500);
-        $('#td' + previousInputPage).hide("slide", {direction: "left" }, 500);
-      } else {
-        $('#th' + previousInputPage).hide("slide", {direction: "right" }, 500);
-        $('#td' + previousInputPage).hide("slide", {direction: "right" }, 500);
-      }
-    }
-
-    function showInputPage(){
-      /* Slide the new page from the right direction depending on previous page */
-      if (inputPage > previousInputPage) {
-        $('#th' + inputPage).show("slide", {direction: "right" }, 500);
-        $('#td' + inputPage).show("slide", {direction: "right" }, 500);
-      } else {
-        $('#th' + inputPage).show("slide", {direction: "left" }, 500);
-        $('#td' + inputPage).show("slide", {direction: "left" }, 500);
-      }
-      window.setTimeout(focusTheRightBox,500);
-    }
-  </script>
-
-    <!-- Javascript to focus the right input box after modal is closed and hide boxes -->
-    <script>
-        /* When the user clicks on <span> (x), close the modal */
-        span.onclick = function() {
-            if (modalRead) {
-                modal.style.display = "none";
-                focusTheRightBox();
-            }
-        }
-
-        /* When the user clicks anywhere outside of the modal, close it */
-        window.onclick = function(event) {
-            if (event.target == modal && modalRead) {
-                modal.style.display = "none";
-                focusTheRightBox();
-            }
-        }
-
-        var writeOver1 = document.getElementById('writeOver1');
-        writeOver1.onclick = function() {
-            focusTheRightBox();
-        }
-
-        /* Hide testdata boxes when testdata is un-checked */
-        function fillDBchange(checkbox) {
-            if (checkbox.checked === true){
-                $("#testdataBoxes").show("slide", {direction: "left" }, 500);
-            } else {
-                $("#testdataBoxes").hide("slide", {direction: "left" }, 500);
-            }
-        }
-
-        function createDBchange(checkbox) {
-            if (checkbox.checked === true){
-                $("#DBboxes").show("slide", {direction: "left" }, 500);
-            } else {
-                $("#DBboxes").hide("slide", {direction: "left" }, 500);
-            }
-        }
-    </script>
-
-    <!-- Empty footer to show a nice border at bottom -->
-    <div id="inputFooter"></div>
+  <!-- Empty footer to show a nice border at bottom -->
+  <div id="inputFooter"></div>
 </form>
 <!-- END OF INPUT FORM SECTION -->
 
@@ -516,7 +273,6 @@
                         <span title='Close pop-up' class='close''>&times;</span>
                             <span id='dialogText'></span>
                     </div>
-
                 </div>";
 
     /* Javascripts for warning pop-up */
@@ -1067,8 +823,6 @@
 <!-- END OF INSTALL SECTION -->
 
 <script>
-  /* Show modal */
-  modal.style.display = "block";
   var showHideButton = document.getElementById('showHideInstallation');
 
   if (showHideButton !== null){
