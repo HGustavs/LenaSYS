@@ -12,7 +12,7 @@ function getPermissionModalText(fOwner, fFilePath, fOperatingSystem){
   ${setFirstPermissionText(fOperatingSystem)}<br><br>
   Current Owner: ${fOwner}<br>
   Current OperatingSystem: ${fOperatingSystem}<br><br>
-  To do this run the command: ${setSecondPermissionText(fOperatingSystem, fFilePath)}\<br><br>
+  To do this run the command: <br> ${setSecondPermissionText(fOperatingSystem, fFilePath)}\<br><br>
   <input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
   <i>I promise I have done this.</i>`
 
@@ -45,7 +45,7 @@ function setSecondPermissionText(fOperatingSystem, fFilePath){
       secondText = "sudo chgrp -R www-data " + fFilePath + "<br>" + "sudo chown -R www-data " + fFilePath + "</h2><br>";
       break;
     case "Darwin":
-      secondText = "sudo chgrp -R www " + fFilePath + "<br>" + "sudo chown -R www " + fFilePath + "</h2><br>";
+      secondText = "sudo chgrp -R www " + fFilePath + "<br>" + "</h2><br>";
       break;
   }
   return secondText;
