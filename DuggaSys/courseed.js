@@ -469,7 +469,7 @@ function htmlFix(text){
 }
 
 
-let activeCodes = [];
+var activeCodes = [];
 
 //Gets all active course codes in the list by the data-code attribute all items have when created based on database values.
 function setActiveCodes() {
@@ -535,7 +535,7 @@ function elementIsValid(element) {
 function validateForm(formid) {
 	const formContainer = document.getElementById(formid);
 	const inputs = formContainer.querySelectorAll("input.validate");
-	let numberOfValidInputs = 0;
+	var numberOfValidInputs = 0;
 
 	//Count number of valid inputs
 	inputs.forEach(input => {
