@@ -1910,7 +1910,6 @@ input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
-  width: auto;
   height: 30px;
   color: #fff;
   cursor: pointer;
@@ -3085,7 +3084,6 @@ padding: 10px;
   color: #fff;
   cursor: pointer;
   margin: 8px 2px 4px 2px;
-  padding: 0px;
   font-size: 14px;
   transition: 0.1s background-color;
   float: right;
