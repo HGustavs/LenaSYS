@@ -83,11 +83,11 @@ function updateCellInternal() {
 
 // clickedInternal
 function clickedInternal(event, clickdobj) {
-	let clickedTbl = event.target.closest("table").id.substring(0, event.target.closest("table").id.indexOf(DELIMITER + "tbl"));
-	let active = null;
+	var clickedTbl = event.target.closest("table").id.substring(0, event.target.closest("table").id.indexOf(DELIMITER + "tbl"));
+	var active = null;
 
 	// loops through the sortabletables and checks if something is clicked, change active to the sortabletable that was clicked
-	for (let i = 0; i < sortableTable.sortableTables.length; i++) {
+	for (var i = 0; i < sortableTable.sortableTables.length; i++) {
 		if (sortableTable.sortableTables[i].tableid == clickedTbl) {
 			active = sortableTable.sortableTables[i];
 			break;
@@ -99,8 +99,8 @@ function clickedInternal(event, clickdobj) {
 	if (sortableTable.currentTable.showEditCell != null) {
 		var cellelement = event.target.closest("td");
 		var rowelement = event.target.closest("tr");
-		let regex = new RegExp("^r([0-9]+)" + DELIMITER + "([a-zA-Z0-9]+)" + DELIMITER + "(.*)")
-		let match = cellelement.id.match(regex);
+		var regex = new RegExp("^r([0-9]+)" + DELIMITER + "([a-zA-Z0-9]+)" + DELIMITER + "(.*)")
+		var match = cellelement.id.match(regex);
 		var rowno = match[1];
 		var columnno = null;
 		var tableid = match[2];
@@ -238,7 +238,7 @@ function SortableTable(param) {
 	this.hasFooter = getparam(param.hasFooter, false);
 	
 	// Prepare head and order with columns from rowsum list
-	for (let i = 0; i < rowsumList.length; i++) {
+	for (var i = 0; i < rowsumList.length; i++) {
 		tbl.tblhead[rowsumList[i][0]['id']] = rowsumList[i][0]['name'];
 		columnOrder.push(rowsumList[i][0]['id']);
 	}
@@ -427,10 +427,10 @@ function SortableTable(param) {
 				for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
 					if (columnfilter[columnOrderIdx] !== null) {
 						// check if this column is a row-sum column
-						for (let j = 0; j < rowsumList.length; j++) {
+						for (var j = 0; j < rowsumList.length; j++) {
 							if (columnOrder[columnOrderIdx].indexOf(rowsumList[j][0]['id']) > -1) {
 								tbl.tblbody[i][columnOrder[columnOrderIdx]] = 0;
-								for (let k = 1; k < rowsumList[j].length; k++) {
+								for (var k = 1; k < rowsumList[j].length; k++) {
 									if (typeof (tbl.tblbody[i][rowsumList[j][k].substring(0, rowsumList[j][k].indexOf('.'))]) === 'object') {
 										tbl.tblbody[i][columnOrder[columnOrderIdx]] += parseFloat(byString(tbl.tblbody[i][rowsumList[j][k].substring(0, rowsumList[j][k].indexOf('.'))], rowsumList[j][k]));
 									} else {
@@ -783,7 +783,7 @@ function SortableTable(param) {
 
 		// Export visible columns
 		var rendcnt = 0;
-		for (let columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
+		for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
 			var colname = columnOrder[columnOrderIdx];
 			var col = tbl.tblhead[colname];
 			if (columnfilter[columnOrderIdx] !== null) {
@@ -796,10 +796,10 @@ function SortableTable(param) {
 		str += "\n";
 
 		// Export data for visible columns
-		for (let i = 0; i < tbl.tblbody.length; i++) {
-			let row = tbl.tblbody[i];
+		for (var i = 0; i < tbl.tblbody.length; i++) {
+			var row = tbl.tblbody[i];
 			rendcnt = 0;
-			for (let columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
+			for (var columnOrderIdx = 0; columnOrderIdx < columnOrder.length; columnOrderIdx++) {
 				var colname = columnOrder[columnOrderIdx];
 				var col = tbl.tblhead[colname];
 				if (columnfilter[columnOrderIdx] !== null) {
