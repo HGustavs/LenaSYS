@@ -271,7 +271,7 @@ function fitToContainer()
 	}
 
 	document.getElementById("opTableContainer").style.maxHeight=(canvas.height-25-38)+"px";
-	document.getElementById("container").style.height=(canvas.height-50)+"px";
+	document.getElementById("dugga4Container").style.height=(canvas.height-50)+"px";
 
 	sf = canvas.width / 200;
 }
