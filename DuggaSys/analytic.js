@@ -8,19 +8,17 @@ var analytics = {
 // Document ready callback		
 //------------------------------------------------------------------------------------------------
 $(function() {
-	$(window).resize(function() {
-		switch (analytics.chartType) {
-			case "bar":
-				drawBarChart(analytics.chartData);
-				break;
-			case "pie":
-				drawPieChart(analytics.chartData);
-				break;
-			case "line":
-				drawLineChart(analytics.chartData);
-				break;
-		}
-	});
+	switch (analytics.chartType) {
+		case "bar":
+			drawBarChart(analytics.chartData);
+			break;
+		case "pie":
+			drawPieChart(analytics.chartData);
+			break;
+		case "line":
+			drawLineChart(analytics.chartData);
+			break;
+	}
 	loadGeneralStats();
 });
 
@@ -30,7 +28,7 @@ $(function() {
 function resetAnalyticsChart() {
 	analytics.chartType = null;
 	analytics.chartData = null;
-	clearCanvas($("#analytic-chart")[0]);
+	$( "#canvas-area" ).empty();
 }
 
 //------------------------------------------------------------------------------------------------
@@ -60,15 +58,48 @@ function loadGeneralStats() {
 		$('#analytic-info').append("<p>General statistics about the system.</p>");
 
 		var tableData = [["Stat", "Value"]];
-		for (var stat in data) {
-			if (data.hasOwnProperty(stat)) {
+
+		// Login fails
+		var loginFails = data['stats']['loginFails'];
+		for (var stat in loginFails) {
+			if (loginFails.hasOwnProperty(stat)) {
 				tableData.push([
 					stat,
-					data[stat]
+					loginFails[stat]
 				]);
 			}
 		}
+
+		// Disk usage
+		var chartData = [];
+		chartData.push({
+			label: 'Total Memory ('+data.disk.total+')',
+			value: data.disk.totalPercent
+		});
+
+		chartData.push({
+			label: 'Free Memory ('+data.disk.free+')',
+			value: data.disk.freePercent
+		});
+		drawPieChart(chartData, 'Disk Usage on the server', true);
+
+		// Ram Usage
+		if(data.ram != undefined){
+			var chartData = [];
+			chartData.push({
+				label: 'Total RAM ('+data.ram.total+')',
+				value: data.ram.totalPercent
+			});
+	
+			chartData.push({
+				label: 'Free RAM ('+data.ram.free+')',
+				value: data.ram.freePercent
+			});
+			drawPieChart(chartData, 'RAM Usage on the Server', true);
+		}
+
 		$('#analytic-info').append(renderTable(tableData));
+		
 	});
 }
 
@@ -97,7 +128,7 @@ function loadOsPercentage() {
 		for (var i = 0; i < data.length; i++) {
 			tableData.push([
 				data[i].operatingSystem,
-				data[i].percentage
+				(+data[i].percentage).toFixed(2)
 			]);
 		}
 		$('#analytic-info').append(renderTable(tableData));
@@ -278,14 +309,177 @@ function loadServiceCrashes() {
 			str += "<br>User agent: " + crash.userAgent;
 			str += "<br>OS: " + crash.operatingSystem;
 			str += "<br>Browser: " + crash.browser;
-			str += "<br><br>Client start: " + formatDate(crash.steps[5]);
 			str += "<br>Server start: " + (crash.steps[6] === undefined ? 'missing' : formatDate(crash.steps[6]));
 			str += "<br>Server end: " + (crash.steps[7] === undefined ? 'missing' : formatDate(crash.steps[7]));
-			str += "<br>Client end (fourth round trip): " + (crash.steps[8] === undefined ? 'missing' : formatDate(crash.steps[8]));
 			str += "<br><hr></div>";
 			$('#analytic-info').append(str);
 		});
 	});
+
+}
+
+
+function loadFileInformation() {
+    resetAnalyticsChart();
+    $('#analytic-info').empty();
+	$('#analytic-info').append("<p>File information for created and edited files.</p>");
+	
+
+    var inputDateFrom = $('<input type="text"></input>')
+        .datepicker({
+            dateFormat: "yy-mm-dd"
+        })
+        .datepicker("setDate", "-1m")
+        .appendTo($('#analytic-info'));
+ 
+    var inputDateTo = $('<input type="text"></input>')
+        .datepicker({
+            dateFormat: "yy-mm-dd"
+        })
+        .datepicker("setDate", "+1d")
+        .appendTo($('#analytic-info'));
+	
+ 
+    function updateFileInformation() {
+        $.ajax({
+            url: "analyticService.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+				query: "fileInformation",
+            },
+            success: function(data) {
+                var files = {};
+                $.each(data, function(i, row) {
+                    var description = row.description.split(" ");
+                    var version = description[0];
+                    var file =  description[1];
+ 
+                    if(row.eventType == 15){
+                        var action = "Created"
+                    }
+                    else{
+                        var action = "Edited"
+                    }
+ 
+                    if (!files.hasOwnProperty(file)) {
+                        files[file] = [["Username", "Action", "Version", "File", "Timestamp"]];
+                    }
+                    const splits = row.timestamp.split(' ', 2)
+                    if(splits[0] >=  inputDateFrom.val() && splits[0] <= inputDateTo.val()){
+                        files[file].push([
+                        row.userName,
+                        action,
+                        version,
+                        file,
+                        row.timestamp
+                    ]);     
+                    }
+                });
+ 
+                $('#analytic-info > select.file-select').remove();
+                var fileSelect = $('<select class="file-select"></select>');
+                for (var file in files) {
+                    if (files.hasOwnProperty(file)) {
+						if(localStorage.getItem('analyticsLastFile') == file) {
+							fileSelect.append('<option value="' + file + '" selected>' + file + '</option>');
+						} else {
+							fileSelect.append('<option value="' + file + '">' + file + '</option>')
+						}
+                    }
+                }
+                fileSelect.change(function() {
+					deleteTable();
+					try {
+						localStorage.setItem('analyticsLastFile', files[$(this).val()][1][3]);
+					} catch(err) { }
+                    $('#analytic-info').append(renderTable(files[$(this).val()]));
+                });
+                $('#analytic-info').append(fileSelect);
+                fileSelect.change();
+            }
+        });
+    }
+   
+	
+    inputDateFrom.change(updateFileInformation);
+    inputDateTo.change(updateFileInformation);
+ 
+    updateFileInformation();
+}
+
+function loadPageInformation() {
+    resetAnalyticsChart();
+    $('#analytic-info').empty();
+    $('#analytic-info').append("<p>Page information.</p>");
+ 
+    var selectPage = $("<select></select>")
+        .append('<option value="showDugga" selected>showDugga</option>')
+        .append('<option value="codeviewer">codeviewer</option>')
+        .appendTo($('#analytic-info'));
+   
+       
+   
+    function updatePageHitInformation(page){
+        loadAnalytics(page + "Information", function(data) {
+            console.log(page);
+            var tableData = [["Page", "Hits"]];
+            for (var i = 0; i < data.length; i++) {
+                tableData.push([
+                    page,
+                    data[i].pageLoads
+                ]);
+            }
+           
+            $('#analytic-info').append("<p>Page information.</p>");
+            $('#analytic-info').append(selectPage);
+            $('#analytic-info').append(renderTable(tableData));
+            updatePieChartInformation(page, tableData);
+        });
+    }
+ 
+    function updatePieChartInformation(page, tableData){
+        console.log(page + "Percentage");
+        loadAnalytics(page + "Percentage", function(data) {
+ 
+            var tablePercentage = [["Courseid", "Percentage"]];
+            for (var i = 0; i < data.length; i++) {
+                tablePercentage.push([
+                    data[i].courseid,
+                    data[i].percentage
+                ]);
+            }
+ 
+            var chartData = [];
+            for (var i = 0; i < data.length; i++) {
+                chartData.push({
+                    label: "courseid:" + " " + data[i].courseid,
+                    value: data[i].percentage
+                });
+            }
+            $('#analytic-info').append("<p>Page information.</p>");
+            $('#analytic-info').append(selectPage);
+            $('#analytic-info').append(renderTable(tableData));
+            $('#analytic-info').append(renderTable(tablePercentage));
+            $('#analytic-info').append(drawPieChart(chartData));
+            updateState();
+        });
+    }
+ 
+    function updateState(){
+        selectPage.change(function(){
+            switch(selectPage.val()){
+                case "showDugga":
+                    updatePageHitInformation("dugga");
+                    break;
+                case "codeviewer":
+                    updatePageHitInformation("codeviewer");
+                    break;
+            }
+        });
+    }
+ 
+    updateState();
 }
 
 //------------------------------------------------------------------------------------------------
@@ -296,9 +490,9 @@ function loadServiceCrashes() {
 //------------------------------------------------------------------------------------------------
 // Fits a canvas to its container	
 //------------------------------------------------------------------------------------------------
-function fitCanvasToContainer(canvas){
-	canvas.style.width="100%";
-	canvas.style.height="100%";
+function fitCanvasToContainer(canvas, width = 100, height = 100) {
+	canvas.style.width = width + "%";
+	canvas.style.height = height + "%";
 	canvas.width  = canvas.offsetWidth;
 	canvas.height = canvas.offsetHeight;
 }
@@ -310,6 +504,16 @@ function clearCanvas(canvas) {
 	var ctx = canvas.getContext("2d");
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+//------------------------------------------------------------------------------------------------
+// Deletes tables with the class name "rows" 
+//------------------------------------------------------------------------------------------------
+function deleteTable() {
+	var table = document.getElementsByClassName("rows");
+    while(table.length > 0){
+        table[0].parentNode.removeChild(table[0]);
+    }
 }
 
 //------------------------------------------------------------------------------------------------
@@ -343,7 +547,12 @@ function drawBarChart(data) {
 	analytics.chartType = "bar";
 	analytics.chartData = data;
 
-	var canvas = $("#analytic-chart")[0];
+	var elementID = 'canvas' + $('canvas').length;
+	$('<canvas>').attr({
+		id: elementID
+	}).appendTo('#canvas-area');
+
+	var canvas = document.getElementById(elementID);
 	var ctx = canvas.getContext("2d");
 
 	fitCanvasToContainer(canvas);
@@ -376,26 +585,44 @@ function drawBarChart(data) {
 //------------------------------------------------------------------------------------------------
 // Generates a random pastel color in hex format and returns it
 //------------------------------------------------------------------------------------------------
-function getRandomColor() {
-	var r = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
-	var g = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
-	var b = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
-	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+function getRandomColor(i) {
+	var colors = ["#775886", "#cccccc", '#927b9e', '#93A561', 'ffd369', '#50a750', '#75050'];
+
+	if(i > colors.length-1) {
+		var r = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+		var g = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+		var b = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+		return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+	} else {
+		return colors[i];
+	}
 }
 
 //------------------------------------------------------------------------------------------------
 // Draws a pie chart with the data given
 //------------------------------------------------------------------------------------------------
-function drawPieChart(data) {
+
+function drawPieChart(data, title = null, multirow = false) {
 	if (!$.isArray(data)) return;
 
 	analytics.chartType = "pie";
 	analytics.chartData = data;
 
-	var canvas = $("#analytic-chart")[0];
+	// Dynamically generate the canvas elem
+	var elementID = 'canvas' + $('canvas').length;
+	$('<canvas>').attr({
+		id: elementID
+	}).appendTo('#canvas-area');
+
+	var canvas = document.getElementById(elementID);
 	var ctx = canvas.getContext("2d");
 
-	fitCanvasToContainer(canvas);
+	if(multirow) {
+		fitCanvasToContainer(canvas, 48.5, 75);
+	} else {
+		fitCanvasToContainer(canvas);
+	}
+	
 	clearCanvas(canvas);
 
 	var total = 0;
@@ -407,8 +634,15 @@ function drawPieChart(data) {
 	var textAreaHeight = fontSize * 2.2;
 	var radius = canvas.height / 2;
 	var last = 0;
+
+	// Add the title to the chart
+	if(title != null) {
+		ctx.font = "20px Arial";
+		ctx.fillText(title, radius * 2 + 30, 25);
+	}
+
 	for (var i = 0; i < data.length; i++) {
-		ctx.fillStyle = getRandomColor();
+		ctx.fillStyle = getRandomColor(i);
 		ctx.beginPath();
 		ctx.moveTo(radius, radius);
 		ctx.arc(radius, radius, radius, last, last + (Math.PI*2*(data[i].value/total)), false);
@@ -416,17 +650,17 @@ function drawPieChart(data) {
 		ctx.fill();
 		last += (Math.PI*2*(data[i].value/total));
 
-		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 20, 12, 12);
+		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 40, 12, 12);
 		ctx.fillStyle = "black";
 		ctx.font = fontSize + "px Arial";
-		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight);
+		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight + 20);
 	}
 }
 
 function renderTable(data) {
 	if (!$.isArray(data)) return;
 
-	var str = '<table class="list">';
+	var str = '<table class="list rows">';
 	if (data.length > 0) {
 		// Render headings
 		str += "<thead><tr>";
@@ -455,7 +689,12 @@ function drawLineChart(data) {
 	analytics.chartType = "line";
 	analytics.chartData = data;
 
-	var canvas = $("#analytic-chart")[0];
+	var elementID = 'canvas' + $('canvas').length;
+	$('<canvas>').attr({
+		id: elementID
+	}).appendTo('#canvas-area');
+
+	var canvas = document.getElementById(elementID);
 	var ctx = canvas.getContext("2d");
 
 	fitCanvasToContainer(canvas);

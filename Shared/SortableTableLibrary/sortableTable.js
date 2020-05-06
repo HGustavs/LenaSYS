@@ -666,6 +666,13 @@ function SortableTable(param) {
         }
         $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
         $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
+
+        //Recalculate the values in the first column that is simply a counter
+        var counterElements = $(".fileLink___counter").filter(":visible");
+        var i = 0;
+        counterElements.each(function (index) {
+            this.firstChild.innerHTML = ++i;
+        });
     }
 
 	this.updateCell = function () {
