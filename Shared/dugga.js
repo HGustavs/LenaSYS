@@ -666,7 +666,7 @@ function AJAXService(opt,apara,kind)
       tex += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 	apara.log_uuid = tex;
-
+	
   var para="";
 	for (var key in apara) {
 		var old = apara[key];
@@ -1102,9 +1102,9 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){
 			$("#logoutBox").show();
+			$("#logoutBox").css('display', 'block');
 			$(".buttonLogoutCancelBox").click(function(){
 				$("#logoutBox").hide();
-
 			});
 
 
@@ -1578,6 +1578,12 @@ function FABMouseOver(e) {
 			$('.fab-btn-sm').toggleClass('scale-out');
 		}
 	}
+	else if (e.target.id === "addElement") {
+		if ($('.fab-btn-sm2').hasClass('scale-out')) {
+			$('.fab-btn-list2').fadeIn(0);
+			$('.fab-btn-sm2').toggleClass('scale-out');
+		}
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -1587,6 +1593,10 @@ function FABMouseOut(e) {
 	if (!$('.fab-btn-sm').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button")) {
 		$('.fab-btn-sm').toggleClass('scale-out');
 		$('.fab-btn-list').delay(100).fadeOut(0);
+	}
+	else if (!$('.fab-btn-sm2').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button2").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button2")) {
+		$('.fab-btn-sm2').toggleClass('scale-out');
+		$('.fab-btn-list2').delay(100).fadeOut(0);
 	}
 }
 
