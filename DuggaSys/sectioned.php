@@ -122,8 +122,6 @@
 			<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>
 			<table>				
 			<?php
-				$stmt = $pdo->prepare( "DELETE FROM announcement");			   
-			    $stmt->execute();
 
 				$courseid = $_GET['courseid'];
 				$coursevers = $_GET['coursevers'];
