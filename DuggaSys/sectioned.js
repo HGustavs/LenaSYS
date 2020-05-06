@@ -1034,7 +1034,7 @@ function returnedSection(data) {
     str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML = str;
-    showCreateVersion();
+    
    
 
   }
@@ -1071,7 +1071,8 @@ function returnedSection(data) {
 
   addClasses();
   showMOTD();
-  }  
+  } 
+  else{showCreateVersion();} 
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
