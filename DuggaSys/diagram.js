@@ -93,7 +93,9 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
-var writeToLayer = "Layer_1_Acitve";
+var valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
+var writeToLayer = getcorrectlayer();
+var showLayer = ["Layer_1"];
 var gridSize = 16;                  // Distance between lines in grid
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                            // Canvas context
@@ -478,9 +480,6 @@ window.addEventListener('blur', resetButtonsPressed);
 
 //Functions to call after document body loads
 function init() {
-    if(localStorage.getItem('layerItems') != null){
-        loadLayer(localStorage.getItem('layerItems'));
-    }
     initializeCanvas(); 
     canvasSize(); 
     loadDiagram(); 
@@ -1566,6 +1565,10 @@ diagram.getZoomValue = function(){
 //--------------------------------------------------------------------
 
 function initializeCanvas() {
+    // check localStorage for active layers
+    if(localStorage.getItem('layerItems') != null){
+        loadLayer(localStorage.getItem('layerItems'));
+    }
     //hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
     setInterval(refreshFunction, refreshTimer);
     setInterval(hashCurrent, hashUpdateTimer);
@@ -5517,7 +5520,6 @@ function submitAppearanceForm() {
 function createLayer(){
     let parentNode = document.getElementById("viewLayer");
     let id =0;
-    let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
     let spans = parentNode.getElementsByTagName('span')
     let layerArray = []
     for(let i = 0; i < spans.length; i++){
@@ -5548,7 +5550,6 @@ function loadLayer(localStorageID){
     let parentNode = document.getElementById("viewLayer");
     addLayersToApperence(localStorageID)
     let id =1;
-    let valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
     let spans = parentNode.getElementsByTagName('span')
     let layerArray = []
     for(let i = 0; i < localStorageID -1; i++){
@@ -5569,6 +5570,7 @@ function loadLayer(localStorageID){
             if(getActiveViewlayers.indexOf(newSpan.id) !== -1){
                 newSpan.classList.add("isActive");
                 newSpan.classList.remove("notActive");
+                showLayer.push(newSpan.id);
             } 
         }
     }
@@ -5583,11 +5585,14 @@ function toggleBackgroundLayer (object){
         object.classList.remove("notActive");
         object.classList.add("isActive");
         activeLocalStorage()
+        showLayer.push(object.id);
     }
     else {
         object.classList.remove("isActive");
         object.classList.add("notActive");
         activeLocalStorage();
+        const index = showLayer.indexOf(object.id);
+        showLayer.splice(index, 1);
     }
 }
 
@@ -5636,7 +5641,6 @@ function toggleActiveBackgroundLayer(object) {
     let isActive = false;
     for (let i = 0; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
-            
             isActive = true;
             i = spans.length;
         }
@@ -5665,9 +5669,9 @@ function toggleActiveBackgroundLayer(object) {
 }
 
 function setlayer(object){
-    let remove = object.id.replace('_Active','');
-    console.log(remove);
-    writeToLayer = remove;
+    let fixID = object.id.replace('_Active','');
+    toggleBackgroundLayer(document.getElementById(fixID))
+    writeToLayer = fixID;
 }
 
 function addLayersToApperence(localStorageID){
@@ -5681,6 +5685,14 @@ function addLayersToApperence(localStorageID){
         select.add(option);
     }
     initAppearanceForm()
+}
+function getcorrectlayer(){
+    if(localStorage.getItem('writeToActiveLayers') != null){
+        let getLayer = localStorage.getItem("writeToActiveLayers")
+        let fixID = getLayer.replace('_Active','');
+        return fixID
+    }
+        return "Layer_1"
 }
 //function deleteLayer(){
  //   document.getElementById("layerPlaceholder").innerHTML = "<div class='drop-down-item' tabindex='0'> <span class='drop-down-option id='layer_1'>Layer One</span></div>'";
