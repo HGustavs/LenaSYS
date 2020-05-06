@@ -5499,6 +5499,7 @@ function loadGlobalAppearanceForm() {
 
 const separators = {
     input: "~",
+    option: "~",
     textarea: "~\n"
 };
 
@@ -5644,8 +5645,8 @@ function setLineDirectionElementUML(object, index) {
         options[1].innerHTML += connectedObjectsArray[1].name;
     }
     if(index.max > index.current) {
-        options[0].innerHTML += ", ";
-        options[1].innerHTML += ", "
+        options[0].innerHTML += `${separators.option} `;
+        options[1].innerHTML += `${separators.option} `;
     }
 }
 
