@@ -85,8 +85,6 @@
   var owner = <?php echo json_encode($username); ?>;
   var filePath = <?php echo json_encode($putFileHere); ?>;
   var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
-  
-  var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal (used much later in)
   var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
   var modal = document.getElementById('warning'); // Get the modal
 
@@ -100,6 +98,10 @@
     `<div>
       ${getPermissionModalText(fOwner, fFilePath, fOperatingSystem)}
     </div>`;
+  }
+
+  if (operatingSystem != "Windows"){
+    modal.style.display = "block";
   }
 </script>
 
@@ -271,7 +273,6 @@
                         <span title='Close pop-up' class='close''>&times;</span>
                             <span id='dialogText'></span>
                     </div>
-
                 </div>";
 
     /* Javascripts for warning pop-up */
@@ -822,11 +823,6 @@
 <!-- END OF INSTALL SECTION -->
 
 <script>
-  var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
-  if (operatingSystem != "Windows"){
-    modal.style.display = "block";
-  }
-
   var showHideButton = document.getElementById('showHideInstallation');
 
   if (showHideButton !== null){

@@ -2,6 +2,7 @@
 // JavaScript defer file. Stuff that needs to be loaded defer (after php-file have been run) goes here.
 //------------------------------------------------------------------------------------------------------
 
+var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal (used much later in)
 var btn = document.getElementById("showModalBtn");
 var modalRead = false; // Have the user read info?
 var leftArrow = document.getElementById('leftArrow');
