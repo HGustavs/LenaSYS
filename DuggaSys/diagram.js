@@ -5502,6 +5502,20 @@ function getGroupsByTypes(typesToShow) {
     });
 }
 
+//Shoud simulate button click or enter click in appearance menu to save and close
+function submitAppearanceForm() {
+    selected_objects.forEach(object => {
+        if(object.symbolkind === symbolKind.uml) {
+            object.resizeUMLToMinHeight();
+        }
+    });
+    if(globalappearanceMenuOpen) {
+        setGlobalProperties();
+    }
+    SaveState();
+    toggleApperanceElement();
+}
+
 //Layer intergration functions
 function createLayer(){
     let parentNode = document.getElementById("viewLayer");
@@ -5685,17 +5699,41 @@ function getcorrectlayer(){
  //   document.getElementById("layerPlaceholder").style.margin = "0px";
 //}
 
-
-//Shoud simulate button click or enter click in appearance menu to save and close
-function submitAppearanceForm() {
-    selected_objects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml) {
-            object.resizeUMLToMinHeight();
+//A check if line should connect to a object when loose line is released inside a object
+function canConnectLine(startObj, endObj){
+    var okToMakeLine = false;
+    if (!(startObj.symbolkind == symbolKind.erEntity && endObj.symbolkind == symbolKind.erEntity)
+        && !(startObj.symbolkind == symbolKind.erRelation && endObj.symbolkind == symbolKind.erRelation)
+        && startObj.symbolkind != symbolKind.line && symbolEndKind != symbolKind.line 
+        && startObj.symbolkind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            symbolEndKind = endObj.symbolkind;
+            okToMakeLine = true;
+            // Can't be more than two lines between an entity and a relation
+            if ((startObj.symbolkind == symbolKind.erEntity && symbolEndKind == symbolKind.erRelation)
+            || (startObj.symbolkind == symbolKind.erRelation && symbolEndKind == symbolKind.erEntity)) {
+                if ((endObj.connectorCountFromSymbol(startObj) > 1)
+                || (startObj.connectorCountFromSymbol(endObj) > 1)) {
+                    okToMakeLine = false;
+                }
+            }
+            // Must be two different objects
+            else if (endObj == startObj) {
+                okToMakeLine = false;
+            }
+            // Can't be from er to uml
+            else if (symbolEndKind == symbolKind.uml) {
+                okToMakeLine = false;
+            }
+            // Can't be more than one line if not relation to entity
+            else {
+                if ((startObj.symbolkind != symbolKind.erRelation && symbolEndKind != symbolKind.erRelation)
+                || startObj.symbolkind == symbolKind.erAttribute || symbolEndKind == symbolKind.erAttribute) {
+                    if ((endObj.connectorCountFromSymbol(startObj) > 0)
+                    || (startObj.connectorCountFromSymbol(endObj) > 0)) {
+                        okToMakeLine = false
+                    }
+                }
+            }
         }
-    });
-    if(globalappearanceMenuOpen) {
-        setGlobalProperties();
-    }
-    SaveState();
-    toggleApperanceElement();
+    return okToMakeLine;
 }
