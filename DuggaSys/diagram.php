@@ -132,7 +132,17 @@
                         <img class="invert-color" src="../Shared/icons/textbox.svg">
                     </button>
                 </div>
-                <div class="diagram-sidebar-section"></div>
+                <div class="diagram-sidebar-section">
+                    <div class="diagram-sidebar-label">Undo/Redo</div>
+                    <div id="diagram-undo-redo-container">
+                        <button id="undoButton" onclick="undoDiagram(event)" class="diagram-tools-button diagram-tools-button-small" data="Undo (Ctrl + Z)">
+                            <img class="invert-color" src="../Shared/icons/undo.svg">
+                        </button>
+                        <button id="redoButton" onclick="redoDiagram(event)" class="diagram-tools-button diagram-tools-button-small" data="Redo (Ctrl + Y)">
+                            <img class="invert-color" src="../Shared/icons/redo.svg">
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="ruler-y" class="ruler"></div>
