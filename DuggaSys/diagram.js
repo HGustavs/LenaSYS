@@ -6049,7 +6049,7 @@ function createLayer(){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
@@ -6076,7 +6076,7 @@ function loadLayer(localStorageID){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
@@ -6107,6 +6107,7 @@ function toggleBackgroundLayer (object, changeLayer){
     }
     if(object.classList.contains("notActive")){
         object.classList.remove("notActive");
+        object.classList.remove("drop-down-option-hover");
         object.classList.add("isActive");
         activeLocalStorage()
         showLayer.push(object.id);
@@ -6114,10 +6115,12 @@ function toggleBackgroundLayer (object, changeLayer){
     else {
         object.classList.remove("isActive");
         object.classList.add("notActive");
+        object.classList.add("drop-down-option-hover");
         activeLocalStorage();
         const index = showLayer.indexOf(object.id);
         showLayer.splice(index, 1);
     }
+    updateGraphics();
 }
 
 function activeLocalStorage(){
@@ -6147,14 +6150,18 @@ function fixWriteToLayer(){
     let update = document.getElementById("layerActive");
     let spans = update.getElementsByTagName('span')
     let active = localStorage.getItem("writeToActiveLayers");
+    console.log(active);
     for(let i = 0; i < spans.length; i++){
         spans[i].id = spans[i].id+"_Active";
         spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
         if (spans[i].id == active) {
-            spans[i].setAttribute("class", "isActive drop-down-option");
+            spans[i].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
+        }
+        else if (active == null){
+            spans[0].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
         }
         else {
-            spans[i].setAttribute("class", "notActive drop-down-option");
+            spans[i].setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         }
     }
 }
@@ -6167,15 +6174,18 @@ function toggleActiveBackgroundLayer(object) {
         if(spans[i].classList.contains("isActive")){
             spans[i].classList.remove("isActive");
             spans[i].classList.add("notActive");
+            spans[i].classList.add("drop-down-option-hover");
         }
 
         if(object.id == spans[i].id){
             object.classList.remove("notActive");
             object.classList.add("isActive");
+            object.classList.remove("drop-down-option-hover");
             localStorage.setItem("writeToActiveLayers", object.id);
             setlayer(object);
         }
     }
+    updateGraphics();
 }
 
 
