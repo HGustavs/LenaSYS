@@ -1630,13 +1630,13 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
 
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    const diagramContainer = document.getElementById("diagram-canvas-container");
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
     const zoomRange = document.getElementById("ZoomSelect");
 
 
-    canvas = document.getElementById("diagramCanvas");
+    canvas = document.getElementById("diagram-canvas");
     if(canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
@@ -2409,7 +2409,7 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    var diagramContainer = document.getElementById("diagramCanvasContainer");
+    var diagramContainer = document.getElementById("diagram-canvas-container");
     if(fullscreen){
         // Resize container
         diagramContainer.style.height = window.innerHeight + "px";
@@ -3746,8 +3746,8 @@ function toggleFullscreen(){
     // Load relevant elements
     var head = document.querySelector("header");
     var menu_border = document.getElementById("buttonDiv");
-    var canvas_div = document.getElementById("diagramCanvasContainer");
-    var canvas_border = document.getElementById("diagramCanvas");
+    var canvas_div = document.getElementById("diagram-canvas-container");
+    var canvas_border = document.getElementById("diagram-canvas");
     var tool_bar = document.getElementById("diagram-toolbar");
     var inside_toolbar = document.getElementById("inside-toolbar");
     var menu_buttons = document.getElementsByClassName("menu-drop-down");
