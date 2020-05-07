@@ -327,7 +327,7 @@
 				<div class='inputwrapper'><span>Version ID:</span><input oninput="validateCourseID('versid', 'dialog2')" class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
 				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
+				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN or VTNN</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
@@ -354,7 +354,7 @@
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('eversname', 'dialog5')" class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
+				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN or VTNN</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>

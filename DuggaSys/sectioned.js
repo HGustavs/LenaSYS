@@ -1618,7 +1618,16 @@ $(window).load(function () {
   if(adminLoggedin == 'yes'){
     $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>');
   }
+  $("#newAnnouncement").click(function(){
+    $("#modal").toggle();
+    $(window).click(function(e) {
+      if(e.target.id == "modal"){
+        $("#modal").hide(); 
+      }
+    });
 
+
+  });
 });
 
 //show the full announcement
@@ -1628,14 +1637,6 @@ function showAnnouncement(){
 //sets author for announcement
 function setAnnouncementAuthor(){
   $("#author").val($("#userName").html());
-  $("#modal").toggle();
-  $(window).click(function(e) {
-    if(e.target.id == "modal"){
-      $("#modal").hide(); 
-    }
-  });
-
-  console.log("Checking if onclick function is working");
   
 }
 // Checks if <a> link is external
@@ -1701,7 +1702,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 /*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
   //Regex for 2 capital letters, 2 numbers
-  var Name = /^[A-Z]{2}\d{2}$/;
+  var Name = /^HT\d{2}$|^VT\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
   

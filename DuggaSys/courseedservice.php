@@ -158,16 +158,16 @@ if(checklogin()){
 			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':vers', $versid);
-
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries\n".$error[2];
 			}
 		}else if(strcmp($opt, "CPYVRS")===0){
+			$allOperationsSucceeded = true;
 			try{
 				$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$pdo->beginTransaction();
-        $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate);");
+        $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
 
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':coursecode', $coursecode);
@@ -175,6 +175,7 @@ if(checklogin()){
 				$query->bindParam(':versname', $versname);
 				$query->bindParam(':coursename', $coursename);
 				$query->bindParam(':coursenamealt', $coursenamealt);
+				$query->bindParam(':motd', $motd);
         // if start and end dates are null, insert mysql null value into database
         if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
         else $query->bindParam(':startdate', $startdate);
@@ -183,6 +184,7 @@ if(checklogin()){
 
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
+					$allOperationsSucceeded = false;
 					$debug="Error updating entries\n".$error[2];
 				}
 
@@ -197,6 +199,7 @@ if(checklogin()){
 				$query->bindParam(':oldvers', $copycourse);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
+						$allOperationsSucceeded = false;
 						$debug="Error reading quiz\n".$error[2];
 				}else{
 						foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -205,6 +208,7 @@ if(checklogin()){
 								$ruery->bindParam(':newvers', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug.="Error copying quiz entry\n".$error[2];
 								}else{
 										$duggalist[$row['id']]=$pdo->lastInsertId();
@@ -215,6 +219,7 @@ if(checklogin()){
 							$buery->bindParam(':quizid', $key);
 							if(!$buery->execute()) {
 									$error=$buery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug="Error reading variants: ".$error[2];
 							}else{
 									foreach($buery->fetchAll(PDO::FETCH_ASSOC) as $rowz){
@@ -223,6 +228,7 @@ if(checklogin()){
 											$ruery->bindParam(':newquizid', $value);
 											if(!$ruery->execute()) {
 												$error=$ruery->errorInfo();
+												$allOperationsSucceeded = false;
 												$debug.="Error updating entry\n".$error[2];
 											}
 									}
@@ -237,6 +243,7 @@ if(checklogin()){
 				$query->bindParam(':oldvers', $copycourse);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
+						$allOperationsSucceeded = false;
 						$debug="Error reading codeexample: ".$error[2];
 				}else{
 						foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -245,6 +252,7 @@ if(checklogin()){
 								$ruery->bindParam(':newvers', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug.="Error copying codeexample entry\n".$error[2];
 								}else{
 										$codeexamplelist[$row['exampleid']]=$pdo->lastInsertId();
@@ -258,6 +266,7 @@ if(checklogin()){
 								$buery->bindParam(':exampleid', $key);
 								if(!$buery->execute()) {
 										$error=$buery->errorInfo();
+										$allOperationsSucceeded = false;
 										$debug="Error reading boxes: ".$error[2];
 								}else{
 										foreach($buery->fetchAll(PDO::FETCH_ASSOC) as $rowz){
@@ -268,6 +277,7 @@ if(checklogin()){
 												$ruery->bindParam(':newexampleid', $value);
 												if(!$ruery->execute()) {
 													$error=$ruery->errorInfo();
+													$allOperationsSucceeded = false;
 													$debug.="Error duplicating boxes\n".$error[2];
 												}
 										}
@@ -277,6 +287,7 @@ if(checklogin()){
 										$pruery->bindParam(':oldexampleid', $key);
 										if(!$pruery->execute()) {
 											$error=$pruery->errorInfo();
+											$allOperationsSucceeded = false;
 											$debug.="Error finding improws\n".$error[2];
 										}
 										foreach ($pruery->fetchAll(PDO::FETCH_ASSOC) as $improwz) {
@@ -288,6 +299,7 @@ if(checklogin()){
 														$qruery->bindParam(':newexampleid', $value);
 														if(!$qruery->execute()) {
 															$error=$qruery->errorInfo();
+															$allOperationsSucceeded = false;
 															$debug.="Error duplicating improws\n".$error[2];
 														}
 												}
@@ -298,6 +310,7 @@ if(checklogin()){
 										$zruery->bindParam(':oldexampleid', $key);
 										if(!$zruery->execute()) {
 											$error=$zruery->errorInfo();
+											$allOperationsSucceeded = false;
 											$debug.="Error finding impwords\n".$error[2];
 										}
 										foreach ($zruery->fetchAll(PDO::FETCH_ASSOC) as $impwordz) {
@@ -308,6 +321,7 @@ if(checklogin()){
 														$zzqruery->bindParam(':newexampleid', $value);
 														if(!$zzqruery->execute()) {
 															$error=$zzqruery->errorInfo();
+															$allOperationsSucceeded = false;
 															$debug.="Error duplicating impwords: ".$error[2];
 														}
 												}
@@ -321,6 +335,7 @@ if(checklogin()){
 				$query->bindParam(':oldvers', $copycourse);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
+						$allOperationsSucceeded = false;
 						$debug="Error reading courses\n".$error[2];
 				}else{
 						$momentlist=array();
@@ -330,6 +345,7 @@ if(checklogin()){
 								$ruery->bindParam(':gubbe', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug.="Error copying entry\n".$error[2];
 								}else{
 										$momentlist[$row['lid']]=$pdo->lastInsertId();
@@ -343,6 +359,7 @@ if(checklogin()){
 								$ruery->bindParam(':updvers', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug.="Error updating entry\n".$error[2];
 								}
 						}
@@ -354,6 +371,7 @@ if(checklogin()){
 								$puery->bindParam(':updvers', $versid);
 								if(!$puery->execute()) {
 									$error=$puery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug.="Error updating entry\n".$error[2];
 								}
 						}
@@ -366,6 +384,7 @@ if(checklogin()){
 								$puery->bindParam(':updvers', $versid);
 								if(!$puery->execute()) {
 									$error=$puery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug.="Error updating entry\n".$error[2];
 								}
 						}
@@ -377,6 +396,7 @@ if(checklogin()){
 								$puery->bindParam(':updvers', $versid);
 								if(!$puery->execute()) {
 									$error=$puery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug.="Error updating before link\n".$error[2];
 								}
 						}
@@ -387,6 +407,7 @@ if(checklogin()){
 								$puery->bindParam(':updvers', $versid);
 								if(!$puery->execute()) {
 									$error=$puery->errorInfo();
+									$allOperationsSucceeded = false;
 									$debug.="Error updating after link\n".$error[2];
 								}
 						}
@@ -400,6 +421,7 @@ if(checklogin()){
 
             if(!$query->execute()) {
               $error=$query->errorInfo();
+			  $allOperationsSucceeded = false;
               $debug="Error updating entries\n".$error[2];
             }
 		}
@@ -428,6 +450,11 @@ if(checklogin()){
 					}
 			}
 			*/
+			if(allOperationsSucceeded){
+				$pdo->commit();
+			}else{
+				$pdo->rollBack();
+			}
 		} catch(Exception $e)
 		{
 			$pdo->rollBack();

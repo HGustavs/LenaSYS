@@ -375,6 +375,7 @@ p {
 #announcementBox button.showAllAnnouncement{
   display: none;
 }
+
 #announcementBox table{
   width: 100%;
 
@@ -403,6 +404,7 @@ p {
 }
 #announcementBox table tr:nth-child(3n+1):not(:first-child){
   border-top: 1px solid var(--color-text-primary);
+
 }
 #announcementBox table tr td {
     max-width: 0;
