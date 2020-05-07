@@ -6020,11 +6020,6 @@ function getGroupsByTypes(typesToShow) {
 // submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
 //----------------------------------------------------------------------------------------
 function submitAppearanceForm() {
-    selected_objects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml) {
-            object.resizeUMLToMinHeight();
-        }
-    });
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
     }
