@@ -1661,7 +1661,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 /*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
   //Regex for 2 capital letters, 2 numbers
-  var Name = /^[A-Z]{2}\d{2}$/;
+  var Name = /^HT\d{2}$|^VT\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
   
