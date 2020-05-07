@@ -76,6 +76,36 @@
         ';
     ?>
 
+    <div id="diagram-header">
+        <div id=toolbar-switcher>DEV: All</div>
+        <div id="diagram-toolbar-container">
+            <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">File</span>
+            </div>
+            <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">Edit</span>
+            </div>
+            <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">View</span>
+            </div>
+            <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">Align</span>
+            </div>
+            <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">Distribute</span>
+            </div>
+            <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">Help</span>
+            </div>
+            <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">View layer</span>
+            </div>
+            <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">Write to layer</span>
+            </div>
+        </div>
+    </div>
+
     <!--<div id="contentDiagram">
         <div id="buttonDiv">
             <div class="document-settings">
