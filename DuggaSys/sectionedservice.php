@@ -47,6 +47,7 @@ $deadline=getOP('deadline');
 $jsondeadline = getOP('jsondeadline');
 $studentTeacher = false;
 $feedbackenabled =getOP('feedback');
+$feedbackquestion =getOP('feedbackquestion');
 
 $grpmembershp="UNK";
 $unmarked = 0;
@@ -275,12 +276,13 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled WHERE lid=:lid;");
+					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;");
 					$query->bindParam(':lid', $sectid);
 					$query->bindParam(':entryname', $sectname);
 					$query->bindParam(':comments', $comments);
 					$query->bindParam(':highscoremode', $highscoremode);
 					$query->bindParam(':feedbackenabled', $feedbackenabled);
+					$query->bindParam(':feedbackquestion', $feedbackquestion);
 
 					if ($grptype != "UNK") {
 						$query->bindParam(':groupkind', $grptype);
@@ -503,7 +505,7 @@ if($gradesys=="UNK") $gradesys=0;
 		$entries=array();
 
 		if($cvisibility){
-		  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, feedbackenabled FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+		  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
 			$result=$query->execute();
@@ -534,6 +536,7 @@ if($gradesys=="UNK") $gradesys=0;
 								'qstart' => $row['qstart'],
 								'grptype' => $row['groupKind'],
 								'feedbackenabled' => $row['feedbackenabled'],
+								'feedbackquestion' => $row['feedbackquestion']
 							)
 						);
 				}
@@ -760,7 +763,8 @@ if($gradesys=="UNK") $gradesys=0;
 			"groups" => $groups,
 		  "grpmembershp" => $grpmembershp,
 		  "grplst" => $grplst,
-		  "userfeedback" => $userfeedback
+		  "userfeedback" => $userfeedback,
+		  "feedbackquestion" => $feedbackquestion
 		);
 
 		echo json_encode($array);

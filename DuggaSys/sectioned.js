@@ -114,7 +114,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, feedbackenabled) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, feedbackenabled, feedbackquestion) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
@@ -205,8 +205,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#editSection").css("display", "flex");
   if(feedbackenabled == 1){
     $( "#fdbck" ).prop( "checked", true );
+    $("#inputwrapper-FeedbackQuestion").css("display","block");
+    $("#fdbckque").val(feedbackquestion);
   }else{
     $( "#fdbck" ).prop( "checked", false );
+    $("#inputwrapper-FeedbackQuestion").css("display","none");
   }
 }
 
@@ -314,7 +317,7 @@ function showCreateVersion() {
 }
 
 function createQuickItem() {
-  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "", 0);
+  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "", 0,null);
   newItem();
 }
 
@@ -373,6 +376,8 @@ function prepareItem() {
   } else{
     param.feedback = 0;
   }
+
+  param.feedbackquestion = $("#fdbckque").val();
 
   return param;
 }
@@ -970,7 +975,7 @@ function returnedSection(data) {
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
           str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['feedbackenabled']]) + ");' />";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['feedbackenabled'], item['feedbackquestion']]) + ");' />";
           str += "</td>";
         }
 
@@ -1848,4 +1853,12 @@ function createUserFeedbackTable(data){
 function contactStudent(entryname,username){
   
   window.location = "mailto:" + username + "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
+}
+
+function showFeedbackquestion(){
+  if($("#fdbck").prop('checked')){
+    $("#inputwrapper-FeedbackQuestion").css("display","block");
+  }else{
+    $("#inputwrapper-FeedbackQuestion").css("display","none");
+  }
 }

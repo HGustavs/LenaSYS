@@ -174,7 +174,7 @@ if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	  <div class="loginBox" style="max-width:400px;">
 			<div class='loginBoxheader'><h3>Kvitto och feedback - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
 			<div id='feedbackbox'>
-				<span>Hur skulle du betygsätta duggan?</span>
+				<span id='feedbackquestion'></span>
 					<div id="ratingbox">
 						<label for='r1'>1<br />
 							<input type='radio' id='r1' value='1' name="rating">

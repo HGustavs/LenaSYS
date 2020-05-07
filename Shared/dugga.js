@@ -1683,6 +1683,7 @@ function duggaFeedbackCheck(){
 function returnedFeed(data) {
 	if (data['userfeedback']== 1 ){
 		$("#feedbackbox").css("display","inline-block");
+		$("#feedbackquestion").html(data['feedbackquestion']);
 	} 
 }
 

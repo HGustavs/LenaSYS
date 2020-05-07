@@ -519,12 +519,13 @@ if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 }
 
 if(strcmp($opt,"CHECKFDBCK")==0){	
-	$query = $pdo->prepare("SELECT feedbackenabled FROM listentries WHERE lid=:moment AND cid=:cid;");
+	$query = $pdo->prepare("SELECT feedbackenabled, feedbackquestion FROM listentries WHERE lid=:moment AND cid=:cid;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':moment', $moment);
 	$query->execute();
 	$result = $query->fetch();
-	$userfeedback = $result['feedbackenabled'];	
+	$userfeedback = $result['feedbackenabled'];
+	$feedbackquestion = $result['feedbackquestion'];		
 }
 
 if(strcmp($opt,"SENDFDBCK")==0){
@@ -559,7 +560,8 @@ $array = array(
 		"deadline" => $duggainfo['deadline'],
 		"release" => $duggainfo['qrelease'],
 		"files" => $files,
-		"userfeedback" => $userfeedback
+		"userfeedback" => $userfeedback,
+		"feedbackquestion" => $feedbackquestion,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
