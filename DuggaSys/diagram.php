@@ -108,7 +108,30 @@
     <div id="diagram-container">
         <div id="diagram-sidebar-container">
             <div id="diagram-tools-container">
-                <div class="diagram-sidebar-section"></div>
+                <div class="diagram-sidebar-section">
+                    <div class="diagram-sidebar-label">Tools</div>
+                    <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute (Shift + A)">
+                        <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
+                    </button>
+                    <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity (Shift + E)">
+                        <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
+                    </button>
+                    <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation (Shift + R)">
+                        <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
+                    </button>
+                    <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class (Shift + C)">
+                        <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
+                    </button>
+                    <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line (Shift + L)">
+                        <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
+                    </button>
+                    <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free (Shift + F)">
+                        <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
+                    </button>
+                    <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed' data="Draw Text (Shift + T)">
+                        <img class="toolboxButtons invert-color" src="../Shared/icons/textbox.svg">
+                    </button>
+                </div>
                 <div class="diagram-sidebar-section"></div>
             </div>
         </div>

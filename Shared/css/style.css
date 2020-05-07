@@ -2131,16 +2131,15 @@ div.submit-button:disabled {
 
 .buttonsStyle {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
   border: 1px solid #614875;
-  margin: 5px auto;
+  margin: 5px;
   transition: 0.25s background-color;
-  display: inline;
   border-radius: 4px;
   cursor: pointer;
+  height: 32px;
+  width: 50px;
 }
 
 .buttonsStyle:hover {
@@ -2151,7 +2150,6 @@ div.submit-button:disabled {
   outline:0;
 }
 
-.buttonsStyle img,
 #moveButton img {
   width: 50px;
   height: 40px;
@@ -2208,8 +2206,8 @@ div.submit-button:disabled {
   border: 1px solid #614875;
 }
 
-#contentDiagram .toolboxButtons {
-  width: 35px !important;
+.toolboxButtons {
+  width: 100% !important;
   height: 25px !important;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -2218,16 +2216,8 @@ div.submit-button:disabled {
   -ms-user-select: none;
 }
 
-#textButton {
-  width: 35px;
-  height: 22px;
-  margin-top: 3px;
+.invert-color {
   filter: invert(100%);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 #moveButton img {
