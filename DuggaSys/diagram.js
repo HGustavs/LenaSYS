@@ -3592,17 +3592,15 @@ function setOrientationIcon(element, check) {
 // DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
 
-const toolbarER = currentMode.er;
-const toolbarUML = currentMode.uml;
-const toolbarDeveloperMode = currentMode.dev; // Ta bort dessa
-
 //----------------------------------------------------------------------
-// switchToolbar: function for switching the toolbar state (All, ER, UML),
-//                not sure what the numbers 0 an 3 mean
+// switchToolbar: function for switching the toolbar state (All, ER, UML)
 //----------------------------------------------------------------------
 
 function switchToolbar(mode) {
     /*
+        
+
+
         1. Välj mode. Två ifsatser - 
         UML 
             element + checkbox i menyn? allt i samma funktion eller uppdelat? Känns lättare att ha allting samlat
@@ -3613,71 +3611,63 @@ function switchToolbar(mode) {
 
         Allting som ska visas hela tiden
 
+
+
+        ----
+
+        -Funktioner som anropas vid tryckning i menyn kan tas bort. 
+        -Skapa ny funktion för hideUMLElements ish? Denna funktion kommer bli lång 
+            -Lägg till event som parameter i denna funktion så kan event.stoppropagation anropas för dev mode
+        -
     */
-  if(mode == "ER") { 
-      toolbarState = currentMode.er;// Känns som rimligare format än det som står under. Ta bort constants
-  } else if(mode == currentMode.uml) {
-      toolbarState = toolbarUML;
-  } else if(mode == currentMode.dev) {
-      toolbarState = toolbarDeveloperMode;
-  }
+   
+    if(mode == "ER") { 
+        toolbarState = currentMode.er;
+    } else if(mode == "UML") {
+        toolbarState = currentMode.uml;
+    } else if(mode == "Dev") {
+        toolbarState = currentMode.dev;
+    }
 
   document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
-
   localStorage.setItem("toolbarState", toolbarState);
-  //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == toolbarER) {
+  
+  // Hide/show relevant toolbar buttons
+  if(toolbarState != currentMode.dev) {
     $(".toolbar-drawer").hide();
-    $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
     $(".tlabel").hide();
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
     $(".buttonsStyle").hide();
-    $("#linebutton").show();
-    $("#attributebutton").show();
-    $("#entitybutton").show();
-    $("#relationbutton").show();
-    $("#drawerDraw").show();
-    $("#labelDraw").show();
-    $("#drawfreebutton").show();
-    $("#drawtextbutton").show();
-  }
-  else if (toolbarState == toolbarUML) {
-    $(".toolbar-drawer").hide();
-    $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
-    $("#linebutton").show();
-    $("#classbutton").show();
-    $("#drawtextbutton").show();
-  } else if(toolbarState == toolbarDeveloperMode) {
+    if(toolbarState == currentMode.er){
+        $("#attributebutton").show();
+        $("#entitybutton").show();
+        $("#relationbutton").show();
+        $("#labelDraw").show();
+        $("#drawfreebutton").show();
+    } else if(toolbarState == currentMode.uml) {
+        $("#classbutton").show();
+    }
+  } else {
     $(".toolbar-drawer").show();
-    $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
     $(".tlabel").show();
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
     $(".buttonsStyle").show();
-    $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-    $("#drawerDraw").show();
     $("#labelDraw").show();
     $("#drawfreebutton").show();
-    $("#drawtextbutton").show();
   }
+
+  // Global, always shown 
+  $("#labelCreate").show();
+  $("#labelTools").show();
+  $("#labelUndo").show();
+  $("#linebutton").show();
+  $("#drawerCreate").show();
+  $("#drawerDraw").show();
+  $("#drawerTools").show(); 
+  $("#drawerUndo").show();
+  $("#drawtextbutton").show();
+
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
 
