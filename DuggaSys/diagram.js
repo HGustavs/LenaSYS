@@ -5372,6 +5372,9 @@ function movemode(e, t) {
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
+        if (uimode == "CreateFigure") {
+            cancelFreeDraw();
+        }
         buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
