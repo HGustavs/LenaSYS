@@ -128,6 +128,7 @@ $sql = '
 	CREATE TABLE IF NOT EXISTS userLogEntries (
 		id INTEGER PRIMARY KEY,
 		uid INTEGER(10),
+		username VARCHAR(15),
 		eventType INTEGER,
 		description VARCHAR(50),
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -197,9 +198,10 @@ function logEvent($eventType, $description) {
 // logUserEvent - Creates a new userbased event in the log.db database.
 //------------------------------------------------------------------------------------------------
 
-function logUserEvent($uid, $eventType, $description) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description, userAgent, remoteAddress) VALUES (:uid, :eventType, :description, :userAgent, :remoteAddress)');
+function logUserEvent($uid, $username, $eventType, $description) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, username, eventType, description, userAgent, remoteAddress) VALUES (:uid, :username, :eventType, :description, :userAgent, :remoteAddress)');
 	$query->bindParam(':uid', $uid);
+	$query->bindParam(':username', $username);
 	$query->bindParam(':eventType', $eventType);
 	$query->bindParam(':description', $description);
 	$query->bindParam(':userAgent', $_SERVER['HTTP_USER_AGENT']);

@@ -38,6 +38,16 @@ if (isset($_SESSION['uid'])) {
     $userid = "UNK";
 }
 
+// Gets username based on uid
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
 $log_uuid = getOP('log_uuid');
 
 $filo = print_r($_FILES, true);
@@ -186,19 +196,19 @@ if ($storefile) {
 
                     // Logging for version local files
                     $description="VersionLocal"." ".$fname;
-                    logUserEvent($userid, EventTypes::AddFile, $description);
+                    logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 } else if ($kind == "MFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
                     
                     // Logging for course local files
                     $description="CourseLocal"." ".$fname;
-                    logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
+                    logUserEvent($userid, $username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;
 
                     // Logging for global files
                     $description="Global"." ".$fname;
-                    logUserEvent($userid, EventTypes::AddFile, $description);
+                    logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 }
 
                 // check if upload is successful

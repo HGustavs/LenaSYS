@@ -44,6 +44,16 @@ if(isset($_SESSION['uid'])){
 $ha=null;
 $debug="NONE!";
 
+// Gets username based on uid
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php",$userid,$info);
@@ -76,7 +86,7 @@ if(checklogin()){
 
 			// Logging for creating new course
 			$description=$coursename." ".$coursecode." "."Hidden";
-			logUserEvent($userid, EventTypes::AddCourse, $description);
+			logUserEvent($userid, $username, EventTypes::AddCourse, $description);
 
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
@@ -130,7 +140,7 @@ if(checklogin()){
 
 			// Logging for create a fresh course version
 			$description=$cid." ".$versid;
-			logUserEvent($userid, EventTypes::AddCourseVers, $description);
+			logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
 
 
 		}else if(strcmp($opt,"UPDATEVRS")===0){
@@ -188,7 +198,7 @@ if(checklogin()){
 
 				// Logging for creating a copy of course version
 				$description=$cid." ".$versid;
-				logUserEvent($userid, EventTypes::AddCourseVers, $description);
+				logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
 
 				// Duplicate duggas and dugga variants
 				$duggalist=array();
@@ -463,7 +473,7 @@ if(checklogin()){
 			
 			// Logging for editing of course
 			$description=$coursename." ".$coursecode." ".$visibilityName;
-			logUserEvent($userid, EventTypes::EditCourse, $description);
+			logUserEvent($userid, $username, EventTypes::EditCourse, $description);
 
 		}else if(strcmp($opt,"SETTINGS")===0){
 		$query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
