@@ -491,7 +491,7 @@ function accessCourse() {
 function returnedCourse(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   window.setTimeout(function () {
-    changeURL("sectioned.php?courseid=" + querystring["courseid"] +
+    changeURL("","sectioned.php?courseid=" + querystring["courseid"] +
       "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
   }, 1000);
 }
