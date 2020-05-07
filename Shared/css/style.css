@@ -4901,9 +4901,17 @@ only screen and (max-device-width: 320px) {
 
 /* Diagram */
 
+#diagram-header, #diagram-container {
+  --header-height: 50px;
+  --diagram-header-height: 36px;
+  --ruler-size: 32px;
+  --diagram-sidebar-width: 60px;
+  --canvas-margin: 8px;
+}
+
 #diagram-header {
-  margin-top: 50px;
-  height: 36px;
+  margin-top: var(--header-height);
+  height: var(--diagram-header-height);
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -4913,7 +4921,8 @@ only screen and (max-device-width: 320px) {
   font-size: 11px;
   color: #c0c0c0;
   font-weight: bold;
-  padding: 0 10px;
+  text-align: center;
+  width: var(--diagram-sidebar-width);
 }
 
 #diagram-toolbar-container {
@@ -4923,13 +4932,13 @@ only screen and (max-device-width: 320px) {
 }
 
 #diagram-container {
-  height: calc(100vh - 50px - 36px);
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height));
   width: 100%;
   display: flex;
 }
 
 #diagram-sidebar-container {
-  width: 58px;
+  width: var(--diagram-sidebar-width);
 }
 
 #diagram-tools-container {
@@ -5036,14 +5045,14 @@ only screen and (max-device-width: 320px) {
 #diagram-content {
   display: flex;
   flex-direction: column;
-  width: calc(100vw - 58px);
+  width: calc(100vw - var(--diagram-sidebar-width));
 }
 
 #diagram-canvas-container {
   position: relative;
   margin: 0 8px 8px 0;
   background-color: #ffffff;
-  height: calc(100vh - 50px - 36px - 8px);
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--canvas-margin));
 }
 
 #diagram-canvas {
