@@ -82,7 +82,7 @@ function loadGeneralStats() {
 				var date = new Date(activeUsers[stat].time + ' GMT');
 				tableData.push([
 					activeUsers[stat].username,
-					activeUsers[stat].refer,
+					'<a href="'+activeUsers[stat].refer+'" target="_blank">'+activeUsers[stat].refer+'</a>',
 					timeSince(date)
 				]);
 			}
