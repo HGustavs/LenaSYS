@@ -175,11 +175,12 @@ function returned(data)
 		if (boxtype === "CODE") {
 			// Print out code example in a code box
 			var boxtypeCodebox = document.getElementById(contentid);
+			
 			boxtypeCodebox.removeAttribute("contenteditable");
 			boxtypeCodebox.classList.remove("descbox");
 			boxtypeCodebox.classList.add("codebox");
 			createboxmenu(contentid, boxid, boxtype);
-
+			
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
 			// Setting boxmenuheight to 0, possible cause to example malfunction?
@@ -197,6 +198,13 @@ function returned(data)
 
 			// set font size
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
+
+			// Set scrollbars to hidden if the content in the box takes up less space than the size of the box.
+			var contentHeight = 15 * (lineno / 2);
+			if(contentHeight < $("#box" + boxid).height()){
+				$("#box" + boxid).css("overflow", "hidden");
+			}
+
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
 
@@ -3240,6 +3248,7 @@ function resizeBoxes(parent, templateId) {
 				$(boxValArray['box3']['id']).css("left", " ");
 				$(boxValArray['box4']['id']).css("left", " ");
 				$(boxValArray['box5']['id']).css("left", " ");
+				
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3876,7 +3885,25 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
 	}
 	
-
+	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
+	if(document.querySelector('#textwrapper' + boxOne).childElementCount * 15 > $(boxValArray['box' + boxOne]['id']).height() - 44){
+		$("#box" + boxOne).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxOne).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxTwo).childElementCount * 15 > $(boxValArray['box' + boxTwo]['id']).height() - 44){
+		$("#box" + boxTwo).css("overflow", "auto");
+	} else{
+		$("#box" + boxTwo).css("overflow", "hidden");
+	}
+	// This function can only decrease the height of the last two boxes, therefore it can only set scrollbars to auto and not hidden.
+	if(document.querySelector('#textwrapper' + boxThree).childElementCount * 15 > $(boxValArray['box' + boxThree]['id']).height() - 44){
+		$("#box" + boxThree).css("overflow", "auto");
+	} 
+	if(document.querySelector('#textwrapper' + boxFour).childElementCount * 15 > $(boxValArray['box' + boxFour]['id']).height() - 44){
+		$("#box" + boxFour).css("overflow", "auto");
+	}
 
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
@@ -3960,6 +3987,25 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 
 	}
 
+	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
+	if(document.querySelector('#textwrapper' + boxTwo).childElementCount * 15 > $(boxValArray['box' + boxTwo]['id']).height() - 44){
+		$("#box" + boxTwo).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxTwo).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxThree).childElementCount * 15 > $(boxValArray['box' + boxThree]['id']).height() - 44){
+		$("#box" + boxThree).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxThree).css("overflow", "hidden");
+	}
+	// This function can only decrease the height of the last box, therefore it can only set scrollbars to auto and not hidden.
+	if(document.querySelector('#textwrapper' + boxFour).childElementCount * 15 > $(boxValArray['box' + boxFour]['id']).height() - 44){
+		$("#box" + boxFour).css("overflow", "auto");
+		
+	}
+
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
 	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
@@ -4007,6 +4053,20 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 
 		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");
+	}
+
+	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
+	if(document.querySelector('#textwrapper' + boxThree).childElementCount * 15 > $(boxValArray['box' + boxThree]['id']).height() - 44){
+		$("#box" + boxThree).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxThree).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxFour).childElementCount * 15 > $(boxValArray['box' + boxFour]['id']).height() - 44){
+		$("#box" + boxFour).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxFour).css("overflow", "hidden");
 	}
 
 	//Update array
