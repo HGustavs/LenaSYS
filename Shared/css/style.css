@@ -3023,6 +3023,69 @@ padding: 10px;
   color: gray;
   text-align: center;
 }
+#resultedLegendContainer{
+  position: fixed;
+  top: 80px;
+  right:-323px;
+  z-index: 2000;
+  transition: right 0.3s, top 0.3s;
+}
+
+#legendBtn{
+  height: 31px;
+  width: 36px;
+  background-color:#ccc;
+  float: left;
+  padding-top: 7px;
+  padding-right: 4px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 17px 0px 0px 17px;
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -webkit-user-select: none;     
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.legendList{
+  width: 280px;
+  float: right;
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  list-style: none;
+  background-color: #ddd;
+  margin: 0px;
+  border-radius: 0px 0px 0px 5px;
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.legendListItem{
+  padding-bottom: 8px;
+}
+
+.legendList div{
+  display: inline-block;
+}
+
+.legendList div:first-of-type{
+  font-weight: bold;
+}
+
+.legendListItem img{
+  width: 24px;
+  height: 24px;
+}
+
+.legendListItem div:first-of-type{
+  width: 24px;
+  height: 14px;
+}
 
 #laddate {
   border: 1px solid var(--color-border);
