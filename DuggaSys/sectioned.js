@@ -1617,6 +1617,12 @@ $(window).load(function () {
 function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
 }
+
+//sets author for announcement
+function setAnnouncementAuthor(){
+  $("#author").val($("#userName").html());
+  
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
@@ -1680,7 +1686,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 /*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
   //Regex for 2 capital letters, 2 numbers
-  var Name = /^[A-Z]{2}\d{2}$/;
+  var Name = /^HT\d{2}$|^VT\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
   

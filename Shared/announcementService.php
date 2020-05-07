@@ -9,14 +9,16 @@ $coursevers = $_SESSION["coursevers"];
 $coursename = $_SESSION["coursename"];
 $title = $_POST['title'];
 $message = $_POST['announcementMsg'];
+$author = $_POST['author'];
 
-$query = $pdo->prepare("INSERT INTO announcement(courseid, courseversion, coursename, title, message) VALUES (:courseid,:courseversion, :coursename, :title, :message);");
+$query = $pdo->prepare("INSERT INTO announcement(courseid, courseversion, coursename, title, message, author) VALUES (:courseid,:courseversion, :coursename, :title, :message, :author);");
 
 $query->bindParam(':courseid', $courseid);
 $query->bindParam(':courseversion', $coursevers);
 $query->bindParam(':coursename', $coursename);
 $query->bindParam(':title', $title);
 $query->bindParam(':message', $message);
+$query->bindParam(':author', $author);
 
 $query->execute(); 
 

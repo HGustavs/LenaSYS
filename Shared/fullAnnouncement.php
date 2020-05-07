@@ -1,6 +1,6 @@
 <div id="fullAnnnouncementOverlay">
 	<div id="fullAnnouncement">
-		<div>				
+		<div>
 			<?php
 
 			$announcementid = $_GET['announcementid'];
@@ -14,7 +14,7 @@
 					echo "<p>".ucfirst(strtolower($message))."</p>";
 					echo "<p><b>Posted on:</b><br>".$announceTime."</p>";
 
-				}    
+				}
 			}
 
 			?>

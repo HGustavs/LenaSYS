@@ -13,6 +13,8 @@
    		<hr>
    	</div>
     <div class="modal-container">
+
+      <input type="text" name="author" id="author" style="display: none;">
       <label for="title"><b>Title</b></label>
       <input type="text" placeholder="Enter a title for the announcement" name="title" required>
       <label for="announcementMsg"><b>Message</b></label>
