@@ -915,10 +915,10 @@ function compare(a, b) {
 					if (typeof tempB === "number") {
 						tempB = "";
 					}
-				}else if(col=="version"){
-						tempA=tempA.version;
-						tempB=tempB.version;
-				}					
+				}else if(col=="access") {
+					tempA=tempA.access;
+					tempB=tempB.access;
+				}
 				return tempA.toLocaleUpperCase().localeCompare(tempB.toLocaleUpperCase(), "sv");
 		}else if(col=="lastmodified"){
 				tempA=Date.parse(tempA);
