@@ -2328,6 +2328,10 @@ function minimizeBoxes(boxid) {
 				$(boxValArray['box' + i]['id']).width("50%");
 				$(boxValArray['box' + boxid]['id']).width("100%");	
 			}
+			thisBox1.classList.remove('hidden');
+			thisBox2.classList.remove('hidden');
+			thisBox1.classList.remove('visuallyhidden');
+			thisBox2.classList.remove('visuallyhidden');
 		}
 		else{
 			for(i = 1; i <= 3; i++){
@@ -2345,6 +2349,35 @@ function minimizeBoxes(boxid) {
 		}	
 	}
 
+    //for template 5
+    if(templateid == 5 && isMobile == false){
+        if(boxid == 1 || boxid == 3){
+            $(boxValArray['box' + (boxid + 1)]['id']).width("100%");
+            $(boxValArray['box' + boxid]['id']).width("10%");
+            thisBox2.classList.remove('hidden');
+            thisBox4.classList.remove('hidden');
+            thisBox2.classList.remove('visuallyhidden');
+            thisBox4.classList.remove('visuallyhidden');
+            setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20);    
+        }
+        else{
+            $(boxValArray['box' + (boxid - 1)]['id']).width("100%");
+            $(boxValArray['box' + boxid]['id']).width("10%");
+            thisBox1.classList.remove('hidden');
+            thisBox3.classList.remove('hidden');
+            thisBox1.classList.remove('visuallyhidden');
+            thisBox3.classList.remove('visuallyhidden');
+            setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20);    
+        }
+
+	}
+
 
 
 	//for template 8
@@ -2354,6 +2387,10 @@ function minimizeBoxes(boxid) {
 				$(boxValArray['box' + i]['id']).width("100%");
 				$(boxValArray['box' + boxid]['id']).width("10%");	
 			}
+			thisBox2.classList.remove('hidden');
+			thisBox3.classList.remove('hidden');
+			thisBox2.classList.remove('visuallyhidden');
+			thisBox3.classList.remove('visuallyhidden');
 			setTimeout(function () {
 				thisBox.classList.add('hidden');
 				thisBox.classList.add('visuallyhidden');
