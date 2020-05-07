@@ -2346,6 +2346,26 @@ function minimizeBoxes(boxid) {
 	}
 
 
+
+	//for template 8
+	if(templateid == 8 && isMobile == false){
+		if(boxid == 1){
+			for(i = 1; i <= 3; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");	
+			}
+			setTimeout(function () {
+				thisBox.classList.add('hidden');
+				thisBox.classList.add('visuallyhidden');
+			}, 20);	
+		}
+		else{
+			for(i = 1; i <= 3; i++){
+				$(boxValArray['box' + i]['id']).height("100%");
+				$(boxValArray['box' + boxid]['id']).height("10%");	
+			}
+		}
+	}
 }
 
 function hideCopyButtons(templateid, boxid) {
