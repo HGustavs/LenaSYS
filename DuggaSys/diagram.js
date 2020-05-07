@@ -2776,12 +2776,6 @@ function resetSerialNumbers(){
     }
 }
 
-// the purpose is not very clear
-var consloe = {};
-consloe.log = function(gobBluth) {
-    document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
-}
-
 //------------------------------------------------------------------------------
 // developerMode:
 // this function show and hides developer options.

@@ -75,8 +75,8 @@
             <option value=\'1..*\'>1..*</option>
         ';
     ?>
-    <!-- content START -->
-    <div id="contentDiagram">
+
+    <!--<div id="contentDiagram">
         <div id="buttonDiv">
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
@@ -89,31 +89,24 @@
                                     <h4 class="label tlabel" id="labelTools" style ="text-align: center">Tools</h4>
                                     <div class="toolbar-drawer" id="drawerCreate">
                                         <div class="tooltipdialog">
-                                            <!-- ER attribute -->
                                             <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute (Shift + A)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                             </button>
-                                            <!-- ER entity -->
                                             <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity (Shift + E)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
                                             </button>
-                                            <!-- ER Relation -->
                                             <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation (Shift + R)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
                                             </button>
-                                            <!-- UML Create Class -->
                                             <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class (Shift + C)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
                                             </button>
-                                            <!-- Create Line -->
                                             <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line (Shift + L)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                             </button>
-                                            <!-- Draw Free -->
                                             <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free (Shift + F)">
                                                 <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
                                             </button>
-                                            <!-- Create Text -->
                                             <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed' data="Draw Text (Shift + T)">
                                                 <img id='textButton' src="../Shared/icons/textbox.svg">
                                             </button>
@@ -123,11 +116,9 @@
                                 <div class="diagramLabelToolContainer">
                                     <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                                     <div class="toolbar-undo-redo-drawer" id="drawerUndo">
-                                        <!-- Undo -->
                                         <button class="diagramAction" id="undoButton" onclick='undoDiagram(event)' data="Undo (Ctrl + Z)">
                                           <img src="../Shared/icons/undo.svg">
                                         </button>
-                                        <!-- Redo -->
                                         <button class="diagramAction" id="redoButton" onclick='redoDiagram(event)' data="Redo (Ctrl + Y)">
                                           <img src="../Shared/icons/redo.svg">
                                         </button>
@@ -473,23 +464,6 @@
                         <span id="errorMSG"></span>
                     </div>
                 </div>
-
-                <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
-                <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
-
-                <!--
-                    Needs to be implemented in the new navbar
-
-                   <select id='download' onchange='downloadMode(this)'>
-                        <option selected='selected' disabled>State</option>
-                        <option value='getImage'>getImage</option>
-                        <option value='Save'>Save</option>
-                        <option value='Load'>Load</option>
-                    </select>
-
-                    <input id='fileid' type='file' name='file_name' hidden multiple/>
-                -->
-
             </div>
             <div id="diagramCanvasContainer">
                <canvas id="diagramCanvas"></canvas>
@@ -513,16 +487,9 @@
                     <span id="zoomV"></span>
                 </div>
             </div>
-            <div id="consoleDiv">
-                <!--
-                    Can be used for a later date. Not needed now.
-                <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
-                <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
-                <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
-                -->
-            </div>
         </div>
-    </div>
+    </div>-->
+
     <!-- The Appearance menu. Default state is display: none; -->
     <div id="appearance" class='loginBoxContainer'>
         <div id="appearanceFormContainer" class='loginBox'>
