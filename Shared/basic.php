@@ -182,8 +182,60 @@ $sql = '
 		quizid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
+	CREATE TABLE IF NOT EXISTS userHistory (
+		refer TEXT,
+		userid INTEGER(10),
+		username VARCHAR(50),
+		IP TEXT,
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
 ';
 $log_db->exec($sql);
+
+//------------------------------------------------------------------------------------------------
+// Logging of user history, used to keep track of who is online and where they are on the site
+//------------------------------------------------------------------------------------------------
+
+$refer = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+if (!strstr(strtolower($refer), 'service')) {
+	$query = $log_db->prepare('INSERT INTO userHistory (refer, userid, username, IP) VALUES (:refer, :userid, :username, :IP)');
+
+	$query->bindParam(':refer', $refer);
+
+	if(isset($_SESSION['loginname']) && isset($_SESSION['uid'])) {
+		$username = $_SESSION['loginname'];
+		$userid = $_SESSION['uid'];
+	} else {
+		if(!isset($_COOKIE['cookie_guest'])) {
+			$username = 00;
+		} else {
+			$username = $_COOKIE['cookie_guest'];
+		}
+		$userid = 00;
+	}
+
+	$IP = "";
+	if(isset($_SERVER['REMOTE_ADDR'])){
+		$IP.=$_SERVER['REMOTE_ADDR'];
+	}
+
+	if(isset($_SERVER['HTTP_CLIENT_IP'])){
+		$IP.=" ".$_SERVER['HTTP_CLIENT_IP'];
+	}
+	
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+		$IP.=" ".$_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+
+	$query->bindParam(':userid', $userid);
+	$query->bindParam(':username', $username);
+	$query->bindParam(':IP', $IP);
+
+	if($username != "00") {
+		$query->execute();
+	}
+}
+
 //------------------------------------------------------------------------------------------------
 // logEvent - Creates a new log entry in the log database (log.db, located at the root directory)
 //------------------------------------------------------------------------------------------------
