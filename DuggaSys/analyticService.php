@@ -95,6 +95,7 @@ function generalStats() {
 
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
+	$generalStats['stats']['numOnline'] = count($activeUsers);
 	$generalStats['stats']['activeUsers'] = $activeUsers;
 
 	// Disk space calculation

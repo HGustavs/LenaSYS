@@ -56,10 +56,8 @@ function loadAnalytics(q, cb) {
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
 
-		$('#analytic-info').append("<h1>General statistics about the system.</h1>");
-
+		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>General statistics about the system.</p>");
 		// Login fails
-		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Login Fails</p>");
 		var tableData = [["Stat", "Value"]];
 		var loginFails = data['stats']['loginFails'];
 		for (var stat in loginFails) {
@@ -70,19 +68,25 @@ function loadGeneralStats() {
 				]);
 			}
 		}
+
+		// Number of online users last 15 minutes
+		tableData.push([
+			'Online users the last 15 minutes',
+			data['stats']['numOnline']
+		]);
+
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Active users
 		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Active users the last 15 minutes</p>");
 		var tableData = [["User", "Page", "Last seen"]];
 		var activeUsers = data['stats']['activeUsers'];
-		console.log(activeUsers)
 		for (var stat in activeUsers) {
 			if (activeUsers.hasOwnProperty(stat)) {
 				var date = new Date(activeUsers[stat].time + ' GMT');
 				tableData.push([
 					activeUsers[stat].username,
-					'<a href="'+activeUsers[stat].refer+'" target="_blank">'+activeUsers[stat].refer+'</a>',
+					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
 					timeSince(date)
 				]);
 			}
