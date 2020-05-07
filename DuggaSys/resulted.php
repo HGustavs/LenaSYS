@@ -55,11 +55,11 @@ pdoConnect();
     </div>
       <div id="ladexportContainer">
       <div class="resultedFormsFlex">
-        <label>Delkurs</label>
+        <label>Subcourse</label>
         <select id="ladselect"></select>
       </div>
       <div class="resultedFormsFlex">
-        <label>Betygsskala</label>
+        <label>Grade scale</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
           <option value="U-G-VG" selected>U-G-VG</option>
@@ -68,7 +68,7 @@ pdoConnect();
         </select>
       </div>
       <div class="resultedFormsFlex">
-        <label>Betygsdatum</label>
+        <label>Date of grading</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
 		<div class="resultedFormsFlex">
@@ -84,7 +84,7 @@ pdoConnect();
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
         <div class="resultedFormsFlex">
-				<label>Filtrera efter</label>
+				<label>Filter by</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>none</option>
 					<option value="Filter-G">G</option>
