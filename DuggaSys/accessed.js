@@ -269,6 +269,7 @@ function changeOptDivStudent(e,value){
 	keyvalue = e.target.getAttribute('data-value');
 	
 	obj = {
+		uid: paramlist[1],
 		[key]: keyvalue
 	}
 	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
@@ -330,17 +331,15 @@ function renderCell(col, celldata, cellid) {
 		}
 		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+className+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
+		var examinerName = "";
 		for(i = 0; i < filez['teachers'].length; i++){
 			if(obj.examiner == filez['teachers'][i].uid){
 				examinerName = filez['teachers'][i].name;
 			}
 		}
-		if(examinerName == null){
-			examinerName = "None";
-		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
-		var versname = "UNK";
+		var versname = "";
 		for (var i = 0; i < filez['courses'].length; i++) {
 			if (obj.vers == filez['courses'][i]['vers']) {
 				versname = filez['courses'][i]['versname'];
