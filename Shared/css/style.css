@@ -390,7 +390,15 @@ p {
   padding: 0 0 0 10px;
 
 }
-#announcementBox table tr:nth-child(2n):not(:last-child){
+
+#announcementBox table .authorProfile{
+  padding-top: 10px;
+}
+.fa-user{
+  margin-right:5px;
+  
+}
+#announcementBox table tr:nth-child(3n):not(:last-child){
   border-bottom: 1px solid var(--color-text-primary);
 }
 #announcementBox table tr td {
