@@ -187,8 +187,8 @@ $codeLinkQuery->execute();
                     }
                     if(isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w')){
                     echo '
-                    <option value="MFILE">Course</option>
-                    
+                    <option value="MFILE">Course Local</option>
+                    <option value="LFILE">Version Local</option>
                     ';
                     }
                     ?>
