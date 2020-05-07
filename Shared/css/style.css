@@ -5193,11 +5193,15 @@ only screen and (max-device-width: 320px) {
 }
 
 .diagram-sidebar-section {
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .diagram-sidebar-label {
-
+  font-size: 11px;
+  margin-top: 8px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 #diagram-content {
