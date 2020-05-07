@@ -901,6 +901,8 @@ function compare(a, b) {
 				}else if(col=="examiner"){
 					tempA = tempA.examiner;
 					tempB = tempB.examiner;
+					if(tempA==null) return -1;
+					if(tempB==null) return 1;
 					for (var i =0; i < filez['teachers'].length; i++) {
 						if (tempA == filez['teachers'][i].uid) {
 							tempA = filez['teachers'][i].name;
