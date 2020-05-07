@@ -1617,7 +1617,7 @@ $(window).load(function () {
 
   var adminLoggedin = $("#adminLoggedin").val();
   if(adminLoggedin == 'yes'){
-    $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>');
+    $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create an new announcement</button>');
   }
   $("#newAnnouncement").click(function(){
     $("#modal").toggle();
