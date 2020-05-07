@@ -105,6 +105,19 @@
             </div>
         </div>
     </div>
+    <div id="diagram-container">
+        <div id="diagram-sidebar-container">
+            <div id="diagram-tools-container">
+                <div class="diagram-sidebar-section"></div>
+                <div class="diagram-sidebar-section"></div>
+            </div>
+        </div>
+        <div id="diagram-content">
+            <div id="diagram-canvas-container">
+                <div id="diagram-canvas"></div>
+            </div>
+        </div>
+    </div>
 
     <!--<div id="contentDiagram">
         <div id="buttonDiv">
