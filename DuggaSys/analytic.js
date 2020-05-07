@@ -55,11 +55,12 @@ function loadAnalytics(q, cb) {
 //------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
-		$('#analytic-info').append("<p>General statistics about the system.</p>");
 
-		var tableData = [["Stat", "Value"]];
+		$('#analytic-info').append("<h1>General statistics about the system.</h1>");
 
 		// Login fails
+		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Login Fails</p>");
+		var tableData = [["Stat", "Value"]];
 		var loginFails = data['stats']['loginFails'];
 		for (var stat in loginFails) {
 			if (loginFails.hasOwnProperty(stat)) {
@@ -69,6 +70,24 @@ function loadGeneralStats() {
 				]);
 			}
 		}
+		$('#analytic-info').append(renderTable(tableData));
+		
+		// Active users
+		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Active users the last 15 minutes</p>");
+		var tableData = [["User", "Page", "Time"]];
+		var activeUsers = data['stats']['activeUsers'];
+		console.log(activeUsers)
+		for (var stat in activeUsers) {
+			if (activeUsers.hasOwnProperty(stat)) {
+				tableData.push([
+					activeUsers[stat].username,
+					activeUsers[stat].refer,
+					activeUsers[stat].time
+				]);
+			}
+		}
+
+		$('#analytic-info').append(renderTable(tableData));
 
 		// Disk usage
 		var chartData = [];
@@ -96,10 +115,7 @@ function loadGeneralStats() {
 				value: data.ram.freePercent
 			});
 			drawPieChart(chartData, 'RAM Usage on the Server', true);
-		}
-
-		$('#analytic-info').append(renderTable(tableData));
-		
+		}		
 	});
 }
 
