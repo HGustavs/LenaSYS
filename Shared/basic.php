@@ -149,22 +149,6 @@ $sql = '
 		IP TEXT,
 		browser VARCHAR(100)
 	);
-	CREATE TABLE IF NOT EXISTS clickLogEntries (
-		id INTEGER PRIMARY KEY,
-		target TEXT,
-		mouseX TEXT,
-		mouseY TEXT,
-		clientResX TEXT,
-		clientResY TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE IF NOT EXISTS mousemoveLogEntries (
-		id INTEGER PRIMARY KEY,
-		page TEXT,
-		mouseX TEXT,
-		mouseY TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
 	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
 		id INTEGER PRIMARY KEY,
 		type INTEGER,
@@ -302,32 +286,6 @@ function logServiceEvent($uuid, $eventType, $service, $userid, $info, $timestamp
 	$query->bindParam(':operatingSystem', $currentOS);
 	$currentBrowser = getBrowser();
 	$query->bindParam(':browser', $currentBrowser);
-	$query->execute();
-}
-
-//------------------------------------------------------------------------------------------------
-// logClickEvent - Creates a new click event in the log.db database.
-//------------------------------------------------------------------------------------------------
-
-function logClickEvent($target, $mouseX, $mouseY, $clientResX, $clientResY) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO clickLogEntries (target, mouseX, mouseY, clientResX, clientResY) VALUES (:target, :mouseX, :mouseY, :clientResX, :clientResY)');
-	$query->bindParam(':target', $target);
-	$query->bindParam(':mouseX', $mouseX);
-	$query->bindParam(':mouseY', $mouseY);
-	$query->bindParam(':clientResX', $clientResX);
-	$query->bindParam(':clientResY', $clientResY);
-	$query->execute();
-}
-
-//------------------------------------------------------------------------------------------------
-// logMousemoveEvent - Creates a new click event in the log.db database.
-//------------------------------------------------------------------------------------------------
-
-function logMousemoveEvent($page, $mouseX, $mouseY) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO mousemoveLogEntries (page, mouseX, mouseY) VALUES (:page, :mouseX, :mouseY)');
-	$query->bindParam(':page', $page);
-	$query->bindParam(':mouseX', $mouseX);
-	$query->bindParam(':mouseY', $mouseY);
 	$query->execute();
 }
 
