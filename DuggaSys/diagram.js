@@ -6096,7 +6096,15 @@ function loadLayer(localStorageID){
     fixWriteToLayer();
 }
 
-function toggleBackgroundLayer (object){
+function toggleBackgroundLayer (object, changeLayer){
+    if (changeLayer == true){
+        if (object.classList.contains("notActive")){
+            object.classList.remove("notActive");
+            object.classList.add("isActive");
+            showLayer.push(object.id);
+        }
+        return
+    }
     if(object.classList.contains("notActive")){
         object.classList.remove("notActive");
         object.classList.add("isActive");
@@ -6186,7 +6194,7 @@ function toggleActiveBackgroundLayer(object) {
 
 function setlayer(object){
     let fixID = object.id.replace('_Active','');
-    toggleBackgroundLayer(document.getElementById(fixID))
+    toggleBackgroundLayer(document.getElementById(fixID), true)
     writeToLayer = fixID;
 }
 
