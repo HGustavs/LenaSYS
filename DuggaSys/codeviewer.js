@@ -3194,7 +3194,6 @@ function resizeBoxes(parent, templateId) {
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
-				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3203,12 +3202,11 @@ function resizeBoxes(parent, templateId) {
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
-			handles: "e, s",
+			handles: "e",
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
-				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
@@ -3488,7 +3486,21 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 	var basePer = 100 - remainHeightPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).css("top", basePer + '%');
 	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
+
+	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+		$("#box" + boxNumBase).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumBase).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+		$("#box" + boxNumSame).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumSame).css("overflow", "hidden");
+	}
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
