@@ -45,12 +45,13 @@ $js = array(
 <body>
 
 <?php
-
 	$noup="NONE";
 	$loginvar="ANALYTIC";
 	setcookie("loginvar", $loginvar);
 	include '../Shared/navheader.php';
-	
+?>
+
+<?php
 	// Show analytics if user is superuser.
 	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
 		echo '
