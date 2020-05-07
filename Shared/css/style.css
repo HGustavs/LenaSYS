@@ -4918,6 +4918,16 @@ only screen and (max-device-width: 320px) {
   font-size: 14px;
 }
 
+#diagram-header.fullscren {
+  margin-top: 0;
+  position: relative;
+  z-index: 2;
+  background-color: #ffffff;
+  width: fit-content;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+}
+
 #diagram-toolbar-switcher {
   font-size: 11px;
   color: #c0c0c0;
@@ -4942,8 +4952,12 @@ only screen and (max-device-width: 320px) {
   width: var(--diagram-sidebar-width);
 }
 
-#diagram-tools-container {
-    
+#diagram-container.fullscreen #diagram-tools-container {
+  position: relative;
+  z-index: 2;
+  background-color: #ffffff;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
 }
 
 .diagram-sidebar-section {
@@ -5056,10 +5070,24 @@ only screen and (max-device-width: 320px) {
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--canvas-margin));
 }
 
+#diagram-container.fullscreen #diagram-canvas-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: unset;
+  margin: 0;
+}
+
 #diagram-canvas {
   border: 1px solid #000000;
   width: 100%;
   height: 100%;
+}
+
+#diagram-container.fullscreen #diagram-canvas {
+  border: none;
 }
 
 #moveButton {
