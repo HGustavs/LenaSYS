@@ -3491,14 +3491,17 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 		if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
 			$("#box" + boxNumBase).css("overflow", "auto");
 		
-		} else{
+		} 
+		else{
 			$("#box" + boxNumBase).css("overflow", "hidden");
 		}
-	}else if(document.querySelector('#box' + boxNumBase).className == 'box descbox'){
+	}
+	else if(document.querySelector('#box' + boxNumBase).className == 'box descbox'){
 		if(document.querySelector('#box' + boxNumBase).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
 			$("#box" + boxNumBase).css("overflow", "auto");
 			
-		} else{
+		} 
+		else{
 			$("#box" + boxNumBase).css("overflow", "hidden");
 		}
 	}
@@ -3507,14 +3510,17 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 		if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
 		$("#box" + boxNumSame).css("overflow", "auto");
 		
-		} else{
+		} 
+		else{
 			$("#box" + boxNumSame).css("overflow", "hidden");
 		}
-	}else if(document.querySelector('#box' + boxNumSame).className == 'box descbox'){
+	}
+	else if(document.querySelector('#box' + boxNumSame).className == 'box descbox'){
 		if(document.querySelector('#box' + boxNumSame).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
 			$("#box" + boxNumSame).css("overflow", "auto");
 			
-		} else{
+		} 
+		else{
 			$("#box" + boxNumSame).css("overflow", "hidden");
 		}
 	}
@@ -3617,30 +3623,83 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
 	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
 
-	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-		$("#box" + boxNumBase).css("overflow", "auto");
+	if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+		if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+			$("#box" + boxNumBase).css("overflow", "auto");
 		
-	} else{
-		$("#box" + boxNumBase).css("overflow", "hidden");
+		} 
+		else{
+			$("#box" + boxNumBase).css("overflow", "hidden");
+		}
 	}
-	if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-		$("#box" + boxNumSame).css("overflow", "auto");
+	else if(document.querySelector('#box' + boxNumBase).className == 'box descbox'){
+		if(document.querySelector('#box' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+			$("#box" + boxNumBase).css("overflow", "auto");
 		
-	} else{
-		$("#box" + boxNumSame).css("overflow", "hidden");
+		} 
+		else{
+			$("#box" + boxNumBase).css("overflow", "hidden");
+		}
 	}
-	if(document.querySelector('#textwrapper3').childElementCount * 15 > $(boxValArray['box3']['id']).height() - 44){
-		$("#box3").css("overflow", "auto");
+	
+	if(document.querySelector('#box' + boxNumSame).className == 'box codebox'){
+		if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+			$("#box" + boxNumSame).css("overflow", "auto");
 		
-	} else{
-		$("#box3").css("overflow", "hidden");
+		} 
+		else{
+			$("#box" + boxNumSame).css("overflow", "hidden");
+		}
 	}
-	if(document.querySelector('#textwrapper4').childElementCount * 15 > $(boxValArray['box4']['id']).height() - 44){
-		$("#box4").css("overflow", "auto");
+	else if(document.querySelector('#box' + boxNumSame).className == 'box descbox'){
+		if(document.querySelector('#box' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+			$("#box" + boxNumSame).css("overflow", "auto");
 		
-	} else{
-		$("#box4").css("overflow", "hidden");
+		} 
+		else{
+			$("#box" + boxNumSame).css("overflow", "hidden");
+		}
 	}
+
+	if(document.querySelector('#box3').className == 'box codebox'){
+		if(document.querySelector('#textwrapper3').childElementCount * 15 > $(boxValArray['box3']['id']).height() - 44){
+			$("#box3").css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box3").css("overflow", "hidden");
+		}
+	}
+	else if(document.querySelector('#box3').className == 'box descbox'){
+		if(document.querySelector('#box3').childElementCount * 15 > $(boxValArray['box3']['id']).height() - 44){
+			$("#box3").css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box3").css("overflow", "hidden");
+		}
+	}
+
+	if(document.querySelector('#box4').className == 'box codebox'){
+		if(document.querySelector('#textwrapper4').childElementCount * 15 > $(boxValArray['box4']['id']).height() - 44){
+			$("#box4").css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box4").css("overflow", "hidden");
+		}
+	}
+	else if(document.querySelector('#box4').className == 'box descbox'){
+		if(document.querySelector('#box4').childElementCount * 15 > $(boxValArray['box4']['id']).height() - 44){
+			$("#box4").css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box4").css("overflow", "hidden");
+		}
+	}
+	
+	
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
