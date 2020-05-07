@@ -4918,7 +4918,7 @@ only screen and (max-device-width: 320px) {
   font-size: 14px;
 }
 
-#diagram-header.fullscren {
+#diagram-header.fullscreen.toolbar {
   margin-top: 0;
   position: relative;
   z-index: 2;
@@ -4952,7 +4952,7 @@ only screen and (max-device-width: 320px) {
   width: var(--diagram-sidebar-width);
 }
 
-#diagram-container.fullscreen #diagram-tools-container {
+#diagram-container.fullscreen.toolbar #diagram-tools-container {
   position: relative;
   z-index: 2;
   background-color: #ffffff;
