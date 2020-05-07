@@ -112,7 +112,9 @@
                 <div class="diagram-sidebar-section"></div>
             </div>
         </div>
+        <div id="ruler-y" class="ruler"></div>
         <div id="diagram-content">
+            <div id="ruler-x" class="ruler"></div>
             <div id="diagram-canvas-container">
                 <div id="diagram-canvas"></div>
             </div>
