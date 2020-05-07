@@ -179,11 +179,12 @@ function loadServiceUsage() {
 		.append('<option value="weekly">Weekly</option>')
 		.append('<option value="monthly">Monthly</option>')
 		.appendTo($('#analytic-info'));
-    var inputDateFrom
-    var inputDateTo
+    var inputDateFrom;
+    var inputDateTo;
     changeInput("daily");
  
     function changeInput(input){
+     $( ".hasDatepicker" ).remove();
      if(input=="daily"){
       inputDateFrom = $('<input type="text"></input>')
           .datepicker({
@@ -246,7 +247,6 @@ function loadServiceUsage() {
       console.log("M TO: " + inputDateTo);
       console.log("M FROM: " + inputDateTo);
      }
-     
     }
  
 	function updateServiceUsage() {
@@ -317,7 +317,7 @@ function loadServiceUsage() {
     inputDateFrom.change(updateServiceUsage);
 	inputDateTo.change(updateServiceUsage);
 	selectInterval.change(updateServiceUsage);
-	updateServiceUsage();
+	//updateServiceUsage();
     }
     updateInfo();
 }
