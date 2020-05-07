@@ -1611,6 +1611,7 @@ $(window).load(function () {
 
 
   });
+
   var rowCount = $('#announcementBox table tr').length;
   if (rowCount > 9) {
     $('#announcementBox table tr:gt(8)').hide();
@@ -1623,7 +1624,6 @@ $(window).load(function () {
     $('#announcementBox table tr:gt(8)').toggle();
     $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
   });
-
 
 });
 
