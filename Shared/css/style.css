@@ -733,6 +733,7 @@ header td {
   width: 29px;
   vertical-align: middle;
   margin-top: 9px;
+  margin-bottom:5px;
 }
 
 .navButt img {
@@ -3881,6 +3882,8 @@ rect[class*="activitymarker"]:hover {
   padding-left:0;
   margin-right:0;
   margin-left:0px;
+  margin-bottom: 20px;
+  
   
   
 }
