@@ -3500,6 +3500,19 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 		$("#box" + boxNumSame).css("overflow", "hidden");
 	}
 
+	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+		$("#box" + boxNumBase).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumBase).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+		$("#box" + boxNumSame).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumSame).css("overflow", "hidden");
+	}
+
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 }
