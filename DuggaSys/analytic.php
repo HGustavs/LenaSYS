@@ -48,8 +48,8 @@ $js = array(
 
 	$noup="NONE";
 	$loginvar="ANALYTIC";
-	include '../Shared/navheader.php';
 	setcookie("loginvar", $loginvar);
+	include '../Shared/navheader.php';
 	
 	// Show analytics if user is superuser.
 	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
