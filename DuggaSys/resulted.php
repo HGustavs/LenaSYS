@@ -52,12 +52,12 @@ pdoConnect();
 	<div id="resultedLegendContainer" >
 		<div id="legendBtn" onclick="showLegend();"> ? </div>
 		<ul class="legendList">
-			<li class="legendListItem"><img src="../Shared/icons/Uh.png" alt="grade"><img src="../Shared/icons/G.png" alt="grade"> Pass</li>
-			<li class="legendListItem"><img src="../Shared/icons/U.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Fail</li>
-			<li class="legendListItem"><img src="../Shared/icons/Uc.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Pending/not graded</li>
-			<li class="legendListItem"><img src="../Shared/icons/FistV.png" alt="grade"> Show dugga stats</li>
-			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png" alt="grade"> Submission past deadline</li>
-			<li class="legendListItem"><span> (9) </span> <span> Grading changes</span></li>
+			<li class="legendListItem"><img src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>
+			<li class="legendListItem"><img src="../Shared/icons/U.png"><img src="../Shared/icons/Gc.png"> Fail</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uc.png"><img src="../Shared/icons/Gc.png"> Pending/not graded</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png"> Show dugga stats</li>
+			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png"> Submission past deadline</li>
+			<li class="legendListItem"><span> (9) </span><span> Grading changes</span></li>
 			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg"> Dugga not yet submitted</li>
 			<li class="legendListItem"><div class="dugga-moment"></div> Dugga moment</li>
 			<li class="legendListItem"><div class="dugga-pending-late-submission"></div> Dugga pending: Late submission</li>
@@ -131,7 +131,7 @@ pdoConnect();
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
 			onmouseout="hideHover();" >Show Results</h3>
 			<button id='gradeBtn' class='cursorPointer' onclick="toggleGradeBox();">
-				<img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px">
+				<img src="../Shared/icons/FistV.png" height="24px" width="24px">
 			</button>
 			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
