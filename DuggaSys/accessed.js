@@ -872,9 +872,9 @@ function createCheckboxes() {
 //--------------------------------------------------------------------------
 
 function compare(a, b) {
-    var col = sortableTable.currentTable.getSortcolumn();
-		var status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
-	
+	var col = myTable.getSortcolumn();
+	var status = myTable.getSortkind(); // Get if the sort arrow is up or down.
+
 		if(status==1){
 				var tempA = a;
 				var tempB = b;
@@ -899,10 +899,22 @@ function compare(a, b) {
 						if(tempA==null) return -1;
 						if(tempB==null) return 1;
 				}else if(col=="examiner"){
-						tempA=tempA.examiner;
-						tempB=tempB.examiner;
-						if(tempA==null) return -1;
-						if(tempB==null) return 1;
+					tempA = tempA.examiner;
+					tempB = tempB.examiner;
+					for (var i =0; i < filez['teachers'].length; i++) {
+						if (tempA == filez['teachers'][i].uid) {
+							tempA = filez['teachers'][i].name;
+						}
+						if (tempB == filez['teachers'][i].uid) {
+							tempB = filez['teachers'][i].name;
+						}
+					}
+					if (typeof tempA === "number") {
+						tempA = "";
+					}
+					if (typeof tempB === "number") {
+						tempB = "";
+					}
 				}else if(col=="version"){
 						tempA=tempA.version;
 						tempB=tempB.version;
