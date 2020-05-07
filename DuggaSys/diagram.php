@@ -77,7 +77,7 @@
     ?>
 
     <div id="diagram-header">
-        <div id=toolbar-switcher>DEV: All</div>
+        <div id=diagram-toolbar-switcher>DEV: All</div>
         <div id="diagram-toolbar-container">
             <div class="menu-drop-down" tabindex="0">
                 <span class="drop-down-label">File</span>
