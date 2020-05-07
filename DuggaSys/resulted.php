@@ -57,14 +57,15 @@ pdoConnect();
 			<li class="legendListItem"><img src="../Shared/icons/U.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Fail</li>
 			<li class="legendListItem"><img src="../Shared/icons/Uc.png" alt="grade"><img src="../Shared/icons/Gc.png" alt="grade"> Pending/not graded</li>
 			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png" alt="grade"> Submission past deadline</li>
-			<li class="legendListItem"><div> (9) </div> <div>Grading changes</div></li>
-			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg" alt="grade"> Dugga not yet submitted</li>
+			<li class="legendListItem"><span> (9) </span> <span>Grading changes</span></li>
+			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg"> Dugga not yet submitted</li>
 			<li class="legendListItem"><div class="dugga-moment"></div> Dugga moment</li>
 			<li class="legendListItem"><div class="dugga-pending-late-submission"></div> Dugga pending: Late submission</li>
 			<li class="legendListItem"><div class="dugga-pending"></div> Dugga pending: Submission in time</li>
 			<li class="legendListItem"><div class="dugga-moment dugga-pass"></div> Moment passed</li>
 			<li class="legendListItem"><div class="dugga-moment dugga-fail"></div> Moment failed</li>
-			<li class="legendListItem"><div class="dugga-moment dugga-assigned"></div> Moment assigned</li>
+			<li class="legendListItem"><div class="dugga-moment dugga-assigned"></div> Duggas submitted</li>
+			<li class="legendListItem"><span>Unassigned</span><span> Duggas not submitted</span></li>
 		</ul>
 	</div>
     <div id="resultedFormContainer">

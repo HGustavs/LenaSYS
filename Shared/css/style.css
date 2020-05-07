@@ -3073,7 +3073,7 @@ padding: 10px;
   display: inline-block;
 }
 
-.legendList div:first-of-type{
+.legendListItem span:first-of-type{
   font-weight: bold;
 }
 
