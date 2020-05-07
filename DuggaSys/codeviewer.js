@@ -3538,6 +3538,31 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
 	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
 
+	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+		$("#box" + boxNumBase).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumBase).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+		$("#box" + boxNumSame).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumSame).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper3').childElementCount * 15 > $(boxValArray['box3']['id']).height() - 44){
+		$("#box3").css("overflow", "auto");
+		
+	} else{
+		$("#box3").css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper4').childElementCount * 15 > $(boxValArray['box4']['id']).height() - 44){
+		$("#box4").css("overflow", "auto");
+		
+	} else{
+		$("#box4").css("overflow", "hidden");
+	}
+
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
