@@ -153,13 +153,7 @@ $codeLinkQuery->execute();
                         </div>
                     </div>
                     <span id="spankind">Kind:</span>
-                    <div class='testselect'>
-                    <select name ="uploadtype[]" id="selectdir">
-                            <option value="global">Global</option>
-                            <option value="courselocal">Course</option>
-                            <option value="courselocal">Course Local</option>
-                         </select>
-                    </div>
+                    
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
                         <input style="width:380px" id="uploadedlink" class="textinput" name="link"
@@ -182,23 +176,22 @@ $codeLinkQuery->execute();
                     <!-- .svg| -->
                     <ul style="padding-left: 0px; list-style-type: none; display: none;" id="dummyFileErrorList"></ul>
                     <input type="text" id="newEmptyFile" name="newEmptyFile[]" placeholder="Greger.txt">
+                    <select name ="efilekind[]" id="selectdir">
                     <?php
                     if(isSuperUser($_SESSION['uid'])){
                         echo '
-                            <input type="radio" id="global" name="efilekind[]" value="GFILE">
-                            <label for="global">Global File</label><br>
+                            <option value="GFILE">Global</option>
+                           
                         ';
                     }
                     if(isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w')){
                     echo '
-                        <input type="radio" id="clocal" name="efilekind[]" value="MFILE">
-                        <label for="clocal">Course Local File</label><br>
+                    <option value="MFILE">Course</option>
                     
-                        <input type="radio" id="local" name="efilekind[]" value="LFILE" checked>
-                        <label for="local">Local File</label><br>
                     ';
                     }
                     ?>
+                    <select>
                     <div id='uploadbuttonname'>
                         <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile('EFILE');"/>
                     </div>
