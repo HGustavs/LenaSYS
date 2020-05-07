@@ -4833,6 +4833,7 @@ only screen and (max-device-width: 320px) {
   width: 100%;
   border: 0;
   margin: 0;
+  padding: 0;
 }
 
 #appearanceForm textarea {
@@ -5075,12 +5076,6 @@ only screen and (max-device-width: 320px) {
 #moveButton img {
   height: 30px;
   width: 30px;
-  padding: 2px;
-}
-
-#moveButton img {
-  width: 50px;
-  height: 40px;
 }
 
 /* --------------================################================-------------- *
