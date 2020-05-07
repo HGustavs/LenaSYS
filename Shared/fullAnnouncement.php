@@ -10,6 +10,8 @@
 				foreach ($pdo->query('SELECT * FROM announcement WHERE id="'.$announcementid.'"') AS $headline){
 					$headlines = $headline['title'];
 					$message = $headline['message'];
+					$author = $headline['author'];
+					echo "<p><i class='fa fa-user'></i>".$author."</p>";
 					echo "<h3>".ucfirst(strtolower($headlines))."</h3>";
 					echo "<p>".ucfirst(strtolower($message))."</p>";
 					echo "<p><b>Posted on:</b><br>".$announceTime."</p>";
