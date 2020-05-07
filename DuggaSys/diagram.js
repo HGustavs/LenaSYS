@@ -3598,29 +3598,26 @@ function setOrientationIcon(element, check) {
 
 function switchToolbar(mode) {
     /*
-        
-
-
-        1. Välj mode. Två ifsatser - 
-        UML 
-            element + checkbox i menyn? allt i samma funktion eller uppdelat? Känns lättare att ha allting samlat
-        ER
-        Dev - allt så är uml/er relevant då? 
-
-        ---
-
-        Allting som ska visas hela tiden
-
-
-
-        ----
+        HÄR
 
         -Funktioner som anropas vid tryckning i menyn kan tas bort. 
         -Skapa ny funktion för hideUMLElements ish? Denna funktion kommer bli lång 
             -Lägg till event som parameter i denna funktion så kan event.stoppropagation anropas för dev mode
         -
+
+        SwitchToolbarDev = visa alla verktyg
+
+        Flöde atm:
+            Klick > developermode(event) > switchtoolbardev(event) > switchtoolbar(mode)
+
+        Önskat flöde: 
+            Klick > Sätt rätt menyer > Sätt rätt verktyg
+            abstraktion:
+            -changeToolbar
+                -changeMenu
+                -changeTools (this function). Lägg till att ändra texten här på Mode (innerHTML i developermode)
+
     */
-   
     if(mode == "ER") { 
         toolbarState = currentMode.er;
     } else if(mode == "UML") {
