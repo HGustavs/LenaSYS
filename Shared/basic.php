@@ -215,9 +215,11 @@ if (!strstr(strtolower($refer), 'service')) {
 	if(isset($_SERVER['REMOTE_ADDR'])){
 		$IP.=$_SERVER['REMOTE_ADDR'];
 	}
+
 	if(isset($_SERVER['HTTP_CLIENT_IP'])){
 		$IP.=" ".$_SERVER['HTTP_CLIENT_IP'];
 	}
+	
 	if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
 		$IP.=" ".$_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
@@ -230,6 +232,7 @@ if (!strstr(strtolower($refer), 'service')) {
 		$query->execute();
 	}
 }
+
 //------------------------------------------------------------------------------------------------
 // logEvent - Creates a new log entry in the log database (log.db, located at the root directory)
 //------------------------------------------------------------------------------------------------
