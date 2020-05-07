@@ -1,0 +1,231 @@
+{
+	"diagram": [
+		{
+			"kind": 2,
+			"name": "New 0",
+			"id": 0,
+			"targeted": false,
+			"symbolkind": 1,
+			"operations": [
+				{
+					"text": "- makemore()"
+				}
+			],
+			"attributes": [
+				{
+					"text": "+ height:Integer"
+				}
+			],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [
+				{
+					"from": 6,
+					"to": 7
+				}
+			],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 0,
+			"bottomRight": 1,
+			"middleDivider": 2,
+			"centerPoint": 2,
+			"minHeight": 88,
+			"minWidth": 112.685546875,
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "New 1",
+			"id": 1,
+			"targeted": false,
+			"symbolkind": 1,
+			"operations": [
+				{
+					"text": "- makemore()"
+				}
+			],
+			"attributes": [
+				{
+					"text": "+ height:Integer"
+				}
+			],
+			"textLines": [],
+			"cardinality": {},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [
+				{
+					"from": 7,
+					"to": 6
+				}
+			],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 3,
+			"bottomRight": 4,
+			"middleDivider": 5,
+			"centerPoint": 5,
+			"minHeight": 88,
+			"minWidth": 112.685546875,
+			"isHovered": false
+		},
+		{
+			"kind": 2,
+			"name": "Line2",
+			"id": 2,
+			"targeted": false,
+			"symbolkind": 7,
+			"operations": [],
+			"attributes": [],
+			"textLines": [],
+			"cardinality": {
+				"value": "",
+				"valueUML": ""
+			},
+			"lineDirection": "First",
+			"recursiveLineExtent": 40,
+			"group": 0,
+			"isLocked": false,
+			"isLockHovered": false,
+			"isOval": false,
+			"isAttribute": false,
+			"isRelation": false,
+			"isLine": false,
+			"isRecursiveLine": false,
+			"pointsAtSamePosition": false,
+			"UMLCustomResize": false,
+			"connectorTop": [],
+			"connectorBottom": [],
+			"connectorLeft": [],
+			"connectorRight": [],
+			"properties": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#000000",
+				"fontColor": "#000000",
+				"font": "Arial",
+				"lineWidth": 2,
+				"textSize": 14,
+				"sizeOftext": "Tiny",
+				"textAlign": "center",
+				"key_type": "Normal",
+				"isComment": false,
+				"setLayer": "Layer_1"
+			},
+			"topLeft": 6,
+			"object_type": "",
+			"bottomRight": 7,
+			"breakpointStartX": 0,
+			"breakpointStartY": 0,
+			"breakpointEndX": 0,
+			"breakpointEndY": 0,
+			"middleBreakPointX": 0,
+			"middleBreakPointY": 0,
+			"startLineDirection": "",
+			"endLineDirection": "",
+			"isHovered": false
+		}
+	],
+	"points": [
+		{
+			"x": 148.6572265625,
+			"y": 259,
+			"isSelected": 0
+		},
+		{
+			"x": 261.3427734375,
+			"y": 347,
+			"isSelected": 0
+		},
+		{
+			"x": 205,
+			"y": 308,
+			"isSelected": 0
+		},
+		{
+			"x": 412.6572265625,
+			"y": 115,
+			"isSelected": 0
+		},
+		{
+			"x": 525.3427734375,
+			"y": 203,
+			"isSelected": 0
+		},
+		{
+			"x": 469,
+			"y": 164,
+			"isSelected": 0
+		},
+		{
+			"x": 261.3427734375,
+			"y": 303,
+			"isSelected": 0
+		},
+		{
+			"x": 412.6572265625,
+			"y": 159,
+			"isSelected": 0
+		}
+	],
+	"diagramNames": [
+		"Symbol",
+		"Symbol",
+		"Symbol"
+	],
+	"diagramID": [
+		0,
+		1,
+		2
+	]
+}

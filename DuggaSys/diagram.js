@@ -505,89 +505,8 @@ function init() {
 //--------------------------------------------------------------
 
 function generateERExampleCode() {
-    //Create some entities and attributes
-    var erAttributeA = new Symbol(2);
-    erAttributeA.name = "SSN";
-    erAttributeA.topLeft = points.addPoint(770, 270, false);
-    erAttributeA.bottomRight = points.addPoint(880, 330, false);
-    erAttributeA.centerPoint = points.addPoint((770 + 880) * 0.5, (270 + 330) * 0.5, false);
-    var erAttributeB = new Symbol(2);
-    erAttributeB.name = "Name";
-    erAttributeB.topLeft = points.addPoint(770, 370, false);
-    erAttributeB.bottomRight = points.addPoint(880, 430, false);
-    erAttributeB.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
-    var erAttributeC = new Symbol(2);
-    erAttributeC.name = "Smell";
-    erAttributeC.topLeft = points.addPoint(120, 370, false);
-    erAttributeC.bottomRight = points.addPoint(230, 430, false);
-    erAttributeC.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
-    var erAttributeD = new Symbol(2);
-    erAttributeD.name = "Stink";
-    erAttributeD.topLeft = points.addPoint(120, 270, false);
-    erAttributeD.bottomRight = points.addPoint(230, 330, false);
-    erAttributeD.centerPoint = points.addPoint((120 + 230) * 0.5, (270 + 330) * 0.5, false);
-    var erAttributeE = new Symbol(2);
-    erAttributeE.name = "Verisimilitude";
-    erAttributeE.topLeft = points.addPoint(450, 60, false);
-    erAttributeE.bottomRight = points.addPoint(560, 120, false);
-    erAttributeE.centerPoint = points.addPoint((450 + 560) * 0.5, (60 + 120) * 0.5, false);
-    var erEntityA = new Symbol(3);
-    erEntityA.name = "Person";
-    erEntityA.topLeft = points.addPoint(450, 300, false);
-    erEntityA.bottomRight = points.addPoint(560, 360, false);
-    erEntityA.centerPoint = points.addPoint((450 + 560) * 0.5, (300 + 360) * 0.5, false);
-    var erEntityB = new Symbol(3);
-    erEntityB.name = "Pet";
-    erEntityB.topLeft = points.addPoint(450, 550, false);
-    erEntityB.bottomRight = points.addPoint(560, 610, false);
-    erEntityB.centerPoint = points.addPoint((450 + 560) * 0.5, (600 + 660) * 0.5, false);
-    var erRelationA = new Symbol(5);
-    erRelationA.name = "Has";
-    erRelationA.topLeft = points.addPoint(450, 430, false);
-    erRelationA.bottomRight = points.addPoint(560, 490, false);
-    erRelationA.centerPoint = points.addPoint((450 + 560) * 0.5, (400 + 460) * 0.5, false);
-
-    // Create connectors
-    var erattributeRelA = new Symbol(4);
-    erattributeRelA.topLeft = points.addPoint(560, 350, false);
-    erattributeRelA.bottomRight = points.addPoint(770, 400, false);
-    erattributeRelA.centerPoint = points.addPoint((560 + 770) * 0.5, (350 + 400) * 0.5, false);
-    var erattributeRelB = new Symbol(4);
-    erattributeRelB.topLeft = points.addPoint(560, 310, false);
-    erattributeRelB.bottomRight = points.addPoint(770, 300, false);
-    erattributeRelB.centerPoint = points.addPoint((560 + 770) * 0.5, (320 + 300) * 0.5, false);
-    var erattributeRelC = new Symbol(4);
-    erattributeRelC.topLeft = points.addPoint(230, 400, false);
-    erattributeRelC.bottomRight = points.addPoint(450, 350, false);
-    erattributeRelC.centerPoint = points.addPoint((230 + 450) * 0.5, (400 + 350) * 0.5, false);
-    var erattributeRelD = new Symbol(4);
-    erattributeRelD.topLeft = points.addPoint(230, 300, false);
-    erattributeRelD.bottomRight = points.addPoint(450, 310, false);
-    erattributeRelD.centerPoint = points.addPoint((230 + 450) * 0.5, (300 + 310) * 0.5, false);
-    var erattributeRelE = new Symbol(4);
-    erattributeRelE.topLeft = points.addPoint(505, 120, false);
-    erattributeRelE.bottomRight = points.addPoint(505, 300, false);
-    erattributeRelE.centerPoint = points.addPoint((505 + 505) * 0.5, (120 + 300) * 0.5, false);
-    var erRelationRelA = new Symbol(4);
-    erRelationRelA.topLeft = points.addPoint(505, 360, false);
-    erRelationRelA.bottomRight = points.addPoint(505, 550, false);
-    erRelationRelA.centerPoint = points.addPoint((505 + 505) * 0.5, (360 + 550) * 0.5, false);
-
-    // Add all elements to diagram
-    diagram.push(erattributeRelA);
-    diagram.push(erattributeRelB);
-    diagram.push(erattributeRelC);
-    diagram.push(erattributeRelD);
-    diagram.push(erattributeRelE);
-    diagram.push(erRelationRelA);
-    diagram.push(erAttributeA);
-    diagram.push(erAttributeB);
-    diagram.push(erAttributeC);
-    diagram.push(erAttributeD);
-    diagram.push(erAttributeE);
-    diagram.push(erEntityA);
-    diagram.push(erEntityB);
-    diagram.push(erRelationA);
+    var fileContent = $.get("exampleER.txt", data => LoadImport(data));
+    LoadImport(fileContent);
 }
 
 //--------------------------------------------------------------------
@@ -595,41 +514,8 @@ function generateERExampleCode() {
 //--------------------------------------------------------------------
 
 function generateUMLExampleCode() {
-    // Create a UML Class and add three attributes, two operations and a name
-    var classA = new Symbol(symbolKind.uml);
-    classA.name = "Person";
-    classA.attributes.push({text:"+ height:Integer"});
-    classA.attributes.push({text:"# at:Large"});
-    classA.attributes.push({text:"- megalomania:Real"});
-    classA.operations.push({text:"+ hold(name:String)"});
-    classA.operations.push({text:"- makemore()"});
-    classA.topLeft = points.addPoint(450, 300, false);
-    classA.bottomRight = points.addPoint(590, 430, false);
-    classA.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
-    classA.centerPoint = points.addPoint((450 + 590) * 0.5, (300 + 430) * 0.5, false);
-    
-    //Create a second UML class
-    var classB = new Symbol(symbolKind.uml);
-    classB.name = "Pet";
-    classB.attributes.push({text:"+ color:String"});
-    classB.attributes.push({text:"- megalomania:Real"});
-    classB.operations.push({text:"- beCute()"});
-    classB.topLeft = points.addPoint(700, 300, false);
-    classB.bottomRight = points.addPoint(840, 430, false);
-    classB.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
-    classB.centerPoint = points.addPoint((700 + 840) * 0.5, (300 + 430) * 0.5, false);
-
-    //Add some relations
-    var umlRelationA = new Symbol(symbolKind.umlLine);
-    umlRelationA.topLeft = points.addPoint(590, 365, false);
-    umlRelationA.bottomRight = points.addPoint(706, 365, false);
-    umlRelationA.centerPoint = points.addPoint((590 + 706) * 0.5, (365 + 365) * 0.5, false);
-    umlRelationA.cardinality = {"value": "1", "valueUML": "0..*", "symbolKind": 1, "parentBox": classB};
-
-    //Push to diagram
-    diagram.push(classA);
-    diagram.push(classB);
-    diagram.push(umlRelationA);
+    var fileContent = $.get("exampleUML.txt", data => LoadImport(data));
+    LoadImport(fileContent);
 }
 
 //--------------------------------------------------------------------
