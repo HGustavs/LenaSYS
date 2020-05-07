@@ -135,7 +135,6 @@
 			<div id="announcementBox">
 			<h3>To Do</h3>
 			<hr>
-			<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create an new announcement</button>
 			<table>
 			<?php
 
