@@ -2602,10 +2602,10 @@ $(document).ready(function() {
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")) {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
         } else {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             $(this).removeClass("unpressed").addClass("pressed");
         }
     });
@@ -3617,7 +3617,7 @@ function switchToolbar(mode) {
     $("#labelCreate").show();
     $("#labelTools").show();
     $("#labelUndo").show();
-    $(".buttonsStyle").hide();
+    $(".diagram-tools-button-big").hide();
     $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
@@ -3637,7 +3637,7 @@ function switchToolbar(mode) {
     $("#labelCreate").show();
     $("#labelTools").show();
     $("#labelUndo").show();
-    $(".buttonsStyle").hide();
+    $(".diagram-tools-button-big").hide();
     $("#linebutton").show();
     $("#classbutton").show();
     $("#drawtextbutton").show();
@@ -3650,7 +3650,7 @@ function switchToolbar(mode) {
     $("#labelCreate").show();
     $("#labelTools").show();
     $("#labelUndo").show();
-    $(".buttonsStyle").show();
+    $(".diagram-tools-button-big").show();
     $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
@@ -4118,7 +4118,7 @@ function mousemoveevt(ev) {
             // If mouse is pressed down inside a movable object - move that object
             if (movobj != -1 ) {
                 uimode = "Moved";
-                $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+                $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
@@ -4970,7 +4970,7 @@ function touchMoveEvent(event) {
     if (md == mouseState.insideMovableObject) {
         if (movobj != -1) {
             uimode = "Moved";
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                     if(snapToGrid) {
@@ -5366,7 +5366,7 @@ function resize() {
 //---------------------------------------
 
 function movemode(e, t) {
-	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+	$(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
