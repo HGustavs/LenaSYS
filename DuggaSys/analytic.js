@@ -172,28 +172,83 @@ function loadServiceUsage() {
 	resetAnalyticsChart();
 	$('#analytic-info').empty();
 	$('#analytic-info').append("<p>Service usage</p>");
-
-	var inputDateFrom = $('<input type="text"></input>')
-		.datepicker({
-			dateFormat: "yy-mm-dd"
-		})
-		.datepicker("setDate", "-1m")
-		.appendTo($('#analytic-info'));
-
-	var inputDateTo = $('<input type="text"></input>')
-		.datepicker({
-			dateFormat: "yy-mm-dd"
-		})
-		.datepicker("setDate", "+1d")
-		.appendTo($('#analytic-info'));
-
-	var selectInterval = $("<select></select>")
+ 
+ 	var selectInterval = $("<select></select>")
 		.append('<option value="hourly">Hourly</option>')
 		.append('<option value="daily" selected>Daily</option>')
 		.append('<option value="weekly">Weekly</option>')
 		.append('<option value="monthly">Monthly</option>')
 		.appendTo($('#analytic-info'));
+    var inputDateFrom
+    var inputDateTo
+    changeInput("daily");
+ 
+    function changeInput(input){
+     if(input=="daily"){
+      inputDateFrom = $('<input type="text"></input>')
+          .datepicker({
+              dateFormat: "yy-mm-dd"
+          })
+          .datepicker("setDate", "-1m")
+          .appendTo($('#analytic-info'));
 
+      inputDateTo = $('<input type="text"></input>')
+          .datepicker({
+              dateFormat: "yy-mm-dd"
+          })
+          .datepicker("setDate", "+1d")
+          .appendTo($('#analytic-info'));
+      console.log("D TO: " + inputDateTo);
+      console.log("D FROM: " + inputDateTo);
+     }
+     else if(input=="hourly"){
+       inputDateFrom = $('<input type="text"></input>')
+          .datepicker({
+              dateFormat: "yy-mm-dd"
+          })
+          .datepicker("setDate", "-1m")
+          .appendTo($('#analytic-info'));
+       inputDateTo = inputDateFrom;
+     console.log("H TO: " + inputDateTo.val());
+     console.log("H FROM: " + inputDateTo.val());
+     }
+     else if(input=="weekly"){
+      inputDateFrom = $('<input type="text"></input>')
+          .datepicker({
+              dateFormat: "yy-mm-dd"
+          })
+          .datepicker("setDate", "-1m")
+          .appendTo($('#analytic-info'));
+
+      inputDateTo = $('<input type="text"></input>')
+          .datepicker({
+              dateFormat: "yy-mm-dd"
+          })
+          .datepicker("setDate", "+1d")
+          .appendTo($('#analytic-info'));
+      console.log("W TO: " + inputDateTo);
+      console.log("W FROM: " + inputDateTo);
+     }
+     else if(input=="monthly"){
+      inputDateFrom = $('<input type="text"></input>')
+          .datepicker({
+              dateFormat: "yy-mm-dd"
+          })
+          .datepicker("setDate", "-1m")
+          .appendTo($('#analytic-info'));
+
+      inputDateTo = $('<input type="text"></input>')
+          .datepicker({
+              dateFormat: "yy-mm-dd"
+          })
+          .datepicker("setDate", "+1d")
+          .appendTo($('#analytic-info'));
+      console.log("M TO: " + inputDateTo);
+      console.log("M FROM: " + inputDateTo);
+     }
+     
+    }
+ 
 	function updateServiceUsage() {
 		$.ajax({
 			url: "analyticService.php",
@@ -234,12 +289,37 @@ function loadServiceUsage() {
 			}
 		});
 	}
-
-	inputDateFrom.change(updateServiceUsage);
+     function updateInfo(){
+        selectInterval.change(function(){
+            switch(selectInterval.val()){
+                case "hourly":
+                    console.log("hourly");
+                    changeInput("hourly");
+                    updateServiceUsage();
+                    break;
+                case "daily":
+                    console.log("daily");
+                    changeInput("daily");
+                    updateServiceUsage();
+                    break;
+                case "weekly":
+                    console.log("weekly");
+                    changeInput("weekly");
+                    updateServiceUsage();
+                    break;
+                case "monthly":
+                    console.log("monthly");
+                    changeInput("monthly");
+                    updateServiceUsage();
+                    break;
+            }
+        });
+    inputDateFrom.change(updateServiceUsage);
 	inputDateTo.change(updateServiceUsage);
 	selectInterval.change(updateServiceUsage);
-
 	updateServiceUsage();
+    }
+    updateInfo();
 }
 
 function loadServiceAvgDuration() {
@@ -400,7 +480,6 @@ function loadFileInformation() {
             }
         });
     }
-   
 	
     inputDateFrom.change(updateFileInformation);
     inputDateTo.change(updateFileInformation);
