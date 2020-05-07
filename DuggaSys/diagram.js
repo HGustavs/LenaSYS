@@ -6160,37 +6160,24 @@ function fixWriteToLayer(){
 }
 
 function toggleActiveBackgroundLayer(object) {
+
     let checkActive = document.getElementById("layerActive");
     let spans = checkActive.getElementsByTagName('span')
-    let isActive = false;
-    for (let i = 0; i < spans.length; i++){
+    for (let i = 0 ; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
-            isActive = true;
-            i = spans.length;
+            spans[i].classList.remove("isActive");
+            spans[i].classList.add("notActive");
         }
-    }
-    if(isActive == false){
-        object.classList.remove("notActive");
-        object.classList.add("isActive");
-        localStorage.setItem("writeToActiveLayers", object.id);
-        setlayer(object);
-    }
-    else {
-        object.classList.remove("isActive");
-        object.classList.add("notActive");
-        let checkLocalStorage = localStorage.getItem("writeToActiveLayers");
-    }
-    active = false;
-    for(let i = 0; i < spans.length; i++){
-        if(spans[i].classList.contains("isActive")){
-            active = true;
-            i = spans.length;
+
+        if(object.id == spans[i].id){
+            object.classList.remove("notActive");
+            object.classList.add("isActive");
+            localStorage.setItem("writeToActiveLayers", object.id);
+            setlayer(object);
         }
-    }
-    if (active == false){
-        localStorage.setItem("writeToActiveLayers", null);
     }
 }
+
 
 function setlayer(object){
     let fixID = object.id.replace('_Active','');
@@ -6214,9 +6201,9 @@ function getcorrectlayer(){
     if(localStorage.getItem('writeToActiveLayers') != null){
         let getLayer = localStorage.getItem("writeToActiveLayers")
         let fixID = getLayer.replace('_Active','');
-        return fixID
+        return fixID;
     }
-        return "Layer_1"
+        return "Layer_1";
 }
 
 //A check if line should connect to a object when loose line is released inside a object
