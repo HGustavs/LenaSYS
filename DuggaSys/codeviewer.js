@@ -3487,31 +3487,38 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 	$(boxValArray['box' + boxNumSame]['id']).css("top", basePer + '%');
 	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
 
-	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-		$("#box" + boxNumBase).css("overflow", "auto");
+	if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+		if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+			$("#box" + boxNumBase).css("overflow", "auto");
 		
-	} else{
-		$("#box" + boxNumBase).css("overflow", "hidden");
+		} else{
+			$("#box" + boxNumBase).css("overflow", "hidden");
+		}
+	}else if(document.querySelector('#box' + boxNumBase).className == 'box descbox'){
+		if(document.querySelector('#box' + boxNumBase).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+			$("#box" + boxNumBase).css("overflow", "auto");
+			
+		} else{
+			$("#box" + boxNumBase).css("overflow", "hidden");
+		}
 	}
-	if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+	
+	if(document.querySelector('#box' + boxNumSame).className == 'box codebox'){
+		if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
 		$("#box" + boxNumSame).css("overflow", "auto");
 		
-	} else{
-		$("#box" + boxNumSame).css("overflow", "hidden");
+		} else{
+			$("#box" + boxNumSame).css("overflow", "hidden");
+		}
+	}else if(document.querySelector('#box' + boxNumSame).className == 'box descbox'){
+		if(document.querySelector('#box' + boxNumSame).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+			$("#box" + boxNumSame).css("overflow", "auto");
+			
+		} else{
+			$("#box" + boxNumSame).css("overflow", "hidden");
+		}
 	}
-
-	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-		$("#box" + boxNumBase).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxNumBase).css("overflow", "hidden");
-	}
-	if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-		$("#box" + boxNumSame).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxNumSame).css("overflow", "hidden");
-	}
+	
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
@@ -3531,24 +3538,64 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig) 
 	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
 	$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
 
-	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-		$("#box" + boxNumBase).css("overflow", "auto");
+	if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
+		if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+			$("#box" + boxNumBase).css("overflow", "auto");
 		
-	} else{
-		$("#box" + boxNumBase).css("overflow", "hidden");
+		} 
+		else{
+			$("#box" + boxNumBase).css("overflow", "hidden");
+		}
 	}
-	if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-		$("#box" + boxNumSame).css("overflow", "auto");
+	else if(document.querySelector('#box' + boxNumBase).className == 'box descbox'){
+		if(document.querySelector('#box' + boxNumBase).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+			$("#box" + boxNumBase).css("overflow", "auto");
 		
-	} else{
-		$("#box" + boxNumSame).css("overflow", "hidden");
+		} 
+		else{
+			$("#box" + boxNumBase).css("overflow", "hidden");
+		}
 	}
-	if(document.querySelector('#textwrapper' + boxNumBig).childElementCount * 15 > $(boxValArray['box' + boxNumBig]['id']).height() - 44){
-		$("#box" + boxNumBig).css("overflow", "auto");
+	
+	if(document.querySelector('#box' + boxNumSame).className == 'box codebox'){
+		if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+			$("#box" + boxNumSame).css("overflow", "auto");
 		
-	} else{
-		$("#box" + boxNumBig).css("overflow", "hidden");
+		} 
+		else{
+			$("#box" + boxNumSame).css("overflow", "hidden");
+		}
 	}
+	else if(document.querySelector('#box' + boxNumSame).className == 'box descbox'){
+		if(document.querySelector('#box' + boxNumSame).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
+			$("#box" + boxNumSame).css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box" + boxNumSame).css("overflow", "hidden");
+		}
+	}
+
+	if(document.querySelector('#box' + boxNumBig).className == 'box codebox'){
+		if(document.querySelector('#textwrapper' + boxNumBig).childElementCount * 15 > $(boxValArray['box' + boxNumBig]['id']).height() - 44){
+			$("#box" + boxNumBig).css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box" + boxNumBig).css("overflow", "hidden");
+		}
+	}
+	else if(document.querySelector('#box' + boxNumBig).className == 'box descbox'){
+		if(document.querySelector('#box' + boxNumBig).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumBig]['id']).height() - 44){
+			$("#box" + boxNumBig).css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box" + boxNumBig).css("overflow", "hidden");
+		}
+	}
+	
+	
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
