@@ -418,7 +418,9 @@ function loadFileInformation() {
 function loadPageInformation() {
     resetAnalyticsChart();
     $('#analytic-info').empty();
-    $('#analytic-info').append("<p>Page information.</p>");
+	$('#analytic-info').append("<p>Page information.</p>");
+	
+	var firstLoad = true;
  
     var selectPage = $("<select></select>")
         .append('<option value="showDugga" selected>showDugga</option>')
@@ -474,6 +476,10 @@ function loadPageInformation() {
     }
  
     function updateState(){
+		if(firstLoad === true){
+			updatePageHitInformation("dugga");
+			firstLoad = false;
+		} 
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "showDugga":
