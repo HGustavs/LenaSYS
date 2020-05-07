@@ -920,6 +920,8 @@ function compare(a, b) {
 				}else if(col=="access") {
 					tempA=tempA.access;
 					tempB=tempB.access;
+					if(tempA==null) return -1;
+					if(tempB==null) return 1;
 				}
 				return tempA.toLocaleUpperCase().localeCompare(tempB.toLocaleUpperCase(), "sv");
 		}else if(col=="lastmodified"){
