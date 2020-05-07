@@ -2794,7 +2794,7 @@ function developerMode(event) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev(event);                                                             // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to DEV.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -2922,7 +2922,7 @@ function switchToolbarTo(target) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
-        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+        var toolbarTypeText = document.getElementById('diagram-toolbar-switcher').innerHTML;
         document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
     }
 }
@@ -2938,9 +2938,9 @@ function switchToolbarER() {
     toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
     switchToolbar('ER');
     if (developerModeActive) {
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: ER';
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: ER';
     } else {
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: ER';              // Change the text to ER.
     }
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -2959,9 +2959,9 @@ function switchToolbarUML() {
     toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
     switchToolbar('UML');
     if (developerModeActive) {
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: UML';
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: UML';
     } else {
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';              // Change the text to UML.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: UML';              // Change the text to UML.
     }                                                           // ---||---
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
@@ -2983,7 +2983,7 @@ function switchToolbarDev(event) {
     }
     toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to UML.
+    document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=true);                                                             // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -3604,19 +3604,13 @@ function switchToolbar(mode) {
       toolbarState = toolbarDeveloperMode;
   }
 
-  document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
+  document.getElementById('diagram-toolbar-switcher').innerHTML = "Mode: ER";
 
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
-    $(".toolbar-drawer").hide();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
     $(".diagram-tools-button-big").hide();
     $("#linebutton").show();
     $("#attributebutton").show();
@@ -3628,28 +3622,16 @@ function switchToolbar(mode) {
     $("#drawtextbutton").show();
   }
   else if (toolbarState == toolbarUML) {
-    $(".toolbar-drawer").hide();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
     $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
     $(".diagram-tools-button-big").hide();
     $("#linebutton").show();
     $("#classbutton").show();
     $("#drawtextbutton").show();
   } else if(toolbarState == toolbarDeveloperMode) {
-    $(".toolbar-drawer").show();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").show();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
     $(".diagram-tools-button-big").show();
     $("#linebutton").show();
     $("#attributebutton").show();
@@ -3660,7 +3642,7 @@ function switchToolbar(mode) {
     $("#drawfreebutton").show();
     $("#drawtextbutton").show();
   }
-  document.getElementById('toolbar-switcher').value = toolbarState;
+  document.getElementById('diagram-toolbar-switcher').innerHTML = toolbarState;
 }
 
 // ----------------------------------

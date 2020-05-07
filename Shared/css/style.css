@@ -99,7 +99,7 @@
 @media print {
 	@page { margin: 0; }
 	body { margin: 1.6cm; }	
-	#buttonDiv,#appearance,.loginBoxContainer importDiagram{
+	#appearance,.loginBoxContainer importDiagram{
 	visibility: hidden;
 	}
 	
@@ -213,13 +213,6 @@ p {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
-#buttonDiv {
-  margin: 58px 0 8px 52px;
-  height: 20px;
-  background: var(--color-background);
-  border-left: 1px solid var(--color-border-4);
-}
-
 .version {
   color: #EFF;
   text-shadow: 1px 1px var(--color-text-list);
@@ -251,11 +244,6 @@ p {
 #content {
   background: var(--color-background);
   margin: 65px 10px 15px 10px;
-}
-
-#contentDiagram {
-  background: var(--color-background);
-  margin: 0 10px 10px 10px;
 }
 
 #accessedcontent {
@@ -1416,93 +1404,10 @@ input {
 }
 
 /* --------------================################================-------------- *
- *                              TOOLBOX/APPLICATION                             *
- * --------------================################================-------------- */
-
-/*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
-
-#diagram-toolbar {
-  width: 58px;
-  left: 2px;
-  height: 100%;
-}
-
-.application-toolbar-wrap {
-  position: fixed;
-  z-index: 1000;
-  background-color: var(--color-background);
-}
-
-.application-toolbar {
-  padding-left: 0px;
-  padding-top: 0px;
-}
-
-.application-toolbar>input[type='button'] {
-  background-color: black;
-}
-
-.toolbar-drawer {
-  padding-left: 4px;
-  border-top: 1px solid var(--color-border-3);
-}
-
-.toolbar-undo-redo-drawer {
-  width: 55px;
-  padding: 4px 2px;
-  border-top: 1px solid var(--color-border-3);
-}
-
-.application-toolbar h4.label {
-  font-size: 11px;
-  font-weight: normal;
-  margin-top: 8px;
-  margin-bottom: 0px;
-  padding: 0px 4px 0px 0px;
-}
-
-.toolbarArrows {
-  width: 20%;
-  background: var(--color-primary);
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#toolbarTypeText {
-  font-size: 11px;
-  color: #c0c0c0;
-  font-weight: bold;
-  margin: 4px 0 16px 0;
-  text-align: center;
-}
-
-#toolbarLeftArrow {
-  transform: rotate(-90deg);
-  width: 50%;
-  filter: invert(100%);
-}
-
-#toolbarRightArrow {
-  transform: rotate(90deg);
-  width: 50%;
-  filter: invert(100%);
-}
-
-
-
-/* --------------================################================-------------- *
- *                            END TOOLBOX/APPLICATION                           *
- * --------------================################================-------------- */
-
-/* --------------================################================-------------- *
   *                        TOOLBAR/DROPDOWN/APPLICATION                          *
   * --------------================################================-------------- */
 
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
-
-.document-settings {
-  font-size: 14px;
-}
 
 .export-drop-down {
   display: none;
@@ -1510,18 +1415,6 @@ input {
 
 .papersize-drop-down{
 	display: none;
-}
-
-.document-settings>.menu-item,
-.document-settings>.menu-drop-down {
-  float: left;
-}
-
-.document-settings span.label {
-  display: block;
-  height: 22px;
-  line-height: 22px;
-  padding: 0px 6px;
 }
 
 .menu-drop-down span.drop-down-label {
@@ -1546,23 +1439,6 @@ input {
 
 .papersize-drop-down-head:focus-within .papersize-drop-down {
 	display: block !important;
-  }
-
-.document-settings span.label:hover {
-  cursor: pointer;
-  background-color: var(--color-border-3);
-}
-
-.document-settings>.menu-drop-down:hover>.drop-down {
-  display: inline-block;
-}
-
-.document-settings>.menu-drop-down>.drop-down>.export-drop-down-head:hover>.export-drop-down {
-  display: inline-block;
-}
-
-.document-settings>.menu-drop-down>.drop-down>.papersize-drop-down-head:hover>.papersize-drop-down {
-	display: inline-block;
 }
 
 .drop-down,
