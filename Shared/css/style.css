@@ -1428,7 +1428,6 @@ input {
 }
 
 .application-toolbar-wrap {
-
   position: fixed;
   z-index: 1000;
   background-color: var(--color-background);
@@ -5156,7 +5155,30 @@ only screen and (max-device-width: 320px) {
   display: none;
 }
 
-/* Diagram canvas */
+/* Diagram */
+
+#diagram-header {
+  margin-top: 50px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+
+#diagram-header #toolbar-switcher {
+  font-size: 11px;
+  color: #c0c0c0;
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+#diagram-toolbar-container {
+  display: flex;
+  padding: 4px 0;
+  border-left: 1px solid #c8c8c8;
+}
+
 #diagramCanvasContainer {
   margin-left: 52px;
   height: calc(100vh - 96px);
