@@ -1597,8 +1597,8 @@ $(window).load(function () {
     $("#testbutton").css("background-color", "#614875");
   });
   $("#announcement").click(function(){
-    $("#announcementBox").toggle();
-    $('#fullAnnouncement').hide();
+    $("#announcementBoxOverlay").toggle();
+    $('#fullAnnnouncementOverlay').hide();
 
   });
   $("#newAnnouncement").click(function(){
@@ -1615,7 +1615,7 @@ $(window).load(function () {
 
 //show the full announcement
 function showAnnouncement(){
-  document.getElementById('fullAnnouncement').style.display="block";
+  document.getElementById('fullAnnnouncementOverlay').style.display="block";
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {

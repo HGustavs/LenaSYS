@@ -352,13 +352,29 @@ p {
   display:none;
 }
 /*Announcement box*/
-#announcementBox,
-#fullAnnouncement{
+#announcementBoxOverlay,
+#fullAnnnouncementOverlay{
+  position: fixed; 
+  display: none;
   background-color:  #f2f2f2;
   border: 2px solid #bdbdbd;
-  padding: 15px;
-  margin-bottom: 15px;
+  padding: 10px;
+  z-index: 1004; 
+  left: 0;
+  top: 50px;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto;
+  overflow-x: auto;
+  
 
+}
+#announcementBox{
+  margin-bottom: 80px;
+}
+#fullAnnouncement{
+  padding: 10px 15px 160px 10px;
+  
 }
 #announcementBox button{
   background-color: #fff;
@@ -470,7 +486,7 @@ p {
 }
 .modal {
   position: fixed; 
-  z-index: 1; 
+  z-index: 1005; 
   left: 0;
   top: 0;
   width: 100%; 
@@ -4867,7 +4883,13 @@ only screen and (max-device-width: 390px) {
     opacity: 1;
 
   }
-
+  #announcementBox table tr{
+    border: none;
+  }
+  #announcementBox table tr th,
+  #announcementBox table tr td{
+    padding-left: 0;
+  }
 }
 
 @media only screen and (max-width: 320px),
