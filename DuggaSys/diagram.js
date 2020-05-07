@@ -3594,7 +3594,7 @@ function setOrientationIcon(element, check) {
 
 const toolbarER = currentMode.er;
 const toolbarUML = currentMode.uml;
-const toolbarDeveloperMode = currentMode.dev;
+const toolbarDeveloperMode = currentMode.dev; // Ta bort dessa
 
 //----------------------------------------------------------------------
 // switchToolbar: function for switching the toolbar state (All, ER, UML),
@@ -3602,8 +3602,20 @@ const toolbarDeveloperMode = currentMode.dev;
 //----------------------------------------------------------------------
 
 function switchToolbar(mode) {
-  if(mode == currentMode.er) {
-      toolbarState = toolbarER;
+    /*
+        1. Välj mode. Två ifsatser - 
+        UML 
+            element + checkbox i menyn? allt i samma funktion eller uppdelat? Känns lättare att ha allting samlat
+        ER
+        Dev - allt så är uml/er relevant då? 
+
+        ---
+
+        Allting som ska visas hela tiden
+
+    */
+  if(mode == "ER") { 
+      toolbarState = currentMode.er;// Känns som rimligare format än det som står under. Ta bort constants
   } else if(mode == currentMode.uml) {
       toolbarState = toolbarUML;
   } else if(mode == currentMode.dev) {
