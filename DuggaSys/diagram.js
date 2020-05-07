@@ -5305,9 +5305,49 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
 }
 
 function doubleclick() {
-    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
+    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true 
+    && diagram[lastSelectedObject].figureType == "Free") {
+        let clickedSegmentId = clickedOnLine(diagram[lastSelectedObject]);
+        if (clickedSegmentId != -1) {
+            let freedrawObject = diagram[lastSelectedObject];
+            let newPoint = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+            let clickedSegment = freedrawObject.segments[clickedSegmentId];
+            
+            freedrawObject.segments.splice(clickedSegmentId, 1);
+            freedrawObject.segments.splice(clickedSegmentId, 0, {kind:kind.path, pa:clickedSegment.pa, pb:newPoint});
+            freedrawObject.segments.splice(clickedSegmentId+1, 0, {kind:kind.path, pa:newPoint, pb:clickedSegment.pb});
+        }
+    }
+    else if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         loadAppearanceForm();
     }
+}
+
+function clickedOnLine(clickedObject) {
+    let clickedLine = -1;
+    
+    for (let i = 0; i < clickedObject.segments.length; i++) {
+        if (pointOnLine(currentMouseCoordinateX, currentMouseCoordinateY, clickedObject.segments[i])) {
+            clickedLine = i;
+        }
+    }
+    return clickedLine;
+}
+
+function pointOnLine(pointX, pointY, segment) {
+    let pointBetween = {x:pointX, y:pointY};
+    let pointA = {x:points[segment.pa].x, y:points[segment.pa].y};
+    let pointB = {x:points[segment.pb].x, y:points[segment.pb].y};
+
+    if (distance(pointA, pointBetween) + distance(pointB, pointBetween) 
+    <= distance(pointA, pointB) + 0.1) {
+        return true;
+    }
+
+}
+
+function distance(point1, point2) {     
+    return Math.sqrt((Math.pow((point1.x - point2.x),2) + Math.pow((point1.y - point2.y),2)));
 }
 
 function createText(posX, posY) {
