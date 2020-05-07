@@ -3109,8 +3109,6 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-				$(boxValArray['box3']['id']).css("left", " ");
-				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3125,11 +3123,10 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", " ");
+				$(boxValArray['box3']['id']).css("left", "");
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
-				$(boxValArray['box4']['id']).css("top", " ");
 				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events', 'auto');
 			}
@@ -3175,6 +3172,7 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
+				$(boxValArray['box4']['id']).css("top", "");
 				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
 			},
 			stop: function (e, ui) {
@@ -3636,15 +3634,11 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
 	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
-	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-	$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
-
 	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
 
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
 	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
@@ -3725,6 +3719,23 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
 	}
 
+	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
+		$("#box" + boxNumBase).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumBase).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxNumAlign).childElementCount * 15 > $(boxValArray['box' + boxNumAlign]['id']).height() - 44){
+		$("#box" + boxNumAlign).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumAlign).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxNumAlignSecond).childElementCount * 15 > $(boxValArray['box' + boxNumAlignSecond]['id']).height() - 44){
+		$("#box" + boxNumAlignSecond).css("overflow", "auto");
+		
+	}
+
 	//Update array
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
@@ -3748,8 +3759,27 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 			"top": basePer + "%",
 			"height": remainHeightPer + "%"
 		});
-	} else {
+	} 
+	else if(atry2 >= 79.5){
+		$(boxValArray['box' + boxNumAlign]['id']).css("top", remainHeightPer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%",);
+	}
+	else {
 		$("#box4wrapper").height(atry2 + "%");
+	}
+
+	if(document.querySelector('#textwrapper' + boxNumAlign).childElementCount * 15 > $(boxValArray['box' + boxNumAlign]['id']).height() - 44){
+		$("#box" + boxNumAlign).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumAlign).css("overflow", "hidden");
+	}
+	if(document.querySelector('#textwrapper' + boxNumAlignSecond).childElementCount * 15 > $(boxValArray['box' + boxNumAlignSecond]['id']).height() - 44){
+		$("#box" + boxNumAlignSecond).css("overflow", "auto");
+		
+	} else{
+		$("#box" + boxNumAlignSecond).css("overflow", "hidden");
 	}
 
 }
