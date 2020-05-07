@@ -83,7 +83,7 @@ if ($ha) {
         } else {
             $storefile = true;
         }
-    } else if($kind == "EFILE"){
+    } else if($kind == "EFILE"){ // Dummy-file type
         $fileLocation = $_POST["efilekind"][0];
         if($fileLocation == "GFILE"){
             if (!file_exists($currcvd . "/courses/global")) {
@@ -101,7 +101,6 @@ if ($ha) {
                 $storefile = true;
             }
             if ($fileLocation == "LFILE") {
-                echo $vers;
                 if (!file_exists($currcvd . "/courses/" . $cid . "/" . $vers)) {
                     $storefile = mkdir($currcvd . "/courses/" . $cid . "/" . $vers,0777,true);
                 } else {
@@ -177,7 +176,7 @@ if ($storefile) {
         $fileText = $_POST["newEmptyFile"][0]; //Name of the file
         $fileLocation = $_POST["efilekind"][0]; // global or corselocal
         $extension = substr($fileText, strrpos($fileText, '.') + 1);
-
+        // check extension and making directory
         if (array_key_exists($extension, $allowedExtensions)) {
             $fileText = preg_replace('/[[:^print:]]/', '', $fileText);
             $fileText = preg_replace('/\s+/', '', $fileText);
