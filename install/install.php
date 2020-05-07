@@ -264,7 +264,9 @@
     $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
     ob_end_clean(); // Remove form and start installation.
 
-    /* Pop-up window when installation is done. Hidden from start. */
+    //---------------------------------------------------------------------------------------------------
+    // Javascripts for warning pop-up
+    //---------------------------------------------------------------------------------------------------
     echo "
       <div id='warning' class='modal'>
         <!-- Modal content -->
@@ -275,7 +277,9 @@
       </div>
     ";
 
-    /* Javascripts for warning pop-up */
+    //---------------------------------------------------------------------------------------------------
+    // Javascripts for warning pop-up
+    //---------------------------------------------------------------------------------------------------
     echo "
       <script>
         var modalRead = false; // Have the user read info?
@@ -305,7 +309,9 @@
     flush();
     ob_flush();
 
-    /***** START of installation progress ******/
+    //---------------------------------------------------------------------------------------------------
+    // START of installation progress
+    //---------------------------------------------------------------------------------------------------
     $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     $totalSteps = 1; // Variable to hold the total steps to complete.
     $completedSteps = 0; // Variable to hold the current completed steps.
@@ -334,9 +340,9 @@
       }
     }
 
-    /* Header.
-      * Will contain title and progress bar.
-      */
+    //---------------------------------------------------------------------------------------------------
+    // Header - Contains title and progress bar.
+    //---------------------------------------------------------------------------------------------------
     echo "
       <div id='header'>
         <h1>Installation</h1>
@@ -348,7 +354,9 @@
       </div>
     ";
 
-    /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
+    //---------------------------------------------------------------------------------------------------
+    // Javascripts to calculate length of progressRect. This will show the current progress in progressBar
+    //---------------------------------------------------------------------------------------------------
     echo "
     <script>
       /* Function to remove decimals from percentage text */
@@ -396,7 +404,7 @@
     ob_flush();
 
     //---------------------------------------------------------------------------------------------------
-    // All this code does the install
+    // All the following code of the long if-statement does the install
     //---------------------------------------------------------------------------------------------------
     echo "<div id='installationProgressWrap'>";
       # Test permissions on directory before starting installation.
@@ -620,38 +628,40 @@
     echo "</div>
     ";
 
-    # Will show how many errors installation finished with.
+    //---------------------------------------------------------------------------------------------------
+    // Will show how many errors installation finished with.
+    //---------------------------------------------------------------------------------------------------
     echo "
       <div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
         <span id='errorCount'>Errors: " . $errors . "</span>
       </div>
     "; 
 
-    # Collapse progress only if there are no errors.
+    //---------------------------------------------------------------------------------------------------
+    // Collapse progress only if there are no errors.
+    //---------------------------------------------------------------------------------------------------
     if ($errors == 0) {
         echo "<script>$('#installationProgressWrap').toggle(500);</script>";
     }
 
     //---------------------------------------------------------------------------------------------------
-    // All this code prints further instructions to complete installation.
+    // The rest of the if-statement prints further instructions
     //---------------------------------------------------------------------------------------------------
     $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
     echo "<div id='doThisWrapper'>";
     echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
-    // Trying to put content and/or create coursesyspw.php.
-    // If there already is a file it will be filled with the entered
-    // credentials in case they don't match what was originally in the file
-    // and if no file exists create one with credentials, if it fails
-    // give instructions on how to create the file.
+
+
+    //---------------------------------------------------------------------------------------------------
+    // Create/update coursesyspw.php , if it fails output instructions.
+    //---------------------------------------------------------------------------------------------------
     try {
-      // Start of Content to put in coursesyspw.
       $filePutContent = "<?php
           define(\"DB_USER\",\"".$username."\");
           define(\"DB_PASSWORD\",\"".$password."\");
           define(\"DB_HOST\",\"".$serverName."\");
           define(\"DB_NAME\",\"".$databaseName."\");
       ?>";
-      // end of coursesyspw content
       file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
     } catch (\Exception $e) {
       echo "<br><b>To make installation work please make a
@@ -671,11 +681,16 @@
       echo '<div id="copied1">Copied to clipboard!<br></div>';
     }
 
-    //Check upload_max_filesize parameter
+    //---------------------------------------------------------------------------------------------------
+    // Check upload_max_filesize parameter
+    //---------------------------------------------------------------------------------------------------
     if(ini_get('upload_max_filesize')!='128M'){
       echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
     }
 
+    //---------------------------------------------------------------------------------------------------
+    // Try to connect to db, if not created the function will create db. If all fails print instructions
+    //---------------------------------------------------------------------------------------------------
     if(!connectLogDB()){
       echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
       with a sqlite database inside at " . $putFileHere . " with permissions 664<br>
@@ -689,11 +704,17 @@
       echo '<div id="copied2">Copied to clipboard!<br></div>';
     }
 
+    //---------------------------------------------------------------------------------------------------
+    // "Function" to get the path to the installed system
+    //---------------------------------------------------------------------------------------------------
     $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
     if(substr($lenaInstall, 0 , 2) == '/') {
       $lenaInstall = substr($lenaInstall, 1);
     }
 
+    //---------------------------------------------------------------------------------------------------
+    // Buttons and other UI-stuff
+    //---------------------------------------------------------------------------------------------------
     echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
     echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
     echo "</form>";
@@ -842,8 +863,6 @@
     }
   }
 
-  document.getElementById("progressRect").setAttribute("width", "" + completedWidth + "");
-
   /* Show/Hide installation progress. */
   function toggleInstallationProgress(){
     $('#installationProgressWrap').toggle(500);
@@ -858,11 +877,11 @@
       range.moveToElementText(text);
       range.select();
     } else {
-        var selection = window.getSelection();
-        var range = document.createRange();
-        range.selectNodeContents(text);
-        selection.removeAllRanges();
-        selection.addRange(range);
+      var selection = window.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(text);
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
 
     /* Copy selection. */
