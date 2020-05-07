@@ -152,7 +152,7 @@ $codeLinkQuery->execute();
                             <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
                         </div>
                     </div>
-                    <span id="spankind">Kind:</span>
+                    
                     
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
@@ -176,6 +176,7 @@ $codeLinkQuery->execute();
                     <!-- .svg| -->
                     <ul style="padding-left: 0px; list-style-type: none; display: none;" id="dummyFileErrorList"></ul>
                     <input type="text" id="newEmptyFile" name="newEmptyFile[]" placeholder="Greger.txt">
+                    <span id="spankind">Kind:</span>
                     <select name ="efilekind[]" id="selectdir">
                     <?php
                     if(isSuperUser($_SESSION['uid'])){
@@ -193,7 +194,7 @@ $codeLinkQuery->execute();
                     ?>
                     <select>
                     <div id='uploadbuttonname'>
-                        <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile('EFILE');"/>
+                        <input type="submit" style="position: relative; top:25px;" onclick="uploadFile('EFILE');"/>
                     </div>
                 </form>
             </div>
