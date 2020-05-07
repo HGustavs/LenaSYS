@@ -5323,6 +5323,9 @@ function doubleclick() {
     }
 }
 
+//--------------------------------------------------------------------
+// clickedOnLine: Checks if a line of an object is clicked, returns segment index
+//--------------------------------------------------------------------
 function clickedOnLine(clickedObject) {
     let clickedLine = -1;
     
@@ -5334,6 +5337,9 @@ function clickedOnLine(clickedObject) {
     return clickedLine;
 }
 
+//--------------------------------------------------------------------
+// pointOnLine: Checks if a point is positioned on a segment
+//--------------------------------------------------------------------
 function pointOnLine(pointX, pointY, segment) {
     let pointBetween = {x:pointX, y:pointY};
     let pointA = {x:points[segment.pa].x, y:points[segment.pa].y};
@@ -5343,9 +5349,11 @@ function pointOnLine(pointX, pointY, segment) {
     <= distance(pointA, pointB) + 0.1) {
         return true;
     }
-
 }
 
+//--------------------------------------------------------------------
+// distance: Returns distance between two points 
+//--------------------------------------------------------------------
 function distance(point1, point2) {     
     return Math.sqrt((Math.pow((point1.x - point2.x),2) + Math.pow((point1.y - point2.y),2)));
 }
