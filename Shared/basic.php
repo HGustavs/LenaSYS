@@ -306,32 +306,6 @@ function logServiceEvent($uuid, $eventType, $service, $userid, $info, $timestamp
 }
 
 //------------------------------------------------------------------------------------------------
-// logClickEvent - Creates a new click event in the log.db database.
-//------------------------------------------------------------------------------------------------
-
-function logClickEvent($target, $mouseX, $mouseY, $clientResX, $clientResY) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO clickLogEntries (target, mouseX, mouseY, clientResX, clientResY) VALUES (:target, :mouseX, :mouseY, :clientResX, :clientResY)');
-	$query->bindParam(':target', $target);
-	$query->bindParam(':mouseX', $mouseX);
-	$query->bindParam(':mouseY', $mouseY);
-	$query->bindParam(':clientResX', $clientResX);
-	$query->bindParam(':clientResY', $clientResY);
-	$query->execute();
-}
-
-//------------------------------------------------------------------------------------------------
-// logMousemoveEvent - Creates a new click event in the log.db database.
-//------------------------------------------------------------------------------------------------
-
-function logMousemoveEvent($page, $mouseX, $mouseY) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO mousemoveLogEntries (page, mouseX, mouseY) VALUES (:page, :mouseX, :mouseY)');
-	$query->bindParam(':page', $page);
-	$query->bindParam(':mouseX', $mouseX);
-	$query->bindParam(':mouseY', $mouseY);
-	$query->execute();
-}
-
-//------------------------------------------------------------------------------------------------
 // Log page load for examples. - Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
 //------------------------------------------------------------------------------------------------
 
