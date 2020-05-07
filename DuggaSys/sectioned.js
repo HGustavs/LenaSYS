@@ -1596,8 +1596,32 @@ $(window).load(function () {
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
+  $("#announcement").click(function(){
+    $("#announcementBox").toggle();
+    $('#fullAnnouncement').hide();
+
+  });
+  $("#newAnnouncement").click(function(){
+    $("#modal").toggle();
+    $(window).click(function(e) {
+      if(e.target.id == "modal"){
+        $("#modal").hide(); 
+      }
+    });
+
+
+  });
 });
 
+//show the full announcement
+function showAnnouncement(){
+  document.getElementById('fullAnnouncement').style.display="block";
+}
+//sets author for announcement
+function setAnnouncementAuthor(){
+  $("#author").val($("#userName").html());
+  
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
