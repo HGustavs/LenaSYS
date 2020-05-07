@@ -349,7 +349,23 @@ function Symbol(kindOfSymbol) {
             this.minHeight = attrHeight + opHeight;
             
             //Finding the longest string
-            var longestStr = this.name;
+            var longestStr = "";
+            //Check if any attribute is the longest
+            for (var i = 0; i < this.attributes.length; i++) {
+                if (this.attributes[i].text.length > longestStr.length) {
+                    longestStr = this.attributes[i].text;
+                }
+            }
+            //check if any operation is the longest
+            for (var i = 0; i < this.operations.length; i++) {
+                if (this.operations[i].text.length > longestStr.length) {
+                    longestStr = this.operations[i].text;
+                }
+            }
+            //check if name is the longest
+            if(this.name.length > longestStr.length){
+                longestStr = this.name;
+            }
 
             if(!this.UMLCustomResize) {
                 for(var i = 0; i < this.operations.length; i++) {
@@ -363,7 +379,7 @@ function Symbol(kindOfSymbol) {
             }
             ctx.font = "14px Arial";
             this.minWidth = ctx.measureText(longestStr).width + 15;
-
+            //console.log(this.minWidth);
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging
