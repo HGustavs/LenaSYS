@@ -134,7 +134,7 @@
 						$announcementid = $headline['id'];
 						$announceTime = $headline['announceTime'];
 						$author = $headline['author'];
-						echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th><td><button><a href='../Shared/announcementService.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&deleteannouncementid=".$announcementid."'>Delete</a></button><button><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&updateannouncementid=".$announcementid."&title=".$headlines."&message=".$message."&author=".$author."'>Update</a></button></td></tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
+						echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th><td><button class='actionBtn'><a href='../Shared/announcementService.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&deleteannouncementid=".$announcementid."'>Delete</a></button><button class='actionBtn'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&updateannouncementid=".$announcementid."&title=".$headlines."&message=".$message."&author=".$author."'>Update</a></button></td></tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
 
 
 					}
@@ -155,7 +155,7 @@
 		include '../Shared/announcementBox.php';
 		if (isset($_GET['announcementid'])) {
 			include '../Shared/fullAnnouncement.php';
-			
+
 		}if (isset($_GET['updateannouncementid'])) {
 			include '../Shared/updateAnnouncement.php';
 		}

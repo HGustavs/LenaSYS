@@ -1620,6 +1620,9 @@ $(window).load(function () {
   var adminLoggedin = $("#adminLoggedin").val();
   if(adminLoggedin == 'yes'){
     $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create an new announcement</button>');
+    $("#announcementBox table .actionBtn").add();
+  }else{
+    $("#announcementBox table .actionBtn").remove();
   }
   $("#newAnnouncement").click(function(){
     $("#modal").toggle();
