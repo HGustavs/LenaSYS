@@ -740,8 +740,17 @@ if($gradesys=="UNK") $gradesys=0;
 					);
 				}
 			}
+			$query = $pdo->prepare("SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':lid', $moment);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading courses".$error[2];
+			} else{
+				$row = $query->fetch();
+				$avgfeedbackscore = $row[0];
+			}
 		}
-
 		$array = array(
 			"entries" => $entries,
 			"debug" => $debug,
@@ -764,7 +773,8 @@ if($gradesys=="UNK") $gradesys=0;
 		  "grpmembershp" => $grpmembershp,
 		  "grplst" => $grplst,
 		  "userfeedback" => $userfeedback,
-		  "feedbackquestion" => $feedbackquestion
+		  "feedbackquestion" => $feedbackquestion,
+		  "avgfeedbackscore" => $avgfeedbackscore
 		);
 
 		echo json_encode($array);

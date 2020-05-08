@@ -962,7 +962,7 @@ function returnedSection(data) {
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
           str += "<td style='width:32px;'>";
-          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\");'>";
+          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
           str += "</td>";
         }
 
@@ -1811,16 +1811,32 @@ function validateForm(formid) {
   }
 }
 
-function showUserFeedBack(lid) {
+function showUserFeedBack(lid,feedbackquestion) {
 	AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
   $("#userFeedbackDialog").css("display", "flex");
   $("#feedbacktablecontainer").html("");
+  $("#duggaFeedbackQuestion").html(feedbackquestion);
 }
 
 function returnedUserFeedback(data){
   if(data.userfeedback.length == 0){
     $("#feedbacktablecontainer").html( "<p>No feedback available</p>" );
   }else{
+    var averagerating = parseFloat(data.avgfeedbackscore);
+    var highestscore = 0;
+    var lowestscore = 10;
+    for(var i = 0; i<data.userfeedback.length; i++){
+      if(data.userfeedback[i].score > highestscore){
+        highestscore=data.userfeedback[i].score;
+      }
+      if(data.userfeedback[i].score < lowestscore){
+        lowestscore=data.userfeedback[i].score;
+      }
+    }
+    console.log(typeof(averagerating));
+    $("#avg-feedback").html(averagerating.toFixed(2));
+    $("#median-feedback").html(highestscore+" / "+lowestscore);
+    $("#total-feedback").html(data.userfeedback.length);
     $("#feedbacktablecontainer").html(createUserFeedbackTable(data));
   }
   
