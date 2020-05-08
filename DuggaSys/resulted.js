@@ -687,12 +687,15 @@ function returnedResults(data) {
 // Success return function for LadExport lastGraded
 //----------------------------------------
 function returnedExportedGrades(gradeData){
+	// Tries to write out the last exported date.
+	// If it fails, then log the error.
 	try {
-		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;
-	  }
-	  catch(err) {
-		console.log("gradeLastExported updated in database");
-	  }
+		if (typeof gradeData[0].gradeLastExported !== 'undefined' && typeof gradeData[0] === 'object') {
+			document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
+		}
+	} catch (error) {
+		console.log(error);
+	}
 }
 var myTable;
 //----------------------------------------
@@ -1523,7 +1526,7 @@ function copyLadexport() {
 	today = yyyy + '-' + mm + '-' + dd;
 
 	 var gradeLastExported = today + " " + time;
-	 lastExpDate.innerHTML =  gradeLastExported;
+	 lastExpDate.innerHTML = gradeLastExported;
 	 lastExpDate.style.color = 'green';
 
 	 setInterval(function(){
