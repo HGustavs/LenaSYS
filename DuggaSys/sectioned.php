@@ -131,17 +131,17 @@
 
 		<!-- Mobile view END -->
 		<!-- Announcement box -->
-		<div id="announcementBoxOverlay">
-			<div id="announcementBox">
+		<div id="announcementBox" style="display: none;">
 			<h3>To Do</h3>
 			<hr>
+			<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>
 			<table>
 			<?php
 
 				$courseid = $_GET['courseid'];
 				$coursevers = $_GET['coursevers'];
 
-				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid="'.$courseid.'" AND courseversion="'.$coursevers.'" ORDER BY announceTime DESC') AS $headline){
+				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid LIKE "%'.$courseid.'%" AND courseversion LIKE "%'.$coursevers.'%" ORDER BY announceTime DESC') AS $headline){
 	             $headlines = $headline['title'];
 	             $message = $headline['message'];
 	             $announcementid = $headline['id'];
@@ -155,14 +155,8 @@
 			?>
 
 			</table>
-
-			<button class="showAllAnnouncement">
-				<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
-				</a>
-			</button>
 		</div>
 
-		</div>
 		<?php
 			include '../Shared/announcementBox.php';
 			include '../Shared/fullAnnouncement.php';
