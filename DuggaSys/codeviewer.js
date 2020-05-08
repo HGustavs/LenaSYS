@@ -2378,7 +2378,61 @@ function minimizeBoxes(boxid) {
 
 	}
 
+	//for template 6
+	if(templateid == 6 && isMobile == false){
+		if(boxid == 1){
+			for(i = 1; i <= 4; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");	
+			}
+            setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20); 
+		}
+		if(boxid == 2){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+		if(boxid == 3){
+			$(boxValArray['box' + 2]['id']).height("50%");
+			$(boxValArray['box' + 4]['id']).height("50%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+		if(boxid == 4){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+	}
 
+	//for template 7
+	if(templateid == 7 && isMobile == false){
+		if(boxid == 1){
+			for(i = 1; i <= 4; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");	
+			}
+			setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20); 
+		}
+		if(boxid == 2){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+		if(boxid == 3){
+			$(boxValArray['box' + 2]['id']).height("50%");
+			$(boxValArray['box' + 4]['id']).height("50%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+		if(boxid == 4){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+	}
 
 	//for template 8
 	if(templateid == 8 && isMobile == false){
@@ -2403,6 +2457,41 @@ function minimizeBoxes(boxid) {
 			}
 		}
 	}
+
+	//for template 9
+	if(templateid == 9 && isMobile == false){
+		if(boxid == 1){
+			for(i = 1; i <= 5; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");	
+			}
+			setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20); 
+		}
+		if(boxid == 2){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+		if(boxid == 3){
+			$(boxValArray['box' + 2]['id']).height("50%");
+			$(boxValArray['box' + 4]['id']).height("50%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+		if(boxid == 4){
+			$(boxValArray['box' + 2]['id']).height("50%");
+			$(boxValArray['box' + 4]['id']).height("50%");
+			$(boxValArray['box' + 5]['id']).height("50%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+		if(boxid == 5){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+	}	
 }
 
 function hideCopyButtons(templateid, boxid) {
