@@ -1,105 +1,107 @@
 /* This template makes three boxes, one to the left and two to the right of the fist one.
    The two to the right is, one on top of the other */
-#box1wrapper{
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: -moz-calc(50.0%);
-	width: -webkit-calc(50.0%);
-	width: calc(50.0%);
-	height: -webkit-calc(100%);
-	height: -moz-calc(100%);
-	height: calc(100%) !important;
-	min-width: 10%;
-	max-width: 90%;
+#box1wrapper {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: -moz-calc(50.0%);
+    width: -webkit-calc(50.0%);
+    width: calc(50.0%);
+    height: -webkit-calc(100%);
+    height: -moz-calc(100%);
+    height: calc(100%) !important;
+    min-width: 10%;
+    max-width: 90%;
 }
 
 #box2wrapper {
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	width: -moz-calc(50.0%);
-	width: -webkit-calc(50.0%);
-	width: calc(50.0%);
-	height: -webkit-calc(50%);
-	height: -moz-calc(50%);
-	height: calc(50%);
-	min-width: 10%;
-	max-width: 90%;
-	max-height: 90%;
-	min-height: 10%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: -moz-calc(50.0%);
+    width: -webkit-calc(50.0%);
+    width: calc(50.0%);
+    height: -webkit-calc(50%);
+    height: -moz-calc(50%);
+    height: calc(50%);
+    min-width: 10%;
+    max-width: 90%;
+    max-height: 90%;
+    min-height: 10%;
 }
 
 #box3wrapper {
-	position: absolute;
-   	right: 0px;
-   	bottom: 0px;
-   	width: -moz-calc(50%);
-   	width: -webkit-calc(50%);
-   	width: calc(50%);
-   	height: -webkit-calc(50%);
-   	height: -moz-calc(50%);
-   	height: calc(50%);
-	min-width: 10%;
-	max-width: 90%;
-	max-height: 90%;
-	min-height: 10%;
-}
-@media only screen 
-and (max-device-width : 725px) {
-
-    
-    #box1wrapper{
     position: absolute;
-    left: 0px;
-    height: -moz-calc(35.0%);
-    height: -webkit-calc(35.0%);
-    height: calc(35.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
-    min-height: 33%;
-	max-height: 33%;
-    min-width: 100%;
-	max-width: 100%;
+    right: 0px;
+    bottom: 0px;
+    width: -moz-calc(50%);
+    width: -webkit-calc(50%);
+    width: calc(50%);
+    height: -webkit-calc(50%);
+    height: -moz-calc(50%);
+    height: calc(50%);
+    min-width: 10%;
+    max-width: 90%;
+    max-height: 90%;
+    min-height: 10%;
 }
+
+@media only screen and (max-width: 800px) {
+    #box1wrapper {
+        overflow: hidden;
+        position: absolute;
+        left: 0px;
+        height: -moz-calc(35.0%);
+        height: -webkit-calc(35.0%);
+        height: calc(35.0%);
+        width: -moz-calc(100.0%) !important;
+        width: -webkit-calc(100.0%) !important;
+        width: calc(100.0%) !important;
+        min-height: 33%;
+        max-height: 33%;
+        min-width: 100%;
+        max-width: 100%;
+    }
 
 
 
     #box2wrapper {
-    position: absolute;
-    top:33%;
-    bottom: 0px;
-    left: 0px;
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
-    font-family: Arial,Sans-Serif;
-    min-height: 33%;
-	max-height: 33%;
-    min-width: 100%;
-	max-width: 100%;
-}
+        overflow: hidden;
+        position: absolute;
+        top: 33%;
+        bottom: 0px;
+        left: 0px;
+        height: -moz-calc(65.0%);
+        height: -webkit-calc(65.0%);
+        height: calc(65.0%);
+        width: -moz-calc(100.0%) !important;
+        width: -webkit-calc(100.0%) !important;
+        width: calc(100.0%) !important;
+        font-family: Arial, Sans-Serif;
+        min-height: 33%;
+        max-height: 33%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
     #box3wrapper {
-    position: absolute;
-    top:66%;
-    bottom: 33%;
-    left: 0px;    
-    height: -moz-calc(65.0%);
-    height: -webkit-calc(65.0%);
-    height: calc(65.0%);
-    width: -moz-calc(100.0%)!important;
-    width: -webkit-calc(100.0%)!important;
-    width: calc(100.0%)!important;
-    font-family: Arial,Sans-Serif;
-    min-height: 33%;
-	max-height: 33%;
-    min-width: 100%;
-	max-width: 100%;
-}
+        overflow: hidden;
+        position: absolute;
+        top: 66%;
+        bottom: 33%;
+        left: 0px;
+        height: -moz-calc(65.0%);
+        height: -webkit-calc(65.0%);
+        height: calc(65.0%);
+        width: -moz-calc(100.0%) !important;
+        width: -webkit-calc(100.0%) !important;
+        width: calc(100.0%) !important;
+        font-family: Arial, Sans-Serif;
+        min-height: 33%;
+        max-height: 33%;
+        min-width: 100%;
+        max-width: 100%;
+    }
 
 
 
