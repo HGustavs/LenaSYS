@@ -231,7 +231,7 @@ function passwordGuessing(){
 		FROM userLogEntries
 		WHERE eventType = '.EventTypes::LoginFail.'
 		GROUP BY uid, remoteAddress
-		HAVING tries > 10;
+		HAVING tries >= 3;
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
