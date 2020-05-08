@@ -47,6 +47,7 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 		$filemtime = filemtime('analytic.js');
 		echo "<script type='text/javascript' src='analytic.js?$filemtime'></script>";
 	?>
+	<script src="https://kit.fontawesome.com/5aee74955a.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
