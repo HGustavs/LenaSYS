@@ -261,11 +261,25 @@
 <?php 
   # Installer
   if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
-    $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
+    $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     ob_end_clean(); // Remove form and start installation.
 
     //---------------------------------------------------------------------------------------------------
-    // Javascripts for warning pop-up
+    // Header - Contains title, progress bar and restart-button.
+    //---------------------------------------------------------------------------------------------------
+    echo "
+      <div id='header'>
+        <h1>Installation</h1>
+        <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
+          <rect id='progressRect' width='0' height='20px' />
+        </svg>
+        <span id='percentageText'></span>
+        <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
+      </div>
+    ";
+
+    //---------------------------------------------------------------------------------------------------
+    // Modal showing after installation is done
     //---------------------------------------------------------------------------------------------------
     echo "
       <div id='warning' class='modal'>
@@ -311,11 +325,12 @@
     //---------------------------------------------------------------------------------------------------
     // START of installation progress
     //---------------------------------------------------------------------------------------------------
-    $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     $totalSteps = 1; // Variable to hold the total steps to complete.
     $completedSteps = 0; // Variable to hold the current completed steps.
 
-    /* The following if-block will decide how many steps there are to complete installation. */
+    //---------------------------------------------------------------------------------------------------
+    // The following if-block will decide how many steps there are to complete installation.
+    //---------------------------------------------------------------------------------------------------
     if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
       $totalSteps += 4;
       if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
@@ -338,20 +353,6 @@
         }
       }
     }
-
-    //---------------------------------------------------------------------------------------------------
-    // Header - Contains title, progress bar and restart-button.
-    //---------------------------------------------------------------------------------------------------
-    echo "
-      <div id='header'>
-        <h1>Installation</h1>
-        <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
-          <rect id='progressRect' width='0' height='20px' />
-        </svg>
-        <span id='percentageText'></span>
-        <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
-      </div>
-    ";
 
     //---------------------------------------------------------------------------------------------------
     // Javascripts to calculate length of progressRect. This will show the current progress in progressBar
@@ -401,8 +402,6 @@
     </script>";
     flush();
     ob_flush();
-
-
 
     //---------------------------------------------------------------------------------------------------
     // All the following code of the long if-statement does the install
@@ -634,7 +633,6 @@
     $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
     echo "<div id='doThisWrapper'>";
     echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
-
 
     //---------------------------------------------------------------------------------------------------
     // Create/update coursesyspw.php , if it fails output instructions.
