@@ -6715,13 +6715,10 @@ textarea#filecont {
 }
 
 .motdBoxheader div:hover {
-  border: 2px;
-  border-style: solid;
-  border-color: white;
   background-color: #815e9d;
   -webkit-transition: background-color 100ms linear;
-    -ms-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;
+  -ms-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
 }
 .notActive {
   background-color:white;
