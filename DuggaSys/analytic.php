@@ -52,26 +52,37 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 <body>
 
 <?php
-
 	$noup="NONE";
 	$loginvar="ANALYTIC";
-	include '../Shared/navheader.php';
 	setcookie("loginvar", $loginvar);
-	
+
 	// Show analytics if user is superuser.
 	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
-?>
-	<!-- content START -->
-	<div id="content">
-		<div id="analytic-info"></div>
-		<div id="canvas-area">
+
+		echo '
+		<!-- content START -->
+		<div id="content">
+			<div class="analytic-buttons">
+				<input class="submit-button" style="float:left" type="button" value="General stats" onclick="loadGeneralStats()">
+				<input class="submit-button" style="float:left" type="button" value="Password guessing" onclick="loadPasswordGuessing()">
+				<input class="submit-button" style="float:left" type="button" value="OS Percentage" onclick="loadOsPercentage()">
+				<input class="submit-button" style="float:left" type="button" value="Browser percentage" onclick="loadBrowserPercentage()">
+				<input class="submit-button" style="float:left" type="button" value="Service usage" onclick="loadServiceUsage()">
+				<input class="submit-button" style="float:left" type="button" value="Service speed" onclick="loadServiceAvgDuration()">
+				<input class="submit-button" style="float:left" type="button" value="Service crashes" onclick="loadServiceCrashes()">
+				<input class="submit-button" style="float:left" type="button" value="File information" onclick="loadFileInformation()">
+				<input class="submit-button" style="float:left" type="button" value="Page information" onclick="loadPageInformation()">
+			</div>
+				<div id="analytic-info" style="clear: both; padding: 15px;"></div>
+				<div id="canvas-area" style="height: 300px;">
+			</div>
+			
 		</div>
-	</div>
-	<!-- content END -->
-	
-<?php
-	}	
-	else{
+		<!-- content END -->
+		';
+	} else {
 		header('Location: courseed.php');
 	}
+
+	include '../Shared/navheader.php';
 ?>
