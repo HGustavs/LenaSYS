@@ -426,8 +426,8 @@ function createVersion() {
   param.versname = document.getElementById("versname").value;
   param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = document.getElementById("course-coursecode").innerHTML;
-  param.coursename = document.getElementById("course-coursename").innerHTML;
+  param.coursecode = querystring["courseid"];
+  param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#makeactive").is(':checked');
   param.startdate = getDateFormat(new Date($("#startdate").val()));
   param.enddate = getDateFormat(new Date($("#enddate").val()));
@@ -445,6 +445,7 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("versid").value );
   }
 }
 
@@ -461,8 +462,8 @@ function updateVersion() {
   param.versid = document.getElementById("eversid").value;
   param.versname = document.getElementById("eversname").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = document.getElementById("course-coursecode").innerHTML;
-  param.coursename = document.getElementById("course-coursename").innerHTML;
+  param.coursecode = querystring["courseid"];
+  param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
   param.enddate = $("#eenddate").val();
@@ -471,6 +472,7 @@ function updateVersion() {
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("versid").value );
 }
 
 //queryString for coursename is added
@@ -1019,7 +1021,7 @@ function returnedSection(data) {
     }
   } else {
     
-    str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
+    str = "<div class='err' style='z-index:500; position:absolute; top:10%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML+= str;
     $("#newCourseVersion").css("display", "block");
