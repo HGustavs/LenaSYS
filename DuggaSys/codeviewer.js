@@ -3767,6 +3767,7 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 		$("#box4wrapper").height(atry2 + "%");
 	}
 
+	hideShowScrollbars(boxValArray, boxNumBase);
 	hideShowScrollbars(boxValArray, boxNumAlign);
 	hideShowScrollbars(boxValArray, boxNumAlignSecond);
 
@@ -3916,24 +3917,10 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 	}
 	
 	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	if(document.querySelector('#textwrapper' + boxOne).childElementCount * 15 > $(boxValArray['box' + boxOne]['id']).height() - 44){
-		$("#box" + boxOne).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxOne).css("overflow", "hidden");
-	}
-	if(document.querySelector('#textwrapper' + boxTwo).childElementCount * 15 > $(boxValArray['box' + boxTwo]['id']).height() - 44){
-		$("#box" + boxTwo).css("overflow", "auto");
-	} else{
-		$("#box" + boxTwo).css("overflow", "hidden");
-	}
-	// This function can only decrease the height of the last two boxes, therefore it can only set scrollbars to auto and not hidden.
-	if(document.querySelector('#textwrapper' + boxThree).childElementCount * 15 > $(boxValArray['box' + boxThree]['id']).height() - 44){
-		$("#box" + boxThree).css("overflow", "auto");
-	} 
-	if(document.querySelector('#textwrapper' + boxFour).childElementCount * 15 > $(boxValArray['box' + boxFour]['id']).height() - 44){
-		$("#box" + boxFour).css("overflow", "auto");
-	}
+	hideShowScrollbars(boxValArray, boxOne);
+	hideShowScrollbars(boxValArray, boxTwo);
+	hideShowScrollbars(boxValArray, boxThree);
+	hideShowScrollbars(boxValArray, boxFour);
 
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
@@ -4018,23 +4005,10 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	}
 
 	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	if(document.querySelector('#textwrapper' + boxTwo).childElementCount * 15 > $(boxValArray['box' + boxTwo]['id']).height() - 44){
-		$("#box" + boxTwo).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxTwo).css("overflow", "hidden");
-	}
-	if(document.querySelector('#textwrapper' + boxThree).childElementCount * 15 > $(boxValArray['box' + boxThree]['id']).height() - 44){
-		$("#box" + boxThree).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxThree).css("overflow", "hidden");
-	}
-	// This function can only decrease the height of the last box, therefore it can only set scrollbars to auto and not hidden.
-	if(document.querySelector('#textwrapper' + boxFour).childElementCount * 15 > $(boxValArray['box' + boxFour]['id']).height() - 44){
-		$("#box" + boxFour).css("overflow", "auto");
-		
-	}
+	hideShowScrollbars(boxValArray, boxOne);
+	hideShowScrollbars(boxValArray, boxTwo);
+	hideShowScrollbars(boxValArray, boxThree);
+	hideShowScrollbars(boxValArray, boxFour);
 
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
@@ -4086,18 +4060,10 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	}
 
 	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	if(document.querySelector('#textwrapper' + boxThree).childElementCount * 15 > $(boxValArray['box' + boxThree]['id']).height() - 44){
-		$("#box" + boxThree).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxThree).css("overflow", "hidden");
-	}
-	if(document.querySelector('#textwrapper' + boxFour).childElementCount * 15 > $(boxValArray['box' + boxFour]['id']).height() - 44){
-		$("#box" + boxFour).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxFour).css("overflow", "hidden");
-	}
+	hideShowScrollbars(boxValArray, boxOne);
+	hideShowScrollbars(boxValArray, boxTwo);
+	hideShowScrollbars(boxValArray, boxThree);
+	hideShowScrollbars(boxValArray, boxFour);
 
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
