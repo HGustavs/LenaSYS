@@ -204,10 +204,12 @@ function returned(data)
 			if(contentHeight < $("#box" + boxid).height()){
 				$("#box" + boxid).css("overflow", "hidden");
 			}
+			else{
+				$("#box" + boxid).css("overflow", "auto");
+			}
 
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
-
 			var boxtypeDescbox = document.getElementById(contentid);
 			boxtypeDescbox.classList.remove("codebox");
 			boxtypeDescbox.classList.add("descbox");
@@ -253,8 +255,17 @@ function returned(data)
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
 			$("#" + contentid).css("margin-top", boxmenuheight);
+			
+			if(document.querySelector('#box' + boxid).firstChild.childElementCount * 15 < $('#box' + boxid).height()){
+				$('#box' + boxid).css("overflow", "hidden");
+				
+			}
+			else{
+				$('#box' + boxid).css("overflow", "auto");
+			}
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
+			
 			
 			var boxtypeframebox = document.getElementById(contentid);
 			boxtypeframebox.classList.remove("codebox", "descbox");
@@ -3487,43 +3498,8 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 	$(boxValArray['box' + boxNumSame]['id']).css("top", basePer + '%');
 	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
 
-	if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-			$("#box" + boxNumBase).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumBase).css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box' + boxNumBase).className == 'box descbox'){
-		if(document.querySelector('#box' + boxNumBase).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-			$("#box" + boxNumBase).css("overflow", "auto");
-			
-		} 
-		else{
-			$("#box" + boxNumBase).css("overflow", "hidden");
-		}
-	}
-	
-	if(document.querySelector('#box' + boxNumSame).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-		$("#box" + boxNumSame).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumSame).css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box' + boxNumSame).className == 'box descbox'){
-		if(document.querySelector('#box' + boxNumSame).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-			$("#box" + boxNumSame).css("overflow", "auto");
-			
-		} 
-		else{
-			$("#box" + boxNumSame).css("overflow", "hidden");
-		}
-	}
+	hideShowScrollbars(boxValArray, boxNumBase);
+	hideShowScrollbars(boxValArray, boxNumSame);
 	
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
@@ -3543,65 +3519,10 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig) 
 	$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
 	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
 	$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
-
-	if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-			$("#box" + boxNumBase).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumBase).css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box' + boxNumBase).className == 'box descbox'){
-		if(document.querySelector('#box' + boxNumBase).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-			$("#box" + boxNumBase).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumBase).css("overflow", "hidden");
-		}
-	}
 	
-	if(document.querySelector('#box' + boxNumSame).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-			$("#box" + boxNumSame).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumSame).css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box' + boxNumSame).className == 'box descbox'){
-		if(document.querySelector('#box' + boxNumSame).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-			$("#box" + boxNumSame).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumSame).css("overflow", "hidden");
-		}
-	}
-
-	if(document.querySelector('#box' + boxNumBig).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + boxNumBig).childElementCount * 15 > $(boxValArray['box' + boxNumBig]['id']).height() - 44){
-			$("#box" + boxNumBig).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumBig).css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box' + boxNumBig).className == 'box descbox'){
-		if(document.querySelector('#box' + boxNumBig).firstChild.childElementCount * 15 > $(boxValArray['box' + boxNumBig]['id']).height() - 44){
-			$("#box" + boxNumBig).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumBig).css("overflow", "hidden");
-		}
-	}
-	
-	
+	hideShowScrollbars(boxValArray, boxNumBase);
+	hideShowScrollbars(boxValArray, boxNumSame);
+	hideShowScrollbars(boxValArray, boxNumBig);
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
@@ -3622,84 +3543,11 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 	$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
 	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
 	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
-
-	if(document.querySelector('#box' + boxNumBase).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-			$("#box" + boxNumBase).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumBase).css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box' + boxNumBase).className == 'box descbox'){
-		if(document.querySelector('#box' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-			$("#box" + boxNumBase).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumBase).css("overflow", "hidden");
-		}
-	}
 	
-	if(document.querySelector('#box' + boxNumSame).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-			$("#box" + boxNumSame).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumSame).css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box' + boxNumSame).className == 'box descbox'){
-		if(document.querySelector('#box' + boxNumSame).childElementCount * 15 > $(boxValArray['box' + boxNumSame]['id']).height() - 44){
-			$("#box" + boxNumSame).css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box" + boxNumSame).css("overflow", "hidden");
-		}
-	}
-
-	if(document.querySelector('#box3').className == 'box codebox'){
-		if(document.querySelector('#textwrapper3').childElementCount * 15 > $(boxValArray['box3']['id']).height() - 44){
-			$("#box3").css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box3").css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box3').className == 'box descbox'){
-		if(document.querySelector('#box3').childElementCount * 15 > $(boxValArray['box3']['id']).height() - 44){
-			$("#box3").css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box3").css("overflow", "hidden");
-		}
-	}
-
-	if(document.querySelector('#box4').className == 'box codebox'){
-		if(document.querySelector('#textwrapper4').childElementCount * 15 > $(boxValArray['box4']['id']).height() - 44){
-			$("#box4").css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box4").css("overflow", "hidden");
-		}
-	}
-	else if(document.querySelector('#box4').className == 'box descbox'){
-		if(document.querySelector('#box4').childElementCount * 15 > $(boxValArray['box4']['id']).height() - 44){
-			$("#box4").css("overflow", "auto");
-		
-		} 
-		else{
-			$("#box4").css("overflow", "hidden");
-		}
-	}
-	
-	
+	hideShowScrollbars(boxValArray, boxNumBase);
+	hideShowScrollbars(boxValArray, boxNumSame);
+	hideShowScrollbars(boxValArray, 3);
+	hideShowScrollbars(boxValArray, 4);
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
@@ -4279,6 +4127,31 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
 	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
 	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
+//------------------------------------------------------------------------------------------------------------------------------
+
+function hideShowScrollbars(boxValArray, box){
+	if(document.querySelector('#box' + box).className == 'box codebox'){
+		if(document.querySelector('#textwrapper' + box).childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
+			$("#box" + box).css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box" + box).css("overflow", "hidden");
+		}
+	}
+	else if(document.querySelector('#box' + box).className == 'box descbox'){
+		if(document.querySelector('#box' + box).firstChild.childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
+			$("#box" + box).css("overflow", "auto");
+		
+		} 
+		else{
+			$("#box" + box).css("overflow", "hidden");
+		}
+	}
 }
 
 //----------------------------------------------------------------------------------
