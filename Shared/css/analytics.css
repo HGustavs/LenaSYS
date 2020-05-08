@@ -34,3 +34,10 @@
     background-color:#7B5A96;
     border-radius:4px;
 }
+
+.faNavheader{
+    color: white !important; 
+    font-size: 1.5em !important;
+    margin-right: 11px;
+    margin-left: 4px;
+}
