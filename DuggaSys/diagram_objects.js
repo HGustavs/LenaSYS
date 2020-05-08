@@ -754,8 +754,6 @@ function Symbol(kindOfSymbol) {
         var x2 = Math.trunc(points[this.bottomRight].x);
         var y2 = Math.trunc(points[this.bottomRight].y);
 
-        //console.log(x1 +","+ y1 +" : " + x2 +","+ y2);
-
 
        // Variables for UML line breakpoints 
        var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
@@ -784,19 +782,7 @@ function Symbol(kindOfSymbol) {
         for (var i = 0; i < diagram.length; i++) {            
             if (diagram[i].symbolkind == symbolKind.uml) { // filter UML class
 
-                var currentSymbol = diagram[i].corners();
-
-                console.log("=================");
-
-                console.log((Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x - 1 - getOrigoOffsetX())) / diagram.getZoomValue() + " : " + 
-                            x1 + " : " + 
-                            (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x + 1 - getOrigoOffsetX())) / diagram.getZoomValue());
-
-                console.log(Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y - getOrigoOffsetY()) +" : "+ 
-                            y1 +" : "+ 
-                            Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y - getOrigoOffsetY()));
-
-                
+                var currentSymbol = diagram[i].corners();                
 
                 // Check if line's start point matches any class diagram
                 if (x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) - 1 - getOrigoOffsetX()) / diagram.getZoomValue() &&
