@@ -2467,7 +2467,7 @@ div.submit-button:disabled {
 }
 
 #fileLink .list--nomargin {
-  margin: 0 !important;
+  margin-bottom:20px;
 }
 
 .last {
