@@ -4964,11 +4964,11 @@ only screen and (max-device-width: 320px) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 8px 0;
 }
 
 .diagram-sidebar-label {
   font-size: 11px;
-  margin-top: 8px;
   border-bottom: 1px solid #f0f0f0;
 }
 
