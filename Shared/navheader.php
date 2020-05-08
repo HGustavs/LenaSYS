@@ -135,6 +135,7 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
+							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 					}
 			}
 	
