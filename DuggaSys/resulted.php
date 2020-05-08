@@ -84,7 +84,7 @@ pdoConnect();
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
         <div class="resultedFormsFlex">
-				<label>Filter by:</label>
+				<label>Filter by...</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>none</option>
 					<option value="Filter-G">G</option>
@@ -93,7 +93,7 @@ pdoConnect();
 				</select>
 				</div>
 				<div class="resultedFormsFlex">
-					<label>Examinator:</label>
+					<label>Examinator</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
 			</div>
