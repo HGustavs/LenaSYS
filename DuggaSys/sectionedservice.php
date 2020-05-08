@@ -44,6 +44,7 @@ $enddate=getOP('enddate');
 $showgrps=getOP('showgrp');
 $grptype=getOP('grptype');
 $deadline=getOP('deadline');
+$pos=getOP('pos');
 $jsondeadline = getOP('jsondeadline');
 $studentTeacher = false;
 $motd=getOP('motd');
@@ -189,7 +190,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind, tabs) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind, :tabs)");
+					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind, tabs) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind, :tabs)");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':cvs', $coursevers);
 					$query->bindParam(':usrid', $userid);
@@ -197,9 +198,10 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(':link', $link);
 					$query->bindParam(':kind', $kind);
 					$query->bindParam(':gradesys', $gradesys);
-					$query->bindParam(':comment', $comment);
+					$query->bindParam(':comment', $comments);
 					$query->bindParam(':visible', $visibility);
 					$query->bindParam(':highscoremode', $highscoremode);
+					$query->bindParam(':pos', $pos);	
 					$query->bindParam(':tabs', $tabs);
 
 					if ($grptype != "UNK") {
