@@ -11,6 +11,7 @@ var accessFilter = "WRST";
 var trueTeacher;
 var examinerName;
 var activeDropdown;
+var shouldReRender = false;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -592,7 +593,11 @@ function returnedAccess(data) {
 			hasMagicHeadings: false,
 			hasCounterColumn: true
 		});
+		shouldReRender = true;
+	}
 
+	if (shouldReRender) {
+		shouldReRender = false;
 		myTable.renderTable();
 	}
 }
