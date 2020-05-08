@@ -3498,6 +3498,7 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 	$(boxValArray['box' + boxNumSame]['id']).css("top", basePer + '%');
 	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
 
+	// Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxNumBase);
 	hideShowScrollbars(boxValArray, boxNumSame);
 	
@@ -3520,6 +3521,7 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig) 
 	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
 	$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
 	
+	// Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxNumBase);
 	hideShowScrollbars(boxValArray, boxNumSame);
 	hideShowScrollbars(boxValArray, boxNumBig);
@@ -3544,11 +3546,13 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
 	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
 	
+	// Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxNumBase);
 	hideShowScrollbars(boxValArray, boxNumSame);
 	hideShowScrollbars(boxValArray, 3);
 	hideShowScrollbars(boxValArray, 4);
 
+	
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
@@ -3730,6 +3734,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
 	}
 
+	// Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxNumBase);
 	hideShowScrollbars(boxValArray, boxNumAlign);
 	hideShowScrollbars(boxValArray, boxNumAlignSecond);
@@ -3767,6 +3772,7 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 		$("#box4wrapper").height(atry2 + "%");
 	}
 
+	// Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxNumBase);
 	hideShowScrollbars(boxValArray, boxNumAlign);
 	hideShowScrollbars(boxValArray, boxNumAlignSecond);
@@ -3916,7 +3922,7 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
 	}
 	
-	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
+	// Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxOne);
 	hideShowScrollbars(boxValArray, boxTwo);
 	hideShowScrollbars(boxValArray, boxThree);
@@ -4004,7 +4010,7 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 
 	}
 
-	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
+	// Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxOne);
 	hideShowScrollbars(boxValArray, boxTwo);
 	hideShowScrollbars(boxValArray, boxThree);
@@ -4059,7 +4065,7 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");
 	}
 
-	// Checks the height of all lines in textwrapper combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
+	// Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxOne);
 	hideShowScrollbars(boxValArray, boxTwo);
 	hideShowScrollbars(boxValArray, boxThree);
@@ -4080,18 +4086,13 @@ function hideShowScrollbars(boxValArray, box){
 	if(document.querySelector('#box' + box).className == 'box codebox'){
 		if(document.querySelector('#textwrapper' + box).childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
 			$("#box" + box).css("overflow", "auto");
-		
-		} 
-		else{
+		}else{
 			$("#box" + box).css("overflow", "hidden");
 		}
-	}
-	else if(document.querySelector('#box' + box).className == 'box descbox'){
+	}else if(document.querySelector('#box' + box).className == 'box descbox'){
 		if(document.querySelector('#box' + box).firstChild.childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
 			$("#box" + box).css("overflow", "auto");
-		
-		} 
-		else{
+		}else{
 			$("#box" + box).css("overflow", "hidden");
 		}
 	}
