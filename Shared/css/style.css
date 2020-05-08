@@ -622,6 +622,7 @@ p {
   cursor: pointer;
 }
 
+/*Styling for indented tabs*/
 .tabs0, .tabsnull{
   width: 32px;
 }
@@ -634,14 +635,19 @@ p {
 .tabs3{
   width: 128px;
 }
+/*END for tabs 0*/
 .tabs4{
-  width: 160px;
+  width: 64px;
 }
+
+/*END for tabs 1*/
 .tabs5{
-  width: 192px;
+  width: 96px;
 }
+
+/*END for tabs 2*/
 .tabs6{
-  width: 224px;
+  width: 128px;
 }
 
 .markdownIcon,
