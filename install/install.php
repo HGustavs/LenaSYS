@@ -409,8 +409,11 @@
     //---------------------------------------------------------------------------------------------------
     echo "<div id='installationProgressWrap'>";
       $isPermissionsSat = isPermissionsSat();
+      $isAllCredentialsFilled = isAllCredentialsFilled();
       
-      # Test permissions on directory before starting installation.
+      //---------------------------------------------------------------------------------------------------
+      // Check permissions.
+      //---------------------------------------------------------------------------------------------------
       if($isPermissionsSat) {
         echo "<span id='successText' />Permissions on {$putFileHere} sat correctly.</span><br>";
       } else {
@@ -420,14 +423,12 @@
       $completedSteps++;
       echo "<script>updateProgressBar({$completedSteps});</script>";
 
-      # Check if all fields are filled.
-      $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
-      foreach ($fields AS $fieldname) { //Loop trough each field
-        if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
-          $errors++;
-          exit ("<span id='failText' />Please fill all fields.</span><br>
-            <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-        }
+      //---------------------------------------------------------------------------------------------------
+      // Check so all fields on first page are sat.
+      //---------------------------------------------------------------------------------------------------
+      if(!$isAllCredentialsFilled) {
+        exit ("<span id='failText' />Please fill all fields.</span><br>
+        <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
       }
 
       # Only create DB if box is ticked.
@@ -710,6 +711,24 @@
     echo "</div>";
   } 
 
+  //---------------------------------------------------------------------------------------------------
+  // Function that checks if all credentials are filled out (on the first page).
+  //---------------------------------------------------------------------------------------------------
+  function isAllCredentialsFilled(){
+    $isAllCredentialsFilled = true;
+    $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
+    foreach ($fields AS $fieldname) {
+      if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
+        $isAllCredentialsFilled = false;
+        $errors++;
+      }
+    }
+    return $isAllCredentialsFilled;
+  }
+
+  //---------------------------------------------------------------------------------------------------
+  // Function that checks if permissions (chown/chgrp) are sat.
+  //---------------------------------------------------------------------------------------------------
   function isPermissionsSat(){
     $permissionsSat = false;
     if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0060)) {
@@ -726,6 +745,7 @@
     }
     return $permissionsSat;
   }
+
 
   //---------------------------------------------------------------------------------------------------
   // Function that returns the path to the installation.
