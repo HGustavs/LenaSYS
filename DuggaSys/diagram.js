@@ -5889,7 +5889,16 @@ function loadLayer(localStorageID){
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
 }
-function toggleBackgroundLayer (object){
+
+function toggleBackgroundLayer (object, changeLayer){
+    if (changeLayer == true){
+        if (object.classList.contains("notActive")){
+            object.classList.remove("notActive");
+            object.classList.add("isActive");
+            showLayer.push(object.id);
+        }
+        return
+    }
     if(object.classList.contains("notActive")){
         object.classList.remove("notActive");
         object.classList.remove("drop-down-option-hover");
@@ -5935,11 +5944,15 @@ function fixWriteToLayer(){
     let update = document.getElementById("layerActive");
     let spans = update.getElementsByTagName('span')
     let active = localStorage.getItem("writeToActiveLayers");
+    console.log(active);
     for(let i = 0; i < spans.length; i++){
         spans[i].id = spans[i].id+"_Active";
         spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
         if (spans[i].id == active) {
             spans[i].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
+        }
+        else if (active == null){
+            spans[0].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
         }
         else {
             spans[i].setAttribute("class", "notActive drop-down-option drop-down-option-hover");
@@ -5948,41 +5961,31 @@ function fixWriteToLayer(){
 }
 
 function toggleActiveBackgroundLayer(object) {
+
     let checkActive = document.getElementById("layerActive");
     let spans = checkActive.getElementsByTagName('span')
-    let isActive = false;
-    for (let i = 0; i < spans.length; i++){
+    for (let i = 0 ; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
-            isActive = true;
-            i = spans.length;
+            spans[i].classList.remove("isActive");
+            spans[i].classList.add("notActive");
+            spans[i].classList.add("drop-down-option-hover");
+        }
+
+        if(object.id == spans[i].id){
+            object.classList.remove("notActive");
+            object.classList.add("isActive");
+            object.classList.remove("drop-down-option-hover");
+            localStorage.setItem("writeToActiveLayers", object.id);
+            setlayer(object);
         }
     }
-    if(isActive == false){
-        object.classList.remove("notActive");
-        object.classList.add("isActive");
-        localStorage.setItem("writeToActiveLayers", object.id);
-        setlayer(object);
-    }
-    else {
-        object.classList.remove("isActive");
-        object.classList.add("notActive");
-        let checkLocalStorage = localStorage.getItem("writeToActiveLayers");
-    }
-    active = false;
-    for(let i = 0; i < spans.length; i++){
-        if(spans[i].classList.contains("isActive")){
-            active = true;
-            i = spans.length;
-        }
-    }
-    if (active == false){
-        localStorage.setItem("writeToActiveLayers", null);
-    }
+    updateGraphics();
 }
+
 
 function setlayer(object){
     let fixID = object.id.replace('_Active','');
-    toggleBackgroundLayer(document.getElementById(fixID))
+    toggleBackgroundLayer(document.getElementById(fixID), true)
     writeToLayer = fixID;
 }
 
@@ -6002,9 +6005,9 @@ function getcorrectlayer(){
     if(localStorage.getItem('writeToActiveLayers') != null){
         let getLayer = localStorage.getItem("writeToActiveLayers")
         let fixID = getLayer.replace('_Active','');
-        return fixID
+        return fixID;
     }
-        return "Layer_1"
+        return "Layer_1";
 }
 
 //A check if line should connect to a object when loose line is released inside a object
