@@ -63,21 +63,9 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 ?>
 	<!-- content START -->
 	<div id="content">
-		<div class="analytic-buttons">
-			<input class="analytic-button" type="button" value="General stats" onclick="loadGeneralStats()">
-			<input class="analytic-button" type="button" value="Password guessing" onclick="loadPasswordGuessing()">
-			<input class="analytic-button" type="button" value="OS Percentage" onclick="loadOsPercentage()">
-			<input class="analytic-button" type="button" value="Browser percentage" onclick="loadBrowserPercentage()">
-			<input class="analytic-button" type="button" value="Service usage" onclick="loadServiceUsage()">
-			<input class="analytic-button" type="button" value="Service speed" onclick="loadServiceAvgDuration()">
-			<input class="analytic-button" type="button" value="Service crashes" onclick="loadServiceCrashes()">
-			<input class="analytic-button" type="button" value="File information" onclick="loadFileInformation()">
-			<input class="analytic-button" type="button" value="Page information" onclick="loadPageInformation()">
-		</div>
 		<div id="analytic-info"></div>
 		<div id="canvas-area">
 		</div>
-		
 	</div>
 	<!-- content END -->
 	
