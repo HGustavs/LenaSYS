@@ -5113,6 +5113,7 @@ only screen and (max-device-width: 320px) {
 
 #editDugga #name {
   width: 195px;
+  color: initial;
 }
 
 /* Collapsible */
