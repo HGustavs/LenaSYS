@@ -284,7 +284,6 @@
       <script>
         var modalRead = false; // Have the user read info?
         var modal = document.getElementById('warning'); // Get the modal
-        var btn = document.getElementById('showModalBtn'); // Get the button that opens the modal
         var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
         var filePath = '{$putFileHere}';
 
@@ -341,7 +340,7 @@
     }
 
     //---------------------------------------------------------------------------------------------------
-    // Header - Contains title and progress bar.
+    // Header - Contains title, progress bar and restart-button.
     //---------------------------------------------------------------------------------------------------
     echo "
       <div id='header'>
@@ -705,21 +704,26 @@
     }
 
     //---------------------------------------------------------------------------------------------------
-    // "Function" to get the path to the installed system
-    //---------------------------------------------------------------------------------------------------
-    $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
-    if(substr($lenaInstall, 0 , 2) == '/') {
-      $lenaInstall = substr($lenaInstall, 1);
-    }
-
-    //---------------------------------------------------------------------------------------------------
     // Buttons and other UI-stuff
     //---------------------------------------------------------------------------------------------------
+    $lenaInstall = getInstallDirectory();
     echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
     echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
     echo "</form>";
     echo "</div>";
   } 
+
+  //---------------------------------------------------------------------------------------------------
+  // Function that returns the path to the installation.
+  //---------------------------------------------------------------------------------------------------
+  function getInstallDirectory(){
+    $lenaInstall = null;
+    $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
+    if(substr($lenaInstall, 0 , 2) == '/') {
+      $lenaInstall = substr($lenaInstall, 1);
+    }
+    return $lenaInstall;
+  }
 
   # Function to add testdata from specified file. Parameter file = sql file name without .sql.
   function addTestData($file, $connection){
