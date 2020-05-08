@@ -490,6 +490,7 @@ function init() {
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
+    setIsRulersActiveOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
     updateGraphics(); 
@@ -6099,5 +6100,18 @@ function toggleRulers() {
     }
     isRulersActive = !isRulersActive;
     setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
+    localStorage.setItem("isRulersActive", isRulersActive);
     canvasSize();
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+//------------------------------------------------------------------------------------------------------------------------
+
+function setIsRulersActiveOnRefresh() {
+	const tempIsRulerActive = localStorage.getItem("isRulersActive");
+	if(tempIsRulerActive !== null) {
+        isRulersActive = !(tempIsRulerActive === "true");
+        toggleRulers();
+    }
 }
