@@ -782,34 +782,34 @@ function Symbol(kindOfSymbol) {
         for (var i = 0; i < diagram.length; i++) {            
             if (diagram[i].symbolkind == symbolKind.uml) { // filter UML class
 
-                var currentSymbol = diagram[i].corners();
+                var currentSymbol = diagram[i].corners();                
 
                 // Check if line's start point matches any class diagram
-                if (x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) &&
-                    x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1) &&
-                    y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) &&
-                    y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y)) {
+                if (x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) - 1 - getOrigoOffsetX()) / diagram.getZoomValue() &&
+                    x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) + 1 - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                    y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                    y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y - getOrigoOffsetY()) / diagram.getZoomValue()) {
 
                     startLineDirection = "left";
 
-                } else if ( x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)-1) &&
-                            x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)+1) &&
-                            y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) &&
-                            y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)) {
+                } else if ( x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x) - 1 - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                            x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x) + 1 - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                            y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                            y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y - getOrigoOffsetY()) / diagram.getZoomValue()) {
 
                     startLineDirection = "right";
 
-                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)-1) &&
-                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)+1) &&
-                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) &&
-                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)) {
+                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) - 1 - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) + 1 - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x - getOrigoOffsetX()) / diagram.getZoomValue()) {
 
                     startLineDirection = "up";
 
-                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)-1) &&
-                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)+1) &&
-                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x) &&
-                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x)) {
+                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y) - 1 - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y) + 1 - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x - getOrigoOffsetX()) / diagram.getZoomValue()) {
 
                     startLineDirection = "down";
 
@@ -818,31 +818,31 @@ function Symbol(kindOfSymbol) {
 
                 
                 // Check if line's end point matches any class diagram
-                if (x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) &&
-                    x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1) &&
-                    y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) &&
-                    y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y)) {
+                if (x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) - 1 - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                    x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) + 1 - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                    y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                    y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y - getOrigoOffsetY()) / diagram.getZoomValue()) {
 
                     endLineDirection = "left";
 
-                } else if ( x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)-1) &&
-                            x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)+1) &&
-                            y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) &&
-                            y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)) {
+                } else if ( x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x) - 1 - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                            x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x) + 1 - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                            y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                            y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y - getOrigoOffsetY()) / diagram.getZoomValue()) {
 
                     endLineDirection = "right";
 
-                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)-1) &&
-                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)+1) &&
-                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) &&
-                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)) {
+                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) - 1 - getOrigoOffsetY()) / diagram.getZoomValue() &&
+                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) + 1 - getOrigoOffsetY()) / diagram.getZoomValue() &&
+                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x - getOrigoOffsetX()) / diagram.getZoomValue()) {
 
                     endLineDirection = "up";
 
-                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)-1) &&
-                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)+1) &&
-                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x) &&
-                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x)) {
+                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y) - 1 - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y) + 1 - getOrigoOffsetY()) / diagram.getZoomValue()&&
+                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x - getOrigoOffsetX()) / diagram.getZoomValue()&&
+                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x - getOrigoOffsetX()) / diagram.getZoomValue()) {
 
                     endLineDirection = "down";
 

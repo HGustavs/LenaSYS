@@ -6060,3 +6060,11 @@ function canConnectLine(startObj, endObj){
 
     return okToMakeLine;
 }
+
+function getOrigoOffsetX() {
+    return origoOffsetX;
+}
+
+function getOrigoOffsetY() {
+    return origoOffsetY;
+}
