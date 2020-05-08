@@ -1087,16 +1087,18 @@ function ignoreMOTD(){
   return true;
 }
 
-function resetMOTDCookieForCurrentCourse(){
-  var c_string = getCookie('MOTD');
-  c_array = c_string.split(',');
-  for(let i = 0; i<c_array.length;i+=2){
-    if(c_array[i] == versnme && c_array[i+1] == versnr){
-      c_array.splice(i, 2);
+function resetMOTDCookieForCurrentCourse() {
+    var c_string = getCookie('MOTD');
+    if (c_string != null) { 
+        c_array = c_string.split(',');
+        for (let i = 0; i < c_array.length; i += 2) {
+            if (c_array[i] == versnme && c_array[i + 1] == versnr) {
+                c_array.splice(i, 2);
+            }
+        }
+        document.cookie = 'MOTD=' + c_array;
     }
-  }
-  document.cookie = 'MOTD=' + c_array;
-  showMOTD();
+    showMOTD();
 }
 
 function closeMOTD(){
