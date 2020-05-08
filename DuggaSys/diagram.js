@@ -6060,7 +6060,11 @@ function canConnectLine(startObj, endObj){
 }
 
 function createRuler(element, length) {
-
+    for(let i = 0; i < length; i++) {
+        const line = document.createElement("div");
+        line.classList.add("ruler-line");
+        element.appendChild(line);
+    }
 }
 
 function toggleRulers() {
