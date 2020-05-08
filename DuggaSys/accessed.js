@@ -259,9 +259,9 @@ function changeOptDiv(e) {
 		uid: paramlist[1],
 		[key]: keyvalue
 	}
+	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
 	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
 	changeProperty(paramlist[1], paramlist[0], keyvalue);
-	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
 }
 
 function changeOptDivStudent(e,value){
@@ -274,11 +274,11 @@ function changeOptDivStudent(e,value){
 		[key]: keyvalue
 	}
 	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
-	changeProperty(paramlist[1], paramlist[0], value);
 	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
 	if (key === "access") {// if teacher access has been set or revoked -> need to update examiner dropdown menus
 		shouldReRender = true;
 	}
+	changeProperty(paramlist[1], paramlist[0], value);
 }
 
 function changeOpt(e) {
