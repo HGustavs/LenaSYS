@@ -120,12 +120,6 @@ var hoveredObject;
 var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
-var old_container_marginTop;        // Used to revert changes from fullscreen
-var old_container_marginLeft;       // Used to revert changes from fullscreen
-var old_container_width;            // Used to revert changes from fullscreen
-var old_container_height;           // Used to revert changes from fullscreen
-var old_container_position;         // Used to revert changes from fullscreen
-var old_canvas_div_marginLeft;      // Used to revert changes from 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
@@ -505,89 +499,8 @@ function init() {
 //--------------------------------------------------------------
 
 function generateERExampleCode() {
-    //Create some entities and attributes
-    var erAttributeA = new Symbol(2);
-    erAttributeA.name = "SSN";
-    erAttributeA.topLeft = points.addPoint(770, 270, false);
-    erAttributeA.bottomRight = points.addPoint(880, 330, false);
-    erAttributeA.centerPoint = points.addPoint((770 + 880) * 0.5, (270 + 330) * 0.5, false);
-    var erAttributeB = new Symbol(2);
-    erAttributeB.name = "Name";
-    erAttributeB.topLeft = points.addPoint(770, 370, false);
-    erAttributeB.bottomRight = points.addPoint(880, 430, false);
-    erAttributeB.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
-    var erAttributeC = new Symbol(2);
-    erAttributeC.name = "Smell";
-    erAttributeC.topLeft = points.addPoint(120, 370, false);
-    erAttributeC.bottomRight = points.addPoint(230, 430, false);
-    erAttributeC.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
-    var erAttributeD = new Symbol(2);
-    erAttributeD.name = "Stink";
-    erAttributeD.topLeft = points.addPoint(120, 270, false);
-    erAttributeD.bottomRight = points.addPoint(230, 330, false);
-    erAttributeD.centerPoint = points.addPoint((120 + 230) * 0.5, (270 + 330) * 0.5, false);
-    var erAttributeE = new Symbol(2);
-    erAttributeE.name = "Verisimilitude";
-    erAttributeE.topLeft = points.addPoint(450, 60, false);
-    erAttributeE.bottomRight = points.addPoint(560, 120, false);
-    erAttributeE.centerPoint = points.addPoint((450 + 560) * 0.5, (60 + 120) * 0.5, false);
-    var erEntityA = new Symbol(3);
-    erEntityA.name = "Person";
-    erEntityA.topLeft = points.addPoint(450, 300, false);
-    erEntityA.bottomRight = points.addPoint(560, 360, false);
-    erEntityA.centerPoint = points.addPoint((450 + 560) * 0.5, (300 + 360) * 0.5, false);
-    var erEntityB = new Symbol(3);
-    erEntityB.name = "Pet";
-    erEntityB.topLeft = points.addPoint(450, 550, false);
-    erEntityB.bottomRight = points.addPoint(560, 610, false);
-    erEntityB.centerPoint = points.addPoint((450 + 560) * 0.5, (600 + 660) * 0.5, false);
-    var erRelationA = new Symbol(5);
-    erRelationA.name = "Has";
-    erRelationA.topLeft = points.addPoint(450, 430, false);
-    erRelationA.bottomRight = points.addPoint(560, 490, false);
-    erRelationA.centerPoint = points.addPoint((450 + 560) * 0.5, (400 + 460) * 0.5, false);
-
-    // Create connectors
-    var erattributeRelA = new Symbol(4);
-    erattributeRelA.topLeft = points.addPoint(560, 350, false);
-    erattributeRelA.bottomRight = points.addPoint(770, 400, false);
-    erattributeRelA.centerPoint = points.addPoint((560 + 770) * 0.5, (350 + 400) * 0.5, false);
-    var erattributeRelB = new Symbol(4);
-    erattributeRelB.topLeft = points.addPoint(560, 310, false);
-    erattributeRelB.bottomRight = points.addPoint(770, 300, false);
-    erattributeRelB.centerPoint = points.addPoint((560 + 770) * 0.5, (320 + 300) * 0.5, false);
-    var erattributeRelC = new Symbol(4);
-    erattributeRelC.topLeft = points.addPoint(230, 400, false);
-    erattributeRelC.bottomRight = points.addPoint(450, 350, false);
-    erattributeRelC.centerPoint = points.addPoint((230 + 450) * 0.5, (400 + 350) * 0.5, false);
-    var erattributeRelD = new Symbol(4);
-    erattributeRelD.topLeft = points.addPoint(230, 300, false);
-    erattributeRelD.bottomRight = points.addPoint(450, 310, false);
-    erattributeRelD.centerPoint = points.addPoint((230 + 450) * 0.5, (300 + 310) * 0.5, false);
-    var erattributeRelE = new Symbol(4);
-    erattributeRelE.topLeft = points.addPoint(505, 120, false);
-    erattributeRelE.bottomRight = points.addPoint(505, 300, false);
-    erattributeRelE.centerPoint = points.addPoint((505 + 505) * 0.5, (120 + 300) * 0.5, false);
-    var erRelationRelA = new Symbol(4);
-    erRelationRelA.topLeft = points.addPoint(505, 360, false);
-    erRelationRelA.bottomRight = points.addPoint(505, 550, false);
-    erRelationRelA.centerPoint = points.addPoint((505 + 505) * 0.5, (360 + 550) * 0.5, false);
-
-    // Add all elements to diagram
-    diagram.push(erattributeRelA);
-    diagram.push(erattributeRelB);
-    diagram.push(erattributeRelC);
-    diagram.push(erattributeRelD);
-    diagram.push(erattributeRelE);
-    diagram.push(erRelationRelA);
-    diagram.push(erAttributeA);
-    diagram.push(erAttributeB);
-    diagram.push(erAttributeC);
-    diagram.push(erAttributeD);
-    diagram.push(erAttributeE);
-    diagram.push(erEntityA);
-    diagram.push(erEntityB);
-    diagram.push(erRelationA);
+    var fileContent = $.get("exampleER.txt", data => LoadImport(data));
+    LoadImport(fileContent);
 }
 
 //--------------------------------------------------------------------
@@ -595,41 +508,8 @@ function generateERExampleCode() {
 //--------------------------------------------------------------------
 
 function generateUMLExampleCode() {
-    // Create a UML Class and add three attributes, two operations and a name
-    var classA = new Symbol(symbolKind.uml);
-    classA.name = "Person";
-    classA.attributes.push({text:"+ height:Integer"});
-    classA.attributes.push({text:"# at:Large"});
-    classA.attributes.push({text:"- megalomania:Real"});
-    classA.operations.push({text:"+ hold(name:String)"});
-    classA.operations.push({text:"- makemore()"});
-    classA.topLeft = points.addPoint(450, 300, false);
-    classA.bottomRight = points.addPoint(590, 430, false);
-    classA.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
-    classA.centerPoint = points.addPoint((450 + 590) * 0.5, (300 + 430) * 0.5, false);
-    
-    //Create a second UML class
-    var classB = new Symbol(symbolKind.uml);
-    classB.name = "Pet";
-    classB.attributes.push({text:"+ color:String"});
-    classB.attributes.push({text:"- megalomania:Real"});
-    classB.operations.push({text:"- beCute()"});
-    classB.topLeft = points.addPoint(700, 300, false);
-    classB.bottomRight = points.addPoint(840, 430, false);
-    classB.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
-    classB.centerPoint = points.addPoint((700 + 840) * 0.5, (300 + 430) * 0.5, false);
-
-    //Add some relations
-    var umlRelationA = new Symbol(symbolKind.umlLine);
-    umlRelationA.topLeft = points.addPoint(590, 365, false);
-    umlRelationA.bottomRight = points.addPoint(706, 365, false);
-    umlRelationA.centerPoint = points.addPoint((590 + 706) * 0.5, (365 + 365) * 0.5, false);
-    umlRelationA.cardinality = {"value": "1", "valueUML": "0..*", "symbolKind": 1, "parentBox": classB};
-
-    //Push to diagram
-    diagram.push(classA);
-    diagram.push(classB);
-    diagram.push(umlRelationA);
+    var fileContent = $.get("exampleUML.txt", data => LoadImport(data));
+    LoadImport(fileContent);
 }
 
 //--------------------------------------------------------------------
@@ -1630,13 +1510,13 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
 
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    const diagramContainer = document.getElementById("diagram-canvas-container");
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
     const zoomRange = document.getElementById("ZoomSelect");
 
 
-    canvas = document.getElementById("diagramCanvas");
+    canvas = document.getElementById("diagram-canvas");
     if(canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
@@ -2409,21 +2289,9 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    var diagramContainer = document.getElementById("diagramCanvasContainer");
-    if(fullscreen){
-        // Resize container
-        diagramContainer.style.height = window.innerHeight + "px";
-        diagramContainer.style.width = window.innerWidth + "px";
-        // Remove "px" and set canvas size
-        var width_converted = diagramContainer.style.width.replace("px", "");
-        var height_converted = diagramContainer.style.height.replace("px", "");
-        canvas.width = width_converted;
-        canvas.height = height_converted;
-    } else {
-        // Resize canvas
-        canvas.width = diagramContainer.offsetWidth;
-        canvas.height = diagramContainer.offsetHeight;
-    }
+    var diagramContainer = document.getElementById("diagram-canvas-container");
+    canvas.width = diagramContainer.offsetWidth;
+    canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();    
     updateGraphics();
 }
@@ -2602,10 +2470,10 @@ $(document).ready(function() {
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")) {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
         } else {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             $(this).removeClass("unpressed").addClass("pressed");
         }
     });
@@ -2776,12 +2644,6 @@ function resetSerialNumbers(){
     }
 }
 
-// the purpose is not very clear
-var consloe = {};
-consloe.log = function(gobBluth) {
-    document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
-}
-
 //------------------------------------------------------------------------------
 // developerMode:
 // this function show and hides developer options.
@@ -2800,7 +2662,7 @@ function developerMode(event) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev(event);                                                             // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to DEV.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -2928,7 +2790,7 @@ function switchToolbarTo(target) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
-        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+        var toolbarTypeText = document.getElementById('diagram-toolbar-switcher').innerHTML;
         document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
     }
 }
@@ -2944,9 +2806,9 @@ function switchToolbarER() {
     toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
     switchToolbar('ER');
     if (developerModeActive) {
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: ER';
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: ER';
     } else {
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: ER';              // Change the text to ER.
     }
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -2965,9 +2827,9 @@ function switchToolbarUML() {
     toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
     switchToolbar('UML');
     if (developerModeActive) {
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: UML';
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: UML';
     } else {
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';              // Change the text to UML.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: UML';              // Change the text to UML.
     }                                                           // ---||---
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
@@ -2989,7 +2851,7 @@ function switchToolbarDev(event) {
     }
     toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to UML.
+    document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=true);                                                             // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -3610,20 +3472,14 @@ function switchToolbar(mode) {
       toolbarState = toolbarDeveloperMode;
   }
 
-  document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
+  document.getElementById('diagram-toolbar-switcher').innerHTML = "Mode: ER";
 
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
-    $(".toolbar-drawer").hide();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
+    $(".diagram-tools-button-big").hide();
     $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
@@ -3634,29 +3490,17 @@ function switchToolbar(mode) {
     $("#drawtextbutton").show();
   }
   else if (toolbarState == toolbarUML) {
-    $(".toolbar-drawer").hide();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
     $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
+    $(".diagram-tools-button-big").hide();
     $("#linebutton").show();
     $("#classbutton").show();
     $("#drawtextbutton").show();
   } else if(toolbarState == toolbarDeveloperMode) {
-    $(".toolbar-drawer").show();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").show();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").show();
+    $(".diagram-tools-button-big").show();
     $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
@@ -3666,7 +3510,7 @@ function switchToolbar(mode) {
     $("#drawfreebutton").show();
     $("#drawtextbutton").show();
   }
-  document.getElementById('toolbar-switcher').value = toolbarState;
+  document.getElementById('diagram-toolbar-switcher').innerHTML = toolbarState;
 }
 
 // ----------------------------------
@@ -3749,64 +3593,23 @@ function scrollZoom(event) {
 //-----------------------
 
 function toggleFullscreen(){
-    // Load relevant elements
-    var head = document.querySelector("header");
-    var menu_border = document.getElementById("buttonDiv");
-    var canvas_div = document.getElementById("diagramCanvasContainer");
-    var canvas_border = document.getElementById("diagramCanvas");
-    var tool_bar = document.getElementById("diagram-toolbar");
-    var inside_toolbar = document.getElementById("inside-toolbar");
-    var menu_buttons = document.getElementsByClassName("menu-drop-down");
+    var header = document.querySelector("header");
+    var diagramHeader = document.getElementById("diagram-header");
+    var diagramContainer = document.getElementById("diagram-container")
 
     if(!fullscreen){
-        // Get previous settings
-        old_canvas_div_marginLeft = canvas_div.style.marginLeft;
-        old_container_height = canvas_div.style.height;
-        old_container_width = canvas_div.style.width;
-        old_container_position = canvas_div.style.position;
-
-        // Hide header, buttons, their leftover space, border and resize container to fit entire screen
-        head.style.display = "none";
-        for(var i = 0; i < menu_buttons.length; i++){
-            menu_buttons[i].style.display = "none";
-        }
-        tool_bar.style.visibility = "hidden";
-        inside_toolbar.style.visibility = "hidden"
-        canvas_div.style.position = "absolute";
-        canvas_div.style.marginLeft = 0;
-        canvas_div.style.top = 0;
-        canvas_div.style.right = 0;
-        canvas_div.style.bottom = 0;
-        canvas_div.style.left = 0;
-        canvas_div.style.height = window.innerHeight + "px";
-        canvas_div.style.width = window.innerWidth + "px";
-        canvas_border.style.border = 0 + "px";
-        menu_border.style.border = 0 + "px";
+        diagramHeader.classList.add("fullscreen");
+        diagramContainer.classList.add("fullscreen");
+        header.style.display = "none";
         fullscreen = true;
-
-        // Display popup message
         $("#fullscreenDialog").css("display", "flex");
-
-        // Refit canvas to current container
         canvasSize();
-    } else if (fullscreen){
-        // Revert to previous settings
-        head.style.display = "inline-block";
-        for(var i = 0; i < menu_buttons.length; i++){
-            menu_buttons[i].style.display = "block";
-        }
-        tool_bar.style.visibility = "visible";
-        inside_toolbar.style.visibility = "visible";
-        inside_toolbar.style.border = "none";
-        canvas_div.style.position = old_container_position;
-        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
-        canvas_div.style.height = old_container_height;
-        canvas_div.style.width = old_container_width;
-        canvas_border.style.border = 1 + "px solid #000000";
-        menu_border.style.borderLeft = 1 + "px solid #c0c0c0";
+    } else {
+        diagramHeader.classList.remove("fullscreen", "toolbar");
+        diagramContainer.classList.remove("fullscreen", "toolbar");
+        header.style.display = "inline-block";
         fullscreen = false;
-
-        // Refit canvas to current container
+        toolbarDisplayed = false;
         canvasSize();        
     }
 }
@@ -3824,20 +3627,16 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    // Get element
-    var tool_bar = document.getElementById("inside-toolbar");
+    var diagramHeader = document.getElementById("diagram-header");
+    var diagramContainer = document.getElementById("diagram-container");
 
     if(!toolbarDisplayed){
-        // Show inner toolbar, add border and set background color
-        tool_bar.style.visibility = "visible";
-        tool_bar.style.backgroundColor = "#ffffff";
-        tool_bar.style.border = 1 + "px solid #000000";
+        diagramHeader.classList.add("toolbar");
+        diagramContainer.classList.add("toolbar");
         toolbarDisplayed = true;
     } else {
-        // Hide
-        tool_bar.style.visibility = "hidden";
-        tool_bar.style.background = "none";
-        tool_bar.style.border = 0 + "px";
+        diagramHeader.classList.remove("toolbar");
+        diagramContainer.classList.remove("toolbar");
         toolbarDisplayed = false;
     }
 }
@@ -4125,7 +3924,7 @@ function mousemoveevt(ev) {
             // If mouse is pressed down inside a movable object - move that object
             if (movobj != -1 ) {
                 uimode = "Moved";
-                $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+                $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
@@ -4977,7 +4776,7 @@ function touchMoveEvent(event) {
     if (md == mouseState.insideMovableObject) {
         if (movobj != -1) {
             uimode = "Moved";
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                     if(snapToGrid) {
@@ -5373,7 +5172,7 @@ function resize() {
 //---------------------------------------
 
 function movemode(e, t) {
-	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+	$(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
@@ -6020,11 +5819,6 @@ function getGroupsByTypes(typesToShow) {
 // submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
 //----------------------------------------------------------------------------------------
 function submitAppearanceForm() {
-    selected_objects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml) {
-            object.resizeUMLToMinHeight();
-        }
-    });
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
     }
