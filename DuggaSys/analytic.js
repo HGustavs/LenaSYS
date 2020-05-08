@@ -184,72 +184,86 @@ function loadServiceUsage() {
     changeInput("daily");
  
     function changeInput(input){
-     $( ".hasDatepicker" ).remove();
-     if(input=="daily"){
-      inputDateFrom = $('<input type="text"></input>')
-          .datepicker({
-              dateFormat: "yy-mm-dd"
-          })
-          .datepicker("setDate", "-1m")
-          .appendTo($('#analytic-info'));
+         $( ".hasDatepicker" ).remove();
+         if(input=="daily"){
+            inputDateFrom = $('<input type="text"></input>')
+                .datepicker({
+                    dateFormat: "yy-mm-dd"
+                })
+                .datepicker("setDate", "-1m")
+                .appendTo($('#analytic-info'));
 
-      inputDateTo = $('<input type="text"></input>')
-          .datepicker({
-              dateFormat: "yy-mm-dd"
-          })
-          .datepicker("setDate", "+1d")
-          .appendTo($('#analytic-info'));
-      console.log("D TO: " + inputDateTo);
-      console.log("D FROM: " + inputDateTo);
-     }
-     else if(input=="hourly"){
-       inputDateFrom = $('<input type="text"></input>')
-          .datepicker({
-              dateFormat: "yy-mm-dd"
-          })
-          .datepicker("setDate", "-1m")
-          .appendTo($('#analytic-info'));
-       inputDateTo = inputDateFrom;
-     console.log("H TO: " + inputDateTo.val());
-     console.log("H FROM: " + inputDateTo.val());
-     }
-     else if(input=="weekly"){
-      inputDateFrom = $('<input type="text"></input>')
-          .datepicker({
-              dateFormat: "yy-mm-dd"
-          })
-          .datepicker("setDate", "-1m")
-          .appendTo($('#analytic-info'));
+            inputDateTo = $('<input type="text"></input>')
+                .datepicker({
+                    dateFormat: "yy-mm-dd"
+                })
+                .datepicker("setDate", "+1d")
+                .appendTo($('#analytic-info'));
+                console.log("D TO: " + inputDateTo.val());
+                console.log("D FROM: " + inputDateTo.val());
+         }
+         else if(input=="hourly"){
+           inputDateFrom = $('<input type="text"></input>')
+               .datepicker({
+                   dateFormat: "yy-mm-dd"
+               })
+               .datepicker("setDate", "-1m")
+               .appendTo($('#analytic-info'));
+               inputDateTo = inputDateFrom;
+               console.log("H TO: " + inputDateTo.val());
+               console.log("H FROM: " + inputDateTo.val());
+         }
+         else if(input=="weekly"){
+           inputDateFrom = $('<input type="text"></input>')
+               .datepicker({
+                   dateFormat: "yy-mm-dd",
+                   beforeShowDay : function(date){ 
+                    return[(date.getDay() == 1),""];
+                   }
+            
+               })
+               .datepicker("setDate", "-1m")
+               .appendTo($('#analytic-info'));
 
-      inputDateTo = $('<input type="text"></input>')
-          .datepicker({
-              dateFormat: "yy-mm-dd"
-          })
-          .datepicker("setDate", "+1d")
-          .appendTo($('#analytic-info'));
-      console.log("W TO: " + inputDateTo);
-      console.log("W FROM: " + inputDateTo);
-     }
-     else if(input=="monthly"){
-      inputDateFrom = $('<input type="text"></input>')
-          .datepicker({
-              dateFormat: "yy-mm-dd"
-          })
-          .datepicker("setDate", "-1m")
-          .appendTo($('#analytic-info'));
+           inputDateTo = $('<input type="text"></input>')
+               .datepicker({
+                   dateFormat: "yy-mm-dd",
+                   beforeShowDay : function(date){ 
+                     return[(date.getDay() == 1),""];
+                   }
+               })
+               .datepicker("setDate", "+1d")
+               .appendTo($('#analytic-info'));
+               console.log("W TO: " + inputDateTo.val());
+               console.log("W FROM: " + inputDateTo.val());
+         }
+         else if(input=="monthly"){
+           inputDateFrom = $('<input type="text"></input>')
+               .datepicker({
+                  changeMonth: true,
+                  changeYear: true,
+                  dateFormat: "yy-mm-01",
+               })
+               .datepicker("setDate", "-1m")
+               .appendTo($('#analytic-info'));
 
-      inputDateTo = $('<input type="text"></input>')
-          .datepicker({
-              dateFormat: "yy-mm-dd"
-          })
-          .datepicker("setDate", "+1d")
-          .appendTo($('#analytic-info'));
-      console.log("M TO: " + inputDateTo);
-      console.log("M FROM: " + inputDateTo);
-     }
+           inputDateTo = $('<input type="text"></input>')
+               .datepicker({
+                   changeMonth: true,
+                   changeYear: true,
+                   dateFormat: "yy-mm-01"
+               })
+               .datepicker("setDate", "+1d")
+               .appendTo($('#analytic-info'));
+               console.log("M TO: " + inputDateTo.val());
+               console.log("M FROM: " + inputDateTo.val());
+         }
     }
  
 	function updateServiceUsage() {
+        console.log("UpdateFunction From: " + inputDateFrom.val());
+        console.log("UpdateFunction TO: " + inputDateTo.val());
+        console.log("selectInterval: " + selectInterval.val());
 		$.ajax({
 			url: "analyticService.php",
 			type: "POST",
@@ -295,29 +309,25 @@ function loadServiceUsage() {
                 case "hourly":
                     console.log("hourly");
                     changeInput("hourly");
-                    updateServiceUsage();
                     break;
                 case "daily":
                     console.log("daily");
                     changeInput("daily");
-                    updateServiceUsage();
                     break;
                 case "weekly":
                     console.log("weekly");
                     changeInput("weekly");
-                    updateServiceUsage();
                     break;
                 case "monthly":
                     console.log("monthly");
                     changeInput("monthly");
-                    updateServiceUsage();
                     break;
             }
+            inputDateFrom.change(updateServiceUsage);
+            inputDateTo.change(updateServiceUsage);
+            selectInterval.change(updateServiceUsage);
+            updateServiceUsage();
         });
-    inputDateFrom.change(updateServiceUsage);
-	inputDateTo.change(updateServiceUsage);
-	selectInterval.change(updateServiceUsage);
-	//updateServiceUsage();
     }
     updateInfo();
 }
@@ -803,7 +813,7 @@ function drawLineChart(data) {
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = "#333";
 	ctx.font = "Arial 8pt";
-	ctx.textAlign = "center"
+	ctx.textAlign = "center";
 
 	// Draw L
 	ctx.beginPath();
