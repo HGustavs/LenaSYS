@@ -410,7 +410,7 @@
     echo "<div id='installationProgressWrap'>";
       $isPermissionsSat = isPermissionsSat();
       $isAllCredentialsFilled = isAllCredentialsFilled();
-      
+
       //---------------------------------------------------------------------------------------------------
       // Check permissions.
       //---------------------------------------------------------------------------------------------------
@@ -440,6 +440,8 @@
         $rootUser = $_POST["mysqlRoot"];
         $rootPwd = $_POST["rootPwd"];
 
+        $connection = null;
+
         # Connect to database with root access.
         try {
           $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
@@ -457,21 +459,25 @@
         flush();
         ob_flush();
 
+        function deleteUser($connection, $username){
+          try {
+            $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
+            echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
+            } catch (PDOException $e) {
+            $errors++;
+            echo "<span id='failText' />User with name {$username}
+            does not already exist. Will only make a new one (not write over).</span><br>";
+            }
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
+            flush();
+            ob_flush();
+        }
+
+
         # If checked, write over existing database and user
         if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
-          # User
-          try {
-          $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
-          echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
-          } catch (PDOException $e) {
-          $errors++;
-          echo "<span id='failText' />User with name {$username}
-          does not already exist. Will only make a new one (not write over).</span><br>";
-          }
-          $completedSteps++;
-          echo "<script>updateProgressBar({$completedSteps});</script>";
-          flush();
-          ob_flush();
+          deleteUser($connection, $username);
         }
 
         # If checked something something
