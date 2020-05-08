@@ -6528,10 +6528,3 @@ textarea#filecont {
 .isActive {
   background-color: #775886;
 }
-
-.analytic-buttons{
-    display:flex;
-    justify-content: center;
-    flex-flow:wrap;
-}
-
