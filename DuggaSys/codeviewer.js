@@ -2475,15 +2475,14 @@ function minimizeBoxes(boxid) {
 			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
 		}
 		if(boxid == 3){
-			$(boxValArray['box' + 2]['id']).height("50%");
-			$(boxValArray['box' + 4]['id']).height("50%");
+			$(boxValArray['box' + 2]['id']).height("33%");
+			$(boxValArray['box' + 4]['id']).height("33%");
 			$(boxValArray['box' + boxid]['id']).height("0%");
 			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
 		}
 		if(boxid == 4){
-			$(boxValArray['box' + 2]['id']).height("50%");
-			$(boxValArray['box' + 4]['id']).height("50%");
-			$(boxValArray['box' + 5]['id']).height("50%");
+			$(boxValArray['box' + 2]['id']).height("33%");
+			$(boxValArray['box' + 5]['id']).height("33%");
 			$(boxValArray['box' + boxid]['id']).height("0%");
 			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
 		}
