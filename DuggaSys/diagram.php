@@ -379,7 +379,7 @@
                 <div class="drop-down">
                     <div id="viewLayer">
                         <div class="drop-down-item" tabindex="0">
-                            <span class="isActive drop-down-option" onclick="toggleBackgroundLayer(this)" id="Layer_1">Layer One</span>
+                            <span class="isActive drop-down-option" onclick="toggleBackgroundLayer(this), deleteLayerView()" id="Layer_1">Layer One</span>
                         </div>
                     </div>
                     <div class="drop-down-divider">
@@ -388,7 +388,7 @@
                         <span class="drop-down-option" onclick="createLayer()">Create Layer</span>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="deleteLayer()">Delete selected layers</span>
+                        <span class="drop-down-option" onclick="deleteLayerView()">Delete selected layers</span>
                     </div>
                 </div>
             </div>
@@ -397,7 +397,7 @@
                 <div class="drop-down">
                     <div id="layerActive">
                         <div class="drop-down-item" tabindex="0">
-                            <span class="isActive drop-down-option" onclick="toggleBackgroundLayer(this)" id="Layer_1_Active">Layer One</span>
+                            <span class="isActive drop-down-option" onclick="toggleBackgroundLayer(this), deleteLayerActive()" id="Layer_1_Active">Layer One</span>
                         </div>
                     </div>
                     <div class="drop-down-divider">

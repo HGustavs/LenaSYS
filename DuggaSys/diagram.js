@@ -6007,6 +6007,22 @@ function getcorrectlayer(){
         return "Layer_1"
 }
 
+function deleteLayerView(){
+    console.log(showLayer);
+    diagram.deleteObject(diagram[0]);
+    let deleteArray = []
+    for(let i = 0;i < diagram.length;i++){
+        console.log(diagram[i].properties.setLayer)
+        if(showLayer.indexOf(diagram[i].properties.setLayer)){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    console.log(deleteArray);
+}
+function deleteLayerActive(){
+
+}
+
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;
