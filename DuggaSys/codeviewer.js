@@ -3730,22 +3730,9 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
 	}
 
-	if(document.querySelector('#textwrapper' + boxNumBase).childElementCount * 15 > $(boxValArray['box' + boxNumBase]['id']).height() - 44){
-		$("#box" + boxNumBase).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxNumBase).css("overflow", "hidden");
-	}
-	if(document.querySelector('#textwrapper' + boxNumAlign).childElementCount * 15 > $(boxValArray['box' + boxNumAlign]['id']).height() - 44){
-		$("#box" + boxNumAlign).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxNumAlign).css("overflow", "hidden");
-	}
-	if(document.querySelector('#textwrapper' + boxNumAlignSecond).childElementCount * 15 > $(boxValArray['box' + boxNumAlignSecond]['id']).height() - 44){
-		$("#box" + boxNumAlignSecond).css("overflow", "auto");
-		
-	}
+	hideShowScrollbars(boxValArray, boxNumBase);
+	hideShowScrollbars(boxValArray, boxNumAlign);
+	hideShowScrollbars(boxValArray, boxNumAlignSecond);
 
 	//Update array
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
@@ -3780,18 +3767,8 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 		$("#box4wrapper").height(atry2 + "%");
 	}
 
-	if(document.querySelector('#textwrapper' + boxNumAlign).childElementCount * 15 > $(boxValArray['box' + boxNumAlign]['id']).height() - 44){
-		$("#box" + boxNumAlign).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxNumAlign).css("overflow", "hidden");
-	}
-	if(document.querySelector('#textwrapper' + boxNumAlignSecond).childElementCount * 15 > $(boxValArray['box' + boxNumAlignSecond]['id']).height() - 44){
-		$("#box" + boxNumAlignSecond).css("overflow", "auto");
-		
-	} else{
-		$("#box" + boxNumAlignSecond).css("overflow", "hidden");
-	}
+	hideShowScrollbars(boxValArray, boxNumAlign);
+	hideShowScrollbars(boxValArray, boxNumAlignSecond);
 
 }
 
