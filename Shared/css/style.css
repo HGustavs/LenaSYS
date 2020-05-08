@@ -351,6 +351,221 @@ p {
   margin-left: 25px;
   display:none;
 }
+/*Announcement box*/
+#announcementBoxOverlay,
+#fullAnnnouncementOverlay{
+  position: fixed; 
+  display: none;
+  background-color:  #f2f2f2;
+  border: 2px solid #bdbdbd;
+  padding: 10px;
+  z-index: 1004; 
+  left: 0;
+  top: 50px;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto;
+  overflow-x: auto;
+  
+
+}
+#announcementBox{
+  margin-bottom: 80px;
+}
+#fullAnnouncement{
+  padding: 10px 15px 160px 10px;
+  
+}
+#announcementBox button{
+  background-color: #fff;
+  border: 1px solid #bdbdbd;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 0 20px 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#announcementBox button.showAllAnnouncement{
+  display: none;
+}
+
+#announcementBox table{
+  width: 100%;
+
+}
+#announcementBox table tr{
+  border-left: 5px solid var(--color-logo-background);
+
+}
+#announcementBox table tr th{
+  color: var(--color-text-primary);
+  text-align: left;
+
+}
+#announcementBox table th,
+#announcementBox table td{
+  padding: 0 0 0 10px;
+
+}
+
+#announcementBox table .authorProfile{
+  padding-top: 10px;
+}
+.fa-user{
+  margin-right:5px;
+  
+}
+#announcementBox table tr:nth-child(3n+1):not(:first-child){
+  border-top: 1px solid var(--color-text-primary);
+
+}
+#announcementBox table tr td {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#announcementBox table tr td.columnA {
+    width: 70%;
+}
+#announcementBox table tr th{
+  padding-top: 15px;
+}
+#announcementBox table tr td.columnB {
+    width: 30%;
+    padding-bottom: 15px;
+}
+
+#announcementBox table a{
+  text-decoration: none;
+  color: #000;
+
+}
+#announcementBox table a:hover{
+  text-decoration: underline;
+
+}
+#announcementBox .headlines tr:last-child{
+  border-bottom: none;
+}
+/*Show all the announcements*/
+.hvr-icon-forward {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+}
+.hvr-icon-forward .hvr-icon {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-icon{
+  margin-left: 5px;
+}
+.hvr-icon-forward:hover .hvr-icon, .hvr-icon-forward:focus .hvr-icon, .hvr-icon-forward:active .hvr-icon {
+  -webkit-transform: translateX(4px);
+  transform: translateX(4px);
+}
+
+#announcementBox button a{
+    text-decoration: none;
+    color: #000;
+}
+
+/*End of show all the announcments*/
+.modal input[type=text], 
+.modal textarea {
+  width: 100%;
+  padding: 12px 20px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin: 8px 0;
+  font-family: Roboto, Arial Narrow;
+  font-size: 16px;
+}
+.modal textarea {
+  height: 150px;
+  border-radius: 4px;
+  resize: none;
+}
+.modal .modalBtns button{
+  color: white;
+  padding: 14px 20px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+}
+.modal .createbtn{
+  background-color: var(--color-logo-background);
+}
+.modal .cancelbtn{
+  background-color: var(--color-red);
+}
+.modal .modalBtns{
+  display: flex;
+  flex-direction: row;
+}
+
+.modal button:hover {
+  opacity: 0.8;
+}
+.modal .containerHeader {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+.modal .modal-container{
+  padding: 16px;
+}
+.modal {
+  position: fixed; 
+  z-index: 1005; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; 
+  border: 1px solid #888;
+  width: 80%; 
+}
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)} 
+  to {-webkit-transform: scale(1)}
+}
+  
+@keyframes animatezoom {
+  from {transform: scale(0)} 
+  to {transform: scale(1)}
+}
+
+/*End of announcement box*/
 
 #Sectionlist {
   margin: 0px auto;
@@ -1954,7 +2169,7 @@ input.submit-button {
   margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 0.1s background-color;
-  float: left;
+  
   -webkit-appearance: none
 }
 
@@ -2080,6 +2295,18 @@ input.hide-moments-button {
 
 .filePopUp {
   position: relative;
+}
+
+.testselect {
+  position: relative;
+  clear:both;
+  width:150px;  
+  padding: 3px 0 3px 0;
+  height: 30px;
+  line-height: 30px;
+  left: 90px;
+  display: none;
+  
 }
 
 .fileUploadInfo {
@@ -3115,6 +3342,7 @@ padding: 10px;
 }
 
 .submit-button {
+  position: relative;
   background-color: var(--color-primary);
   border: 0px;
   width: 110px;
@@ -3124,10 +3352,12 @@ padding: 10px;
   margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 0.1s background-color;
-  float: right;
+  left: 87px;
   line-height: 30px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  
+
 }
 
 
@@ -3153,7 +3383,7 @@ padding: 10px;
   border-radius: 0;
 }
 
-#uploadbuttonname .fileed-submit-button {
+#uploadbuttonname .ubmit-fileed-sbutton {
   margin: 15px 0 18px 0 !important;
 }
 
@@ -4753,7 +4983,13 @@ only screen and (max-device-width: 390px) {
     opacity: 1;
 
   }
-
+  #announcementBox table tr{
+    border: none;
+  }
+  #announcementBox table tr th,
+  #announcementBox table tr td{
+    padding-left: 0;
+  }
 }
 
 @media only screen and (max-width: 320px),
@@ -5072,6 +5308,9 @@ only screen and (max-device-width: 320px) {
 
   #statisticsList {
     display: none;
+  }
+  .modal .modalBtns button {
+     width: 100%;
   }
 }
 
@@ -6514,13 +6753,10 @@ textarea#filecont {
 }
 
 .motdBoxheader div:hover {
-  border: 2px;
-  border-style: solid;
-  border-color: white;
   background-color: #815e9d;
   -webkit-transition: background-color 100ms linear;
-    -ms-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;
+  -ms-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
 }
 .notActive {
   background-color:white;
@@ -6528,3 +6764,27 @@ textarea#filecont {
 .isActive {
   background-color: #775886;
 }
+
+.analytic-buttons{
+    display:flex;
+    justify-content: center;
+    flex-flow:wrap;
+}
+#selectdir{
+  width: 120px;
+  position: relative;
+  float: left;
+  top:20px;
+  left: -35px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  
+}
+
+#spankind {
+  position: relative;
+  left: 0px;
+  float: left;
+  
+}
+

@@ -50,6 +50,7 @@
 			}
 
 			if($noup!='NONE') {
+				  echo "<td class='navButt' id='announcement' title='Announcement' style='border:1px solid white;'><img src=''></td>";
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
@@ -147,13 +148,19 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
+							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 					}
 			}
 	
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
 					echo "<td id='testSearchContainer' class='navButt'>";
-					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+
+					if ($requestedService == "fileed.php")
+						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+					else
+						echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/>";
+
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
 					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
 					echo	"</div>";
@@ -162,7 +169,12 @@
 					echo 	"</div><div>";
 					echo "</td>";
 					echo "<td class='navButt'>";
-					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender(); sortAndFilterTogether();' type='button'>";
+
+					if ($requestedService == "fileed.php") 
+						echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender(); sortAndFilterTogether();' type='button'>";
+					else
+						echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender();' type='button'>";
+
 					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
 					echo "</td>";
