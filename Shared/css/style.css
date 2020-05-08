@@ -5159,6 +5159,30 @@ only screen and (max-device-width: 320px) {
   margin-top: 4px;
 }
 
+#ruler-x .big {
+  height: 100%;
+}
+
+#ruler-x .small {
+  height: 8px;
+}
+
+#ruler-x .mini {
+  height: 4px;
+}
+
+#ruler-y .big {
+  width: 100%;
+}
+
+#ruler-y .small {
+  width: 8px;
+}
+
+#ruler-y .mini {
+  width: 4px;
+}
+
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
  * --------------================################================-------------- */
