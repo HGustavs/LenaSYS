@@ -48,7 +48,7 @@
 			} else if($requestedService == "analytic.php") {
 				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img src="../Shared/icons/Up.svg"></a></td>';
 				echo '<td class="navButt" id="GeneralStats" title="General Stats"><a onclick="loadGeneralStats()"><i class="fas fa-stream faNavheader"></i></a></td>';
-				// echo '<td class="navButt" id="CurrentlyOnline" title="Currently Online"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="CurrentlyOnline" title="Currently Online"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users faNavheader"></i></a></td>';
 				echo '<td class="navButt" id="PasswordGuessing" title="Password guessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key faNavheader"></i></a></td>';
 				echo '<td class="navButt" id="OSPercentage" title="OS Percentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop faNavheader"></i></a></td>';
 				echo '<td class="navButt" id="Browserpercentage" title="Browser percentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome faNavheader"></i></a></td>';
