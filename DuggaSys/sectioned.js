@@ -1021,7 +1021,7 @@ function returnedSection(data) {
     }
   } else {
     
-    str = "<div class='err' style='z-index:500; position:absolute; top:15%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
+    str = "<div class='err' style='z-index:500; position:absolute; top:10%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML+= str;
     $("#newCourseVersion").css("display", "block");
