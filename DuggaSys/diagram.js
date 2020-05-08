@@ -120,12 +120,6 @@ var hoveredObject;
 var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
-var old_container_marginTop;        // Used to revert changes from fullscreen
-var old_container_marginLeft;       // Used to revert changes from fullscreen
-var old_container_width;            // Used to revert changes from fullscreen
-var old_container_height;           // Used to revert changes from fullscreen
-var old_container_position;         // Used to revert changes from fullscreen
-var old_canvas_div_marginLeft;      // Used to revert changes from 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
@@ -1516,13 +1510,13 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
 
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    const diagramContainer = document.getElementById("diagram-canvas-container");
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
     const zoomRange = document.getElementById("ZoomSelect");
 
 
-    canvas = document.getElementById("diagramCanvas");
+    canvas = document.getElementById("diagram-canvas");
     if(canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
@@ -2295,21 +2289,9 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    var diagramContainer = document.getElementById("diagramCanvasContainer");
-    if(fullscreen){
-        // Resize container
-        diagramContainer.style.height = window.innerHeight + "px";
-        diagramContainer.style.width = window.innerWidth + "px";
-        // Remove "px" and set canvas size
-        var width_converted = diagramContainer.style.width.replace("px", "");
-        var height_converted = diagramContainer.style.height.replace("px", "");
-        canvas.width = width_converted;
-        canvas.height = height_converted;
-    } else {
-        // Resize canvas
-        canvas.width = diagramContainer.offsetWidth;
-        canvas.height = diagramContainer.offsetHeight;
-    }
+    var diagramContainer = document.getElementById("diagram-canvas-container");
+    canvas.width = diagramContainer.offsetWidth;
+    canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();    
     updateGraphics();
 }
@@ -2488,10 +2470,10 @@ $(document).ready(function() {
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")) {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
         } else {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             $(this).removeClass("unpressed").addClass("pressed");
         }
     });
@@ -2662,12 +2644,6 @@ function resetSerialNumbers(){
     }
 }
 
-// the purpose is not very clear
-var consloe = {};
-consloe.log = function(gobBluth) {
-    document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
-}
-
 //------------------------------------------------------------------------------
 // developerMode:
 // this function show and hides developer options.
@@ -2686,7 +2662,7 @@ function developerMode(event) {
         showCrosses();
         drawOrigo();                                                                    // Draw origo on canvas
         switchToolbarDev(event);                                                             // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to DEV.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
         setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
         setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -2814,7 +2790,7 @@ function switchToolbarTo(target) {
         modeSwitchConfirmed(true);
     } else {
         $("#modeSwitchDialog").css("display", "flex");
-        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+        var toolbarTypeText = document.getElementById('diagram-toolbar-switcher').innerHTML;
         document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
     }
 }
@@ -2830,9 +2806,9 @@ function switchToolbarER() {
     toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
     switchToolbar('ER');
     if (developerModeActive) {
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: ER';
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: ER';
     } else {
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: ER';              // Change the text to ER.
     }
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -2851,9 +2827,9 @@ function switchToolbarUML() {
     toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
     switchToolbar('UML');
     if (developerModeActive) {
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: UML';
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: UML';
     } else {
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';              // Change the text to UML.
+        document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: UML';              // Change the text to UML.
     }                                                           // ---||---
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
     setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
@@ -2875,7 +2851,7 @@ function switchToolbarDev(event) {
     }
     toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to UML.
+    document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=true);                                                             // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
@@ -3496,20 +3472,14 @@ function switchToolbar(mode) {
       toolbarState = toolbarDeveloperMode;
   }
 
-  document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
+  document.getElementById('diagram-toolbar-switcher').innerHTML = "Mode: ER";
 
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER) {
-    $(".toolbar-drawer").hide();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
+    $(".diagram-tools-button-big").hide();
     $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
@@ -3520,29 +3490,17 @@ function switchToolbar(mode) {
     $("#drawtextbutton").show();
   }
   else if (toolbarState == toolbarUML) {
-    $(".toolbar-drawer").hide();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
     $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
+    $(".diagram-tools-button-big").hide();
     $("#linebutton").show();
     $("#classbutton").show();
     $("#drawtextbutton").show();
   } else if(toolbarState == toolbarDeveloperMode) {
-    $(".toolbar-drawer").show();
     $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").show();
     $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").show();
+    $(".diagram-tools-button-big").show();
     $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
@@ -3552,7 +3510,7 @@ function switchToolbar(mode) {
     $("#drawfreebutton").show();
     $("#drawtextbutton").show();
   }
-  document.getElementById('toolbar-switcher').value = toolbarState;
+  document.getElementById('diagram-toolbar-switcher').innerHTML = toolbarState;
 }
 
 // ----------------------------------
@@ -3635,64 +3593,23 @@ function scrollZoom(event) {
 //-----------------------
 
 function toggleFullscreen(){
-    // Load relevant elements
-    var head = document.querySelector("header");
-    var menu_border = document.getElementById("buttonDiv");
-    var canvas_div = document.getElementById("diagramCanvasContainer");
-    var canvas_border = document.getElementById("diagramCanvas");
-    var tool_bar = document.getElementById("diagram-toolbar");
-    var inside_toolbar = document.getElementById("inside-toolbar");
-    var menu_buttons = document.getElementsByClassName("menu-drop-down");
+    var header = document.querySelector("header");
+    var diagramHeader = document.getElementById("diagram-header");
+    var diagramContainer = document.getElementById("diagram-container")
 
     if(!fullscreen){
-        // Get previous settings
-        old_canvas_div_marginLeft = canvas_div.style.marginLeft;
-        old_container_height = canvas_div.style.height;
-        old_container_width = canvas_div.style.width;
-        old_container_position = canvas_div.style.position;
-
-        // Hide header, buttons, their leftover space, border and resize container to fit entire screen
-        head.style.display = "none";
-        for(var i = 0; i < menu_buttons.length; i++){
-            menu_buttons[i].style.display = "none";
-        }
-        tool_bar.style.visibility = "hidden";
-        inside_toolbar.style.visibility = "hidden"
-        canvas_div.style.position = "absolute";
-        canvas_div.style.marginLeft = 0;
-        canvas_div.style.top = 0;
-        canvas_div.style.right = 0;
-        canvas_div.style.bottom = 0;
-        canvas_div.style.left = 0;
-        canvas_div.style.height = window.innerHeight + "px";
-        canvas_div.style.width = window.innerWidth + "px";
-        canvas_border.style.border = 0 + "px";
-        menu_border.style.border = 0 + "px";
+        diagramHeader.classList.add("fullscreen");
+        diagramContainer.classList.add("fullscreen");
+        header.style.display = "none";
         fullscreen = true;
-
-        // Display popup message
         $("#fullscreenDialog").css("display", "flex");
-
-        // Refit canvas to current container
         canvasSize();
-    } else if (fullscreen){
-        // Revert to previous settings
-        head.style.display = "inline-block";
-        for(var i = 0; i < menu_buttons.length; i++){
-            menu_buttons[i].style.display = "block";
-        }
-        tool_bar.style.visibility = "visible";
-        inside_toolbar.style.visibility = "visible";
-        inside_toolbar.style.border = "none";
-        canvas_div.style.position = old_container_position;
-        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
-        canvas_div.style.height = old_container_height;
-        canvas_div.style.width = old_container_width;
-        canvas_border.style.border = 1 + "px solid #000000";
-        menu_border.style.borderLeft = 1 + "px solid #c0c0c0";
+    } else {
+        diagramHeader.classList.remove("fullscreen", "toolbar");
+        diagramContainer.classList.remove("fullscreen", "toolbar");
+        header.style.display = "inline-block";
         fullscreen = false;
-
-        // Refit canvas to current container
+        toolbarDisplayed = false;
         canvasSize();        
     }
 }
@@ -3710,20 +3627,16 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    // Get element
-    var tool_bar = document.getElementById("inside-toolbar");
+    var diagramHeader = document.getElementById("diagram-header");
+    var diagramContainer = document.getElementById("diagram-container");
 
     if(!toolbarDisplayed){
-        // Show inner toolbar, add border and set background color
-        tool_bar.style.visibility = "visible";
-        tool_bar.style.backgroundColor = "#ffffff";
-        tool_bar.style.border = 1 + "px solid #000000";
+        diagramHeader.classList.add("toolbar");
+        diagramContainer.classList.add("toolbar");
         toolbarDisplayed = true;
     } else {
-        // Hide
-        tool_bar.style.visibility = "hidden";
-        tool_bar.style.background = "none";
-        tool_bar.style.border = 0 + "px";
+        diagramHeader.classList.remove("toolbar");
+        diagramContainer.classList.remove("toolbar");
         toolbarDisplayed = false;
     }
 }
@@ -4011,7 +3924,7 @@ function mousemoveevt(ev) {
             // If mouse is pressed down inside a movable object - move that object
             if (movobj != -1 ) {
                 uimode = "Moved";
-                $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+                $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
@@ -4863,7 +4776,7 @@ function touchMoveEvent(event) {
     if (md == mouseState.insideMovableObject) {
         if (movobj != -1) {
             uimode = "Moved";
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                     if(snapToGrid) {
@@ -5259,7 +5172,7 @@ function resize() {
 //---------------------------------------
 
 function movemode(e, t) {
-	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+	$(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
