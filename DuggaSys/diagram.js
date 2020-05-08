@@ -6059,6 +6059,10 @@ function canConnectLine(startObj, endObj){
     return okToMakeLine;
 }
 
+//--------------------------------------------------------------------------------------
+// createRuler: Fills the passed ruller container with lines according to passed length.
+//--------------------------------------------------------------------------------------
+
 function createRuler(element, length) {
     element.innerHTML = "";
     for(let i = 0; i < length / 5; i++) {
@@ -6076,11 +6080,19 @@ function createRuler(element, length) {
     }
 }
 
+//------------------------------------------------------------------------------------------------
+// toggleRulers: Hides rulers if isRulersActive is true and shows them if isRulersActive is false.
+//------------------------------------------------------------------------------------------------
+
 function toggleRulers() {
     const diagramContent = document.getElementById("diagram-content");
+    const rulers = document.querySelectorAll(".ruler");
     if(isRulersActive) {
         diagramContent.classList.remove("rulers-active");
+        rulers.forEach(ruler => ruler.classList.add("hidden"));
     } else {
         diagramContent.classList.add("rulers-active");
+        rulers.forEach(ruler => ruler.classList.remove("hidden"));
     }
+    isRulersActive = !isRulersActive;
 }

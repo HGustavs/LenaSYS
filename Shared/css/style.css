@@ -5127,6 +5127,10 @@ only screen and (max-device-width: 320px) {
   flex-shrink: 0;
 }
 
+.ruler.hidden {
+  display: none;
+}
+
 #ruler-x {
   height: 32px;
   flex-direction: row;

@@ -286,6 +286,9 @@
                         <span class="drop-down-option" onclick="toggleFullscreen();">Fullscreen</span>
                         <i id="hotkey-fullscreen" class="hotKeys">Shift + F11</i>           
                     </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick="toggleRulers();">Rulers</span>        
+                    </div>
                 </div>
             </div>
             <div class="menu-drop-down" tabindex="0">
