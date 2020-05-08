@@ -128,6 +128,7 @@ $sql = '
 	CREATE TABLE IF NOT EXISTS userLogEntries (
 		id INTEGER PRIMARY KEY,
 		uid INTEGER(10),
+		username VARCHAR(15),
 		eventType INTEGER,
 		description VARCHAR(50),
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -148,26 +149,11 @@ $sql = '
 		IP TEXT,
 		browser VARCHAR(100)
 	);
-	CREATE TABLE IF NOT EXISTS clickLogEntries (
-		id INTEGER PRIMARY KEY,
-		target TEXT,
-		mouseX TEXT,
-		mouseY TEXT,
-		clientResX TEXT,
-		clientResY TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE IF NOT EXISTS mousemoveLogEntries (
-		id INTEGER PRIMARY KEY,
-		page TEXT,
-		mouseX TEXT,
-		mouseY TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
 	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
 		id INTEGER PRIMARY KEY,
 		type INTEGER,
 		courseid INTEGER,
+		uid INTEGER(10),
 		exampleid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
@@ -175,12 +161,65 @@ $sql = '
 		id INTEGER PRIMARY KEY,
 		type INTEGER,
 		cid INTEGER,
+		uid INTEGER(10),
 		vers INTEGER,
 		quizid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
+	CREATE TABLE IF NOT EXISTS userHistory (
+		refer TEXT,
+		userid INTEGER(10),
+		username VARCHAR(50),
+		IP TEXT,
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
 ';
 $log_db->exec($sql);
+
+//------------------------------------------------------------------------------------------------
+// Logging of user history, used to keep track of who is online and where they are on the site
+//------------------------------------------------------------------------------------------------
+
+$refer = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+if (!strstr(strtolower($refer), 'service')) {
+	$query = $log_db->prepare('INSERT INTO userHistory (refer, userid, username, IP) VALUES (:refer, :userid, :username, :IP)');
+
+	$query->bindParam(':refer', $refer);
+
+	if(isset($_SESSION['loginname']) && isset($_SESSION['uid'])) {
+		$username = $_SESSION['loginname'];
+		$userid = $_SESSION['uid'];
+	} else {
+		if(!isset($_COOKIE['cookie_guest'])) {
+			$username = 00;
+		} else {
+			$username = $_COOKIE['cookie_guest'];
+		}
+		$userid = 00;
+	}
+
+	$IP = "";
+	if(isset($_SERVER['REMOTE_ADDR'])){
+		$IP.=$_SERVER['REMOTE_ADDR'];
+	}
+
+	if(isset($_SERVER['HTTP_CLIENT_IP'])){
+		$IP.=" ".$_SERVER['HTTP_CLIENT_IP'];
+	}
+	
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+		$IP.=" ".$_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+
+	$query->bindParam(':userid', $userid);
+	$query->bindParam(':username', $username);
+	$query->bindParam(':IP', $IP);
+
+	if($username != "00") {
+		$query->execute();
+	}
+}
+
 //------------------------------------------------------------------------------------------------
 // logEvent - Creates a new log entry in the log database (log.db, located at the root directory)
 //------------------------------------------------------------------------------------------------
@@ -197,9 +236,10 @@ function logEvent($eventType, $description) {
 // logUserEvent - Creates a new userbased event in the log.db database.
 //------------------------------------------------------------------------------------------------
 
-function logUserEvent($uid, $eventType, $description) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description, userAgent, remoteAddress) VALUES (:uid, :eventType, :description, :userAgent, :remoteAddress)');
+function logUserEvent($uid, $username, $eventType, $description) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, username, eventType, description, userAgent, remoteAddress) VALUES (:uid, :username, :eventType, :description, :userAgent, :remoteAddress)');
 	$query->bindParam(':uid', $uid);
+	$query->bindParam(':username', $username);
 	$query->bindParam(':eventType', $eventType);
 	$query->bindParam(':description', $description);
 	$query->bindParam(':userAgent', $_SERVER['HTTP_USER_AGENT']);
@@ -250,38 +290,13 @@ function logServiceEvent($uuid, $eventType, $service, $userid, $info, $timestamp
 }
 
 //------------------------------------------------------------------------------------------------
-// logClickEvent - Creates a new click event in the log.db database.
-//------------------------------------------------------------------------------------------------
-
-function logClickEvent($target, $mouseX, $mouseY, $clientResX, $clientResY) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO clickLogEntries (target, mouseX, mouseY, clientResX, clientResY) VALUES (:target, :mouseX, :mouseY, :clientResX, :clientResY)');
-	$query->bindParam(':target', $target);
-	$query->bindParam(':mouseX', $mouseX);
-	$query->bindParam(':mouseY', $mouseY);
-	$query->bindParam(':clientResX', $clientResX);
-	$query->bindParam(':clientResY', $clientResY);
-	$query->execute();
-}
-
-//------------------------------------------------------------------------------------------------
-// logMousemoveEvent - Creates a new click event in the log.db database.
-//------------------------------------------------------------------------------------------------
-
-function logMousemoveEvent($page, $mouseX, $mouseY) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO mousemoveLogEntries (page, mouseX, mouseY) VALUES (:page, :mouseX, :mouseY)');
-	$query->bindParam(':page', $page);
-	$query->bindParam(':mouseX', $mouseX);
-	$query->bindParam(':mouseY', $mouseY);
-	$query->execute();
-}
-
-//------------------------------------------------------------------------------------------------
 // Log page load for examples. - Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
 //------------------------------------------------------------------------------------------------
 
-function logExampleLoadEvent($courseid, $exampleid, $type) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, exampleid, type) VALUES (:courseid, :exampleid, :type)');
+function logExampleLoadEvent($courseid, $uid, $exampleid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, uid, exampleid, type) VALUES (:courseid, :uid, :exampleid, :type)');
 	$query->bindParam(':courseid', $courseid);
+	$query->bindParam(':uid', $uid);
 	$query->bindParam(':exampleid', $exampleid);
 	$query->bindParam(':type', $type);
 	$query->execute();
@@ -291,9 +306,10 @@ function logExampleLoadEvent($courseid, $exampleid, $type) {
 // Log page load for examples. - Creates a new entry to the duggaLoadLogEntries when a user opens a new dugga.
 //------------------------------------------------------------------------------------------------
 
-function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, vers, quizid, type) VALUES (:cid, :vers, :quizid, :type)');
+function logDuggaLoadEvent($cid, $uid, $vers, $quizid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, uid, vers, quizid, type) VALUES (:cid, :uid, :vers, :quizid, :type)');
 	$query->bindParam(':cid', $cid);
+	$query->bindParam(':uid', $uid);
 	$query->bindParam(':vers', $vers);
 	$query->bindParam(':quizid', $quizid);
 	$query->bindParam(':type', $type);

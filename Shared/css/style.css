@@ -1053,10 +1053,48 @@ div .navButt:hover {
 }
 
 @media only screen and (max-width: 800px) {
- #div2 {
- top: 80px;
+        #div2 {
+        top: 80px;
+        }
+        #codeBurger {
+        display: table-cell;
+    }
+    .navButt img {
+        width: 20px;
+    }
+    #navHeading {
+        display: none;
+    }
+    #mobileNavHeading {
+        display: block;
+        height: 25px;
+        text-align: center;
+        color:black;
+        margin-top: 50px;
+    }
 
-}   
+    #burgerMenu {
+        position: absolute;
+        z-index: 9999;
+        background-color: var(--color-background-2);
+        border: 2px solid var(--color-border);
+        display: none;
+    }
+    .burgerOption {
+        padding: 15px 15px 15px 15px;
+    }
+    .err{
+    display: none;
+    }
+        .codeheader {
+        display: none;
+    }
+    .box{
+        overflow: hidden;
+    }
+    
+}
+
 }
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -6749,3 +6787,4 @@ textarea#filecont {
   float: left;
   
 }
+

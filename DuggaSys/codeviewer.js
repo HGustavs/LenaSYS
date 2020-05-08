@@ -306,9 +306,6 @@ function returned(data)
 	//hides maximize button if not supported
 	hideMaximizeAndResetButton();
 
-	//hides minimize button if not supported
-	hideMinimizeButton()
-
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
 
@@ -2218,6 +2215,12 @@ function Play(event) {
 }
 
 function minimizeBoxes(boxid) {
+	thisBox = document.querySelector('#box' + boxid + 'wrapper #boxtitlewrapper');
+	thisBox1 = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
+	thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
+	thisBox3 = document.querySelector('#box' + 3 + 'wrapper #boxtitlewrapper');
+	thisBox4 = document.querySelector('#box' + 4 + 'wrapper #boxtitlewrapper');
+	thisBox5 = document.querySelector('#box' + 5 + 'wrapper #boxtitlewrapper');
 	const isMobile = /Mobi/.test(window.navigator.userAgent);
 	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
@@ -2256,9 +2259,7 @@ function minimizeBoxes(boxid) {
 	if (templateid == 1 && isMobile == false) {
         
 		if (boxid == 1) {
-            thisBox2 = document.querySelector('#box' + 2 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 2]['id']).width("100%");
-
 			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 1, 2);
             thisBox2.classList.remove('hidden');
@@ -2268,14 +2269,12 @@ function minimizeBoxes(boxid) {
 		}
 
 		if (boxid == 2) {
-            thisBox2 = document.querySelector('#box' + 1 + 'wrapper #boxtitlewrapper');
 			$(boxValArray['box' + 1]['id']).width("100%");
-
 			$(boxValArray['box' + boxid]['id']).width("0%");
 			alignBoxesWidth(boxValArray, 1, 2);
-            thisBox2.classList.remove('hidden');
+            thisBox1.classList.remove('hidden');
             setTimeout(function () {
-                thisBox2.classList.remove('visuallyhidden');
+                thisBox1.classList.remove('visuallyhidden');
             }, 20);
 		}
 	}
@@ -2295,6 +2294,203 @@ function minimizeBoxes(boxid) {
 			alignBoxesHeight2boxes(boxValArray, 2, 1);
 		}
 	}
+
+	//for template 3
+	if (templateid == 3 && isMobile == false) {
+		if(boxid == 1){
+			for (i = 1; i <= 3; i++) {
+				$(boxValArray['box' + i]['id']).height("50%");
+				$(boxValArray['box' + boxid]['id']).height("10%");
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");
+			}
+			thisBox.classList.remove('hidden');
+            setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20);
+		}
+		else{
+			for (i = 1; i <= 3; i++) {
+				$(boxValArray['box' + i]['id']).height("100%");
+				$(boxValArray['box' + boxid]['id']).height("10%");
+			}
+			thisBox.classList.remove('hidden');
+		}
+	}
+
+	//for template 4
+	if (templateid == 4 && isMobile == false){
+		if(boxid == 3){
+			for(i = 1; i <= 3; i++){
+				$(boxValArray['box' + i]['id']).height("90%");
+				$(boxValArray['box' + boxid]['id']).height("10%");
+				$(boxValArray['box' + i]['id']).width("50%");
+				$(boxValArray['box' + boxid]['id']).width("100%");	
+			}
+			thisBox1.classList.remove('hidden');
+			thisBox2.classList.remove('hidden');
+			thisBox1.classList.remove('visuallyhidden');
+			thisBox2.classList.remove('visuallyhidden');
+		}
+		else{
+			for(i = 1; i <= 3; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");
+			}
+			thisBox1.classList.remove('hidden');
+			thisBox2.classList.remove('hidden');
+			thisBox1.classList.remove('visuallyhidden');
+			thisBox2.classList.remove('visuallyhidden');
+            setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20);	
+		}	
+	}
+
+    //for template 5
+    if(templateid == 5 && isMobile == false){
+        if(boxid == 1 || boxid == 3){
+            $(boxValArray['box' + (boxid + 1)]['id']).width("100%");
+            $(boxValArray['box' + boxid]['id']).width("10%");
+            thisBox2.classList.remove('hidden');
+            thisBox4.classList.remove('hidden');
+            thisBox2.classList.remove('visuallyhidden');
+            thisBox4.classList.remove('visuallyhidden');
+            setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20);    
+        }
+        else{
+            $(boxValArray['box' + (boxid - 1)]['id']).width("100%");
+            $(boxValArray['box' + boxid]['id']).width("10%");
+            thisBox1.classList.remove('hidden');
+            thisBox3.classList.remove('hidden');
+            thisBox1.classList.remove('visuallyhidden');
+            thisBox3.classList.remove('visuallyhidden');
+            setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20);    
+        }
+
+	}
+
+	//for template 6
+	if(templateid == 6 && isMobile == false){
+		if(boxid == 1){
+			for(i = 1; i <= 4; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");	
+			}
+            setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20); 
+		}
+		if(boxid == 2){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+		if(boxid == 3){
+			$(boxValArray['box' + 2]['id']).height("50%");
+			$(boxValArray['box' + 4]['id']).height("50%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+		if(boxid == 4){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+	}
+
+	//for template 7
+	if(templateid == 7 && isMobile == false){
+		if(boxid == 1){
+			for(i = 1; i <= 4; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");	
+			}
+			setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20); 
+		}
+		if(boxid == 2){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+		if(boxid == 3){
+			$(boxValArray['box' + 2]['id']).height("50%");
+			$(boxValArray['box' + 4]['id']).height("50%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+		if(boxid == 4){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+		}
+	}
+
+	//for template 8
+	if(templateid == 8 && isMobile == false){
+		if(boxid == 1){
+			for(i = 1; i <= 3; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");	
+			}
+			thisBox2.classList.remove('hidden');
+			thisBox3.classList.remove('hidden');
+			thisBox2.classList.remove('visuallyhidden');
+			thisBox3.classList.remove('visuallyhidden');
+			setTimeout(function () {
+				thisBox.classList.add('hidden');
+				thisBox.classList.add('visuallyhidden');
+			}, 20);	
+		}
+		else{
+			for(i = 1; i <= 3; i++){
+				$(boxValArray['box' + i]['id']).height("100%");
+				$(boxValArray['box' + boxid]['id']).height("10%");	
+			}
+		}
+	}
+
+	//for template 9
+	if(templateid == 9 && isMobile == false){
+		if(boxid == 1){
+			for(i = 1; i <= 5; i++){
+				$(boxValArray['box' + i]['id']).width("100%");
+				$(boxValArray['box' + boxid]['id']).width("10%");	
+			}
+			setTimeout(function () {
+                thisBox.classList.add('hidden');
+                thisBox.classList.add('visuallyhidden');
+            }, 20); 
+		}
+		if(boxid == 2){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+		if(boxid == 3){
+			$(boxValArray['box' + 2]['id']).height("33%");
+			$(boxValArray['box' + 4]['id']).height("33%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+		if(boxid == 4){
+			$(boxValArray['box' + 2]['id']).height("33%");
+			$(boxValArray['box' + 5]['id']).height("33%");
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+		if(boxid == 5){
+			$(boxValArray['box' + boxid]['id']).height("0%");
+			alignTemplate9Height3Stack(boxValArray, 2,3,4,5);
+		}
+	}	
 }
 
 function hideCopyButtons(templateid, boxid) {
@@ -3096,19 +3292,12 @@ function maximizeBoxes(boxid) {
 	}
 }
 
-//hide maximizeButton
+//hide maximizeButton, resetButton and minimizeButton
 function hideMaximizeAndResetButton() {
 	var templateid = retData['templateid'];
 	if (templateid > 9) {
 		$('.maximizebtn').hide();
 		$('.resetbtn').hide();
-	}
-}
-
-//hide minimizeButton
-function hideMinimizeButton() {
-	var templateid = retData['templateid'];
-	if (templateid > 2) {
 		$('.minimizebtn').hide();
 	}
 }

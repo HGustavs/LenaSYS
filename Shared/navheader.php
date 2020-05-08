@@ -35,7 +35,20 @@
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
-	
+
+			// Analytics button
+			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
+				echo "<td class='menuButton' style='display: inline-block;'>";
+				echo "    <div class='access menuButton'>";
+  				echo "      <a id='accessBTN' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
+  				echo "        <img class='navButt' src='../Shared/icons/analytic.svg'>";
+				echo "      </a>";
+				echo "    </div>";
+				echo "</td>";
+			} else if($requestedService == "analytic.php") {
+				echo '<td class="navButt" id="home" title="Home"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img src="../Shared/icons/Up.svg"></a></td>';
+			}
+
 			if($noup!='NONE') {
 				  echo "<td class='navButt' id='announcement' title='Announcement' style='border:1px solid white;'><img src=''></td>";
 				  echo "<td class='navButt' id='back' title='Back'>";
