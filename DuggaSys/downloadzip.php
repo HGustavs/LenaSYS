@@ -27,9 +27,19 @@ if(isset($_SESSION['uid'])){
 	$userid="UNK";
 }
 
+// Gets username based on uid, USED FOR LOGGING
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
 // Logging who request to download all content from what course version 
 $description=$cid." ".$vers;
-logUserEvent($userid, EventTypes::DownloadAllCourseVers, $description);
+logUserEvent($userid, $username, EventTypes::DownloadAllCourseVers, $description);
 
 // Create new zip class 
 $zip	=	new	ZipArchive; 
