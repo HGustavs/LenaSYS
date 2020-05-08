@@ -690,7 +690,7 @@ function returnedExportedGrades(gradeData){
 	// Tries to write out the last exported date.
 	// If it fails, then log the error.
 	try {
-		if (typeof gradeData[0].gradeLastExported !== 'undefined' && typeof gradeData[0] === 'object') {
+		if (typeof gradeData.gradeLastExported !== 'undefined' && typeof gradeData === 'object') {
 			document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
 		}
 	} catch (error) {

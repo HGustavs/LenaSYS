@@ -112,7 +112,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 	// Check if opt == updateunexported
 	if ($opt === getunexported_service_name) {
-		$statement = $pdo->prepare("	UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
+		$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
 		$statement->bindParam(':gradeLastExported', $gradeLastExported);
 		
 		if ($statement === false) {
