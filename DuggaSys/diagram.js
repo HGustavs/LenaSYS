@@ -121,6 +121,7 @@ var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
+var isRulersActive = false;         //Show/hide rulers
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -6056,4 +6057,16 @@ function canConnectLine(startObj, endObj){
         }
 
     return okToMakeLine;
+}
+
+function createRuler(element, length) {
+
+}
+
+function toggleRulers() {
+    if(isRulersActive) {
+
+    } else {
+        
+    }
 }
