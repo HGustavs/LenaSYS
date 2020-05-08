@@ -3668,6 +3668,12 @@ function switchToolbar(mode) {
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
 
+function editToolbarMenus(mode){
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
+}
+
 // ----------------------------------
 // DIAGRAM MOUSE SECTION
 // ----------------------------------
