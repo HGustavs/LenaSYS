@@ -297,7 +297,7 @@
     echo "
       <script>
         var modalRead = false; // Have the user read info?
-        var modal = document.getElementById('warning'); // Get the modal
+        var postInstallModal = document.getElementById('warning'); // Get the modal
         var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
         var filePath = '{$putFileHere}';
 
@@ -308,13 +308,13 @@
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
-          modal.style.display = 'none';
+          postInstallModal.style.display = 'none';
         }
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
           if (event.target == modal) {
-            modal.style.display = 'none';
+            postInstallModal.style.display = 'none';
           }
         }
       </script>
@@ -905,6 +905,7 @@
 <!-- END OF INSTALL SECTION -->
 
 <script>
+  postInstallModal.style.display = "block";
   var showHideButton = document.getElementById('showHideInstallation');
 
   if (showHideButton !== null){
