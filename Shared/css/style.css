@@ -2068,6 +2068,21 @@ button.option {
  right:20px;
 }
 
+@media only screen and (max-width: 420px) {
+  #MOTDbutton {
+    width:20%;
+   }
+}
+@media only screen and (max-width: 330px) {
+  #MOTDbutton {
+    width:15%;
+   }
+}
+@media only screen and (max-width: 275px) {
+  #MOTDbutton {
+    width:10%;
+   }
+}
 input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
