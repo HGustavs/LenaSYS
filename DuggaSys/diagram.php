@@ -286,6 +286,9 @@
                         <span class="drop-down-option" onclick="toggleFullscreen();">Fullscreen</span>
                         <i id="hotkey-fullscreen" class="hotKeys">Shift + F11</i>           
                     </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick="toggleRulers();">Rulers</span>        
+                    </div>
                 </div>
             </div>
             <div class="menu-drop-down" tabindex="0">
@@ -455,9 +458,9 @@
                 </div>
             </div>
         </div>
-        <div id="ruler-y" class="ruler"></div>
+        <div id="ruler-y" class="ruler hidden"></div>
         <div id="diagram-content">
-            <div id="ruler-x" class="ruler"></div>
+            <div id="ruler-x" class="ruler hidden"></div>
             <div id="diagram-canvas-container">
                 <canvas id="diagram-canvas"></canvas>
                 <button id='moveButton' class='unpressed' title="Move Around">

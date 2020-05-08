@@ -5063,6 +5063,15 @@ only screen and (max-device-width: 320px) {
   display: flex;
   flex-direction: column;
   width: calc(100vw - var(--diagram-sidebar-width));
+  overflow: hidden;
+}
+
+#diagram-content * {
+  box-sizing: border-box;
+}
+
+#diagram-content.rulers-active {
+  width: calc(100vw - var(--diagram-sidebar-width) - var(--ruler-size));
 }
 
 #diagram-canvas-container {
@@ -5070,6 +5079,10 @@ only screen and (max-device-width: 320px) {
   margin: 0 8px 8px 0;
   background-color: #ffffff;
   height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--canvas-margin));
+}
+
+#diagram-content.rulers-active #diagram-canvas-container {
+  height: calc(100vh - var(--header-height) - var(--diagram-header-height) - var(--ruler-size) - var(--canvas-margin));
 }
 
 #diagram-container.fullscreen #diagram-canvas-container {
@@ -5106,6 +5119,81 @@ only screen and (max-device-width: 320px) {
 #moveButton img {
   height: 30px;
   width: 30px;
+}
+
+.ruler {
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.ruler.hidden {
+  display: none;
+}
+
+#ruler-x {
+  height: 32px;
+  flex-direction: row;
+  margin-right: var(--canvas-margin);
+  border-top: 1px solid #000000;
+  border-right: 1px solid #000000;
+}
+
+#ruler-y {
+  width: 32px;
+  margin-top: 32px;
+  margin-bottom: var(--canvas-margin);
+  flex-direction: column;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+}
+
+.ruler-line {
+  background-color: #000000;
+  font-size: 10px;
+  text-indent: 2px;
+}
+
+#ruler-x .ruler-line {
+  width: 1px;
+  margin-left: 4px;
+}
+
+#ruler-y .ruler-line {
+  height: 1px;
+  margin-top: 4px;
+}
+
+#ruler-x .ruler-line:first-of-type {
+  margin-left: 0;
+}
+
+#ruler-y .ruler-line:first-of-type {
+  margin-top: 0;
+}
+
+#ruler-x .big {
+  height: 100%;
+}
+
+#ruler-x .small {
+  height: 8px;
+}
+
+#ruler-x .mini {
+  height: 4px;
+}
+
+#ruler-y .big {
+  width: 100%;
+}
+
+#ruler-y .small {
+  width: 8px;
+}
+
+#ruler-y .mini {
+  width: 4px;
 }
 
 /* --------------================################================-------------- *

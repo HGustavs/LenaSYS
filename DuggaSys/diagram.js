@@ -121,6 +121,7 @@ var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
+var isRulersActive = false;         //Show/hide rulers
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -489,6 +490,7 @@ function init() {
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
+    setIsRulersActiveOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
     updateGraphics(); 
@@ -2292,7 +2294,11 @@ function canvasSize() {
     var diagramContainer = document.getElementById("diagram-canvas-container");
     canvas.width = diagramContainer.offsetWidth;
     canvas.height = diagramContainer.offsetHeight;
-    boundingRect = canvas.getBoundingClientRect();    
+    boundingRect = canvas.getBoundingClientRect();
+    if(isRulersActive) {
+        createRuler(document.getElementById("ruler-x"), canvas.width);
+        createRuler(document.getElementById("ruler-y"), canvas.height);
+    }
     updateGraphics();
 }
 
@@ -3601,17 +3607,16 @@ function toggleFullscreen(){
         diagramHeader.classList.add("fullscreen");
         diagramContainer.classList.add("fullscreen");
         header.style.display = "none";
-        fullscreen = true;
         $("#fullscreenDialog").css("display", "flex");
-        canvasSize();
     } else {
         diagramHeader.classList.remove("fullscreen", "toolbar");
         diagramContainer.classList.remove("fullscreen", "toolbar");
         header.style.display = "inline-block";
-        fullscreen = false;
         toolbarDisplayed = false;
-        canvasSize();        
     }
+    fullscreen = !fullscreen;
+    setCheckbox($(".drop-down-option:contains('Fullscreen')"), fullscreen);
+    canvasSize();        
 }
 
 //-----------------------
@@ -6059,6 +6064,59 @@ function canConnectLine(startObj, endObj){
         }
 
     return okToMakeLine;
+}
+
+//--------------------------------------------------------------------------------------
+// createRuler: Fills the passed ruller container with lines according to passed length.
+//--------------------------------------------------------------------------------------
+
+function createRuler(element, length) {
+    element.innerHTML = "";
+    for(let i = 0; i < length / 5; i++) {
+        const line = document.createElement("div");
+        line.classList.add("ruler-line");
+        if(i % 10 === 0) {
+            line.classList.add("big");
+            line.innerText = i * 5;
+        } else if(i % 2 === 0) {
+            line.classList.add("small");
+        } else {
+            line.classList.add("mini");
+        }
+        element.appendChild(line);
+    }
+}
+
+//------------------------------------------------------------------------------------------------
+// toggleRulers: Hides rulers if isRulersActive is true and shows them if isRulersActive is false.
+//------------------------------------------------------------------------------------------------
+
+function toggleRulers() {
+    const diagramContent = document.getElementById("diagram-content");
+    const rulers = document.querySelectorAll(".ruler");
+    if(isRulersActive) {
+        diagramContent.classList.remove("rulers-active");
+        rulers.forEach(ruler => ruler.classList.add("hidden"));
+    } else {
+        diagramContent.classList.add("rulers-active");
+        rulers.forEach(ruler => ruler.classList.remove("hidden"));
+    }
+    isRulersActive = !isRulersActive;
+    setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
+    localStorage.setItem("isRulersActive", isRulersActive);
+    canvasSize();
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+//------------------------------------------------------------------------------------------------------------------------
+
+function setIsRulersActiveOnRefresh() {
+    const tempIsRulerActive = localStorage.getItem("isRulersActive");
+    if(tempIsRulerActive !== null) {
+        isRulersActive = !(tempIsRulerActive === "true");
+        toggleRulers();
+    }
 }
 
 function getOrigoOffsetX() {
