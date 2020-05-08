@@ -6060,9 +6060,17 @@ function canConnectLine(startObj, endObj){
 }
 
 function createRuler(element, length) {
-    for(let i = 0; i < length; i++) {
+    for(let i = 0; i < length / 5; i++) {
         const line = document.createElement("div");
         line.classList.add("ruler-line");
+        if(i % 10 === 0) {
+            line.classList.add("big");
+            line.innerText = i * 5;
+        } else if(i % 2 === 0) {
+            line.classList.add("small");
+        } else {
+            line.classList.add("mini");
+        }
         element.appendChild(line);
     }
 }
@@ -6071,6 +6079,6 @@ function toggleRulers() {
     if(isRulersActive) {
 
     } else {
-        
+
     }
 }
