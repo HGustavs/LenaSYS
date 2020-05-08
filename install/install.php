@@ -264,48 +264,53 @@
     $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
     ob_end_clean(); // Remove form and start installation.
 
-    /* Pop-up window when installation is done. Hidden from start. */
+    //---------------------------------------------------------------------------------------------------
+    // Javascripts for warning pop-up
+    //---------------------------------------------------------------------------------------------------
     echo "
-                <div id='warning' class='modal'>
+      <div id='warning' class='modal'>
+        <!-- Modal content -->
+        <div class='modal-content'>
+          <span title='Close pop-up' class='close''>&times;</span>
+            <span id='dialogText'></span>
+        </div>
+      </div>
+    ";
 
-                    <!-- Modal content -->
-                    <div class='modal-content'>
-                        <span title='Close pop-up' class='close''>&times;</span>
-                            <span id='dialogText'></span>
-                    </div>
-                </div>";
-
-    /* Javascripts for warning pop-up */
+    //---------------------------------------------------------------------------------------------------
+    // Javascripts for warning pop-up
+    //---------------------------------------------------------------------------------------------------
     echo "
-        <script>
-            var modalRead = false; // Have the user read info?
-            var modal = document.getElementById('warning'); // Get the modal
-            var btn = document.getElementById('showModalBtn'); // Get the button that opens the modal
-            var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
-            var filePath = '{$putFileHere}';
+      <script>
+        var modalRead = false; // Have the user read info?
+        var modal = document.getElementById('warning'); // Get the modal
+        var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
+        var filePath = '{$putFileHere}';
 
-            document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
-                '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
-                '<p>If you don\'t follow these instructions nothing will work. G4-2020 will not take any ' +
-                'responsibility for your failing system.</p>';
+        document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
+          '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
+          '<p>If you don\'t follow these instructions nothing will work. G4-2020 will not take any ' +
+          'responsibility for your failing system.</p>';
 
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                modal.style.display = 'none';
-            }
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = 'none';
+        }
 
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            }
-        </script>
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = 'none';
+          }
+        }
+      </script>
     ";
     flush();
     ob_flush();
 
-    /***** START of installation progress ******/
+    //---------------------------------------------------------------------------------------------------
+    // START of installation progress
+    //---------------------------------------------------------------------------------------------------
     $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     $totalSteps = 1; // Variable to hold the total steps to complete.
     $completedSteps = 0; // Variable to hold the current completed steps.
@@ -334,21 +339,23 @@
       }
     }
 
-    /* Header.
-      * Will contain title and progress bar.
-      */
+    //---------------------------------------------------------------------------------------------------
+    // Header - Contains title, progress bar and restart-button.
+    //---------------------------------------------------------------------------------------------------
     echo "
       <div id='header'>
-          <h1>Installation</h1>
-          <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
-            <rect id='progressRect' width='0' height='20px' />
-          </svg>
-          <span id='percentageText'></span>
-          <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
+        <h1>Installation</h1>
+        <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
+          <rect id='progressRect' width='0' height='20px' />
+        </svg>
+        <span id='percentageText'></span>
+        <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
       </div>
     ";
 
-    /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
+    //---------------------------------------------------------------------------------------------------
+    // Javascripts to calculate length of progressRect. This will show the current progress in progressBar
+    //---------------------------------------------------------------------------------------------------
     echo "
     <script>
       /* Function to remove decimals from percentage text */
@@ -365,8 +372,8 @@
         var completedWidth;
 
         /* if window was resized (completedsteps = -1) take latest copleted steps.
-          * Else update to new completed step.
-          */
+        * Else update to new completed step.
+        */
         if (completedSteps === -1) {
           completedWidth = stepWidth * completedStepsLatest;
         } else {
@@ -395,37 +402,39 @@
     flush();
     ob_flush();
 
+    //---------------------------------------------------------------------------------------------------
+    // All the following code of the long if-statement does the install
+    //---------------------------------------------------------------------------------------------------
     echo "<div id='installationProgressWrap'>";
-    
-    # Test permissions on directory before starting installation.
-    if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0060)) {
-      $errors++;
-      exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-        <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-    } else {
-      if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
+      # Test permissions on directory before starting installation.
+      if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0060)) {
         $errors++;
         exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
           <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
       } else {
-        echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
-      }
-    }
-    $completedSteps++;
-    echo "<script>updateProgressBar({$completedSteps});</script>";
-
-    # Check if all fields are filled.
-    $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
-    foreach ($fields AS $fieldname) { //Loop trough each field
-      if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
-        $errors++;
-        exit ("<span id='failText' />Please fill all fields.</span><br>
+        if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
+          $errors++;
+          exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
             <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+        } else {
+          echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
+        }
       }
-    }
+      $completedSteps++;
+      echo "<script>updateProgressBar({$completedSteps});</script>";
 
-    # Only create DB if box is ticked.
-    if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
+      # Check if all fields are filled.
+      $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
+      foreach ($fields AS $fieldname) { //Loop trough each field
+        if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
+          $errors++;
+          exit ("<span id='failText' />Please fill all fields.</span><br>
+            <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+        }
+      }
+
+      # Only create DB if box is ticked.
+      if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
         $username = $_POST["newUser"];
         $password = $_POST["password"];
         $databaseName = $_POST["DBName"];
@@ -532,32 +541,32 @@
         $initQueryArray = explode(";", $initQuery);
         $initSuccess = false;
         try {
-            $connection->query("SET NAMES utf8");
-            $connection->query("USE {$databaseName}");
-            # Use this var if several statements should be called at once (functions).
-            $queryBlock = '';
-            $blockStarted = false;
-            foreach ($initQueryArray AS $query) {
-                $completeQuery = $query . ";";
-                # This commented code in this block could work if delimiters are fixed/removed in sql files.
-                # TODO: Fix handling of delimiters. Now this part only removes code between them.
-                if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")) {
-                  $blockStarted = true;
-                  #$queryBlock = $completeQuery;
-                } else if ($blockStarted && strpos(strtolower($completeQuery), "delimiter ;")) {
-                  $blockStarted = false;
-                  #$queryBlock = $queryBlock . $completeQuery;
-                  #$connection->query($queryBlock);
-                } else if ($blockStarted) {
-                  #$queryBlock = $queryBlock . $completeQuery;
-                } else {
-                  if (trim($query) != '') { // do not send if empty query.
-                    $connection->query($completeQuery);
-                  }
-                }
+          $connection->query("SET NAMES utf8");
+          $connection->query("USE {$databaseName}");
+          # Use this var if several statements should be called at once (functions).
+          $queryBlock = '';
+          $blockStarted = false;
+          foreach ($initQueryArray AS $query) {
+            $completeQuery = $query . ";";
+            # This commented code in this block could work if delimiters are fixed/removed in sql files.
+            # TODO: Fix handling of delimiters. Now this part only removes code between them.
+            if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")) {
+              $blockStarted = true;
+              #$queryBlock = $completeQuery;
+            } else if ($blockStarted && strpos(strtolower($completeQuery), "delimiter ;")) {
+              $blockStarted = false;
+              #$queryBlock = $queryBlock . $completeQuery;
+              #$connection->query($queryBlock);
+            } else if ($blockStarted) {
+              #$queryBlock = $queryBlock . $completeQuery;
+            } else {
+              if (trim($query) != '') { // do not send if empty query.
+                $connection->query($completeQuery);
+              }
             }
-            $initSuccess = true;
-            echo "<span id='successText' />Initialization of database complete. </span><br>";
+          }
+          $initSuccess = true;
+          echo "<span id='successText' />Initialization of database complete. </span><br>";
         } catch (PDOException $e) {
           $errors++;
           echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
@@ -602,46 +611,56 @@
           copyTestFiles("{$putFileHere}/install/courses/1/", "{$putFileHere}/courses/1/");
           copyTestFiles("{$putFileHere}/install/courses/2/", "{$putFileHere}/courses/2/");
         } else {
-              echo "Skipped filling database with test data.<br>";
-            }
-    } else {
-      echo "Skipped creating database.<br>";
-    }
-    $completedSteps++;
-    echo "<script>updateProgressBar({$completedSteps});</script>";
+          echo "Skipped filling database with test data.<br>";
+        }
+      } else {
+        echo "Skipped creating database.<br>";
+      }
+      $completedSteps++;
+      echo "<script>updateProgressBar({$completedSteps});</script>";
 
-    echo "<b>Installation finished.</b><br>";
-    flush();
-    ob_flush();
-    // resetting timeout to what it was prior to installation
-    set_time_limit($timeOutSeconds);
-    echo "</div>";
-    echo "<div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
-            <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
+      echo "<b>Installation finished.</b><br>";
+      flush();
+      ob_flush();
+      // resetting timeout to what it was prior to installation
+      set_time_limit($timeOutSeconds);
+    echo "</div>
+    ";
 
-    # Collapse progress only if there are no errors.
+    //---------------------------------------------------------------------------------------------------
+    // Will show how many errors installation finished with.
+    //---------------------------------------------------------------------------------------------------
+    echo "
+      <div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
+        <span id='errorCount'>Errors: " . $errors . "</span>
+      </div>
+    "; 
+
+    //---------------------------------------------------------------------------------------------------
+    // Collapse progress only if there are no errors.
+    //---------------------------------------------------------------------------------------------------
     if ($errors == 0) {
         echo "<script>$('#installationProgressWrap').toggle(500);</script>";
     }
 
-    # All this code prints further instructions to complete installation.
+    //---------------------------------------------------------------------------------------------------
+    // The rest of the if-statement prints further instructions
+    //---------------------------------------------------------------------------------------------------
     $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
     echo "<div id='doThisWrapper'>";
     echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
-    // Trying to put content and/or create coursesyspw.php.
-    // If there already is a file it will be filled with the entered
-    // credentials in case they don't match what was originally in the file
-    // and if no file exists create one with credentials, if it fails
-    // give instructions on how to create the file.
+
+
+    //---------------------------------------------------------------------------------------------------
+    // Create/update coursesyspw.php , if it fails output instructions.
+    //---------------------------------------------------------------------------------------------------
     try {
-    // Start of Content to put in coursesyspw.
-    $filePutContent = "<?php
-        define(\"DB_USER\",\"".$username."\");
-        define(\"DB_PASSWORD\",\"".$password."\");
-        define(\"DB_HOST\",\"".$serverName."\");
-        define(\"DB_NAME\",\"".$databaseName."\");
-    ?>";
-      // end of coursesyspw content
+      $filePutContent = "<?php
+          define(\"DB_USER\",\"".$username."\");
+          define(\"DB_PASSWORD\",\"".$password."\");
+          define(\"DB_HOST\",\"".$serverName."\");
+          define(\"DB_NAME\",\"".$databaseName."\");
+      ?>";
       file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
     } catch (\Exception $e) {
       echo "<br><b>To make installation work please make a
@@ -661,11 +680,16 @@
       echo '<div id="copied1">Copied to clipboard!<br></div>';
     }
 
-    //Check upload_max_filesize parameter
+    //---------------------------------------------------------------------------------------------------
+    // Check upload_max_filesize parameter
+    //---------------------------------------------------------------------------------------------------
     if(ini_get('upload_max_filesize')!='128M'){
       echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
     }
 
+    //---------------------------------------------------------------------------------------------------
+    // Try to connect to db, if not created the function will create db. If all fails print instructions
+    //---------------------------------------------------------------------------------------------------
     if(!connectLogDB()){
       echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
       with a sqlite database inside at " . $putFileHere . " with permissions 664<br>
@@ -678,16 +702,28 @@
       echo "</code></div>";
       echo '<div id="copied2">Copied to clipboard!<br></div>';
     }
-    $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
-    if(substr($lenaInstall, 0 , 2) == '/') {
-      $lenaInstall = substr($lenaInstall, 1);
-    }
 
+    //---------------------------------------------------------------------------------------------------
+    // Buttons and other UI-stuff
+    //---------------------------------------------------------------------------------------------------
+    $lenaInstall = getInstallDirectory();
     echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
     echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
     echo "</form>";
     echo "</div>";
   } 
+
+  //---------------------------------------------------------------------------------------------------
+  // Function that returns the path to the installation.
+  //---------------------------------------------------------------------------------------------------
+  function getInstallDirectory(){
+    $lenaInstall = null;
+    $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
+    if(substr($lenaInstall, 0 , 2) == '/') {
+      $lenaInstall = substr($lenaInstall, 1);
+    }
+    return $lenaInstall;
+  }
 
   # Function to add testdata from specified file. Parameter file = sql file name without .sql.
   function addTestData($file, $connection){
@@ -845,11 +881,11 @@
       range.moveToElementText(text);
       range.select();
     } else {
-        var selection = window.getSelection();
-        var range = document.createRange();
-        range.selectNodeContents(text);
-        selection.removeAllRanges();
-        selection.addRange(range);
+      var selection = window.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(text);
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
 
     /* Copy selection. */
