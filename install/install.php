@@ -402,23 +402,20 @@
     flush();
     ob_flush();
 
+
+
     //---------------------------------------------------------------------------------------------------
     // All the following code of the long if-statement does the install
     //---------------------------------------------------------------------------------------------------
     echo "<div id='installationProgressWrap'>";
+      $isPermissionsSat = isPermissionsSat();
+      
       # Test permissions on directory before starting installation.
-      if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0060)) {
-        $errors++;
-        exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-          <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+      if($isPermissionsSat) {
+        echo "<span id='successText' />Permissions on {$putFileHere} sat correctly.</span><br>";
       } else {
-        if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
-          $errors++;
-          exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-            <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-        } else {
-          echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
-        }
+        exit ("<span id='failText' />Permissions on {$putFileHere} not sat correctly, please restart the installation.</span><br>
+          <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
       }
       $completedSteps++;
       echo "<script>updateProgressBar({$completedSteps});</script>";
@@ -712,6 +709,23 @@
     echo "</form>";
     echo "</div>";
   } 
+
+  function isPermissionsSat(){
+    $permissionsSat = false;
+    if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0060)) {
+      $errors++;
+      $permissionsSat = false;
+    }
+    else {
+      if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
+        $errors++;
+        $permissionsSat = false;
+      } else {
+        $permissionsSat = true;
+      }
+    }
+    return $permissionsSat;
+  }
 
   //---------------------------------------------------------------------------------------------------
   // Function that returns the path to the installation.
