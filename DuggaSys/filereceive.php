@@ -29,18 +29,26 @@ $link = getOP('link');
 $selectedfile = getOP('selectedfile');
 $error = false;
 
-
-
-
 if (isset($_SESSION['uid'])) {
     $userid = $_SESSION['uid'];
 } else {
     $userid = "UNK";
 }
 
+// Gets username based on uid, USED FOR LOGGING
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
 $log_uuid = getOP('log_uuid');
 
 $filo = print_r($_FILES, true);
+
 $info = $cid . " " . $vers . " " . $kind . " " . $link . " " . $selectedfile . " " . $error . " " . $filo;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filereceive.php", $userid, $info);
 
@@ -54,6 +62,7 @@ if ($ha) {
     $storefile = false;
     chdir('../');
     $currcvd = getcwd();
+
     if ($kind == "LINK" && $link != "UNK") {
         //  if link isn't in database (e.g no rows are returned), add it to database
         $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
@@ -84,7 +93,33 @@ if ($ha) {
         } else {
             $storefile = true;
         }
-    } else if ($kind == "LFILE" || $kind == "MFILE") {
+    } else if($kind == "EFILE"){ // Dummy-file type
+        $fileLocation = $_POST["efilekind"][0];
+        if($fileLocation == "GFILE"){
+            if (!file_exists($currcvd . "/courses/global")) {
+                $storefile = mkdir($currcvd . "/courses/global",0777,true);
+            }
+            else{
+                $storefile = true;
+            }
+        }else if ($fileLocation == "LFILE" || $fileLocation == "MFILE") {
+            //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
+            if (!file_exists($currcvd . "/courses/" . $cid)) {
+                echo $currcvd . "/courses/" . $cid;
+                $storefile = mkdir($currcvd . "/courses/" . $cid ,0777,true);
+            } else {
+                $storefile = true;
+            }
+            if ($fileLocation == "LFILE") {
+                if (!file_exists($currcvd . "/courses/" . $cid . "/" . $vers)) {
+                    $storefile = mkdir($currcvd . "/courses/" . $cid . "/" . $vers,0777,true);
+                } else {
+                    $storefile = true;
+                }
+            }
+        }
+        
+    }else if ($kind == "LFILE" || $kind == "MFILE") {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
         if (!file_exists($currcvd . "/courses/" . $cid)) {
             echo $currcvd . "/courses/" . $cid;
@@ -93,6 +128,7 @@ if ($ha) {
             $storefile = true;
         }
         if ($kind == "LFILE") {
+            echo $vers;
             if (!file_exists($currcvd . "/courses/" . $cid . "/" . $vers)) {
                 $storefile = mkdir($currcvd . "/courses/" . $cid . "/" . $vers,0777,true);
             } else {
@@ -145,19 +181,108 @@ if ($storefile) {
         //	"psd"		=> [
         //	"rar"		=> [
     ];
+    // Uploading of dummy-files in fileed
+    if($kind == "EFILE"){ 
+        $fileText = $_POST["newEmptyFile"][0]; //Name of the file
+        $fileLocation = $_POST["efilekind"][0]; // global or corselocal
+        $extension = substr($fileText, strrpos($fileText, '.') + 1);
+        // check extension and making directory
+        if (array_key_exists($extension, $allowedExtensions)) {
+            $fileText = preg_replace('/[[:^print:]]/', '', $fileText);
+            $fileText = preg_replace('/\s+/', '', $fileText);
+            if ($fileLocation == "LFILE") {
+                $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fileText;
+                $description="VersionLocal"." ".$fileText;
+                logUserEvent($userid, EventTypes::AddFile, $description);
+                $kindid = 4;
+            } else if($fileLocation == "MFILE"){
+                $movname = $currcvd . "/courses/" . $cid . "/" . $fileText;
+                $description="CourseLocal"." ".$fileText;
+                logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
+                $kindid = 3;
+            } else if($fileLocation == "GFILE"){
+                $movname = $currcvd . "/courses/global/" . $fileText;
+                $description="Global"." ".$fileText;
+                logUserEvent($userid, EventTypes::AddFile, $description);
+                $kindid = 2;
+            }
+            else{
+                echo"Unknown type of file";
+            }
+                    $ourFileHandle= fopen($movname, 'w') or die('Permission error');  // Creating the file
+
+                    if ($fileLocation == "LFILE") {
+                        $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND vers=:vers AND filename=:filename AND kind=4;"); // 1=Link 2=Global 3=Course Local 4=Local
+                        $query->bindParam(':vers', $vers);
+                    } else if ($fileLocation == "MFILE") {
+                        $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;"); // 1=Link 2=Global 3=Course Local 4=Local
+                    } else {
+                        $query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;"); // 1=Link 2=Global 3=Course Local 4=Local
+                    }
+                    $query->bindParam(':filename', $fileText);
+                    $query->bindParam(':cid', $cid);
+                    $query->execute();
+                    $norows = $query->fetchColumn();
+                    $filesize = filesize($movname);
+                    if ($norows == 0) {
+                        if ($fileLocation == "LFILE") {
+                            $kindid = 4;
+                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,vers,filesize) VALUES(:filename,:kindid,:cid,:vers,:filesize);");
+                            $query->bindParam(':vers', $vers);
+                        } else if ($fileLocation== "MFILE") {
+                            $kindid = 3;
+                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
+                        } else if ($fileLocation == "GFILE") {
+                            $kindid = 2;
+                            $query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
+                        }
+                        $query->bindParam(':cid', $cid);
+                        $query->bindParam(':filename', $fileText);
+                        $query->bindParam(':filesize', $filesize);
+                        $query->bindParam(':kindid', $kindid);
+
+                        if (!$query->execute()) {
+                            $error = $query->errorInfo();
+                            echo "Error updating file entries" . $error[2];
+                            $errortype ="uploadfile";
+                            $errorvar = $error[2];
+                            print_r($error);
+                            echo $errorvar;
+                        }
+                    }
+                    $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
+                    $query->bindParam(':filename', $fileText);
+                    $query->bindParam(':cid', $cid);
+                    $query->bindParam(':filesize', $filesize);
+                    $query->bindParam(':kindid', $kindid);
+
+                    if (!$query->execute()) {
+                        $error = $query->errorInfo();
+                        echo "Error updating filesize and uploaddate: " . $error[2];
+                        $errortype ="updatefile";
+                        $errorvar = $error[2]; 
+                    }        
+        }
+        else{ // Not allowed extension
+            $errortype ="extension";
+            $errorvar = $extension;
+        }
+        fclose($ourFileHandle);
+    }
 
     $swizzled = swizzleArray($_FILES['uploadedfile']);
-
     echo "<pre>";
     // Uncomment for debug printing
     //print_r($swizzled);
     //testcommit
 
     foreach ($swizzled as $key => $filea) {
+        
         // Uncomment for debug printing
         //print_r($filea) . "<br />";
 
         //  if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process.
+        echo $filea["name"];
         if ($filea["name"] != "") {
 
             $temp = explode(".", $filea["name"]);
@@ -186,19 +311,19 @@ if ($storefile) {
 
                     // Logging for version local files
                     $description="VersionLocal"." ".$fname;
-                    logUserEvent($userid, EventTypes::AddFile, $description);
+                    logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 } else if ($kind == "MFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
                     
                     // Logging for course local files
                     $description="CourseLocal"." ".$fname;
-                    logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
+                    logUserEvent($userid, $username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;
 
                     // Logging for global files
                     $description="Global"." ".$fname;
-                    logUserEvent($userid, EventTypes::AddFile, $description);
+                    logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 }
 
                 // check if upload is successful
