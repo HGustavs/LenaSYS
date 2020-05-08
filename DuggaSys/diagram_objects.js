@@ -1580,8 +1580,8 @@ function Symbol(kindOfSymbol) {
                     linePosY = 22; 
             }
             ctx.beginPath(1);
-            ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + linePosY);
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + linePosY);
+            ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + linePosY * zoomValue);
+            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + linePosY * zoomValue);
             ctx.strokeStyle = this.properties['strokeColor'];
 
         }
