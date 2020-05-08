@@ -37,7 +37,6 @@
 			//---------------------------------------------------------------------
 	
 			if($noup!='NONE') {
-				  echo "<td class='navButt' id='announcement' title='Announcement' style='border:1px solid white;'><img src=''></td>";
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){

@@ -485,18 +485,6 @@ CREATE TABLE `groups` (
     groupInt INTEGER NOT NULL,
     PRIMARY KEY (groupID)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
-CREATE TABLE announcement(
-	id INT(12) NOT NULL AUTO_INCREMENT,
-    courseid INT(12) NOT NULL,
-    courseversion VARCHAR(255) NOT NULL,
-    coursename VARCHAR(255) NOT NULL,
-    title TINYTEXT,
-    message TEXT,
-    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    author VARCHAR(255),
-    PRIMARY KEY(id)
-    
-)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO `groups`(groupKind,groupVal,groupInt) VALUES ("No","1",1);
 INSERT INTO `groups`(groupKind,groupVal,groupInt) VALUES ("No","2",2);
