@@ -459,38 +459,19 @@
         flush();
         ob_flush();
 
-        function deleteUser($connection, $username){
-          try {
-            $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
-            echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
-            } catch (PDOException $e) {
-            $errors++;
-            echo "<span id='failText' />User with name {$username}
-            does not already exist. Will only make a new one (not write over).</span><br>";
-            }
-            $completedSteps++;
-            echo "<script>updateProgressBar({$completedSteps});</script>";
-            flush();
-            ob_flush();
-        }
 
-
-        # If checked, write over existing database and user
+        # If checked, delete user
         if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
           deleteUser($connection, $username);
+          $completedSteps++;
+          echo "<script>updateProgressBar({$completedSteps});</script>";
+          flush();
+          ob_flush();
         }
 
-        # If checked something something
+        # If checked, delete database
         if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
-          # Database
-          try {
-            $connection->query("DROP DATABASE {$databaseName}");
-            echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
-          } catch (PDOException $e) {
-            $errors++;
-            echo "<span id='failText' />Database with name {$databaseName}
-            does not already exist. Will only make a new one (not write over).</span><br>";
-          }
+          deleteDatabase($connection, $databaseName);
           $completedSteps++;
           echo "<script>updateProgressBar({$completedSteps});</script>";
           flush();
@@ -752,6 +733,33 @@
     return $permissionsSat;
   }
 
+  //---------------------------------------------------------------------------------------------------
+  // Function that deletes a user from database
+  //---------------------------------------------------------------------------------------------------
+  function deleteUser($connection, $username){
+    try {
+      $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
+      echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
+    } catch (PDOException $e) {
+    $errors++;
+    echo "<span id='failText' />User with name {$username}
+    does not already exist. Will only make a new one (not write over).</span><br>";
+    }
+  } 
+
+  //---------------------------------------------------------------------------------------------------
+  // Function that deletes a user from database
+  //---------------------------------------------------------------------------------------------------
+  function deleteDatabase($connection, $databaseName){
+    try {
+      $connection->query("DROP DATABASE {$databaseName}");
+      echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
+    } catch (PDOException $e) {
+      $errors++;
+      echo "<span id='failText' />Database with name {$databaseName}
+      does not already exist. Will only make a new one (not write over).</span><br>";
+    }
+  }
 
   //---------------------------------------------------------------------------------------------------
   // Function that returns the path to the installation.
