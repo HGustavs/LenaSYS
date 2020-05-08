@@ -844,9 +844,46 @@ div .navButt:hover {
 }
 
 @media only screen and (max-width: 800px) {
- #div2 {
- top: 80px;
+        #div2 {
+        top: 80px;
+        }
+        #codeBurger {
+        display: table-cell;
+    }
+    .navButt img {
+        width: 20px;
+    }
+    #navHeading {
+        display: none;
+    }
+    #mobileNavHeading {
+        display: block;
+        height: 25px;
+        text-align: center;
+        color:black;
+        margin-top: 50px;
+    }
 
+    #burgerMenu {
+        position: absolute;
+        z-index: 9999;
+        background-color: var(--color-background-2);
+        border: 2px solid var(--color-border);
+        display: none;
+    }
+    .burgerOption {
+        padding: 15px 15px 15px 15px;
+    }
+    .err{
+    display: none;
+    }
+        .codeheader {
+        display: none;
+    }
+    .box{
+        overflow: hidden;
+    }
+    
 }
 }
 /* --------------================################================-------------- *
@@ -1922,7 +1959,7 @@ input.submit-button {
   margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 0.1s background-color;
-  float: left;
+  
   -webkit-appearance: none
 }
 
@@ -2048,6 +2085,18 @@ input.hide-moments-button {
 
 .filePopUp {
   position: relative;
+}
+
+.testselect {
+  position: relative;
+  clear:both;
+  width:150px;  
+  padding: 3px 0 3px 0;
+  height: 30px;
+  line-height: 30px;
+  left: 90px;
+  display: none;
+  
 }
 
 .fileUploadInfo {
@@ -2473,7 +2522,7 @@ div.submit-button:disabled {
 }
 
 #fileLink .list--nomargin {
-  margin: 0 !important;
+  margin-bottom:20px;
 }
 
 .last {
@@ -3083,6 +3132,7 @@ padding: 10px;
 }
 
 .submit-button {
+  position: relative;
   background-color: var(--color-primary);
   border: 0px;
   width: 110px;
@@ -3092,10 +3142,12 @@ padding: 10px;
   margin: 8px 2px 4px 2px;
   font-size: 14px;
   transition: 0.1s background-color;
-  float: right;
+  left: 87px;
   line-height: 30px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  
+
 }
 
 
@@ -3121,7 +3173,7 @@ padding: 10px;
   border-radius: 0;
 }
 
-#uploadbuttonname .fileed-submit-button {
+#uploadbuttonname .ubmit-fileed-sbutton {
   margin: 15px 0 18px 0 !important;
 }
 
@@ -6485,13 +6537,10 @@ textarea#filecont {
 }
 
 .motdBoxheader div:hover {
-  border: 2px;
-  border-style: solid;
-  border-color: white;
   background-color: #815e9d;
   -webkit-transition: background-color 100ms linear;
-    -ms-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;
+  -ms-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
 }
 .notActive {
   background-color:white;
@@ -6504,4 +6553,21 @@ textarea#filecont {
     display:flex;
     justify-content: center;
     flex-flow:wrap;
+}
+#selectdir{
+  width: 120px;
+  position: relative;
+  float: left;
+  top:20px;
+  left: -35px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  
+}
+
+#spankind {
+  position: relative;
+  left: 0px;
+  float: left;
+  
 }

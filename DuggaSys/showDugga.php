@@ -52,7 +52,7 @@
 	}
 
 
-	logDuggaLoadEvent($cid, $vers, $quizid, EventTypes::pageLoad);
+	logDuggaLoadEvent($cid, $userid, $vers, $quizid, EventTypes::pageLoad);
 
 if($cid != "UNK") $_SESSION['courseid'] = $cid;
 	$hr=false;

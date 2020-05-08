@@ -55,7 +55,7 @@ if($opt=="GETQUESTION"){
 		$res["securityquestion"] = $_SESSION["securityquestion"];
     }else{
       $res["getname"] = $_SESSION["getname"];
-      logUserEvent($userid,EventTypes::RequestNewPW,"");
+      logUserEvent($userid, $username, EventTypes::RequestNewPW,"");
     }
   }else{
     $res["getname"] = "limit";
@@ -105,7 +105,7 @@ if($opt=="GETQUESTION"){
       }
     }else{
       $res["requestchange"] = "wrong";
-      logUserEvent($userid,EventTypes::CheckSecQuestion,"");
+      logUserEvent($userid, $username, EventTypes::CheckSecQuestion,"");
     }
   }else{
     $res["requestchange"] = "limit";
