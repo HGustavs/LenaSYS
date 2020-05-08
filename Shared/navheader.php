@@ -46,7 +46,17 @@
 				echo "    </div>";
 				echo "</td>";
 			} else if($requestedService == "analytic.php") {
-				echo '<td class="navButt" id="home" title="Home"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img src="../Shared/icons/Up.svg"></a></td>';
+				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img src="../Shared/icons/Up.svg"></a></td>';
+				echo '<td class="navButt" id="GeneralStats" title="General Stats"><a onclick="loadGeneralStats()"><i class="fas fa-stream faNavheader"></i></a></td>';
+				// echo '<td class="navButt" id="CurrentlyOnline" title="Currently Online"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="PasswordGuessing" title="Password guessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="OSPercentage" title="OS Percentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Browserpercentage" title="Browser percentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Serviceusage" title="Service usage"><a onclick="loadServiceUsage()"><i class="fas fa-chart-line faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Servicespeed" title="Service speed"><a onclick="loadServiceAvgDuration()"><i class="fas fa-tachometer-alt faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Servicecrashes" title="Service crashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Fileinformation" title="File information"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Pageinformation" title="Page information"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe faNavheader"></i></a></td>';
 			}
 
 			if($noup!='NONE') {
