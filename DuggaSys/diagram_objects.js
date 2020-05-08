@@ -1565,9 +1565,23 @@ function Symbol(kindOfSymbol) {
             ctx.stroke();
             this.properties['key_type'] == 'Partial key' ? ctx.setLineDash([5, 4]) : ctx.setLineDash([]);
             var linelength = ctx.measureText(this.name).width;
+            var linePosY = 0;
+            switch (this.properties['sizeOftext']) {
+                case 'Tiny':
+                    linePosY = 10;
+                     break;
+                case 'Small':
+                    linePosY = 12;
+                    break;
+                case 'Medium':
+                    linePosY = 15;
+                    break;
+                case 'Large':
+                    linePosY = 22; 
+            }
             ctx.beginPath(1);
-            ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + linePosY);
+            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + linePosY);
             ctx.strokeStyle = this.properties['strokeColor'];
 
         }
