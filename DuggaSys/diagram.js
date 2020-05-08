@@ -3606,17 +3606,16 @@ function toggleFullscreen(){
         diagramHeader.classList.add("fullscreen");
         diagramContainer.classList.add("fullscreen");
         header.style.display = "none";
-        fullscreen = true;
         $("#fullscreenDialog").css("display", "flex");
-        canvasSize();
     } else {
         diagramHeader.classList.remove("fullscreen", "toolbar");
         diagramContainer.classList.remove("fullscreen", "toolbar");
         header.style.display = "inline-block";
-        fullscreen = false;
         toolbarDisplayed = false;
-        canvasSize();        
     }
+    fullscreen = !fullscreen;
+    setCheckbox($(".drop-down-option:contains('Fullscreen')"), fullscreen);
+    canvasSize();        
 }
 
 //-----------------------
@@ -6099,5 +6098,6 @@ function toggleRulers() {
         rulers.forEach(ruler => ruler.classList.remove("hidden"));
     }
     isRulersActive = !isRulersActive;
+    setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
     canvasSize();
 }
