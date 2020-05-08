@@ -754,6 +754,8 @@ function Symbol(kindOfSymbol) {
         var x2 = Math.trunc(points[this.bottomRight].x);
         var y2 = Math.trunc(points[this.bottomRight].y);
 
+        //console.log(x1 +","+ y1 +" : " + x2 +","+ y2);
+
 
        // Variables for UML line breakpoints 
        var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
@@ -784,32 +786,36 @@ function Symbol(kindOfSymbol) {
 
                 var currentSymbol = diagram[i].corners();
 
+                console.log(Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y - getOrigoOffsetY()) +" : "+ 
+                            y1 +" : "+ 
+                            Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y - getOrigoOffsetY()));
+
                 // Check if line's start point matches any class diagram
-                if (x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) &&
-                    x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1) &&
-                    y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) &&
-                    y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y)) {
+                if (x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) - 1 - getOrigoOffsetX()) &&
+                    x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) + 1 - getOrigoOffsetX()) &&
+                    y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y - getOrigoOffsetY()) &&
+                    y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y - getOrigoOffsetY())) {
 
                     startLineDirection = "left";
 
-                } else if ( x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)-1) &&
-                            x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)+1) &&
-                            y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) &&
-                            y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)) {
+                } else if ( x1 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x) - 1 - getOrigoOffsetX()) &&
+                            x1 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x) + 1 - getOrigoOffsetX()) &&
+                            y1 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y - getOrigoOffsetY()) &&
+                            y1 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y - getOrigoOffsetY())) {
 
                     startLineDirection = "right";
 
-                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)-1) &&
-                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)+1) &&
-                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) &&
-                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)) {
+                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) - 1 - getOrigoOffsetY()) &&
+                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) + 1 - getOrigoOffsetY()) &&
+                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x - getOrigoOffsetX()) &&
+                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x - getOrigoOffsetX())) {
 
                     startLineDirection = "up";
 
-                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)-1) &&
-                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)+1) &&
-                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x) &&
-                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x)) {
+                } else if ( y1 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y) - 1 - getOrigoOffsetY()) &&
+                            y1 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y) + 1 - getOrigoOffsetY()) &&
+                            x1 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x - getOrigoOffsetX()) &&
+                            x1 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x - getOrigoOffsetX())) {
 
                     startLineDirection = "down";
 
@@ -818,31 +824,31 @@ function Symbol(kindOfSymbol) {
 
                 
                 // Check if line's end point matches any class diagram
-                if (x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)-1) &&
-                    x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x)+1) &&
-                    y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y) &&
-                    y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y)) {
+                if (x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) - 1 - getOrigoOffsetX()) &&
+                    x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) + 1 - getOrigoOffsetX()) &&
+                    y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tl.y).y - getOrigoOffsetY()) &&
+                    y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.bl.y).y - getOrigoOffsetY())) {
 
                     endLineDirection = "left";
 
-                } else if ( x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)-1) &&
-                            x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)+1) &&
-                            y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) &&
-                            y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)) {
+                } else if ( x2 >= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x) - 1 - getOrigoOffsetX()) &&
+                            x2 <= (Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x) + 1 - getOrigoOffsetX()) &&
+                            y2 > Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y - getOrigoOffsetY()) &&
+                            y2 < Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y - getOrigoOffsetY())) {
 
                     endLineDirection = "right";
 
-                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)-1) &&
-                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y)+1) &&
-                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x) &&
-                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x)) {
+                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) - 1 - getOrigoOffsetY()) &&
+                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.tr.y).y) + 1 - getOrigoOffsetY()) &&
+                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.tl.x).x - getOrigoOffsetX()) &&
+                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.tr.x).x - getOrigoOffsetX())) {
 
                     endLineDirection = "up";
 
-                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)-1) &&
-                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y)+1) &&
-                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x) &&
-                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x)) {
+                } else if ( y2 >= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y) - 1 - getOrigoOffsetY()) &&
+                            y2 <= (Math.trunc(pixelsToCanvas(0, currentSymbol.br.y).y) + 1 - getOrigoOffsetY()) &&
+                            x2 > Math.trunc(pixelsToCanvas(currentSymbol.bl.x).x - getOrigoOffsetX()) &&
+                            x2 < Math.trunc(pixelsToCanvas(currentSymbol.br.x).x - getOrigoOffsetX())) {
 
                     endLineDirection = "down";
 
