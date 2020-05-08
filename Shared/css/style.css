@@ -5159,6 +5159,14 @@ only screen and (max-device-width: 320px) {
   margin-top: 4px;
 }
 
+#ruler-x .ruler-line:first-of-type {
+  margin-left: 0;
+}
+
+#ruler-y .ruler-line:first-of-type {
+  margin-top: 0;
+}
+
 #ruler-x .big {
   height: 100%;
 }
