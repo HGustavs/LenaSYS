@@ -80,6 +80,48 @@
         <div id=diagram-toolbar-switcher>DEV: All</div>
         <div id="diagram-toolbar-container">
             <div class="menu-drop-down" tabindex="0">
+                <span class="drop-down-label">File</span>
+                <div class="drop-down">
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option">Save</span>
+                    </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option">Load</span>
+                    </div>
+                    <div class="drop-down-divider">
+                    </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick="openImportDialog();">Import</span>
+                    </div>
+                    <div class="drop-down-item export-drop-down-head" tabindex="0">
+                        <span class="drop-down-option" id="exportid">Export...</span>
+                        <div class="export-drop-down">
+                            <div class="export-drop-down-item" tabindex="0">
+                                <a class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
+                            </div>
+                            <div class="export-drop-down-item" tabindex="0">
+                                <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
+                            </div>
+                            <div class="export-drop-down-item" tabindex="0">
+                                <a class="drop-down-option" id="picid" onclick='ExportPicture(this);'>Export Picture</a>
+                            </div>
+                            <div class="export-drop-down-item" tabindex="0">
+                                <a class="drop-down-option" id="svgidPaper" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="drop-down-divider">
+                    </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick="printDiagram();">Print Diagram</span>
+                    </div>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
+                        <i id="hotkey-clear" class="hotKeys">Ctrl + A, Delete</i>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-drop-down" tabindex="0">
                 <span class="drop-down-label">Edit</span>
                 <div class="drop-down">
                     <div class="drop-down-item" tabindex="0">
