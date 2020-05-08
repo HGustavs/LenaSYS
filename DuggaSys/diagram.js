@@ -2293,7 +2293,11 @@ function canvasSize() {
     var diagramContainer = document.getElementById("diagram-canvas-container");
     canvas.width = diagramContainer.offsetWidth;
     canvas.height = diagramContainer.offsetHeight;
-    boundingRect = canvas.getBoundingClientRect();    
+    boundingRect = canvas.getBoundingClientRect();
+    if(isRulersActive) {
+        createRuler(document.getElementById("ruler-x"), canvas.width);
+        createRuler(document.getElementById("ruler-y"), canvas.height);
+    }
     updateGraphics();
 }
 
@@ -6095,4 +6099,5 @@ function toggleRulers() {
         rulers.forEach(ruler => ruler.classList.remove("hidden"));
     }
     isRulersActive = !isRulersActive;
+    canvasSize();
 }
