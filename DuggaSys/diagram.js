@@ -6060,6 +6060,7 @@ function canConnectLine(startObj, endObj){
 }
 
 function createRuler(element, length) {
+    element.innerHTML = "";
     for(let i = 0; i < length / 5; i++) {
         const line = document.createElement("div");
         line.classList.add("ruler-line");
@@ -6076,9 +6077,10 @@ function createRuler(element, length) {
 }
 
 function toggleRulers() {
+    const diagramContent = document.getElementById("diagram-content");
     if(isRulersActive) {
-
+        diagramContent.classList.remove("rulers-active");
     } else {
-
+        diagramContent.classList.add("rulers-active");
     }
 }

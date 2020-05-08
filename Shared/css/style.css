@@ -5063,6 +5063,7 @@ only screen and (max-device-width: 320px) {
   display: flex;
   flex-direction: column;
   width: calc(100vw - var(--diagram-sidebar-width));
+  overflow: hidden;
 }
 
 #diagram-content * {
