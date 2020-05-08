@@ -141,7 +141,7 @@ else{
 
 
 	<!-- Edit Server Settings START -->
-	<div id='editSettings' class='loginBoxContainer' style='display:none;'>
+	<div id='editSettings' onmouseover="validateMOTD('motd','dialog5');" class='loginBoxContainer' style='display:none;' >
     <div class='loginBox' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Server Settings</h3>

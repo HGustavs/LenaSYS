@@ -277,10 +277,13 @@ function updateSettings() {
 	} else {
 		readonly = 0;
 	}
-
-	popupContainer.style.display = "none";
-
-	AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
+	if (window.bool9 === true) {
+		alert('Version updated');
+		popupContainer.style.display = "none";
+		AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
+	  } else {
+		alert("You have entered incorrect information");
+	  }
 }
 
 function createVersion(){
