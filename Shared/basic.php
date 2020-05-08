@@ -154,6 +154,7 @@ $sql = '
 		type INTEGER,
 		courseid INTEGER,
 		uid INTEGER(10),
+		username VARCHAR(15),
 		exampleid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
@@ -162,6 +163,7 @@ $sql = '
 		type INTEGER,
 		cid INTEGER,
 		uid INTEGER(10),
+		username VARCHAR(15),
 		vers INTEGER,
 		quizid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -293,10 +295,11 @@ function logServiceEvent($uuid, $eventType, $service, $userid, $info, $timestamp
 // Log page load for examples. - Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
 //------------------------------------------------------------------------------------------------
 
-function logExampleLoadEvent($courseid, $uid, $exampleid, $type) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, uid, exampleid, type) VALUES (:courseid, :uid, :exampleid, :type)');
+function logExampleLoadEvent($courseid, $uid, $username, $exampleid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, uid, username, exampleid, type) VALUES (:courseid, :uid, :username, :exampleid, :type)');
 	$query->bindParam(':courseid', $courseid);
 	$query->bindParam(':uid', $uid);
+	$query->bindParam(':username', $username);
 	$query->bindParam(':exampleid', $exampleid);
 	$query->bindParam(':type', $type);
 	$query->execute();
@@ -306,10 +309,11 @@ function logExampleLoadEvent($courseid, $uid, $exampleid, $type) {
 // Log page load for examples. - Creates a new entry to the duggaLoadLogEntries when a user opens a new dugga.
 //------------------------------------------------------------------------------------------------
 
-function logDuggaLoadEvent($cid, $uid, $vers, $quizid, $type) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, uid, vers, quizid, type) VALUES (:cid, :uid, :vers, :quizid, :type)');
+function logDuggaLoadEvent($cid, $uid, $username, $vers, $quizid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, uid, username, vers, quizid, type) VALUES (:cid, :uid, :username, :vers, :quizid, :type)');
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':uid', $uid);
+	$query->bindParam(':username', $username);
 	$query->bindParam(':vers', $vers);
 	$query->bindParam(':quizid', $quizid);
 	$query->bindParam(':type', $type);

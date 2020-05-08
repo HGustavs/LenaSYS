@@ -71,6 +71,7 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 			<input class="submit-button" style="float:left" type="button" value="Service crashes" onclick="loadServiceCrashes()">
 			<input class="submit-button" style="float:left" type="button" value="File information" onclick="loadFileInformation()">
 			<input class="submit-button" style="float:left" type="button" value="Page information" onclick="loadPageInformation()">
+			<input class="submit-button" style="float:left" type="button" value="User information" onclick="loadUserInformation()">
 		</div>
 		<div id="analytic-info" style="clear: both; padding: 15px;"></div>
 		<div id="canvas-area" style="height: 300px;">
