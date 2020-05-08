@@ -6112,8 +6112,8 @@ function toggleRulers() {
 //------------------------------------------------------------------------------------------------------------------------
 
 function setIsRulersActiveOnRefresh() {
-	const tempIsRulerActive = localStorage.getItem("isRulersActive");
-	if(tempIsRulerActive !== null) {
+    const tempIsRulerActive = localStorage.getItem("isRulersActive");
+    if(tempIsRulerActive !== null) {
         isRulersActive = !(tempIsRulerActive === "true");
         toggleRulers();
     }
