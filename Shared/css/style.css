@@ -352,13 +352,29 @@ p {
   display:none;
 }
 /*Announcement box*/
-#announcementBox,
-#fullAnnouncement{
+#announcementBoxOverlay,
+#fullAnnnouncementOverlay{
+  position: fixed; 
+  display: none;
   background-color:  #f2f2f2;
   border: 2px solid #bdbdbd;
-  padding: 15px;
-  margin-bottom: 15px;
+  padding: 10px;
+  z-index: 1004; 
+  left: 0;
+  top: 50px;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto;
+  overflow-x: auto;
+  
 
+}
+#announcementBox{
+  margin-bottom: 80px;
+}
+#fullAnnouncement{
+  padding: 10px 15px 160px 10px;
+  
 }
 #announcementBox button{
   background-color: #fff;
@@ -372,6 +388,10 @@ p {
   cursor: pointer;
   border-radius: 4px;
 }
+#announcementBox button.showAllAnnouncement{
+  display: none;
+}
+
 #announcementBox table{
   width: 100%;
 
@@ -398,8 +418,9 @@ p {
   margin-right:5px;
   
 }
-#announcementBox table tr:nth-child(3n):not(:last-child){
-  border-bottom: 1px solid var(--color-text-primary);
+#announcementBox table tr:nth-child(3n+1):not(:first-child){
+  border-top: 1px solid var(--color-text-primary);
+
 }
 #announcementBox table tr td {
     max-width: 0;
@@ -430,6 +451,40 @@ p {
 #announcementBox .headlines tr:last-child{
   border-bottom: none;
 }
+/*Show all the announcements*/
+.hvr-icon-forward {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+}
+.hvr-icon-forward .hvr-icon {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-icon{
+  margin-left: 5px;
+}
+.hvr-icon-forward:hover .hvr-icon, .hvr-icon-forward:focus .hvr-icon, .hvr-icon-forward:active .hvr-icon {
+  -webkit-transform: translateX(4px);
+  transform: translateX(4px);
+}
+
+#announcementBox button a{
+    text-decoration: none;
+    color: #000;
+}
+
+/*End of show all the announcments*/
 .modal input[type=text], 
 .modal textarea {
   width: 100%;
@@ -478,7 +533,7 @@ p {
 }
 .modal {
   position: fixed; 
-  z-index: 1; 
+  z-index: 1005; 
   left: 0;
   top: 0;
   width: 100%; 
@@ -4875,7 +4930,13 @@ only screen and (max-device-width: 390px) {
     opacity: 1;
 
   }
-
+  #announcementBox table tr{
+    border: none;
+  }
+  #announcementBox table tr th,
+  #announcementBox table tr td{
+    padding-left: 0;
+  }
 }
 
 @media only screen and (max-width: 320px),
