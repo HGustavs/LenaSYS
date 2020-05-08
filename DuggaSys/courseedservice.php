@@ -128,10 +128,20 @@ if(checklogin()){
 				$debug="Error inserting entries\n".$error[2];
 			} 
 
+			if($makeactive==3){
+				$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':vers', $versid);
+				if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug="Error updating entries\n".$error[2];
+				}	
+			}
+
 			// Logging for create a fresh course version
 			$description=$cid." ".$versid;
 			logUserEvent($userid, EventTypes::AddCourseVers, $description);
-
+			
 
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 				$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
