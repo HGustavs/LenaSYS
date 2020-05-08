@@ -5108,6 +5108,29 @@ only screen and (max-device-width: 320px) {
   width: 30px;
 }
 
+.ruler {
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+#ruler-x {
+  height: 32px;
+  flex-direction: row;
+  margin-right: var(--canvas-margin);
+  border-top: 1px solid #000000;
+  border-right: 1px solid #000000;
+}
+
+#ruler-y {
+  width: 32px;
+  margin-top: 32px;
+  margin-bottom: var(--canvas-margin);
+  flex-direction: column;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+}
+
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
  * --------------================################================-------------- */
