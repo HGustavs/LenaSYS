@@ -1071,7 +1071,7 @@ function showMOTD(){
     }else{
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
-      document.getElementById("FABStatic2").style.top = "623px";
+      document.getElementById("FABStatic2").style.top = "auto";
     }
   }
 }
@@ -1107,7 +1107,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
-  document.getElementById("FABStatic2").style.top = "565px";
+  document.getElementById("FABStatic2").style.top = "auto";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
