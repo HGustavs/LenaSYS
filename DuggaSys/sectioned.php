@@ -119,7 +119,8 @@
 		<!-- Mobile view END -->
 		<!-- Announcement box -->
 		<div id="announcementBoxOverlay">
-			<div id="announcementBox">
+			<div id="txtHint" style="border: 1px solid #000;"></div>
+			<!--<div id="announcementBox">
 				<h3>To Do</h3>
 				<hr>
 				<table>
@@ -151,10 +152,10 @@
 					<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
 					</a>
 				</button>
-			</div>
+			</div>-->
 
 		</div>
-		<?php
+		<!--<?php
 		include '../Shared/announcementBox.php';
 		if (isset($_GET['announcementid'])) {
 			include '../Shared/fullAnnouncement.php';
@@ -163,7 +164,7 @@
 			include '../Shared/updateAnnouncement.php';
 		}
 
-		?>
+		?>-->
 
 		<!-- + button --->
 
