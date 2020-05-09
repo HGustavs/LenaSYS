@@ -1,9 +1,3 @@
-<?php
-$_SESSION["courseid"] = $_GET["courseid"];
-$_SESSION["coursevers"] = $_GET["coursevers"];
-$_SESSION["coursename"] = $_GET["coursename"];
-
-?>
 
 <link href="https://fonts.googleapis.com/css2?family=Varela&display=swap" rel="stylesheet">
 
@@ -13,6 +7,10 @@ $_SESSION["coursename"] = $_GET["coursename"];
     <h1>Create announcement</h1>
     <p>Please fill in this form to create an announcement.</p>
     <hr>
+
+    <input type="hidden" name="uid" id="userid">
+    <input type="hidden" name="cid" id="courseid">
+    <input type="hidden" name="versid" id="versid">
 
     <label for="title"><b>Title</b></label>
     <input type="text" placeholder="Enter a title" name="title" required>
