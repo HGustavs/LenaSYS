@@ -375,18 +375,7 @@ p {
   padding: 10px 15px 160px 10px;
   
 }
-#announcementBox button{
-  background-color: #fff;
-  border: 1px solid #bdbdbd;
-  padding: 10px 20px 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px 0 20px 0;
-  cursor: pointer;
-  border-radius: 4px;
-}
+
 #announcementBox button.showAllAnnouncement{
   display: none;
 }

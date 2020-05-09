@@ -13,7 +13,7 @@
     <input type="hidden" name="versid" id="versid">
 
     <label for="title"><b>Title</b></label>
-    <input type="text" id="announcementTitle" placeholder="Enter a title" name="title" required>
+    <input type="text" id="announcementTitle" placeholder="Enter a title" name="announcementTitle" required>
 
     <label for="announcementMsg"><b>Message</b></label>
     <textarea  type="Text" id="announcementMsg" placeholder="What do you want your students to know?" name="announcementMsg" required></textarea>

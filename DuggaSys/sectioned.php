@@ -119,10 +119,16 @@
 		<!-- Mobile view END -->
 		<!-- Announcement box -->
 		<div id="announcementBoxOverlay">
-			<?php include "../Shared/announcementBox.php"; ?>
-			
-			<div id="txtHint"></div>
+			<div id="announcementBox">
+				<?php 
+				$_SESSION['courseid'] = $_GET['courseid'];
+				$_SESSION['coursename'] = $_GET['coursename'];
+				$_SESSION['coursevers'] = $_GET['coursevers'];
+				include "../Shared/announcementBox.php"; 
 
+				?>
+				<div id="announcementCards">Is this working</div>
+			</div>
 		</div>
 		
 

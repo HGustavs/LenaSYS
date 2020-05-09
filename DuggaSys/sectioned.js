@@ -1644,6 +1644,7 @@ $(window).load(function () {
   });
   retrieveAnnouncementAuthor();
   retrieveCourseProfile();
+  retrieveAnnouncementsCards();
 });
 
 //show the full announcement
@@ -1651,11 +1652,6 @@ function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
 }
 
-//sets author for announcement
-function setAnnouncementAuthor(){
-  $("#author").val($("#userName").html());
-
-}
 //retrieve the announcment author 
 function retrieveAnnouncementAuthor(){
   var uname = $("#userName").html();
@@ -1665,7 +1661,7 @@ function retrieveAnnouncementAuthor(){
       document.getElementById("userid").value = this.responseText;
     }
   };
-  xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?uname="+uname,true);
+  xmlhttp.open("GET","../Shared/retrieveUserid.php?uname="+uname,true);
   xmlhttp.send();
 
 }
@@ -1694,6 +1690,22 @@ function validateCreateAnnouncementForm(){
       'border':'1px solid red'
     });   
   });
+}
+//retrive announcements
+function retrieveAnnouncementsCards(){
+  var currentLocation = $(location).attr('href');
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("announcementCards").innerHTML = this.responseText;
+    }
+  };
+  xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid,true);
+  xmlhttp.send();
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
