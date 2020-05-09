@@ -119,6 +119,8 @@
 		<!-- Mobile view END -->
 		<!-- Announcement box -->
 		<div id="announcementBoxOverlay">
+			<?php include "../Shared/announcementBox.php"; ?>
+			
 			<div id="txtHint"></div>
 
 		</div>
