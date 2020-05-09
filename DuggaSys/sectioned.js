@@ -1601,6 +1601,9 @@ $(window).load(function () {
   $("#announcement").click(function(){
     $("#announcementBoxOverlay").toggle();
     $('#fullAnnnouncementOverlay').hide();
+    if($("#announcementForm").is(":hidden")){
+      $("#announcementForm").show();
+    }
 
   });
 
