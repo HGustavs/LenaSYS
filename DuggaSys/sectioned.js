@@ -1678,6 +1678,23 @@ function retrieveCourseProfile(){
   $("#courseid").val(cid);
   $("#versid").val(versid);
 }
+//validate create announcement form
+function validateCreateAnnouncementForm(){
+  $("#announcementForm").submit(function(e){
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+    if (announcementTitle == null || announcementTitle == '') {  
+        $("#announcementTitle").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (announcementMsg == null || announcementMsg == '') {  
+        $("#announcementMsg").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }
+    $(".errorCreateAnnouncement").css({
+      'border':'1px solid red'
+    });   
+  });
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);

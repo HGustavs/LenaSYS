@@ -13,13 +13,13 @@
     <input type="hidden" name="versid" id="versid">
 
     <label for="title"><b>Title</b></label>
-    <input type="text" placeholder="Enter a title" name="title" required>
+    <input type="text" id="announcementTitle" placeholder="Enter a title" name="title" required>
 
     <label for="announcementMsg"><b>Message</b></label>
-    <textarea  type="Text" placeholder="What do you want your students to know?" name="announcementMsg" required></textarea>
+    <textarea  type="Text" id="announcementMsg" placeholder="What do you want your students to know?" name="announcementMsg" required></textarea>
 
     <div class="clearfix">
-      <button type="submit" class="createBtn">Create</button>
+      <button type="submit" class="createBtn" onclick="validateCreateAnnouncementForm();">Create</button>
     </div>
   </div>
 </form>
