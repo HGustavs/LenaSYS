@@ -1643,6 +1643,7 @@ $(window).load(function () {
     $(".action-content").toggle();
   });
   retrieveAnnouncementAuthor();
+  retrieveCourseProfile();
 });
 
 //show the full announcement
@@ -1661,15 +1662,22 @@ function retrieveAnnouncementAuthor(){
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("txtHint").innerHTML = this.responseText;
+      document.getElementById("userid").value = this.responseText;
     }
   };
   xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?uname="+uname,true);
   xmlhttp.send();
 
-  console.log(uname);
 }
-
+//retrieve course profile
+function retrieveCourseProfile(){
+  var currentLocation = $(location).attr('href');
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+  $("#courseid").val(cid);
+  $("#versid").val(versid);
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
