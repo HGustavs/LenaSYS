@@ -1639,7 +1639,6 @@ $(window).load(function () {
   $(".actionBtn").click(function(){
     $(".action-content").toggle();
   });
-  retrieveAnnouncementAuthor();
 });
 
 //show the full announcement
@@ -1651,20 +1650,6 @@ function showAnnouncement(){
 function setAnnouncementAuthor(){
   $("#author").val($("#userName").html());
 
-}
-//retrieve the announcment author 
-function retrieveAnnouncementAuthor(){
-  var uname = $("#userName").html();
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("txtHint").innerHTML = this.responseText;
-    }
-  };
-  xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?uname="+uname,true);
-  xmlhttp.send();
-
-  console.log(uname);
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
