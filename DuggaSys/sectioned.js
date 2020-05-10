@@ -1708,6 +1708,7 @@ function retrieveAnnouncementsCards(){
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("announcementCards").innerHTML = this.responseText;
       accessAdminAction();
+      readLessOrMore();
 
     }
   };
@@ -1789,7 +1790,31 @@ function accessAdminAction(){
     $(".actionBtns").remove();
   }
 }
+//read less or more announcement card
+function readLessOrMore(){
+    var maxLength = 60;
 
+    $(".announcementMsgParagraph").each(function(){
+
+      var myStr = $(this).text();
+
+      if($.trim(myStr).length > maxLength){
+        var newStr = myStr.substring(0, maxLength);
+        var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+        $(this).empty().html(newStr);
+        $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
+        $(this).append('<span class="more-text">' + removedStr + '</span>');
+
+      }
+
+    });
+
+    $(".read-more").click(function(){
+      $(this).siblings(".more-text").contents().unwrap();
+      $(this).remove();
+      
+    });
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
