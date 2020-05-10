@@ -1592,6 +1592,7 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 // Setup (when loaded rather than when ready)
 $(window).load(function () {
+  accessAdminAction();
   $(".messagebox").hover(function () {
     $("#testbutton").css("background-color", "red");
   });
@@ -1648,6 +1649,14 @@ $(window).load(function () {
   displayListAndGrid();
 });
 
+function accessAdminAction(){
+  var adminLoggedin = $("#adminLoggedin").val();
+  if(adminLoggedin == 'yes'){
+    $("#announcementForm").add();
+  }else{
+    $("#announcementForm").remove();
+  }
+}
 //show the full announcement
 function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
