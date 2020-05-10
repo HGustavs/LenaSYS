@@ -2296,8 +2296,7 @@ function canvasSize() {
     canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
     if(isRulersActive) {
-        createRuler(document.getElementById("ruler-x"), canvas.width);
-        createRuler(document.getElementById("ruler-y"), canvas.height);
+        createRulers();
     }
     updateGraphics();
 }
@@ -6079,8 +6078,12 @@ function createRulers() {
 // createRuler: Fills the passed ruller container with lines according to passed length.
 //--------------------------------------------------------------------------------------
 
-function createRuler(element, length) {
+function createRuler(element, length, origoOffset) {
+    const from = Math.round(-origoOffset);
+    const to = Math.round(length - origoOffset);
+
     element.innerHTML = "";
+    
     for(let i = 0; i < length / 5; i++) {
         const line = document.createElement("div");
         line.classList.add("ruler-line");
