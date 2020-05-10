@@ -30,7 +30,7 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 		echo "<div class='courseversion'><b>".strtoupper($versname)." - ".$versid."</b></div>";
 	}
 
-	echo "<div class='displayAnnouncementMsg'><p>".ucfirst(strtolower($message))."</p></div>";
+	echo "<div class='displayAnnouncementMsg'><p class='announcementMsgParagraph'>".ucfirst(strtolower($message))."</p></div>";
 
 	foreach ($pdo->query('SELECT * FROM user WHERE uid="'.$uid.'"') AS $author){
 		$firstname = $author['firstname'];

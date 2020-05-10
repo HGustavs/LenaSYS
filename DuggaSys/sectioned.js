@@ -1649,14 +1649,7 @@ $(window).load(function () {
   displayListAndGrid();
 });
 
-function accessAdminAction(){
-  var adminLoggedin = $("#adminLoggedin").val();
-  if(adminLoggedin == 'yes'){
-    $("#announcementForm").add();
-  }else{
-    $("#announcementForm").remove();
-  }
-}
+
 //show the full announcement
 function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
@@ -1668,7 +1661,9 @@ function retrieveAnnouncementAuthor(){
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("userid").value = this.responseText;
+      if($("#userid").length > 0) {
+          document.getElementById("userid").value = this.responseText;
+      }
     }
   };
   xmlhttp.open("GET","../Shared/retrieveUserid.php?uname="+uname,true);
@@ -1712,6 +1707,8 @@ function retrieveAnnouncementsCards(){
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("announcementCards").innerHTML = this.responseText;
+      accessAdminAction();
+
     }
   };
   xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid,true);
@@ -1781,6 +1778,16 @@ function displayListAndGrid(){
     });
   }
 
+}
+function accessAdminAction(){
+  var adminLoggedin = $("#adminLoggedin").val();
+  if(adminLoggedin == 'yes'){
+    $("#announcementForm").add();
+    $(".actionBtns").add();
+  }else{
+    $("#announcementForm").remove();
+    $(".actionBtns").remove();
+  }
 }
 
 // Checks if <a> link is external
