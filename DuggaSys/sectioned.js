@@ -1758,7 +1758,7 @@ function displayListAndGrid(){
 
   $(".gridBtn").click(function(){
     for (i = 0; i < announcementCard.length; i++) {
-      announcementCard[i].style.width = "50%";
+      announcementCard[i].style.width = "48%";
     }
   });
 

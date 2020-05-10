@@ -600,18 +600,75 @@ p {
   to {transform: scale(1)}
 }
 /*retrieve announcement*/
-.announcementCard{
-  border: 1px solid #ddd;
-}
 #displayAnnouncements .announcementCard {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px;
   float: left;
-  width: 50%;
+  width: 48%;
+  margin: 0 20px 20px 0;
+  padding: 20px;
+  font-family: 'Varela', sans-serif;
+
 }
 .announcementCard:after {
   content: "";
   display: table;
   clear: both;
 }
+.announcementCard:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+#displayAnnouncements .announcementCard .actionBtns{
+  margin: 10px 0 25px 0;
+}
+#displayAnnouncements .announcementCard .actionBtns span.editBtn {
+  background-color: #fff; 
+  color: black; 
+  border: 2px solid var(--color-logo-background);
+  padding: 4px 8px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  font-weight: bold;
+}
+#displayAnnouncements .announcementCard .actionBtns span.editBtn:hover,
+#displayAnnouncements .announcementCard .actionBtns span.editBtn:focus{
+  background-color: var(--color-logo-background);
+  color: #fff;
+
+}
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a{
+  float: right;
+  font-size: 30px;
+  margin-top: -17px;
+  font-weight: bold;
+  color: #ff8080;
+  text-decoration: none;
+}
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a:hover,
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a:focus {
+  color: #cc0000;
+  cursor: pointer;
+}
+#displayAnnouncements .announcementCard .courseversion{
+ color: #9474a4;
+ margin-bottom: 15px;
+
+}
+.displayAnnounceTime,
+.displayAuthor{
+  color: #ddd;
+}
+.displayAuthor{
+  float: right;
+}
+#displayAnnouncements .announcementCard .displayAnnouncementMsg{
+  margin-bottom: 40px;
+}
+
 #displayAnnouncements #btnContainer .btn {
   border: none;
   outline: none;
@@ -877,6 +934,9 @@ p {
 
   #dugga4Container #toolbox{
     margin: 15px 0;
+  }
+  #displayAnnouncements .announcementCard{
+    width: 100%;
   }
 }
 
