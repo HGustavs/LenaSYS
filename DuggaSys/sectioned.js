@@ -1726,10 +1726,13 @@ function handleResponse(xhttp){
   xmlDoc=parser.parseFromString(xhttp.responseText,"text/xml");
   responseTitle = xmlDoc.getElementById("responseTitle");
   responseMessage = xmlDoc.getElementById("responseMessage");
-
+  
   title = responseTitle.childNodes[0].nodeValue;
   message = responseMessage.childNodes[0].nodeValue;
 
+  if($("#announcementForm").is(":hidden")){
+    $("#announcementForm").show();
+  }
   $(".formTitle").html("Update announcement");
   $(".formSubtitle").html("Please fill in this form to update the announcement.");
   $("#announcementTitle").val(title);
