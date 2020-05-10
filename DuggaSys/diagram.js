@@ -6067,6 +6067,15 @@ function canConnectLine(startObj, endObj){
 }
 
 //--------------------------------------------------------------------------------------
+// createRulers: Creates rulers for x and y axis.
+//-----------------------------------------------
+
+function createRulers() {
+    createRuler(document.getElementById("ruler-x"), canvas.width, origoOffsetX);
+    createRuler(document.getElementById("ruler-y"), canvas.height, origoOffsetY);
+}
+
+//--------------------------------------------------------------------------------------
 // createRuler: Fills the passed ruller container with lines according to passed length.
 //--------------------------------------------------------------------------------------
 
