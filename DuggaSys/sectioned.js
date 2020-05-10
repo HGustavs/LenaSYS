@@ -1809,10 +1809,14 @@ function readLessOrMore(){
 
     });
 
+    var announcementCard = document.getElementsByClassName("announcementCard");
     $(".read-more").click(function(){
       $(this).siblings(".more-text").contents().unwrap();
       $(this).remove();
       
+      for (i = 0; i < announcementCard.length; i++) {
+        announcementCard[i].style.width = "100%";
+      }
     });
 }
 // Checks if <a> link is external
