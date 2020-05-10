@@ -522,6 +522,7 @@ p {
   display: inline-block;
   border: none;
   font-family: 'Varela', sans-serif;
+  font-size: 16px;
   background: #f1f1f1;
   border-radius: 0;
 }

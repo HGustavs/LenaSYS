@@ -10,7 +10,7 @@ session_start();
 
 
 	
-if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']))	{
+if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && isset($_POST['createBtn'])){
 	$uid = $_POST['uid'];
 	$cid = $_POST['cid'];
 	$versid = $_POST['versid'];
@@ -41,21 +41,25 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']))	{
 	$stmt->bindParam(':versid', $versid);   
 
 	$stmt->execute();
-}/*elseif (isset($_POST['modAnnouncementid']) && isset($_POST['modAuthor'])) {
-	$modAnnouncementid = $_POST['modAnnouncementid'];
-	$modAuthor = $_POST['modAuthor'];
-	$modTitle = $_POST['modTitle'];
-	$modMessage = $_POST['modAnnouncementMsg'];
+}elseif (isset($_POST['updateannouncementid']) && isset($_POST['updateBtn'])) {
+	$updateannouncementid = $_POST['updateannouncementid'];
+	$uid = $_POST['uid'];
+	$cid = $_POST['cid'];
+	$versid = $_POST['versid'];
+	$updateTitle = $_POST['announcementTitle'];
+	$updateMessage = $_POST['announcementMsg'];
 
-	$update = 'UPDATE announcement SET title=:title, message=:message WHERE id=:id AND author=:author';
+	$update = 'UPDATE announcement SET title=:title, message=:message WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
 	$stmt = $pdo->prepare($update);
-	$stmt->bindParam(':id', $modAnnouncementid);   
-	$stmt->bindParam(':author', $modAuthor);
-	$stmt->bindParam(':title', $modTitle);   
-	$stmt->bindParam(':message', $modMessage);   
+	$stmt->bindParam(':announcementid', $updateannouncementid);   
+	$stmt->bindParam(':uid', $uid);
+	$stmt->bindParam(':cid', $cid);
+	$stmt->bindParam(':versid', $versid);
+	$stmt->bindParam(':title', $updateTitle);   
+	$stmt->bindParam(':message', $updateMessage);   
 
 	$stmt->execute();
-}*/
+}
 header("Location: ../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."");
 
 

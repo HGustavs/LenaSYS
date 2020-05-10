@@ -1709,24 +1709,23 @@ function retrieveAnnouncementsCards(){
 }
 //update anouncement form
 function updateannouncementForm(updateannouncementid, tempFuction){
-  console.log(updateannouncementid);
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-        tempFuction(this);
+        tempFuction(this, updateannouncementid);
     }
   };
   xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
   xmlhttp.send();
 
 }
-function handleResponse(xhttp){
+function handleResponse(xhttp, updateannouncementid){
   var parser, xmlDoc, responseTitle, responseMessage, title, message;
   parser=new DOMParser();
   xmlDoc=parser.parseFromString(xhttp.responseText,"text/xml");
   responseTitle = xmlDoc.getElementById("responseTitle");
   responseMessage = xmlDoc.getElementById("responseMessage");
-  
+
   title = responseTitle.childNodes[0].nodeValue;
   message = responseMessage.childNodes[0].nodeValue;
 
@@ -1738,6 +1737,8 @@ function handleResponse(xhttp){
   $("#announcementTitle").val(title);
   $("#announcementMsg").html(message);
   $(".createBtn").html("Update");
+  $(".createBtn").attr("name", "updateBtn");
+  $("#announcementForm .announcementFormcontainer hr").after('<input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'">');
 
 }
 // Checks if <a> link is external

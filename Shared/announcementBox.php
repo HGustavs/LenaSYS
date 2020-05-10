@@ -19,7 +19,7 @@
     <textarea  type="Text" id="announcementMsg" placeholder="What do you want your students to know?" name="announcementMsg" required></textarea>
 
     <div class="clearfix">
-      <button type="submit" class="createBtn" onclick="validateCreateAnnouncementForm();">Create</button>
+      <button type="submit" class="createBtn" name="createBtn" onclick="validateCreateAnnouncementForm();">Create</button>
     </div>
   </div>
 </form>
