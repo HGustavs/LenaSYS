@@ -6083,19 +6083,23 @@ function createRuler(element, length, origoOffset) {
     const to = Math.round(length - origoOffset);
 
     element.innerHTML = "";
-    
-    for(let i = 0; i < length / 5; i++) {
-        const line = document.createElement("div");
-        line.classList.add("ruler-line");
-        if(i % 10 === 0) {
-            line.classList.add("big");
-            line.innerText = i * 5;
-        } else if(i % 2 === 0) {
-            line.classList.add("small");
-        } else {
-            line.classList.add("mini");
+
+    for(let i = from; i < to; i++) {
+        if(i % 5 === 0) {
+            const line = document.createElement("div");
+            line.classList.add("ruler-line");
+            if(i % 10 === 0) {
+                if(i % 50 === 0) {
+                    line.classList.add("big");
+                    line.innerText = i;
+                } else {
+                    line.classList.add("small");
+                }
+            } else {
+                line.classList.add("mini");
+            }
+            element.appendChild(line);
         }
-        element.appendChild(line);
     }
 }
 
