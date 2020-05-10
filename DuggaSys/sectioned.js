@@ -1744,9 +1744,36 @@ function handleResponse(xhttp, updateannouncementid){
 }
 //announcement card grid and list view
 function displayListAndGrid(){
-  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button>'+
-    '<button class="btn active" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button></div><br>');
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i class="fa fa-th-large"></i> Grid</button></div><br>');
+
+  var announcementCard = document.getElementsByClassName("announcementCard");
+  var i;
+
+  $(".listBtn").click(function(){
+    for (i = 0; i < announcementCard.length; i++) {
+      announcementCard[i].style.width = "100%";
+    }
+  });
+
+  $(".gridBtn").click(function(){
+    for (i = 0; i < announcementCard.length; i++) {
+      announcementCard[i].style.width = "50%";
+    }
+  });
+
+  var btnContainer = document.getElementById("btnContainer");
+  var btns = btnContainer.getElementsByClassName("btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+      var current = document.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      this.className += " active";
+    });
+  }
+
 }
+
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);

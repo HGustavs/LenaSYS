@@ -369,7 +369,7 @@ p {
 
 }
 #announcementBox{
-  margin-bottom: 80px;
+  margin-bottom: 300px;
 }
 #fullAnnouncement{
   padding: 10px 15px 160px 10px;
@@ -603,10 +603,9 @@ p {
 .announcementCard{
   border: 1px solid #ddd;
 }
-#displayAnnouncements #announcementCards {
+#displayAnnouncements .announcementCard {
   float: left;
   width: 50%;
-  padding: 10px;
 }
 .announcementCard:after {
   content: "";
