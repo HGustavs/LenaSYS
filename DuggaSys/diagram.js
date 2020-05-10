@@ -1108,7 +1108,6 @@ function copySymbol(symbol) {
                     if(typeof connectedAttribute !== "undefined") {
                         const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
                         if(isAttributeSelected && connectedAttribute.connectorTop.find(object => object.from === symbol[key])) {
-                            console.log(connectedAttribute);
                             newPointIndex = null;
                         }
                     }
