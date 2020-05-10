@@ -1099,21 +1099,20 @@ function copySymbol(symbol) {
 
             let newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
-
                 //Special case for ER lines connected to attributes
                 //The second point of an er line connected to an attribute is the attribute's centerPoint
                 //This code finds connected attributes that will be copied and prevents the second point from being duplicated if the attribute will also be copied
                 //If the attribute will not be copied the point should be created
-                if(symbol.symbolkind === symbolKind.line && key === "bottomRight") {
+                if(symbol.symbolkind === symbolKind.line) {
                     const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
                     if(typeof connectedAttribute !== "undefined") {
                         const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
-                        if(isAttributeSelected) {
+                        if(isAttributeSelected && connectedAttribute.connectorTop.find(object => object.from === symbol[key])) {
+                            console.log(connectedAttribute);
                             newPointIndex = null;
                         }
                     }
                 }
-
                 if(newPointIndex !== null) {
                     const point = points[pointIndexes[key].old];
                     newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
