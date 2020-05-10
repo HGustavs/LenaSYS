@@ -4,8 +4,8 @@
 <form id="announcementForm" class="announcementForm animate" action="../Shared/announcementService.php" method="post">
   <span onclick="document.getElementById('announcementForm').style.display='none'" class="closeAnnouncementForm" title="Close Modal">&times;</span>
   <div class="announcementFormcontainer">
-    <h1>Create announcement</h1>
-    <p>Please fill in this form to create an announcement.</p>
+    <h1 class="formTitle">Create announcement</h1>
+    <p class="formSubtitle">Please fill in this form to create an announcement.</p>
     <hr>
 
     <input type="hidden" name="uid" id="userid">

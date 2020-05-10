@@ -1707,6 +1707,36 @@ function retrieveAnnouncementsCards(){
   xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid,true);
   xmlhttp.send();
 }
+//update anouncement form
+function updateannouncementForm(updateannouncementid, tempFuction){
+  console.log(updateannouncementid);
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        tempFuction(this);
+    }
+  };
+  xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
+  xmlhttp.send();
+
+}
+function handleResponse(xhttp){
+  var parser, xmlDoc, responseTitle, responseMessage, title, message;
+  parser=new DOMParser();
+  xmlDoc=parser.parseFromString(xhttp.responseText,"text/xml");
+  responseTitle = xmlDoc.getElementById("responseTitle");
+  responseMessage = xmlDoc.getElementById("responseMessage");
+
+  title = responseTitle.childNodes[0].nodeValue;
+  message = responseMessage.childNodes[0].nodeValue;
+
+  $(".formTitle").html("Update announcement");
+  $(".formSubtitle").html("Please fill in this form to update the announcement.");
+  $("#announcementTitle").val(title);
+  $("#announcementMsg").html(message);
+  $(".createBtn").html("Update");
+
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);

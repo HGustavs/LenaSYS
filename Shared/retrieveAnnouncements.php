@@ -14,7 +14,15 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	$title = $announcement['title'];
 	$message = $announcement['message'];
 	$announceTime = $announcement['announceTime'];
-	echo "<div class='announcementCard'><div class='actionBtns'><span>Edit</span><span><a href='../Shared/announcementService.php?courseid=".$cid."&coursevers=".$versid."&deleteannouncementid=".$announcementid."&uid=".$uid."'>&times;</a></span></div>";
+	echo "<div class='announcementCard'>";
+	foreach ($pdo->query('SELECT * FROM course WHERE cid="'.$cid.'"') AS $course){
+		$coursename = $course['coursename'];
+		echo "<div class='actionBtns'>";
+		/*echo "<span><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursename=".$coursename."&coursevers=".$versid."&updateannouncementid=".$announcementid."&uid=".$uid."' onclick='updateannouncementForm();'>Edit</a>";*/
+		echo "<span onclick='updateannouncementForm(".$announcementid.", handleResponse);'>Edit</span>";
+		echo "</span><span><a href='../Shared/announcementService.php?courseid=".$cid."&coursename=".$coursename."&coursevers=".$versid."&deleteannouncementid=".$announcementid."&uid=".$uid."'>&times;</a></span>";
+		echo "</div>";
+	}
 	echo "<div><h3>".ucfirst(strtolower($title))."</h3></div>";
 
 	foreach ($pdo->query('SELECT * FROM vers WHERE cid="'.$cid.'" AND vers="'.$versid.'"') AS $vers){
