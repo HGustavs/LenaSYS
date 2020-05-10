@@ -3749,6 +3749,9 @@ function mousemoveevt(ev) {
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
+        if(isRulersActive) {
+            createRulers();
+        }
     }
     reWrite();
     updateGraphics();
