@@ -952,6 +952,11 @@ function Symbol(kindOfSymbol) {
                 }
             }
         }
+        
+        //handles recursive lines
+        if(this.isRecursiveLine){
+            return this.entityhover(mx, my);
+        }
 
         //If nothing applies, return false
         return false;
