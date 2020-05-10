@@ -6085,11 +6085,11 @@ function createRuler(element, length, origoOffset) {
     element.innerHTML = "";
 
     for(let i = from; i < to; i++) {
-        if(i % 5 === 0) {
+        if(i % 4 === 0) {
             const line = document.createElement("div");
             line.classList.add("ruler-line");
-            if(i % 10 === 0) {
-                if(i % 50 === 0) {
+            if(i % 8 === 0) {
+                if(i % 32 === 0) {
                     line.classList.add("big");
                     line.innerText = i;
                 } else {
