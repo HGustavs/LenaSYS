@@ -5125,6 +5125,8 @@ only screen and (max-device-width: 320px) {
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
 }
 
 .ruler.hidden {
@@ -5135,7 +5137,6 @@ only screen and (max-device-width: 320px) {
   height: 32px;
   flex-direction: row;
   margin-right: var(--canvas-margin);
-  border-top: 1px solid #000000;
   border-right: 1px solid #000000;
 }
 
@@ -5144,7 +5145,6 @@ only screen and (max-device-width: 320px) {
   margin-top: 32px;
   margin-bottom: var(--canvas-margin);
   flex-direction: column;
-  border-left: 1px solid #000000;
   border-bottom: 1px solid #000000;
 }
 
