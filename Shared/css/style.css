@@ -508,10 +508,13 @@ p {
 
 /*End of show all the announcments*/
 /*Start of announcement form*/
+#displayAnnouncements,
+.announcementForm{
+  margin: 20px;
+}
 .announcementForm{
   width: 800px;
-  margin: 20px;
-  border:  1px solid var(--color-logo-background);
+  border:  2px solid #f2f2f2;
   font-family: 'Varela', sans-serif;
 }
 .announcementForm input[type=text],
@@ -596,7 +599,34 @@ p {
   from {transform: scale(0)} 
   to {transform: scale(1)}
 }
-
+/*retrieve announcement*/
+.announcementCard{
+  border: 1px solid #ddd;
+}
+#displayAnnouncements #announcementCards {
+  float: left;
+  width: 50%;
+  padding: 10px;
+}
+.announcementCard:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#displayAnnouncements #btnContainer .btn {
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+#displayAnnouncements #btnContainer .btn:hover {
+  background-color: #ddd;
+}
+#displayAnnouncements #btnContainer .btn.active {
+  background-color: var(--color-logo-background);
+  color: white;
+}
 /*End of announcement box*/
 
 #Sectionlist {

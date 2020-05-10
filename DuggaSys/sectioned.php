@@ -127,7 +127,9 @@
 				include "../Shared/announcementBox.php"; 
 
 				?>
-				<div id="announcementCards"></div>
+				<div id="displayAnnouncements">
+					<div id="announcementCards"></div>
+				</div>
 			</div>
 		</div>
 		

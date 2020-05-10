@@ -1645,6 +1645,7 @@ $(window).load(function () {
   retrieveAnnouncementAuthor();
   retrieveCourseProfile();
   retrieveAnnouncementsCards();
+  displayListAndGrid();
 });
 
 //show the full announcement
@@ -1740,6 +1741,11 @@ function handleResponse(xhttp, updateannouncementid){
   $(".createBtn").attr("name", "updateBtn");
   $("#announcementForm .announcementFormcontainer hr").after('<input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'">');
 
+}
+//announcement card grid and list view
+function displayListAndGrid(){
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button></div><br>');
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
