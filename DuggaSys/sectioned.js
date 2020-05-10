@@ -1601,48 +1601,12 @@ $(window).load(function () {
   });
   $("#announcement").click(function(){
     $("#announcementBoxOverlay").toggle();
-    $('#fullAnnnouncementOverlay').hide();
     if($("#announcementForm").is(":hidden")){
       $("#announcementForm").show();
     }
 
   });
-
-  var rowCount = $('#announcementBox table tr').length;
-  if (rowCount > 9) {
-    $('#announcementBox table tr:gt(8)').hide();
-    $('.showAllAnnouncement').show();
-  }else if(rowCount == 0){
-    $('#announcementBox').append("<p style='color:#775886;'>No announcements created yet</p>");
-  }
-
-  $('.showAllAnnouncement').on('click', function() {
-    $('#announcementBox table tr:gt(8)').toggle();
-    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
-  });
-
-  var adminLoggedin = $("#adminLoggedin").val();
-  if(adminLoggedin == 'yes'){
-    $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create an new announcement</button>');
-    $("#announcementBox table .actionBtn").add();
-    $("#modal").add();
-  }else{
-    $("#announcementBox table .actionBtn").remove();
-    $("#modal").remove();
-  }
-  $("#newAnnouncement").click(function(){
-    $("#modal").toggle();
-    $(window).click(function(e) {
-      if(e.target.id == "modal"){
-        $("#modal").hide();
-      }
-    });
-
-
-  });
-  $(".actionBtn").click(function(){
-    $(".action-content").toggle();
-  });
+ 
   retrieveAnnouncementAuthor();
   retrieveCourseProfile();
   retrieveAnnouncementsCards();
@@ -1709,6 +1673,7 @@ function retrieveAnnouncementsCards(){
       document.getElementById("announcementCards").innerHTML = this.responseText;
       accessAdminAction();
       readLessOrMore();
+      showLessOrMoreAnnouncements();
 
     }
   };
@@ -1818,6 +1783,14 @@ function readLessOrMore(){
         announcementCard[i].style.width = "100%";
       }
     });
+}
+
+function showLessOrMoreAnnouncements(){
+  var announcementCardLength = $(".announcementCard").length;
+  if (announcementCardLength == 0) {
+      $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
+  }
+
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {
