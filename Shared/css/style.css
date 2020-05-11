@@ -2835,12 +2835,10 @@ span.arrow {
 
 .resultTableMini {
   height: 25px;
-  align-items: center;
-  display: flex;
 }
 
 .resultTableMiniLeft {
-  height: 45px;
+  height: 50px;
   align-items: center;
   display: flex;
 }
