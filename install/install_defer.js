@@ -10,6 +10,13 @@ var rightArrow = document.getElementById('rightArrow');
 var submitButton = document.getElementById('submitInput');
 var inputPage = 1;
 var previousInputPage = 0;
+var showHideButton = document.getElementById('showHideInstallation');
+
+if (showHideButton !== null){
+  showHideButton.onclick = function(){
+    toggleInstallationProgress();
+  }
+}
 
 //---------------------------------------------------------------------------------------------------
 // On-click function for the permission-button

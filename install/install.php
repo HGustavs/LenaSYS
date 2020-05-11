@@ -907,13 +907,7 @@
 
 <script>
   postInstallModal.style.display = "block";
-  var showHideButton = document.getElementById('showHideInstallation');
 
-  if (showHideButton !== null){
-    showHideButton.onclick = function(){
-      toggleInstallationProgress();
-    }
-  }
 
   /* Show/Hide installation progress. */
   function toggleInstallationProgress(){
