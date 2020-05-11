@@ -2157,8 +2157,9 @@ button.option {
 
 #MOTDbutton {
  top: -2px;
- position:absolute;
- right:20px;
+ position: absolute;
+ right: 20px;
+ left: auto;
 }
 
 @media only screen and (max-width: 420px) {

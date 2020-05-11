@@ -1071,7 +1071,7 @@ function showMOTD(){
     }else{
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
-      document.getElementById("FABStatic2").style.top = "616px";
+      document.getElementById("FABStatic2").style.top = "auto";
     }
   }
 }
