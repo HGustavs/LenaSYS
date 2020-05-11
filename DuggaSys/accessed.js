@@ -204,7 +204,7 @@ function verifyUserInputForm(input) {
  * For information regarding Swedish personal identity numbers visit:
  * https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
  ****************************************************************************************************/
-function checkSsnErrors(ssn)
+function checkSsnError(ssn)
 {
 	const length = ssn.length;
 	const delimiter = length-5;	// The expected position of the '-' in the ssn
@@ -212,11 +212,12 @@ function checkSsnErrors(ssn)
 	switch(length) {
 		case 11: case 13:
 			const formatTest = /\d{6,8}-\d{4}/;	// Expected format
-			if(formatTest.test(ssn))
+			if(formatTest.test(ssn)) {
 				break;
+			}
 			
 		default:
-			return 'Incorrect SSN format. Should be ######-#### or ########-####';
+			return 'Incorrect SSN format. Should be ######-#### or ########-####.';
 	}
 
 	const dd = ssn.substring(delimiter-2, delimiter);
@@ -226,15 +227,21 @@ function checkSsnErrors(ssn)
 	const controlDigit = ssn.substring(length-1);
 	const ssnDate = new Date(yyyy + '-' + mm + '-' + dd);
 
-	if(ssnDate.getTime() > Date.now())	// Make sure date of SSN is not in the future
+	if(ssnDate.getTime() > Date.now()) {			// Make sure date of SSN is not in the future
 		return 'Incorrect date in SSN. The future is not here yet';
+	}
+
+	if(isNaN(ssnDate)								// Make sure date is valid (i.e. not 87th April)
+		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
+		return 'Invalid date in SSN.';
+	}
 
 	return null;	// The provided SSN is correct!
 }
 
-const testSSN = '200712-1234';
+const testSSN = '970229-1234';
 console.log(testSSN);
-console.log(checkSsnErrors(testSSN));
+console.log(checkSsnError(testSSN));
 
 var inputVerified;
 
