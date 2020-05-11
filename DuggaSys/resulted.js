@@ -793,9 +793,11 @@ function renderCell(col, celldata, cellid) {
 			str = "<div class='resultTableCell resultTableMiniLeft'>";
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
+			str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 			str += "</div>";
 			str += "</div>";
 			return str;
+			
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div class='resultTableCell resultTableMini ";
@@ -804,9 +806,10 @@ function renderCell(col, celldata, cellid) {
 			}
 			if (celldata.grade > 1) {
 				str += "dugga-pass";
-			} else if (celldata.submittedts <= celldata.deadlinets) {
+			} else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {
+						
 				str += "dugga-pending";
-			} else if (celldata.kind != 4 && celldata.submittedts > celldata.deadlinets) {
+			} else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 				str += "dugga-pending-late-submission";
 			} else if (celldata.grade === 1) {
 				str += "dugga-fail";
