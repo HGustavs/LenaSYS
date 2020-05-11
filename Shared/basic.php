@@ -377,7 +377,8 @@ abstract class EventTypes {
     const ResetPW = 20;
     const DuggaFileupload = 21;
 	const DownloadAllCourseVers = 22;
-	const EditFile = 23;  
+	const EditFile = 23; 
+    const SubmitDugga = 24;
 }
 
 //------------------------------------------------------------------------------------------------
