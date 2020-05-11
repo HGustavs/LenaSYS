@@ -261,11 +261,25 @@
 <?php 
   # Installer
   if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
-    $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
+    $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     ob_end_clean(); // Remove form and start installation.
 
     //---------------------------------------------------------------------------------------------------
-    // Javascripts for warning pop-up
+    // Header - Contains title, progress bar and restart-button.
+    //---------------------------------------------------------------------------------------------------
+    echo "
+      <div id='header'>
+        <h1>Installation</h1>
+        <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
+          <rect id='progressRect' width='0' height='20px' />
+        </svg>
+        <span id='percentageText'></span>
+        <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
+      </div>
+    ";
+
+    //---------------------------------------------------------------------------------------------------
+    // Modal showing after installation is done
     //---------------------------------------------------------------------------------------------------
     echo "
       <div id='warning' class='modal'>
@@ -311,11 +325,12 @@
     //---------------------------------------------------------------------------------------------------
     // START of installation progress
     //---------------------------------------------------------------------------------------------------
-    $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     $totalSteps = 1; // Variable to hold the total steps to complete.
     $completedSteps = 0; // Variable to hold the current completed steps.
 
-    /* The following if-block will decide how many steps there are to complete installation. */
+    //---------------------------------------------------------------------------------------------------
+    // The following if-block will decide how many steps there are to complete installation.
+    //---------------------------------------------------------------------------------------------------
     if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
       $totalSteps += 4;
       if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
@@ -338,20 +353,6 @@
         }
       }
     }
-
-    //---------------------------------------------------------------------------------------------------
-    // Header - Contains title, progress bar and restart-button.
-    //---------------------------------------------------------------------------------------------------
-    echo "
-      <div id='header'>
-        <h1>Installation</h1>
-        <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
-          <rect id='progressRect' width='0' height='20px' />
-        </svg>
-        <span id='percentageText'></span>
-        <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
-      </div>
-    ";
 
     //---------------------------------------------------------------------------------------------------
     // Javascripts to calculate length of progressRect. This will show the current progress in progressBar
@@ -406,31 +407,27 @@
     // All the following code of the long if-statement does the install
     //---------------------------------------------------------------------------------------------------
     echo "<div id='installationProgressWrap'>";
-      # Test permissions on directory before starting installation.
-      if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0060)) {
-        $errors++;
-        exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-          <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+      $isPermissionsSat = isPermissionsSat($putFileHere);
+      $isAllCredentialsFilled = isAllCredentialsFilled();
+
+      //---------------------------------------------------------------------------------------------------
+      // Check permissions.
+      //---------------------------------------------------------------------------------------------------
+      if($isPermissionsSat) {
+        echo "<span id='successText' />Permissions on {$putFileHere} sat correctly.</span><br>";
       } else {
-        if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
-          $errors++;
-          exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-            <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-        } else {
-          echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
-        }
+        exit ("<span id='failText' />Permissions on {$putFileHere} not sat correctly, please restart the installation.</span><br>
+          <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
       }
       $completedSteps++;
       echo "<script>updateProgressBar({$completedSteps});</script>";
 
-      # Check if all fields are filled.
-      $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
-      foreach ($fields AS $fieldname) { //Loop trough each field
-        if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
-          $errors++;
-          exit ("<span id='failText' />Please fill all fields.</span><br>
-            <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
-        }
+      //---------------------------------------------------------------------------------------------------
+      // Check so all fields on first page are sat.
+      //---------------------------------------------------------------------------------------------------
+      if(!$isAllCredentialsFilled) {
+        exit ("<span id='failText' />Please fill all fields.</span><br>
+        <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
       }
 
       # Only create DB if box is ticked.
@@ -441,6 +438,8 @@
         $serverName = $_POST["hostname"];
         $rootUser = $_POST["mysqlRoot"];
         $rootPwd = $_POST["rootPwd"];
+
+        $connection = null;
 
         # Connect to database with root access.
         try {
@@ -459,34 +458,19 @@
         flush();
         ob_flush();
 
-        # If checked, write over existing database and user
+
+        # If checked, delete user
         if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
-          # User
-          try {
-          $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
-          echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
-          } catch (PDOException $e) {
-          $errors++;
-          echo "<span id='failText' />User with name {$username}
-          does not already exist. Will only make a new one (not write over).</span><br>";
-          }
+          deleteUser($connection, $username);
           $completedSteps++;
           echo "<script>updateProgressBar({$completedSteps});</script>";
           flush();
           ob_flush();
         }
 
-        # If checked something something
+        # If checked, delete database
         if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
-          # Database
-          try {
-            $connection->query("DROP DATABASE {$databaseName}");
-            echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
-          } catch (PDOException $e) {
-            $errors++;
-            echo "<span id='failText' />Database with name {$databaseName}
-            does not already exist. Will only make a new one (not write over).</span><br>";
-          }
+          deleteDatabase($connection, $databaseName);
           $completedSteps++;
           echo "<script>updateProgressBar({$completedSteps});</script>";
           flush();
@@ -650,7 +634,6 @@
     echo "<div id='doThisWrapper'>";
     echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
 
-
     //---------------------------------------------------------------------------------------------------
     // Create/update coursesyspw.php , if it fails output instructions.
     //---------------------------------------------------------------------------------------------------
@@ -712,6 +695,69 @@
     echo "</form>";
     echo "</div>";
   } 
+
+  //---------------------------------------------------------------------------------------------------
+  // Function that checks if all credentials are filled out (on the first page).
+  //---------------------------------------------------------------------------------------------------
+  function isAllCredentialsFilled(){
+    $isAllCredentialsFilled = true;
+    $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
+    foreach ($fields AS $fieldname) {
+      if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
+        $isAllCredentialsFilled = false;
+        $errors++;
+      }
+    }
+    return $isAllCredentialsFilled;
+  }
+
+  //---------------------------------------------------------------------------------------------------
+  // Function that checks if permissions (chown/chgrp) are sat.
+  //---------------------------------------------------------------------------------------------------
+  function isPermissionsSat($crntFilePath){
+    $permissionsSat = false;
+    if(!mkdir("{$crntFilePath}/testPermissionsForInstallationToStartDir", 0060)) {
+      $errors++;
+      $permissionsSat = false;
+    }
+    else {
+      if (!rmdir("{$crntFilePath}/testPermissionsForInstallationToStartDir")) {
+        $errors++;
+        $permissionsSat = false;
+      } else {
+        $permissionsSat = true;
+      }
+    }
+    return $permissionsSat;
+  }
+
+  //---------------------------------------------------------------------------------------------------
+  // Function that deletes a user from database
+  //---------------------------------------------------------------------------------------------------
+  function deleteUser($connection, $username){
+    try {
+      $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
+      echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
+    } catch (PDOException $e) {
+    $errors++;
+    echo "<span id='failText' />User with name {$username}
+    does not already exist. Will only make a new one (not write over).</span><br>";
+    }
+  } 
+
+  //---------------------------------------------------------------------------------------------------
+  // Function that deletes a user from database
+  //---------------------------------------------------------------------------------------------------
+  function deleteDatabase($connection, $databaseName){
+    try {
+      $connection->query("DROP DATABASE {$databaseName}");
+      echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
+    } catch (PDOException $e) {
+      $errors++;
+      echo "<span id='failText' />Database with name {$databaseName}
+      does not already exist. Will only make a new one (not write over).</span><br>";
+    }
+  }
 
   //---------------------------------------------------------------------------------------------------
   // Function that returns the path to the installation.
