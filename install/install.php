@@ -7,7 +7,7 @@
   <script src="install_defer.js" defer></script>
 </head>
 <body>
-
+<!-- Config Section -->
 <?php
   // Saving away old execution time setting and setting new to 120 (default is 30).
   // this is done in order to avoid a php timeout, especially on windows where Database
@@ -94,26 +94,26 @@
 
 <!-- Modal prompting the user to set folder-permissions -->
 <div id='warning' class='modal'>
-      <div class='modal-content'>
-        <span title='Close pop-up' class='close'>&times;</span>
-          <span id='dialogText'></span>
-            <script>
-              var owner = <?php echo json_encode($username); ?>;
-              var filePath = <?php echo json_encode($putFileHere); ?>;
-              var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
-              var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
-              var modal = document.getElementById('warning'); // Get the modal
-              var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
+  <div class='modal-content'>
+    <span title='Close pop-up' class='close'>&times;</span>
+      <span id='dialogText'></span>
+        <script>
+          var owner = <?php echo json_encode($username); ?>;
+          var filePath = <?php echo json_encode($putFileHere); ?>;
+          var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
+          var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
+          var modal = document.getElementById('warning'); // Get the modal
+          var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
 
-              setPermissionModalText(owner, filePath, operatingSystem);
+          setPermissionModalText(owner, filePath, operatingSystem);
 
-              if (operatingSystem != 'Windows' && isPermissionsSat != true){
-                modal.style.display = 'block';
-              } else {
-                modal.style.display = 'none';
-              }
-            </script>
-      </div>
+          if (operatingSystem != 'Windows' && isPermissionsSat != true){
+            modal.style.display = 'block';
+          } else {
+            modal.style.display = 'none';
+          }
+        </script>
+  </div>
 </div> 
 
 <div id="header">
@@ -263,7 +263,6 @@
   <div id="inputFooter"></div>
 </form>
 
-
 <!-- Install Section -->
 <?php 
   # Installer
@@ -368,12 +367,13 @@
       };
 
       var totalSteps = {$totalSteps};
-      var completedStepsLatest = 0; // This variable is used on window resize.
+      
 
       function updateProgressBar(completedSteps){
         var totalWidth = document.getElementById(\"progressBar\").clientWidth;
         var stepWidth = totalWidth / totalSteps;
         var completedWidth;
+        var completedStepsLatest = 0; // This variable is used on window resize.
 
         /* if window was resized (completedsteps = -1) take latest copleted steps.
         * Else update to new completed step.
@@ -886,5 +886,4 @@
     return true;
   }
 ?>
-
 </body>

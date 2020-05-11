@@ -239,4 +239,3 @@ function createDBchange(checkbox) {
       $("#DBboxes").hide("slide", {direction: "left" }, 500);
   }
 }
-
