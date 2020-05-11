@@ -989,7 +989,12 @@ function copySymbol(symbol) {
                     const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
                     if(typeof connectedAttribute !== "undefined") {
                         const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
+                        //If one of the connected objects is a attribute, create no second point
                         if(isAttributeSelected && connectedAttribute.connectorTop.find(object => object.from === symbol[key])) {
+                            newPointIndex = null;
+                        }
+                        //If both connected objects are attributes, create no points
+                        else if(symbol.getConnectedObjects()[0].symbolkind == symbolKind.erAttribute && symbol.getConnectedObjects()[1].symbolkind == symbolKind.erAttribute){
                             newPointIndex = null;
                         }
                     }
