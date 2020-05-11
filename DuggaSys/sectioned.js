@@ -1824,6 +1824,8 @@ function showLessOrMoreAnnouncements(){
   var announcementCardLength = $(".announcementCard").length;
   if (announcementCardLength == 0) {
       $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
+  }else if(announcementCardLength > 6){
+      $(".announcementCard:gt(5)").hide();
   }
 
 }
