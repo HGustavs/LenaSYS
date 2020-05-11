@@ -85,6 +85,7 @@
   var owner = <?php echo json_encode($username); ?>;
   var filePath = <?php echo json_encode($putFileHere); ?>;
   var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
+  var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
   var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
   var modal = document.getElementById('warning'); // Get the modal
 
@@ -100,7 +101,7 @@
     </div>`;
   }
 
-  if (operatingSystem != "Windows"){
+  if (operatingSystem != "Windows" && isPermissionsSat != true){
     modal.style.display = "block";
   }
 </script>
