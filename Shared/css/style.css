@@ -371,7 +371,7 @@ p {
 }
 /*Start of announcement form*/
 #displayAnnouncements{
-  margin: 20px 0 0 0;
+  margin: 20px 0 20px 0;
 }
 .announcementForm{
   width: 800px;
@@ -546,6 +546,52 @@ p {
   background-color: var(--color-logo-background);
   color: white;
 }
+/*Show all the announcements*/
+.showAllAnnouncement{
+  padding: 10px 15px 10px 15px;
+  font-family: 'Varela', sans-serif;
+  font-size: 16px;
+  border: none;
+  color: #fff;
+  background-color: var(--color-logo-background);
+}
+.hvr-icon-forward {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+}
+.hvr-icon-forward .hvr-icon {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-icon{
+  margin-left: 5px;
+}
+.hvr-icon-forward:hover .hvr-icon, .hvr-icon-forward:focus .hvr-icon, .hvr-icon-forward:active .hvr-icon {
+  -webkit-transform: translateX(4px);
+  transform: translateX(4px);
+
+}
+.showAllAnnouncement:hover{
+  cursor: pointer;
+}
+#announcementBox button a{
+    text-decoration: none;
+    color: #000;
+}
+
+/*End of show all the announcments*/
+
 /*End of announcement box*/
 
 #Sectionlist {
