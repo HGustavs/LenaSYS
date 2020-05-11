@@ -74,6 +74,9 @@
             <option value=\'0..*\'>0..*</option>
             <option value=\'1..*\'>1..*</option>
         ';
+
+        //Get all .txt files in folder templates/examplediagrams. Should be all example diagram files.
+        $exampleDiagramFilePaths = glob('templates/example-diagram/*.txt');
     ?>
 
     <div id="diagram-header">
