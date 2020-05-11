@@ -2294,8 +2294,8 @@ div.submit-button:disabled {
   padding: 5px 0;
   position: absolute;
   z-index: 5;
-  top: -24px;
-  left: -18px;
+  top: -4px;
+  left: -100px;
   font-size: 12px;
   line-height: 14px;
 }
