@@ -2,7 +2,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Varela&display=swap" rel="stylesheet">
 
 <form id="announcementForm" class="announcementForm animate" action="../Shared/announcementService.php" method="post">
-  <span onclick="document.getElementById('announcementForm').style.display='none'" class="closeAnnouncementForm" title="Close Modal">&times;</span>
+  <span onclick="displayAnnouncementForm();" class="closeAnnouncementForm" title="Close Modal">&times;</span>
   <div class="announcementFormcontainer">
     <h1 class="formTitle">Create announcement</h1>
     <p class="formSubtitle">Please fill in this form to create an announcement.</p>

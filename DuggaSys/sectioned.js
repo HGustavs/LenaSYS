@@ -1600,6 +1600,7 @@ $(window).load(function () {
     $("#testbutton").css("background-color", "#614875");
   });
   $("#announcement").click(function(){
+    sessionStorage.removeItem("closeUpdateForm");
     $("#announcementBoxOverlay").toggle();
     if($("#announcementForm").is(":hidden")){
       $("#announcementForm").show();
@@ -1611,6 +1612,7 @@ $(window).load(function () {
   retrieveCourseProfile();
   retrieveAnnouncementsCards();
   displayListAndGrid();
+  displayAnnouncementBoxOverlay();
 });
 
 
@@ -1753,6 +1755,24 @@ function accessAdminAction(){
   }else{
     $("#announcementForm").remove();
     $(".actionBtns").remove();
+  }
+}
+function displayAnnouncementForm(reload){
+  if ($("#updateannouncementid").length > 0) {
+    location.reload();
+    sessionStorage.setItem('closeUpdateForm', true);
+
+  }else{
+    $("#announcementForm").hide();
+    sessionStorage.removeItem("closeUpdateForm");
+
+  }
+
+}
+function displayAnnouncementBoxOverlay(){
+  var closeUpdateForm = sessionStorage.getItem("closeUpdateForm");
+  if(closeUpdateForm == 'true'){
+    $("#announcementBoxOverlay").show();
   }
 }
 //read less or more announcement card
