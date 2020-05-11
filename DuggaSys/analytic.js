@@ -97,12 +97,12 @@ function loadGeneralStats() {
 		// Disk usage
 		var chartData = [];
 		chartData.push({
-			label: 'Memory in use ('+data.disk.inUse+')',
+			label: 'Memory in use ('+data.disk.inUse+') ('+data.disk.inUsePercent+')',
 			value: data.disk.inUsePercent
 		});
 
 		chartData.push({
-			label: 'Memory Available ('+data.disk.memFree+')',
+			label: 'Memory Available ('+data.disk.memFree+') ('+data.disk.memFreePercent+')',
 			value: data.disk.memFreePercent
 		});
 		
