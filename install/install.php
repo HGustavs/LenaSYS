@@ -7,13 +7,7 @@
   <script src="install_defer.js" defer></script>
 </head>
 <body>
-<!-- Modal used for the permission-popup -->
-<div id='warning' class='modal'>
-      <div class='modal-content'>
-        <span title='Close pop-up' class='close'>&times;</span>
-          <span id='dialogText'></span>
-      </div>
-</div> 
+
 <?php
   // Saving away old execution time setting and setting new to 120 (default is 30).
   // this is done in order to avoid a php timeout, especially on windows where Database
@@ -89,42 +83,38 @@
     return $username;
   }
 
-  //---------------------------------------------------------------------------------------------------
-  // systemVariables: Sets the system variables, path, operatingSystem and username (these are used all over the code right now)
-  //---------------------------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------------------------------------
+  // systemVariables: Sets the system variables, path, operatingSystem, username and check if permissions are sat.
+  //-----------------------------------------------------------------------------------------------------------------
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
   $operatingSystem = PHP_OS_FAMILY;
   $username = getUsername($putFileHere);
   $isPermissionsSat = isPermissionsSat($putFileHere);
 ?>
 
-<!-- Script for setting the permission-modal -->
-<script>
-  var owner = <?php echo json_encode($username); ?>;
-  var filePath = <?php echo json_encode($putFileHere); ?>;
-  var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
-  var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
-  var modal = document.getElementById('warning'); // Get the modal
-  var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
+<!-- Modal prompting the user to set folder-permissions -->
+<div id='warning' class='modal'>
+      <div class='modal-content'>
+        <span title='Close pop-up' class='close'>&times;</span>
+          <span id='dialogText'></span>
+            <script>
+              var owner = <?php echo json_encode($username); ?>;
+              var filePath = <?php echo json_encode($putFileHere); ?>;
+              var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
+              var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
+              var modal = document.getElementById('warning'); // Get the modal
+              var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
 
-  setPermissionModalText(owner, filePath, operatingSystem);
+              setPermissionModalText(owner, filePath, operatingSystem);
 
-  //---------------------------------------------------------------------------------------------------
-  // setPermissionModalText, function to set the text of the permission-modal
-  //---------------------------------------------------------------------------------------------------
-  function setPermissionModalText(fOwner, fFilePath, fOperatingSystem){
-    modalDialogText.innerHTML=	
-    `<div>
-      ${getPermissionModalText(fOwner, fFilePath, fOperatingSystem)}
-    </div>`;
-  }
-
-  if (operatingSystem != "Windows" && isPermissionsSat != true){
-    modal.style.display = "block";
-  } else {
-    modal.style.display = "none";
-  }
-</script>
+              if (operatingSystem != 'Windows' && isPermissionsSat != true){
+                modal.style.display = 'block';
+              } else {
+                modal.style.display = 'none';
+              }
+            </script>
+      </div>
+</div> 
 
 <div id="header">
   <h1>LenaSYS Installer</h1>

@@ -2,7 +2,16 @@
 // JavaScript entry file. Javascript-stuff that are needed from the start goes here.
 //---------------------------------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------------------------------
+// setPermissionModalText, function to set the text of the permission-modal
+//---------------------------------------------------------------------------------------------------
 
+function setPermissionModalText(fOwner, fFilePath, fOperatingSystem){
+  modalDialogText.innerHTML=	
+  `<div>
+    ${getPermissionModalText(fOwner, fFilePath, fOperatingSystem)}
+  </div>`;
+}
 
 //---------------------------------------------------------------------------------------------------
 // getPermissionModalText, f for functionVariable
