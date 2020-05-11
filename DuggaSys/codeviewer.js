@@ -186,7 +186,7 @@ function returned(data)
 			// Setting boxmenuheight to 0, possible cause to example malfunction?
 			if ($("#" + contentid + "menu").height() == null) {
 				boxmenuheight = 0;
-			} else {
+			}else {
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
 			$("#" + contentid).css("margin-top", boxmenuheight - 1);
@@ -203,12 +203,10 @@ function returned(data)
 			var contentHeight = 15 * (lineno / 2);
 			if(contentHeight < $("#box" + boxid).height()){
 				$("#box" + boxid).css("overflow", "hidden");
-			}
-			else{
+			}else{
 				$("#box" + boxid).css("overflow", "auto");
 			}
-
-		} else if (boxtype === "DOCUMENT") {
+		}else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
 			var boxtypeDescbox = document.getElementById(contentid);
 			boxtypeDescbox.classList.remove("codebox");
@@ -258,14 +256,11 @@ function returned(data)
 			
 			if(document.querySelector('#box' + boxid).firstChild.childElementCount * 15 < $('#box' + boxid).height()){
 				$('#box' + boxid).css("overflow", "hidden");
-				
-			}
-			else{
+			}else{
 				$('#box' + boxid).css("overflow", "auto");
 			}
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
-			
 			
 			var boxtypeframebox = document.getElementById(contentid);
 			boxtypeframebox.classList.remove("codebox", "descbox");
@@ -3090,10 +3085,8 @@ function resizeBoxes(parent, templateId) {
 		});
 
 	} else if (templateId == 6) {
-
 		getLocalStorageProperties(templateId, boxValArray);
 		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
-
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -3227,7 +3220,6 @@ function resizeBoxes(parent, templateId) {
 	} else if (templateId == 9) {
 		getLocalStorageProperties(templateId, boxValArray);
 
-
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
@@ -3255,7 +3247,6 @@ function resizeBoxes(parent, templateId) {
 				$(boxValArray['box3']['id']).css("left", " ");
 				$(boxValArray['box4']['id']).css("left", " ");
 				$(boxValArray['box5']['id']).css("left", " ");
-				
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3501,7 +3492,6 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
 	hideShowScrollbars(boxValArray, boxNumBase);
 	hideShowScrollbars(boxValArray, boxNumSame);
-	
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
@@ -3610,7 +3600,7 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 		if(document.querySelector('#box4').className == 'box codebox'){
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
-	} else {
+	}else {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
@@ -3679,7 +3669,7 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 		if(document.querySelector('#box4').className == 'box codebox'){
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
-	} else {
+	}else {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
@@ -3728,7 +3718,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-	} else {
+	}else {
 		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
@@ -3767,8 +3757,7 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%",);
-	}
-	else {
+	}else {
 		$("#box4wrapper").height(atry2 + "%");
 	}
 
@@ -3841,7 +3830,7 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 		if(document.querySelector('#box5').className == 'box codebox'){
 			document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
 		}
-	} else {
+	}else {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxOne, basePer);
 		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
@@ -3895,13 +3884,13 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 		boxFourHeightPer = 10;
 		remainHeightPer = 30;
 
-	} else if (boxTwoHeightPer <= 10) {
+	}else if (boxTwoHeightPer <= 10) {
 		boxTwoHeightPer = 10;
 
-	} else if (boxThreeHeightPer <= 10) {
+	}else if (boxThreeHeightPer <= 10) {
 		boxThreeHeightPer = 10;
 
-	} else if (boxFourHeightPer <= 10) {
+	}else if (boxFourHeightPer <= 10) {
 		boxFourHeightPer = 10;
 	}
 
@@ -3979,7 +3968,7 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");
 
 		//Check if box three is at or below minimum height.
-	} else if (boxThreeHeightPer <= 10) {
+	}else if (boxThreeHeightPer <= 10) {
 		boxThreeHeightPer = 10;
 
 		//Set height and top on the boxes when the lower two boxes are at the minimum height.
@@ -3994,7 +3983,7 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
 
-	} else {
+	}else {
 
 		//Set height and top on the boxes
 		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
@@ -4055,7 +4044,7 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");
 
-	} else {
+	}else {
 
 		//Set height and top on the boxes
 		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
