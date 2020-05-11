@@ -101,6 +101,7 @@ if (checklogin() && $hasAccess) {
 			}
 			$result = $query0->fetch(PDO::FETCH_OBJ);
 			$counted = $result->counted;
+			$succeeded = true;
 			if($counted == 0){
 				$querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
 				$query = $pdo->prepare($querystring);
@@ -108,6 +109,7 @@ if (checklogin() && $hasAccess) {
 				if (!$query->execute()) {
 					$error = $query->errorInfo();
 					$debug = "Error updating file list " . $error[2];
+					$succeeded = false;
 				}
 
 				chdir("../");
