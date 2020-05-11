@@ -199,26 +199,6 @@ $lfiles = array();
 $gfiles = array();
 $access = False;
 
-if (strcmp($opt, "CHECK-IF-IN-USE") === 0) {
-/*
-	$querystring = 'SELECT COUNT (*) counted FROM fileLink, box WHERE box.filename = filelink.filename AND filelink.kind = 2 AND filelink.fileid =:fid ;';
-	//$querystring = 'SELECT * FROM filelink LIMIT 2';
-    $query = $pdo->prepare($querystring);
-    $query->bindParam(':fid', getOP('fid'));
-    if (!$query->execute()) {
-        $error = $query->errorInfo();
-        $debug = "Error updating file list " . $error[2];
-    }
-	foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-		$entry = array(
-			'timesInUse' => json_encode($row['counted']),
-			//'isInUse' => $entry,
-		);
-		array_push($entries, $entry);
-	}
-	*/
-}
-
 if (checklogin() && $hasAccess) {
     $query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
     $query->bindParam(':cid', $cid);

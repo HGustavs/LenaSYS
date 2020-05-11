@@ -734,9 +734,6 @@ function deleteFile(fileid, filename, filekind) {
         AJAXService("DELFILE", tempData
         , "FILE");
     }
-    /*Reloads window when deleteFile has been called*/
-    myTable.renderTable();
-    //window.location.reload(true);
 }
 
 function createQuickItem() {
