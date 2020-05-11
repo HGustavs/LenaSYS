@@ -198,6 +198,21 @@ function verifyUserInputForm(input) {
 	return true;
 }
 
+/******************************************************************************
+ * checkSsnErrors(ssn)
+ * Returns null if there are NO errors, otherwise a descripitve error message
+ *****************************************************************************/
+function checkSsnErrors(ssn)
+{
+	const length = ssn.length;
+	const delimiter = length-5;		// The expected position of the '-' in the ssn
+
+	return null;	// The provided ssn is correct
+}
+
+console.log('851226-5912');
+console.log(checkSsnErrors('851226-5912'));
+
 var inputVerified;
 
 function addClass() {
