@@ -6004,7 +6004,7 @@ function getcorrectlayer(){
         let fixID = getLayer.replace('_Active','');
         return fixID
     }
-    return "Layer_1"
+        return "Layer_1"
 }
 
 function deleteLayerView(){
