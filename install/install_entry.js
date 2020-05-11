@@ -13,7 +13,7 @@ function getPermissionModalText(fOwner, fFilePath, fOperatingSystem){
   Current Owner: ${fOwner}<br>
   Current OperatingSystem: ${fOperatingSystem}<br><br>
   To do this run the command: <br> ${setSecondPermissionText(fOperatingSystem, fFilePath)}\<br><br>
-  <input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
+  <input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>
   <i>I promise I have done this.</i>`
 
   return permissionModalText;
