@@ -4354,9 +4354,6 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
-        if(ev.button == rightMouseClick && figureType == "Free" && uimode != "normal"){
-            endFreeDraw();
-        }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
@@ -4448,8 +4445,11 @@ function mouseupevt(ev) {
 
         if(figureType == "Free") {
             figureFreeDraw();
+            if(ev.button == rightMouseClick && uimode != "normal"){
+                endFreeDraw();
+            }
             return;
-        }
+        }      
     }
     // Code for creating a new class
     if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
