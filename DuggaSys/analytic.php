@@ -55,17 +55,20 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 
 	$noup="NONE";
 	$loginvar="ANALYTIC";
-	include '../Shared/navheader.php';
 	setcookie("loginvar", $loginvar);
+	include '../Shared/navheader.php';
 	
 	// Show analytics if user is superuser.
 	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
 ?>
+	<div class="header">
+		<h1 id="pageTitle"></h1>
+	</div>
+
 	<!-- content START -->
 	<div id="content">
 		<div id="analytic-info"></div>
-		<div id="canvas-area">
-		</div>
+		<div id="canvas-area"></div>
 	</div>
 	<!-- content END -->
 	

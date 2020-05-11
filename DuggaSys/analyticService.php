@@ -59,7 +59,16 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
                 break;
             case 'codeviewerPercentage':
                 codeviewerPercentage();
-                break;
+				break;
+			case 'sectionedInformation':
+				sectionedInformation();
+				break;
+			case 'courseedInformation':
+				courseedInformation();
+				break;
+			case 'userLogInformation':
+				userLogInformation();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -101,14 +110,27 @@ function generalStats() {
 	$generalStats['stats']['numOnline'] = count($activeUsers);
 
 	// Disk space calculation
-	$total = disk_total_space(".");
-	$current = disk_free_space(".");
-	$totalFreePercentage = ($current - 0) * 100 / ($total - $current);
-	$totalInUsePercentage = ($totalFreePercentage-100) * -1;
-	$generalStats['disk']['free'] = convertBytesToHumanreadable(disk_free_space("."));
-	$generalStats['disk']['freePercent'] = $totalFreePercentage;
-	$generalStats['disk']['total'] = convertBytesToHumanreadable(disk_total_space("."));
-	$generalStats['disk']['totalPercent'] = $totalInUsePercentage;
+	$memInUse = disk_total_space(".") - disk_free_space(".");
+	$memFree = disk_free_space(".");
+
+	$minMem = min($memInUse, $memFree);
+	$maxMem = max($memInUse, $memFree);
+	
+	$inUsePercent = (1 - $minMem / $maxMem) * 100;
+
+	$memFreePercent = 100 - $inUsePercent;
+
+	if($memInUse > $memFree) {
+		$generalStats['disk']['inUsePercent'] = max($memFreePercent, $inUsePercent);
+		$generalStats['disk']['memFreePercent'] = min($memFreePercent, $inUsePercent);
+	} else {
+		$generalStats['disk']['inUsePercent'] = min($memFreePercent, $inUsePercent);
+		$generalStats['disk']['memFreePercent'] = max($memFreePercent, $inUsePercent);
+	}
+
+	$generalStats['disk']['inUse'] = convertBytesToHumanreadable($memInUse);
+	$generalStats['disk']['memFree'] = convertBytesToHumanreadable($memFree);
+	$generalStats['disk']['memTotal'] = convertBytesToHumanreadable(disk_total_space("."));
 
 	//If Linux or Windows, Mac OSX does not have any functions that can properly return this data.
 	if (!stristr(PHP_OS, "Darwin")) {
@@ -367,8 +389,11 @@ function serviceCrashes(){
 //------------------------------------------------------------------------------------------------
 function duggaInformation(){
     $result = $GLOBALS['log_db']->query('
-        SELECT
-            COUNT(*) AS pageLoads,
+		SELECT
+			cid,
+			uid,
+			username,
+			quizid,
             timestamp AS timestamp
         FROM duggaLoadLogEntries
         ORDER BY timestamp;
@@ -382,8 +407,11 @@ function duggaInformation(){
  
 function codeviewerInformation(){
     $result = $GLOBALS['log_db']->query('
-        SELECT
-            COUNT(*) AS pageLoads,
+		SELECT
+			courseid AS cid,
+			uid,
+			username,
+			exampleid,
             timestamp AS timestamp
         FROM exampleLoadLogEntries
         ORDER BY timestamp;
@@ -398,7 +426,8 @@ function codeviewerInformation(){
 function duggaPercentage(){
     $result = $GLOBALS['log_db']->query('
         SELECT
-            cid AS courseid,
+			cid AS courseid,
+			COUNT(*) AS pageLoads,
             COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
         FROM duggaLoadLogEntries
         GROUP BY courseid
@@ -414,11 +443,66 @@ function duggaPercentage(){
 function codeviewerPercentage(){
     $result = $GLOBALS['log_db']->query('
         SELECT
-            courseid,
+			courseid,
+			COUNT(*) AS pageLoads,
             COUNT(*) * 100.0 / (SELECT COUNT(*) FROM exampleLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
         FROM exampleLoadLogEntries
         GROUP BY courseid
         ORDER BY percentage DESC;
     ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves sectioned log information      
+//------------------------------------------------------------------------------------------------
+ 
+function sectionedInformation(){
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   userid AS uid,
+		   username,
+		   refer,
+		   timestamp 
+	   FROM userHistory
+	   WHERE refer LIKE "%sectioned%"
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves courseed log information      
+//------------------------------------------------------------------------------------------------
+ 
+function courseedInformation(){
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   userid AS uid,
+		   username,
+		   refer,
+		   timestamp 
+	   FROM userHistory
+	   WHERE refer LIKE "%courseed%"
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves userLog information      
+//------------------------------------------------------------------------------------------------
+ 
+function userLogInformation(){
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   uid,
+		   username,
+		   eventType,
+		   description,
+		   timestamp 
+	   FROM userLogEntries
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($result);
 }

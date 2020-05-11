@@ -56,7 +56,8 @@ function loadAnalytics(q, cb) {
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
 
-		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>General statistics about the system.</p>");
+		$('#pageTitle').text("General statistics");
+		$('#analytic-info').append("<p class='analyticsDesc'>General statistics about the system.</p>");
 		// Login fails
 		var tableData = [["Stat", "Value"]];
 		var loginFails = data['stats']['loginFails'];
@@ -77,17 +78,40 @@ function loadGeneralStats() {
 
 		$('#analytic-info').append(renderTable(tableData));
 		
+		// Active users
+		$('#analytic-info').append("<p class='analyticsDesc'>Active users the last 15 minutes</p>");
+		var tableData = [["User", "Page", "Last seen"]];
+		var activeUsers = data['stats']['activeUsers'];
+		for (var stat in activeUsers) {
+			if (activeUsers.hasOwnProperty(stat)) {
+				var date = new Date(activeUsers[stat].time + ' GMT');
+				tableData.push([
+					activeUsers[stat].username,
+					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
+					timeSince(date)
+				]);
+			}
+		}
+
+		$('#analytic-info').append(renderTable(tableData));
+
 		// Disk usage
 		var chartData = [];
 		chartData.push({
-			label: 'Total Memory ('+data.disk.total+')',
-			value: data.disk.totalPercent
+			label: 'Memory in use ('+data.disk.inUse+')',
+			value: data.disk.inUsePercent
 		});
 
 		chartData.push({
-			label: 'Free Memory ('+data.disk.free+')',
-			value: data.disk.freePercent
+			label: 'Memory Available ('+data.disk.memFree+')',
+			value: data.disk.memFreePercent
 		});
+		
+		chartData.push({
+			label: 'Total Memory ('+data.disk.memTotal+')',
+			value: 0
+		});
+
 		drawPieChart(chartData, 'Disk Usage on the server', true);
 
 		// Ram Usage
@@ -131,7 +155,8 @@ function loadCurrentlyOnline() {
 
 function loadPasswordGuessing() {
 	loadAnalytics("passwordGuessing", function(data) {
-		$('#analytic-info').append("<p>Potential brute force attacks.</p>");
+		$('#pageTitle').text("Password Guessing");
+		$('#analytic-info').append("<p class='analyticsDesc'>Potential brute force attacks.</p>");
 
 		var tableData = [["Username", "Remote address", "User agent", "Tries"]];
 		for (var i = 0; i < data.length; i++) {
@@ -148,7 +173,8 @@ function loadPasswordGuessing() {
 
 function loadOsPercentage() {
 	loadAnalytics("osPercentage", function(data) {
-		$('#analytic-info').append("<p>OS percentage for main page views.</p>");
+		$('#pageTitle').text("OS percentage");
+		$('#analytic-info').append("<p class='analyticsDesc'>OS percentage for main page views.</p>");
 
 		var tableData = [["Operating system", "Percentage"]];
 		for (var i = 0; i < data.length; i++) {
@@ -172,7 +198,8 @@ function loadOsPercentage() {
 
 function loadBrowserPercentage() {
 	loadAnalytics("browserPercentage", function(data) {
-		$('#analytic-info').append("<p>Browser percentage for main page views.</p>");
+		$('#pageTitle').text("Browser percentage");
+		$('#analytic-info').append("<p class='analyticsDesc'>Browser percentage for main page views.</p>");
 
 		var tableData = [["Browser", "Percentage"]];
 		for (var i = 0; i < data.length; i++) {
@@ -196,6 +223,7 @@ function loadBrowserPercentage() {
 
 function loadServiceUsage() {
 	resetAnalyticsChart();
+	$('#pageTitle').text("Service usage");
 	$('#analytic-info').empty();
 	$('#analytic-info').append("<p>Service usage</p>");
 
@@ -277,7 +305,8 @@ function loadServiceUsage() {
 
 function loadServiceAvgDuration() {
 	loadAnalytics("serviceAvgDuration", function(data) {
-		$('#analytic-info').append("<p>The average duration of service call completion in milliseconds.</p>");
+		$('#pageTitle').text("Service speed");
+		$('#analytic-info').append("<p class='analyticsDesc'>The average duration of service call completion in milliseconds.</p>");
 
 		var tableData = [
 			["Service", "Average duration (ms)"]
@@ -303,6 +332,7 @@ function loadServiceAvgDuration() {
 
 function loadServiceCrashes() {
 	loadAnalytics("serviceCrashes", function(data) {
+		$('#pageTitle').text("Service crashes");
 		$('#analytic-info').append("<p>Service requests with missing steps</p><hr>");
 
 		var crashes = {};
@@ -353,7 +383,8 @@ function loadServiceCrashes() {
 
 
 function loadFileInformation() {
-    resetAnalyticsChart();
+	resetAnalyticsChart();
+	$('#pageTitle').text("File Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>File information for created and edited files.</p>");
 	
@@ -442,7 +473,8 @@ function loadFileInformation() {
 }
 
 function loadPageInformation() {
-    resetAnalyticsChart();
+	resetAnalyticsChart();
+	$('#pageTitle').text("Page information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>Page information.</p>");
 	
@@ -456,8 +488,7 @@ function loadPageInformation() {
        
    
     function updatePageHitInformation(page){
-        loadAnalytics(page + "Information", function(data) {
-            console.log(page);
+        loadAnalytics(page + "Percentage", function(data) {
             var tableData = [["Page", "Hits"]];
             for (var i = 0; i < data.length; i++) {
                 tableData.push([
@@ -474,7 +505,6 @@ function loadPageInformation() {
     }
  
     function updatePieChartInformation(page, tableData){
-        console.log(page + "Percentage");
         loadAnalytics(page + "Percentage", function(data) {
  
             var tablePercentage = [["Courseid", "Percentage"]];
@@ -519,6 +549,223 @@ function loadPageInformation() {
     }
  
     updateState();
+}
+
+function loadUserInformation(){
+    resetAnalyticsChart();
+    $('#analytic-info').empty();
+	$('#analytic-info').append("<p>User information.</p>");
+
+	var firstLoad = true;
+	
+	var selectPage = $("<select></select>")
+        .append('<option value="sectioned" selected>sectioned</option>')
+		.append('<option value="courseed">courseed</option>')
+		.append('<option value="showDugga" selected>showDugga</option>')
+		.append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="events">events</option>')
+        .appendTo($('#analytic-info'));
+ 
+ 
+    function updateSectionedInformation(){
+        loadAnalytics("sectionedInformation", function(data) {
+            var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+				var cid;
+				var vers;
+
+				//Retrives the page 
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+				//Retrives the coursid
+				if(row.refer.includes("courseid=")){
+					pageParts = row.refer.split("courseid=");
+					pageParts = pageParts[1].split("&");
+					cid = pageParts[0];
+				}
+
+				//Retrives the course version
+				if(row.refer.includes("coursevers=")){
+					pageParts = row.refer.split("coursevers=");
+					vers = pageParts[1];
+
+					if(vers.includes("&")){
+						pageParts = pageParts[1].split("&");
+						vers = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Course Version", "Timestamp"]];
+                }
+                users[user].push([
+					row.uid,
+					row.username,
+					pageLoad,
+					cid,
+					vers,
+                    row.timestamp
+                ]);
+            });
+            updateState(users);
+        });
+	}
+	
+	function updateCourseedInformation(){
+        loadAnalytics("courseedInformation", function(data) {
+			var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+
+				//Retrives the page 
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Event", "Timestamp"]];
+                }
+                users[user].push([
+					row.uid,
+					row.username,
+                    pageLoad,
+                    row.timestamp
+				]);
+            });
+            updateState(users);
+        });
+    }
+ 
+    function updateCodeviewerInformation(){
+		var users = {};
+        loadAnalytics("codeviewerInformation", function(data) {
+            $.each(data, function(i, row) {
+                var user = row.username;
+               
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Exampleid", "Timestamp"]];
+                }
+                users[user].push([
+					row.uid,
+					row.username,
+					"codeviewer.php",
+					row.cid,
+					row.exampleid,
+                    row.timestamp
+                ]);
+            });
+            updateState(users);
+        });
+	} 
+	
+
+    function updateDuggaInformation(){
+		var users = {};
+        loadAnalytics("duggaInformation", function(data) {
+            $.each(data, function(i, row) {
+                var user = row.username;
+               
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Duggaid", "Timestamp"]];
+                }
+                users[user].push([
+					row.uid,
+					row.username,
+					"showDugga.php",
+					row.cid,
+					row.quizid,
+                    row.timestamp
+                ]);
+            });
+            updateState(users);
+        });
+    } 
+ 
+    function updateUserLogInformation(users){
+		var users = {};
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                var user = row.username;
+               
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp"]];
+                }
+                users[user].push([
+					row.uid,
+					row.username,
+					row.eventType,
+					row.description,
+                    row.timestamp
+                ]);
+            });
+            updateState(users);
+        });
+    } 
+   
+    function updateState(users){
+        $('#analytic-info > select.file-select').remove();
+        var userSelect = $('<select class="file-select"></select>');
+        for (var user in users) {
+            if (users.hasOwnProperty(user)) {
+                userSelect.append('<option value="' + user + '">' + user + '</option>')
+            }
+        }
+        userSelect.change(function() {
+			deleteTable();
+			$('#analytic-info').append(selectPage);
+            $('#analytic-info').append(renderTable(users[$(this).val()]));
+        });
+        $('#analytic-info').append(userSelect);
+		userSelect.change();
+		pageSelect();
+	}
+	
+	function pageSelect(){
+		if(firstLoad === true){
+			updateSectionedInformation();
+			firstLoad = false;
+		} 
+        selectPage.change(function(){
+            switch(selectPage.val()){
+                case "sectioned":
+                    updateSectionedInformation();
+                    break;
+                case "courseed":
+                    updateCourseedInformation();
+					break;
+				case "showDugga":
+					updateDuggaInformation();
+					break;
+				case "codeviewer":
+					updateCodeviewerInformation();
+					break;
+				case "events":
+					updateUserLogInformation();
+					break;
+            }
+        });
+    }
+ 
+    pageSelect();
 }
 
 //------------------------------------------------------------------------------------------------

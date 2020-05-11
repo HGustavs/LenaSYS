@@ -18,3 +18,22 @@
     margin-right: 11px;
     margin-left: 4px;
 }
+
+#content {
+    background: var(--color-background);
+    margin: 5px 10px 15px 10px;
+}
+
+.header {
+    padding: 30px;
+    text-align: center;
+    background: #927b9e;
+    color: white;
+    font-size: 28px;
+    margin-top: 50px;
+}
+
+.analyticsDesc {
+    margin-top: 15px; 
+    margin-bottom: -20px;
+}
