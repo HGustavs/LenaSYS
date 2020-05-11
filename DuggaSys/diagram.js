@@ -985,10 +985,19 @@ function copySymbol(symbol) {
                 //If the attribute will not be copied the point should be created
                 if(symbol.symbolkind === symbolKind.line) {
                     const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
+                    const connectedAttributes = symbol.getConnectedObjects().filter(object => object.symbolkind === symbolKind.erAttribute);
                     if(typeof connectedAttribute !== "undefined") {
                         const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
+                        //If one of the connected objects is a attribute, create no second point
                         if(isAttributeSelected && connectedAttribute.connectorTop.find(object => object.from === symbol[key])) {
                             newPointIndex = null;
+                        }
+                        //If both connected objects are attributes, create no points
+                        else if(connectedAttributes.length > 1 && symbol.getConnectedObjects()[0].symbolkind == symbolKind.erAttribute && symbol.getConnectedObjects()[1].symbolkind == symbolKind.erAttribute){
+                            //Both attributes must be selected
+                            if(selected_objects.includes(connectedAttributes[0]) && selected_objects.includes(connectedAttributes[1])){
+                                newPointIndex = null;
+                            }
                         }
                     }
                 }
