@@ -69,7 +69,8 @@
   //---------------------------------------------------------------------------------------------------
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
   $operatingSystem = PHP_OS_FAMILY;
-  $username = getUsername($putFileHere)
+  $username = getUsername($putFileHere);
+  $isPermissionsSat = isPermissionsSat($putFileHere);
 ?>
 
 <!-- Modal used for the permission-popup -->
