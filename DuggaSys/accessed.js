@@ -198,14 +198,16 @@ function verifyUserInputForm(input) {
 	return true;
 }
 
-/******************************************************************************
+/*****************************************************************************************************
  * checkSsnErrors(ssn)
- * Returns null if there are NO errors, otherwise a descripitve error message
- *****************************************************************************/
+ * Returns null if there are NO errors, otherwise a descripitve error message.
+ * For information regarding Swedish personal identity numbers visit:
+ * https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
+ ****************************************************************************************************/
 function checkSsnErrors(ssn)
 {
 	const length = ssn.length;
-	const delimiter = length-5;		// The expected position of the '-' in the ssn
+	const delimiter = length-5;	// The expected position of the '-' in the ssn
 
 	switch(length) {
 		case 11: case 13:
@@ -214,13 +216,23 @@ function checkSsnErrors(ssn)
 				break;
 			
 		default:
-			return 'Incorrect format. Should be ######-#### or ########-####';
+			return 'Incorrect SSN format. Should be ######-#### or ########-####';
 	}
 
-	return null;	// The provided ssn is correct
+	const dd = ssn.substring(delimiter-2, delimiter);
+	const mm = ssn.substring(delimiter-4, delimiter-2);
+	const yyyy = (length === 13) ? ssn.substring(0, 4) : 19+ssn.substring(0, 2);	// Ensure yyyy
+	const birthNum = ssn.substring(delimiter+1, delimiter+4);
+	const controlDigit = ssn.substring(length-1);
+	const ssnDate = new Date(yyyy + '-' + mm + '-' + dd);
+
+	if(ssnDate.getTime() > Date.now())	// Make sure date of SSN is not in the future
+		return 'Incorrect date in SSN. The future is not here yet';
+
+	return null;	// The provided SSN is correct!
 }
 
-const testSSN = '85555555-1234';
+const testSSN = '200712-1234';
 console.log(testSSN);
 console.log(checkSsnErrors(testSSN));
 
