@@ -214,11 +214,11 @@
                     <div class="drop-down-divider">
                     </div>
                     <div id="er-item" class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
+                        <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER mode</span>
                         <i class="hot-key hot-key-tick">Shift + M</i>
                     </div>
                     <div id="uml-item" class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
+                        <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML mode</span>
                         <i class="hot-key hot-key-tick">Shift + M</i>
                     </div>
                     <div class="drop-down-divider">

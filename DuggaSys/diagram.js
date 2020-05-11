@@ -2154,8 +2154,8 @@ function setPaperSize(event, size){
 	]
 	selectedPaper[size] = true;
 	for (i = 0; i < 7; i++){
-		let name = 'A' + i;
-		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
+        let name = 'A' + i;
+        setCheckbox($(`.drop-down-option:contains('Paper size...') + .side-drop-down .drop-down-option:contains(${name})`), selectedPaper[i]);
 	}
 	paperSize = size; 
 	localStorage.setItem("paperSize", paperSize);
@@ -2657,8 +2657,8 @@ function developerMode(event) {
         switchToolbarDev(event);                                                             // ---||---
         document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-        setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
+        setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
         setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
@@ -2803,8 +2803,8 @@ function switchToolbarER() {
     } else {
         document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: ER';              // Change the text to ER.
     }
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=true);               // Turn on crossER.
+    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=false);                                                            // Turn off crossDEV.
 }
@@ -2824,8 +2824,8 @@ function switchToolbarUML() {
     } else {
         document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: UML';              // Change the text to UML.
     }                                                           // ---||---
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=true);             // Turn on crossUML.
+    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
     crossDEV=false);                                                            // Turn off crossUML.
 }
@@ -2847,8 +2847,8 @@ function switchToolbarDev(event) {
     document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=true);                                                             // Turn on crossDEV.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
 }
 
 //----------------------------------------------------------------------
