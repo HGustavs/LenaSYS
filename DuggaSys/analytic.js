@@ -474,7 +474,7 @@ function loadFileInformation() {
 
 function loadPageInformation() {
 	resetAnalyticsChart();
-	$('#pageTitle').text("Page information");
+	$('#pageTitle').text("Page Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>Page information.</p>");
 	
@@ -552,7 +552,8 @@ function loadPageInformation() {
 }
 
 function loadUserInformation(){
-    resetAnalyticsChart();
+	resetAnalyticsChart();
+	$('#pageTitle').text("User Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>User information.</p>");
 
