@@ -2,6 +2,49 @@
 // JavaScript entry file. Javascript-stuff that are needed from the start goes here.
 //---------------------------------------------------------------------------------------------------
 
+/* Function to remove decimals from percentage text */
+truncateDecimals = function (number) {
+  return Math[number < 0 ? 'ceil' : 'floor'](number);
+};
+
+function jsUpdateProgressBar(tSteps, cSteps){
+  var totalSteps = tSteps;
+  var completedSteps = cSteps;
+
+  var totalWidth = document.getElementById("progressBar").clientWidth;
+  var stepWidth = totalWidth / totalSteps;
+  var completedWidth;
+  var completedStepsLatest = 0; // This variable is used on window resize.
+
+  /* if window was resized (completedsteps = -1) take latest copleted steps.
+  * Else update to new completed step.
+  */
+  if (completedSteps === -1) {
+    completedWidth = stepWidth * completedStepsLatest;
+  } else {
+    completedStepsLatest = completedSteps;
+    completedWidth = stepWidth * completedSteps;
+  }
+
+  /* Calculate length */
+  document.getElementById("progressRect").setAttribute("width", "" + completedWidth + "");
+
+  /* Update percentage text */
+  document.getElementById("percentageText").innerHTML = "" +
+  truncateDecimals((document.getElementById("progressRect").getAttribute("width") / totalWidth) * 100) +
+  "%";
+
+  /* Decide color depending on how far progress has gone */
+  if (document.getElementById("progressRect").getAttribute("width") / totalWidth < 0.33){
+    document.getElementById("progressRect").setAttribute("fill", "rgb(197,81,83)");
+  } else if (document.getElementById("progressRect").getAttribute("width") / totalWidth < 0.66){
+    document.getElementById("progressRect").setAttribute("fill", "rgb(253,203,96)");
+  } else {
+    document.getElementById("progressRect").setAttribute("fill", "green");
+  }
+
+}
+
 //---------------------------------------------------------------------------------------------------
 // setPermissionModalText, function to set the text of the permission-modal
 //---------------------------------------------------------------------------------------------------

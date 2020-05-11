@@ -276,7 +276,7 @@
     echo "
       <div id='header'>
         <h1>Installation</h1>
-        <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
+        <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1, 1);'>
           <rect id='progressRect' width='0' height='20px' />
         </svg>
         <span id='percentageText'></span>
@@ -356,53 +356,16 @@
       }
     }
 
-    //---------------------------------------------------------------------------------------------------
-    // Javascripts to calculate length of progressRect. This will show the current progress in progressBar
-    //---------------------------------------------------------------------------------------------------
-    echo "
-    <script>
-      /* Function to remove decimals from percentage text */
-      truncateDecimals = function (number) {
-        return Math[number < 0 ? 'ceil' : 'floor'](number);
-      };
+    function updateProgressBar($cSteps, $tSteps){
+      echo "
+        <script>
+          var totalSteps = {$tSteps};
+          var completedSteps = {$cSteps};
+          jsUpdateProgressBar(totalSteps, completedSteps);
+        </script>
+      ";
+    }
 
-      var totalSteps = {$totalSteps};
-      
-
-      function updateProgressBar(completedSteps){
-        var totalWidth = document.getElementById(\"progressBar\").clientWidth;
-        var stepWidth = totalWidth / totalSteps;
-        var completedWidth;
-        var completedStepsLatest = 0; // This variable is used on window resize.
-
-        /* if window was resized (completedsteps = -1) take latest copleted steps.
-        * Else update to new completed step.
-        */
-        if (completedSteps === -1) {
-          completedWidth = stepWidth * completedStepsLatest;
-        } else {
-          completedStepsLatest = completedSteps;
-          completedWidth = stepWidth * completedSteps;
-        }
-
-        /* Calculate length */
-        document.getElementById(\"progressRect\").setAttribute(\"width\", \"\" + completedWidth + \"\");
-
-        /* Update percentage text */
-        document.getElementById(\"percentageText\").innerHTML = \"\" +
-        truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) +
-        \"%\";
-
-        /* Decide color depending on how far progress has gone */
-        if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
-          document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(197,81,83)\");
-        } else if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.66){
-          document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(253,203,96)\");
-        } else {
-          document.getElementById(\"progressRect\").setAttribute(\"fill\", \"green\");
-        }
-      }
-    </script>";
     flush();
     ob_flush();
 
@@ -424,7 +387,7 @@
           <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
       }
       $completedSteps++;
-      echo "<script>updateProgressBar({$completedSteps});</script>";
+      updateProgressBar($completedSteps, $totalSteps);
 
       //---------------------------------------------------------------------------------------------------
       // Check so all fields on first page are sat.
@@ -456,7 +419,7 @@
           <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
         }
         $completedSteps++;
-        echo "<script>updateProgressBar({$completedSteps});</script>";
+        updateProgressBar($completedSteps, $totalSteps);
         flush();
         ob_flush();
 
@@ -465,7 +428,7 @@
         if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
           deleteUser($connection, $username);
           $completedSteps++;
-          echo "<script>updateProgressBar({$completedSteps});</script>";
+          updateProgressBar($completedSteps, $totalSteps);
           flush();
           ob_flush();
         }
@@ -474,7 +437,7 @@
         if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
           deleteDatabase($connection, $databaseName);
           $completedSteps++;
-          echo "<script>updateProgressBar({$completedSteps});</script>";
+          updateProgressBar($completedSteps, $totalSteps);
           flush();
           ob_flush();
         }
@@ -488,7 +451,7 @@
           echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
         }
         $completedSteps++;
-        echo "<script>updateProgressBar({$completedSteps});</script>";
+        updateProgressBar($completedSteps, $totalSteps);
         flush();
         ob_flush();
 
@@ -504,7 +467,7 @@
           echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
         }
         $completedSteps++;
-        echo "<script>updateProgressBar({$completedSteps});</script>";
+        updateProgressBar($completedSteps, $totalSteps);
         flush();
         ob_flush();
 
@@ -552,7 +515,7 @@
           echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
         }
         $completedSteps++;
-        echo "<script>updateProgressBar({$completedSteps});</script>";
+        updateProgressBar($completedSteps, $totalSteps);
         flush();
         ob_flush();
 
@@ -596,7 +559,7 @@
         echo "Skipped creating database.<br>";
       }
       $completedSteps++;
-      echo "<script>updateProgressBar({$completedSteps});</script>";
+      updateProgressBar($completedSteps, $totalSteps);
 
       echo "<b>Installation finished.</b><br>";
       flush();
@@ -759,6 +722,7 @@
   function addTestData($file, $connection){
     global $errors;
     global $completedSteps;
+    global $totalSteps;
     $testDataQuery = @file_get_contents("SQL/{$file}.sql");
     if ($testDataQuery === FALSE) {
       $errors++;
@@ -781,7 +745,7 @@
       }
     }
     $completedSteps++;
-    echo "<script>updateProgressBar({$completedSteps});</script>";
+    updateProgressBar($completedSteps, $totalSteps);
     flush();
     ob_flush();
   }
@@ -789,6 +753,7 @@
   # Function to copy test files
   function copyTestFiles($fromDir,$destDir) {
     global $completedSteps;
+    global $totalSteps;
     $dir = opendir($fromDir);
     @mkdir($destDir);
     while (false !== ($copyThis = readdir($dir))) {
@@ -799,7 +764,7 @@
     closedir($dir);
     echo "<span id='successText' />Successfully filled {$destDir} with files from {$fromDir}.</span><br>";
     $completedSteps++;
-    echo "<script>updateProgressBar({$completedSteps});</script>";
+    updateProgressBar($completedSteps, $totalSteps);
     flush();
     ob_flush();
   }
