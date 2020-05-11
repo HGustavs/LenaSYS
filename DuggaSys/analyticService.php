@@ -99,14 +99,27 @@ function generalStats() {
 	$generalStats['stats']['activeUsers'] = $activeUsers;
 
 	// Disk space calculation
-	$total = disk_total_space(".");
-	$current = disk_free_space(".");
-	$totalFreePercentage = ($current - 0) * 100 / ($total - $current);
-	$totalInUsePercentage = ($totalFreePercentage-100) * -1;
-	$generalStats['disk']['free'] = convertBytesToHumanreadable(disk_free_space("."));
-	$generalStats['disk']['freePercent'] = $totalFreePercentage;
-	$generalStats['disk']['total'] = convertBytesToHumanreadable(disk_total_space("."));
-	$generalStats['disk']['totalPercent'] = $totalInUsePercentage;
+	$memInUse = disk_total_space(".") - disk_free_space(".");
+	$memFree = disk_free_space(".");
+
+	$memFreePercent = ($memFree - 0) * 100 / ($memInUse - $memFree);
+	$inUsePercent = ($memFreePercent-100) * -1;
+
+
+	$generalStats['disk']['inUse'] = convertBytesToHumanreadable($memInUse);
+	$generalStats['disk']['memFree'] = convertBytesToHumanreadable($memFree);
+	$generalStats['disk']['memTotal'] = convertBytesToHumanreadable(disk_total_space("."));
+	$generalStats['disk']['inUsePercent'] = $inUsePercent;
+	$generalStats['disk']['memFreePercent'] = $memFreePercent;
+
+
+	// $current = disk_free_space(".");
+	// $totalFreePercentage = ($current - 0) * 100 / ($total - $current);
+	// $totalInUsePercentage = ($totalFreePercentage-100) * -1;
+	// $generalStats['disk']['free'] = convertBytesToHumanreadable(disk_free_space("."));
+	// $generalStats['disk']['freePercent'] = $totalFreePercentage;
+	// $generalStats['disk']['total'] = convertBytesToHumanreadable($total);
+	// $generalStats['disk']['totalPercent'] = $totalInUsePercentage;
 
 	//If Linux or Windows, Mac OSX does not have any functions that can properly return this data.
 	if (!stristr(PHP_OS, "Darwin")) {
