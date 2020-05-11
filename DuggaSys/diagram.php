@@ -96,19 +96,19 @@
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="openImportDialog();">Import</span>
                     </div>
-                    <div class="drop-down-item export-drop-down-head" tabindex="0">
+                    <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" id="exportid">Export...</span>
-                        <div class="export-drop-down">
-                            <div class="export-drop-down-item" tabindex="0">
+                        <div class="side-drop-down">
+                            <div class="drop-down-item" tabindex="0">
                                 <a class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                             </div>
-                            <div class="export-drop-down-item" tabindex="0">
+                            <div class="drop-down-item" tabindex="0">
                                 <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
                             </div>
-                            <div class="export-drop-down-item" tabindex="0">
+                            <div class="drop-down-item" tabindex="0">
                                 <a class="drop-down-option" id="picid" onclick='ExportPicture(this);'>Export Picture</a>
                             </div>
-                            <div class="export-drop-down-item" tabindex="0">
+                            <div class="drop-down-item" tabindex="0">
                                 <a class="drop-down-option" id="svgidPaper" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
                             </div>
                         </div>
@@ -227,28 +227,28 @@
                         <span class="drop-down-option" onclick="toggleVirtualPaper(event)">Display Virtual Paper</span>
                         <i class="hot-key hot-key-tick">Shift + 4</i>
                     </div>
-                    <div class="drop-down-item papersize-drop-down-head" tabindex="0">
+                    <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" id="paperid">Paper size...</span>
-                        <div class="papersize-drop-down">
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="side-drop-down">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A0" onclick='setPaperSize(event, 0);'>A0</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A1" onclick='setPaperSize(event, 1);'>A1</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A2" onclick='setPaperSize(event, 2);'>A2</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A3" onclick='setPaperSize(event, 3);'>A3</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A4" onclick='setPaperSize(event, 4);'>A4</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A5" onclick='setPaperSize(event, 5);'>A5</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A6" onclick='setPaperSize(event, 6);'>A6</a>
                         </div>
                         </div>

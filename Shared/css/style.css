@@ -1409,14 +1409,6 @@ input {
 
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
-.export-drop-down {
-  display: none;
-}
-
-.papersize-drop-down{
-	display: none;
-}
-
 .menu-drop-down span.drop-down-label {
   display: block;
   height: 20px;
@@ -1433,44 +1425,24 @@ input {
   display: block !important;
 }
 
-.export-drop-down-head:focus-within .export-drop-down {
+.drop-down, .side-drop-down {
+  position: absolute;
+  z-index: 2000;
+  outline: 1px solid var(--color-border-3);
+  border: 1px solid var(--color-border-4);
+  display: none;
+  width: 260px;
+  background-color: rgb(255, 255, 255);
+}
+
+.drop-down-item:focus-within .side-drop-down {
   display: block !important;
 }
 
-.papersize-drop-down-head:focus-within .papersize-drop-down {
-	display: block !important;
-}
-
-.drop-down,
-.export-drop-down {
-  position: absolute;
-  z-index: 2000;
-  outline: 1px solid var(--color-border-3);
-  border: 1px solid var(--color-border-4);
+.side-drop-down {
+  left: 100%;
+  top: 0;
   display: none;
-  width: 260px;
-  background-color: rgb(255, 255, 255);
-}
-
-.drop-down,
-.papersize-drop-down {
-  position: absolute;
-  z-index: 2000;
-  outline: 1px solid var(--color-border-3);
-  border: 1px solid var(--color-border-4);
-  display: none;
-  width: 260px;
-  background-color: rgb(255, 255, 255);
-}
-
-.export-drop-down {
-  left: 260px;
-  top: 109px;
-}
-
-.papersize-drop-down {
-	left: 260px;
-	top: 109px;
 }
 
 .drop-down-divider {
@@ -1486,27 +1458,6 @@ input {
 }
 
 .drop-down-item>a,
-.export-drop-down-item>a {
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  display: inline-block;
-  width: 252px;
-  height: 16px;
-  line-height: 16px;
-  padding: 8px 0px 8px 8px;
-}
-
-.drop-down-item>a,
-.papersize-drop-down-item>a {
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  display: inline-block;
-  width: 252px;
-  height: 16px;
-  line-height: 16px;
-  padding: 8px 0px 8px 8px;
-}
-
 .drop-down-option {
   color: rgb(0, 0, 0);
   text-decoration: none;
@@ -1516,6 +1467,7 @@ input {
   line-height: 16px;
   padding: 8px 0px 8px 8px;
 }
+
 .drop-down-option-hover{
   background-color:white;
 }
@@ -1523,31 +1475,9 @@ input {
   background-color: #e0e0e0;
 }
 
-.drop-down-item:hover,
-.export-drop-down-item:hover {
+.drop-down-item:hover {
   background-color: var(--color-border-3);
   cursor: pointer;
-}
-
-.drop-down-item:hover,
-.papersize-drop-down-item:hover {
-  background-color: var(--color-border-3);
-  cursor: pointer;
-}
-
-.drop-down-text>a {
-  font-size: 14px !important;
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  display: inline-block;
-  height: 16px;
-  line-height: 16px;
-  padding: 8px 0px 8px 8px;
-}
-
-.drop-down-text:hover {
-  background-color: var(--color-border-3);
-  cursor: default;
 }
 
 .drop-down-item-disabled {
