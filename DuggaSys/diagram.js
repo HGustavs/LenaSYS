@@ -2292,8 +2292,7 @@ function canvasSize() {
     canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
     if(isRulersActive) {
-        createRuler(document.getElementById("ruler-x"), canvas.width);
-        createRuler(document.getElementById("ruler-y"), canvas.height);
+        createRulers();
     }
     updateGraphics();
 }
@@ -3746,6 +3745,9 @@ function mousemoveevt(ev) {
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
+        if(isRulersActive) {
+            createRulers();
+        }
     }
     reWrite();
     updateGraphics();
@@ -6063,23 +6065,40 @@ function canConnectLine(startObj, endObj){
 }
 
 //--------------------------------------------------------------------------------------
+// createRulers: Creates rulers for x and y axis.
+//-----------------------------------------------
+
+function createRulers() {
+    createRuler(document.getElementById("ruler-x"), canvas.width, origoOffsetX);
+    createRuler(document.getElementById("ruler-y"), canvas.height, origoOffsetY);
+}
+
+//--------------------------------------------------------------------------------------
 // createRuler: Fills the passed ruller container with lines according to passed length.
 //--------------------------------------------------------------------------------------
 
-function createRuler(element, length) {
+function createRuler(element, length, origoOffset) {
+    const from = Math.round(-origoOffset);
+    const to = Math.round(length - origoOffset);
+
     element.innerHTML = "";
-    for(let i = 0; i < length / 5; i++) {
-        const line = document.createElement("div");
-        line.classList.add("ruler-line");
-        if(i % 10 === 0) {
-            line.classList.add("big");
-            line.innerText = i * 5;
-        } else if(i % 2 === 0) {
-            line.classList.add("small");
-        } else {
-            line.classList.add("mini");
+
+    for(let i = from; i < to; i++) {
+        if(i % 4 === 0) {
+            const line = document.createElement("div");
+            line.classList.add("ruler-line");
+            if(i % 8 === 0) {
+                if(i % 32 === 0) {
+                    line.classList.add("big");
+                    line.innerText = i;
+                } else {
+                    line.classList.add("small");
+                }
+            } else {
+                line.classList.add("mini");
+            }
+            element.appendChild(line);
         }
-        element.appendChild(line);
     }
 }
 
