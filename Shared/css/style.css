@@ -3342,7 +3342,6 @@ padding: 10px;
 }
 
 .submit-button {
-  position: relative;
   background-color: var(--color-primary);
   border: 0px;
   width: 110px;
