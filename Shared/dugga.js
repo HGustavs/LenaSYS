@@ -1688,7 +1688,6 @@ function returnedFeed(data) {
 }
 
 function sendFeedback(entryname){
-	console.log(entryname);
 	if ($("input[name='rating']:checked").val()) {
 		$('#submitstatus').css("display", "none");
 		var param = {};

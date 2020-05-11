@@ -337,11 +337,11 @@
           <h3 id="userFeedbackTitle">User Feedback</h3> 
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
         </div>
-		<h3 id="duggaFeedbackQuestion"></h3>
+		<h2 id="duggaFeedbackQuestion"></h2>
 		<div id="statscontainer">
-			<div id="avg-feedback" class="statsdiv"></div>
-			<div id="median-feedback" class="statsdiv"></div>
-			<div id="total-feedback" class="statsdiv"></div>
+			<div class="statsdiv"><p id="avg-feedback"></p>Medelvärde</div>
+			<div class="statsdiv"><p id="median-feedback"></p>Högsta/Lägsta</div>
+			<div class="statsdiv"><p id="total-feedback"></p>Antal feedback</div>
 		</div>
 		<div id="feedbacktablecontainer">
 		</div>

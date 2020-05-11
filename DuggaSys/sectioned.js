@@ -1815,6 +1815,7 @@ function showUserFeedBack(lid,feedbackquestion) {
 	AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
   $("#userFeedbackDialog").css("display", "flex");
   $("#feedbacktablecontainer").html("");
+  $("#statscontainer").css("display", "none");
   $("#duggaFeedbackQuestion").html(feedbackquestion);
 }
 
@@ -1822,18 +1823,19 @@ function returnedUserFeedback(data){
   if(data.userfeedback.length == 0){
     $("#feedbacktablecontainer").html( "<p>No feedback available</p>" );
   }else{
+    $("#statscontainer").css("display", "flex");
     var averagerating = parseFloat(data.avgfeedbackscore);
     var highestscore = 0;
     var lowestscore = 10;
     for(var i = 0; i<data.userfeedback.length; i++){
-      if(data.userfeedback[i].score > highestscore){
+      if(parseInt(data.userfeedback[i].score) > highestscore){
         highestscore=data.userfeedback[i].score;
+        
       }
-      if(data.userfeedback[i].score < lowestscore){
+      if(parseInt(data.userfeedback[i].score) < lowestscore){
         lowestscore=data.userfeedback[i].score;
       }
     }
-    console.log(typeof(averagerating));
     $("#avg-feedback").html(averagerating.toFixed(2));
     $("#median-feedback").html(highestscore+" / "+lowestscore);
     $("#total-feedback").html(data.userfeedback.length);
@@ -1854,11 +1856,19 @@ function createUserFeedbackTable(data){
   for(var i = 0; i < data.userfeedback.length; i++){
     str +="<tr>";
     str += "<td>"+data.userfeedback[i].ufid+"</td>";
-    str += "<td>"+data.userfeedback[i].username+"</td>";
+    if(data.userfeedback[i].username === null){
+      str += "<td>N/A</td>";
+    }else{
+      str += "<td>"+data.userfeedback[i].username+"</td>";
+    }
     str += "<td>"+data.userfeedback[i].cid+"</td>";
     str += "<td>"+data.userfeedback[i].lid+"</td>";
-    str += "<td>"+data.userfeedback[i].score+"</td>";
-    str += "<td><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"" + data.userfeedback[i].entryname + "\",\"" + data.userfeedback[i].username + "\")'></td>";
+    str += "<td style='font-weight: bold; font-size: 18px;'>"+data.userfeedback[i].score+"</td>";
+    if(data.userfeedback[i].username === null){
+      str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
+    }else{
+      str += "<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"" + data.userfeedback[i].entryname + "\",\"" + data.userfeedback[i].username + "\")'></td>";
+    }
     str += "</tr>";
   }
 
