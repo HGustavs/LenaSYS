@@ -686,6 +686,13 @@ p {
   margin-left: 15px;
   border-left: 2px solid black;
 }
+#Sectionlist .tabs1 .spacerRight {
+  height: 32px;
+  width: 32px;
+  margin-left: 15px;
+  border-right: 2px solid black;
+}
+
 
 #Sectionlist .spacerEnd {
   height: 15px;
