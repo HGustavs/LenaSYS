@@ -502,7 +502,6 @@ function init() {
 
 function generateERExampleCode() {
     var fileContent = $.get("exampleER.txt", data => LoadImport(data));
-    LoadImport(fileContent);
 }
 
 //--------------------------------------------------------------------
@@ -511,7 +510,6 @@ function generateERExampleCode() {
 
 function generateUMLExampleCode() {
     var fileContent = $.get("exampleUML.txt", data => LoadImport(data));
-    LoadImport(fileContent);
 }
 
 //--------------------------------------------------------------------
