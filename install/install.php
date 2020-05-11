@@ -105,8 +105,19 @@
   var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
   var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
   var modal = document.getElementById('warning'); // Get the modal
+  var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
 
   setPermissionModalText(owner, filePath, operatingSystem);
+
+  //---------------------------------------------------------------------------------------------------
+  // setPermissionModalText, function to set the text of the permission-modal
+  //---------------------------------------------------------------------------------------------------
+  function setPermissionModalText(fOwner, fFilePath, fOperatingSystem){
+    modalDialogText.innerHTML=	
+    `<div>
+      ${getPermissionModalText(fOwner, fFilePath, fOperatingSystem)}
+    </div>`;
+  }
 
   if (operatingSystem != "Windows" && isPermissionsSat != true){
     modal.style.display = "block";
