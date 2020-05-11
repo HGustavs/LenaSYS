@@ -72,7 +72,7 @@ if (checklogin() && $hasAccess) {
 					$error = $query->errorInfo();
 					$debug = "Error updating file list " . $error[2];
 				}else{
-					$debug = "The file was deleted, refresh the page to see the changes.";
+					$debug = "The file was deleted.";
 				}
 
 				chdir("../");
@@ -84,7 +84,7 @@ if (checklogin() && $hasAccess) {
 				}
 			}
 		}else{
-			$debug = "This file is part of a code example. Remove it from there before removing the file.TEST";
+			$debug = "This file is part of a code example. Remove it from there before removing the file.";
 		}
 		if($kind != 2){
 			$counted = 0;
@@ -106,7 +106,7 @@ if (checklogin() && $hasAccess) {
 					$error = $query->errorInfo();
 					$debug = "Error updating file list " . $error[2];
 				}else{
-					$debug = "The file was deleted, refresh the page to see the changes.";
+					$debug = "The file was deleted.";
 				}
 
 				chdir("../");
@@ -123,7 +123,7 @@ if (checklogin() && $hasAccess) {
 				// Unlinks (deletes) a file from the directory given if it exists.
 				if (file_exists($currcwd)) unlink($currcwd);
 			}else{
-				$debug = "This file is part of a code example. Remove it from there before removing the file.TEST";
+				$debug = "This file is part of a code example. Remove it from there before removing the file.";
 			}
 		}
 
