@@ -102,8 +102,10 @@ function generalStats() {
 	$memInUse = disk_total_space(".") - disk_free_space(".");
 	$memFree = disk_free_space(".");
 
-	$memFreePercent = ($memFree - 0) * 100 / ($memInUse - $memFree);
-	$inUsePercent = ($memFreePercent-100) * -1;
+	$inUsePercent = (1 - $memFree / $memInUse) * 100;
+	$memFreePercent = 100 - $inUsePercent;
+
+
 
 
 	$generalStats['disk']['inUse'] = convertBytesToHumanreadable($memInUse);
