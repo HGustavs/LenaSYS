@@ -2788,33 +2788,25 @@ consloe.log = function(gobBluth) {
 //------------------------------------------------------------------------------
 
 var previousToolbarState = currentMode.er;
-var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
+var developerModeActive = true;                 // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     resetToolButtonsPressed();
     developerModeActive = !developerModeActive;
-    // save the previous toolbarstate so that we can return to it
-    if (developerModeActive) previousToolbarState = toolbarState;
-    toolbarState = currentMode.dev;
+
+    if (developerModeActive) previousToolbarState = toolbarState; // save the previous toolbarstate so that we can return to it
+    targetMode = currentMode.dev;
     if (developerModeActive) {
+        // Enable developer features (crosses/origo)
         showCrosses();
-        drawOrigo();                                                                    // Draw origo on canvas
-        switchToolbarDev(event);                                                             // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to DEV.
-        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-        setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-        setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-            crossDEV=true);                                                             // Turn on crossDEV.
-        setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
+        drawOrigo();
     } else {
-        // switch to the saved toolbarstate
-        if (previousToolbarState == currentMode.er) switchToolbarER();
-        else if (previousToolbarState == currentMode.uml) switchToolbarUML();
+        // Revert to previous state and hide developer features
+        toolbarState = previousToolbarState;
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
-        setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
         hideCrosses();
     }
+    switchMode();
     reWrite();
     updateGraphics();
 }
@@ -2925,7 +2917,7 @@ function switchToolbarTo(target) {
     modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
     if (developerModeActive) {
-        modeSwitchConfirmed(true);
+        switchMode();
     } else {
         $("#modeSwitchDialog").css("display", "flex");
         var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
@@ -2987,13 +2979,15 @@ function switchToolbarDev(event) {
     if(!developerModeActive){
         return;
     }
-    toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
+    toolbarState = currentMode.dev;
+    switchMode();
+    /*                                              // Change the toolbar to DEV.
     switchToolbar('Dev');                                                           // ---||---
     document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=true);                                                             // Turn on crossDEV.
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.*/
 }
 
 //----------------------------------------------------------------------
@@ -3596,7 +3590,20 @@ function setOrientationIcon(element, check) {
 // switchToolbar: function for switching the toolbar state (All, ER, UML)
 //----------------------------------------------------------------------
 
-function switchToolbar(mode) {
+function switchMode() {
+    closeModeSwitchDialog();
+    toolbarState = targetMode;
+    console.log(toolbarState);
+    localStorage.setItem("toolbarState", toolbarState);
+    switchToolbar();
+    editToolbarMenus();
+}
+
+//----------------------------------------------------------------------
+// switchToolbar: function for switching the toolbar state (All, ER, UML)
+//----------------------------------------------------------------------
+
+function switchToolbar() {
     /*
         HÄR
 
@@ -3611,23 +3618,16 @@ function switchToolbar(mode) {
             Klick > developermode(event) > switchtoolbardev(event) > switchtoolbar(mode)
 
         Önskat flöde: 
-            Klick > Sätt rätt menyer > Sätt rätt verktyg
+            Klick (targetmode sätts) > confirm? (anropa switchmode) > Sätt rätt menyer > Sätt rätt verktyg
+            
             abstraktion:
             -changeToolbar
                 -changeMenu
                 -changeTools (this function). Lägg till att ändra texten här på Mode (innerHTML i developermode)
 
     */
-    if(mode == "ER") { 
-        toolbarState = currentMode.er;
-    } else if(mode == "UML") {
-        toolbarState = currentMode.uml;
-    } else if(mode == "Dev") {
-        toolbarState = currentMode.dev;
-    }
-
-  document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
-  localStorage.setItem("toolbarState", toolbarState);
+  //document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
+  
   
   // Hide/show relevant toolbar buttons
   if(toolbarState != currentMode.dev) {
@@ -3664,14 +3664,40 @@ function switchToolbar(mode) {
   $("#drawerTools").show(); 
   $("#drawerUndo").show();
   $("#drawtextbutton").show();
-
+  document.getElementById('toolbarTypeText').innerHTML = 'Mode: '+ toolbarState;
   document.getElementById('toolbar-switcher').value = toolbarState;
 }
 
-function editToolbarMenus(mode){
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);
+//-------------------------------------------------------------------------
+// editToolbarMenus: Edit checkboxes depending on what mode is active
+//-------------------------------------------------------------------------
+
+function editToolbarMenus(){
+    setCheckbox($(".drop-down-option:contains('ER')"), toolbarState == currentMode.er);
+    setCheckbox($(".drop-down-option:contains('UML')"), toolbarState == currentMode.uml);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), toolbarState == currentMode.dev);
+    /*
+    if(toolbarState == currentMode.er){
+        setCheckbox($(".drop-down-option:contains('ER')"), true);
+        console.log(5==5);
+        console.log("hm");
+    } else if (toolbarState == currentMode.uml){
+        setCheckbox($(".drop-down-option:contains('UML')"), true);
+    } else if (toolbarState == currentMode.dev){
+        console.log(5==5);
+    }
+    
     setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);
-    setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), true);*/
+}
+
+//-------------------------------------------------------------------------
+// closeModeSitchDialog: Closes popup that appears when switching modes
+//-------------------------------------------------------------------------
+
+function closeModeSwitchDialog(){
+    modeSwitchDialogActive = false;
+    $("#modeSwitchDialog").hide();
 }
 
 // ----------------------------------
