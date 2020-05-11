@@ -753,13 +753,22 @@ function loadUserInformation(){
         var userSelect = $('<select class="file-select"></select>');
         for (var user in users) {
             if (users.hasOwnProperty(user)) {
-                userSelect.append('<option value="' + user + '">' + user + '</option>')
+				if(localStorage.getItem('analyticsLastUser') == user) {
+					userSelect.append('<option value="' + user + '" selected>' + user + '</option>');
+				} else {
+					userSelect.append('<option value="' + user + '">' + user + '</option>');
+				}
             }
         }
         userSelect.change(function() {
 			deleteTable();
 			$('#analytic-info').append(selectPage);
-            $('#analytic-info').append(renderTable(users[$(this).val()]));
+			$('#analytic-info').append(renderTable(users[$(this).val()]));
+
+			try {
+				localStorage.setItem('analyticsLastUser', $(this).val());
+			} catch(err) { }
+
         });
         $('#analytic-info').append(userSelect);
 		userSelect.change();
