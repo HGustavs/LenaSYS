@@ -370,11 +370,16 @@
                     </div>
                     <div class="drop-down-divider">
                     </div>
-                    <?php foreach($exampleDiagramFilePaths as $filePath): ?>
-                        <div class="drop-down-item" tabindex="0">
-                            <span class="drop-down-option" onclick="generateExampleCode('<?=$filePath;?>');">Generate <?=basename($filePath);?></span>
+                    <div class="drop-down-item" tabindex="0">
+                        <span class="drop-down-option">Generate example diagrams</span>
+                        <div class="side-drop-down">
+                            <?php foreach($exampleDiagramFilePaths as $filePath): ?>
+                                <div class="drop-down-item" tabindex="0">
+                                    <span class="drop-down-option" onclick="generateExampleCode('<?=$filePath;?>');">Generate <?=basename($filePath);?></span>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                    <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
             <div class="menu-drop-down">
