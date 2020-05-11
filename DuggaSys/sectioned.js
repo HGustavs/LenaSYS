@@ -1898,7 +1898,7 @@ function validateForm(formid) {
 
     }
     // if all information is correct
-    if (window.bool7 === true && window.bool8 === true && window.bool10 === true ) {
+    if (window.bool8 === true && window.bool10 === true ) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
