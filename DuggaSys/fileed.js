@@ -735,6 +735,7 @@ function deleteFile(fileid, filename, filekind) {
         , "FILE");
     }
     /*Reloads window when deleteFile has been called*/
+    myTable.renderTable();
     //window.location.reload(true);
 }
 
