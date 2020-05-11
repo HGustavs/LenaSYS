@@ -540,6 +540,63 @@ function resetToolButtonsPressed() {
 }
 
 //--------------------------------------------------------------------
+// deleteFreedrawObject: Checks if a point of a selected freedraw object
+//                       or entire object should be removed
+//--------------------------------------------------------------------
+function deleteFreedrawObject() {
+    let pointId = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).index;
+    let point = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+    
+    if (typeof point.attachedSymbol != "undefined") {
+        // A freedraw object needs to be selected
+        if (point.attachedSymbol.figureType == "Free" && point.attachedSymbol.targeted) {
+            // If a point isn't hovered, delete object
+            if (point.distance > 10 / zoomValue){
+                eraseObject(point.attachedSymbol);
+                return;
+            }
+            // Freedraw objects need at least 3 points
+            if (point.attachedSymbol.segments.length <= 3) {
+                return;
+            }
+            // Remove hovered point
+            else {
+                removeFreedrawPoint(point.attachedSymbol, pointId); 
+            }
+        }
+    }
+}
+
+//--------------------------------------------------------------------
+// removeFreedrawPoint: Removes a point from a freedraw object and
+//                      Reorganizes the segments
+//--------------------------------------------------------------------
+function removeFreedrawPoint(symbol , pointId) {
+    let newSegment = {kind:kind.path, pa:-1, pb:-1};
+    let toRemove = [];
+    // Finds the segments where the point is used
+    for (let i = 0; symbol.segments.length > i; i++) {
+        if (symbol.segments[i].pa == pointId) {
+            newSegment.pb = symbol.segments[i].pb;
+            toRemove.push(i);
+        }
+        if (symbol.segments[i].pb == pointId) {
+            newSegment.pa = symbol.segments[i].pa;
+            toRemove.push(i);
+        }
+    }
+    // Removes the segments to and from the point to remove
+    symbol.segments.splice(toRemove[1], 1);
+    symbol.segments.splice(toRemove[0], 1);
+    // Adds new segment between the points that were connected to removed point
+    symbol.segments.splice(toRemove[0], 0, newSegment);
+    symbol.targeted = false;
+    // Hide removed point in center
+    points[pointId].x = 0;
+    points[pointId].y = 0;
+}
+
+//--------------------------------------------------------------------
 // This handles all the key binds for diagram
 //--------------------------------------------------------------------
 
@@ -563,6 +620,7 @@ function keyDownHandler(e) {
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
+        deleteFreedrawObject();
         eraseSelectedObject(event);
         SaveState();
     }  
@@ -2454,7 +2512,9 @@ function eraseObject(object) {
 function eraseSelectedObject(event) {
     event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
-        eraseObject(selected_objects[i]);
+        if (selected_objects[i].figureType != "Free") {
+            eraseObject(selected_objects[i]);
+        }
     }
     selected_objects = [];
     lastSelectedObject = -1;
@@ -5122,9 +5182,58 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
 }
 
 function doubleclick() {
-    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
+    // Add point to freedraw object if clicked on line
+    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true 
+    && diagram[lastSelectedObject].figureType == "Free") {
+        let clickedSegmentId = clickedOnLine(diagram[lastSelectedObject]);
+        if (clickedSegmentId != -1) {
+            let freedrawObject = diagram[lastSelectedObject];
+            let newPoint = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+            let clickedSegment = freedrawObject.segments[clickedSegmentId];
+            
+            freedrawObject.segments.splice(clickedSegmentId, 1);
+            freedrawObject.segments.splice(clickedSegmentId, 0, {kind:kind.path, pa:clickedSegment.pa, pb:newPoint});
+            freedrawObject.segments.splice(clickedSegmentId+1, 0, {kind:kind.path, pa:newPoint, pb:clickedSegment.pb});
+        }
+    }
+    else if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         loadAppearanceForm();
     }
+}
+
+//--------------------------------------------------------------------
+// clickedOnLine: Checks if a line of an object is clicked, returns segment index
+//--------------------------------------------------------------------
+function clickedOnLine(clickedObject) {
+    let clickedLine = -1;
+    
+    for (let i = 0; i < clickedObject.segments.length; i++) {
+        if (pointOnLine(currentMouseCoordinateX, currentMouseCoordinateY, clickedObject.segments[i])) {
+            clickedLine = i;
+        }
+    }
+    return clickedLine;
+}
+
+//--------------------------------------------------------------------
+// pointOnLine: Checks if a point is positioned on a segment
+//--------------------------------------------------------------------
+function pointOnLine(pointX, pointY, segment) {
+    let pointBetween = {x:pointX, y:pointY};
+    let pointA = {x:points[segment.pa].x, y:points[segment.pa].y};
+    let pointB = {x:points[segment.pb].x, y:points[segment.pb].y};
+
+    if (distance(pointA, pointBetween) + distance(pointB, pointBetween) 
+    <= distance(pointA, pointB) + 0.1) {
+        return true;
+    }
+}
+
+//--------------------------------------------------------------------
+// distance: Returns distance between two points 
+//--------------------------------------------------------------------
+function distance(point1, point2) {     
+    return Math.sqrt((Math.pow((point1.x - point2.x),2) + Math.pow((point1.y - point2.y),2)));
 }
 
 function createText(posX, posY) {
