@@ -19,7 +19,6 @@ $(function() {
 			drawLineChart(analytics.chartData);
 			break;
 	}
-	loadGeneralStats();
 });
 
 //------------------------------------------------------------------------------------------------
@@ -55,6 +54,7 @@ function loadAnalytics(q, cb) {
 //------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
+		localStorage.setItem('analyticsPage', 'generalStats');
 
 		$('#pageTitle').text("General statistics");
 		$('#analytic-info').append("<p class='analyticsDesc'>General statistics about the system.</p>");
@@ -115,6 +115,7 @@ function loadGeneralStats() {
 }
 function loadCurrentlyOnline() {
 	loadAnalytics("onlineUsers", function(data) {
+		localStorage.setItem('analyticsPage', 'onlineUsers');
 		$('#pageTitle').text("Currently Online");
 		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Active users the last 15 minutes</p>");
 		var tableData = [["User", "Page", "Last seen"]];
@@ -138,6 +139,7 @@ function loadCurrentlyOnline() {
 
 function loadPasswordGuessing() {
 	loadAnalytics("passwordGuessing", function(data) {
+		localStorage.setItem('analyticsPage', 'passwordGuessing');
 		$('#pageTitle').text("Password Guessing");
 		$('#analytic-info').append("<p class='analyticsDesc'>Potential brute force attacks.</p>");
 
@@ -156,6 +158,7 @@ function loadPasswordGuessing() {
 
 function loadOsPercentage() {
 	loadAnalytics("osPercentage", function(data) {
+		localStorage.setItem('analyticsPage', 'osPercentage');
 		$('#pageTitle').text("OS percentage");
 		$('#analytic-info').append("<p class='analyticsDesc'>OS percentage for main page views.</p>");
 
@@ -181,6 +184,7 @@ function loadOsPercentage() {
 
 function loadBrowserPercentage() {
 	loadAnalytics("browserPercentage", function(data) {
+		localStorage.setItem('analyticsPage', 'browserPercentage');
 		$('#pageTitle').text("Browser percentage");
 		$('#analytic-info').append("<p class='analyticsDesc'>Browser percentage for main page views.</p>");
 
@@ -205,6 +209,7 @@ function loadBrowserPercentage() {
 }
 
 function loadServiceUsage() {
+	localStorage.setItem('analyticsPage', 'serviceUsage');
 	resetAnalyticsChart();
 	$('#pageTitle').text("Service usage");
 	$('#analytic-info').empty();
@@ -288,6 +293,7 @@ function loadServiceUsage() {
 
 function loadServiceAvgDuration() {
 	loadAnalytics("serviceAvgDuration", function(data) {
+		localStorage.setItem('analyticsPage', 'serviceAvgDuration');
 		$('#pageTitle').text("Service speed");
 		$('#analytic-info').append("<p class='analyticsDesc'>The average duration of service call completion in milliseconds.</p>");
 
@@ -315,6 +321,7 @@ function loadServiceAvgDuration() {
 
 function loadServiceCrashes() {
 	loadAnalytics("serviceCrashes", function(data) {
+		localStorage.setItem('analyticsPage', 'serviceCrashes');
 		$('#pageTitle').text("Service crashes");
 		$('#analytic-info').append("<p>Service requests with missing steps</p><hr>");
 
@@ -366,6 +373,7 @@ function loadServiceCrashes() {
 
 
 function loadFileInformation() {
+	localStorage.setItem('analyticsPage', 'fileInformation');
 	resetAnalyticsChart();
 	$('#pageTitle').text("File Information");
     $('#analytic-info').empty();
@@ -456,6 +464,7 @@ function loadFileInformation() {
 }
 
 function loadPageInformation() {
+	localStorage.setItem('analyticsPage', 'pageInformation');
 	resetAnalyticsChart();
 	$('#pageTitle').text("Page Information");
     $('#analytic-info').empty();
@@ -535,6 +544,7 @@ function loadPageInformation() {
 }
 
 function loadUserInformation(){
+	localStorage.setItem('analyticsPage', 'userInformation');
 	resetAnalyticsChart();
 	$('#pageTitle').text("User Information");
     $('#analytic-info').empty();
@@ -608,6 +618,7 @@ function loadUserInformation(){
 	
 	function updateCourseedInformation(){
         loadAnalytics("courseedInformation", function(data) {
+			localStorage.setItem('analyticsPage', 'courseedInformation');
 			var users = {};
             $.each(data, function(i, row) {
 				var user = row.username;
@@ -642,6 +653,7 @@ function loadUserInformation(){
     function updateCodeviewerInformation(){
 		var users = {};
         loadAnalytics("codeviewerInformation", function(data) {
+			localStorage.setItem('analyticsPage', 'codeviewerInformation');
             $.each(data, function(i, row) {
                 var user = row.username;
                
@@ -665,6 +677,7 @@ function loadUserInformation(){
     function updateDuggaInformation(){
 		var users = {};
         loadAnalytics("duggaInformation", function(data) {
+			localStorage.setItem('analyticsPage', 'duggaInformation');
             $.each(data, function(i, row) {
                 var user = row.username;
                
@@ -687,6 +700,7 @@ function loadUserInformation(){
     function updateUserLogInformation(users){
 		var users = {};
         loadAnalytics("userLogInformation", function(data) {
+			localStorage.setItem('analyticsPage', 'userLogInformation');
             $.each(data, function(i, row) {
                 var user = row.username;
                
