@@ -1610,7 +1610,7 @@ $(window).load(function () {
   $(".createBtn").click(function(){
     sessionStorage.setItem('closeUpdateForm', true);
   });
-  
+
   retrieveAnnouncementAuthor();
   retrieveCourseProfile();
   retrieveAnnouncementsCards();
@@ -1679,6 +1679,7 @@ function retrieveAnnouncementsCards(){
       accessAdminAction();
       readLessOrMore();
       showLessOrMoreAnnouncements();
+      scrollToTheAnnnouncementForm();
 
     }
   };
@@ -1759,6 +1760,8 @@ function accessAdminAction(){
   }else{
     $("#announcementForm").remove();
     $(".actionBtns").remove();
+    $("#displayAnnouncements").css("margin-top", "0px");
+
   }
 }
 function displayAnnouncementForm(reload){
@@ -1779,6 +1782,13 @@ function displayAnnouncementBoxOverlay(){
   if(closeUpdateForm == 'true'){
     $("#announcementBoxOverlay").show();
   }
+}
+function scrollToTheAnnnouncementForm(){
+  $(".editBtn").click(function() {
+    $('html,body').animate({
+        scrollTop: $("#announcementForm").offset().top},
+        'slow');
+  });
 }
 //read less or more announcement card
 function readLessOrMore(){
