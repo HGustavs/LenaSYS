@@ -68,8 +68,7 @@ setcookie("sessionEndTimeLogOut", "expireC", time() + 3600, "/"); // Ends sessio
 	<!-- content START -->
 	<div id="content">
 		<div id="analytic-info"></div>
-		<div id="canvas-area">
-		</div>
+		<div id="canvas-area"></div>
 	</div>
 	<!-- content END -->
 	
