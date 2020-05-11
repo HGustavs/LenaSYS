@@ -1533,9 +1533,7 @@ function copyLadexport() {
 		lastExpDate.style.color  = '#000';
 	 }, 5000);
 
-	AJAXService("updateunexported", {
-		gradeLastExported: gradeLastExported,
-	}, "GEXPORT");
+	AJAXService("updateunexported", {}, "GEXPORT");
 
 }
 

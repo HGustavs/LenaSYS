@@ -39,7 +39,6 @@ $coursevers=getOP('coursevers');
 $qvariant=getOP("qvariant");
 $quizId=getOP("quizId");
 $teacher = getOP('teacher');
-$gradeLastExported=getOP('gradeLastExported');
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
 $access = false;
@@ -112,8 +111,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 	// Check if opt == updateunexported
 	if ($opt === getunexported_service_name) {
-		$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = :gradeLastExported");
-		$statement->bindParam(':gradeLastExported', $gradeLastExported);
+		$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP");
 		
 		if ($statement === false) {
 			// Failed to prepare query, log and return an error message
