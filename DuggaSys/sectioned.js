@@ -308,15 +308,14 @@ function defaultNewItem() {
 }
 
 function showCreateVersion() {
-  $("#newCourseVersion").css("display", "flex");
-
+    $("#newCourseVersion").css("display", "flex");
 }
 
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
-function createFABItem(kind, itemtitle) {
+function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined");
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment);
     newItem();
   }
 }
@@ -362,6 +361,12 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
+  if(param.comments == "TOP"){
+    param.pos = "-1";
+  }
+  else{
+    param.pos = "100";
+  }
 
   return param;
 }
@@ -405,7 +410,7 @@ function newItem() {
   AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
-  setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
+  //setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
 
 //----------------------------------------------------------------------------------
@@ -468,6 +473,7 @@ function updateVersion() {
   $("#editCourseVersion").css("display", "none");
 }
 
+//queryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
@@ -525,31 +531,6 @@ function returnedGroups(data) {
     str += "<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:" + grpemail + "'>Email group</a></div>"
     grpemail = "";
   }
-  /*
-  for (var grpKind in groups) {
-      // skip loop if the property is from prototype
-      if (!groups.hasOwnProperty(grpKind)) continue;
-      str+="<table><caption>"+grpKind+"</caption>";
-      var obj = groups[grpKind];
-      console.log(obj);
-      for (var prop in obj) {
-          // skip loop if the property is from prototype
-          if(!obj.hasOwnProperty(prop)) continue;
-          str+="<thead><tr><th>Group "+prop+"</th></tr></thead>";
-          str+="<tbody>";
-          for(let i=0;i<obj[prop].length;i++){
-              str+="<tr>";
-              str+="<td>"+(i+1)+"</td>";
-              for(let j=0;j<obj[prop][i].length;j++){
-                  str+="<td>"+obj[prop][i][j]+"</td>";
-              }
-              str+="</tr>";
-          }
-          str+="</tbody>";
-      }
-      str+="</table><br>";
-  }
-  */
   if (str != "") {
     $("#grptbl").html(str);
     $("#grptblContainer").css("display", "flex");
@@ -583,7 +564,7 @@ function returnedSection(data) {
           var vversz = itemz['vers'];
           var vnamez = itemz['versname'];
           if (retdata['coursevers'] == vversz) {
-            versionname = vnamez;
+              versionname = vnamez;
           }
         }
       }
@@ -593,7 +574,7 @@ function returnedSection(data) {
     document.getElementById("course-coursecode").innerHTML = retdata['coursecode'];
     document.getElementById("course-coursename").innerHTML = retdata['coursename'];
     document.getElementById("course-versname").innerHTML = versionname;
-    
+
     var str = "";
 
     if (data['writeaccess']) {
@@ -609,25 +590,24 @@ function returnedSection(data) {
           bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
         // save vers, versname and motd from table vers as global variables.
-        if (querystring['coursevers'] == item['vers']) versnme = item['versname'];
+        versnme = versionname;
         if (querystring['coursevers'] == item['vers']) motd = item['motd'];
         if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
-      document.getElementById("courseDropdownTop-mobile").innerHTML = bstr;
       bstr = "<option value='None'>None</option>" + bstr;
       document.getElementById("copyvers").innerHTML = bstr;
 
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
-
+      document.getElementById("FABStatic2").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
-
+      document.getElementById("FABStatic2").style.display = "None";
     }
 
     if (data['studentteacher']) {
@@ -669,7 +649,13 @@ function returnedSection(data) {
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
-        str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
+        // New items added get the class glow to show they are new
+        if(item['pos'] == "-1" || item['pos'] == "100"){
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
+        }
+        else{
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
+        }
 
         menuState.idCounter++;
         // All are visible according to database
@@ -874,6 +860,7 @@ function returnedSection(data) {
           var param = {
             'did': item['link'],
             'courseid': querystring['courseid'],
+            'coursename': querystring['coursename'],
             'coursevers': querystring['coursevers'],
             'moment': item['lid'],
             'segment': momentexists,
@@ -1031,13 +1018,14 @@ function returnedSection(data) {
       }
     }
   } else {
-    str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> This version does not seem to exist!</div>";
 
-    document.getElementById('Sectionlist').innerHTML = str;
+    str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
-    if (data['writeaccess']) {
-      showCreateVersion();
-    }
+    document.getElementById('Sectionlist').innerHTML+= str;
+    $("#newCourseVersion").css("display", "block");
+
+
+
 
   }
 
@@ -1051,9 +1039,15 @@ function returnedSection(data) {
 
   // Change title of the current page depending on which page the user is on.
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
-    
+
   // Sets a title on the course heading name
-  document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
+
+
+  if(versionname){
+    document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
+
+
+
 
   drawPieChart(); // Create the pie chart used in the statistics section.
   fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
@@ -1067,20 +1061,21 @@ function returnedSection(data) {
 
   addClasses();
   showMOTD();
-  
+  }
 }
 // Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
 function showMOTD(){
-  if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){ 
+  if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){
     if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
-      document.getElementById("motdArea").style.display = "none"; 
+      document.getElementById("motdArea").style.display = "none";
     }else{
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+      document.getElementById("FABStatic2").style.top = "623px";
     }
   }
 }
-// Checks if the MOTD cookie already have the current vers and versname 
+// Checks if the MOTD cookie already have the current vers and versname
 function ignoreMOTD(){
   var c_string = getCookie('MOTD');
   c_array = c_string.split(',');
@@ -1112,6 +1107,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
+  document.getElementById("FABStatic2").style.top = "565px";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
@@ -1364,7 +1360,7 @@ function drawSwimlanes() {
   var tempNumb = 2;
 
   var str = "";
-  // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not. 
+  // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not.
   str += "<defs><linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextGrey'><stop offset='85%' stop-opacity='1' stop-color='#000000' /><stop offset='100%' stop-opacity='0'/> </linearGradient> <linearGradient gradientUnits='userSpaceOnUse' x1='0' x2='300' y1='0' y2='0' id='fadeTextRed'><stop offset='85%' stop-opacity='1' stop-color='#FF0000' /><stop offset='100%' stop-opacity='0'/> </linearGradient></defs>";
 
   for (var i = 0; i < weekLength; i++) {
@@ -1409,7 +1405,7 @@ function drawSwimlanes() {
         if ((entry.submitted != null) && (entry.grade == undefined)) fillcol = "#FFEB3B"
         else if ((entry.submitted != null) && (entry.grade > 1)) fillcol = "#00E676"
         else if ((entry.submitted != null) && (entry.grade == 1)) fillcol = "#E53935";
-        
+
         // Grey backgroundcolor & red font-color if no submissions of the dugga have been made.
         var textcol = `url("#fadeTextGrey")`;
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
@@ -1421,7 +1417,7 @@ function drawSwimlanes() {
           duggalength = duggalength * -1;
         }
         var tempVariable = duggalength*daywidth;
-        
+
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'> <title> " + entry.text + " </title>" + entry.text + "</text>";
       }
@@ -1438,6 +1434,7 @@ function drawSwimlanes() {
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mouseover(function (e) {
+    //showFabList(e);
     FABMouseOver(e);
 });
 
@@ -1456,7 +1453,7 @@ $(document).mousedown(function (e) {
 $(document).mouseup(function (e) {
   mouseUp(e);
 
-  
+
 });
 
 $(document).ready(function(){
@@ -1506,9 +1503,9 @@ function mouseDown(e) {
 function mouseUp(e) {
   // if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
   if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) && $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
-    
+
     event.preventDefault();
-     
+
     closeWindows();
     console.log(e.target);
     closeSelect();
@@ -1599,8 +1596,51 @@ $(window).load(function () {
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
+  $("#announcement").click(function(){
+    $("#announcementBoxOverlay").toggle();
+    $('#fullAnnnouncementOverlay').hide();
+
+  });
+
+  var rowCount = $('#announcementBox table tr').length;
+  if (rowCount > 9) {
+    $('#announcementBox table tr:gt(8)').hide();
+    $('.showAllAnnouncement').show();
+  }else if(rowCount == 0){
+    $('#announcementBox').append("<p style='color:#775886;'>No announcements created yet</p>");
+  }
+
+  $('.showAllAnnouncement').on('click', function() {
+    $('#announcementBox table tr:gt(8)').toggle();
+    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
+  });
+
+  var adminLoggedin = $("#adminLoggedin").val();
+  if(adminLoggedin == 'yes'){
+    $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create an new announcement</button>');
+  }
+  $("#newAnnouncement").click(function(){
+    $("#modal").toggle();
+    $(window).click(function(e) {
+      if(e.target.id == "modal"){
+        $("#modal").hide();
+      }
+    });
+
+
+  });
 });
 
+//show the full announcement
+function showAnnouncement(){
+  document.getElementById('fullAnnnouncementOverlay').style.display="block";
+}
+
+//sets author for announcement
+function setAnnouncementAuthor(){
+  $("#author").val($("#userName").html());
+
+}
 // Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
@@ -1611,7 +1651,7 @@ function replaceDefualtLink(){
   var links = document.getElementsByTagName('a');
 
   for(var i = 0; i < links.length; i++){
-    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" + querystring['courseid'] + "&coursevers=" + 
+    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" + querystring['courseid'] + "&coursevers=" +
     querystring['coursevers'] + "&fname=---===######===---")){
       links[i].href = "../errorpages/403.php";
     }
@@ -1664,10 +1704,10 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
 /*Validates all versionnames*/
 function validateVersionName(versionName, dialogid) {
   //Regex for 2 capital letters, 2 numbers
-  var Name = /^[A-Z]{2}\d{2}$/;
+  var Name = /^HT\d{2}$|^VT\d{2}$/;
   var name = document.getElementById(versionName);
   var x = document.getElementById(dialogid);
-  
+
   //if versionname is 2 capital letters, 2 numbers
   if (name.value.match(Name)) {
     name.style.borderColor = "#383";
@@ -1701,6 +1741,7 @@ function validateCourseID(courseid, dialogid) {
   var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
+  var val = document.getElementById("versid").value;
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -1710,10 +1751,21 @@ function validateCourseID(courseid, dialogid) {
   } else {
 
     code.style.borderColor = "#E54";
+    x2.innerHTML = "Only numbers(between 3-6 numbers)";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
   }
+
+  const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
+  if(versionIsValid) {
+    code.style.borderColor = "#E54";
+    x2.innerHTML = "Version ID already exists, try another";
+    x2.style.display = "block";
+    code.style.borderWidth = "2px";
+    window.bool = false;
+  }
+
 }
 
 function validateMOTD(motd, dialogid){
@@ -1784,7 +1836,7 @@ function validateDate(startDate, endDate, dialogID) {
   }
 }
 
-/*Validates if deadline is between start and end date*/ 
+/*Validates if deadline is between start and end date*/
 function validateDate2(ddate, dialogid) {
   var ddate = document.getElementById(ddate);
   var x = document.getElementById(dialogid);
@@ -1810,7 +1862,7 @@ function validateDate2(ddate, dialogid) {
     }
 }
 
-/*Validates all forms*/ 
+/*Validates all forms*/
 
 function validateForm(formid) {
 
@@ -1854,7 +1906,7 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
-  
+
   // validates edit course version form
   if (formid === 'editCourseVersion') {
     var eversName = document.getElementById("eversname").value;
@@ -1874,5 +1926,5 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
-  
+
 }

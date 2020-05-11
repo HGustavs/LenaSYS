@@ -149,18 +149,24 @@ function showFilePopUp(fileKind) {
     $(".linkPopUp").css("display", "none");
     $("#createNewEmptyFile").css("display", "none");
     $(".addNewFile").css("display", "block");
-
+    $('#uploadedfile').attr('type', 'file');
     if (fileKind == "MFILE") {
         $("#mFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     } else if (fileKind == "LFILE") {
         $("#lFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     } else if (fileKind == "GFILE") {
         $("#gFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     }else if(fileKind == "EFILE"){
         $("#eFileHeadline").css("display", "block");
-        $(".addNewFile").css("display", "none");
         $("#createNewEmptyFile").css("display", "block");
-
+        $(".addNewFile").css("display", "none");
+        //$(".testselect").css("display", "block");
+        //$(".addNewFile").css("display", "none");
+        //$("#createNewEmptyFile").css("display", "block");
+        //$('#uploadedfile').attr('type', 'text');
     }
 }
 
@@ -179,6 +185,16 @@ function uploadFile(kind) {
             if (item != ".." && item != ".") str += "<option>" + item + "</option>";
         }
         $("#selectedfile").html(str);
+    } else if (kind == "EFILE") {
+        var str = "<option>NONE</option>";
+        for (i = 0; i < filez['gfiles'].length; i++) {
+            var item = filez['gfiles'][i];
+            if (item != ".." && item != ".") str += "<option>" + item + "</option>";
+        }
+        $("#ekind").val(kind);
+        $("#ecourseid").val(querystring['courseid']);
+        $("#ecoursevers").val(querystring['coursevers']);
+        $("#selectedfile").html(str); 
     } else if (kind == "LFILE" || kind == "LINK") {
         $("#selecty").css("display", "none");
     }
@@ -217,6 +233,89 @@ function hoverSearch() {
 //stops displaying the dropdown when removing cursor from search bar
 function leaveSearch() {
     $('#dropdownSearch').css({ display: 'none' });
+}
+
+//------------------------------------------------------------------
+// validateDummyFile <- Validates the name and extension of the file
+//------------------------------------------------------------------
+function validateDummyFile() {
+    var allowedExtensions = [
+        "txt",
+        "html",
+        "java",
+        "xml",
+        "js",
+        "css",
+        "php",
+        "sr",
+        "md",
+        "sql",
+        "md",
+        "py",
+        "bat",
+        "xsl"
+    ];
+
+    var filterSymbols = [
+        "<",
+        ">",
+        ":",
+        ",",
+        "|",
+        "*",
+        "?",
+        "=",
+        "\"",
+        "/",
+        "\\"
+    ];
+
+    var errors = [];
+    var name = document.getElementById("newEmptyFile").value;
+
+    // Trim name
+    name = name.trim();
+
+    // Get filename
+    var filename = name.substring(0, name.indexOf("."));
+    if (filename.length == 0)
+        errors.push("Invalid filename");
+
+    // Get extension
+    var extension = name.substring(name.lastIndexOf(".") + 1);
+
+    // Check if extension is valid
+    if (!allowedExtensions.includes(extension))
+        errors.push("Invalid extension: ." + extension)
+
+    // Check for invalid characters
+    for (var i = 0; i < name.length; i++) {
+        if (filterSymbols.includes(name[i])) 
+            errors.push("Invalid character at position " + (i + 1) + ": " + name[i]);
+    }
+
+    var list = document.getElementById("dummyFileErrorList");
+
+    if (errors.length > 0) {
+        list.innerHTML = "";
+        list.style.display = "block";
+
+        // Add error message title
+        var liTop = document.createElement('li');
+        liTop.innerHTML = "Errors found:".bold();
+        liTop.style.color = "rgb(199, 80, 80)";
+        list.append(liTop)
+
+        for (var i = 0; i < errors.length; i++) {
+            var li = document.createElement('li');
+            li.innerHTML = errors[i];
+            list.append(li);
+        }
+
+        return false;
+    }
+
+    return true;
 }
 
 //------------------------------------------------------------------
@@ -359,6 +458,22 @@ document.addEventListener('keydown', function (event) {
     }
   })
 
+//---------------------------------------------------------------------------------------------
+//sortAndFilterTogether <- callback function sort and filter files by its kind and search input
+//---------------------------------------------------------------------------------------------
+function sortAndFilterTogether(){
+  filterFilesByKind(sortFilter.kind);
+
+}
+var sortFilter = {
+    fileKind : "",
+    set kind(kind){
+        this.fileKind = kind;
+    },
+    get kind(){
+        return this.fileKind;
+    }
+};
 
 //---------------------------------------------------------------
 //filterFilesByKind <- Callback function sorts the files by its kind
@@ -380,10 +495,62 @@ function filterFilesByKind(kind){
     }else if(kind == "AllFiles"){
         $("#fileLink table tr").show();
     }
-    $("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
+    sortFilter.fileKind=kind;
+    setBackgroundForOddEvenRows();
+
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
+}
+function setBackgroundForOddEvenRows(){
+	$("#fileLink table tbody tr:visible:even").css("background", "var(--color-background-1)");
     $("#fileLink table tbody tr:visible:odd").css("background", "var(--color-background-2)");
 }
+//Sort files by alphabetical order after sorting by kind
+function sortFiles(asc){
+    var rows, switching, i, x, y, shouldSwitch;
+    switching = true;
 
+    while(switching){
+        switching = false;
+        rows = $("#fileLink table tr");
+        for(i = 1; i < (rows.length - 1); i++){
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[3];
+            y = rows[i + 1].getElementsByTagName("TD")[3];
+
+           if(asc == true){
+           	 if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()){
+                shouldSwitch = true;
+                break;
+             }
+
+           }else if(asc == false){
+           	  if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()){
+                shouldSwitch = true;
+                break;
+            }
+
+           }
+
+        }
+        if(shouldSwitch){
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            setBackgroundForOddEvenRows();
+
+        }
+    }
+    //Recalculate the values in the first column that is simply a counter
+    var counterElements = $(".fileLink___counter").filter(":visible");
+    var i = 0;
+    counterElements.each(function (index) {
+        this.firstChild.innerHTML = ++i;
+    });
+}
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
@@ -471,9 +638,9 @@ function renderSortOptions(col, status, colname) {
     if (status == -1) {
         str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
     } else if (status == 0) {
-        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1); sortFiles(true);'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
     } else {
-        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+        str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0); sortFiles(false);'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
     }
     return str;
 }

@@ -343,7 +343,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				if($ukind=="U"){
 					if ($mark == "UNK"){
 						$mark = null;
-						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded ,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 					} else {
 						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 					}
@@ -459,6 +459,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					}
 				}
 			}
+        // Logging for mark a dugga
+        $description=$coursename." ".$coursecode." ".$duggaid." ".$mark." ".$duggauser;
+        logUserEvent($userid, $loginname, EventTypes::MarkedDugga, $description);
 		}
 
 	if(strcmp($opt,"DUGGA")==0){

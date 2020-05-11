@@ -20,6 +20,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'generalStats':
 				generalStats();
 				break;
+			case 'onlineUsers':
+				onlineUsers();
+				break;
 			case 'serviceAvgDuration':
 				serviceAvgDuration();
 				break;
@@ -42,6 +45,30 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'serviceCrashes':
 				serviceCrashes();
 				break;
+			case 'fileInformation':
+				fileInformation();
+				break;
+			case 'duggaInformation':
+                duggaInformation();
+                break;
+            case 'codeviewerInformation':
+                codeviewerInformation();
+                break;
+            case 'duggaPercentage':
+                duggaPercentage();
+                break;
+            case 'codeviewerPercentage':
+                codeviewerPercentage();
+				break;
+			case 'sectionedInformation':
+				sectionedInformation();
+				break;
+			case 'courseedInformation':
+				courseedInformation();
+				break;
+			case 'userLogInformation':
+				userLogInformation();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -55,7 +82,7 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 //------------------------------------------------------------------------------------------------
 function generalStats() {
 	$log_db = $GLOBALS['log_db'];
-	$result = $log_db->query('
+	$LoginFail = $log_db->query('
 		SELECT
 			COUNT(*) AS loginFails
 		FROM
@@ -63,7 +90,156 @@ function generalStats() {
 		WHERE
 			eventType = '.EventTypes::LoginFail.';
 	')->fetchAll(PDO::FETCH_ASSOC);
-	echo json_encode($result[0]);
+
+	$activeUsers = $log_db->query('
+		SELECT 
+			username, refer, max(timestamp) as time
+		FROM 
+			userHistory
+		WHERE 
+			timestamp >= Datetime("now", "-15 minutes")
+		GROUP BY 
+			username
+		ORDER BY 
+			timestamp DESC;
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+
+	$generalStats = [];
+	$generalStats['stats']['loginFails'] = $LoginFail[0];
+	$generalStats['stats']['numOnline'] = count($activeUsers);
+
+	// Disk space calculation
+	$memInUse = disk_total_space(".") - disk_free_space(".");
+	$memFree = disk_free_space(".");
+
+	$minMem = min($memInUse, $memFree);
+	$maxMem = max($memInUse, $memFree);
+	
+	$inUsePercent = (1 - $minMem / $maxMem) * 100;
+
+	$memFreePercent = 100 - $inUsePercent;
+
+	if($memInUse > $memFree) {
+		$generalStats['disk']['inUsePercent'] = max($memFreePercent, $inUsePercent);
+		$generalStats['disk']['memFreePercent'] = min($memFreePercent, $inUsePercent);
+	} else {
+		$generalStats['disk']['inUsePercent'] = min($memFreePercent, $inUsePercent);
+		$generalStats['disk']['memFreePercent'] = max($memFreePercent, $inUsePercent);
+	}
+
+	$generalStats['disk']['inUse'] = convertBytesToHumanreadable($memInUse);
+	$generalStats['disk']['memFree'] = convertBytesToHumanreadable($memFree);
+	$generalStats['disk']['memTotal'] = convertBytesToHumanreadable(disk_total_space("."));
+
+	//If Linux or Windows, Mac OSX does not have any functions that can properly return this data.
+	if (!stristr(PHP_OS, "Darwin")) {
+		$memUsage = getServerMemoryUsage(false);
+		$generalStats['ram']['free'] = convertBytesToHumanreadable($memUsage["free"]);
+		$generalStats['ram']['total'] = convertBytesToHumanreadable($memUsage["total"]);
+		$generalStats['ram']['freePercent'] = 100 - getServerMemoryUsage(true);
+		$generalStats['ram']['totalPercent'] = getServerMemoryUsage(true);
+	}
+	
+	echo json_encode($generalStats);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves online users
+//------------------------------------------------------------------------------------------------
+function onlineUsers() {
+	$log_db = $GLOBALS['log_db'];
+
+	$activeUsers = $log_db->query('
+		SELECT 
+			username, refer, max(timestamp) as time
+		FROM 
+			userHistory
+		WHERE 
+			timestamp >= Datetime("now", "-15 minutes")
+		GROUP BY 
+			username
+		ORDER BY 
+			timestamp DESC;
+	')->fetchAll(PDO::FETCH_ASSOC);
+	
+	echo json_encode($activeUsers);
+}
+
+// Convert bytes to mb, gb and so on in a human readable format
+function convertBytesToHumanreadable($bytes) {
+    $si_prefix = array( 'B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB' );
+    $base = 1024;
+    $class = min((int)log($bytes , $base) , count($si_prefix) - 1);
+	return sprintf('%1.2f' , $bytes / pow($base,$class)) . ' ' . $si_prefix[$class];
+}
+
+// Return memory usage for Linux and Windows
+function getServerMemoryUsage($getPercentage=true) {
+	$memoryTotal = null;
+	$memoryFree = null;
+
+	if (stristr(PHP_OS, "win")) {
+		$cmd = "wmic ComputerSystem get TotalPhysicalMemory";
+		@exec($cmd, $outputTotalPhysicalMemory);
+
+		$cmd = "wmic OS get FreePhysicalMemory";
+		@exec($cmd, $outputFreePhysicalMemory);
+
+		if ($outputTotalPhysicalMemory && $outputFreePhysicalMemory) {
+			foreach ($outputTotalPhysicalMemory as $line) {
+				if ($line && preg_match("/^[0-9]+\$/", $line)) {
+					$memoryTotal = $line;
+					break;
+				}
+			}
+			foreach ($outputFreePhysicalMemory as $line) {
+				if ($line && preg_match("/^[0-9]+\$/", $line)) {
+					$memoryFree = $line;
+					$memoryFree *= 1024; 
+					break;
+				}
+			}
+		}
+	} else {
+		if (is_readable("/proc/meminfo")) {
+			$stats = @file_get_contents("/proc/meminfo");
+			if ($stats !== false) {
+				$stats = str_replace(array("\r\n", "\n\r", "\r"), "\n", $stats);
+				$stats = explode("\n", $stats);
+				foreach ($stats as $statLine) {
+					$statLineData = explode(":", trim($statLine));
+
+					if (count($statLineData) == 2 && trim($statLineData[0]) == "MemTotal") {
+						$memoryTotal = trim($statLineData[1]);
+						$memoryTotal = explode(" ", $memoryTotal);
+						$memoryTotal = $memoryTotal[0];
+						$memoryTotal *= 1024; 
+					}
+					
+					if (count($statLineData) == 2 && trim($statLineData[0]) == "MemFree") {
+						$memoryFree = trim($statLineData[1]);
+						$memoryFree = explode(" ", $memoryFree);
+						$memoryFree = $memoryFree[0];
+						$memoryFree *= 1024;
+					}
+				}
+			}
+		}
+	}
+
+	if (is_null($memoryTotal) || is_null($memoryFree)) {
+		return null;
+	} else {
+		if ($getPercentage) {
+			return (100 - ($memoryFree * 100 / $memoryTotal));
+		} else {
+			return array(
+				"total" => $memoryTotal,
+				"free" => $memoryFree,
+			);
+		}
+	}
 }
 
 //------------------------------------------------------------------------------------------------
@@ -101,7 +277,7 @@ function passwordGuessing(){
 		FROM userLogEntries
 		WHERE eventType = '.EventTypes::LoginFail.'
 		GROUP BY uid, remoteAddress
-		HAVING tries > 10;
+		HAVING tries >= 3;
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
@@ -133,12 +309,31 @@ function serviceUsage($start, $end, $interval){
 			COUNT(*) AS hits
 		FROM serviceLogEntries
 		WHERE
-			eventType = '.EventTypes::ServiceClientStart.'
+			eventType = '.EventTypes::ServiceServerStart.'
 			AND datetime(timeStamp/1000, \'unixepoch\') BETWEEN ? AND ?
 		GROUP BY service, dateTime;
 	');
 	$query->execute(array($dateGroupFormat, $start, $end));
 	$result = $query->fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}
+
+
+//------------------------------------------------------------------------------------------------
+// Retrieves file information		
+//------------------------------------------------------------------------------------------------
+
+function fileInformation(){
+	$result = $GLOBALS['log_db']->query('
+		SELECT
+			uid AS userName,
+			timestamp AS timestamp,
+			eventType AS eventType,
+			description AS description
+		FROM userLogEntries
+		WHERE eventType = '.EventTypes::AddFile.' OR eventType = '.EventTypes::EditFile.'
+		ORDER BY timestamp;
+	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
 
@@ -150,9 +345,9 @@ function osPercentage(){
 	$result = $GLOBALS['log_db']->query('
 		SELECT
 			operatingSystem,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceClientStart.') AS percentage
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
 		FROM serviceLogEntries
-		WHERE eventType = '.EventTypes::ServiceClientStart.'
+		WHERE eventType = '.EventTypes::ServiceServerStart.'
 		GROUP BY operatingSystem
 		ORDER BY percentage DESC
 	')->fetchAll(PDO::FETCH_ASSOC);
@@ -167,9 +362,9 @@ function browserPercentage(){
 	$result = $GLOBALS['log_db']->query('
 		SELECT
 			browser,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceClientStart.') AS percentage
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
 		FROM serviceLogEntries
-		WHERE eventType = '.EventTypes::ServiceClientStart.'
+		WHERE eventType = '.EventTypes::ServiceServerStart.'
 		GROUP BY browser
 		ORDER BY percentage DESC
 	')->fetchAll(PDO::FETCH_ASSOC);
@@ -184,7 +379,130 @@ function serviceCrashes(){
 	$result = $GLOBALS['log_db']->query('
 		SELECT * 
 		FROM serviceLogEntries
-		WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceClientEnd.');
+		WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerEnd.');
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves dugga information         
+//------------------------------------------------------------------------------------------------
+function duggaInformation(){
+    $result = $GLOBALS['log_db']->query('
+		SELECT
+			cid,
+			uid,
+			username,
+			quizid,
+            timestamp AS timestamp
+        FROM duggaLoadLogEntries
+        ORDER BY timestamp;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves codeviewer information        
+//------------------------------------------------------------------------------------------------
+ 
+function codeviewerInformation(){
+    $result = $GLOBALS['log_db']->query('
+		SELECT
+			courseid AS cid,
+			uid,
+			username,
+			exampleid,
+            timestamp AS timestamp
+        FROM exampleLoadLogEntries
+        ORDER BY timestamp;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves dugga percentage          
+//------------------------------------------------------------------------------------------------
+ 
+function duggaPercentage(){
+    $result = $GLOBALS['log_db']->query('
+        SELECT
+			cid AS courseid,
+			COUNT(*) AS pageLoads,
+            COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+        FROM duggaLoadLogEntries
+        GROUP BY courseid
+        ORDER BY percentage DESC;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+ 
+//------------------------------------------------------------------------------------------------
+// Retrieves example percentage        
+//------------------------------------------------------------------------------------------------
+ 
+function codeviewerPercentage(){
+    $result = $GLOBALS['log_db']->query('
+        SELECT
+			courseid,
+			COUNT(*) AS pageLoads,
+            COUNT(*) * 100.0 / (SELECT COUNT(*) FROM exampleLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+        FROM exampleLoadLogEntries
+        GROUP BY courseid
+        ORDER BY percentage DESC;
+    ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves sectioned log information      
+//------------------------------------------------------------------------------------------------
+ 
+function sectionedInformation(){
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   userid AS uid,
+		   username,
+		   refer,
+		   timestamp 
+	   FROM userHistory
+	   WHERE refer LIKE "%sectioned%"
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves courseed log information      
+//------------------------------------------------------------------------------------------------
+ 
+function courseedInformation(){
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   userid AS uid,
+		   username,
+		   refer,
+		   timestamp 
+	   FROM userHistory
+	   WHERE refer LIKE "%courseed%"
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves userLog information      
+//------------------------------------------------------------------------------------------------
+ 
+function userLogInformation(){
+    $result = $GLOBALS['log_db']->query('
+       SELECT
+		   uid,
+		   username,
+		   eventType,
+		   description,
+		   timestamp 
+	   FROM userLogEntries
+	   ORDER BY timestamp;
+   ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
 }
