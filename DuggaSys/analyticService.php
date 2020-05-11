@@ -111,11 +111,11 @@ function generalStats() {
 	$memFreePercent = 100 - $inUsePercent;
 
 	if($memInUse > $memFree) {
-		$generalStats['disk']['inUsePercent'] = $inUsePercent;
-		$generalStats['disk']['memFreePercent'] = $memFreePercent;
+		$generalStats['disk']['inUsePercent'] = max($memFreePercent, $inUsePercent);
+		$generalStats['disk']['memFreePercent'] = min($memFreePercent, $inUsePercent);
 	} else {
-		$generalStats['disk']['inUsePercent'] = $memFreePercent;
-		$generalStats['disk']['memFreePercent'] = $inUsePercent;
+		$generalStats['disk']['inUsePercent'] = min($memFreePercent, $inUsePercent);
+		$generalStats['disk']['memFreePercent'] = max($memFreePercent, $inUsePercent);
 	}
 
 
