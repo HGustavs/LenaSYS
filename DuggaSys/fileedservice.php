@@ -89,30 +89,51 @@ if (checklogin() && $hasAccess) {
 		}else{
 			$debug = "This file is part of a code example. Remove it from there before removing the file.";
 		}
-    if($kind != 2){
-        $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
-        $query = $pdo->prepare($querystring);
-        $query->bindParam(':fid', $fid);
-        if (!$query->execute()) {
-            $error = $query->errorInfo();
-            $debug = "Error updating file list " . $error[2];
-        }
+		if($kind != 2){
+			$counted = 0;
+			//Check if file is in use
+			$querystring0 = 'SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filename AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
+			$query0 = $pdo->prepare($querystring0);
+			$query0->bindParam(':fid', $fid);
+			if (!$query0->execute()) {
+				$error = $query0->errorInfo();
+				$debug = "Error getting file list " . $error[2];
+			}
+			$result = $query0->fetch(PDO::FETCH_OBJ);
+			$counted = $result->counted;
+			if($counted == 0){
+				$querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
+				$query = $pdo->prepare($querystring);
+				$query->bindParam(':fid', $fid);
+				if (!$query->execute()) {
+					$error = $query->errorInfo();
+					$debug = "Error updating file list " . $error[2];
+				}
 
-        chdir("../");
-        $currcwd = getcwd();
+				chdir("../");
+				$currcwd = getcwd();
 
-        if ($kind == 2) {
-            $currcwd .= "/courses/global/" . $filename;
-        } else if ($kind == 3) {
-            $currcwd .= "/courses/" . $cid . "/" . $filename;
-        } else if ($kind == 4) {
-            $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
-        }
+				if ($kind == 2) {
+					$currcwd .= "/courses/global/" . $filename;
+				} else if ($kind == 3) {
+					$currcwd .= "/courses/" . $cid . "/" . $filename;
+				} else if ($kind == 4) {
+					$currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
+				}
 
-        // Unlinks (deletes) a file from the directory given if it exists.
-        if (file_exists($currcwd))
-            unlink($currcwd);
-    }
+				// Unlinks (deletes) a file from the directory given if it exists.
+				if (file_exists($currcwd)) unlink($currcwd);
+
+				if($succeeded){
+					$debug = "The file was deleted, refresh the page to see the changes.";
+				}
+			}else{
+				$debug = "This file is part of a code example. Remove it from there before removing the file.";
+			}
+		}
+
+
+
     } else if (strcmp($opt, "SAVEFILE") === 0) {
         // Change path to file depending on filename and filekind
         chdir("../");
