@@ -247,7 +247,7 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					}
 				} else if(strcmp($opt,"UPDATE")===0) {
-
+					
 					// Insert a new code example and update variables accordingly.
 					if($link==-1) {
 
@@ -286,7 +286,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(':entryname', $sectname);
 					$query->bindParam(':comments', $comments);
 					$query->bindParam(':highscoremode', $highscoremode);
-
+					
 					if ($grptype != "UNK") {
 						$query->bindParam(':groupkind', $grptype);
 					} else {
