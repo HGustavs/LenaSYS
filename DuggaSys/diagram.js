@@ -4846,6 +4846,10 @@ function touchMoveEvent(event) {
         
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
+        
+        if(isRulersActive) {
+            createRulers();
+        }
     }
 
     // Moves an object
