@@ -84,7 +84,7 @@ if (checklogin() && $hasAccess) {
 				}
 			}
 		}else{
-			$debug = "This file is part of a code example. Remove it from there before removing the file.";
+			$debug = "This file is part of a code example. Remove it from there before removing the file.TEST";
 		}
 		if($kind != 2){
 			$counted = 0;
@@ -123,7 +123,7 @@ if (checklogin() && $hasAccess) {
 				// Unlinks (deletes) a file from the directory given if it exists.
 				if (file_exists($currcwd)) unlink($currcwd);
 			}else{
-				$debug = "This file is part of a code example. Remove it from there before removing the file.";
+				$debug = "This file is part of a code example. Remove it from there before removing the file.TEST";
 			}
 		}
 
