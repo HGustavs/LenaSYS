@@ -100,3 +100,8 @@ function selectText(containerid) {
 function hideCopiedAgain(text) {
   $(text).hide("slide", {direction: "right"}, 1000)
 }
+
+/* Show/Hide installation progress. */
+function toggleInstallationProgress(){
+  $('#installationProgressWrap').toggle(500);
+}

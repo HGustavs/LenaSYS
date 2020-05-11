@@ -896,10 +896,6 @@
 <script>
   postInstallModal.style.display = "block";
 
-  /* Show/Hide installation progress. */
-  function toggleInstallationProgress(){
-    $('#installationProgressWrap').toggle(500);
-  }
 </script>
 
 </body>
