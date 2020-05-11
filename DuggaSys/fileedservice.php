@@ -150,7 +150,21 @@ if (checklogin() && $hasAccess) {
                 $error = True;
             }
         }
-    }
+		
+    } else if (strcmp($opt, "CHECK-IF-IN-USE") === 0) {
+		//$querystring = 'SELECT COUNT (*) FROM fileLink, box ' +
+		//+' WHERE box.filename=filelink.filename ' +
+		//+' AND filelink.kind = 2 ' +
+		//+ 'AND filelink.fileid = :fid ;';
+		$querystring = 'SELECT COUNT (*) FROM fileLink';
+        $query = $pdo->prepare($querystring);
+        $query->bindParam(':fid', $fid);
+        if (!$query->execute()) {
+            $error = $query->errorInfo();
+            $debug = "Error updating file list " . $error[2];
+        }
+	}
+	
 }
 
 //------------------------------------------------------------------------------------------------

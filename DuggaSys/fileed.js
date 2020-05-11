@@ -729,10 +729,34 @@ function deleteFile(fileid, filename, filekind) {
         filename: filename,
         kind: filekind,
     };
+    //Check if file is in use before deletion
+    alert("CHECK IF FILE IS IN USE: \n fileid: " + fileid + "\n cid: " + querystring['courseid'] + "\n filename: " + filename + "\n kind: " + filekind);
+
+    //select * from  lena.filelink fl, lena.box b
+    //where b.filename = fl.filename
+    //and fl.kind = 2
+    //and fl.fileid = fileid
+    var checkResult = null;
+    $.ajax({
+        url: "fileedservice.php",
+        type: "POST",
+        data: "coursevers=" + querystring['coursevers'] + "&opt=CHECK-IF-IN-USE",
+        dataType: "json",
+        success: function (data) {
+            alert("WOOO");
+            checkResult = data;
+            console.log("check1: " + checkResult);
+        }
+    })
+    console.log("check2: " + checkResult);
+
+    //success: function(data) {
+    //    result = data;
+    //}
 
     if (confirm("Do you really want to delete the file/link: " + filename)) {
-        AJAXService("DELFILE", tempData
-        , "FILE");
+        //AJAXService("DELFILE", tempData
+        //, "FILE");
     }
     /*Reloads window when deleteFile has been called*/
     window.location.reload(true);
