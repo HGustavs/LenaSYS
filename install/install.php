@@ -312,28 +312,24 @@
     ";
 
     //---------------------------------------------------------------------------------------------------
-    // Javascripts for warning pop-up
+    // Javascript for warning modal
     //---------------------------------------------------------------------------------------------------
     echo "
       <script>
-        var modalRead = false; // Have the user read info?
         var postInstallModal = document.getElementById('warning'); // Get the modal
         var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
-        var filePath = '{$putFileHere}';
 
         document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
           '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
           '<p>If you don\'t follow these instructions nothing will work. G4-2020 will not take any ' +
           'responsibility for your failing system.</p>';
 
-        // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
           postInstallModal.style.display = 'none';
         }
 
-        // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
-          if (event.target == modal) {
+          if (event.target == postInstallModal) {
             postInstallModal.style.display = 'none';
           }
         }
@@ -459,13 +455,11 @@
         $serverName = $_POST["hostname"];
         $rootUser = $_POST["mysqlRoot"];
         $rootPwd = $_POST["rootPwd"];
-
         $connection = null;
 
         # Connect to database with root access.
         try {
           $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
-          // set the PDO error mode to exception
           $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
           echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
         } catch (PDOException $e) {
@@ -548,24 +542,17 @@
         try {
           $connection->query("SET NAMES utf8");
           $connection->query("USE {$databaseName}");
-          # Use this var if several statements should be called at once (functions).
           $queryBlock = '';
           $blockStarted = false;
           foreach ($initQueryArray AS $query) {
             $completeQuery = $query . ";";
-            # This commented code in this block could work if delimiters are fixed/removed in sql files.
-            # TODO: Fix handling of delimiters. Now this part only removes code between them.
             if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")) {
               $blockStarted = true;
-              #$queryBlock = $completeQuery;
             } else if ($blockStarted && strpos(strtolower($completeQuery), "delimiter ;")) {
               $blockStarted = false;
-              #$queryBlock = $queryBlock . $completeQuery;
-              #$connection->query($queryBlock);
             } else if ($blockStarted) {
-              #$queryBlock = $queryBlock . $completeQuery;
             } else {
-              if (trim($query) != '') { // do not send if empty query.
+              if (trim($query) != '') { 
                 $connection->query($completeQuery);
               }
             }
@@ -905,9 +892,9 @@
 ?>
 <!-- END OF INSTALL SECTION -->
 
+<!-- Script for setting the finished-modal -->
 <script>
   postInstallModal.style.display = "block";
-
 
   /* Show/Hide installation progress. */
   function toggleInstallationProgress(){
