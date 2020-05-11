@@ -482,3 +482,11 @@ function userLogInformation(){
    ')->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($result);
 }
+
+//------------------------------------------------------------------------------------------------
+// Retrieves courseName for courseID     
+//------------------------------------------------------------------------------------------------
+
+function resolveCourseID(){
+	
+}

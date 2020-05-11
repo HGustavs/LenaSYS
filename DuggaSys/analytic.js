@@ -484,8 +484,7 @@ function loadPageInformation() {
  
     function updatePieChartInformation(page, tableData){
         loadAnalytics(page + "Percentage", function(data) {
- 
-            var tablePercentage = [["Courseid", "Percentage"]];
+            var tablePercentage = [["Name","Courseid", "Percentage"]];
             for (var i = 0; i < data.length; i++) {
                 tablePercentage.push([
                     data[i].courseid,
