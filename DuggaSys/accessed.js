@@ -207,11 +207,22 @@ function checkSsnErrors(ssn)
 	const length = ssn.length;
 	const delimiter = length-5;		// The expected position of the '-' in the ssn
 
+	switch(length) {
+		case 11: case 13:
+			const formatTest = /\d{6,8}-\d{4}/;	// Expected format
+			if(formatTest.test(ssn))
+				break;
+			
+		default:
+			return 'Incorrect format. Should be ######-#### or ########-####';
+	}
+
 	return null;	// The provided ssn is correct
 }
 
-console.log('851226-5912');
-console.log(checkSsnErrors('851226-5912'));
+const testSSN = '85555555-1234';
+console.log(testSSN);
+console.log(checkSsnErrors(testSSN));
 
 var inputVerified;
 
