@@ -98,14 +98,20 @@ function loadGeneralStats() {
 		// Disk usage
 		var chartData = [];
 		chartData.push({
-			label: 'Total Memory ('+data.disk.total+')',
-			value: data.disk.totalPercent
+			label: 'Memory in use ('+data.disk.inUse+')',
+			value: data.disk.inUsePercent
 		});
 
 		chartData.push({
-			label: 'Free Memory ('+data.disk.free+')',
-			value: data.disk.freePercent
+			label: 'Memory Available ('+data.disk.memFree+')',
+			value: data.disk.memFreePercent
 		});
+		
+		chartData.push({
+			label: 'Total Memory ('+data.disk.memTotal+')',
+			value: 0
+		});
+
 		drawPieChart(chartData, 'Disk Usage on the server', true);
 
 		// Ram Usage
