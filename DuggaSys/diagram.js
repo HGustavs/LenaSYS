@@ -659,6 +659,53 @@ function resetToolButtonsPressed() {
     }
 }
 
+function deleteFreedrawObject() {
+
+    let pointId = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).index;
+    let point = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+    
+    if (typeof point.attachedSymbol != "undefined") {
+        console.log(point);
+        if (point.attachedSymbol.figureType == "Free" && point.attachedSymbol.targeted) {
+            if (point.distance > 20){
+                eraseObject(point.attachedSymbol);
+            }
+            if (point.attachedSymbol.segments.length <= 3) {
+                console.log("too few points");
+                return;
+            }
+            else {
+                removeFreedrawPoint(point.attachedSymbol, pointId); 
+            }
+        }
+    }
+}
+
+function removeFreedrawPoint(symbol , pointId) {
+    console.log(pointId);
+    let seg = {kind:kind.path, pa:-1, pb:-1};
+    let toRemove = [];
+    for (let i = 0; symbol.segments.length > i; i++) {
+        if (symbol.segments[i].pa == pointId) {
+            seg.pb = symbol.segments[i].pb;
+            toRemove.push(i);
+        }
+        if (symbol.segments[i].pb == pointId) {
+            seg.pa = symbol.segments[i].pa;
+            toRemove.push(i);
+        }
+    }
+    console.log(seg);
+    symbol.segments.splice(toRemove[1], 1);
+    symbol.segments.splice(toRemove[0], 1);
+    symbol.segments.splice(toRemove[0], 0, seg);
+    //points.splice(pointId, 1);
+    console.log(points);
+    console.log(symbol.segments);
+    
+
+}
+
 //--------------------------------------------------------------------
 // This handles all the key binds for diagram
 //--------------------------------------------------------------------
@@ -683,6 +730,7 @@ function keyDownHandler(e) {
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
+        deleteFreedrawObject();
         eraseSelectedObject(event);
         SaveState();
     }  
@@ -2576,7 +2624,9 @@ function eraseObject(object) {
 function eraseSelectedObject(event) {
     event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
-        eraseObject(selected_objects[i]);
+        if (selected_objects[i].figureType != "Free") {
+            eraseObject(selected_objects[i]);
+        }
     }
     selected_objects = [];
     lastSelectedObject = -1;
@@ -5305,6 +5355,7 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
 }
 
 function doubleclick() {
+    // Add point to freedraw object if clicked on line
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true 
     && diagram[lastSelectedObject].figureType == "Free") {
         let clickedSegmentId = clickedOnLine(diagram[lastSelectedObject]);
