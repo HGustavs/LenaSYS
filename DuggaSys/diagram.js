@@ -6291,7 +6291,7 @@ function createRuler(element, length, origoOffset) {
             if(i % 8 === 0) {
                 if(i % 32 === 0) {
                     line.classList.add("big");
-                    line.innerText = i;
+                    line.innerText = Math.round(i / zoomValue);
                 } else {
                     line.classList.add("small");
                 }
