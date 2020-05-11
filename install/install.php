@@ -65,6 +65,24 @@
   }
 
   //---------------------------------------------------------------------------------------------------
+  // Function that checks if permissions (chown/chgrp) are sat.
+  //---------------------------------------------------------------------------------------------------
+  function isPermissionsSat($crntFilePath){
+    $permissionsSat = false;
+    if(!mkdir("{$crntFilePath}/testPermissionsForInstallationToStartDir", 0060)) {
+      $permissionsSat = false;
+    }
+    else {
+      if (!rmdir("{$crntFilePath}/testPermissionsForInstallationToStartDir")) {
+        $permissionsSat = false;
+      } else {
+        $permissionsSat = true;
+      }
+    }
+    return $permissionsSat;
+  }
+
+  //---------------------------------------------------------------------------------------------------
   // systemVariables: Sets the system variables, path, operatingSystem and username (these are used all over the code right now)
   //---------------------------------------------------------------------------------------------------
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
@@ -418,6 +436,7 @@
       if($isPermissionsSat) {
         echo "<span id='successText' />Permissions on {$putFileHere} sat correctly.</span><br>";
       } else {
+        $errors++;
         exit ("<span id='failText' />Permissions on {$putFileHere} not sat correctly, please restart the installation.</span><br>
           <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
       }
@@ -711,26 +730,6 @@
       }
     }
     return $isAllCredentialsFilled;
-  }
-
-  //---------------------------------------------------------------------------------------------------
-  // Function that checks if permissions (chown/chgrp) are sat.
-  //---------------------------------------------------------------------------------------------------
-  function isPermissionsSat($crntFilePath){
-    $permissionsSat = false;
-    if(!mkdir("{$crntFilePath}/testPermissionsForInstallationToStartDir", 0060)) {
-      $errors++;
-      $permissionsSat = false;
-    }
-    else {
-      if (!rmdir("{$crntFilePath}/testPermissionsForInstallationToStartDir")) {
-        $errors++;
-        $permissionsSat = false;
-      } else {
-        $permissionsSat = true;
-      }
-    }
-    return $permissionsSat;
   }
 
   //---------------------------------------------------------------------------------------------------
