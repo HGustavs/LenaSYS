@@ -130,6 +130,28 @@ function loadGeneralStats() {
 		}		
 	});
 }
+function loadCurrentlyOnline() {
+	loadAnalytics("onlineUsers", function(data) {
+		$('#pageTitle').text("Currently Online");
+		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Active users the last 15 minutes</p>");
+		var tableData = [["User", "Page", "Last seen"]];
+		var activeUsers = data;
+		console.log(activeUsers);
+		for (var stat in activeUsers) {
+			if (activeUsers.hasOwnProperty(stat)) {
+				var date = new Date(activeUsers[stat].time + ' GMT');
+				tableData.push([
+					activeUsers[stat].username,
+					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
+					timeSince(date)
+				]);
+			}
+		}
+
+		$('#analytic-info').append(renderTable(tableData));
+	
+	});
+}
 
 function loadPasswordGuessing() {
 	loadAnalytics("passwordGuessing", function(data) {

@@ -20,6 +20,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'generalStats':
 				generalStats();
 				break;
+			case 'onlineUsers':
+				onlineUsers();
+				break;
 			case 'serviceAvgDuration':
 				serviceAvgDuration();
 				break;
@@ -105,7 +108,6 @@ function generalStats() {
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
 	$generalStats['stats']['numOnline'] = count($activeUsers);
-	$generalStats['stats']['activeUsers'] = $activeUsers;
 
 	// Disk space calculation
 	$memInUse = disk_total_space(".") - disk_free_space(".");
@@ -140,6 +142,28 @@ function generalStats() {
 	}
 	
 	echo json_encode($generalStats);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves online users
+//------------------------------------------------------------------------------------------------
+function onlineUsers() {
+	$log_db = $GLOBALS['log_db'];
+
+	$activeUsers = $log_db->query('
+		SELECT 
+			username, refer, max(timestamp) as time
+		FROM 
+			userHistory
+		WHERE 
+			timestamp >= Datetime("now", "-15 minutes")
+		GROUP BY 
+			username
+		ORDER BY 
+			timestamp DESC;
+	')->fetchAll(PDO::FETCH_ASSOC);
+	
+	echo json_encode($activeUsers);
 }
 
 // Convert bytes to mb, gb and so on in a human readable format
