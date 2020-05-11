@@ -6278,26 +6278,34 @@ function canConnectLine(startObj, endObj){
 //-----------------------------------------------
 
 function createRulers() {
-    createRuler(document.getElementById("ruler-x"), canvas.width, origoOffsetX);
-    createRuler(document.getElementById("ruler-y"), canvas.height, origoOffsetY);
+    createRuler(document.getElementById("ruler-x"), canvas.width, origoOffsetX, "marginLeft");
+    createRuler(document.getElementById("ruler-y"), canvas.height, origoOffsetY, "marginTop");
 }
 
 //--------------------------------------------------------------------------------------
 // createRuler: Fills the passed ruller container with lines according to passed length.
 //--------------------------------------------------------------------------------------
 
-function createRuler(element, length, origoOffset) {
+function createRuler(element, length, origoOffset, marginProperty) {
     const from = Math.round(-origoOffset);
     const to = Math.round(length - origoOffset);
 
+    const steps = {};
+    steps.first = 5;
+    steps.second = steps.first * 2;
+    steps.third = steps.first * steps.second;
+
+    const margin = steps.first - 1;
+
     element.innerHTML = "";
 
-    for(let i = from; i < to; i++) {
-        if(i % 4 === 0) {
+    for(let i = from; i < to; i++) { 
+        if(i % steps.first === 0) {
             const line = document.createElement("div");
             line.classList.add("ruler-line");
-            if(i % 8 === 0) {
-                if(i % 32 === 0) {
+            
+            if(i % steps.second === 0) {
+                if(i % steps.third === 0) {
                     line.classList.add("big");
                     line.innerText = Math.round(i / zoomValue);
                 } else {
@@ -6309,6 +6317,10 @@ function createRuler(element, length, origoOffset) {
             element.appendChild(line);
         }
     }
+
+    element.querySelectorAll(".ruler-line").forEach(line => {
+        line.style[marginProperty] = `${margin}px`;
+    });
 }
 
 //------------------------------------------------------------------------------------------------

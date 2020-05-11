@@ -5156,12 +5156,10 @@ only screen and (max-device-width: 320px) {
 
 #ruler-x .ruler-line {
   width: 1px;
-  margin-left: 3px;
 }
 
 #ruler-y .ruler-line {
   height: 1px;
-  margin-top: 3px;
 }
 
 #ruler-x .ruler-line:first-of-type {
