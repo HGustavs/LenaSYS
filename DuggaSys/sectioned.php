@@ -7,11 +7,11 @@
 
 
 	if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];	
+		$userid=$_SESSION['uid'];
 	}else{
-		$userid="00";		
+		$userid="00";
 	}
-	
+
 	if($userid == "00"){
 		if (!isset($_COOKIE["cookie_guest"])) {
 			// Cookie for guest username is not present, send a guest cookie to user.
@@ -41,6 +41,7 @@
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -68,7 +69,7 @@
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i class='material-icons'>link</i></a></li>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i class='material-icons'>format_quote</i></a></li> 
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
 		<!-- Small FAB Button in top in the header of sectioned -->
@@ -82,7 +83,7 @@
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i class='material-icons'>link</i></a></li>
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
 						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i class='material-icons'>format_quote</i></a></li> 
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
 
@@ -90,19 +91,83 @@
 
 		<!-- MOTD dropdown -->
 		<div id='motdArea' style='display: none;'>
-			<?php	
+			<?php
 				echo "<tr>";
 				echo "		<div class='motdBoxheader' >";
 				echo "			<h3>Message of the day</h3>";
 				echo "				<div class='cursorPointerMOTD' onclick='closeMOTD()'  >x</div>";
 				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
-				echo "		<p style='text-align:center' id='motd'></p>";			
+				echo "		<p style='text-align:center' id='motd'></p>";
 				echo" 	</div>";
 				echo "</tr>";
 			?>
 		</div>
 		<!-- MOTD dropdown END -->
+
+		<!-- Mobile view Start(course-dropdown, editVers, newVers) -->
+		<div class='mobile-view'>
+					<?php
+
+						echo "<td style='display: inline-block;'>";
+						echo "    <div class='course-dropdown-div'>";
+						echo "      <select id='courseDropdownTop-mobile' class='course-dropdown' onchange='goToVersion(this)' ></select>";
+						echo "    </div>";
+						echo "</td>";
+
+						echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
+						echo "    <div class='editVers menuButton'>";
+            echo "      <img id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
+						echo "    </div>";
+						echo "</td>";
+
+						echo "<td class='newVers' style='display: inline-block;margin-right:2px;'>";
+						echo "    <div class='newVers menuButton'>";
+            echo "      <img id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
+						echo "    </div>";
+						echo "</td>";
+					?>
+		</div>
+
+		<!-- Mobile view END -->
+		<!-- Announcement box -->
+		<div id="announcementBoxOverlay">
+			<div id="announcementBox">
+			<h3>To Do</h3>
+			<hr>
+			<table>
+			<?php
+
+				$courseid = $_GET['courseid'];
+				$coursevers = $_GET['coursevers'];
+
+				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid="'.$courseid.'" AND courseversion="'.$coursevers.'" ORDER BY announceTime DESC') AS $headline){
+	             $headlines = $headline['title'];
+	             $message = $headline['message'];
+	             $announcementid = $headline['id'];
+	             $announceTime = $headline['announceTime'];
+	             $author = $headline['author'];
+	             echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
+
+	            }
+
+
+			?>
+
+			</table>
+
+			<button class="showAllAnnouncement">
+				<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
+				</a>
+			</button>
+		</div>
+
+		</div>
+		<?php
+			include '../Shared/announcementBox.php';
+			include '../Shared/fullAnnouncement.php';
+
+		?>
 
 		<!-- + button --->
 
@@ -118,16 +183,16 @@
 
 
 				<div id='course-newitem' style='display: flex;'>
-					
+
 				</div>
-			
+
 				<!-- test #1 -->
 
 				<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
 				<div id='course-courseid' style='display:none; margin-right:10px;' >UNK</div>
 
 		</div>
-		
+
 		<!-- + button END -->
 
 		<div id='courseList'>
@@ -264,7 +329,7 @@
 				<div class='inputwrapper'><span>Version ID:</span><input oninput="validateCourseID('versid', 'dialog2')" class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
 				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
+				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN or VTNN</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
@@ -291,7 +356,7 @@
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('eversname', 'dialog5')" class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">2 capital letters, 2 numbers</p>
+				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN or VTNN</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>

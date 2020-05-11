@@ -1,5 +1,39 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+function customErrorHandler($errno, $errstr, $errfile, $errline) {
+    switch ($errno) {
+		case E_USER_ERROR:
+			echo '<script> alert("
+									ERROR: ['.$errno.'] '.$errstr.'\n
+									Fatal error on line '.$errline.' in file '.$errfile.'\n
+									PHP ' . PHP_VERSION . ' (' . PHP_OS . ')
+								"); 
+				</script>';
+			exit(1);
+			break;
+
+		case E_USER_WARNING:
+			echo '<script> alert("WARNING: ['.$errno.'] '.$errstr.'"); </script>';
+			break;
+
+		case E_USER_NOTICE:
+			echo '<script> alert("NOTICE: ['.$errno.'] '.$errstr.'"); </script>';
+			break;
+
+		default:
+			echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
+			break;
+    }
+}
+
+//set error handler
+set_error_handler("customErrorHandler");
+
+  
 //------------------------------------------------------------------------------------------------
 // makeLogEntry
 //------------------------------------------------------------------------------------------------

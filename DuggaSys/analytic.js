@@ -56,7 +56,8 @@ function loadAnalytics(q, cb) {
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
 
-		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>General statistics about the system.</p>");
+		$('#pageTitle').text("General statistics");
+		$('#analytic-info').append("<p class='analyticsDesc'>General statistics about the system.</p>");
 		// Login fails
 		var tableData = [["Stat", "Value"]];
 		var loginFails = data['stats']['loginFails'];
@@ -78,7 +79,7 @@ function loadGeneralStats() {
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Active users
-		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Active users the last 15 minutes</p>");
+		$('#analytic-info').append("<p class='analyticsDesc'>Active users the last 15 minutes</p>");
 		var tableData = [["User", "Page", "Last seen"]];
 		var activeUsers = data['stats']['activeUsers'];
 		for (var stat in activeUsers) {
@@ -126,7 +127,8 @@ function loadGeneralStats() {
 
 function loadPasswordGuessing() {
 	loadAnalytics("passwordGuessing", function(data) {
-		$('#analytic-info').append("<p>Potential brute force attacks.</p>");
+		$('#pageTitle').text("Password Guessing");
+		$('#analytic-info').append("<p class='analyticsDesc'>Potential brute force attacks.</p>");
 
 		var tableData = [["Username", "Remote address", "User agent", "Tries"]];
 		for (var i = 0; i < data.length; i++) {
@@ -143,7 +145,8 @@ function loadPasswordGuessing() {
 
 function loadOsPercentage() {
 	loadAnalytics("osPercentage", function(data) {
-		$('#analytic-info').append("<p>OS percentage for main page views.</p>");
+		$('#pageTitle').text("OS percentage");
+		$('#analytic-info').append("<p class='analyticsDesc'>OS percentage for main page views.</p>");
 
 		var tableData = [["Operating system", "Percentage"]];
 		for (var i = 0; i < data.length; i++) {
@@ -167,7 +170,8 @@ function loadOsPercentage() {
 
 function loadBrowserPercentage() {
 	loadAnalytics("browserPercentage", function(data) {
-		$('#analytic-info').append("<p>Browser percentage for main page views.</p>");
+		$('#pageTitle').text("Browser percentage");
+		$('#analytic-info').append("<p class='analyticsDesc'>Browser percentage for main page views.</p>");
 
 		var tableData = [["Browser", "Percentage"]];
 		for (var i = 0; i < data.length; i++) {
@@ -191,6 +195,7 @@ function loadBrowserPercentage() {
 
 function loadServiceUsage() {
 	resetAnalyticsChart();
+	$('#pageTitle').text("Service usage");
 	$('#analytic-info').empty();
 	$('#analytic-info').append("<p>Service usage</p>");
 
@@ -272,7 +277,8 @@ function loadServiceUsage() {
 
 function loadServiceAvgDuration() {
 	loadAnalytics("serviceAvgDuration", function(data) {
-		$('#analytic-info').append("<p>The average duration of service call completion in milliseconds.</p>");
+		$('#pageTitle').text("Service speed");
+		$('#analytic-info').append("<p class='analyticsDesc'>The average duration of service call completion in milliseconds.</p>");
 
 		var tableData = [
 			["Service", "Average duration (ms)"]
@@ -298,6 +304,7 @@ function loadServiceAvgDuration() {
 
 function loadServiceCrashes() {
 	loadAnalytics("serviceCrashes", function(data) {
+		$('#pageTitle').text("Service crashes");
 		$('#analytic-info').append("<p>Service requests with missing steps</p><hr>");
 
 		var crashes = {};
@@ -348,7 +355,8 @@ function loadServiceCrashes() {
 
 
 function loadFileInformation() {
-    resetAnalyticsChart();
+	resetAnalyticsChart();
+	$('#pageTitle').text("File Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>File information for created and edited files.</p>");
 	
@@ -437,7 +445,8 @@ function loadFileInformation() {
 }
 
 function loadPageInformation() {
-    resetAnalyticsChart();
+	resetAnalyticsChart();
+	$('#pageTitle').text("Page information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>Page information.</p>");
 	

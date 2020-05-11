@@ -968,59 +968,6 @@
 
 
 
-
-
-@media only screen and (max-device-width : 598px) {
-    .codeheader {
-        font-size: 15px !important;
-    }
-
-}
-
-@media only screen and (max-device-width : 528px) {
-    .codeheader {
-        display: none;
-    }
-
-}
-
-
-
-
-
-
-@media only screen and (max-width: 800px) {
-    #codeBurger {
-        display: table-cell;
-    }
-    .navButt img {
-        width: 20px;
-    }
-    #navHeading {
-        display: none;
-    }
-    #mobileNavHeading {
-        display: block;
-        height: 25px;
-        text-align: center;
-        color:black;
-        margin-top: 50px;
-    }
-
-    #burgerMenu {
-        position: absolute;
-        z-index: 9999;
-        background-color: var(--color-background-2);
-        border: 2px solid var(--color-border);
-        display: none;
-    }
-    .burgerOption {
-        padding: 15px 15px 15px 15px;
-    }
-    .err{
-    display: none;
-    }
-}
 @media only screen and (max-width: 364px) {
         #mobileNavHeading {
             font-size: 13px;
