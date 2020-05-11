@@ -19,6 +19,43 @@ $(function() {
 			drawLineChart(analytics.chartData);
 			break;
 	}
+
+	switch(localStorage.getItem('analyticsPage')) {
+		case "onlineUsers":
+			loadCurrentlyOnline();
+			break;			
+		case "passwordGuessing":
+			loadPasswordGuessing();
+			break;
+		case "osPercentage":
+			loadOsPercentage();
+			break;
+		case "browserPercentage":
+			loadBrowserPercentage();
+			break;
+		case "serviceUsage":
+			loadServiceUsage();
+			break;
+		case "serviceAvgDuration":
+			loadServiceAvgDuration();
+			break;
+		case "serviceCrashes":
+			loadServiceCrashes();
+			break;
+		case "fileInformation":
+			loadFileInformation();
+			break;
+		case "pageInformation":
+			loadPageInformation();
+			break;
+		case "userInformation":
+			loadUserInformation();
+			break;
+		case "generalStats":
+		default:
+			loadGeneralStats();
+			break;
+	}
 });
 
 //------------------------------------------------------------------------------------------------
