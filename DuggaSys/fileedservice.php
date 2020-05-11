@@ -64,7 +64,7 @@ if (checklogin() && $hasAccess) {
 		$counted = $result->counted;
 		if($counted == 0){
 			// Remove file link from database
-			$debug = "";
+			$succeeded = true;
 			if ($kind == 2 && isSuperUser($userid)){
 				$querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
 				$query = $pdo->prepare($querystring);
@@ -72,6 +72,7 @@ if (checklogin() && $hasAccess) {
 				if (!$query->execute()) {
 					$error = $query->errorInfo();
 					$debug = "Error updating file list " . $error[2];
+					$succeeded = false;
 				}
 
 				chdir("../");
@@ -82,7 +83,7 @@ if (checklogin() && $hasAccess) {
 					if (file_exists($currcwd)) unlink($currcwd);
 				}
 			}
-			if($debug==""){
+			if($succeeded){
 				$debug = "The file was deleted, refresh the page to see the changes.";
 			}
 		}else{
