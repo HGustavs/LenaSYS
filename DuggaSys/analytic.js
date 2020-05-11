@@ -20,6 +20,7 @@ $(function() {
 			break;
 	}
 
+	// Load the last page from localstorage
 	switch(localStorage.getItem('analyticsPage')) {
 		case "onlineUsers":
 			loadCurrentlyOnline();
@@ -376,7 +377,6 @@ function loadServiceCrashes() {
 			crashes[step.uuid].steps[step.eventType] = new Date(Number(step.timestamp));
 		});
 
-
 		function pad(n, width) {
 			n = n + '';
 			return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
@@ -493,7 +493,6 @@ function loadFileInformation() {
         });
     }
    
-	
     inputDateFrom.change(updateFileInformation);
     inputDateTo.change(updateFileInformation);
  
@@ -514,8 +513,6 @@ function loadPageInformation() {
         .append('<option value="codeviewer">codeviewer</option>')
         .appendTo($('#analytic-info'));
    
-       
-   
     function updatePageHitInformation(page){
         loadAnalytics(page + "Percentage", function(data) {
             var tableData = [["Page", "Hits"]];
@@ -535,7 +532,6 @@ function loadPageInformation() {
  
     function updatePieChartInformation(page, tableData){
         loadAnalytics(page + "Percentage", function(data) {
- 
             var tablePercentage = [["Courseid", "Percentage"]];
             for (var i = 0; i < data.length; i++) {
                 tablePercentage.push([
@@ -655,7 +651,6 @@ function loadUserInformation(){
 	
 	function updateCourseedInformation(){
         loadAnalytics("courseedInformation", function(data) {
-			localStorage.setItem('analyticsPage', 'courseedInformation');
 			var users = {};
             $.each(data, function(i, row) {
 				var user = row.username;
@@ -690,7 +685,6 @@ function loadUserInformation(){
     function updateCodeviewerInformation(){
 		var users = {};
         loadAnalytics("codeviewerInformation", function(data) {
-			localStorage.setItem('analyticsPage', 'codeviewerInformation');
             $.each(data, function(i, row) {
                 var user = row.username;
                
@@ -714,7 +708,6 @@ function loadUserInformation(){
     function updateDuggaInformation(){
 		var users = {};
         loadAnalytics("duggaInformation", function(data) {
-			localStorage.setItem('analyticsPage', 'duggaInformation');
             $.each(data, function(i, row) {
                 var user = row.username;
                
@@ -737,7 +730,6 @@ function loadUserInformation(){
     function updateUserLogInformation(users){
 		var users = {};
         loadAnalytics("userLogInformation", function(data) {
-			localStorage.setItem('analyticsPage', 'userLogInformation');
             $.each(data, function(i, row) {
                 var user = row.username;
                
