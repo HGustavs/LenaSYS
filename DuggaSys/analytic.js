@@ -78,23 +78,6 @@ function loadGeneralStats() {
 
 		$('#analytic-info').append(renderTable(tableData));
 		
-		// Active users
-		$('#analytic-info').append("<p class='analyticsDesc'>Active users the last 15 minutes</p>");
-		var tableData = [["User", "Page", "Last seen"]];
-		var activeUsers = data['stats']['activeUsers'];
-		for (var stat in activeUsers) {
-			if (activeUsers.hasOwnProperty(stat)) {
-				var date = new Date(activeUsers[stat].time + ' GMT');
-				tableData.push([
-					activeUsers[stat].username,
-					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
-					timeSince(date)
-				]);
-			}
-		}
-
-		$('#analytic-info').append(renderTable(tableData));
-
 		// Disk usage
 		var chartData = [];
 		chartData.push({
