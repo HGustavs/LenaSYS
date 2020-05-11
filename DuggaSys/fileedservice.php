@@ -12,6 +12,16 @@ if (isset($_SESSION['uid'])) {
     $userid = "1";
 }
 
+// Gets username based on uid, USED FOR LOGGING
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
 $cid = getOP('cid');
 $opt = getOP('opt');
 $coursevers = getOP('coursevers');
@@ -95,19 +105,19 @@ if (checklogin() && $hasAccess) {
 
             // Logging for global files
             $description="Global"." ".$filename;
-            logUserEvent($userid, EventTypes::EditFile, $description);
+            logUserEvent($userid, $username, EventTypes::EditFile, $description);
         } else if ($kind == 3) {
             $currcwd .= "/courses/" . $cid . "/" . $filename;
 
             // Logging for course local files
             $description="CourseLocal"." ".$filename;
-            logUserEvent($userid, EventTypes::EditFile, $description);
+            logUserEvent($userid, $username, EventTypes::EditFile, $description);
         } else if ($kind == 4) {
             $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
             
             // Logging for version local files
             $description="VersionLocal"." ".$filename;
-            logUserEvent($userid, EventTypes::EditFile, $description);
+            logUserEvent($userid, $username, EventTypes::EditFile, $description);
         }
 
         // Only edit the file if it already exisiting

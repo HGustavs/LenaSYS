@@ -1081,10 +1081,48 @@ div .navButt:hover {
 }
 
 @media only screen and (max-width: 800px) {
- #div2 {
- top: 80px;
+        #div2 {
+        top: 80px;
+        }
+        #codeBurger {
+        display: table-cell;
+    }
+    .navButt img {
+        width: 20px;
+    }
+    #navHeading {
+        display: none;
+    }
+    #mobileNavHeading {
+        display: block;
+        height: 25px;
+        text-align: center;
+        color:black;
+        margin-top: 50px;
+    }
 
-}   
+    #burgerMenu {
+        position: absolute;
+        z-index: 9999;
+        background-color: var(--color-background-2);
+        border: 2px solid var(--color-border);
+        display: none;
+    }
+    .burgerOption {
+        padding: 15px 15px 15px 15px;
+    }
+    .err{
+    display: none;
+    }
+        .codeheader {
+        display: none;
+    }
+    .box{
+        overflow: hidden;
+    }
+    
+}
+
 }
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -2722,7 +2760,7 @@ div.submit-button:disabled {
 }
 
 #fileLink .list--nomargin {
-  margin: 0 !important;
+  margin-bottom:20px;
 }
 
 .last {
@@ -3332,7 +3370,6 @@ padding: 10px;
 }
 
 .submit-button {
-  position: relative;
   background-color: var(--color-primary);
   border: 0px;
   width: 110px;
@@ -5454,7 +5491,7 @@ only screen and (max-device-width: 320px) {
 
 .fixed-action-button2 {
   position: absolute;
-  top: 565px;
+  top: auto;
   right: 24px;
   z-index: 1;
   touch-action: none;
@@ -5522,13 +5559,22 @@ only screen and (max-device-width: 320px) {
 
 /* FAB bubble list container */
 
-.fab-btn-list, .fab-btn-list2 {
+.fab-btn-list  {
   position: absolute;
   left: auto;
   width: 100%;
   list-style: none;
   text-align: center;
   bottom: 55px;
+}
+
+.fab-btn-list2 {
+  position: absolute;
+  left: auto;
+  width: 100%;
+  list-style: none;
+  text-align: center;
+  top: 25px;
 }
 
 
@@ -6777,3 +6823,4 @@ textarea#filecont {
   float: left;
   
 }
+

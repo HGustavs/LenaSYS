@@ -35,9 +35,32 @@
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
-	
+
+			// Analytics button
+			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
+				echo "<td class='menuButton' style='display: inline-block;'>";
+				echo "    <div class='access menuButton'>";
+  				echo "      <a id='accessBTN' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
+  				echo "        <img class='navButt' src='../Shared/icons/analytic.svg'>";
+				echo "      </a>";
+				echo "    </div>";
+				echo "</td>";
+			} else if($requestedService == "analytic.php") {
+				echo '<td class="navButt" id="home" title="Back"><a id="upIcon" class="navButt internal-link" href="../DuggaSys/courseed.php"><img src="../Shared/icons/Up.svg"></a></td>';
+				echo '<td class="navButt" id="GeneralStats" title="General Stats"><a onclick="loadGeneralStats()"><i class="fas fa-stream faNavheader"></i></a></td>';
+				// echo '<td class="navButt" id="CurrentlyOnline" title="Currently Online"><a onclick="loadCurrentlyOnline()"><i class="fas fa-users faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="PasswordGuessing" title="Password guessing"><a onclick="loadPasswordGuessing()"><i class="fas fa-key faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="OSPercentage" title="OS Percentage"><a onclick="loadOsPercentage()"><i class="fas fa-laptop faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Browserpercentage" title="Browser percentage"><a onclick="loadBrowserPercentage()"><i class="fa fa-chrome faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Serviceusage" title="Service usage"><a onclick="loadServiceUsage()"><i class="fas fa-chart-line faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Servicespeed" title="Service speed"><a onclick="loadServiceAvgDuration()"><i class="fas fa-tachometer-alt faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Servicecrashes" title="Service crashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Fileinformation" title="File information"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Pageinformation" title="Page information"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe faNavheader"></i></a></td>';
+			}
+
 			if($noup!='NONE') {
-				  echo "<td class='navButt' id='announcement' title='Announcement' style='border:1px solid white;'><img src=''></td>";
+				  echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
@@ -179,7 +202,7 @@
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
 					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
-					echo   "<span>";
+					echo   "<span id='filterButton'>";
 					echo     "<img class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";
@@ -192,7 +215,7 @@
 	
 	    if($requestedService=="resulted.php" ){
 					echo "<td id='sort' class='navButt' onmouseover='hovers();' onmouseleave='leaves();'>";
-					echo   "<span>";
+					echo   "<span id='sortButton'>";
 					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 					echo     "<div id='dropdowns' class='dropdown-list-container' style='z-index: 1'>";
 					echo     "</div>";
@@ -273,6 +296,7 @@
 		$(".dropdown-list-container").css("display", "none");
 	}
 
+/*Shadow hover effect for home button START -------------*/
 document.getElementById("homeIcon").addEventListener("mouseover", mouseOverHome);
 document.getElementById("homeIcon").addEventListener("mouseout", mouseOutHome);
 
@@ -293,7 +317,10 @@ function mouseOutHome() {
       images[0].src = '../Shared/icons/Home.svg';
    }
 }
+/*Shadow hover effect for home button END -------------*/
 
+
+/*Shadow hover effect for back button START -------------*/
 var backButton = document.getElementById("upIcon");
 if(backButton){
 	backButton.addEventListener("mouseover", mouseOverUp);
@@ -318,7 +345,60 @@ function mouseOutUp() {
    }
 }
 
+/*Shadow hover effect for back button END -------------*/
 
+
+/*Shadow hover effect for filter button START -------------*/
+var filterButton = document.getElementById("filterButton");
+if(filterButton){
+	filterButton.addEventListener("mouseover", mouseOverFilter);
+	filterButton.addEventListener("mouseout", mouseOutFilter);
+}
+
+function mouseOverFilter() {
+	var obj = document.getElementById("filterButton");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/filter_iconShadow.svg';
+   }
+}
+
+function mouseOutFilter() {
+	var obj = document.getElementById("filterButton");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/filter_icon.svg';
+   }
+}
+/*Shadow hover effect for filter button END -------------*/
+
+/*Shadow hover effect for sort button START -------------*/
+var sortButton = document.getElementById("sortButton");
+if(sortButton){
+	sortButton.addEventListener("mouseover", mouseOverSort);
+	sortButton.addEventListener("mouseout", mouseOutSort);
+}
+
+function mouseOverSort() {
+	var obj = document.getElementById("sortButton");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/sort_whiteShadow.svg';
+   }
+}
+
+function mouseOutSort() {
+	var obj = document.getElementById("sortButton");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/sort_white.svg';
+   }
+}
+/*Shadow hover effect for sort button END -------------*/
 
 </script>
 <script type="text/javascript">
