@@ -145,12 +145,15 @@ $codeLinkQuery->execute();
                     <input type='hidden' id='kind' name='kind' value='Toddler'/>
                     <div class='inputwrapper filePopUp'>
                         <span>Upload File:</span>
-                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple"/>
+                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" placeholder="hej.text"/>
+                        
                         <div class="fileUploadInfo">
                             <h1>Allowed Files</h1>
                             <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
                         </div>
                     </div>
+                    
+                    
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
                         <input style="width:380px" id="uploadedlink" class="textinput" name="link"
@@ -160,18 +163,39 @@ $codeLinkQuery->execute();
                 <div id='uploadbuttonname'>
                     <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);"/>
                 </div>
-
                 <div style='display:none;' id='errormessage'></div>
             </form>
 
            </div>
             <div id="createNewEmptyFile" style="display: none;">
-                <form action="#" method="POST">
+                <form enctype="multipart/form-data" action="filereceive.php" method="POST" onsubmit="return validateDummyFile();">
+                    <input type='hidden' id='ecourseid' name='courseid' value='Toddler'/>
+                    <input type='hidden' id='ecoursevers' name='coursevers' value='Toddler'/>
+                    <input type='hidden' id='ekind' name='kind' value='Toddler'/>
                     <label for="newEmptyFile">File name and type e.g greger.txt</label>
-                    <input type="text" id="newEmptyFile" name="newEmptyFile" placeholder="Greger.txt">
-
-                    <input type="submit" name="createBtn" value="Create">
-
+                    <!-- .svg| -->
+                    <ul style="padding-left: 0px; list-style-type: none; display: none;" id="dummyFileErrorList"></ul>
+                    <input type="text" id="newEmptyFile" name="newEmptyFile[]" placeholder="Greger.txt">
+                    <span id="spankind">Kind:</span>
+                    <select name ="efilekind[]" id="selectdir">
+                    <?php
+                    if(isSuperUser($_SESSION['uid'])){
+                        echo '
+                            <option value="GFILE">Global</option>
+                           
+                        ';
+                    }
+                    if(isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w')){
+                    echo '
+                    <option value="MFILE">Course Local</option>
+                    <option value="LFILE">Version Local</option>
+                    ';
+                    }
+                    ?>
+                    <select>
+                    <div id='uploadbuttonname'>
+                        <input type="submit" style="position: relative; top:25px;" onclick="uploadFile('EFILE');"/>
+                    </div>
                 </form>
             </div>
 

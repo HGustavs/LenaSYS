@@ -20,6 +20,17 @@ if(isset($_SESSION['uid'])){
 	$userid="guest";
 }
 
+// Gets username based on uid, USED FOR LOGGING
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
+
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
@@ -209,7 +220,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 						// Logging for newly added items
 						$description=$sectname;
-                        logUserEvent($userid,EventTypes::SectionItems,$sectname);
+                        logUserEvent($userid, $username, EventTypes::SectionItems,$sectname);
 
 					}
 
@@ -358,7 +369,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 						// Logging for editing course version
 						$description=$courseid." ".$versid;
-						logUserEvent($userid, EventTypes::EditCourseVers, $description);	
+						logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);	
 
 				} else if(strcmp($opt,"CHGVERS")===0) {
 					$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
