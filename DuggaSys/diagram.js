@@ -710,7 +710,7 @@ function removeFreedrawPoint(symbol , pointId) {
     symbol.segments.splice(toRemove[0], 1);
     // Adds new segment between the points that were connected to removed point
     symbol.segments.splice(toRemove[0], 0, newSegment);
-
+    symbol.targeted = false;
     // Hide removed point in center
     points[pointId].x = 0;
     points[pointId].y = 0;
