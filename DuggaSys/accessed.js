@@ -212,10 +212,9 @@ function checkSsnError(ssn)
 	switch(length) {
 		case 11: case 13:
 			const formatTest = /\d{6,8}-\d{4}/;	// Expected format
-			if(formatTest.test(ssn)) {
+			if(formatTest.test(ssn))
 				break;
-			}
-			
+						
 		default:
 			return 'Incorrect SSN format. Should be ######-#### or ########-####.';
 	}
@@ -224,24 +223,34 @@ function checkSsnError(ssn)
 	const mm = ssn.substring(delimiter-4, delimiter-2);
 	const yyyy = (length === 13) ? ssn.substring(0, 4) : 19+ssn.substring(0, 2);	// Ensure yyyy
 	const birthNum = ssn.substring(delimiter+1, delimiter+4);
-	const controlDigit = ssn.substring(length-1);
-	const ssnDate = new Date(yyyy + '-' + mm + '-' + dd);
+	const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
 
-	if(ssnDate.getTime() > Date.now()) {			// Make sure date of SSN is not in the future
+	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
 		return 'Incorrect date in SSN. The future is not here yet';
-	}
 
 	if(isNaN(ssnDate)								// Make sure date is valid (i.e. not 87th April)
 		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
 		return 'Invalid date in SSN.';
 	}
 
+	const controlDigitString = yyyy.substring(2, 4) + mm + dd + birthNum;
+	var ccd = 0;	// Calculated Control Digit
+	for(var i = 0; i < controlDigitString.length; i++) {
+		var n = parseInt(controlDigitString.charAt(i));
+		if(i%2 === 0) n *= 2;			// Every other digit should be multiplied by 2
+		if(n >= 10) n -= 9;				// If value is >= 10, 9 should be removed
+
+		ccd += n;	// Add value to the calculation in progress
+	}
+
+	ccd = 10 - (ccd%10);		// 10 - the last digit of the calculation
+	if(ccd === 10) ccd = 0;		// If value is 10, remove the left digit... Leads to ccd = 0
+
+	if(ccd != ssn.substring(length-1))	// Compare calculated to given control digit
+		return 'Incorrect control digit in SSN. Expected value: ' + ccd;
+
 	return null;	// The provided SSN is correct!
 }
-
-const testSSN = '970229-1234';
-console.log(testSSN);
-console.log(checkSsnError(testSSN));
 
 var inputVerified;
 
