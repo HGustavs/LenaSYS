@@ -50,6 +50,24 @@
   ob_start();
 
   //---------------------------------------------------------------------------------------------------
+  // Function that checks if permissions (chown/chgrp) are sat.
+  //---------------------------------------------------------------------------------------------------
+  function isPermissionsSat($crntFilePath){
+    $permissionsSat = false;
+    if(!mkdir("{$crntFilePath}/testPermissionsForInstallationToStartDir", 0060)) {
+      $permissionsSat = false;
+    }
+    else {
+      if (!rmdir("{$crntFilePath}/testPermissionsForInstallationToStartDir")) {
+        $permissionsSat = false;
+      } else {
+        $permissionsSat = true;
+      }
+    }
+    return $permissionsSat;
+  }
+
+  //---------------------------------------------------------------------------------------------------
   // getUsername: Returns username based on value from cdirname(), called to set variable username
   //---------------------------------------------------------------------------------------------------
   function getUsername($currentPath) {
@@ -69,7 +87,8 @@
   //---------------------------------------------------------------------------------------------------
   $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
   $operatingSystem = PHP_OS_FAMILY;
-  $username = getUsername($putFileHere)
+  $username = getUsername($putFileHere);
+  $isPermissionsSat = isPermissionsSat($putFileHere);
 ?>
 
 <!-- Modal used for the permission-popup -->
@@ -85,6 +104,7 @@
   var owner = <?php echo json_encode($username); ?>;
   var filePath = <?php echo json_encode($putFileHere); ?>;
   var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
+  var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
   var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
   var modal = document.getElementById('warning'); // Get the modal
 
@@ -100,7 +120,7 @@
     </div>`;
   }
 
-  if (operatingSystem != "Windows"){
+  if (operatingSystem != "Windows" && isPermissionsSat != true){
     modal.style.display = "block";
   }
 </script>
@@ -416,6 +436,7 @@
       if($isPermissionsSat) {
         echo "<span id='successText' />Permissions on {$putFileHere} sat correctly.</span><br>";
       } else {
+        $errors++;
         exit ("<span id='failText' />Permissions on {$putFileHere} not sat correctly, please restart the installation.</span><br>
           <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
       }
@@ -711,25 +732,6 @@
     return $isAllCredentialsFilled;
   }
 
-  //---------------------------------------------------------------------------------------------------
-  // Function that checks if permissions (chown/chgrp) are sat.
-  //---------------------------------------------------------------------------------------------------
-  function isPermissionsSat($crntFilePath){
-    $permissionsSat = false;
-    if(!mkdir("{$crntFilePath}/testPermissionsForInstallationToStartDir", 0060)) {
-      $errors++;
-      $permissionsSat = false;
-    }
-    else {
-      if (!rmdir("{$crntFilePath}/testPermissionsForInstallationToStartDir")) {
-        $errors++;
-        $permissionsSat = false;
-      } else {
-        $permissionsSat = true;
-      }
-    }
-    return $permissionsSat;
-  }
 
   //---------------------------------------------------------------------------------------------------
   // Function that deletes a user from database
