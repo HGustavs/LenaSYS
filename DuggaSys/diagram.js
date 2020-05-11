@@ -6030,7 +6030,30 @@ function deleteLayerView(){
     SaveState()
 }
 function deleteLayerActive(){
-
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+    let saveIndex;
+    let deleteArray = []
+    for(let i = 0; i < spans.length;i++){
+        if(spans[i].classList.contains("isActive")){
+            let deleteLayer = spans[i].parentNode;
+            saveIndex = spans[i].id.replace('_Active','');
+            deleteLayer.parentNode.removeChild(deleteLayer);
+        }
+    }
+    for(let i = 0;i < diagram.length;i++){
+        if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    let elem = document.getElementById(saveIndex);
+    elem.parentNode.removeChild(elem);
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState() 
 }
 function fixviewLayer(){
     let parentNode = document.getElementById("viewLayer");
