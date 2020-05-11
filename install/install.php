@@ -110,6 +110,8 @@
 
   if (operatingSystem != "Windows" && isPermissionsSat != true){
     modal.style.display = "block";
+  } else {
+    modal.style.display = "none";
   }
 </script>
 
