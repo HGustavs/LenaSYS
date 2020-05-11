@@ -496,20 +496,12 @@ function init() {
     updateGraphics(); 
 }
 
-//--------------------------------------------------------------
-// Generates an example of a ER-diagram
-//--------------------------------------------------------------
+//------------------------------------------
+// Generates example diagram of passed file.
+//------------------------------------------
 
-function generateERExampleCode() {
-    var fileContent = $.get("exampleER.txt", data => LoadImport(data));
-}
-
-//--------------------------------------------------------------------
-// Generates an example of a UML-diagram
-//--------------------------------------------------------------------
-
-function generateUMLExampleCode() {
-    var fileContent = $.get("exampleUML.txt", data => LoadImport(data));
+function generateExampleCode(url) {
+    $.get(url, data => LoadImport(data));
 }
 
 //--------------------------------------------------------------------

@@ -372,12 +372,11 @@
                     </div>
                     <div class="drop-down-divider">
                     </div>
-                    <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="generateERExampleCode();">Generate example ER-diagram</span>
-                    </div>
-                    <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="generateUMLExampleCode();">Generate example UML-diagram</span>
-                    </div>
+                    <?php foreach($exampleDiagramFilePaths as $filePath): ?>
+                        <div class="drop-down-item" tabindex="0">
+                            <span class="drop-down-option" onclick="generateExampleCode('<?=$filePath;?>');">Generate <?=basename($filePath);?></span>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="menu-drop-down">
