@@ -64,6 +64,7 @@ if (checklogin() && $hasAccess) {
 		$counted = $result->counted;
 		if($counted == 0){
 			// Remove file link from database
+			$debug = "";
 			if ($kind == 2 && isSuperUser($userid)){
 				$querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
 				$query = $pdo->prepare($querystring);
@@ -80,6 +81,9 @@ if (checklogin() && $hasAccess) {
 					$currcwd .= "/courses/global/" . $filename;
 					if (file_exists($currcwd)) unlink($currcwd);
 				}
+			}
+			if($debug==""){
+				$debug = "The file was deleted, refresh the page to see the changes.";
 			}
 		}else{
 			$debug = "This file is part of a code example. Remove it from there before removing the file.";
