@@ -7,6 +7,13 @@
   <script src="install_defer.js" defer></script>
 </head>
 <body>
+<!-- Modal used for the permission-popup -->
+<div id='warning' class='modal'>
+      <div class='modal-content'>
+        <span title='Close pop-up' class='close'>&times;</span>
+          <span id='dialogText'></span>
+      </div>
+</div> 
 <?php
   // Saving away old execution time setting and setting new to 120 (default is 30).
   // this is done in order to avoid a php timeout, especially on windows where Database
@@ -91,34 +98,15 @@
   $isPermissionsSat = isPermissionsSat($putFileHere);
 ?>
 
-<!-- Modal used for the permission-popup -->
-<div id='warning' class='modal'>
-      <div class='modal-content'>
-        <span title='Close pop-up' class='close'>&times;</span>
-          <span id='dialogText'></span>
-      </div>
-</div> 
-
 <!-- Script for setting the permission-modal -->
 <script>
   var owner = <?php echo json_encode($username); ?>;
   var filePath = <?php echo json_encode($putFileHere); ?>;
   var operatingSystem = <?php echo json_encode(PHP_OS_FAMILY); ?>;
   var isPermissionsSat = <?php echo json_encode($isPermissionsSat); ?>;
-  var modalDialogText = document.getElementById('dialogText'); // Get the dialogText of the modal
   var modal = document.getElementById('warning'); // Get the modal
 
   setPermissionModalText(owner, filePath, operatingSystem);
-
-  //---------------------------------------------------------------------------------------------------
-  // setPermissionModalText, function to set the text of the permission-modal, getPermission is in install_entry
-  //---------------------------------------------------------------------------------------------------
-  function setPermissionModalText(fOwner, fFilePath, fOperatingSystem){
-    modalDialogText.innerHTML=	
-    `<div>
-      ${getPermissionModalText(fOwner, fFilePath, fOperatingSystem)}
-    </div>`;
-  }
 
   if (operatingSystem != "Windows" && isPermissionsSat != true){
     modal.style.display = "block";
@@ -130,7 +118,7 @@
   <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
 </div>
 
-<!-- START OF INPUT FORM SECTION -->
+<!-- Input Section -->
 <form action="install.php?mode=install" method="post">
   <!-- Input-wrapper holding headings and slides (pages) -->
   <div id="inputWrapper">
@@ -143,8 +131,8 @@
       <div class="inputNotFirst" id="th5"><h2>Submit</h2></div>
     </div>
 
+    <!-- PHP-SCRIPT to prefill credentials from coursesyspw - also logic for filling in credentials-->
     <?php
-      // Prefill existing credentials, exluding password
       $dbUsername = "";
       $dbHostname = "";
       $dbName = "";
@@ -190,11 +178,9 @@
       echo 'Enter hostname (e.g localhost). <br>';
       echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
       echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
-
         if($dbUsername || $dbHostname || $dbName || $dbPassword){
           echo "<br><b>Values from existing coursesyspw.php were used </b><br>";
         }
-
       echo '</div>';
     ?>
 
@@ -273,11 +259,9 @@
   <!-- Empty footer to show a nice border at bottom -->
   <div id="inputFooter"></div>
 </form>
-<!-- END OF INPUT FORM SECTION -->
 
-<!-- START of install section. When form is submitted mode will be changed to install and this will run
-  -- Flush and ob_flush is used after every output in progress to dynamically show output when something was done.
-  -->
+
+<!-- Install Section -->
 <?php 
   # Installer
   if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
@@ -899,6 +883,5 @@
     return true;
   }
 ?>
-<!-- END OF INSTALL SECTION -->
 
 </body>
