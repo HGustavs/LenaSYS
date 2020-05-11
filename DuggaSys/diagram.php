@@ -651,7 +651,7 @@
     </div>
     <!-- The import menu. Default state is display: none; -->
     <div id="import" class='loginBoxContainer importDiagram'>
-        <div class='loginBox'>
+        <div class='loginBox' style="width:40%">
             <div class='loginBoxheader'>
                 <h3>Import</h3>
                 <div class='cursorPointer' onclick='closeImportDialog();'>
@@ -660,9 +660,9 @@
             </div>
             <div class='table-wrap'>
                 <div class="importWrap">
-                    <div>
-                        <input type="file" class="import-file-button" id="importFile" accept=".txt, text/plain" />
-                        <label for="importFile" id="importLabel" class="submit-button custom-file-upload">Choose a file</label>
+                    <div style="width:100%;">
+                        <input type="file" class="import-file-button" id="importFile" accept=".txt, text/plain"  />
+                        <label for="importFile" id="importLabel" class="submit-button custom-file-upload" style="width:100%">Choose a file</label>
                     </div>
                     <div id="importError" class="importError">
                         <span>Only .txt-files allowed</span>
