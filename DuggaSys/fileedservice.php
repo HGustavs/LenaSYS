@@ -64,7 +64,6 @@ if (checklogin() && $hasAccess) {
 		$counted = $result->counted;
 		if($counted == 0){
 			// Remove file link from database
-			$succeeded = true;
 			if ($kind == 2 && isSuperUser($userid)){
 				$querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
 				$query = $pdo->prepare($querystring);
@@ -72,7 +71,6 @@ if (checklogin() && $hasAccess) {
 				if (!$query->execute()) {
 					$error = $query->errorInfo();
 					$debug = "Error updating file list " . $error[2];
-					$succeeded = false;
 				}
 
 				chdir("../");
@@ -82,9 +80,6 @@ if (checklogin() && $hasAccess) {
 					$currcwd .= "/courses/global/" . $filename;
 					if (file_exists($currcwd)) unlink($currcwd);
 				}
-			}
-			if($succeeded){
-				$debug = "The file was deleted, refresh the page to see the changes.";
 			}
 		}else{
 			$debug = "This file is part of a code example. Remove it from there before removing the file.";
@@ -101,7 +96,6 @@ if (checklogin() && $hasAccess) {
 			}
 			$result = $query0->fetch(PDO::FETCH_OBJ);
 			$counted = $result->counted;
-			$succeeded = true;
 			if($counted == 0){
 				$querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
 				$query = $pdo->prepare($querystring);
@@ -109,7 +103,6 @@ if (checklogin() && $hasAccess) {
 				if (!$query->execute()) {
 					$error = $query->errorInfo();
 					$debug = "Error updating file list " . $error[2];
-					$succeeded = false;
 				}
 
 				chdir("../");
@@ -125,10 +118,6 @@ if (checklogin() && $hasAccess) {
 
 				// Unlinks (deletes) a file from the directory given if it exists.
 				if (file_exists($currcwd)) unlink($currcwd);
-
-				if($succeeded){
-					$debug = "The file was deleted, refresh the page to see the changes.";
-				}
 			}else{
 				$debug = "This file is part of a code example. Remove it from there before removing the file.";
 			}
