@@ -1864,6 +1864,25 @@ function validateDate2(ddate, dialogid) {
     }
 }
 
+function validateSectName(name, dialogid){
+  var emotd = document.getElementById(name);
+  var Emotd = /^[^"]+$/;
+  // var EmotdRange = /^.{0,50}$/;
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd)) {
+    emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    x4.style.display = "none";
+    window.bool9 = true;
+  } else {
+    emotd.style.borderColor = "#E54";
+    x4.style.display = "block";
+    emotd.style.borderWidth = "2px";
+    window.bool9 = false;
+  }
+
+}
+
 /*Validates all forms*/
 
 function validateForm(formid) {

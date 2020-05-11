@@ -256,8 +256,9 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onchange="validateSectName('sectionname','dialog10')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
+				<p id="dialog10" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Error</p>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
