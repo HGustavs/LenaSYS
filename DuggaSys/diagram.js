@@ -5372,7 +5372,7 @@ function movemode(e, t) {
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
-        if (uimode == "CreateFigure") {
+        if (uimode == "CreateFigure" && numberOfPointsInFigure > 0) {
             cancelFreeDraw();
         }
         buttonStyle.style.visibility = 'visible';
