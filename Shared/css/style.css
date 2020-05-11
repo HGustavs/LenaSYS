@@ -5847,6 +5847,10 @@ only screen and (max-device-width: 320px) {
   .fileView{
     width: 100%;
   }
+  .announcementCard,
+  #announcementForm{
+    font-size: .8rem;
+  }
 }
 
 .fileView h1 {
