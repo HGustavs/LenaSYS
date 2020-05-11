@@ -1607,7 +1607,10 @@ $(window).load(function () {
     }
 
   });
- 
+  $(".createBtn").click(function(){
+    sessionStorage.setItem('closeUpdateForm', true);
+  });
+  
   retrieveAnnouncementAuthor();
   retrieveCourseProfile();
   retrieveAnnouncementsCards();
@@ -1716,6 +1719,7 @@ function handleResponse(xhttp, updateannouncementid){
   $("#announcementForm .announcementFormcontainer hr").after('<input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'">');
 
 }
+
 //announcement card grid and list view
 function displayListAndGrid(){
   $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i class="fa fa-bars"></i> List</button>'+
@@ -1764,6 +1768,7 @@ function displayAnnouncementForm(reload){
 
   }else{
     $("#announcementForm").hide();
+    $("#displayAnnouncements").css("margin-top", "0px");
     sessionStorage.removeItem("closeUpdateForm");
 
   }

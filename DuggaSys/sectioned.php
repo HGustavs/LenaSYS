@@ -120,6 +120,7 @@
 		<!-- Announcement box -->
 		<div id="announcementBoxOverlay">
 			<div id="announcementBox">
+				<div id="formContainer">
 				<?php 
 				$_SESSION['courseid'] = $_GET['courseid'];
 				$_SESSION['coursename'] = $_GET['coursename'];
@@ -127,6 +128,7 @@
 				include "../Shared/announcementBox.php"; 
 
 				?>
+				</div>
 				<div id="displayAnnouncements">
 					<div id="announcementCards"></div>
 				</div>

@@ -354,12 +354,13 @@ p {
 }
 /*Announcement box*/
 #announcementBoxOverlay{
-  position: fixed; 
+  position: relative; 
+  display: none;
   background-color:#fff;
-  padding: 10px;
   z-index: 1004; 
   left: 0;
-  top: 50px;
+  top: 0;
+  bottom: 0;
   width: 100%; 
   height: 100%; 
   overflow: auto;
@@ -368,13 +369,9 @@ p {
 
   
 }
-#announcementBox{
-  margin-bottom: 450px;
-}
 /*Start of announcement form*/
-#displayAnnouncements,
-.announcementForm{
-  margin: 20px;
+#displayAnnouncements{
+  margin: 20px 0 0 0;
 }
 .announcementForm{
   width: 800px;
