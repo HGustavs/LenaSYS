@@ -407,7 +407,7 @@
     // All the following code of the long if-statement does the install
     //---------------------------------------------------------------------------------------------------
     echo "<div id='installationProgressWrap'>";
-      $isPermissionsSat = isPermissionsSat();
+      $isPermissionsSat = isPermissionsSat($putFileHere);
       $isAllCredentialsFilled = isAllCredentialsFilled();
 
       //---------------------------------------------------------------------------------------------------
@@ -714,14 +714,14 @@
   //---------------------------------------------------------------------------------------------------
   // Function that checks if permissions (chown/chgrp) are sat.
   //---------------------------------------------------------------------------------------------------
-  function isPermissionsSat(){
+  function isPermissionsSat($crntFilePath){
     $permissionsSat = false;
-    if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0060)) {
+    if(!mkdir("{$crntFilePath}/testPermissionsForInstallationToStartDir", 0060)) {
       $errors++;
       $permissionsSat = false;
     }
     else {
-      if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
+      if (!rmdir("{$crntFilePath}/testPermissionsForInstallationToStartDir")) {
         $errors++;
         $permissionsSat = false;
       } else {
