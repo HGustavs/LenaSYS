@@ -6134,6 +6134,86 @@ function getcorrectlayer(){
         return "Layer_1";
 }
 
+function deleteLayerView(){
+    let parentNode = document.getElementById("viewLayer");
+    let deleteArray = []
+    for(let i = 0;i < diagram.length;i++){
+        if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    for(let i = 0; i < showLayer.length; i++){
+        let deleteLayer = document.getElementById(showLayer[i]).parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+        deleteLayer = document.getElementById(showLayer[i]+"_Active").parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+    }
+    showLayer = [];
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState()
+}
+function deleteLayerActive(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+    let saveIndex;
+    let deleteArray = []
+    for(let i = 0; i < spans.length;i++){
+        if(spans[i].classList.contains("isActive")){
+            let deleteLayer = spans[i].parentNode;
+            saveIndex = spans[i].id.replace('_Active','');
+            deleteLayer.parentNode.removeChild(deleteLayer);
+        }
+    }
+    for(let i = 0;i < diagram.length;i++){
+        if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    let elem = document.getElementById(saveIndex);
+    elem.parentNode.removeChild(elem);
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState() 
+}
+function fixviewLayer(){
+    let parentNode = document.getElementById("viewLayer");
+    let spans = parentNode.getElementsByTagName('span');
+
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i;
+    }
+}
+function fixActiveLayer(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i +"_Active";
+    }
+}
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;

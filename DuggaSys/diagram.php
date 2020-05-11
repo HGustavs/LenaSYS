@@ -391,7 +391,7 @@
                         <span class="drop-down-option" onclick="createLayer()">Create Layer</span>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="deleteLayer()">Delete selected layers</span>
+                        <span class="drop-down-option" onclick="deleteLayerView()">Delete selected layers</span>
                     </div>
                 </div>
             </div>
@@ -409,7 +409,7 @@
                         <span class="drop-down-option" onclick="createLayer()">Create Layer</span>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="deleteLayer()">Delete selected layers</span>
+                        <span class="drop-down-option" onclick="deleteLayerActive()">Delete selected layers</span>
                     </div>
                 </div>
             </div>
