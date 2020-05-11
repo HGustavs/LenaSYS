@@ -6004,25 +6004,48 @@ function getcorrectlayer(){
         let fixID = getLayer.replace('_Active','');
         return fixID
     }
-        return "Layer_1"
+    return "Layer_1"
 }
 
 function deleteLayerView(){
-    console.log(showLayer);
-    diagram.deleteObject(diagram[0]);
+    let parentNode = document.getElementById("viewLayer");
     let deleteArray = []
     for(let i = 0;i < diagram.length;i++){
-        console.log(diagram[i].properties.setLayer)
-        if(showLayer.indexOf(diagram[i].properties.setLayer)){
+        if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
             deleteArray.push(diagram[i]);
         }
     }
-    console.log(deleteArray);
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    for(let i = 0; i < showLayer.length; i++){
+        let deleteLayer = document.getElementById(showLayer[i]).parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+    }
+    showLayer = [];
+    fixviewLayer();
+    SaveState()
 }
 function deleteLayerActive(){
 
 }
+function fixviewLayer(){
+    let parentNode = document.getElementById("viewLayer");
+    let spans = parentNode.getElementsByTagName('span');
 
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        let saveId =spans[i-1].id
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i;
+    }
+}
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;
