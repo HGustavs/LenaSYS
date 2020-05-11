@@ -732,7 +732,6 @@
     return $isAllCredentialsFilled;
   }
 
-
   //---------------------------------------------------------------------------------------------------
   // Function that deletes a user from database
   //---------------------------------------------------------------------------------------------------
@@ -919,45 +918,6 @@
   /* Show/Hide installation progress. */
   function toggleInstallationProgress(){
     $('#installationProgressWrap').toggle(500);
-  }
-
-  /* Function to select and copy text inside code boxes at end of installation. */
-  function selectText(containerid) {
-    /* Get selection inside div. */
-    var text = document.getElementById(containerid);
-    if (document.body.createTextRange) {
-      var range = document.body.createTextRange();
-      range.moveToElementText(text);
-      range.select();
-    } else {
-      var selection = window.getSelection();
-      var range = document.createRange();
-      range.selectNodeContents(text);
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
-
-    /* Copy selection. */
-    document.execCommand("copy");
-
-    /* Remove selection. */
-    window.getSelection().removeAllRanges();
-
-    /* Show the 'copied' text to let user know that text was copied to clipboard.
-    * After show animation is done it will call hide function to hide text again.
-    */
-    if (containerid === "codeBox1") {
-      $("#copied1").show("slide", {direction: "left" }, 1000);
-      window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
-    } else if (containerid === "codeBox2") {
-      $("#copied2").show("slide", {direction: "left" }, 1000);
-      window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
-    }
-  }
-
-  /* Hide 'copied' text */
-  function hideCopiedAgain(text) {
-    $(text).hide("slide", {direction: "right"}, 1000)
   }
 </script>
 
