@@ -57,6 +57,7 @@
 				echo '<td class="navButt" id="Servicecrashes" title="Service crashes"><a onclick="loadServiceCrashes()"><i class="fas fa-car-crash faNavheader"></i></a></td>';
 				echo '<td class="navButt" id="Fileinformation" title="File information"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf faNavheader"></i></a></td>';
 				echo '<td class="navButt" id="Pageinformation" title="Page information"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="Userinformation" title="User information"><a onclick="loadUserInformation()"><i class="fas fa-user faNavheader"></i></a></td>';
 			}
 
 			if($noup!='NONE') {
