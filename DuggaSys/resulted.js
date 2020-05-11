@@ -797,13 +797,21 @@ function renderCell(col, celldata, cellid) {
 			str += "</div>";
 			str += "</div>";
 			return str;
-			
+
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
+			var unassignedCheck = false;
 			// color based on pass,fail,pending,assigned,unassigned
 			str = "<div class='resultTableCell resultTableMini ";
 			if (celldata.kind == 4) {
 				str += "dugga-moment ";
 			}
+			else if (celldata.grade != null) {
+				// do nothing for the purpose of being able to generate styling for empty cells
+			}
+			else {
+				str += "dugga-empty ";
+			}
+
 			if (celldata.grade > 1) {
 				str += "dugga-pass";
 			} else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {
@@ -817,7 +825,9 @@ function renderCell(col, celldata, cellid) {
 				str += "dugga-assigned";
 			} else {
 				str += "dugga-unassigned";
+				unassignedCheck = true;
 			}
+			
 			str += "'>";
 			str += "</div>";
 			return str;
