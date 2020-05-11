@@ -1826,18 +1826,10 @@ function showLessOrMoreAnnouncements(){
       $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
   }else if(announcementCardLength > 6){
       $(".announcementCard:gt(5)").hide();
-      $("#displayAnnouncements").append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
+      $("#displayAnnouncements").append('<button class="showAllAnnouncement">'+
         '<span class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
-        '</button></div>');
+        '</button>');
   }
-
-  $('.showAllAnnouncement').on('click', function() {
-    //toggle elements with class .ty-compact-list that their index is bigger than 2
-    $('.announcementCard:gt(5)').toggle();
-    //change text of show more element just for demonstration purposes to this demo
-    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
-  });
-
 
 }
 // Checks if <a> link is external

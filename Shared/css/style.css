@@ -547,11 +547,6 @@ p {
   color: white;
 }
 /*Show all the announcements*/
-.showmoreBtnContainer{
-  float: left;
-  width: 100%;
-  margin-bottom: 20px;
-}
 .showAllAnnouncement{
   padding: 10px 15px 10px 15px;
   font-family: 'Varela', sans-serif;
