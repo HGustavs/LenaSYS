@@ -2142,7 +2142,7 @@ function toggleComments(event) {
 		hideComment = true;
       	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     }
-	updateGraphics();
+    updateGraphics();
     localStorage.setItem("hideComment", hideComment);
 }
 
