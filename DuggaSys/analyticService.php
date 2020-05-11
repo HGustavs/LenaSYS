@@ -110,14 +110,19 @@ function generalStats() {
 
 	$memFreePercent = 100 - $inUsePercent;
 
+	if($memInUse > $memFree) {
+		$generalStats['disk']['inUsePercent'] = $inUsePercent;
+		$generalStats['disk']['memFreePercent'] = $memFreePercent;
+	} else {
+		$generalStats['disk']['inUsePercent'] = $memFreePercent;
+		$generalStats['disk']['memFreePercent'] = $inUsePercent;
+	}
 
 
-
-	$generalStats['disk']['inUse'] = $memInUse;
-	$generalStats['disk']['memFree'] = $memFree;
+	$generalStats['disk']['inUse'] = convertBytesToHumanreadable($memInUse);
+	$generalStats['disk']['memFree'] = convertBytesToHumanreadable($memFree);
 	$generalStats['disk']['memTotal'] = convertBytesToHumanreadable(disk_total_space("."));
-	$generalStats['disk']['inUsePercent'] = $inUsePercent;
-	$generalStats['disk']['memFreePercent'] = $memFreePercent;
+
 
 
 	// $current = disk_free_space(".");
