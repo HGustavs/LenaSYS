@@ -1949,8 +1949,9 @@ function validateForm(formid) {
   }
     if (formid === "editsectionname"){
       if (window.bool10 === true ) {
-        alert('Version updated');
+        alert('Item updated');
         updateItem();
+        updateDeadline();
       } else {
         alert("You have entered incorrect information");
       }
