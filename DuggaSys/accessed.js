@@ -160,9 +160,10 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	// Verify SSN <= 20 characters
-	if (input[0].length > 20) {
-		alert('Input exceeded max length for SSN (20)');
+	// Verify SSN using checkSsnError function
+	var errorString = '';
+	if(verifyString = checkSsnError(input[0])) {	// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
@@ -195,11 +196,12 @@ function verifyUserInputForm(input) {
 		alert('Email input must contain at least 1 character before "@" to create a username');
 		return false;
 	}
+
 	return true;
 }
 
 /*****************************************************************************************************
- * checkSsnErrors(ssn)
+ * checkSsnError(ssn)
  * Returns null if there are NO errors, otherwise a descripitve error message.
  * For information regarding Swedish personal identity numbers visit:
  * https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
@@ -216,7 +218,7 @@ function checkSsnError(ssn)
 				break;
 						
 		default:
-			return 'Incorrect SSN format. Should be ######-#### or ########-####.';
+			return 'SSN Error! Format should be ######-#### or ########-####.';
 	}
 
 	const dd = ssn.substring(delimiter-2, delimiter);
@@ -226,11 +228,11 @@ function checkSsnError(ssn)
 	const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
 
 	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
-		return 'Incorrect date in SSN. The future is not here yet';
+		return 'SSN Error! Impossible date in SSN. The future is not here yet.';
 
 	if(isNaN(ssnDate)								// Make sure date is valid (i.e. not 87th April)
 		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
-		return 'Invalid date in SSN.';
+		return 'SSN Error! Invalid date.';
 	}
 
 	const controlDigitString = yyyy.substring(2, 4) + mm + dd + birthNum;
@@ -247,7 +249,7 @@ function checkSsnError(ssn)
 	if(ccd === 10) ccd = 0;		// If value is 10, remove the left digit... Leads to ccd = 0
 
 	if(ccd != ssn.substring(length-1))	// Compare calculated to given control digit
-		return 'Incorrect control digit in SSN. Expected value: ' + ccd;
+		return 'SSN Error! Incorrect control digit (last digit). Expected: ' + ccd;
 
 	return null;	// The provided SSN is correct!
 }
