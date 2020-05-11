@@ -1826,10 +1826,14 @@ function showLessOrMoreAnnouncements(){
       $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
   }else if(announcementCardLength > 6){
       $(".announcementCard:gt(5)").hide();
-      $("#displayAnnouncements").append('<button class="showAllAnnouncement">'+
+      $("#displayAnnouncements").append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
         '<span class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
-        '</button>');
+        '</button></div>');
   }
+   $('.showAllAnnouncement').on('click', function() {
+    $('.announcementCard:gt(5)').toggle();
+    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
+  });
 
 }
 // Checks if <a> link is external
