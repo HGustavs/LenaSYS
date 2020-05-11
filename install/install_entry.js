@@ -31,6 +31,9 @@ function setFirstPermissionText(fOperatingSystem){
     case "Darwin":
       firstText = "<h2>Make sure you set ownership of LenaSYS directory to 'www'";
       break;
+    case "Windows":
+      firstText = "<h2>For Windows 10 with WAMP no additional permissions needs to be sat.";
+      break;
   }
   return firstText;
 }
@@ -46,6 +49,9 @@ function setSecondPermissionText(fOperatingSystem, fFilePath){
       break;
     case "Darwin":
       secondText = "sudo chgrp -R www " + fFilePath + "<br>" + "</h2><br>";
+      break;
+    case "Windows":
+      secondText = "For Windows 10 with WAMP no additional permissions needs to be sat.</h2><br>";
       break;
   }
   return secondText;
