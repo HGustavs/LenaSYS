@@ -702,7 +702,16 @@
     echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
     echo "</form>";
     echo "</div>";
-  } 
+
+    //---------------------------------------------------------------------------------------------------
+    // Show the postInstallModal modal
+    //---------------------------------------------------------------------------------------------------
+    echo "
+      <script>
+        postInstallModal.style.display = 'block';
+      </script>
+    ";
+  }
 
   //---------------------------------------------------------------------------------------------------
   // Function that checks if all credentials are filled out (on the first page).
@@ -891,11 +900,5 @@
   }
 ?>
 <!-- END OF INSTALL SECTION -->
-
-<!-- Script for setting the finished-modal -->
-<script>
-  postInstallModal.style.display = "block";
-
-</script>
 
 </body>
