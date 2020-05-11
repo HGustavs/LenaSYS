@@ -686,9 +686,25 @@ p {
   margin-left: 15px;
   border-left: 2px solid black;
 }
+
+/*Vertical line for tabs1*/
 #Sectionlist .tabs1 .spacerRight {
   height: 32px;
   width: 32px;
+  margin-left: 15px;
+  border-right: 2px solid black;
+}
+/*Vertical line for tabs2*/
+#Sectionlist .tabs2 .spacerRight {
+  height: 32px;
+  width: 64px;
+  margin-left: 15px;
+  border-right: 2px solid black;
+}
+/*Vertical line for tabs3*/
+#Sectionlist .tabs3 .spacerRight {
+  height: 32px;
+  width: 96px;
   margin-left: 15px;
   border-right: 2px solid black;
 }
