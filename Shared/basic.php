@@ -378,7 +378,7 @@ abstract class EventTypes {
     const DuggaFileupload = 21;
 	const DownloadAllCourseVers = 22;
 	const EditFile = 23; 
-    const SubmitDugga = 24;
+    const MarkedDugga = 24;
 }
 
 //------------------------------------------------------------------------------------------------
