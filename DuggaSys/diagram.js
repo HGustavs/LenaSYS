@@ -659,21 +659,27 @@ function resetToolButtonsPressed() {
     }
 }
 
+//--------------------------------------------------------------------
+// deleteFreedrawObject: Checks if a point of a selected freedraw object
+//                       or entire object should be removed
+//--------------------------------------------------------------------
 function deleteFreedrawObject() {
-
     let pointId = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).index;
     let point = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
     
     if (typeof point.attachedSymbol != "undefined") {
-        console.log(point);
+        // A freedraw object needs to be selected
         if (point.attachedSymbol.figureType == "Free" && point.attachedSymbol.targeted) {
-            if (point.distance > 20){
+            // If a point isn't hovered, delete object
+            if (point.distance > 10 / zoomValue){
                 eraseObject(point.attachedSymbol);
-            }
-            if (point.attachedSymbol.segments.length <= 3) {
-                console.log("too few points");
                 return;
             }
+            // Freedraw objects need at least 3 points
+            if (point.attachedSymbol.segments.length <= 3) {
+                return;
+            }
+            // Remove hovered point
             else {
                 removeFreedrawPoint(point.attachedSymbol, pointId); 
             }
@@ -681,29 +687,33 @@ function deleteFreedrawObject() {
     }
 }
 
+//--------------------------------------------------------------------
+// removeFreedrawPoint: Removes a point from a freedraw object and
+//                      Reorganizes the segments
+//--------------------------------------------------------------------
 function removeFreedrawPoint(symbol , pointId) {
-    console.log(pointId);
-    let seg = {kind:kind.path, pa:-1, pb:-1};
+    let newSegment = {kind:kind.path, pa:-1, pb:-1};
     let toRemove = [];
+    // Finds the segments where the point is used
     for (let i = 0; symbol.segments.length > i; i++) {
         if (symbol.segments[i].pa == pointId) {
-            seg.pb = symbol.segments[i].pb;
+            newSegment.pb = symbol.segments[i].pb;
             toRemove.push(i);
         }
         if (symbol.segments[i].pb == pointId) {
-            seg.pa = symbol.segments[i].pa;
+            newSegment.pa = symbol.segments[i].pa;
             toRemove.push(i);
         }
     }
-    console.log(seg);
+    // Removes the segments to and from the point to remove
     symbol.segments.splice(toRemove[1], 1);
     symbol.segments.splice(toRemove[0], 1);
-    symbol.segments.splice(toRemove[0], 0, seg);
-    //points.splice(pointId, 1);
-    console.log(points);
-    console.log(symbol.segments);
-    
+    // Adds new segment between the points that were connected to removed point
+    symbol.segments.splice(toRemove[0], 0, newSegment);
 
+    // Hide removed point in center
+    points[pointId].x = 0;
+    points[pointId].y = 0;
 }
 
 //--------------------------------------------------------------------
