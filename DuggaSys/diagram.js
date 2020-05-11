@@ -3621,6 +3621,10 @@ function zoomInMode(event) {
         origoOffsetY -= centerY * zoomDifference - centerY;
     }
 
+    if(isRulersActive) {
+        createRulers();
+    }
+
     reWrite();
     updateGraphics();
 }
