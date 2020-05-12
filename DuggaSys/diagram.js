@@ -120,13 +120,8 @@ var hoveredObject;
 var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
-var old_container_marginTop;        // Used to revert changes from fullscreen
-var old_container_marginLeft;       // Used to revert changes from fullscreen
-var old_container_width;            // Used to revert changes from fullscreen
-var old_container_height;           // Used to revert changes from fullscreen
-var old_container_position;         // Used to revert changes from fullscreen
-var old_canvas_div_marginLeft;      // Used to revert changes from 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
+var isRulersActive = false;         //Show/hide rulers
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -495,141 +490,19 @@ function init() {
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
+    setIsRulersActiveOnRefresh();
+    setHideCommentOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
     updateGraphics(); 
 }
 
-//--------------------------------------------------------------
-// Generates an example of a ER-diagram
-//--------------------------------------------------------------
+//------------------------------------------
+// Generates example diagram of passed file.
+//------------------------------------------
 
-function generateERExampleCode() {
-    //Create some entities and attributes
-    var erAttributeA = new Symbol(2);
-    erAttributeA.name = "SSN";
-    erAttributeA.topLeft = points.addPoint(770, 270, false);
-    erAttributeA.bottomRight = points.addPoint(880, 330, false);
-    erAttributeA.centerPoint = points.addPoint((770 + 880) * 0.5, (270 + 330) * 0.5, false);
-    var erAttributeB = new Symbol(2);
-    erAttributeB.name = "Name";
-    erAttributeB.topLeft = points.addPoint(770, 370, false);
-    erAttributeB.bottomRight = points.addPoint(880, 430, false);
-    erAttributeB.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
-    var erAttributeC = new Symbol(2);
-    erAttributeC.name = "Smell";
-    erAttributeC.topLeft = points.addPoint(120, 370, false);
-    erAttributeC.bottomRight = points.addPoint(230, 430, false);
-    erAttributeC.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
-    var erAttributeD = new Symbol(2);
-    erAttributeD.name = "Stink";
-    erAttributeD.topLeft = points.addPoint(120, 270, false);
-    erAttributeD.bottomRight = points.addPoint(230, 330, false);
-    erAttributeD.centerPoint = points.addPoint((120 + 230) * 0.5, (270 + 330) * 0.5, false);
-    var erAttributeE = new Symbol(2);
-    erAttributeE.name = "Verisimilitude";
-    erAttributeE.topLeft = points.addPoint(450, 60, false);
-    erAttributeE.bottomRight = points.addPoint(560, 120, false);
-    erAttributeE.centerPoint = points.addPoint((450 + 560) * 0.5, (60 + 120) * 0.5, false);
-    var erEntityA = new Symbol(3);
-    erEntityA.name = "Person";
-    erEntityA.topLeft = points.addPoint(450, 300, false);
-    erEntityA.bottomRight = points.addPoint(560, 360, false);
-    erEntityA.centerPoint = points.addPoint((450 + 560) * 0.5, (300 + 360) * 0.5, false);
-    var erEntityB = new Symbol(3);
-    erEntityB.name = "Pet";
-    erEntityB.topLeft = points.addPoint(450, 550, false);
-    erEntityB.bottomRight = points.addPoint(560, 610, false);
-    erEntityB.centerPoint = points.addPoint((450 + 560) * 0.5, (600 + 660) * 0.5, false);
-    var erRelationA = new Symbol(5);
-    erRelationA.name = "Has";
-    erRelationA.topLeft = points.addPoint(450, 430, false);
-    erRelationA.bottomRight = points.addPoint(560, 490, false);
-    erRelationA.centerPoint = points.addPoint((450 + 560) * 0.5, (400 + 460) * 0.5, false);
-
-    // Create connectors
-    var erattributeRelA = new Symbol(4);
-    erattributeRelA.topLeft = points.addPoint(560, 350, false);
-    erattributeRelA.bottomRight = points.addPoint(770, 400, false);
-    erattributeRelA.centerPoint = points.addPoint((560 + 770) * 0.5, (350 + 400) * 0.5, false);
-    var erattributeRelB = new Symbol(4);
-    erattributeRelB.topLeft = points.addPoint(560, 310, false);
-    erattributeRelB.bottomRight = points.addPoint(770, 300, false);
-    erattributeRelB.centerPoint = points.addPoint((560 + 770) * 0.5, (320 + 300) * 0.5, false);
-    var erattributeRelC = new Symbol(4);
-    erattributeRelC.topLeft = points.addPoint(230, 400, false);
-    erattributeRelC.bottomRight = points.addPoint(450, 350, false);
-    erattributeRelC.centerPoint = points.addPoint((230 + 450) * 0.5, (400 + 350) * 0.5, false);
-    var erattributeRelD = new Symbol(4);
-    erattributeRelD.topLeft = points.addPoint(230, 300, false);
-    erattributeRelD.bottomRight = points.addPoint(450, 310, false);
-    erattributeRelD.centerPoint = points.addPoint((230 + 450) * 0.5, (300 + 310) * 0.5, false);
-    var erattributeRelE = new Symbol(4);
-    erattributeRelE.topLeft = points.addPoint(505, 120, false);
-    erattributeRelE.bottomRight = points.addPoint(505, 300, false);
-    erattributeRelE.centerPoint = points.addPoint((505 + 505) * 0.5, (120 + 300) * 0.5, false);
-    var erRelationRelA = new Symbol(4);
-    erRelationRelA.topLeft = points.addPoint(505, 360, false);
-    erRelationRelA.bottomRight = points.addPoint(505, 550, false);
-    erRelationRelA.centerPoint = points.addPoint((505 + 505) * 0.5, (360 + 550) * 0.5, false);
-
-    // Add all elements to diagram
-    diagram.push(erattributeRelA);
-    diagram.push(erattributeRelB);
-    diagram.push(erattributeRelC);
-    diagram.push(erattributeRelD);
-    diagram.push(erattributeRelE);
-    diagram.push(erRelationRelA);
-    diagram.push(erAttributeA);
-    diagram.push(erAttributeB);
-    diagram.push(erAttributeC);
-    diagram.push(erAttributeD);
-    diagram.push(erAttributeE);
-    diagram.push(erEntityA);
-    diagram.push(erEntityB);
-    diagram.push(erRelationA);
-}
-
-//--------------------------------------------------------------------
-// Generates an example of a UML-diagram
-//--------------------------------------------------------------------
-
-function generateUMLExampleCode() {
-    // Create a UML Class and add three attributes, two operations and a name
-    var classA = new Symbol(symbolKind.uml);
-    classA.name = "Person";
-    classA.attributes.push({text:"+ height:Integer"});
-    classA.attributes.push({text:"# at:Large"});
-    classA.attributes.push({text:"- megalomania:Real"});
-    classA.operations.push({text:"+ hold(name:String)"});
-    classA.operations.push({text:"- makemore()"});
-    classA.topLeft = points.addPoint(450, 300, false);
-    classA.bottomRight = points.addPoint(590, 430, false);
-    classA.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
-    classA.centerPoint = points.addPoint((450 + 590) * 0.5, (300 + 430) * 0.5, false);
-    
-    //Create a second UML class
-    var classB = new Symbol(symbolKind.uml);
-    classB.name = "Pet";
-    classB.attributes.push({text:"+ color:String"});
-    classB.attributes.push({text:"- megalomania:Real"});
-    classB.operations.push({text:"- beCute()"});
-    classB.topLeft = points.addPoint(700, 300, false);
-    classB.bottomRight = points.addPoint(840, 430, false);
-    classB.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
-    classB.centerPoint = points.addPoint((700 + 840) * 0.5, (300 + 430) * 0.5, false);
-
-    //Add some relations
-    var umlRelationA = new Symbol(symbolKind.umlLine);
-    umlRelationA.topLeft = points.addPoint(590, 365, false);
-    umlRelationA.bottomRight = points.addPoint(706, 365, false);
-    umlRelationA.centerPoint = points.addPoint((590 + 706) * 0.5, (365 + 365) * 0.5, false);
-    umlRelationA.cardinality = {"value": "1", "valueUML": "0..*", "symbolKind": 1, "parentBox": classB};
-
-    //Push to diagram
-    diagram.push(classA);
-    diagram.push(classB);
-    diagram.push(umlRelationA);
+function generateExampleCode(url) {
+    $.get(url, data => LoadImport(data));
 }
 
 //--------------------------------------------------------------------
@@ -660,6 +533,63 @@ function resetToolButtonsPressed() {
 }
 
 //--------------------------------------------------------------------
+// deleteFreedrawObject: Checks if a point of a selected freedraw object
+//                       or entire object should be removed
+//--------------------------------------------------------------------
+function deleteFreedrawObject() {
+    let pointId = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).index;
+    let point = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+    
+    if (typeof point.attachedSymbol != "undefined") {
+        // A freedraw object needs to be selected
+        if (point.attachedSymbol.figureType == "Free" && point.attachedSymbol.targeted) {
+            // If a point isn't hovered, delete object
+            if (point.distance > 10 / zoomValue){
+                eraseObject(point.attachedSymbol);
+                return;
+            }
+            // Freedraw objects need at least 3 points
+            if (point.attachedSymbol.segments.length <= 3) {
+                return;
+            }
+            // Remove hovered point
+            else {
+                removeFreedrawPoint(point.attachedSymbol, pointId); 
+            }
+        }
+    }
+}
+
+//--------------------------------------------------------------------
+// removeFreedrawPoint: Removes a point from a freedraw object and
+//                      Reorganizes the segments
+//--------------------------------------------------------------------
+function removeFreedrawPoint(symbol , pointId) {
+    let newSegment = {kind:kind.path, pa:-1, pb:-1};
+    let toRemove = [];
+    // Finds the segments where the point is used
+    for (let i = 0; symbol.segments.length > i; i++) {
+        if (symbol.segments[i].pa == pointId) {
+            newSegment.pb = symbol.segments[i].pb;
+            toRemove.push(i);
+        }
+        if (symbol.segments[i].pb == pointId) {
+            newSegment.pa = symbol.segments[i].pa;
+            toRemove.push(i);
+        }
+    }
+    // Removes the segments to and from the point to remove
+    symbol.segments.splice(toRemove[1], 1);
+    symbol.segments.splice(toRemove[0], 1);
+    // Adds new segment between the points that were connected to removed point
+    symbol.segments.splice(toRemove[0], 0, newSegment);
+    symbol.targeted = false;
+    // Hide removed point in center
+    points[pointId].x = 0;
+    points[pointId].y = 0;
+}
+
+//--------------------------------------------------------------------
 // This handles all the key binds for diagram
 //--------------------------------------------------------------------
 
@@ -683,12 +613,13 @@ function keyDownHandler(e) {
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
+        deleteFreedrawObject();
         eraseSelectedObject(event);
         SaveState();
     }  
     //Check if enter is pressed when "focused" on an item in the dropdown menu
     if(key == keyMap.enterKey) {
-        const allowedClasses = ["drop-down-item", "export-drop-down-item", "papersize-drop-down-item"];
+        const allowedClasses = ["drop-down-item"];
         const isAllowed = allowedClasses.some(className => document.activeElement.classList.contains(className));
         if(isAllowed) {
             const onclickElement = document.activeElement.querySelector("[onclick]");
@@ -1101,21 +1032,28 @@ function copySymbol(symbol) {
 
             let newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
-
                 //Special case for ER lines connected to attributes
                 //The second point of an er line connected to an attribute is the attribute's centerPoint
                 //This code finds connected attributes that will be copied and prevents the second point from being duplicated if the attribute will also be copied
                 //If the attribute will not be copied the point should be created
-                if(symbol.symbolkind === symbolKind.line && key === "bottomRight") {
+                if(symbol.symbolkind === symbolKind.line) {
                     const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
+                    const connectedAttributes = symbol.getConnectedObjects().filter(object => object.symbolkind === symbolKind.erAttribute);
                     if(typeof connectedAttribute !== "undefined") {
                         const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
-                        if(isAttributeSelected) {
+                        //If one of the connected objects is a attribute, create no second point
+                        if(isAttributeSelected && connectedAttribute.connectorTop.find(object => object.from === symbol[key])) {
                             newPointIndex = null;
+                        }
+                        //If both connected objects are attributes, create no points
+                        else if(connectedAttributes.length > 1 && symbol.getConnectedObjects()[0].symbolkind == symbolKind.erAttribute && symbol.getConnectedObjects()[1].symbolkind == symbolKind.erAttribute){
+                            //Both attributes must be selected
+                            if(selected_objects.includes(connectedAttributes[0]) && selected_objects.includes(connectedAttributes[1])){
+                                newPointIndex = null;
+                            }
                         }
                     }
                 }
-
                 if(newPointIndex !== null) {
                     const point = points[pointIndexes[key].old];
                     newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
@@ -1632,13 +1570,13 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
 
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    const diagramContainer = document.getElementById("diagram-canvas-container");
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
     const zoomRange = document.getElementById("ZoomSelect");
 
 
-    canvas = document.getElementById("diagramCanvas");
+    canvas = document.getElementById("diagram-canvas");
     if(canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
@@ -2265,7 +2203,24 @@ function toggleComments(event) {
 		hideComment = true;
       	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     }
-	updateGraphics();
+    updateGraphics();
+    localStorage.setItem("hideComment", hideComment);
+}
+
+//---------------------------------------------------------------
+// Stores if the comments are hidden or not in localStorage
+//---------------------------------------------------------------
+
+function setHideCommentOnRefresh() {
+    const tempHideComment = localStorage.getItem("hideComment");
+    if (tempHideComment != null) {
+        if (tempHideComment == 'true') {
+            hideComment = false;
+        } else {
+            hideComment = true;
+        }
+    toggleComments(event);
+  }
 }
 //--------------------------------------------
 //Sets the size of the paper on the canvas
@@ -2286,8 +2241,8 @@ function setPaperSize(event, size){
 	]
 	selectedPaper[size] = true;
 	for (i = 0; i < 7; i++){
-		let name = 'A' + i;
-		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
+        let name = 'A' + i;
+        setCheckbox($(`.drop-down-option:contains('Paper size...') + .side-drop-down .drop-down-option:contains(${name})`), selectedPaper[i]);
 	}
 	paperSize = size; 
 	localStorage.setItem("paperSize", paperSize);
@@ -2411,22 +2366,13 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    var diagramContainer = document.getElementById("diagramCanvasContainer");
-    if(fullscreen){
-        // Resize container
-        diagramContainer.style.height = window.innerHeight + "px";
-        diagramContainer.style.width = window.innerWidth + "px";
-        // Remove "px" and set canvas size
-        var width_converted = diagramContainer.style.width.replace("px", "");
-        var height_converted = diagramContainer.style.height.replace("px", "");
-        canvas.width = width_converted;
-        canvas.height = height_converted;
-    } else {
-        // Resize canvas
-        canvas.width = diagramContainer.offsetWidth;
-        canvas.height = diagramContainer.offsetHeight;
+    var diagramContainer = document.getElementById("diagram-canvas-container");
+    canvas.width = diagramContainer.offsetWidth;
+    canvas.height = diagramContainer.offsetHeight;
+    boundingRect = canvas.getBoundingClientRect();
+    if(isRulersActive) {
+        createRulers();
     }
-    boundingRect = canvas.getBoundingClientRect();    
     updateGraphics();
 }
 
@@ -2578,7 +2524,9 @@ function eraseObject(object) {
 function eraseSelectedObject(event) {
     event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
-        eraseObject(selected_objects[i]);
+        if (selected_objects[i].figureType != "Free") {
+            eraseObject(selected_objects[i]);
+        }
     }
     selected_objects = [];
     lastSelectedObject = -1;
@@ -2604,10 +2552,10 @@ $(document).ready(function() {
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")) {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
         } else {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             $(this).removeClass("unpressed").addClass("pressed");
         }
     });
@@ -2778,12 +2726,6 @@ function resetSerialNumbers(){
     }
 }
 
-// the purpose is not very clear
-var consloe = {};
-consloe.log = function(gobBluth) {
-    document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
-}
-
 //------------------------------------------------------------------------------
 // developerMode: Toggles in and out from developer mode
 //------------------------------------------------------------------------------
@@ -2863,7 +2805,7 @@ function switchToolbarTo(target) {
         switchMode();
     } else {
         $("#modeSwitchDialog").css("display", "flex");
-        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
+        var toolbarTypeText = document.getElementById('diagram-toolbar-switcher').innerHTML;
         document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
     }
 }
@@ -3598,6 +3540,10 @@ function zoomInMode(event) {
         origoOffsetY -= centerY * zoomDifference - centerY;
     }
 
+    if(isRulersActive) {
+        createRulers();
+    }
+
     reWrite();
     updateGraphics();
 }
@@ -3640,66 +3586,24 @@ function scrollZoom(event) {
 //-----------------------
 
 function toggleFullscreen(){
-    // Load relevant elements
-    var head = document.querySelector("header");
-    var menu_border = document.getElementById("buttonDiv");
-    var canvas_div = document.getElementById("diagramCanvasContainer");
-    var canvas_border = document.getElementById("diagramCanvas");
-    var tool_bar = document.getElementById("diagram-toolbar");
-    var inside_toolbar = document.getElementById("inside-toolbar");
-    var menu_buttons = document.getElementsByClassName("menu-drop-down");
+    var header = document.querySelector("header");
+    var diagramHeader = document.getElementById("diagram-header");
+    var diagramContainer = document.getElementById("diagram-container")
 
     if(!fullscreen){
-        // Get previous settings
-        old_canvas_div_marginLeft = canvas_div.style.marginLeft;
-        old_container_height = canvas_div.style.height;
-        old_container_width = canvas_div.style.width;
-        old_container_position = canvas_div.style.position;
-
-        // Hide header, buttons, their leftover space, border and resize container to fit entire screen
-        head.style.display = "none";
-        for(var i = 0; i < menu_buttons.length; i++){
-            menu_buttons[i].style.display = "none";
-        }
-        tool_bar.style.visibility = "hidden";
-        inside_toolbar.style.visibility = "hidden"
-        canvas_div.style.position = "absolute";
-        canvas_div.style.marginLeft = 0;
-        canvas_div.style.top = 0;
-        canvas_div.style.right = 0;
-        canvas_div.style.bottom = 0;
-        canvas_div.style.left = 0;
-        canvas_div.style.height = window.innerHeight + "px";
-        canvas_div.style.width = window.innerWidth + "px";
-        canvas_border.style.border = 0 + "px";
-        menu_border.style.border = 0 + "px";
-        fullscreen = true;
-
-        // Display popup message
+        diagramHeader.classList.add("fullscreen");
+        diagramContainer.classList.add("fullscreen");
+        header.style.display = "none";
         $("#fullscreenDialog").css("display", "flex");
-
-        // Refit canvas to current container
-        canvasSize();
-    } else if (fullscreen){
-        // Revert to previous settings
-        head.style.display = "inline-block";
-        for(var i = 0; i < menu_buttons.length; i++){
-            menu_buttons[i].style.display = "block";
-        }
-        tool_bar.style.visibility = "visible";
-        inside_toolbar.style.visibility = "visible";
-        inside_toolbar.style.border = "none";
-        canvas_div.style.position = old_container_position;
-        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
-        canvas_div.style.height = old_container_height;
-        canvas_div.style.width = old_container_width;
-        canvas_border.style.border = 1 + "px solid #000000";
-        menu_border.style.borderLeft = 1 + "px solid #c0c0c0";
-        fullscreen = false;
-
-        // Refit canvas to current container
-        canvasSize();        
+    } else {
+        diagramHeader.classList.remove("fullscreen", "toolbar");
+        diagramContainer.classList.remove("fullscreen", "toolbar");
+        header.style.display = "inline-block";
+        toolbarDisplayed = false;
     }
+    fullscreen = !fullscreen;
+    setCheckbox($(".drop-down-option:contains('Fullscreen')"), fullscreen);
+    canvasSize();        
 }
 
 //-----------------------
@@ -3715,20 +3619,16 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    // Get element
-    var tool_bar = document.getElementById("inside-toolbar");
+    var diagramHeader = document.getElementById("diagram-header");
+    var diagramContainer = document.getElementById("diagram-container");
 
     if(!toolbarDisplayed){
-        // Show inner toolbar, add border and set background color
-        tool_bar.style.visibility = "visible";
-        tool_bar.style.backgroundColor = "#ffffff";
-        tool_bar.style.border = 1 + "px solid #000000";
+        diagramHeader.classList.add("toolbar");
+        diagramContainer.classList.add("toolbar");
         toolbarDisplayed = true;
     } else {
-        // Hide
-        tool_bar.style.visibility = "hidden";
-        tool_bar.style.background = "none";
-        tool_bar.style.border = 0 + "px";
+        diagramHeader.classList.remove("toolbar");
+        diagramContainer.classList.remove("toolbar");
         toolbarDisplayed = false;
     }
 }
@@ -3837,6 +3737,9 @@ function mousemoveevt(ev) {
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
+        if(isRulersActive) {
+            createRulers();
+        }
     }
     reWrite();
     updateGraphics();
@@ -4016,7 +3919,7 @@ function mousemoveevt(ev) {
             // If mouse is pressed down inside a movable object - move that object
             if (movobj != -1 ) {
                 uimode = "Moved";
-                $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+                $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
@@ -4246,9 +4149,6 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
-        if(ev.button == rightMouseClick && figureType == "Free"){
-            endFreeDraw();
-        }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
@@ -4340,8 +4240,11 @@ function mouseupevt(ev) {
 
         if(figureType == "Free") {
             figureFreeDraw();
+            if(ev.button == rightMouseClick && uimode != "normal"){
+                endFreeDraw();
+            }
             return;
-        }
+        }      
     }
     // Code for creating a new class
     if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
@@ -4862,13 +4765,17 @@ function touchMoveEvent(event) {
         
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
+        
+        if(isRulersActive) {
+            createRulers();
+        }
     }
 
     // Moves an object
     if (md == mouseState.insideMovableObject) {
         if (movobj != -1) {
             uimode = "Moved";
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                     if(snapToGrid) {
@@ -5202,9 +5109,58 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
 }
 
 function doubleclick() {
-    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
+    // Add point to freedraw object if clicked on line
+    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true 
+    && diagram[lastSelectedObject].figureType == "Free") {
+        let clickedSegmentId = clickedOnLine(diagram[lastSelectedObject]);
+        if (clickedSegmentId != -1) {
+            let freedrawObject = diagram[lastSelectedObject];
+            let newPoint = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+            let clickedSegment = freedrawObject.segments[clickedSegmentId];
+            
+            freedrawObject.segments.splice(clickedSegmentId, 1);
+            freedrawObject.segments.splice(clickedSegmentId, 0, {kind:kind.path, pa:clickedSegment.pa, pb:newPoint});
+            freedrawObject.segments.splice(clickedSegmentId+1, 0, {kind:kind.path, pa:newPoint, pb:clickedSegment.pb});
+        }
+    }
+    else if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         loadAppearanceForm();
     }
+}
+
+//--------------------------------------------------------------------
+// clickedOnLine: Checks if a line of an object is clicked, returns segment index
+//--------------------------------------------------------------------
+function clickedOnLine(clickedObject) {
+    let clickedLine = -1;
+    
+    for (let i = 0; i < clickedObject.segments.length; i++) {
+        if (pointOnLine(currentMouseCoordinateX, currentMouseCoordinateY, clickedObject.segments[i])) {
+            clickedLine = i;
+        }
+    }
+    return clickedLine;
+}
+
+//--------------------------------------------------------------------
+// pointOnLine: Checks if a point is positioned on a segment
+//--------------------------------------------------------------------
+function pointOnLine(pointX, pointY, segment) {
+    let pointBetween = {x:pointX, y:pointY};
+    let pointA = {x:points[segment.pa].x, y:points[segment.pa].y};
+    let pointB = {x:points[segment.pb].x, y:points[segment.pb].y};
+
+    if (distance(pointA, pointBetween) + distance(pointB, pointBetween) 
+    <= distance(pointA, pointB) + 0.1) {
+        return true;
+    }
+}
+
+//--------------------------------------------------------------------
+// distance: Returns distance between two points 
+//--------------------------------------------------------------------
+function distance(point1, point2) {     
+    return Math.sqrt((Math.pow((point1.x - point2.x),2) + Math.pow((point1.y - point2.y),2)));
 }
 
 function createText(posX, posY) {
@@ -5264,11 +5220,14 @@ function resize() {
 //---------------------------------------
 
 function movemode(e, t) {
-	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+	$(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
+        if (uimode == "CreateFigure" && numberOfPointsInFigure > 0) {
+            cancelFreeDraw();
+        }
         buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
@@ -5911,11 +5870,6 @@ function getGroupsByTypes(typesToShow) {
 // submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
 //----------------------------------------------------------------------------------------
 function submitAppearanceForm() {
-    selected_objects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml) {
-            object.resizeUMLToMinHeight();
-        }
-    });
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
     }
@@ -5940,7 +5894,7 @@ function createLayer(){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
@@ -5967,7 +5921,7 @@ function loadLayer(localStorageID){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
@@ -5987,9 +5941,18 @@ function loadLayer(localStorageID){
     fixWriteToLayer();
 }
 
-function toggleBackgroundLayer (object){
+function toggleBackgroundLayer (object, changeLayer){
+    if (changeLayer == true){
+        if (object.classList.contains("notActive")){
+            object.classList.remove("notActive");
+            object.classList.add("isActive");
+            showLayer.push(object.id);
+        }
+        return
+    }
     if(object.classList.contains("notActive")){
         object.classList.remove("notActive");
+        object.classList.remove("drop-down-option-hover");
         object.classList.add("isActive");
         activeLocalStorage()
         showLayer.push(object.id);
@@ -5997,10 +5960,12 @@ function toggleBackgroundLayer (object){
     else {
         object.classList.remove("isActive");
         object.classList.add("notActive");
+        object.classList.add("drop-down-option-hover");
         activeLocalStorage();
         const index = showLayer.indexOf(object.id);
         showLayer.splice(index, 1);
     }
+    updateGraphics();
 }
 
 function activeLocalStorage(){
@@ -6030,54 +5995,48 @@ function fixWriteToLayer(){
     let update = document.getElementById("layerActive");
     let spans = update.getElementsByTagName('span')
     let active = localStorage.getItem("writeToActiveLayers");
+    console.log(active);
     for(let i = 0; i < spans.length; i++){
         spans[i].id = spans[i].id+"_Active";
         spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
         if (spans[i].id == active) {
-            spans[i].setAttribute("class", "isActive drop-down-option");
+            spans[i].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
+        }
+        else if (active == null){
+            spans[0].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
         }
         else {
-            spans[i].setAttribute("class", "notActive drop-down-option");
+            spans[i].setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         }
     }
 }
 
 function toggleActiveBackgroundLayer(object) {
+
     let checkActive = document.getElementById("layerActive");
     let spans = checkActive.getElementsByTagName('span')
-    let isActive = false;
-    for (let i = 0; i < spans.length; i++){
+    for (let i = 0 ; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
-            isActive = true;
-            i = spans.length;
+            spans[i].classList.remove("isActive");
+            spans[i].classList.add("notActive");
+            spans[i].classList.add("drop-down-option-hover");
+        }
+
+        if(object.id == spans[i].id){
+            object.classList.remove("notActive");
+            object.classList.add("isActive");
+            object.classList.remove("drop-down-option-hover");
+            localStorage.setItem("writeToActiveLayers", object.id);
+            setlayer(object);
         }
     }
-    if(isActive == false){
-        object.classList.remove("notActive");
-        object.classList.add("isActive");
-        localStorage.setItem("writeToActiveLayers", object.id);
-        setlayer(object);
-    }
-    else {
-        object.classList.remove("isActive");
-        object.classList.add("notActive");
-        let checkLocalStorage = localStorage.getItem("writeToActiveLayers");
-    }
-    active = false;
-    for(let i = 0; i < spans.length; i++){
-        if(spans[i].classList.contains("isActive")){
-            active = true;
-            i = spans.length;
-        }
-    }
-    if (active == false){
-        localStorage.setItem("writeToActiveLayers", null);
-    }
+    updateGraphics();
 }
+
 
 function setlayer(object){
     let fixID = object.id.replace('_Active','');
-    toggleBackgroundLayer(document.getElementById(fixID))
+    toggleBackgroundLayer(document.getElementById(fixID), true)
     writeToLayer = fixID;
 }
 
@@ -6097,11 +6056,91 @@ function getcorrectlayer(){
     if(localStorage.getItem('writeToActiveLayers') != null){
         let getLayer = localStorage.getItem("writeToActiveLayers")
         let fixID = getLayer.replace('_Active','');
-        return fixID
+        return fixID;
     }
-        return "Layer_1"
+        return "Layer_1";
 }
 
+function deleteLayerView(){
+    let parentNode = document.getElementById("viewLayer");
+    let deleteArray = []
+    for(let i = 0;i < diagram.length;i++){
+        if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    for(let i = 0; i < showLayer.length; i++){
+        let deleteLayer = document.getElementById(showLayer[i]).parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+        deleteLayer = document.getElementById(showLayer[i]+"_Active").parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+    }
+    showLayer = [];
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState()
+}
+function deleteLayerActive(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+    let saveIndex;
+    let deleteArray = []
+    for(let i = 0; i < spans.length;i++){
+        if(spans[i].classList.contains("isActive")){
+            let deleteLayer = spans[i].parentNode;
+            saveIndex = spans[i].id.replace('_Active','');
+            deleteLayer.parentNode.removeChild(deleteLayer);
+        }
+    }
+    for(let i = 0;i < diagram.length;i++){
+        if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    let elem = document.getElementById(saveIndex);
+    elem.parentNode.removeChild(elem);
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState() 
+}
+function fixviewLayer(){
+    let parentNode = document.getElementById("viewLayer");
+    let spans = parentNode.getElementsByTagName('span');
+
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i;
+    }
+}
+function fixActiveLayer(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i +"_Active";
+    }
+}
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;
@@ -6151,4 +6190,94 @@ function canConnectLine(startObj, endObj){
         }
 
     return okToMakeLine;
+}
+
+//--------------------------------------------------------------------------------------
+// createRulers: Creates rulers for x and y axis.
+//-----------------------------------------------
+
+function createRulers() {
+    createRuler(document.getElementById("ruler-x"), canvas.width, origoOffsetX, "marginLeft");
+    createRuler(document.getElementById("ruler-y"), canvas.height, origoOffsetY, "marginTop");
+}
+
+//--------------------------------------------------------------------------------------
+// createRuler: Fills the passed ruller container with lines according to passed length.
+//--------------------------------------------------------------------------------------
+
+function createRuler(element, length, origoOffset, marginProperty) {
+    const from = Math.round(-origoOffset);
+    const to = Math.round(length - origoOffset);
+
+    const steps = {};
+    steps.mini = 5;
+    steps.small = steps.mini * 2;
+    steps.big = Math.round((steps.mini * steps.small) * zoomValue);
+    
+    if(zoomValue <= 0.7 && zoomValue >= 0.5) {
+        steps.big *= 2;
+    } else if(zoomValue <= 0.4 && zoomValue >= 0.3) {
+        steps.big *= 4;
+    } else if(zoomValue <= 0.2) {
+        steps.big *= 8;
+    }
+
+    element.innerHTML = "";
+
+    for(let i = from; i < to; i++) {
+        if(i % steps.big === 0 || i % steps.small === 0 || i % steps.mini === 0) {
+            const line = document.createElement("div");
+            line.classList.add("ruler-line");
+            line.style[marginProperty] = `${steps.mini - 1}px`;
+            if(i % steps.big === 0) {
+                line.classList.add("big");
+                line.innerText = Math.round(i / zoomValue);
+            } else if(i % steps.small === 0) {
+                line.classList.add("small");
+            } else if(i % steps.mini === 0) {
+                line.classList.add("mini");
+            }
+            element.appendChild(line);
+        }
+    }
+}
+
+//------------------------------------------------------------------------------------------------
+// toggleRulers: Hides rulers if isRulersActive is true and shows them if isRulersActive is false.
+//------------------------------------------------------------------------------------------------
+
+function toggleRulers() {
+    const diagramContent = document.getElementById("diagram-content");
+    const rulers = document.querySelectorAll(".ruler");
+    if(isRulersActive) {
+        diagramContent.classList.remove("rulers-active");
+        rulers.forEach(ruler => ruler.classList.add("hidden"));
+    } else {
+        diagramContent.classList.add("rulers-active");
+        rulers.forEach(ruler => ruler.classList.remove("hidden"));
+    }
+    isRulersActive = !isRulersActive;
+    setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
+    localStorage.setItem("isRulersActive", isRulersActive);
+    canvasSize();
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+//------------------------------------------------------------------------------------------------------------------------
+
+function setIsRulersActiveOnRefresh() {
+    const tempIsRulerActive = localStorage.getItem("isRulersActive");
+    if(tempIsRulerActive !== null) {
+        isRulersActive = !(tempIsRulerActive === "true");
+        toggleRulers();
+    }
+}
+
+function getOrigoOffsetX() {
+    return origoOffsetX;
+}
+
+function getOrigoOffsetY() {
+    return origoOffsetY;
 }
