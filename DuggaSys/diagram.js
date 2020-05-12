@@ -2725,38 +2725,27 @@ function resetSerialNumbers(){
 }
 
 //------------------------------------------------------------------------------
-// developerMode:
-// this function show and hides developer options.
+// developerMode: Toggles in and out from developer mode
 //------------------------------------------------------------------------------
 
 var previousToolbarState = currentMode.er;
-var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
+var developerModeActive = true;                 // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     resetToolButtonsPressed();
     developerModeActive = !developerModeActive;
-    // save the previous toolbarstate so that we can return to it
-    if (developerModeActive) previousToolbarState = toolbarState;
-    toolbarState = currentMode.dev;
+
     if (developerModeActive) {
+        targetMode = currentMode.dev;
+        // Enable developer features (crosses/origo)
         showCrosses();
-        drawOrigo();                                                                    // Draw origo on canvas
-        switchToolbarDev(event);                                                             // ---||---
-        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to DEV.
-        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
-        setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
-        setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-            crossDEV=true);                                                             // Turn on crossDEV.
-        setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
+        drawOrigo();
     } else {
-        // switch to the saved toolbarstate
-        if (previousToolbarState == currentMode.er) switchToolbarER();
-        else if (previousToolbarState == currentMode.uml) switchToolbarUML();
-        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
-        setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
+        // Revert to previous state and hide developer features
+        targetMode = previousToolbarState;
         hideCrosses();
     }
+    switchMode();
     reWrite();
     updateGraphics();
 }
@@ -2768,25 +2757,8 @@ function setModeOnRefresh() {
     } else {
         toolbarState = currentMode.er;
     }
-
     developerModeActive = false;
-
-    if(toolbarState == currentMode.er) {
-        switchToolbarER();
-        hideCrosses();
-    } else if(toolbarState == currentMode.uml) {
-        switchToolbarUML();
-        hideCrosses();
-    } else if(toolbarState == currentMode.dev) {
-        developerModeActive = true;
-        showCrosses();
-        switchToolbarDev(event);
-        setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
-        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
-    } else {
-        switchToolbarER();
-        hideCrosses();
-    }
+    switchMode();
 }
 
 function setPaperSizeOnRefresh() {
@@ -2817,46 +2789,7 @@ function hideCrosses() {
 }
 
 //------------------------------------------------------------------------------
-// modeSwitchConfirmed:
-// This function calls the switch methods if the change is accepted, called
-// when clicking the dialog.
-//------------------------------------------------------------------------------
-
-function modeSwitchConfirmed(confirmed) {
-    modeSwitchDialogActive = false;
-    $("#modeSwitchDialog").hide();
-    if(confirmed){
-        resetToolButtonsPressed();
-        if (targetMode == 'ER') {
-            switchToolbarER();
-        } else if (targetMode == 'UML') {
-            switchToolbarUML();
-        }
-    }
-}
-
-//-----------------------------------
-// Switches between modes ER and UML
-//-----------------------------------
-
-function toggleMode() {
-    if(toolbarState == "ER" && !developerModeActive){
-        switchToolbarTo("UML");
-    } else if (toolbarState == "UML" && !developerModeActive) {
-        switchToolbarTo("ER");
-    } else {
-        if(toolbarState == "ER") {
-            switchToolbarTo("UML");
-        } else {
-            switchToolbarTo("ER");
-        }
-    }
-}
-
-//------------------------------------------------------------------------------
-// switchToolbarTo:
-// This function switch opens a dialog for confirmation and sets which mode
-// to change to.
+// switchToolbarTo: This function switch opens a dialog for confirming mode switch
 //------------------------------------------------------------------------------
 
 function switchToolbarTo(target) {
@@ -2867,7 +2800,7 @@ function switchToolbarTo(target) {
     modeSwitchDialogActive = true;
     //only ask for confirmation when developer mode is off
     if (developerModeActive) {
-        modeSwitchConfirmed(true);
+        switchMode();
     } else {
         $("#modeSwitchDialog").css("display", "flex");
         var toolbarTypeText = document.getElementById('diagram-toolbar-switcher').innerHTML;
@@ -2876,67 +2809,75 @@ function switchToolbarTo(target) {
 }
 
 //------------------------------------------------------------------------------
-// SwitchToolbarER:
-// This function handles everything that need to happen when the toolbar
-// changes to ER. It changes toolbar and turn on/off crosses on the menu.
+// SwitchToolbarDev: Called when pressing "Display all tools". Sets targeted mode to developer and calls to switch
 //------------------------------------------------------------------------------
 
-var crossER = false;
-function switchToolbarER() {
-    toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
-    switchToolbar('ER');
-    if (developerModeActive) {
-        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: ER';
-    } else {
-        document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: ER';              // Change the text to ER.
-    }
-    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=true);               // Turn on crossER.
-    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-        crossDEV=false);                                                            // Turn off crossDEV.
-}
-
-//------------------------------------------------------------------------------
-// SwitchToolbarUML:
-// This function handles everything that need to happen when the toolbar
-// changes to UML. It changes toolbar and turn on/off crosses on the menu.
-//------------------------------------------------------------------------------
-
-var crossUML = false;
-function switchToolbarUML() {
-    toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
-    switchToolbar('UML');
-    if (developerModeActive) {
-        document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: UML';
-    } else {
-        document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: UML';              // Change the text to UML.
-    }                                                           // ---||---
-    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=true);             // Turn on crossUML.
-    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-    crossDEV=false);                                                            // Turn off crossUML.
-}
-
-//------------------------------------------------------------------------------
-// SwitchToolbarDev:
-// This function handles everything that need to happen when the toolbar
-// changes to Dev. It changes toolbar and turn on/off crosses on the menu.
-//------------------------------------------------------------------------------
-
-var crossDEV = false;
 function switchToolbarDev(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
+    event.stopPropagation();
     if(!developerModeActive){
         return;
     }
-    toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
-    switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to UML.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-        crossDEV=true);                                                             // Turn on crossDEV.
-    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
+    targetMode = currentMode.dev;
+    switchMode();
 }
+
+//----------------------------------------------------------------------
+// switchMode: called when pressing "Accept" button after mode switch, and as trigger when jumping in/out from developer mode
+//----------------------------------------------------------------------
+
+function switchMode() {
+    closeModeSwitchDialog();
+    toolbarState = targetMode;
+    localStorage.setItem("toolbarState", toolbarState);
+    if(toolbarState != currentMode.dev) previousToolbarState = toolbarState;
+    switchToolbar();
+    editToolbarMenus();
+}
+
+//----------------------------------------------------------------------
+// switchToolbar: switches what tools are displayed in the left toolbar (Dev, ER, UML)
+//----------------------------------------------------------------------
+
+function switchToolbar() {  
+    // Hide/show relevant toolbar buttons depending on what mode is selected
+    if(toolbarState != currentMode.dev) {
+      $(".toolbar-drawer").hide();
+      $(".tlabel").hide();
+      $(".buttonsStyle").hide();
+      if(toolbarState == currentMode.er) {
+            $("#attributebutton").show();
+            $("#entitybutton").show();
+            $("#relationbutton").show();
+            $("#labelDraw").show();
+            $("#drawfreebutton").show();
+      } else if(toolbarState == currentMode.uml) {
+            $("#classbutton").show();
+      }
+    } else {
+        $(".toolbar-drawer").show();
+        $(".tlabel").show();
+        $(".buttonsStyle").show();
+        $("#attributebutton").show();
+        $("#entitybutton").show();
+        $("#relationbutton").show();
+        $("#labelDraw").show();
+        $("#drawfreebutton").show();
+    }
+  
+    // Global, always shown 
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
+    $("#linebutton").show();
+    $("#drawerCreate").show();
+    $("#drawerDraw").show();
+    $("#drawerTools").show(); 
+    $("#drawerUndo").show();
+    $("#drawtextbutton").show();
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: '+ toolbarState;
+    document.getElementById('toolbar-switcher').value = toolbarState;
+}
+
 
 //----------------------------------------------------------------------
 // removeLocalStorage: this function is running when you click the button clear diagram
@@ -3592,6 +3533,33 @@ function switchToolbar(mode) {
   }
   document.getElementById('diagram-toolbar-switcher').innerHTML = toolbarState;
 }
+
+//-------------------------------------------------------------------------
+// editToolbarMenus: Edit checkboxes in menus depending on what mode is active
+//-------------------------------------------------------------------------
+
+function editToolbarMenus(){
+    setCheckbox($(".drop-down-option:contains('ER')"), toolbarState == currentMode.er);
+    setCheckbox($(".drop-down-option:contains('UML')"), toolbarState == currentMode.uml);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), (toolbarState == currentMode.dev) || developerModeActive);
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), (toolbarState == currentMode.dev));
+    if(developerModeActive){
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), false);
+    }
+}
+
+//-------------------------------------------------------------------------
+// closeModeSitchDialog: Closes popup that appears when switching modes
+//-------------------------------------------------------------------------
+
+function closeModeSwitchDialog(){
+    modeSwitchDialogActive = false;
+    $("#modeSwitchDialog").hide();
+}
+
 
 // ----------------------------------
 // DIAGRAM MOUSE SECTION
