@@ -6309,6 +6309,7 @@ function createRuler(element, length, origoOffset, marginProperty) {
         if(i % steps.mini === 0) {
             const line = document.createElement("div");
             line.classList.add("ruler-line");
+            line.style[marginProperty] = `${steps.mini - 1}px`;
             if(i % steps.small === 0 || i % steps.big === 0) {
                 if(i % steps.big === 0) {
                     line.classList.add("big");
@@ -6322,10 +6323,6 @@ function createRuler(element, length, origoOffset, marginProperty) {
             element.appendChild(line);
         }
     }
-
-    element.querySelectorAll(".ruler-line").forEach(line => {
-        line.style[marginProperty] = `${steps.mini - 1}px`;
-    });
 }
 
 //------------------------------------------------------------------------------------------------
