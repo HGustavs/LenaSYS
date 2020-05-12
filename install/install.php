@@ -206,6 +206,8 @@
           <div id="DBboxes">
             <input title="Include test data." type="checkbox" name="fillDB" value="Yes" onchange="fillDBchange(this)" checked/>
             Include test data. <br><br>
+            <input title="Include Demo-Course" type="checkbox" name="demoCourseDB" value="Yes" onchange="demoCourseDBchange(this)" checked/>
+            Include demo-course. <br><br>
             <div id="testdataBoxes">
               <input title="Include markdown." type="checkbox" name="mdSupport" value="Yes" checked/>
               Include markdown. (Files located in /Install/md) <br><br>
@@ -344,6 +346,11 @@
         }
         if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
           $totalSteps += 4;
+
+          if (isset($_POST["demoCourseDB"]) && $_POST["demoCourseDB"] == 'Yes') {
+            $totalSteps++;
+          }
+          
           if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
             $totalSteps++;
           }
@@ -515,7 +522,13 @@
           /*************** Fill database with test data if this was checked. ****************/
           if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
             addTestData("testdata", $connection);
-            addTestData("demoCourseData", $connection);
+            
+            # Add Demo-Page
+            if (isset($_POST["demoCourseDB"]) && $_POST["demoCourseDB"] == 'Yes') {
+              addTestData("demoCourseData", $connection);
+            } else {
+              echo "Skipped adding demo-page<br>";
+            }
 
             # Copy md files to the right place.
             if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
