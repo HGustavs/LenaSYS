@@ -4732,7 +4732,7 @@ only screen and (max-device-width: 320px) {
 #diagram-header, #diagram-container {
   --header-height: 50px;
   --diagram-header-height: 36px;
-  --ruler-size: 32px;
+  --ruler-size: 38px;
   --diagram-sidebar-width: 60px;
   --canvas-margin: 8px;
 }
@@ -4947,11 +4947,9 @@ only screen and (max-device-width: 320px) {
 }
 
 .ruler {
-  display: flex;
-  align-items: flex-end;
-  flex-shrink: 0;
   border-top: 1px solid #000000;
   border-left: 1px solid #000000;
+  position: relative;
 }
 
 .ruler.hidden {
@@ -4960,7 +4958,6 @@ only screen and (max-device-width: 320px) {
 
 #ruler-x {
   height: var(--ruler-size);
-  flex-direction: row;
   margin-right: var(--canvas-margin);
   border-right: 1px solid #000000;
 }
@@ -4969,14 +4966,29 @@ only screen and (max-device-width: 320px) {
   width: var(--ruler-size);
   margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
-  flex-direction: column;
   border-bottom: 1px solid #000000;
+}
+
+.ruler-lines {
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
 }
 
 .ruler-line {
   background-color: #000000;
   font-size: 10px;
   text-indent: 2px;
+}
+
+#ruler-x .ruler-lines {
+  flex-direction: row;
+  height: 100%;
+}
+
+#ruler-y .ruler-lines {
+  flex-direction: column;
+  width: 100%;
 }
 
 #ruler-x .ruler-line {
@@ -5017,6 +5029,33 @@ only screen and (max-device-width: 320px) {
 
 #ruler-y .mini {
   width: 4px;
+}
+
+.ruler-extra-lines {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.ruler-extra-lines .mouse-line {
+  position: absolute;
+  background-color: var(--color-text-primary);
+}
+
+#ruler-x .ruler-extra-lines .mouse-line {
+  width: 4px;
+  height: calc(var(--ruler-size) / 4);
+  bottom: 0;
+  left: 0;
+}
+
+#ruler-y .ruler-extra-lines .mouse-line {
+  height: 4px;
+  width: calc(var(--ruler-size) / 4);
+  top: 0;
+  right: 0;
 }
 
 /* --------------================################================-------------- *
