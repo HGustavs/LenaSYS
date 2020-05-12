@@ -120,6 +120,12 @@ function loadGeneralStats() {
 			data['stats']['lenasysSize']
 		]);
 
+		// LenaSys Installation Size
+		tableData.push([
+			'User Submissions Size',
+			data['stats']['userSubmissionSize']
+		]);
+
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
