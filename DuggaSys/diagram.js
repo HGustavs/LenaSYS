@@ -2788,97 +2788,6 @@ function hideCrosses() {
     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
 }
 
-//------------------------------------------------------------------------------
-// switchToolbarTo: This function switch opens a dialog for confirming mode switch
-//------------------------------------------------------------------------------
-
-function switchToolbarTo(target) {
-    if (toolbarState == target) {
-      return;
-    }
-    targetMode = target;
-    modeSwitchDialogActive = true;
-    //only ask for confirmation when developer mode is off
-    if (developerModeActive) {
-        switchMode();
-    } else {
-        $("#modeSwitchDialog").css("display", "flex");
-        var toolbarTypeText = document.getElementById('diagram-toolbar-switcher').innerHTML;
-        document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
-    }
-}
-
-//------------------------------------------------------------------------------
-// SwitchToolbarDev: Called when pressing "Display all tools". Sets targeted mode to developer and calls to switch
-//------------------------------------------------------------------------------
-
-function switchToolbarDev(event) {
-    event.stopPropagation();
-    if(!developerModeActive){
-        return;
-    }
-    targetMode = currentMode.dev;
-    switchMode();
-}
-
-//----------------------------------------------------------------------
-// switchMode: called when pressing "Accept" button after mode switch, and as trigger when jumping in/out from developer mode
-//----------------------------------------------------------------------
-
-function switchMode() {
-    closeModeSwitchDialog();
-    toolbarState = targetMode;
-    localStorage.setItem("toolbarState", toolbarState);
-    if(toolbarState != currentMode.dev) previousToolbarState = toolbarState;
-    switchToolbar();
-    editToolbarMenus();
-}
-
-//----------------------------------------------------------------------
-// switchToolbar: switches what tools are displayed in the left toolbar (Dev, ER, UML)
-//----------------------------------------------------------------------
-
-function switchToolbar() {  
-    // Hide/show relevant toolbar buttons depending on what mode is selected
-    if(toolbarState != currentMode.dev) {
-      $(".toolbar-drawer").hide();
-      $(".tlabel").hide();
-      $(".buttonsStyle").hide();
-      if(toolbarState == currentMode.er) {
-            $("#attributebutton").show();
-            $("#entitybutton").show();
-            $("#relationbutton").show();
-            $("#labelDraw").show();
-            $("#drawfreebutton").show();
-      } else if(toolbarState == currentMode.uml) {
-            $("#classbutton").show();
-      }
-    } else {
-        $(".toolbar-drawer").show();
-        $(".tlabel").show();
-        $(".buttonsStyle").show();
-        $("#attributebutton").show();
-        $("#entitybutton").show();
-        $("#relationbutton").show();
-        $("#labelDraw").show();
-        $("#drawfreebutton").show();
-    }
-  
-    // Global, always shown 
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $("#linebutton").show();
-    $("#drawerCreate").show();
-    $("#drawerDraw").show();
-    $("#drawerTools").show(); 
-    $("#drawerUndo").show();
-    $("#drawtextbutton").show();
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: '+ toolbarState;
-    document.getElementById('toolbar-switcher').value = toolbarState;
-}
-
-
 //----------------------------------------------------------------------
 // removeLocalStorage: this function is running when you click the button clear diagram
 //----------------------------------------------------------------------
@@ -3475,63 +3384,55 @@ function setOrientationIcon(element, check) {
 // DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
 
-const toolbarER = currentMode.er;
-const toolbarUML = currentMode.uml;
-const toolbarDeveloperMode = currentMode.dev;
-
 //----------------------------------------------------------------------
-// switchToolbar: function for switching the toolbar state (All, ER, UML),
-//                not sure what the numbers 0 an 3 mean
+// switchMode: called when pressing "Accept" button after mode switch, and as trigger when jumping in/out from developer mode
 //----------------------------------------------------------------------
 
-function switchToolbar(mode) {
-  if(mode == currentMode.er) {
-      toolbarState = toolbarER;
-  } else if(mode == currentMode.uml) {
-      toolbarState = toolbarUML;
-  } else if(mode == currentMode.dev) {
-      toolbarState = toolbarDeveloperMode;
-  }
+function switchMode() {
+    closeModeSwitchDialog();
+    toolbarState = targetMode;
+    localStorage.setItem("toolbarState", toolbarState);
+    if(toolbarState != currentMode.dev) previousToolbarState = toolbarState;
+    switchToolbar();
+    editToolbarMenus();
+}
 
-  document.getElementById('diagram-toolbar-switcher').innerHTML = "Mode: ER";
+//----------------------------------------------------------------------
+// switchToolbar: switches what tools are displayed in the left toolbar (Dev, ER, UML)
+//----------------------------------------------------------------------
 
-  localStorage.setItem("toolbarState", toolbarState);
-  //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == toolbarER) {
-    $("#drawerTools").show();
+function switchToolbar() {  
+    // Hide/show relevant toolbar buttons depending on what mode is selected
+    if(toolbarState != currentMode.dev) {
+        if(toolbarState == currentMode.er) {
+            $("#attributebutton").show();
+            $("#entitybutton").show();
+            $("#relationbutton").show();
+            $("#labelDraw").show();
+            $("#drawfreebutton").show();
+        } else if(toolbarState == currentMode.uml) {
+            $("#classbutton").show();
+        }
+    } else {
+        $("#attributebutton").show();
+        $("#entitybutton").show();
+        $("#relationbutton").show();
+        $("#labelDraw").show();
+        $("#drawfreebutton").show();
+    }
+  
+    // Global, always shown 
     $("#labelCreate").show();
-    $(".diagram-tools-button-big").hide();
+    $("#labelTools").show();
+    $("#labelUndo").show();
     $("#linebutton").show();
-    $("#attributebutton").show();
-    $("#entitybutton").show();
-    $("#relationbutton").show();
+    $("#drawerCreate").show();
     $("#drawerDraw").show();
-    $("#labelDraw").show();
-    $("#drawfreebutton").show();
+    $("#drawerTools").show(); 
+    $("#drawerUndo").show();
     $("#drawtextbutton").show();
-  }
-  else if (toolbarState == toolbarUML) {
-    $("#drawerTools").show();
-    $("#drawerDraw").show();
-    $("#labelCreate").show();
-    $(".diagram-tools-button-big").hide();
-    $("#linebutton").show();
-    $("#classbutton").show();
-    $("#drawtextbutton").show();
-  } else if(toolbarState == toolbarDeveloperMode) {
-    $("#drawerTools").show();
-    $("#labelCreate").show();
-    $(".diagram-tools-button-big").show();
-    $("#linebutton").show();
-    $("#attributebutton").show();
-    $("#entitybutton").show();
-    $("#relationbutton").show();
-    $("#drawerDraw").show();
-    $("#labelDraw").show();
-    $("#drawfreebutton").show();
-    $("#drawtextbutton").show();
-  }
-  document.getElementById('diagram-toolbar-switcher').innerHTML = toolbarState;
+    document.getElementById('toolbarTypeText').innerHTML = 'Mode: '+ toolbarState;
+    document.getElementById('toolbar-switcher').value = toolbarState;
 }
 
 //-------------------------------------------------------------------------
@@ -3549,6 +3450,39 @@ function editToolbarMenus(){
         $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
         setCheckbox($(".drop-down-option:contains('Display All Tools')"), false);
     }
+}
+
+//------------------------------------------------------------------------------
+// switchToolbarTo: This function switch opens a dialog for confirming mode switch
+//------------------------------------------------------------------------------
+
+function switchToolbarTo(target) {
+    if (toolbarState == target) {
+      return;
+    }
+    targetMode = target;
+    modeSwitchDialogActive = true;
+    //only ask for confirmation when developer mode is off
+    if (developerModeActive) {
+        switchMode();
+    } else {
+        $("#modeSwitchDialog").css("display", "flex");
+        var toolbarTypeText = document.getElementById('diagram-toolbar-switcher').innerHTML;
+        document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
+    }
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarDev: Called when pressing "Display all tools". Sets targeted mode to developer and calls to switch
+//------------------------------------------------------------------------------
+
+function switchToolbarDev(event) {
+    event.stopPropagation();
+    if(!developerModeActive){
+        return;
+    }
+    targetMode = currentMode.dev;
+    switchMode();
 }
 
 //-------------------------------------------------------------------------
