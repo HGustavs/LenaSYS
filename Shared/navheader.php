@@ -400,6 +400,32 @@ function mouseOutSort() {
 }
 /*Shadow hover effect for sort button END -------------*/
 
+/*Shadow hover effect for announcement button START -------------*/
+var annButton = document.getElementById("announcement");
+if(annButton){
+	annButton.addEventListener("mouseover", mouseOverAnnouncement);
+	annButton.addEventListener("mouseout", mouseOutAnnouncement);
+}
+
+function mouseOverAnnouncement() {
+	var obj = document.getElementById("announcement");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/announcement_iconShadow.svg';
+   }
+}
+
+function mouseOutAnnouncement() {
+	var obj = document.getElementById("announcement");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/announcement_icon.svg';
+   }
+}
+/*Shadow hover effect for sort button END -------------*/
+
 </script>
 <script type="text/javascript">
 	(function(proxied) {
