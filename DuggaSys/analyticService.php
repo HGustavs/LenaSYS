@@ -109,6 +109,8 @@ function generalStats() {
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
 	$generalStats['stats']['numOnline'] = count($activeUsers);
 
+	$generalStats['stats']['lenasysSize'] = convertBytesToHumanreadable(GetDirectorySize(str_replace("DuggaSys", "", getcwd())));
+
 	// Disk space calculation
 	$memInUse = disk_total_space(".") - disk_free_space(".");
 	$memFree = disk_free_space(".");
@@ -142,6 +144,17 @@ function generalStats() {
 	}
 	
 	echo json_encode($generalStats);
+}
+
+function GetDirectorySize($path) {
+    $bytestotal = 0;
+    $path = realpath($path);
+    if($path!==false && $path!='' && file_exists($path)){
+        foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object){
+            $bytestotal += $object->getSize();
+        }
+    }
+    return $bytestotal;
 }
 
 //------------------------------------------------------------------------------------------------
