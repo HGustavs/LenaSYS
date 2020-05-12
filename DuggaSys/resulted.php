@@ -59,7 +59,7 @@ pdoConnect();
         <select id="ladselect"></select>
       </div>
       <div class="resultedFormsFlex">
-        <label>LadScale</label>
+        <label>Grading scale</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
           <option value="U-G-VG" selected>U-G-VG</option>
