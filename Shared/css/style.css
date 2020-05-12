@@ -4947,9 +4947,6 @@ only screen and (max-device-width: 320px) {
 }
 
 .ruler {
-  display: flex;
-  align-items: flex-end;
-  flex-shrink: 0;
   border-top: 1px solid #000000;
   border-left: 1px solid #000000;
 }
@@ -4960,7 +4957,6 @@ only screen and (max-device-width: 320px) {
 
 #ruler-x {
   height: var(--ruler-size);
-  flex-direction: row;
   margin-right: var(--canvas-margin);
   border-right: 1px solid #000000;
 }
@@ -4969,7 +4965,6 @@ only screen and (max-device-width: 320px) {
   width: var(--ruler-size);
   margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
-  flex-direction: column;
   border-bottom: 1px solid #000000;
 }
 

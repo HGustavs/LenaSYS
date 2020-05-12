@@ -6288,8 +6288,8 @@ function canConnectLine(startObj, endObj){
 //-----------------------------------------------
 
 function createRulers() {
-    createRuler(document.getElementById("ruler-x"), canvas.width, origoOffsetX, "marginLeft");
-    createRuler(document.getElementById("ruler-y"), canvas.height, origoOffsetY, "marginTop");
+    createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
+    createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
 }
 
 //--------------------------------------------------------------------------------------
