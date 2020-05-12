@@ -69,6 +69,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'userLogInformation':
 				userLogInformation();
 				break;
+			case 'pageInformation':
+				pageInformation();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -446,40 +449,6 @@ function codeviewerInformation(){
 }
  
 //------------------------------------------------------------------------------------------------
-// Retrieves dugga percentage          
-//------------------------------------------------------------------------------------------------
- 
-function duggaPercentage(){
-    $result = $GLOBALS['log_db']->query('
-        SELECT
-			cid AS courseid,
-			COUNT(*) AS pageLoads,
-            COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
-        FROM duggaLoadLogEntries
-        GROUP BY courseid
-        ORDER BY percentage DESC;
-    ')->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
-}
- 
-//------------------------------------------------------------------------------------------------
-// Retrieves example percentage        
-//------------------------------------------------------------------------------------------------
- 
-function codeviewerPercentage(){
-    $result = $GLOBALS['log_db']->query('
-        SELECT
-			courseid,
-			COUNT(*) AS pageLoads,
-            COUNT(*) * 100.0 / (SELECT COUNT(*) FROM exampleLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
-        FROM exampleLoadLogEntries
-        GROUP BY courseid
-        ORDER BY percentage DESC;
-    ')->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
-}
-
-//------------------------------------------------------------------------------------------------
 // Retrieves sectioned log information      
 //------------------------------------------------------------------------------------------------
  
@@ -531,4 +500,68 @@ function userLogInformation(){
 	   ORDER BY timestamp;
    ')->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves page information      
+//------------------------------------------------------------------------------------------------
+ 
+function pageInformation(){
+    $dugga= $GLOBALS['log_db']->query('
+		SELECT
+			cid AS courseid,
+			COUNT(*) AS pageLoads,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+		FROM 
+			duggaLoadLogEntries
+		GROUP BY 
+			courseid
+		ORDER BY 
+			percentage DESC;
+	')->fetchAll(PDO::FETCH_ASSOC);
+	
+	$codeviewer = $GLOBALS['log_db']->query('
+		SELECT
+			courseid,
+			COUNT(*) AS pageLoads,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE type = '.EventTypes::pageLoad.') AS percentage
+		FROM 
+			exampleLoadLogEntries
+		GROUP BY 
+			courseid
+		ORDER BY 
+			percentage DESC;
+	')->fetchAll(PDO::FETCH_ASSOC);
+ 
+	$sectioned = $GLOBALS['log_db']->query('
+		SELECT
+			refer,
+			COUNT(*) AS pageLoads
+		FROM 
+			userHistory
+		WHERE 
+			refer LIKE "%sectioned%";
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$courseed = $GLOBALS['log_db']->query('
+		SELECT
+			refer,
+			COUNT(*) AS pageLoads
+		FROM 
+			userHistory
+		WHERE 
+			refer LIKE "%courseed%";
+	')->fetchAll(PDO::FETCH_ASSOC); 
+	
+	$result = [];
+	$result['hits']['dugga'] = $dugga[0];
+	$result['hits']['codeviewer'] = $codeviewer[0];
+	$result['hits']['sectioned'] = $sectioned[0];
+	$result['hits']['courseed'] = $courseed[0]; 
+
+
+	$result['percentage']['dugga'] = $dugga;
+	$result['percentage']['codeviewer'] = $codeviewer;
+
+	echo json_encode($result);
 }

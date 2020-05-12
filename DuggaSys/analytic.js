@@ -531,61 +531,62 @@ function loadPageInformation() {
         .append('<option value="codeviewer">codeviewer</option>')
         .appendTo($('#analytic-info'));
    
-    function updatePageHitInformation(page){
-        loadAnalytics(page + "Percentage", function(data) {
-            var tableData = [["Page", "Hits"]];
-            for (var i = 0; i < data.length; i++) {
-                tableData.push([
-                    page,
-                    data[i].pageLoads
-                ]);
-            }
-           
-            $('#analytic-info').append("<p>Page information.</p>");
-            $('#analytic-info').append(selectPage);
-            $('#analytic-info').append(renderTable(tableData));
-            updatePieChartInformation(page, tableData);
+    function updatePageHitInformation(pages, page){
+        loadAnalytics("pageInformation", function(data) {
+
+			var tableData = [["Page", "Hits"]];
+			for(var i = 0; i < pages.length; i++){
+				tableData.push([
+					pages[i],
+					data['hits'][pages[i]].pageLoads
+				]);
+			}
+
+            updatePieChartInformation(page, tableData, data);
         });
     }
  
-    function updatePieChartInformation(page, tableData){
-        loadAnalytics(page + "Percentage", function(data) {
-            var tablePercentage = [["Courseid", "Percentage"]];
-            for (var i = 0; i < data.length; i++) {
-                tablePercentage.push([
-                    data[i].courseid,
-                    data[i].percentage
-                ]);
-            }
+    function updatePieChartInformation(page, tableData, data){
+
+        var tablePercentage = [["Courseid", "Percentage"]];
+        for (var i = 0; i < data['percentage'][page].length; i++) {
+            tablePercentage.push([
+                data['percentage'][page][i].courseid,
+                data['percentage'][page][i].percentage
+            ]);
+        }
  
-            var chartData = [];
-            for (var i = 0; i < data.length; i++) {
-                chartData.push({
-                    label: "courseid:" + " " + data[i].courseid,
-                    value: data[i].percentage
-                });
-            }
-            $('#analytic-info').append("<p>Page information.</p>");
-            $('#analytic-info').append(selectPage);
-            $('#analytic-info').append(renderTable(tableData));
-            $('#analytic-info').append(renderTable(tablePercentage));
-            $('#analytic-info').append(drawPieChart(chartData));
-            updateState();
-        });
+        var chartData = [];
+        for (var i = 0; i < data['percentage'][page].length; i++) {
+            chartData.push({
+                label: "courseid:" + " " + data['percentage'][page][i].courseid,
+                value: data['percentage'][page][i].percentage
+            });
+		}
+		
+        $('#analytic-info').append("<p>Page information.</p>");
+        $('#analytic-info').append(selectPage);
+		$('#analytic-info').append(renderTable(tableData));
+        $('#analytic-info').append(renderTable(tablePercentage));
+        $('#analytic-info').append(drawPieChart(chartData, "Hit spread for " + page + " page loads:"));
+        updateState();
     }
  
     function updateState(){
+		// Add additonal pages here
+		var pages = ["dugga", "codeviewer", "sectioned", "courseed"];
+
 		if(firstLoad === true){
-			updatePageHitInformation("dugga");
+			updatePageHitInformation(pages, pages[0]);
 			firstLoad = false;
 		} 
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "showDugga":
-                    updatePageHitInformation("dugga");
+                    updatePageHitInformation(pages, pages[0]);
                     break;
                 case "codeviewer":
-                    updatePageHitInformation("codeviewer");
+                    updatePageHitInformation(pages, pages[1]);
                     break;
             }
         });
