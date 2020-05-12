@@ -1757,7 +1757,6 @@ function displayListAndGrid(){
       announcementCard[i].style.width = "48%";
     }
   });
-
   var btnContainer = document.getElementById("btnContainer");
   var btns = btnContainer.getElementsByClassName("btn");
   for (var i = 0; i < btns.length; i++) {
@@ -1790,7 +1789,6 @@ function displayAnnouncementForm(reload){
     $("#announcementForm").hide();
     $("#displayAnnouncements").css("margin-top", "0px");
     sessionStorage.removeItem("closeUpdateForm");
-
   }
 
 }
@@ -1810,9 +1808,8 @@ function scrollToTheAnnnouncementForm(){
 //read less or more announcement card
 function readLessOrMore(){
     var maxLength = 60;
-
+  
     $(".announcementMsgParagraph").each(function(){
-
       var myStr = $(this).text();
 
       if($.trim(myStr).length > maxLength){
