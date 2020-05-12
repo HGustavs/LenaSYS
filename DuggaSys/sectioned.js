@@ -1599,6 +1599,24 @@ $(window).load(function () {
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
+  $("#sectionList_arrowStatisticsOpen").click(function () {
+    $("#sectionList_arrowStatisticsOpen").hide();
+    $("#sectionList_arrowStatisticsClosed").show();
+    $("#statisticsList").show();
+    $("#statistics").hide();
+    $(".statisticsContent").show();
+    $("#courseList").css({
+      'display':'flex',
+      'flex-direction': 'column'
+    });
+    $(".statisticsContentBottom").show();
+  });
+  $("#sectionList_arrowStatisticsClosed").click(function () {
+    $("#sectionList_arrowStatisticsOpen").show();
+    $("#sectionList_arrowStatisticsClosed").hide();
+    $("#statisticsList").hide();
+
+  });
   $("#announcement").click(function(){
     sessionStorage.removeItem("closeUpdateForm");
     $("#announcementBoxOverlay").toggle();
