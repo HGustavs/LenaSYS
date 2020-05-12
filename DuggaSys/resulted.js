@@ -809,7 +809,7 @@ function renderCell(col, celldata, cellid) {
 				// do nothing for the purpose of being able to generate styling for empty cells
 			}
 			else {
-				str += "dugga-empty ";
+				str += "dugga-empty-mini ";
 			}
 
 			if (celldata.grade > 1) {

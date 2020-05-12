@@ -3411,6 +3411,16 @@ padding: 10px;
   background-position: center center;
 }
 
+.dugga-empty-mini {
+  height: 25px;
+  background-color: #aaa;
+  background-image: url('../icons/not_announced_icon.svg');
+  opacity: 0.2;
+  background-repeat: no-repeat;
+  background-size: 20%;
+  background-position: center center;
+}
+
 .dugga-result-subheader {
   border-top: 2px solid white;
 }
