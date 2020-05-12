@@ -200,7 +200,7 @@ function loadServiceUsage() {
                 .datepicker("setDate", "+1d")
                 .appendTo($('#analytic-info'));
                 console.log("D TO: " + inputDateTo.val());
-                console.log("D FROM: " + inputDateTo.val());
+                console.log("D FROM: " + inputDateFrom.val());
          }
          else if(input=="hourly"){
            inputDateFrom = $('<input type="text"></input>')
@@ -211,7 +211,7 @@ function loadServiceUsage() {
                .appendTo($('#analytic-info'));
                inputDateTo = inputDateFrom;
                console.log("H TO: " + inputDateTo.val());
-               console.log("H FROM: " + inputDateTo.val());
+               console.log("H FROM: " + inputDateFrom.val());
          }
          else if(input=="weekly"){
            inputDateFrom = $('<input type="text"></input>')
@@ -275,6 +275,7 @@ function loadServiceUsage() {
 				interval: selectInterval.val()
 			},
 			success: function(data) {
+             console.log(data);
 				resetAnalyticsChart();
 
 				var services = {};
@@ -296,7 +297,10 @@ function loadServiceUsage() {
 					}
 				}
 				serviceSelect.change(function() {
+                 resetAnalyticsChart();
+                 console.log(services[$(this).val()]);
 					drawLineChart(services[$(this).val()]);
+                 
 				});
 				$('#analytic-info').append(serviceSelect);
 				serviceSelect.change();
