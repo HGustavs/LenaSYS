@@ -230,7 +230,7 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection' class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onmouseover="validateSectName('sectionname','dialog10'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
@@ -241,8 +241,9 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onchange="validateSectName('sectionname','dialog10')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
+				<p id="dialog10" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Forbidden characters in filename</p>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
@@ -265,7 +266,7 @@
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem(); updateDeadline();' />
+					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSectionName");' />
 				</div>
 			</div>
 		</div>

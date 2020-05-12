@@ -2071,6 +2071,25 @@ function validateDate2(ddate, dialogid) {
     }
 }
 
+function validateSectName(name, dialogid){
+  var emotd = document.getElementById(name);
+  var Emotd = /^[^"']+$/;
+  // var EmotdRange = /^.{0,50}$/;
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd)) {
+    emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    x4.style.display = "none";
+    window.bool10 = true;
+  } else {
+    emotd.style.borderColor = "#E54";
+    x4.style.display = "block";
+    emotd.style.borderWidth = "2px";
+    window.bool10 = false;
+  }
+
+}
+
 /*Validates all forms*/
 
 function validateForm(formid) {
@@ -2086,7 +2105,24 @@ function validateForm(formid) {
 
     }
     // if all information is correct
-    if (window.bool7 === true && window.bool8 === true) {
+    if (window.bool8 === true && window.bool10 === true ) {
+      alert('The item is now updated');
+      updateItem();
+      updateDeadline();
+
+    } else {
+      alert("You have entered incorrect information");
+    }
+  }
+  if (formid === 'editSectionName') {
+    var sName = document.getElementById("sectionname").value;
+    //If fields empty
+    if (sName == null || sName == "") {
+      alert("Fill in all fields");
+
+    }
+    // if all information is correct
+    if (window.bool10 === true ) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
