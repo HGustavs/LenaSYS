@@ -28,9 +28,9 @@
 	max-height: 90%;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen 
+and (max-device-width : 725px) {
     #box1wrapper{
-         overflow: hidden;
         position: absolute;
         left: 0px;
         height: -moz-calc(35.0%);
@@ -46,7 +46,6 @@
     }
 
     #box2wrapper {
-         overflow: hidden;
         position: absolute;
         top:auto !important;
         bottom: 0px;

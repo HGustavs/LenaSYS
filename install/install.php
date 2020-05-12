@@ -784,6 +784,22 @@
         IP TEXT,
         browser VARCHAR(100)
       );
+      CREATE TABLE IF NOT EXISTS clickLogEntries (
+        id INTEGER PRIMARY KEY,
+        target TEXT,
+        mouseX TEXT,
+        mouseY TEXT,
+        clientResX TEXT,
+        clientResY TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE TABLE IF NOT EXISTS mousemoveLogEntries (
+        id INTEGER PRIMARY KEY,
+        page TEXT,
+        mouseX TEXT,
+        mouseY TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
       CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
         id INTEGER PRIMARY KEY,
         type INTEGER,

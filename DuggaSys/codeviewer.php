@@ -161,12 +161,12 @@ Testing Link:
 				$userid="00";		// Guest ID is intentionally different from registered users, it begins with a double-zero to indicate guest
 			}
 
-			// Gets username based on uid, USED FOR LOGGING
+			// Gets username based on uid
 			$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
 			$query->bindParam(':uid', $userid);
 			$query-> execute();
 
-			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$username = $row['username'];
 			}
@@ -191,11 +191,11 @@ Testing Link:
 			// Logs users who view example, along with the example they have viewed
 			if ($userid == "00") {
 				$description=$exampleid." ".$courseID." ".$cvers;
-				logUserEvent($_COOKIE["cookie_guest"], "guest", EventTypes::DuggaRead, $description);
+				logUserEvent($_COOKIE["cookie_guest"], EventTypes::DuggaRead, $description);
 			}
 			else{
 				$description=$exampleid." ".$courseID." ".$cvers;
-				logUserEvent($userid, $username, EventTypes::DuggaRead, $description);
+				logUserEvent($userid, EventTypes::DuggaRead, $description);
 			}
 
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
@@ -374,7 +374,7 @@ Testing Link:
 		<!-- Template Choosing Box -->
 		<?php
 			// Adding page logging
-			logExampleLoadEvent($courseID, $userid, $exampleid, EventTypes::pageLoad);
+			logExampleLoadEvent($courseID, $exampleid, EventTypes::pageLoad);
 
 			include '../Shared/loginbox.php';
 		?>
