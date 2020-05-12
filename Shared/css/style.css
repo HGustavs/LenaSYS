@@ -373,6 +373,30 @@ p {
 #displayAnnouncements{
   margin: 20px 0 20px 0;
 }
+.announcementdeleted,
+.announcementupdated,
+.announcementcreated{
+  margin: 0 0 20px 0px;
+  padding: 15px;
+  background-color: #fff;
+  font-weight: bold;
+}
+.closeActionLogDisplay{
+  margin-top: -12px;
+}
+.announcementcreated{
+  border: 2px solid #00cc00;
+  color: #00cc00;
+}
+.announcementdeleted{
+  border: 2px solid #ff0000;
+  color: #ff0000;
+}
+.announcementupdated{
+  border: 2px solid var(--color-logo-background);
+  color: var(--color-logo-background);
+}
+
 .announcementForm{
   width: 800px;
   border:  2px solid #f2f2f2;
@@ -501,16 +525,21 @@ p {
   color: #fff;
 
 }
-#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a{
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a,
+.closeActionLogDisplay{
   float: right;
   font-size: 30px;
-  margin-top: -17px;
   font-weight: bold;
   color: #ff8080;
   text-decoration: none;
 }
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a{
+  margin-top: -17px;
+}
 #displayAnnouncements .announcementCard .actionBtns span.deleteBtn a:hover,
-#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a:focus {
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a:focus,
+.closeActionLogDisplay:hover,
+.closeActionLogDisplay:focus{
   color: #cc0000;
   cursor: pointer;
 }

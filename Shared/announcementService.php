@@ -26,6 +26,8 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 
 	$query->execute(); 
 
+	$_SESSION["announcementcreated"] = "New announcement is created!";
+
 }else if(isset($_GET['deleteannouncementid'])){
 	$deleteannouncementid = $_GET['deleteannouncementid'];
 	$uid = $_GET['uid'];
@@ -41,6 +43,7 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$stmt->bindParam(':versid', $versid);   
 
 	$stmt->execute();
+	$_SESSION["announcementdeleted"] = "Announcement is deleted!";
 }elseif (isset($_POST['updateannouncementid']) && isset($_POST['updateBtn'])) {
 	$updateannouncementid = $_POST['updateannouncementid'];
 	$uid = $_POST['uid'];
@@ -59,6 +62,7 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$stmt->bindParam(':message', $updateMessage);   
 
 	$stmt->execute();
+	$_SESSION["announcementupdated"] = "Announcement is updated!";
 }
 header("Location: ../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."");
 
