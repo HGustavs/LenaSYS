@@ -1215,6 +1215,10 @@ div .navButt:hover {
     .navButt img {
         width: 20px;
     }
+
+    .access menuButton{
+      width: 20px;
+    }
     #navHeading {
         display: none;
     }
@@ -4908,14 +4912,6 @@ only screen and (max-device-width: 860px) {
     -webkit-transition: margin-right 0.5s, width 0.5s;
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
-  }
-
-  table.navheader div.access {
-    pointer-events: none;
-    opacity: 0;
-    -webkit-transition: opacity 0.5s;
-    -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s;
   }
 
   ul.hamburgerList li.access {
