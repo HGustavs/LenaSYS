@@ -120,34 +120,35 @@
 		<!-- Announcement box -->
 		<div id="announcementBoxOverlay">
 			<div id="announcementBox">
-			<h3>To Do</h3>
-			<hr>
-			<table>
-			<?php
+				<h3>To Do</h3>
+				<hr>
+				<table>
+					<?php
 
-				$courseid = $_GET['courseid'];
-				$coursevers = $_GET['coursevers'];
+					$courseid = $_GET['courseid'];
+					$coursevers = $_GET['coursevers'];
 
-				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid="'.$courseid.'" AND courseversion="'.$coursevers.'" ORDER BY announceTime DESC') AS $headline){
-	             $headlines = $headline['title'];
-	             $message = $headline['message'];
-	             $announcementid = $headline['id'];
-	             $announceTime = $headline['announceTime'];
-	             $author = $headline['author'];
-	             echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
-
-	            }
+					foreach ($pdo->query('SELECT * FROM announcement WHERE courseid="'.$courseid.'" AND courseversion="'.$coursevers.'" ORDER BY announceTime DESC') AS $headline){
+						$headlines = $headline['title'];
+						$message = $headline['message'];
+						$announcementid = $headline['id'];
+						$announceTime = $headline['announceTime'];
+						$author = $headline['author'];
+						echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th><td><button class='actionBtn'><a href='../Shared/announcementService.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&deleteannouncementid=".$announcementid."'>Delete</a></button><button class='actionBtn'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&updateannouncementid=".$announcementid."&title=".$headlines."&message=".$message."&author=".$author."'>Update</a></button></td></tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
 
 
-			?>
+					}
 
-			</table>
 
-			<button class="showAllAnnouncement">
-				<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
-				</a>
-			</button>
-		</div>
+					?>
+
+				</table>
+
+				<button class="showAllAnnouncement">
+					<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
+					</a>
+				</button>
+			</div>
 
 		</div>
 		<?php
@@ -155,6 +156,10 @@
 			if (isset($_GET['announcementid'])) {
 				include '../Shared/fullAnnouncement.php';
 			}
+
+		}if (isset($_GET['updateannouncementid'])) {
+			include '../Shared/updateAnnouncement.php';
+		}
 
 		?>
 
