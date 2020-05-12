@@ -40,8 +40,8 @@
 			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
 				echo "<td class='menuButton' style='display: inline-block;'>";
 				echo "    <div class='access menuButton'>";
-  				echo "      <a id='accessBTN' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
-  				echo "        <img class='navButt' src='../Shared/icons/analytic.svg'>";
+  				echo "      <a id='accessBTN' class='navButt' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
+  				echo "        <img src='../Shared/icons/analytic.svg' style='margin: 8px; height: 30px;'>";
 				echo "      </a>";
 				echo "    </div>";
 				echo "</td>";
@@ -60,12 +60,12 @@
 			}
 
 			if($noup!='NONE') {
-				  echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
 					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
+  				echo "<td class='navButt' id='announcement' title='Announcement'><img src='../Shared/icons/announcement_icon.svg'></td>";
 			}else if($noup=='SECTION'){
 					echo "<a href='";
 					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
@@ -396,6 +396,32 @@ function mouseOutSort() {
    {
       var images = obj.getElementsByTagName('img');
       images[0].src = '../Shared/icons/sort_white.svg';
+   }
+}
+/*Shadow hover effect for sort button END -------------*/
+
+/*Shadow hover effect for announcement button START -------------*/
+var annButton = document.getElementById("announcement");
+if(annButton){
+	annButton.addEventListener("mouseover", mouseOverAnnouncement);
+	annButton.addEventListener("mouseout", mouseOutAnnouncement);
+}
+
+function mouseOverAnnouncement() {
+	var obj = document.getElementById("announcement");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/announcement_iconShadow.svg';
+   }
+}
+
+function mouseOutAnnouncement() {
+	var obj = document.getElementById("announcement");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/announcement_icon.svg';
    }
 }
 /*Shadow hover effect for sort button END -------------*/
