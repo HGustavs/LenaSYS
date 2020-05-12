@@ -1907,6 +1907,23 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+  if (formid === 'editSectionName') {
+    var sName = document.getElementById("sectionname").value;
+    //If fields empty
+    if (sName == null || sName == "") {
+      alert("Fill in all fields");
+
+    }
+    // if all information is correct
+    if (window.bool10 === true ) {
+      alert('The item is now updated');
+      updateItem();
+      updateDeadline();
+
+    } else {
+      alert("You have entered incorrect information");
+    }
+  }
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
