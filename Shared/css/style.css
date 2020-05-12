@@ -687,21 +687,21 @@ p {
   border-left: 2px solid black;
 }
 
-/*Vertical line for tabs1*/
+/*Vertical line for 1 tabs*/
 #Sectionlist .tabs1 .spacerRight {
   height: 32px;
   width: 32px;
   margin-left: 15px;
   border-right: 2px solid black;
 }
-/*Vertical line for tabs2*/
+/*Vertical line for 2 tabs*/
 #Sectionlist .tabs2 .spacerRight {
   height: 32px;
   width: 64px;
   margin-left: 15px;
   border-right: 2px solid black;
 }
-/*Vertical line for tabs3*/
+/*Vertical line for 3 tabs*/
 #Sectionlist .tabs3 .spacerRight {
   height: 32px;
   width: 96px;
@@ -709,7 +709,7 @@ p {
   border-right: 2px solid black;
 }
 
-/*Vertical line for end tabs for tabs0*/
+/*Vertical line for end tabs for "1 tab + end"*/
 #Sectionlist .tabs4 .spacerRight {
   height: 17px;
   width: 18px;
@@ -718,7 +718,7 @@ p {
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
 }
-/*Vertical line for end tabs for tabs1*/
+/*Vertical line for end tabs for "2 tabs + end"*/
 #Sectionlist .tabs5 .spacerRight {
   height: 17px;
   width: 20px;
@@ -727,7 +727,7 @@ p {
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
 }
-/*Vertical line for end tabs for tabs2*/
+/*Vertical line for end tabs for "3 tabs + end"*/
 #Sectionlist .tabs6 .spacerRight {
   height: 17px;
   width: 20px;
