@@ -227,8 +227,10 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
+			str+="<div data-value='"+null+"' onclick='changeOptDiv(event)'>";
+			str+=""+"None"+"</div>";
 			for(var i=0;i<optionlist.length;i++){
-				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDiv(event)'> ";
+				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDiv(event)'>";
 				str+=""+optionlist[i][optionstring]+"</div>";
 			}
 		str +="</div>"
@@ -239,8 +241,10 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
+			str+="<div data-value='"+null+"' onclick='changeOptDivStudent(event,\""+-1+"\")'>";
+			str+=""+"None"+"</div>";
 			for(var i=0;i<optionlist.length;i++){
-				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'> ";
+				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'>";
 				str+=""+optionlist[i][optionstring]+"</div>";
 			}
 		str +="</div>"

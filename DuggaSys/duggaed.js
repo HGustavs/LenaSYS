@@ -707,9 +707,11 @@ function renderCell(col, celldata, cellid) {
 		case "qrelease":	// DUGGA-TABLE - Result date
 			if(!celldata) {	// if null - return string "N/A"
 				retString = "N/A";
-			} else {		// else - return date without seconds (i.e. last three charachters)
+			} else if(celldata.length > 10){		// when there is time included - return date without seconds (i.e. last three charachters)
 				var secCutoff = celldata.length - 3;
 				retString = celldata.slice(0, secCutoff);
+			} else {
+				retString = celldata;	//else - simply show the celldata, in this case the date (YYYY-MM-DD)
 			}
 			break;
 
@@ -980,10 +982,10 @@ function compare(a, b) {
 	}
 	
 	if(tempA != null){
-		tempA = tempA.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+		tempA = tempA.toLowerCase().replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
 	}
 	if(tempB != null){
-		tempB = tempB.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+		tempB = tempB.toLowerCase().replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
 	}
 
 	if (tempA > tempB) {
