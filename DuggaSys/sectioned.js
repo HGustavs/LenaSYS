@@ -851,6 +851,7 @@ function returnedSection(data) {
           var param = {
             'exampleid': item['link'],
             'courseid': querystring['courseid'],
+            'coursename' : querystring['coursename'],
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
