@@ -514,6 +514,10 @@ p {
 .modal .cancelbtn{
   background-color: var(--color-red);
 }
+.modal .modCancelbtn a{
+  text-decoration: none;
+  color: #fff;
+}
 .modal .modalBtns{
   display: flex;
   flex-direction: row;
