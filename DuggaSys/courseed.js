@@ -549,9 +549,11 @@ function validateForm(formid) {
 		if(formid === "newCourse") {
 			createNewCourse();
 			alert("New course added!");
+			location.reload();
 		} else if(formid === "editCourse") {
 			updateCourse();
 			alert("Course updated!");
+			location.reload();
 		}
 
 		//Reset inputs
