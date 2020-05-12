@@ -1757,6 +1757,7 @@ function displayListAndGrid(){
       announcementCard[i].style.width = "48%";
     }
   });
+
   var btnContainer = document.getElementById("btnContainer");
   var btns = btnContainer.getElementsByClassName("btn");
   for (var i = 0; i < btns.length; i++) {
@@ -1767,6 +1768,15 @@ function displayListAndGrid(){
     });
   }
 
+  $(window).resize(function() {
+    if (($(window).width()) < 1050) {
+      $(".gridBtn").removeClass("active");
+      $(".listBtn").addClass("active");
+    }else{
+      $(".listBtn").removeClass("active");
+      $(".gridBtn").addClass("active");
+    }
+  });
 }
 function accessAdminAction(){
   var adminLoggedin = $("#adminLoggedin").val();
@@ -1789,6 +1799,7 @@ function displayAnnouncementForm(reload){
     $("#announcementForm").hide();
     $("#displayAnnouncements").css("margin-top", "0px");
     sessionStorage.removeItem("closeUpdateForm");
+
   }
 
 }
@@ -1805,11 +1816,15 @@ function scrollToTheAnnnouncementForm(){
         'slow');
   });
 }
+function closeActionLogDisplay(){
+  $(".closeActionLogDisplay").parent().remove();
+}
 //read less or more announcement card
 function readLessOrMore(){
     var maxLength = 60;
-  
+
     $(".announcementMsgParagraph").each(function(){
+
       var myStr = $(this).text();
 
       if($.trim(myStr).length > maxLength){

@@ -120,6 +120,24 @@
 		<!-- Announcement box -->
 		<div id="announcementBoxOverlay">
 			<div id="announcementBox">
+				<div id="actionLogDisplay">
+					<?php 		
+
+					if (isset($_SESSION["announcementcreated"])) {
+						echo '<div class="announcementcreated"><span>'.$_SESSION["announcementcreated"].'</span><span onclick="closeActionLogDisplay();" class="closeActionLogDisplay" title="Close">&times;</span></div>';
+					}elseif (isset($_SESSION['announcementupdated'])) {
+						echo '<div class="announcementupdated"><span>'.$_SESSION["announcementupdated"].'</span><span onclick="closeActionLogDisplay();" class="closeActionLogDisplay" title="Close">&times;</span></div>';
+					}elseif(isset($_SESSION['announcementdeleted'])){
+						echo '<div class="announcementdeleted"><span>'.$_SESSION["announcementdeleted"].'</span><span onclick="closeActionLogDisplay();" class="closeActionLogDisplay" title="Close">&times;</span></div>';
+
+					}
+
+					unset($_SESSION['announcementcreated']);
+					unset($_SESSION['announcementupdated']);
+					unset($_SESSION['announcementdeleted']);
+
+					?>
+				</div>
 				<div id="formContainer">
 				<?php 
 				$_SESSION['courseid'] = $_GET['courseid'];

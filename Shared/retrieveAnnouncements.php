@@ -18,8 +18,8 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	foreach ($pdo->query('SELECT * FROM course WHERE cid="'.$cid.'"') AS $course){
 		$coursename = $course['coursename'];
 		echo "<div class='actionBtns'>";
-		echo "<span class='editBtn' onclick='updateannouncementForm(".$announcementid.", handleResponse);'>Edit</span>";
-		echo "<span class='deleteBtn'><a href='../Shared/announcementService.php?courseid=".$cid."&coursename=".$coursename."&coursevers=".$versid."&deleteannouncementid=".$announcementid."&uid=".$uid."'>&times;</a></span>";
+		echo "<span class='editBtn' onclick='updateannouncementForm(".$announcementid.", handleResponse);' title='Edit announcement'>Edit</span>";
+		echo "<span class='deleteBtn'><a href='../Shared/announcementService.php?courseid=".$cid."&coursename=".$coursename."&coursevers=".$versid."&deleteannouncementid=".$announcementid."&uid=".$uid."' title='Delete announcement'>&times;</a></span>";
 		echo "</div>";
 	}
 	echo "<div><h3>".ucfirst(strtolower($title))."</h3></div>";
