@@ -463,9 +463,13 @@
                 </div>
             </div>
         </div>
-        <div id="ruler-y" class="ruler hidden"></div>
+        <div id="ruler-y" class="ruler hidden">
+            <div class="ruler-lines"></div>
+        </div>
         <div id="diagram-content">
-            <div id="ruler-x" class="ruler hidden"></div>
+            <div id="ruler-x" class="ruler hidden">
+                <div class="ruler-lines"></div>
+            </div>
             <div id="diagram-canvas-container">
                 <canvas id="diagram-canvas"></canvas>
                 <button id='moveButton' class='unpressed' title="Move Around">
