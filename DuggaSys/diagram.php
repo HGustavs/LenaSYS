@@ -465,12 +465,16 @@
         </div>
         <div id="ruler-y" class="ruler hidden">
             <div class="ruler-lines"></div>
-            <div class="ruler-extra-lines"></div>
+            <div class="ruler-extra-lines">
+                <div class="mouse-line"></div>
+            </div>
         </div>
         <div id="diagram-content">
             <div id="ruler-x" class="ruler hidden">
                 <div class="ruler-lines"></div>
-                <div class="ruler-extra-lines"></div>
+                <div class="ruler-extra-lines">
+                    <div class="mouse-line"></div>
+                </div>
             </div>
             <div id="diagram-canvas-container">
                 <canvas id="diagram-canvas"></canvas>
