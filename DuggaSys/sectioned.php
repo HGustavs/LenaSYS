@@ -157,7 +157,7 @@
 				include '../Shared/fullAnnouncement.php';
 			}
 
-		}if (isset($_GET['updateannouncementid'])) {
+		if (isset($_GET['updateannouncementid'])) {
 			include '../Shared/updateAnnouncement.php';
 		}
 
