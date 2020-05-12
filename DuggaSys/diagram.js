@@ -6119,6 +6119,7 @@ function toggleActiveBackgroundLayer(object) {
             object.classList.remove("drop-down-option-hover");
             localStorage.setItem("writeToActiveLayers", object.id);
             setlayer(object);
+            activeLocalStorage();
         }
     }
     updateGraphics();
