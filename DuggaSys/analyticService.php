@@ -18,7 +18,7 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 	if (isset($_POST['query'])) {
 		switch ($_POST['query']) {
 			case 'generalStats':
-				generalStats();
+				generalStats($pdo);
 				break;
 			case 'onlineUsers':
 				onlineUsers();
@@ -80,7 +80,7 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 //------------------------------------------------------------------------------------------------
 // Retrieves general stats from the log			
 //------------------------------------------------------------------------------------------------
-function generalStats() {
+function generalStats($dbCon) {
 	$log_db = $GLOBALS['log_db'];
 	$LoginFail = $log_db->query('
 		SELECT
@@ -109,8 +109,20 @@ function generalStats() {
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
 	$generalStats['stats']['numOnline'] = count($activeUsers);
 
-  $generalStats['stats']['lenasysSize'] = convertBytesToHumanreadable(GetDirectorySize(str_replace("DuggaSys", "", getcwd())));
+ 	$generalStats['stats']['lenasysSize'] = convertBytesToHumanreadable(GetDirectorySize(str_replace("DuggaSys", "", getcwd())));
 	$generalStats['stats']['userSubmissionSize'] = convertBytesToHumanreadable(GetDirectorySize(getcwd() . "/submissions"));
+
+
+	$query = $dbCon->prepare("SELECT count(*) as numUsers FROM user");
+
+	if(!$query->execute()) {
+		$numUsers = 'Error Reading DB.';
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$numUsers = $rows[0]['numUsers'];
+	}
+
+	$generalStats['stats']['totalUsers'] = $numUsers;
 
 	// Disk space calculation
 	$memInUse = disk_total_space(".") - disk_free_space(".");
