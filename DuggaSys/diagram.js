@@ -6232,6 +6232,13 @@ function fixActiveLayer(){
         correctSpan.id = "Layer_" + i +"_Active";
     }
 }
+function fixExampleLayer(){
+    for(let i = 0; i <diagram.length;i++){
+        diagram[i].properties.setLayer = writeToLayer;
+    }
+    updateGraphics();
+    SaveState();
+}
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;
