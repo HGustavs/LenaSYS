@@ -459,7 +459,8 @@ function loadPageInformation() {
 	var firstLoad = true;
  
     var selectPage = $("<select></select>")
-        .append('<option value="showDugga" selected>showDugga</option>')
+		.append('<option value="showDugga" selected>showDugga</option>')
+		.append('<option value="resolveCourse" selected>resolveCourse</option>')
         .append('<option value="codeviewer">codeviewer</option>')
         .appendTo($('#analytic-info'));
    
@@ -482,9 +483,33 @@ function loadPageInformation() {
         });
     }
  
+	function resolveCourse(){
+		console.log("resolveCourse");	
+		$.ajax({
+            url: "analyticService.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+				query: "resolveCourseID",
+            },success: function(data){
+				console.log("success");
+				var tabledonk = [["Courseid"]];
+           		for (var i = 0; i < data.length; i++) {
+                	tabledonk.push([
+						data[i].courseid,
+						data[i].cid
+                	]);
+				}
+				$('#analytic-info').append("<p>Page information.</p>");
+				$('#analytic-info').append(renderTable(tabledonk));	
+			}
+		})
+	}
+
+
     function updatePieChartInformation(page, tableData){
         loadAnalytics(page + "Percentage", function(data) {
-            var tablePercentage = [["Name","Courseid", "Percentage"]];
+            var tablePercentage = [["Courseid", "Percentage"]];
             for (var i = 0; i < data.length; i++) {
                 tablePercentage.push([
                     data[i].courseid,
@@ -502,7 +527,7 @@ function loadPageInformation() {
             $('#analytic-info').append("<p>Page information.</p>");
             $('#analytic-info').append(selectPage);
             $('#analytic-info').append(renderTable(tableData));
-            $('#analytic-info').append(renderTable(tablePercentage));
+			$('#analytic-info').append(renderTable(tablePercentage));
             $('#analytic-info').append(drawPieChart(chartData));
             updateState();
         });
@@ -515,11 +540,14 @@ function loadPageInformation() {
 		} 
         selectPage.change(function(){
             switch(selectPage.val()){
+				case "resolveCourse":
+					resolveCourse();
+					break;
                 case "showDugga":
-                    updatePageHitInformation("dugga");
+					updatePageHitInformation("dugga");
                     break;
                 case "codeviewer":
-                    updatePageHitInformation("codeviewer");
+					updatePageHitInformation("codeviewer");
                     break;
             }
         });

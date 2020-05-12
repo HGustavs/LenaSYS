@@ -66,6 +66,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'userLogInformation':
 				userLogInformation();
 				break;
+			case 'resolveCourseID':
+				resolveCourseID();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -488,5 +491,10 @@ function userLogInformation(){
 //------------------------------------------------------------------------------------------------
 
 function resolveCourseID(){
-	
+    $result = $GLOBALS['log_db']->query('
+		SELECT
+			cid AS courseid
+		FROM duggaLoadLogEntries
+   ')->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result);
 }
