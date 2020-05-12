@@ -4,7 +4,7 @@
 
 /********************************************************************************
 
-   Globals <-- Next are globals - properly declared with var
+   Globals
 
 *********************************************************************************/
 var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal (used much later in)
