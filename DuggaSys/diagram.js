@@ -3631,6 +3631,10 @@ function zoomInMode(event) {
         origoOffsetY -= centerY * zoomDifference - centerY;
     }
 
+    if(isRulersActive) {
+        createRulers();
+    }
+
     reWrite();
     updateGraphics();
 }
@@ -4852,6 +4856,10 @@ function touchMoveEvent(event) {
         
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
+        
+        if(isRulersActive) {
+            createRulers();
+        }
     }
 
     // Moves an object
@@ -6280,32 +6288,44 @@ function canConnectLine(startObj, endObj){
 //-----------------------------------------------
 
 function createRulers() {
-    createRuler(document.getElementById("ruler-x"), canvas.width, origoOffsetX);
-    createRuler(document.getElementById("ruler-y"), canvas.height, origoOffsetY);
+    createRuler(document.getElementById("ruler-x"), canvas.width, origoOffsetX, "marginLeft");
+    createRuler(document.getElementById("ruler-y"), canvas.height, origoOffsetY, "marginTop");
 }
 
 //--------------------------------------------------------------------------------------
 // createRuler: Fills the passed ruller container with lines according to passed length.
 //--------------------------------------------------------------------------------------
 
-function createRuler(element, length, origoOffset) {
+function createRuler(element, length, origoOffset, marginProperty) {
     const from = Math.round(-origoOffset);
     const to = Math.round(length - origoOffset);
+
+    const steps = {};
+    steps.mini = 5;
+    steps.small = steps.mini * 2;
+    steps.big = Math.round((steps.mini * steps.small) * zoomValue);
+    
+    if(zoomValue <= 0.7 && zoomValue >= 0.5) {
+        steps.big *= 2;
+    } else if(zoomValue <= 0.4 && zoomValue >= 0.3) {
+        steps.big *= 4;
+    } else if(zoomValue <= 0.2) {
+        steps.big *= 8;
+    }
 
     element.innerHTML = "";
 
     for(let i = from; i < to; i++) {
-        if(i % 4 === 0) {
+        if(i % steps.big === 0 || i % steps.small === 0 || i % steps.mini === 0) {
             const line = document.createElement("div");
             line.classList.add("ruler-line");
-            if(i % 8 === 0) {
-                if(i % 32 === 0) {
-                    line.classList.add("big");
-                    line.innerText = i;
-                } else {
-                    line.classList.add("small");
-                }
-            } else {
+            line.style[marginProperty] = `${steps.mini - 1}px`;
+            if(i % steps.big === 0) {
+                line.classList.add("big");
+                line.innerText = Math.round(i / zoomValue);
+            } else if(i % steps.small === 0) {
+                line.classList.add("small");
+            } else if(i % steps.mini === 0) {
                 line.classList.add("mini");
             }
             element.appendChild(line);

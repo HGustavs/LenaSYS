@@ -4959,15 +4959,15 @@ only screen and (max-device-width: 320px) {
 }
 
 #ruler-x {
-  height: 32px;
+  height: var(--ruler-size);
   flex-direction: row;
   margin-right: var(--canvas-margin);
   border-right: 1px solid #000000;
 }
 
 #ruler-y {
-  width: 32px;
-  margin-top: 32px;
+  width: var(--ruler-size);
+  margin-top: var(--ruler-size);
   margin-bottom: var(--canvas-margin);
   flex-direction: column;
   border-bottom: 1px solid #000000;
@@ -4981,12 +4981,10 @@ only screen and (max-device-width: 320px) {
 
 #ruler-x .ruler-line {
   width: 1px;
-  margin-left: 3px;
 }
 
 #ruler-y .ruler-line {
   height: 1px;
-  margin-top: 3px;
 }
 
 #ruler-x .ruler-line:first-of-type {
