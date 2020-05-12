@@ -3403,36 +3403,24 @@ function switchMode() {
 
 function switchToolbar() {  
     // Hide/show relevant toolbar buttons depending on what mode is selected
-    if(toolbarState != currentMode.dev) {
-        if(toolbarState == currentMode.er) {
-            $("#attributebutton").show();
-            $("#entitybutton").show();
-            $("#relationbutton").show();
-            $("#labelDraw").show();
-            $("#drawfreebutton").show();
-        } else if(toolbarState == currentMode.uml) {
-            $("#classbutton").show();
-        }
-    } else {
+    if(toolbarState == currentMode.dev || toolbarState == currentMode.er) {
         $("#attributebutton").show();
         $("#entitybutton").show();
         $("#relationbutton").show();
-        $("#labelDraw").show();
         $("#drawfreebutton").show();
+        $("#classbutton").hide();
+        if(toolbarState != currentMode.er) {
+            $("#classbutton").show();
+        }
     }
-  
-    // Global, always shown 
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $("#linebutton").show();
-    $("#drawerCreate").show();
-    $("#drawerDraw").show();
-    $("#drawerTools").show(); 
-    $("#drawerUndo").show();
-    $("#drawtextbutton").show();
-    document.getElementById('toolbarTypeText').innerHTML = 'Mode: '+ toolbarState;
-    document.getElementById('toolbar-switcher').value = toolbarState;
+    else if(toolbarState == currentMode.uml) {
+        $("#classbutton").show();
+        $("#attributebutton").hide();
+        $("#entitybutton").hide();
+        $("#relationbutton").hide();
+        $("#drawfreebutton").hide();
+    }
+    document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: '+ toolbarState;
 }
 
 //-------------------------------------------------------------------------
@@ -3440,8 +3428,8 @@ function switchToolbar() {
 //-------------------------------------------------------------------------
 
 function editToolbarMenus(){
-    setCheckbox($(".drop-down-option:contains('ER')"), toolbarState == currentMode.er);
-    setCheckbox($(".drop-down-option:contains('UML')"), toolbarState == currentMode.uml);
+    setCheckbox($(".drop-down-option:contains('ER mode')"), toolbarState == currentMode.er);
+    setCheckbox($(".drop-down-option:contains('UML mode')"), toolbarState == currentMode.uml);
     setCheckbox($(".drop-down-option:contains('Developer mode')"), (toolbarState == currentMode.dev) || developerModeActive);
     setCheckbox($(".drop-down-option:contains('Display All Tools')"), (toolbarState == currentMode.dev));
     if(developerModeActive){
@@ -3467,8 +3455,7 @@ function switchToolbarTo(target) {
         switchMode();
     } else {
         $("#modeSwitchDialog").css("display", "flex");
-        var toolbarTypeText = document.getElementById('diagram-toolbar-switcher').innerHTML;
-        document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
+        document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarState + " to " + targetMode;
     }
 }
 
