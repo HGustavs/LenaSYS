@@ -755,27 +755,27 @@ p {
 
 /*Vertical line for end tabs for "1 tab + end"*/
 #Sectionlist .tabs4 .spacerRight {
-  height: 17px;
-  width: 18px;
-  margin: 0px 0px 12px 47px;
+  height: 19px;
+  width: 22px;
+  margin: 0px 0px 12px 45px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
 }
 /*Vertical line for end tabs for "2 tabs + end"*/
 #Sectionlist .tabs5 .spacerRight {
-  height: 17px;
-  width: 20px;
-  margin: 0px 0px 12px 79px;
+  height: 19px;
+  width: 22px;
+  margin: 0px 0px 12px 77px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
 }
 /*Vertical line for end tabs for "3 tabs + end"*/
 #Sectionlist .tabs6 .spacerRight {
-  height: 17px;
-  width: 20px;
-  margin: 0px 0px 12px 111px;
+  height: 19px;
+  width: 22px;
+  margin: 0px 0px 12px 109px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
