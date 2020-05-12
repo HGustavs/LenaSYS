@@ -694,17 +694,15 @@ function keyDownHandler(e) {
             if (modeSwitchDialogActive) {
                 // if the cancel button is focused then trigger that
                 if (document.activeElement.id == "modeSwitchButtonCancel") {
-                    modeSwitchConfirmed(false);
+                    closeModeSwitchDialog();
                 } else {
-                modeSwitchConfirmed(true);
+                    switchMode();
                 }
             }
         } else if (key == keyMap.escapeKey) {
             cancelFreeDraw();
             deselectObjects();
-
-
-            if (modeSwitchDialogActive) modeSwitchConfirmed(false);
+            if (modeSwitchDialogActive) closeModeSwitchDialog();
         } else if ((key == keyMap.key1 || key == keyMap.num1) && shiftIsClicked){
             moveToFront(event);
         } else if ((key == keyMap.key2 || key == keyMap.num2) && shiftIsClicked){
@@ -728,7 +726,11 @@ function keyDownHandler(e) {
         } else if (shiftIsClicked && key == keyMap.dKey) {
         developerMode(event);
         } else if (shiftIsClicked && key == keyMap.mKey  && !modeSwitchDialogActive) {
-            toggleMode();
+            if(toolbarState == currentMode.uml || toolbarState == currentMode.dev) {
+                switchToolbarTo(currentMode.er);
+            } else if (toolbarState == currentMode.er) {
+                switchToolbarTo(currentMode.uml);
+            }
         } else if (shiftIsClicked && key == keyMap.xKey) {
             lockSelected(event);
         } else if (shiftIsClicked && key == keyMap.oKey) {
