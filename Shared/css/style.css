@@ -4949,6 +4949,7 @@ only screen and (max-device-width: 320px) {
 .ruler {
   border-top: 1px solid #000000;
   border-left: 1px solid #000000;
+  position: relative;
 }
 
 .ruler.hidden {
@@ -5028,6 +5029,14 @@ only screen and (max-device-width: 320px) {
 
 #ruler-y .mini {
   width: 4px;
+}
+
+.ruler-extra-lines {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 /* --------------================################================-------------- *
