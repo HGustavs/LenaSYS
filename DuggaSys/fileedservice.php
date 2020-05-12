@@ -51,50 +51,84 @@ if (checklogin() && $hasAccess) {
     if ($kind == 2 && isSuperUser($_SESSION['uid'] == false)) return;
 
     if (strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-        // Remove file link from database
-    if ($kind == 2 && isSuperUser($userid)){
-        $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
-        $query = $pdo->prepare($querystring);
-        $query->bindParam(':fid', $fid);
-        if (!$query->execute()) {
-            $error = $query->errorInfo();
-            $debug = "Error updating file list " . $error[2];
-        }
+		$counted = 0;
+		//Check if file is in use
+		$querystring0 = 'SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filename AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
+		$query0 = $pdo->prepare($querystring0);
+		$query0->bindParam(':fid', $fid);
+		if (!$query0->execute()) {
+			$error = $query0->errorInfo();
+			$debug = "Error getting file list " . $error[2];
+		}
+		$result = $query0->fetch(PDO::FETCH_OBJ);
+		$counted = $result->counted;
+		if($counted == 0){
+			// Remove file link from database
+			if ($kind == 2 && isSuperUser($userid)){
+				$querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
+				$query = $pdo->prepare($querystring);
+				$query->bindParam(':fid', $fid);
+				if (!$query->execute()) {
+					$error = $query->errorInfo();
+					$debug = "Error updating file list " . $error[2];
+				}else{
+					$debug = "The file was deleted.";
+				}
 
-        chdir("../");
-        $currcwd = getcwd();
+				chdir("../");
+				$currcwd = getcwd();
 
-        if ($kind == 2) {
-            $currcwd .= "/courses/global/" . $filename;
+				if ($kind == 2) {
+					$currcwd .= "/courses/global/" . $filename;
+					if (file_exists($currcwd)) unlink($currcwd);
+				}
+			}
+		}else{
+			$debug = "This file is part of a code example. Remove it from there before removing the file.";
+		}
+		if($kind != 2){
+			$counted = 0;
+			//Check if file is in use
+			$querystring0 = 'SELECT COUNT(*) counted FROM fileLink, box WHERE box.filename = fileLink.filename AND (fileLink.kind = 2 OR fileLink.kind = 3) AND fileLink.fileid=:fid ;';
+			$query0 = $pdo->prepare($querystring0);
+			$query0->bindParam(':fid', $fid);
+			if (!$query0->execute()) {
+				$error = $query0->errorInfo();
+				$debug = "Error getting file list " . $error[2];
+			}
+			$result = $query0->fetch(PDO::FETCH_OBJ);
+			$counted = $result->counted;
+			if($counted == 0){
+				$querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
+				$query = $pdo->prepare($querystring);
+				$query->bindParam(':fid', $fid);
+				if (!$query->execute()) {
+					$error = $query->errorInfo();
+					$debug = "Error updating file list " . $error[2];
+				}else{
+					$debug = "The file was deleted.";
+				}
 
-            if (file_exists($currcwd))
-            unlink($currcwd);
-    }
-    }
-    if($kind != 2){
-        $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
-        $query = $pdo->prepare($querystring);
-        $query->bindParam(':fid', $fid);
-        if (!$query->execute()) {
-            $error = $query->errorInfo();
-            $debug = "Error updating file list " . $error[2];
-        }
+				chdir("../");
+				$currcwd = getcwd();
 
-        chdir("../");
-        $currcwd = getcwd();
+				if ($kind == 2) {
+					$currcwd .= "/courses/global/" . $filename;
+				} else if ($kind == 3) {
+					$currcwd .= "/courses/" . $cid . "/" . $filename;
+				} else if ($kind == 4) {
+					$currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
+				}
 
-        if ($kind == 2) {
-            $currcwd .= "/courses/global/" . $filename;
-        } else if ($kind == 3) {
-            $currcwd .= "/courses/" . $cid . "/" . $filename;
-        } else if ($kind == 4) {
-            $currcwd .= "/courses/" . $cid . "/" . $vers . "/" . $filename;
-        }
+				// Unlinks (deletes) a file from the directory given if it exists.
+				if (file_exists($currcwd)) unlink($currcwd);
+			}else{
+				$debug = "This file is part of a code example. Remove it from there before removing the file.";
+			}
+		}
 
-        // Unlinks (deletes) a file from the directory given if it exists.
-        if (file_exists($currcwd))
-            unlink($currcwd);
-    }
+
+
     } else if (strcmp($opt, "SAVEFILE") === 0) {
         // Change path to file depending on filename and filekind
         chdir("../");
@@ -150,7 +184,9 @@ if (checklogin() && $hasAccess) {
                 $error = True;
             }
         }
+		
     }
+	
 }
 
 //------------------------------------------------------------------------------------------------
@@ -162,6 +198,7 @@ $files = array();
 $lfiles = array();
 $gfiles = array();
 $access = False;
+
 if (checklogin() && $hasAccess) {
     $query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
     $query->bindParam(':cid', $cid);
