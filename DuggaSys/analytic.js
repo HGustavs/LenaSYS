@@ -487,20 +487,16 @@ function loadPageInformation() {
 		console.log("resolveCourse");	
 		$.ajax({
             url: "analyticService.php",
-            type: "POST",
-            dataType: "json",
             data: {
 				query: "resolveCourseID",
             },success: function(data){
 				console.log("success");
-				var tabledonk = [["Courseid"]];
+				var tabledonk = [["Banan"]];
            		for (var i = 0; i < data.length; i++) {
                 	tabledonk.push([
-						data[i].courseid,
 						data[i].cid
                 	]);
 				}
-				$('#analytic-info').append("<p>Page information.</p>");
 				$('#analytic-info').append(renderTable(tabledonk));	
 			}
 		})

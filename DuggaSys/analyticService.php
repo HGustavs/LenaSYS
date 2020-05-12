@@ -491,10 +491,8 @@ function userLogInformation(){
 //------------------------------------------------------------------------------------------------
 
 function resolveCourseID(){
-    $result = $GLOBALS['log_db']->query('
-		SELECT
-			cid AS courseid
-		FROM duggaLoadLogEntries
-   ')->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
+	$query = $pdo->prepare("SELECT cid FROM course");
+	$query->execute();
+	$result = $query->fetch();
+	echo json_encode($result);
 }
