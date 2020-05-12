@@ -40,8 +40,8 @@
 			if($noup == 'NONE' && $requestedService != "analytic.php" && checklogin() && isSuperUser($_SESSION['uid']) ){
 				echo "<td class='menuButton' style='display: inline-block;'>";
 				echo "    <div class='access menuButton'>";
-  				echo "      <a id='accessBTN' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
-  				echo "        <img class='navButt' src='../Shared/icons/analytic.svg'>";
+  				echo "      <a id='accessBTN' class='navButt' title='Visit the analytics page' value='Analytics' href='analytic.php'>";
+  				echo "        <img src='../Shared/icons/analytic.svg' style='margin: 8px; height: 30px;'>";
 				echo "      </a>";
 				echo "    </div>";
 				echo "</td>";
