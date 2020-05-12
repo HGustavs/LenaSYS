@@ -666,6 +666,34 @@ p {
   cursor: pointer;
 }
 
+/*Styling for indented tabs*/
+.tabs0, .tabsnull{
+  width: 32px;
+}
+.tabs1{
+  width: 64px;
+}
+.tabs2{
+  width: 96px;
+}
+.tabs3{
+  width: 128px;
+}
+/*END for tabs 0*/
+.tabs4{
+  width: 64px;
+}
+
+/*END for tabs 1*/
+.tabs5{
+  width: 96px;
+}
+
+/*END for tabs 2*/
+.tabs6{
+  width: 128px;
+}
+
 .markdownIcon,
 .trashcanIcon {
   vertical-align: middle;
@@ -701,6 +729,56 @@ p {
   width: 15px;
   margin-left: 15px;
   border-left: 2px solid black;
+}
+
+/*Vertical line for 1 tabs*/
+#Sectionlist .tabs1 .spacerRight {
+  height: 32px;
+  width: 32px;
+  margin-left: 15px;
+  border-right: 2px solid black;
+}
+/*Vertical line for 2 tabs*/
+#Sectionlist .tabs2 .spacerRight {
+  height: 32px;
+  width: 64px;
+  margin-left: 15px;
+  border-right: 2px solid black;
+}
+/*Vertical line for 3 tabs*/
+#Sectionlist .tabs3 .spacerRight {
+  height: 32px;
+  width: 96px;
+  margin-left: 15px;
+  border-right: 2px solid black;
+}
+
+/*Vertical line for end tabs for "1 tab + end"*/
+#Sectionlist .tabs4 .spacerRight {
+  height: 17px;
+  width: 18px;
+  margin: 0px 0px 12px 47px;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+  border-bottom-left-radius: 6px;
+}
+/*Vertical line for end tabs for "2 tabs + end"*/
+#Sectionlist .tabs5 .spacerRight {
+  height: 17px;
+  width: 20px;
+  margin: 0px 0px 12px 79px;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+  border-bottom-left-radius: 6px;
+}
+/*Vertical line for end tabs for "3 tabs + end"*/
+#Sectionlist .tabs6 .spacerRight {
+  height: 17px;
+  width: 20px;
+  margin: 0px 0px 12px 111px;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+  border-bottom-left-radius: 6px;
 }
 
 #Sectionlist .spacerEnd {
