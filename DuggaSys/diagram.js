@@ -93,6 +93,7 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
+var colorArray = ["#000000","#ffffff","#64B5F6","#81C784","#e6e6e6","#E57373","#FFF176","#FFB74D","#BA68C8","#366922"]
 var valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
 var writeToLayer = getcorrectlayer();
 var showLayer = ["Layer_1"];
@@ -5989,6 +5990,7 @@ function createLayer(){
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
     addLayersToApperence(id);
+
 }
 function loadLayer(localStorageID){
     let parentNode = document.getElementById("viewLayer");
@@ -6121,6 +6123,9 @@ function setlayer(object){
     let fixID = object.id.replace('_Active','');
     toggleBackgroundLayer(document.getElementById(fixID), true)
     writeToLayer = fixID;
+    let fixColor = fixID.replace('Layer_','');
+    console.log(fixColor)
+    settings.properties.strokeColor = colorArray[fixColor]; 
 }
 
 function addLayersToApperence(localStorageID){

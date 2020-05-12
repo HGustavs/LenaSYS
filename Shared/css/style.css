@@ -6343,6 +6343,7 @@ textarea#filecont {
 }
 .isActive {
   background-color: #775886;
+  color:white;
 }
 
 .analytic-buttons{
