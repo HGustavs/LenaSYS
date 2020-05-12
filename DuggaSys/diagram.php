@@ -699,16 +699,16 @@
         <div class='loginBox modeSwitchContainer'>
             <div class='loginBoxheader modeSwitchHeader'>
                 <h3 id="modeSwitchTarget"></h3>
-                <div class='cursorPointer' onclick='modeSwitchConfirmed(false)'>
+                <div class='cursorPointer' onclick='closeModeSwitchDialog();'>
                     x
                 </div>
             </div>
             <div class='mode-wrap'>
                 <div id="modeSwitchButton1" class="importButtonWrap">
-                    <button id="modeSwitchButtonAccept" type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(true);">Accept</button>
+                    <button id="modeSwitchButtonAccept" type="button" class="buttonStyleDialog" onclick="switchMode();">Accept</button>
                 </div>
                 <div id="modeSwitchButton2" class="importButtonWrap">
-                    <button id="modeSwitchButtonCancel" type="button" class="buttonStyleDialog" onclick="modeSwitchConfirmed(false);">Cancel</button>
+                    <button id="modeSwitchButtonCancel" type="button" class="buttonStyleDialog" onclick="closeModeSwitchDialog();">Cancel</button>
                 </div>
             </div>
         </div>
