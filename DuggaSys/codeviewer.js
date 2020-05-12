@@ -3657,6 +3657,7 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
+				$(boxValArray['box2']['id']).css("left", "");
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
