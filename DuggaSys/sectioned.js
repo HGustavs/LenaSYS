@@ -491,7 +491,7 @@ function accessCourse() {
 function returnedCourse(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   window.setTimeout(function () {
-    changeURL("sectioned.php?courseid=" + querystring["courseid"] +
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
       "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
   }, 1000);
 }
@@ -1811,7 +1811,7 @@ function scrollToTheAnnnouncementForm(){
 //read less or more announcement card
 function readLessOrMore(){
     var maxLength = 60;
-
+  
     $(".announcementMsgParagraph").each(function(){
 
       var myStr = $(this).text();
