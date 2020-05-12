@@ -152,10 +152,10 @@
 
 		</div>
 		<?php
-    
-		include '../Shared/announcementBox.php';
-		if (isset($_GET['announcementid'])) {
-			include '../Shared/fullAnnouncement.php';
+			include '../Shared/announcementBox.php';
+			if (isset($_GET['announcementid'])) {
+				include '../Shared/fullAnnouncement.php';
+			}
 
 		}if (isset($_GET['updateannouncementid'])) {
 			include '../Shared/updateAnnouncement.php';
@@ -172,6 +172,11 @@
 
 		<!-- Small FAB Button in top in the header of sectioned -->
 		
+			<div style="margin:10px;">
+				<img src="../Shared/icons/right_complement.svg" id="sectionList_arrowStatisticsOpen">
+				<img src="../Shared/icons/desc_complement.svg" id="sectionList_arrowStatisticsClosed">
+			</div>
+
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
 				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
 				<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fabBtnList2'>
@@ -232,6 +237,7 @@
 								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
 				</div>
+				<div class="statisticsContentBottom"></div>
 		</div>
 		<!-- Statistics List END-->
 
