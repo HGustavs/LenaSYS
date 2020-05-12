@@ -1152,13 +1152,23 @@ function Symbol(kindOfSymbol) {
     // removePointFromConnector: Removes a point from this symbols connector
     //                           Used when lines are removed from an object
     //--------------------------------------------------------------------
-    this.removePointFromConnector = function(point) {
+    this.removePointFromConnector = function(point, line) {
         var broken = false;
         for(var i = 0; i < this.connectorTop.length; i++) {
             if(this.connectorTop[i].to == point || this.connectorTop[i].from == point) {
-                this.connectorTop.splice(i,1);
-                broken = true;
-                break;
+                //Extra check for attributes since many lines can share the same value (due to how lines many lines can connect to the same attributes centerpoint)
+                if(this.symbolkind == symbolKind.erAttribute){
+                    if((this.connectorTop[i].to == line.bottomRight && this.connectorTop[i].from == line.topLeft) || (this.connectorTop[i].from == line.bottomRight && this.connectorTop[i].to == line.topLeft)){
+                        this.connectorTop.splice(i,1);
+                        broken = true;
+                        break;
+                    }
+                }
+                else{
+                    this.connectorTop.splice(i,1);
+                    broken = true;
+                    break; 
+                }
             }
         }
         if(!broken) {
