@@ -2,6 +2,11 @@
 // JavaScript defer file. Stuff that needs to be loaded defer (after php-file have been run) goes here.
 //------------------------------------------------------------------------------------------------------
 
+/********************************************************************************
+
+   Globals
+
+*********************************************************************************/
 var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal (used much later in)
 var btn = document.getElementById("showModalBtn");
 var modalRead = false; // Have the user read info?
@@ -10,6 +15,16 @@ var rightArrow = document.getElementById('rightArrow');
 var submitButton = document.getElementById('submitInput');
 var inputPage = 1;
 var previousInputPage = 0;
+var showHideButton = document.getElementById('showHideInstallation');
+
+//---------------------------------------------------------------------------------------------------
+// On-click function for show/hide-button
+//---------------------------------------------------------------------------------------------------    
+if (showHideButton !== null){
+  showHideButton.onclick = function(){
+    toggleInstallationProgress();
+  }
+}
 
 //---------------------------------------------------------------------------------------------------
 // On-click function for the permission-button
@@ -23,13 +38,11 @@ btn.onclick = function () {
 //---------------------------------------------------------------------------------------------------    
 function haveRead(isTrue) {
   modalRead = isTrue;
-}
+}  
 
 //---------------------------------------------------------------------------------------------------
-// Javascript functions for arrow functionality
+// focusTheRightBox
 //---------------------------------------------------------------------------------------------------    
-
-/* Function to focus the right box on the page */
 function focusTheRightBox() {
   if (inputPage === 1 || inputPage === 2) {
     var fields = document.getElementsByClassName("page" + inputPage + "input");
@@ -49,6 +62,9 @@ function focusTheRightBox() {
   }
 }
 
+//---------------------------------------------------------------------------------------------------
+// leftArrow
+//---------------------------------------------------------------------------------------------------    
 leftArrow.onclick = function() {
   previousInputPage = inputPage;
   if(inputPage > 1) inputPage--;
@@ -56,6 +72,9 @@ leftArrow.onclick = function() {
   focusTheRightBox();
 };
 
+//---------------------------------------------------------------------------------------------------
+// rightArrow
+//---------------------------------------------------------------------------------------------------   
 rightArrow.onclick = function() {
   /* Only continue if all fields on current page are filled out */
   if (inputPage === 1 || inputPage === 2) {
@@ -93,7 +112,9 @@ rightArrow.onclick = function() {
   }
 };
 
-/* Remove default behaviour (click submit button) when pressing enter */
+//---------------------------------------------------------------------------------------------------
+// Remove default behaviour (click submit button) when pressing enter
+//---------------------------------------------------------------------------------------------------   
 $(document).ready(function() {
   $(window).keydown(function(event){
     if(event.keyCode === 13) {
@@ -103,7 +124,9 @@ $(document).ready(function() {
   });
 });
 
-/* You want to be able to press enter to continue, this function fixes this. */
+//---------------------------------------------------------------------------------------------------
+// You want to be able to press enter to continue, this function fixes this.
+//---------------------------------------------------------------------------------------------------   
 document.addEventListener("keydown", function(e) {
   if(e.keyCode === 13){
     if (modal.style.display === "none"){
@@ -149,6 +172,9 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
+//---------------------------------------------------------------------------------------------------
+// updateInputPage: Function used to swap page
+//---------------------------------------------------------------------------------------------------   
 function updateInputPage(){
   /* Hide current input page */
   hideInputPage();
@@ -168,6 +194,9 @@ function updateInputPage(){
   }
 }
 
+//---------------------------------------------------------------------------------------------------
+// hideInputPage: Function used by updateInputPage
+//---------------------------------------------------------------------------------------------------   
 function hideInputPage(){
   /* Slide away the old page from the right direction depending on new page */
   if (inputPage > previousInputPage) {
@@ -179,6 +208,9 @@ function hideInputPage(){
   }
 }
 
+//---------------------------------------------------------------------------------------------------
+// showInputPage: Function used by updateInputPage
+//---------------------------------------------------------------------------------------------------  
 function showInputPage(){
   /* Slide the new page from the right direction depending on previous page */
   if (inputPage > previousInputPage) {
@@ -192,10 +224,8 @@ function showInputPage(){
 }
 
 //---------------------------------------------------------------------------------------------------
-// Javascript to focus the right input box after modal is closed and hide boxes
-//---------------------------------------------------------------------------------------------------    
-
-/* When the user clicks on <span> (x), close the modal */
+// When the user clicks on <span> (x), close the modal
+//---------------------------------------------------------------------------------------------------  
 span.onclick = function() {
   if (modalRead) {
       modal.style.display = "none";
@@ -203,7 +233,9 @@ span.onclick = function() {
   }
 }
 
-/* When the user clicks anywhere outside of the modal, close it */
+//---------------------------------------------------------------------------------------------------
+// When the user clicks anywhere outside of the modal, close it
+//---------------------------------------------------------------------------------------------------  
 window.onclick = function(event) {
   if (event.target == modal && modalRead) {
       modal.style.display = "none";
@@ -211,12 +243,17 @@ window.onclick = function(event) {
   }
 }
 
+//---------------------------------------------------------------------------------------------------
+// When user click outside modal, return to right field
+//--------------------------------------------------------------------------------------------------- 
 var writeOver1 = document.getElementById('writeOver1');
 writeOver1.onclick = function() {
   focusTheRightBox();
 }
 
-/* Hide testdata boxes when testdata is un-checked */
+//---------------------------------------------------------------------------------------------------
+// fillDBchange: Hide testdata boxes when testdata is un-checked
+//--------------------------------------------------------------------------------------------------- 
 function fillDBchange(checkbox) {
   if (checkbox.checked === true){
       $("#testdataBoxes").show("slide", {direction: "left" }, 500);
@@ -225,6 +262,9 @@ function fillDBchange(checkbox) {
   }
 }
 
+//---------------------------------------------------------------------------------------------------
+// createDBchange:
+//--------------------------------------------------------------------------------------------------- 
 function createDBchange(checkbox) {
   if (checkbox.checked === true){
       $("#DBboxes").show("slide", {direction: "left" }, 500);
@@ -232,4 +272,3 @@ function createDBchange(checkbox) {
       $("#DBboxes").hide("slide", {direction: "left" }, 500);
   }
 }
-
