@@ -114,6 +114,12 @@ function loadGeneralStats() {
 			data['stats']['numOnline']
 		]);
 
+		// LenaSys Installation Size
+		tableData.push([
+			'LenaSYS Installation Size',
+			data['stats']['lenasysSize']
+		]);
+
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
