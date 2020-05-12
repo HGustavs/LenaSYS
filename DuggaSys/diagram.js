@@ -4300,6 +4300,14 @@ function mouseupevt(ev) {
     }
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
+    // Check if there's difference in mouse start position and end position.
+    let mouseDifference;
+    if (startMouseCoordinateX != currentMouseCoordinateX || startMouseCoordinateY != currentMouseCoordinateY) {
+        mouseDifference = true;
+    } else {
+        mouseDifference = false;
+    }
+  
     if(ev.button == leftMouseClick){
         canvasLeftClick = false;
     } else if (ev.button == rightMouseClick) {
@@ -4349,7 +4357,7 @@ function mouseupevt(ev) {
     if (movobj > -1) {
         if (diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
-    if (symbolStartKind != symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+    if (symbolStartKind != symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && mouseDifference) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
@@ -4446,7 +4454,7 @@ function mouseupevt(ev) {
         }
     }
   
-    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && startMouseCoordinateX != currentMouseCoordinateX && startMouseCoordinateY != currentMouseCoordinateY) {
+    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && mouseDifference) {
         saveState = false;
         uimode = "CreateUMLLine";
         //Check if you release on canvas or try to draw a line from entity to entity
