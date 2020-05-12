@@ -178,18 +178,17 @@ function returned(data)
 		if (boxtype === "CODE") {
 			// Print out code example in a code box
 			var boxtypeCodebox = document.getElementById(contentid);
-			
 			boxtypeCodebox.removeAttribute("contenteditable");
 			boxtypeCodebox.classList.remove("descbox");
 			boxtypeCodebox.classList.add("codebox");
 			createboxmenu(contentid, boxid, boxtype);
-			
+
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
 			// Setting boxmenuheight to 0, possible cause to example malfunction?
 			if ($("#" + contentid + "menu").height() == null) {
 				boxmenuheight = 0;
-			}else {
+			} else {
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
 			$("#" + contentid).css("margin-top", boxmenuheight - 1);
@@ -201,16 +200,9 @@ function returned(data)
 
 			// set font size
 			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
-
-			// Set scrollbars to hidden if the content in the box takes up less space than the size of the box.
-			var contentHeight = 15 * (lineno / 2);
-			if(contentHeight < $("#box" + boxid).height()){
-				$("#box" + boxid).css("overflow", "hidden");
-			}else{
-				$("#box" + boxid).css("overflow", "auto");
-			}
-		}else if (boxtype === "DOCUMENT") {
+		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
+
 			var boxtypeDescbox = document.getElementById(contentid);
 			boxtypeDescbox.classList.remove("codebox");
 			boxtypeDescbox.classList.add("descbox");
@@ -256,12 +248,6 @@ function returned(data)
 				boxmenuheight = $("#" + contentid + "menu").height();
 			}
 			$("#" + contentid).css("margin-top", boxmenuheight);
-			
-			if(document.querySelector('#box' + boxid).firstChild.childElementCount * 15 < $('#box' + boxid).height()){
-				$('#box' + boxid).css("overflow", "hidden");
-			}else{
-				$('#box' + boxid).css("overflow", "auto");
-			}
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype);
 			
@@ -3629,8 +3615,8 @@ function resizeBoxes(parent, templateId) {
 		});
 
 	} else if (templateId == 6) {
+
 		getLocalStorageProperties(templateId, boxValArray);
-		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -3656,6 +3642,8 @@ function resizeBoxes(parent, templateId) {
 			},
 			resize: function (e, ui) {
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+				$(boxValArray['box3']['id']).css("left", " ");
+				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3670,7 +3658,7 @@ function resizeBoxes(parent, templateId) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
-				$(boxValArray['box3']['id']).css("left", "");
+				$(boxValArray['box3']['id']).css("left", " ");
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
@@ -3742,6 +3730,7 @@ function resizeBoxes(parent, templateId) {
 			resize: function (e, ui) {
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
+				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3750,11 +3739,12 @@ function resizeBoxes(parent, templateId) {
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
-			handles: "e",
+			handles: "e, s",
 			start: function (event, ui) {
 				$('iframe').css('pointer-events', 'none');
 			},
 			resize: function (e, ui) {
+				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
@@ -3765,6 +3755,7 @@ function resizeBoxes(parent, templateId) {
 		});
 	} else if (templateId == 9) {
 		getLocalStorageProperties(templateId, boxValArray);
+
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -4032,12 +4023,7 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 	var basePer = 100 - remainHeightPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-	$(boxValArray['box' + boxNumSame]['id']).css("top", basePer + '%');
 	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
-
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumSame);
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
@@ -4056,11 +4042,6 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig) 
 	$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
 	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
 	$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
-	
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumSame);
-	hideShowScrollbars(boxValArray, boxNumBig);
 
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
@@ -4081,14 +4062,7 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame) {
 	$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
 	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
 	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
-	
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumSame);
-	hideShowScrollbars(boxValArray, 3);
-	hideShowScrollbars(boxValArray, 4);
 
-	
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
@@ -4140,7 +4114,7 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 		if(document.querySelector('#box4').className == 'box codebox'){
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
-	}else {
+	} else {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
@@ -4184,6 +4158,7 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
 	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
 	//Makes the description text and copyClipboard-element disappear when certain threshold is met.
@@ -4209,7 +4184,7 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 		if(document.querySelector('#box4').className == 'box codebox'){
 			document.querySelector('#box4wrapper #copyClipboard').style.display = 'none';
 		}
-	}else {
+	} else {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxNumBase, basePer);
 		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
@@ -4258,17 +4233,11 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-
 	} else { // When Box3 is greater than minimum size.
 		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
 		$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
 	}
-
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumAlign);
-	hideShowScrollbars(boxValArray, boxNumAlignSecond);
 
 	//Update array
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
@@ -4287,24 +4256,23 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 	var basePer = 100 - (remainHeightPer + alignSecondPer);
 	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
 	var atry2 = (atry / boxValArray['parent']['height']) * 100;
-
-	if (atry2 <= 10) {
-		$("#box3wrapper").css({
-			"top": basePer + "%",
-			"height": remainHeightPer + "%"
-		});
-	} 
-	else if(atry2 >= 79.5){
+	
+	if (atry2 <= 10) { // When Box4 is at minimum size.
+		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+	// Note: it is set to >= 79.5 instead of 80 because when maximizing, atry2 never reaches 80% but anything bewteen 79.5 and 79.99.
+	}else if(atry2 >= 79.5) { // When Box4 is at maximum size. 
+		$(boxValArray['box' + boxNumBase]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("top", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
 		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%",);
-	}else {
-		$("#box4wrapper").height(atry2 + "%");
+	} else { // When Box4 is between minimum and maximum size.
+		$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
 	}
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxNumBase);
-	hideShowScrollbars(boxValArray, boxNumAlign);
-	hideShowScrollbars(boxValArray, boxNumAlignSecond);
+
+	//Update array
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
+	boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
 }
 
 //----------------------------------
@@ -4369,7 +4337,7 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 		if(document.querySelector('#box5').className == 'box codebox'){
 			document.querySelector('#box5wrapper #copyClipboard').style.display = 'none';
 		}
-	}else {
+	} else {
 		thisBox = document.querySelector('#box1wrapper #boxtitlewrapper');
 		toggleTitleWrapper(thisBox, boxOne, basePer);
 		thisBox = document.querySelector('#box2wrapper #boxtitlewrapper');
@@ -4423,13 +4391,13 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 		boxFourHeightPer = 10;
 		remainHeightPer = 30;
 
-	}else if (boxTwoHeightPer <= 10) {
+	} else if (boxTwoHeightPer <= 10) {
 		boxTwoHeightPer = 10;
 
-	}else if (boxThreeHeightPer <= 10) {
+	} else if (boxThreeHeightPer <= 10) {
 		boxThreeHeightPer = 10;
 
-	}else if (boxFourHeightPer <= 10) {
+	} else if (boxFourHeightPer <= 10) {
 		boxFourHeightPer = 10;
 	}
 
@@ -4450,11 +4418,7 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) {
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer) + "%");
 	}
 	
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxOne);
-	hideShowScrollbars(boxValArray, boxTwo);
-	hideShowScrollbars(boxValArray, boxThree);
-	hideShowScrollbars(boxValArray, boxFour);
+
 
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
@@ -4507,7 +4471,7 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");
 
 		//Check if box three is at or below minimum height.
-	}else if (boxThreeHeightPer <= 10) {
+	} else if (boxThreeHeightPer <= 10) {
 		boxThreeHeightPer = 10;
 
 		//Set height and top on the boxes when the lower two boxes are at the minimum height.
@@ -4522,7 +4486,7 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
 
-	}else {
+	} else {
 
 		//Set height and top on the boxes
 		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
@@ -4537,12 +4501,6 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
 
 	}
-
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxOne);
-	hideShowScrollbars(boxValArray, boxTwo);
-	hideShowScrollbars(boxValArray, boxThree);
-	hideShowScrollbars(boxValArray, boxFour);
 
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
@@ -4583,7 +4541,7 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
 		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");
 
-	}else {
+	} else {
 
 		//Set height and top on the boxes
 		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
@@ -4593,37 +4551,11 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");
 	}
 
-	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
-	hideShowScrollbars(boxValArray, boxOne);
-	hideShowScrollbars(boxValArray, boxTwo);
-	hideShowScrollbars(boxValArray, boxThree);
-	hideShowScrollbars(boxValArray, boxFour);
-
 	//Update array
 	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
 	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
 	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
 	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
-}
-
-//------------------------------------------------------------------------------------------------------------------------------
-// Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
-//------------------------------------------------------------------------------------------------------------------------------
-
-function hideShowScrollbars(boxValArray, box){
-	if(document.querySelector('#box' + box).className == 'box codebox'){
-		if(document.querySelector('#textwrapper' + box).childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
-			$("#box" + box).css("overflow", "auto");
-		}else{
-			$("#box" + box).css("overflow", "hidden");
-		}
-	}else if(document.querySelector('#box' + box).className == 'box descbox'){
-		if(document.querySelector('#box' + box).firstChild.childElementCount * 15 > $(boxValArray['box' + box]['id']).height() - 44){
-			$("#box" + box).css("overflow", "auto");
-		}else{
-			$("#box" + box).css("overflow", "hidden");
-		}
-	}
 }
 
 //----------------------------------------------------------------------------------
