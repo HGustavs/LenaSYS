@@ -56,7 +56,7 @@ INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email,sec
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (20,'mofre','Morgan','Freeman','19370601-3134','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','mofre@student.his.se',0,0,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (21,'keree','Keanu','Reeves','19640902-1233','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','keree@student.his.se',0,0,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (22,'mestr','Meryl','Streep','19490622-1991','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','mestr@student.his.se',0,0,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
-INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (22,'alvik','Alicia','Vikander','19881003-4591','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','alvik@student.his.se',0,0,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (23,'alvik','Alicia','Vikander','19881003-4591','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','alvik@student.his.se',0,0,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
 
 
 /* Insert courses */
@@ -463,27 +463,21 @@ INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (6,4,0,'
 
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,3,0,'W',1,'HT15',1337);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,2,0,'W',1,'HT15',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,2,0,'W',1,'HT14',97731);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,1,0,'W',1,'HT15',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,1,0,'W',1,'HT16',45657);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,4,0,'W',1,'HT15',1338);
 -- Teachers END --
 
 -- StudentTeachers --
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,3,0,'ST',1,'HT15',1337);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,2,0,'ST',1,'HT15',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,2,0,'ST',1,'HT14',97731);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,1,0,'ST',1,'HT15',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,1,0,'ST',1,'HT16',45657);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,4,0,'ST',1,'HT15',1338);
 -- StudentTeachers END --
 
 -- Student --
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,3,0,'R',1,'HT15',1337);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,2,0,'R',1,'HT15',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,2,0,'R',1,'HT14',97731);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,1,0,'R',1,'HT15',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,1,0,'R',1,'HT16',45657);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,4,0,'R',1,'HT15',1338);
 -- Student END --
 
