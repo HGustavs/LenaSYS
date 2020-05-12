@@ -392,6 +392,40 @@ p {
   display: none;
 }
 
+#announcementBox button.actionBtn {
+  background-color: var(--color-logo-background);
+  color: white;
+  padding: 5px 15px 5px 15px;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.actionOverlay{
+  position: relative;
+  display: inline-block;
+}
+.action-content{
+  display: none;
+  margin:-20px 0 0 0;
+  background-color: #9474a4;
+  min-width: 160px;
+  overflow: hidden;
+  z-index: 1006;
+  border-radius: 0 5px 5px 5px;
+}
+#announcementBox .actionOverlay .action-content a {
+  color: #fff;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.action-content a:hover {
+  background-color: var(--color-logo-background);
+}
+#announcementBox button.actionBtn:hover,
+#announcementBox button.actionBtn:focus{
+  background-color: var(--color-text-primary);
+}
 #announcementBox table{
   width: 100%;
 

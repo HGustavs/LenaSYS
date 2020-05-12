@@ -1654,6 +1654,9 @@ $(window).load(function () {
 
 
   });
+  $(".actionBtn").click(function(){
+    $(".action-content").toggle();
+  });
 });
 
 //show the full announcement
