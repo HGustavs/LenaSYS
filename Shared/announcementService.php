@@ -6,9 +6,6 @@ session_start();
 
 
 
-
-
-
 	
 if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && isset($_POST['createBtn'])){
 	$uid = $_POST['uid'];

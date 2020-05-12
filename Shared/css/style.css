@@ -637,6 +637,19 @@ p {
   border-radius: 5px;
 }
 
+#sectionList_arrowStatisticsOpen,
+#sectionList_arrowStatisticsClosed{
+  display: none;
+  cursor: pointer;
+}
+.statisticsContentBottom{
+  min-height: 30px;
+  background-color: var(--color-text-primary);
+  display: none;
+
+
+}
+
 .item {
   /*padding-top: 4px;*/
   min-height: 30px;
@@ -4838,6 +4851,9 @@ only screen and (max-device-width: 860px) {
 
   #statisticsList {
     display: none;
+  }
+  #sectionList_arrowStatisticsOpen{
+    display: inline;
   }
 }
 
