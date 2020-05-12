@@ -5039,6 +5039,25 @@ only screen and (max-device-width: 320px) {
   left: 0;
 }
 
+.ruler-extra-lines .mouse-line {
+  position: absolute;
+  background-color: var(--color-text-primary);
+}
+
+#ruler-x .ruler-extra-lines .mouse-line {
+  width: 2px;
+  height: calc(var(--ruler-size) / 2);
+  bottom: 0;
+  left: 0;
+}
+
+#ruler-y .ruler-extra-lines .mouse-line {
+  height: 2px;
+  width: calc(var(--ruler-size) / 2);
+  top: 0;
+  right: 0;
+}
+
 /* --------------================################================-------------- *
  *                            FAB Button (SectionED)                            *
  * --------------================################================-------------- */
