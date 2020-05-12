@@ -109,7 +109,8 @@ function generalStats() {
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
 	$generalStats['stats']['numOnline'] = count($activeUsers);
 
-	$generalStats['stats']['lenasysSize'] = convertBytesToHumanreadable(GetDirectorySize(str_replace("DuggaSys", "", getcwd())));
+  $generalStats['stats']['lenasysSize'] = convertBytesToHumanreadable(GetDirectorySize(str_replace("DuggaSys", "", getcwd())));
+	$generalStats['stats']['userSubmissionSize'] = convertBytesToHumanreadable(GetDirectorySize(getcwd() . "/submissions"));
 
 	// Disk space calculation
 	$memInUse = disk_total_space(".") - disk_free_space(".");
