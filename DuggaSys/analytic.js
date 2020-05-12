@@ -120,10 +120,16 @@ function loadGeneralStats() {
 			data['stats']['lenasysSize']
 		]);
 
-		// LenaSys Installation Size
+		// User Submissions Size
 		tableData.push([
 			'User Submissions Size',
 			data['stats']['userSubmissionSize']
+		]);
+
+		// Total number of users
+		tableData.push([
+			'Total Users',
+			data['stats']['totalUsers']
 		]);
 
 		$('#analytic-info').append(renderTable(tableData));
