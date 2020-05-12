@@ -116,7 +116,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
@@ -153,7 +153,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
-  $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
+  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
   $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
   if(deadline !== undefined){
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
@@ -346,7 +346,7 @@ function prepareItem() {
   // Storing tabs in gradesys column!
   var kind = $("#type").val()
   if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 6 || kind == 7) {
-    param.gradesys = $("#tabs").val();
+    param.tabs = $("#tabs").val();
   } else {
     param.gradesys = $("#gradesys").val();
   }
@@ -357,6 +357,7 @@ function prepareItem() {
   param.highscoremode = $("#highscoremode").val();
   param.sectname = $("#sectionname").val();
   param.visibility = $("#visib").val();
+  param.tabs = $("#tabs").val();
   param.moment = $("#moment").val();
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
@@ -491,7 +492,7 @@ function accessCourse() {
 function returnedCourse(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   window.setTimeout(function () {
-    changeURL("sectioned.php?courseid=" + querystring["courseid"] +
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
       "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
   }, 1000);
 }
@@ -680,7 +681,7 @@ function returnedSection(data) {
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += "<td style='width:32px;'><div class='spacerLeft'></div></td>";
+          if (itemKind === 3) str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
           var grady = -1;
           var status = "";
           var marked;
@@ -947,7 +948,7 @@ function returnedSection(data) {
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
           str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline']]) + ");' />";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['tabs']]) + ");' />";
           str += "</td>";
         }
 
@@ -1087,18 +1088,16 @@ function ignoreMOTD(){
   return true;
 }
 
-function resetMOTDCookieForCurrentCourse() {
-    var c_string = getCookie('MOTD');
-    if (c_string != null) { 
-        c_array = c_string.split(',');
-        for (let i = 0; i < c_array.length; i += 2) {
-            if (c_array[i] == versnme && c_array[i + 1] == versnr) {
-                c_array.splice(i, 2);
-            }
-        }
-        document.cookie = 'MOTD=' + c_array;
+function resetMOTDCookieForCurrentCourse(){
+  var c_string = getCookie('MOTD');
+  c_array = c_string.split(',');
+  for(let i = 0; i<c_array.length;i+=2){
+    if(c_array[i] == versnme && c_array[i+1] == versnr){
+      c_array.splice(i, 2);
     }
-    showMOTD();
+  }
+  document.cookie = 'MOTD=' + c_array;
+  showMOTD();
 }
 
 function closeMOTD(){
@@ -1109,7 +1108,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
-  document.getElementById("FABStatic2").style.top = "auto";
+  document.getElementById("FABStatic2").style.top = "565px";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
