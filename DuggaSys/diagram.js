@@ -5895,8 +5895,8 @@ function createLayer(){
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
         newDiv.appendChild(newSpan);
+        localStorage.setItem('layerItems', id);
     }
-    localStorage.setItem('layerItems', id);
     let activeDropdown = parentNode.cloneNode(true)
     document.getElementById("layerActive").innerHTML ="";
     document.getElementById("layerActive").appendChild(activeDropdown);
@@ -5906,21 +5906,19 @@ function createLayer(){
 function loadLayer(localStorageID){
     let parentNode = document.getElementById("viewLayer");
     addLayersToApperence(localStorageID)
-    let id =1;
     let spans = parentNode.getElementsByTagName('span')
     let layerArray = []
-    for(let i = 0; i < localStorageID -1; i++){
+    for(let i = 2; i <= localStorageID; i++){
         layerArray.push(spans[i]);
-        id++
         let newDiv = document.createElement("div");
         newDiv.setAttribute("class", "drop-down-item");
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
         newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
-        newSpan.setAttribute("id", "Layer_"+id);
+        newSpan.setAttribute("id", "Layer_"+i);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
-        newSpan.innerHTML = valueArray[id];
+        newSpan.innerHTML = valueArray[i];
         newDiv.appendChild(newSpan);
         getActiveViewlayers = JSON.parse(localStorage.getItem("activeLayers") || 0);
         if (getActiveViewlayers != 0){
