@@ -1769,6 +1769,15 @@ function displayListAndGrid(){
     });
   }
 
+  $(window).resize(function() {
+    if (($(window).width()) < 1050) {
+      $(".gridBtn").removeClass("active");
+      $(".listBtn").addClass("active");
+    }else{
+      $(".listBtn").removeClass("active");
+      $(".gridBtn").addClass("active");
+    }
+  });
 }
 function accessAdminAction(){
   var adminLoggedin = $("#adminLoggedin").val();
@@ -1807,6 +1816,9 @@ function scrollToTheAnnnouncementForm(){
         scrollTop: $("#announcementForm").offset().top},
         'slow');
   });
+}
+function closeActionLogDisplay(){
+  $(".closeActionLogDisplay").parent().remove();
 }
 //read less or more announcement card
 function readLessOrMore(){
