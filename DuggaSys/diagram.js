@@ -6291,21 +6291,18 @@ function createRuler(element, length, origoOffset, marginProperty) {
     const to = Math.round(length - origoOffset);
 
     const steps = {};
-    steps.first = 5;
-    steps.second = steps.first * 2;
-    steps.third = steps.first * steps.second;
-
-    const margin = steps.first - 1;
+    steps.mini = 5;
+    steps.small = steps.mini * 2;
+    steps.big = Math.round((steps.mini * steps.small) * zoomValue);
 
     element.innerHTML = "";
 
-    for(let i = from; i < to; i++) { 
-        if(i % steps.first === 0) {
+    for(let i = from; i < to; i++) {
+        if(i % steps.mini === 0) {
             const line = document.createElement("div");
             line.classList.add("ruler-line");
-            
-            if(i % steps.second === 0) {
-                if(i % steps.third === 0) {
+            if(i % steps.small === 0 || i % steps.big === 0) {
+                if(i % steps.big === 0) {
                     line.classList.add("big");
                     line.innerText = Math.round(i / zoomValue);
                 } else {
@@ -6319,7 +6316,7 @@ function createRuler(element, length, origoOffset, marginProperty) {
     }
 
     element.querySelectorAll(".ruler-line").forEach(line => {
-        line.style[marginProperty] = `${margin}px`;
+        line.style[marginProperty] = `${steps.mini - 1}px`;
     });
 }
 
