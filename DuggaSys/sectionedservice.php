@@ -717,7 +717,7 @@ if($gradesys=="UNK") $gradesys=0;
 		}
 
 		$userfeedback=array();
-
+		// Fetches All data from Userduggafeedback
 		if(strcmp($opt,"GETUF")==0){
 			$query = $pdo->prepare("SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
 			$query->bindParam(':cid', $courseid);

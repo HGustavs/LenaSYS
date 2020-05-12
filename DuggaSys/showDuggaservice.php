@@ -517,7 +517,7 @@ if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$grade="UNK";
 		$duggafeedback="UNK";
 }
-
+//Fetches Data From listentries Table
 if(strcmp($opt,"CHECKFDBCK")==0){	
 	$query = $pdo->prepare("SELECT feedbackenabled, feedbackquestion FROM listentries WHERE lid=:moment AND cid=:cid;");
 	$query->bindParam(':cid', $courseid);
@@ -527,7 +527,7 @@ if(strcmp($opt,"CHECKFDBCK")==0){
 	$userfeedback = $result['feedbackenabled'];
 	$feedbackquestion = $result['feedbackquestion'];		
 }
-
+//inserts Data to Feedback Table, with and without username
 if(strcmp($opt,"SENDFDBCK")==0){
 	if($contactable == 1){
 		$query = $pdo->prepare("INSERT INTO userduggafeedback(username,cid,lid,score,entryname) VALUES (:username,:cid,:lid,:score,:entryname);");

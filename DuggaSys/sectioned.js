@@ -201,7 +201,10 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Set Lid
   $("#lid").val(lid);
 
-  // Display Dialog
+  
+  //------------------------------------------------------------------------------
+  //checks if feedback is enabled and enables input box for feedbackquestion choice.
+  //------------------------------------------------------------------------------
   $("#editSection").css("display", "flex");
   if(feedbackenabled == 1){
     $( "#fdbck" ).prop( "checked", true );
@@ -1811,6 +1814,9 @@ function validateForm(formid) {
   }
 }
 
+//------------------------------------------------------------------------------
+//displays dialogue box and the content
+//------------------------------------------------------------------------------
 function showUserFeedBack(lid,feedbackquestion) {
 	AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
   $("#userFeedbackDialog").css("display", "flex");
@@ -1819,6 +1825,9 @@ function showUserFeedBack(lid,feedbackquestion) {
   $("#duggaFeedbackQuestion").html(feedbackquestion);
 }
 
+//------------------------------------------------------------------------------
+//returns the feedbackdata and displays the feedback and statistics.
+//------------------------------------------------------------------------------
 function returnedUserFeedback(data){
   if(data.userfeedback.length == 0){
     $("#feedbacktablecontainer").html( "<p>No feedback available</p>" );
@@ -1843,7 +1852,9 @@ function returnedUserFeedback(data){
   }
   
 }
-
+//------------------------------------------------------------------------------
+//Creates a table with the Feedback data.
+//------------------------------------------------------------------------------
 function createUserFeedbackTable(data){
   var str = "<table id='feedbacktable'  style='border-collapse: collapse' class='list'>";
   str += "<thead><tr><th>Feedback ID</th>";
@@ -1876,11 +1887,16 @@ function createUserFeedbackTable(data){
   return str;
 }
 
+//------------------------------------------------------------------------------
+//opens an email to the student
+//------------------------------------------------------------------------------
 function contactStudent(entryname,username){
   
   window.location = "mailto:" + username + "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
 }
-
+//------------------------------------------------------------------------------
+//Displays the feedback question input on enable-button toggle. 
+//------------------------------------------------------------------------------
 function showFeedbackquestion(){
   if($("#fdbck").prop('checked')){
     $("#inputwrapper-FeedbackQuestion").css("display","block");

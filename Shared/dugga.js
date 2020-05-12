@@ -1674,6 +1674,10 @@ function hideCookieMessage() {
 // Functions for animating and hiding MOTD and cookie messages
 //----------------------------------------------------------------------------------
 
+
+//----------------------------------------------------------------------------------
+//sends Course and Dugga ID to see whether feedback should be enabled in receiptbox
+//----------------------------------------------------------------------------------
 function duggaFeedbackCheck(){
 	var citstr=querystring['moment'];
 	citstr=querystring['cid']+" "+citstr;
@@ -1686,7 +1690,9 @@ function returnedFeed(data) {
 		$("#feedbackquestion").html(data['feedbackquestion']);
 	} 
 }
-
+//----------------------------------------------------------------------------------
+//sends userinput feedback
+//----------------------------------------------------------------------------------
 function sendFeedback(entryname){
 	if ($("input[name='rating']:checked").val()) {
 		$('#submitstatus').css("display", "none");
