@@ -491,6 +491,7 @@ function init() {
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
     setIsRulersActiveOnRefresh();
+    setHideCommentOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
     updateGraphics(); 
@@ -2200,7 +2201,24 @@ function toggleComments(event) {
 		hideComment = true;
       	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     }
-	updateGraphics();
+    updateGraphics();
+    localStorage.setItem("hideComment", hideComment);
+}
+
+//---------------------------------------------------------------
+// Stores if the comments are hidden or not in localStorage
+//---------------------------------------------------------------
+
+function setHideCommentOnRefresh() {
+    const tempHideComment = localStorage.getItem("hideComment");
+    if (tempHideComment != null) {
+        if (tempHideComment == 'true') {
+            hideComment = false;
+        } else {
+            hideComment = true;
+        }
+    toggleComments(event);
+  }
 }
 //--------------------------------------------
 //Sets the size of the paper on the canvas
