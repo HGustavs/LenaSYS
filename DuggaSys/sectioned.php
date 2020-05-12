@@ -152,6 +152,7 @@
 
 		</div>
 		<?php
+    
 		include '../Shared/announcementBox.php';
 		if (isset($_GET['announcementid'])) {
 			include '../Shared/fullAnnouncement.php';
