@@ -112,6 +112,7 @@
 	right: 0;
 	}
 	}
+* {box-sizing: border-box}
 html,
 body {
   margin: 0;
@@ -352,140 +353,213 @@ p {
   display:none;
 }
 /*Announcement box*/
-#announcementBoxOverlay,
-#fullAnnnouncementOverlay{
-  position: fixed; 
+#announcementBoxOverlay{
+  position: relative; 
   display: none;
-  background-color:  #f2f2f2;
-  border: 2px solid #bdbdbd;
-  padding: 10px;
+  background-color:#fff;
   z-index: 1004; 
   left: 0;
-  top: 50px;
+  top: 0;
+  bottom: 0;
   width: 100%; 
   height: 100%; 
   overflow: auto;
   overflow-x: auto;
-  
+  font-family: 'Varela', sans-serif;
 
-}
-#announcementBox{
-  margin-bottom: 80px;
-}
-#fullAnnouncement{
-  padding: 10px 15px 160px 10px;
   
 }
-#announcementBox button{
-  background-color: #fff;
-  border: 1px solid #bdbdbd;
-  padding: 10px 20px 10px 20px;
-  text-align: center;
-  text-decoration: none;
+/*Start of announcement form*/
+#displayAnnouncements{
+  margin: 20px 0 20px 0;
+}
+.announcementForm{
+  width: 800px;
+  border:  2px solid #f2f2f2;
+  font-family: 'Varela', sans-serif;
+}
+.announcementForm input[type=text],
+.announcementForm textarea{
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
   display: inline-block;
+  border: none;
+  font-family: 'Varela', sans-serif;
   font-size: 16px;
-  margin: 10px 0 20px 0;
-  cursor: pointer;
-  border-radius: 4px;
+  background: #f1f1f1;
+  border-radius: 0;
 }
-#announcementBox button.showAllAnnouncement{
-  display: none;
-}
+.announcementForm textarea{
+  height: 150px;
 
-#announcementBox button.actionBtn {
+}
+.announcementForm input[type=text]:focus,
+.announcementForm textarea:focus {
+  background-color: #ddd;
+  outline: none;
+}
+.errorCreateAnnouncement{
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+@keyframes shake {
+  0% { margin-left: 0rem; }
+  25% { margin-left: 0.5rem; }
+  75% { margin-left: -0.5rem; }
+  100% { margin-left: 0rem; }
+}
+.announcementForm hr {
+  border: 1px solid  #f1f1f1;
+  margin-bottom: 25px;
+}
+.announcementForm button {
   background-color: var(--color-logo-background);
   color: white;
-  padding: 5px 15px 5px 15px;
+  padding: 14px 20px;
+  margin: 8px 0;
   border: none;
-  border-radius: 5px 5px 0 0;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-.actionOverlay{
-  position: relative;
-  display: inline-block;
-}
-.action-content{
-  display: none;
-  margin:-20px 0 0 0;
-  background-color: #9474a4;
-  min-width: 160px;
-  overflow: hidden;
-  z-index: 1006;
-  border-radius: 0 5px 5px 5px;
-}
-#announcementBox .actionOverlay .action-content a {
-  color: #fff;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-.action-content a:hover {
-  background-color: var(--color-logo-background);
-}
-#announcementBox button.actionBtn:hover,
-#announcementBox button.actionBtn:focus{
-  background-color: var(--color-text-primary);
-}
-#announcementBox table{
+  cursor: pointer;
   width: 100%;
+  opacity: 0.9;
+}
+.announcementForm button:hover {
+  opacity:1;
+}
+.closeAnnouncementForm{
+  float: right;
+  margin-right: 20px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #ff8080;
 
 }
-#announcementBox table tr{
-  border-left: 5px solid var(--color-logo-background);
-
-}
-#announcementBox table tr th{
-  color: var(--color-text-primary);
-  text-align: left;
-
-}
-#announcementBox table th,
-#announcementBox table td{
-  padding: 0 0 0 10px;
-
+.closeAnnouncementForm:hover,
+.closeAnnouncementForm:focus {
+  color: #cc0000;
+  cursor: pointer;
 }
 
-#announcementBox table .authorProfile{
-  padding-top: 10px;
+.announcementForm .announcementFormcontainer{
+  margin-top: 15px;
+  padding: 16px;
 }
-.fa-user{
-  margin-right:5px;
+.announcementFormcontainer p{
+  color: #ffa500;
+}
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)} 
+  to {-webkit-transform: scale(1)}
+}
   
+@keyframes animatezoom {
+  from {transform: scale(0)} 
+  to {transform: scale(1)}
 }
-#announcementBox table tr:nth-child(3n+1):not(:first-child){
-  border-top: 1px solid var(--color-text-primary);
+/*retrieve announcement*/
+#displayAnnouncements .announcementCard {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  float: left;
+  width: 48%;
+  margin: 0 20px 20px 0;
+  padding: 20px;
+  font-family: 'Varela', sans-serif;
 
 }
-#announcementBox table tr td {
-    max-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.announcementCard:after {
+  content: "";
+  display: table;
+  clear: both;
 }
-#announcementBox table tr td.columnA {
-    width: 70%;
+.announcementCard:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
-#announcementBox table tr th{
-  padding-top: 15px;
+#displayAnnouncements .announcementCard .actionBtns{
+  margin: 10px 0 25px 0;
 }
-#announcementBox table tr td.columnB {
-    width: 30%;
-    padding-bottom: 15px;
+#displayAnnouncements .announcementCard .actionBtns span.editBtn {
+  background-color: #fff; 
+  color: black; 
+  border: 2px solid var(--color-logo-background);
+  padding: 4px 8px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  font-weight: bold;
 }
+#displayAnnouncements .announcementCard .actionBtns span.editBtn:hover,
+#displayAnnouncements .announcementCard .actionBtns span.editBtn:focus{
+  background-color: var(--color-logo-background);
+  color: #fff;
 
-#announcementBox table a{
+}
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a{
+  float: right;
+  font-size: 30px;
+  margin-top: -17px;
+  font-weight: bold;
+  color: #ff8080;
   text-decoration: none;
-  color: #000;
+}
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a:hover,
+#displayAnnouncements .announcementCard .actionBtns span.deleteBtn a:focus {
+  color: #cc0000;
+  cursor: pointer;
+}
+#displayAnnouncements .announcementCard .courseversion{
+ color: #9474a4;
+ margin-bottom: 15px;
 
 }
-#announcementBox table a:hover{
-  text-decoration: underline;
-
+.displayAnnounceTime,
+.displayAuthor{
+  color: #ddd;
 }
-#announcementBox .headlines tr:last-child{
-  border-bottom: none;
+.displayAuthor{
+  float: right;
+}
+#displayAnnouncements .announcementCard .displayAnnouncementMsg{
+  margin-bottom: 40px;
+}
+.announcementMsgParagraph .more-text{
+  display: none;
+}
+#displayAnnouncements #btnContainer .btn {
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+#displayAnnouncements #btnContainer .btn:hover {
+  background-color: #ddd;
+}
+#displayAnnouncements #btnContainer .btn.active {
+  background-color: var(--color-logo-background);
+  color: white;
 }
 /*Show all the announcements*/
+.showmoreBtnContainer{
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.showAllAnnouncement{
+  padding: 10px 15px 10px 15px;
+  font-family: 'Varela', sans-serif;
+  font-size: 16px;
+  border: none;
+  color: #fff;
+  background-color: var(--color-logo-background);
+}
 .hvr-icon-forward {
   display: inline-block;
   vertical-align: middle;
@@ -511,97 +585,17 @@ p {
 .hvr-icon-forward:hover .hvr-icon, .hvr-icon-forward:focus .hvr-icon, .hvr-icon-forward:active .hvr-icon {
   -webkit-transform: translateX(4px);
   transform: translateX(4px);
-}
 
+}
+.showAllAnnouncement:hover{
+  cursor: pointer;
+}
 #announcementBox button a{
     text-decoration: none;
     color: #000;
 }
 
 /*End of show all the announcments*/
-.modal input[type=text], 
-.modal textarea {
-  width: 100%;
-  padding: 12px 20px;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  margin: 8px 0;
-  font-family: Roboto, Arial Narrow;
-  font-size: 16px;
-}
-.modal textarea {
-  height: 150px;
-  border-radius: 4px;
-  resize: none;
-}
-.modal .modalBtns button{
-  color: white;
-  padding: 14px 20px;
-  border: none;
-  cursor: pointer;
-  width: 50%;
-}
-.modal .createbtn{
-  background-color: var(--color-logo-background);
-}
-.modal .cancelbtn{
-  background-color: var(--color-red);
-}
-.modal .modCancelbtn a{
-  text-decoration: none;
-  color: #fff;
-}
-.modal .modalBtns{
-  display: flex;
-  flex-direction: row;
-}
-
-.modal button:hover {
-  opacity: 0.8;
-}
-.modal .containerHeader {
-  text-align: center;
-  margin: 24px 0 12px 0;
-  position: relative;
-}
-
-.modal .modal-container{
-  padding: 16px;
-}
-.modal {
-  position: fixed; 
-  z-index: 1005; 
-  left: 0;
-  top: 0;
-  width: 100%; 
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4);
-  padding-top: 60px;
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto 15% auto; 
-  border: 1px solid #888;
-  width: 80%; 
-}
-.animate {
-  -webkit-animation: animatezoom 0.6s;
-  animation: animatezoom 0.6s
-}
-
-@-webkit-keyframes animatezoom {
-  from {-webkit-transform: scale(0)} 
-  to {-webkit-transform: scale(1)}
-}
-  
-@keyframes animatezoom {
-  from {transform: scale(0)} 
-  to {transform: scale(1)}
-}
 
 /*End of announcement box*/
 
@@ -867,6 +861,9 @@ p {
 
   #dugga4Container #toolbox{
     margin: 15px 0;
+  }
+  #displayAnnouncements .announcementCard{
+    width: 100%;
   }
 }
 
@@ -3382,6 +3379,10 @@ padding: 10px;
   .ladDiv {
     width: 60%;
   }
+  .announcementForm{
+    width: 100%;
+    margin: 0;
+  }
 }
 
 
@@ -5069,13 +5070,7 @@ only screen and (max-device-width: 390px) {
     opacity: 1;
 
   }
-  #announcementBox table tr{
-    border: none;
-  }
-  #announcementBox table tr th,
-  #announcementBox table tr td{
-    padding-left: 0;
-  }
+ 
 }
 
 @media only screen and (max-width: 320px),
@@ -5899,6 +5894,10 @@ only screen and (max-device-width: 320px) {
 @media only screen and (max-width: 441px) {
   .fileView{
     width: 100%;
+  }
+  .announcementCard,
+  #announcementForm{
+    font-size: .8rem;
   }
 }
 

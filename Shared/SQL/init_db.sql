@@ -486,15 +486,16 @@ CREATE TABLE `groups` (
     PRIMARY KEY (groupID)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 CREATE TABLE announcement(
-	id INT(12) NOT NULL AUTO_INCREMENT,
-    courseid INT(12) NOT NULL,
-    courseversion VARCHAR(255) NOT NULL,
-    coursename VARCHAR(255) NOT NULL,
-    title TINYTEXT,
-    message TEXT,
-    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    author VARCHAR(255),
-    PRIMARY KEY(id)
+    announcementid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    uid INT UNSIGNED NOT NULL,
+    cid INT UNSIGNED NOT NULL,
+    versid VARCHAR(8),
+    title TINYTEXT NOT NULL,
+    message TEXT NOT NULL,
+    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY(announcementid, uid, cid),
+    FOREIGN KEY (uid) REFERENCES user (uid),
+    FOREIGN KEY (cid) REFERENCES course (cid)
     
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 

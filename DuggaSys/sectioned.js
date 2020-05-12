@@ -1592,6 +1592,7 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 // Setup (when loaded rather than when ready)
 $(window).load(function () {
+  accessAdminAction();
   $(".messagebox").hover(function () {
     $("#testbutton").css("background-color", "red");
   });
@@ -1617,56 +1618,240 @@ $(window).load(function () {
 
   });
   $("#announcement").click(function(){
+    sessionStorage.removeItem("closeUpdateForm");
     $("#announcementBoxOverlay").toggle();
-    $('#fullAnnnouncementOverlay').hide();
+    if($("#announcementForm").is(":hidden")){
+      $("#announcementForm").show();
+    }
 
   });
-
-  var rowCount = $('#announcementBox table tr').length;
-  if (rowCount > 9) {
-    $('#announcementBox table tr:gt(8)').hide();
-    $('.showAllAnnouncement').show();
-  }else if(rowCount == 0){
-    $('#announcementBox').append("<p style='color:#775886;'>No announcements created yet</p>");
-  }
-
-  $('.showAllAnnouncement').on('click', function() {
-    $('#announcementBox table tr:gt(8)').toggle();
-    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
+  $(".createBtn").click(function(){
+    sessionStorage.setItem('closeUpdateForm', true);
   });
 
-  var adminLoggedin = $("#adminLoggedin").val();
-  if(adminLoggedin == 'yes'){
-    $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create an new announcement</button>');
-    $("#announcementBox table .actionBtn").add();
-    $("#modal").add();
-  }else{
-    $("#announcementBox table .actionBtn").remove();
-    $("#modal").remove();
-  }
-  $("#newAnnouncement").click(function(){
-    $("#modal").toggle();
-    $(window).click(function(e) {
-      if(e.target.id == "modal"){
-        $("#modal").hide();
-      }
-    });
-
-
-  });
-  $(".actionBtn").click(function(){
-    $(".action-content").toggle();
-  });
+  retrieveAnnouncementAuthor();
+  retrieveCourseProfile();
+  retrieveAnnouncementsCards();
+  displayListAndGrid();
+  displayAnnouncementBoxOverlay();
 });
+
 
 //show the full announcement
 function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
 }
 
-//sets author for announcement
-function setAnnouncementAuthor(){
-  $("#author").val($("#userName").html());
+//retrieve the announcment author 
+function retrieveAnnouncementAuthor(){
+  var uname = $("#userName").html();
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      if($("#userid").length > 0) {
+          document.getElementById("userid").value = this.responseText;
+      }
+    }
+  };
+  xmlhttp.open("GET","../Shared/retrieveUserid.php?uname="+uname,true);
+  xmlhttp.send();
+
+}
+//retrieve course profile
+function retrieveCourseProfile(){
+  var currentLocation = $(location).attr('href');
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+  $("#courseid").val(cid);
+  $("#versid").val(versid);
+}
+//validate create announcement form
+function validateCreateAnnouncementForm(){
+  $("#announcementForm").submit(function(e){
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+    if (announcementTitle == null || announcementTitle == '') {  
+        $("#announcementTitle").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (announcementMsg == null || announcementMsg == '') {  
+        $("#announcementMsg").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }
+    $(".errorCreateAnnouncement").css({
+      'border':'1px solid red'
+    });   
+  });
+}
+//retrive announcements
+function retrieveAnnouncementsCards(){
+  var currentLocation = $(location).attr('href');
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("announcementCards").innerHTML = this.responseText;
+      accessAdminAction();
+      readLessOrMore();
+      showLessOrMoreAnnouncements();
+      scrollToTheAnnnouncementForm();
+
+    }
+  };
+  xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid,true);
+  xmlhttp.send();
+}
+//update anouncement form
+function updateannouncementForm(updateannouncementid, tempFuction){
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        tempFuction(this, updateannouncementid);
+    }
+  };
+  xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
+  xmlhttp.send();
+
+}
+function handleResponse(xhttp, updateannouncementid){
+  var parser, xmlDoc, responseTitle, responseMessage, title, message;
+  parser=new DOMParser();
+  xmlDoc=parser.parseFromString(xhttp.responseText,"text/xml");
+  responseTitle = xmlDoc.getElementById("responseTitle");
+  responseMessage = xmlDoc.getElementById("responseMessage");
+
+  title = responseTitle.childNodes[0].nodeValue;
+  message = responseMessage.childNodes[0].nodeValue;
+
+  if($("#announcementForm").is(":hidden")){
+    $("#announcementForm").show();
+  }
+  $(".formTitle").html("Update announcement");
+  $(".formSubtitle").html("Please fill in this form to update the announcement.");
+  $("#announcementTitle").val(title);
+  $("#announcementMsg").html(message);
+  $(".createBtn").html("Update");
+  $(".createBtn").attr("name", "updateBtn");
+  $("#announcementForm .announcementFormcontainer hr").after('<input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'">');
+
+}
+
+//announcement card grid and list view
+function displayListAndGrid(){
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i class="fa fa-th-large"></i> Grid</button></div><br>');
+
+  var announcementCard = document.getElementsByClassName("announcementCard");
+  var i;
+
+  $(".listBtn").click(function(){
+    for (i = 0; i < announcementCard.length; i++) {
+      announcementCard[i].style.width = "100%";
+    }
+  });
+
+  $(".gridBtn").click(function(){
+    for (i = 0; i < announcementCard.length; i++) {
+      announcementCard[i].style.width = "48%";
+    }
+  });
+
+  var btnContainer = document.getElementById("btnContainer");
+  var btns = btnContainer.getElementsByClassName("btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+      var current = document.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      this.className += " active";
+    });
+  }
+
+}
+function accessAdminAction(){
+  var adminLoggedin = $("#adminLoggedin").val();
+  if(adminLoggedin == 'yes'){
+    $("#announcementForm").add();
+    $(".actionBtns").add();
+  }else{
+    $("#announcementForm").remove();
+    $(".actionBtns").remove();
+    $("#displayAnnouncements").css("margin-top", "0px");
+
+  }
+}
+function displayAnnouncementForm(reload){
+  if ($("#updateannouncementid").length > 0) {
+    location.reload();
+    sessionStorage.setItem('closeUpdateForm', true);
+
+  }else{
+    $("#announcementForm").hide();
+    $("#displayAnnouncements").css("margin-top", "0px");
+    sessionStorage.removeItem("closeUpdateForm");
+
+  }
+
+}
+function displayAnnouncementBoxOverlay(){
+  var closeUpdateForm = sessionStorage.getItem("closeUpdateForm");
+  if(closeUpdateForm == 'true'){
+    $("#announcementBoxOverlay").show();
+  }
+}
+function scrollToTheAnnnouncementForm(){
+  $(".editBtn").click(function() {
+    $('html,body').animate({
+        scrollTop: $("#announcementForm").offset().top},
+        'slow');
+  });
+}
+//read less or more announcement card
+function readLessOrMore(){
+    var maxLength = 60;
+
+    $(".announcementMsgParagraph").each(function(){
+
+      var myStr = $(this).text();
+
+      if($.trim(myStr).length > maxLength){
+        var newStr = myStr.substring(0, maxLength);
+        var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+        $(this).empty().html(newStr);
+        $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
+        $(this).append('<span class="more-text">' + removedStr + '</span>');
+
+      }
+
+    });
+
+    var announcementCard = document.getElementsByClassName("announcementCard");
+    $(".read-more").click(function(){
+      $(this).siblings(".more-text").contents().unwrap();
+      $(this).remove();
+      
+      for (i = 0; i < announcementCard.length; i++) {
+        announcementCard[i].style.width = "100%";
+      }
+    });
+}
+
+function showLessOrMoreAnnouncements(){
+  var announcementCardLength = $(".announcementCard").length;
+  if (announcementCardLength == 0) {
+      $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
+  }else if(announcementCardLength > 6){
+      $(".announcementCard:gt(5)").hide();
+      $("#displayAnnouncements").append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
+        '<span class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
+        '</button></div>');
+  }
+   $('.showAllAnnouncement').on('click', function() {
+    $('.announcementCard:gt(5)').toggle();
+    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
+  });
 
 }
 // Checks if <a> link is external

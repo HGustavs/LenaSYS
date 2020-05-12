@@ -120,51 +120,20 @@
 		<!-- Announcement box -->
 		<div id="announcementBoxOverlay">
 			<div id="announcementBox">
-				<h3>To Do</h3>
-				<hr>
-				<table>
-					<?php
+				<div id="formContainer">
+				<?php 
+				$_SESSION['courseid'] = $_GET['courseid'];
+				$_SESSION['coursename'] = $_GET['coursename'];
+				$_SESSION['coursevers'] = $_GET['coursevers'];
+				include "../Shared/announcementBox.php"; 
 
-					$courseid = $_GET['courseid'];
-					$coursevers = $_GET['coursevers'];
-
-					foreach ($pdo->query('SELECT * FROM announcement WHERE courseid="'.$courseid.'" AND courseversion="'.$coursevers.'" ORDER BY announceTime DESC') AS $headline){
-						$headlines = $headline['title'];
-						$message = $headline['message'];
-						$announcementid = $headline['id'];
-						$announceTime = $headline['announceTime'];
-						$author = $headline['author'];
-						echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th>";
-						echo "<td><div class='actionOverlay'><button class='actionBtn'>Action</button><div class='action-content'><a href='../Shared/announcementService.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&deleteannouncementid=".$announcementid."'>Delete</a><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&updateannouncementid=".$announcementid."&title=".$headlines."&message=".$message."&author=".$author."'>Update</a></div></div>";
-						echo "</td>";
-						echo "</tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
-
-
-					}
-
-
-					?>
-
-				</table>
-
-				<button class="showAllAnnouncement">
-					<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
-					</a>
-				</button>
+				?>
+				</div>
+				<div id="displayAnnouncements">
+					<div id="announcementCards"></div>
+				</div>
 			</div>
-
 		</div>
-		<?php
-			include '../Shared/announcementBox.php';
-			if (isset($_GET['announcementid'])) {
-				include '../Shared/fullAnnouncement.php';
-			}
-
-		if (isset($_GET['updateannouncementid'])) {
-			include '../Shared/updateAnnouncement.php';
-		}
-
-		?>
 
 		<!-- + button --->
 
