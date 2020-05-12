@@ -6294,6 +6294,14 @@ function createRuler(element, length, origoOffset, marginProperty) {
     steps.mini = 5;
     steps.small = steps.mini * 2;
     steps.big = Math.round((steps.mini * steps.small) * zoomValue);
+    
+    if(zoomValue <= 0.7 && zoomValue >= 0.5) {
+        steps.big *= 2;
+    } else if(zoomValue <= 0.4 && zoomValue >= 0.3) {
+        steps.big *= 4;
+    } else if(zoomValue <= 0.2) {
+        steps.big *= 8;
+    }
 
     element.innerHTML = "";
 
