@@ -4973,10 +4973,26 @@ only screen and (max-device-width: 320px) {
   border-bottom: 1px solid #000000;
 }
 
+.ruler-lines {
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
 .ruler-line {
   background-color: #000000;
   font-size: 10px;
   text-indent: 2px;
+}
+
+#ruler-x .ruler-lines {
+  flex-direction: row;
+  height: 100%;
+}
+
+#ruler-y .ruler-lines {
+  flex-direction: column;
+  width: 100%;
 }
 
 #ruler-x .ruler-line {
