@@ -251,7 +251,7 @@ p {
 
 #content {
   background: var(--color-background);
-  margin: 65px 10px 15px 10px;
+  margin: 65px 0px 15px 0px;
 }
 
 #contentDiagram {
@@ -629,7 +629,7 @@ p {
 /*End of announcement box*/
 
 #Sectionlist {
-  margin: 0px auto;
+  margin: 10px;
   background-color: var(--color-background);
   color: var(--color-text-secondary);
   display: block;
@@ -1159,7 +1159,7 @@ div .navButt:hover {
     
 }
 
-}
+
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
@@ -2221,8 +2221,26 @@ button.option {
 
 #MOTDbutton {
  top: -2px;
+ position: absolute;
+ right: 20px;
+ left: auto;
 }
 
+@media only screen and (max-width: 420px) {
+  #MOTDbutton {
+    width:20%;
+   }
+}
+@media only screen and (max-width: 330px) {
+  #MOTDbutton {
+    width:15%;
+   }
+}
+@media only screen and (max-width: 275px) {
+  #MOTDbutton {
+    width:10%;
+   }
+}
 input.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -3410,7 +3428,6 @@ padding: 10px;
 }
 
 .submit-button {
-  position: relative;
   background-color: var(--color-primary);
   border: 0px;
   width: 110px;
@@ -4272,6 +4289,21 @@ rect[class*="activitymarker"]:hover {
 
 .alertmsg#servermsgcontainer {
   top: 50px;
+}
+
+#servermsgcontainer{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#servermsg{
+  margin:0;
+}
+
+#servermsgtitle{
+  font-size:20px;
+  color:#614875;
 }
 
 /*
@@ -6774,19 +6806,17 @@ textarea#filecont {
   width: 100%;
 }
 #motdArea{
-  border: 1px;
+  /*border: 1px;
   border-radius: 2px;
   border-style: solid;
-  border-color: #614875;
+  border-color: #614875;*/
+  border-collapse:collapse;
   background-color: #FECC56;
   justify-content: center;
   align-items: center;
   background-color: var(--color-accent);
   z-index: 1000;
-  
-  
   position: relative;
-  
   margin-top: -16px;
   margin-bottom: 7px;
   max-width: auto;
