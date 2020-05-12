@@ -4732,7 +4732,7 @@ only screen and (max-device-width: 320px) {
 #diagram-header, #diagram-container {
   --header-height: 50px;
   --diagram-header-height: 36px;
-  --ruler-size: 32px;
+  --ruler-size: 38px;
   --diagram-sidebar-width: 60px;
   --canvas-margin: 8px;
 }
@@ -5045,15 +5045,15 @@ only screen and (max-device-width: 320px) {
 }
 
 #ruler-x .ruler-extra-lines .mouse-line {
-  width: 2px;
-  height: calc(var(--ruler-size) / 2);
+  width: 4px;
+  height: calc(var(--ruler-size) / 4);
   bottom: 0;
   left: 0;
 }
 
 #ruler-y .ruler-extra-lines .mouse-line {
-  height: 2px;
-  width: calc(var(--ruler-size) / 2);
+  height: 4px;
+  width: calc(var(--ruler-size) / 4);
   top: 0;
   right: 0;
 }

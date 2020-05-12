@@ -3797,6 +3797,12 @@ function mousemoveevt(ev) {
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
+    //Update the moving mouse line positions for x-axis and y-axis rulers when rulers are active
+    if(isRulersActive) {
+        document.querySelector("#ruler-x .ruler-extra-lines .mouse-line").style.left = `${ev.offsetX}px`;
+        document.querySelector("#ruler-y .ruler-extra-lines .mouse-line").style.top = `${ev.offsetY}px`;
+    }
+
     // deltas are used to determine the range of which the mouse is allowed to move when pressed.
     deltaX = 2;
     deltaY = 2;
