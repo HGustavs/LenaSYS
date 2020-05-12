@@ -152,9 +152,10 @@
 
 		</div>
 		<?php
-		include '../Shared/announcementBox.php';
-		if (isset($_GET['announcementid'])) {
-			include '../Shared/fullAnnouncement.php';
+			include '../Shared/announcementBox.php';
+			if (isset($_GET['announcementid'])) {
+				include '../Shared/fullAnnouncement.php';
+			}
 
 		}if (isset($_GET['updateannouncementid'])) {
 			include '../Shared/updateAnnouncement.php';
