@@ -13,7 +13,7 @@ if($opt=="GETQUESTION"){
   
   // Request barrier
   $maxRequestTries = 5;
-  $log_db = new PDO('sqlite:../../log/loglena4.db');
+  //$log_db = new PDO('sqlite:../../log/loglena4.db');
   $IP = getIP();
   $timeInterval = 5; // in minutes
 
@@ -71,7 +71,7 @@ if($opt=="GETQUESTION"){
 
   // Security question barrier
   $maxQuestionTries = 5;
-  $log_db = new PDO('sqlite:../../log/loglena4.db');
+  //$log_db = new PDO('sqlite:../../log/loglena4.db');
   $IP = getIP();
   $timeInterval = 5; // in minutes
 
