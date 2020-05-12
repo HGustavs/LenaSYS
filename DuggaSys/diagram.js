@@ -6306,18 +6306,16 @@ function createRuler(element, length, origoOffset, marginProperty) {
     element.innerHTML = "";
 
     for(let i = from; i < to; i++) {
-        if(i % steps.mini === 0) {
+        if(i % steps.big === 0 || i % steps.small === 0 || i % steps.mini === 0) {
             const line = document.createElement("div");
             line.classList.add("ruler-line");
             line.style[marginProperty] = `${steps.mini - 1}px`;
-            if(i % steps.small === 0 || i % steps.big === 0) {
-                if(i % steps.big === 0) {
-                    line.classList.add("big");
-                    line.innerText = Math.round(i / zoomValue);
-                } else {
-                    line.classList.add("small");
-                }
-            } else {
+            if(i % steps.big === 0) {
+                line.classList.add("big");
+                line.innerText = Math.round(i / zoomValue);
+            } else if(i % steps.small === 0) {
+                line.classList.add("small");
+            } else if(i % steps.mini === 0) {
                 line.classList.add("mini");
             }
             element.appendChild(line);
