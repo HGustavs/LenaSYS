@@ -491,25 +491,18 @@ function init() {
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
     setIsRulersActiveOnRefresh();
+    setHideCommentOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
     updateGraphics(); 
 }
 
-//--------------------------------------------------------------
-// Generates an example of a ER-diagram
-//--------------------------------------------------------------
+//------------------------------------------
+// Generates example diagram of passed file.
+//------------------------------------------
 
-function generateERExampleCode() {
-    var fileContent = $.get("exampleER.txt", data => LoadImport(data));
-}
-
-//--------------------------------------------------------------------
-// Generates an example of a UML-diagram
-//--------------------------------------------------------------------
-
-function generateUMLExampleCode() {
-    var fileContent = $.get("exampleUML.txt", data => LoadImport(data));
+function generateExampleCode(url) {
+    $.get(url, data => LoadImport(data));
 }
 
 //--------------------------------------------------------------------
@@ -540,6 +533,63 @@ function resetToolButtonsPressed() {
 }
 
 //--------------------------------------------------------------------
+// deleteFreedrawObject: Checks if a point of a selected freedraw object
+//                       or entire object should be removed
+//--------------------------------------------------------------------
+function deleteFreedrawObject() {
+    let pointId = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).index;
+    let point = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+    
+    if (typeof point.attachedSymbol != "undefined") {
+        // A freedraw object needs to be selected
+        if (point.attachedSymbol.figureType == "Free" && point.attachedSymbol.targeted) {
+            // If a point isn't hovered, delete object
+            if (point.distance > 10 / zoomValue){
+                eraseObject(point.attachedSymbol);
+                return;
+            }
+            // Freedraw objects need at least 3 points
+            if (point.attachedSymbol.segments.length <= 3) {
+                return;
+            }
+            // Remove hovered point
+            else {
+                removeFreedrawPoint(point.attachedSymbol, pointId); 
+            }
+        }
+    }
+}
+
+//--------------------------------------------------------------------
+// removeFreedrawPoint: Removes a point from a freedraw object and
+//                      Reorganizes the segments
+//--------------------------------------------------------------------
+function removeFreedrawPoint(symbol , pointId) {
+    let newSegment = {kind:kind.path, pa:-1, pb:-1};
+    let toRemove = [];
+    // Finds the segments where the point is used
+    for (let i = 0; symbol.segments.length > i; i++) {
+        if (symbol.segments[i].pa == pointId) {
+            newSegment.pb = symbol.segments[i].pb;
+            toRemove.push(i);
+        }
+        if (symbol.segments[i].pb == pointId) {
+            newSegment.pa = symbol.segments[i].pa;
+            toRemove.push(i);
+        }
+    }
+    // Removes the segments to and from the point to remove
+    symbol.segments.splice(toRemove[1], 1);
+    symbol.segments.splice(toRemove[0], 1);
+    // Adds new segment between the points that were connected to removed point
+    symbol.segments.splice(toRemove[0], 0, newSegment);
+    symbol.targeted = false;
+    // Hide removed point in center
+    points[pointId].x = 0;
+    points[pointId].y = 0;
+}
+
+//--------------------------------------------------------------------
 // This handles all the key binds for diagram
 //--------------------------------------------------------------------
 
@@ -563,12 +613,13 @@ function keyDownHandler(e) {
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
+        deleteFreedrawObject();
         eraseSelectedObject(event);
         SaveState();
     }  
     //Check if enter is pressed when "focused" on an item in the dropdown menu
     if(key == keyMap.enterKey) {
-        const allowedClasses = ["drop-down-item", "export-drop-down-item", "papersize-drop-down-item"];
+        const allowedClasses = ["drop-down-item"];
         const isAllowed = allowedClasses.some(className => document.activeElement.classList.contains(className));
         if(isAllowed) {
             const onclickElement = document.activeElement.querySelector("[onclick]");
@@ -985,10 +1036,19 @@ function copySymbol(symbol) {
                 //If the attribute will not be copied the point should be created
                 if(symbol.symbolkind === symbolKind.line) {
                     const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
+                    const connectedAttributes = symbol.getConnectedObjects().filter(object => object.symbolkind === symbolKind.erAttribute);
                     if(typeof connectedAttribute !== "undefined") {
                         const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
+                        //If one of the connected objects is a attribute, create no second point
                         if(isAttributeSelected && connectedAttribute.connectorTop.find(object => object.from === symbol[key])) {
                             newPointIndex = null;
+                        }
+                        //If both connected objects are attributes, create no points
+                        else if(connectedAttributes.length > 1 && symbol.getConnectedObjects()[0].symbolkind == symbolKind.erAttribute && symbol.getConnectedObjects()[1].symbolkind == symbolKind.erAttribute){
+                            //Both attributes must be selected
+                            if(selected_objects.includes(connectedAttributes[0]) && selected_objects.includes(connectedAttributes[1])){
+                                newPointIndex = null;
+                            }
                         }
                     }
                 }
@@ -2141,7 +2201,24 @@ function toggleComments(event) {
 		hideComment = true;
       	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     }
-	updateGraphics();
+    updateGraphics();
+    localStorage.setItem("hideComment", hideComment);
+}
+
+//---------------------------------------------------------------
+// Stores if the comments are hidden or not in localStorage
+//---------------------------------------------------------------
+
+function setHideCommentOnRefresh() {
+    const tempHideComment = localStorage.getItem("hideComment");
+    if (tempHideComment != null) {
+        if (tempHideComment == 'true') {
+            hideComment = false;
+        } else {
+            hideComment = true;
+        }
+    toggleComments(event);
+  }
 }
 //--------------------------------------------
 //Sets the size of the paper on the canvas
@@ -2162,8 +2239,8 @@ function setPaperSize(event, size){
 	]
 	selectedPaper[size] = true;
 	for (i = 0; i < 7; i++){
-		let name = 'A' + i;
-		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
+        let name = 'A' + i;
+        setCheckbox($(`.drop-down-option:contains('Paper size...') + .side-drop-down .drop-down-option:contains(${name})`), selectedPaper[i]);
 	}
 	paperSize = size; 
 	localStorage.setItem("paperSize", paperSize);
@@ -2445,7 +2522,9 @@ function eraseObject(object) {
 function eraseSelectedObject(event) {
     event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
-        eraseObject(selected_objects[i]);
+        if (selected_objects[i].figureType != "Free") {
+            eraseObject(selected_objects[i]);
+        }
     }
     selected_objects = [];
     lastSelectedObject = -1;
@@ -2665,8 +2744,8 @@ function developerMode(event) {
         switchToolbarDev(event);                                                             // ---||---
         document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to DEV.
         $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-        setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+        setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
+        setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
         setCheckbox($(".drop-down-option:contains('Display All Tools')"),
             crossDEV=true);                                                             // Turn on crossDEV.
         setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
@@ -2811,8 +2890,8 @@ function switchToolbarER() {
     } else {
         document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: ER';              // Change the text to ER.
     }
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=true);               // Turn on crossER.
+    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=false);                                                            // Turn off crossDEV.
 }
@@ -2832,8 +2911,8 @@ function switchToolbarUML() {
     } else {
         document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: UML';              // Change the text to UML.
     }                                                           // ---||---
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=true);             // Turn on crossUML.
+    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
     crossDEV=false);                                                            // Turn off crossUML.
 }
@@ -2855,8 +2934,8 @@ function switchToolbarDev(event) {
     document.getElementById('diagram-toolbar-switcher').innerHTML = 'DEV: All';             // Change the text to UML.
     setCheckbox($(".drop-down-option:contains('Display All Tools')"),
         crossDEV=true);                                                             // Turn on crossDEV.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
+    setCheckbox($(".drop-down-option:contains('UML mode')"), crossUML=false);            // Turn off crossUML.
+    setCheckbox($(".drop-down-option:contains('ER mode')"), crossER=false);              // Turn off crossER.
 }
 
 //----------------------------------------------------------------------
@@ -5113,9 +5192,58 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
 }
 
 function doubleclick() {
-    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
+    // Add point to freedraw object if clicked on line
+    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true 
+    && diagram[lastSelectedObject].figureType == "Free") {
+        let clickedSegmentId = clickedOnLine(diagram[lastSelectedObject]);
+        if (clickedSegmentId != -1) {
+            let freedrawObject = diagram[lastSelectedObject];
+            let newPoint = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+            let clickedSegment = freedrawObject.segments[clickedSegmentId];
+            
+            freedrawObject.segments.splice(clickedSegmentId, 1);
+            freedrawObject.segments.splice(clickedSegmentId, 0, {kind:kind.path, pa:clickedSegment.pa, pb:newPoint});
+            freedrawObject.segments.splice(clickedSegmentId+1, 0, {kind:kind.path, pa:newPoint, pb:clickedSegment.pb});
+        }
+    }
+    else if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         loadAppearanceForm();
     }
+}
+
+//--------------------------------------------------------------------
+// clickedOnLine: Checks if a line of an object is clicked, returns segment index
+//--------------------------------------------------------------------
+function clickedOnLine(clickedObject) {
+    let clickedLine = -1;
+    
+    for (let i = 0; i < clickedObject.segments.length; i++) {
+        if (pointOnLine(currentMouseCoordinateX, currentMouseCoordinateY, clickedObject.segments[i])) {
+            clickedLine = i;
+        }
+    }
+    return clickedLine;
+}
+
+//--------------------------------------------------------------------
+// pointOnLine: Checks if a point is positioned on a segment
+//--------------------------------------------------------------------
+function pointOnLine(pointX, pointY, segment) {
+    let pointBetween = {x:pointX, y:pointY};
+    let pointA = {x:points[segment.pa].x, y:points[segment.pa].y};
+    let pointB = {x:points[segment.pb].x, y:points[segment.pb].y};
+
+    if (distance(pointA, pointBetween) + distance(pointB, pointBetween) 
+    <= distance(pointA, pointB) + 0.1) {
+        return true;
+    }
+}
+
+//--------------------------------------------------------------------
+// distance: Returns distance between two points 
+//--------------------------------------------------------------------
+function distance(point1, point2) {     
+    return Math.sqrt((Math.pow((point1.x - point2.x),2) + Math.pow((point1.y - point2.y),2)));
 }
 
 function createText(posX, posY) {
@@ -6016,6 +6144,86 @@ function getcorrectlayer(){
         return "Layer_1";
 }
 
+function deleteLayerView(){
+    let parentNode = document.getElementById("viewLayer");
+    let deleteArray = []
+    for(let i = 0;i < diagram.length;i++){
+        if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    for(let i = 0; i < showLayer.length; i++){
+        let deleteLayer = document.getElementById(showLayer[i]).parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+        deleteLayer = document.getElementById(showLayer[i]+"_Active").parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+    }
+    showLayer = [];
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState()
+}
+function deleteLayerActive(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+    let saveIndex;
+    let deleteArray = []
+    for(let i = 0; i < spans.length;i++){
+        if(spans[i].classList.contains("isActive")){
+            let deleteLayer = spans[i].parentNode;
+            saveIndex = spans[i].id.replace('_Active','');
+            deleteLayer.parentNode.removeChild(deleteLayer);
+        }
+    }
+    for(let i = 0;i < diagram.length;i++){
+        if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    let elem = document.getElementById(saveIndex);
+    elem.parentNode.removeChild(elem);
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState() 
+}
+function fixviewLayer(){
+    let parentNode = document.getElementById("viewLayer");
+    let spans = parentNode.getElementsByTagName('span');
+
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i;
+    }
+}
+function fixActiveLayer(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i +"_Active";
+    }
+}
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;

@@ -74,6 +74,9 @@
             <option value=\'0..*\'>0..*</option>
             <option value=\'1..*\'>1..*</option>
         ';
+
+        //Get all .txt files in folder templates/examplediagrams. Should be all example diagram files.
+        $exampleDiagramFilePaths = glob('templates/example-diagram/*.txt');
     ?>
 
     <div id="diagram-header">
@@ -93,19 +96,19 @@
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="openImportDialog();">Import</span>
                     </div>
-                    <div class="drop-down-item export-drop-down-head" tabindex="0">
+                    <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" id="exportid">Export...</span>
-                        <div class="export-drop-down">
-                            <div class="export-drop-down-item" tabindex="0">
+                        <div class="side-drop-down">
+                            <div class="drop-down-item" tabindex="0">
                                 <a class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                             </div>
-                            <div class="export-drop-down-item" tabindex="0">
+                            <div class="drop-down-item" tabindex="0">
                                 <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
                             </div>
-                            <div class="export-drop-down-item" tabindex="0">
+                            <div class="drop-down-item" tabindex="0">
                                 <a class="drop-down-option" id="picid" onclick='ExportPicture(this);'>Export Picture</a>
                             </div>
-                            <div class="export-drop-down-item" tabindex="0">
+                            <div class="drop-down-item" tabindex="0">
                                 <a class="drop-down-option" id="svgidPaper" onclick='ExportSVGA4(this);'>Export as A4 size(SVG)</a>
                             </div>
                         </div>
@@ -117,7 +120,7 @@
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
-                        <i id="hotkey-clear" class="hotKeys">Ctrl + A, Delete</i>
+                        <i class="hot-key">Ctrl + A, Delete</i>
                     </div>
                 </div>
             </div>
@@ -126,11 +129,11 @@
                 <div class="drop-down">
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='undoDiagram(event)'>Undo</span>
-                        <i id="hotkey-undo" class="hotKeys">Ctrl + Z</i>
+                        <i class="hot-key">Ctrl + Z</i>
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='redoDiagram(event)'>Redo</span>
-                        <i id="hotkey-redo" class="hotKeys">Ctrl + Y</i>
+                        <i class="hot-key">Ctrl + Y</i>
                     </div>
                     <div class="drop-down-divider">
                     </div>
@@ -147,13 +150,13 @@
                     <div class="drop-down-item" tabindex="0">
                         <div id="move-selected-front-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='moveToFront(event)'>Move selected to front</span>
-                            <i id="hotkey-front" class="hotKeys">Shift + 1</i>
+                            <i class="hot-key">Shift + 1</i>
                         </div>
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <div id="move-selected-back-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='moveToBack(event)'>Move selected to back</span>
-                            <i id="hotkey-back" class="hotKeys">Shift + 2</i>
+                            <i class="hot-key">Shift + 2</i>
                         </div>
                     </div>
                     <div class="drop-down-divider">
@@ -161,13 +164,13 @@
                     <div class="drop-down-item" tabindex="0">
                         <div id="lock-selected-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='lockSelected(event)'>Lock/Unlock selected</span>
-                            <i id="hotkey-lock" class="hotKeys">Shift + X</i>
+                            <i class="hot-key">Shift + X</i>
                         </div>
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <div id="delete-object-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='eraseSelectedObject(event);'>Delete Object</span>
-                            <i id="hotkey-delete" class="hotKeys">Delete/Backspace</i>
+                            <i class="hot-key">Delete/Backspace</i>
                         </div>
                     </div>
                     <div class="drop-down-divider">
@@ -186,7 +189,7 @@
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='resetViewToOrigin(event);'>Reset view to origin</span>
-                        <i id="hotkey-resetView" class="hotKeys">Shift + O</i>
+                        <i class="hot-key">Shift + O</i>
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="openShortcutsDialog(event);">Edit keyboard shortcuts</span>
@@ -201,7 +204,7 @@
                 <div class="drop-down">
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick='developerMode(event);'>Developer mode</span>
-                        <i id="hotkey-developerMode" class="hotKeys">Shift + D</i>
+                        <i class="hot-key hot-key-tick">Shift + D</i>
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <div id="displayAllTools" class="drop-down-item-disabled">
@@ -211,41 +214,41 @@
                     <div class="drop-down-divider">
                     </div>
                     <div id="er-item" class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER</span>
-                        <i id="hotkey-ER" class="hotKeys">Shift + M</i>
+                        <span class="drop-down-option" onclick="switchToolbarTo('ER');">ER mode</span>
+                        <i class="hot-key hot-key-tick">Shift + M</i>
                     </div>
                     <div id="uml-item" class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML</span>
-                        <i id="hotkey-UML" class="hotKeys">Shift + M</i>
+                        <span class="drop-down-option" onclick="switchToolbarTo('UML');">UML mode</span>
+                        <i class="hot-key hot-key-tick">Shift + M</i>
                     </div>
                     <div class="drop-down-divider">
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleVirtualPaper(event)">Display Virtual Paper</span>
-                        <i id="hotkey-displayPaper" class="hotKeys">Shift + 4</i>
+                        <i class="hot-key hot-key-tick">Shift + 4</i>
                     </div>
-                    <div class="drop-down-item papersize-drop-down-head" tabindex="0">
+                    <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" id="paperid">Paper size...</span>
-                        <div class="papersize-drop-down">
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="side-drop-down">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A0" onclick='setPaperSize(event, 0);'>A0</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A1" onclick='setPaperSize(event, 1);'>A1</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A2" onclick='setPaperSize(event, 2);'>A2</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A3" onclick='setPaperSize(event, 3);'>A3</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A4" onclick='setPaperSize(event, 4);'>A4</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A5" onclick='setPaperSize(event, 5);'>A5</a>
                         </div>
-                        <div class="papersize-drop-down-item" tabindex="0">
+                        <div class="drop-down-item" tabindex="0">
                             <a class="drop-down-option" id="A6" onclick='setPaperSize(event, 6);'>A6</a>
                         </div>
                         </div>
@@ -284,7 +287,7 @@
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleFullscreen();">Fullscreen</span>
-                        <i id="hotkey-fullscreen" class="hotKeys">Shift + F11</i>           
+                        <i class="hot-key hot-key-tick">Shift + F11</i>           
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleRulers();">Rulers</span>        
@@ -302,25 +305,25 @@
                     <div class="drop-down-item" tabindex="0">
                         <div id="align-top-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick="align(event, 'top');">Top</span>
-                            <i id="hotkey-Align-Top" class="hotKeys">Shift + ▲</i>
+                            <i class="hot-key">Shift + ▲</i>
                         </div>
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <div id="align-right-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick="align(event, 'right');">Right</span>
-                            <i id="hotkey-Align-Right" class="hotKeys">Shift + ►</i>
+                            <i class="hot-key">Shift + ►</i>
                         </div>
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <div id="align-bottom-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick="align(event, 'bottom');">Bottom</span>
-                            <i id="hotkey-Align-Bottom" class="hotKeys">Shift + ▼ </i>
+                            <i class="hot-key">Shift + ▼ </i>
                         </div>
                     </div>
                     <div class="drop-down-item" tabindex="0">
                         <div id="align-left-item" class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick="align(event, 'left');">Left</span>
-                            <i id="hotkey-Align-Left" class="hotKeys">Shift + ◄ </i>
+                            <i class="hot-key">Shift + ◄ </i>
                         </div>
                     </div>
                     <div class="drop-down-divider">
@@ -357,23 +360,25 @@
                 <div class="drop-down">
                     <div class="drop-down-item" tabindex="0">
                         <span class="drop-down-option" onclick="toggleCameraView(event);">Move camera</span>
-                        <i id="hotkey-space" class="hotKeys">Blankspace</i>
+                        <i class="hot-key">Blankspace</i>
                     </div>
                     <div class="drop-down-divider">
                     </div>
                     <div class="drop-down-text-non-clickable" tabindex="0">
                         <span class="drop-down-option">Select multiple objects</span>
-                        <div id="hotkey-ctrl" class="hotKeys">
-                            <i>Ctrl + leftclick</i>
-                        </div>
+                        <i class="hot-key">Ctrl + leftclick</i>
                     </div>
                     <div class="drop-down-divider">
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="generateERExampleCode();">Generate example ER-diagram</span>
-                    </div>
-                    <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="generateUMLExampleCode();">Generate example UML-diagram</span>
+                        <span class="drop-down-option">Generate example diagrams</span>
+                        <div class="side-drop-down">
+                            <?php foreach($exampleDiagramFilePaths as $filePath): ?>
+                                <div class="drop-down-item" tabindex="0">
+                                    <span class="drop-down-option" onclick="generateExampleCode('<?=$filePath;?>');">Generate <?=basename($filePath);?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -391,7 +396,7 @@
                         <span class="drop-down-option" onclick="createLayer()">Create Layer</span>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="deleteLayer()">Delete selected layers</span>
+                        <span class="drop-down-option" onclick="deleteLayerView()">Delete selected layers</span>
                     </div>
                 </div>
             </div>
@@ -409,7 +414,7 @@
                         <span class="drop-down-option" onclick="createLayer()">Create Layer</span>
                     </div>
                     <div class="drop-down-item" tabindex="0">
-                        <span class="drop-down-option" onclick="deleteLayer()">Delete selected layers</span>
+                        <span class="drop-down-option" onclick="deleteLayerActive()">Delete selected layers</span>
                     </div>
                 </div>
             </div>
