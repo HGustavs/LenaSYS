@@ -4119,7 +4119,6 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame) {
 	var basePer = 100 - remainHeightPer;
 
 	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-	//$(boxValArray['box' + boxNumSame]['id']).css("top", basePer + '%');
 	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
 
 	//Checks the height of all lines in the box combined, if it's more than the boxes own height scrollbars are set to auto. Otherwise they are set to hidden.
