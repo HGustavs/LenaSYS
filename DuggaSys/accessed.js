@@ -11,6 +11,7 @@ var accessFilter = "WRST";
 var trueTeacher;
 var examinerName;
 var activeDropdown;
+var shouldReRender = false;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -260,7 +261,7 @@ function changeOptDiv(e) {
 	}
 	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
 	changeProperty(paramlist[1], paramlist[0], keyvalue);
-	myTable.renderTable();
+  shouldReRender = true;
 }
 
 function changeOptDivStudent(e,value){
@@ -274,7 +275,7 @@ function changeOptDivStudent(e,value){
 	}
 	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
 	changeProperty(paramlist[1], paramlist[0], value);
-	myTable.renderTable();
+  shouldReRender = true;
 }
 
 /*function changeOpt(e) {
@@ -595,7 +596,11 @@ function returnedAccess(data) {
 			hasMagicHeadings: false,
 			hasCounterColumn: true
 		});
+		shouldReRender = true;
+	}
 
+	if (shouldReRender) {
+		shouldReRender = false;
 		myTable.renderTable();
 	}
 }
