@@ -5001,11 +5001,11 @@ only screen and (max-device-width: 320px) {
 }
 
 #ruler-x .ruler-line:first-of-type {
-  margin-left: 0;
+  margin-left: 0 !important;
 }
 
 #ruler-y .ruler-line:first-of-type {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 #ruler-x .big {
