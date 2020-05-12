@@ -93,8 +93,8 @@ pdoConnect();
               <div class='flexwrapper'><span>Result release:</span><span><input class='' type='date' id='release' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
         		</div>
         		<div style='padding:5px;display:flex;justify-content:space-between'>
-        			<input id='closeDugga' class='submit-button' style='' type='button' value='Cancel' onclick='closeWindows();' />
-        			<input id='saveDugga' class='submit-button' style='' type='button' value='Save' onclick='updateDugga();' />
+        			<input id='closeDugga' class='submit-button' type='button' value='Cancel' onclick='closeWindows();' />
+        			<input id='saveDugga' class='submit-button' type='button' value='Save' onclick='updateDugga();' />
         		</div>
         </div>
   	</div>
@@ -215,12 +215,12 @@ pdoConnect();
               </div>
             </div>
             <div id='buttonVariantDiv' style='display:flex;justify-content:space-between'>
-              <input id='closeVariant' class='submit-button' style='' type='button' value='Close' onclick='closeWindows();'>
+              <input id='closeVariant' class='submit-button' type='button' value='Close' onclick='closeWindows();'>
               <div style='display:flex;justify-content:flex-end'>
-                  <input id='submitVariant' class='submit-button' style='' type='button' value='Create' onclick='createVariant();'>
-                  <input id='saveVariant' class='submit-button' style='' type='button' value='Update' onclick='updateVariant("0");'>
-                  <input id='disableVariant' class='submit-button disableEnable' style='' type='button' value='Disable' onclick='updateVariant("1");'>
-                  <input id='enableVariant' class='submit-button disableEnable' style='' type='button' value='Enable' onclick='updateVariant("0");'>
+                  <input id='submitVariant' class='submit-button' type='button' value='Create' onclick='createVariant();'>
+                  <input id='saveVariant' class='submit-button' type='button' value='Update' onclick='updateVariant("0");'>
+                  <input id='disableVariant' class='submit-button disableEnable' type='button' value='Disable' onclick='updateVariant("1");'>
+                  <input id='enableVariant' class='submit-button disableEnable' type='button' value='Enable' onclick='updateVariant("0");'>
                   <!--<input id='cancelVariant' class='submit-button' style='display:block; float:right;' type='button' value='Cancel' onclick='newVariant(); removeVariantTableHighlights();'>-->
               </div>
             </div>
