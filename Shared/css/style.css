@@ -4950,6 +4950,7 @@ only screen and (max-device-width: 320px) {
   border-top: 1px solid #000000;
   border-left: 1px solid #000000;
   position: relative;
+  overflow: hidden;
 }
 
 .ruler.hidden {
