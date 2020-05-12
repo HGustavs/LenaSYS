@@ -72,7 +72,20 @@
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
-		
+		<!-- Small FAB Button in top in the header of sectioned -->
+		<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
+		<input id='addElement'  type='button' value='+' style="position:relative; top:-493px" class='submit-button-newitem' title='New Item' >
+		<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fabBtnList2'>
+					 	<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i class='material-icons'>link</i></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i class='material-icons'>format_quote</i></a></li>
+				</ol>
+		</div>
 
 		<!-- FAB END -->
 
@@ -118,17 +131,17 @@
 
 		<!-- Mobile view END -->
 		<!-- Announcement box -->
-		<div id="announcementBoxOverlay">
-			<div id="announcementBox">
+		<div id="announcementBox" style="display: none;">
 			<h3>To Do</h3>
 			<hr>
+			<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create a new announcement</button>
 			<table>
 			<?php
 
 				$courseid = $_GET['courseid'];
 				$coursevers = $_GET['coursevers'];
 
-				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid="'.$courseid.'" AND courseversion="'.$coursevers.'" ORDER BY announceTime DESC') AS $headline){
+				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid LIKE "%'.$courseid.'%" AND courseversion LIKE "%'.$coursevers.'%" ORDER BY announceTime DESC') AS $headline){
 	             $headlines = $headline['title'];
 	             $message = $headline['message'];
 	             $announcementid = $headline['id'];
@@ -142,19 +155,11 @@
 			?>
 
 			</table>
-
-			<button class="showAllAnnouncement">
-				<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
-				</a>
-			</button>
 		</div>
 
-		</div>
 		<?php
 			include '../Shared/announcementBox.php';
-			if (isset($_GET['announcementid'])) {
-				include '../Shared/fullAnnouncement.php';
-			}
+			include '../Shared/fullAnnouncement.php';
 
 		?>
 
@@ -164,22 +169,6 @@
 		<div id='Sectionlist'>
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
-
-		<!-- Small FAB Button in top in the header of sectioned -->
-		
-			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
-				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
-				<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fabBtnList2'>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i class='material-icons'>link</i></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i class='material-icons'>format_quote</i></a></li>
-					</ol>
-			</div>
 				<div style='flex-grow:1'>
 						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;'>UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>

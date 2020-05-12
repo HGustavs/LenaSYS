@@ -68,15 +68,15 @@
     max-width: 90%;
     min-width: 10%;
 }
-@media only screen and (max-width: 800px) {
+@media only screen 
+and (max-device-width : 725px) {
     #box1wrapper{
-     overflow: hidden;
     position: absolute;
     left: 0px;
     top:0;    
     height: -moz-calc(35.0%);
     height: -webkit-calc(35.0%);
-    height: calc(35.0%) !important;
+    height: calc(35.0%);
     width: -moz-calc(100.0%)!important;
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;
@@ -89,14 +89,13 @@
 
 
     #box2wrapper {
-     overflow: hidden;
     position: absolute;
     top: 25%;
     bottom: 0px;
     left: 0px;
     height: -moz-calc(65.0%);
     height: -webkit-calc(65.0%);
-    height: calc(65.0%) !important;
+    height: calc(65.0%);
     width: -moz-calc(100.0%)!important;
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;
@@ -107,14 +106,13 @@
 	max-width: 100%;
 }
     #box3wrapper {
-     overflow: hidden;
     position: absolute;
     top:50% !important;
     bottom: 33%;
     left: 0px; 
     height: -moz-calc(65.0%);
     height: -webkit-calc(65.0%);
-    height: calc(65.0%) !important;
+    height: calc(65.0%);
     width: -moz-calc(100.0%)!important;
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;
@@ -125,14 +123,13 @@
 	max-width: 100%;
 }
     #box4wrapper {
-     overflow: hidden;
     position: absolute;
     top:75%;
     bottom: 33%;
     left: 0px;       
     height: -moz-calc(65.0%);
     height: -webkit-calc(65.0%);
-    height: calc(65.0%) !important;
+    height: calc(65.0%);
     width: -moz-calc(100.0%)!important;
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;

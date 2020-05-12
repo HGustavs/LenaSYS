@@ -261,7 +261,7 @@ if(checklogin()){
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
-            logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
+            logUserEvent($userid,EventTypes::DuggaFileupload,$discription);
 
             //Seperate timeUsed, stepsUsed and score from $answer
             $temp = explode("##!!##", $answer);

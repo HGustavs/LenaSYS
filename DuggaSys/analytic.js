@@ -55,10 +55,11 @@ function loadAnalytics(q, cb) {
 //------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
+		$('#analytic-info').append("<p>General statistics about the system.</p>");
 
-		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>General statistics about the system.</p>");
-		// Login fails
 		var tableData = [["Stat", "Value"]];
+
+		// Login fails
 		var loginFails = data['stats']['loginFails'];
 		for (var stat in loginFails) {
 			if (loginFails.hasOwnProperty(stat)) {
@@ -68,31 +69,6 @@ function loadGeneralStats() {
 				]);
 			}
 		}
-
-		// Number of online users last 15 minutes
-		tableData.push([
-			'Online users the last 15 minutes',
-			data['stats']['numOnline']
-		]);
-
-		$('#analytic-info').append(renderTable(tableData));
-		
-		// Active users
-		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Active users the last 15 minutes</p>");
-		var tableData = [["User", "Page", "Last seen"]];
-		var activeUsers = data['stats']['activeUsers'];
-		for (var stat in activeUsers) {
-			if (activeUsers.hasOwnProperty(stat)) {
-				var date = new Date(activeUsers[stat].time + ' GMT');
-				tableData.push([
-					activeUsers[stat].username,
-					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
-					timeSince(date)
-				]);
-			}
-		}
-
-		$('#analytic-info').append(renderTable(tableData));
 
 		// Disk usage
 		var chartData = [];
@@ -120,7 +96,10 @@ function loadGeneralStats() {
 				value: data.ram.freePercent
 			});
 			drawPieChart(chartData, 'RAM Usage on the Server', true);
-		}		
+		}
+
+		$('#analytic-info').append(renderTable(tableData));
+		
 	});
 }
 
@@ -244,19 +223,11 @@ function loadServiceUsage() {
 				var serviceSelect = $('<select class="service-select"></select>');
 				for (var service in services) {
 					if (services.hasOwnProperty(service)) {
-						if(localStorage.getItem('analyticsLastService') == service) {
-							serviceSelect.append('<option value="' + service + '" selected>' + service + '</option>')
-						} else {
-							serviceSelect.append('<option value="' + service + '">' + service + '</option>')
-						}
+						serviceSelect.append('<option value="' + service + '">' + service + '</option>')
 					}
 				}
 				serviceSelect.change(function() {
-					$( "#canvas-area" ).empty();
 					drawLineChart(services[$(this).val()]);
-					try {
-						localStorage.setItem('analyticsLastService', $(this).val());
-					} catch(err) { }
 				});
 				$('#analytic-info').append(serviceSelect);
 				serviceSelect.change();
@@ -267,6 +238,7 @@ function loadServiceUsage() {
 	inputDateFrom.change(updateServiceUsage);
 	inputDateTo.change(updateServiceUsage);
 	selectInterval.change(updateServiceUsage);
+
 	updateServiceUsage();
 }
 
@@ -439,9 +411,7 @@ function loadFileInformation() {
 function loadPageInformation() {
     resetAnalyticsChart();
     $('#analytic-info').empty();
-	$('#analytic-info').append("<p>Page information.</p>");
-	
-	var firstLoad = true;
+    $('#analytic-info').append("<p>Page information.</p>");
  
     var selectPage = $("<select></select>")
         .append('<option value="showDugga" selected>showDugga</option>')
@@ -497,10 +467,6 @@ function loadPageInformation() {
     }
  
     function updateState(){
-		if(firstLoad === true){
-			updatePageHitInformation("dugga");
-			firstLoad = false;
-		} 
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "showDugga":
@@ -788,30 +754,3 @@ function drawLineChart(data) {
 	}
 	ctx.stroke();
 }
-
-// Converts timestamps to how long ago
-function timeSince(date) {
-	let minute = 60;
-    let hour   = minute * 60;
-    let day    = hour   * 24;
-    let month  = day    * 30;
-    let year   = day    * 365;
-
-    let suffix = ' ago';
-
-    let elapsed = Math.floor((Date.now() - date) / 1000);
-
-    if (elapsed < minute) {
-        return 'just now';
-    }
-
-    // get an array in the form of [number, string]
-    let a = elapsed < hour  && [Math.floor(elapsed / minute), 'minute'] ||
-            elapsed < day   && [Math.floor(elapsed / hour), 'hour']     ||
-            elapsed < month && [Math.floor(elapsed / day), 'day']       ||
-            elapsed < year  && [Math.floor(elapsed / month), 'month']   ||
-            [Math.floor(elapsed / year), 'year'];
-
-    // pluralise and append suffix
-    return a[0] + ' ' + a[1] + (a[0] === 1 ? '' : 's') + suffix;
-  }

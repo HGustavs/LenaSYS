@@ -70,7 +70,7 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 //------------------------------------------------------------------------------------------------
 function generalStats() {
 	$log_db = $GLOBALS['log_db'];
-	$LoginFail = $log_db->query('
+	$result = $log_db->query('
 		SELECT
 			COUNT(*) AS loginFails
 		FROM
@@ -79,24 +79,9 @@ function generalStats() {
 			eventType = '.EventTypes::LoginFail.';
 	')->fetchAll(PDO::FETCH_ASSOC);
 
-	$activeUsers = $log_db->query('
-		SELECT 
-			username, refer, max(timestamp) as time
-		FROM 
-			userHistory
-		WHERE 
-			timestamp >= Datetime("now", "-15 minutes")
-		GROUP BY 
-			username
-		ORDER BY 
-			timestamp DESC;
-	')->fetchAll(PDO::FETCH_ASSOC);
-
 
 	$generalStats = [];
-	$generalStats['stats']['loginFails'] = $LoginFail[0];
-	$generalStats['stats']['numOnline'] = count($activeUsers);
-	$generalStats['stats']['activeUsers'] = $activeUsers;
+	$generalStats['stats']['loginFails'] = $result[0];
 
 	// Disk space calculation
 	$total = disk_total_space(".");
