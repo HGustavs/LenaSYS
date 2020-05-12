@@ -2,19 +2,23 @@
 // JavaScript entry file. Javascript-stuff that are needed from the start goes here.
 //---------------------------------------------------------------------------------------------------
 
-/* Function to remove decimals from percentage text */
+//---------------------------------------------------------------------------------------------------
+// truncateDecimals: Function to remove decimals from percentage text, called by jsUpdateProgressBar
+//---------------------------------------------------------------------------------------------------
 truncateDecimals = function (number) {
   return Math[number < 0 ? 'ceil' : 'floor'](number);
 };
 
+//---------------------------------------------------------------------------------------------------
+// jsUpdateProgressBar: Function to update the progressbar
+//---------------------------------------------------------------------------------------------------
 function jsUpdateProgressBar(tSteps, cSteps){
   var totalSteps = tSteps;
   var completedSteps = cSteps;
-
   var totalWidth = document.getElementById("progressBar").clientWidth;
   var stepWidth = totalWidth / totalSteps;
   var completedWidth;
-  var completedStepsLatest = 0; // This variable is used on window resize.
+  var completedStepsLatest = 0;
 
   /* if window was resized (completedsteps = -1) take latest copleted steps.
   * Else update to new completed step.
@@ -46,7 +50,7 @@ function jsUpdateProgressBar(tSteps, cSteps){
 }
 
 //---------------------------------------------------------------------------------------------------
-// setPermissionModalText, function to set the text of the permission-modal
+// setPermissionModalText: Function to set the text of the permission-modal
 //---------------------------------------------------------------------------------------------------
 
 function setPermissionModalText(fOwner, fFilePath, fOperatingSystem){
@@ -57,7 +61,7 @@ function setPermissionModalText(fOwner, fFilePath, fOperatingSystem){
 }
 
 //---------------------------------------------------------------------------------------------------
-// getPermissionModalText, f for functionVariable
+// getPermissionModalText: Function to get o/s-specific text. Called by setPermissionModalText
 //---------------------------------------------------------------------------------------------------
 function getPermissionModalText(fOwner, fFilePath, fOperatingSystem){
   var permissionModalText = null;
@@ -112,9 +116,8 @@ function setSecondPermissionText(fOperatingSystem, fFilePath){
 }
 
 //-----------------------------------------------------------------------------------------------------------
-// selectText(): Used to copy text from container.
+// selectText: Function to select and copy text inside code boxes at end of installation.
 //-----------------------------------------------------------------------------------------------------------
-/* Function to select and copy text inside code boxes at end of installation. */
 function selectText(containerid) {
   /* Get selection inside div. */
   var text = document.getElementById(containerid);
@@ -149,13 +152,15 @@ function selectText(containerid) {
 }
 
 //-----------------------------------------------------------------------------------------------------------
-// hideCopiedText(): Hide 'copied' text, used by selectText()
+// hideCopiedText: Hide 'copied' text, used by selectText()
 //-----------------------------------------------------------------------------------------------------------
 function hideCopiedAgain(text) {
   $(text).hide("slide", {direction: "right"}, 1000)
 }
 
-/* Show/Hide installation progress. */
+//-----------------------------------------------------------------------------------------------------------
+// toggleInstallationProgress: Hide 'copied' text, used by selectText()
+//-----------------------------------------------------------------------------------------------------------
 function toggleInstallationProgress(){
   $('#installationProgressWrap').toggle(500);
 }

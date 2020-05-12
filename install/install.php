@@ -360,9 +360,9 @@
       flush();
       ob_flush();
 
-      //---------------------------------------------------------------------------------------------------
-      // All the following code of the long if-statement does the install
-      //---------------------------------------------------------------------------------------------------
+      //-----------------------------------------------------------------------------------------------------
+      // All the following code of the long if-statement does the install, echoed to installationProgressWap.
+      //-----------------------------------------------------------------------------------------------------
       echo "<div id='installationProgressWrap'>";
         $isPermissionsSat = isPermissionsSat($putFileHere);
         $isAllCredentialsFilled = isAllCredentialsFilled();
@@ -388,7 +388,9 @@
           <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
         }
 
-        # Only create DB if box is ticked.
+        //---------------------------------------------------------------------------------------------------
+        // Create database if this option is ticked.
+        //---------------------------------------------------------------------------------------------------
         if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
           $username = $_POST["newUser"];
           $password = $_POST["password"];
