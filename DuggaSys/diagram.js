@@ -6246,6 +6246,22 @@ function createRuler(element, length, origoOffset, marginProperty) {
     }
 }
 
+//-------------------------------------------------------------------------------------
+// createRulerLinesObjectPoints: Creates lines on ruler for all selected object points.
+//-------------------------------------------------------------------------------------
+
+function createRulerLinesObjectPoints() {
+
+}
+
+//------------------------------------------------------------------------------------
+// getSelectedObjectsPoints: Returns unique points for all currently selected objects.
+//------------------------------------------------------------------------------------
+
+function getSelectedObjectsPoints() {
+
+}
+
 //------------------------------------------------------------------------------------------------
 // toggleRulers: Hides rulers if isRulersActive is true and shows them if isRulersActive is false.
 //------------------------------------------------------------------------------------------------
