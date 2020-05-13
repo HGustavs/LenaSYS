@@ -200,12 +200,12 @@ function verifyUserInputForm(input) {
 	return true;
 }
 
-/*****************************************************************************************************
- * checkSsnError(ssn)
- * Returns null if there are NO errors, otherwise a descripitve error message.
- * For information regarding Swedish personal identity numbers visit:
- * https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
- ****************************************************************************************************/
+//---------------------------------------------------------------------------------------------------
+// checkSsnError(ssn)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+// For information regarding Swedish personal identity numbers visit:
+// https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
+//---------------------------------------------------------------------------------------------------
 function checkSsnError(ssn)
 {
 	const length = ssn.length;
@@ -218,7 +218,7 @@ function checkSsnError(ssn)
 				break;
 						
 		default:
-			return 'SSN Error! Format should be ######-#### or ########-####.';
+			return 'SSN Error! Should be ######-#### or ########-####.';
 	}
 
 	const dd = ssn.substring(delimiter-2, delimiter);
@@ -252,6 +252,21 @@ function checkSsnError(ssn)
 		return 'SSN Error! Incorrect control digit (last digit). Expected: ' + ccd;
 
 	return null;	// The provided SSN is correct!
+}
+
+//-------------------------------------------------------------
+// updateErrorMessage()
+// Updates the error message shown inside the "Add user" window
+//-------------------------------------------------------------
+function updateErrorMessage()
+{
+	var errorMsg = '';
+	var testString = '';
+
+	if(testString = checkSsnError(document.getElementById('addSsn').value))	// Check SSN for errors
+		errorMsg += testString;
+
+	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';	// Updates label
 }
 
 var inputVerified;
