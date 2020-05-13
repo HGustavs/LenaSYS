@@ -75,6 +75,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'pageInformation':
 				pageInformation();
 				break;
+			case 'resolveCourseID':
+				resolveCourseID($pdo);
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -776,7 +779,16 @@ function pageInformation(){
 	echo json_encode($result);
 }
 
+// Retrieves courseName for courseID     
 //------------------------------------------------------------------------------------------------
+function resolveCourseID($db){
+	$cid = $_POST['cid'];
+	$query = $db->prepare("SELECT coursename FROM course WHERE cid='".$cid."'");
+	$query->execute();
+	$result = $query->fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}
+  
 // Retrieves course disk usage
 //------------------------------------------------------------------------------------------------
 function courseDiskUsage($pdo) {

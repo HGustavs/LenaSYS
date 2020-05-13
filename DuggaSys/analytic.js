@@ -581,15 +581,54 @@ function loadPageInformation() {
     }
  
     function updatePieChartInformation(page, tableData, data){
+		var courseID = [];
+		var coursePercentage = [];
+		var courseName = [];
+		var numberOfCourses = 0;
+		var loopCounter = 0;
+		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
 
-        var tablePercentage = [["Courseid", "Percentage"]];
         for (var i = 0; i < data['percentage'][page].length; i++) {
-            tablePercentage.push([
-                data['percentage'][page][i].courseid,
+			numberOfCourses = parseInt(data['percentage'][page].length);
+			courseID.push([
+                data['percentage'][page][i].courseid
+			]);
+			coursePercentage.push([
                 data['percentage'][page][i].percentage
-            ]);
+			]);
+
+			$.ajax({
+				url: "analyticService.php",
+				type: "POST",
+				dataType: "json",
+				data: {
+					query: "resolveCourseID",
+					cid: parseInt(courseID[i])
+				},success: function(data){
+					loopCounter++;
+					console.log("success");
+					for (var i = 0; i < data.length; i++) {
+						courseName.push([
+							data[i].coursename
+						]);
+					}
+					tablePercentage = [["Courseid", "Percentage", "Coursename"]];
+					for (var i = 0; i < courseName.length; i++){
+						tablePercentage.push([
+							courseID[i],
+							coursePercentage[i],
+							courseName[i]
+						]);
+					}
+					if(loopCounter == numberOfCourses){
+						$('#analytic-info').append(renderTable(tablePercentage));
+					}
+				}, error: function(){
+					console.log(" AJAX error");
+				}		
+			});
         }
- 
+
         var chartData = [];
         for (var i = 0; i < data['percentage'][page].length; i++) {
             chartData.push({
@@ -601,7 +640,6 @@ function loadPageInformation() {
         $('#analytic-info').append("<p>Page information.</p>");
         $('#analytic-info').append(selectPage);
 		$('#analytic-info').append(renderTable(tableData));
-        $('#analytic-info').append(renderTable(tablePercentage));
         $('#analytic-info').append(drawPieChart(chartData, "Hit spread for " + page + " page loads:"));
         updateState();
     }
