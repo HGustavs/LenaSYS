@@ -486,32 +486,56 @@ function loadPageInformation() {
 	function resolveCourse(){
 		console.log("resolveCourse");	
 		$.ajax({
-            url: "analyticService.php",
+			url: "analyticService.php",
+			type: "POST",
+            dataType: "json",
             data: {
 				query: "resolveCourseID",
             },success: function(data){
 				console.log("success");
-				var tabledonk = [["Banan"]];
+				console.log(data);
+				var tablename = [["Name"]];
            		for (var i = 0; i < data.length; i++) {
-                	tabledonk.push([
-						data[i].cid
+                	tablename.push([
+						data[i].coursename
                 	]);
 				}
-				$('#analytic-info').append(renderTable(tabledonk));	
+				$('#analytic-info').append(renderTable(tablename));	
+			}, error: function(){
+				console.log("error");
 			}
-		})
+		});
 	}
 
 
     function updatePieChartInformation(page, tableData){
         loadAnalytics(page + "Percentage", function(data) {
-            var tablePercentage = [["Courseid", "Percentage"]];
+            var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
             for (var i = 0; i < data.length; i++) {
                 tablePercentage.push([
                     data[i].courseid,
                     data[i].percentage
-                ]);
-            }
+				]);
+			}
+			
+			$.ajax({
+				url: "analyticService.php",
+				type: "POST",
+				dataType: "json",
+				data: {
+					query: "resolveCourseID",
+				},success: function(data){
+					console.log("success");
+					console.log(data);
+					   for (var i = 0; i < data.length; i++) {
+						tablePercentage.push([
+							data[i].coursename
+						]);
+					}
+				}, error: function(){
+					console.log("error");
+				}
+			});
  
             var chartData = [];
             for (var i = 0; i < data.length; i++) {

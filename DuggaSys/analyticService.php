@@ -67,7 +67,7 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 				userLogInformation();
 				break;
 			case 'resolveCourseID':
-				resolveCourseID();
+				resolveCourseID($pdo);
 				break;
 		}
 	} else {
@@ -490,9 +490,9 @@ function userLogInformation(){
 // Retrieves courseName for courseID     
 //------------------------------------------------------------------------------------------------
 
-function resolveCourseID(){
-	$query = $pdo->prepare("SELECT cid FROM course");
+function resolveCourseID($db){
+	$query = $db->prepare("SELECT coursename FROM course");
 	$query->execute();
-	$result = $query->fetch();
+	$result = $query->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
