@@ -1109,7 +1109,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
-  document.getElementById("FABStatic2").style.top = "565px";
+  document.getElementById("FABStatic2").style.top = "auto";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
