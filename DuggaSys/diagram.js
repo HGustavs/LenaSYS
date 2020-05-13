@@ -6151,7 +6151,13 @@ function getCorrectValueArray(){
             return spans[i].innerHTML;
         }
     }
-
+}
+function fixExampleLayer(){
+    for(let i = 0; i <diagram.length;i++){
+        diagram[i].properties.setLayer = writeToLayer;
+    }
+    updateGraphics();
+    SaveState();
 }
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
