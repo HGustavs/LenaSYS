@@ -68,7 +68,7 @@ function selectDugga(qid) {
 	var marro=["00","05","10","15","20","25","30","35","40","45","50","55"];
 	var marrv=[0,5,10,15,20,25,30,35,40,45,50,55];
 	if(qid=="UNK"){
-		quiz={"arrow":"UNK","qname":"New Dugga","autograde":0,"gradesystem":1,"quizFile":0,"qstart":"UNK","deadline":"UNK","jsondeadline":"","qrelease":"UNK"};
+		quiz={"arrow":"UNK","qname":"","autograde":0,"gradesystem":1,"quizFile":0,"qstart":"UNK","deadline":"UNK","jsondeadline":"","qrelease":"UNK"};
 	} else {
 		globalData['entries'].forEach(function (element) {
 			if (element['did'] == qid) {

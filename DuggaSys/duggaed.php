@@ -78,7 +78,7 @@ pdoConnect();
   	      			<div class="tooltipDugga">
   		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
   		      		</div>
-  		      		<input class='textinput' type='text' id='name' value='New Dugga' onkeyup='validateDuggaName();' onchange='validateDuggaName();' />
+  		      		<input class='textinput' type='text' id='name' placeholder='New Dugga' onkeyup='validateDuggaName();' onchange='validateDuggaName();' />
   		      	</div>
         			<div class='flexwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
         			<div class='flexwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
