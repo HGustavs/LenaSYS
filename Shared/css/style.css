@@ -3015,7 +3015,7 @@ padding: 10px;
   border: 1px solid var(--color-primary);
   border-radius: 4px;
   padding: 10px;
-  width: min-content;
+  width: max-content;
 }
 
 .resultedFormsFlex {
