@@ -2370,9 +2370,7 @@ function canvasSize() {
     canvas.width = diagramContainer.offsetWidth;
     canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
-    if(isRulersActive) {
-        createRulers();
-    }
+    createRulers();
     updateGraphics();
 }
 
@@ -3521,11 +3519,7 @@ function zoomInMode(event) {
         origoOffsetX -= centerX * zoomDifference - centerX;
         origoOffsetY -= centerY * zoomDifference - centerY;
     }
-
-    if(isRulersActive) {
-        createRulers();
-    }
-
+    createRulers();
     reWrite();
     updateGraphics();
 }
@@ -3724,9 +3718,7 @@ function mousemoveevt(ev) {
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
-        if(isRulersActive) {
-            createRulers();
-        }
+        createRulers();
     }
     reWrite();
     updateGraphics();
@@ -4761,9 +4753,7 @@ function touchMoveEvent(event) {
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
         
-        if(isRulersActive) {
-            createRulers();
-        }
+        createRulers();
     }
 
     // Moves an object
@@ -6192,6 +6182,7 @@ function canConnectLine(startObj, endObj){
 //-----------------------------------------------
 
 function createRulers() {
+    if(!isRulersActive) return;
     createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
     createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
     createRulerLinesObjectPoints();
