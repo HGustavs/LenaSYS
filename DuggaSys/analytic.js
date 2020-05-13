@@ -37,6 +37,9 @@ $(function() {
 		case "serviceUsage":
 			loadServiceUsage();
 			break;
+		case "courseDiskUsage":
+			loadCourseDiskUsage();
+			break;
 		case "serviceAvgDuration":
 			loadServiceAvgDuration();
 			break;
@@ -347,6 +350,35 @@ function loadServiceUsage() {
 	updateServiceUsage();
 }
 
+function loadCourseDiskUsage() {
+	loadAnalytics("courseDiskUsage", function(data) {
+		localStorage.setItem('analyticsPage', 'courseDiskUsage');
+		$('#pageTitle').text("Coruse Disk Usage");
+		$('#analytic-info').append("<p class='analyticsDesc'>The disk usage per course</p>");
+
+		var tableData = [
+			["Corse Code", "Course", "Disk Usage"]
+		];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].coursecode,
+				data[i].coursename,
+				data[i].sizeReadable
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+
+		var chartData = [];
+		for (var i = 0; i < data.length; i++) {
+			chartData.push({
+				label: data[i].coursecode,
+				value: data[i].size
+			});
+		}
+		drawBarChart(chartData, "bytes");
+	});
+}
+
 function loadServiceAvgDuration() {
 	loadAnalytics("serviceAvgDuration", function(data) {
 		localStorage.setItem('analyticsPage', 'serviceAvgDuration');
@@ -528,7 +560,9 @@ function loadPageInformation() {
  
     var selectPage = $("<select></select>")
         .append('<option value="showDugga" selected>showDugga</option>')
-        .append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="sectioned">sectioned</option>')
+		.append('<option value="courseed">courseed</option>')
         .appendTo($('#analytic-info'));
    
     function updatePageHitInformation(pages, page){
@@ -612,7 +646,7 @@ function loadPageInformation() {
  
     function updateState(){
 		// Add additonal pages here
-		var pages = ["dugga", "codeviewer", "sectioned", "courseed"];
+		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile"];
 
 		if(firstLoad === true){
 			updatePageHitInformation(pages, pages[0]);
@@ -625,7 +659,13 @@ function loadPageInformation() {
                     break;
                 case "codeviewer":
                     updatePageHitInformation(pages, pages[1]);
-                    break;
+					break;
+				case "sectioned":
+					updatePageHitInformation(pages, pages[2]);
+					break;
+				case "courseed":
+					updatePageHitInformation(pages, pages[3]);
+					break;
             }
         });
     }
@@ -929,7 +969,7 @@ function chartDataLongestLabelWidth(data, ctx) {
 //------------------------------------------------------------------------------------------------
 // Draws a bar chart with the data given
 //------------------------------------------------------------------------------------------------
-function drawBarChart(data) {
+function drawBarChart(data, format = null) {
 	if (!$.isArray(data)) return;
 
 	analytics.chartType = "bar";
@@ -959,15 +999,33 @@ function drawBarChart(data) {
 	
 	for (var i = 0; i < data.length; i++) {
 		var x = barSpacing + i * (barWidth + barSpacing);
+		
 		ctx.fillStyle = "#614875";
 		ctx.scale(1, -1);
 		ctx.fillRect(x, textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
-		ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		
+		if(format = "bytes") {
+			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		} else {
+			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		}
+		
 		ctx.fillStyle = "black";
 		ctx.fillText(data[i].label, x + barWidth / 2, -textAreaHeight / 2);
 	}
+}
+
+function humanFileSize(size) {
+	if (size < 1024) 
+		return size + ' B'
+    let i = Math.floor(Math.log(size) / Math.log(1024))
+    let num = (size / Math.pow(1024, i))
+    let round = Math.round(num)
+	num = round < 10 ? num.toFixed(2) : round < 100 ? num.toFixed(1) : round
+	
+    return `${num} ${'KMGTPEZY'[i-1]}B` 
 }
 
 //------------------------------------------------------------------------------------------------

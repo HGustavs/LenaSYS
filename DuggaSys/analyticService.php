@@ -20,6 +20,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'generalStats':
 				generalStats($pdo);
 				break;
+			case 'courseDiskUsage':
+				courseDiskUsage($pdo);
+				break;
 			case 'onlineUsers':
 				onlineUsers();
 				break;
@@ -657,11 +660,21 @@ function pageInformation(){
 	$sectioned = $GLOBALS['log_db']->query('
 		SELECT
 			refer,
+			substr(
+				refer, 
+				INSTR(refer, "courseid=")+9, 
+				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
+			) courseid,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE refer LIKE "%sectioned%") AS percentage,
 			COUNT(*) AS pageLoads
 		FROM 
 			userHistory
 		WHERE 
-			refer LIKE "%sectioned%";
+			refer LIKE "%sectioned%"
+		GROUP BY 
+			courseid;
+		ORDER BY 
+			percentage DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$courseed = $GLOBALS['log_db']->query('
@@ -671,30 +684,131 @@ function pageInformation(){
 		FROM 
 			userHistory
 		WHERE 
-			refer LIKE "%courseed%";
-	')->fetchAll(PDO::FETCH_ASSOC); 
+			refer LIKE "%courseed%"
+	')->fetchAll(PDO::FETCH_ASSOC);
 	
+	$fileed = $GLOBALS['log_db']->query('
+		SELECT
+			refer,
+			COUNT(*) AS pageLoads
+		FROM 
+			userHistory
+		WHERE 
+			refer LIKE "%fileed%"
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$resulted = $GLOBALS['log_db']->query('
+		SELECT
+			refer,
+			COUNT(*) AS pageLoads
+		FROM 
+			userHistory
+		WHERE 
+			refer LIKE "%resulted%"
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$analytic = $GLOBALS['log_db']->query('
+		SELECT
+			refer,
+			COUNT(*) AS pageLoads
+		FROM 
+			userHistory
+		WHERE 
+			refer LIKE "%analytic%"
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$contribution = $GLOBALS['log_db']->query('
+	SELECT
+		refer,
+		COUNT(*) AS pageLoads
+	FROM 
+		userHistory
+	WHERE 
+		refer LIKE "%contribution%"
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$duggaed = $GLOBALS['log_db']->query('
+	SELECT
+		refer,
+		COUNT(*) AS pageLoads
+	FROM 
+		userHistory
+	WHERE 
+		refer LIKE "%duggaed%"
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$accessed = $GLOBALS['log_db']->query('
+	SELECT
+		refer,
+		COUNT(*) AS pageLoads
+	FROM 
+		userHistory
+	WHERE 
+		refer LIKE "%accessed%"
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	$profile = $GLOBALS['log_db']->query('
+	SELECT
+		refer,
+		COUNT(*) AS pageLoads
+	FROM 
+		userHistory
+	WHERE 
+		refer LIKE "%profile%"
+	')->fetchAll(PDO::FETCH_ASSOC);
+
 	$result = [];
 	$result['hits']['dugga'] = $dugga[0];
 	$result['hits']['codeviewer'] = $codeviewer[0];
 	$result['hits']['sectioned'] = $sectioned[0];
 	$result['hits']['courseed'] = $courseed[0]; 
+	$result['hits']['fileed'] = $fileed[0];
+	$result['hits']['resulted'] = $resulted[0];
+	$result['hits']['analytic'] = $analytic[0];
+	$result['hits']['contribution'] = $contribution[0];
+	$result['hits']['duggaed'] = $duggaed[0];   
+	$result['hits']['accessed'] = $accessed[0];
+	$result['hits']['profile'] = $profile[0];   
 
 
 	$result['percentage']['dugga'] = $dugga;
 	$result['percentage']['codeviewer'] = $codeviewer;
+	$result['percentage']['sectioned'] = $sectioned;
+	$result['percentage']['courseed'] = $courseed;
 
 	echo json_encode($result);
 }
 
-//------------------------------------------------------------------------------------------------
 // Retrieves courseName for courseID     
 //------------------------------------------------------------------------------------------------
-
 function resolveCourseID($db){
 	$cid = $_POST['cid'];
 	$query = $db->prepare("SELECT coursename FROM course WHERE cid='".$cid."'");
 	$query->execute();
 	$result = $query->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
+}
+  
+// Retrieves course disk usage
+//------------------------------------------------------------------------------------------------
+function courseDiskUsage($pdo) {
+	$query = $pdo->prepare("SELECT coursename, cid, activeversion, coursecode FROM course");
+
+	if($query->execute()) {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$course = [];
+		foreach($rows as $row => $values) {
+			$course[$row] = [
+							"coursename"	=> $values['coursename'],
+							"cid" 			=> $values['cid'],
+							"activeversion" => $values['activeversion'],
+							"coursecode" => $values['coursecode'],
+							"size" 			=> GetDirectorySize(getcwd() . "/submissions/" . $values['cid'] . "/" . $values['activeversion']),
+							"sizeReadable" 	=> convertBytesToHumanreadable(GetDirectorySize(getcwd() . "/submissions/" . $values['cid'] . "/" . $values['activeversion'])),
+	
+						 ];
+		}
+	
+		print_r(json_encode($course));
+	}
 }
