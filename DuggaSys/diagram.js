@@ -2823,10 +2823,11 @@ function reWrite() {
 
     if (developerModeActive) {
         let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
+        let activeLayer = '<b> Layer: </b>' +getCorrectValueArray();
         if (typeof hoveredObject !== "undefined" && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
             coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
-        coordinatesElement.innerHTML = `${coordinatesText}</p>`;
+        coordinatesElement.innerHTML = `${coordinatesText}${activeLayer}</p>`;
         if (!isMobile){
             coordinatesElement.style.display = "block";
         }
@@ -6026,6 +6027,7 @@ function toggleActiveBackgroundLayer(object) {
             object.classList.remove("drop-down-option-hover");
             localStorage.setItem("writeToActiveLayers", object.id);
             setlayer(object);
+            reWrite();
         }
     }
     updateGraphics();
@@ -6138,6 +6140,17 @@ function fixActiveLayer(){
         }
         correctSpan.id = "Layer_" + i +"_Active";
     }
+}
+function getCorrectValueArray(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+    let updateToolbar = document.getElementById("activeLayerinToolbar");
+    for(let i = 0; i <spans.length;i++){
+        if(spans[i].classList.contains("isActive")){
+            return spans[i].innerHTML;
+        }
+    }
+
 }
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
