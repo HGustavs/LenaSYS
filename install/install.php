@@ -122,7 +122,7 @@
   </div>
 
   <!-- Input Section -->
-  <form action="install.php?mode=install" method="post">
+  <form action="install.php?mode=install" method="post" class="install-form">
     <!-- Input-wrapper holding headings and slides (pages) -->
     <div id="inputWrapper">
       <!-- Headings for each input-slide -->
@@ -262,8 +262,9 @@
     </div>
 
     <!-- Empty footer to show a nice border at bottom -->
-    <div id="inputFooter"></div>
   </form>
+  
+  <div id="inputFooter"></div>
 
   <!-- Install Section -->
   <?php 
