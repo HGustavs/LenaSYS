@@ -602,6 +602,11 @@ p {
   #dugga4Container #toolbox{
     margin: 15px 0;
   }
+  
+  #dugga4Container canvas{
+    min-width: 75%;
+    height: auto;
+  }
 }
 
 /* Instruction and submission of dugga */
