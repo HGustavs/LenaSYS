@@ -233,7 +233,7 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 			}
 			str+=">"+"None"+"</div>";
 			for(var i=0;i<optionlist.length;i++){
-				/* Check if a class is set or not.
+				/* Check if a class & version is set or not.
 				If it has, it will be styled by id = 'access-dropdown-selected'.
 				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
                 if(option == optionlist[i][optionstring]){
@@ -280,7 +280,6 @@ function makeDivItemStudent(option,optionlist,valuelist)
 		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
 			str+="<div data-value='"+stringArray[i]+"' onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
-			console.log(option);
 			if(option == valuelist[i]){
 				str+=" id='access-dropdown-selected'>"+optionlist[i]+"</div>";
 			}else{
