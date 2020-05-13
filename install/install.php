@@ -235,6 +235,8 @@
           Yes I want to write over an existing database.<br>
           <input title="Write over existing user." id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
           Yes I want to write over an existing user.<br>
+          <input title="Init as transaction." id="transaction" type="checkbox" name="InitTransaction" value="Yes" />
+          Yes I want to perform the database-initializing as an transaction.<br>
         </div>
             <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
       </div>
@@ -333,16 +335,21 @@
       //---------------------------------------------------------------------------------------------------
       $totalSteps = 1; // Variable to hold the total steps to complete.
       $completedSteps = 0; // Variable to hold the current completed steps.
+      $initSuccess = false;
+      $initQuery = null;
 
       //---------------------------------------------------------------------------------------------------
       // The following if-block will decide how many steps there are to complete installation.
       //---------------------------------------------------------------------------------------------------
       if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
-        $totalSteps += 4;
+        $totalSteps += 5;
         if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
           $totalSteps++;
         }
         if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
+          $totalSteps++;
+        }
+        if (isset($_POST["transaction"]) && $_POST["transaction"] == 'Yes') {
           $totalSteps++;
         }
         if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
@@ -491,6 +498,9 @@
           $initQueryArray = explode(";", $initQuery);
           $initSuccess = false;
           try {
+            if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
+              $connection->beginTransaction();
+            }
             $connection->query("SET NAMES utf8");
             $connection->query("USE {$databaseName}");
             $queryBlock = '';
@@ -509,11 +519,22 @@
               }
             }
             $initSuccess = true;
-            echo "<span id='successText' />Initialization of database complete. </span><br>";
+            if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
+              $connection->commit();
+              echo "<span id='successText' />Initialization of database complete as a transaction completed.</span><br>";
+            } else{
+              echo "<span id='successText' />Initialization of database complete. </span><br>";
+            }
           } catch (PDOException $e) {
             $errors++;
-            echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
-            echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+            if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
+              $connection->rollback();
+              echo "<span id='failText' />Failed initialization and rollbacking transaction because of query (in init_db.sql): </span><br>";
+              echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+            } else{
+              echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
+              echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+            }
           }
           $completedSteps++;
           updateProgressBar($completedSteps, $totalSteps);
@@ -637,22 +658,6 @@
       //---------------------------------------------------------------------------------------------------
       if(ini_get('upload_max_filesize')!='128M'){
         echo "<br>PHP ini setting <b>upload_max_filesize</b> should be 128M, it is currently: " . ini_get('upload_max_filesize') . " . Please change it here: <b>" . php_ini_loaded_file() . "</b>";
-      }
-
-      //---------------------------------------------------------------------------------------------------
-      // Try to connect to db, if not created the function will create db. If all fails print instructions
-      //---------------------------------------------------------------------------------------------------
-      if(!connectLogDB()){
-        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
-        with a sqlite database inside at " . $putFileHere . " with permissions 664<br>
-        (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
-        echo "mkdir " . $putFileHere . "/log && ";
-        echo "chmod 664 " . $putFileHere . "/log && ";
-        echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
-        echo "chmod 664 " . $putFileHere . "/log/loglena4.db";
-        echo "</code></div>";
-        echo '<div id="copied2">Copied to clipboard!<br></div>';
       }
 
       //---------------------------------------------------------------------------------------------------
@@ -792,88 +797,6 @@
       updateProgressBar($completedSteps, $totalSteps);
       flush();
       ob_flush();
-    }
-    
-    # Function to connect to log-db
-    function connectLogDB() {
-      if(!file_exists ('../../log')) {
-        if(!mkdir('../../log')){
-          echo "Error creating folder: log";
-          return false;
-        }
-      }
-      try {
-        $log_db = new PDO('sqlite:../../log/loglena4.db');
-      } catch (PDOException $e) {
-        echo "Failed to connect to the database";
-        return false;
-      }
-
-      $sql = '
-        CREATE TABLE IF NOT EXISTS logEntries (
-          id INTEGER PRIMARY KEY,
-          eventType INTEGER,
-          description TEXT,
-          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-          userAgent TEXT
-        );
-        CREATE TABLE IF NOT EXISTS userLogEntries (
-          id INTEGER PRIMARY KEY,
-          uid INTEGER(10),
-          eventType INTEGER,
-          description VARCHAR(50),
-          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-          userAgent TEXT,
-          remoteAddress VARCHAR(15)
-        );
-        CREATE TABLE IF NOT EXISTS serviceLogEntries (
-          id INTEGER PRIMARY KEY,
-          uuid CHAR(15),
-          eventType INTEGER,
-          service VARCHAR(15),
-          userid VARCHAR(8),
-          timestamp INTEGER,
-          userAgent TEXT,
-          operatingSystem VARCHAR(100),
-          info TEXT,
-          referer TEXT,
-          IP TEXT,
-          browser VARCHAR(100)
-        );
-        CREATE TABLE IF NOT EXISTS clickLogEntries (
-          id INTEGER PRIMARY KEY,
-          target TEXT,
-          mouseX TEXT,
-          mouseY TEXT,
-          clientResX TEXT,
-          clientResY TEXT,
-          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-        CREATE TABLE IF NOT EXISTS mousemoveLogEntries (
-          id INTEGER PRIMARY KEY,
-          page TEXT,
-          mouseX TEXT,
-          mouseY TEXT,
-          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-        CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
-          id INTEGER PRIMARY KEY,
-          type INTEGER,
-          courseid INTEGER,
-          exampleid INTEGER,
-          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-        CREATE TABLE IF NOT EXISTS duggaLoadLogEntries(
-          id INTEGER PRIMARY KEY,
-          type INTEGER,
-          cid INTEGER,
-          vers INTEGER,
-          quizid INTEGER,
-          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-      ';
-      $log_db->exec($sql);
-      return true;
     }
   ?>
 </body>

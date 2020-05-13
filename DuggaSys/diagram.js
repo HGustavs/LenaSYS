@@ -93,6 +93,7 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
+var colorArray = ["#000000","#496e63","#64B5F6","#81C784","#e6e6e6","#E57373","#FFF176","#FFB74D","#BA68C8","#366922"]
 var valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
 var writeToLayer = getcorrectlayer();
 var showLayer = ["Layer_1"];
@@ -4263,6 +4264,8 @@ function mouseupevt(ev) {
     if (movobj > -1) {
         if (diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
+    // Selecting objects in Create Line mode returns false saveState
+    if (uimode == "CreateLine" && !mouseDifference) saveState = false;
     if (symbolStartKind != symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && mouseDifference) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
@@ -4283,8 +4286,7 @@ function mouseupevt(ev) {
             // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -4343,6 +4345,11 @@ function mouseupevt(ev) {
                 if(diagram[lineStartObj].kind == 1 || diagram[markedObject].kind == 1){
                     okToMakeLine = false;
                     flash("Can not draw line to/from a freedraw object", "danger");
+                }
+              
+                if(symbolEndKind == symbolKind.text || symbolStartKind == symbolKind.text) {
+                    okToMakeLine = false;
+                    flash("Can not draw line to/from a text object", "danger");
                 }
 
                 if (okToMakeLine) {
@@ -5907,6 +5914,7 @@ function createLayer(){
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
     addLayersToApperence(id);
+
 }
 function loadLayer(localStorageID){
     let parentNode = document.getElementById("viewLayer");
@@ -6028,6 +6036,7 @@ function toggleActiveBackgroundLayer(object) {
             localStorage.setItem("writeToActiveLayers", object.id);
             setlayer(object);
             reWrite();
+
             activeLocalStorage();
         }
     }
@@ -6039,6 +6048,9 @@ function setlayer(object){
     let fixID = object.id.replace('_Active','');
     toggleBackgroundLayer(document.getElementById(fixID), true)
     writeToLayer = fixID;
+    let fixColor = fixID.replace('Layer_','');
+    console.log(fixColor)
+    settings.properties.strokeColor = colorArray[fixColor-1]; 
 }
 
 function addLayersToApperence(localStorageID){

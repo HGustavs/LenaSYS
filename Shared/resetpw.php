@@ -13,7 +13,6 @@ if($opt=="GETQUESTION"){
   
   // Request barrier
   $maxRequestTries = 5;
-  $log_db = new PDO('sqlite:../../log/loglena4.db');
   $IP = getIP();
   $timeInterval = 5; // in minutes
 
@@ -55,7 +54,7 @@ if($opt=="GETQUESTION"){
 		$res["securityquestion"] = $_SESSION["securityquestion"];
     }else{
       $res["getname"] = $_SESSION["getname"];
-      logUserEvent($userid,EventTypes::RequestNewPW,"");
+      logUserEvent($userid, $username, EventTypes::RequestNewPW,"");
     }
   }else{
     $res["getname"] = "limit";
@@ -71,7 +70,6 @@ if($opt=="GETQUESTION"){
 
   // Security question barrier
   $maxQuestionTries = 5;
-  $log_db = new PDO('sqlite:../../log/loglena4.db');
   $IP = getIP();
   $timeInterval = 5; // in minutes
 
@@ -105,7 +103,7 @@ if($opt=="GETQUESTION"){
       }
     }else{
       $res["requestchange"] = "wrong";
-      logUserEvent($userid,EventTypes::CheckSecQuestion,"");
+      logUserEvent($userid, $username, EventTypes::CheckSecQuestion,"");
     }
   }else{
     $res["requestchange"] = "limit";

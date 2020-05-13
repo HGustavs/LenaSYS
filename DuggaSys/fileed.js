@@ -149,18 +149,24 @@ function showFilePopUp(fileKind) {
     $(".linkPopUp").css("display", "none");
     $("#createNewEmptyFile").css("display", "none");
     $(".addNewFile").css("display", "block");
-
+    $('#uploadedfile').attr('type', 'file');
     if (fileKind == "MFILE") {
         $("#mFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     } else if (fileKind == "LFILE") {
         $("#lFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     } else if (fileKind == "GFILE") {
         $("#gFileHeadline").css("display", "block");
+        $(".testselect").css("display", "none");
     }else if(fileKind == "EFILE"){
         $("#eFileHeadline").css("display", "block");
-        $(".addNewFile").css("display", "none");
         $("#createNewEmptyFile").css("display", "block");
-
+        $(".addNewFile").css("display", "none");
+        //$(".testselect").css("display", "block");
+        //$(".addNewFile").css("display", "none");
+        //$("#createNewEmptyFile").css("display", "block");
+        //$('#uploadedfile').attr('type', 'text');
     }
 }
 
@@ -179,6 +185,16 @@ function uploadFile(kind) {
             if (item != ".." && item != ".") str += "<option>" + item + "</option>";
         }
         $("#selectedfile").html(str);
+    } else if (kind == "EFILE") {
+        var str = "<option>NONE</option>";
+        for (i = 0; i < filez['gfiles'].length; i++) {
+            var item = filez['gfiles'][i];
+            if (item != ".." && item != ".") str += "<option>" + item + "</option>";
+        }
+        $("#ekind").val(kind);
+        $("#ecourseid").val(querystring['courseid']);
+        $("#ecoursevers").val(querystring['coursevers']);
+        $("#selectedfile").html(str); 
     } else if (kind == "LFILE" || kind == "LINK") {
         $("#selecty").css("display", "none");
     }
@@ -217,6 +233,89 @@ function hoverSearch() {
 //stops displaying the dropdown when removing cursor from search bar
 function leaveSearch() {
     $('#dropdownSearch').css({ display: 'none' });
+}
+
+//------------------------------------------------------------------
+// validateDummyFile <- Validates the name and extension of the file
+//------------------------------------------------------------------
+function validateDummyFile() {
+    var allowedExtensions = [
+        "txt",
+        "html",
+        "java",
+        "xml",
+        "js",
+        "css",
+        "php",
+        "sr",
+        "md",
+        "sql",
+        "md",
+        "py",
+        "bat",
+        "xsl"
+    ];
+
+    var filterSymbols = [
+        "<",
+        ">",
+        ":",
+        ",",
+        "|",
+        "*",
+        "?",
+        "=",
+        "\"",
+        "/",
+        "\\"
+    ];
+
+    var errors = [];
+    var name = document.getElementById("newEmptyFile").value;
+
+    // Trim name
+    name = name.trim();
+
+    // Get filename
+    var filename = name.substring(0, name.indexOf("."));
+    if (filename.length == 0)
+        errors.push("Invalid filename");
+
+    // Get extension
+    var extension = name.substring(name.lastIndexOf(".") + 1);
+
+    // Check if extension is valid
+    if (!allowedExtensions.includes(extension))
+        errors.push("Invalid extension: ." + extension)
+
+    // Check for invalid characters
+    for (var i = 0; i < name.length; i++) {
+        if (filterSymbols.includes(name[i])) 
+            errors.push("Invalid character at position " + (i + 1) + ": " + name[i]);
+    }
+
+    var list = document.getElementById("dummyFileErrorList");
+
+    if (errors.length > 0) {
+        list.innerHTML = "";
+        list.style.display = "block";
+
+        // Add error message title
+        var liTop = document.createElement('li');
+        liTop.innerHTML = "Errors found:".bold();
+        liTop.style.color = "rgb(199, 80, 80)";
+        list.append(liTop)
+
+        for (var i = 0; i < errors.length; i++) {
+            var li = document.createElement('li');
+            li.innerHTML = errors[i];
+            list.append(li);
+        }
+
+        return false;
+    }
+
+    return true;
 }
 
 //------------------------------------------------------------------
@@ -635,8 +734,6 @@ function deleteFile(fileid, filename, filekind) {
         AJAXService("DELFILE", tempData
         , "FILE");
     }
-    /*Reloads window when deleteFile has been called*/
-    window.location.reload(true);
 }
 
 function createQuickItem() {
