@@ -99,6 +99,8 @@ CREATE TABLE listentries (
 	rowcolor				TINYINT(1),
 	groupID					INT DEFAULT NULL,
 	groupKind 				VARCHAR(16) DEFAULT NULL,
+	feedbackenabled			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	feedbackquestion		VARCHAR(512),
     PRIMARY KEY (lid),
 	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid)REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
@@ -573,6 +575,20 @@ CREATE TABLE timesheet(
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (did) REFERENCES quiz(id),
 	FOREIGN KEY (moment) REFERENCES listentries(lid)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
+
+/* userDuggaFeedback table used for user feedback on duggor */
+CREATE TABLE userDuggaFeedback(
+	ufid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	username						VARCHAR(80) DEFAULT null,
+	cid						INT UNSIGNED NOT NULL,
+	lid					INT UNSIGNED NOT NULL,
+	score						INT(11) NOT NULL,
+	entryname					varchar(68),
+	PRIMARY KEY (ufid),
+	FOREIGN KEY (username) REFERENCES user(username),
+	FOREIGN KEY (cid) REFERENCES course(cid),
+	FOREIGN KEY (lid) REFERENCES listentries(lid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 /*
