@@ -1692,7 +1692,15 @@ function retrieveAnnouncementsCards(){
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("announcementCards").innerHTML = this.responseText;
+      var parsed_data = JSON.parse(this.response);
+      document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+      var unread_announcements = parsed_data.nRows;
+      if(unread_announcements > 0){
+        $("#announcementnotificationcount").add();
+        $("#announcementnotificationcount").html(parsed_data.nRows);
+      }else{
+        $("#announcementnotificationcount").remove();
+      }
       accessAdminAction();
       readLessOrMore();
       showLessOrMoreAnnouncements();
