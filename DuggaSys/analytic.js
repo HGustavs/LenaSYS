@@ -923,7 +923,7 @@ function chartDataLongestLabelWidth(data, ctx) {
 //------------------------------------------------------------------------------------------------
 // Draws a bar chart with the data given
 //------------------------------------------------------------------------------------------------
-function drawBarChart(data) {
+function drawBarChart(data, format = null) {
 	if (!$.isArray(data)) return;
 
 	analytics.chartType = "bar";
@@ -953,15 +953,33 @@ function drawBarChart(data) {
 	
 	for (var i = 0; i < data.length; i++) {
 		var x = barSpacing + i * (barWidth + barSpacing);
+		
 		ctx.fillStyle = "#614875";
 		ctx.scale(1, -1);
 		ctx.fillRect(x, textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
-		ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		
+		if(format = "bytes") {
+			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		} else {
+			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		}
+		
 		ctx.fillStyle = "black";
 		ctx.fillText(data[i].label, x + barWidth / 2, -textAreaHeight / 2);
 	}
+}
+
+function humanFileSize(size) {
+	if (size < 1024) 
+		return size + ' B'
+    let i = Math.floor(Math.log(size) / Math.log(1024))
+    let num = (size / Math.pow(1024, i))
+    let round = Math.round(num)
+	num = round < 10 ? num.toFixed(2) : round < 100 ? num.toFixed(1) : round
+	
+    return `${num} ${'KMGTPEZY'[i-1]}B` 
 }
 
 //------------------------------------------------------------------------------------------------
