@@ -121,7 +121,20 @@ function loadGeneralStats() {
 				value: data.ram.freePercent
 			});
 			drawPieChart(chartData, 'RAM Usage on the Server', true);
-		}		
+		}	
+		
+		// CPU Usage
+			var chartData = [];
+			chartData.push({
+				label: 'CPU Load',
+				value: data.cpu.totalPercent
+			});
+		
+			chartData.push({
+				label: 'CPU Free',
+				value: data.cpu.freePercent
+			});
+			drawPieChart(chartData, 'CPU Usage on the Server', true);		
 	});
 }
 
@@ -661,7 +674,7 @@ function drawPieChart(data, title = null, multirow = false) {
 	var ctx = canvas.getContext("2d");
 
 	if(multirow) {
-		fitCanvasToContainer(canvas, 48.5, 75);
+		fitCanvasToContainer(canvas, 33, 80);
 	} else {
 		fitCanvasToContainer(canvas);
 	}

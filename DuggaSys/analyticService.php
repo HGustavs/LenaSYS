@@ -116,9 +116,15 @@ function generalStats() {
 		$generalStats['ram']['freePercent'] = 100 - getServerMemoryUsage(true);
 		$generalStats['ram']['totalPercent'] = getServerMemoryUsage(true);
 	}
-	
+
+	// CPU Load
+		$cpuLoad = getServerLoad();
+		$generalStats['cpu']['freePercent'] = 100 - $cpuLoad;
+		$generalStats['cpu']['totalPercent'] = $cpuLoad;
+
 	echo json_encode($generalStats);
 }
+
 
 // Convert bytes to mb, gb and so on in a human readable format
 function convertBytesToHumanreadable($bytes) {
@@ -193,6 +199,85 @@ function getServerMemoryUsage($getPercentage=true) {
 				"free" => $memoryFree,
 			);
 		}
+	}
+}
+
+// Calculate server load for Linux
+function getServerLoadLinux()
+{
+	if (is_readable("/proc/stat")) {
+		$stats = @file_get_contents("/proc/stat");
+
+		if ($stats !== false) {
+			// Remove double spaces to make it easier to extract values with explode()
+			$stats = preg_replace("/[[:blank:]]+/", " ", $stats);
+
+			// Separate lines
+			$stats = str_replace(array("\r\n", "\n\r", "\r"), "\n", $stats);
+			$stats = explode("\n", $stats);
+
+			// Separate values and find line for main CPU load
+			foreach ($stats as $statLine) {
+				$statLineData = explode(" ", trim($statLine));
+
+				if ((count($statLineData) >= 5) && ($statLineData[0] == "cpu")) {
+					return array(
+						$statLineData[1],
+						$statLineData[2],
+						$statLineData[3],
+						$statLineData[4],
+					);
+				}
+			}
+		}
+	}
+	return null;
+}
+
+// Returns CPU usage for Linux and Windows
+function getServerLoad()
+{
+	$load = null;
+
+	if (stristr(PHP_OS, "win")) {
+		$cmd = "wmic cpu get loadpercentage /all";
+		@exec($cmd, $output);
+
+		if ($output) {
+			foreach ($output as $line) {
+				if ($line && preg_match("/^[0-9]+\$/", $line)) {
+					$load = $line;
+					break;
+				}
+			}
+		}
+	} else {
+		if (is_readable("/proc/stat")) {
+			// Collect 2 samples - each with 1 second period
+			$statData1 = getServerLoadLinux();
+			sleep(1);
+			$statData2 = getServerLoadLinux();
+
+			if((!is_null($statData1)) && (!is_null($statData2))) {
+				// Get difference
+				$statData2[0] -= $statData1[0];
+				$statData2[1] -= $statData1[1];
+				$statData2[2] -= $statData1[2];
+				$statData2[3] -= $statData1[3];
+
+				// Sum up the 4 values for User, Nice, System and Idle and calculate
+				// the percentage of idle time (which is part of the 4 values!)
+				$cpuTime = $statData2[0] + $statData2[1] + $statData2[2] + $statData2[3];
+
+				// Invert percentage to get CPU time, not idle time
+				$load = 100 - ($statData2[3] * 100 / $cpuTime);
+			}
+		}
+	}
+	if (is_null($load)) {
+		echo "Not able to estimate CPU load (Perhaps using old version of Windows or missing rights at Linux or Windows)";	
+	} else {
+	return $load;
 	}
 }
 
