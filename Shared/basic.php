@@ -25,7 +25,7 @@ function customErrorHandler($errno, $errstr, $errfile, $errline) {
 			break;
 
 		default:
-			echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
+			//echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
 			break;
     }
 }
