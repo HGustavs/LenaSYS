@@ -837,7 +837,21 @@ function renderCell(col, celldata, cellid) {
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
 					str += "dugga-pending ";
 				} else {
-					str += "dugga-empty";
+					str += "dugga-empty-mini";
+				}
+		
+				str += "'>";
+				
+				return str;
+				
+			}
+			if(filterList["passedDeadline"]){
+				// color based on pending
+				str = "<div class='resultTableCell resultTableMini ";
+				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+					str += "dugga-pending-late-submission ";
+				} else {
+					str += "dugga-empty-mini";
 				}
 		
 				str += "'>";
