@@ -235,6 +235,8 @@
           Yes I want to write over an existing database.<br>
           <input title="Write over existing user." id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
           Yes I want to write over an existing user.<br>
+          <input title="Init as transaction." id="transaction" type="checkbox" name="InitTransaction" value="Yes" />
+          Yes I want to perform the database-initializing as an transaction.<br>
         </div>
             <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
       </div>
@@ -333,6 +335,8 @@
       //---------------------------------------------------------------------------------------------------
       $totalSteps = 1; // Variable to hold the total steps to complete.
       $completedSteps = 0; // Variable to hold the current completed steps.
+      $initSuccess = false;
+      $initQuery = null;
 
       //---------------------------------------------------------------------------------------------------
       // The following if-block will decide how many steps there are to complete installation.
@@ -343,6 +347,9 @@
           $totalSteps++;
         }
         if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
+          $totalSteps++;
+        }
+        if (isset($_POST["transaction"]) && $_POST["transaction"] == 'Yes') {
           $totalSteps++;
         }
         if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
@@ -491,6 +498,9 @@
           $initQueryArray = explode(";", $initQuery);
           $initSuccess = false;
           try {
+            if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
+              $connection->beginTransaction();
+            }
             $connection->query("SET NAMES utf8");
             $connection->query("USE {$databaseName}");
             $queryBlock = '';
@@ -509,11 +519,22 @@
               }
             }
             $initSuccess = true;
-            echo "<span id='successText' />Initialization of database complete. </span><br>";
+            if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
+              $connection->commit();
+              echo "<span id='successText' />Initialization of database complete as a transaction completed.</span><br>";
+            } else{
+              echo "<span id='successText' />Initialization of database complete. </span><br>";
+            }
           } catch (PDOException $e) {
             $errors++;
-            echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
-            echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+            if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
+              $connection->rollback();
+              echo "<span id='failText' />Failed initialization and rollbacking transaction because of query (in init_db.sql): </span><br>";
+              echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+            } else{
+              echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
+              echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
+            }
           }
           $completedSteps++;
           updateProgressBar($completedSteps, $totalSteps);
