@@ -1698,6 +1698,10 @@ function retrieveAnnouncementsCards(){
       readLessOrMore();
       showLessOrMoreAnnouncements();
       scrollToTheAnnnouncementForm();
+      $(".deleteBtn").click(function(){
+        sessionStorage.setItem('closeUpdateForm', true);
+
+      });
 
     }
   };
@@ -1787,8 +1791,11 @@ function accessAdminAction(){
   }else{
     $("#announcementForm").remove();
     $(".actionBtns").remove();
-    $("#displayAnnouncements").css("margin-top", "0px");
-
+    if($("#announcementForm").is(":hidden") || ($("#announcementForm").length) == 0){
+      $("#displayAnnouncements").css("margin-top", "0px");
+    }else{
+      $("#displayAnnouncements").css("margin-top", "20px");
+    }
   }
 }
 function displayAnnouncementForm(reload){
@@ -1798,7 +1805,6 @@ function displayAnnouncementForm(reload){
 
   }else{
     $("#announcementForm").hide();
-    $("#displayAnnouncements").css("margin-top", "0px");
     sessionStorage.removeItem("closeUpdateForm");
 
   }
@@ -1808,6 +1814,7 @@ function displayAnnouncementBoxOverlay(){
   var closeUpdateForm = sessionStorage.getItem("closeUpdateForm");
   if(closeUpdateForm == 'true'){
     $("#announcementBoxOverlay").show();
+  
   }
 }
 function scrollToTheAnnnouncementForm(){

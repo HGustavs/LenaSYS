@@ -368,6 +368,9 @@ p {
   font-family: 'Varela', sans-serif;
 
 }
+#announcementBoxOverlay #announcementBox{
+  margin: 10px;
+}
 /*Start of announcement form*/
 #displayAnnouncements{
   margin: 20px 0 20px 0;
@@ -443,6 +446,7 @@ p {
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
+  outline:none;
 }
 .announcementForm button:hover {
   opacity:1;
