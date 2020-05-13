@@ -145,12 +145,19 @@ if(!file_exists ('../../log')) {
 		die;
 	}
 }
+//---------------------------------------------------------------------------------------------------------------
+// IF MAKING CHANGES TO SQLite tables, increment this value!
+//---------------------------------------------------------------------------------------------------------------
+$dbVersion = 5;
+//---------------------------------------------------------------------------------------------------------------
+
 try {
-	$log_db = new PDO('sqlite:../../log/loglena4.db');
+	$log_db = new PDO('sqlite:../../log/loglena'.$dbVersion.'.db');
 } catch (PDOException $e) {
 	echo "Failed to connect to the database";
 	throw $e;
 }
+
 $sql = '
 	CREATE TABLE IF NOT EXISTS logEntries (
 		id INTEGER PRIMARY KEY,
