@@ -255,16 +255,11 @@ function editSettings(){
 	const popupContainer = document.getElementById("editSettings");
 
 	var tempMotd = motd;
-	tempMotd = motd.replace(/&Aring;/g, "Å");
-	tempMotd = motd.replace(/&aring;/g, "å");
-	tempMotd = motd.replace(/&Auml;/g, "Ä");
-	tempMotd = motd.replace(/&auml;/g, "ä");
-	tempMotd = motd.replace(/&Ouml;/g, "Ö");
-	tempMotd = motd.replace(/&ouml;/g, "ö");
-
+	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö");
+	
 	if(motd !== "UNK") {
-		$("#motd").val(tempMotd);
-		//messageElement.value = tempMotd;
+		
+		messageElement.value = tempMotd;
 	} 
 
 	if(readonly === 1) {
