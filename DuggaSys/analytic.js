@@ -528,7 +528,9 @@ function loadPageInformation() {
  
     var selectPage = $("<select></select>")
         .append('<option value="showDugga" selected>showDugga</option>')
-        .append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="sectioned">sectioned</option>')
+		.append('<option value="courseed">courseed</option>')
         .appendTo($('#analytic-info'));
    
     function updatePageHitInformation(pages, page){
@@ -574,7 +576,7 @@ function loadPageInformation() {
  
     function updateState(){
 		// Add additonal pages here
-		var pages = ["dugga", "codeviewer", "sectioned", "courseed"];
+		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile"];
 
 		if(firstLoad === true){
 			updatePageHitInformation(pages, pages[0]);
@@ -587,7 +589,13 @@ function loadPageInformation() {
                     break;
                 case "codeviewer":
                     updatePageHitInformation(pages, pages[1]);
-                    break;
+					break;
+				case "sectioned":
+					updatePageHitInformation(pages, pages[2]);
+					break;
+				case "courseed":
+					updatePageHitInformation(pages, pages[3]);
+					break;
             }
         });
     }
