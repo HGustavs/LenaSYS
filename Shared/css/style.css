@@ -352,6 +352,19 @@ p {
   margin-left: 25px;
   display:none;
 }
+/*Announcement icon and notification*/
+#announcement #announcementnotificationcount{
+  position: relative;
+  right: 20px;
+  bottom: 6px;
+  background-color: var(--color-red);
+  font-size: 10px;
+  padding: 3px;
+  font-weight: bold;
+  font-family: 'Varela', sans-serif;
+  border-radius: 100px 100px 100px 100px;
+
+}
 /*Announcement box*/
 #announcementBoxOverlay{
   position: relative; 
