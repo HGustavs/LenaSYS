@@ -116,7 +116,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
@@ -148,12 +148,12 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   } else {
      document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
-
+  
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
-  $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
+  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
   $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
   if(deadline !== undefined){
     $("#deadlinehours").html(makeoptions(deadline.substr(11,2),hourArrOptions,hourArrValue));
@@ -346,7 +346,7 @@ function prepareItem() {
   // Storing tabs in gradesys column!
   var kind = $("#type").val()
   if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 6 || kind == 7) {
-    param.gradesys = $("#tabs").val();
+    param.tabs = $("#tabs").val();
   } else {
     param.gradesys = $("#gradesys").val();
   }
@@ -357,6 +357,7 @@ function prepareItem() {
   param.highscoremode = $("#highscoremode").val();
   param.sectname = $("#sectionname").val();
   param.visibility = $("#visib").val();
+  param.tabs = $("#tabs").val();
   param.moment = $("#moment").val();
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
@@ -491,7 +492,7 @@ function accessCourse() {
 function returnedCourse(data) {
   if (data['debug'] != "NONE!") alert(data['debug']);
   window.setTimeout(function () {
-    changeURL("sectioned.php?courseid=" + querystring["courseid"] +
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] +
       "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
   }, 1000);
 }
@@ -680,7 +681,7 @@ function returnedSection(data) {
         if (itemKind === 3 || itemKind === 4) {
 
           // Styling for quiz row e.g. add a tab spacer
-          if (itemKind === 3) str += "<td style='width:32px;'><div class='spacerLeft'></div></td>";
+          if (itemKind === 3) str += "<td style='width:0px'><div class='spacerLeft'></div></td><td id='indTab' class='tabs" + item["tabs"] + "'><div class='spacerRight'></div></td>";
           var grady = -1;
           var status = "";
           var marked;
@@ -851,6 +852,7 @@ function returnedSection(data) {
           var param = {
             'exampleid': item['link'],
             'courseid': querystring['courseid'],
+            'coursename' : querystring['coursename'],
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
@@ -947,7 +949,7 @@ function returnedSection(data) {
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
           str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline']]) + ");' />";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['tabs']]) + ");' />";
           str += "</td>";
         }
 
@@ -1071,7 +1073,7 @@ function showMOTD(){
     }else{
       document.getElementById("motdArea").style.display = "block";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
-      document.getElementById("FABStatic2").style.top = "623px";
+      document.getElementById("FABStatic2").style.top = "auto";
     }
   }
 }
@@ -1107,7 +1109,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
-  document.getElementById("FABStatic2").style.top = "565px";
+  document.getElementById("FABStatic2").style.top = "auto";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
@@ -1507,7 +1509,6 @@ function mouseUp(e) {
     event.preventDefault();
 
     closeWindows();
-    console.log(e.target);
     closeSelect();
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
@@ -1590,55 +1591,285 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 // Setup (when loaded rather than when ready)
 $(window).load(function () {
+  accessAdminAction();
   $(".messagebox").hover(function () {
     $("#testbutton").css("background-color", "red");
   });
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
-  $("#announcement").click(function(){
-    $("#announcementBoxOverlay").toggle();
-    $('#fullAnnnouncementOverlay').hide();
-
-  });
-
-  var rowCount = $('#announcementBox table tr').length;
-  if (rowCount > 9) {
-    $('#announcementBox table tr:gt(8)').hide();
-    $('.showAllAnnouncement').show();
-  }else if(rowCount == 0){
-    $('#announcementBox').append("<p style='color:#775886;'>No announcements created yet</p>");
-  }
-
-  $('.showAllAnnouncement').on('click', function() {
-    $('#announcementBox table tr:gt(8)').toggle();
-    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
-  });
-
-  var adminLoggedin = $("#adminLoggedin").val();
-  if(adminLoggedin == 'yes'){
-    $("#announcementBox table").before('<button id="newAnnouncement" onclick="setAnnouncementAuthor();">Create an new announcement</button>');
-  }
-  $("#newAnnouncement").click(function(){
-    $("#modal").toggle();
-    $(window).click(function(e) {
-      if(e.target.id == "modal"){
-        $("#modal").hide();
-      }
+  $("#sectionList_arrowStatisticsOpen").click(function () {
+    $("#sectionList_arrowStatisticsOpen").hide();
+    $("#sectionList_arrowStatisticsClosed").show();
+    $("#statisticsList").show();
+    $("#statistics").hide();
+    $(".statisticsContent").show();
+    $("#courseList").css({
+      'display':'flex',
+      'flex-direction': 'column'
     });
-
+    $(".statisticsContentBottom").show();
+  });
+  $("#sectionList_arrowStatisticsClosed").click(function () {
+    $("#sectionList_arrowStatisticsOpen").show();
+    $("#sectionList_arrowStatisticsClosed").hide();
+    $("#statisticsList").hide();
 
   });
+  $("#announcement").click(function(){
+    sessionStorage.removeItem("closeUpdateForm");
+    $("#announcementBoxOverlay").toggle();
+    if($("#announcementForm").is(":hidden")){
+      $("#announcementForm").show();
+    }
+
+  });
+  $(".createBtn").click(function(){
+    sessionStorage.setItem('closeUpdateForm', true);
+  });
+
+  retrieveAnnouncementAuthor();
+  retrieveCourseProfile();
+  retrieveAnnouncementsCards();
+  displayListAndGrid();
+  displayAnnouncementBoxOverlay();
 });
+
 
 //show the full announcement
 function showAnnouncement(){
   document.getElementById('fullAnnnouncementOverlay').style.display="block";
 }
 
-//sets author for announcement
-function setAnnouncementAuthor(){
-  $("#author").val($("#userName").html());
+//retrieve the announcment author 
+function retrieveAnnouncementAuthor(){
+  var uname = $("#userName").html();
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      if($("#userid").length > 0) {
+          document.getElementById("userid").value = this.responseText;
+      }
+    }
+  };
+  xmlhttp.open("GET","../Shared/retrieveUserid.php?uname="+uname,true);
+  xmlhttp.send();
+
+}
+//retrieve course profile
+function retrieveCourseProfile(){
+  var currentLocation = $(location).attr('href');
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+  $("#courseid").val(cid);
+  $("#versid").val(versid);
+}
+//validate create announcement form
+function validateCreateAnnouncementForm(){
+  $("#announcementForm").submit(function(e){
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+    if (announcementTitle == null || announcementTitle == '') {  
+        $("#announcementTitle").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }else if (announcementMsg == null || announcementMsg == '') {  
+        $("#announcementMsg").addClass('errorCreateAnnouncement');
+        e.preventDefault();
+    }
+    $(".errorCreateAnnouncement").css({
+      'border':'1px solid red'
+    });   
+  });
+}
+//retrive announcements
+function retrieveAnnouncementsCards(){
+  var currentLocation = $(location).attr('href');
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("announcementCards").innerHTML = this.responseText;
+      accessAdminAction();
+      readLessOrMore();
+      showLessOrMoreAnnouncements();
+      scrollToTheAnnnouncementForm();
+      $(".deleteBtn").click(function(){
+        sessionStorage.setItem('closeUpdateForm', true);
+
+      });
+
+    }
+  };
+  xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid,true);
+  xmlhttp.send();
+}
+//update anouncement form
+function updateannouncementForm(updateannouncementid, tempFuction){
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        tempFuction(this, updateannouncementid);
+    }
+  };
+  xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
+  xmlhttp.send();
+
+}
+function handleResponse(xhttp, updateannouncementid){
+  var parser, xmlDoc, responseTitle, responseMessage, title, message;
+  parser=new DOMParser();
+  xmlDoc=parser.parseFromString(xhttp.responseText,"text/xml");
+  responseTitle = xmlDoc.getElementById("responseTitle");
+  responseMessage = xmlDoc.getElementById("responseMessage");
+
+  title = responseTitle.childNodes[0].nodeValue;
+  message = responseMessage.childNodes[0].nodeValue;
+
+  if($("#announcementForm").is(":hidden")){
+    $("#announcementForm").show();
+  }
+  $(".formTitle").html("Update announcement");
+  $(".formSubtitle").html("Please fill in this form to update the announcement.");
+  $("#announcementTitle").val(title);
+  $("#announcementMsg").html(message);
+  $(".createBtn").html("Update");
+  $(".createBtn").attr("name", "updateBtn");
+  $("#announcementForm .announcementFormcontainer hr").after('<input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'">');
+
+}
+
+//announcement card grid and list view
+function displayListAndGrid(){
+  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn"><i class="fa fa-bars"></i> List</button>'+
+    '<button class="btn active gridBtn"><i class="fa fa-th-large"></i> Grid</button></div><br>');
+
+  var announcementCard = document.getElementsByClassName("announcementCard");
+  var i;
+
+  $(".listBtn").click(function(){
+    for (i = 0; i < announcementCard.length; i++) {
+      announcementCard[i].style.width = "100%";
+    }
+  });
+
+  $(".gridBtn").click(function(){
+    for (i = 0; i < announcementCard.length; i++) {
+      announcementCard[i].style.width = "48%";
+    }
+  });
+
+  var btnContainer = document.getElementById("btnContainer");
+  var btns = btnContainer.getElementsByClassName("btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+      var current = document.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      this.className += " active";
+    });
+  }
+
+  $(window).resize(function() {
+    if (($(window).width()) < 1050) {
+      $(".gridBtn").removeClass("active");
+      $(".listBtn").addClass("active");
+    }else{
+      $(".listBtn").removeClass("active");
+      $(".gridBtn").addClass("active");
+    }
+  });
+}
+function accessAdminAction(){
+  var adminLoggedin = $("#adminLoggedin").val();
+  if(adminLoggedin == 'yes'){
+    $("#announcementForm").add();
+    $(".actionBtns").add();
+  }else{
+    $("#announcementForm").remove();
+    $(".actionBtns").remove();
+    if($("#announcementForm").is(":hidden") || ($("#announcementForm").length) == 0){
+      $("#displayAnnouncements").css("margin-top", "0px");
+    }else{
+      $("#displayAnnouncements").css("margin-top", "20px");
+    }
+  }
+}
+function displayAnnouncementForm(reload){
+  if ($("#updateannouncementid").length > 0) {
+    location.reload();
+    sessionStorage.setItem('closeUpdateForm', true);
+
+  }else{
+    $("#announcementForm").hide();
+    sessionStorage.removeItem("closeUpdateForm");
+
+  }
+
+}
+function displayAnnouncementBoxOverlay(){
+  var closeUpdateForm = sessionStorage.getItem("closeUpdateForm");
+  if(closeUpdateForm == 'true'){
+    $("#announcementBoxOverlay").show();
+  
+  }
+}
+function scrollToTheAnnnouncementForm(){
+  $(".editBtn").click(function() {
+    $('html,body').animate({
+        scrollTop: $("#announcementForm").offset().top},
+        'slow');
+  });
+}
+function closeActionLogDisplay(){
+  $(".closeActionLogDisplay").parent().remove();
+}
+//read less or more announcement card
+function readLessOrMore(){
+    var maxLength = 60;
+
+    $(".announcementMsgParagraph").each(function(){
+
+      var myStr = $(this).text();
+
+      if($.trim(myStr).length > maxLength){
+        var newStr = myStr.substring(0, maxLength);
+        var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+        $(this).empty().html(newStr);
+        $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
+        $(this).append('<span class="more-text">' + removedStr + '</span>');
+
+      }
+
+    });
+
+    var announcementCard = document.getElementsByClassName("announcementCard");
+    $(".read-more").click(function(){
+      $(this).siblings(".more-text").contents().unwrap();
+      $(this).remove();
+      
+      for (i = 0; i < announcementCard.length; i++) {
+        announcementCard[i].style.width = "100%";
+      }
+    });
+}
+
+function showLessOrMoreAnnouncements(){
+  var announcementCardLength = $(".announcementCard").length;
+  if (announcementCardLength == 0) {
+      $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
+  }else if(announcementCardLength > 6){
+      $(".announcementCard:gt(5)").hide();
+      $("#displayAnnouncements").append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">'+
+        '<span class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i></span>'+
+        '</button></div>');
+  }
+   $('.showAllAnnouncement').on('click', function() {
+    $('.announcementCard:gt(5)').toggle();
+    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
+  });
 
 }
 // Checks if <a> link is external
@@ -1838,6 +2069,9 @@ function validateDate(startDate, endDate, dialogID) {
 
 /*Validates if deadline is between start and end date*/
 function validateDate2(ddate, dialogid) {
+  var inputDeadline = document.getElementById("inputwrapper-deadline");
+  if (window.getComputedStyle(inputDeadline).display !== "none") {
+  
   var ddate = document.getElementById(ddate);
   var x = document.getElementById(dialogid);
   var deadline = new Date(ddate.value);
@@ -1860,6 +2094,29 @@ function validateDate2(ddate, dialogid) {
     window.bool8 = false;
 
     }
+  }
+  else{
+    window.bool8 = true;
+  }
+}
+
+function validateSectName(name, dialogid){
+  var emotd = document.getElementById(name);
+  var Emotd = /^[^"']+$/;
+  // var EmotdRange = /^.{0,50}$/;
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd)) {
+    emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    x4.style.display = "none";
+    window.bool10 = true;
+  } else {
+    emotd.style.borderColor = "#E54";
+    x4.style.display = "block";
+    emotd.style.borderWidth = "2px";
+    window.bool10 = false;
+  }
+
 }
 
 /*Validates all forms*/
@@ -1872,12 +2129,12 @@ function validateForm(formid) {
     var deadDate = document.getElementById("setDeadlineValue").value;
 
     //If fields empty
-    if (sName == null || sName == "", deadDate == null || deadDate == "") {
+    if (sName == null || sName == "") {
       alert("Fill in all fields");
 
     }
     // if all information is correct
-    if (window.bool7 === true && window.bool8 === true) {
+    if (window.bool8 === true && window.bool10 === true ) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
