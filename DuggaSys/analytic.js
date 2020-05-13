@@ -504,7 +504,6 @@ function loadPageInformation() {
 						cid: parseInt(courseID[i])
 					},success: function(data){
 						console.log("success");
-						console.log(data);
 						for (var i = 0; i < data.length; i++) {
 							courseName.push([
 								data[i].coursename
@@ -519,7 +518,9 @@ function loadPageInformation() {
 								courseName[i]
 							]);
 						}
-						
+						if(data.length < i){
+							$('#analytic-info').append(renderTable(tablePercentage));
+						}	
 					}, error: function(){
 						console.log(" AJAX error");
 					}		
@@ -537,9 +538,8 @@ function loadPageInformation() {
 			$('#analytic-info').append(selectPage);
             $('#analytic-info').append(renderTable(tableData));
             $('#analytic-info').append(drawPieChart(chartData));
-            updateState();
+			updateState();
 		});
-		$('#analytic-info').append(renderTable(tablePercentage));
     }
  
     function updateState(){
