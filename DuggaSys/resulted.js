@@ -830,6 +830,21 @@ function renderCell(col, celldata, cellid) {
 			
 			str += "'>";
 			str += "</div>";
+
+			if(filterList["onlyPending"]){
+				// color based on pending
+				str = "<div class='resultTableCell resultTableMini ";
+				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+					str += "dugga-pending ";
+				} else {
+					str += "dugga-empty";
+				}
+		
+				str += "'>";
+				
+				return str;
+				
+			}
 			return str;
 		}
 		// Render passed deadline duggas
