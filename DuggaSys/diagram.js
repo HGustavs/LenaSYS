@@ -4262,6 +4262,8 @@ function mouseupevt(ev) {
     if (movobj > -1) {
         if (diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
+    // Selecting objects in Create Line mode returns false saveState
+    if (uimode == "CreateLine" && !mouseDifference) saveState = false;
     if (symbolStartKind != symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && mouseDifference) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
@@ -4282,8 +4284,7 @@ function mouseupevt(ev) {
             // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -4342,6 +4343,11 @@ function mouseupevt(ev) {
                 if(diagram[lineStartObj].kind == 1 || diagram[markedObject].kind == 1){
                     okToMakeLine = false;
                     flash("Can not draw line to/from a freedraw object", "danger");
+                }
+              
+                if(symbolEndKind == symbolKind.text || symbolStartKind == symbolKind.text) {
+                    okToMakeLine = false;
+                    flash("Can not draw line to/from a text object", "danger");
                 }
 
                 if (okToMakeLine) {
