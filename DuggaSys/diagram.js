@@ -4262,6 +4262,8 @@ function mouseupevt(ev) {
     if (movobj > -1) {
         if (diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
+    // Selecting objects in Create Line mode returns false saveState
+    if (uimode == "CreateLine" && !mouseDifference) saveState = false;
     if (symbolStartKind != symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && mouseDifference) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
