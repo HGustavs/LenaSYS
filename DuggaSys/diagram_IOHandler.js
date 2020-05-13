@@ -414,7 +414,7 @@ function ExportSVGA4(el) { //There will probably be so only one size paper are t
 // used when exporting the file as a .png image.
 //------------------------------------------------
 function ExportPicture(el) {
-    var canvasId = 'diagramCanvas';
+    var canvasId = 'diagram-canvas';
     var filename = 'picture.png';
     el.href = document.getElementById(canvasId).toDataURL();
     el.download = filename;
