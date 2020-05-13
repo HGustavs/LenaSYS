@@ -110,7 +110,7 @@ if($requestType == "mail" && checklogin() && (hasAccess($_SESSION['uid'], $cid, 
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 
 	// Check if opt == updateunexported
-	if ($opt === getunexported_service_name) {
+	if ($opt === updateunexported_service_name) {
 		$statement = $pdo->prepare("UPDATE userAnswer SET gradeLastExported = CURRENT_TIMESTAMP");
 		
 		if ($statement === false) {

@@ -690,7 +690,7 @@ function returnedExportedGrades(gradeData){
 	// Tries to write out the last exported date.
 	// If it fails, then log the error.
 	try {
-		if (typeof gradeData.gradeLastExported !== 'undefined' && typeof gradeData === 'object') {
+		if (typeof gradeData[0].gradeLastExported !== 'undefined') {
 			document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
 		}
 	} catch (error) {
@@ -1476,6 +1476,7 @@ function exportColumnHeading(format, heading, colname) {
 
 //Function for exporting grades to ladoc
 function ladexport() {
+	AJAXService("getunexported", {}, "GEXPORT");
 	let expo = "";
 
 	expo += document.getElementById("ladselect").value + "\n";
@@ -1501,8 +1502,6 @@ function ladexport() {
 	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
 
 	 localStorage.setItem('lastExpDate', gradeLastExported);
-
-	AJAXService("getunexported", {}, "GEXPORT");
 }
 
 function copyLadexport() {
