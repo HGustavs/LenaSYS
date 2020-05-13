@@ -553,6 +553,7 @@ function loadPageInformation() {
 		var numberOfCourses = 0;
 		var loopCounter = 0;
 		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
+
         for (var i = 0; i < data['percentage'][page].length; i++) {
 			numberOfCourses = parseInt(data['percentage'][page].length);
 			courseID.push([
@@ -561,6 +562,7 @@ function loadPageInformation() {
 			coursePercentage.push([
                 data['percentage'][page][i].percentage
 			]);
+
 			$.ajax({
 				url: "analyticService.php",
 				type: "POST",
@@ -587,14 +589,12 @@ function loadPageInformation() {
 					if(loopCounter == numberOfCourses){
 						$('#analytic-info').append(renderTable(tablePercentage));
 					}
-	
 				}, error: function(){
 					console.log(" AJAX error");
 				}		
 			});
         }
 
- 
         var chartData = [];
         for (var i = 0; i < data['percentage'][page].length; i++) {
             chartData.push({
