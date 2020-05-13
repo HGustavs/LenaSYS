@@ -87,7 +87,7 @@
       		</div>
       		<div style='padding:5px;'>
       			<input type='hidden' id='uid' value='Toddler' />
-      			<div class='inputwrapper'><span>SSN:</span><input placeholder="990102-5578" class='textinput' type='text' id='addSsn' onchange="updateErrorMessage()"/></div>
+      			<div class='inputwrapper'><span>SSN:</span><input placeholder="990102-5578" class='textinput' type='text' id='addSsn' onchange="updateErrorMessage()" onkeyup="updateErrorMessage()"/></div>
       			<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>
       			<div class='inputwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
       			<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
@@ -97,7 +97,7 @@
       			<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail'></div>
       		</div>
 			<div style='padding:5px;'>
-				<div>
+				<div class='accessTableAddUserWarning'>
 					<label id='addErrorMessage'> </label>
 				</div>
 			</div>  

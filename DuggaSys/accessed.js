@@ -218,7 +218,7 @@ function checkSsnError(ssn)
 				break;
 						
 		default:
-			return 'SSN Error! Should be ######-#### or ########-####.';
+			return 'SSN Error! Should be ######-#### or ########-####';
 	}
 
 	const dd = ssn.substring(delimiter-2, delimiter);
@@ -228,11 +228,11 @@ function checkSsnError(ssn)
 	const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
 
 	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
-		return 'SSN Error! Impossible date in SSN. The future is not here yet.';
+		return 'SSN Error! Impossible date in SSN. The future is not here yet';
 
 	if(isNaN(ssnDate)								// Make sure date is valid (i.e. not 87th April)
 		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
-		return 'SSN Error! Invalid date.';
+		return 'SSN Error! Invalid date';
 	}
 
 	const controlDigitString = yyyy.substring(2, 4) + mm + dd + birthNum;
