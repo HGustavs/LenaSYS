@@ -227,8 +227,11 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
-			str+="<div data-value='"+null+"' onclick='changeOptDiv(event)'>";
-			str+=""+"None"+"</div>";
+			str+="<div data-value='"+null+"' onclick='changeOptDiv(event)'";
+			if (option === "") {
+				str+=" id='access-dropdown-selected'";
+			}
+			str+=">"+"None"+"</div>";
 			for(var i=0;i<optionlist.length;i++){
 				/* Check if a class is set or not.
 				If it has, it will be styled by id = 'access-dropdown-selected'.
@@ -249,8 +252,11 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
-			str+="<div data-value='"+null+"' onclick='changeOptDivStudent(event,\""+-1+"\")'>";
-			str+=""+"None"+"</div>";
+			str+="<div data-value='"+null+"' onclick='changeOptDivStudent(event,\""+-1+"\")'";
+			if (option === "") {
+				str+=" id='access-dropdown-selected'";
+			}
+			str+=">"+"None"+"</div>";
 			for(var i=0;i<optionlist.length;i++){
 				/* Check if a examiner is set or not.
 				If it has, it will be styled by id = 'access-dropdown-selected'.
