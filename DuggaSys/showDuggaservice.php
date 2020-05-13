@@ -34,6 +34,9 @@ $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
 $setanswer=gettheOP('setanswer');
 $showall=getOP('showall');
+$contactable=getOP('contactable');
+$rating=getOP('score');
+$entryname=getOP('entryname');
 $showall="true";
 
 $param = "UNK";
@@ -261,7 +264,7 @@ if(checklogin()){
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
             $discription = $couseid." ".$duggaid." ".$moment." ".$answer;
-            logUserEvent($userid,EventTypes::DuggaFileupload,$discription);
+            logUserEvent($userid, $username, EventTypes::DuggaFileupload,$discription);
 
             //Seperate timeUsed, stepsUsed and score from $answer
             $temp = explode("##!!##", $answer);
@@ -516,6 +519,35 @@ if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$grade="UNK";
 		$duggafeedback="UNK";
 }
+//Fetches Data From listentries Table
+if(strcmp($opt,"CHECKFDBCK")==0){	
+	$query = $pdo->prepare("SELECT feedbackenabled, feedbackquestion FROM listentries WHERE lid=:moment AND cid=:cid;");
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':moment', $moment);
+	$query->execute();
+	$result = $query->fetch();
+	$userfeedback = $result['feedbackenabled'];
+	$feedbackquestion = $result['feedbackquestion'];		
+}
+//inserts Data to Feedback Table, with and without username
+if(strcmp($opt,"SENDFDBCK")==0){
+	if($contactable == 1){
+		$query = $pdo->prepare("INSERT INTO userduggafeedback(username,cid,lid,score,entryname) VALUES (:username,:cid,:lid,:score,:entryname);");
+		$query->bindParam(':username', $loginname);
+		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':lid', $moment);
+		$query->bindParam(':score', $rating);
+		$query->bindParam(':entryname', $entryname);
+		$query->execute();
+	}else{
+		$query = $pdo->prepare("INSERT INTO userduggafeedback(cid,lid,score,entryname) VALUES (:cid,:lid,:score,:entryname);");
+		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':lid', $moment);
+		$query->bindParam(':score', $rating);
+		$query->bindParam(':entryname', $entryname);
+		$query->execute();
+	}	
+}
 
 $array = array(
 		"debug" => $debug,
@@ -529,7 +561,9 @@ $array = array(
 		"marked" => $marked,
 		"deadline" => $duggainfo['deadline'],
 		"release" => $duggainfo['qrelease'],
-		"files" => $files
+		"files" => $files,
+		"userfeedback" => $userfeedback,
+		"feedbackquestion" => $feedbackquestion,
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 

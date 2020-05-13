@@ -63,11 +63,9 @@
 	max-height: 90%;
 	min-height: 10%;
 }
-
-@media only screen 
-and (max-device-width : 725px) {
-   
+@media only screen and (max-width: 800px) {
     #box1wrapper{
+     overflow: hidden;
     position: absolute;
     left: 0px;
     top:0;    
@@ -86,6 +84,7 @@ and (max-device-width : 725px) {
 
 
     #box2wrapper {
+     overflow: hidden;
     position: absolute;
     top: 25%;
     bottom: 0px;
@@ -103,6 +102,7 @@ and (max-device-width : 725px) {
 	max-width: 100%;
 }
     #box3wrapper {
+     overflow: hidden;
     position: absolute;
     top:50%;
     bottom: 33%;
@@ -120,6 +120,7 @@ and (max-device-width : 725px) {
 	max-width: 100%;
 }
     #box4wrapper {
+     overflow: hidden;
     position: absolute;
     top:75%;
     bottom: 33%;
@@ -142,5 +143,4 @@ and (max-device-width : 725px) {
 
 
 }
-
 

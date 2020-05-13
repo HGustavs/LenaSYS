@@ -32,7 +32,7 @@
 
     $log_uuid = getOP('log_uuid');
     $info=$opt." ".$courseid." ".$coursename;
-    logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "diagramservice.php",$userid,$info);
+    //logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "diagramservice.php",$userid,$info);
 
     $log_db = new PDO('sqlite:../../GHdataD.db');
     $gituser = $loginname;
@@ -108,5 +108,5 @@
     $array = array('debug' => $debug, 'weeks' => $weeks);
     echo json_encode($array);
 
-    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "diagramservice.php",$userid,$info);
+    //logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "diagramservice.php",$userid,$info);
 ?>

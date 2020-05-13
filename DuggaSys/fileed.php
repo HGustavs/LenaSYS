@@ -63,33 +63,43 @@ $codeLinkQuery->execute();
         <!-- insert here -->
         <div class="err" id="fileerror0">
         <?php 
-        if($_GET['errortype'] == "extension") {
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Extension \"" . $_GET['errorvar'] . "\" not allowed.\n";
-        }
-        else if($_GET['errortype'] == "nofile"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "No file found - check upload_max_filesize and post_max_size in php.ini.";
-        }
-        else if($_GET['errortype'] == "movefile"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Error moving file ";
-        }
-        else if($_GET['errortype'] == "updatefile"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Error updating filesize and uploaddate: \"" . $_GET['errorvar'] . "\"";
-        }
-        else if($_GET['errortype'] == "uploadfile"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Error updating file entries \"" . $_GET['errorvar'] . "\"";
-        }
-        else if($_GET['errortype'] == "noaccess"){
-            echo'<style>#fileerror0{ display:block; }</style>';
-            echo "Access denied, you do not have the rights.";
-        }
-        else {
-            echo '<style>#fileerror0{ display:none; }</style>';
-        }
+		$noerrors = true;
+		if(isset($_GET['errortype'])){
+			if($_GET['errortype'] == "extension") {
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Extension \"" . $_GET['errorvar'] . "\" not allowed.\n";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "nofile"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "No file found - check upload_max_filesize and post_max_size in php.ini.";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "movefile"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Error moving file ";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "updatefile"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Error updating filesize and uploaddate: \"" . $_GET['errorvar'] . "\"";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "uploadfile"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Error updating file entries \"" . $_GET['errorvar'] . "\"";
+				$noerrors = false;
+			}
+			else if($_GET['errortype'] == "noaccess"){
+				echo'<style>#fileerror0{ display:block; }</style>';
+				echo "Access denied, you do not have the rights.";
+				$noerrors = false;
+			}
+		}
+		if($noerrors) {
+			echo '<style>#fileerror0{ display:none; }</style>';
+		}
+		
      
         ?>
         </div>
@@ -145,12 +155,15 @@ $codeLinkQuery->execute();
                     <input type='hidden' id='kind' name='kind' value='Toddler'/>
                     <div class='inputwrapper filePopUp'>
                         <span>Upload File:</span>
-                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple"/>
+                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" placeholder="hej.text"/>
+                        
                         <div class="fileUploadInfo">
                             <h1>Allowed Files</h1>
                             <p>PDF, HTML, PHP, MD, TXT, JS, JPG, PNG</p>
                         </div>
                     </div>
+                    
+                    
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
                         <input style="width:380px" id="uploadedlink" class="textinput" name="link"
@@ -160,18 +173,39 @@ $codeLinkQuery->execute();
                 <div id='uploadbuttonname'>
                     <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);"/>
                 </div>
-
                 <div style='display:none;' id='errormessage'></div>
             </form>
 
            </div>
             <div id="createNewEmptyFile" style="display: none;">
-                <form action="#" method="POST">
+                <form enctype="multipart/form-data" action="filereceive.php" method="POST" onsubmit="return validateDummyFile();">
+                    <input type='hidden' id='ecourseid' name='courseid' value='Toddler'/>
+                    <input type='hidden' id='ecoursevers' name='coursevers' value='Toddler'/>
+                    <input type='hidden' id='ekind' name='kind' value='Toddler'/>
                     <label for="newEmptyFile">File name and type e.g greger.txt</label>
-                    <input type="text" id="newEmptyFile" name="newEmptyFile" placeholder="Greger.txt">
-
-                    <input type="submit" name="createBtn" value="Create">
-
+                    <!-- .svg| -->
+                    <ul style="padding-left: 0px; list-style-type: none; display: none;" id="dummyFileErrorList"></ul>
+                    <input type="text" id="newEmptyFile" name="newEmptyFile[]" placeholder="Greger.txt">
+                    <span id="spankind">Kind:</span>
+                    <select name ="efilekind[]" id="selectdir">
+                    <?php
+                    if(isSuperUser($_SESSION['uid'])){
+                        echo '
+                            <option value="GFILE">Global</option>
+                           
+                        ';
+                    }
+                    if(isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w')){
+                    echo '
+                    <option value="MFILE">Course Local</option>
+                    <option value="LFILE">Version Local</option>
+                    ';
+                    }
+                    ?>
+                    <select>
+                    <div id='uploadbuttonname'>
+                        <input type="submit" style="position: relative; top:25px;" onclick="uploadFile('EFILE');"/>
+                    </div>
                 </form>
             </div>
 

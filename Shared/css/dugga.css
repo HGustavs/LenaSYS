@@ -181,6 +181,11 @@ strong {font-weight: bold;}
 	background: #fff;
 }
 
+#emailPopup {
+	margin-top: 15px;
+	float: none;
+}
+
 #emailPopup #email {
 	margin-left: 10px;
 	width: 280px;

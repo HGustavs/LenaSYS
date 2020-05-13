@@ -4,19 +4,17 @@
 				<div id="feedbackTable" style="margin-top: -3px;"></div>	
 		</div>
 </div>
-<div id="container" style="display:flex; justify-content:center;">
-    <div id='duggaInfoBox2' style="display: inline-block; width:300px;">
-      
-          <div class='loginBoxheader'>
-                <h3>Dugga 4 - Transformationer</h3>
-          </div>
-                <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er. 
-                    Till ert förfogande finns de klassiska transformationerna: transelera (T), rotera (R) och skala (S). För att rita ut planeter så väljer ni draw R/G/B beroende på vilken färg som önskas.</p>
-                <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
-                <p style="margin-left: 4px;">Lycka till!</p>
-            
+<div class='instructions-container'>
+    <div class='instructions-button' onclick='toggleInstructions(this)'><h3>Instructions</h3></div>	
+    <div class="instructions-content">
+        <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er. 
+                Till ert förfogande finns de klassiska transformationerna: transelera (T), rotera (R) och skala (S). För att rita ut planeter så väljer ni draw R/G/B beroende på vilken färg som önskas.</p>
+        <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
+        <p style="margin-left: 4px;">Lycka till!</p>
     </div>
+</div>
 
+<div id="dugga4Container"> 
     <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; display:block;'></canvas>
 
     <div id="toolbox" style="min-width:340px;width:340px;display:inline-block;">
