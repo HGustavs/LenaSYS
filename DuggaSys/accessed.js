@@ -347,7 +347,7 @@ function renderCell(col, celldata, cellid) {
 			}
 		}
 
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";

@@ -280,8 +280,9 @@ function makeDivItemStudent(option,optionlist,valuelist)
 		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
 			str+="<div data-value='"+stringArray[i]+"' onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
-			if(valuelist==null){
-				str+=">"+optionlist[i]+"</div>";
+			console.log(option);
+			if(option == valuelist[i]){
+				str+=" id='access-dropdown-selected'>"+optionlist[i]+"</div>";
 			}else{
 				str+=">"+optionlist[i]+"</div>";
 			}
