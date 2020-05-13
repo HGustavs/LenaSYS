@@ -4282,8 +4282,7 @@ function mouseupevt(ev) {
             // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -4342,6 +4341,11 @@ function mouseupevt(ev) {
                 if(diagram[lineStartObj].kind == 1 || diagram[markedObject].kind == 1){
                     okToMakeLine = false;
                     flash("Can not draw line to/from a freedraw object", "danger");
+                }
+              
+                if(symbolEndKind == symbolKind.text || symbolStartKind == symbolKind.text) {
+                    okToMakeLine = false;
+                    flash("Can not draw line to/from a text object", "danger");
                 }
 
                 if (okToMakeLine) {
