@@ -227,11 +227,22 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
-			str+="<div data-value='"+null+"' onclick='changeOptDiv(event)'>";
-			str+=""+"None"+"</div>";
+			str+="<div data-value='"+null+"' onclick='changeOptDiv(event)'";
+			if (option === "") {
+				str+=" class = 'access-dropdown-selected'";
+			}
+			str+=">"+"None"+"</div>";
 			for(var i=0;i<optionlist.length;i++){
-				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDiv(event)'>";
-				str+=""+optionlist[i][optionstring]+"</div>";
+				/* Check if a class & version is set or not.
+				If it has, it will be styled by id = 'access-dropdown-selected'.
+				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
+                if(option == optionlist[i][optionstring]){
+                    str+="<div class = 'access-dropdown-selected' data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'>";
+                    str+=""+optionlist[i][optionstring]+"</div>";
+                }else{
+                    str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")' >";
+                    str+=""+optionlist[i][optionstring]+"</div>";
+                }
 			}
 		str +="</div>"
 		return str;
@@ -241,12 +252,23 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
-			str+="<div data-value='"+null+"' onclick='changeOptDivStudent(event,\""+-1+"\")'>";
-			str+=""+"None"+"</div>";
-			for(var i=0;i<optionlist.length;i++){
-				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'>";
-				str+=""+optionlist[i][optionstring]+"</div>";
+			str+="<div data-value='"+null+"' onclick='changeOptDivStudent(event,\""+-1+"\")'";
+			if (option === "") {
+				str+=" class = 'access-dropdown-selected'";
 			}
+			str+=">"+"None"+"</div>";
+			for(var i=0;i<optionlist.length;i++){
+				/* Check if a examiner is set or not.
+				If it has, it will be styled by id = 'access-dropdown-selected'.
+				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
+                if(option == optionlist[i][optionstring]){
+                    str+="<div class = 'access-dropdown-selected' data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'>";
+                    str+=""+optionlist[i][optionstring]+"</div>";
+                }else{
+                    str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")' >";
+                    str+=""+optionlist[i][optionstring]+"</div>";
+                }
+            }
 		str +="</div>"
 		return str;
 }
@@ -258,8 +280,8 @@ function makeDivItemStudent(option,optionlist,valuelist)
 		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
 			str+="<div data-value='"+stringArray[i]+"' onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
-			if(valuelist==null){
-				str+=">"+optionlist[i]+"</div>";
+			if(option == valuelist[i]){
+				str+=" class = 'access-dropdown-selected'>"+optionlist[i]+"</div>";
 			}else{
 				str+=">"+optionlist[i]+"</div>";
 			}
