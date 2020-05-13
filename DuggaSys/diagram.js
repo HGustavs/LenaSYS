@@ -6194,6 +6194,7 @@ function canConnectLine(startObj, endObj){
 function createRulers() {
     createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
     createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
+    createRulerLinesObjectPoints();
 }
 
 //------------------------------------------------------------------------------
@@ -6258,7 +6259,18 @@ function createRulerLinesObjectPoints() {
     const selectedPoints = getSelectedObjectsPoints();
 
     selectedPoints.forEach(point => {
+        const canvasCoordinate = pixelsToCanvas(point.x, point.y);
+        const lineX = document.createElement("div");
+        const lineY = document.createElement("div");
 
+        lineX.classList.add("point-line");
+        lineY.classList.add("point-line");
+
+        lineX.style.left = `${canvasCoordinate.x}px`;
+        lineY.style.top = `${canvasCoordinate.y}px`;
+
+        rulerExtraLinesX.appendChild(lineX);
+        rulerExtraLinesY.appendChild(lineY);
     });
 }
 
