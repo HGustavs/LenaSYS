@@ -230,7 +230,7 @@ function validateSSN(ssn)
 	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
 		return 'SSN Error! Impossible date in SSN. The future is not here yet';
 
-	if(isNaN(ssnDate)								// Make sure date is valid (i.e. not 87th April)
+	if(isNaN(ssnDate)					// Make sure date is valid (i.e. not 87th April)
 		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
 		return 'SSN Error! Invalid date';
 	}
@@ -240,7 +240,7 @@ function validateSSN(ssn)
 	for(var i = 0; i < controlDigitString.length; i++) {
 		var n = parseInt(controlDigitString.charAt(i));
 		if(i%2 === 0) n *= 2;			// Every other digit should be multiplied by 2
-		if(n >= 10) n -= 9;				// If value is >= 10, 9 should be removed
+		if(n >= 10) n -= 9;			// If value is >= 10, 9 should be subtracted
 
 		ccd += n;	// Add value to the calculation in progress
 	}
