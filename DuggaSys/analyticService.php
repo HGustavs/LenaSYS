@@ -72,6 +72,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'pageInformation':
 				pageInformation();
 				break;
+			case 'resolveCourseID':
+				resolveCourseID($pdo);
+				break;
 		}
 	} else {
 		echo 'N/A';
