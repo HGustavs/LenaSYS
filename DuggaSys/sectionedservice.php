@@ -20,6 +20,17 @@ if(isset($_SESSION['uid'])){
 	$userid="guest";
 }
 
+// Gets username based on uid, USED FOR LOGGING
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
+
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
@@ -48,6 +59,7 @@ $pos=getOP('pos');
 $jsondeadline = getOP('jsondeadline');
 $studentTeacher = false;
 $motd=getOP('motd');
+$tabs=getOP('tabs');
 
 $grpmembershp="UNK";
 $unmarked = 0;
@@ -189,7 +201,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind, tabs) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind, :tabs)");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':cvs', $coursevers);
 					$query->bindParam(':usrid', $userid);
@@ -201,6 +213,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(':visible', $visibility);
 					$query->bindParam(':highscoremode', $highscoremode);
 					$query->bindParam(':pos', $pos);	
+					$query->bindParam(':tabs', $tabs);
 
 					if ($grptype != "UNK") {
 						$query->bindParam(':groupkind', $grptype);
@@ -209,7 +222,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 						// Logging for newly added items
 						$description=$sectname;
-                        logUserEvent($userid,EventTypes::SectionItems,$sectname);
+                        logUserEvent($userid, $username, EventTypes::SectionItems,$sectname);
 
 					}
 
@@ -270,7 +283,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:groupkind WHERE lid=:lid;");
+					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, tabs=:tabs, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:groupkind WHERE lid=:lid;");
 					$query->bindParam(':lid', $sectid);
 					$query->bindParam(':entryname', $sectname);
 					$query->bindParam(':comments', $comments);
@@ -289,6 +302,7 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(':link', $link);
 					$query->bindParam(':visible', $visibility);
 					$query->bindParam(':gradesys', $gradesys);
+					$query->bindParam(':tabs', $tabs);
 
 					if(!$query->execute()) {
 						$error=$query->errorInfo();
@@ -358,7 +372,7 @@ if($gradesys=="UNK") $gradesys=0;
 
 						// Logging for editing course version
 						$description=$courseid." ".$versid;
-						logUserEvent($userid, EventTypes::EditCourseVers, $description);	
+						logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);	
 
 				} else if(strcmp($opt,"CHGVERS")===0) {
 					$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
@@ -514,7 +528,7 @@ if($gradesys=="UNK") $gradesys=0;
 		$entries=array();
 
 		if($cvisibility){
-		  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+		  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, tabs FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
 			$result=$query->execute();
@@ -543,7 +557,8 @@ if($gradesys=="UNK") $gradesys=0;
 								'qrelease' => $row['qrelease'],
 								'comments' => $row['comments'],
 								'qstart' => $row['qstart'],
-								'grptype' => $row['groupKind']
+								'grptype' => $row['groupKind'],
+								'tabs' => $row['tabs']
 							)
 						);
 				}
