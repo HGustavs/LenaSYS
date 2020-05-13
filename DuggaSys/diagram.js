@@ -3690,8 +3690,7 @@ function mousemoveevt(ev) {
 
     //Update the moving mouse line positions for x-axis and y-axis rulers when rulers are active
     if(isRulersActive) {
-        document.querySelector("#ruler-x .ruler-extra-lines .mouse-line").style.left = `${ev.offsetX}px`;
-        document.querySelector("#ruler-y .ruler-extra-lines .mouse-line").style.top = `${ev.offsetY}px`;
+        setRulerMouseLinesPosition(ev.offsetX, ev.offsetY);
     }
 
     // deltas are used to determine the range of which the mouse is allowed to move when pressed.
@@ -6195,6 +6194,15 @@ function canConnectLine(startObj, endObj){
 function createRulers() {
     createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
     createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
+}
+
+//------------------------------------------------------------------------------
+// setRulerMouseLinesPosition: Move rulers mouse position lines to passed value.
+//------------------------------------------------------------------------------
+
+function setRulerMouseLinesPosition(x, y) {
+    document.querySelector("#ruler-x .ruler-extra-lines .mouse-line").style.left = `${x}px`;
+    document.querySelector("#ruler-y .ruler-extra-lines .mouse-line").style.top = `${y}px`;
 }
 
 //--------------------------------------------------------------------------------------
