@@ -460,7 +460,6 @@ function loadPageInformation() {
  
     var selectPage = $("<select></select>")
 		.append('<option value="showDugga" selected>showDugga</option>')
-		.append('<option value="resolveCourse" selected>resolveCourse</option>')
         .append('<option value="codeviewer">codeviewer</option>')
         .appendTo($('#analytic-info'));
    
@@ -482,61 +481,51 @@ function loadPageInformation() {
             updatePieChartInformation(page, tableData);
         });
     }
- 
-	function resolveCourse(){
-		console.log("resolveCourse");	
-		$.ajax({
-			url: "analyticService.php",
-			type: "POST",
-            dataType: "json",
-            data: {
-				query: "resolveCourseID",
-            },success: function(data){
-				console.log("success");
-				console.log(data);
-				var tablename = [["Name"]];
-           		for (var i = 0; i < data.length; i++) {
-                	tablename.push([
-						data[i].coursename
-                	]);
-				}
-				$('#analytic-info').append(renderTable(tablename));	
-			}, error: function(){
-				console.log("error");
-			}
-		});
-	}
-
 
     function updatePieChartInformation(page, tableData){
+		var courseName = [];
+		var courseID = [];
+		var coursePercentage = [];
+		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
         loadAnalytics(page + "Percentage", function(data) {
-            var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
             for (var i = 0; i < data.length; i++) {
-                tablePercentage.push([
-                    data[i].courseid,
-                    data[i].percentage
+				courseID.push([
+					data[i].courseid
 				]);
+				coursePercentage.push([
+					data[i].percentage
+				]);
+				$.ajax({
+					url: "analyticService.php",
+					type: "POST",
+					dataType: "json",
+					data: {
+						query: "resolveCourseID",
+						cid: parseInt(courseID[i])
+					},success: function(data){
+						console.log("success");
+						console.log(data);
+						for (var i = 0; i < data.length; i++) {
+							courseName.push([
+								data[i].coursename
+							]);
+						}
+						console.log(courseName[0]);
+						tablePercentage = [["Courseid", "Percentage", "Coursename"]];
+						for (var i = 0; i < courseName.length; i++){
+							tablePercentage.push([
+								courseID[i],
+								coursePercentage[i],
+								courseName[i]
+							]);
+						}
+						
+					}, error: function(){
+						console.log(" AJAX error");
+					}		
+				});
 			}
-			
-			$.ajax({
-				url: "analyticService.php",
-				type: "POST",
-				dataType: "json",
-				data: {
-					query: "resolveCourseID",
-				},success: function(data){
-					console.log("success");
-					console.log(data);
-					   for (var i = 0; i < data.length; i++) {
-						tablePercentage.push([
-							data[i].coursename
-						]);
-					}
-				}, error: function(){
-					console.log("error");
-				}
-			});
- 
+
             var chartData = [];
             for (var i = 0; i < data.length; i++) {
                 chartData.push({
@@ -545,12 +534,12 @@ function loadPageInformation() {
                 });
             }
             $('#analytic-info').append("<p>Page information.</p>");
-            $('#analytic-info').append(selectPage);
+			$('#analytic-info').append(selectPage);
             $('#analytic-info').append(renderTable(tableData));
-			$('#analytic-info').append(renderTable(tablePercentage));
             $('#analytic-info').append(drawPieChart(chartData));
             updateState();
-        });
+		});
+		$('#analytic-info').append(renderTable(tablePercentage));
     }
  
     function updateState(){
@@ -560,9 +549,6 @@ function loadPageInformation() {
 		} 
         selectPage.change(function(){
             switch(selectPage.val()){
-				case "resolveCourse":
-					resolveCourse();
-					break;
                 case "showDugga":
 					updatePageHitInformation("dugga");
                     break;

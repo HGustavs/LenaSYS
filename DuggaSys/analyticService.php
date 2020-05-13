@@ -491,7 +491,8 @@ function userLogInformation(){
 //------------------------------------------------------------------------------------------------
 
 function resolveCourseID($db){
-	$query = $db->prepare("SELECT coursename FROM course");
+	$cid = $_POST['cid'];
+	$query = $db->prepare("SELECT coursename FROM course WHERE cid='".$cid."'");
 	$query->execute();
 	$result = $query->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
