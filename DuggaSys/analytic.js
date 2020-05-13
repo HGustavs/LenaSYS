@@ -37,6 +37,9 @@ $(function() {
 		case "serviceUsage":
 			loadServiceUsage();
 			break;
+		case "courseDiskUsage":
+			loadCourseDiskUsage();
+			break;
 		case "serviceAvgDuration":
 			loadServiceAvgDuration();
 			break;
@@ -345,6 +348,35 @@ function loadServiceUsage() {
 	inputDateTo.change(updateServiceUsage);
 	selectInterval.change(updateServiceUsage);
 	updateServiceUsage();
+}
+
+function loadCourseDiskUsage() {
+	loadAnalytics("courseDiskUsage", function(data) {
+		localStorage.setItem('analyticsPage', 'courseDiskUsage');
+		$('#pageTitle').text("Coruse Disk Usage");
+		$('#analytic-info').append("<p class='analyticsDesc'>The disk usage per course</p>");
+
+		var tableData = [
+			["Corse Code", "Course", "Disk Usage"]
+		];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].coursecode,
+				data[i].coursename,
+				data[i].sizeReadable
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+
+		var chartData = [];
+		for (var i = 0; i < data.length; i++) {
+			chartData.push({
+				label: data[i].coursecode,
+				value: data[i].size
+			});
+		}
+		drawBarChart(chartData, "bytes");
+	});
 }
 
 function loadServiceAvgDuration() {
