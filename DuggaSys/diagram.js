@@ -6251,7 +6251,7 @@ function createRuler(element, length, origoOffset, marginProperty) {
 //-------------------------------------------------------------------------------------
 
 function createRulerLinesObjectPoints() {
-    if(!isRulersActive) return;
+    if(!isRulersActive || selected_objects.length < 1) return;
 
     const rulerExtraLinesX = document.querySelector("#ruler-x .ruler-extra-lines");
     const rulerExtraLinesY = document.querySelector("#ruler-y .ruler-extra-lines");
