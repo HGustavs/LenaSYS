@@ -58,6 +58,7 @@
 				echo '<td class="navButt" id="Fileinformation" title="File information"><a onclick="loadFileInformation()"><i class="fas fa-file-pdf faNavheader"></i></a></td>';
 				echo '<td class="navButt" id="Pageinformation" title="Page information"><a onclick="loadPageInformation()"><i class="fas fa-globe-europe faNavheader"></i></a></td>';
 				echo '<td class="navButt" id="Userinformation" title="User information"><a onclick="loadUserInformation()"><i class="fas fa-user faNavheader"></i></a></td>';
+				echo '<td class="navButt" id="CourseDiskUsage" title="Course Disk Usage"><a onclick="loadCourseDiskUsage()"><i class="fas fa-hdd faNavheader"></i></a></td>';
 			}
 
 			if($noup!='NONE') {
