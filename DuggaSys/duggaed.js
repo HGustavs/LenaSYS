@@ -109,6 +109,8 @@ function selectDugga(qid) {
 	$("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
 
 	$("#editDugga").css("display", "flex");
+	/* Validates name as soon as a dugga is selected.*/
+	validateDuggaName();
 }
 
 
