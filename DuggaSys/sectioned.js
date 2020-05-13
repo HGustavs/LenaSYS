@@ -238,8 +238,10 @@ function changedType(kind) {
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
+  var tempMotd = motd;
+	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö");
   $("#eversname").val(versnme);
-  $("#eMOTD").val(motd);
+  $("#eMOTD").val(tempMotd);
   $("#eversid").val(querystring['coursevers']);
   let sdate = retdata['startdate'];
   let edate = retdata['enddate'];
