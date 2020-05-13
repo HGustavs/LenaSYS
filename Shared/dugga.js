@@ -227,9 +227,22 @@ function makedivItem(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
+			str+="<div data-value='"+null+"' onclick='changeOptDiv(event)'";
+			if (option === "") {
+				str+=" class = 'access-dropdown-selected'";
+			}
+			str+=">"+"None"+"</div>";
 			for(var i=0;i<optionlist.length;i++){
-				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDiv(event)'> ";
-				str+=""+optionlist[i][optionstring]+"</div>";
+				/* Check if a class & version is set or not.
+				If it has, it will be styled by id = 'access-dropdown-selected'.
+				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
+                if(option == optionlist[i][optionstring]){
+                    str+="<div class = 'access-dropdown-selected' data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'>";
+                    str+=""+optionlist[i][optionstring]+"</div>";
+                }else{
+                    str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")' >";
+                    str+=""+optionlist[i][optionstring]+"</div>";
+                }
 			}
 		str +="</div>"
 		return str;
@@ -239,10 +252,23 @@ function makedivItemWithValue(option,optionlist,optionstring,valuestring)
 {
 		var str="";
 		str +="<div class='access-dropdown-content'>"
-			for(var i=0;i<optionlist.length;i++){
-				str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'> ";
-				str+=""+optionlist[i][optionstring]+"</div>";
+			str+="<div data-value='"+null+"' onclick='changeOptDivStudent(event,\""+-1+"\")'";
+			if (option === "") {
+				str+=" class = 'access-dropdown-selected'";
 			}
+			str+=">"+"None"+"</div>";
+			for(var i=0;i<optionlist.length;i++){
+				/* Check if a examiner is set or not.
+				If it has, it will be styled by id = 'access-dropdown-selected'.
+				"If" sets an id so it could be styled and print out all options. "Else" prints out all options.*/
+                if(option == optionlist[i][optionstring]){
+                    str+="<div class = 'access-dropdown-selected' data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")'>";
+                    str+=""+optionlist[i][optionstring]+"</div>";
+                }else{
+                    str+="<div data-value='"+optionlist[i][valuestring]+"' onclick='changeOptDivStudent(event,\""+optionlist[i][valuestring]+"\")' >";
+                    str+=""+optionlist[i][optionstring]+"</div>";
+                }
+            }
 		str +="</div>"
 		return str;
 }
@@ -254,8 +280,8 @@ function makeDivItemStudent(option,optionlist,valuelist)
 		str +="<div class='access-dropdown-content'>"
 		for(var i=0;i<optionlist.length;i++){
 			str+="<div data-value='"+stringArray[i]+"' onclick='changeOptDivStudent(event,\""+stringArray[i]+"\")'";
-			if(valuelist==null){
-				str+=">"+optionlist[i]+"</div>";
+			if(option == valuelist[i]){
+				str+=" class = 'access-dropdown-selected'>"+optionlist[i]+"</div>";
 			}else{
 				str+=">"+optionlist[i]+"</div>";
 			}
@@ -552,6 +578,7 @@ function saveDuggaResult(citstr)
  			}
 
 		}
+		duggaFeedbackCheck();
 		showReceiptPopup();
 }
 
@@ -873,7 +900,31 @@ function AJAXService(opt,apara,kind)
 			data: "opt="+opt+para,
 			dataType: "json",
 			success: returnedQuiz
-		})
+		});
+	} else if(kind=="DUGGAFEEDBACK") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedFeed
+		});
+	} else if(kind=="SENDDUGGAFEEDBACK") {
+		$.ajax({
+			url: "showDuggaservice.php",
+			type:"POST",
+			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedSubmitFeedback
+		});
+	} else if(kind=="USERFB") {
+		$.ajax({
+			url: "sectionedservice.php",
+			type:"POST",
+			data:"courseid="+querystring['cid']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedUserFeedback
+		});
 	}
 }
 
@@ -1697,4 +1748,52 @@ function hideCookieMessage() {
 		$("#cookiemsg").css("display", "none");
 		$("#cookiemsg").css("opacity", "1");
 	}, 200);
+}
+
+//----------------------------------------------------------------------------------
+// hideServerMessage/hideCookieMessage : Hide MOTD/cookie messages
+//
+// Functions for animating and hiding MOTD and cookie messages
+//----------------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------------------
+//sends Course and Dugga ID to see whether feedback should be enabled in receiptbox
+//----------------------------------------------------------------------------------
+function duggaFeedbackCheck(){
+	var citstr=querystring['moment'];
+	citstr=querystring['cid']+" "+citstr;
+	AJAXService("CHECKFDBCK",{answer:citstr},"DUGGAFEEDBACK");
+}
+
+function returnedFeed(data) {
+	if (data['userfeedback']== 1 ){
+		$("#feedbackbox").css("display","inline-block");
+		$("#feedbackquestion").html(data['feedbackquestion']);
+	} 
+}
+//----------------------------------------------------------------------------------
+//sends userinput feedback
+//----------------------------------------------------------------------------------
+function sendFeedback(entryname){
+	if ($("input[name='rating']:checked").val()) {
+		$('#submitstatus').css("display", "none");
+		var param = {};
+  		param.courseid = querystring['courseid'];
+  		param.moment = querystring['moment'];
+		param.score = $("input[name='rating']:checked").val();
+		param.entryname = entryname;  
+		if($("#contactable:checked").val()){
+			param.contactable = 1;
+		}else{
+			param.contactable = 0;
+		}
+		AJAXService("SENDFDBCK",param,"SENDDUGGAFEEDBACK");
+	}else {
+		$('#submitstatus').css({'color':'var(--color-red)',"display": "inline-block"}).text("Select a rating before saving it.");
+	}
+}
+
+function returnedSubmitFeedback(){
+	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
 }

@@ -959,10 +959,16 @@ p {
   #dugga4Container #toolbox{
     margin: 15px 0;
   }
+
   #displayAnnouncements .announcementCard{
     width: 100%;
   }
-}
+  
+  #dugga4Container canvas{
+    min-width: 75%;
+    height: auto;
+  }
+
 
 /* Instruction and submission of dugga */
 
@@ -1502,6 +1508,75 @@ div .navButt:hover {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+}
+
+#feedbackbox{
+  border: 3px solid var(--color-border-primary);
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px 0px;
+  overflow: auto;
+  display:none;
+}
+
+#feedbackbox #ratingbox{
+  display: flex;
+  flex-direction: row;
+}
+
+#feedbackbox #ratingbox label{
+  padding: 8px;
+  text-align: center;
+}
+
+#duggaFeedbackQuestion{
+  text-align: center;
+  color: var(--color-primary);
+}
+
+#statscontainer{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+}
+
+.statsdiv{
+  background-color: var(--color-text-primary);
+  color: var(--color-statistics);
+  width: 33%;
+  height: 150px;
+  text-align: center;
+  line-height: 2;
+  font-size: 20px;
+  margin-bottom: -15px;
+}
+
+#feedbacktablecontainer td{
+  text-align: center;
+}
+
+#feedbacktablecontainer td input{
+  float: none;
+}
+
+#avg-feedback, #median-feedback, #total-feedback{
+  font-size: 50px;
+  line-height: 1.3;
+  margin-bottom: -15px;
+}
+
+input.inactive-button {
+  background-color:var(--color-border);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: #fff;
+  margin: 8px 2px 4px 2px;
+  font-size: 14px;
+  transition: 0.1s background-color;
+  float: left;
+  -webkit-appearance: none
 }
 
 .note {
@@ -2308,8 +2383,8 @@ div.submit-button:disabled {
   padding: 5px 0;
   position: absolute;
   z-index: 5;
-  top: -24px;
-  left: -18px;
+  top: -4px;
+  left: -100px;
   font-size: 12px;
   line-height: 14px;
 }
@@ -2907,6 +2982,10 @@ span.arrow {
   margin-right: 3px;
 }
 
+.accessTableAddUserWarning {
+  color: var(--color-red-hover);
+}
+
 .accessTableCell {
   height: 60px;
   text-align: center;
@@ -2923,7 +3002,9 @@ span.arrow {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 160px;
+  left:0;
+  top: 100%;
+  width: 100%;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
@@ -2945,7 +3026,10 @@ span.arrow {
 
 padding: 10px;
 }
-
+.access-dropdown-selected {
+  background-color:var(--color-accent);
+  color:var(--color-primary);
+}
 #reset-pw{
   width:70%; 
   margin-left:20px;
@@ -3022,7 +3106,7 @@ padding: 10px;
   border: 1px solid var(--color-primary);
   border-radius: 4px;
   padding: 10px;
-  width: min-content;
+  width: max-content;
 }
 
 .resultedFormsFlex {
@@ -3036,6 +3120,69 @@ padding: 10px;
   font-size: 10px;
   color: gray;
   text-align: center;
+}
+#resultedLegendContainer{
+  position: fixed;
+  top: 80px;
+  right:-323px;
+  z-index: 2000;
+  transition: right 0.3s, top 0.3s;
+}
+
+#legendBtn{
+  height: 31px;
+  width: 36px;
+  background-color:#ccc;
+  float: left;
+  padding-top: 7px;
+  padding-right: 4px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 17px 0px 0px 17px;
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -webkit-user-select: none;     
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.legendList{
+  width: 280px;
+  float: right;
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  list-style: none;
+  background-color: #ddd;
+  margin: 0px;
+  border-radius: 0px 0px 0px 5px;
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.legendListItem{
+  padding-bottom: 8px;
+}
+
+.legendList div{
+  display: inline-block;
+}
+
+.legendListItem span:first-of-type{
+  font-weight: bold;
+}
+
+.legendListItem img{
+  width: 24px;
+  height: 24px;
+}
+
+.legendListItem div:first-of-type{
+  width: 24px;
+  height: 14px;
 }
 
 #laddate {
@@ -5147,6 +5294,7 @@ only screen and (max-device-width: 320px) {
 
 #editDugga #name {
   width: 195px;
+  color: initial;
 }
 
 /* Collapsible */

@@ -11,6 +11,7 @@ var accessFilter = "WRST";
 var trueTeacher;
 var examinerName;
 var activeDropdown;
+var shouldReRender = false;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -160,9 +161,10 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	// Verify SSN <= 20 characters
-	if (input[0].length > 20) {
-		alert('Input exceeded max length for SSN (20)');
+	// Verify SSN using validateSSN function
+	var errorString = '';
+	if(verifyString = validateSSN(input[0])) {	// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
@@ -195,7 +197,77 @@ function verifyUserInputForm(input) {
 		alert('Email input must contain at least 1 character before "@" to create a username');
 		return false;
 	}
+
 	return true;
+}
+
+//---------------------------------------------------------------------------------------------------
+// validateSSN(ssn)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+// For information regarding Swedish personal identity numbers visit:
+// https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
+//---------------------------------------------------------------------------------------------------
+function validateSSN(ssn)
+{
+	const length = ssn.length;
+	const delimiter = length-5;	// The expected position of the '-' in the ssn
+
+	switch(length) {
+		case 11: case 13:
+			const formatTest = /\d{6,8}-\d{4}/;	// Expected format
+			if(formatTest.test(ssn))
+				break;
+						
+		default:
+			return 'SSN Error! Should be ######-#### or ########-####';
+	}
+
+	const dd = ssn.substring(delimiter-2, delimiter);
+	const mm = ssn.substring(delimiter-4, delimiter-2);
+	const yyyy = (length === 13) ? ssn.substring(0, 4) : 19+ssn.substring(0, 2);	// Ensure yyyy
+	const birthNum = ssn.substring(delimiter+1, delimiter+4);
+	const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
+
+	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
+		return 'SSN Error! Impossible date in SSN. The future is not here yet';
+
+	if(isNaN(ssnDate)					// Make sure date is valid (i.e. not 87th April)
+		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
+		return 'SSN Error! Invalid date';
+	}
+
+	const controlDigitString = yyyy.substring(2, 4) + mm + dd + birthNum;
+	var ccd = 0;	// Calculated Control Digit
+	for(var i = 0; i < controlDigitString.length; i++) {
+		var n = parseInt(controlDigitString.charAt(i));
+		if(i%2 === 0) n *= 2;			// Every other digit should be multiplied by 2
+		if(n >= 10) n -= 9;			// If value is >= 10, 9 should be subtracted
+
+		ccd += n;	// Add value to the calculation in progress
+	}
+
+	ccd = 10 - (ccd%10);		// 10 - the last digit of the calculation
+	if(ccd === 10) ccd = 0;		// If value is 10, remove the left digit... Leads to ccd = 0
+
+	if(ccd != ssn.substring(length-1))	// Compare calculated to given control digit
+		return 'SSN Error! Incorrect control digit (last digit). Expected: ' + ccd;
+
+	return null;	// The provided SSN is correct!
+}
+
+//-------------------------------------------------------------
+// updateErrorMessage()
+// Updates the error message shown inside the "Add user" window
+//-------------------------------------------------------------
+function updateErrorMessage()
+{
+	var errorMsg = '';
+	var testString = '';
+
+	if(testString = validateSSN(document.getElementById('addSsn').value))	// Check SSN for errors if input has been given
+		errorMsg += testString;
+
+	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';	// Updates label
 }
 
 var inputVerified;
@@ -260,7 +332,7 @@ function changeOptDiv(e) {
 	}
 	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
 	changeProperty(paramlist[1], paramlist[0], keyvalue);
-	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
+  shouldReRender = true;
 }
 
 function changeOptDivStudent(e,value){
@@ -269,14 +341,15 @@ function changeOptDivStudent(e,value){
 	keyvalue = e.target.getAttribute('data-value');
 	
 	obj = {
+		uid: paramlist[1],
 		[key]: keyvalue
 	}
 	updateDropdownInTable(e.target.parentElement.parentElement.firstChild, obj);
 	changeProperty(paramlist[1], paramlist[0], value);
-	e.target.parentElement.parentElement.firstChild.innerHTML = e.target.innerHTML;
+  shouldReRender = true;
 }
 
-function changeOpt(e) {
+/*function changeOpt(e) {
 	var paramlist = e.target.id.split("_");
 	obj = {
 		uid: paramlist[1],
@@ -284,7 +357,7 @@ function changeOpt(e) {
 	obj[paramlist[0]] = e.target.value;
 	updateDropdownInTable(e.target.parentElement, obj);
 	changeProperty(paramlist[1], paramlist[0], e.target.value);
-}
+}*/
 
 function changeProperty(targetobj, propertyname, propertyvalue) {
 	AJAXService("UPDATE", {
@@ -324,26 +397,28 @@ function renderCell(col, celldata, cellid) {
 			str = "<div style='display:flex;'><span id='" + col + "_" + obj.uid + "' style='margin:0 4px;flex-grow:1;'>" + obj[col] + "</span></div>";
 		}
 	} else if (col == "class") {
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+obj.class+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.class, filez['classes'], "class", "class") + "</div>";
+		var className = obj.class;
+		if (className == null || className === "null") {
+			className = "";
+		}
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+className+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(className, filez['classes'], "class", "class") + "</div>";
 	} else if (col == "examiner") {
+		var examinerName = "";
 		for(i = 0; i < filez['teachers'].length; i++){
 			if(obj.examiner == filez['teachers'][i].uid){
 				examinerName = filez['teachers'][i].name;
 			}
 		}
-		if(examinerName == null){
-			examinerName = "None";
-		}
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(obj.examiner, filez['teachers'], "name", "uid") + "</div>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div '>"+examinerName+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItemWithValue(examinerName, filez['teachers'], "name", "uid") + "</div>";
 	} else if (col == "vers") {
-		var versname = "null"
+		var versname = "";
 		for (var i = 0; i < filez['courses'].length; i++) {
 			if (obj.vers == filez['courses'][i]['vers']) {
 				versname = filez['courses'][i]['versname'];
 			}
 		}
 
-		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(obj.vers, filez['courses'], "versname", "vers") + "</select>";
+		str = "<div class='access-dropdown' id='" + col + "_" + obj.uid + "'><Div >"+versname+"</Div><img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>" + makedivItem(versname, filez['courses'], "versname", "vers") + "</select>";
         for (var submission of filez['submissions']) {
             if (obj.uid === submission.uid) {
                 str += "<img class='oldSubmissionIcon' title='View old version' src='../Shared/icons/DocumentDark.svg' onclick='showVersion(" + submission.vers + ")'>";
@@ -390,9 +465,9 @@ function renderCell(col, celldata, cellid) {
 		for (var i = 0; i < filez['groups'].length; i++) {
 			var group = filez['groups'][i];
 			if (tgroups.indexOf((group.groupkind + "_" + group.groupval)) > -1) {
-				str += "<label><input type='checkbox' checked id='g" + obj.uid + "' value='" + group.groupkind + "_" + group.groupval + "' />" + group.groupval + "</label>";
+				str += "<label><input type='radio' name='groupradio"+obj.uid+"' checked id='g" + obj.uid + "' value='" + group.groupkind + "_" + group.groupval + "' />" + group.groupval + "</label>";
 			} else {
-				str += "<label><input type='checkbox' id='g" + obj.uid + "' value='" + group.groupkind + "_" + group.groupval + "' />" + group.groupval + "</label>";
+				str += "<label><input type='radio' name='groupradio"+obj.uid+"' id='g" + obj.uid + "' value='" + group.groupkind + "_" + group.groupval + "' />" + group.groupval + "</label>";
 			}
 		}
 		str += '</div></div>';
@@ -592,7 +667,11 @@ function returnedAccess(data) {
 			hasMagicHeadings: false,
 			hasCounterColumn: true
 		});
+		shouldReRender = true;
+	}
 
+	if (shouldReRender) {
+		shouldReRender = false;
 		myTable.renderTable();
 	}
 }
@@ -872,9 +951,9 @@ function createCheckboxes() {
 //--------------------------------------------------------------------------
 
 function compare(a, b) {
-    var col = sortableTable.currentTable.getSortcolumn();
-		var status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
-	
+	var col = myTable.getSortcolumn();
+	var status = myTable.getSortkind(); // Get if the sort arrow is up or down.
+
 		if(status==1){
 				var tempA = a;
 				var tempB = b;
@@ -899,14 +978,30 @@ function compare(a, b) {
 						if(tempA==null) return -1;
 						if(tempB==null) return 1;
 				}else if(col=="examiner"){
-						tempA=tempA.examiner;
-						tempB=tempB.examiner;
-						if(tempA==null) return -1;
-						if(tempB==null) return 1;
-				}else if(col=="version"){
-						tempA=tempA.version;
-						tempB=tempB.version;
-				}					
+					tempA = tempA.examiner;
+					tempB = tempB.examiner;
+					if(tempA==null) return -1;
+					if(tempB==null) return 1;
+					for (var i =0; i < filez['teachers'].length; i++) {
+						if (tempA == filez['teachers'][i].uid) {
+							tempA = filez['teachers'][i].name;
+						}
+						if (tempB == filez['teachers'][i].uid) {
+							tempB = filez['teachers'][i].name;
+						}
+					}
+					if (typeof tempA === "number") {
+						tempA = "";
+					}
+					if (typeof tempB === "number") {
+						tempB = "";
+					}
+				}else if(col=="access") {
+					tempA=tempA.access;
+					tempB=tempB.access;
+					if(tempA==null) return -1;
+					if(tempB==null) return 1;
+				}
 				return tempA.toLocaleUpperCase().localeCompare(tempB.toLocaleUpperCase(), "sv");
 		}else if(col=="lastmodified"){
 				tempA=Date.parse(tempA);

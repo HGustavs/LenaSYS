@@ -277,6 +277,8 @@
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
+					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' onchange='showFeedbackquestion()'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput'' id='fdbckque' value='Hur skulle du betygsätta duggan?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
@@ -406,6 +408,26 @@
 		</div>
 	</div>
 	<!-- HighscoreBox END -->
+
+	<!-- User Feedback Dialog START -->
+    <div id='userFeedbackDialog' class='loginBoxContainer' style='display:none;'>
+      <div class='loginBox' id='variantBox'>
+        <div class='loginBoxheader'>
+          <h3 id="userFeedbackTitle">User Feedback</h3> 
+          <div class='cursorPointer' onclick='closeWindows();'>x</div>
+        </div>
+		<h2 id="duggaFeedbackQuestion"></h2>
+		<div id="statscontainer">
+			<div class="statsdiv"><p id="avg-feedback"></p>Medelvärde</div>
+			<div class="statsdiv"><p id="median-feedback"></p>Högsta/Lägsta</div>
+			<div class="statsdiv"><p id="total-feedback"></p>Antal feedback</div>
+		</div>
+		<div id="feedbacktablecontainer">
+		</div>
+      </div>
+    </div>
+    <!-- User Feedback Dialog END -->
+
 </body>
 
 </html>

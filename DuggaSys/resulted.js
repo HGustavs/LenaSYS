@@ -30,6 +30,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
+var legendIsHidden = true;
 
 function setup() {
     //Benchmarking function
@@ -686,12 +687,15 @@ function returnedResults(data) {
 // Success return function for LadExport lastGraded
 //----------------------------------------
 function returnedExportedGrades(gradeData){
+	// Tries to write out the last exported date.
+	// If it fails, then log the error.
 	try {
-		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;
-	  }
-	  catch(err) {
-		console.log("gradeLastExported updated in database");
-	  }
+		if (typeof gradeData[0].gradeLastExported !== 'undefined' && typeof gradeData[0] === 'object') {
+			document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
+		}
+	} catch (error) {
+		console.log(error);
+	}
 }
 var myTable;
 //----------------------------------------
@@ -1522,7 +1526,7 @@ function copyLadexport() {
 	today = yyyy + '-' + mm + '-' + dd;
 
 	 var gradeLastExported = today + " " + time;
-	 lastExpDate.innerHTML =  gradeLastExported;
+	 lastExpDate.innerHTML = gradeLastExported;
 	 lastExpDate.style.color = 'green';
 
 	 setInterval(function(){
@@ -1568,10 +1572,16 @@ $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
 	var ladExportWidth = document.getElementById("resultedFormContainer").offsetWidth;
 	var scrolled = $(this).scrollLeft();
+	var legendBox = $('#resultedLegendContainer');
+	var $win = $(window);
 	if((scrolled + ladExportWidth) < resultTableWidth){
 		$('#resultedFormContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
 		});
+		legendBox.css("top", "103px");
+	}
+	if ($(window).scrollTop() == 0){
+		legendBox.css("top", "80px");
 	}
 });
 
@@ -1581,6 +1591,22 @@ function hideSSN(ssn){
 	return hiddenSSN;
 }
 
+//Shows and hides element describing the icons and colours
+function showLegend(){
+	var legendBox = $('#resultedLegendContainer');
+	if (legendIsHidden == false){
+
+		legendBox.css("right", "-323px");
+		legendIsHidden = true;
+	}
+	else if (legendIsHidden == true){
+		legendBox.css("right", "0px");
+		legendIsHidden = false;
+	}
+	else{
+		//alert(legendIsHidden);
+	}
+}
 
 function compare(firstCell, secoundCell) {
 	let col = myTable.getSortcolumn(); // Get column name
