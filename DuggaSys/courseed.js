@@ -122,7 +122,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	tempCoursename = tempCoursename.replace(/&auml;/g, "ä");
 	tempCoursename = tempCoursename.replace(/&Ouml;/g, "Ö");
 	tempCoursename = tempCoursename.replace(/&ouml;/g, "ö");
-
+	
 	// Set Name
 	$("#coursename").val(tempCoursename);
 	// Set Cid
@@ -254,8 +254,17 @@ function editSettings(){
 	const readOnlyCheckbox = document.getElementById("readonly");
 	const popupContainer = document.getElementById("editSettings");
 
+	var tempMotd = motd;
+	tempMotd = motd.replace(/&Aring;/g, "Å");
+	tempMotd = motd.replace(/&aring;/g, "å");
+	tempMotd = motd.replace(/&Auml;/g, "Ä");
+	tempMotd = motd.replace(/&auml;/g, "ä");
+	tempMotd = motd.replace(/&Ouml;/g, "Ö");
+	tempMotd = motd.replace(/&ouml;/g, "ö");
+
 	if(motd !== "UNK") {
-		messageElement.value = motd;
+		$("#motd").val(tempMotd);
+		//messageElement.value = tempMotd;
 	} 
 
 	if(readonly === 1) {
@@ -443,7 +452,7 @@ function returnedCourse(data)
 
 	motd = data["motd"];
 	readonly = parseInt(data["readonly"]);
-
+	
 	if(motd!=="UNK"){
 		document.getElementById("servermsg").innerHTML=data["motd"];
 		document.getElementById("servermsgcontainer").style.display="flex";
@@ -574,7 +583,7 @@ function validateForm(formid) {
 }
 function validateMOTD(motd, dialogid){
 	var emotd = document.getElementById(motd);
-	var Emotd = /(^$)|(^[-a-zA-Z0-9_ !,.]*$)/;
+	var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_ !,.]*$)/;
 	var EmotdRange = /^.{0,50}$/;
 	var x4 = document.getElementById(dialogid);
 	if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
