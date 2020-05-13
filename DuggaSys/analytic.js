@@ -647,15 +647,17 @@ function loadUserInformation(){
 
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "Page", "Courseid", "Course Version", "Timestamp"]];
-                }
-                users[user].push([
-					row.uid,
-					row.username,
-					pageLoad,
-					cid,
-					vers,
-                    row.timestamp
-                ]);
+				}
+				if(cid != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						pageLoad,
+						cid,
+						vers,
+						row.timestamp
+					]);
+				}
             });
             updateState(users);
         });
@@ -682,13 +684,15 @@ function loadUserInformation(){
 
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "Event", "Timestamp"]];
-                }
-                users[user].push([
-					row.uid,
-					row.username,
-                    pageLoad,
-                    row.timestamp
-				]);
+				}
+				if(pageLoad != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						pageLoad,
+						row.timestamp
+					]);
+				}
             });
             updateState(users);
         });
@@ -702,15 +706,17 @@ function loadUserInformation(){
                
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "Page", "Courseid", "Exampleid", "Timestamp"]];
-                }
-                users[user].push([
-					row.uid,
-					row.username,
-					"codeviewer.php",
-					row.cid,
-					row.exampleid,
-                    row.timestamp
-                ]);
+				}
+				if(row.cid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						"codeviewer.php",
+						row.cid,
+						row.exampleid,
+						row.timestamp
+					]);
+				}
             });
             updateState(users);
         });
@@ -725,15 +731,17 @@ function loadUserInformation(){
                
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "Page", "Courseid", "Duggaid", "Timestamp"]];
-                }
-                users[user].push([
-					row.uid,
-					row.username,
-					"showDugga.php",
-					row.cid,
-					row.quizid,
-                    row.timestamp
-                ]);
+				}
+				if(row.cid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						"showDugga.php",
+						row.cid,
+						row.quizid,
+						row.timestamp
+					]);
+				}
             });
             updateState(users);
         });
@@ -744,17 +752,18 @@ function loadUserInformation(){
         loadAnalytics("userLogInformation", function(data) {
             $.each(data, function(i, row) {
                 var user = row.username;
-               
                 if (!users.hasOwnProperty(user)) {
                     users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp"]];
-                }
-                users[user].push([
-					row.uid,
-					row.username,
-					row.eventType,
-					row.description,
-                    row.timestamp
-                ]);
+				}
+				if(row.eventType != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						row.eventType,
+						row.description,
+						row.timestamp
+					]);
+				}
             });
             updateState(users);
         });
