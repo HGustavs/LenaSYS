@@ -49,10 +49,10 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 				fileInformation();
 				break;
 			case 'duggaInformation':
-                duggaInformation();
+                duggaInformation($pdo);
                 break;
             case 'codeviewerInformation':
-                codeviewerInformation();
+                codeviewerInformation($pdo);
                 break;
             case 'duggaPercentage':
                 duggaPercentage();
@@ -61,13 +61,13 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
                 codeviewerPercentage();
 				break;
 			case 'sectionedInformation':
-				sectionedInformation();
+				sectionedInformation($pdo);
 				break;
 			case 'courseedInformation':
-				courseedInformation();
+				courseedInformation($pdo);
 				break;
 			case 'userLogInformation':
-				userLogInformation();
+				userLogInformation($pdo);
 				break;
 		}
 	} else {
@@ -401,7 +401,23 @@ function serviceCrashes(){
 //------------------------------------------------------------------------------------------------
 // Retrieves dugga information         
 //------------------------------------------------------------------------------------------------
-function duggaInformation(){
+function duggaInformation($pdo) {
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [	
+								"cid" 			=>	"",
+								"uid" 			=>	$value['uid'],
+								"username"		=>	$value['username'],	
+								"quizid"		=>	"",		
+								"timestamp"		=>	""
+							];
+		}
+	}
+
     $result = $GLOBALS['log_db']->query('
 		SELECT
 			cid,
@@ -412,14 +428,38 @@ function duggaInformation(){
         FROM duggaLoadLogEntries
         ORDER BY timestamp;
     ')->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === FALSE) { 
+			unset($users[$key]);
+		} 
+	}
+
+    echo json_encode(array_merge($users,$result));
 }
  
 //------------------------------------------------------------------------------------------------
 // Retrieves codeviewer information        
 //------------------------------------------------------------------------------------------------
  
-function codeviewerInformation(){
+function codeviewerInformation($pdo){
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [	
+								"cid" 			=>	"",
+								"uid" 			=>	$value['uid'],
+								"username"		=>	$value['username'],		
+								"exampleid"		=>	"",
+								"timestamp"		=>	""
+							];
+		}
+	}
+
     $result = $GLOBALS['log_db']->query('
 		SELECT
 			courseid AS cid,
@@ -430,7 +470,15 @@ function codeviewerInformation(){
         FROM exampleLoadLogEntries
         ORDER BY timestamp;
     ')->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === TRUE) { 
+			unset($users[$key]);
+		}
+	}
+
+    echo json_encode(array_merge($users,$result));
 }
  
 //------------------------------------------------------------------------------------------------
@@ -471,7 +519,22 @@ function codeviewerPercentage(){
 // Retrieves sectioned log information      
 //------------------------------------------------------------------------------------------------
  
-function sectionedInformation(){
+function sectionedInformation($pdo) {
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [	
+								"uid" 			=>	$value['uid'],
+								"username"		=>	$value['username'],								
+								"refer"		=>	"",
+								"timestamp"	=>	""
+							];
+		}
+	}
+
     $result = $GLOBALS['log_db']->query('
        SELECT
 		   userid AS uid,
@@ -482,14 +545,37 @@ function sectionedInformation(){
 	   WHERE refer LIKE "%sectioned%"
 	   ORDER BY timestamp;
    ')->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === TRUE) { 
+			unset($users[$key]);
+		}
+	}
+
+    echo json_encode(array_merge($users,$result));
 }
 
 //------------------------------------------------------------------------------------------------
 // Retrieves courseed log information      
 //------------------------------------------------------------------------------------------------
  
-function courseedInformation(){
+function courseedInformation($pdo){
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [	
+								"uid" 			=>	$value['uid'],
+								"username"		=>	$value['username'],								
+								"refer"		=>	"",
+								"timestamp"	=>	""
+							];
+		}
+	}
+
     $result = $GLOBALS['log_db']->query('
        SELECT
 		   userid AS uid,
@@ -500,23 +586,55 @@ function courseedInformation(){
 	   WHERE refer LIKE "%courseed%"
 	   ORDER BY timestamp;
    ')->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === TRUE) { 
+			unset($users[$key]);
+		} 
+	}
+
+    echo json_encode(array_merge($users,$result));
 }
 
 //------------------------------------------------------------------------------------------------
 // Retrieves userLog information      
 //------------------------------------------------------------------------------------------------
  
-function userLogInformation(){
-    $result = $GLOBALS['log_db']->query('
-       SELECT
-		   uid,
-		   username,
-		   eventType,
-		   description,
-		   timestamp 
-	   FROM userLogEntries
-	   ORDER BY timestamp;
-   ')->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
+function userLogInformation($pdo){
+	$query = $pdo->prepare("SELECT username, uid FROM user");
+	if(!$query->execute()) {
+	} else {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		foreach($rows as $key => $value) {
+			$users[$key] =  [
+								"username"		=>	$value['username'],
+								"uid" 			=>	$value['uid'],
+								"eventType"		=>	"",
+								"description"	=>	"",
+								"timestamp"		=>	""
+							];
+		}
+	}
+
+	$result = $GLOBALS['log_db']->query('
+		SELECT
+			uid,
+			username,
+			eventType,
+			description,
+			timestamp 
+		FROM userLogEntries
+		ORDER BY timestamp;
+	')->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach($result as $value) {
+		$key = array_search($value['uid'], array_column($users, 'uid'));
+		if($key === TRUE) { 
+			unset($users[$key]);
+		}
+	}
+
+    echo json_encode(array_merge($users,$result));
 }
