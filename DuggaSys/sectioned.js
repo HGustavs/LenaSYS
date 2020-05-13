@@ -1509,7 +1509,6 @@ function mouseUp(e) {
     event.preventDefault();
 
     closeWindows();
-    console.log(e.target);
     closeSelect();
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
