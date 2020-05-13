@@ -6258,7 +6258,6 @@ function createRulerLinesObjectPoints() {
 
     //Get an array of points used by all selected objects
     const selectedPoints = getSelectedObjectsPoints();
-    console.log(selectedPoints);
 
     //Remove all current point liens
     document.querySelectorAll(".point-line").forEach(element => element.remove());
