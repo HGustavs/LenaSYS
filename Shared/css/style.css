@@ -5040,23 +5040,48 @@ only screen and (max-device-width: 320px) {
   left: 0;
 }
 
-.ruler-extra-lines .mouse-line {
+.ruler-extra-lines .mouse-line,
+.ruler-extra-lines .point-line {
   position: absolute;
+}
+
+.ruler-extra-lines .mouse-line {
   background-color: var(--color-text-primary);
 }
 
-#ruler-x .ruler-extra-lines .mouse-line {
-  width: 4px;
+.ruler-extra-lines .point-line {
+  background-color: var(--color-red);
+}
+
+#ruler-x .ruler-extra-lines .mouse-line,
+#ruler-x .ruler-extra-lines .point-line {
   height: calc(var(--ruler-size) / 4);
   bottom: 0;
   left: 0;
 }
 
-#ruler-y .ruler-extra-lines .mouse-line {
-  height: 4px;
+#ruler-y .ruler-extra-lines .mouse-line,
+#ruler-y .ruler-extra-lines .point-line {
   width: calc(var(--ruler-size) / 4);
   top: 0;
   right: 0;
+}
+
+
+#ruler-x .ruler-extra-lines .mouse-line {
+  width: 4px;
+}
+
+#ruler-x .ruler-extra-lines .point-line {
+  width: 3px;
+}
+
+#ruler-y .ruler-extra-lines .mouse-line {
+  height: 4px;
+}
+
+#ruler-y .ruler-extra-lines .point-line {
+  height: 3px;
 }
 
 /* --------------================################================-------------- *
