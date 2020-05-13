@@ -161,9 +161,10 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	// Verify SSN <= 20 characters
-	if (input[0].length > 20) {
-		alert('Input exceeded max length for SSN (20)');
+	// Verify SSN using validateSSN function
+	var errorString = '';
+	if(verifyString = validateSSN(input[0])) {	// Returns null if there is no error
+		alert(verifyString);
 		return false;
 	}
 
@@ -196,7 +197,77 @@ function verifyUserInputForm(input) {
 		alert('Email input must contain at least 1 character before "@" to create a username');
 		return false;
 	}
+
 	return true;
+}
+
+//---------------------------------------------------------------------------------------------------
+// validateSSN(ssn)
+// Returns null if there are NO errors, otherwise a descripitve error message as string.
+// For information regarding Swedish personal identity numbers visit:
+// https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
+//---------------------------------------------------------------------------------------------------
+function validateSSN(ssn)
+{
+	const length = ssn.length;
+	const delimiter = length-5;	// The expected position of the '-' in the ssn
+
+	switch(length) {
+		case 11: case 13:
+			const formatTest = /\d{6,8}-\d{4}/;	// Expected format
+			if(formatTest.test(ssn))
+				break;
+						
+		default:
+			return 'SSN Error! Should be ######-#### or ########-####';
+	}
+
+	const dd = ssn.substring(delimiter-2, delimiter);
+	const mm = ssn.substring(delimiter-4, delimiter-2);
+	const yyyy = (length === 13) ? ssn.substring(0, 4) : 19+ssn.substring(0, 2);	// Ensure yyyy
+	const birthNum = ssn.substring(delimiter+1, delimiter+4);
+	const ssnDate = new Date(`${yyyy}-${mm}-${dd}`);
+
+	if(ssnDate.getTime() > Date.now())			// Make sure date of SSN is not in the future
+		return 'SSN Error! Impossible date in SSN. The future is not here yet';
+
+	if(isNaN(ssnDate)					// Make sure date is valid (i.e. not 87th April)
+		|| (parseInt(dd) !== ssnDate.getDate())) {	// Ensures leap years are handled correctly
+		return 'SSN Error! Invalid date';
+	}
+
+	const controlDigitString = yyyy.substring(2, 4) + mm + dd + birthNum;
+	var ccd = 0;	// Calculated Control Digit
+	for(var i = 0; i < controlDigitString.length; i++) {
+		var n = parseInt(controlDigitString.charAt(i));
+		if(i%2 === 0) n *= 2;			// Every other digit should be multiplied by 2
+		if(n >= 10) n -= 9;			// If value is >= 10, 9 should be subtracted
+
+		ccd += n;	// Add value to the calculation in progress
+	}
+
+	ccd = 10 - (ccd%10);		// 10 - the last digit of the calculation
+	if(ccd === 10) ccd = 0;		// If value is 10, remove the left digit... Leads to ccd = 0
+
+	if(ccd != ssn.substring(length-1))	// Compare calculated to given control digit
+		return 'SSN Error! Incorrect control digit (last digit). Expected: ' + ccd;
+
+	return null;	// The provided SSN is correct!
+}
+
+//-------------------------------------------------------------
+// updateErrorMessage()
+// Updates the error message shown inside the "Add user" window
+//-------------------------------------------------------------
+function updateErrorMessage()
+{
+	var errorMsg = '';
+	var testString = '';
+
+	if(testString = validateSSN(document.getElementById('addSsn').value))	// Check SSN for errors if input has been given
+		errorMsg += testString;
+
+	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';	// Updates label
 }
 
 var inputVerified;

@@ -2898,6 +2898,10 @@ span.arrow {
   margin-right: 3px;
 }
 
+.accessTableAddUserWarning {
+  color: var(--color-red-hover);
+}
+
 .accessTableCell {
   height: 60px;
   text-align: center;
