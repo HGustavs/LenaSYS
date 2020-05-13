@@ -148,7 +148,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   } else {
      document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
-
+  
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
@@ -2062,6 +2062,9 @@ function validateDate(startDate, endDate, dialogID) {
 
 /*Validates if deadline is between start and end date*/
 function validateDate2(ddate, dialogid) {
+  var inputDeadline = document.getElementById("inputwrapper-deadline");
+  if (window.getComputedStyle(inputDeadline).display !== "none") {
+  
   var ddate = document.getElementById(ddate);
   var x = document.getElementById(dialogid);
   var deadline = new Date(ddate.value);
@@ -2084,6 +2087,10 @@ function validateDate2(ddate, dialogid) {
     window.bool8 = false;
 
     }
+  }
+  else{
+    window.bool8 = true;
+  }
 }
 
 function validateSectName(name, dialogid){
@@ -2115,29 +2122,12 @@ function validateForm(formid) {
     var deadDate = document.getElementById("setDeadlineValue").value;
 
     //If fields empty
-    if (sName == null || sName == "", deadDate == null || deadDate == "") {
-      alert("Fill in all fields");
-
-    }
-    // if all information is correct
-    if (window.bool8 === true && window.bool10 === true ) {
-      alert('The item is now updated');
-      updateItem();
-      updateDeadline();
-
-    } else {
-      alert("You have entered incorrect information");
-    }
-  }
-  if (formid === 'editSectionName') {
-    var sName = document.getElementById("sectionname").value;
-    //If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
 
     }
     // if all information is correct
-    if (window.bool10 === true ) {
+    if (window.bool8 === true && window.bool10 === true ) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
