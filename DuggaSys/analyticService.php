@@ -20,6 +20,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'generalStats':
 				generalStats($pdo);
 				break;
+			case 'courseDiskUsage':
+				courseDiskUsage($pdo);
+				break;
 			case 'onlineUsers':
 				onlineUsers();
 				break;
@@ -682,4 +685,29 @@ function pageInformation(){
 	$result['percentage']['codeviewer'] = $codeviewer;
 
 	echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves course disk usage
+//------------------------------------------------------------------------------------------------
+function courseDiskUsage($pdo) {
+	$query = $pdo->prepare("SELECT coursename, cid, activeversion, coursecode FROM course");
+
+	if($query->execute()) {
+		$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+		$course = [];
+		foreach($rows as $row => $values) {
+			$course[$row] = [
+							"coursename"	=> $values['coursename'],
+							"cid" 			=> $values['cid'],
+							"activeversion" => $values['activeversion'],
+							"coursecode" => $values['coursecode'],
+							"size" 			=> GetDirectorySize(getcwd() . "/submissions/" . $values['cid'] . "/" . $values['activeversion']),
+							"sizeReadable" 	=> convertBytesToHumanreadable(GetDirectorySize(getcwd() . "/submissions/" . $values['cid'] . "/" . $values['activeversion'])),
+	
+						 ];
+		}
+	
+		print_r(json_encode($course));
+	}
 }
