@@ -4717,6 +4717,7 @@ function touchStartEvent(event) {
         }
         lastSelectedObject = -1;
         selected_objects = [];
+        createRulerLinesObjectPoints();
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
     }
@@ -4817,9 +4818,9 @@ function touchMoveEvent(event) {
         ctx.stroke();
         ctx.setLineDash([]);
     }
+    createRulerLinesObjectPoints();
     reWrite();
     updateGraphics();
-
 }
 
 // Takes the closest selected point and resizes the object
@@ -6257,6 +6258,7 @@ function createRulerLinesObjectPoints() {
 
     //Get an array of points used by all selected objects
     const selectedPoints = getSelectedObjectsPoints();
+    console.log(selectedPoints);
 
     //Remove all current point liens
     document.querySelectorAll(".point-line").forEach(element => element.remove());
