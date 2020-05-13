@@ -2485,12 +2485,16 @@ function eraseObject(object) {
         // lines
         } else {
             diagram.filter(
-                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml)
+                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml || symbol.symbolkind == symbolKind.erAttribute)
                     .filter(symbol =>   symbol.hasConnector(object.topLeft)
                                      && symbol.hasConnector(object.bottomRight))
                     .forEach(symbol => {
-                        symbol.removePointFromConnector(object.topLeft);
-                        symbol.removePointFromConnector(object.bottomRight);
+                        if(symbol.symbolkind == symbolKind.erAttribute){
+                            symbol.removePointFromConnector(symbol.centerPoint, object);
+                        } else{
+                            symbol.removePointFromConnector(object.topLeft);
+                            symbol.removePointFromConnector(object.bottomRight);
+                        }
                     });
 
             var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml);
