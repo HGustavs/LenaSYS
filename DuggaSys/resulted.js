@@ -818,6 +818,7 @@ function renderCell(col, celldata, cellid) {
 						
 				str += "dugga-pending";
 			} else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+				console.log(celldata.submitted);
 				str += "dugga-pending-late-submission";
 			} else if (celldata.grade === 1) {
 				str += "dugga-fail";
@@ -830,34 +831,42 @@ function renderCell(col, celldata, cellid) {
 			
 			str += "'>";
 			str += "</div>";
+			if(filterList["onlyPending"] || filterList["passedDeadline"]){
+			
+				if(filterList["onlyPending"] && filterList["passedDeadline"]){
+					str = "<div class='resultTableCell resultTableMini ";
+					if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+						str += "dugga-pending ";
+					}else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+						str += "dugga-pending-late-submission ";
+					} else {
+						str += "dugga-empty-mini";
+					}
+					str += "'>";
+				}
 
-			if(filterList["onlyPending"]){
-				// color based on pending
-				str = "<div class='resultTableCell resultTableMini ";
-				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
-					str += "dugga-pending ";
-				} else {
-					str += "dugga-empty-mini";
+				else if(filterList["onlyPending"]){
+					// color based on pending
+					str = "<div class='resultTableCell resultTableMini ";
+					if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
+						str += "dugga-pending ";
+					} else {
+						str += "dugga-empty-mini";
+					}
+					str += "'>";	
 				}
-		
-				str += "'>";
-				
-				return str;
-				
-			}
-			if(filterList["passedDeadline"]){
-				// color based on pending
-				str = "<div class='resultTableCell resultTableMini ";
-				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
-					str += "dugga-pending-late-submission ";
-				} else {
-					str += "dugga-empty-mini";
+
+				else if(filterList["passedDeadline"]){
+					// color based on pending
+					str = "<div class='resultTableCell resultTableMini ";
+					if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
+						str += "dugga-pending-late-submission ";
+					} else {
+						str += "dugga-empty-mini";
+					}
+					str += "'>";
 				}
-		
-				str += "'>";
-				
-				return str;
-				
+
 			}
 			return str;
 		}
