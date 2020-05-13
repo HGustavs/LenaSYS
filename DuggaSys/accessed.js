@@ -160,9 +160,9 @@ function addSingleUser() {
 }
 
 function verifyUserInputForm(input) {
-	// Verify SSN using checkSsnError function
+	// Verify SSN using validateSSN function
 	var errorString = '';
-	if(verifyString = checkSsnError(input[0])) {	// Returns null if there is no error
+	if(verifyString = validateSSN(input[0])) {	// Returns null if there is no error
 		alert(verifyString);
 		return false;
 	}
@@ -201,12 +201,12 @@ function verifyUserInputForm(input) {
 }
 
 //---------------------------------------------------------------------------------------------------
-// checkSsnError(ssn)
+// validateSSN(ssn)
 // Returns null if there are NO errors, otherwise a descripitve error message as string.
 // For information regarding Swedish personal identity numbers visit:
 // https://www.scb.se/contentassets/8d9d985ca9c84c6e8d879cc89a8ae479/ov9999_2016a01_br_be96br1601.pdf
 //---------------------------------------------------------------------------------------------------
-function checkSsnError(ssn)
+function validateSSN(ssn)
 {
 	const length = ssn.length;
 	const delimiter = length-5;	// The expected position of the '-' in the ssn
@@ -263,7 +263,7 @@ function updateErrorMessage()
 	var errorMsg = '';
 	var testString = '';
 
-	if(testString = checkSsnError(document.getElementById('addSsn').value))	// Check SSN for errors
+	if(testString = validateSSN(document.getElementById('addSsn').value))	// Check SSN for errors if input has been given
 		errorMsg += testString;
 
 	document.getElementById('addErrorMessage').innerHTML = errorMsg + ' ';	// Updates label
