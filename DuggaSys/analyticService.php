@@ -683,3 +683,15 @@ function pageInformation(){
 
 	echo json_encode($result);
 }
+
+//------------------------------------------------------------------------------------------------
+// Retrieves courseName for courseID     
+//------------------------------------------------------------------------------------------------
+
+function resolveCourseID($db){
+	$cid = $_POST['cid'];
+	$query = $db->prepare("SELECT coursename FROM course WHERE cid='".$cid."'");
+	$query->execute();
+	$result = $query->fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}
