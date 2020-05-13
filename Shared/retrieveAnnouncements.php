@@ -14,7 +14,7 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	$title = $announcement['title'];
 	$message = $announcement['message'];
 	$announceTime = $announcement['announceTime'];
-	$retrievedAnnouncementCard .="<div class='announcementCard'>";
+	$retrievedAnnouncementCard .="<div class='announcementCard' onclick='updateReadStatus(".$announcementid.", ".$cid.", ".$versid.");'>";
 
 	foreach ($pdo->query('SELECT * FROM course WHERE cid="'.$cid.'"') AS $course){
 		$coursename = $course['coursename'];
