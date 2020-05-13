@@ -547,14 +547,49 @@ function loadPageInformation() {
     }
  
     function updatePieChartInformation(page, tableData, data){
-
-        var tablePercentage = [["Courseid", "Percentage"]];
+		var courseID = [];
+		var coursePercentage = [];
+		var courseName = [];
+		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
         for (var i = 0; i < data['percentage'][page].length; i++) {
-            tablePercentage.push([
-                data['percentage'][page][i].courseid,
+			courseID.push([
+                data['percentage'][page][i].courseid
+			]);
+			coursePercentage.push([
                 data['percentage'][page][i].percentage
-            ]);
+			]);
+			$.ajax({
+				url: "analyticService.php",
+				type: "POST",
+				dataType: "json",
+				data: {
+					query: "resolveCourseID",
+					cid: parseInt(courseID[i])
+				},success: function(data){
+					console.log("success");
+					for (var i = 0; i < data.length; i++) {
+						courseName.push([
+							data[i].coursename
+						]);
+					}
+					console.log(courseName[0]);
+					tablePercentage = [["Courseid", "Percentage", "Coursename"]];
+					for (var i = 0; i < courseName.length; i++){
+						tablePercentage.push([
+							courseID[i],
+							coursePercentage[i],
+							courseName[i]
+						]);
+					}
+					if(data['percentage'][page].length < i){
+						$('#analytic-info').append(renderTable(tablePercentage));
+					}	
+				}, error: function(){
+					console.log(" AJAX error");
+				}		
+			});
         }
+
  
         var chartData = [];
         for (var i = 0; i < data['percentage'][page].length; i++) {
@@ -567,7 +602,6 @@ function loadPageInformation() {
         $('#analytic-info').append("<p>Page information.</p>");
         $('#analytic-info').append(selectPage);
 		$('#analytic-info').append(renderTable(tableData));
-        $('#analytic-info').append(renderTable(tablePercentage));
         $('#analytic-info').append(drawPieChart(chartData, "Hit spread for " + page + " page loads:"));
         updateState();
     }
