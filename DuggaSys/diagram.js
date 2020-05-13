@@ -687,6 +687,7 @@ function keyDownHandler(e) {
                 selected_objects.push(diagram[i]);
                 diagram[i].targeted = true;
             }
+            createRulerLinesObjectPoints();
             updateGraphics();
         } else if(key == keyMap.ctrlKey || key == keyMap.windowsKey) {
             ctrlIsClicked = true;
@@ -2528,6 +2529,7 @@ function eraseSelectedObject(event) {
     }
     selected_objects = [];
     lastSelectedObject = -1;
+    createRulerLinesObjectPoints();
     updateGraphics();
 }
 
@@ -3274,6 +3276,7 @@ function undoDiagram(event) {
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
     hoveredObject = undefined;
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------------------
@@ -3294,6 +3297,7 @@ function redoDiagram(event) {
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
     hoveredObject = undefined;
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------------------
@@ -4068,6 +4072,7 @@ function mousemoveevt(ev) {
             }
         }
     }
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------
@@ -4134,6 +4139,7 @@ function mousedownevt(ev) {
             }
             lastSelectedObject = -1;
             selected_objects = [];
+            createRulerLinesObjectPoints();
         }
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
@@ -4182,6 +4188,7 @@ function handleSelect() {
             lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length-1]);
         }
     }
+    createRulerLinesObjectPoints();
 }
 
 function mouseupevt(ev) {
@@ -6243,6 +6250,8 @@ function createRuler(element, length, origoOffset, marginProperty) {
 //-------------------------------------------------------------------------------------
 
 function createRulerLinesObjectPoints() {
+    if(!isRulersActive) return;
+
     const rulerExtraLinesX = document.querySelector("#ruler-x .ruler-extra-lines");
     const rulerExtraLinesY = document.querySelector("#ruler-y .ruler-extra-lines");
 
