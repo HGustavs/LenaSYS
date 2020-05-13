@@ -17,6 +17,7 @@ pdoConnect();
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="google" content="notranslate">
 	<title>Result Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
@@ -47,18 +48,37 @@ pdoConnect();
   ?>
   <!-- content START -->
 	<div id="content">
-		
+	
+	<div id="resultedLegendContainer" >
+		<div id="legendBtn" onclick="showLegend();"> ? </div>
+		<ul class="legendList">
+			<li class="legendListItem"><img src="../Shared/icons/Uh.png"><img src="../Shared/icons/G.png"> Pass</li>
+			<li class="legendListItem"><img src="../Shared/icons/U.png"><img src="../Shared/icons/Gc.png"> Fail</li>
+			<li class="legendListItem"><img src="../Shared/icons/Uc.png"><img src="../Shared/icons/Gc.png"> Pending/not graded</li>
+			<li class="legendListItem"><img src="../Shared/icons/FistV.png"> Show dugga stats</li>
+			<li class="legendListItem"><img src="../Shared/icons/warningTriangle.png"> Submission past deadline</li>
+			<li class="legendListItem"><span> (9) </span><span> Grading changes</span></li>
+			<li class="legendListItem"><img src="../Shared/icons/not_announced_icon.svg"> Dugga not yet submitted</li>
+			<li class="legendListItem"><div class="dugga-moment"></div> Dugga moment</li>
+			<li class="legendListItem"><div class="dugga-pending-late-submission"></div> Dugga pending: Late submission</li>
+			<li class="legendListItem"><div class="dugga-pending"></div> Dugga pending: Submission in time</li>
+			<li class="legendListItem"><div class="dugga-moment dugga-pass"></div> Moment passed</li>
+			<li class="legendListItem"><div class="dugga-moment dugga-fail"></div> Moment failed</li>
+			<li class="legendListItem"><div class="dugga-moment dugga-assigned"></div> Duggas submitted</li>
+			<li class="legendListItem"><span>Unassigned</span><span> No duggas submitted</span></li>
+		</ul>
+	</div>
     <div id="resultedFormContainer">
 	<div class="titles" style="justify-content:flex-start;">
 			<h1>Edit student results</h1>
     </div>
       <div id="ladexportContainer">
       <div class="resultedFormsFlex">
-        <label>Delkurs</label>
+        <label>Subcourse</label>
         <select id="ladselect"></select>
       </div>
       <div class="resultedFormsFlex">
-        <label>Betygsskala</label>
+        <label>Grading scale</label>
         <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
         <select id="ladgradescale">
           <option value="U-G-VG" selected>U-G-VG</option>
@@ -67,10 +87,13 @@ pdoConnect();
         </select>
       </div>
       <div class="resultedFormsFlex">
-        <label>Betygsdatum</label>
+        <label>Date of grading</label>
         <input id="laddate" type="date" style="font-size:12px;">
         </div>
+		<div class="resultedFormsFlex">
       <button class="resultedbuttons" onclick="ladexport();">LadExport</button>
+	  <span id="lastExportedDate"></span>
+	  </div>
 			</div>
 			<div style="display: flex;">
 			<!-- Email button will be disabled if user is not logged in as admin, or not logged in at all -->
@@ -80,7 +103,7 @@ pdoConnect();
 				<button class="resultedbuttons" onclick="mail();" disabled>Mail students</button>
 			<?php } ?>
         <div class="resultedFormsFlex">
-				<label>Filtrera efter</label>
+				<label>Filter by...</label>
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>none</option>
 					<option value="Filter-G">G</option>
@@ -89,7 +112,7 @@ pdoConnect();
 				</select>
 				</div>
 				<div class="resultedFormsFlex">
-					<label>Examinator:</label>
+					<label>Examinator</label>
 					<select name="teacherDropdown" id="teacherDropdown" onchange="updateTable()"></select>
 				</div>
 			</div>
@@ -108,7 +131,7 @@ pdoConnect();
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
 			onmouseout="hideHover();" >Show Results</h3>
 			<button id='gradeBtn' class='cursorPointer' onclick="toggleGradeBox();">
-				<img src="../Shared/icons/FistV.png" alt="grade" height="24px" width="24px">
+				<img src="../Shared/icons/FistV.png" height="24px" width="24px">
 			</button>
 			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
@@ -137,7 +160,7 @@ pdoConnect();
 										<table width="100%" height="100%">
 											<tr height="24px">
 													<td>
-															<button onclick='addCanned();'>Add</button>
+															<button onclick='addCanned();'>Add phrase</button>
 															<select id="cannedResponse">
 																	<option>&laquo; NONE &raquo;</option>
 																	<option>(Y) </option>
@@ -154,6 +177,8 @@ pdoConnect();
 											<tr height="24px">
 													<td>
 															<button onclick='saveResponse();'>Save</button>
+															<!-- Clear text in textarea id="responseArea" -->
+															<button onclick='clearResponseArea()'>Clear</button>
 													</td>
 											</tr>
 										</table>

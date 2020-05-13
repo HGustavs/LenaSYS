@@ -66,11 +66,12 @@ INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activev
 INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (324,"IT108G","Webbutveckling - webbplatsdesign",NOW(),1,0,12324,7.5);
 
 /* Insert versions of courses (The column vers should be the same as "anmälningskod", number with 5 digts) */
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (1,'DV12G','Webbprogrammering','UNK','45656','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (2,'IT118G','Webbutveckling - datorgrafik','UNK','97732','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (2,'IT118G','Webbutveckling - datorgrafik','UNK','97731','HT14','2014-12-29 00:00:00','2015-03-08 00:00:00');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (3,'IT500G','Datorns grunder','UNK','1337','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (4,'IT301G','Software Engineering','UNK','1338','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (1,'DV12G','Webbprogrammering','UNK','45656','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00','Webbprogrammering - HT15');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (1,'DV12G','Webbprogrammering','UNK','45657','HT16','2015-12-29 00:00:00','2016-03-08 00:00:00','Webbprogrammering - HT16');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (2,'IT118G','Webbutveckling - datorgrafik','UNK','97732','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00','Webbutveckling - datorgrafik - HT15');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (2,'IT118G','Webbutveckling - datorgrafik','UNK','97731','HT14','2014-12-29 00:00:00','2015-03-08 00:00:00','Webbutveckling - datorgrafik - HT14');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (3,'IT500G','Datorns grunder','UNK','1337','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00','Datorns grunder - HT15');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (4,'IT301G','Software Engineering','UNK','1338','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00','Software Engineering - HT15');
 
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (305,"IT308G","Objektorienterad programmering",'UNK','12305','HT15');
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (307,"IT115G","Datorns grunder",'UNK','12307','HT15');
@@ -140,6 +141,11 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,ro
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1018,1,'Shader examples','UNK',1,18,1,1,'45656',0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1019,1,'Shaderprogrammering',15,2,19,1,1,'45656',0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1020,1,'Shaderprogrammering',16,2,20,1,1,'45656',0);
+
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1021,1,'PHP examples - EN','UNK',1,1,1,1,'45657',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1022,1,'PHP Example 1 - EN',1,2,2,1,1,'45657',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1023,1,'PHP Example 2 - EN',2,2,3,1,1,'45657',0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1024,1,'PHP Example 3 - EN',3,2,4,1,1,'45657',0);
 
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2001,2,'Biträkningsduggor 1HP','',4,0,1,1,'97732',2001,2,0,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2002,2,'Biträkningsdugga 1','1',3,1,1,1,'97732',2001,2,1,0);

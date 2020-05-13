@@ -13,16 +13,23 @@
 				$_SESSION['courseid'] = getOPG('cid');
 			else
 				$_SESSION['courseid'] = "UNK";
+				//get course name
+			if (isset($_GET['coursename']))
+				$_SESSION['coursename'] = getOPG('coursename');
+			else if (isset($_GET['coursename']))
+				$_SESSION['coursename'] = getOPG('coursename');
+			else
+				$_SESSION['coursename'] = "UNK";
 
 			if (isset($_GET['coursevers']))
 				$_SESSION['coursevers'] = getOPG('coursevers');
-			else if (isset($_GET['cid']))
+			else if (isset($_GET['cvers']))
 				$_SESSION['coursevers'] = getOPG('cvers');
 			else
 				$_SESSION['coursevers'] = "UNK";
 	
 			// Always show home button which links to course homepage
-			echo "<td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
+			echo "<td class='navButt' id='home' title='Home'><a id='homeIcon' class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -33,20 +40,20 @@
 				  echo "<td class='navButt' id='back' title='Back'>";
 			}
 			if($noup=='COURSE'){
-					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
+					echo "<a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-					// echo "<td>GREGER!</td>";	
 			}else if($noup=='SECTION'){
 					echo "<a href='";
-					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
+
 	
 			// Adding buttons for courses
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st'))) {				
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {				
 							echo "<td style='display: inline-block;' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";
@@ -127,41 +134,41 @@
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
-
-							//Adds the download files button to the toolbar
-							echo "<td class='Downlad all files' style='display: inline-block;'>";
-							echo "    <div class='Downlad all files'>";
-							echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-							echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
-							echo "      </a>";
-							echo "    </div>";
-							echo "</td>";
 					}
 			}
 	
 			// Sort dialog - accessed / resulted /fileed
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ||$requestedService=="fileed.php" ){
-					echo "<td id='searchBar' class='navButt'>";
-					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
-					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black; margin-top: 40px'>"; //Dropdown menu for when hovering the search bar
-					echo	"<p><b>Keywords:</b> markG, markU, date</p>";
-					echo	"<p><b>Ex:</b> markG:färgdugga</p>";
+					echo "<td id='testSearchContainer' class='navButt'>";
+					echo   "<input id='searchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();sortAndFilterTogether();'/>";
+					echo	"<div id='dropdownSearch' class='dropdown-list-container' style='z-index: 1; color: black;'>"; //Dropdown menu for when hovering the search bar
+					echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
 					echo	"</div>";
-					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender()' type='button'>";
-					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
-					echo   "</button>";
 					echo   "<div class='tooltipbackground'><div class='tooltipsearchbar'>";
 					echo 	"<input id='tooltipsearchinput' type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender()'/>";
 					echo 	"</div><div>";
-					echo   "</button>";
-					
 					echo "</td>";
+					echo "<td class='navButt'>";
+					echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender(); sortAndFilterTogether();' type='button'>";
+					echo     "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
+					echo   "</button>";
+					echo "</td>";
+					if ($requestedService == "fileed.php" && (hasAccess($_SESSION["uid"], $_SESSION["courseid"], "w") || $_SESSION["superuser"] == 1)) {
+						//Adds the download files button to the toolbar
+						echo "<td class='navButt'>";
+						echo "    <div>";
+						echo "      <a id='downloadBTN' title='Download all content in a zip file' target='_blank' value='Download' href='downloadzip.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
+						echo "        <img class='navButt' src='../Shared/icons/Diskett.svg'>";
+						echo "      </a>";
+						echo "    </div>";
+						echo "</td>";
+					}				
 			}
 
       if($requestedService=="accessed.php" || $requestedService=="resulted.php" ){
 					echo "<td id='select' class='navButt' onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
-					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg' style='margin-left:35px;'>";
+					echo     "<img class='navButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";
@@ -189,7 +196,7 @@
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
 					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play(event);'><img src='../Shared/icons/play_button.svg' /></td>";
-					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st'))) {
+					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {
 						echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
 						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/files_icon.svg' /></td>";
@@ -249,11 +256,58 @@
 	function cookieMessage(){
 		hideCookieMessage();
 		localStorage.setItem("cookieMessage", "off");
-		//$("#cookiemsg").css("display", "none");
 	}
 	function hoverBack(){
 		$(".dropdown-list-container").css("display", "none");
 	}
+
+document.getElementById("homeIcon").addEventListener("mouseover", mouseOverHome);
+document.getElementById("homeIcon").addEventListener("mouseout", mouseOutHome);
+
+function mouseOverHome() {
+	var obj = document.getElementById("homeIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/HomeShadow.svg';
+   }
+}
+
+function mouseOutHome() {
+	var obj = document.getElementById("homeIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/Home.svg';
+   }
+}
+
+var backButton = document.getElementById("upIcon");
+if(backButton){
+	backButton.addEventListener("mouseover", mouseOverUp);
+	backButton.addEventListener("mouseout", mouseOutUp);
+}
+
+function mouseOverUp() {
+	var obj = document.getElementById("upIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/UpShadow.svg';
+   }
+}
+
+function mouseOutUp() {
+	var obj = document.getElementById("upIcon");
+   if(obj != null)
+   {
+      var images = obj.getElementsByTagName('img');
+      images[0].src = '../Shared/icons/Up.svg';
+   }
+}
+
+
+
 </script>
 <script type="text/javascript">
 	(function(proxied) {

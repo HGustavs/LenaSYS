@@ -41,6 +41,7 @@ h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 	top:  20%;
 	border: 2px solid var(--color-border);
 }
+
 #gradeBtn {
 	background-color:var(--color-accent);
 	border: none;
@@ -178,6 +179,17 @@ strong {font-weight: bold;}
 	border-bottom: 0;
 	border-right: 0;
 	background: #fff;
+}
+
+#emailPopup {
+	margin-top: 15px;
+	float: none;
+}
+
+#emailPopup #email {
+	margin-left: 10px;
+	width: 280px;
+	float: none;
 }
 
 /* --------------================################================-------------- *

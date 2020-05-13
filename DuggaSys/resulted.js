@@ -30,13 +30,18 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
+var legendIsHidden = true;
 
 function setup() {
     //Benchmarking function
     //benchmarkData = performance.timing;
     window.onscroll = function () {
 
-    };
+	};
+	
+	if (typeof localStorage.getItem("lastExpDate") != undefined) {
+		document.getElementById('lastExportedDate').innerHTML = localStorage.getItem("lastExpDate");
+	}
 
     AJAXService("GET", { cid: querystring['courseid'], vers: querystring['coursevers'] }, "RESULT");
 }
@@ -89,9 +94,17 @@ function process() {
 		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + entries[i].examiner + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname ,class: entries[i].class, access: entries[i].access, examiner: entries[i].examiner, username: entries[i].username, ssn: entries[i].ssn });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
+			var tmpGrade = null;
 			if (momtmp[j].kind == 4) {
 				momtmp[j].link = -1;
 				momtmp[j].qvariant = -1;
+				for (var l = 1; j+l < momtmp.length; l++) {
+					if(momtmp[j+l].kind == 4){
+						break;
+					}else if(momtmp[j+l].kind == 3 && typeof(restmp[momtmp[j + l].lid]) != 'undefined' && momtmp[j+l].momname == momtmp[j].momname){
+						tmpGrade = 0;
+					}
+				}
 			}
 			// If it is a feedback quiz -- we have special handling.
 			if (momtmp[j].quizfile == "feedback_dugga") {
@@ -142,7 +155,7 @@ function process() {
 						userAnswer: "UNK",
 						marked: new Date(0),
 						submitted: new Date(0),
-						grade: null,
+						grade: tmpGrade,
 						quizId: momtmp[j].link,
 						qvariant: momtmp[j].qvariant,
 						quizfile: momtmp[j].quizfile,
@@ -176,9 +189,9 @@ function process() {
 
 	// Sorting
 	dstr += "<div class='checkbox-dugga' style='border-bottom:1px solid #888'>";
-	dstr += "<input type='radio' class='headercheck' name='sortdir' value='0' ' onclick='sorttype(-1)' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Ascending</label>";
-	dstr += "<input name='sortdir' type='radio' class='headercheck' value='1' ' onclick='sorttype(-1)' id='sortdir'> <label class='headerlabel' for='sortdir'>Sort descending</label>";
-	dstr += "<div><input name='sortdir' type='radio' class='headercheck' value='2' ' onclick='sorttype(-1)' id='sortdir'><label class='headerlabel' for='sortdir'>Sort Pending</label></div></div>";
+	dstr += "<input type='radio' class='headercheck' name='sortdir' value='0' ' onclick='sorttype(-1)' id='sortdirAsc'><label class='headerlabel' for='sortdirAsc'>Sort Ascending</label>";
+	dstr += "<input name='sortdir' type='radio' class='headercheck' value='1' ' onclick='sorttype(-1)' id='sortdirDes'> <label class='headerlabel' for='sortdirDes'>Sort descending</label>";
+	dstr += "<div><input name='sortdir' type='radio' class='headercheck' value='2' ' onclick='sorttype(-1)' id='sortdirPen'><label class='headerlabel' for='sortdirPen'>Sort Pending</label></div></div>";
   dstr += "<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr += "<div class='checkbox-dugga'style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
 
@@ -194,9 +207,9 @@ function process() {
 
 		dstr += "<div class='checkbox-dugga checknarrow ";
 		if (moments[j].visible == 0) {
-			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
+			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='myTable.setNameColumn(\"" + name + "\");sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		} else {
-			dstr += "'><input name='sortcol' type='radio' class='sortradio' id='sortcol" + (j + 1) + "' onclick='sorttype(-1)' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
+			dstr += "'><input name='sortcol' type='radio' class='sortradio' id='sortcol" + (j + 1) + "' onclick='myTable.setNameColumn(\"" + name + "\");sorttype(-1)' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		}
 	}
 	dstr += "</td><td style='vertical-align:top;'>";
@@ -268,9 +281,9 @@ function leaves() {
 }
 
 function sorttype(t) {
-  if(t == 0){
+  if (t==0 || document.getElementById("sortcol0_0").isChecked){
     myTable.setNameColumn('Fname');
-  }else{
+  }else if (t==1 || document.getElementById("sortcol0_1").isChecked) {
     myTable.setNameColumn('Lname');
   }
 
@@ -296,6 +309,14 @@ function sorttype(t) {
 	$("input[name='sortdir']:checked").each(function () {
 		dir = this.value;
 	});
+	if (dir == 2 && (myTable.getNameColumn() === 'Fname' || myTable.getNameColumn() === 'Lname')) { // if "pending" and name column
+		document.getElementById("sortdirAsc").checked = true;
+		sorttype(-1);
+		return;
+	}
+	if (myTable.getNameColumn() === 'Lname') { // if Lname, dir == (2 || 3)
+		dir = parseInt(dir) + 2;
+	}
 	typechanged = true;
 	if(col !== undefined && dir !== undefined){
 		typechanged = false;
@@ -352,7 +373,6 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					// This variable adds 24h to the current time
 					var newDateObj = new Date(newGradeExpire.getTime() + allowedRegradeTime);
 					var newGradeExpirePlusOneDay = newDateObj.getTime();
-
 					// Compare the gradeExpire value to the current time, if no grade is set, we can always set it no matter the last change
 					if (newGradeExpirePlusOneDay > currentTimeGetTime) {
 						//The user must press the ctrl-key to activate if-statement
@@ -460,14 +480,14 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 
 	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
 }
-
+//Toggles the visibility of the grading box. if the box is hidden it will change the display to block, if its visible it'll change the display to none
 function toggleGradeBox(){
 	var toggleGrade = document.getElementById('toggleGrade');
-	var width = toggleGrade.offsetWidth;
-
-	$('#toggleGrade').animate({width: 'toggle'});
-	if(width <= 0){
+	if(toggleGrade.style.display=='none' || toggleGrade.style.display=='' ){
+		toggleGrade.style.display = 'block';
 		toggleGrade.style.position = 'absolute';
+	} else{
+		toggleGrade.style.display = 'none';
 	}
 }
 
@@ -553,103 +573,113 @@ function saveResponse() {
 	document.getElementById("responseArea").innerHTML = "";
 	$("#previewpopover").css("display", "none");
 }
+//----------------------------------------
+// Clear response textbox on Preview Popover.
+//----------------------------------------
+function clearResponseArea(){
+	document.getElementById("responseArea").innerHTML = "";
+}
 
 //----------------------------------------
 // Renderer
 //----------------------------------------
 
 function returnedResults(data) {
-	if (!data.access) {
+  	if (!data[0].access) {
 		window.location.href = 'courseed.php';
 	}
-	if (data['debug'] !== "NONE!")
-		alert(data['debug']);
-	if (data.gradeupdated === true) {
-		// Update the the local array studentInfo when grade is updated.
-		for (var student in studentInfo) {
-			var studentObject = studentInfo[student]["lid:" + data.duggaid];
-			if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
-				studentObject.grade = parseInt(data.results);
-				studentObject.timesGraded = parseInt(data.duggatimesgraded);
-				studentObject.gradeExpire = data.duggaexpire;
-				if (data.results > 0) {
-					studentObject.needMarking = false;
-				} else {
-					studentObject.needMarking = true;
-				}
-				break;
-			}
+	//loops through all the responses from resultedservice.php to update or create table
+	for(var i = 0; i < data.length; i++){
+		if (data[i]['debug'] !== "NONE!"){
+			alert(data[i]['debug']);
 		}
-		myTable.renderTable();
-	} else {
-
-		entries = data.entries;
-		moments = data.moments;
-		versions = data.versions;
-		results = data.results;
-		teacher = data.teachers;
-		courseteachers = data.courseteachers;
-
-		let ladmoments = "";
-		for (let i = 0; i < moments.length; i++) {
-			let dugga = moments[i];
-			if (dugga.kind === 4) {
-				ladmoments += "<option value='" + dugga.entryname + "'>" + dugga.entryname + "</option>";
-			}
-		}
-		var teacherList;
-		teacherList += "<option value='none'>none</option>";
-		for(var i = 0; i < teacher.length; i++){
-			if(!teacherList.includes(teacher[i].id)){
-				if(teacher[i].id == localStorage.getItem('examinatorFilter')){
-					teacherList += "<option value='"+ teacher[i].id +"' selected>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
-				} else {
-					teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+		if (data[i].gradeupdated === true) {
+			// Update the the local array studentInfo when grade is updated.
+			for (var student in studentInfo) {
+				var studentObject = studentInfo[student]["lid:" + data[i].duggaid];
+				if (studentObject != null && studentObject.uid === parseInt(data[i].duggauser) && studentObject.lid === parseInt(data[i].duggaid)) {
+					studentObject.grade = parseInt(data[i].results);
+					studentObject.timesGraded = parseInt(data[i].duggatimesgraded);
+					studentObject.gradeExpire = data[i].duggaexpire;
+					if (data[i].results > 0) {
+						studentObject.needMarking = false;
+					} else {
+						studentObject.needMarking = true;
+					}
+					break;
 				}
 			}
-		}
-		var uniqueTeacherList = [...new Set(teacherList)]
-		document.getElementById("teacherDropdown").innerHTML = teacherList;
-		document.getElementById("ladselect").innerHTML = ladmoments;
-		document.getElementById("laddate").valueAsDate = new Date();
+			myTable.renderTable();
+		} else {
+			data = data[0];
+			entries = data.entries;
+			moments = data.moments;
+			versions = data.versions;
+			results = data.results;
+			teacher = data.teachers;
+			courseteachers = data.courseteachers;
 
-		//tim=performance.now();
+			let ladmoments = "";
+			for (let i = 0; i < moments.length; i++) {
+				let dugga = moments[i];
+				if (dugga.kind === 4) {
+					ladmoments += "<option value='" + dugga.entryname + "'>" + dugga.entryname + "</option>";
+				}
+			}
+			var teacherList;
+			teacherList += "<option value='none'>none</option>";
+			for(var i = 0; i < teacher.length; i++){
+				if(!teacherList.includes(teacher[i].id)){
+					if(teacher[i].id == localStorage.getItem('examinatorFilter')){
+						teacherList += "<option value='"+ teacher[i].id +"' selected>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+					} else {
+						teacherList += "<option value='"+ teacher[i].id +"'>"+ teacher[i].firstname + " " + teacher[i].lastname + "</option>";
+					}
+				}
+			}
+			var uniqueTeacherList = [...new Set(teacherList)]
+			document.getElementById("teacherDropdown").innerHTML = teacherList;
+			document.getElementById("ladselect").innerHTML = ladmoments;
+			document.getElementById("laddate").valueAsDate = new Date();
 
-		subheading = 0;
+			//tim=performance.now();
 
-		$(document).ready(function () {
-			$("#dropdownc").mouseleave(function () {
-				leavec();
+			subheading = 0;
+
+			$(document).ready(function () {
+				$("#dropdownc").mouseleave(function () {
+					leavec();
+				});
 			});
-		});
-		$(document).ready(function () {
-			$("#dropdowns").mouseleave(function () {
-				leaves();
+			$(document).ready(function () {
+				$("#dropdowns").mouseleave(function () {
+					leaves();
+				});
 			});
-		});
 
-		allData = data; // used by dugga.js
+			allData = data; // used by dugga.js
 
-		if (data['dugganame'] !== "") {
-			// Display student submission
-			$.getScript(data['dugganame'], function () {
-				$("#MarkCont").html(data['duggapage']);
-				showFacit(data['duggaparam'], data['useranswer'], data['duggaanswer'], data['duggastats'], data['files'], data['moment'], data['duggafeedback']);
-				if(data['duggafeedback'] == ""){
-                    var doc = document.getElementById("teacherFeedbackTable");
-                    for (var i = 0; i < doc.childNodes.length; i++) {
-                   		if (doc.childNodes[i].className == "list feedback-list") {
-                			doc.childNodes[i].style.display = "none";
-                   			break;
+			if (data['dugganame'] !== "") {
+				// Display student submission
+				$.getScript(data['dugganame'], function () {
+					$("#MarkCont").html(data['duggapage']);
+					showFacit(data['duggaparam'], data['useranswer'], data['duggaanswer'], data['duggastats'], data['files'], data['moment'], data['duggafeedback']);
+					if(data['duggafeedback'] == ""){
+						var doc = document.getElementById("teacherFeedbackTable");
+						for (var i = 0; i < doc.childNodes.length; i++) {
+							if (doc.childNodes[i].className == "list feedback-list") {
+									doc.childNodes[i].style.display = "none";
+									break;
+							}
 						}
 					}
-                }
-			});
-			$("#resultpopover").css("display", "block");
-		} else {
-			// Process and render filtered data
-			process();
-			createSortableTable(data);
+				});
+				$("#resultpopover").css("display", "block");
+			} else {
+					// Process and render filtered data
+					process();
+					createSortableTable(data);
+			}
 		}
 	}
 }
@@ -657,12 +687,15 @@ function returnedResults(data) {
 // Success return function for LadExport lastGraded
 //----------------------------------------
 function returnedExportedGrades(gradeData){
+	// Tries to write out the last exported date.
+	// If it fails, then log the error.
 	try {
-		document.getElementById('lastExpDate').innerHTML =  gradeData[0].gradeLastExported;
-	  }
-	  catch(err) {
-		console.log("gradeLastExported updated in database");
-	  }
+		if (typeof gradeData[0].gradeLastExported !== 'undefined' && typeof gradeData[0] === 'object') {
+			document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
+		}
+	} catch (error) {
+		console.log(error);
+	}
 }
 var myTable;
 //----------------------------------------
@@ -757,7 +790,7 @@ function renderCell(col, celldata, cellid) {
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLname") {
-			str = "<div class='resultTableCell resultTableMini'>";
+			str = "<div class='resultTableCell resultTableMiniLeft'>";
 			str += "<div class='resultTableText'>";
 			str += celldata.firstname + " " + celldata.lastname;
 			str += "</div>";
@@ -798,10 +831,13 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		} else if (filterGrade === "none" || celldata.grade === filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div style='padding:10px;' class='resultTableCell ";
+			str = "<div style='padding:12px;' class='resultTableCell ";
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
-				str += "dugga-pending";
+				str += "dugga-pending ";
+			} else {
+				str += "dugga-empty";
 			}
+
 			str += "'>";
 			// Creation of grading buttons
 			if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted < celldata.deadline) {
@@ -814,7 +850,7 @@ function renderCell(col, celldata, cellid) {
 					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
 				}
 				str += "<img id='korf' class='fist";
-				if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
+				if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
 					str += " grading-hidden";
 				}
 				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
@@ -857,10 +893,13 @@ function renderCell(col, celldata, cellid) {
 				return str;
 			}else if (filterGrade === "none" || celldata.grade === filterGrade) {
 				// color based on pass,fail,pending,assigned,unassigned
-				str = "<div style='padding:10px;' class='resultTableCell ";
+				str = "<div style='padding:12px;' class='resultTableCell ";
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
 					str += "dugga-pending-late-submission";
+				} else {
+					str += "dugga-empty";
 				}
+				
 				str += "'>";
 				// Creation of grading buttons
 				if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {
@@ -873,7 +912,7 @@ function renderCell(col, celldata, cellid) {
 						str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
 					}
 					str += "<img id='korf' class='fist";
-					if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
+					if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
 						str += " grading-hidden";
 					}
 					str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
@@ -897,9 +936,11 @@ function renderCell(col, celldata, cellid) {
 						}
 					}
 					str += ">";
+
 					if (celldata.submitted.getTime() !== timeZero.getTime()) {
 						str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
 					}
+					
 					for (var p = 0; p < moments.length; p++) {
 						if (moments[p].link == celldata.quizId) {
 							if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
@@ -926,8 +967,9 @@ function renderCell(col, celldata, cellid) {
 		return str;
 
 	} else if (filterGrade === "none" || celldata.grade === filterGrade) {
+		var unassignedCheck = false;
 		// color based on pass,fail,pending,assigned,unassigned
-		str = "<div style='padding:10px;' class='resultTableCell ";
+		str = "<div class='resultTableCell ";
 		if (celldata.kind == 4) {
 			str += "dugga-moment ";
 		}
@@ -949,28 +991,37 @@ function renderCell(col, celldata, cellid) {
 			str += "dugga-assigned";
 		} else {
 			str += "dugga-unassigned";
+			unassignedCheck = true;
 		}
-		str += "'>";
+		if(unassignedCheck){
+			str += "' style='height:74px;'>";
+		}else{
+			str += "' style='padding:12px;'>";
+		}
 
 		// Creation of grading buttons
 		if (celldata.ishere === true || celldata.kind == 4) {
-			str += "<div class='gradeContainer resultTableText'>";
-			if (celldata.grade === null) {
-				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
-			} else if (celldata.grade === -1) {
-				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
-			} else {
-				str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+			if(!unassignedCheck){
+				str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1) {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['courseid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist";
+				if ((celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) || celldata.quizfile == null) { // Always shows fist. Should be re-evaluated
+					str += " grading-hidden";
+				}
+				str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
+				str += "/>";
+			}else{
+				str += "<div class='text-center resultTableText' style='padding-top: 30px;'>Unassigned</div>"
 			}
-			str += "<img id='korf' class='fist";
-			if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
-				str += " grading-hidden";
-			}
-			str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['courseid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\",\"" + celldata.entryname + "\");'";
-			str += "/>";
 			//Print times graded
 			str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
-			if (celldata.timesGraded !== 0) {
+			if (celldata.timesGraded !== 0 && typeof(celldata.timesGraded) != 'undefined') {
 				str += '(' + celldata.timesGraded + ')';
 			}
 			str += "</div>";
@@ -987,8 +1038,12 @@ function renderCell(col, celldata, cellid) {
 				}
 			}
 			str += ">";
-			if (celldata.submitted.getTime() !== timeZero.getTime()) {
+
+			if (celldata.submitted.getTime() !== timeZero.getTime() && !isNaN(celldata.submitted.getTime())) {
 				str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
+			} else if (!unassignedCheck && celldata.submitted.getTime() === timeZero.getTime()) {
+				str += "Not submitted";
+				//Checks if the cells does exist, are assigned but not yet submitted for grading.
 			}
 			for (var p = 0; p < moments.length; p++) {
 				if (moments[p].link == celldata.quizId) {
@@ -1196,7 +1251,6 @@ function rowFilter(row) {
 }
 
 function renderSortOptions(col, status, colname) {
-
 	str = "";
 	if (status == -1) {
 		if (col == "FnameLname") {
@@ -1213,24 +1267,37 @@ function renderSortOptions(col, status, colname) {
 		if (col == "FnameLname") {
 			let colnameArr = colname.split("/");
 			if (status == 0 || status == 1) {
+				document.getElementById("sortcol0_0").checked = true;
+
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 0) {
+					document.getElementById("sortdirAsc").checked = true;
+
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",1)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
+					document.getElementById("sortdirDes").checked = true;
+
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				}
 				str += "</div>"
 			} else if (status == 2 || status == 3) {
+				document.getElementById("sortcol0_1").checked = true;
+
 				str += "<div style='white-space:nowrap;cursor:pointer'>"
 				if (status == 2) {
+					document.getElementById("sortdirAsc").checked = true;
+
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
 				} else {
+					document.getElementById("sortdirDes").checked = true;
+
+
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[0] + "\"); myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 					str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[1] + "\"); myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 					// str += "<span onclick='myTable.setNameColumn(\"" + colnameArr[2] + "\"); myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
@@ -1250,12 +1317,21 @@ function renderSortOptions(col, status, colname) {
 				str += "</div>"
 			}
 		} else {
+			var labels = document.getElementsByClassName('headerlabel');
+			for (var i=0; i < labels.length; i++) {
+				if (labels[i].getAttribute("title") === colname)
+					labels[i].parentNode.children[0].checked = true;
+			}
+
 			if (status == 0) {
 				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>ASC </span>" + colname + "</span>";
+				document.getElementById("sortdirAsc").checked = true;
 			} else if (status == 1) {
 				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>DES </span>" + colname + "</span>";
+				document.getElementById("sortdirDes").checked = true;
 			} else if (status == 2) {
 				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>PEN </span>" + colname + "</span>";
+				document.getElementById("sortdirPen").checked = true;
 			}
 		}
 	}
@@ -1412,6 +1488,20 @@ function ladexport() {
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
 
+	var today = new Date();
+	var dd = addZero(today.getDate());
+	var mm = addZero(today.getMonth() + 1); //January is 0!
+	var yyyy = today.getFullYear();
+	var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+
+	today = yyyy + '-' + mm + '-' + dd;
+
+	 var gradeLastExported = today + " " + time;
+	 lastExpDate.innerHTML =  gradeLastExported;
+	 document.getElementById('lastExportedDate').innerHTML = gradeLastExported;
+
+	 localStorage.setItem('lastExpDate', gradeLastExported);
+
 	AJAXService("getunexported", {}, "GEXPORT");
 }
 
@@ -1436,7 +1526,7 @@ function copyLadexport() {
 	today = yyyy + '-' + mm + '-' + dd;
 
 	 var gradeLastExported = today + " " + time;
-	 lastExpDate.innerHTML =  gradeLastExported;
+	 lastExpDate.innerHTML = gradeLastExported;
 	 lastExpDate.style.color = 'green';
 
 	 setInterval(function(){
@@ -1482,10 +1572,16 @@ $(window).scroll(function() {
 	var resultTableWidth = document.getElementById("resultTable___tbl").offsetWidth;
 	var ladExportWidth = document.getElementById("resultedFormContainer").offsetWidth;
 	var scrolled = $(this).scrollLeft();
+	var legendBox = $('#resultedLegendContainer');
+	var $win = $(window);
 	if((scrolled + ladExportWidth) < resultTableWidth){
 		$('#resultedFormContainer').css({
 			'transform': 'translateX(' + scrolled +'px'+ ')'
 		});
+		legendBox.css("top", "103px");
+	}
+	if ($(window).scrollTop() == 0){
+		legendBox.css("top", "80px");
 	}
 });
 
@@ -1495,12 +1591,28 @@ function hideSSN(ssn){
 	return hiddenSSN;
 }
 
+//Shows and hides element describing the icons and colours
+function showLegend(){
+	var legendBox = $('#resultedLegendContainer');
+	if (legendIsHidden == false){
+
+		legendBox.css("right", "-323px");
+		legendIsHidden = true;
+	}
+	else if (legendIsHidden == true){
+		legendBox.css("right", "0px");
+		legendIsHidden = false;
+	}
+	else{
+		//alert(legendIsHidden);
+	}
+}
 
 function compare(firstCell, secoundCell) {
-	let col = sortableTable.currentTable.getSortcolumn(); // Get column name
-	let status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
+	let col = myTable.getSortcolumn(); // Get column name
+	let status = myTable.getSortkind(); // Get if the sort arrow is up or down.
 	let val = 0;
-	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
+	let colOrder = myTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
 	var sizeTemp = '{"';
@@ -1508,7 +1620,15 @@ function compare(firstCell, secoundCell) {
 		// "FnameLname" is comprised of two separately sortable sub-columns,
 		// if one of them is the sort-target, replace col with the subcolumn
 		if(col == "FnameLname"){
-			col = sortableTable.currentTable.getNameColumn();
+			col = myTable.getNameColumn();
+			if (typeof(col) === "undefined") {
+				if (status == 0 || status == 1) {
+					col = "Fname";
+				} else {
+					col = "Lname";
+				}
+			}
+			myTable.setNameColumn(col);
 		}
 		// now check for matching columns with the potentially replaced name
 		if (col == "Fname") {

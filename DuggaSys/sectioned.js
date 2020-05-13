@@ -12,6 +12,8 @@ var xelink;
 var momentexists = 0;
 var resave = false;
 var versnme = "UNKz";
+var versnr;
+var motd;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -201,10 +203,10 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Set Lid
   $("#lid").val(lid);
 
-  
   //------------------------------------------------------------------------------
   //checks if feedback is enabled and enables input box for feedbackquestion choice.
   //------------------------------------------------------------------------------
+
   $("#editSection").css("display", "flex");
   if(feedbackenabled == 1){
     $( "#fdbck" ).prop( "checked", true );
@@ -247,6 +249,7 @@ function changedType(kind) {
 
 function showEditVersion() {
   $("#eversname").val(versnme);
+  $("#eMOTD").val(motd);
   $("#eversid").val(querystring['coursevers']);
   let sdate = retdata['startdate'];
   let edate = retdata['enddate'];
@@ -315,19 +318,14 @@ function defaultNewItem() {
 }
 
 function showCreateVersion() {
-  $("#newCourseVersion").css("display", "flex");
-
+    $("#newCourseVersion").css("display", "flex");
 }
 
-function createQuickItem() {
-  selectItem("0", "New Code", "2", "", "", "0", "", "", "UNK", "", "", 0,null);
-  newItem();
-}
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
-function createFABItem(kind, itemtitle) {
+function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "undefined", "undefined", "undefined", 0);
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
     newItem();
   }
 }
@@ -382,6 +380,13 @@ function prepareItem() {
 
   param.feedbackquestion = $("#fdbckque").val();
 
+  if(param.comments == "TOP"){
+    param.pos = "-1";
+  }
+  else{
+    param.pos = "100";
+  }
+  
   return param;
 }
 
@@ -408,8 +413,11 @@ function updateItem() {
   $("#editSection").css("display", "none");
 }
 
-function updateDeadline(){
-  AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+function updateDeadline() {
+    var kind = $("#type").val();
+    if (kind == 3) {
+        AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+    }
 }
 
 //----------------------------------------------------------------------------------
@@ -421,7 +429,7 @@ function newItem() {
   AJAXService("NEW", prepareItem(), "SECTION");
   $("#editSection").css("display", "none");
 
-  setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
+  //setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
 
 //----------------------------------------------------------------------------------
@@ -435,6 +443,7 @@ function createVersion() {
   param.cid = querystring['courseid'];
   param.versid = document.getElementById("versid").value;
   param.versname = document.getElementById("versname").value;
+  param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = document.getElementById("course-coursecode").innerHTML;
   param.coursename = document.getElementById("course-coursename").innerHTML;
@@ -476,12 +485,14 @@ function updateVersion() {
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
   param.enddate = $("#eenddate").val();
+  param.motd = document.getElementById("eMOTD").value;
 
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
 }
 
+//queryString for coursename is added
 function goToVersion(courseDropDown) {
   var value = courseDropDown.options[courseDropDown.selectedIndex].value;
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
@@ -539,31 +550,6 @@ function returnedGroups(data) {
     str += "<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:" + grpemail + "'>Email group</a></div>"
     grpemail = "";
   }
-  /*
-  for (var grpKind in groups) {
-      // skip loop if the property is from prototype
-      if (!groups.hasOwnProperty(grpKind)) continue;
-      str+="<table><caption>"+grpKind+"</caption>";
-      var obj = groups[grpKind];
-      console.log(obj);
-      for (var prop in obj) {
-          // skip loop if the property is from prototype
-          if(!obj.hasOwnProperty(prop)) continue;
-          str+="<thead><tr><th>Group "+prop+"</th></tr></thead>";
-          str+="<tbody>";
-          for(let i=0;i<obj[prop].length;i++){
-              str+="<tr>";
-              str+="<td>"+(i+1)+"</td>";
-              for(let j=0;j<obj[prop][i].length;j++){
-                  str+="<td>"+obj[prop][i][j]+"</td>";
-              }
-              str+="</tr>";
-          }
-          str+="</tbody>";
-      }
-      str+="</table><br>";
-  }
-  */
   if (str != "") {
     $("#grptbl").html(str);
     $("#grptblContainer").css("display", "flex");
@@ -597,7 +583,7 @@ function returnedSection(data) {
           var vversz = itemz['vers'];
           var vnamez = itemz['versname'];
           if (retdata['coursevers'] == vversz) {
-            versionname = vnamez;
+              versionname = vnamez;
           }
         }
       }
@@ -607,7 +593,7 @@ function returnedSection(data) {
     document.getElementById("course-coursecode").innerHTML = retdata['coursecode'];
     document.getElementById("course-coursename").innerHTML = retdata['coursename'];
     document.getElementById("course-versname").innerHTML = versionname;
-
+    
     var str = "";
 
     if (data['writeaccess']) {
@@ -622,23 +608,25 @@ function returnedSection(data) {
           }
           bstr += ">" + item['versname'] + " - " + item['vers'] + "</option>";
         }
-        if (querystring['coursevers'] == item['vers']) versnme = item['versname'];
+        // save vers, versname and motd from table vers as global variables.
+        versnme = versionname;
+        if (querystring['coursevers'] == item['vers']) motd = item['motd'];
+        if (querystring['coursevers'] == item['vers']) versnr = item['vers'];
       }
 
       document.getElementById("courseDropdownTop").innerHTML = bstr;
-      document.getElementById("courseDropdownTop-mobile").innerHTML = bstr;
       bstr = "<option value='None'>None</option>" + bstr;
       document.getElementById("copyvers").innerHTML = bstr;
 
       // Show FAB / Menu
       document.getElementById("FABStatic").style.display = "Block";
-
+      document.getElementById("FABStatic2").style.display = "Block";
       // Show addElement Button
       document.getElementById("addElement").style.display = "Block";
     } else {
       // Hide FAB / Menu
       document.getElementById("FABStatic").style.display = "None";
-
+      document.getElementById("FABStatic2").style.display = "None";
     }
 
     if (data['studentteacher']) {
@@ -680,8 +668,14 @@ function returnedSection(data) {
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
-        str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
-
+        // New items added get the class glow to show they are new
+        if(item['pos'] == "-1" || item['pos'] == "100"){
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) +" glow"+ "' style='display:block'>";
+        }
+        else{
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
+        }
+        
         menuState.idCounter++;
         // All are visible according to database
 
@@ -885,6 +879,7 @@ function returnedSection(data) {
           var param = {
             'did': item['link'],
             'courseid': querystring['courseid'],
+            'coursename': querystring['coursename'],
             'coursevers': querystring['coursevers'],
             'moment': item['lid'],
             'segment': momentexists,
@@ -1049,13 +1044,14 @@ function returnedSection(data) {
       }
     }
   } else {
-    str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> This version does not seem to exist!</div>";
+    
+    str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
-    document.getElementById('Sectionlist').innerHTML = str;
+    document.getElementById('Sectionlist').innerHTML+= str;
+    $("#newCourseVersion").css("display", "block");
 
-    if (data['writeaccess']) {
-      showCreateVersion();
-    }
+    
+   
 
   }
 
@@ -1071,7 +1067,13 @@ function returnedSection(data) {
   document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
     
   // Sets a title on the course heading name
-  document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
+  
+ 
+  if(versionname){
+    document.getElementById("course-coursename").title = data.coursename + " " + data.coursecode + " " + versionname;
+  
+  
+ 
 
   drawPieChart(); // Create the pie chart used in the statistics section.
   fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
@@ -1080,7 +1082,81 @@ function returnedSection(data) {
   // Change the scroll position to where the user was last time.
   $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
+  // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
+  replaceDefualtLink();
+
   addClasses();
+  showMOTD();
+  } 
+}
+// Displays MOTD if there in no MOTD cookie or if the cookie dosen't have the correcy values
+function showMOTD(){
+  if((document.cookie.indexOf('MOTD=') <= -1) || ((document.cookie.indexOf('MOTD=')) == 0 && ignoreMOTD())){ 
+    if(motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
+      document.getElementById("motdArea").style.display = "none"; 
+    }else{
+      document.getElementById("motdArea").style.display = "block";
+      document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
+      document.getElementById("FABStatic2").style.top = "623px";
+    }
+  }
+}
+// Checks if the MOTD cookie already have the current vers and versname 
+function ignoreMOTD(){
+  var c_string = getCookie('MOTD');
+  c_array = c_string.split(',');
+  for(let i = 0; i<c_array.length;i+=2){
+    if(c_array[i] == versnme && c_array[i+1] == versnr){
+      return false;
+    }
+  }
+  return true;
+}
+
+function resetMOTDCookieForCurrentCourse(){
+  var c_string = getCookie('MOTD');
+  c_array = c_string.split(',');
+  for(let i = 0; i<c_array.length;i+=2){
+    if(c_array[i] == versnme && c_array[i+1] == versnr){
+      c_array.splice(i, 2);
+    }
+  }
+  document.cookie = 'MOTD=' + c_array;
+  showMOTD();
+}
+
+function closeMOTD(){
+  if(document.cookie.indexOf('MOTD=') <= -1){
+    document.cookie = 'MOTD=';
+    setMOTDCookie();
+  }else{
+    setMOTDCookie();
+  }
+  document.getElementById('motdArea').style.display='none';
+  document.getElementById("FABStatic2").style.top = "565px";
+}
+// Adds the current versname and vers to the MOTD cookie
+function setMOTDCookie(){
+  var c_string = getCookie('MOTD');
+  c_string += versnme+","+versnr+",";
+  document.cookie = 'MOTD=' + c_string;
+}
+// Returns the value based on the cookies name
+function getCookie(c_name) {
+  var c_value = " " + document.cookie;
+  var c_start = c_value.indexOf(" " + c_name + "=");
+  if (c_start == -1) {
+      c_value = null;
+  }
+  else {
+      c_start = c_value.indexOf("=", c_start) + 1;
+      var c_end = c_value.indexOf(";", c_start);
+      if (c_end == -1) {
+          c_end = c_value.length;
+      }
+      c_value = unescape(c_value.substring(c_start,c_end));
+  }
+  return c_value;
 }
 
 function showHighscore(did, lid) {
@@ -1384,6 +1460,7 @@ function drawSwimlanes() {
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mouseover(function (e) {
+    //showFabList(e);
     FABMouseOver(e);
 });
 
@@ -1402,9 +1479,7 @@ $(document).mousedown(function (e) {
 $(document).mouseup(function (e) {
   mouseUp(e);
 
-  if (e.button == 0) {
-    FABUp(e);
-  }
+  
 });
 
 $(document).ready(function(){
@@ -1554,10 +1629,23 @@ function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
 }
 
+// Replaces the link corresponding wtih the dropdown choices ---===######===--- with a link to errorpage instead
+function replaceDefualtLink(){
+  var links = document.getElementsByTagName('a');
+
+  for(var i = 0; i < links.length; i++){
+    if((links[i].getAttribute('href')) == ("showdoc.php?exampleid=---===######===---&courseid=" + querystring['courseid'] + "&coursevers=" + 
+    querystring['coursevers'] + "&fname=---===######===---")){
+      links[i].href = "../errorpages/403.php";
+    }
+  }
+}
+
+
 // Adds classes to <a> element depending on if they are external / internal
 function addClasses() {
   var links = document.getElementsByTagName('a');
-
+  
   for (var i = 0; i < links.length; i++) {
     if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
       links[i].classList.add("example-link");
@@ -1636,6 +1724,7 @@ function validateCourseID(courseid, dialogid) {
   var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
+  var val = document.getElementById("versid").value;
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -1645,13 +1734,42 @@ function validateCourseID(courseid, dialogid) {
   } else {
 
     code.style.borderColor = "#E54";
+    x2.innerHTML = "Only numbers(between 3-6 numbers)";
     x2.style.display = "block";
     code.style.borderWidth = "2px";
     window.bool = false;
   }
 
+  const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
+  if(versionIsValid) {
+    code.style.borderColor = "#E54";
+    x2.innerHTML = "Version ID already exists, try another";
+    x2.style.display = "block";
+    code.style.borderWidth = "2px";
+    window.bool = false;
+  }
 
 }
+
+function validateMOTD(motd, dialogid){
+  var emotd = document.getElementById(motd);
+  var Emotd = /(^$)|(^[-a-zA-Z0-9_ !,.]*$)/;
+  var EmotdRange = /^.{0,50}$/;
+  var x4 = document.getElementById(dialogid);
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
+    emotd.style.borderColor = "#383";
+    emotd.style.borderWidth = "2px";
+    x4.style.display = "none";
+    window.bool9 = true;
+  } else {
+    emotd.style.borderColor = "#E54";
+    x4.style.display = "block";
+    emotd.style.borderWidth = "2px";
+    window.bool9 = false;
+  }
+
+}
+
 /*Validates that start date comes before end date*/
 function validateDate(startDate, endDate, dialogID) {
   var sdate = document.getElementById(startDate);
@@ -1698,27 +1816,6 @@ function validateDate(startDate, endDate, dialogID) {
     if (startDate === 'estartdate' && endDate === 'eenddate') {
       window.bool6 = false;
     }
-  }
-}
-
-// Validates sectionname
-function validateSectionName(nameid, dialogid) {
-  //Regex for space and uppercase+lowercase letters
-  var Name = /^[a-zA-Z_ ]+$/;
-  var name = document.getElementById(nameid);
-  var x = document.getElementById(dialogid);
-
-  //If sectionname is only letters
-  if (name.value.match(Name)) {
-    name.style.borderColor = "#383";
-    name.style.borderWidth = "2px";
-    x.style.display = "none";
-    window.bool7 = true;
-  } else {
-    name.style.borderColor = "#E54";
-    x.style.display = "block";
-    name.style.borderWidth = "2px";
-    window.bool7 = false;
   }
 }
 
@@ -1804,10 +1901,10 @@ function validateForm(formid) {
     }
 
     // if all information is correct
-    if (window.bool4 === true && window.bool6 === true) {
+    if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
       alert('Version updated');
       updateVersion();
-
+      resetMOTDCookieForCurrentCourse();
     } else {
       alert("You have entered incorrect information");
     }

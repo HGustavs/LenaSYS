@@ -78,7 +78,7 @@ pdoConnect();
   	      			<div class="tooltipDugga">
   		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
   		      		</div>
-  		      		<input class='textinput' type='text' id='name' value='New Dugga' onkeyup='validateDuggaName();' onchange='validateDuggaName();' />
+  		      		<input class='textinput' type='text' id='name' placeholder='New Dugga' onkeyup='validateDuggaName();' onchange='validateDuggaName();' />
   		      	</div>
         			<div class='flexwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
         			<div class='flexwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
@@ -93,8 +93,8 @@ pdoConnect();
               <div class='flexwrapper'><span>Result release:</span><span><input class='' type='date' id='release' value='' style='width:125px;font-family:"arial narrow";' /><select style='width:55px;' id='releaset'></select><select style='width:55px;' id='releasem'></select></span></div>
         		</div>
         		<div style='padding:5px;display:flex;justify-content:space-between'>
-        			<input id='closeDugga' class='submit-button' style='' type='button' value='Cancel' onclick='closeWindows();' />
-        			<input id='saveDugga' class='submit-button' style='' type='button' value='Save' onclick='updateDugga();' />
+        			<input id='closeDugga' class='submit-button' type='button' value='Cancel' onclick='closeWindows();' />
+        			<input id='saveDugga' class='submit-button' type='button' value='Save' onclick='updateDugga();' />
         		</div>
         </div>
   	</div>
@@ -171,7 +171,7 @@ pdoConnect();
                     <div id="duggaExtraParamForm">
                       <fieldset style="width:90%">
                         <legend>Extra parameters</legend>
-                        <textarea id='extraparam' rows="5" style="" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>
+                        <textarea id='extraparam' rows="5" onkeyup="$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));"></textarea>
                       </fieldset>
                     </div>
                   </div>
@@ -193,9 +193,9 @@ pdoConnect();
                 <fieldset style="width:90%">
                   <legend>Search in the Table</legend>
                   <div style="width:100%; height: 25px; display:flex; flex-wrap:wrap; flex-direction:row;">
-                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; padding: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
+                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
                     onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
-                                        <button id="searchbutton" class="switchContent" style="" onclick="return searchKeyUp(event);" type="button">
+                                        <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
                       <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
                     </button>
                   </div>
@@ -215,12 +215,12 @@ pdoConnect();
               </div>
             </div>
             <div id='buttonVariantDiv' style='display:flex;justify-content:space-between'>
-              <input id='closeVariant' class='submit-button' style='' type='button' value='Close' onclick='closeWindows();'>
+              <input id='closeVariant' class='submit-button' type='button' value='Close' onclick='closeWindows();'>
               <div style='display:flex;justify-content:flex-end'>
-                  <input id='submitVariant' class='submit-button' style='' type='button' value='Create' onclick='createVariant();'>
-                  <input id='saveVariant' class='submit-button' style='' type='button' value='Update' onclick='updateVariant("0");'>
-                  <input id='disableVariant' class='submit-button disableEnable' style='' type='button' value='Disable' onclick='updateVariant("1");'>
-                  <input id='enableVariant' class='submit-button disableEnable' style='' type='button' value='Enable' onclick='updateVariant("0");'>
+                  <input id='submitVariant' class='submit-button' type='button' value='Create' onclick='createVariant();'>
+                  <input id='saveVariant' class='submit-button' type='button' value='Update' onclick='updateVariant("0");'>
+                  <input id='disableVariant' class='submit-button disableEnable' type='button' value='Disable' onclick='updateVariant("1");'>
+                  <input id='enableVariant' class='submit-button disableEnable' type='button' value='Enable' onclick='updateVariant("0");'>
                   <!--<input id='cancelVariant' class='submit-button' style='display:block; float:right;' type='button' value='Cancel' onclick='newVariant(); removeVariantTableHighlights();'>-->
               </div>
             </div>

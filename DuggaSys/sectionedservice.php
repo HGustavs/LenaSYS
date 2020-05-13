@@ -44,25 +44,17 @@ $enddate=getOP('enddate');
 $showgrps=getOP('showgrp');
 $grptype=getOP('grptype');
 $deadline=getOP('deadline');
+$pos=getOP('pos');
 $jsondeadline = getOP('jsondeadline');
 $studentTeacher = false;
 $feedbackenabled =getOP('feedback');
 $feedbackquestion =getOP('feedbackquestion');
+$motd=getOP('motd');
 
 $grpmembershp="UNK";
 $unmarked = 0;
 $groups=array();
 $grplst=array();
-
-// Gets username based on uid
-$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
-$query->bindParam(':uid', $userid);
-$query-> execute();
-
-// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
-while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-        $username = $row['username'];
-}
 
 if($gradesys=="UNK") $gradesys=0;
 
@@ -199,7 +191,7 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
+					$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':cvs', $coursevers);
 					$query->bindParam(':usrid', $userid);
@@ -207,15 +199,19 @@ if($gradesys=="UNK") $gradesys=0;
 					$query->bindParam(':link', $link);
 					$query->bindParam(':kind', $kind);
 					$query->bindParam(':gradesys', $gradesys);
-					$query->bindParam(':comment', $comment);
+					$query->bindParam(':comment', $comments);
 					$query->bindParam(':visible', $visibility);
 					$query->bindParam(':highscoremode', $highscoremode);
+					$query->bindParam(':pos', $pos);	
 
 					if ($grptype != "UNK") {
 						$query->bindParam(':groupkind', $grptype);
 					} else {
 						$query->bindValue(':groupkind', null, PDO::PARAM_STR);
-                        logUserEvent($username,EventTypes::SectionItems,$sectname);
+
+						// Logging for newly added items
+						$description=$sectname;
+                        logUserEvent($userid,EventTypes::SectionItems,$sectname);
 
 					}
 
@@ -325,11 +321,23 @@ if($gradesys=="UNK") $gradesys=0;
 						$debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
 					}
 				}else if(strcmp($opt,"UPDATEVRS")===0) {
+						// After column 'motd' exist on all releases this query can be merged with the original 'UPDATEVERS' below
+						$query = $pdo->prepare("UPDATE vers SET motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':coursecode', $coursecode);
+						$query->bindParam(':vers', $versid);
+						$query->bindParam(':motd', $motd);
+						if(!$query->execute()){
+							$error=$query->errorInfo();
+							$debug="Error updating entries: Missing column 'motd' ".$error[2];
+						}
+
 						$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':coursecode', $coursecode);
 						$query->bindParam(':vers', $versid);
 						$query->bindParam(':versname', $versname);
+						//$query->bindParam(':motd', $motd);
 		        // if start and end dates are null, insert mysql null value into database
 
 						if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
@@ -351,6 +359,11 @@ if($gradesys=="UNK") $gradesys=0;
 									$debug="Error updating entries".$error[2];
 								}
 						}
+
+						// Logging for editing course version
+						$description=$courseid." ".$versid;
+						logUserEvent($userid, EventTypes::EditCourseVers, $description);	
+
 				} else if(strcmp($opt,"CHGVERS")===0) {
 					$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 					$query->bindParam(':cid', $courseid);
@@ -562,11 +575,30 @@ if($gradesys=="UNK") $gradesys=0;
 		$links=array();
 
 		$versions=array();
-		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-
+		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
+		// After column 'motd' exist on all releases the outer if-statement can be removed.
 		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error reading courses".$error[2];
+			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading courses".$error[2];
+			}else{
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$versions,
+						array(
+							'cid' => $row['cid'],
+							'coursecode' => $row['coursecode'],
+							'vers' => $row['vers'],
+							'versname' => $row['versname'],
+							'coursename' => $row['coursename'],
+							'coursenamealt' => $row['coursenamealt'],
+							'startdate' => $row['startdate'],
+							'enddate' => $row['enddate'],
+						)
+					);
+				}
+			}
 		}else{
 			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 				array_push(
@@ -579,7 +611,8 @@ if($gradesys=="UNK") $gradesys=0;
 						'coursename' => $row['coursename'],
 						'coursenamealt' => $row['coursenamealt'],
 						'startdate' => $row['startdate'],
-						'enddate' => $row['enddate']
+						'enddate' => $row['enddate'],
+						'motd' => $row['motd']
 					)
 				);
 			}
@@ -622,11 +655,30 @@ if($gradesys=="UNK") $gradesys=0;
 			}
 
 			$versions=array();
-			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-
+			$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
+			// After column 'motd' exist on all releases the outer if-statement can be removed.
 			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error reading courses".$error[2];
+				$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error reading courses".$error[2];
+				}else{
+					foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+						array_push(
+							$versions,
+							array(
+								'cid' => $row['cid'],
+								'coursecode' => $row['coursecode'],
+								'vers' => $row['vers'],
+								'versname' => $row['versname'],
+								'coursename' => $row['coursename'],
+								'coursenamealt' => $row['coursenamealt'],
+								'startdate' => $row['startdate'],
+								'enddate' => $row['enddate'],
+							)
+						);
+					}
+				}
 			}else{
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 					array_push(
@@ -639,12 +691,12 @@ if($gradesys=="UNK") $gradesys=0;
 							'coursename' => $row['coursename'],
 							'coursenamealt' => $row['coursenamealt'],
 							'startdate' => $row['startdate'],
-							'enddate' => $row['enddate']
+							'enddate' => $row['enddate'],
+							'motd' => $row['motd']
 						)
 					);
 				}
 			}
-
 			$codeexamples=array();
 
 			// New Example
