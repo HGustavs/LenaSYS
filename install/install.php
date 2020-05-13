@@ -338,7 +338,7 @@
       // The following if-block will decide how many steps there are to complete installation.
       //---------------------------------------------------------------------------------------------------
       if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
-        $totalSteps += 4;
+        $totalSteps += 5;
         if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
           $totalSteps++;
         }
