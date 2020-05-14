@@ -4112,6 +4112,7 @@ rect[class*="activitymarker"]:hover {
 }
 
 #servermsgcontainer{
+  box-shadow:1px 1px 6px grey;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -6969,10 +6970,7 @@ textarea#filecont {
   width: 100%;
 }
 #motdArea{
-  /*border: 1px;
-  border-radius: 2px;
-  border-style: solid;
-  border-color: #614875;*/
+  box-shadow: 1px 1px 6px grey;
   border-collapse:collapse;
   background-color: #FECC56;
   justify-content: center;
