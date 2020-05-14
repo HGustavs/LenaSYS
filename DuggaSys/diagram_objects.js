@@ -641,6 +641,16 @@ function Symbol(kindOfSymbol) {
         }, []);
     }
 
+    //-----------------------------------------------------------------------
+    // getConnectedTo: Returns the line points connected to the other symbol.
+    //-----------------------------------------------------------------------
+    this.getConnectedTo = function() {
+        return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].reduce((result, connector) => {
+            connector.forEach(coordinate => result.push(coordinate.to));
+            return result;
+        }, []);
+    }
+
     //--------------------------------------------------------------------
     // isClicked: Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
