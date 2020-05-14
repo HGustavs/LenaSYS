@@ -2345,9 +2345,35 @@ function disableShortcuts(event){
     updateGraphics();
 }
 
-//---------------------------------
-// Erases the object from diagram
-//---------------------------------
+//-------------------------------------------------------------------------------------------------------
+// eraseLine: Erases passed line from diagram. Makes sure line points are no longer in object connectors.
+//-------------------------------------------------------------------------------------------------------
+
+function eraseLine(line) {
+    const connectedObjects = line.getConnectedObjects();
+
+    connectedObjects.forEach(symbol => {
+        if(symbol.symbolkind == symbolKind.erAttribute){
+            symbol.removePointFromConnector(symbol.centerPoint, line);
+        } else{
+            symbol.removePointFromConnector(line.topLeft);
+            symbol.removePointFromConnector(line.bottomRight);
+        }
+    });
+
+    // Check if the line has a common point with a center point of attributes or relations.
+    const removeTopLeft = !connectedObjects.some(symbol => symbol.centerPoint === line.topLeft || symbol.middleDivider === line.topLeft);
+    const removeBottomRight = !connectedObjects.some(symbol => symbol.centerPoint === line.bottomRight || symbol.middleDivider === line.bottomRight);
+
+    if(removeTopLeft) points[line.topLeft] = "";
+    if(removeBottomRight) points[line.bottomRight] = "";
+
+    diagram.deleteObject(line);
+}
+
+//------------------------------------------------
+// eraseObject: Erases passed object from diagram.
+//------------------------------------------------
 
 function eraseObject(object) {
     var objectsToDelete = [];
