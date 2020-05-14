@@ -509,6 +509,7 @@ p {
   margin: 0 20px 20px 0;
   padding: 20px;
   font-family: 'Varela', sans-serif;
+  cursor: pointer;
 
 }
 .announcementCard:after {
@@ -565,7 +566,7 @@ p {
 }
 .displayAnnounceTime,
 .displayAuthor{
-  color: #ddd;
+  color: #b3b3b3;
 }
 .displayAuthor{
   float: right;

@@ -14,7 +14,12 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	$title = $announcement['title'];
 	$message = $announcement['message'];
 	$announceTime = $announcement['announceTime'];
-	$retrievedAnnouncementCard .="<div class='announcementCard' onclick='updateReadStatus(".$announcementid.", ".$cid.", ".$versid.");'>";
+	$read_status = $announcement['read_status'];
+	if ($read_status == 0) {
+		$retrievedAnnouncementCard .="<div class='announcementCard' onclick='updateReadStatus(".$announcementid.", ".$cid.", ".$versid.");' style='opacity:0.5;'>";	
+	}elseif ($read_status == 1) {
+		$retrievedAnnouncementCard .="<div class='announcementCard' onclick='updateReadStatus(".$announcementid.", ".$cid.", ".$versid.");'>";	
+	}
 
 	foreach ($pdo->query('SELECT * FROM course WHERE cid="'.$cid.'"') AS $course){
 		$coursename = $course['coursename'];
