@@ -2376,62 +2376,15 @@ function eraseLine(line) {
 //------------------------------------------------
 
 function eraseObject(object) {
-    var objectsToDelete = [];
-    if (object.kind == kind.symbol) {
-        // None lines
-        if(object.symbolkind != symbolKind.line && object.symbolkind != symbolKind.umlLine) {
-            var lines = diagram.getObjectsByType(symbolKind.line);
-            var umlLines = diagram.getObjectsByType(symbolKind.umlLine);
-            if(object.symbolkind != symbolKind.uml) {
-            objectsToDelete = lines.filter(
-                line => line.topLeft == object.middleDivider
-                || line.topLeft == object.centerPoint
-                || line.bottomRight == object.middleDivider
-                || line.bottomRight == object.centerPoint
-                || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
-                || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == symbolKind.erEntity || object.symbolkind == symbolKind.erRelation))
-            );  
-            } else if (object.symbolkind == symbolKind.uml) {
-            objectsToDelete = umlLines.filter(
-                umlLine => umlLine.topLeft == object.middleDivider
-                || (object.hasConnectorFromPoint(umlLine.topLeft) && (object.symbolkind == symbolKind.uml))
-                || (object.hasConnectorFromPoint(umlLine.bottomRight) && (object.symbolkind == symbolKind.uml))
-            );
-            }
-        // lines
+    if (object.kind === kind.symbol) {
+        if(object.isLineType()) {
+            eraseLine(object);
         } else {
-            diagram.filter(
-                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml || symbol.symbolkind == symbolKind.erAttribute)
-                    .filter(symbol =>   symbol.hasConnectorPoint(object.topLeft)
-                                     && symbol.hasConnectorPoint(object.bottomRight))
-                    .forEach(symbol => {
-                        if(symbol.symbolkind == symbolKind.erAttribute){
-                            symbol.removePointFromConnector(symbol.centerPoint, object);
-                        } else{
-                            symbol.removePointFromConnector(object.topLeft);
-                            symbol.removePointFromConnector(object.bottomRight);
-                        }
-                    });
-
-            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml);
-            // Check if the line has a common point with a centerpoint of attributes or relations.
-            var removeTopleft = attributesAndRelations
-                        .filter(symbol => symbol.centerPoint == object.topLeft
-                                       || symbol.middleDivider == object.topLeft
-                               ).length == 0;
-            var removeBottomright = attributesAndRelations
-                        .filter(symbol => symbol.centerPoint == object.bottomRight
-                                        || symbol.middleDivider == object.bottomRight
-                               ).length == 0;
-            if(removeTopleft) points[object.topLeft] = "";
-            if(removeBottomright) points[object.bottomRight] = "";
+            object.getConnectedLines().forEach(eraseObject);
         }
-        object.erase();
-    } else if (object.kind == kind.path) {
-        object.erase();
     }
+    object.erase();
     diagram.deleteObject(object);
-    objectsToDelete.forEach(eraseObject);
     updateGraphics();
 }
 
