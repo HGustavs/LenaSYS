@@ -1420,41 +1420,6 @@ diagram.checkForHover = function(posX, posY) {
     return hoveredObjects[hoveredObjects.length - 1];
 }
 
-//--------------------------------------------------------------------
-// eraseLines: removes all the lines connected to an object
-//--------------------------------------------------------------------
-
-diagram.eraseLines = function(privateLines) {
-    for (var i = 0; i < privateLines.length; i++) {
-        var eraseLeft = false;
-        var eraseRight = false;
-        for (var j = 0; j < diagram.length;j++) {
-            if (points[diagram[j].centerPoint] == points[privateLines[i].topLeft] ||
-                points[diagram[j].middleDivider] == points[privateLines[i].topLeft]) {
-                eraseLeft = true;
-            }
-            if (points[diagram[j].centerPoint] == points[privateLines[i].bottomRight] ||
-                points[diagram[j].middleDivider] == points[privateLines[i].bottomRight]) {
-                eraseRight = true;
-            }
-        }
-        var connected_objects = privateLines[i].getConnectedObjects();
-        if(!eraseLeft) {
-            for(var j = 0; j < connected_objects.length; j++) {
-                connected_objects[j].removePointFromConnector(privateLines[i].topLeft);
-            }
-            points[privateLines[i].topLeft] = waldoPoint;
-        }
-        if(!eraseRight) {
-            for(var j = 0; j < connected_objects.length; j++) {
-                connected_objects[j].removePointFromConnector(privateLines[i].bottomRight);
-            }
-            points[privateLines[i].bottomRight] = waldoPoint;
-        }
-        diagram.deleteObject(privateLines[i]);
-    }
-}
-
 //-----------------------------------------------------------------------------------------------------
 // getObjectsByType: Returns an array of all diagram objects with the passed symbolKind. (0 for paths).
 //-----------------------------------------------------------------------------------------------------
@@ -2436,7 +2401,6 @@ function eraseObject(object) {
             if(removeBottomright) points[object.bottomRight] = "";
         }
         object.erase();
-        diagram.eraseLines(object, object.getConnectedLines());
     } else if (object.kind == kind.path) {
         object.erase();
     }
