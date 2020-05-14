@@ -467,9 +467,7 @@ function loadServiceUsage() {
                  
 				});
 				$('#analytic-info').append(serviceSelect);
-				serviceSelect.change();
-                  fullDateFrom = undefined;
-                  fullDateTo = undefined;
+				serviceSelect.change();  
 			}
            }
 		});
@@ -478,14 +476,18 @@ function loadServiceUsage() {
         selectInterval.change(function(){
             switch(selectInterval.val()){
                 case "hourly":
+                    fullDateFrom = undefined;
+                    fullDateTo = undefined;
                     console.log("hourly");
                     changeInput("hourly");
-              updateServiceUsage();
+                    updateServiceUsage();
                     break;
                 case "daily":
+                    fullDateFrom = undefined;
+                    fullDateTo = undefined;
                     console.log("daily");
                     changeInput("daily");
-              updateServiceUsage();
+                    updateServiceUsage();
                     break;
                 case "weekly":
                     console.log("weekly");
@@ -497,6 +499,7 @@ function loadServiceUsage() {
                     changeInput("monthly");
               //updateServiceUsage();
                     break;
+              
             }
             /*datePickerFrom.change(updateServiceUsage);
             datePickerTo.change(updateServiceUsage);
