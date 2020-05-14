@@ -564,28 +564,13 @@ function Symbol(kindOfSymbol) {
         this.sortConnector(this.connectorBottom, 2, x1, x2, y2);
     }
 
-    // return true if connector contains a certain point
+    //-------------------------------------------------------------------
+    // hasConnector: Returns true if any connector contains passed point.
+    //-------------------------------------------------------------------
     this.hasConnector = function(point) {
-        for (var i = 0; i < this.connectorTop.length; i++) {
-            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point) {
-                return true;
-            }
-        }
-        for(var i = 0; i < this.connectorRight.length; i++) {
-            if(this.connectorRight[i].to == point || this.connectorRight[i].from == point) {
-                return true;
-            }
-        }
-        for (var i = 0; i < this.connectorBottom.length; i++) {
-            if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point) {
-                return true;
-            }
-        }
-        for (var i = 0; i < this.connectorLeft.length; i++) {
-            if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point) {
-                return true;
-            }
-        }
+        return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].some(connector => {
+            return connector.some(coordinate => coordinate.to === point || coordinate.from === point);
+        });
     }
 
     //--------------------------------------------------------------------
