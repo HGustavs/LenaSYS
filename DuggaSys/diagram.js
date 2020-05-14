@@ -2436,40 +2436,42 @@ function disableShortcuts(event){
 function resetShortcuts(event){
     event.stopPropagation();
     //Reset binds to default keycodes
-    keyMap.backspaceKey = 8;
-    keyMap.shiftKey = 16;
-    keyMap.ctrlKey = 17;
-    keyMap.altKey = 18;
-    keyMap.escapeKey = 27;
-    keyMap.spacebarKey = 32;
-    keyMap.leftArrow = 37;
-    keyMap.upArrow = 38;
-    keyMap.rightArrow = 39;
-    keyMap.downArrow = 40;
-    keyMap.deleteKey = 46;
-    keyMap.key0 = 48;
-    keyMap.key1 = 49;
-    keyMap.key2 = 50;
-    keyMap.key4 = 52;
-    keyMap.aKey = 65;
-    keyMap.cKey = 67;
-    keyMap.dKey = 68;
-    keyMap.eKey = 69;
-    keyMap.fKey = 70;
-    keyMap.lKey = 76;
-    keyMap.mKey = 77;
-    keyMap.nKey = 78;
-    keyMap.oKey = 79;
-    keyMap.rKey = 82;
-    keyMap.vKey = 86;
-    keyMap.zKey = 90;
-    keyMap.yKey = 89;
-    keyMap.xKey = 88;
-    keyMap.windowsKey = 91;
-    keyMap.num1 = 97;
-    keyMap.num2 = 98;
-    keyMap.lessThanKey = 60;
-    keyMap.f11Key = 122;
+    keyMap.backspaceKey = defaultBackspaceKey,
+    keyMap.enterKey = defaultEnterKey,
+    keyMap.shiftKey = defaultShiftKey,
+    keyMap.ctrlKey = defaultCtrlKey,
+    keyMap.altKey = defaultAltKey,
+    keyMap.escapeKey = defaultEscapeKey,
+    keyMap.spacebarKey = defaultSpacebarKey,
+    keyMap.leftArrow = defaultLeftArrow,
+    keyMap.upArrow = defaultUpArrow,
+    keyMap.rightArrow = defaultRightArrow,
+    keyMap.downArrow = defaultDownArrow,
+    keyMap.deleteKey = defaultDeleteKey,
+    keyMap.key0 = defaultKey0,
+    keyMap.key1 = defaultKey1,
+    keyMap.key2 = defaultKey2,
+    keyMap.key4 = defaultKey4,
+    keyMap.aKey = defaultAKey,
+    keyMap.cKey = defaultCKey,
+    keyMap.dKey = defaultDKey,
+    keyMap.eKey = defaultEKey,
+    keyMap.fKey = defaultFKey,
+    keyMap.lKey = defaultLKey,
+    keyMap.mKey = defaultMKey,
+    keyMap.nKey = defaultNKey,
+    keyMap.oKey = defaultOKey,
+    keyMap.rKey = defaultRKey,
+    keyMap.tKey = defaultTKey,
+    keyMap.vKey = defaultVKey,
+    keyMap.zKey = defaultZKey,
+    keyMap.yKey = defaultYKey,
+    keyMap.xKey = defaultXKey,
+    keyMap.windowsKey = defaultWindowsKey,
+    keyMap.num1 = defaultNum1,
+    keyMap.num2 = defaultNum2,
+    keyMap.lessThanKey = defaultLessThanKey,
+    keyMap.f11Key = defaultF11Key,
     //redraw the keyMap to the html element
     drawKeyMap(keyMap, $("#shortcuts-wrap").get(0) );
     updateGraphics();
