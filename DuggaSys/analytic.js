@@ -135,6 +135,12 @@ function loadGeneralStats() {
 			data['stats']['totalUsers']
 		]);
 
+		// Top Page
+		tableData.push([
+			'Top Page: ' + data['stats']['topPage'],
+			'Hits: ' + data['stats']['topPageHits']
+    ]);
+    
 		// Top Browser
 		tableData.push([
 			'Top Browser',

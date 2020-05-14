@@ -113,6 +113,12 @@ function generalStats($dbCon) {
 			timestamp DESC;
 	')->fetchAll(PDO::FETCH_ASSOC);
 
+	$topPage = $log_db->query('
+		SELECT refer, COUNT(*) as hits
+		FROM userHistory 
+		GROUP BY refer 
+		ORDER BY COUNT(*) DESC LIMIT 1;
+	')->fetchAll(PDO::FETCH_ASSOC);
 	
 	$topBrowser = $GLOBALS['log_db']->query('
 		SELECT
@@ -141,8 +147,12 @@ function generalStats($dbCon) {
  	$generalStats['stats']['lenasysSize'] = convertBytesToHumanreadable(GetDirectorySize(str_replace("DuggaSys", "", getcwd())));
 	$generalStats['stats']['userSubmissionSize'] = convertBytesToHumanreadable(GetDirectorySize(getcwd() . "/submissions"));
 
+	$generalStats['stats']['topPage'] = $topPage[0]['refer'];
+	$generalStats['stats']['topPageHits'] = $topPage[0]['hits'];
+
 	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
 	$generalStats['stats']['topOS'] = $topOS[0]['operatingSystem'];
+
 
 	$query = $dbCon->prepare("SELECT count(*) as numUsers FROM user");
 
