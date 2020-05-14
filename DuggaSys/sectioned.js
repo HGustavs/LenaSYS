@@ -344,14 +344,17 @@ function openCodeDialog() {
 }
 
 function onSelectFileChanged(selected) {
-  // console.log(selected.value + " - " + selected.options[selected.selectedIndex].text);
-  const selectHolder = document.getElementById('selectHolder');
+  const fileKindOrder = ["-= Global Files =-", "-= Local Files =-", "-= Course Local Files =-"];
+  const text = selected.options[selected.selectedIndex].text;
 
-  console.log(selectHolderArray);
-
-  
-
-  createSelect();
+  if (fileKindOrder.includes(text)) {
+    // Need to remove select options after this
+    console.log("Remove elements after this one");
+    const selectHolder = document.getElementById('selectHolder');
+  } else {
+    // Creates element if not reseting previous selects
+    createSelect();
+  }
 }
 
 function createSelect() {
