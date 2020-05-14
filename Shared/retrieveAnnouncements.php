@@ -4,9 +4,10 @@ include_once ("../Shared/database.php");
 pdoConnect();
 
 $cid = intval($_GET['cid']);
+$recipient = intval($_GET['recipient']);
 $versid = intval($_GET['versid']);
 $retrievedAnnouncementCard = '';
-foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid="'.$versid.'" ORDER BY announceTime DESC') AS $announcement){
+foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid="'.$versid.'" AND recipient="'.$recipient.'" ORDER BY announceTime DESC') AS $announcement){
 	$announcementid = $announcement['announcementid'];
 	$uid = $announcement['uid'];
 	$cid = $announcement['cid'];
@@ -16,7 +17,7 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	$announceTime = $announcement['announceTime'];
 	$read_status = $announcement['read_status'];
 	$edited = $announcement['edited'];
-	if ($read_status == 0) {
+	if ($read_status == 0 && $recipient == $announcement['recipient']) {
 		$retrievedAnnouncementCard .="<div class='announcementCard' onclick='updateReadStatus(".$announcementid.", ".$cid.", ".$versid.");' style='opacity:0.5;'>";	
 	}elseif ($read_status == 1) {
 		$retrievedAnnouncementCard .="<div class='announcementCard' onclick='updateReadStatus(".$announcementid.", ".$cid.", ".$versid.");'>";	
@@ -54,7 +55,7 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 };
 
 //count rows
-$nRows = $pdo->query('SELECT COUNT(*) FROM announcement WHERE cid="'.$cid.'" AND versid="'.$versid.'" AND read_status = "1" ORDER BY announceTime DESC')->fetchColumn(); 
+$nRows = $pdo->query('SELECT COUNT(*) FROM announcement WHERE cid="'.$cid.'" AND versid="'.$versid.'" AND recipient ="'.$recipient.'" AND read_status = "1" ORDER BY announceTime DESC')->fetchColumn(); 
 
 
 echo json_encode(['retrievedAnnouncementCard' => $retrievedAnnouncementCard, 'nRows' => $nRows]);

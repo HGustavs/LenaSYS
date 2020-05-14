@@ -18,9 +18,9 @@ pdoConnect();
     </div>
     <div id="courseidAndVersid">
       <div>
-        <label for="courseid">Course</label><br>
-        <select id="courseid" name="cid">
-          <option value="" selected>ID</option>
+        <label for="cid">Course</label><br>
+        <select id="cid" name="cid">
+          <option selected disabled>ID</option>
           <?php
           foreach ($pdo->query('SELECT * FROM course ORDER BY coursename ASC') as $course) {
             echo "<option value='".$course['cid']."'>".$course['coursename']."</option>";
@@ -29,16 +29,16 @@ pdoConnect();
         </select>
       </div>
       <div>
-        <label for="versid">Course-version</label><br>
+        <label for="versid">Version</label><br>
         <select id="versid" name="versid" disabled>
-          <option value="" selected>ID</option>
+          <option selected disabled>ID</option>
         </select>
       </div>
     </div>
     <div id="recipientBox">
       <label for="recipient">Recipients</label><br>
-      <select id="recipient" name="recipient" multiple disabled>
-        <option value="all">All</option>
+      <select id="recipient" name="recipients[]" multiple disabled>
+        <option disabled>Select</option>
       </select>
     </div>
     <div>

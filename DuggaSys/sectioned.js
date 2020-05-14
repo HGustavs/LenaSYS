@@ -1680,6 +1680,7 @@ function retrieveAnnouncementAuthor(){
       if($("#userid").length > 0) {
           var parsed_data = JSON.parse(this.response);
           document.getElementById("userid").value = parsed_data.uid;
+          $("#recipient").append("<option value="+parsed_data.uid+" selected hidden></option>");
 
       }
     }
@@ -1692,9 +1693,9 @@ function retrieveAnnouncementAuthor(){
 function retrieveCourseProfile(){
   var cid = '';
   var versid = '';
-  $("#courseid").change(function(){
-    cid = $("#courseid").val();
-    if (($("#courseid").val()) != '') {
+  $("#cid").change(function(){
+    cid = $("#cid").val();
+    if (($("#cid").val()) != '') {
       $("#versid").prop("disabled", false);
       $.ajax({
         url: "../Shared/retrievevers.php",
@@ -1729,7 +1730,7 @@ function retrieveCourseProfile(){
         type: "POST",
         success: function(data){
           var item = JSON.parse(data);
-          $("#recipient").find('*').not(':first').remove();
+          $("#recipient").find('*').not(':nth-child(1)').not(':nth-child(2)').remove();
           $.each(item.users_course, function(index,item) {        
             $("#recipient").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
           });
@@ -1768,30 +1769,39 @@ function retrieveAnnouncementsCards(){
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
+  var uname = $("#userName").html();
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: {uname:uname},
+    type: "GET",
+    success: function(data){
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+     var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var parsed_data = JSON.parse(this.response);
+          document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+          var unread_announcements = parsed_data.nRows;
+          if(unread_announcements > 0){
+            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            $("#announcementnotificationcount").html(parsed_data.nRows);
+          }
+          accessAdminAction();
+          readLessOrMore();
+          showLessOrMoreAnnouncements();
+          scrollToTheAnnnouncementForm();
+          $(".deleteBtn").click(function(){
+            sessionStorage.setItem('closeUpdateForm', true);
 
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      var parsed_data = JSON.parse(this.response);
-      document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
-      var unread_announcements = parsed_data.nRows;
-      if(unread_announcements > 0){
-        $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
-        $("#announcementnotificationcount").html(parsed_data.nRows);
-      }
-      accessAdminAction();
-      readLessOrMore();
-      showLessOrMoreAnnouncements();
-      scrollToTheAnnnouncementForm();
-      $(".deleteBtn").click(function(){
-        sessionStorage.setItem('closeUpdateForm', true);
+          });
 
-      });
-
+        }
+      };
+      xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid+"&recipient="+uid,true);
+      xmlhttp.send();
     }
-  };
-  xmlhttp.open("GET","../Shared/retrieveAnnouncements.php?cid="+cid+"&versid="+versid,true);
-  xmlhttp.send();
+  });
 }
 //update anouncement form
 function updateannouncementForm(updateannouncementid, tempFuction){
@@ -1959,13 +1969,24 @@ function showLessOrMoreAnnouncements(){
 
 }
 function updateReadStatus(announcementid, cid, versid){
+  var uname = $("#userName").html();
   $.ajax({
-    url: "../Shared/updateviewedAnnouncementCards.php",
-    data: {announcementid : announcementid, cid : cid, versid : versid},
-    type: "POST",
+    url: "../Shared/retrieveUserid.php",
+    data: {uname: uname},
+    type: "GET",
     success: function(data){
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+      $.ajax({
+        url: "../Shared/updateviewedAnnouncementCards.php",
+        data: {announcementid : announcementid, uid : uid, cid : cid, versid : versid},
+        type: "POST",
+        success: function(data){
+        }
+      });
     }
   });
+
 }
 // Checks if <a> link is external
 function link_is_external(link_element) {

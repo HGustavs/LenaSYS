@@ -491,6 +491,7 @@ CREATE TABLE `groups` (
 CREATE TABLE announcement(
     announcementid INT UNSIGNED NOT NULL AUTO_INCREMENT,
     uid INT UNSIGNED NOT NULL,
+    recipient INT UNSIGNED NOT NULL,
     cid INT UNSIGNED NOT NULL,
     versid VARCHAR(8),
     title TINYTEXT NOT NULL,
@@ -500,6 +501,7 @@ CREATE TABLE announcement(
     edited VARCHAR(3) NOT NULL DEFAULT "NO",
     PRIMARY KEY(announcementid, uid, cid),
     FOREIGN KEY (uid) REFERENCES user (uid),
+    FOREIGN KEY (recipient) REFERENCES user (uid),
     FOREIGN KEY (cid) REFERENCES course (cid)
     
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
