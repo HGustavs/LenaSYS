@@ -68,7 +68,7 @@ function selectDugga(qid) {
 	var marro=["00","05","10","15","20","25","30","35","40","45","50","55"];
 	var marrv=[0,5,10,15,20,25,30,35,40,45,50,55];
 	if(qid=="UNK"){
-		quiz={"arrow":"UNK","qname":"New Dugga","autograde":0,"gradesystem":1,"quizFile":0,"qstart":"UNK","deadline":"UNK","jsondeadline":"","qrelease":"UNK"};
+		quiz={"arrow":"UNK","qname":"","autograde":0,"gradesystem":1,"quizFile":0,"qstart":"UNK","deadline":"UNK","jsondeadline":"","qrelease":"UNK"};
 	} else {
 		globalData['entries'].forEach(function (element) {
 			if (element['did'] == qid) {
@@ -109,6 +109,8 @@ function selectDugga(qid) {
 	$("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
 
 	$("#editDugga").css("display", "flex");
+	/* Validates name as soon as a dugga is selected.*/
+	validateDuggaName();
 }
 
 
@@ -707,9 +709,11 @@ function renderCell(col, celldata, cellid) {
 		case "qrelease":	// DUGGA-TABLE - Result date
 			if(!celldata) {	// if null - return string "N/A"
 				retString = "N/A";
-			} else {		// else - return date without seconds (i.e. last three charachters)
+			} else if(celldata.length > 10){		// when there is time included - return date without seconds (i.e. last three charachters)
 				var secCutoff = celldata.length - 3;
 				retString = celldata.slice(0, secCutoff);
+			} else {
+				retString = celldata;	//else - simply show the celldata, in this case the date (YYYY-MM-DD)
 			}
 			break;
 
@@ -980,10 +984,10 @@ function compare(a, b) {
 	}
 	
 	if(tempA != null){
-		tempA = tempA.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+		tempA = tempA.toLowerCase().replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
 	}
 	if(tempB != null){
-		tempB = tempB.replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
+		tempB = tempB.toLowerCase().replace(/&aring/g,"å").replace(/&auml/g,"ä").replace(/&ouml/g,"ö").replace(/&Aring/g,"Å").replace(/&Auml/g,"Ä").replace(/&Ouml/g,"Ö");
 	}
 
 	if (tempA > tempB) {
