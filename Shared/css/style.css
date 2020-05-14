@@ -3024,7 +3024,6 @@ padding: 10px;
 }
 .access-dropdown-selected {
   background-color:var(--color-accent);
-  color:var(--color-primary);
 }
 #reset-pw{
   width:70%; 
