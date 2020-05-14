@@ -570,10 +570,18 @@ function loadPageInformation() {
 
 			var tableData = [["Page", "Hits"]];
 			for(var i = 0; i < pages.length; i++){
-				tableData.push([
-					pages[i],
-					data['hits'][pages[i]].pageLoads
-				]);
+
+				if(data['hits'][pages[i]] !== null){
+					tableData.push([
+						pages[i],
+						data['hits'][pages[i]].pageLoads
+					]);
+				}else{
+					tableData.push([
+						pages[i],
+						"0"
+					]);
+				}
 			}
 
             updatePieChartInformation(page, tableData, data);
@@ -606,7 +614,6 @@ function loadPageInformation() {
 					cid: parseInt(courseID[i])
 				},success: function(data){
 					loopCounter++;
-					console.log("success");
 					for (var i = 0; i < data.length; i++) {
 						courseName.push([
 							data[i].coursename
@@ -621,7 +628,9 @@ function loadPageInformation() {
 						]);
 					}
 					if(loopCounter == numberOfCourses){
-						$('#analytic-info').append(renderTable(tablePercentage));
+						if(courseName.length !== 0){
+							$('#analytic-info').append(renderTable(tablePercentage));
+						}
 					}
 				}, error: function(){
 					console.log(" AJAX error");
@@ -640,7 +649,9 @@ function loadPageInformation() {
         $('#analytic-info').append("<p>Page information.</p>");
         $('#analytic-info').append(selectPage);
 		$('#analytic-info').append(renderTable(tableData));
-        $('#analytic-info').append(drawPieChart(chartData, "Hit spread for " + page + " page loads:"));
+		if(chartData !== 0){
+		$('#analytic-info').append(drawPieChart(chartData, "Hit spread for " + page + " page loads:"));
+		}
         updateState();
     }
  
