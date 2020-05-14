@@ -874,6 +874,18 @@ function loadUserInformation(){
 				}
             });
             updateState(users);
+		});
+		$.ajax({
+        	url:"../Shared/basic.php", 
+            type: "POST", 
+            dataType: 'json',
+           	data: {
+			   test: "success"
+			},success:function(data){
+             	console.log(data);
+           	},error: function(){
+			   console.log("AJAX error");
+		   	}
         });
     } 
    

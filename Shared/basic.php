@@ -369,6 +369,13 @@ function logDuggaLoadEvent($cid, $uid, $username, $vers, $quizid, $type) {
 // EventTypes - Contains constants for log event types
 //------------------------------------------------------------------------------------------------
 
+$test = $_POST['test'];
+
+if ($test == "success"){
+	$result = "test";
+	echo json_encode($result);
+}
+
 abstract class EventTypes {
 	const DuggaRead = 1;
 	const DuggaWrite = 2;
