@@ -2392,31 +2392,6 @@ function disableShortcuts(event){
     updateGraphics();
 }
 
-//-------------------------------------------
-// Returns lines connected to the object
-//--------------------------------------------
-
-function getConnectedLines(object) {
-    var privatePoints = object.getPoints();
-    var lines = diagram.getObjectsByType(symbolKind.line);
-    var objectLines = [];
-    for (var i = 0; i < lines.length; i++) {
-        var line = lines[i];
-        //Lines connected to object's centerPoint
-        //Line always have topLeft and bottomRight if symbolkind == 4, because that means it's a line object
-        if (line.topLeft == object.centerPoint || line.bottomRight == object.centerPoint) {
-            objectLines.push(line);
-        }
-        //Connected to connectors top, right, bottom and left.
-        for (var j = 0; j < privatePoints.length; j++) {
-            if (line.topLeft == privatePoints[j] || line.bottomRight == privatePoints[j]) {
-                objectLines.push(line);
-            }
-        }
-    }
-    return objectLines;
-}
-
 //---------------------------------
 // Erases the object from diagram
 //---------------------------------
@@ -2426,8 +2401,8 @@ function eraseObject(object) {
     if (object.kind == kind.symbol) {
         // None lines
         if(object.symbolkind != symbolKind.line && object.symbolkind != symbolKind.umlLine) {
-            var lines = diagram.filter(symbol => symbol.symbolkind == symbolKind.line);
-            var umlLines = diagram.filter(symbol => symbol.symbolkind == symbolKind.umlLine);
+            var lines = diagram.getObjectsByType(symbolKind.line);
+            var umlLines = diagram.getObjectsByType(symbolKind.umlLine);
             if(object.symbolkind != symbolKind.uml) {
             objectsToDelete = lines.filter(
                 line => line.topLeft == object.middleDivider
