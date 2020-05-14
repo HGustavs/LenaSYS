@@ -485,7 +485,7 @@ window.addEventListener('blur', resetButtonsPressed);
 
 //Functions to call after document body loads
 function init() {
-    initializeCanvas(); 
+    initializeCanvas();
     canvasSize(); 
     loadDiagram(); 
     setModeOnRefresh(); 
@@ -2736,7 +2736,7 @@ function resetSerialNumbers(){
 //------------------------------------------------------------------------------
 
 var previousToolbarState = currentMode.er;
-var developerModeActive = true;                 // used to repressent a switch for whenever the developerMode is enabled or not.
+var developerModeActive = false;                 // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     resetToolButtonsPressed();
@@ -2757,15 +2757,22 @@ function developerMode(event) {
     updateGraphics();
 }
 
+//------------------------------------------------------------------------------
+// setModeOnRefresh: Sets toolbar mode when refreshing page. 
+// If none is saved in localstorage, default is ER
+//------------------------------------------------------------------------------
+
 function setModeOnRefresh() {
     const tempToolbarState = localStorage.getItem("toolbarState");
-    if(tempToolbarState !== null) {
-        toolbarState = tempToolbarState;
+    if(tempToolbarState != null) {
+        targetMode = tempToolbarState;
     } else {
-        toolbarState = currentMode.er;
+        targetMode = currentMode.er;
     }
-    developerModeActive = false;
     switchMode();
+    if(toolbarState != currentMode.dev){
+        hideCrosses();
+    }
 }
 
 function setPaperSizeOnRefresh() {
