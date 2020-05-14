@@ -1210,6 +1210,21 @@ function Symbol(kindOfSymbol) {
         return privatePoints;
     }
 
+    //-------------------------------------------------------------------------------------
+    // getConnectedLinePoints: Adds all connected line points to an array and returns the array.
+    //-------------------------------------------------------------------------------------
+
+    this.getConnectedLinePoints = function() {
+        const points = [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].reduce((set, connector) => {
+            connector.forEach(coordinate => {
+                set.add(coordinate.to);
+                set.add(coordinate.from);
+            });
+            return set;
+        }, new Set());
+        return [...points];
+    }
+
     //-----------------------------------------------------------------------
     // isLineType: Checks if this is a line (ER or UML)
     //-----------------------------------------------------------------------
