@@ -1,7 +1,11 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+$refer = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+if (!strstr(strtolower($refer), 'service')) { // only echo from non-service files
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+}
 error_reporting(E_ALL);
 
 function customErrorHandler($errno, $errstr, $errfile, $errline) {
@@ -25,7 +29,7 @@ function customErrorHandler($errno, $errstr, $errfile, $errline) {
 			break;
 
 		default:
-			echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'"); </script>';
+			//echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
 			break;
     }
 }
@@ -145,12 +149,19 @@ if(!file_exists ('../../log')) {
 		die;
 	}
 }
+//---------------------------------------------------------------------------------------------------------------
+// IF MAKING CHANGES TO SQLite tables, increment this value!
+//---------------------------------------------------------------------------------------------------------------
+$dbVersion = 5;
+//---------------------------------------------------------------------------------------------------------------
+
 try {
-	$log_db = new PDO('sqlite:../../log/loglena4.db');
+	$log_db = new PDO('sqlite:../../log/loglena'.$dbVersion.'.db');
 } catch (PDOException $e) {
 	echo "Failed to connect to the database";
 	throw $e;
 }
+
 $sql = '
 	CREATE TABLE IF NOT EXISTS logEntries (
 		id INTEGER PRIMARY KEY,
@@ -188,6 +199,7 @@ $sql = '
 		type INTEGER,
 		courseid INTEGER,
 		uid INTEGER(10),
+		username VARCHAR(15),
 		exampleid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
@@ -196,6 +208,7 @@ $sql = '
 		type INTEGER,
 		cid INTEGER,
 		uid INTEGER(10),
+		username VARCHAR(15),
 		vers INTEGER,
 		quizid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -327,10 +340,11 @@ function logServiceEvent($uuid, $eventType, $service, $userid, $info, $timestamp
 // Log page load for examples. - Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
 //------------------------------------------------------------------------------------------------
 
-function logExampleLoadEvent($courseid, $uid, $exampleid, $type) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, uid, exampleid, type) VALUES (:courseid, :uid, :exampleid, :type)');
+function logExampleLoadEvent($courseid, $uid, $username, $exampleid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, uid, username, exampleid, type) VALUES (:courseid, :uid, :username, :exampleid, :type)');
 	$query->bindParam(':courseid', $courseid);
 	$query->bindParam(':uid', $uid);
+	$query->bindParam(':username', $username);
 	$query->bindParam(':exampleid', $exampleid);
 	$query->bindParam(':type', $type);
 	$query->execute();
@@ -340,10 +354,11 @@ function logExampleLoadEvent($courseid, $uid, $exampleid, $type) {
 // Log page load for examples. - Creates a new entry to the duggaLoadLogEntries when a user opens a new dugga.
 //------------------------------------------------------------------------------------------------
 
-function logDuggaLoadEvent($cid, $uid, $vers, $quizid, $type) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, uid, vers, quizid, type) VALUES (:cid, :uid, :vers, :quizid, :type)');
+function logDuggaLoadEvent($cid, $uid, $username, $vers, $quizid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, uid, username, vers, quizid, type) VALUES (:cid, :uid, :username, :vers, :quizid, :type)');
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':uid', $uid);
+	$query->bindParam(':username', $username);
 	$query->bindParam(':vers', $vers);
 	$query->bindParam(':quizid', $quizid);
 	$query->bindParam(':type', $type);
@@ -377,7 +392,8 @@ abstract class EventTypes {
     const ResetPW = 20;
     const DuggaFileupload = 21;
 	const DownloadAllCourseVers = 22;
-	const EditFile = 23;  
+	const EditFile = 23; 
+    const MarkedDugga = 24;
 }
 
 //------------------------------------------------------------------------------------------------

@@ -116,7 +116,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, tabs, feedbackenabled, feedbackquestion) {
 
   // Variables for the different options and values for the deadlne time dropdown meny.
   var hourArrOptions=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
@@ -148,7 +148,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   } else {
      document.querySelector("#inputwrapper-deadline").style.display = "block";
   }
-
+  
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
@@ -206,6 +206,19 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Display Dialog
   $("#editSection").css("display", "flex");
 
+  //------------------------------------------------------------------------------
+  //checks if feedback is enabled and enables input box for feedbackquestion choice.
+  //------------------------------------------------------------------------------
+
+  $("#editSection").css("display", "flex");
+  if(feedbackenabled == 1){
+    $( "#fdbck" ).prop( "checked", true );
+    $("#inputwrapper-FeedbackQuestion").css("display","block");
+    $("#fdbckque").val(feedbackquestion);
+  }else{
+    $( "#fdbck" ).prop( "checked", false );
+    $("#inputwrapper-FeedbackQuestion").css("display","none");
+  }
 }
 
 //----------------------------------------------------------------------------------
@@ -315,7 +328,7 @@ function showCreateVersion() {
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
-    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment);
+    selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment,"undefined", "undefined", 0, null);
     newItem();
   }
 }
@@ -362,6 +375,15 @@ function prepareItem() {
   param.comments = $("#comments").val();
   param.grptype = $("#grptype").val();
   param.deadline = $("#setDeadlineValue").val()+" "+$("#deadlinehours").val()+":"+$("#deadlineminutes").val();
+
+  if ($('#fdbck').prop('checked')){
+    param.feedback = 1;
+  } else{
+    param.feedback = 0;
+  }
+
+  param.feedbackquestion = $("#fdbckque").val();
+
   if(param.comments == "TOP"){
     param.pos = "-1";
   }
@@ -427,8 +449,8 @@ function createVersion() {
   param.versname = document.getElementById("versname").value;
   param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = document.getElementById("course-coursecode").innerHTML;
-  param.coursename = document.getElementById("course-coursename").innerHTML;
+  param.coursecode = querystring["courseid"];
+  param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#makeactive").is(':checked');
   param.startdate = getDateFormat(new Date($("#startdate").val()));
   param.enddate = getDateFormat(new Date($("#enddate").val()));
@@ -446,6 +468,7 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("versid").value );
   }
 }
 
@@ -462,8 +485,8 @@ function updateVersion() {
   param.versid = document.getElementById("eversid").value;
   param.versname = document.getElementById("eversname").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = document.getElementById("course-coursecode").innerHTML;
-  param.coursename = document.getElementById("course-coursename").innerHTML;
+  param.coursecode = querystring["courseid"];
+  param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
   param.enddate = $("#eenddate").val();
@@ -472,6 +495,7 @@ function updateVersion() {
   AJAXService("UPDATEVRS", param, "SECTION");
 
   $("#editCourseVersion").css("display", "none");
+  changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("versid").value );
 }
 
 //queryString for coursename is added
@@ -852,6 +876,7 @@ function returnedSection(data) {
           var param = {
             'exampleid': item['link'],
             'courseid': querystring['courseid'],
+            'coursename' : querystring['coursename'],
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
@@ -939,6 +964,13 @@ function returnedSection(data) {
           }
         }
 
+        // Userfeedback
+        if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
+          str += "<td style='width:32px;'>";
+          str += "<img id='dorf' src='../Shared/icons/FistV.svg' title='feedback' onclick='showUserFeedBack(\"" + item['lid']  + "\",\"" + item['feedbackquestion']  + "\");'>";
+          str += "</td>";
+        }
+
         // Cog Wheel
         if (data['writeaccess'] || data['studentteacher']) {
           str += "<td style='width:32px;' ";
@@ -948,7 +980,7 @@ function returnedSection(data) {
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
           str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['tabs']]) + ");' />";
+          str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + ");' />";
           str += "</td>";
         }
 
@@ -1019,7 +1051,6 @@ function returnedSection(data) {
       }
     }
   } else {
-
     str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'><span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML+= str;
@@ -1108,7 +1139,7 @@ function closeMOTD(){
     setMOTDCookie();
   }
   document.getElementById('motdArea').style.display='none';
-  document.getElementById("FABStatic2").style.top = "565px";
+  document.getElementById("FABStatic2").style.top = "auto";
 }
 // Adds the current versname and vers to the MOTD cookie
 function setMOTDCookie(){
@@ -1508,7 +1539,6 @@ function mouseUp(e) {
     event.preventDefault();
 
     closeWindows();
-    console.log(e.target);
     closeSelect();
     showSaveButton();
   } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
@@ -2086,6 +2116,9 @@ function validateDate(startDate, endDate, dialogID) {
 
 /*Validates if deadline is between start and end date*/
 function validateDate2(ddate, dialogid) {
+  var inputDeadline = document.getElementById("inputwrapper-deadline");
+  if (window.getComputedStyle(inputDeadline).display !== "none") {
+  
   var ddate = document.getElementById(ddate);
   var x = document.getElementById(dialogid);
   var deadline = new Date(ddate.value);
@@ -2108,6 +2141,10 @@ function validateDate2(ddate, dialogid) {
     window.bool8 = false;
 
     }
+  }
+  else{
+    window.bool8 = true;
+  }
 }
 
 function validateSectName(name, dialogid){
@@ -2139,29 +2176,12 @@ function validateForm(formid) {
     var deadDate = document.getElementById("setDeadlineValue").value;
 
     //If fields empty
-    if (sName == null || sName == "", deadDate == null || deadDate == "") {
-      alert("Fill in all fields");
-
-    }
-    // if all information is correct
-    if (window.bool8 === true && window.bool10 === true ) {
-      alert('The item is now updated');
-      updateItem();
-      updateDeadline();
-
-    } else {
-      alert("You have entered incorrect information");
-    }
-  }
-  if (formid === 'editSectionName') {
-    var sName = document.getElementById("sectionname").value;
-    //If fields empty
     if (sName == null || sName == "") {
       alert("Fill in all fields");
 
     }
     // if all information is correct
-    if (window.bool10 === true ) {
+    if (window.bool8 === true && window.bool10 === true ) {
       alert('The item is now updated');
       updateItem();
       updateDeadline();
@@ -2210,5 +2230,95 @@ function validateForm(formid) {
       alert("You have entered incorrect information");
     }
   }
+}
 
+//------------------------------------------------------------------------------
+//displays dialogue box and the content
+//------------------------------------------------------------------------------
+function showUserFeedBack(lid,feedbackquestion) {
+	AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
+  $("#userFeedbackDialog").css("display", "flex");
+  $("#feedbacktablecontainer").html("");
+  $("#statscontainer").css("display", "none");
+  $("#duggaFeedbackQuestion").html(feedbackquestion);
+}
+
+//------------------------------------------------------------------------------
+//returns the feedbackdata and displays the feedback and statistics.
+//------------------------------------------------------------------------------
+function returnedUserFeedback(data){
+  if(data.userfeedback.length == 0){
+    $("#feedbacktablecontainer").html( "<p>No feedback available</p>" );
+  }else{
+    $("#statscontainer").css("display", "flex");
+    var averagerating = parseFloat(data.avgfeedbackscore);
+    var highestscore = 0;
+    var lowestscore = 10;
+    for(var i = 0; i<data.userfeedback.length; i++){
+      if(parseInt(data.userfeedback[i].score) > highestscore){
+        highestscore=data.userfeedback[i].score;
+        
+      }
+      if(parseInt(data.userfeedback[i].score) < lowestscore){
+        lowestscore=data.userfeedback[i].score;
+      }
+    }
+    $("#avg-feedback").html(averagerating.toFixed(2));
+    $("#median-feedback").html(highestscore+" / "+lowestscore);
+    $("#total-feedback").html(data.userfeedback.length);
+    $("#feedbacktablecontainer").html(createUserFeedbackTable(data));
+  }
+  
+}
+//------------------------------------------------------------------------------
+//Creates a table with the Feedback data.
+//------------------------------------------------------------------------------
+function createUserFeedbackTable(data){
+  var str = "<table id='feedbacktable'  style='border-collapse: collapse' class='list'>";
+  str += "<thead><tr><th>Feedback ID</th>";
+  str += "<th>Username</th>";
+  str += "<th>Course ID</th>";
+  str += "<th>Dugga ID</th>";
+  str += "<th>Rating</th>";
+  str += "<th>Contact student</th></tr></thead><tbody style='background-color: var(--color-background)'>";
+
+  for(var i = 0; i < data.userfeedback.length; i++){
+    str +="<tr>";
+    str += "<td>"+data.userfeedback[i].ufid+"</td>";
+    if(data.userfeedback[i].username === null){
+      str += "<td>N/A</td>";
+    }else{
+      str += "<td>"+data.userfeedback[i].username+"</td>";
+    }
+    str += "<td>"+data.userfeedback[i].cid+"</td>";
+    str += "<td>"+data.userfeedback[i].lid+"</td>";
+    str += "<td style='font-weight: bold; font-size: 18px;'>"+data.userfeedback[i].score+"</td>";
+    if(data.userfeedback[i].username === null){
+      str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
+    }else{
+      str += "<td style='width:1px;'><input class='submit-button' type='button' value='Contact student' onclick='contactStudent(\"" + data.userfeedback[i].entryname + "\",\"" + data.userfeedback[i].username + "\")'></td>";
+    }
+    str += "</tr>";
+  }
+
+  str += "</tbody></table>";
+  return str;
+}
+
+//------------------------------------------------------------------------------
+//opens an email to the student
+//------------------------------------------------------------------------------
+function contactStudent(entryname,username){
+  
+  window.location = "mailto:" + username + "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga "+entryname;
+}
+//------------------------------------------------------------------------------
+//Displays the feedback question input on enable-button toggle. 
+//------------------------------------------------------------------------------
+function showFeedbackquestion(){
+  if($("#fdbck").prop('checked')){
+    $("#inputwrapper-FeedbackQuestion").css("display","block");
+  }else{
+    $("#inputwrapper-FeedbackQuestion").css("display","none");
+  }
 }

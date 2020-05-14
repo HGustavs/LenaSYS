@@ -93,6 +93,7 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
+var colorArray = ["#000000","#496e63","#64B5F6","#81C784","#e6e6e6","#E57373","#FFF176","#FFB74D","#BA68C8","#366922"]
 var valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
 var writeToLayer = getcorrectlayer();
 var showLayer = ["Layer_1"];
@@ -120,13 +121,8 @@ var hoveredObject;
 var markedObject = false;
 var lineStartObj = -1;
 var fullscreen = false;             // Used to toggle fullscreen 
-var old_container_marginTop;        // Used to revert changes from fullscreen
-var old_container_marginLeft;       // Used to revert changes from fullscreen
-var old_container_width;            // Used to revert changes from fullscreen
-var old_container_height;           // Used to revert changes from fullscreen
-var old_container_position;         // Used to revert changes from fullscreen
-var old_canvas_div_marginLeft;      // Used to revert changes from 
 var toolbarDisplayed = false;       // Show/hide toolbar in fullscreen
+var isRulersActive = false;         //Show/hide rulers
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
@@ -495,141 +491,19 @@ function init() {
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
+    setIsRulersActiveOnRefresh();
+    setHideCommentOnRefresh();
     initAppearanceForm();
     setPaperSize(event, paperSize);
     updateGraphics(); 
 }
 
-//--------------------------------------------------------------
-// Generates an example of a ER-diagram
-//--------------------------------------------------------------
+//------------------------------------------
+// Generates example diagram of passed file.
+//------------------------------------------
 
-function generateERExampleCode() {
-    //Create some entities and attributes
-    var erAttributeA = new Symbol(2);
-    erAttributeA.name = "SSN";
-    erAttributeA.topLeft = points.addPoint(770, 270, false);
-    erAttributeA.bottomRight = points.addPoint(880, 330, false);
-    erAttributeA.centerPoint = points.addPoint((770 + 880) * 0.5, (270 + 330) * 0.5, false);
-    var erAttributeB = new Symbol(2);
-    erAttributeB.name = "Name";
-    erAttributeB.topLeft = points.addPoint(770, 370, false);
-    erAttributeB.bottomRight = points.addPoint(880, 430, false);
-    erAttributeB.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
-    var erAttributeC = new Symbol(2);
-    erAttributeC.name = "Smell";
-    erAttributeC.topLeft = points.addPoint(120, 370, false);
-    erAttributeC.bottomRight = points.addPoint(230, 430, false);
-    erAttributeC.centerPoint = points.addPoint((770 + 880) * 0.5, (370 + 430) * 0.5, false);
-    var erAttributeD = new Symbol(2);
-    erAttributeD.name = "Stink";
-    erAttributeD.topLeft = points.addPoint(120, 270, false);
-    erAttributeD.bottomRight = points.addPoint(230, 330, false);
-    erAttributeD.centerPoint = points.addPoint((120 + 230) * 0.5, (270 + 330) * 0.5, false);
-    var erAttributeE = new Symbol(2);
-    erAttributeE.name = "Verisimilitude";
-    erAttributeE.topLeft = points.addPoint(450, 60, false);
-    erAttributeE.bottomRight = points.addPoint(560, 120, false);
-    erAttributeE.centerPoint = points.addPoint((450 + 560) * 0.5, (60 + 120) * 0.5, false);
-    var erEntityA = new Symbol(3);
-    erEntityA.name = "Person";
-    erEntityA.topLeft = points.addPoint(450, 300, false);
-    erEntityA.bottomRight = points.addPoint(560, 360, false);
-    erEntityA.centerPoint = points.addPoint((450 + 560) * 0.5, (300 + 360) * 0.5, false);
-    var erEntityB = new Symbol(3);
-    erEntityB.name = "Pet";
-    erEntityB.topLeft = points.addPoint(450, 550, false);
-    erEntityB.bottomRight = points.addPoint(560, 610, false);
-    erEntityB.centerPoint = points.addPoint((450 + 560) * 0.5, (600 + 660) * 0.5, false);
-    var erRelationA = new Symbol(5);
-    erRelationA.name = "Has";
-    erRelationA.topLeft = points.addPoint(450, 430, false);
-    erRelationA.bottomRight = points.addPoint(560, 490, false);
-    erRelationA.centerPoint = points.addPoint((450 + 560) * 0.5, (400 + 460) * 0.5, false);
-
-    // Create connectors
-    var erattributeRelA = new Symbol(4);
-    erattributeRelA.topLeft = points.addPoint(560, 350, false);
-    erattributeRelA.bottomRight = points.addPoint(770, 400, false);
-    erattributeRelA.centerPoint = points.addPoint((560 + 770) * 0.5, (350 + 400) * 0.5, false);
-    var erattributeRelB = new Symbol(4);
-    erattributeRelB.topLeft = points.addPoint(560, 310, false);
-    erattributeRelB.bottomRight = points.addPoint(770, 300, false);
-    erattributeRelB.centerPoint = points.addPoint((560 + 770) * 0.5, (320 + 300) * 0.5, false);
-    var erattributeRelC = new Symbol(4);
-    erattributeRelC.topLeft = points.addPoint(230, 400, false);
-    erattributeRelC.bottomRight = points.addPoint(450, 350, false);
-    erattributeRelC.centerPoint = points.addPoint((230 + 450) * 0.5, (400 + 350) * 0.5, false);
-    var erattributeRelD = new Symbol(4);
-    erattributeRelD.topLeft = points.addPoint(230, 300, false);
-    erattributeRelD.bottomRight = points.addPoint(450, 310, false);
-    erattributeRelD.centerPoint = points.addPoint((230 + 450) * 0.5, (300 + 310) * 0.5, false);
-    var erattributeRelE = new Symbol(4);
-    erattributeRelE.topLeft = points.addPoint(505, 120, false);
-    erattributeRelE.bottomRight = points.addPoint(505, 300, false);
-    erattributeRelE.centerPoint = points.addPoint((505 + 505) * 0.5, (120 + 300) * 0.5, false);
-    var erRelationRelA = new Symbol(4);
-    erRelationRelA.topLeft = points.addPoint(505, 360, false);
-    erRelationRelA.bottomRight = points.addPoint(505, 550, false);
-    erRelationRelA.centerPoint = points.addPoint((505 + 505) * 0.5, (360 + 550) * 0.5, false);
-
-    // Add all elements to diagram
-    diagram.push(erattributeRelA);
-    diagram.push(erattributeRelB);
-    diagram.push(erattributeRelC);
-    diagram.push(erattributeRelD);
-    diagram.push(erattributeRelE);
-    diagram.push(erRelationRelA);
-    diagram.push(erAttributeA);
-    diagram.push(erAttributeB);
-    diagram.push(erAttributeC);
-    diagram.push(erAttributeD);
-    diagram.push(erAttributeE);
-    diagram.push(erEntityA);
-    diagram.push(erEntityB);
-    diagram.push(erRelationA);
-}
-
-//--------------------------------------------------------------------
-// Generates an example of a UML-diagram
-//--------------------------------------------------------------------
-
-function generateUMLExampleCode() {
-    // Create a UML Class and add three attributes, two operations and a name
-    var classA = new Symbol(symbolKind.uml);
-    classA.name = "Person";
-    classA.attributes.push({text:"+ height:Integer"});
-    classA.attributes.push({text:"# at:Large"});
-    classA.attributes.push({text:"- megalomania:Real"});
-    classA.operations.push({text:"+ hold(name:String)"});
-    classA.operations.push({text:"- makemore()"});
-    classA.topLeft = points.addPoint(450, 300, false);
-    classA.bottomRight = points.addPoint(590, 430, false);
-    classA.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
-    classA.centerPoint = points.addPoint((450 + 590) * 0.5, (300 + 430) * 0.5, false);
-    
-    //Create a second UML class
-    var classB = new Symbol(symbolKind.uml);
-    classB.name = "Pet";
-    classB.attributes.push({text:"+ color:String"});
-    classB.attributes.push({text:"- megalomania:Real"});
-    classB.operations.push({text:"- beCute()"});
-    classB.topLeft = points.addPoint(700, 300, false);
-    classB.bottomRight = points.addPoint(840, 430, false);
-    classB.middleDivider = points.addPoint((50 + 50) * 0.5, (50 + 50) * 0.5, false);
-    classB.centerPoint = points.addPoint((700 + 840) * 0.5, (300 + 430) * 0.5, false);
-
-    //Add some relations
-    var umlRelationA = new Symbol(symbolKind.umlLine);
-    umlRelationA.topLeft = points.addPoint(590, 365, false);
-    umlRelationA.bottomRight = points.addPoint(706, 365, false);
-    umlRelationA.centerPoint = points.addPoint((590 + 706) * 0.5, (365 + 365) * 0.5, false);
-    umlRelationA.cardinality = {"value": "1", "valueUML": "0..*", "symbolKind": 1, "parentBox": classB};
-
-    //Push to diagram
-    diagram.push(classA);
-    diagram.push(classB);
-    diagram.push(umlRelationA);
+function generateExampleCode(url) {
+    $.get(url, data => LoadImport(data));
 }
 
 //--------------------------------------------------------------------
@@ -660,6 +534,63 @@ function resetToolButtonsPressed() {
 }
 
 //--------------------------------------------------------------------
+// deleteFreedrawObject: Checks if a point of a selected freedraw object
+//                       or entire object should be removed
+//--------------------------------------------------------------------
+function deleteFreedrawObject() {
+    let pointId = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).index;
+    let point = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+    
+    if (typeof point.attachedSymbol != "undefined") {
+        // A freedraw object needs to be selected
+        if (point.attachedSymbol.figureType == "Free" && point.attachedSymbol.targeted) {
+            // If a point isn't hovered, delete object
+            if (point.distance > 10 / zoomValue){
+                eraseObject(point.attachedSymbol);
+                return;
+            }
+            // Freedraw objects need at least 3 points
+            if (point.attachedSymbol.segments.length <= 3) {
+                return;
+            }
+            // Remove hovered point
+            else {
+                removeFreedrawPoint(point.attachedSymbol, pointId); 
+            }
+        }
+    }
+}
+
+//--------------------------------------------------------------------
+// removeFreedrawPoint: Removes a point from a freedraw object and
+//                      Reorganizes the segments
+//--------------------------------------------------------------------
+function removeFreedrawPoint(symbol , pointId) {
+    let newSegment = {kind:kind.path, pa:-1, pb:-1};
+    let toRemove = [];
+    // Finds the segments where the point is used
+    for (let i = 0; symbol.segments.length > i; i++) {
+        if (symbol.segments[i].pa == pointId) {
+            newSegment.pb = symbol.segments[i].pb;
+            toRemove.push(i);
+        }
+        if (symbol.segments[i].pb == pointId) {
+            newSegment.pa = symbol.segments[i].pa;
+            toRemove.push(i);
+        }
+    }
+    // Removes the segments to and from the point to remove
+    symbol.segments.splice(toRemove[1], 1);
+    symbol.segments.splice(toRemove[0], 1);
+    // Adds new segment between the points that were connected to removed point
+    symbol.segments.splice(toRemove[0], 0, newSegment);
+    symbol.targeted = false;
+    // Hide removed point in center
+    points[pointId].x = 0;
+    points[pointId].y = 0;
+}
+
+//--------------------------------------------------------------------
 // This handles all the key binds for diagram
 //--------------------------------------------------------------------
 
@@ -683,12 +614,13 @@ function keyDownHandler(e) {
     }
     if (appearanceMenuOpen) return;
     if ((key == keyMap.deleteKey || key == keyMap.backspaceKey)) {
+        deleteFreedrawObject();
         eraseSelectedObject(event);
         SaveState();
     }  
     //Check if enter is pressed when "focused" on an item in the dropdown menu
     if(key == keyMap.enterKey) {
-        const allowedClasses = ["drop-down-item", "export-drop-down-item", "papersize-drop-down-item"];
+        const allowedClasses = ["drop-down-item"];
         const isAllowed = allowedClasses.some(className => document.activeElement.classList.contains(className));
         if(isAllowed) {
             const onclickElement = document.activeElement.querySelector("[onclick]");
@@ -756,6 +688,7 @@ function keyDownHandler(e) {
                 selected_objects.push(diagram[i]);
                 diagram[i].targeted = true;
             }
+            createRulerLinesObjectPoints();
             updateGraphics();
         } else if(key == keyMap.ctrlKey || key == keyMap.windowsKey) {
             ctrlIsClicked = true;
@@ -763,17 +696,15 @@ function keyDownHandler(e) {
             if (modeSwitchDialogActive) {
                 // if the cancel button is focused then trigger that
                 if (document.activeElement.id == "modeSwitchButtonCancel") {
-                    modeSwitchConfirmed(false);
+                    closeModeSwitchDialog();
                 } else {
-                modeSwitchConfirmed(true);
+                    switchMode();
                 }
             }
         } else if (key == keyMap.escapeKey) {
             cancelFreeDraw();
             deselectObjects();
-
-
-            if (modeSwitchDialogActive) modeSwitchConfirmed(false);
+            if (modeSwitchDialogActive) closeModeSwitchDialog();
         } else if ((key == keyMap.key1 || key == keyMap.num1) && shiftIsClicked){
             moveToFront(event);
         } else if ((key == keyMap.key2 || key == keyMap.num2) && shiftIsClicked){
@@ -797,7 +728,11 @@ function keyDownHandler(e) {
         } else if (shiftIsClicked && key == keyMap.dKey) {
         developerMode(event);
         } else if (shiftIsClicked && key == keyMap.mKey  && !modeSwitchDialogActive) {
-            toggleMode();
+            if(toolbarState == currentMode.uml || toolbarState == currentMode.dev) {
+                switchToolbarTo(currentMode.er);
+            } else if (toolbarState == currentMode.er) {
+                switchToolbarTo(currentMode.uml);
+            }
         } else if (shiftIsClicked && key == keyMap.xKey) {
             lockSelected(event);
         } else if (shiftIsClicked && key == keyMap.oKey) {
@@ -1099,21 +1034,28 @@ function copySymbol(symbol) {
 
             let newPointIndex = 0;
             if(typeof keyContainsDuplicateOldPoint === "undefined") {
-
                 //Special case for ER lines connected to attributes
                 //The second point of an er line connected to an attribute is the attribute's centerPoint
                 //This code finds connected attributes that will be copied and prevents the second point from being duplicated if the attribute will also be copied
                 //If the attribute will not be copied the point should be created
-                if(symbol.symbolkind === symbolKind.line && key === "bottomRight") {
+                if(symbol.symbolkind === symbolKind.line) {
                     const connectedAttribute = symbol.getConnectedObjects().find(object => object.symbolkind === symbolKind.erAttribute);
+                    const connectedAttributes = symbol.getConnectedObjects().filter(object => object.symbolkind === symbolKind.erAttribute);
                     if(typeof connectedAttribute !== "undefined") {
                         const isAttributeSelected = cloneTempArray.some(object => Object.is(connectedAttribute, object));
-                        if(isAttributeSelected) {
+                        //If one of the connected objects is a attribute, create no second point
+                        if(isAttributeSelected && connectedAttribute.connectorTop.find(object => object.from === symbol[key])) {
                             newPointIndex = null;
+                        }
+                        //If both connected objects are attributes, create no points
+                        else if(connectedAttributes.length > 1 && symbol.getConnectedObjects()[0].symbolkind == symbolKind.erAttribute && symbol.getConnectedObjects()[1].symbolkind == symbolKind.erAttribute){
+                            //Both attributes must be selected
+                            if(selected_objects.includes(connectedAttributes[0]) && selected_objects.includes(connectedAttributes[1])){
+                                newPointIndex = null;
+                            }
                         }
                     }
                 }
-
                 if(newPointIndex !== null) {
                     const point = points[pointIndexes[key].old];
                     newPointIndex = points.addPoint(point.x + 50, point.y + 50, point.isSelected);
@@ -1630,13 +1572,13 @@ function initializeCanvas() {
     setInterval(hashCurrent, hashUpdateTimer);
     setInterval(hashFunction, hashUpdateTimer + 500);
 
-    const diagramContainer = document.getElementById("diagramCanvasContainer");
+    const diagramContainer = document.getElementById("diagram-canvas-container");
     const moveButton = document.getElementById("moveButton");
     const zoomTextElement = document.getElementById("zoomV");
     const zoomRange = document.getElementById("ZoomSelect");
 
 
-    canvas = document.getElementById("diagramCanvas");
+    canvas = document.getElementById("diagram-canvas");
     if(canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
@@ -2263,7 +2205,24 @@ function toggleComments(event) {
 		hideComment = true;
       	setCheckbox($(".drop-down-option:contains('Hide Comments')"), hideComment);
     }
-	updateGraphics();
+    updateGraphics();
+    localStorage.setItem("hideComment", hideComment);
+}
+
+//---------------------------------------------------------------
+// Stores if the comments are hidden or not in localStorage
+//---------------------------------------------------------------
+
+function setHideCommentOnRefresh() {
+    const tempHideComment = localStorage.getItem("hideComment");
+    if (tempHideComment != null) {
+        if (tempHideComment == 'true') {
+            hideComment = false;
+        } else {
+            hideComment = true;
+        }
+    toggleComments(event);
+  }
 }
 //--------------------------------------------
 //Sets the size of the paper on the canvas
@@ -2284,8 +2243,8 @@ function setPaperSize(event, size){
 	]
 	selectedPaper[size] = true;
 	for (i = 0; i < 7; i++){
-		let name = 'A' + i;
-		setCheckbox($(`.drop-down-option:contains(${name})`), selectedPaper[i]);
+        let name = 'A' + i;
+        setCheckbox($(`.drop-down-option:contains('Paper size...') + .side-drop-down .drop-down-option:contains(${name})`), selectedPaper[i]);
 	}
 	paperSize = size; 
 	localStorage.setItem("paperSize", paperSize);
@@ -2409,22 +2368,11 @@ $(document).ready(function(){
 //---------------------------------------------------
 
 function canvasSize() {
-    var diagramContainer = document.getElementById("diagramCanvasContainer");
-    if(fullscreen){
-        // Resize container
-        diagramContainer.style.height = window.innerHeight + "px";
-        diagramContainer.style.width = window.innerWidth + "px";
-        // Remove "px" and set canvas size
-        var width_converted = diagramContainer.style.width.replace("px", "");
-        var height_converted = diagramContainer.style.height.replace("px", "");
-        canvas.width = width_converted;
-        canvas.height = height_converted;
-    } else {
-        // Resize canvas
-        canvas.width = diagramContainer.offsetWidth;
-        canvas.height = diagramContainer.offsetHeight;
-    }
-    boundingRect = canvas.getBoundingClientRect();    
+    var diagramContainer = document.getElementById("diagram-canvas-container");
+    canvas.width = diagramContainer.offsetWidth;
+    canvas.height = diagramContainer.offsetHeight;
+    boundingRect = canvas.getBoundingClientRect();
+    createRulers();
     updateGraphics();
 }
 
@@ -2537,12 +2485,16 @@ function eraseObject(object) {
         // lines
         } else {
             diagram.filter(
-                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml)
+                symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml || symbol.symbolkind == symbolKind.erAttribute)
                     .filter(symbol =>   symbol.hasConnector(object.topLeft)
                                      && symbol.hasConnector(object.bottomRight))
                     .forEach(symbol => {
-                        symbol.removePointFromConnector(object.topLeft);
-                        symbol.removePointFromConnector(object.bottomRight);
+                        if(symbol.symbolkind == symbolKind.erAttribute){
+                            symbol.removePointFromConnector(symbol.centerPoint, object);
+                        } else{
+                            symbol.removePointFromConnector(object.topLeft);
+                            symbol.removePointFromConnector(object.bottomRight);
+                        }
                     });
 
             var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == symbolKind.erAttribute || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml);
@@ -2576,10 +2528,13 @@ function eraseObject(object) {
 function eraseSelectedObject(event) {
     event.stopPropagation();
     for(var i = 0; i < selected_objects.length; i++) {
-        eraseObject(selected_objects[i]);
+        if (selected_objects[i].figureType != "Free") {
+            eraseObject(selected_objects[i]);
+        }
     }
     selected_objects = [];
     lastSelectedObject = -1;
+    createRulerLinesObjectPoints();
     updateGraphics();
 }
 
@@ -2602,10 +2557,10 @@ $(document).ready(function() {
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")) {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
         } else {
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             $(this).removeClass("unpressed").addClass("pressed");
         }
     });
@@ -2776,45 +2731,28 @@ function resetSerialNumbers(){
     }
 }
 
-// the purpose is not very clear
-var consloe = {};
-consloe.log = function(gobBluth) {
-    document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
-}
-
 //------------------------------------------------------------------------------
-// developerMode:
-// this function show and hides developer options.
+// developerMode: Toggles in and out from developer mode
 //------------------------------------------------------------------------------
 
 var previousToolbarState = currentMode.er;
-var developerModeActive = true;                // used to repressent a switch for whenever the developerMode is enabled or not.
+var developerModeActive = true;                 // used to repressent a switch for whenever the developerMode is enabled or not.
 function developerMode(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
     resetToolButtonsPressed();
     developerModeActive = !developerModeActive;
-    // save the previous toolbarstate so that we can return to it
-    if (developerModeActive) previousToolbarState = toolbarState;
-    toolbarState = currentMode.dev;
+
     if (developerModeActive) {
+        targetMode = currentMode.dev;
+        // Enable developer features (crosses/origo)
         showCrosses();
-        drawOrigo();                                                                    // Draw origo on canvas
-        switchToolbarDev(event);                                                             // ---||---
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to DEV.
-        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");    // Remove disable of displayAllTools id.
-        setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-        setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-        setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-            crossDEV=true);                                                             // Turn on crossDEV.
-        setCheckbox($(".drop-down-option:contains('Developer mode')"), true);
+        drawOrigo();
     } else {
-        // switch to the saved toolbarstate
-        if (previousToolbarState == currentMode.er) switchToolbarER();
-        else if (previousToolbarState == currentMode.uml) switchToolbarUML();
-        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
-        setCheckbox($(".drop-down-option:contains('Developer mode')"), false);
+        // Revert to previous state and hide developer features
+        targetMode = previousToolbarState;
         hideCrosses();
     }
+    switchMode();
     reWrite();
     updateGraphics();
 }
@@ -2826,25 +2764,8 @@ function setModeOnRefresh() {
     } else {
         toolbarState = currentMode.er;
     }
-
     developerModeActive = false;
-
-    if(toolbarState == currentMode.er) {
-        switchToolbarER();
-        hideCrosses();
-    } else if(toolbarState == currentMode.uml) {
-        switchToolbarUML();
-        hideCrosses();
-    } else if(toolbarState == currentMode.dev) {
-        developerModeActive = true;
-        showCrosses();
-        switchToolbarDev(event);
-        setCheckbox($(".drop-down-option:contains('Developer mode')"), developerModeActive);
-        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
-    } else {
-        switchToolbarER();
-        hideCrosses();
-    }
+    switchMode();
 }
 
 function setPaperSizeOnRefresh() {
@@ -2872,128 +2793,6 @@ function hideCrosses() {
     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
     crossFillStyle = "rgba(255, 102, 68, 0.0)";
     crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-}
-
-//------------------------------------------------------------------------------
-// modeSwitchConfirmed:
-// This function calls the switch methods if the change is accepted, called
-// when clicking the dialog.
-//------------------------------------------------------------------------------
-
-function modeSwitchConfirmed(confirmed) {
-    modeSwitchDialogActive = false;
-    $("#modeSwitchDialog").hide();
-    if(confirmed){
-        resetToolButtonsPressed();
-        if (targetMode == 'ER') {
-            switchToolbarER();
-        } else if (targetMode == 'UML') {
-            switchToolbarUML();
-        }
-    }
-}
-
-//-----------------------------------
-// Switches between modes ER and UML
-//-----------------------------------
-
-function toggleMode() {
-    if(toolbarState == "ER" && !developerModeActive){
-        switchToolbarTo("UML");
-    } else if (toolbarState == "UML" && !developerModeActive) {
-        switchToolbarTo("ER");
-    } else {
-        if(toolbarState == "ER") {
-            switchToolbarTo("UML");
-        } else {
-            switchToolbarTo("ER");
-        }
-    }
-}
-
-//------------------------------------------------------------------------------
-// switchToolbarTo:
-// This function switch opens a dialog for confirmation and sets which mode
-// to change to.
-//------------------------------------------------------------------------------
-
-function switchToolbarTo(target) {
-    if (toolbarState == target) {
-      return;
-    }
-    targetMode = target;
-    modeSwitchDialogActive = true;
-    //only ask for confirmation when developer mode is off
-    if (developerModeActive) {
-        modeSwitchConfirmed(true);
-    } else {
-        $("#modeSwitchDialog").css("display", "flex");
-        var toolbarTypeText = document.getElementById('toolbarTypeText').innerHTML;
-        document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarTypeText + " to " + targetMode;
-    }
-}
-
-//------------------------------------------------------------------------------
-// SwitchToolbarER:
-// This function handles everything that need to happen when the toolbar
-// changes to ER. It changes toolbar and turn on/off crosses on the menu.
-//------------------------------------------------------------------------------
-
-var crossER = false;
-function switchToolbarER() {
-    toolbarState = currentMode.er;                                                  // Change the toolbar to ER.
-    switchToolbar('ER');
-    if (developerModeActive) {
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: ER';
-    } else {
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: ER';              // Change the text to ER.
-    }
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=true);               // Turn on crossER.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-        crossDEV=false);                                                            // Turn off crossDEV.
-}
-
-//------------------------------------------------------------------------------
-// SwitchToolbarUML:
-// This function handles everything that need to happen when the toolbar
-// changes to UML. It changes toolbar and turn on/off crosses on the menu.
-//------------------------------------------------------------------------------
-
-var crossUML = false;
-function switchToolbarUML() {
-    toolbarState = currentMode.uml;                                                 // Change the toolbar to UML.
-    switchToolbar('UML');
-    if (developerModeActive) {
-        document.getElementById('toolbarTypeText').innerHTML = 'DEV: UML';
-    } else {
-        document.getElementById('toolbarTypeText').innerHTML = 'Mode: UML';              // Change the text to UML.
-    }                                                           // ---||---
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=true);             // Turn on crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-    crossDEV=false);                                                            // Turn off crossUML.
-}
-
-//------------------------------------------------------------------------------
-// SwitchToolbarDev:
-// This function handles everything that need to happen when the toolbar
-// changes to Dev. It changes toolbar and turn on/off crosses on the menu.
-//------------------------------------------------------------------------------
-
-var crossDEV = false;
-function switchToolbarDev(event) {
-    event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if(!developerModeActive){
-        return;
-    }
-    toolbarState = currentMode.dev;                                                 // Change the toolbar to DEV.
-    switchToolbar('Dev');                                                           // ---||---
-    document.getElementById('toolbarTypeText').innerHTML = 'DEV: All';             // Change the text to UML.
-    setCheckbox($(".drop-down-option:contains('Display All Tools')"),
-        crossDEV=true);                                                             // Turn on crossDEV.
-    setCheckbox($(".drop-down-option:contains('UML')"), crossUML=false);            // Turn off crossUML.
-    setCheckbox($(".drop-down-option:contains('ER')"), crossER=false);              // Turn off crossER.
 }
 
 //----------------------------------------------------------------------
@@ -3025,10 +2824,11 @@ function reWrite() {
 
     if (developerModeActive) {
         let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
+        let activeLayer = '<b> Layer: </b>' +getCorrectValueArray();
         if (typeof hoveredObject !== "undefined" && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
             coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
-        coordinatesElement.innerHTML = `${coordinatesText}</p>`;
+        coordinatesElement.innerHTML = `${coordinatesText}${activeLayer}</p>`;
         if (!isMobile){
             coordinatesElement.style.display = "block";
         }
@@ -3482,6 +3282,7 @@ function undoDiagram(event) {
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
     hoveredObject = undefined;
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------------------
@@ -3502,6 +3303,7 @@ function redoDiagram(event) {
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
     hoveredObject = undefined;
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------------------
@@ -3592,82 +3394,103 @@ function setOrientationIcon(element, check) {
 // DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
 
-const toolbarER = currentMode.er;
-const toolbarUML = currentMode.uml;
-const toolbarDeveloperMode = currentMode.dev;
-
 //----------------------------------------------------------------------
-// switchToolbar: function for switching the toolbar state (All, ER, UML),
-//                not sure what the numbers 0 an 3 mean
+// switchMode: called when pressing "Accept" button after mode switch, and as trigger when jumping in/out from developer mode
 //----------------------------------------------------------------------
 
-function switchToolbar(mode) {
-  if(mode == currentMode.er) {
-      toolbarState = toolbarER;
-  } else if(mode == currentMode.uml) {
-      toolbarState = toolbarUML;
-  } else if(mode == currentMode.dev) {
-      toolbarState = toolbarDeveloperMode;
-  }
-
-  document.getElementById('toolbarTypeText').innerHTML = "Mode: ER";
-
-  localStorage.setItem("toolbarState", toolbarState);
-  //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == toolbarER) {
-    $(".toolbar-drawer").hide();
-    $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
-    $("#linebutton").show();
-    $("#attributebutton").show();
-    $("#entitybutton").show();
-    $("#relationbutton").show();
-    $("#drawerDraw").show();
-    $("#labelDraw").show();
-    $("#drawfreebutton").show();
-    $("#drawtextbutton").show();
-  }
-  else if (toolbarState == toolbarUML) {
-    $(".toolbar-drawer").hide();
-    $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
-    $("#linebutton").show();
-    $("#classbutton").show();
-    $("#drawtextbutton").show();
-  } else if(toolbarState == toolbarDeveloperMode) {
-    $(".toolbar-drawer").show();
-    $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").show();
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").show();
-    $("#linebutton").show();
-    $("#attributebutton").show();
-    $("#entitybutton").show();
-    $("#relationbutton").show();
-    $("#drawerDraw").show();
-    $("#labelDraw").show();
-    $("#drawfreebutton").show();
-    $("#drawtextbutton").show();
-  }
-  document.getElementById('toolbar-switcher').value = toolbarState;
+function switchMode() {
+    closeModeSwitchDialog();
+    toolbarState = targetMode;
+    localStorage.setItem("toolbarState", toolbarState);
+    if(toolbarState != currentMode.dev) previousToolbarState = toolbarState;
+    switchToolbar();
+    editToolbarMenus();
 }
+
+//----------------------------------------------------------------------
+// switchToolbar: switches what tools are displayed in the left toolbar (Dev, ER, UML)
+//----------------------------------------------------------------------
+
+function switchToolbar() {  
+    // Hide/show relevant toolbar buttons depending on what mode is selected
+    if(toolbarState == currentMode.dev || toolbarState == currentMode.er) {
+        $("#attributebutton").show();
+        $("#entitybutton").show();
+        $("#relationbutton").show();
+        $("#drawfreebutton").show();
+        $("#classbutton").hide();
+        if(toolbarState != currentMode.er) {
+            $("#classbutton").show();
+        }
+    }
+    else if(toolbarState == currentMode.uml) {
+        $("#classbutton").show();
+        $("#attributebutton").hide();
+        $("#entitybutton").hide();
+        $("#relationbutton").hide();
+        $("#drawfreebutton").hide();
+    }
+    document.getElementById('diagram-toolbar-switcher').innerHTML = 'Mode: '+ toolbarState;
+}
+
+//-------------------------------------------------------------------------
+// editToolbarMenus: Edit checkboxes in menus depending on what mode is active
+//-------------------------------------------------------------------------
+
+function editToolbarMenus(){
+    setCheckbox($(".drop-down-option:contains('ER mode')"), toolbarState == currentMode.er);
+    setCheckbox($(".drop-down-option:contains('UML mode')"), toolbarState == currentMode.uml);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), (toolbarState == currentMode.dev) || developerModeActive);
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), (toolbarState == currentMode.dev));
+    if(developerModeActive){
+        $("#displayAllTools").removeClass("drop-down-item drop-down-item-disabled");
+    } else {
+        $("#displayAllTools").addClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), false);
+    }
+}
+
+//------------------------------------------------------------------------------
+// switchToolbarTo: This function switch opens a dialog for confirming mode switch
+//------------------------------------------------------------------------------
+
+function switchToolbarTo(target) {
+    if (toolbarState == target) {
+      return;
+    }
+    targetMode = target;
+    modeSwitchDialogActive = true;
+    //only ask for confirmation when developer mode is off
+    if (developerModeActive) {
+        switchMode();
+    } else {
+        $("#modeSwitchDialog").css("display", "flex");
+        document.getElementById("modeSwitchTarget").innerHTML = "Change mode from " + toolbarState + " to " + targetMode;
+    }
+}
+
+//------------------------------------------------------------------------------
+// SwitchToolbarDev: Called when pressing "Display all tools". Sets targeted mode to developer and calls to switch
+//------------------------------------------------------------------------------
+
+function switchToolbarDev(event) {
+    event.stopPropagation();
+    if(!developerModeActive){
+        return;
+    }
+    targetMode = currentMode.dev;
+    switchMode();
+}
+
+//-------------------------------------------------------------------------
+// closeModeSitchDialog: Closes popup that appears when switching modes
+//-------------------------------------------------------------------------
+
+function closeModeSwitchDialog(){
+    modeSwitchDialogActive = false;
+    $("#modeSwitchDialog").hide();
+}
+
 
 // ----------------------------------
 // DIAGRAM MOUSE SECTION
@@ -3706,7 +3529,7 @@ function zoomInMode(event) {
         origoOffsetX -= centerX * zoomDifference - centerX;
         origoOffsetY -= centerY * zoomDifference - centerY;
     }
-
+    createRulers();
     reWrite();
     updateGraphics();
 }
@@ -3749,66 +3572,24 @@ function scrollZoom(event) {
 //-----------------------
 
 function toggleFullscreen(){
-    // Load relevant elements
-    var head = document.querySelector("header");
-    var menu_border = document.getElementById("buttonDiv");
-    var canvas_div = document.getElementById("diagramCanvasContainer");
-    var canvas_border = document.getElementById("diagramCanvas");
-    var tool_bar = document.getElementById("diagram-toolbar");
-    var inside_toolbar = document.getElementById("inside-toolbar");
-    var menu_buttons = document.getElementsByClassName("menu-drop-down");
+    var header = document.querySelector("header");
+    var diagramHeader = document.getElementById("diagram-header");
+    var diagramContainer = document.getElementById("diagram-container")
 
     if(!fullscreen){
-        // Get previous settings
-        old_canvas_div_marginLeft = canvas_div.style.marginLeft;
-        old_container_height = canvas_div.style.height;
-        old_container_width = canvas_div.style.width;
-        old_container_position = canvas_div.style.position;
-
-        // Hide header, buttons, their leftover space, border and resize container to fit entire screen
-        head.style.display = "none";
-        for(var i = 0; i < menu_buttons.length; i++){
-            menu_buttons[i].style.display = "none";
-        }
-        tool_bar.style.visibility = "hidden";
-        inside_toolbar.style.visibility = "hidden"
-        canvas_div.style.position = "absolute";
-        canvas_div.style.marginLeft = 0;
-        canvas_div.style.top = 0;
-        canvas_div.style.right = 0;
-        canvas_div.style.bottom = 0;
-        canvas_div.style.left = 0;
-        canvas_div.style.height = window.innerHeight + "px";
-        canvas_div.style.width = window.innerWidth + "px";
-        canvas_border.style.border = 0 + "px";
-        menu_border.style.border = 0 + "px";
-        fullscreen = true;
-
-        // Display popup message
+        diagramHeader.classList.add("fullscreen");
+        diagramContainer.classList.add("fullscreen");
+        header.style.display = "none";
         $("#fullscreenDialog").css("display", "flex");
-
-        // Refit canvas to current container
-        canvasSize();
-    } else if (fullscreen){
-        // Revert to previous settings
-        head.style.display = "inline-block";
-        for(var i = 0; i < menu_buttons.length; i++){
-            menu_buttons[i].style.display = "block";
-        }
-        tool_bar.style.visibility = "visible";
-        inside_toolbar.style.visibility = "visible";
-        inside_toolbar.style.border = "none";
-        canvas_div.style.position = old_container_position;
-        canvas_div.style.marginLeft = old_canvas_div_marginLeft;
-        canvas_div.style.height = old_container_height;
-        canvas_div.style.width = old_container_width;
-        canvas_border.style.border = 1 + "px solid #000000";
-        menu_border.style.borderLeft = 1 + "px solid #c0c0c0";
-        fullscreen = false;
-
-        // Refit canvas to current container
-        canvasSize();        
+    } else {
+        diagramHeader.classList.remove("fullscreen", "toolbar");
+        diagramContainer.classList.remove("fullscreen", "toolbar");
+        header.style.display = "inline-block";
+        toolbarDisplayed = false;
     }
+    fullscreen = !fullscreen;
+    setCheckbox($(".drop-down-option:contains('Fullscreen')"), fullscreen);
+    canvasSize();        
 }
 
 //-----------------------
@@ -3824,20 +3605,16 @@ function closeFullscreenDialog(){
 //-----------------------
 
 function toggleToolbar(){
-    // Get element
-    var tool_bar = document.getElementById("inside-toolbar");
+    var diagramHeader = document.getElementById("diagram-header");
+    var diagramContainer = document.getElementById("diagram-container");
 
     if(!toolbarDisplayed){
-        // Show inner toolbar, add border and set background color
-        tool_bar.style.visibility = "visible";
-        tool_bar.style.backgroundColor = "#ffffff";
-        tool_bar.style.border = 1 + "px solid #000000";
+        diagramHeader.classList.add("toolbar");
+        diagramContainer.classList.add("toolbar");
         toolbarDisplayed = true;
     } else {
-        // Hide
-        tool_bar.style.visibility = "hidden";
-        tool_bar.style.background = "none";
-        tool_bar.style.border = 0 + "px";
+        diagramHeader.classList.remove("toolbar");
+        diagramContainer.classList.remove("toolbar");
         toolbarDisplayed = false;
     }
 }
@@ -3915,6 +3692,11 @@ function mousemoveevt(ev) {
     currentMouseCoordinateX = canvasToPixels(ev.clientX - boundingRect.left).x;
     currentMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
 
+    //Update the moving mouse line positions for x-axis and y-axis rulers when rulers are active
+    if(isRulersActive) {
+        setRulerMouseLinesPosition(ev.offsetX, ev.offsetY);
+    }
+
     // deltas are used to determine the range of which the mouse is allowed to move when pressed.
     deltaX = 2;
     deltaY = 2;
@@ -3946,6 +3728,7 @@ function mousemoveevt(ev) {
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
+        createRulers();
     }
     reWrite();
     updateGraphics();
@@ -4014,6 +3797,7 @@ function mousemoveevt(ev) {
                 // for locking proportions of object when resizing it
                 if(shiftIsClicked) {
                     var object;
+                    obejct.minWidth = ctx.measureText(longestStr).width + 15
                     // the movement change we wan't to make
                     var change = ((currentMouseCoordinateX - sel.point.x) + (currentMouseCoordinateY - sel.point.y)) / 2;
                     // find the object that has the point we want to move
@@ -4124,7 +3908,7 @@ function mousemoveevt(ev) {
             // If mouse is pressed down inside a movable object - move that object
             if (movobj != -1 ) {
                 uimode = "Moved";
-                $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+                $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
                 for (var i = 0; i < diagram.length; i++) {
                     if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                         if(snapToGrid) {
@@ -4294,6 +4078,7 @@ function mousemoveevt(ev) {
             }
         }
     }
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------
@@ -4354,15 +4139,13 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
-        if(ev.button == rightMouseClick && figureType == "Free"){
-            endFreeDraw();
-        }
         if (uimode != "MoveAround" && !ctrlIsClicked) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
             lastSelectedObject = -1;
             selected_objects = [];
+            createRulerLinesObjectPoints();
         }
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
@@ -4411,6 +4194,7 @@ function handleSelect() {
             lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length-1]);
         }
     }
+    createRulerLinesObjectPoints();
 }
 
 function mouseupevt(ev) {
@@ -4421,6 +4205,14 @@ function mouseupevt(ev) {
     }
     markedObject = diagram.indexOf(diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY));
 
+    // Check if there's difference in mouse start position and end position.
+    let mouseDifference;
+    if (startMouseCoordinateX != currentMouseCoordinateX || startMouseCoordinateY != currentMouseCoordinateY) {
+        mouseDifference = true;
+    } else {
+        mouseDifference = false;
+    }
+  
     if(ev.button == leftMouseClick){
         canvasLeftClick = false;
     } else if (ev.button == rightMouseClick) {
@@ -4448,8 +4240,11 @@ function mouseupevt(ev) {
 
         if(figureType == "Free") {
             figureFreeDraw();
+            if(ev.button == rightMouseClick && uimode != "normal"){
+                endFreeDraw();
+            }
             return;
-        }
+        }      
     }
     // Code for creating a new class
     if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
@@ -4467,7 +4262,9 @@ function mouseupevt(ev) {
     if (movobj > -1) {
         if (diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
-    if (symbolStartKind != symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
+    // Selecting objects in Create Line mode returns false saveState
+    if (uimode == "CreateLine" && !mouseDifference) saveState = false;
+    if (symbolStartKind != symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && mouseDifference) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
         if (markedObject == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[markedObject].symbolkind == symbolKind.erEntity) {
@@ -4487,8 +4284,7 @@ function mouseupevt(ev) {
             // if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line &&
-                symbolStartKind != symbolKind.text && symbolEndKind != symbolKind.text) {
+            if (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == symbolKind.erAttribute) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -4532,7 +4328,13 @@ function mouseupevt(ev) {
                 }else if ((symbolEndKind == symbolKind.uml && symbolStartKind != symbolKind.uml) || (symbolEndKind != symbolKind.uml && symbolStartKind == symbolKind.uml)) {
                     okToMakeLine = false;
                     flash("Can not draw line between ER- and UML-objects", "danger");
-                }
+                } else if(symbolEndKind == symbolKind.erAttribute && symbolStartKind == symbolKind.erAttribute){
+                    if ((diagram[markedObject].connectorCountFromSymbol(diagram[lineStartObj]) > 0) || (diagram[lineStartObj].connectorCountFromSymbol(diagram[markedObject]) > 0)){
+                        okToMakeLine = false;
+                        flash("Can not draw multiple lines between these objects", "danger");
+                    }
+                } 
+
                 if(diagram[lineStartObj] == diagram[markedObject]){
                     okToMakeLine = false;
                     flash("Can not draw line between the same object", "danger");
@@ -4541,6 +4343,11 @@ function mouseupevt(ev) {
                 if(diagram[lineStartObj].kind == 1 || diagram[markedObject].kind == 1){
                     okToMakeLine = false;
                     flash("Can not draw line to/from a freedraw object", "danger");
+                }
+              
+                if(symbolEndKind == symbolKind.text || symbolStartKind == symbolKind.text) {
+                    okToMakeLine = false;
+                    flash("Can not draw line to/from a text object", "danger");
                 }
 
                 if (okToMakeLine) {
@@ -4558,7 +4365,7 @@ function mouseupevt(ev) {
         }
     }
   
-    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && startMouseCoordinateX != currentMouseCoordinateX && startMouseCoordinateY != currentMouseCoordinateY) {
+    if (symbolStartKind == symbolKind.uml && uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode && mouseDifference) {
         saveState = false;
         uimode = "CreateUMLLine";
         //Check if you release on canvas or try to draw a line from entity to entity
@@ -4866,7 +4673,6 @@ function mouseupevt(ev) {
                     diagram[markedObject].connectorTop.push({from:p2, to:p1});
                 }
             }
-        
         }
         connectLooseLineObj.lineIsSelected = false;
         connectLooseLineObj.looseLineP1 = null;
@@ -4923,6 +4729,7 @@ function touchStartEvent(event) {
         }
         lastSelectedObject = -1;
         selected_objects = [];
+        createRulerLinesObjectPoints();
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
     }
@@ -4965,13 +4772,15 @@ function touchMoveEvent(event) {
         
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
+        
+        createRulers();
     }
 
     // Moves an object
     if (md == mouseState.insideMovableObject) {
         if (movobj != -1) {
             uimode = "Moved";
-            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].isLocked && !diagram[i].isLocked) {
                     if(snapToGrid) {
@@ -5021,9 +4830,9 @@ function touchMoveEvent(event) {
         ctx.stroke();
         ctx.setLineDash([]);
     }
+    createRulerLinesObjectPoints();
     reWrite();
     updateGraphics();
-
 }
 
 // Takes the closest selected point and resizes the object
@@ -5305,9 +5114,58 @@ function createSymbol(p1BeforeResize, p2BeforeResize){
 }
 
 function doubleclick() {
-    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
+    // Add point to freedraw object if clicked on line
+    if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true 
+    && diagram[lastSelectedObject].figureType == "Free") {
+        let clickedSegmentId = clickedOnLine(diagram[lastSelectedObject]);
+        if (clickedSegmentId != -1) {
+            let freedrawObject = diagram[lastSelectedObject];
+            let newPoint = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+            let clickedSegment = freedrawObject.segments[clickedSegmentId];
+            
+            freedrawObject.segments.splice(clickedSegmentId, 1);
+            freedrawObject.segments.splice(clickedSegmentId, 0, {kind:kind.path, pa:clickedSegment.pa, pb:newPoint});
+            freedrawObject.segments.splice(clickedSegmentId+1, 0, {kind:kind.path, pa:newPoint, pb:clickedSegment.pb});
+        }
+    }
+    else if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         loadAppearanceForm();
     }
+}
+
+//--------------------------------------------------------------------
+// clickedOnLine: Checks if a line of an object is clicked, returns segment index
+//--------------------------------------------------------------------
+function clickedOnLine(clickedObject) {
+    let clickedLine = -1;
+    
+    for (let i = 0; i < clickedObject.segments.length; i++) {
+        if (pointOnLine(currentMouseCoordinateX, currentMouseCoordinateY, clickedObject.segments[i])) {
+            clickedLine = i;
+        }
+    }
+    return clickedLine;
+}
+
+//--------------------------------------------------------------------
+// pointOnLine: Checks if a point is positioned on a segment
+//--------------------------------------------------------------------
+function pointOnLine(pointX, pointY, segment) {
+    let pointBetween = {x:pointX, y:pointY};
+    let pointA = {x:points[segment.pa].x, y:points[segment.pa].y};
+    let pointB = {x:points[segment.pb].x, y:points[segment.pb].y};
+
+    if (distance(pointA, pointBetween) + distance(pointB, pointBetween) 
+    <= distance(pointA, pointB) + 0.1) {
+        return true;
+    }
+}
+
+//--------------------------------------------------------------------
+// distance: Returns distance between two points 
+//--------------------------------------------------------------------
+function distance(point1, point2) {     
+    return Math.sqrt((Math.pow((point1.x - point2.x),2) + Math.pow((point1.y - point2.y),2)));
 }
 
 function createText(posX, posY) {
@@ -5367,11 +5225,14 @@ function resize() {
 //---------------------------------------
 
 function movemode(e, t) {
-	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+	$(".diagram-tools-button-big").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
+        if (uimode == "CreateFigure" && numberOfPointsInFigure > 0) {
+            cancelFreeDraw();
+        }
         buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
@@ -6014,11 +5875,6 @@ function getGroupsByTypes(typesToShow) {
 // submitAppearanceForm: Submits appearance form, saving state and closes appearance menu.
 //----------------------------------------------------------------------------------------
 function submitAppearanceForm() {
-    selected_objects.forEach(object => {
-        if(object.symbolkind === symbolKind.uml) {
-            object.resizeUMLToMinHeight();
-        }
-    });
     if(globalappearanceMenuOpen) {
         setGlobalProperties();
     }
@@ -6043,37 +5899,36 @@ function createLayer(){
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "notActive drop-down-option");
+        newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         newSpan.setAttribute("id", "Layer_"+id);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
         newSpan.innerHTML = valueArray[id];
         newDiv.appendChild(newSpan);
+        localStorage.setItem('layerItems', id);
     }
-    localStorage.setItem('layerItems', id);
     let activeDropdown = parentNode.cloneNode(true)
     document.getElementById("layerActive").innerHTML ="";
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
     addLayersToApperence(id);
+
 }
 function loadLayer(localStorageID){
     let parentNode = document.getElementById("viewLayer");
     addLayersToApperence(localStorageID)
-    let id =1;
     let spans = parentNode.getElementsByTagName('span')
     let layerArray = []
-    for(let i = 0; i < localStorageID -1; i++){
+    for(let i = 2; i <= localStorageID; i++){
         layerArray.push(spans[i]);
-        id++
         let newDiv = document.createElement("div");
         newDiv.setAttribute("class", "drop-down-item");
         newDiv.setAttribute("tabindex", "0");
         parentNode.appendChild(newDiv);
         let newSpan = document.createElement("span");
-        newSpan.setAttribute("class", "notActive drop-down-option");
-        newSpan.setAttribute("id", "Layer_"+id);
+        newSpan.setAttribute("class", "notActive drop-down-option drop-down-option-hover");
+        newSpan.setAttribute("id", "Layer_"+i);
         newSpan.setAttribute("onclick", "toggleBackgroundLayer(this)")
-        newSpan.innerHTML = valueArray[id];
+        newSpan.innerHTML = valueArray[i];
         newDiv.appendChild(newSpan);
         getActiveViewlayers = JSON.parse(localStorage.getItem("activeLayers") || 0);
         if (getActiveViewlayers != 0){
@@ -6090,9 +5945,18 @@ function loadLayer(localStorageID){
     fixWriteToLayer();
 }
 
-function toggleBackgroundLayer (object){
+function toggleBackgroundLayer (object, changeLayer){
+    if (changeLayer == true){
+        if (object.classList.contains("notActive")){
+            object.classList.remove("notActive");
+            object.classList.add("isActive");
+            showLayer.push(object.id);
+        }
+        return
+    }
     if(object.classList.contains("notActive")){
         object.classList.remove("notActive");
+        object.classList.remove("drop-down-option-hover");
         object.classList.add("isActive");
         activeLocalStorage()
         showLayer.push(object.id);
@@ -6100,10 +5964,12 @@ function toggleBackgroundLayer (object){
     else {
         object.classList.remove("isActive");
         object.classList.add("notActive");
+        object.classList.add("drop-down-option-hover");
         activeLocalStorage();
         const index = showLayer.indexOf(object.id);
         showLayer.splice(index, 1);
     }
+    updateGraphics();
 }
 
 function activeLocalStorage(){
@@ -6133,55 +5999,55 @@ function fixWriteToLayer(){
     let update = document.getElementById("layerActive");
     let spans = update.getElementsByTagName('span')
     let active = localStorage.getItem("writeToActiveLayers");
+    console.log(active);
     for(let i = 0; i < spans.length; i++){
         spans[i].id = spans[i].id+"_Active";
         spans[i].setAttribute("onclick", "toggleActiveBackgroundLayer(this)");
         if (spans[i].id == active) {
-            spans[i].setAttribute("class", "isActive drop-down-option");
+            spans[i].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
+        }
+        else if (active == null){
+            spans[0].setAttribute("class", "isActive drop-down-option drop-down-option-hover");
         }
         else {
-            spans[i].setAttribute("class", "notActive drop-down-option");
+            spans[i].setAttribute("class", "notActive drop-down-option drop-down-option-hover");
         }
     }
 }
 
 function toggleActiveBackgroundLayer(object) {
+
     let checkActive = document.getElementById("layerActive");
     let spans = checkActive.getElementsByTagName('span')
-    let isActive = false;
-    for (let i = 0; i < spans.length; i++){
+    for (let i = 0 ; i < spans.length; i++){
         if(spans[i].classList.contains("isActive")){
-            isActive = true;
-            i = spans.length;
+            spans[i].classList.remove("isActive");
+            spans[i].classList.add("notActive");
+            spans[i].classList.add("drop-down-option-hover");
+        }
+
+        if(object.id == spans[i].id){
+            object.classList.remove("notActive");
+            object.classList.add("isActive");
+            object.classList.remove("drop-down-option-hover");
+            localStorage.setItem("writeToActiveLayers", object.id);
+            setlayer(object);
+            reWrite();
+
+            activeLocalStorage();
         }
     }
-    if(isActive == false){
-        object.classList.remove("notActive");
-        object.classList.add("isActive");
-        localStorage.setItem("writeToActiveLayers", object.id);
-        setlayer(object);
-    }
-    else {
-        object.classList.remove("isActive");
-        object.classList.add("notActive");
-        let checkLocalStorage = localStorage.getItem("writeToActiveLayers");
-    }
-    active = false;
-    for(let i = 0; i < spans.length; i++){
-        if(spans[i].classList.contains("isActive")){
-            active = true;
-            i = spans.length;
-        }
-    }
-    if (active == false){
-        localStorage.setItem("writeToActiveLayers", null);
-    }
+    updateGraphics();
 }
+
 
 function setlayer(object){
     let fixID = object.id.replace('_Active','');
-    toggleBackgroundLayer(document.getElementById(fixID))
+    toggleBackgroundLayer(document.getElementById(fixID), true)
     writeToLayer = fixID;
+    let fixColor = fixID.replace('Layer_','');
+    console.log(fixColor)
+    settings.properties.strokeColor = colorArray[fixColor-1]; 
 }
 
 function addLayersToApperence(localStorageID){
@@ -6200,18 +6066,112 @@ function getcorrectlayer(){
     if(localStorage.getItem('writeToActiveLayers') != null){
         let getLayer = localStorage.getItem("writeToActiveLayers")
         let fixID = getLayer.replace('_Active','');
-        return fixID
+        return fixID;
     }
-        return "Layer_1"
+        return "Layer_1";
 }
 
+function deleteLayerView(){
+    let parentNode = document.getElementById("viewLayer");
+    let deleteArray = []
+    for(let i = 0;i < diagram.length;i++){
+        if(showLayer.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    for(let i = 0; i < showLayer.length; i++){
+        let deleteLayer = document.getElementById(showLayer[i]).parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+        deleteLayer = document.getElementById(showLayer[i]+"_Active").parentNode;
+        deleteLayer.parentNode.removeChild(deleteLayer);
+    }
+    showLayer = [];
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState()
+}
+function deleteLayerActive(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+    let saveIndex;
+    let deleteArray = []
+    for(let i = 0; i < spans.length;i++){
+        if(spans[i].classList.contains("isActive")){
+            let deleteLayer = spans[i].parentNode;
+            saveIndex = spans[i].id.replace('_Active','');
+            deleteLayer.parentNode.removeChild(deleteLayer);
+        }
+    }
+    for(let i = 0;i < diagram.length;i++){
+        if(saveIndex.indexOf(diagram[i].properties.setLayer) !== -1){
+            deleteArray.push(diagram[i]);
+        }
+    }
+    for(let i = 0; i < deleteArray.length;i++){
+        diagram.deleteObject(deleteArray[i]);
+    }
+    let elem = document.getElementById(saveIndex);
+    elem.parentNode.removeChild(elem);
+    fixviewLayer();
+    fixActiveLayer()
+    SaveState() 
+}
+function fixviewLayer(){
+    let parentNode = document.getElementById("viewLayer");
+    let spans = parentNode.getElementsByTagName('span');
+
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i;
+    }
+}
+function fixActiveLayer(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+
+    localStorage.setItem('layerItems', spans.length);
+    for(let i = 1; i <= spans.length;i++){
+        let correctSpan = spans[i-1];
+        correctSpan.innerHTML = valueArray[i];
+        for(let j = 0; j < diagram.length;j++){
+            if(diagram[j].properties.setLayer == spans[i-1].id){
+                diagram[j].properties.setLayer = "Layer_"+ i;
+            }
+        }
+        correctSpan.id = "Layer_" + i +"_Active";
+    }
+}
+function getCorrectValueArray(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+    let updateToolbar = document.getElementById("activeLayerinToolbar");
+    for(let i = 0; i <spans.length;i++){
+        if(spans[i].classList.contains("isActive")){
+            return spans[i].innerHTML;
+        }
+    }
+}
+function fixExampleLayer(){
+    for(let i = 0; i <diagram.length;i++){
+        diagram[i].properties.setLayer = writeToLayer;
+    }
+    updateGraphics();
+    SaveState();
+}
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;
-    if (!(startObj.symbolkind == symbolKind.erEntity && endObj.symbolkind == symbolKind.erEntity)
-        && !(startObj.symbolkind == symbolKind.erRelation && endObj.symbolkind == symbolKind.erRelation)
-        && startObj.symbolkind != symbolKind.line && symbolEndKind != symbolKind.line 
-        && startObj.symbolkind != symbolKind.text && symbolEndKind != symbolKind.text) {
+    if (startObj.symbolkind != symbolKind.line && symbolEndKind != symbolKind.line && startObj.symbolkind != symbolKind.text && symbolEndKind != symbolKind.text) {
             symbolEndKind = endObj.symbolkind;
             okToMakeLine = true;
             // Can't be more than two lines between an entity and a relation
@@ -6220,16 +6180,25 @@ function canConnectLine(startObj, endObj){
                 if ((endObj.connectorCountFromSymbol(startObj) > 1)
                 || (startObj.connectorCountFromSymbol(endObj) > 1)) {
                     okToMakeLine = false;
+                    flash("A max of two lines can be drawn between these objects", "danger");
                 }
             }
-            // Must be two different objects
-            else if (endObj == startObj) {
+            //Can't draw line between two entities
+            if(startObj.symbolkind == symbolKind.erEntity && endObj.symbolkind == symbolKind.erEntity){
                 okToMakeLine = false;
+                flash("Can not draw line between two ER-entities", "danger");
             }
-            // Can't be from er to uml
-            else if (symbolEndKind == symbolKind.uml) {
+            //Can't draw line between two relationships
+            if(startObj.symbolkind == symbolKind.erRelation && endObj.symbolkind == symbolKind.erRelation){
                 okToMakeLine = false;
+                flash("Can not draw line between two ER-relations", "danger");
             }
+
+            if(endObj.symbolkind == symbolKind.uml){
+                okToMakeLine = false;
+                flash("Can not draw ER-line to UML-objects", "danger");
+            }
+       
             // Can't be more than one line if not relation to entity
             else {
                 if ((startObj.symbolkind != symbolKind.erRelation && symbolEndKind != symbolKind.erRelation)
@@ -6237,9 +6206,165 @@ function canConnectLine(startObj, endObj){
                     if ((endObj.connectorCountFromSymbol(startObj) > 0)
                     || (startObj.connectorCountFromSymbol(endObj) > 0)) {
                         okToMakeLine = false
+                        flash("Can not draw multiple lines between these objects", "danger");
                     }
                 }
             }
         }
+        else if(endObj == startObj){
+            okToMakeLine = false;
+            flash("Can not draw line between the same object", "danger");
+        }
+
     return okToMakeLine;
+}
+
+//--------------------------------------------------------------------------------------
+// createRulers: Creates rulers for x and y axis.
+//-----------------------------------------------
+
+function createRulers() {
+    if(!isRulersActive) return;
+    createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
+    createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
+    createRulerLinesObjectPoints();
+}
+
+//------------------------------------------------------------------------------
+// setRulerMouseLinesPosition: Move rulers mouse position lines to passed value.
+//------------------------------------------------------------------------------
+
+function setRulerMouseLinesPosition(x, y) {
+    document.querySelector("#ruler-x .ruler-extra-lines .mouse-line").style.left = `${x}px`;
+    document.querySelector("#ruler-y .ruler-extra-lines .mouse-line").style.top = `${y}px`;
+}
+
+//--------------------------------------------------------------------------------------
+// createRuler: Fills the passed ruller container with lines according to passed length.
+//--------------------------------------------------------------------------------------
+
+function createRuler(element, length, origoOffset, marginProperty) {
+    const from = Math.round(-origoOffset);
+    const to = Math.round(length - origoOffset);
+
+    const steps = {};
+    steps.mini = 5;
+    steps.small = steps.mini * 2;
+    steps.big = Math.round((steps.mini * steps.small) * zoomValue);
+    
+    if(zoomValue <= 0.7 && zoomValue >= 0.5) {
+        steps.big *= 2;
+    } else if(zoomValue <= 0.4 && zoomValue >= 0.3) {
+        steps.big *= 4;
+    } else if(zoomValue <= 0.2) {
+        steps.big *= 8;
+    }
+
+    element.innerHTML = "";
+
+    for(let i = from; i < to; i++) {
+        if(i % steps.big === 0 || i % steps.small === 0 || i % steps.mini === 0) {
+            const line = document.createElement("div");
+            line.classList.add("ruler-line");
+            line.style[marginProperty] = `${steps.mini - 1}px`;
+            if(i % steps.big === 0) {
+                line.classList.add("big");
+                line.innerText = Math.round(i / zoomValue);
+            } else if(i % steps.small === 0) {
+                line.classList.add("small");
+            } else if(i % steps.mini === 0) {
+                line.classList.add("mini");
+            }
+            element.appendChild(line);
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------
+// createRulerLinesObjectPoints: Creates lines on ruler for all selected object points.
+//-------------------------------------------------------------------------------------
+
+function createRulerLinesObjectPoints() {
+    if(!isRulersActive || selected_objects.length < 1) return;
+
+    const rulerExtraLinesX = document.querySelector("#ruler-x .ruler-extra-lines");
+    const rulerExtraLinesY = document.querySelector("#ruler-y .ruler-extra-lines");
+
+    //Get an array of points used by all selected objects
+    const selectedPoints = getSelectedObjectsPoints();
+
+    //Remove all current point liens
+    document.querySelectorAll(".point-line").forEach(element => element.remove());
+
+    selectedPoints.forEach(point => {
+        const canvasCoordinate = pixelsToCanvas(point.x, point.y);
+        const lineX = document.createElement("div");
+        const lineY = document.createElement("div");
+
+        lineX.classList.add("point-line");
+        lineY.classList.add("point-line");
+
+        lineX.style.left = `${canvasCoordinate.x}px`;
+        lineY.style.top = `${canvasCoordinate.y}px`;
+
+        rulerExtraLinesX.appendChild(lineX);
+        rulerExtraLinesY.appendChild(lineY);
+    });
+}
+
+//------------------------------------------------------------------------------------
+// getSelectedObjectsPoints: Returns unique points for all currently selected objects.
+//------------------------------------------------------------------------------------
+
+function getSelectedObjectsPoints() {
+    const selectedPoints = selected_objects.reduce((set, object) => {
+        object.getPoints().forEach(pointIndex => {
+            if(typeof pointIndex !== "undefined") {
+                set.add(points[pointIndex]);
+            }
+        });
+        return set;
+    }, new Set());
+
+    return [...selectedPoints];
+}
+
+//------------------------------------------------------------------------------------------------
+// toggleRulers: Hides rulers if isRulersActive is true and shows them if isRulersActive is false.
+//------------------------------------------------------------------------------------------------
+
+function toggleRulers() {
+    const diagramContent = document.getElementById("diagram-content");
+    const rulers = document.querySelectorAll(".ruler");
+    if(isRulersActive) {
+        diagramContent.classList.remove("rulers-active");
+        rulers.forEach(ruler => ruler.classList.add("hidden"));
+    } else {
+        diagramContent.classList.add("rulers-active");
+        rulers.forEach(ruler => ruler.classList.remove("hidden"));
+    }
+    isRulersActive = !isRulersActive;
+    setCheckbox($(".drop-down-option:contains('Rulers')"), isRulersActive);
+    localStorage.setItem("isRulersActive", isRulersActive);
+    canvasSize();
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+// setIsRulersActiveOnRefresh: Gets the isActiveRulers value from localStorage to decide if rulers should be shown or not.
+//------------------------------------------------------------------------------------------------------------------------
+
+function setIsRulersActiveOnRefresh() {
+    const tempIsRulerActive = localStorage.getItem("isRulersActive");
+    if(tempIsRulerActive !== null) {
+        isRulersActive = !(tempIsRulerActive === "true");
+        toggleRulers();
+    }
+}
+
+function getOrigoOffsetX() {
+    return origoOffsetX;
+}
+
+function getOrigoOffsetY() {
+    return origoOffsetY;
 }

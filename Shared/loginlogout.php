@@ -24,7 +24,7 @@ if($opt=="REFRESH"){
 	$password=getOP('password');
   
     // Login barrier
-    $maxLoginTries = 10;
+    $maxLoginTries = 3;
     $IP = getIP();
     $timeInterval = 10; // in minutes
 
