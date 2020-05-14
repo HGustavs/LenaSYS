@@ -375,7 +375,21 @@ if ($test == "success"){
 	test();
 }
 function test() {
-	$result = EventTypes::DuggaRead;
+	$x = 1;
+	$EventTypesClass = new ReflectionClass ( 'EventTypes' );
+	$constants = $EventTypesClass->getConstants();
+
+	$constName = null;
+	foreach ( $constants as $name => $value )
+	{
+		if ( $value == $x )
+		{
+			$constName = $name;
+			break;
+		}
+	}
+
+	$result = $constName;
 	echo json_encode($result);
 }
 
