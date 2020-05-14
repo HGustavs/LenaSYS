@@ -3632,9 +3632,7 @@ function resizeBoxes(parent, templateId)
 		});
 
 	} else if (templateId == 6) {
-
 		getLocalStorageProperties(templateId, boxValArray);
-    
 		document.getElementById("box3wrapper").style.top = localStorage.getItem("template6box2heightPercent") + "%";
 
 		$(boxValArray['box1']['id']).resizable({
@@ -3682,8 +3680,6 @@ function resizeBoxes(parent, templateId)
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
-				document.querySelector(boxValArray['box4']['id']).style.top = " ";
-
 				setLocalStorageProperties(templateId, boxValArray);
 				document.getElementsByTagName("iframe")[0].style.pointerEvents = "auto";
 			}
@@ -3761,7 +3757,7 @@ function resizeBoxes(parent, templateId)
 		});
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
-			handles: "e, s",
+			handles: "e",
 			start: function (event, ui) {
 				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
@@ -3777,7 +3773,6 @@ function resizeBoxes(parent, templateId)
 		});
 	} else if (templateId == 9) {
 		getLocalStorageProperties(templateId, boxValArray);
-
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
