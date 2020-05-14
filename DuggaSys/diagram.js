@@ -1472,25 +1472,6 @@ diagram.getObjectsByTypes = function(types = []) {
 }
 
 //--------------------------------------------------------------------
-// updateLineRelations: Updates a line's relation depending on
-//                      what object it is connected to
-//--------------------------------------------------------------------
-
-diagram.updateLineRelations = function() {
-    var privateLines = this.getObjectsByType(symbolKind.line);
-    for (var i = 0; i < privateLines.length; i++) {
-        var connected_objects = privateLines[i].getConnectedObjects();
-        if (connected_objects.length >= 2) {
-            for (var j = 0; j < connected_objects.length; j++) {
-                if (connected_objects[j].type == "weak") {
-                    privateLines[i].type = "weak";
-                }
-            }
-        }
-    }
-}
-
-//--------------------------------------------------------------------
 // sortConnectors: Sort all connectors related to entity.
 //--------------------------------------------------------------------
 
@@ -4601,7 +4582,6 @@ function mouseupevt(ev) {
     
     hashFunction();
     updateGraphics();
-    diagram.updateLineRelations();
     // Clear mouse state
     md = mouseState.empty;
     if(saveState) SaveState();
@@ -4895,7 +4875,6 @@ function touchEndEvent(event) {
     }
     hashFunction();
     updateGraphics();
-    diagram.updateLineRelations();
     md = mouseState.empty;
     if(saveState) SaveState();
 }
