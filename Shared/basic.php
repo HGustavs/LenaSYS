@@ -372,7 +372,10 @@ function logDuggaLoadEvent($cid, $uid, $username, $vers, $quizid, $type) {
 $test = $_POST['test'];
 
 if ($test == "success"){
-	$result = "test";
+	test();
+}
+function test() {
+	$result = EventTypes::DuggaRead;
 	echo json_encode($result);
 }
 
@@ -400,7 +403,7 @@ abstract class EventTypes {
     const DuggaFileupload = 21;
 	const DownloadAllCourseVers = 22;
 	const EditFile = 23; 
-    const MarkedDugga = 24;
+	const MarkedDugga = 24;
 }
 
 //------------------------------------------------------------------------------------------------
