@@ -119,7 +119,26 @@ function generalStats($dbCon) {
 		GROUP BY refer 
 		ORDER BY COUNT(*) DESC LIMIT 1;
 	')->fetchAll(PDO::FETCH_ASSOC);
-
+	
+	$topBrowser = $GLOBALS['log_db']->query('
+		SELECT
+			browser,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
+		FROM serviceLogEntries
+		WHERE eventType = '.EventTypes::ServiceServerStart.'
+		GROUP BY browser
+		ORDER BY percentage DESC LIMIT 1
+		')->fetchAll(PDO::FETCH_ASSOC);
+	
+	$topOS = $GLOBALS['log_db']->query('
+		SELECT
+			operatingSystem,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
+		FROM serviceLogEntries
+		WHERE eventType = '.EventTypes::ServiceServerStart.'
+		GROUP BY operatingSystem
+		ORDER BY percentage DESC
+	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
@@ -130,6 +149,10 @@ function generalStats($dbCon) {
 
 	$generalStats['stats']['topPage'] = $topPage[0]['refer'];
 	$generalStats['stats']['topPageHits'] = $topPage[0]['hits'];
+
+	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
+	$generalStats['stats']['topOS'] = $topOS[0]['operatingSystem'];
+
 
 	$query = $dbCon->prepare("SELECT count(*) as numUsers FROM user");
 
@@ -674,7 +697,7 @@ function pageInformation(){
 				INSTR(refer, "courseid=")+9, 
 				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
 			) courseid,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE refer LIKE "%sectioned%") AS percentage,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%sectioned%") AS percentage,
 			COUNT(*) AS pageLoads
 		FROM 
 			userHistory
