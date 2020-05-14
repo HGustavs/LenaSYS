@@ -665,7 +665,7 @@ function pageInformation(){
 				INSTR(refer, "courseid=")+9, 
 				INSTR(refer, "&coursename=")-18 - INSTR(refer, "courseid=")+9
 			) courseid,
-			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM duggaLoadLogEntries WHERE refer LIKE "%sectioned%") AS percentage,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM userHistory WHERE refer LIKE "%sectioned%") AS percentage,
 			COUNT(*) AS pageLoads
 		FROM 
 			userHistory
