@@ -310,20 +310,14 @@ function loadServiceUsage() {
 
 				var services = {};
              
-               
+               console.log("innan loop: "+services);
 				$.each(data, function(i, row) {
-                   
+                   console.log("i loop: "+services);
 					if (!services.hasOwnProperty(row.service)) {
 						services[row.service] = [];
 					}
-					services[row.service].push({
-						X: row.dateTime,
-						Y: row.hits
-					});
-                 	services[row.service].push({
-						X: "2020-05-10",
-						Y: "10"
-					});
+					
+                 
                    if(row.service =="codeviewerService.php"){
                     console.log("ROW: "+row.dateTime);
                 
@@ -333,11 +327,23 @@ function loadServiceUsage() {
                     date1 = day.getFullYear()+ "-" +("0" + (day.getMonth() + 1)).slice(-2)+ "-" +("0" + day.getDate()).slice(-2);
                      loop++;
                      if(date1 != row.dateTime){
-                     console.log("i loop: "+[row.dateTime].valueOf());
+                      
+					service[row].push({
+                        service: "codeviwerService.php",
+						dateTime: date1,
+						hits: "0"
+                        
+					});
+                 
+                      
+                     }
+                     else{
+                      console.log("else");
                      }
                     }
                      
                     day.setDate(day.getDate() - loop);
+                    //console.log("slutet av loopen "+services[row.service]);
                     //console.log("efterfor loop: "+ row.date);
                    }
 				});
@@ -350,8 +356,7 @@ function loadServiceUsage() {
 					}
 				}
 				serviceSelect.change(function() {
-                 resetAnalyticsChart();
-                 console.log(serviceSelect.val());
+                    resetAnalyticsChart();
 					drawLineChart(services[$(this).val()]);
                  
 				});
