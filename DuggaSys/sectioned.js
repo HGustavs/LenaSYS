@@ -565,6 +565,10 @@ function returnedGroups(data) {
 
 function returnedSection(data) {
   retdata = data;
+  
+  var getData = data;
+  localStorage.setItem("sectionData", JSON.stringify(getData));
+  
   if (data['debug'] != "NONE!") alert(data['debug']);
 
   var now = new Date();

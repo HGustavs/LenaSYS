@@ -42,6 +42,9 @@ var exampleid;
 var cvers;
 var template7maximizebuttonpressed = false;
 var template8maximizebuttonpressed = false;
+var sectionData;
+var codeExamples = [];
+var currentPos;
 
 
 /********************************************************************************
@@ -79,8 +82,44 @@ function returnedError(error) {
 
 function returned(data) 
 {
+	sectionData = JSON.parse(localStorage.getItem("sectionData"));
+	console.log(sectionData);
 	retData = data;
+	var j = 0;
+	for(i = 1; i < sectionData["entries"].length; i++){
+		
+		if(sectionData["entries"][i]["kind"] == 2){
+			codeExamples[j] = sectionData["entries"][i];
+			j++
+		}
+	}
+	console.log(codeExamples);
+
+	for(i = 1; i < codeExamples.length; i++){
+		if(retData["sectionname"] == codeExamples[i]["entryname"]){
+			currentPos = i;
+		}
+	}
+	console.log(currentPos);
 	
+	var j = 0;
+	for(i = currentPos + 1; i < codeExamples.length; i++){
+		if(j < 5){
+			retData['after'][j][1] = codeExamples[currentPos + 1 + j]['entryname'];
+			retData['after'][j][0] = (String)(codeExamples[currentPos + 1 + j]['link']);
+			retData['exampleno'] = currentPos
+			console.log("i: " + i);
+			j++
+		}else{
+			break
+		}
+		
+	}
+	
+	
+	
+	console.log(retData);
+
 	if (retData['deleted']) {
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
