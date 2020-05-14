@@ -576,8 +576,7 @@ function loadPageInformation() {
 						pages[i],
 						data['hits'][pages[i]].pageLoads
 					]);
-				}
-				else{
+				}else{
 					tableData.push([
 						pages[i],
 						"0"
