@@ -268,86 +268,234 @@ function loadBrowserPercentage() {
 }
 
 function loadServiceUsage() {
-	localStorage.setItem('analyticsPage', 'serviceUsage');
 	resetAnalyticsChart();
-	$('#pageTitle').text("Service usage");
 	$('#analytic-info').empty();
 	$('#analytic-info').append("<p>Service usage</p>");
-
-	var inputDateFrom = $('<input type="text"></input>')
-		.datepicker({
-			dateFormat: "yy-mm-dd"
-		})
-		.datepicker("setDate", "-1m")
-		.appendTo($('#analytic-info'));
-
-	var inputDateTo = $('<input type="text"></input>')
-		.datepicker({
-			dateFormat: "yy-mm-dd"
-		})
-		.datepicker("setDate", "+1d")
-		.appendTo($('#analytic-info'));
-
-	var selectInterval = $("<select></select>")
+ 
+ 	var selectInterval = $("<select></select>")
 		.append('<option value="hourly">Hourly</option>')
 		.append('<option value="daily" selected>Daily</option>')
 		.append('<option value="weekly">Weekly</option>')
 		.append('<option value="monthly">Monthly</option>')
 		.appendTo($('#analytic-info'));
+    var datePickerFrom, datePickerTo;
+    var dateFrom, dayFrom, monthFrom, yearFrom, fullDateFrom;
+    var dateTo, dayTo, monthTo, yearTo, fullDateTo;
+    var startdate;
+    changeInput("daily");
+ 
+    function changeInput(input){
+         $( ".hasDatepicker" ).remove();
+         if(input=="daily"){
+            datePickerFrom = $('<input type="text"></input>')
+                .datepicker({
+                    dateFormat: "yy-mm-dd",
+                 onSelect: function(dateText, inst) { 
+                     dateFrom = $(this).datepicker('getDate'),
+                     dayFrom  = dateFrom.getDate(),  
+                     monthFrom = dateFrom.getMonth() + 1,              
+                     yearFrom =  dateFrom.getFullYear(),
+                     fullDateFrom = $(this).datepicker({ dateFormat: 'dd-mm-yy' }).val();
+                     startdate = dateFrom;
+                     updateServiceUsage();
+                 }
+                })
+                //.datepicker("setDate", "-1m")
+                .appendTo($('#analytic-info'));
 
+            datePickerTo = $('<input type="text"></input>')
+                .datepicker({
+                    dateFormat: "yy-mm-dd",
+                 onSelect: function(dateText, inst) { 
+                    dateTo = $(this).datepicker('getDate'),
+                    dayTo  = dateTo.getDate(),  
+                    monthTo = dateTo.getMonth() + 1,              
+                    yearTo =  dateTo.getFullYear(),
+                    fullDateTo = $(this).datepicker({ dateFormat: 'dd-mm-yy' }).val();
+                    updateServiceUsage();
+                 }
+                })
+                //.datepicker("setDate", "+1d")
+                .appendTo($('#analytic-info'));
+         }
+         else if(input=="hourly"){
+            datePickerFrom = $('<input type="text"></input>')
+                .datepicker({
+                    dateFormat: "yy-mm-dd",
+                 onSelect: function(dateText, inst) { 
+                     dateFrom = $(this).datepicker('getDate'),
+                     dayFrom  = dateFrom.getDate(),  
+                     monthFrom = dateFrom.getMonth() + 1,              
+                     yearFrom =  dateFrom.getFullYear(),
+                     fullDateFrom = $(this).datepicker({ dateFormat: 'dd-mm-yy' }).val();
+                     fullDateTo = fullDateFrom;
+                     dateTo = dateFrom;
+                  startdate = dateFrom;
+                     updateServiceUsage();
+                 }
+                })
+                //.datepicker("setDate", "-1m")
+                .appendTo($('#analytic-info'));
+                datePickerTo = datePickerFrom
+             
+         }
+         else if(input=="weekly"){
+           inputDateFrom = $('<input type="text"></input>')
+               .datepicker({
+                   dateFormat: "yy-mm-dd",
+                   beforeShowDay : function(date){ 
+                    return[(date.getDay() == 1),""];
+                   }
+            
+               })
+               .datepicker("setDate", "-1m")
+               .appendTo($('#analytic-info'));
+
+           inputDateTo = $('<input type="text"></input>')
+               .datepicker({
+                   dateFormat: "yy-mm-dd",
+                   beforeShowDay : function(date){ 
+                     return[(date.getDay() == 1),""];
+                   }
+               })
+               .datepicker("setDate", "+1d")
+               .appendTo($('#analytic-info'));
+               console.log("W TO: " + inputDateTo.val());
+               console.log("W FROM: " + inputDateTo.val());
+         }
+         else if(input=="monthly"){
+           inputDateFrom = $('<input type="text"></input>')
+               .datepicker({
+                  changeMonth: true,
+                  changeYear: true,
+                  dateFormat: "yy-mm-01",
+               })
+               .datepicker("setDate", "-1m")
+               .appendTo($('#analytic-info'));
+
+           inputDateTo = $('<input type="text"></input>')
+               .datepicker({
+                   changeMonth: true,
+                   changeYear: true,
+                   dateFormat: "yy-mm-01"
+               })
+               .datepicker("setDate", "+1d")
+               .appendTo($('#analytic-info'));
+               console.log("M TO: " + inputDateTo.val());
+               console.log("M FROM: " + inputDateTo.val());
+         }
+    }
+ 
 	function updateServiceUsage() {
+        console.log("From: "+fullDateFrom);
+     console.log("To: "+fullDateTo);
+     console.log("DATEFROM: " + dateFrom);
+     const constday = dateFrom;
+        console.log("selectInterval: " + selectInterval.val());
 		$.ajax({
 			url: "analyticService.php",
 			type: "POST",
 			dataType: "json",
 			data: {
 				query: "serviceUsage",
-				start: inputDateFrom.val(),
-				end: inputDateTo.val(),
+				start: fullDateFrom,
+				end: fullDateTo,
 				interval: selectInterval.val()
 			},
-			success: function(data) {
+             success: function(data) {
+              if(fullDateFrom != undefined && fullDateTo != undefined){
+                console.log(data);
 				resetAnalyticsChart();
 
 				var services = {};
+             
+               console.log("innan loop: "+services);
 				$.each(data, function(i, row) {
+                   console.log("i loop: "+services);
 					if (!services.hasOwnProperty(row.service)) {
 						services[row.service] = [];
 					}
-					services[row.service].push({
-						X: row.dateTime,
-						Y: row.hits
+					
+                 
+                   if(row.service =="codeviewerService.php"){
+                    console.log("ROW: "+row.dateTime);
+                
+                    var loop=0;
+                    var day;
+                    for (day = dateFrom; day <= dateTo; day.setDate(day.getDate() + 1)) {
+                    date1 = day.getFullYear()+ "-" +("0" + (day.getMonth() + 1)).slice(-2)+ "-" +("0" + day.getDate()).slice(-2);
+                     loop++;
+                     if(date1 != row.dateTime){
+                      
+					service[row].push({
+                        service: "codeviwerService.php",
+						dateTime: date1,
+						hits: "0"
+                        
 					});
+                 
+                      
+                     }
+                     else{
+                      console.log("else");
+                     }
+                    }
+                     
+                    day.setDate(day.getDate() - loop);
+                    //console.log("slutet av loopen "+services[row.service]);
+                    //console.log("efterfor loop: "+ row.date);
+                   }
 				});
 
 				$('#analytic-info > select.service-select').remove();
 				var serviceSelect = $('<select class="service-select"></select>');
 				for (var service in services) {
 					if (services.hasOwnProperty(service)) {
-						if(localStorage.getItem('analyticsLastService') == service) {
-							serviceSelect.append('<option value="' + service + '" selected>' + service + '</option>')
-						} else {
-							serviceSelect.append('<option value="' + service + '">' + service + '</option>')
-						}
+						serviceSelect.append('<option value="' + service + '">' + service + '</option>')
 					}
 				}
 				serviceSelect.change(function() {
-					$( "#canvas-area" ).empty();
+                    resetAnalyticsChart();
 					drawLineChart(services[$(this).val()]);
-					try {
-						localStorage.setItem('analyticsLastService', $(this).val());
-					} catch(err) { }
+                 
 				});
 				$('#analytic-info').append(serviceSelect);
 				serviceSelect.change();
 			}
+           }
 		});
 	}
-
-	inputDateFrom.change(updateServiceUsage);
-	inputDateTo.change(updateServiceUsage);
-	selectInterval.change(updateServiceUsage);
-	updateServiceUsage();
+     function updateInfo(){
+        selectInterval.change(function(){
+            switch(selectInterval.val()){
+                case "hourly":
+                    console.log("hourly");
+                    changeInput("hourly");
+              updateServiceUsage();
+                    break;
+                case "daily":
+                    console.log("daily");
+                    changeInput("daily");
+              updateServiceUsage();
+                    break;
+                case "weekly":
+                    console.log("weekly");
+                    changeInput("weekly");
+              //updateServiceUsage();
+                    break;
+                case "monthly":
+                    console.log("monthly");
+                    changeInput("monthly");
+              //updateServiceUsage();
+                    break;
+            }
+            /*datePickerFrom.change(updateServiceUsage);
+            datePickerTo.change(updateServiceUsage);
+            selectInterval.change(updateServiceUsage);*/
+            
+        });
+    }
+    updateInfo();
 }
 
 function loadCourseDiskUsage() {
