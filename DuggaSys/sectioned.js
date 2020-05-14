@@ -412,7 +412,7 @@ function deleteItem(item_lid = null) {
 
 function updateItem() {
   AJAXService("UPDATE", prepareItem(), "SECTION");
-
+  
   $("#sectionConfirmBox").css("display", "none");
   $("#editSection").css("display", "none");
 }
@@ -449,7 +449,7 @@ function createVersion() {
   param.versname = document.getElementById("versname").value;
   param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = querystring["courseid"];
+  param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#makeactive").is(':checked');
   param.startdate = getDateFormat(new Date($("#startdate").val()));
@@ -485,7 +485,7 @@ function updateVersion() {
   param.versid = document.getElementById("eversid").value;
   param.versname = document.getElementById("eversname").value;
   param.copycourse = document.getElementById("copyvers").value;
-  param.coursecode = querystring["courseid"];
+  param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#emakeactive").is(':checked');
   param.startdate = $("#estartdate").val();
