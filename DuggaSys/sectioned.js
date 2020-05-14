@@ -2205,11 +2205,10 @@ function validateForm(formid) {
     }
 
     // if all information is correct
-      console.log(window.bool4 + " " + window.bool6 + " " + window.bool9);
     if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
       alert('Version updated');
       updateVersion();
-      //resetMOTDCookieForCurrentCourse();
+      resetMOTDCookieForCurrentCourse();
     } else {
       alert("You have entered incorrect information");
     }
