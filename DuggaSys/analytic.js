@@ -451,6 +451,7 @@ function loadServiceUsage() {
                      day.setDate(day.getDate() - loop);
                      
                     }
+                    
 				});
 
 				$('#analytic-info > select.service-select').remove();
@@ -467,6 +468,8 @@ function loadServiceUsage() {
 				});
 				$('#analytic-info').append(serviceSelect);
 				serviceSelect.change();
+                  fullDateFrom = undefined;
+                  fullDateTo = undefined;
 			}
            }
 		});
