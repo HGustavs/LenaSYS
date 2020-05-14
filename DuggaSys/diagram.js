@@ -1464,48 +1464,6 @@ diagram.getObjectsByType = function(type) {
 }
 
 //--------------------------------------------------------------------
-// getEntityObjects: Returns a list of all entities
-//--------------------------------------------------------------------
-
-diagram.getEntityObjects = function() {
-    var entities = [];
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == symbolKind.erEntity) {
-            entities.push(diagram[i]);
-        }
-    }
-    return entities;
-}
-
-//--------------------------------------------------------------------
-// getLineObjects: Returns a list of all lines
-//--------------------------------------------------------------------
-
-diagram.getLineObjects = function() {
-    var lines = [];
-    for (var i = 0; i < this.length; i++) {
-        if (diagram[i].symbolkind == symbolKind.line) {
-            lines.push(diagram[i]);
-        }
-    }
-    return lines;
-}
-
-//--------------------------------------------------------------------
-// getRelationObjects: Returns a list of all relations
-//--------------------------------------------------------------------
-
-diagram.getRelationObjects = function() {
-    var relations = [];
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == symbolKind.erRelation) {
-            relations.push(diagram[i]);
-        }
-    }
-    return relations;
-}
-
-//--------------------------------------------------------------------
 // updateLineRelations: Updates a line's relation depending on
 //                      what object it is connected to
 //--------------------------------------------------------------------
