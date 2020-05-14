@@ -596,30 +596,13 @@ function Symbol(kindOfSymbol) {
         return count;
     }
 
-    //--------------------------------------------------------------------
-    // hasConnectorFromPoint: returns if this symbol has a connector to the point
-    //--------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    // hasConnectorFromPoint: Returns true if this symbol has a connector from the point.
+    //---------------------------------------------------------------------------------
     this.hasConnectorFromPoint = function(point) {
-        for (var i = 0; i < this.connectorTop.length; i++) {
-            if(this.connectorTop[i].from == point) {
-                return true;
-            }
-        }
-        for(var i = 0; i < this.connectorRight.length; i++) {
-            if(this.connectorRight[i].from == point) {
-                return true;
-            }
-        }
-        for (var i = 0; i < this.connectorBottom.length; i++) {
-            if(this.connectorBottom[i].from == point) {
-                return true;
-            }
-        }
-        for (var i = 0; i < this.connectorLeft.length; i++) {
-            if(this.connectorLeft[i].from == point) {
-                return true;
-            }
-        }
+        return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].some(connector => {
+            return connector.some(coordinate => coordinate.from === point);
+        });
     }
 
     //--------------------------------------------------------------------
