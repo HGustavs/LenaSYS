@@ -760,10 +760,10 @@ function setConnectedLines(temp) {
     for (var y = 0; y < cloneTempArray.length; y++) {
         for (var x = 0; x < cloneTempArray.length; x++) {
             if(cloneTempArray[x].kind !== kind.path && cloneTempArray[y].kind !== kind.path) {
-                if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].bottomRight)) {
+                if(x != y && cloneTempArray[y].getConnectedFrom().includes(cloneTempArray[x].bottomRight)) {
                     var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].bottomRight);
                     connected.push({from:y, to:x, loc: location, lineloc: "bottomRight", lineloc2: "topLeft"});
-                } else if(x != y && cloneTempArray[y].getConnectedTo().includes(cloneTempArray[x].topLeft)) {
+                } else if(x != y && cloneTempArray[y].getConnectedFrom().includes(cloneTempArray[x].topLeft)) {
                     var location = cloneTempArray[y].getConnectorNameFromPoint(cloneTempArray[x].topLeft);
                     connected.push({from:y, to:x, loc: location, lineloc: "topLeft", lineloc2: "bottomRight"});   
                 }
@@ -2448,8 +2448,8 @@ function eraseObject(object) {
         } else {
             diagram.filter(
                 symbol => symbol.symbolkind == symbolKind.erEntity || symbol.symbolkind == symbolKind.erRelation || symbol.symbolkind == symbolKind.uml || symbol.symbolkind == symbolKind.erAttribute)
-                    .filter(symbol =>   symbol.hasConnector(object.topLeft)
-                                     && symbol.hasConnector(object.bottomRight))
+                    .filter(symbol =>   symbol.hasConnectorPoint(object.topLeft)
+                                     && symbol.hasConnectorPoint(object.bottomRight))
                     .forEach(symbol => {
                         if(symbol.symbolkind == symbolKind.erAttribute){
                             symbol.removePointFromConnector(symbol.centerPoint, object);

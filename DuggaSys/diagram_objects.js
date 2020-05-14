@@ -565,9 +565,9 @@ function Symbol(kindOfSymbol) {
     }
 
     //-------------------------------------------------------------------
-    // hasConnector: Returns true if any connector contains passed point.
+    // hasConnectorPoint: Returns true if any connector contains passed point.
     //-------------------------------------------------------------------
-    this.hasConnector = function(point) {
+    this.hasConnectorPoint = function(point) {
         return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].some(connector => {
             return connector.some(coordinate => coordinate.to === point || coordinate.from === point);
         });
@@ -631,36 +631,14 @@ function Symbol(kindOfSymbol) {
         }
     }
 
-    //--------------------------------------------------------------------
-    // Gets connected lines
-    //--------------------------------------------------------------------
-    this.getConnectedTo = function(){
-        var connected = [];
-        //top
-        if(this.connectorTop.length > 0){
-            for(var j = 0 ; j < this.connectorTop.length ; j++){
-                connected.push(this.connectorTop[j].from);
-            }
-        }
-        //right
-        if(this.connectorRight.length > 0){
-            for(var j = 0 ; j < this.connectorRight.length ; j++){
-                connected.push(this.connectorRight[j].from);
-            }
-        }
-        //bottom
-        if(this.connectorBottom.length > 0){
-            for(var j = 0 ; j < this.connectorBottom.length ; j++){
-                connected.push(this.connectorBottom[j].from);
-            }
-        }
-        //left
-        if(this.connectorLeft.length > 0){
-            for(var j = 0 ; j < this.connectorLeft.length ; j++){
-                connected.push(this.connectorLeft[j].from);
-            }
-        }
-        return connected;
+    //------------------------------------------------------------------------------------------------
+    // getConnectedFrom: Returns the line points connected from this symbol only (not to other symbols).
+    //------------------------------------------------------------------------------------------------
+    this.getConnectedFrom = function() {
+        return [this.connectorTop, this.connectorRight, this.connectorBottom, this.connectorLeft].reduce((result, connector) => {
+            connector.forEach(coordinate => result.push(coordinate.from));
+            return result;
+        }, []);
     }
 
     //--------------------------------------------------------------------
