@@ -565,7 +565,8 @@ p {
 
 }
 .displayAnnounceTime,
-.displayAuthor{
+.displayAuthor,
+.editMark{
   color: #b3b3b3;
 }
 .displayAuthor{

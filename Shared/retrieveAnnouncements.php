@@ -15,6 +15,7 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	$message = $announcement['message'];
 	$announceTime = $announcement['announceTime'];
 	$read_status = $announcement['read_status'];
+	$edited = $announcement['edited'];
 	if ($read_status == 0) {
 		$retrievedAnnouncementCard .="<div class='announcementCard' onclick='updateReadStatus(".$announcementid.", ".$cid.", ".$versid.");' style='opacity:0.5;'>";	
 	}elseif ($read_status == 1) {
@@ -35,9 +36,13 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 		$versname = $vers['versname'];
 		$retrievedAnnouncementCard .= "<div class='courseversion'><b>".strtoupper($versname)." - ".$versid."</b></div>";
 	}
-
+	
 	$retrievedAnnouncementCard .= "<div class='displayAnnouncementMsg'><p class='announcementMsgParagraph'>".ucfirst(strtolower($message))."</p></div>";
 
+	if (strtoupper($edited) == strtoupper("YES")) {
+		$retrievedAnnouncementCard .= "<div><span class='editMark'>&#x270D; Edited</span></div>";
+		
+	}
 	foreach ($pdo->query('SELECT * FROM user WHERE uid="'.$uid.'"') AS $author){
 		$firstname = $author['firstname'];
 		$lastname = $author['lastname'];

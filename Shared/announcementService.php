@@ -52,8 +52,9 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$updateTitle = $_POST['announcementTitle'];
 	$updateMessage = $_POST['announcementMsg'];
 	$read_status = 1;
+	$edited = "YES";
 
-	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
+	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status, edited=:edited WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
 	$stmt = $pdo->prepare($update);
 	$stmt->bindParam(':announcementid', $updateannouncementid);   
 	$stmt->bindParam(':uid', $uid);
@@ -61,7 +62,8 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$stmt->bindParam(':versid', $versid);
 	$stmt->bindParam(':title', $updateTitle);   
 	$stmt->bindParam(':message', $updateMessage);
-	$stmt->bindParam(':read_status', $read_status);    
+	$stmt->bindParam(':read_status', $read_status);
+	$stmt->bindParam(':edited', $edited);        
 
 	$stmt->execute();
 	$_SESSION["announcementupdated"] = "Announcement is updated!";
