@@ -160,6 +160,7 @@ function SaveFile(el) {
 function LoadImport(fileContent) {
     a = fileContent;
     Load();
+    fixExampleLayer()
 }
 
 //---------------------------------------------

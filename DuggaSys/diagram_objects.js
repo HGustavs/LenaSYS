@@ -3405,6 +3405,20 @@ function Path() {
         }
         return str;
     }
+    
+    //--------------------------------------------------
+    // getPoints: Returns all unique points in the path.
+    //--------------------------------------------------
+
+    this.getPoints = function() {
+        const points = this.segments.reduce((set, segment) => {
+            set.add(segment.pa); 
+            set.add(segment.pb); 
+            return set;
+        }, new Set());
+
+        return [...points];
+    }
 }
 
 var figurePath = new Path();
