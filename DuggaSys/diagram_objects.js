@@ -1263,7 +1263,7 @@ function Symbol(kindOfSymbol) {
     //------------------------------------------------------------------
     this.getConnectedLines = function() {
         const points = this.getConnectedFrom();
-        const lines = diagram.getObjectsByType(symbolKind.line);
+        const lines = diagram.getObjectsByTypes([symbolKind.line, symbolKind.umlLine]);
 
         const connectedLines = lines.reduce((set, line) => {
             points.forEach(point => {
@@ -1274,7 +1274,7 @@ function Symbol(kindOfSymbol) {
             return set;
         }, new Set());
 
-        return connectedLines;
+        return [...connectedLines];
     }
 
     //--------------------------------------------------------------------
