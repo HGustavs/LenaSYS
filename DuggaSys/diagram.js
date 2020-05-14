@@ -1459,8 +1459,16 @@ diagram.eraseLines = function(privateLines) {
 // getObjectsByType: Returns an array of all diagram objects with the passed symbolKind. (0 for paths).
 //-----------------------------------------------------------------------------------------------------
 
-diagram.getObjectsByType = function(type) {
+diagram.getObjectsByType = function(type = 0) {
     return diagram.filter(object => (object.symbolkind || 0) === type);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// getObjectsByTypes: Returns an array of all diagram objects included in passed array of symbolKinds. (0 for paths).
+//-------------------------------------------------------------------------------------------------------------------
+
+diagram.getObjectsByTypes = function(types = []) {
+    return diagram.filter(object => types.includes(object.symbolkind || 0));
 }
 
 //--------------------------------------------------------------------
