@@ -1167,47 +1167,14 @@ function Symbol(kindOfSymbol) {
     //-----------------------------------------------------------------------
     // getPoints: Adds each corner point to an array and returns the array
     //-----------------------------------------------------------------------
+
     this.getPoints = function() {
-        var privatePoints = [];
-        if(this.symbolkind  == symbolKind.erEntity) {
-            for (var i = 0; i < this.connectorTop.length; i++) {
-                if(this.getquadrant(this.connectorTop[i].to.x,this.connectorTop[i].to.y) != -1) {
-                    privatePoints.push(this.connectorTop[i].to);
-                }
-                if(this.getquadrant(this.connectorTop[i].from.x,this.connectorTop[i].from.y) != -1) {
-                    privatePoints.push(this.connectorTop[i].from);
-                }
+        return [this.topLeft, this.bottomRight, this.middleDivider, this.centerPoint].reduce((result, pointIndex) => {
+            if(typeof pointIndex !== "undefined" && pointIndex !== null) {
+                result.push(pointIndex);
             }
-            for (var i = 0; i < this.connectorRight.length; i++) {
-                if(this.getquadrant(this.connectorRight[i].to.x,this.connectorRight[i].to.y) != -1) {
-                    privatePoints.push(this.connectorRight[i].to);
-                }
-                if(this.getquadrant(this.connectorRight[i].from.x,this.connectorRight[i].from.y) != -1) {
-                    privatePoints.push(this.connectorRight[i].from);
-                }
-            }
-            for (var i = 0; i < this.connectorBottom.length; i++) {
-                if(this.getquadrant(this.connectorBottom[i].to.x,this.connectorBottom[i].to.y) != -1) {
-                    privatePoints.push(this.connectorBottom[i].to);
-                }
-                if(this.getquadrant(this.connectorBottom[i].from.x,this.connectorBottom[i].from.y) != -1) {
-                    privatePoints.push(this.connectorBottom[i].from);
-                }
-            }
-            for (var i = 0; i < this.connectorLeft.length; i++) {
-                if(this.getquadrant(this.connectorLeft[i].to.x,this.connectorLeft[i].to.y) != -1) {
-                    privatePoints.push(this.connectorLeft[i].to);
-                }
-                if(this.getquadrant(this.connectorLeft[i].from.x,this.connectorLeft[i].from.y) != -1) {
-                    privatePoints.push(this.connectorLeft[i].from);
-                }
-            }
-        }
-        privatePoints.push(this.topLeft);
-        privatePoints.push(this.bottomRight);
-        privatePoints.push(this.middleDivider);
-        privatePoints.push(this.centerPoint);
-        return privatePoints;
+            return result;
+        }, []);
     }
 
     //-------------------------------------------------------------------------------------
