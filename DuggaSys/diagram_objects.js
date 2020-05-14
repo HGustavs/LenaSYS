@@ -2344,7 +2344,7 @@ function Symbol(kindOfSymbol) {
 			}
 			
 
-			ctx.textAlign = this.textAlign;
+			ctx.textAlign = this.properties['textAlign'];
 			for (var i = 0; i < this.textLines.length; i++) {
 				ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.99) / 2 + (this.properties['textSize'] * i));
 			}
