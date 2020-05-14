@@ -1438,7 +1438,7 @@ diagram.eraseLines = function(privateLines) {
                 eraseRight = true;
             }
         }
-        var connected_objects = connectedObjects(privateLines[i]);
+        var connected_objects = privateLines[i].getConnectedObjects();
         if(!eraseLeft) {
             for(var j = 0; j < connected_objects.length; j++) {
                 connected_objects[j].removePointFromConnector(privateLines[i].topLeft);
@@ -1479,8 +1479,7 @@ diagram.getObjectsByTypes = function(types = []) {
 diagram.updateLineRelations = function() {
     var privateLines = this.getObjectsByType(symbolKind.line);
     for (var i = 0; i < privateLines.length; i++) {
-        privateLines[i].type = "idek";
-        var connected_objects = connectedObjects(privateLines[i]);
+        var connected_objects = privateLines[i].getConnectedObjects();
         if (connected_objects.length >= 2) {
             for (var j = 0; j < connected_objects.length; j++) {
                 if (connected_objects[j].type == "weak") {
@@ -2510,31 +2509,6 @@ $(document).ready(function() {
         }
     });
 });
-
-//--------------------------------------------------
-// Returns connected that are connected to the line
-//--------------------------------------------------
-
-function connectedObjects(line) {
-    var privateObjects = [];
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == kind.symbol && diagram[i].symbolkind != symbolKind.line) {
-            var objectPoints = diagram[i].getPoints();
-            for (var j = 0; j < objectPoints.length; j++) {
-                if (objectPoints[j] == line.topLeft || objectPoints[j] == line.bottomRight) {
-                    privateObjects.push(diagram[i]);
-                }
-                if (privateObjects.length >= 2) {
-                    break;
-                }
-            }
-            if (privateObjects.length >= 2) {
-                break;
-            }
-        }
-    }
-    return privateObjects;
-}
 
 //-----------------------------------
 // Draws the gridlines of the canvas
