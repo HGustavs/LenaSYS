@@ -172,7 +172,7 @@ function loadGeneralStats() {
 		}
 			
 		// CPU Usage
-		if(data.cpu != undefined){
+		if (!stristr(PHP_OS, "Darwin")) {
 		var chartData = [];
 		chartData.push({
 			label: 'CPU Load ('+data.cpu.totalPercent+'%)',
