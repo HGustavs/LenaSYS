@@ -1258,25 +1258,23 @@ function Symbol(kindOfSymbol) {
         }
     }
 
-    //--------------------------------------------------------------------
-    // getLines: Returns all the lines connected to the object
-    //--------------------------------------------------------------------
-    this.getLines = function() {
-        var privatePoints = this.getPoints();
-        var lines = diagram.getObjectsByType(symbolKind.line);
-        var objectLines = [];
-        for (var i = 0; i < lines.length; i++) {
-            //Connected to connectors top, right, bottom and left; topLeft, bottomRight, centerPoint or middleDivider.
-            for (var j = 0; j < privatePoints.length; j++) {
-                if (lines[i].topLeft == privatePoints[j] || lines[i].bottomRight == privatePoints[j]) {
-                    if(objectLines.indexOf(lines[i])==-1) {
-                        objectLines.push(lines[i]);
-                        break;
-                    }
+    //------------------------------------------------------------------
+    // getConnectedLines: Returns all the lines connected to the object.
+    //------------------------------------------------------------------
+    this.getConnectedLines = function() {
+        const points = this.getConnectedFrom();
+        const lines = diagram.getObjectsByType(symbolKind.line);
+
+        const connectedLines = lines.reduce((set, line) => {
+            points.forEach(point => {
+                if(line.topLeft === point || line.bottomRight === point) {
+                    set.add(line);
                 }
-            }
-        }
-        return objectLines;
+            });
+            return set;
+        }, new Set());
+
+        return connectedLines;
     }
 
     //--------------------------------------------------------------------

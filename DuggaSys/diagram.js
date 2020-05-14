@@ -2473,7 +2473,7 @@ function eraseObject(object) {
             if(removeBottomright) points[object.bottomRight] = "";
         }
         object.erase();
-        diagram.eraseLines(object, object.getLines());
+        diagram.eraseLines(object, object.getConnectedLines());
     } else if (object.kind == kind.path) {
         object.erase();
     }
