@@ -6280,11 +6280,7 @@ function createRulerLinesObjectPoints() {
 
 function getSelectedObjectsPoints() {
     const selectedPoints = selected_objects.reduce((set, object) => {
-        object.getPoints().forEach(pointIndex => {
-            if(typeof pointIndex !== "undefined") {
-                set.add(points[pointIndex]);
-            }
-        });
+        object.getPoints().forEach(pointIndex => set.add(points[pointIndex]));
         return set;
     }, new Set());
 
