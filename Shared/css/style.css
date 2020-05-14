@@ -405,6 +405,22 @@ p {
   font-family: 'Varela', sans-serif;
   box-sizing: border-box;
 }
+.announcementForm #courseidAndVersid{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+
+}
+.announcementForm #courseidAndVersid div{
+  width: 50%;
+}
+.announcementForm #courseidAndVersid div:last-child{
+  margin-left: 5px;
+}
+.announcementForm #courseidAndVersid #recipientBox{
+  height: 150px;
+}
+.announcementForm select,
 .announcementForm input[type=text],
 .announcementForm textarea{
   width: 100%;
