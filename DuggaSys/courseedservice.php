@@ -65,7 +65,6 @@ $isSuperUserVar=false;
 
 if(checklogin()){
 	$isSuperUserVar=isSuperUser($userid);
-
 	$ha = $isSuperUserVar;
 
 	if($ha){
@@ -153,12 +152,12 @@ if(checklogin()){
 			logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
 
 		}else if(strcmp($opt,"UPDATEVRS")===0){
+				$debug = "TEST";
 				$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursecode', $coursecode);
 				$query->bindParam(':vers', $versid);
 				$query->bindParam(':versname', $versname);
-
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
 						$debug="Error updating entries\n".$error[2];
