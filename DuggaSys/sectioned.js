@@ -445,7 +445,7 @@ function createVersion() {
   var param = {};
   //param.courseid = querystring['courseid'];
   param.cid = querystring['courseid'];
-  param.versid = document.getElementById("versid").value;
+  param.versid = document.getElementById("cversid").value;
   param.versname = document.getElementById("versname").value;
   param.motd = document.getElementById("vmotd").value;
   param.copycourse = document.getElementById("copyvers").value;
@@ -468,7 +468,7 @@ function createVersion() {
       AJAXService("NEWVRS", param, "COURSE");
     }
     $("#newCourseVersion").css("display", "none");
-    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("versid").value );
+    changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" +document.getElementById("cversid").value );
   }
 }
 
@@ -2004,7 +2004,7 @@ function validateCourseID(courseid, dialogid) {
   var Code = /^[0-9]{3,6}$/;
   var code = document.getElementById(courseid);
   var x2 = document.getElementById(dialogid);
-  var val = document.getElementById("versid").value;
+  var val = document.getElementById("cversid").value;
 
   if (code.value.match(Code)) {
     code.style.borderColor = "#383";
@@ -2178,7 +2178,7 @@ function validateForm(formid) {
    //Validates new course version form
   if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
-    var versId = document.getElementById("versid").value;
+    var versId = document.getElementById("cversid").value;
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
