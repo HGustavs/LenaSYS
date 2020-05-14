@@ -123,6 +123,16 @@ function generalStats($dbCon) {
 		GROUP BY browser
 		ORDER BY percentage DESC LIMIT 1
 		')->fetchAll(PDO::FETCH_ASSOC);
+	
+	$topOS = $GLOBALS['log_db']->query('
+		SELECT
+			operatingSystem,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceServerStart.') AS percentage
+		FROM serviceLogEntries
+		WHERE eventType = '.EventTypes::ServiceServerStart.'
+		GROUP BY operatingSystem
+		ORDER BY percentage DESC
+	')->fetchAll(PDO::FETCH_ASSOC);
 
 	$generalStats = [];
 	$generalStats['stats']['loginFails'] = $LoginFail[0];
@@ -132,6 +142,7 @@ function generalStats($dbCon) {
 	$generalStats['stats']['userSubmissionSize'] = convertBytesToHumanreadable(GetDirectorySize(getcwd() . "/submissions"));
 
 	$generalStats['stats']['topBrowser'] = $topBrowser[0]['browser'];
+	$generalStats['stats']['topOS'] = $topOS[0]['operatingSystem'];
 
 	$query = $dbCon->prepare("SELECT count(*) as numUsers FROM user");
 
