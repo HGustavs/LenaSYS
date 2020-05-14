@@ -2429,6 +2429,51 @@ function disableShortcuts(event){
     }
     updateGraphics();
 }
+//---------------------------------------------------------------------------------
+// resetShortcuts: resets the keybinds to the initial values
+//---------------------------------------------------------------------------------
+
+function resetShortcuts(event){
+    event.stopPropagation();
+    //Reset binds to default keycodes
+    keyMap.backspaceKey = 8;
+    keyMap.shiftKey = 16;
+    keyMap.ctrlKey = 17;
+    keyMap.altKey = 18;
+    keyMap.escapeKey = 27;
+    keyMap.spacebarKey = 32;
+    keyMap.leftArrow = 37;
+    keyMap.upArrow = 38;
+    keyMap.rightArrow = 39;
+    keyMap.downArrow = 40;
+    keyMap.deleteKey = 46;
+    keyMap.key0 = 48;
+    keyMap.key1 = 49;
+    keyMap.key2 = 50;
+    keyMap.key4 = 52;
+    keyMap.aKey = 65;
+    keyMap.cKey = 67;
+    keyMap.dKey = 68;
+    keyMap.eKey = 69;
+    keyMap.fKey = 70;
+    keyMap.lKey = 76;
+    keyMap.mKey = 77;
+    keyMap.nKey = 78;
+    keyMap.oKey = 79;
+    keyMap.rKey = 82;
+    keyMap.vKey = 86;
+    keyMap.zKey = 90;
+    keyMap.yKey = 89;
+    keyMap.xKey = 88;
+    keyMap.windowsKey = 91;
+    keyMap.num1 = 97;
+    keyMap.num2 = 98;
+    keyMap.lessThanKey = 60;
+    keyMap.f11Key = 122;
+    //redraw the keyMap to the html element
+    drawKeyMap(keyMap, $("#shortcuts-wrap").get(0) );
+    updateGraphics();
+}
 
 //-------------------------------------------
 // Returns lines connected to the object
