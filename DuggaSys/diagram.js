@@ -93,6 +93,7 @@ const mouseState = {
     insideMovableObject: 3,         // mouse pressed down inside a movable object
     boxSelectOrCreateMode: 4        // Box select or Create mode
 };
+var colorArray = ["#000000","#496e63","#64B5F6","#81C784","#e6e6e6","#E57373","#FFF176","#FFB74D","#BA68C8","#366922"]
 var valueArray = ["Layer Zero","Layer One", "Layer Two", "Layer Three", "Layer Four", "Layer Five", "Layer Six", "Layer Seven", "Layer Eight", "Layer Nine", "Layer Ten"]
 var writeToLayer = getcorrectlayer();
 var showLayer = ["Layer_1"];
@@ -687,6 +688,7 @@ function keyDownHandler(e) {
                 selected_objects.push(diagram[i]);
                 diagram[i].targeted = true;
             }
+            createRulerLinesObjectPoints();
             updateGraphics();
         } else if(key == keyMap.ctrlKey || key == keyMap.windowsKey) {
             ctrlIsClicked = true;
@@ -2370,9 +2372,7 @@ function canvasSize() {
     canvas.width = diagramContainer.offsetWidth;
     canvas.height = diagramContainer.offsetHeight;
     boundingRect = canvas.getBoundingClientRect();
-    if(isRulersActive) {
-        createRulers();
-    }
+    createRulers();
     updateGraphics();
 }
 
@@ -2534,6 +2534,7 @@ function eraseSelectedObject(event) {
     }
     selected_objects = [];
     lastSelectedObject = -1;
+    createRulerLinesObjectPoints();
     updateGraphics();
 }
 
@@ -2823,10 +2824,11 @@ function reWrite() {
 
     if (developerModeActive) {
         let coordinatesText = `<p><b>Mouse:</b> (${decimalPrecision(currentMouseCoordinateX, 0).toFixed(0)}, ${decimalPrecision(currentMouseCoordinateY, 0).toFixed(0)})</p>`;
+        let activeLayer = '<b> Layer: </b>' +getCorrectValueArray();
         if (typeof hoveredObject !== "undefined" && hoveredObject.symbolkind != symbolKind.umlLine && hoveredObject.symbolkind != symbolKind.line && hoveredObject.figureType != "Free") {
             coordinatesText += `<p><b>Object center:</b> (${Math.round(points[hoveredObject.centerPoint].x)}, ${Math.round(points[hoveredObject.centerPoint].y)})</p>`;
         }
-        coordinatesElement.innerHTML = `${coordinatesText}</p>`;
+        coordinatesElement.innerHTML = `${coordinatesText}${activeLayer}</p>`;
         if (!isMobile){
             coordinatesElement.style.display = "block";
         }
@@ -3280,6 +3282,7 @@ function undoDiagram(event) {
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
     hoveredObject = undefined;
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------------------
@@ -3300,6 +3303,7 @@ function redoDiagram(event) {
     selected_objects = diagram.filter(object => object.targeted);
     cloneTempArray = [];
     hoveredObject = undefined;
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------------------
@@ -3525,11 +3529,7 @@ function zoomInMode(event) {
         origoOffsetX -= centerX * zoomDifference - centerX;
         origoOffsetY -= centerY * zoomDifference - centerY;
     }
-
-    if(isRulersActive) {
-        createRulers();
-    }
-
+    createRulers();
     reWrite();
     updateGraphics();
 }
@@ -3694,8 +3694,7 @@ function mousemoveevt(ev) {
 
     //Update the moving mouse line positions for x-axis and y-axis rulers when rulers are active
     if(isRulersActive) {
-        document.querySelector("#ruler-x .ruler-extra-lines .mouse-line").style.left = `${ev.offsetX}px`;
-        document.querySelector("#ruler-y .ruler-extra-lines .mouse-line").style.top = `${ev.offsetY}px`;
+        setRulerMouseLinesPosition(ev.offsetX, ev.offsetY);
     }
 
     // deltas are used to determine the range of which the mouse is allowed to move when pressed.
@@ -3729,9 +3728,7 @@ function mousemoveevt(ev) {
         startMouseCoordinateY = canvasToPixels(0, ev.clientY - boundingRect.top).y;
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
-        if(isRulersActive) {
-            createRulers();
-        }
+        createRulers();
     }
     reWrite();
     updateGraphics();
@@ -4081,6 +4078,7 @@ function mousemoveevt(ev) {
             }
         }
     }
+    createRulerLinesObjectPoints();
 }
 
 //----------------------------------------------------------
@@ -4147,6 +4145,7 @@ function mousedownevt(ev) {
             }
             lastSelectedObject = -1;
             selected_objects = [];
+            createRulerLinesObjectPoints();
         }
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
@@ -4195,6 +4194,7 @@ function handleSelect() {
             lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length-1]);
         }
     }
+    createRulerLinesObjectPoints();
 }
 
 function mouseupevt(ev) {
@@ -4729,6 +4729,7 @@ function touchStartEvent(event) {
         }
         lastSelectedObject = -1;
         selected_objects = [];
+        createRulerLinesObjectPoints();
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
     }
@@ -4772,9 +4773,7 @@ function touchMoveEvent(event) {
         localStorage.setItem("cameraPosX", origoOffsetX);
         localStorage.setItem("cameraPosY", origoOffsetY);
         
-        if(isRulersActive) {
-            createRulers();
-        }
+        createRulers();
     }
 
     // Moves an object
@@ -4831,9 +4830,9 @@ function touchMoveEvent(event) {
         ctx.stroke();
         ctx.setLineDash([]);
     }
+    createRulerLinesObjectPoints();
     reWrite();
     updateGraphics();
-
 }
 
 // Takes the closest selected point and resizes the object
@@ -5912,6 +5911,7 @@ function createLayer(){
     document.getElementById("layerActive").appendChild(activeDropdown);
     fixWriteToLayer();
     addLayersToApperence(id);
+
 }
 function loadLayer(localStorageID){
     let parentNode = document.getElementById("viewLayer");
@@ -6032,6 +6032,9 @@ function toggleActiveBackgroundLayer(object) {
             object.classList.remove("drop-down-option-hover");
             localStorage.setItem("writeToActiveLayers", object.id);
             setlayer(object);
+            reWrite();
+
+            activeLocalStorage();
         }
     }
     updateGraphics();
@@ -6042,6 +6045,9 @@ function setlayer(object){
     let fixID = object.id.replace('_Active','');
     toggleBackgroundLayer(document.getElementById(fixID), true)
     writeToLayer = fixID;
+    let fixColor = fixID.replace('Layer_','');
+    console.log(fixColor)
+    settings.properties.strokeColor = colorArray[fixColor-1]; 
 }
 
 function addLayersToApperence(localStorageID){
@@ -6145,6 +6151,23 @@ function fixActiveLayer(){
         correctSpan.id = "Layer_" + i +"_Active";
     }
 }
+function getCorrectValueArray(){
+    let parentNode = document.getElementById("layerActive");
+    let spans = parentNode.getElementsByTagName('span');
+    let updateToolbar = document.getElementById("activeLayerinToolbar");
+    for(let i = 0; i <spans.length;i++){
+        if(spans[i].classList.contains("isActive")){
+            return spans[i].innerHTML;
+        }
+    }
+}
+function fixExampleLayer(){
+    for(let i = 0; i <diagram.length;i++){
+        diagram[i].properties.setLayer = writeToLayer;
+    }
+    updateGraphics();
+    SaveState();
+}
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
     var okToMakeLine = false;
@@ -6201,8 +6224,19 @@ function canConnectLine(startObj, endObj){
 //-----------------------------------------------
 
 function createRulers() {
+    if(!isRulersActive) return;
     createRuler(document.querySelector("#ruler-x .ruler-lines"), canvas.width, origoOffsetX, "marginLeft");
     createRuler(document.querySelector("#ruler-y .ruler-lines"), canvas.height, origoOffsetY, "marginTop");
+    createRulerLinesObjectPoints();
+}
+
+//------------------------------------------------------------------------------
+// setRulerMouseLinesPosition: Move rulers mouse position lines to passed value.
+//------------------------------------------------------------------------------
+
+function setRulerMouseLinesPosition(x, y) {
+    document.querySelector("#ruler-x .ruler-extra-lines .mouse-line").style.left = `${x}px`;
+    document.querySelector("#ruler-y .ruler-extra-lines .mouse-line").style.top = `${y}px`;
 }
 
 //--------------------------------------------------------------------------------------
@@ -6244,6 +6278,55 @@ function createRuler(element, length, origoOffset, marginProperty) {
             element.appendChild(line);
         }
     }
+}
+
+//-------------------------------------------------------------------------------------
+// createRulerLinesObjectPoints: Creates lines on ruler for all selected object points.
+//-------------------------------------------------------------------------------------
+
+function createRulerLinesObjectPoints() {
+    if(!isRulersActive || selected_objects.length < 1) return;
+
+    const rulerExtraLinesX = document.querySelector("#ruler-x .ruler-extra-lines");
+    const rulerExtraLinesY = document.querySelector("#ruler-y .ruler-extra-lines");
+
+    //Get an array of points used by all selected objects
+    const selectedPoints = getSelectedObjectsPoints();
+
+    //Remove all current point liens
+    document.querySelectorAll(".point-line").forEach(element => element.remove());
+
+    selectedPoints.forEach(point => {
+        const canvasCoordinate = pixelsToCanvas(point.x, point.y);
+        const lineX = document.createElement("div");
+        const lineY = document.createElement("div");
+
+        lineX.classList.add("point-line");
+        lineY.classList.add("point-line");
+
+        lineX.style.left = `${canvasCoordinate.x}px`;
+        lineY.style.top = `${canvasCoordinate.y}px`;
+
+        rulerExtraLinesX.appendChild(lineX);
+        rulerExtraLinesY.appendChild(lineY);
+    });
+}
+
+//------------------------------------------------------------------------------------
+// getSelectedObjectsPoints: Returns unique points for all currently selected objects.
+//------------------------------------------------------------------------------------
+
+function getSelectedObjectsPoints() {
+    const selectedPoints = selected_objects.reduce((set, object) => {
+        object.getPoints().forEach(pointIndex => {
+            if(typeof pointIndex !== "undefined") {
+                set.add(points[pointIndex]);
+            }
+        });
+        return set;
+    }, new Set());
+
+    return [...selectedPoints];
 }
 
 //------------------------------------------------------------------------------------------------
