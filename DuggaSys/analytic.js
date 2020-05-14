@@ -412,7 +412,7 @@ function loadServiceUsage() {
                console.log("innan loop: "+services);
 				$.each(data, function(i, row) {
                    console.log("i loop: "+services);
-					if (!services.hasOwnProperty(row.service)) {
+					/*if (!services.hasOwnProperty(row.service)) {
 						services[row.service] = [];
 					}
 					
@@ -420,7 +420,7 @@ function loadServiceUsage() {
                         X: row.dateTime,
                         Y: row.hits
 					});
-                 
+                 */
                    if(row.service =="codeviewerService.php"){
                     console.log("ROW: "+row.dateTime);
                 
@@ -430,17 +430,27 @@ function loadServiceUsage() {
                     date1 = day.getFullYear()+ "-" +("0" + (day.getMonth() + 1)).slice(-2)+ "-" +("0" + day.getDate()).slice(-2);
                      loop++;
                      if(date1 != row.dateTime){
-                      
-					/*service[row].push({
-                        service: "codeviwerService.php",
-						dateTime: date1,
-						hits: "0"
+                         
+                    if (!services.hasOwnProperty(row.service)) {
+						services[row.service] = [];
+					}
+					
+					services[row.service].push({
+						X: date1,
+						Y: "0"
                         
-					});*/
+					});
                  
                      }
                      else{
-                      console.log("else");
+                      if (!services.hasOwnProperty(row.service)) {
+						services[row.service] = [];
+					}
+					
+                   services[row.service].push({
+                        X: row.dateTime,
+                        Y: row.hits
+					});
                      }
                     }
                      
