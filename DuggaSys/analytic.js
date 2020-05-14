@@ -416,6 +416,10 @@ function loadServiceUsage() {
 						services[row.service] = [];
 					}
 					
+                   services[row.service].push({
+                        X: row.dateTime,
+                        Y: row.hits
+					});
                  
                    if(row.service =="codeviewerService.php"){
                     console.log("ROW: "+row.dateTime);
@@ -427,14 +431,13 @@ function loadServiceUsage() {
                      loop++;
                      if(date1 != row.dateTime){
                       
-					service[row].push({
+					/*service[row].push({
                         service: "codeviwerService.php",
 						dateTime: date1,
 						hits: "0"
                         
-					});
+					});*/
                  
-                      
                      }
                      else{
                       console.log("else");
