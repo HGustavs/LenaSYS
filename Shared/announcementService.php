@@ -54,7 +54,7 @@ if(isset($_POST['uid']) && isset($_POST['cid']) && isset($_POST['versid']) && is
 	$read_status = 1;
 	$edited = "YES";
 
-	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status, edited=:edited WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
+	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status, edited=:edited, announceTime=now() WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
 	$stmt = $pdo->prepare($update);
 	$stmt->bindParam(':announcementid', $updateannouncementid);   
 	$stmt->bindParam(':uid', $uid);

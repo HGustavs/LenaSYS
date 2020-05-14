@@ -493,7 +493,7 @@ CREATE TABLE announcement(
     versid VARCHAR(8),
     title TINYTEXT NOT NULL,
     message TEXT NOT NULL,
-    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     read_status INT(1) NOT NULL,
     edited VARCHAR(3) NOT NULL DEFAULT "NO",
     PRIMARY KEY(announcementid, uid, cid),
