@@ -707,6 +707,7 @@ function renderCell(col, celldata, cellid) {
 		case "qstart":		// DUGGA-TABLE - Startdate
 		case "deadline":	// DUGGA-TABLE - Deadline
 		case "qrelease":	// DUGGA-TABLE - Result date
+		case "modified":  // DUGGA-TABLE - Last Modified
 			if(!celldata) {	// if null - return string "N/A"
 				retString = "N/A";
 			} else if(celldata.length > 10){		// when there is time included - return date without seconds (i.e. last three charachters)
