@@ -3281,7 +3281,9 @@ function distribute(event, axis) {
 
 function undoDiagram(event) {
     event.stopPropagation();                    // This line stops the collapse of the menu when it's clicked
-    if (diagramNumber > 0) diagramNumber--;
+    if (diagramNumber > 0) {
+        diagramNumber--;
+    }
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumber);
     localStorage.setItem("diagramNumber", diagramNumber);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
@@ -6173,7 +6175,7 @@ function fixExampleLayer(){
         diagram[i].properties.setLayer = writeToLayer;
     }
     updateGraphics();
-    SaveState();
+    //SaveState(); // This save breaks the undo functionality right now
 }
 //A check if line should connect to a object when loose line is released inside a object
 function canConnectLine(startObj, endObj){
