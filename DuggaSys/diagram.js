@@ -1083,11 +1083,7 @@ function copySymbol(symbol) {
 function copyPath(path) {
     const clone = Object.assign(new Path, JSON.parse(JSON.stringify(path)));
 
-    const oldPointIndexes = clone.segments.reduce((result, segment) => {
-        result.push(segment.pa);
-        result.push(segment.pb);
-        return [...new Set(result)];
-    }, []);
+    const oldPointIndexes = clone.getPoints();
 
     const pointIndexes = oldPointIndexes.reduce((result, pointIndex) => {
         const point = points[pointIndex];
