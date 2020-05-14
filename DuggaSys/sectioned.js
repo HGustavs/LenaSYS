@@ -344,7 +344,12 @@ function openCodeDialog() {
 }
 
 function onSelectFileChanged(selected) {
-  console.log(selected.value + " - " + selected.options[selected.selectedIndex].text);
+  // console.log(selected.value + " - " + selected.options[selected.selectedIndex].text);
+  const selectHolder = document.getElementById('selectHolder');
+
+  console.log(selectHolderArray);
+
+  
 
   createSelect();
 }
@@ -368,6 +373,24 @@ function addSelectOptions(selectElement) {
       fileKindIndex++;
     }
   }
+}
+
+function submitSelectedFiles(e) {
+  const fileLineBreakers = ["-= Global Files =-", "-= Local Files =-", "-= Course Local Files =-"];
+  const selectHolder = document.getElementById('selectHolder');
+  const length = selectHolder.children.length;
+  
+  for (let i = 0; i < length; i++) {
+    const element = selectHolder.children[i];
+    const text = element.options[element.selectedIndex].text;
+
+    if (!fileLineBreakers.includes(text)) {
+      console.log("Item "+i+": " + text);
+    }
+  }
+
+  e.preventDefault();
+  return false;
 }
 
 function closeDialog(id) {

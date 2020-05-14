@@ -57,16 +57,19 @@
 	<!-- Create Code Dialog -->
 	<section>
 		<div id='codeItemDialog' class="loginBoxContainer" style="display:none;">
-        	<div class='loginBox' style='width:650px;'>
-                <div class='loginBoxheader'>
-                    <h3>Create new code example</h3>
-                    <div class='cursorPointer' onclick='closeDialog("codeItemDialog");'>x</div>
-				</div>
-				<div id="selectHolder">
-					<select id="fileSelectParent" onchange="onSelectFileChanged(this);"></select>
-				</div>
-        	</div>
-    	</div>
+			<div class='loginBox' style='width:650px;'>
+				<form action="sectionedservice.php" method="post" onsubmit="return submitSelectedFiles(event);">
+					<div class='loginBoxheader'>
+						<h3>Create new code example</h3>
+						<div class='cursorPointer' onclick='closeDialog("codeItemDialog");'>x</div>
+					</div>
+					<div id="selectHolder">
+						<select id="fileSelectParent" onchange="onSelectFileChanged(this);"></select>
+					</div>
+					<input type="submit" value="Create">
+				</form>
+			</div>
+		</div>
 	</section>
 
 	<!-- content START -->
