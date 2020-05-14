@@ -141,6 +141,12 @@ function loadGeneralStats() {
 			data['stats']['topBrowser']
 		]);
 
+		// Top OS
+		tableData.push([
+			'Top OS',
+			data['stats']['topOS']
+		]);
+
 		$('#analytic-info').append(renderTable(tableData));
 		
 		// Disk usage
