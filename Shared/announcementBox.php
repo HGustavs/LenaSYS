@@ -1,8 +1,4 @@
 
-<?php 
-include_once ("../Shared/database.php");
-pdoConnect();
-?>
 <link href="https://fonts.googleapis.com/css2?family=Varela&display=swap" rel="stylesheet">
 
 <form id="announcementForm" class="announcementForm animate" action="../Shared/announcementService.php" method="post">
@@ -12,38 +8,16 @@ pdoConnect();
     <p class="formSubtitle">Please fill in this form to create an announcement.</p>
     <hr>
 
-    <div>
-      <input type="hidden" name="uid" id="userid">
-    </div>
-    <div id="courseidAndVersid">
-      <div>
-        <label for="courseid">Course</label><br>
-        <select id="courseid" name="cid">
-          <option value="" selected>ID</option>
-        </select>
-      </div>
-      <div>
-        <label for="versid">Course-version</label><br>
-        <select id="versid" name="versid" disabled>
-          <option value="" selected>Version</option>
-        </select>
-      </div>
-    </div>
-    <div id="recipientBox">
-      <label for="recient">Recipients</label><br>
-      <select id="recient" name="recipient" multiple>
-        <option value="all">All</option>
-        
-      </select>
-    </div>
-    <div>
-      <label for="title"><b>Title</b></label>
-      <input type="text" id="announcementTitle" placeholder="Enter a title" name="announcementTitle" required>
-    </div>
-    <div>
-      <label for="announcementMsg"><b>Message</b></label>
-      <textarea  type="Text" id="announcementMsg" placeholder="What do you want your students to know?" name="announcementMsg" required></textarea>
-    </div>
+    <input type="hidden" name="uid" id="userid">
+    <input type="hidden" name="cid" id="courseid">
+    <input type="hidden" name="versid" id="versid">
+
+    <label for="title"><b>Title</b></label>
+    <input type="text" id="announcementTitle" placeholder="Enter a title" name="announcementTitle" required>
+
+    <label for="announcementMsg"><b>Message</b></label>
+    <textarea  type="Text" id="announcementMsg" placeholder="What do you want your students to know?" name="announcementMsg" required></textarea>
+
     <div class="clearfix">
       <button type="submit" class="createBtn" name="createBtn" onclick="validateCreateAnnouncementForm();">Create</button>
     </div>
