@@ -2610,14 +2610,8 @@ function Symbol(kindOfSymbol) {
     //---------------------------------------------------------
     this.getTextX = function(x1, midX, x2) {
         var textX = 0;
-        if (this.properties['textAlign'] == "start" && this.properties['sizeOftext'] == 'Large') textX = x1 + 70 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "end" && this.properties['sizeOftext'] == 'Large') textX = x2 - 70 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "start" && this.properties['sizeOftext'] == 'Medium') textX = x1 + 43 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "end" && this.properties['sizeOftext'] == 'Medium') textX = x2 - 43 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "start" && this.properties['sizeOftext'] == 'Small') textX = x1 + 30 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "end" && this.properties['sizeOftext'] == 'Small') textX = x2 - 30 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "start" && this.properties['sizeOftext'] == 'Tiny') textX = x1 + 22 * diagram.getZoomValue();
-        else if (this.properties['textAlign'] == "end" && this.properties['sizeOftext'] == 'Tiny') textX = x2 - 22 * diagram.getZoomValue();
+        if (this.properties['textAlign'] == "start") textX = x1;
+        else if (this.properties['textAlign'] == "end") textX = x2;
         else textX = midX;
         return textX;
     }
