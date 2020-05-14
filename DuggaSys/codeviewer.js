@@ -3658,9 +3658,8 @@ function resizeBoxes(parent, templateId)
 				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
+				document.querySelector(boxValArray['box2']['id']).style.left = "";
 				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-				document.querySelector(boxValArray['box3']['id']).style.left = " ";
-				document.querySelector(boxValArray['box2']['id']).style.left = " ";
 			},
 			stop: function (e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -3675,8 +3674,7 @@ function resizeBoxes(parent, templateId)
 				document.getElementsByTagName("iframe")[0].style.pointerEvents = "none";
 			},
 			resize: function (e, ui) {
-        
-				document.querySelector(boxValArray['box4']['id']).style.top = " ";
+				document.querySelector(boxValArray['box3']['id']).style.left = "";
 				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 			},
 			stop: function (e, ui) {
