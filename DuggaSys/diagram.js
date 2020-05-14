@@ -1455,6 +1455,14 @@ diagram.eraseLines = function(privateLines) {
     }
 }
 
+//-----------------------------------------------------------------------------------------------------
+// getObjectsByType: Returns an array of all diagram objects with the passed symbolKind. (0 for paths).
+//-----------------------------------------------------------------------------------------------------
+
+diagram.getObjectsByType = function(type) {
+    return diagram.filter(object => (object.symbolkind || 0) === type);
+}
+
 //--------------------------------------------------------------------
 // getEntityObjects: Returns a list of all entities
 //--------------------------------------------------------------------
