@@ -281,7 +281,6 @@ function loadServiceUsage() {
     var datePickerFrom, datePickerTo;
     var dateFrom, dayFrom, monthFrom, yearFrom, fullDateFrom;
     var dateTo, dayTo, monthTo, yearTo, fullDateTo;
-    var startdate;
     changeInput("daily");
  
     function changeInput(input){
@@ -296,7 +295,6 @@ function loadServiceUsage() {
                      monthFrom = dateFrom.getMonth() + 1,              
                      yearFrom =  dateFrom.getFullYear(),
                      fullDateFrom = $(this).datepicker({ dateFormat: 'dd-mm-yy' }).val();
-                     startdate = dateFrom;
                      updateServiceUsage();
                  }
                 })
@@ -330,7 +328,6 @@ function loadServiceUsage() {
                      fullDateFrom = $(this).datepicker({ dateFormat: 'dd-mm-yy' }).val();
                      fullDateTo = fullDateFrom;
                      dateTo = dateFrom;
-                  startdate = dateFrom;
                      updateServiceUsage();
                  }
                 })
@@ -387,11 +384,6 @@ function loadServiceUsage() {
     }
  
 	function updateServiceUsage() {
-        console.log("From: "+fullDateFrom);
-     console.log("To: "+fullDateTo);
-     console.log("DATEFROM: " + dateFrom);
-     const constday = dateFrom;
-        console.log("selectInterval: " + selectInterval.val());
 		$.ajax({
 			url: "analyticService.php",
 			type: "POST",
@@ -406,12 +398,9 @@ function loadServiceUsage() {
               if(fullDateFrom != undefined && fullDateTo != undefined){
                 console.log(data);
 				resetAnalyticsChart();
-
 				var services = {};
-             
-               console.log("innan loop: "+services);
 				$.each(data, function(i, row) {
-                   console.log("i loop: "+services);
+                  
 					/*if (!services.hasOwnProperty(row.service)) {
 						services[row.service] = [];
 					}
@@ -419,31 +408,11 @@ function loadServiceUsage() {
                    services[row.service].push({
                         X: row.dateTime,
                         Y: row.hits
-					});
-                 */
-                   if(row.service =="codeviewerService.php"){
-                    console.log("ROW: "+row.dateTime);
-                
-                    var loop=0;
-                    var day;
-                    for (day = dateFrom; day <= dateTo; day.setDate(day.getDate() + 1)) {
-                    date1 = day.getFullYear()+ "-" +("0" + (day.getMonth() + 1)).slice(-2)+ "-" +("0" + day.getDate()).slice(-2);
-                     loop++;
-                     if(date1 != row.dateTime){
-                         
-                    if (!services.hasOwnProperty(row.service)) {
-						services[row.service] = [];
-					}
-					
-					services[row.service].push({
-						X: date1,
-						Y: "0"
-                        
-					});
+					});*/
+                    if(selectInterval.val()=="hourly"){
                  
-                     }
-                     else{
-                      if (!services.hasOwnProperty(row.service)) {
+                     console.log(services[row.service]);
+                       if (!services.hasOwnProperty(row.service)) {
 						services[row.service] = [];
 					}
 					
@@ -451,13 +420,37 @@ function loadServiceUsage() {
                         X: row.dateTime,
                         Y: row.hits
 					});
+                       }
+                 
+                    else if(selectInterval.val()=="daily"){
+                     var loop=0;
+                     var day;
+                     for (day = dateFrom; day <= dateTo; day.setDate(day.getDate() + 1)) {
+                          date1 = day.getFullYear()+ "-" +("0" + (day.getMonth() + 1)).slice(-2)+ "-" +("0" + day.getDate()).slice(-2);
+                          loop++;
+                          if(date1 == row.dateTime){
+                              if (!services.hasOwnProperty(row.service)) {
+                                  services[row.service] = [];
+                              }
+                              services[row.service].push({
+                                  X: row.dateTime,
+                                  Y: row.hits
+                              });
+
+                          }
+                          else{
+                              if (!services.hasOwnProperty(row.service)) {
+                                  services[row.service] = [];
+                              }
+                              services[row.service].push({
+                                  X: date1,
+                                  Y: "0"
+                              });
+                          }
                      }
-                    }
+                     day.setDate(day.getDate() - loop);
                      
-                    day.setDate(day.getDate() - loop);
-                    //console.log("slutet av loopen "+services[row.service]);
-                    //console.log("efterfor loop: "+ row.date);
-                   }
+                    }
 				});
 
 				$('#analytic-info > select.service-select').remove();
