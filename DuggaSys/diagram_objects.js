@@ -1335,7 +1335,7 @@ function Symbol(kindOfSymbol) {
     //--------------------------------------------------------------------
     this.getLines = function() {
         var privatePoints = this.getPoints();
-        var lines = diagram.getLineObjects();
+        var lines = diagram.getObjectsByType(symbolKind.line);
         var objectLines = [];
         for (var i = 0; i < lines.length; i++) {
             //Connected to connectors top, right, bottom and left; topLeft, bottomRight, centerPoint or middleDivider.
@@ -2673,7 +2673,7 @@ function Symbol(kindOfSymbol) {
 //checkLineIntersection: checks if any two lines does intersect
 //--------------------------------------------------------------
 function checkLineIntersection(line1StartX, line1StartY, line1EndX, line1EndY) {
-	var	lines	=	diagram.getLineObjects();
+    var	lines = diagram.getObjectsByType(symbolKind.line);
 	var results = [];
 	for (var i = 0; i < lines.length; i++) {
 		var	line2StartX = pixelsToCanvas(points[lines[i].topLeft].x).x;

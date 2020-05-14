@@ -1511,7 +1511,7 @@ diagram.getRelationObjects = function() {
 //--------------------------------------------------------------------
 
 diagram.updateLineRelations = function() {
-    var privateLines = this.getLineObjects();
+    var privateLines = this.getObjectsByType(symbolKind.line);
     for (var i = 0; i < privateLines.length; i++) {
         privateLines[i].type = "idek";
         var connected_objects = connectedObjects(privateLines[i]);
@@ -2440,7 +2440,7 @@ function disableShortcuts(event){
 
 function getConnectedLines(object) {
     var privatePoints = object.getPoints();
-    var lines = diagram.getLineObjects();
+    var lines = diagram.getObjectsByType(symbolKind.line);
     var objectLines = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
