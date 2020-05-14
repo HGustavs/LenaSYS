@@ -1,7 +1,11 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+$refer = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+if (!strstr(strtolower($refer), 'service')) { // only echo from non-service files
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+}
 error_reporting(E_ALL);
 
 function customErrorHandler($errno, $errstr, $errfile, $errline) {
@@ -25,7 +29,7 @@ function customErrorHandler($errno, $errstr, $errfile, $errline) {
 			break;
 
 		default:
-			echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
+			//echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
 			break;
     }
 }
@@ -145,12 +149,19 @@ if(!file_exists ('../../log')) {
 		die;
 	}
 }
+//---------------------------------------------------------------------------------------------------------------
+// IF MAKING CHANGES TO SQLite tables, increment this value!
+//---------------------------------------------------------------------------------------------------------------
+$dbVersion = 5;
+//---------------------------------------------------------------------------------------------------------------
+
 try {
-	$log_db = new PDO('sqlite:../../log/loglena4.db');
+	$log_db = new PDO('sqlite:../../log/loglena'.$dbVersion.'.db');
 } catch (PDOException $e) {
 	echo "Failed to connect to the database";
 	throw $e;
 }
+
 $sql = '
 	CREATE TABLE IF NOT EXISTS logEntries (
 		id INTEGER PRIMARY KEY,

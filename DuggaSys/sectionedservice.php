@@ -58,6 +58,8 @@ $deadline=getOP('deadline');
 $pos=getOP('pos');
 $jsondeadline = getOP('jsondeadline');
 $studentTeacher = false;
+$feedbackenabled =getOP('feedback');
+$feedbackquestion =getOP('feedbackquestion');
 $motd=getOP('motd');
 $tabs=getOP('tabs');
 
@@ -283,11 +285,13 @@ if($gradesys=="UNK") $gradesys=0;
 							$link=$pdo->lastInsertId();
 					}
 
-					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, tabs=:tabs, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:groupkind WHERE lid=:lid;");
+					$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, tabs=:tabs, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:groupkind, feedbackenabled=:feedbackenabled, feedbackquestion=:feedbackquestion WHERE lid=:lid;");
 					$query->bindParam(':lid', $sectid);
 					$query->bindParam(':entryname', $sectname);
 					$query->bindParam(':comments', $comments);
 					$query->bindParam(':highscoremode', $highscoremode);
+					$query->bindParam(':feedbackenabled', $feedbackenabled);
+					$query->bindParam(':feedbackquestion', $feedbackquestion);
 
 					if ($grptype != "UNK") {
 						$query->bindParam(':groupkind', $grptype);
@@ -528,7 +532,7 @@ if($gradesys=="UNK") $gradesys=0;
 		$entries=array();
 
 		if($cvisibility){
-		  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, tabs FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+		  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
 			$result=$query->execute();
@@ -558,7 +562,9 @@ if($gradesys=="UNK") $gradesys=0;
 								'comments' => $row['comments'],
 								'qstart' => $row['qstart'],
 								'grptype' => $row['groupKind'],
-								'tabs' => $row['tabs']
+								'tabs' => $row['tabs'],
+								'feedbackenabled' => $row['feedbackenabled'],
+								'feedbackquestion' => $row['feedbackquestion']
 							)
 						);
 				}
@@ -777,6 +783,41 @@ if($gradesys=="UNK") $gradesys=0;
 		  }
 		}
 
+		$userfeedback=array();
+		// Fetches All data from Userduggafeedback
+		if(strcmp($opt,"GETUF")==0){
+			$query = $pdo->prepare("SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':lid', $moment);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading courses".$error[2];
+			}else{
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$userfeedback,
+						array(
+							'ufid' => $row['ufid'],
+							'username' => $row['username'],
+							'cid' => $row['cid'],
+							'lid' => $row['lid'],
+							'score' => $row['score'],
+							'entryname' => $row['entryname']
+						)
+					);
+				}
+			}
+			$query = $pdo->prepare("SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':lid', $moment);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading courses".$error[2];
+			} else{
+				$row = $query->fetch();
+				$avgfeedbackscore = $row[0];
+			}
+		}
 		$array = array(
 			"entries" => $entries,
 			"debug" => $debug,
@@ -797,7 +838,10 @@ if($gradesys=="UNK") $gradesys=0;
 			"enddate" => $enddate,
 			"groups" => $groups,
 		  "grpmembershp" => $grpmembershp,
-		  "grplst" => $grplst
+		  "grplst" => $grplst,
+		  "userfeedback" => $userfeedback,
+		  "feedbackquestion" => $feedbackquestion,
+		  "avgfeedbackscore" => $avgfeedbackscore
 		);
 
 		echo json_encode($array);
