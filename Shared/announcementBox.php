@@ -1,4 +1,9 @@
 
+<?php 
+include_once ("../Shared/database.php");
+pdoConnect();
+?>
+
 <link href="https://fonts.googleapis.com/css2?family=Varela&display=swap" rel="stylesheet">
 
 <form id="announcementForm" class="announcementForm animate" action="../Shared/announcementService.php" method="post">
@@ -16,20 +21,24 @@
         <label for="courseid">Course</label><br>
         <select id="courseid" name="cid">
           <option value="" selected>ID</option>
+          <?php
+          foreach ($pdo->query('SELECT * FROM course ORDER BY coursename ASC') as $course) {
+            echo "<option value='".$course['cid']."'>".$course['coursename']."</option>";
+          }
+          ?>
         </select>
       </div>
       <div>
         <label for="versid">Course-version</label><br>
-        <select id="versid" name="versid">
-          <option value="" selected>Version</option>
+        <select id="versid" name="versid" disabled>
+          <option value="" selected>ID</option>
         </select>
       </div>
     </div>
     <div id="recipientBox">
-      <label for="recient">Recipients</label><br>
-      <select id="recient" name="recipient" multiple>
+      <label for="recipient">Recipients</label><br>
+      <select id="recipient" name="recipient" multiple disabled>
         <option value="all">All</option>
-
       </select>
     </div>
     <div>

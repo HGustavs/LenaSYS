@@ -1690,13 +1690,61 @@ function retrieveAnnouncementAuthor(){
 }
 //retrieve course profile
 function retrieveCourseProfile(){
-  var currentLocation = $(location).attr('href');
-  var url = new URL(currentLocation);
-  var cid = url.searchParams.get("courseid");
-  var versid = url.searchParams.get("coursevers");
-  $("#courseid").val(cid);
-  $("#versid").val(versid);
+  var cid = '';
+  var versid = '';
+  $("#courseid").change(function(){
+    cid = $("#courseid").val();
+    if (($("#courseid").val()) != '') {
+      $("#versid").prop("disabled", false);
+      $.ajax({
+        url: "../Shared/retrievevers.php",
+        data: {cid: cid},
+        type: "POST",
+        success: function(data){
+          var item = JSON.parse(data);
+          $("#versid").find('*').not(':first').remove();
+          $.each(item.versids, function(index,item) {        
+              $("#versid").append("<option value="+item.versid+">"+item.versid+"</option>");
+          });
+          
+        },
+        error:function(){
+          console.log("*******Error*******");
+        }
+      });
+
+    }else{
+      $("#versid").prop("disabled", true);
+    }
+
+  });
+
+  $("#versid").change(function(){
+    versid = $("#versid").val();
+    if (($("#versid").val()) != '') { 
+      $("#recipient").prop("disabled", false);
+      $.ajax({
+        url: "../Shared/retrieveuser_course.php",
+        data: {cid: cid, versid:versid},
+        type: "POST",
+        success: function(data){
+          var item = JSON.parse(data);
+          $("#recipient").find('*').not(':first').remove();
+          $.each(item.users_course, function(index,item) {        
+            $("#recipient").append("<option value="+item.uid+">"+item.firstname+" "+item.lastname+"</option>");
+          });
+
+        },
+        error:function(){
+          console.log("*******Error user_course*******");
+        }
+      });
+    }else{
+      $("#recipient").prop("disabled", true);
+    }
+  });
 }
+
 //validate create announcement form
 function validateCreateAnnouncementForm(){
   $("#announcementForm").submit(function(e){
