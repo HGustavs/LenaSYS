@@ -6247,6 +6247,9 @@ function createRuler(element, length, origoOffset, marginProperty) {
 //-------------------------------------------------------------------------------------
 
 function createRulerLinesObjectPoints() {
+    //Remove all current point liens
+    document.querySelectorAll(".point-line").forEach(element => element.remove());
+
     if(!isRulersActive || selected_objects.length < 1) return;
 
     const rulerExtraLinesX = document.querySelector("#ruler-x .ruler-extra-lines");
@@ -6254,9 +6257,6 @@ function createRulerLinesObjectPoints() {
 
     //Get an array of points used by all selected objects
     const selectedPoints = getSelectedObjectsPoints();
-
-    //Remove all current point liens
-    document.querySelectorAll(".point-line").forEach(element => element.remove());
 
     selectedPoints.forEach(point => {
         const canvasCoordinate = pixelsToCanvas(point.x, point.y);
