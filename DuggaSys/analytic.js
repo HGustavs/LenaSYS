@@ -172,6 +172,7 @@ function loadGeneralStats() {
 		}
 			
 		// CPU Usage
+		if(data.cpu != undefined){
 		var chartData = [];
 		chartData.push({
 			label: 'CPU Load ('+data.cpu.totalPercent+'%)',
@@ -183,6 +184,7 @@ function loadGeneralStats() {
 			value: data.cpu.freePercent
 		});
 		drawPieChart(chartData, 'CPU Usage on the Server', true);		
+	}
 	});
 }
 
