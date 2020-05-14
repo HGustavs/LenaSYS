@@ -487,7 +487,8 @@ window.addEventListener('blur', resetButtonsPressed);
 function init() {
     initializeCanvas();
     canvasSize(); 
-    loadDiagram(); 
+    loadDiagram();
+    loadKeyBinds(); 
     setModeOnRefresh(); 
     refreshVirtualPaper();
     setPaperSizeOnRefresh();
@@ -2285,6 +2286,7 @@ function drawKeyMap(map, target) {
         </div>`
     });
     target.innerHTML = html;
+    saveKeyBinds();
 }
 
 //----------------------------------------------------

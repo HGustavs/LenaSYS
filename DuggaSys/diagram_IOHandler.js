@@ -113,6 +113,7 @@ function Save() {
     localStorage.setItem("diagramNumber", diagramNumber);
     c = [];
     d = [];
+    keyBinds = keyMap;
     for (var i = 0; i < diagram.length; i++) {
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
@@ -163,6 +164,19 @@ function LoadImport(fileContent) {
     fixExampleLayer()
 }
 
+function saveKeyBinds(){
+    
+    localStorage.setItem("Keybinds", JSON.stringify(keyMap));
+}
+
+function loadKeyBinds(){
+    
+    if(true){
+        console.log("Keybinds fetched");
+        keyMap = JSON.parse(localStorage.getItem("Keybinds"));
+        drawKeyMap(keyMap, $("#shortcuts-wrap").get(0));
+    }
+}
 //---------------------------------------------
 // loadDiagram: retrive an old diagram if it exist.
 //---------------------------------------------
