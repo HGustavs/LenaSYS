@@ -688,14 +688,16 @@ function returnedResults(data) {
 //----------------------------------------
 function returnedExportedGrades(gradeData){
 	// Tries to write out the last exported date.
-	// If it fails, then log the error.
+	// Also checks if the object is undefined.
+	// If it's undefined then show the popup.
+	// If it's not, try to write out the gradeLastExported value.
+	// If this fails, then log the error.
 	try {
 		if (typeof gradeData[0] === 'undefined') {
 			// Show the "gradeExportPopUp" div and insert the message.
 			document.getElementById("gradeExportPopUp").style.display = "block";
 			document.getElementById("exportPopUpMessage").innerHTML = "There are no unexported grades";
 		} else {
-			console.log(gradeData[0]);
 			if (typeof gradeData[0].gradeLastExported !== 'undefined') {
 				document.getElementById('lastExpDate').innerHTML = gradeData[0].gradeLastExported;
 				ladexport(gradeData);
@@ -1436,6 +1438,9 @@ function exportCell(format, cell, colname, gradeData = "NONE") {
 					str = "-";
 				} else {
 					if (cell.gradeSystem === 1 || cell.gradeSystem === 2) {
+						// Checks if there data in "gradeData".
+						// If there is, then loop through the array and write out the correct grade.
+						// If there is not, then write out the grades as usual.
 						if (gradeData !== "NONE") {
 							for (var i = 0; i < gradeData.length; i++) {
 								if (cell.uid == gradeData[i].uid && cell.lid == gradeData[i].moment) {
@@ -1503,6 +1508,9 @@ function exportColumnHeading(format, heading, colname) {
 
 //Function for exporting grades to ladoc
 function ladexport(gradeData = "NONE") {
+	// Checks if the exportType is restricted.
+	// If it is, then ask for data from the database.
+	// If not, then continue as normal.
 	if (document.getElementById("exportType").value === "restricted" && gradeData === "NONE") {
 		AJAXService("getunexported", {}, "GEXPORT");
 	} else {
@@ -1511,13 +1519,15 @@ function ladexport(gradeData = "NONE") {
 	expo += document.getElementById("ladselect").value + "\n";
 	expo += document.getElementById("ladgradescale").value + "\n";
 	expo += document.getElementById("laddate").value + "\n";
+	// Checks if there's data in gradeData.
+	// If there's data in gradeData, then write out the grades depending on the data.
+	// If there's not, then just write out all the grades.
 	if (gradeData !== "NONE") {
 		expo += myTable.export("csv", ";", gradeData);
 	} else {
 		expo += myTable.export("csv", ";");
 	}
 
-	//alert(expo);
 	document.getElementById("resultlistheader").innerHTML = "Results for: " + document.getElementById("ladselect").value;
 	document.getElementById("resultlistarea").value = expo;
 	document.getElementById("resultlistpopover").style.display = "flex";
