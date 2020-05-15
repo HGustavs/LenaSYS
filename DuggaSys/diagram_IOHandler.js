@@ -460,6 +460,14 @@ function getAsciiCharsInRange(start, end) {
     return chars;
 }
 
+function generatePropertyKeysMap() {
+    const asciiChars = [
+        ...getAsciiCharsInRange(65, 90),
+        ...getAsciiCharsInRange(97, 122),
+        ...getAsciiCharsInRange(33, 64)
+    ];
+}
+
 //------------------------------------------------
 // Local storage compressing functions end
 //------------------------------------------------
