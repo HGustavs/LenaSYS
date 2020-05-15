@@ -335,9 +335,8 @@ function getServerLoad()
 		}
 	} else {
 		if (is_readable("/proc/stat")) {
-			// Collect 2 samples - each with 1 second period
+			// Collect 2 samples
 			$statData1 = getServerLoadLinux();
-			sleep(1);
 			$statData2 = getServerLoadLinux();
 
 			if((!is_null($statData1)) && (!is_null($statData2))) {
