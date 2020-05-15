@@ -500,7 +500,7 @@ CREATE TABLE announcement(
     announceTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     read_status TINYINT(1) NOT NULL DEFAULT "1",
     edited VARCHAR(3) NOT NULL DEFAULT "NO",
-    PRIMARY KEY(announcementid, secondannouncementid, uid, cid),
+    PRIMARY KEY(announcementid, secondannouncementid, uid, cid, versid),
     FOREIGN KEY (uid) REFERENCES user (uid),
     FOREIGN KEY (recipient) REFERENCES user (uid),
     FOREIGN KEY (cid) REFERENCES course (cid)

@@ -1804,27 +1804,23 @@ function retrieveAnnouncementsCards(){
   });
 }
 //update anouncement form
-function updateannouncementForm(updateannouncementid, tempFuction){
+function updateannouncementForm(updateannouncementid, cid, versid, tempFuction){
   var xmlhttp = new XMLHttpRequest();
+  
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-        tempFuction(this, updateannouncementid);
+        tempFuction(this, updateannouncementid, cid, versid);
     }
   };
   xmlhttp.open("GET","../Shared/updateAnnouncement.php?updateannouncementid="+updateannouncementid,true);
   xmlhttp.send();
 
 }
-function handleResponse(xhttp, updateannouncementid){
-  var parser, xmlDoc, responseTitle, responseMessage, title, message;
-  parser=new DOMParser();
-  xmlDoc=parser.parseFromString(xhttp.responseText,"text/xml");
-  responseTitle = xmlDoc.getElementById("responseTitle");
-  responseMessage = xmlDoc.getElementById("responseMessage");
-
-  title = responseTitle.childNodes[0].nodeValue;
-  message = responseMessage.childNodes[0].nodeValue;
-
+function handleResponse(xhttp, updateannouncementid, cid, versid){
+  var title, message;
+  var parsed_data = JSON.parse(xhttp.response);
+  title = parsed_data.title;
+  message = parsed_data.message;
   if($("#announcementForm").is(":hidden")){
     $("#announcementForm").show();
   }
@@ -1834,7 +1830,13 @@ function handleResponse(xhttp, updateannouncementid){
   $("#announcementMsg").html(message);
   $(".createBtn").html("Update");
   $(".createBtn").attr("name", "updateBtn");
-  $("#announcementForm .announcementFormcontainer hr").after('<input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'">');
+  $("#courseidAndVersid").remove();
+  $("#recipientBox").remove();
+
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'+updateannouncementid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="cid" id="cid" value="'+cid+'"></div>');
+  $("#announcementForm .announcementFormcontainer .clearfix").before('<div><input type="hidden" name="versid" id="versid" value="'+versid+'"></div>');
+
 
 }
 

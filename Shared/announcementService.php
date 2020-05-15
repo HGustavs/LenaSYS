@@ -58,9 +58,9 @@ if(isset($_POST['secondannouncementid']) && isset($_POST['uid']) && isset($_POST
 	$read_status = 1;
 	$edited = "YES";
 
-	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status, edited=:edited, announceTime=now() WHERE announcementid=:announcementid AND uid=:uid AND cid=:cid AND versid=:versid';
+	$update = 'UPDATE announcement SET title=:title, message=:message, read_status=:read_status, edited=:edited, announceTime=now() WHERE secondannouncementid=:secondannouncementid AND uid=:uid AND cid=:cid AND versid=:versid';
 	$stmt = $pdo->prepare($update);
-	$stmt->bindParam(':announcementid', $updateannouncementid);   
+	$stmt->bindParam(':secondannouncementid', $updateannouncementid);   
 	$stmt->bindParam(':uid', $uid);
 	$stmt->bindParam(':cid', $cid);
 	$stmt->bindParam(':versid', $versid);
@@ -72,7 +72,6 @@ if(isset($_POST['secondannouncementid']) && isset($_POST['uid']) && isset($_POST
 	$stmt->execute();
 	$_SESSION["announcementupdated"] = "Announcement is updated!";
 }
-header("Location: ../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."");
-
+header('Location: ' . $_SERVER['HTTP_REFERER']);
 
 ?>

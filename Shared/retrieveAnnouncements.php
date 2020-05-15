@@ -27,8 +27,8 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	foreach ($pdo->query('SELECT * FROM course WHERE cid="'.$cid.'"') AS $course){
 		$coursename = $course['coursename'];
 		$retrievedAnnouncementCard .= "<div class='actionBtns'>";
-		$retrievedAnnouncementCard .= "<span class='editBtn' onclick='updateannouncementForm(".$announcementid.", handleResponse);' title='Edit announcement'>Edit</span>";
-		$retrievedAnnouncementCard .="<span class='deleteBtn'><a href='../Shared/announcementService.php?courseid=".$cid."&coursename=".$coursename."&coursevers=".$versid."&deleteannouncementid=".$secondannouncementid."&uid=".$uid."' title='Delete announcement'>&times;</a></span>";
+		$retrievedAnnouncementCard .= "<span class='editBtn' onclick='updateannouncementForm(".$secondannouncementid.", ".$cid.", ".$versid.", handleResponse);' title='Edit announcement'>Edit</span>";
+		$retrievedAnnouncementCard .="<span class='deleteBtn'><a href='../Shared/announcementService.php?deleteannouncementid=".$secondannouncementid."&uid=".$uid."&courseid=".$cid."&coursevers=".$versid."' title='Delete announcement'>&times;</a></span>";
 		$retrievedAnnouncementCard .="</div>";
 	}
 	$retrievedAnnouncementCard .= "<div><h3>".ucfirst(strtolower($title))."</h3></div>";
@@ -42,7 +42,7 @@ foreach ($pdo->query('SELECT * FROM announcement WHERE cid="'.$cid.'" AND versid
 	$retrievedAnnouncementCard .= "<div class='displayAnnouncementMsg'><p class='announcementMsgParagraph'>".ucfirst(strtolower($message))."</p></div>";
 
 	if (strtoupper($edited) == strtoupper("YES")) {
-		$retrievedAnnouncementCard .= "<div><span class='editMark'>&#x270D; Edited</span></div>";
+		$retrievedAnnouncementCard .= "<div><span class='editMark'>&#128394; Edited</span></div>";
 		
 	}
 	foreach ($pdo->query('SELECT * FROM user WHERE uid="'.$uid.'"') AS $author){
