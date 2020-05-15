@@ -200,7 +200,7 @@ function loadCurrentlyOnline() {
 		console.log(activeUsers);
 		for (var stat in activeUsers) {
 			if (activeUsers.hasOwnProperty(stat)) {
-				var date = new Date(activeUsers[stat].time + ' GMT');
+				var date = new Date(activeUsers[stat].time.replace(' ', 'T') + "Z");			
 				tableData.push([
 					activeUsers[stat].username,
 					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
