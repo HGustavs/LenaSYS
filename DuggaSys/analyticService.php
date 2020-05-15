@@ -337,6 +337,7 @@ function getServerLoad()
 		if (is_readable("/proc/stat")) {
 			$statData1 = getServerLoadLinux();
 
+			if (!is_null($statData1)){
 			// Sum up the 4 values for User, Nice, System and Idle and calculate
 			// the percentage of idle time (which is part of the 4 values!)
 			$cpuTime = $statData1[0] + $statData1[1] + $statData1[2] + $statData1[3];
