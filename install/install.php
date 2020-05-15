@@ -246,7 +246,7 @@
         <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
           Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
           If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
-        <input title="Install LenaSYS!" id="submitInput" class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
+        <input title="Install LenaSYS!" id="submitInput" class="button" type="submit" name="submitButton" value="Install!"/>
       </div>
     </div>
 
