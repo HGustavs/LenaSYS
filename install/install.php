@@ -373,6 +373,7 @@
       echo "<div id='installationProgressWrap'>";
         $isPermissionsSat = isPermissionsSat($putFileHere);
         $isAllCredentialsFilled = isAllCredentialsFilled();
+        global $errors;
 
         //---------------------------------------------------------------------------------------------------
         // Check permissions.
@@ -690,6 +691,7 @@
     // Function that checks if all credentials are filled out (on the first page).
     //---------------------------------------------------------------------------------------------------
     function isAllCredentialsFilled(){
+      global $errors;
       $isAllCredentialsFilled = true;
       $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
       foreach ($fields AS $fieldname) {
@@ -705,6 +707,7 @@
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
     function deleteUser($connection, $username){
+      global $errors;
       try {
         $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
         echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
@@ -719,6 +722,7 @@
     // Function that deletes a user from database
     //---------------------------------------------------------------------------------------------------
     function deleteDatabase($connection, $databaseName){
+      global $errors;
       try {
         $connection->query("DROP DATABASE {$databaseName}");
         echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
