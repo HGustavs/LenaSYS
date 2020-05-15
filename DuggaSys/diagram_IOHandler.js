@@ -461,7 +461,7 @@ function getAsciiCharsInRange(start, end) {
 }
 
 function generatePropertyKeysMap() {
-    const objects = [new Symbol, new Path()];
+    const objects = [new Symbol(1), new Symbol(2), new Symbol(3), new Symbol(4), new Symbol(5), new Symbol(6), new Symbol(7), new Path()];
     const map = new Map();
     const delimiterChar = '~';
     const asciiChars = [
