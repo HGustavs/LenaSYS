@@ -594,3 +594,16 @@ function validateMOTD(motd, dialogid){
 	}
   
   }
+
+/*Change the value of MOTDbutton when the screen width is less than 275 px*/ 
+function MOTDbtnValueX(x) {
+	if (x.matches) { // If media query matches
+		document.getElementById("MOTDbutton").value = "X";
+	} else if(document.readyState === 'complete') {
+		document.getElementById("MOTDbutton").value = "Close";
+	}
+  }
+ 
+  var x = window.matchMedia("(max-width: 275px)");
+  MOTDbtnValueX(x); 
+  x.addListener(MOTDbtnValueX); 

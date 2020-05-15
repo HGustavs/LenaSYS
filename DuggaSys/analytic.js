@@ -19,7 +19,47 @@ $(function() {
 			drawLineChart(analytics.chartData);
 			break;
 	}
-	loadGeneralStats();
+
+	// Load the last page from localstorage
+	switch(localStorage.getItem('analyticsPage')) {
+		case "onlineUsers":
+			loadCurrentlyOnline();
+			break;			
+		case "passwordGuessing":
+			loadPasswordGuessing();
+			break;
+		case "osPercentage":
+			loadOsPercentage();
+			break;
+		case "browserPercentage":
+			loadBrowserPercentage();
+			break;
+		case "serviceUsage":
+			loadServiceUsage();
+			break;
+		case "courseDiskUsage":
+			loadCourseDiskUsage();
+			break;
+		case "serviceAvgDuration":
+			loadServiceAvgDuration();
+			break;
+		case "serviceCrashes":
+			loadServiceCrashes();
+			break;
+		case "fileInformation":
+			loadFileInformation();
+			break;
+		case "pageInformation":
+			loadPageInformation();
+			break;
+		case "userInformation":
+			loadUserInformation();
+			break;
+		case "generalStats":
+		default:
+			loadGeneralStats();
+			break;
+	}
 });
 
 //------------------------------------------------------------------------------------------------
@@ -55,11 +95,12 @@ function loadAnalytics(q, cb) {
 //------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
-		$('#analytic-info').append("<p>General statistics about the system.</p>");
+		localStorage.setItem('analyticsPage', 'generalStats');
 
-		var tableData = [["Stat", "Value"]];
-
+		$('#pageTitle').text("General statistics");
+		$('#analytic-info').append("<p class='analyticsDesc'>General statistics about the system.</p>");
 		// Login fails
+		var tableData = [["Stat", "Value"]];
 		var loginFails = data['stats']['loginFails'];
 		for (var stat in loginFails) {
 			if (loginFails.hasOwnProperty(stat)) {
@@ -70,17 +111,67 @@ function loadGeneralStats() {
 			}
 		}
 
+		// Number of online users last 15 minutes
+		tableData.push([
+			'Online users the last 15 minutes',
+			data['stats']['numOnline']
+		]);
+
+		// LenaSys Installation Size
+		tableData.push([
+			'LenaSYS Installation Size',
+			data['stats']['lenasysSize']
+		]);
+
+		// User Submissions Size
+		tableData.push([
+			'User Submissions Size',
+			data['stats']['userSubmissionSize']
+		]);
+
+		// Total number of users
+		tableData.push([
+			'Total Users',
+			data['stats']['totalUsers']
+		]);
+
+		// Top Page
+		tableData.push([
+			'Top Page: ' + data['stats']['topPage'],
+			'Hits: ' + data['stats']['topPageHits']
+    ]);
+    
+		// Top Browser
+		tableData.push([
+			'Top Browser',
+			data['stats']['topBrowser']
+		]);
+
+		// Top OS
+		tableData.push([
+			'Top OS',
+			data['stats']['topOS']
+		]);
+
+		$('#analytic-info').append(renderTable(tableData));
+		
 		// Disk usage
 		var chartData = [];
 		chartData.push({
-			label: 'Total Memory ('+data.disk.total+')',
-			value: data.disk.totalPercent
+			label: 'Memory in use ('+data.disk.inUse+')',
+			value: data.disk.inUsePercent
 		});
 
 		chartData.push({
-			label: 'Free Memory ('+data.disk.free+')',
-			value: data.disk.freePercent
+			label: 'Memory Available ('+data.disk.memFree+')',
+			value: data.disk.memFreePercent
 		});
+		
+		chartData.push({
+			label: 'Total Memory ('+data.disk.memTotal+')',
+			value: 0
+		});
+
 		drawPieChart(chartData, 'Disk Usage on the server', true);
 
 		// Ram Usage
@@ -96,16 +187,38 @@ function loadGeneralStats() {
 				value: data.ram.freePercent
 			});
 			drawPieChart(chartData, 'RAM Usage on the Server', true);
+		}		
+	});
+}
+function loadCurrentlyOnline() {
+	loadAnalytics("onlineUsers", function(data) {
+		localStorage.setItem('analyticsPage', 'onlineUsers');
+		$('#pageTitle').text("Currently Online");
+		$('#analytic-info').append("<p style='margin-top: 15px; margin-bottom: -20px;'>Active users the last 15 minutes</p>");
+		var tableData = [["User", "Page", "Last seen"]];
+		var activeUsers = data;
+		console.log(activeUsers);
+		for (var stat in activeUsers) {
+			if (activeUsers.hasOwnProperty(stat)) {
+				var date = new Date(activeUsers[stat].time + ' GMT');
+				tableData.push([
+					activeUsers[stat].username,
+					'<a href="' + activeUsers[stat].refer + '" target="_blank">' + activeUsers[stat].refer + '</a>',
+					timeSince(date)
+				]);
+			}
 		}
 
 		$('#analytic-info').append(renderTable(tableData));
-		
+	
 	});
 }
 
 function loadPasswordGuessing() {
 	loadAnalytics("passwordGuessing", function(data) {
-		$('#analytic-info').append("<p>Potential brute force attacks.</p>");
+		localStorage.setItem('analyticsPage', 'passwordGuessing');
+		$('#pageTitle').text("Password Guessing");
+		$('#analytic-info').append("<p class='analyticsDesc'>Potential brute force attacks.</p>");
 
 		var tableData = [["Username", "Remote address", "User agent", "Tries"]];
 		for (var i = 0; i < data.length; i++) {
@@ -122,7 +235,9 @@ function loadPasswordGuessing() {
 
 function loadOsPercentage() {
 	loadAnalytics("osPercentage", function(data) {
-		$('#analytic-info').append("<p>OS percentage for main page views.</p>");
+		localStorage.setItem('analyticsPage', 'osPercentage');
+		$('#pageTitle').text("OS percentage");
+		$('#analytic-info').append("<p class='analyticsDesc'>OS percentage for main page views.</p>");
 
 		var tableData = [["Operating system", "Percentage"]];
 		for (var i = 0; i < data.length; i++) {
@@ -146,7 +261,9 @@ function loadOsPercentage() {
 
 function loadBrowserPercentage() {
 	loadAnalytics("browserPercentage", function(data) {
-		$('#analytic-info').append("<p>Browser percentage for main page views.</p>");
+		localStorage.setItem('analyticsPage', 'browserPercentage');
+		$('#pageTitle').text("Browser percentage");
+		$('#analytic-info').append("<p class='analyticsDesc'>Browser percentage for main page views.</p>");
 
 		var tableData = [["Browser", "Percentage"]];
 		for (var i = 0; i < data.length; i++) {
@@ -169,7 +286,9 @@ function loadBrowserPercentage() {
 }
 
 function loadServiceUsage() {
+	localStorage.setItem('analyticsPage', 'serviceUsage');
 	resetAnalyticsChart();
+	$('#pageTitle').text("Service usage");
 	$('#analytic-info').empty();
 	$('#analytic-info').append("<p>Service usage</p>");
 
@@ -223,11 +342,19 @@ function loadServiceUsage() {
 				var serviceSelect = $('<select class="service-select"></select>');
 				for (var service in services) {
 					if (services.hasOwnProperty(service)) {
-						serviceSelect.append('<option value="' + service + '">' + service + '</option>')
+						if(localStorage.getItem('analyticsLastService') == service) {
+							serviceSelect.append('<option value="' + service + '" selected>' + service + '</option>')
+						} else {
+							serviceSelect.append('<option value="' + service + '">' + service + '</option>')
+						}
 					}
 				}
 				serviceSelect.change(function() {
+					$( "#canvas-area" ).empty();
 					drawLineChart(services[$(this).val()]);
+					try {
+						localStorage.setItem('analyticsLastService', $(this).val());
+					} catch(err) { }
 				});
 				$('#analytic-info').append(serviceSelect);
 				serviceSelect.change();
@@ -238,13 +365,43 @@ function loadServiceUsage() {
 	inputDateFrom.change(updateServiceUsage);
 	inputDateTo.change(updateServiceUsage);
 	selectInterval.change(updateServiceUsage);
-
 	updateServiceUsage();
+}
+
+function loadCourseDiskUsage() {
+	loadAnalytics("courseDiskUsage", function(data) {
+		localStorage.setItem('analyticsPage', 'courseDiskUsage');
+		$('#pageTitle').text("Coruse Disk Usage");
+		$('#analytic-info').append("<p class='analyticsDesc'>The disk usage per course</p>");
+
+		var tableData = [
+			["Corse Code", "Course", "Disk Usage"]
+		];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].coursecode,
+				data[i].coursename,
+				data[i].sizeReadable
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+
+		var chartData = [];
+		for (var i = 0; i < data.length; i++) {
+			chartData.push({
+				label: data[i].coursecode,
+				value: data[i].size
+			});
+		}
+		drawBarChart(chartData, "bytes");
+	});
 }
 
 function loadServiceAvgDuration() {
 	loadAnalytics("serviceAvgDuration", function(data) {
-		$('#analytic-info').append("<p>The average duration of service call completion in milliseconds.</p>");
+		localStorage.setItem('analyticsPage', 'serviceAvgDuration');
+		$('#pageTitle').text("Service speed");
+		$('#analytic-info').append("<p class='analyticsDesc'>The average duration of service call completion in milliseconds.</p>");
 
 		var tableData = [
 			["Service", "Average duration (ms)"]
@@ -270,6 +427,8 @@ function loadServiceAvgDuration() {
 
 function loadServiceCrashes() {
 	loadAnalytics("serviceCrashes", function(data) {
+		localStorage.setItem('analyticsPage', 'serviceCrashes');
+		$('#pageTitle').text("Service crashes");
 		$('#analytic-info').append("<p>Service requests with missing steps</p><hr>");
 
 		var crashes = {};
@@ -285,7 +444,6 @@ function loadServiceCrashes() {
 			}
 			crashes[step.uuid].steps[step.eventType] = new Date(Number(step.timestamp));
 		});
-
 
 		function pad(n, width) {
 			n = n + '';
@@ -320,7 +478,9 @@ function loadServiceCrashes() {
 
 
 function loadFileInformation() {
-    resetAnalyticsChart();
+	localStorage.setItem('analyticsPage', 'fileInformation');
+	resetAnalyticsChart();
+	$('#pageTitle').text("File Information");
     $('#analytic-info').empty();
 	$('#analytic-info').append("<p>File information for created and edited files.</p>");
 	
@@ -401,7 +561,6 @@ function loadFileInformation() {
         });
     }
    
-	
     inputDateFrom.change(updateFileInformation);
     inputDateTo.change(updateFileInformation);
  
@@ -409,77 +568,375 @@ function loadFileInformation() {
 }
 
 function loadPageInformation() {
-    resetAnalyticsChart();
+	localStorage.setItem('analyticsPage', 'pageInformation');
+	resetAnalyticsChart();
+	$('#pageTitle').text("Page Information");
     $('#analytic-info').empty();
-    $('#analytic-info').append("<p>Page information.</p>");
+	$('#analytic-info').append("<p>Page information.</p>");
+	
+	var firstLoad = true;
  
     var selectPage = $("<select></select>")
         .append('<option value="showDugga" selected>showDugga</option>')
-        .append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="sectioned">sectioned</option>')
+		.append('<option value="courseed">courseed</option>')
         .appendTo($('#analytic-info'));
    
-       
-   
-    function updatePageHitInformation(page){
-        loadAnalytics(page + "Information", function(data) {
-            console.log(page);
-            var tableData = [["Page", "Hits"]];
-            for (var i = 0; i < data.length; i++) {
-                tableData.push([
-                    page,
-                    data[i].pageLoads
-                ]);
-            }
-           
-            $('#analytic-info').append("<p>Page information.</p>");
-            $('#analytic-info').append(selectPage);
-            $('#analytic-info').append(renderTable(tableData));
-            updatePieChartInformation(page, tableData);
+    function updatePageHitInformation(pages, page){
+        loadAnalytics("pageInformation", function(data) {
+
+			var tableData = [["Page", "Hits"]];
+			for(var i = 0; i < pages.length; i++){
+
+				if(data['hits'][pages[i]] !== null){
+					tableData.push([
+						pages[i],
+						data['hits'][pages[i]].pageLoads
+					]);
+				}else{
+					tableData.push([
+						pages[i],
+						"0"
+					]);
+				}
+			}
+
+            updatePieChartInformation(page, tableData, data);
         });
     }
  
-    function updatePieChartInformation(page, tableData){
-        console.log(page + "Percentage");
-        loadAnalytics(page + "Percentage", function(data) {
- 
-            var tablePercentage = [["Courseid", "Percentage"]];
-            for (var i = 0; i < data.length; i++) {
-                tablePercentage.push([
-                    data[i].courseid,
-                    data[i].percentage
-                ]);
-            }
- 
-            var chartData = [];
-            for (var i = 0; i < data.length; i++) {
-                chartData.push({
-                    label: "courseid:" + " " + data[i].courseid,
-                    value: data[i].percentage
-                });
-            }
-            $('#analytic-info').append("<p>Page information.</p>");
-            $('#analytic-info').append(selectPage);
-            $('#analytic-info').append(renderTable(tableData));
-            $('#analytic-info').append(renderTable(tablePercentage));
-            $('#analytic-info').append(drawPieChart(chartData));
-            updateState();
-        });
+    function updatePieChartInformation(page, tableData, data){
+		var courseID = [];
+		var coursePercentage = [];
+		var courseName = [];
+		var numberOfCourses = 0;
+		var loopCounter = 0;
+		var tablePercentage = [["Courseid", "Percentage", "Coursename"]];
+
+        for (var i = 0; i < data['percentage'][page].length; i++) {
+			numberOfCourses = parseInt(data['percentage'][page].length);
+			courseID.push([
+                data['percentage'][page][i].courseid
+			]);
+			coursePercentage.push([
+                data['percentage'][page][i].percentage
+			]);
+
+			$.ajax({
+				url: "analyticService.php",
+				type: "POST",
+				dataType: "json",
+				data: {
+					query: "resolveCourseID",
+					cid: parseInt(courseID[i])
+				},success: function(data){
+					loopCounter++;
+					for (var i = 0; i < data.length; i++) {
+						courseName.push([
+							data[i].coursename
+						]);
+					}
+					tablePercentage = [["Courseid", "Percentage", "Coursename"]];
+					for (var i = 0; i < courseName.length; i++){
+						tablePercentage.push([
+							courseID[i],
+							coursePercentage[i],
+							courseName[i]
+						]);
+					}
+					if(loopCounter == numberOfCourses){
+						if(courseName.length !== 0){
+							$('#analytic-info').append(renderTable(tablePercentage));
+						}
+					}
+				}, error: function(){
+					console.log(" AJAX error");
+				}		
+			});
+        }
+
+        var chartData = [];
+        for (var i = 0; i < data['percentage'][page].length; i++) {
+            chartData.push({
+                label: "courseid:" + " " + data['percentage'][page][i].courseid,
+                value: data['percentage'][page][i].percentage
+            });
+		}
+		
+        $('#analytic-info').append("<p>Page information.</p>");
+        $('#analytic-info').append(selectPage);
+		$('#analytic-info').append(renderTable(tableData));
+		if(chartData !== 0){
+		$('#analytic-info').append(drawPieChart(chartData, "Hit spread for " + page + " page loads:"));
+		}
+        updateState();
     }
  
     function updateState(){
+		// Add additonal pages here
+		var pages = ["dugga", "codeviewer", "sectioned", "courseed", "fileed", "resulted", "analytic", "contribution", "duggaed", "accessed", "profile"];
+
+		if(firstLoad === true){
+			updatePageHitInformation(pages, pages[0]);
+			firstLoad = false;
+		} 
         selectPage.change(function(){
             switch(selectPage.val()){
                 case "showDugga":
-                    updatePageHitInformation("dugga");
+                    updatePageHitInformation(pages, pages[0]);
                     break;
                 case "codeviewer":
-                    updatePageHitInformation("codeviewer");
-                    break;
+                    updatePageHitInformation(pages, pages[1]);
+					break;
+				case "sectioned":
+					updatePageHitInformation(pages, pages[2]);
+					break;
+				case "courseed":
+					updatePageHitInformation(pages, pages[3]);
+					break;
             }
         });
     }
  
     updateState();
+}
+
+function loadUserInformation(){
+	localStorage.setItem('analyticsPage', 'userInformation');
+	resetAnalyticsChart();
+	$('#pageTitle').text("User Information");
+    $('#analytic-info').empty();
+	$('#analytic-info').append("<p>User information.</p>");
+
+	var firstLoad = true;
+	
+	var selectPage = $("<select></select>")
+        .append('<option value="sectioned" selected>sectioned</option>')
+		.append('<option value="courseed">courseed</option>')
+		.append('<option value="showDugga" selected>showDugga</option>')
+		.append('<option value="codeviewer">codeviewer</option>')
+		.append('<option value="events">events</option>')
+        .appendTo($('#analytic-info'));
+ 
+ 
+    function updateSectionedInformation(){
+        loadAnalytics("sectionedInformation", function(data) {
+            var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+				var cid;
+				var vers;
+
+				//Retrives the page 
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+				//Retrives the coursid
+				if(row.refer.includes("courseid=")){
+					pageParts = row.refer.split("courseid=");
+					pageParts = pageParts[1].split("&");
+					cid = pageParts[0];
+				}
+
+				//Retrives the course version
+				if(row.refer.includes("coursevers=")){
+					pageParts = row.refer.split("coursevers=");
+					vers = pageParts[1];
+
+					if(vers.includes("&")){
+						pageParts = pageParts[1].split("&");
+						vers = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Course Version", "Timestamp"]];
+				}
+				if(cid != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						pageLoad,
+						cid,
+						vers,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+	}
+	
+	function updateCourseedInformation(){
+        loadAnalytics("courseedInformation", function(data) {
+			var users = {};
+            $.each(data, function(i, row) {
+				var user = row.username;
+				var pageParts;
+				var pageLoad;
+
+				//Retrives the page 
+				if(row.refer.includes("/DuggaSys/")){
+					pageParts = row.refer.split("/DuggaSys/");
+					pageLoad = pageParts[1];
+
+					if(pageLoad.includes("?")){
+						pageParts = pageParts[1].split("?");
+						pageLoad = pageParts[0];
+					}
+				}
+
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Event", "Timestamp"]];
+				}
+				if(pageLoad != undefined) {
+					users[user].push([
+						row.uid,
+						row.username,
+						pageLoad,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+    }
+ 
+    function updateCodeviewerInformation(){
+		var users = {};
+        loadAnalytics("codeviewerInformation", function(data) {
+            $.each(data, function(i, row) {
+                var user = row.username;
+               
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Exampleid", "Timestamp"]];
+				}
+				if(row.cid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						"codeviewer.php",
+						row.cid,
+						row.exampleid,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+	} 
+	
+
+    function updateDuggaInformation(){
+		var users = {};
+        loadAnalytics("duggaInformation", function(data) {
+            $.each(data, function(i, row) {
+                var user = row.username;
+               
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "Page", "Courseid", "Duggaid", "Timestamp"]];
+				}
+				if(row.cid != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						"showDugga.php",
+						row.cid,
+						row.quizid,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+    } 
+ 
+    function updateUserLogInformation(users){
+		var users = {};
+        loadAnalytics("userLogInformation", function(data) {
+            $.each(data, function(i, row) {
+                var user = row.username;
+                if (!users.hasOwnProperty(user)) {
+                    users[user] = [["Userid", "Username", "EventType", "Description", "Timestamp"]];
+				}
+				if(row.eventType != "") {
+					users[user].push([
+						row.uid,
+						row.username,
+						row.eventType,
+						row.description,
+						row.timestamp
+					]);
+				}
+            });
+            updateState(users);
+        });
+    } 
+   
+    function updateState(users){
+        $('#analytic-info > select.file-select').remove();
+        var userSelect = $('<select class="file-select"></select>');
+        for (var user in users) {
+            if (users.hasOwnProperty(user)) {
+				if(localStorage.getItem('analyticsLastUser') == user) {
+					userSelect.append('<option value="' + user + '" selected>' + user + '</option>');
+				} else {
+					userSelect.append('<option value="' + user + '">' + user + '</option>');
+				}
+            }
+        }
+        userSelect.change(function() {
+			deleteTable();
+			$('#analytic-info').append(selectPage);
+			$('#analytic-info').append(renderTable(users[$(this).val()]));
+
+			try {
+				localStorage.setItem('analyticsLastUser', $(this).val());
+			} catch(err) { }
+
+        });
+        $('#analytic-info').append(userSelect);
+		userSelect.change();
+		pageSelect();
+	}
+	
+	function pageSelect(){
+		if(firstLoad === true){
+			updateSectionedInformation();
+			firstLoad = false;
+		} 
+        selectPage.change(function(){
+            switch(selectPage.val()){
+                case "sectioned":
+                    updateSectionedInformation();
+                    break;
+                case "courseed":
+                    updateCourseedInformation();
+					break;
+				case "showDugga":
+					updateDuggaInformation();
+					break;
+				case "codeviewer":
+					updateCodeviewerInformation();
+					break;
+				case "events":
+					updateUserLogInformation();
+					break;
+            }
+        });
+    }
+ 
+    pageSelect();
 }
 
 //------------------------------------------------------------------------------------------------
@@ -541,7 +998,7 @@ function chartDataLongestLabelWidth(data, ctx) {
 //------------------------------------------------------------------------------------------------
 // Draws a bar chart with the data given
 //------------------------------------------------------------------------------------------------
-function drawBarChart(data) {
+function drawBarChart(data, format = null) {
 	if (!$.isArray(data)) return;
 
 	analytics.chartType = "bar";
@@ -571,15 +1028,33 @@ function drawBarChart(data) {
 	
 	for (var i = 0; i < data.length; i++) {
 		var x = barSpacing + i * (barWidth + barSpacing);
+		
 		ctx.fillStyle = "#614875";
 		ctx.scale(1, -1);
 		ctx.fillRect(x, textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
 		ctx.scale(1, -1);
 		ctx.fillStyle = "white";
-		ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		
+		if(format = "bytes") {
+			ctx.fillText(humanFileSize(data[i].value), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		} else {
+			ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		}
+		
 		ctx.fillStyle = "black";
 		ctx.fillText(data[i].label, x + barWidth / 2, -textAreaHeight / 2);
 	}
+}
+
+function humanFileSize(size) {
+	if (size < 1024) 
+		return size + ' B'
+    let i = Math.floor(Math.log(size) / Math.log(1024))
+    let num = (size / Math.pow(1024, i))
+    let round = Math.round(num)
+	num = round < 10 ? num.toFixed(2) : round < 100 ? num.toFixed(1) : round
+	
+    return `${num} ${'KMGTPEZY'[i-1]}B` 
 }
 
 //------------------------------------------------------------------------------------------------
@@ -754,3 +1229,30 @@ function drawLineChart(data) {
 	}
 	ctx.stroke();
 }
+
+// Converts timestamps to how long ago
+function timeSince(date) {
+	let minute = 60;
+    let hour   = minute * 60;
+    let day    = hour   * 24;
+    let month  = day    * 30;
+    let year   = day    * 365;
+
+    let suffix = ' ago';
+
+    let elapsed = Math.floor((Date.now() - date) / 1000);
+
+    if (elapsed < minute) {
+        return 'just now';
+    }
+
+    // get an array in the form of [number, string]
+    let a = elapsed < hour  && [Math.floor(elapsed / minute), 'minute'] ||
+            elapsed < day   && [Math.floor(elapsed / hour), 'hour']     ||
+            elapsed < month && [Math.floor(elapsed / day), 'day']       ||
+            elapsed < year  && [Math.floor(elapsed / month), 'month']   ||
+            [Math.floor(elapsed / year), 'year'];
+
+    // pluralise and append suffix
+    return a[0] + ' ' + a[1] + (a[0] === 1 ? '' : 's') + suffix;
+  }

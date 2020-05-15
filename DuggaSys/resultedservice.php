@@ -459,6 +459,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					}
 				}
 			}
+        // Logging for mark a dugga
+        $description=$coursename." ".$coursecode." ".$duggaid." ".$mark." ".$duggauser;
+        logUserEvent($userid, $loginname, EventTypes::MarkedDugga, $description);
 		}
 
 	if(strcmp($opt,"DUGGA")==0){

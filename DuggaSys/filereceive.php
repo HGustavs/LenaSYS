@@ -35,6 +35,16 @@ if (isset($_SESSION['uid'])) {
     $userid = "UNK";
 }
 
+// Gets username based on uid, USED FOR LOGGING
+$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+$query->bindParam(':uid', $userid);
+$query-> execute();
+
+// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+	$username = $row['username'];
+}
+
 $log_uuid = getOP('log_uuid');
 
 $filo = print_r($_FILES, true);
@@ -183,17 +193,17 @@ if ($storefile) {
             if ($fileLocation == "LFILE") {
                 $movname = $currcvd . "/courses/" . $cid . "/" . $vers . "/" . $fileText;
                 $description="VersionLocal"." ".$fileText;
-                logUserEvent($userid, EventTypes::AddFile, $description);
+                logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 $kindid = 4;
             } else if($fileLocation == "MFILE"){
                 $movname = $currcvd . "/courses/" . $cid . "/" . $fileText;
                 $description="CourseLocal"." ".$fileText;
-                logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
+                logUserEvent($userid, $username, EventTypes::AddFile, "CourseLocal"." , ".$fileText);
                 $kindid = 3;
             } else if($fileLocation == "GFILE"){
                 $movname = $currcvd . "/courses/global/" . $fileText;
                 $description="Global"." ".$fileText;
-                logUserEvent($userid, EventTypes::AddFile, $description);
+                logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 $kindid = 2;
             }
             else{
@@ -301,19 +311,19 @@ if ($storefile) {
 
                     // Logging for version local files
                     $description="VersionLocal"." ".$fname;
-                    logUserEvent($userid, EventTypes::AddFile, $description);
+                    logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 } else if ($kind == "MFILE") {
                     $movname = $currcvd . "/courses/" . $cid . "/" . $fname;
                     
                     // Logging for course local files
                     $description="CourseLocal"." ".$fname;
-                    logUserEvent($username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
+                    logUserEvent($userid, $username, EventTypes::AddFile, "CourseLocal"." , ".$fname);
                 } else {
                     $movname = $currcvd . "/courses/global/" . $fname;
 
                     // Logging for global files
                     $description="Global"." ".$fname;
-                    logUserEvent($userid, EventTypes::AddFile, $description);
+                    logUserEvent($userid, $username, EventTypes::AddFile, $description);
                 }
 
                 // check if upload is successful

@@ -72,20 +72,7 @@
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","undefined");'><i class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
-		<!-- Small FAB Button in top in the header of sectioned -->
-		<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
-		<input id='addElement'  type='button' value='+' style="position:relative; top:-493px" class='submit-button-newitem' title='New Item' >
-		<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fabBtnList2'>
-					 	<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i class='material-icons'>link</i></a></li>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-						<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i class='material-icons'>format_quote</i></a></li>
-				</ol>
-		</div>
+		
 
 		<!-- FAB END -->
 
@@ -133,41 +120,38 @@
 		<!-- Announcement box -->
 		<div id="announcementBoxOverlay">
 			<div id="announcementBox">
-			<h3>To Do</h3>
-			<hr>
-			<table>
-			<?php
+				<div id="actionLogDisplay">
+					<?php 		
 
-				$courseid = $_GET['courseid'];
-				$coursevers = $_GET['coursevers'];
+					if (isset($_SESSION["announcementcreated"])) {
+						echo '<div class="announcementcreated"><span>'.$_SESSION["announcementcreated"].'</span><span onclick="closeActionLogDisplay();" class="closeActionLogDisplay" title="Close">&times;</span></div>';
+					}elseif (isset($_SESSION['announcementupdated'])) {
+						echo '<div class="announcementupdated"><span>'.$_SESSION["announcementupdated"].'</span><span onclick="closeActionLogDisplay();" class="closeActionLogDisplay" title="Close">&times;</span></div>';
+					}elseif(isset($_SESSION['announcementdeleted'])){
+						echo '<div class="announcementdeleted"><span>'.$_SESSION["announcementdeleted"].'</span><span onclick="closeActionLogDisplay();" class="closeActionLogDisplay" title="Close">&times;</span></div>';
 
-				foreach ($pdo->query('SELECT * FROM announcement WHERE courseid="'.$courseid.'" AND courseversion="'.$coursevers.'" ORDER BY announceTime DESC') AS $headline){
-	             $headlines = $headline['title'];
-	             $message = $headline['message'];
-	             $announcementid = $headline['id'];
-	             $announceTime = $headline['announceTime'];
-	             $author = $headline['author'];
-	             echo "<tr><td class='authorProfile' title='Author'><i class='fa fa-user'></i>".$author."</td></tr><tr><th title='Title'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst(strtolower($headlines))."</a></th></tr><tr><td class='columnA' title='Message'><a href='../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."&announcementid=".$announcementid."'>".ucfirst($message)."</a></td><td class='columnB'><b>Posted on:</b><br>".$announceTime."</td></tr>";
+					}
 
-	            }
+					unset($_SESSION['announcementcreated']);
+					unset($_SESSION['announcementupdated']);
+					unset($_SESSION['announcementdeleted']);
 
+					?>
+				</div>
+				<div id="formContainer">
+				<?php 
+				$_SESSION['courseid'] = $_GET['courseid'];
+				$_SESSION['coursename'] = $_GET['coursename'];
+				$_SESSION['coursevers'] = $_GET['coursevers'];
+				include "../Shared/announcementBox.php"; 
 
-			?>
-
-			</table>
-
-			<button class="showAllAnnouncement">
-				<a href="#" class="hvr-icon-forward"><span class="showmore">Show more</span><i class="fa fa-chevron-circle-right hvr-icon"></i>
-				</a>
-			</button>
+				?>
+				</div>
+				<div id="displayAnnouncements">
+					<div id="announcementCards"></div>
+				</div>
+			</div>
 		</div>
-
-		</div>
-		<?php
-			include '../Shared/announcementBox.php';
-			include '../Shared/fullAnnouncement.php';
-
-		?>
 
 		<!-- + button --->
 
@@ -175,6 +159,27 @@
 		<div id='Sectionlist'>
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
+
+		<!-- Small FAB Button in top in the header of sectioned -->
+		
+			<div style="margin:10px;">
+				<img src="../Shared/icons/right_complement.svg" id="sectionList_arrowStatisticsOpen">
+				<img src="../Shared/icons/desc_complement.svg" id="sectionList_arrowStatisticsClosed">
+			</div>
+
+			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
+				<input id='addElement'  type='button' value='+' style="top:-493px" class='submit-button-newitem' title='New Item' >
+				<ol class='fab-btn-list2' style='margin: 0; padding: 0; display: none;'  reversed id='fabBtnList2'>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i class='material-icons'>link</i></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i class='material-icons'>format_quote</i></a></li>
+					</ol>
+			</div>
 				<div style='flex-grow:1'>
 						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;'>UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
@@ -222,6 +227,7 @@
 								<svg id="swimlaneSVG" width='300px' style='margin: 10px;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
 				</div>
+				<div class="statisticsContentBottom"></div>
 		</div>
 		<!-- Statistics List END-->
 
@@ -242,7 +248,7 @@
 	?>
 
 		<!-- Edit Section Dialog START -->
-		<div id='editSection' class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onmouseover="validateSectName('sectionname','dialog10'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
@@ -253,8 +259,9 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onchange="validateSectName('sectionname','dialog10')" type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
+				<p id="dialog10" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Forbidden characters in filename</p>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
@@ -270,6 +277,8 @@
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
+					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' onchange='showFeedbackquestion()'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput'' id='fdbckque' value='Hur skulle du betygsätta duggan?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
@@ -277,7 +286,7 @@
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem(); updateDeadline();' />
+					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection");' />
 				</div>
 			</div>
 		</div>
@@ -326,14 +335,14 @@
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version ID:</span><input oninput="validateCourseID('versid', 'dialog2')" class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
+				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="validateCourseID('cversid', 'dialog2')" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
 				<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-6 numbers)</p>
-				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
+				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="validateVersionName('versname', 'dialog')" class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
 				<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN or VTNN</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='startdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateDate('startdate','enddate','dialog3')" class='textinput' type='date' id='enddate' value='' /></div>
 				<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
-				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
+				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="validateMOTD('vmotd','dialog4')" class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
 				<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 non-nordic symbols</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
@@ -346,7 +355,7 @@
 	<!-- New Verison Dialog END -->
 
 <!-- Edit Version Dialog START -->
-<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9');" class='loginBoxContainer' style='display:none;'>
+<div id='editCourseVersion' onkeyup="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9');" class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:464px;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Course Version</h3>
@@ -355,12 +364,12 @@
 			<div style='padding:5px;'>
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
-				<div class='inputwrapper'><span>Version Name:</span><input oninput="validateVersionName('eversname', 'dialog5')" class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
+				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="validateVersionName('eversname', 'dialog5')" class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
 				<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN or VTNN</p>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="validateDate('estartdate','eenddate','dialog6')" class='textinput' type='date' id='estartdate' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="validateVersionName('eversname', 'dialog5')" class='textinput' type='date' id='eenddate' value='' /></div>
 				<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>
-				<div class='inputwrapper'><span>MOTD:</span><input onchange="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
+				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="validateMOTD('eMOTD', 'dialog9')" class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
 				<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 non-nordic symbols</p>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 			</div>
@@ -399,6 +408,26 @@
 		</div>
 	</div>
 	<!-- HighscoreBox END -->
+
+	<!-- User Feedback Dialog START -->
+    <div id='userFeedbackDialog' class='loginBoxContainer' style='display:none;'>
+      <div class='loginBox' id='variantBox'>
+        <div class='loginBoxheader'>
+          <h3 id="userFeedbackTitle">User Feedback</h3> 
+          <div class='cursorPointer' onclick='closeWindows();'>x</div>
+        </div>
+		<h2 id="duggaFeedbackQuestion"></h2>
+		<div id="statscontainer">
+			<div class="statsdiv"><p id="avg-feedback"></p>Medelvärde</div>
+			<div class="statsdiv"><p id="median-feedback"></p>Högsta/Lägsta</div>
+			<div class="statsdiv"><p id="total-feedback"></p>Antal feedback</div>
+		</div>
+		<div id="feedbacktablecontainer">
+		</div>
+      </div>
+    </div>
+    <!-- User Feedback Dialog END -->
+
 </body>
 
 </html>
